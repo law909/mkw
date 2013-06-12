@@ -1,3 +1,9 @@
+AuthType Basic
+AuthName "Password required"
+AuthBasicProvider file
+AuthUserFile "/var/www/mattkft.hu/mindentkapni.mattkft.hu/.password"
+Require user mindentkapni
+
 <IfModule mod_rewrite.c>
    RewriteEngine on
    RewriteBase /
