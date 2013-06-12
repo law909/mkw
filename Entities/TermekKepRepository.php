@@ -1,0 +1,22 @@
+<?php
+namespace Entities;
+
+use Entities\TermekKep;
+use matt, \Doctrine\ORM;
+
+class TermekKepRepository extends matt\Repository {
+
+	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+		parent::__construct($em,$class);
+		$this->setEntityname('Entities\TermekKep');
+//		$this->setOrders(array());
+	}
+
+	public function getByTermek($termek) {
+		$filter=array();
+		$filter['fields'][]='termek';
+		$filter['clauses'][]='=';
+		$filter['values'][]=$termek;
+		return $this->getAll($filter,array());
+	}
+}

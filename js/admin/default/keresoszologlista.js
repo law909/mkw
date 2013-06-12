@@ -1,0 +1,19 @@
+$(document).ready(function(){
+	$('#mattable-select').mattable({
+		filter:{
+			fields:['#nevfilter']
+		},
+		tablebody:{
+			url:'/admin/keresoszolog/getlistbody'
+		},
+		karb:{
+			container:'#mattkarb',
+			viewUrl:'/admin/keresoszolog/getkarb',
+			newWindowUrl:'/admin/keresoszolog/viewkarb',
+			saveUrl:'/admin/keresoszolog/save'
+		}
+	});
+	$('#maincheckbox').change(function(){
+		$('.egyedcheckbox').attr('checked',$(this).attr('checked'));
+	});
+});

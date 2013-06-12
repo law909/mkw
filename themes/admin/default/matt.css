@@ -1,0 +1,138 @@
+/* M
+----------------------------------*/
+.matt-container {
+}
+
+.matt-hseparator {
+	height: .3em;
+}
+
+/* MessageCenter
+----------------------------------*/
+.matt-messagecenter {
+	font-size: 1.5em;
+	text-align: center;
+	margin-bottom: 0.5em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+/* SelectForm
+----------------------------------*/
+.mattable-titlebar {
+	padding: .3em;
+	position: relative;
+	border: 0px none;
+}
+
+.mattable-table {
+	font-weight: normal;
+	border-spacing: 0px;
+	width: 100%;
+}
+
+.mattable-rborder {
+	border-right-color: inherit;
+	border-right-style: solid;
+	border-right-width: 1px;
+}
+
+.mattable-tborder {
+	border-top-color: inherit;
+	border-top-style: solid;
+	border-top-width: 1px;
+}
+
+.mattable-thcolumn {
+	overflow: hidden;
+	white-space: nowrap;
+	text-align: center;
+	border-top: 0px none;
+	border-bottom: 0px none;
+}
+
+.mattable-cell {
+	padding: 0.5em;
+}
+
+.mattable-footerbar {
+	padding: .3em .3em .3em .3em;
+	position: relative;
+	border-bottom: 0px none;
+	border-left: 0px none;
+	border-right: 0px none;
+}
+
+.mattable-filterwrapper {
+	padding: 1em;
+	position: relative;
+	border-bottom: 0px none;
+	border-left: 0px none;
+	border-right: 0px none;
+}
+
+.mattable-pager {
+	float: right;
+	padding-top: 1px;
+}
+
+.mattable-order {
+	float: left;
+	margin-right: 5px;
+	padding-top: 5px;
+}
+
+.mattable-new {
+	float: left;
+}
+
+.mattable-rightaligned {
+	text-align: right;
+}
+
+.mattable-important {
+	font-weight: bold;
+}
+
+.mattable-repeatable {
+	padding: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+/* EditForm
+----------------------------------*/
+.mattedit-titlebar {
+	padding: .3em;
+	position: relative;
+	border-left: 0px none;
+	border-right: 0px none;
+	border-top: 0px none;
+}
+
+.mattedit-titlebar-close {
+	position: absolute;
+	top: 50%;
+	width: 19px;
+	margin: -10px 0 0 0;
+	padding: 1px;
+	height: 18px;
+	right: 0px;
+}
+
+.mattedit-titlebar-close span {
+	display: block;
+	margin: 1px;
+}
+
+.mattedit-titlebar-close:hover {
+	padding: 0;
+}
+
+.mattedit-page {
+	padding: 1em;
+}
+
+.mattedit-headerimage {
+	float: left;
+	padding: .5em;
+}

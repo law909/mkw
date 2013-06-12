@@ -1,0 +1,637 @@
+@navopacity: 0.95;
+@smallradius: 3px;
+@bigradius: 6px;
+
+@fontsize: 13px;
+@headercarttextfontsize: 11px;
+@logofontsize: 67px;
+@logosmallfontsize: 8px;
+@headernavfontsize: 15px;
+@headernavcategoryfontsize: 14px;
+@morzsafontsize: 11px;
+@sectionheaderfontsize: 21px;
+@footerlogofontsize: 37px;
+@hiralairasfontsize: 70%;
+
+@fontcolor: #333;
+@hoverfontcolor: #a2a2a2;
+@highlite: #ffc600;
+@headersotet: #262626;
+@headervilagos: #4b4b4b;
+@headerfontcolor: #f7f7f7; /*#a2a2a2;*/
+@headerhoverfontcolor: #d2d2d2;
+@headercartvilagos: #ff8201;
+@headercartsotet: #e82823;
+@logofontcolor: #e42721;
+@headernavvilagos: #a2a2a2;
+@headernavsotet: #797979;
+@headercartbuttonvilagos: #e42721;
+@headercartbuttonsotet: #c11813;
+@headernavlinkcolor: #f7f7f7;
+@termekcaptionfontcolor: #333;
+@termekpricefontcolor: #333;
+@okbuttonvilagos: #1ab324;
+@okbuttonsotet: #087510;
+@headerrowmargin: 10px;
+@headermidmargin: 20px;
+@headercarthpadding: 8px;
+@headercartvpadding: 10px;
+
+.gradient-background (@from, @to) {
+	background-color: @to;
+	background-image: -webkit-gradient(linear,0 0,0 100%, from(@from), to(@to));
+	background-image: -webkit-linear-gradient(top,@from,@to);
+	background-image: -moz-linear-gradient(top,@from,@to);
+	background-image: -o-linear-gradient(top,@from,@to);
+	background-image: linear-gradient(to bottom,@from,@to);
+}
+
+.border-radius (@a, @b, @c, @d) {
+	-webkit-border-radius: @arguments;
+	-moz-border-radius: @arguments;
+	border-radius: @arguments;
+}
+
+.box-shadow (@a, @b, @c, @d) {
+	-webkit-box-shadow: @arguments;
+	-moz-box-shadow: @arguments;
+	box-shadow: @arguments;
+}
+
+@font-face {
+    font-family: 'YanoneKaffeesatzBold';
+    src: url('font/YanoneKaffeesatz-Bold-webfont.eot');
+    src: url('font/YanoneKaffeesatz-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('font/YanoneKaffeesatz-Bold-webfont.woff') format('woff'),
+         url('font/YanoneKaffeesatz-Bold-webfont.ttf') format('truetype'),
+         url('font/YanoneKaffeesatz-Bold-webfont.svg#YanoneKaffeesatzBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+.textaligncenter {
+	text-align: center;
+}
+
+.textalignright {
+	text-align: right;
+}
+
+.simalista {
+	list-style: none;
+	margin: 0;
+}
+
+body {
+	font-size: @fontsize;
+}
+
+a {
+	text-decoration: none;
+	color: @fontcolor;
+}
+
+a:hover {
+	text-decoration: none;
+	color: @hoverfontcolor;
+}
+
+p, input {
+	font-size: @fontsize;
+}
+
+select {
+	font-size: @fontsize;
+	width: auto;
+	height: auto;
+	margin: 0;
+	padding: 2px;
+}
+
+td {
+	vertical-align: top;
+}
+
+.form-actions {
+	background: none;
+	border: none;
+}
+
+.okbtn {
+	color: white;
+	font-size: @fontsize;
+	text-shadow: 0 0 0;
+	background-color: @okbuttonvilagos;
+	border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	.gradient-background(@okbuttonvilagos,@okbuttonsotet);
+}
+
+.okbtn:hover,.okbtn:active,.okbtn.active,.okbtn.disabled,.okbtn[disabled] {
+	color: white;
+	.gradient-background(@okbuttonvilagos,@okbuttonsotet);
+}
+.okbtn:active,.okbtn.active {
+	.gradient-background(@okbuttonvilagos,@okbuttonsotet);
+}
+
+header a, footer a {
+	color: @headerfontcolor;
+}
+
+header a:hover, footer a:hover {
+	color: @headerhoverfontcolor;
+}
+
+.headertop {
+	margin-bottom: @headerrowmargin;
+	color: @headerfontcolor;
+	.gradient-background(@headervilagos,@headersotet);
+}
+
+.headerbutton {
+	float: left;
+	border-right-style: solid;
+	border-right-width: 2px;
+	border-color: @headerfontcolor;
+	padding: 10px 10px 10px;
+}
+
+.lastheaderbutton {
+	border: none;
+}
+
+.firstheaderbutton {
+	padding-left: 0;
+}
+
+.headercartcontainer {
+	position: relative;
+}
+
+.headercart {
+	position: absolute;
+	top: 0;
+	right: 0;
+	line-height: 15px;
+	padding: @headercarthpadding @headercartvpadding @headercarthpadding 0;
+	.gradient-background(@headercartvilagos,@headercartsotet);
+	.border-radius(0,0,@bigradius,@bigradius);
+	.box-shadow(0,3px,3px,rgba(0,0,0,0.15));
+}
+
+.headercart a {
+	color: black;
+}
+
+.headercart > div {
+	float: left;
+	padding-left: @headercartvpadding;
+}
+
+.headercarticon {
+	display: block;
+    background: url("img/i_kosar.png") no-repeat scroll center center;
+    width: 30px;
+	height: 30px;
+}
+
+.headerloginicon {
+	display: block;
+	background: url("img/i_emberke.png") no-repeat scroll left center;
+	padding-left: 20px;
+}
+
+.headercarttext {
+	font-size: @headercarttextfontsize;
+	color: white;
+}
+
+a.headercartbtn {
+	color: white;
+	font-size: @fontsize;
+	text-shadow: 0 0 0;
+	background-color: @headercartbuttonvilagos;
+	border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	.gradient-background(@headercartbuttonvilagos,@headercartbuttonsotet);
+}
+
+a.headercartbtn:hover,a.headercartbtn:active,a.headercartbtn.active,a.headercartbtn.disabled,a.headercartbtn[disabled] {
+	color: white;
+	.gradient-background(@headercartbuttonvilagos,@headercartbuttonsotet);
+}
+a.headercartbtn:active,a.headercartbtn.active {
+	.gradient-background(@headercartbuttonvilagos,@headercartbuttonsotet);
+}
+
+.headermid {
+	margin-bottom: @headermidmargin;
+	line-height: normal;
+}
+
+.logo {
+	position: relative;
+	font-family: 'YanoneKaffeesatzBold';
+	font-size: @logofontsize;
+	color: @logofontcolor;
+}
+
+.logokisszoveg {
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+	font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+	font-size: @logosmallfontsize;
+	color: black;
+}
+
+#searchform, #searchinput {
+	margin: 0;
+}
+
+#searchinput {
+	border-color: @logofontcolor;
+	padding-right: 28px;
+	.border-radius(@smallradius,@smallradius,@smallradius,@smallradius);
+}
+
+#searchinput:focus {
+	.box-shadow(0,1px,6px,@headerfontcolor);
+}
+
+#searchbutton {
+	background: url('img/i_keres.png') no-repeat center;
+	background-color: @logofontcolor;
+	border: none;
+	width: 24px;
+	height: 24px;
+	margin-left: -32px;
+	position: absolute;
+	right: 4px;
+	bottom: 3px;
+	.border-radius(@smallradius,@smallradius,@smallradius,@smallradius);
+}
+
+.searchinputbox {
+	position: relative;
+	margin: 33px 0 0 10px;
+}
+
+.headernav {
+	.gradient-background(@headernavvilagos,@headernavsotet);
+}
+
+#navmain {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 100;
+}
+
+#navmain li {
+    float: left;
+	border-left-style: solid;
+	border-left-width: 2px;
+	border-color: @headernavvilagos;
+}
+
+#navmain li.last {
+	border-right-style: solid;
+	border-right-width: 2px;
+}
+
+#navmain li.first {
+	border-left: none;
+}
+
+#navmain li a {
+	display: block;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: @headernavfontsize;
+	color: @headernavlinkcolor;
+	-webkit-transition: background-color .2s linear;
+	-moz-transition: background-color .2s linear;
+	-o-transition: background-color .2s linear;
+	transition: background-color .2s linear;
+	line-height: 20px;
+	padding: 8px 23px;
+}
+
+#navmain li a:hover {
+	background: rgba(0,0,0,0.3);
+	z-index: 1;
+}
+
+#navmain li a.active {
+    background-color: @headernavvilagos;
+}
+
+#navmain .sub {
+	position: absolute;
+	left: 0;
+	background: @headernavvilagos;
+	padding: 10px;
+	float: left;
+	display: none;
+	opacity: @navopacity;
+	z-index: 100;
+	.border-radius(0,0,@bigradius,@bigradius);
+}
+
+#navmain .sub ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	width: 190px;
+	float: left;
+}
+
+#navmain .sub ul li {
+	width: 100%;
+}
+
+#navmain .sub ul li a, #navmain .sub ul li p {
+	font-weight: normal;
+	font-size: @fontsize;
+	float: none;
+	text-indent: 0;
+	margin-right: 10px;
+	margin-left: 4px;
+	height: auto;
+	padding: 4px 6px;
+	display: block;
+	text-decoration: none;
+	background-image: none;
+	line-height: 16px;
+	.border-radius(@smallradius,@smallradius,@smallradius,@smallradius);
+}
+
+#navmain .sub ul li a:hover {
+	background: @headernavlinkcolor;
+	color: @fontcolor;
+}
+
+#navmain .sub ul li.categorytitle {
+	margin: 0 0 0 4px;
+	padding: 4px 3px 6px;
+	font-size: @headernavcategoryfontsize;
+	font-weight: bold;
+	color: @highlite;
+}
+
+footer {
+	margin-top: 20px;
+	padding-top: 20px;
+	color: @headerfontcolor;
+	.gradient-background(@headersotet,@headervilagos);
+}
+
+footer h2 {
+	font-size: @footerlogofontsize;
+	font-family: 'YanoneKaffeesatzBold';
+}
+
+footer h5 {
+	color: @logofontcolor;
+}
+
+footer ul {
+	list-style: none;
+	margin: 0;
+}
+
+footer nav {
+	margin-top: 20px;
+}
+
+.morzsa {
+	font-size: @morzsafontsize;
+	margin-bottom: 20px;
+	background-color: whitesmoke;
+	.border-radius(0,0,0,0);
+}
+
+.morzsaszoveg {
+	padding-left: 8px;
+}
+
+.kat {
+	padding: 10px 0;
+	float: left;
+	width: 100%;
+	cursor: pointer;
+}
+
+.kat:hover {
+	background-color: whitesmoke;
+}
+
+.katimage {
+	float: left;
+	width: 100px;
+	margin: 0 10px;
+	text-align: center;
+}
+
+.kattext {
+	margin: 0 10px;
+}
+
+.kattitle {
+	font-size: @headernavfontsize;
+	font-weight: bold;
+}
+
+.sectionheader {
+	font-size: @sectionheaderfontsize;
+	font-family: 'YanoneKaffeesatzBold';
+	color: @highlite;
+	text-align: center;
+}
+
+.szurokontener {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #efefef;
+	margin-bottom: 15px;
+}
+
+.szurokontener label {
+	font-size: @fontsize;
+}
+
+.szurofej {
+	background-color: #EFEFEF;
+	-webkit-transition: background-color .2s linear;
+	-moz-transition: background-color .2s linear;
+	-o-transition: background-color .2s linear;
+	padding: 8px;
+	cursor: pointer;
+}
+
+.szurofej:hover {
+	background-color: rgba(0,0,0,0.3);
+}
+
+.szurodoboz {
+	padding: 15px;
+	overflow-x: hidden;
+	min-height: 50px;
+	max-height: 175px;
+}
+
+.termek {
+	float: left;
+	width: 100%;
+	padding: 10px 0;
+	border-bottom: 1px solid;
+	border-color: #efefef;
+}
+
+.termekimage {
+	text-align: center;
+	width: 80px;
+	float: left;
+}
+
+.termekcaption, .termekprice {
+	font-size: @headernavfontsize;
+	font-weight: bold;
+	color: @termekcaptionfontcolor;
+}
+
+.termekprice {
+	text-align: right;
+	color: @termekpricefontcolor;
+}
+
+.gtermek {
+	padding: 10px 1.55%; /*border nelkul: 1.6665%;*/
+	height: 370px;
+	width: 45%;
+	float: left;
+	min-height: 1px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #efefef;
+	border-width: 0 0 1px 1px;
+}
+
+.gtermekszelso {
+	border-width: 0 1px 1px 1px;
+}
+
+.gtermekimage {
+	/*text-align: center;*/
+	float: left;
+	width: 120px;
+}
+
+.gtermekadat {
+	height: 285px;
+}
+
+.gtermekprice {
+	font-size: @headernavfontsize;
+	font-weight: bold;
+	color: @termekpricefontcolor;
+	text-align: right;
+	clear: left;
+}
+
+.cartbtn {
+	color: white;
+	font-weight: bold;
+	text-shadow: 0 0 0;
+	border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	.gradient-background(@headercartbuttonvilagos,@headercartbuttonsotet);
+}
+
+.cartbtn:hover,.cartbtn:active,.cartbtn.active,.cartbtn.disabled,.cartbtn[disabled] {
+	color: white;
+	.gradient-background(@headercartbuttonvilagos,@headercartbuttonsotet);
+}
+
+.cartbtn:active,.cartbtn.active {
+	.gradient-background(@headercartbuttonvilagos,@headercartbuttonsotet);
+}
+
+.kiemelttermek {
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+.lapozo {
+	clear: left;
+	background-color: #EFEFEF;
+	padding: 4px 8px;
+}
+
+.lapozoform {
+	margin: 0;
+}
+
+.lapozoform table {
+	width: 100%;
+}
+
+.lapozotalalat {
+	width: 20%;
+}
+
+.lapozooldalak {
+	text-align: center;
+}
+
+.lapozorendezes {
+	width: 15%;
+	text-align: right;
+}
+
+a.pageedit {
+	padding: 4px;
+}
+
+a.pageedit:hover {
+	background-color: white;
+}
+
+span.aktualislap {
+	color: @logofontcolor;
+	background-color: white;
+	padding: 4px;
+}
+
+.hiralairas {
+	font-size: @hiralairasfontsize;
+}
+
+@media (min-width: 480px) {
+	#navmain li .sub {
+		width: 400px;
+	}
+}
+
+@media (min-width: 767px) {
+	#navmain li .sub {
+		width: 700px;
+	}
+
+	#navmain li .sub ul {
+		width: 125px;
+		float: left;
+	}
+}
+
+@media (min-width: 979px) {
+	#navmain li .sub {
+		width: 940px;
+	}
+
+	#navmain li .sub ul {
+		width: 185px;
+		float: left;
+	}
+}

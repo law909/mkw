@@ -1,0 +1,75 @@
+body {
+	font-size: 62.5%;
+}
+
+#menu {
+	position: fixed;
+	padding: 0.5em;
+}
+
+#kozep {
+	position: absolute;
+}
+
+.egyebadat-grid {
+	margin-bottom: 5px;
+}
+
+.egyebadat-wrapper {
+	margin-right: 5px;
+	float: left;
+}
+
+.egyebadat-longwrapper {
+	clear: both;
+}
+
+.jobbra {
+	float: right;
+}
+
+img {
+	border: none;
+}
+
+.admin-termeknev {
+	font-weight: bold;
+	padding-right: 1em;
+}
+
+.admin-termekadat {
+	margin-top: 1em;
+}
+
+.cimkelista {
+	line-height: 2em;
+}
+
+#flyoutpreview {
+	position: absolute;
+	border: 1px solid #ccc;
+	background: #333;
+	padding: 5px;
+	display: none;
+	color: #fff;
+}
+
+.termekselect {
+	width: 40em;
+}
+
+.valtozatkepedit {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	max-width: 650px;
+}
+
+.valtozatkepedit li {
+	margin: 3px;
+	padding: 1px;
+	float: left;
+	width: 100px;
+	height: 80px;
+	text-align: center;
+}

@@ -1,0 +1,90 @@
+<?php
+namespace Entities;
+use matt;
+/**
+ * @Entity(repositoryClass="Entities\ValutanemRepository")
+ * @Table(name="valutanem")
+ */
+class Valutanem {
+	/**
+	 * @Id @Column(type="integer")
+	 * @GeneratedValue(strategy="AUTO")
+	 */
+	private $id;
+	/** @Column(type="string",length=6,nullable=false) */
+	private $nev;
+	/** @Column(type="boolean") */
+	private $kerekit=false;
+	/** @Column(type="boolean") */
+	private $hivatalos=false;
+	/** @Column(type="integer") */
+	private $mincimlet=0;
+	/**
+	 * @ManyToOne(targetEntity="Bankszamla")
+	 * @JoinColumn(name="bankszamla_id",referencedColumnName="id",nullable=true,onDelete="set null")
+	 */
+	private $bankszamla;
+	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="valutanem",cascade={"persist","remove"}) */
+	private $bizonylatfejek;
+	/** @OneToMany(targetEntity="Bizonylattetel", mappedBy="valutanem",cascade={"persist","remove"}) */
+	private $bizonylattetelek;
+	/** @OneToMany(targetEntity="Kosar", mappedBy="valutanem",cascade={"persist","remove"}) */
+	private $kosarak;
+
+	public function getId() {
+		return $this->id;
+	}
+
+	public function getNev() {
+		return $this->nev;
+	}
+
+	public function setNev($nev) {
+		$this->nev = $nev;
+	}
+
+	public function getKerekit() {
+		return $this->kerekit;
+	}
+
+	public function setKerekit($kerekit) {
+		if (matt\Filter::isBool($kerekit)) {
+			$this->kerekit = $kerekit;
+		}
+	}
+
+	public function getHivatalos() {
+		return $this->hivatalos;
+	}
+
+	public function setHivatalos($hivatalos) {
+		if (matt\Filter::isBool($hivatalos)) {
+			$this->hivatalos = $hivatalos;
+		}
+	}
+
+	public function getMincimlet() {
+		return $this->mincimlet;
+	}
+
+	public function setMincimlet($mincimlet) {
+		if (matt\Filter::isInt($mincimlet)) {
+			$this->mincimlet = $mincimlet;
+		}
+	}
+
+	public function getBankszamla() {
+		return $this->bankszamla;
+	}
+
+	public function getBankszamlaId() {
+		if ($this->bankszamla) {
+			return $this->bankszamla->getId();
+		}
+		return '';
+	}
+
+	public function setBankszamla($bankszamla) {
+		$this->bankszamla = $bankszamla;
+	}
+}

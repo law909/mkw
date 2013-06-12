@@ -1,0 +1,17 @@
+$(document).ready(function(){
+	$('#mattable-select').mattable({
+		name:'uzletkoto',
+		filter:{
+			fields:['#nevfilter']
+		},
+		tablebody:{
+			url:'/admin/uzletkoto/getlistbody'
+		},
+		karb:{
+			container:'#mattkarb',
+			viewUrl:'/admin/uzletkoto/getkarb',
+			newWindowUrl:'/admin/uzletkoto/viewkarb',
+			saveUrl:'/admin/uzletkoto/save'
+		}
+	});
+});
