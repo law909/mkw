@@ -46,7 +46,7 @@ class JQGridController extends Controller {
 	protected function getOrderArray($params) {
 		// TODO SQLINJECTION
 		$order=array();
-		$order[$params->getParam('sidx','nev')]=$params->getParam('sord','ASC');
+		$order[$params->getRequestParam('sidx','nev')]=$params->getRequestParam('sord','ASC');
 		return $order;
 	}
 
