@@ -1,6 +1,6 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, Entities, SIIKerES\store;
+use matt, matt\Exceptions, Entities, mkw\store;
 
 class fizmodController extends matt\JQGridController {
 

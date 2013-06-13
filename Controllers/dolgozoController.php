@@ -2,7 +2,7 @@
 namespace Controllers;
 use Entities\Munkakor;
 
-use matt, matt\Exceptions, SIIKerES\store;
+use matt, matt\Exceptions, mkw\store;
 
 class dolgozoController extends matt\MattableController {
 

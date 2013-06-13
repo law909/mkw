@@ -1,6 +1,6 @@
 <?php
 namespace Entities;
-use SIIKerES\Store;
+use mkw\Store;
 
 /**
  * @Entity(repositoryClass="Entities\TermekRepository")
@@ -170,6 +170,8 @@ class Termek {
 	private $valtozatadattipus;
 	/** @Column(type="boolean",nullable=false) */
 	private $nemkaphato=false;
+	/** @OneToMany(targetEntity="TermekErtesito", mappedBy="termek",cascade={"persist","remove"}) */
+	private $termekertesitok;
 
 	/**
 	 * @PrePersist
@@ -194,6 +196,7 @@ class Termek {
 		$this->kosarak=new \Doctrine\Common\Collections\ArrayCollection();
 		$this->termekkapcsolodok=new \Doctrine\Common\Collections\ArrayCollection();
 		$this->altermekkapcsolodok=new \Doctrine\Common\Collections\ArrayCollection();
+		$this->termekertesitok=new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function toTermekLista($valtozat=null) {

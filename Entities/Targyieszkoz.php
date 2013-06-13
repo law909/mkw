@@ -1,6 +1,6 @@
 <?php
 namespace Entities;
-use SIIKerES\store;
+use mkw\store;
 /**
  * @Entity(repositoryClass="Entities\TargyieszkozRepository")
  * @Table(name="targyieszkoz")

@@ -1,6 +1,6 @@
 <?php
 namespace Entities;
-use SIIKerES\store;
+use mkw\store;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** @Entity(repositoryClass="Entities\BizonylattipusRepository")

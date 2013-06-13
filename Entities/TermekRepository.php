@@ -1,7 +1,7 @@
 <?php
 namespace Entities;
 
-use matt, \Doctrine\ORM, Doctrine\ORM\Query\ResultSetMapping, SIIKerES\Store;
+use matt, \Doctrine\ORM, Doctrine\ORM\Query\ResultSetMapping, mkw\Store;
 class TermekRepository extends matt\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {

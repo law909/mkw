@@ -4,7 +4,7 @@ use Entities\DolgozoRepository;
 
 use Entities\Jelenletiiv;
 
-use matt, matt\Exceptions, SIIKerES\store;
+use matt, matt\Exceptions, mkw\store;
 
 class jelenletiivController extends matt\MattableController {
 

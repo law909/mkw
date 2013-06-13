@@ -1,8 +1,8 @@
 <?php
 namespace Controllers;
-use SIIKerES\ArCalculator;
+use mkw\ArCalculator;
 
-use matt, matt\Exceptions, SIIKerES\store;
+use matt, matt\Exceptions, mkw\store;
 
 class bizonylattetelController extends matt\MattableController {
 

@@ -1,5 +1,5 @@
 <?php
-namespace SIIKerES;
+namespace mkw;
 
 class generalDataLoader {
 

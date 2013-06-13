@@ -15,5 +15,6 @@ Require user mindentkapni
 #RewriteRule ^/([^\?]*)\?([^\?]*)$ /$1_$2
 #   RewriteRule ^(.*)$ /index.php?com=$1
 #RewriteRule ^pcat_id$ /rewriter.php?com=$1 L
-RewriteRule (.*) /index.php?com=$1&%{QUERY_STRING}
+RewriteRule . index.php [L]
+#RewriteRule (.*) /index.php?com=$1&%{QUERY_STRING}
 </IfModule>

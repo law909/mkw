@@ -1,6 +1,6 @@
 <?php
 namespace Controllers;
-use matt, SIIKerES\store;
+use matt, mkw\store;
 
 class sitemapController extends matt\Controller {
 
@@ -24,7 +24,7 @@ class sitemapController extends matt\Controller {
 	}
 
 	public function view() {
-		$gd=new \SIIKerES\generalDataLoader();
+		$gd=new \mkw\generalDataLoader();
 		$view=$this->createView('sitemap.tpl');
 		$gd->loadData($view);
 		$view->printTemplateResult();
@@ -80,7 +80,7 @@ class sitemapController extends matt\Controller {
 		$smview->setVar('urls',$urls);
 		file_put_contents('sitemap.xml',$smview->getTemplateResult());
 
-		$gd=new \SIIKerES\generalDataLoader();
+		$gd=new \mkw\generalDataLoader();
 		$view=$this->createView('sitemap.tpl');
 		$gd->loadData($view);
 		$view->setVar('szoveg',t('A sitemap kész.'));

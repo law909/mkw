@@ -1,6 +1,6 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, SIIKerES\store;
+use matt, matt\Exceptions, mkw\store;
 
 class hirController extends matt\MattableController {
 

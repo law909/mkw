@@ -1,7 +1,7 @@
 <?php
 namespace Controllers;
-use SIIKerES\ArCalculator;
-use matt, matt\Exceptions, SIIKerES\store;
+use mkw\ArCalculator;
+use matt, matt\Exceptions, mkw\store;
 
 class kosarController extends matt\MattableController {
 

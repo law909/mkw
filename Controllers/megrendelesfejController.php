@@ -1,7 +1,7 @@
 <?php
 namespace Controllers;
 
-use matt\Exceptions, SIIKerES\store;
+use matt\Exceptions, mkw\store;
 
 class megrendelesfejController extends bizonylatfejController {
 

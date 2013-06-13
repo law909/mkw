@@ -1,6 +1,6 @@
 <?php
 use \Doctrine\ORM\Configuration, \Doctrine\Common\EventManager,
-	\Doctrine\DBAL\Event\Listeners\MysqlSessionInit, \SIIKerES\store;
+	\Doctrine\DBAL\Event\Listeners\MysqlSessionInit, \mkw\store;
 
 require_once 'Doctrine/Common/ClassLoader.php';
 
@@ -15,9 +15,10 @@ $classLoader->register();
 $classLoader=new \Doctrine\Common\ClassLoader('Doctrine');
 $classLoader->register();
 
-$autoloader = new \Doctrine\Common\ClassLoader('Zend');
+/**$autoloader = new \Doctrine\Common\ClassLoader('Zend');
 $autoloader->setNamespaceSeparator('_');
 $autoloader->register();
+**/
 
 $classLoader=new \Doctrine\Common\ClassLoader('Gedmo','Doctrine/DoctrineExtensions/lib');
 $classLoader->register();
@@ -25,7 +26,7 @@ $classLoader->register();
 $classLoader=new \Doctrine\Common\ClassLoader('matt');
 $classLoader->register();
 
-$classLoader=new \Doctrine\Common\ClassLoader('SIIKerES');
+$classLoader=new \Doctrine\Common\ClassLoader('mkw');
 $classLoader->register();
 
 $classLoader=new \matt\ControllerClassLoader('Controllers',__DIR__);
@@ -68,9 +69,8 @@ $setupini=parse_ini_file('setup.ini');
 if (strtolower($ini['tplengine'])=='dwoo') {
 	require_once('dwooAutoload.php');
 }
-elseif (strtolower($ini['tplengine'])=='smarty') {
-	require_once('Smarty.class.php');
-}
+
+require 'vendor/autoload.php';
 
 $connectionOptions = array(
     'driver'=>$ini['db.driver'],

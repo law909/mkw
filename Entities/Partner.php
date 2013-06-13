@@ -1,6 +1,6 @@
 <?php
 namespace Entities;
-use SIIKerES\Store;
+use mkw\Store;
 
 /** @Entity(repositoryClass="Entities\PartnerRepository")
  *  @Table(name="partner")
@@ -136,6 +136,8 @@ class Partner {
 	private $ujdonsaghirlevelkell=false;
 	/** @Column(type="datetime",nullable=true) */
 	private $utolsoklikk;
+	/** @OneToMany(targetEntity="TermekErtesito", mappedBy="partner",cascade={"persist","remove"}) */
+	private $termekertesitok;
 
 
 	public function __construct() {
@@ -143,6 +145,7 @@ class Partner {
 		$this->cimkek=new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
 		$this->kosarak=new \Doctrine\Common\Collections\ArrayCollection();
+		$this->termekertesitok=new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function getCim() {

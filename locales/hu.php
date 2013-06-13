@@ -199,5 +199,5 @@ return array(
 "Érték"=>"Érték",
 "Nullás lista"=>"Nullás lista",
 "Tétel adatok"=>"Tétel adatok",
-"SIIKerES Admin"=>"SIIKerES Admin"
+"MKW Admin"=>"MKW Admin"
 );

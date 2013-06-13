@@ -1,11 +1,11 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, SIIKerES\store;
+use matt, matt\Exceptions, mkw\store;
 
 class termekcimkekatController extends matt\JQGridController {
 
 	private $termekcimkek;
-	
+
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\Termekcimkekat');
 		$this->setEm(store::getEm());
@@ -88,7 +88,7 @@ class termekcimkekatController extends matt\JQGridController {
 		}
 		return $res;
 	}
-	
+
 	private function termekidcount($mibol,$miben) {
 		$cnt=0;
 		if (count($miben)==0) {
@@ -103,7 +103,7 @@ class termekcimkekatController extends matt\JQGridController {
 		}
 		return $cnt;
 	}
-	
+
 	public function getForTermekSzuro($termekids,$selectedids,$szurttermekids) {
 		$this->termekcimkek=$this->getEm()->getRepository('Entities\Termekcimketorzs')->getAllNative();
 		$sid=array();

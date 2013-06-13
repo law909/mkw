@@ -1,7 +1,7 @@
 <?php
 namespace Entities;
 
-use matt, \Doctrine\ORM, SIIKerES\store;
+use matt, \Doctrine\ORM, mkw\store;
 
 class PartnerRepository extends matt\Repository {
 

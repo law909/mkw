@@ -1,6 +1,6 @@
 <?php
 namespace Entities;
-use SIIKerES\store;
+use mkw\store;
 
 /**
  * @Entity(repositoryClass="Entities\HirRepository")
@@ -21,7 +21,7 @@ class Hir {
 	private $cim;
 	/**
 	 * @gedmo:Slug
-	 * @Column(type="string",length=255) 
+	 * @Column(type="string",length=255)
 	 */
 	private $slug;
 	/** @Column(type="integer",nullable=true) */
@@ -55,7 +55,7 @@ class Hir {
 		);
 		return $ret;
 	}
-	
+
 	public function getId() {
 		return $this->id;
 	}
@@ -67,7 +67,7 @@ class Hir {
 	public function setCim($cim) {
 		$this->cim = $cim;
 	}
-	
+
 	public function getSlug() {
 		return $this->slug;
 	}
@@ -75,7 +75,7 @@ class Hir {
 	public function setSlug($adat) {
 		$this->slug=$adat;
 	}
-	
+
 	public function getSeodescription() {
 		return $this->seodescription;
 	}
@@ -83,7 +83,7 @@ class Hir {
 	public function setSeodescription($adat) {
 		$this->seodescription=$adat;
 	}
-	
+
 	public function getSeokeywords() {
 		return $this->seokeywords;
 	}
@@ -91,7 +91,7 @@ class Hir {
 	public function setSeokeywords($adat) {
 		$this->seokeywords=$adat;
 	}
-	
+
 	public function getElsodatum() {
 		return $this->elsodatum;
 	}
@@ -99,12 +99,12 @@ class Hir {
 	public function getElsodatumStr() {
 		return $this->getElsodatum()->format(store::$DateFormat);
 	}
-	
+
 	public function setElsodatum($adat) {
 		if ($adat=='') $adat=date(store::$DateFormat);
 		$this->elsodatum = new \DateTime(store::convDate($adat));
 	}
-	
+
 	public function getUtolsodatum() {
 		return $this->utolsodatum;
 	}
@@ -112,12 +112,12 @@ class Hir {
 	public function getUtolsodatumStr() {
 		return $this->getUtolsodatum()->format(store::$DateFormat);
 	}
-	
+
 	public function setUtolsodatum($adat) {
 		if ($adat=='') $adat=date(store::$DateFormat);
 		$this->utolsodatum = new \DateTime(store::convDate($adat));
 	}
-	
+
 	public function getDatum() {
 		return $this->datum;
 	}
@@ -125,12 +125,12 @@ class Hir {
 	public function getDatumStr() {
 		return $this->getDatum()->format(store::$DateFormat);
 	}
-	
+
 	public function setDatum($adat) {
 		if ($adat=='') $adat=date(store::$DateFormat);
 		$this->datum = new \DateTime(store::convDate($adat));
 	}
-	
+
 	public function getLathato() {
 		return $this->lathato;
 	}
@@ -138,7 +138,7 @@ class Hir {
 	public function setLathato($adat) {
 		$this->lathato=$adat;
 	}
-	
+
 	public function getSzoveg() {
 		return $this->szoveg;
 	}
@@ -146,7 +146,7 @@ class Hir {
 	public function setSzoveg($adat) {
 		$this->szoveg=$adat;
 	}
-	
+
 	public function getForras() {
 		return $this->forras;
 	}
@@ -154,7 +154,7 @@ class Hir {
 	public function setForras($adat) {
 		$this->forras=$adat;
 	}
-	
+
 	public function getLead() {
 		return $this->lead;
 	}
@@ -162,7 +162,7 @@ class Hir {
 	public function setLead($adat) {
 		$this->lead=$adat;
 	}
-	
+
 	public function getSorrend() {
 		return $this->sorrend;
 	}

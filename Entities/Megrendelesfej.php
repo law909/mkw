@@ -1,6 +1,6 @@
 <?php
 namespace Entities;
-use SIIKerES\Store;
+use mkw\Store;
 
 /**
  * @Entity(repositoryClass="Entities\BizonylatfejRepository")

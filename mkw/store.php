@@ -1,5 +1,5 @@
 <?php
-namespace SIIKerES;
+namespace mkw;
 use Doctrine\ORM\EntityManager;
 
 class Store {

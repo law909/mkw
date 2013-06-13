@@ -2,7 +2,7 @@
 namespace Controllers;
 use Entities\Kontakt;
 
-use matt, matt\Exceptions, SIIKerES\store;
+use matt, matt\Exceptions, mkw\store;
 
 class partnerController extends matt\MattableController {
 

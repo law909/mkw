@@ -1,6 +1,6 @@
 <?php
 namespace Entities;
-use SIIKerES\store;
+use mkw\store;
 /**
  * @Entity @HasLifecycleCallbacks
  * @Table(name="feladat")

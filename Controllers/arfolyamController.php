@@ -2,7 +2,7 @@
 namespace Controllers;
 use Doctrine\ORM\Query\Expr\Func;
 
-use matt, matt\Exceptions, Entities, SIIKerES\store;
+use matt, matt\Exceptions, Entities, mkw\store;
 
 class arfolyamController extends matt\JQGridController {
 

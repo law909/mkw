@@ -2,7 +2,7 @@
 namespace Entities;
 
 use Entities\Hir;
-use matt, \Doctrine\ORM, SIIKerES\Store;
+use matt, \Doctrine\ORM, mkw\Store;
 
 class HirRepository extends matt\Repository {
 

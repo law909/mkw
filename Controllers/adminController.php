@@ -1,10 +1,10 @@
 <?php
 namespace Controllers;
-use SIIKerES\ArCalculator;
+use mkw\ArCalculator;
 
 use Proxies\EntitiesAfaProxy;
-use SIIKerES;
-use matt, SIIKerES\store;
+use mkw;
+use matt, mkw\store;
 use Entities;
 
 class adminController extends matt\Controller {
@@ -452,7 +452,7 @@ class adminController extends matt\Controller {
 			'roots' => array(
 				array(
 					'driver'        => 'LocalFileSystem',   // driver for accessing file system (REQUIRED)
-					'path'          => '/var/www/siikeres/termek',         // path to files (REQUIRED)
+					'path'          => '/var/www/mkw/termek',         // path to files (REQUIRED)
 					'URL'           => dirname($_SERVER['PHP_SELF']) . '/termek', // URL to files (REQUIRED)
 					'accessControl' => 'access',             // disable and hide dot starting files (OPTIONAL)
 					'uploadAllow'	=> array('image'),

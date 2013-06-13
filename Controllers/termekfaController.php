@@ -2,7 +2,7 @@
 namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
-use matt, matt\Exceptions, SIIKerES\store;
+use matt, matt\Exceptions, mkw\store;
 
 class termekfaController extends matt\MattableController {
 

@@ -5,7 +5,7 @@ use Entities\TermekValtozat;
 
 use Entities\TermekAr, Entities\TermekRecept;
 
-use matt, matt\Exceptions, SIIKerES\store;
+use matt, matt\Exceptions, mkw\store;
 
 class termekController extends matt\MattableController {
 

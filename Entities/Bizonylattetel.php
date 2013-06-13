@@ -1,6 +1,6 @@
 <?php
 namespace Entities;
-use SIIKerES\store;
+use mkw\store;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** @Entity(repositoryClass="Entities\BizonylattetelRepository")
@@ -12,15 +12,15 @@ class Bizonylattetel {
 	 * @GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** 
+	/**
 	 * @gedmo:Timestampable(on="create")
-	 * @Column(type="datetime",nullable=true) 
+	 * @Column(type="datetime",nullable=true)
 	 */
-	private $created;	
-	/** 
+	private $created;
+	/**
 	 * @gedmo:Timestampable(on="create")
 	 * @gedmo:Timestampable(on="update")
-	 * @Column(type="datetime",nullable=true) 
+	 * @Column(type="datetime",nullable=true)
 	 */
 	private $lastmod;
 	/**
@@ -610,7 +610,7 @@ class Bizonylattetel {
 	public function getLastmod() {
 		return $this->lastmod;
 	}
-	
+
 	public function getCreated() {
 		return $this->created;
 	}

@@ -1,6 +1,6 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, Entities, SIIKerES\store;
+use matt, matt\Exceptions, Entities, mkw\store;
 
 class valutanemController extends matt\JQGridController {
 
@@ -84,7 +84,7 @@ class valutanemController extends matt\JQGridController {
 		$ret.='</select>';
 		echo $ret;
 	}
-	
+
 	public function getRendszerValuta() {
 		$p=$this->getRepo()->find(store::getParameter('valutanem'));
 		return $p;

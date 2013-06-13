@@ -1,6 +1,6 @@
 <?php
-use SIIKerES\Store;
-use \Entities, \Controllers\CentralController, \SIIKerES\generalDataLoader;
+use mkw\Store;
+use \Entities, \Controllers\CentralController, \mkw\generalDataLoader;
 date_default_timezone_set('Europe/Budapest');
 
 require_once('bootstrap.php');
@@ -31,4 +31,5 @@ function t($msgid) {
 
 $gdl=new generalDataLoader();
 $cc=new CentralController($gdl);
+// ddd
 $cc->handleRequest();

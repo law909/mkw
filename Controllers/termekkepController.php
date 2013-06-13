@@ -2,7 +2,7 @@
 namespace Controllers;
 use Entities\TermekKep;
 
-use matt, matt\Exceptions, SIIKerES\store;
+use matt, matt\Exceptions, mkw\store;
 
 class termekkepController extends matt\MattableController {
 

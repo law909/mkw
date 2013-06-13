@@ -1,7 +1,7 @@
 <?php
 namespace Controllers;
 use Entities\Partnercimketorzs;
-use matt, matt\Exceptions, SIIKerES\store;
+use matt, matt\Exceptions, mkw\store;
 
 class partnercimkeController extends matt\MattableController {
 

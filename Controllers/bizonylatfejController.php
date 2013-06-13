@@ -2,7 +2,7 @@
 namespace Controllers;
 use Entities\Bizonylattetel;
 
-use matt, matt\Exceptions, SIIKerES\store;
+use matt, matt\Exceptions, mkw\store;
 
 class bizonylatfejController extends matt\MattableController {
 
