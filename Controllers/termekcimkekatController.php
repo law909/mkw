@@ -6,10 +6,9 @@ class termekcimkekatController extends \mkwhelpers\JQGridController {
 
 	private $termekcimkek;
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct() {
 		$this->setEntityName('Entities\Termekcimkekat');
-		$this->setEm(store::getEm());
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct();
 	}
 
 	protected function loadCells($obj) {
@@ -17,25 +16,25 @@ class termekcimkekatController extends \mkwhelpers\JQGridController {
 			$obj->getTermeklistabanlathato(),$obj->getTermekakciodobozbanlathato());
 	}
 
-	protected function setFields($obj) {
-		$obj->setNev($this->getStringParam('nev',$obj->getNev()));
-		$obj->setSorrend($this->getIntParam('sorrend'));
-		$obj->setTermeklaponlathato($this->getBoolParam('termeklaponlathato'));
-		$obj->setTermekszurobenlathato($this->getBoolParam('termekszurobenlathato'));
-		$obj->setTermeklistabanlathato($this->getBoolParam('termeklistabanlathato'));
-		$obj->setTermekakciodobozbanlathato($this->getBoolParam('termekakciodobozbanlathato'));
+	protected function setFields($obj,$params) {
+		$obj->setNev($params->getStringRequestParam('nev',$obj->getNev()));
+		$obj->setSorrend($params->getIntRequestParam('sorrend'));
+		$obj->setTermeklaponlathato($params->getBoolRequestParam('termeklaponlathato'));
+		$obj->setTermekszurobenlathato($params->getBoolRequestParam('termekszurobenlathato'));
+		$obj->setTermeklistabanlathato($params->getBoolRequestParam('termeklistabanlathato'));
+		$obj->setTermekakciodobozbanlathato($params->getBoolRequestParam('termekakciodobozbanlathato'));
 		return $obj;
 	}
 
-	protected function jsonlist() {
+	public function jsonlist($params) {
 		$filter=array();
-		if ($this->getBoolParam('_search',false)) {
-			if (!is_null($this->getParam('nev',NULL))) {
+		if ($params->getBoolRequestParam('_search',false)) {
+			if (!is_null($params->getRequestParam('nev',NULL))) {
 				$filter['fields'][]='nev';
-				$filter['values'][]=$this->getStringParam('nev');
+				$filter['values'][]=$params->getStringRequestParam('nev');
 			}
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
 		echo json_encode($this->loadDataToView($rec));
 	}
 

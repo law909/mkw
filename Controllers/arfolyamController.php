@@ -5,10 +5,9 @@ use mkw\store;
 
 class arfolyamController extends \mkwhelpers\JQGridController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct() {
 		$this->setEntityName('Entities\Arfolyam');
-		$this->setEm(store::getEm());
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct();
 	}
 
 	protected function loadCells($sor) {
@@ -16,10 +15,10 @@ class arfolyamController extends \mkwhelpers\JQGridController {
 		return array($sor->getDatumString(),(isset($valuta)?$valuta->getNev():''),$sor->getArfolyam());
 	}
 
-	protected function setFields($obj) {
-		$obj->setDatum(new \DateTime(str_replace('.','-',$this->getStringParam('datum'))));
-		$obj->setArfolyam($this->getNumParam('arfolyam'));
-		$valutanem=store::getEm()->getReference('Entities\Valutanem',$this->getIntParam('valutanem',0));
+	protected function setFields($obj,$params) {
+		$obj->setDatum(new \DateTime(str_replace('.','-',$params->getStringRequestParam('datum'))));
+		$obj->setArfolyam($params->getNumRequestParam('arfolyam'));
+		$valutanem=store::getEm()->getReference('Entities\Valutanem',$params->getIntRequestParam('valutanem',0));
 		try {
 			$valutanem->getId();
 			$obj->setValutanem($valutanem);
@@ -29,19 +28,19 @@ class arfolyamController extends \mkwhelpers\JQGridController {
 		return $obj;
 	}
 
-	protected function jsonlist() {
+	public function jsonlist($params) {
 		$filter=array();
-		if ($this->getBoolParam('_search',false)) {
-			if ($this->getStringParam('datum','')!='') {
+		if ($params->getBoolRequestParam('_search',false)) {
+			if ($params->getStringRequestParam('datum','')!='') {
 				$filter['fields'][]='datum';
-				$filter['values'][]=$this->getStringParam('datum','');
+				$filter['values'][]=$params->getStringRequestParam('datum','');
 			}
-			if ($this->getStringParam('valutanem','')!='') {
+			if ($params->getStringRequestParam('valutanem','')!='') {
 				$filter['fields'][]='v.nev';
-				$filter['values'][]=$this->getStringParam('valutanem','');
+				$filter['values'][]=$params->getStringRequestParam('valutanem','');
 			}
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
 		echo json_encode($this->loadDataToView($rec));
 	}
 
@@ -54,7 +53,7 @@ class arfolyamController extends \mkwhelpers\JQGridController {
 		return $res;
 	}
 
-	protected function htmllist() {
+	public function htmllist() {
 		$rec=$this->getRepo()->getAll(array(),array('datum'=>'asc'));
 		$ret='<select>';
 		foreach($rec as $sor) {
@@ -64,8 +63,8 @@ class arfolyamController extends \mkwhelpers\JQGridController {
 		echo $ret;
 	}
 
-	protected function getarfolyam() {
-		$arf=$this->getRepo()->getActualArfolyam($this->getIntParam('valutanem'),$this->getStringParam('datum'));
+	public function getarfolyam($params) {
+		$arf=$this->getRepo()->getActualArfolyam($params->getIntRequestParam('valutanem'),$params->getStringRequestParam('datum'));
 		if ($arf) {
 			echo $arf->getArfolyam();
 		}

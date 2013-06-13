@@ -4,33 +4,32 @@ use mkw\store;
 
 class targyieszkozcsoportController extends \mkwhelpers\JQGridController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct() {
 		$this->setEntityName('Entities\TargyieszkozCsoport');
-		$this->setEm(store::getEm());
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct();
 	}
 
 	protected function loadCells($sor) {
 		return array($sor->getNev(),$sor->getBeszerzesiktgfkviszam(),$sor->getEcsleirasfkviszam(),$sor->getEcsktgfkviszam());
 	}
 
-	protected function setFields($obj) {
-		$obj->setNev($this->getStringParam('nev'));
-		$obj->setBeszerzesiktgfkviszam($this->getStringParam('beszerzesiktgfkviszam'));
-		$obj->setEcsleirasfkviszam($this->getStringParam('ecsleirasfkviszam'));
-		$obj->setEcsktgfkviszam($this->getStringParam('ecsktgfkviszam'));
+	protected function setFields($obj,$params) {
+		$obj->setNev($params->getStringRequestParam('nev'));
+		$obj->setBeszerzesiktgfkviszam($params->getStringRequestParam('beszerzesiktgfkviszam'));
+		$obj->setEcsleirasfkviszam($params->getStringRequestParam('ecsleirasfkviszam'));
+		$obj->setEcsktgfkviszam($params->getStringRequestParam('ecsktgfkviszam'));
 		return $obj;
 	}
 
-	protected function jsonlist() {
+	public function jsonlist($params) {
 		$filter=array();
-		if ($this->getBoolParam('_search',false)) {
-			if (!is_null($this->getParam('nev',NULL))) {
+		if ($params->getBoolRequestParam('_search',false)) {
+			if (!is_null($params->getRequestParam('nev',NULL))) {
 				$filter['fields'][]='nev';
-				$filter['values'][]=$this->getStringParam('nev');
+				$filter['values'][]=$params->getStringRequestParam('nev');
 			}
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
 		echo json_encode($this->loadDataToView($rec));
 	}
 
@@ -43,7 +42,7 @@ class targyieszkozcsoportController extends \mkwhelpers\JQGridController {
 		return $res;
 	}
 
-	protected function htmllist() {
+	public function htmllist() {
 		$rec=$this->getRepo()->getAll(array(),array('nev'=>'asc'));
 		$ret='<select>';
 		foreach($rec as $sor) {

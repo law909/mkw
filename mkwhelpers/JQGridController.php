@@ -39,6 +39,7 @@ class JQGridController extends Controller {
 	}
 
 	protected function setupRepo() {
+		$this->em=\mkw\Store::getEm();
 		$this->repo=$this->em->getRepository($this->entityName);
 	}
 

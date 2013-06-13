@@ -4,10 +4,9 @@ use mkw\store;
 
 class valutanemController extends \mkwhelpers\JQGridController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct() {
 		$this->setEntityName('Entities\Valutanem');
-		$this->setEm(store::getEm());
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct();
 	}
 
 	protected function loadCells($sor) {
@@ -17,12 +16,12 @@ class valutanemController extends \mkwhelpers\JQGridController {
 				(isset($bank)?$bank->getSzamlaszam():''));
 	}
 
-	protected function setFields($obj) {
-		$obj->setNev($this->getStringParam('nev'));
-		$obj->setKerekit($this->getBoolParam('kerekit'));
-		$obj->setHivatalos($this->getBoolParam('hivatalos'));
-		$obj->setMincimlet($this->getIntParam('mincimlet'));
-		$bankszla=store::getEm()->getReference('Entities\Bankszamla',$this->getIntParam('bankszamla'));
+	protected function setFields($obj,$params) {
+		$obj->setNev($params->getStringRequestParam('nev'));
+		$obj->setKerekit($params->getBoolRequestParam('kerekit'));
+		$obj->setHivatalos($params->getBoolRequestParam('hivatalos'));
+		$obj->setMincimlet($params->getIntRequestParam('mincimlet'));
+		$bankszla=store::getEm()->getReference('Entities\Bankszamla',$params->getIntRequestParam('bankszamla'));
 		try {
 			$bankszla->getId();
 			$obj->setBankszamla($bankszla);
@@ -32,15 +31,15 @@ class valutanemController extends \mkwhelpers\JQGridController {
 		return $obj;
 	}
 
-	protected function jsonlist() {
+	public function jsonlist($params) {
 		$filter=array();
-		if ($this->getBoolParam('_search',false)) {
-			if (!is_null($this->getParam('nev',NULL))) {
+		if ($params->getBoolRequestParam('_search',false)) {
+			if (!is_null($params->getRequestParam('nev',NULL))) {
 				$filter['fields'][]='nev';
-				$filter['values'][]=$this->getStringParam('nev');
+				$filter['values'][]=$params->getStringRequestParam('nev');
 			}
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
 		echo json_encode($this->loadDataToView($rec));
 	}
 
@@ -58,7 +57,7 @@ class valutanemController extends \mkwhelpers\JQGridController {
 		return $res;
 	}
 
-	protected function htmllist() {
+	public function htmllist() {
 		$rec=$this->getRepo()->getAll(array(),array('nev'=>'asc'));
 		$ret='<select>';
 		foreach($rec as $sor) {

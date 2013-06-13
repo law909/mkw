@@ -4,30 +4,29 @@ use mkw\store;
 
 class termekvaltozatadattipusController extends \mkwhelpers\JQGridController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct() {
 		$this->setEntityName('Entities\TermekValtozatAdatTipus');
-		$this->setEm(store::getEm());
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct();
 	}
 
 	protected function loadCells($obj) {
 		return array($obj->getNev());
 	}
 
-	protected function setFields($obj) {
-		$obj->setNev($this->getStringParam('nev',$obj->getNev()));
+	protected function setFields($obj,$params) {
+		$obj->setNev($params->getStringRequestParam('nev',$obj->getNev()));
 		return $obj;
 	}
 
-	protected function jsonlist() {
+	public function jsonlist($params) {
 		$filter=array();
-		if ($this->getBoolParam('_search',false)) {
-			if (!is_null($this->getParam('nev',NULL))) {
+		if ($params->getBoolRequestParam('_search',false)) {
+			if (!is_null($params->getRequestParam('nev',NULL))) {
 				$filter['fields'][]='nev';
-				$filter['values'][]=$this->getStringParam('nev');
+				$filter['values'][]=$params->getStringRequestParam('nev');
 			}
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
 		echo json_encode($this->loadDataToView($rec));
 	}
 

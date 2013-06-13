@@ -4,35 +4,34 @@ use mkw\store;
 
 class partnercimkekatController extends \mkwhelpers\JQGridController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct() {
 		$this->setEntityName('Entities\Partnercimkekat');
-		$this->setEm(store::getEm());
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct();
 	}
 
 	protected function loadCells($sor) {
 		return array($sor->getNev(),$sor->getLathato());
 	}
 
-	protected function setFields($obj) {
-		$obj->setNev($this->getStringParam('nev',$obj->getNev()));
-		$obj->setLathato($this->getBoolParam('lathato'));
+	protected function setFields($obj,$params) {
+		$obj->setNev($params->getStringRequestParam('nev',$obj->getNev()));
+		$obj->setLathato($params->getBoolRequestParam('lathato'));
 		return $obj;
 	}
 
-	protected function jsonlist() {
+	public function jsonlist($params) {
 		$filter=array();
-		if ($this->getBoolParam('_search',false)) {
-			if (!is_null($this->getParam('lathato',NULL))) {
+		if ($params->getBoolRequestParam('_search',false)) {
+			if (!is_null($params->getRequestParam('lathato',NULL))) {
 				$filter['fields'][]='lathato';
-				$filter['values'][]=$this->getBoolParam('lathato');
+				$filter['values'][]=$params->getBoolRequestParam('lathato');
 			}
-			if (!is_null($this->getParam('nev',NULL))) {
+			if (!is_null($params->getRequestParam('nev',NULL))) {
 				$filter['fields'][]='nev';
-				$filter['values'][]=$this->getStringParam('nev');
+				$filter['values'][]=$params->getStringRequestParam('nev');
 			}
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
 		echo json_encode($this->loadDataToView($rec));
 	}
 

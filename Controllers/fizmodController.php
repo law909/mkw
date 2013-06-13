@@ -4,45 +4,44 @@ use mkw\store;
 
 class fizmodController extends \mkwhelpers\JQGridController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct() {
 		$this->setEntityName('Entities\Fizmod');
-		$this->setEm(store::getEm());
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct();
 	}
 
 	protected function loadCells($sor) {
 		return array($sor->getNev(),$sor->getTipus(),$sor->getHaladek(),$sor->getWebes());
 	}
 
-	protected function setFields($obj) {
-		$obj->setNev($this->getStringParam('nev'));
-		$obj->setTipus($this->getStringParam('tipus'));
-		$obj->setHaladek($this->getIntParam('haladek'));
-		$obj->setWebes($this->getBoolParam('webes'));
+	protected function setFields($obj,$params) {
+		$obj->setNev($params->getStringRequestParam('nev'));
+		$obj->setTipus($params->getStringRequestParam('tipus'));
+		$obj->setHaladek($params->getIntRequestParam('haladek'));
+		$obj->setWebes($params->getBoolRequestParam('webes'));
 		return $obj;
 	}
 
-	protected function jsonlist() {
+	public function jsonlist($params) {
 		$filter=array();
-		if ($this->getBoolParam('_search',false)) {
-			if (!is_null($this->getParam('tipus',NULL))) {
+		if ($params->getBoolRequestParam('_search',false)) {
+			if (!is_null($params->getRequestParam('tipus',NULL))) {
 				$filter['fields'][]='tipus';
-				$filter['values'][]=$this->getStringParam('tipus');
+				$filter['values'][]=$params->getStringRequestParam('tipus');
 			}
-			if (!is_null($this->getParam('nev',NULL))) {
+			if (!is_null($params->getRequestParam('nev',NULL))) {
 				$filter['fields'][]='nev';
-				$filter['values'][]=$this->getStringParam('nev');
+				$filter['values'][]=$params->getStringRequestParam('nev');
 			}
-			if (!is_null($this->getParam('haladek',NULL))) {
+			if (!is_null($params->getRequestParam('haladek',NULL))) {
 				$filter['fields'][]='haladek';
-				$filter['values'][]=$this->getIntParam('haladek');
+				$filter['values'][]=$params->getIntRequestParam('haladek');
 			}
-			if (!is_null($this->getParam('webes',NULL))) {
+			if (!is_null($params->getRequestParam('webes',NULL))) {
 				$filter['fields'][]='webes';
-				$filter['values'][]=$this->getBoolParam('webes');
+				$filter['values'][]=$params->getBoolRequestParam('webes');
 			}
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
 		echo json_encode($this->loadDataToView($rec));
 	}
 
@@ -61,7 +60,7 @@ class fizmodController extends \mkwhelpers\JQGridController {
 		return $res;
 	}
 
-	protected function htmllist() {
+	public function htmllist() {
 		$rec=$this->getRepo()->getAll(array(),array('nev'=>'asc'));
 		$ret='<select>';
 		foreach($rec as $sor) {

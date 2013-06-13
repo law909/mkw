@@ -6,7 +6,6 @@ class afaController extends \mkwhelpers\JQGridController {
 
 	public function __construct() {
 		$this->setEntityName('Entities\Afa');
-		$this->setEm(store::getEm());
 		parent::__construct();
 	}
 
@@ -50,7 +49,7 @@ class afaController extends \mkwhelpers\JQGridController {
 		return $res;
 	}
 
-	protected function htmllist() {
+	public function htmllist() {
 		$rec=$this->getRepo()->getAll(array(),array('nev'=>'asc'));
 		$ret='<select>';
 		foreach($rec as $sor) {

@@ -4,34 +4,33 @@ use mkw\store;
 
 class partnercsoportController extends \mkwhelpers\JQGridController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct() {
 		$this->setEntityName('Entities\PartnerCsoport');
-		$this->setEm(store::getEm());
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct();
 	}
 
 	protected function loadCells($sor) {
 		return array($sor->getNev(),$sor->getTipusnev(),$sor->getFkviszam());
 	}
 
-	protected function setFields($obj) {
-		$obj->setNev($this->getStringParam('nev'));
-		$obj->setTipus($this->getStringParam('tipus'));
-		$obj->setFkviszam($this->getStringParam('fkviszam'));
+	protected function setFields($obj,$params) {
+		$obj->setNev($params->getStringRequestParam('nev'));
+		$obj->setTipus($params->getStringRequestParam('tipus'));
+		$obj->setFkviszam($params->getStringRequestParam('fkviszam'));
 		return $obj;
 	}
 
-	protected function jsonlist() {
+	public function jsonlist($params) {
 		$filter=array();
-		if ($this->getBoolParam('_search',false)) {
+		if ($params->getBoolRequestParam('_search',false)) {
 			$filter['fields'][]='tipus';
-			$filter['values'][]=$this->getStringParam('tipus');
+			$filter['values'][]=$params->getStringRequestParam('tipus');
 			$filter['fields'][]='nev';
-			$filter['values'][]=$this->getStringParam('nev');
+			$filter['values'][]=$params->getStringRequestParam('nev');
 			$filter['fields'][]='fkviszam';
-			$filter['values'][]=$this->getStringParam('fkviszam');
+			$filter['values'][]=$params->getStringRequestParam('fkviszam');
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
 		echo json_encode($this->loadDataToView($rec));
 	}
 
@@ -44,7 +43,7 @@ class partnercsoportController extends \mkwhelpers\JQGridController {
 		return $res;
 	}
 
-	protected function htmllist() {
+	public function htmllist() {
 		$rec=$this->getRepo()->getAll(array(),array('nev'=>'asc'));
 		$ret='<select>';
 		foreach($rec as $sor) {

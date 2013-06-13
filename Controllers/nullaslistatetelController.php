@@ -4,46 +4,45 @@ use mkw\store;
 
 class nullaslistatetelController extends \mkwhelpers\JQGridController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct() {
 		$this->setEntityName('Entities\Bizonylattetel');
-		$this->setEm(store::getEm());
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct();
 	}
 
 	protected function loadCells($obj) {
 		return array($obj->getMedal_vevokod(),$obj->getMedal_serial(),$obj->getTermekNev(),$obj->getMennyiseg(),$obj->getHataridoStr());
 	}
 
-	protected function setFields($obj) {
-		$termek=$this->getEm()->getRepository('Entities\Termek')->find($this->getIntParam('termek'));
+	protected function setFields($obj,$params) {
+		$termek=$this->getEm()->getRepository('Entities\Termek')->find($params->getIntRequestParam('termek'));
 		if ($termek) {
 			$obj->setTermek($termek);
 		}
-		$obj->setMedal_vevokod($this->getStringParam('vevokod'));
-		$obj->setMedal_serial($this->getStringParam('serial'));
-		$obj->setMennyiseg($this->getFloatParam('mennyiseg',$obj->getMennyiseg()));
-		$obj->setHatarido($this->getStringParam('hatarido'));
+		$obj->setMedal_vevokod($params->getStringRequestParam('vevokod'));
+		$obj->setMedal_serial($params->getStringRequestParam('serial'));
+		$obj->setMennyiseg($params->getFloatRequestParam('mennyiseg',$obj->getMennyiseg()));
+		$obj->setHatarido($params->getStringRequestParam('hatarido'));
 		return $obj;
 	}
 
-	protected function jsonlist() {
+	public function jsonlist($params) {
 		$filter=array();
 		$filter['fields'][]='bizonylatfej';
 		$filter['clauses'][]='=';
-		$filter['values'][]=$this->getStringParam('bizonylatid');
-		if ($this->getBoolParam('_search',false)) {
-			if (!is_null($this->getParam('termek',NULL))) {
+		$filter['values'][]=$params->getStringRequestParam('bizonylatid');
+		if ($params->getBoolRequestParam('_search',false)) {
+			if (!is_null($params->getRequestParam('termek',NULL))) {
 				$filter['fields'][]='termeknev';
 				$filter['clauses'][]='';
-				$filter['values'][]=$this->getStringParam('termek');
+				$filter['values'][]=$params->getStringRequestParam('termek');
 			}
-			if (!is_null($this->getParam('hatarido',NULL))) {
+			if (!is_null($params->getRequestParam('hatarido',NULL))) {
 				$filter['fields'][]='hatarido';
 				$filter['clauses'][]='';
-				$filter['values'][]=$this->getStringParam('hatarido');
+				$filter['values'][]=$params->getStringRequestParam('hatarido');
 			}
 		}
-		$rec=$this->getRepo()->getWithJoins($filter,$this->getOrderArray());
+		$rec=$this->getRepo()->getWithJoins($filter,$this->getOrderArray($params));
 		echo json_encode($this->loadDataToView($rec));
 	}
 
