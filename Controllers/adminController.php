@@ -364,7 +364,7 @@ class adminController extends mkwhelpers\Controller {
 		writelog('KESZ');
 	}
 
-	public function view($params) {
+	public function view() {
 		$view=$this->createView('main.tpl');
 		$this->generalDataLoader->loadData($view);
 		$view->setVar('pagetitle',t('Főoldal'));

@@ -6,19 +6,17 @@ use mkw\store;
 
 class partnerController extends \mkwhelpers\MattableController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Partner');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 		$this->setKarbFormTplName('partnerkarbform.tpl');
 		$this->setKarbTplName('partnerkarb.tpl');
 		$this->setListBodyRowTplName('partnerlista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_partner');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function loadVars($t) {
-		$kontaktCtrl=new kontaktController($this->generalDataLoader);
+		$kontaktCtrl=new kontaktController($this->params);
 		$kont=array();
 		$x=array();
 		if (!$t) {
@@ -80,87 +78,87 @@ class partnerController extends \mkwhelpers\MattableController {
 	}
 
 	protected function setFields($obj) {
-		$obj->setNev($this->getStringParam('nev'));
-		$obj->setVezeteknev($this->getStringParam('vezeteknev'));
-		$obj->setKeresztnev($this->getStringParam('keresztnev'));
-		$obj->setInaktiv($this->getBoolParam('inaktiv'));
-		$obj->setIdegenkod($this->getStringParam('idegenkod'));
-		$obj->setAdoszam($this->getStringParam('adoszam'));
-		$obj->setEuadoszam($this->getStringParam('euadoszam'));
-		$obj->setMukengszam($this->getStringParam('mukengszam'));
-		$obj->setJovengszam($this->getStringParam('jovengszam'));
-		$obj->setOstermszam($this->getStringParam('ostermszam'));
-		$obj->setValligszam($this->getStringParam('valligszam'));
-		$obj->setFvmszam($this->getStringParam('fvmszam'));
-		$obj->setCjszam($this->getStringParam('cjszam'));
-		$obj->setIrszam($this->getStringParam('irszam'));
-		$obj->setVaros($this->getStringParam('varos'));
-		$obj->setUtca($this->getStringParam('utca'));
-		$obj->setLirszam($this->getStringParam('lirszam'));
-		$obj->setLvaros($this->getStringParam('lvaros'));
-		$obj->setLutca($this->getStringParam('lutca'));
-		$obj->setTelefon($this->getStringParam('telefon'));
-		$obj->setMobil($this->getStringParam('mobil'));
-		$obj->setFax($this->getStringParam('fax'));
-		$obj->setEmail($this->getStringParam('email'));
-		$obj->setHonlap($this->getStringParam('honlap'));
-		$obj->setMegjegyzes($this->getStringParam('megjegyzes'));
-		$obj->setSyncid($this->getStringParam('syncid'));
-		$obj->setFizhatido($this->getIntParam('fizhatido'));
-		$obj->setSzamlanev($this->getStringParam('szamlanev'));
-		$obj->setSzamlairszam($this->getStringParam('szamlairszam'));
-		$obj->setSzamlavaros($this->getStringParam('szamlavaros'));
-		$obj->setSzamlautca($this->getStringParam('szamlautca'));
-		$obj->setSzallnev($this->getStringParam('szallnev'));
-		$obj->setSzallirszam($this->getStringParam('szallirszam'));
-		$obj->setSzallvaros($this->getStringParam('szallvaros'));
-		$obj->setSzallutca($this->getStringParam('szallutca'));
-		$obj->setNem($this->getIntParam('nem'));
-		$obj->setSzuletesiido($this->getStringParam('szuletesiido'));
-		$obj->setAkcioshirlevelkell($this->getBoolParam('akcioshirlevelkell'));
-		$obj->setUjdonsaghirlevelkell($this->getBoolParam('ujdonsaghirlevelkell'));
-		$fizmod=store::getEm()->getRepository('Entities\Fizmod')->find($this->getIntParam('fizmod',0));
+		$obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setVezeteknev($this->params->getStringRequestParam('vezeteknev'));
+		$obj->setKeresztnev($this->params->getStringRequestParam('keresztnev'));
+		$obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
+		$obj->setIdegenkod($this->params->getStringRequestParam('idegenkod'));
+		$obj->setAdoszam($this->params->getStringRequestParam('adoszam'));
+		$obj->setEuadoszam($this->params->getStringRequestParam('euadoszam'));
+		$obj->setMukengszam($this->params->getStringRequestParam('mukengszam'));
+		$obj->setJovengszam($this->params->getStringRequestParam('jovengszam'));
+		$obj->setOstermszam($this->params->getStringRequestParam('ostermszam'));
+		$obj->setValligszam($this->params->getStringRequestParam('valligszam'));
+		$obj->setFvmszam($this->params->getStringRequestParam('fvmszam'));
+		$obj->setCjszam($this->params->getStringRequestParam('cjszam'));
+		$obj->setIrszam($this->params->getStringRequestParam('irszam'));
+		$obj->setVaros($this->params->getStringRequestParam('varos'));
+		$obj->setUtca($this->params->getStringRequestParam('utca'));
+		$obj->setLirszam($this->params->getStringRequestParam('lirszam'));
+		$obj->setLvaros($this->params->getStringRequestParam('lvaros'));
+		$obj->setLutca($this->params->getStringRequestParam('lutca'));
+		$obj->setTelefon($this->params->getStringRequestParam('telefon'));
+		$obj->setMobil($this->params->getStringRequestParam('mobil'));
+		$obj->setFax($this->params->getStringRequestParam('fax'));
+		$obj->setEmail($this->params->getStringRequestParam('email'));
+		$obj->setHonlap($this->params->getStringRequestParam('honlap'));
+		$obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
+		$obj->setSyncid($this->params->getStringRequestParam('syncid'));
+		$obj->setFizhatido($this->params->getIntRequestParam('fizhatido'));
+		$obj->setSzamlanev($this->params->getStringRequestParam('szamlanev'));
+		$obj->setSzamlairszam($this->params->getStringRequestParam('szamlairszam'));
+		$obj->setSzamlavaros($this->params->getStringRequestParam('szamlavaros'));
+		$obj->setSzamlautca($this->params->getStringRequestParam('szamlautca'));
+		$obj->setSzallnev($this->params->getStringRequestParam('szallnev'));
+		$obj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
+		$obj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
+		$obj->setSzallutca($this->params->getStringRequestParam('szallutca'));
+		$obj->setNem($this->params->getIntRequestParam('nem'));
+		$obj->setSzuletesiido($this->params->getStringRequestParam('szuletesiido'));
+		$obj->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));
+		$obj->setUjdonsaghirlevelkell($this->params->getBoolRequestParam('ujdonsaghirlevelkell'));
+		$fizmod=store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod',0));
 		if ($fizmod) {
 			$obj->setFizmod($fizmod);
 		}
-		$uk=store::getEm()->getRepository('Entities\Uzletkoto')->find($this->getIntParam('uzletkoto',0));
+		$uk=store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto',0));
 		if ($uk) {
 			$obj->setUzletkoto($uk);
 		}
 		$obj->removeAllCimke();
-		$cimkekpar=$this->getArrayParam('cimkek');
+		$cimkekpar=$this->params->getArrayRequestParam('cimkek');
 		foreach($cimkekpar as $cimkekod) {
 			$cimke=$this->getEm()->getRepository('Entities\Partnercimketorzs')->find($cimkekod);
 			if ($cimke) {
 				$obj->addCimke($cimke);
 			}
 		}
-		$kontaktids=$this->getArrayParam('kontaktid');
+		$kontaktids=$this->params->getArrayRequestParam('kontaktid');
 		foreach($kontaktids as $kontaktid) {
-			if ($this->getStringParam('kontaktnev_'.$kontaktid)!=='') {
-				$oper=$this->getStringParam('kontaktoper_'.$kontaktid);
+			if ($this->params->getStringRequestParam('kontaktnev_'.$kontaktid)!=='') {
+				$oper=$this->params->getStringRequestParam('kontaktoper_'.$kontaktid);
 				if ($oper=='add') {
 					$k=new Kontakt();
-					$k->setNev($this->getStringParam('kontaktnev_'.$kontaktid));
-					$k->setTelefon($this->getStringParam('kontakttelefon_'.$kontaktid));
-					$k->setMobil($this->getStringParam('kontaktmobil_'.$kontaktid));
-					$k->setFax($this->getStringParam('kontaktfax_'.$kontaktid));
-					$k->setEmail($this->getStringParam('kontaktemail_'.$kontaktid));
-					$k->setHonlap($this->getStringParam('kontakthonlap_'.$kontaktid));
-					$k->setMegjegyzes($this->getStringParam('kontaktmegjegyzes_'.$kontaktid));
+					$k->setNev($this->params->getStringRequestParam('kontaktnev_'.$kontaktid));
+					$k->setTelefon($this->params->getStringRequestParam('kontakttelefon_'.$kontaktid));
+					$k->setMobil($this->params->getStringRequestParam('kontaktmobil_'.$kontaktid));
+					$k->setFax($this->params->getStringRequestParam('kontaktfax_'.$kontaktid));
+					$k->setEmail($this->params->getStringRequestParam('kontaktemail_'.$kontaktid));
+					$k->setHonlap($this->params->getStringRequestParam('kontakthonlap_'.$kontaktid));
+					$k->setMegjegyzes($this->params->getStringRequestParam('kontaktmegjegyzes_'.$kontaktid));
 					$obj->addKontakt($k);
 					$this->getEm()->persist($k);
 				}
 				elseif ($oper=='edit') {
 					$k=$this->getEm()->getRepository('Entities\Kontakt')->find($kontaktid);
 					if ($k) {
-						$k->setNev($this->getStringParam('kontaktnev_'.$kontaktid));
-						$k->setTelefon($this->getStringParam('kontakttelefon_'.$kontaktid));
-						$k->setMobil($this->getStringParam('kontaktmobil_'.$kontaktid));
-						$k->setFax($this->getStringParam('kontaktfax_'.$kontaktid));
-						$k->setEmail($this->getStringParam('kontaktemail_'.$kontaktid));
-						$k->setHonlap($this->getStringParam('kontakthonlap_'.$kontaktid));
-						$k->setMegjegyzes($this->getStringParam('kontaktmegjegyzes_'.$kontaktid));
+						$k->setNev($this->params->getStringRequestParam('kontaktnev_'.$kontaktid));
+						$k->setTelefon($this->params->getStringRequestParam('kontakttelefon_'.$kontaktid));
+						$k->setMobil($this->params->getStringRequestParam('kontaktmobil_'.$kontaktid));
+						$k->setFax($this->params->getStringRequestParam('kontaktfax_'.$kontaktid));
+						$k->setEmail($this->params->getStringRequestParam('kontaktemail_'.$kontaktid));
+						$k->setHonlap($this->params->getStringRequestParam('kontakthonlap_'.$kontaktid));
+						$k->setMegjegyzes($this->params->getStringRequestParam('kontaktmegjegyzes_'.$kontaktid));
 						$this->getEm()->persist($k);
 					}
 				}
@@ -169,17 +167,17 @@ class partnerController extends \mkwhelpers\MattableController {
 		return $obj;
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('partnerlista_tbody.tpl');
 
 		$filter=array();
-		if (!is_null($this->getParam('nevfilter',NULL))) {
-			$fv=$this->getStringParam('nevfilter');
+		if (!is_null($this->params->getRequestParam('nevfilter',NULL))) {
+			$fv=$this->params->getStringRequestParam('nevfilter');
 			$filter['fields'][]=array('nev','nev2');
 			$filter['values'][]=$fv;
 		}
-		if (!is_null($this->getParam('cimkefilter',NULL))) {
-			$fv=$this->getArrayParam('cimkefilter');
+		if (!is_null($this->params->getRequestParam('cimkefilter',NULL))) {
+			$fv=$this->params->getArrayRequestParam('cimkefilter');
 			$cimkekodok=implode(',',$fv);
 			if ($cimkekodok) {
 				$q=$this->getEm()->createQuery('SELECT p.id FROM Entities\Partnercimketorzs pc JOIN pc.partnerek p WHERE pc.id IN ('.$cimkekodok.')');
@@ -193,10 +191,7 @@ class partnerController extends \mkwhelpers\MattableController {
 			}
 		}
 
-		$this->initPager(
-			$this->getRepo()->getCount($filter),
-			$this->getIntParam('elemperpage',30),
-			$this->getIntParam('pageno',1));
+		$this->initPager($this->getRepo()->getCount($filter));
 
 		$egyedek=$this->getRepo()->getWithJoins(
 			$filter,
@@ -207,18 +202,20 @@ class partnerController extends \mkwhelpers\MattableController {
 		echo json_encode($this->loadDataToView($egyedek,'partnerlista',$view));
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('partnerlista.tpl');
 
 		$view->setVar('pagetitle',t('Partnerek'));
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
-		$tcc=new partnercimkekatController($this->generalDataLoader);
+		$tcc=new partnercimkekatController($this->params);
 		$view->setVar('cimkekat',$tcc->getWithCimkek(null));
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	public function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Partner'));
@@ -226,12 +223,12 @@ class partnerController extends \mkwhelpers\MattableController {
 
 		$partner=$this->getRepo()->findWithJoins($id);
 		// loadVars utan nem abc sorrendben adja vissza
-		$tcc=new partnercimkekatController($this->generalDataLoader);
+		$tcc=new partnercimkekatController($this->params);
 		$cimkek=$partner?$partner->getCimkek():null;
 		$view->setVar('cimkekat',$tcc->getWithCimkek($cimkek));
-		$fizmod=new fizmodController($this->generalDataLoader);
+		$fizmod=new fizmodController($this->params);
 		$view->setVar('fizmodlist',$fizmod->getSelectList(($partner?$partner->getFizmodId():0)));
-		$uk=new uzletkotoController($this->generalDataLoader);
+		$uk=new uzletkotoController($this->params);
 		$view->setVar('uzletkotolist',$uk->getSelectList(($partner?$partner->getUzletkotoId():0)));
 
 		$view->setVar('partner',$this->loadVars($partner));
@@ -259,11 +256,11 @@ class partnerController extends \mkwhelpers\MattableController {
 	public function regisztral() {
 		$hibas=false;
 		$hibak=array();
-		$vezeteknev=$this->getStringParam('vezeteknev');
-		$keresztnev=$this->getStringParam('keresztnev');
-		$email=$this->getStringParam('email');
-		$jelszo1=$this->getStringParam('jelszo1');
-		$jelszo2=$this->getStringParam('jelszo2');
+		$vezeteknev=$this->params->getStringRequestParam('vezeteknev');
+		$keresztnev=$this->params->getStringRequestParam('keresztnev');
+		$email=$this->params->getStringRequestParam('email');
+		$jelszo1=$this->params->getStringRequestParam('jelszo1');
+		$jelszo2=$this->params->getStringRequestParam('jelszo2');
 		if (!\Zend_Validate::is($email,'EmailAddress')) {
 			$hibas=true;
 			$hibak['email']=t('Rossz az email');
@@ -300,7 +297,7 @@ class partnerController extends \mkwhelpers\MattableController {
 	}
 
 	public function checkemail() {
-		$email=$this->getStringParam('email');
+		$email=$this->params->getStringRequestParam('email');
 		$ret=array();
 		$ret['hibas']=!\Zend_Validate::is($email,'EmailAddress');
 		if (!$ret['hibas']) {
@@ -334,7 +331,7 @@ class partnerController extends \mkwhelpers\MattableController {
 			$this->getEm()->persist($user);
 			$this->getEm()->flush();
 			store::getMainSession()->pk=$user->getId();
-			$kc=new kosarController($this->generalDataLoader);
+			$kc=new kosarController($this->params);
 			$kc->replaceSessionIdAndAddPartner($oldid,$user);
 			$kc->addSessionIdByPartner($user);
 			return true;
@@ -348,7 +345,7 @@ class partnerController extends \mkwhelpers\MattableController {
 			$user->setSessionid('');
 			$this->getEm()->persist($user);
 			$this->getEm()->flush();
-			$kc=new kosarController($this->generalDataLoader);
+			$kc=new kosarController($this->params);
 			$kc->removeSessionId(\Zend_Session::getId());
 			store::destroyMainSession();
 		}

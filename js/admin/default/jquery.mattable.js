@@ -290,7 +290,7 @@
 			if ($.isFunction(setup.filter.onFilter)) {
 				setup.filter.onFilter.call(this,obj);
 			}
-			$.ajax({url:setup.tablebody.url,type:'POST',
+			$.ajax({url:setup.tablebody.url,type:'GET',
 				data:obj,
 				success:function(data) {
 					var resp=JSON.parse(data);
@@ -441,6 +441,7 @@
 					buttons: {
 						'Igen': function() {
 							$.ajax({url:setup.karb.saveUrl,
+								type:'POST',
 								data:{
 									id:termeksor.attr(_dataattr.recordid),
 									oper:'del'

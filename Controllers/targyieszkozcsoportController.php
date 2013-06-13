@@ -4,32 +4,32 @@ use mkw\store;
 
 class targyieszkozcsoportController extends \mkwhelpers\JQGridController {
 
-	public function __construct() {
+	public function __construct($params) {
 		$this->setEntityName('Entities\TargyieszkozCsoport');
-		parent::__construct();
+		parent::__construct($params);
 	}
 
 	protected function loadCells($sor) {
 		return array($sor->getNev(),$sor->getBeszerzesiktgfkviszam(),$sor->getEcsleirasfkviszam(),$sor->getEcsktgfkviszam());
 	}
 
-	protected function setFields($obj,$params) {
-		$obj->setNev($params->getStringRequestParam('nev'));
-		$obj->setBeszerzesiktgfkviszam($params->getStringRequestParam('beszerzesiktgfkviszam'));
-		$obj->setEcsleirasfkviszam($params->getStringRequestParam('ecsleirasfkviszam'));
-		$obj->setEcsktgfkviszam($params->getStringRequestParam('ecsktgfkviszam'));
+	protected function setFields($obj) {
+		$obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setBeszerzesiktgfkviszam($this->params->getStringRequestParam('beszerzesiktgfkviszam'));
+		$obj->setEcsleirasfkviszam($this->params->getStringRequestParam('ecsleirasfkviszam'));
+		$obj->setEcsktgfkviszam($this->params->getStringRequestParam('ecsktgfkviszam'));
 		return $obj;
 	}
 
-	public function jsonlist($params) {
+	public function jsonlist() {
 		$filter=array();
-		if ($params->getBoolRequestParam('_search',false)) {
-			if (!is_null($params->getRequestParam('nev',NULL))) {
+		if ($this->params->getBoolRequestParam('_search',false)) {
+			if (!is_null($this->params->getRequestParam('nev',NULL))) {
 				$filter['fields'][]='nev';
-				$filter['values'][]=$params->getStringRequestParam('nev');
+				$filter['values'][]=$this->params->getStringRequestParam('nev');
 			}
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
 		echo json_encode($this->loadDataToView($rec));
 	}
 

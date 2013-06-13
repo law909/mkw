@@ -6,18 +6,13 @@ class mainController extends \mkwhelpers\Controller {
 
 	private $view;
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
-		$this->setTemplateFactory(store::getTemplateFactory());
-		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
 	private function storePrevUri() {
 		store::getMainSession()->prevuri=$_SERVER['REQUEST_URI'];
 	}
 
 	protected function redirectTo404($keresendo) {
 		$this->view=$this->getTemplateFactory()->createMainView('404.tpl');
-		$tc=new termekController($this->generalDataLoader);
+		$tc=new termekController($this->params);
 		$this->view->setVar('ajanlotttermekek',$tc->getAjanlottLista());
 		$this->fillTemplate();
 		$this->view->setVar('seodescription',t('Sajnos nem találjuk: ').$keresendo);
@@ -34,24 +29,24 @@ class mainController extends \mkwhelpers\Controller {
 
 	protected function createTermekfaParams() {
 		return array(
-			'elemperpage'=>$this->getIntParam('elemperpage',20),
-			'pageno'=>$this->getIntParam('pageno',1),
-			'order'=>$this->getStringParam('order','ardesc'),
-			'filter'=>$this->getStringParam('filter',''),
-			'klikkeltcimkekatid'=>$this->getIntParam('cimkekatid'),
-			'arfilter'=>$this->getStringParam('arfilter',''),
-			'keresett'=>$this->getStringParam('keresett',''),
-			'vt'=>$this->getIntParam('vt',1)
+			'elemperpage'=>$this->params->getIntRequestParam('elemperpage',20),
+			'pageno'=>$this->params->getIntRequestParam('pageno',1),
+			'order'=>$this->params->getStringRequestParam('order','ardesc'),
+			'filter'=>$this->params->getStringRequestParam('filter',''),
+			'klikkeltcimkekatid'=>$this->params->getIntRequestParam('cimkekatid'),
+			'arfilter'=>$this->params->getStringRequestParam('arfilter',''),
+			'keresett'=>$this->params->getStringRequestParam('keresett',''),
+			'vt'=>$this->params->getIntRequestParam('vt',1)
 		);
 	}
 
 	public function view() {
 		$this->view=$this->getTemplateFactory()->createMainView('main.tpl');
 		$this->fillTemplate();
-		$hc=new hirController($this->generalDataLoader);
-		$tc=new termekController($this->generalDataLoader);
-		$khc=new korhintaController($this->generalDataLoader);
-		$tfc=new termekfaController($this->generalDataLoader);
+		$hc=new hirController($this->params);
+		$tc=new termekController($this->params);
+		$khc=new korhintaController($this->params);
+		$tfc=new termekfaController($this->params);
 		$this->view->setVar('hirek',$hc->gethirlist());
 		$this->view->setVar('ajanlotttermekek',$tc->getAjanlottLista());
 		$this->view->setVar('legnepszerubbtermekek',$tc->getLegnepszerubbLista());
@@ -62,7 +57,7 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function termekfa($com) {
-		$tf=new termekfaController($this->generalDataLoader);
+		$tf=new termekfaController($this->params);
 		$ag=$tf->getRepo()->findOneBySlug($com);
 		if ($ag) {
 			if (count($ag->getChildren())>0) {
@@ -89,7 +84,7 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function kereses($com) {
-		$term=trim($this->getStringParam('term'));
+		$term=trim($this->params->getStringRequestParam('term'));
 		if ($term) {
 			$r=store::getEm()->getRepository('\Entities\Termek');
 			$res=$r->getNevek($term);
@@ -97,13 +92,13 @@ class mainController extends \mkwhelpers\Controller {
 		}
 		else {
 			$this->storePrevUri();
-			$keresoszo=trim($this->getStringParam('keresett'));
+			$keresoszo=trim($this->params->getStringRequestParam('keresett'));
 			if ($keresoszo!='') {
 				$log=new \Entities\Keresoszolog($keresoszo);
 				store::getEm()->persist($log);
 				store::getEm()->flush();
 
-				$tf=new termekfaController($this->generalDataLoader);
+				$tf=new termekfaController($this->params);
 				$t=$tf->gettermeklistaforparent(null,$this->createTermekfaParams());
 
 				if ($t['lapozo']['elemcount']>0) {
@@ -114,7 +109,7 @@ class mainController extends \mkwhelpers\Controller {
 				}
 				else {
 					$this->view=$this->getTemplateFactory()->createMainView('nincstalalat.tpl');
-					$tc=new termekController($this->generalDataLoader);
+					$tc=new termekController($this->params);
 					$this->view->setVar('ajanlotttermekek',$tc->getAjanlottLista());
 				}
 				$this->fillTemplate();
@@ -124,7 +119,7 @@ class mainController extends \mkwhelpers\Controller {
 			}
 			else {
 				$this->view=$this->getTemplateFactory()->createMainView('nincstalalat.tpl');
-				$tc=new termekController($this->generalDataLoader);
+				$tc=new termekController($this->params);
 				$this->view->setVar('ajanlotttermekek',$tc->getAjanlottLista());
 				$this->fillTemplate();
 				$this->view->setVar('seodescription',t('Keressen valamit.'));
@@ -135,7 +130,7 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function termek($com) {
-		$tc=new termekController($this->generalDataLoader);
+		$tc=new termekController($this->params);
 		$termek=$tc->getRepo()->findOneBySlug($com);
 		if ($termek) {
 			$this->view=$this->getTemplateFactory()->createMainView('termeklap.tpl');
@@ -156,7 +151,7 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function regisztracio($com) {
-		$pc=new partnerController($this->generalDataLoader);
+		$pc=new partnerController($this->params);
 		switch ($com) {
 			case 'ment':
 				$view=$pc->regisztral();
@@ -173,7 +168,7 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function fiok($com) {
-		$pc=new partnerController($this->generalDataLoader);
+		$pc=new partnerController($this->params);
 		if ($pc->checkloggedin()) {
 			switch ($com) {
 				case 'ment':
@@ -192,14 +187,14 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function login($com) {
-		$pc=new partnerController($this->generalDataLoader);
+		$pc=new partnerController($this->params);
 		if ($pc->checkloggedin()) {
 			header('Location: /fiok');
 		}
 		else {
 			switch ($com) {
 				case 'ment':
-					if ($pc->login($this->getStringParam('email'),$this->getStringParam('jelszo'))) {
+					if ($pc->login($this->getStringRequestParam('email'),$this->getStringRequestParam('jelszo'))) {
 						header('Location: /fiok');
 					}
 					else {
@@ -220,7 +215,7 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function logout($com) {
-		$pc=new partnerController($this->generalDataLoader);
+		$pc=new partnerController($this->params);
 		$prevuri=store::getMainSession()->prevuri;
 		if (!$prevuri) {
 			$prevuri='/';
@@ -232,7 +227,7 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function checkemail($com) {
-		$email=$this->getStringParam('email');
+		$email=$this->params->getStringRequestParam('email');
 		$ret['hibas']=!\Zend_Validate::is($email,'EmailAddress');
 		if ($ret['hibas']) {
 			$ret['uzenet']=t('Kérjük emailcímet adjon meg.');
@@ -244,7 +239,7 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function statlap($com) {
-		$sc=new statlapController($this->generalDataLoader);
+		$sc=new statlapController($this->params);
 		$statlap=$sc->getRepo()->findOneBySlug($com);
 		if ($statlap) {
 			$this->view=$this->getTemplateFactory()->createMainView('statlap.tpl');
@@ -262,7 +257,7 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function hir($com) {
-		$sc=new hirController($this->generalDataLoader);
+		$sc=new hirController($this->params);
 		$hir=$sc->getRepo()->findOneBySlug($com);
 		if ($hir) {
 			$this->view=$this->getTemplateFactory()->createMainView('hir.tpl');
@@ -283,7 +278,7 @@ class mainController extends \mkwhelpers\Controller {
 		$feedview=$this->getTemplateFactory()->createMainView('feed.tpl');
 		switch ($com) {
 			case 'hir':
-				$sc=new hirController($this->generalDataLoader);
+				$sc=new hirController($this->params);
 				$feedview->setVar('title',store::getParameter('feedhirtitle',t('Híreink')));
 				$feedview->setVar('link','http://'.$_SERVER['SERVER_NAME'].'/feed/hir');
 				$d=new \DateTime();
@@ -306,7 +301,7 @@ class mainController extends \mkwhelpers\Controller {
 				$feedview->printTemplateResult();
 				break;
 			case 'termek':
-				$tc=new termekController($this->generalDataLoader);
+				$tc=new termekController($this->params);
 				$view=$this->getTemplateFactory()->createMainView('termekfeed.tpl');
 				$feedview->setVar('title',store::getParameter('feedtermektitle',t('Termékeink')));
 				$feedview->setVar('link','http://'.$_SERVER['HTTP_HOST'].'/feed/termek');
@@ -336,8 +331,8 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function valtozatar($com) {
-		$termekid=$this->getIntParam('t');
-		$valtozatid=$this->getIntParam('vid');
+		$termekid=$this->params->getIntRequestParam('t');
+		$valtozatid=$this->params->getIntRequestParam('vid');
 		$termek=store::getEm()->getRepository('Entities\Termek')->find($termekid);
 		$valtozat=store::getEm()->getRepository('Entities\TermekValtozat')->find($valtozatid);
 		$ret=array();
@@ -346,14 +341,14 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function valtozat($com) {
-		$termekkod=$this->getIntParam('t');
-		$tipusid=$this->getIntParam('ti');
-		$valtozatertek=$this->getParam('v');
-		$masiktipusid=$this->getIntParam('mti');
-		$masikselected=$this->getParam('sel');
+		$termekkod=$this->params->getIntRequestParam('t');
+		$tipusid=$this->params->getIntRequestParam('ti');
+		$valtozatertek=$this->params->getRequestParam('v');
+		$masiktipusid=$this->params->getIntRequestParam('mti');
+		$masikselected=$this->params->getRequestParam('sel');
 		$ret=array();
 
-		$tc=new termekController($this->generalDataLoader);
+		$tc=new termekController($this->params);
 		$termek=$tc->getRepo()->find($termekkod);
 
 		if ($masiktipusid) {
@@ -384,13 +379,13 @@ class mainController extends \mkwhelpers\Controller {
 			case 'ment':
 				$hibas=false;
 				$hibak=array();
-				$nev=$this->getStringParam('nev');
-				$email1=$this->getStringParam('email1');
-				$email2=$this->getStringParam('email2');
-				$telefon=$this->getStringParam('telefon');
-				$rendelesszam=$this->getStringParam('rendelesszam');
-				$tema=$this->getStringParam('tema');
-				$szoveg=$this->getStringParam('szoveg');
+				$nev=$this->params->getStringRequestParam('nev');
+				$email1=$this->params->getStringRequestParam('email1');
+				$email2=$this->params->getStringRequestParam('email2');
+				$telefon=$this->params->getStringRequestParam('telefon');
+				$rendelesszam=$this->params->getStringRequestParam('rendelesszam');
+				$tema=$this->params->getStringRequestParam('tema');
+				$szoveg=$this->params->getStringRequestParam('szoveg');
 				if (!\Zend_Validate::is($email1,'EmailAddress')||!\Zend_Validate::is($email2,'EmailAddress')) {
 					$hibas=true;
 					$hibak['email']=t('Rossz az email');
@@ -413,7 +408,7 @@ class mainController extends \mkwhelpers\Controller {
 					$this->storePrevUri();
 				}
 				else {
-					$kftc=new kapcsolatfelveteltemaController($this->generalDataLoader);
+					$kftc=new kapcsolatfelveteltemaController($this->params);
 					$view=$this->getTemplateFactory()->createMainView('kapcsolat.tpl');
 					$view->setVar('nev',$nev);
 					$view->setVar('email1',$email1);
@@ -427,7 +422,7 @@ class mainController extends \mkwhelpers\Controller {
 				$view->printTemplateResult();
 				break;
 			default :
-				$kftc=new kapcsolatfelveteltemaController($this->generalDataLoader);
+				$kftc=new kapcsolatfelveteltemaController($this->params);
 				$this->view=$this->getTemplateFactory()->createMainView('kapcsolat.tpl');
 				$this->fillTemplate();
 				$this->view->setVar('temalista',$kftc->getSelectList(0));

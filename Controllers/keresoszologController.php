@@ -4,65 +4,41 @@ use mkw\store;
 
 class keresoszologController extends \mkwhelpers\MattableController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Keresoszolog');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 		$this->setKarbFormTplName('keresoszologkarbform.tpl');
 		$this->setKarbTplName('keresoszologkarb.tpl');
 		$this->setListBodyRowTplName('keresoszologlista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function loadVars($t) {
 		$x=array();
-		if ($t) {
-			$x['id']=$t->getId();
-			$x['nev']=$t->getNev();
-			/* MINTA ha nem kell, dobd ki
-			if ($kat=$t->getKategoria()) {
-				$x['cimkekatnev']=$kat->getNev();
-			}
-			else {
-				$x['cimkekatnev']='';
-			}
-			*/
+		if (!$t) {
+			$t=new \Entities\Keresoszolog();
+			$this->getEm()->detach($t);
 		}
-		else {
-			$x['id']=0;
-			$x['nev']='';
-			/* MINTA ha nem kell, dobd ki
-			$x['cimkekatnev']='';
-			*/
-		}
+		$x['id']=$t->getId();
+		$x['nev']=$t->getNev();
 		return $x;
 	}
 
 	protected function setFields($obj) {
-		$obj->setNev($this->getStringParam('nev'));
-		/* MINTA ha nem kell, dobd ki
-		$ck=store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->getIntParam('cimkecsoport'));
-		if ($ck) {
-			$obj->setKategoria($ck);
-		}
-		*/
+		$obj->setNev($this->params->getStringRequestParam('nev'));
 		return $obj;
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('keresoszologlista_tbody.tpl');
 
 		$filter=array();
-		if (!is_null($this->getParam('nevfilter',NULL))) {
+		if (!is_null($this->params->getRequestParam('nevfilter',NULL))) {
 			$filter['fields'][]='nev';
-			$filter['values'][]=$this->getStringParam('nevfilter');
+			$filter['values'][]=$this->params->getStringRequestParam('nevfilter');
 		}
 
-		$this->initPager(
-			$this->getRepo()->getCount($filter),
-			$this->getIntParam('elemperpage',30),
-			$this->getIntParam('pageno',1));
+		$this->initPager($this->getRepo()->getCount($filter));
 
 		$egyedek=$this->getRepo()->getWithJoins(
 			$filter,
@@ -73,7 +49,7 @@ class keresoszologController extends \mkwhelpers\MattableController {
 		echo json_encode($this->loadDataToView($egyedek,'egyedlista',$view));
 	}
 
-	protected function viewselect() {
+	public function viewselect() {
 		$view=$this->createView('keresoszologlista.tpl');
 
 		$view->setVar('pagetitle',t('keresoszolog'));
@@ -81,7 +57,7 @@ class keresoszologController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('keresoszologlista.tpl');
 
 		$view->setVar('pagetitle',t('keresoszolog'));
@@ -91,7 +67,9 @@ class keresoszologController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('keresoszolog'));
@@ -105,9 +83,9 @@ class keresoszologController extends \mkwhelpers\MattableController {
 
 /* MINTA, ha nem kell akkor kidobandó
 	protected function setmenulathato() {
-		$id=$this->getIntParam('id');
-		$kibe=$this->getBoolParam('kibe');
-		$num=$this->getIntParam('num');
+		$id=$this->getIntRequestParam('id');
+		$kibe=$this->getBoolRequestParam('kibe');
+		$num=$this->getIntRequestParam('num');
 		$obj=$this->getRepo()->find($id);
 		if ($obj) {
 			switch ($num) {

@@ -6,21 +6,19 @@ use mkw\store;
 
 class bizonylattetelController extends \mkwhelpers\MattableController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Bizonylattetel');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
 //		$this->setListBodyRowTplName('?howto?lista_tbody_tr.tpl');
 //		$this->setListBodyRowVarName('_egyed');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	public function loadVars($t,$forKarb=false) {
-		$termek=new termekController($this->generalDataLoader);
-		$vtsz=new vtszController($this->generalDataLoader);
-		$afa=new afaController($this->generalDataLoader);
+		$termek=new termekController($this->params);
+		$vtsz=new vtszController($this->params);
+		$afa=new afaController($this->params);
 		$x=array();
 		if ($t) {
 			$x['id']=$t->getId();
@@ -75,25 +73,25 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		return $obj;
 	}
 
-	protected function getemptyrow() {
+	public function getemptyrow() {
 		$view=$this->createView('bizonylattetelkarb.tpl');
 		$view->setVar('tetel',$this->loadVars(null,true));
 		echo $view->getTemplateResult();
 	}
 
-	protected function getar() {
+	public function getar() {
 		$calc=new ArCalculator(
-			$this->getEm()->getRepository('Entities\Valutanem')->find($this->getIntParam('valutanem')),
-			$this->getEm()->getRepository('Entities\Partner')->find($this->getIntParam('partner')),
-			$this->getEm()->getRepository('Entities\Termek')->find($this->getIntParam('termek')));
+			$this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem')),
+			$this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner')),
+			$this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek')));
 		echo $calc->getPartnerAr();
 	}
 
-	protected function calcar() {
-		$afa=$this->getEm()->getRepository('Entities\Afa')->find($this->getIntParam('afa'));
-		$arfolyam=$this->getNumParam('arfolyam',1);
-		$nettoegysar=$this->getNumParam('nettoegysar',0);
-		$mennyiseg=$this->getNumParam('mennyiseg',0);
+	public function calcar() {
+		$afa=$this->getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afa'));
+		$arfolyam=$this->params->getNumRequestParam('arfolyam',1);
+		$nettoegysar=$this->params->getNumRequestParam('nettoegysar',0);
+		$mennyiseg=$this->params->getNumRequestParam('mennyiseg',0);
 
 		$bruttoegysar=$afa->calcBrutto($nettoegysar);
 		$netto=$nettoegysar*$mennyiseg;

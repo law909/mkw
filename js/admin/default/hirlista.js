@@ -51,6 +51,7 @@ $(document).ready(function(){
 		var $this=$(this);
 		$.ajax({
 			url:'/admin/hir/setlathato',
+			type:'POST',
 			data:{
 				id:$this.attr('data-id'),
 				kibe:!$this.is('.ui-state-hover')

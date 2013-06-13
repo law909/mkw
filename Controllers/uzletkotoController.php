@@ -4,47 +4,33 @@ use mkw\store;
 
 class uzletkotoController extends \mkwhelpers\MattableController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Uzletkoto');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 		$this->setKarbFormTplName('uzletkotokarbform.tpl');
 		$this->setKarbTplName('uzletkotokarb.tpl');
 		$this->setListBodyRowTplName('uzletkotolista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_uzletkoto');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function loadVars($t) {
 		$x=array();
-		if ($t) {
-			$x['id']=$t->getId();
-			$x['nev']=$t->getNev();
-			$x['cim']=$t->getCim();
-			$x['irszam']=$t->getIrszam();
-			$x['varos']=$t->getVaros();
-			$x['utca']=$t->getUtca();
-			$x['telefon']=$t->getTelefon();
-			$x['mobil']=$t->getMobil();
-			$x['fax']=$t->getFax();
-			$x['email']=$t->getEmail();
-			$x['honlap']=$t->getHonlap();
-			$x['megjegyzes']=$t->getMegjegyzes();
+		if (!$t) {
+			$t=new \Entities\Uzletkoto();
+			$this->getEm()->detach($t);
 		}
-		else {
-			$x['id']=0;
-			$x['nev']='';
-			$x['cim']='';
-			$x['irszam']='';
-			$x['varos']='';
-			$x['utca']='';
-			$x['telefon']='';
-			$x['mobil']='';
-			$x['fax']='';
-			$x['email']='';
-			$x['honlap']='';
-			$x['megjegyzes']='';
-		}
+		$x['id']=$t->getId();
+		$x['nev']=$t->getNev();
+		$x['cim']=$t->getCim();
+		$x['irszam']=$t->getIrszam();
+		$x['varos']=$t->getVaros();
+		$x['utca']=$t->getUtca();
+		$x['telefon']=$t->getTelefon();
+		$x['mobil']=$t->getMobil();
+		$x['fax']=$t->getFax();
+		$x['email']=$t->getEmail();
+		$x['honlap']=$t->getHonlap();
+		$x['megjegyzes']=$t->getMegjegyzes();
 		return $x;
 	}
 
@@ -52,16 +38,16 @@ class uzletkotoController extends \mkwhelpers\MattableController {
 	 *  EntityController->save() hívja, ezért kell protected-nek lennie
 	 */
 	protected function setFields($obj) {
-		$obj->setNev($this->getStringParam('nev'));
-		$obj->setIrszam($this->getStringParam('irszam'));
-		$obj->setVaros($this->getStringParam('varos'));
-		$obj->setUtca($this->getStringParam('utca'));
-		$obj->setTelefon($this->getStringParam('telefon'));
-		$obj->setMobil($this->getStringParam('mobil'));
-		$obj->setFax($this->getStringParam('fax'));
-		$obj->setEmail($this->getStringParam('email'));
-		$obj->setHonlap($this->getStringParam('honlap'));
-		$obj->setMegjegyzes($this->getStringParam('megjegyzes'));
+		$obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setIrszam($this->params->getStringRequestParam('irszam'));
+		$obj->setVaros($this->params->getStringRequestParam('varos'));
+		$obj->setUtca($this->params->getStringRequestParam('utca'));
+		$obj->setTelefon($this->params->getStringRequestParam('telefon'));
+		$obj->setMobil($this->params->getStringRequestParam('mobil'));
+		$obj->setFax($this->params->getStringRequestParam('fax'));
+		$obj->setEmail($this->params->getStringRequestParam('email'));
+		$obj->setHonlap($this->params->getStringRequestParam('honlap'));
+		$obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
 		return $obj;
 	}
 
@@ -70,15 +56,12 @@ class uzletkotoController extends \mkwhelpers\MattableController {
 
 		$filter=array();
 
-		if (!is_null($this->getParam('nevfilter',NULL))) {
+		if (!is_null($this->params->getRequestParam('nevfilter',NULL))) {
 			$filter['fields'][]='nev';
-			$filter['values'][]=$this->getStringParam('nevfilter');
+			$filter['values'][]=$this->params->getStringRequestParam('nevfilter');
 		}
 
-		$this->initPager(
-			$this->getRepo()->getCount($filter),
-			$this->getIntParam('elemperpage',30),
-			$this->getIntParam('pageno',1));
+		$this->initPager($this->getRepo()->getCount($filter));
 
 		$uk=$this->getRepo()->getWithJoins(
 			$filter,
@@ -106,7 +89,9 @@ class uzletkotoController extends \mkwhelpers\MattableController {
 		return $res;
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 		$view->setVar('pagetitle',t('Üzletkötő'));
 		$view->setVar('oper',$oper);
@@ -118,7 +103,7 @@ class uzletkotoController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function htmllist() {
+	public function htmllist() {
 		$rec=$this->getRepo()->getAll(array(),array('nev'=>'asc'));
 		$ret='<select>';
 		foreach($rec as $sor) {

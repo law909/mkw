@@ -8,13 +8,11 @@ class termekfaController extends \mkwhelpers\MattableController {
 
 	private $fatomb;
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\TermekFa');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 		$this->setKarbFormTplName('termekfakarbform.tpl');
 		$this->setKarbTplName('termekfakarb.tpl');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function loadVars($t,$forKarb=false) {
@@ -46,34 +44,34 @@ class termekfaController extends \mkwhelpers\MattableController {
 	}
 
 	protected function setFields($obj) {
-		$obj->setNev($this->getStringParam('nev'));
-		$obj->setOldalcim($this->getStringParam('oldalcim'));
-		$obj->setRovidleiras($this->getStringParam('rovidleiras'));
-		$obj->setLeiras($this->getStringParam('leiras'));
-		$obj->setSeodescription($this->getStringParam('seodescription'));
-		$obj->setSeokeywords($this->getStringParam('seokeywords'));
-		$obj->setMenu1lathato($this->getBoolParam('menu1lathato'));
-		$obj->setMenu2lathato($this->getBoolParam('menu2lathato'));
-		$obj->setMenu3lathato($this->getBoolParam('menu3lathato'));
-		$obj->setMenu4lathato($this->getBoolParam('menu4lathato'));
-		$obj->setKepurl($this->getStringParam('kepurl'));
-		$obj->setKepleiras($this->getStringParam('kepleiras'));
-		$obj->setSorrend($this->getIntParam('sorrend'));
-		$parent=$this->getRepo()->find($this->getIntParam('parentid'));
+		$obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
+		$obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
+		$obj->setLeiras($this->params->getStringRequestParam('leiras'));
+		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
+		$obj->setSeokeywords($this->params->getStringRequestParam('seokeywords'));
+		$obj->setMenu1lathato($this->params->getBoolRequestParam('menu1lathato'));
+		$obj->setMenu2lathato($this->params->getBoolRequestParam('menu2lathato'));
+		$obj->setMenu3lathato($this->params->getBoolRequestParam('menu3lathato'));
+		$obj->setMenu4lathato($this->params->getBoolRequestParam('menu4lathato'));
+		$obj->setKepurl($this->params->getStringRequestParam('kepurl'));
+		$obj->setKepleiras($this->params->getStringRequestParam('kepleiras'));
+		$obj->setSorrend($this->params->getIntRequestParam('sorrend'));
+		$parent=$this->getRepo()->find($this->params->getIntRequestParam('parentid'));
 		if ($parent) {
 			$obj->setParent($parent);
 		}
 		return $obj;
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('termekfalista.tpl');
 		$view->setVar('pagetitle',t('Termék kategóriák'));
 		$view->printTemplateResult();
 	}
 
 	public function jsonlist() {
-		$elotag=$this->getStringParam('pre');
+		$elotag=$this->params->getStringRequestParam('pre');
 		if (!$elotag) {
 			$elotag='termekfa_';
 		}
@@ -98,7 +96,9 @@ class termekfaController extends \mkwhelpers\MattableController {
 		return $ret;
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 		$view->setVar('pagetitle',t('Termék kategória'));
 		$view->setVar('oper',$oper);
@@ -264,27 +264,27 @@ class termekfaController extends \mkwhelpers\MattableController {
 		return $ret;
 	}
 
-	public function gettermeklistaforparent($parent,$params) {
+	public function gettermeklistaforparent($parent) {
 		$kategoriafilter=array();
 		$arfilter=array();
 		$termekidfilter=array();
 		$ret=array();
 
-		$tc=new termekController($this->generalDataLoader);
+		$tc=new termekController($this->params);
 		$termekrepo=$tc->getRepo();
-		$tck=new termekcimkekatController($this->generalDataLoader);
+		$tck=new termekcimkekatController($this->params);
 
 		$kiemelttermekdb=store::getParameter('kiemelttermekdb',3);
 
-		$elemperpage=$params['elemperpage'];
-		$pageno=$params['pageno'];
-		$ord=$params['order'];
-		$szurostr=$params['filter'];
-		if (array_key_exists('cimkekatid',$params)) {
-			$klikkeltcimkekatid=$params['cimkekatid'];
+		$elemperpage=$this->params['elemperpage'];
+		$pageno=$this->params['pageno'];
+		$ord=$this->params['order'];
+		$szurostr=$this->params['filter'];
+		if (array_key_exists('cimkekatid',$this->params)) {
+			$klikkeltcimkekatid=$this->params['cimkekatid'];
 		}
-		$keresoszo=$params['keresett'];
-		$arfiltertomb=explode(';',$params['arfilter']);
+		$keresoszo=$this->params['keresett'];
+		$arfiltertomb=explode(';',$this->params['arfilter']);
 		if (count($arfiltertomb)>0) {
 			$minarfilter=$arfiltertomb[0]*1;
 		}
@@ -436,7 +436,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 				$ret['navigator']=array(array('caption'=>t('A keresett kifejezés').': '.$keresoszo));
 			}
 			$ret['keresett']=$keresoszo;
-			$ret['vt']=($params['vt']>0?$params['vt']:1);
+			$ret['vt']=($this->params['vt']>0?$this->params['vt']:1);
 			$ret['termekek']=$t;
 			$ret['kiemelttermekek']=$kt;
 			// $tid = termek id-k csak kategoriaval es arral szurve

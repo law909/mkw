@@ -4,15 +4,13 @@ use mkw\store;
 
 class korhintaController extends \mkwhelpers\MattableController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Korhinta');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 		$this->setKarbFormTplName('korhintakarbform.tpl');
 		$this->setKarbTplName('korhintakarb.tpl');
 		$this->setListBodyRowTplName('korhintalista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function loadVars($t) {
@@ -35,28 +33,25 @@ class korhintaController extends \mkwhelpers\MattableController {
 	}
 
 	protected function setFields($obj) {
-		$obj->setNev($this->getStringParam('nev'));
-		$obj->setUrl($this->getStringParam('url'));
-		$obj->setSzoveg($this->getStringParam('szoveg'));
-		$obj->setKepleiras($this->getStringParam('kepleiras',''));
-		$obj->setLathato($this->getBoolParam('lathato',true));
-		$obj->setSorrend($this->getIntParam('sorrend',0));
+		$obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setUrl($this->params->getStringRequestParam('url'));
+		$obj->setSzoveg($this->params->getStringRequestParam('szoveg'));
+		$obj->setKepleiras($this->params->getStringRequestParam('kepleiras',''));
+		$obj->setLathato($this->params->getBoolRequestParam('lathato',true));
+		$obj->setSorrend($this->params->getIntRequestParam('sorrend',0));
 		return $obj;
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('korhintalista_tbody.tpl');
 
 		$filter=array();
-		if (!is_null($this->getParam('nevfilter',NULL))) {
+		if (!is_null($this->params->getRequestParam('nevfilter',NULL))) {
 			$filter['fields'][]='nev';
-			$filter['values'][]=$this->getStringParam('nevfilter');
+			$filter['values'][]=$this->params->getStringRequestParam('nevfilter');
 		}
 
-		$this->initPager(
-			$this->getRepo()->getCount($filter),
-			$this->getIntParam('elemperpage',30),
-			$this->getIntParam('pageno',1));
+		$this->initPager($this->getRepo()->getCount($filter));
 
 		$egyedek=$this->getRepo()->getAll(
 			$filter,
@@ -67,7 +62,7 @@ class korhintaController extends \mkwhelpers\MattableController {
 		echo json_encode($this->loadDataToView($egyedek,'egyedlista',$view));
 	}
 
-	protected function viewselect() {
+	public function viewselect() {
 		$view=$this->createView('korhintalista.tpl');
 
 		$view->setVar('pagetitle',t('Körhinta'));
@@ -75,7 +70,7 @@ class korhintaController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('korhintalista.tpl');
 
 		$view->setVar('pagetitle',t('Körhinta'));
@@ -85,7 +80,9 @@ class korhintaController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Körhinta'));
@@ -97,20 +94,20 @@ class korhintaController extends \mkwhelpers\MattableController {
 		return $view->getTemplateResult();
 	}
 
-	protected function savepicture() {
-		$fa=$this->getRepo()->find($this->getIntParam('id'));
+	public function savepicture() {
+		$fa=$this->getRepo()->find($this->params->getIntRequestParam('id'));
 		if ($fa) {
 			$uploaddir=store::getConfigValue('path.korhintakep');
 			$pp=pathinfo($_FILES['userfile']['name']);
-			$uploadfile=$uploaddir.$this->getStringParam('nev').'.'.$pp['extension'];
+			$uploadfile=$uploaddir.$this->params->getStringRequestParam('nev').'.'.$pp['extension'];
 			if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
 				$imageproc=new \mkwhelpers\Images($uploadfile);
 				$imageproc->setJpgquality(store::getParameter('jpgquality'));
 				$imageproc->setPngquality(store::getParameter('pngquality'));
-				$fn=$uploaddir.$this->getStringParam('nev').'.'.$pp['extension'];
+				$fn=$uploaddir.$this->params->getStringRequestParam('nev').'.'.$pp['extension'];
 				$imageproc->Resample($fn,store::getParameter('korhintaimagesize',480));
-				$fa->setKepnev($this->getStringParam('nev'));
-				$fa->setKepleiras($this->getStringParam('leiras'));
+				$fa->setKepnev($this->params->getStringRequestParam('nev'));
+				$fa->setKepleiras($this->params->getStringRequestParam('leiras'));
 				$fa->setKepurl($uploadfile);
 				$this->getEm()->persist($fa);
 				$this->getEm()->flush();
@@ -122,8 +119,8 @@ class korhintaController extends \mkwhelpers\MattableController {
 		}
 	}
 
-	protected function delpicture() {
-		$fa=$this->getRepo()->find($this->getIntParam('id'));
+	public function delpicture() {
+		$fa=$this->getRepo()->find($this->params->getIntRequestParam('id'));
 		if ($fa) {
 			unlink($fa->getKepurl(''));
 			$fa->setKepurl(null);
@@ -135,10 +132,10 @@ class korhintaController extends \mkwhelpers\MattableController {
 		}
 	}
 
-	protected function setflag() {
-		$id=$this->getIntParam('id');
-		$kibe=$this->getBoolParam('kibe');
-		$flag=$this->getStringParam('flag');
+	public function setflag() {
+		$id=$this->params->getIntRequestParam('id');
+		$kibe=$this->params->getBoolRequestParam('kibe');
+		$flag=$this->params->getStringRequestParam('flag');
 		$obj=$this->getRepo()->find($id);
 		if ($obj) {
 			switch ($flag) {

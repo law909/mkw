@@ -18,9 +18,13 @@ class MattableController extends Controller {
 	private $karbFormTplName;
 	private $karbTplName;
 
-	public function __construct() {
-		parent::__construct();
-		$this->setupRepo();
+	public function __construct($params) {
+		parent::__construct($params);
+		$this->setTemplateFactory(\mkw\Store::getTemplateFactory());
+		$this->em=\mkw\Store::getEm();
+		if ($this->entityName) {
+			$this->repo=$this->em->getRepository($this->entityName);
+		}
 	}
 
 	public function getEntityName() {
@@ -39,18 +43,8 @@ class MattableController extends Controller {
 		return $this->em;
 	}
 
-	public function setEm($em) {
-		$this->em=$em;
-	}
-
 	public function getRepo() {
 		return $this->repo;
-	}
-
-	protected function setupRepo() {
-		if ($this->entityName) {
-			$this->repo=$this->em->getRepository($this->entityName);
-		}
 	}
 
 	protected function getPager() {
@@ -94,8 +88,8 @@ class MattableController extends Controller {
 	}
 
 	protected function saveData() {
-		$parancs=$this->getParam($this->operationName,'');
-		$id=$this->getParam($this->idName,0);
+		$parancs=$this->params->getRequestParam($this->operationName,'');
+		$id=$this->params->getRequestParam($this->idName,0);
 		switch ($parancs){
 			case $this->addOperation:
 				$cl=$this->entityName;
@@ -117,7 +111,7 @@ class MattableController extends Controller {
 		return array('id'=>$id,'obj'=>$obj,'operation'=>$parancs);
 	}
 
-	protected function save() {
+	public function save() {
 		$ret=$this->saveData();
 		switch ($ret['operation']) {
 			case $this->addOperation:
@@ -131,11 +125,11 @@ class MattableController extends Controller {
 
 	protected function getOrderArray() {
 		//TODO SQLINJECTION
-		return $this->repo->getOrder($this->getParam('order',1),$this->getParam('orderdir','asc'));
+		return $this->repo->getOrder($this->params->getRequestParam('order',1),$this->params->getRequestParam('orderdir','asc'));
 	}
 
-	protected function initPager($elemcount,$elemperpage,$pageno) {
-		$this->pager=new PagerCalc($elemcount,$elemperpage,$pageno);
+	protected function initPager($elemcount) {
+		$this->pager=new PagerCalc($elemcount,$this->params->getIntRequestParam('elemperpage',30),$this->params->getIntRequestParam('pageno',1));
 	}
 
 	protected function loadPagerValues($ide) {
@@ -174,11 +168,11 @@ class MattableController extends Controller {
 		return $result;
 	}
 
-	protected function getkarb() {
-		echo $this->_getkarb($this->getParam('id',0),$this->getParam('oper',''),$this->karbFormTplName);
+	public function getkarb() {
+		echo $this->_getkarb($this->karbFormTplName);
 	}
 
-	protected function viewkarb() {
-		echo $this->_getkarb($this->getParam('id',0),$this->getParam('oper',''),$this->karbTplName);
+	public function viewkarb() {
+		echo $this->_getkarb($this->karbTplName);
 	}
 }

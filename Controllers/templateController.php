@@ -7,10 +7,8 @@ class templateController extends \mkwhelpers\MattableController {
 	private $fajlok;
 	private $filedata;
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 //		$this->setEntityName('Entities\?Howto?');
-//		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 		$this->setKarbFormTplName('templatekarbform.tpl');
 		$this->setKarbTplName('templatekarb.tpl');
 		$this->setListBodyRowTplName('templatelista_tbody_tr.tpl');
@@ -21,7 +19,7 @@ class templateController extends \mkwhelpers\MattableController {
 			array('id'=>'lablec','caption'=>'Lábléc sablon','file'=>'tpl/main/'.$theme.'/footer.tpl'),
 			array('id'=>'nincstalalat','caption'=>'Nincs keresési találat','file'=>'tpl/main/'.$theme.'/nincstalalat.tpl')
 		);
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function getFileById($id) {
@@ -51,9 +49,9 @@ class templateController extends \mkwhelpers\MattableController {
 	}
 
 	protected function saveData() {
-		$parancs=$this->getParam($this->operationName,'');
-		$id=$this->getParam($this->idName,0);
-		$szoveg=$this->getStringParam('szoveg');
+		$parancs=$this->params->getRequestParam($this->operationName,'');
+		$id=$this->params->getRequestParam($this->idName,0);
+		$szoveg=$this->params->getStringRequestParam('szoveg');
 		$obj=array();
 		foreach($this->fajlok as $fajl) {
 			if ($id==$fajl['id']) {
@@ -98,13 +96,13 @@ class templateController extends \mkwhelpers\MattableController {
 		return $obj;
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('templatelista_tbody.tpl');
 		$this->loadFileData();
 		echo json_encode($this->loadDataToView($this->filedata,'egyedlista',$view));
 	}
 
-	protected function viewselect() {
+	public function viewselect() {
 		$view=$this->createView('templatelista.tpl');
 
 		$view->setVar('pagetitle',t('Sablonok'));
@@ -112,7 +110,7 @@ class templateController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('templatelista.tpl');
 
 		$view->setVar('pagetitle',t('Sablonok'));
@@ -122,7 +120,9 @@ class templateController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Sablonok'));

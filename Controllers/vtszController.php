@@ -4,9 +4,9 @@ use mkw\store;
 
 class vtszController extends \mkwhelpers\JQGridController {
 
-	public function __construct() {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Vtsz');
-		parent::__construct();
+		parent::__construct($params);
 	}
 
 	protected function loadCells($sor) {
@@ -17,27 +17,27 @@ class vtszController extends \mkwhelpers\JQGridController {
 				$sor->getKozvetitett());
 	}
 
-	protected function setFields($obj,$params) {
-		$obj->setNev($params->getStringRequestParam('nev',$obj->getNev()));
-		$afa=store::getEm()->getReference('Entities\Afa',$params->getIntRequestParam('afa',$obj->getAfa()));
+	protected function setFields($obj) {
+		$obj->setNev($this->params->getStringRequestParam('nev',$obj->getNev()));
+		$afa=store::getEm()->getReference('Entities\Afa',$this->params->getIntRequestParam('afa',$obj->getAfa()));
 		$obj->setAfa($afa);
-		$obj->setKozvetitett($params->getBoolRequestParam('kozvetitett'));
+		$obj->setKozvetitett($this->params->getBoolRequestParam('kozvetitett'));
 		return $obj;
 	}
 
-	public function jsonlist($params) {
+	public function jsonlist() {
 		$filter=array();
-		if ($params->getBoolRequestParam('_search',false)) {
-			if (!is_null($params->getRequestParam('afa',NULL))) {
+		if ($this->params->getBoolRequestParam('_search',false)) {
+			if (!is_null($this->params->getRequestParam('afa',NULL))) {
 				$filter['fields'][]='a.nev';
-				$filter['values'][]=$params->getStringRequestParam('afa');
+				$filter['values'][]=$this->params->getStringRequestParam('afa');
 			}
-			if (!is_null($params->getRequestParam('nev',NULL))) {
+			if (!is_null($this->params->getRequestParam('nev',NULL))) {
 				$filter['fields'][]='nev';
-				$filter['values'][]=$params->getStringRequestParam('nev');
+				$filter['values'][]=$this->params->getStringRequestParam('nev');
 			}
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
 		echo json_encode($this->loadDataToView($rec));
 	}
 

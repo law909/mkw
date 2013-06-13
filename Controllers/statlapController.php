@@ -4,59 +4,48 @@ use mkw\store;
 
 class statlapController extends \mkwhelpers\MattableController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Statlap');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 		$this->setKarbFormTplName('statlapkarbform.tpl');
 		$this->setKarbTplName('statlapkarb.tpl');
 		$this->setListBodyRowTplName('statlaplista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function loadVars($t) {
 		$x=array();
-		if ($t) {
-			$x['id']=$t->getId();
-			$x['oldalcim']=$t->getOldalcim();
-			$x['slug']=$t->getSlug();
-			$x['szoveg']=$t->getSzoveg();
-			$x['seodescription']=$t->getSeodescription();
-			$x['seokeywords']=$t->getSeokeywords();
+		if (!$t) {
+			$t=new \Entities\Statlap();
+			$this->getEm()->detach($t);
 		}
-		else {
-			$x['id']=0;
-			$x['oldalcim']='';
-			$x['slug']='';
-			$x['szoveg']='';
-			$x['seodescription']='';
-			$x['seokeywords']='';
-		}
+		$x['id']=$t->getId();
+		$x['oldalcim']=$t->getOldalcim();
+		$x['slug']=$t->getSlug();
+		$x['szoveg']=$t->getSzoveg();
+		$x['seodescription']=$t->getSeodescription();
+		$x['seokeywords']=$t->getSeokeywords();
 		return $x;
 	}
 
 	protected function setFields($obj) {
-		$obj->setOldalcim($this->getStringParam('oldalcim'));
-		$obj->setSzoveg($this->getStringParam('szoveg'));
-		$obj->setSeodescription($this->getStringParam('seodescription'));
-		$obj->setSeokeywords($this->getStringParam('seokeywords'));
+		$obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
+		$obj->setSzoveg($this->params->getStringRequestParam('szoveg'));
+		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
+		$obj->setSeokeywords($this->params->getStringRequestParam('seokeywords'));
 		return $obj;
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('statlaplista_tbody.tpl');
 
 		$filter=array();
-		if (!is_null($this->getParam('nevfilter',NULL))) {
+		if (!is_null($this->params->getRequestParam('nevfilter',NULL))) {
 			$filter['fields'][]='oldalcim';
-			$filter['values'][]=$this->getStringParam('nevfilter');
+			$filter['values'][]=$this->params->getStringRequestParam('nevfilter');
 		}
 
-		$this->initPager(
-			$this->getRepo()->getCount($filter),
-			$this->getIntParam('elemperpage',30),
-			$this->getIntParam('pageno',1));
+		$this->initPager($this->getRepo()->getCount($filter));
 
 		$egyedek=$this->getRepo()->getAll(
 			$filter,
@@ -67,7 +56,7 @@ class statlapController extends \mkwhelpers\MattableController {
 		echo json_encode($this->loadDataToView($egyedek,'egyedlista',$view));
 	}
 
-	protected function viewselect() {
+	public function viewselect() {
 		$view=$this->createView('statlaplista.tpl');
 
 		$view->setVar('pagetitle',t('Statikus lapok'));
@@ -75,7 +64,7 @@ class statlapController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('statlaplista.tpl');
 
 		$view->setVar('pagetitle',t('Statikus lapok'));
@@ -85,7 +74,9 @@ class statlapController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Statikus lap'));

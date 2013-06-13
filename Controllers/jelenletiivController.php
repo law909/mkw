@@ -7,86 +7,73 @@ use mkw\store;
 
 class jelenletiivController extends \mkwhelpers\MattableController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Jelenletiiv');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 		$this->setKarbFormTplName('jelenletiivkarbform.tpl');
 		$this->setKarbTplName('jelenletiivkarb.tpl');
 		$this->setListBodyRowTplName('jelenletiivlista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function loadVars($t) {
 		$x=array();
-		if ($t) {
-			$x['id']=$t->getId();
-			$x['datum']=$t->getDatum();
-			$x['datumstr']=$t->getDatumStr();
-			$x['munkaido']=$t->getMunkaido();
-			$x['dolgozo']=$t->getDolgozoId();
-			$x['dolgozonev']=$t->getDolgozoNev();
-			$x['jelenlettipus']=$t->getJelenlettipusId();
-			$x['jelenlettipusnev']=$t->getJelenlettipusNev();
+		if (!$t) {
+			$t=new \Entities\Jelenletiiv();
+			$this->getEm()->detach($t);
 		}
-		else {
-			$x['id']=0;
-			$x['datum']=new \DateTime();
-			$x['datumstr']='';
-			$x['munkaido']=0;
-			$x['dolgozo']=0;
-			$x['dolgozonev']='';
-			$x['jelenlettipus']=0;
-			$x['jelenlettipusnev']='';
-		}
+		$x['id']=$t->getId();
+		$x['datum']=$t->getDatum();
+		$x['datumstr']=$t->getDatumStr();
+		$x['munkaido']=$t->getMunkaido();
+		$x['dolgozo']=$t->getDolgozoId();
+		$x['dolgozonev']=$t->getDolgozoNev();
+		$x['jelenlettipus']=$t->getJelenlettipusId();
+		$x['jelenlettipusnev']=$t->getJelenlettipusNev();
 		return $x;
 	}
 
-	protected function setFields($obj) {
-		$obj->setDatum($this->getDateParam('datum'));
-		$obj->setMunkaido($this->getIntParam('munkaido'));
-		$ck=store::getEm()->getRepository('Entities\Dolgozo')->find($this->getIntParam('dolgozo',0));
+	public function setFields($obj) {
+		$obj->setDatum($this->params->getDateRequestParam('datum'));
+		$obj->setMunkaido($this->params->getIntRequestParam('munkaido'));
+		$ck=store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('dolgozo',0));
 		if ($ck) {
 			$obj->setDolgozo($ck);
 		}
-		$ck=store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->getIntParam('jelenlettipus',0));
+		$ck=store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->params->getIntRequestParam('jelenlettipus',0));
 		if ($ck) {
 			$obj->setJelenlettipus($ck);
 		}
 		return $obj;
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('jelenletiivlista_tbody.tpl');
 
 		$filter=array();
 
-		if (!is_null($this->getParam('tolfilter',NULL))) {
+		if (!is_null($this->params->getRequestParam('tolfilter',NULL))) {
 			$filter['fields'][]='datum';
 			$filter['clauses'][]='>=';
-			$filter['values'][]=Store::convDate(($this->getStringParam('tolfilter','')));
+			$filter['values'][]=Store::convDate(($this->params->getStringRequestParam('tolfilter','')));
 		}
-		if (!is_null($this->getParam('igfilter',NULL))) {
+		if (!is_null($this->params->getRequestParam('igfilter',NULL))) {
 			$filter['fields'][]='datum';
 			$filter['clauses'][]='<=';
-			$filter['values'][]=Store::convDate(($this->getStringParam('igfilter','')));
+			$filter['values'][]=Store::convDate(($this->params->getStringRequestParam('igfilter','')));
 		}
-		$fv=$this->getIntParam('dolgozofilter');
+		$fv=$this->params->getIntRequestParam('dolgozofilter');
 		if ($fv>0) {
 			$filter['fields'][]='d.id';
 			$filter['values'][]=$fv;
 		}
-		$fv=$this->getIntParam('jelenlettipusfilter');
+		$fv=$this->params->getIntRequestParam('jelenlettipusfilter');
 		if ($fv>0) {
 			$filter['fields'][]='j.id';
 			$filter['values'][]=$fv;
 		}
 
-		$this->initPager(
-			$this->getRepo()->getCount($filter),
-			$this->getIntParam('elemperpage',30),
-			$this->getIntParam('pageno',1));
+		$this->initPager($this->getRepo()->getCount($filter));
 
 		$egyedek=$this->getRepo()->getWithJoins(
 			$filter,
@@ -97,7 +84,7 @@ class jelenletiivController extends \mkwhelpers\MattableController {
 		echo json_encode($this->loadDataToView($egyedek,'egyedlista',$view));
 	}
 
-	protected function viewselect() {
+	public function viewselect() {
 		$view=$this->createView('jelenletiivlista.tpl');
 
 		$view->setVar('pagetitle',t('Jelenléti ívek'));
@@ -105,21 +92,23 @@ class jelenletiivController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('jelenletiivlista.tpl');
 
 		$view->setVar('pagetitle',t('Jelenléti ívek'));
 		$view->setVar('controllerscript','jelenletiivlista.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
-		$dolgozo=new dolgozoController($this->generalDataLoader);
+		$dolgozo=new dolgozoController($this->params);
 		$view->setVar('dolgozolist',$dolgozo->getSelectList(0));
-		$jt=new jelenlettipusController($this->generalDataLoader);
+		$jt=new jelenlettipusController($this->params);
 		$view->setVar('jelenlettipuslist',$jt->getSelectList(0));
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Jelenléti ív'));
@@ -128,16 +117,16 @@ class jelenletiivController extends \mkwhelpers\MattableController {
 		$view->setVar('oper',$oper);
 		$record=$this->getRepo()->findWithJoins($id);
 		$view->setVar('egyed',$this->loadVars($record));
-		$dolgozo=new dolgozoController($this->generalDataLoader);
+		$dolgozo=new dolgozoController($this->params);
 		$view->setVar('dolgozolist',$dolgozo->getSelectList(($record?$record->getDolgozoId():0)));
-		$jt=new jelenlettipusController($this->generalDataLoader);
+		$jt=new jelenlettipusController($this->params);
 		$view->setVar('jelenlettipuslist',$jt->getSelectList(($record?$record->getJelenlettipusId():0)));
 		return $view->getTemplateResult();
 	}
 
 	public function generatenapi() {
-		$nap=$this->getStringParam('datum','');
-		$jt=store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->getIntParam('jt',0));
+		$nap=$this->params->getStringRequestParam('datum','');
+		$jt=store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->params->getIntRequestParam('jt',0));
 		$egyedek=store::getEm()->getRepository('Entities\Dolgozo')->getWithJoins(array(),array());
 		foreach($egyedek as $egyed) {
 			if ($this->getRepo()->getCount('(_xx.datum=\''.$nap.'\') AND (d.id='.$egyed->getId().') AND (j.id='.$jt->getId().')')==0) {

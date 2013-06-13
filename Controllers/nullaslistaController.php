@@ -5,15 +5,13 @@ use mkw\store;
 
 class nullaslistaController extends bizonylatfejController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+	public function __construct($params) {
 		$this->setEntityName('Entities\Megrendelesfej');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 		$this->setKarbFormTplName('nullaslistafejkarbform.tpl');
 		$this->setKarbTplName('nullaslistafejkarb.tpl');
 		$this->setListBodyRowTplName('nullaslistafejlista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
+		parent::__construct($params);
 	}
 
 	protected function setVars($view) {
@@ -27,15 +25,12 @@ class nullaslistaController extends bizonylatfejController {
 		$view=$this->createView('nullaslistafejlista_tbody.tpl');
 		$this->setVars($view);
 		$filter=array();
-		if (!is_null($this->getParam('idfilter',NULL))) {
+		if (!is_null($this->params->getRequestParam('idfilter',NULL))) {
 			$filter['fields'][]='id';
-			$filter['values'][]=$this->getStringParam('idfilter');
+			$filter['values'][]=$this->params->getStringRequestParam('idfilter');
 		}
 
-		$this->initPager(
-			$this->getRepo()->getCount($filter),
-			$this->getIntParam('elemperpage',30),
-			$this->getIntParam('pageno',1));
+		$this->initPager($this->getRepo()->getCount($filter));
 
 		$egyedek=$this->getRepo()->getWithJoins(
 			$filter,
@@ -66,7 +61,9 @@ class nullaslistaController extends bizonylatfejController {
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 		$this->setVars($view);
 
@@ -76,9 +73,9 @@ class nullaslistaController extends bizonylatfejController {
 		$view->setVar('oper',$oper);
 		$record=$this->getRepo()->findWithJoins($id);
 		$view->setVar('egyed',$this->loadVars($record,true));
-		$partner=new partnerController($this->generalDataLoader);
+		$partner=new partnerController($this->params);
 		$view->setVar('partnerlist',$partner->getSelectList(($record?$record->getPartnerId():0)));
-		$raktar=new raktarController($this->generalDataLoader);
+		$raktar=new raktarController($this->params);
 		if (!$record||!$record->getRaktarId()) {
 			$raktarid=store::getParameter('raktar',0);
 		}
@@ -86,9 +83,9 @@ class nullaslistaController extends bizonylatfejController {
 			$raktarid=$record->getRaktarId();
 		}
 		$view->setVar('raktarlist',$raktar->getSelectList($raktarid));
-		$fizmod=new fizmodController($this->generalDataLoader);
+		$fizmod=new fizmodController($this->params);
 		$view->setVar('fizmodlist',$fizmod->getSelectList(($record?$record->getFizmodId():0)));
-		$valutanem=new valutanemController($this->generalDataLoader);
+		$valutanem=new valutanemController($this->params);
 		if (!$record||!$record->getValutanemId()) {
 			$valutaid=store::getParameter('valutanem',0);
 		}
@@ -96,7 +93,7 @@ class nullaslistaController extends bizonylatfejController {
 			$valutaid=$record->getValutanemId();
 		}
 		$view->setVar('valutanemlist',$valutanem->getSelectList($valutaid));
-		$bankszla=new bankszamlaController($this->generalDataLoader);
+		$bankszla=new bankszamlaController($this->params);
 		$view->setVar('bankszamlalist',$bankszla->getSelectList(($record?$record->getBankszamlaId():0)));
 		$view->setVar('esedekessegalap',store::getParameter('esedekessegalap',1));
 		return $view->getTemplateResult();

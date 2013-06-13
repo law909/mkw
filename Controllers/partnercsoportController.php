@@ -4,33 +4,33 @@ use mkw\store;
 
 class partnercsoportController extends \mkwhelpers\JQGridController {
 
-	public function __construct() {
+	public function __construct($params) {
 		$this->setEntityName('Entities\PartnerCsoport');
-		parent::__construct();
+		parent::__construct($params);
 	}
 
 	protected function loadCells($sor) {
 		return array($sor->getNev(),$sor->getTipusnev(),$sor->getFkviszam());
 	}
 
-	protected function setFields($obj,$params) {
-		$obj->setNev($params->getStringRequestParam('nev'));
-		$obj->setTipus($params->getStringRequestParam('tipus'));
-		$obj->setFkviszam($params->getStringRequestParam('fkviszam'));
+	protected function setFields($obj) {
+		$obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setTipus($this->params->getStringRequestParam('tipus'));
+		$obj->setFkviszam($this->params->getStringRequestParam('fkviszam'));
 		return $obj;
 	}
 
-	public function jsonlist($params) {
+	public function jsonlist() {
 		$filter=array();
-		if ($params->getBoolRequestParam('_search',false)) {
+		if ($this->params->getBoolRequestParam('_search',false)) {
 			$filter['fields'][]='tipus';
-			$filter['values'][]=$params->getStringRequestParam('tipus');
+			$filter['values'][]=$this->params->getStringRequestParam('tipus');
 			$filter['fields'][]='nev';
-			$filter['values'][]=$params->getStringRequestParam('nev');
+			$filter['values'][]=$this->params->getStringRequestParam('nev');
 			$filter['fields'][]='fkviszam';
-			$filter['values'][]=$params->getStringRequestParam('fkviszam');
+			$filter['values'][]=$this->params->getStringRequestParam('fkviszam');
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
 		echo json_encode($this->loadDataToView($rec));
 	}
 

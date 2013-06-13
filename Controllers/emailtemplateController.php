@@ -4,51 +4,43 @@ use mkw\store;
 
 class emailtemplateController extends \mkwhelpers\MattableController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Emailtemplate');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 		$this->setKarbFormTplName('emailtemplatekarbform.tpl');
 		$this->setKarbTplName('emailtemplatekarb.tpl');
 		$this->setListBodyRowTplName('emailtemplatelista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function loadVars($t) {
 		$x=array();
-		if ($t) {
-			$x['id']=$t->getId();
-			$x['nev']=$t->getNev();
-			$x['szoveg']=$t->getSzoveg();
+		if (!$t) {
+			$t=new \Entities\Emailtemplate();
+			$this->getEm()->detach($t);
 		}
-		else {
-			$x['id']=0;
-			$x['nev']='';
-			$x['szoveg']='';
-		}
+		$x['id']=$t->getId();
+		$x['nev']=$t->getNev();
+		$x['szoveg']=$t->getSzoveg();
 		return $x;
 	}
 
 	protected function setFields($obj) {
-		$obj->setNev($this->getStringParam('nev'));
-		$obj->setSzoveg($this->getStringParam('szoveg'));
+		$obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setSzoveg($this->params->getStringRequestParam('szoveg'));
 		return $obj;
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('emailtemplatelista_tbody.tpl');
 
 		$filter=array();
-		if (!is_null($this->getParam('nevfilter',NULL))) {
+		if (!is_null($this->params->getRequestParam('nevfilter',NULL))) {
 			$filter['fields'][]='nev';
-			$filter['values'][]=$this->getStringParam('nevfilter');
+			$filter['values'][]=$this->params->getStringRequestParam('nevfilter');
 		}
 
-		$this->initPager(
-			$this->getRepo()->getCount($filter),
-			$this->getIntParam('elemperpage',30),
-			$this->getIntParam('pageno',1));
+		$this->initPager($this->getRepo()->getCount($filter));
 
 		$egyedek=$this->getRepo()->getAll(
 			$filter,
@@ -59,7 +51,7 @@ class emailtemplateController extends \mkwhelpers\MattableController {
 		echo json_encode($this->loadDataToView($egyedek,'egyedlista',$view));
 	}
 
-	protected function viewselect() {
+	public function viewselect() {
 		$view=$this->createView('emailtemplatelista.tpl');
 
 		$view->setVar('pagetitle',t('emailtemplate'));
@@ -67,7 +59,7 @@ class emailtemplateController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('emailtemplatelista.tpl');
 
 		$view->setVar('pagetitle',t('emailtemplate'));
@@ -77,7 +69,9 @@ class emailtemplateController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('emailtemplate'));

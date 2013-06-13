@@ -6,76 +6,59 @@ use mkw\store;
 
 class termekcimkeController extends \mkwhelpers\MattableController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Termekcimketorzs');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 		$this->setKarbFormTplName('cimkekarbform.tpl');
 		$this->setKarbTplName('cimkekarb.tpl');
 		$this->setListBodyRowTplName('cimkelista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_cimke');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function loadVars($t) {
 		$x=array();
-		if ($t) {
-			$x['id']=$t->getId();
-			$x['nev']=$t->getNev();
-			$x['leiras']=$t->getLeiras();
-			$x['oldalcim']=$t->getOldalcim();
-			if ($kat=$t->getKategoria()) {
-				$x['cimkekatnev']=$kat->getNev();
-			}
-			else {
-				$x['cimkekatnev']='';
-			}
-			$x['menu1lathato']=$t->getMenu1Lathato();
-			$x['menu2lathato']=$t->getMenu2Lathato();
-			$x['menu3lathato']=$t->getMenu3Lathato();
-			$x['menu4lathato']=$t->getMenu4Lathato();
-			$x['kepurl']=$t->getKepurl();
-			$x['kepurlsmall']=$t->getKepurlSmall();
-			$x['kepurlmedium']=$t->getKepurlMedium();
-			$x['kepurllarge']=$t->getKepurlLarge();
-			$x['kepleiras']=$t->getKepleiras();
-			$x['sorrend']=$t->getSorrend();
+		if (!$t) {
+			$t=new \Entities\Termekcimketorzs();
+			$this->getEm()->detach($t);
+		}
+		$x['id']=$t->getId();
+		$x['nev']=$t->getNev();
+		$x['leiras']=$t->getLeiras();
+		$x['oldalcim']=$t->getOldalcim();
+		if ($kat=$t->getKategoria()) {
+			$x['cimkekatnev']=$kat->getNev();
 		}
 		else {
-			$x['id']=0;
-			$x['nev']='';
-			$x['leiras']='';
-			$x['oldalcim']='';
 			$x['cimkekatnev']='';
-			$x['menu1lathato']=false;
-			$x['menu2lathato']=false;
-			$x['menu3lathato']=false;
-			$x['menu4lathato']=false;
-			$x['kepurl']='';
-			$x['kepurlsmall']='';
-			$x['kepurlmedium']='';
-			$x['kepurllarge']='';
-			$x['kepleiras']='';
-			$x['sorrend']=0;
 		}
+		$x['menu1lathato']=$t->getMenu1Lathato();
+		$x['menu2lathato']=$t->getMenu2Lathato();
+		$x['menu3lathato']=$t->getMenu3Lathato();
+		$x['menu4lathato']=$t->getMenu4Lathato();
+		$x['kepurl']=$t->getKepurl();
+		$x['kepurlsmall']=$t->getKepurlSmall();
+		$x['kepurlmedium']=$t->getKepurlMedium();
+		$x['kepurllarge']=$t->getKepurlLarge();
+		$x['kepleiras']=$t->getKepleiras();
+		$x['sorrend']=$t->getSorrend();
 		return $x;
 	}
 
 	protected function setFields($obj) {
-		$ck=store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->getIntParam('cimkecsoport'));
+		$ck=store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('cimkecsoport'));
 		if ($ck) {
 			$obj->setKategoria($ck);
 		}
-		$obj->setNev($this->getStringParam('nev'));
-		$obj->setLeiras($this->getStringParam('leiras'));
-		$obj->setOldalcim($this->getStringParam('oldalcim'));
-		$obj->setMenu1Lathato($this->getBoolParam('menu1lathato'));
-		$obj->setMenu2Lathato($this->getBoolParam('menu2lathato'));
-		$obj->setMenu3Lathato($this->getBoolParam('menu3lathato'));
-		$obj->setMenu4Lathato($this->getBoolParam('menu4lathato'));
-		$obj->setKepurl($this->getStringParam('kepurl',''));
-		$obj->setKepleiras($this->getStringParam('kepleiras',''));
-		$obj->setSorrend($this->getIntParam('sorrend'));
+		$obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setLeiras($this->params->getStringRequestParam('leiras'));
+		$obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
+		$obj->setMenu1Lathato($this->params->getBoolRequestParam('menu1lathato'));
+		$obj->setMenu2Lathato($this->params->getBoolRequestParam('menu2lathato'));
+		$obj->setMenu3Lathato($this->params->getBoolRequestParam('menu3lathato'));
+		$obj->setMenu4Lathato($this->params->getBoolRequestParam('menu4lathato'));
+		$obj->setKepurl($this->params->getStringRequestParam('kepurl',''));
+		$obj->setKepleiras($this->params->getStringRequestParam('kepleiras',''));
+		$obj->setSorrend($this->params->getIntRequestParam('sorrend'));
 		return $obj;
 	}
 
@@ -84,20 +67,17 @@ class termekcimkeController extends \mkwhelpers\MattableController {
 		$view->setVar('kellkep',true);
 
 		$filter=array();
-		if (!is_null($this->getParam('nevfilter',NULL))) {
+		if (!is_null($this->getRequestParam('nevfilter',NULL))) {
 			$filter['fields'][]='nev';
-			$filter['values'][]=$this->getStringParam('nevfilter');
+			$filter['values'][]=$this->getStringRequestParam('nevfilter');
 		}
-		$fv=$this->getIntParam('ckfilter');
+		$fv=$this->getIntRequestParam('ckfilter');
 		if ($fv>0) {
 			$filter['fields'][]='ck.id';
 			$filter['values'][]=$fv;
 		}
 
-		$this->initPager(
-			$this->getRepo()->getCount($filter),
-			$this->getIntParam('elemperpage',30),
-			$this->getIntParam('pageno',1));
+		$this->initPager($this->getRepo()->getCount($filter));
 
 		$egyedek=$this->getRepo()->getWithJoins(
 			$filter,
@@ -116,12 +96,14 @@ class termekcimkeController extends \mkwhelpers\MattableController {
 		$view->setVar('controllerscript','termekcimkelista.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
-		$ckat=new termekcimkekatController($this->generalDataLoader);
+		$ckat=new termekcimkekatController($this->params);
 		$view->setVar('cimkecsoportlist',$ckat->getSelectList(0));
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+		$id=$params->getRequestParam('id',0);
+		$oper=$params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 		$view->setVar('pagetitle',t('Termékcímke'));
 		$view->setVar('controllerscript','termekcimkekarb.js');
@@ -130,15 +112,15 @@ class termekcimkeController extends \mkwhelpers\MattableController {
 		$view->setVar('oper',$oper);
 		$record=$this->getRepo()->findWithJoins($id);
 		$view->setVar('cimke',$this->loadVars($record));
-		$ckat=new termekcimkekatController($this->generalDataLoader);
+		$ckat=new termekcimkekatController($this->params);
 		$view->setVar('cimkecsoportlist',$ckat->getSelectList(($record?$record->getKategoriaId():0)));
 		return $view->getTemplateResult();
 	}
 
-	protected function setmenulathato() {
-		$id=$this->getIntParam('id');
-		$kibe=$this->getBoolParam('kibe');
-		$num=$this->getIntParam('num');
+	public function setmenulathato() {
+		$id=$this->params->getIntRequestParam('id');
+		$kibe=$this->params->getBoolRequestParam('kibe');
+		$num=$this->params->getIntRequestParam('num');
 		$obj=$this->getRepo()->find($id);
 		if ($obj) {
 			switch ($num) {
@@ -160,7 +142,7 @@ class termekcimkeController extends \mkwhelpers\MattableController {
 		}
 	}
 
-	protected function add() {
+	public function add() {
 		$obj=new Termekcimketorzs();
 		$this->setFields($obj);
 		$this->getEm()->persist($obj);
@@ -192,7 +174,7 @@ class termekcimkeController extends \mkwhelpers\MattableController {
 		return $res;
 	}
 
-	protected function viewselect() {
+	public function viewselect() {
 		$view=$this->createView('cimkelista.tpl');
 
 		$view->setVar('pagetitle',t('Termékcímkék'));
@@ -209,23 +191,23 @@ class termekcimkeController extends \mkwhelpers\MattableController {
 	}
 
 /*	protected function savepicture() {
-		$fa=$this->getRepo()->find($this->getIntParam('id'));
+		$fa=$this->getRepo()->find($this->getIntRequestParam('id'));
 		if ($fa) {
 			$uploaddir=store::getConfigValue('path.termekcimkekep');
 			$pp=pathinfo($_FILES['userfile']['name']);
-			$uploadfile=$uploaddir.$this->getStringParam('nev','').'.'.$pp['extension'];
+			$uploadfile=$uploaddir.$this->getStringRequestParam('nev','').'.'.$pp['extension'];
 			if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
 				$imageproc=new \mkwhelpers\Images($uploadfile);
 				$imageproc->setJpgquality(store::getParameter('jpgquality'));
 				$imageproc->setPngquality(store::getParameter('pngquality'));
-				$smallfn=$uploaddir.$this->getStringParam('nev','').store::getParameter('smallimgpost','').'.'.$pp['extension'];
-				$mediumfn=$uploaddir.$this->getStringParam('nev','').store::getParameter('mediumimgpost','').'.'.$pp['extension'];
-				$largefn=$uploaddir.$this->getStringParam('nev','').store::getParameter('bigimgpost','').'.'.$pp['extension'];
+				$smallfn=$uploaddir.$this->getStringRequestParam('nev','').store::getParameter('smallimgpost','').'.'.$pp['extension'];
+				$mediumfn=$uploaddir.$this->getStringRequestParam('nev','').store::getParameter('mediumimgpost','').'.'.$pp['extension'];
+				$largefn=$uploaddir.$this->getStringRequestParam('nev','').store::getParameter('bigimgpost','').'.'.$pp['extension'];
 				$imageproc->Resample($smallfn,store::getParameter('smallimagesize',80));
 				$imageproc->Resample($mediumfn,store::getParameter('mediumimagesize',200));
 				$imageproc->Resample($largefn,storegetParameter('bigimagesize',800));
-				$fa->setKepnev($this->getStringParam('nev'));
-				$fa->setKepleiras($this->getStringParam('leiras'));
+				$fa->setKepnev($this->getStringRequestParam('nev'));
+				$fa->setKepleiras($this->getStringRequestParam('leiras'));
 				$fa->setKepurl($uploadfile);
 				$this->getEm()->persist($fa);
 				$this->getEm()->flush();
@@ -238,7 +220,7 @@ class termekcimkeController extends \mkwhelpers\MattableController {
 	}
 
 	protected function delpicture() {
-		$fa=$this->getRepo()->find($this->getIntParam('id'));
+		$fa=$this->getRepo()->find($this->getIntRequestParam('id'));
 		if ($fa) {
 			unlink($fa->getKepurl(''));
 			unlink($fa->getKepurlSmall(''));

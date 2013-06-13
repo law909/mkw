@@ -4,10 +4,9 @@ use mkw\store;
 
 class sitemapController extends \mkwhelpers\Controller {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
-		$this->setTemplateFactory(store::getTemplateFactory());
+	public function __construct($params) {
 		$this->entityName='Entities\Parameterek';
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	public function view() {

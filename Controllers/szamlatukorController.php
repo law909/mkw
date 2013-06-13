@@ -6,10 +6,9 @@ class szamlatukorController extends \mkwhelpers\Controller {
 
 	private $repo;
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+	public function __construct($params) {
 		$this->entityName='Entities\Szamlatukor';
-		$this->repo=store::getEm()->getRepository($this->entityName);
+		parent::__construct($params);
 	}
 
 	private function loadVars($t) {
@@ -32,18 +31,18 @@ class szamlatukorController extends \mkwhelpers\Controller {
 	}
 
 	private function setFields($obj) {
-		$obj->setId($this->getStringParam('id'));
-		$obj->setNev($this->getStringParam('nev'));
-		$obj->setMerleg($this->getBoolParam('merleg'));
-		$obj->setAnalitikus($this->getBoolParam('analitikus'));
-		$afa=store::getEm()->getRepository('Entities\Afa')->find($this->getIntParam('afa'));
+		$obj->setId($this->params->getStringRequestParam('id'));
+		$obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setMerleg($this->params->getBoolRequestParam('merleg'));
+		$obj->setAnalitikus($this->params->getBoolRequestParam('analitikus'));
+		$afa=store::getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afa'));
 		if ($afa) {
 			$obj->setAfa($afa);
 		}
 		return $obj;
 	}
 
-	protected function jsonlist() {
+	public function jsonlist() {
 		$order=array();
 		$filter=array();
 		$res->page=1;
@@ -55,8 +54,8 @@ class szamlatukorController extends \mkwhelpers\Controller {
 		foreach($rec as $sor) {
 			$levelek[$sor->getId()]=$sor->getId();
 		}
-		$node=$this->getIntParam('nodeid');
-		$n_lvl=$this->getIntParam('n_level');
+		$node=$this->params->getIntRequestParam('nodeid');
+		$n_lvl=$this->params->getIntRequestParam('n_level');
 		if($node >0) {
 			$where='p.id='.$node;
 			$n_lvl=$n_lvl+1;
@@ -77,28 +76,27 @@ class szamlatukorController extends \mkwhelpers\Controller {
 					'false');
 			$i++;
 		}
-//fb($res);
 		echo json_encode($res);
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('szamlatukorlista_tbody.tpl');
 		$this->generalDataLoader->loadData($view);
 
-		$orderno=$this->getIntParam('order',1);
-		$orderdir=$this->getStringParam('orderdir','asc');
+		$orderno=$this->params->getIntRequestParam('order',1);
+		$orderdir=$this->params->getStringRequestParam('orderdir','asc');
 		$orderarr=$this->repo->getOrder($orderno,$orderdir);
 
 		$filter=array();
 		$filter['fields'][]='nev';
-		$filter['values'][]=$this->getStringParam('nevfilter');
+		$filter['values'][]=$this->params->getStringRequestParam('nevfilter');
 
 		$elemcount=$this->repo->getCount($filter);
-		$elemperpage=$this->getIntParam('elemperpage',30);
+		$elemperpage=$this->getIntRequestParam('elemperpage',30);
 		if ($elemperpage==0) {
 			$elemperpage=30;
 		}
-		$pageno=min($this->getIntParam('pageno',1),ceil($elemcount/$elemperpage));
+		$pageno=min($this->getIntRequestParam('pageno',1),ceil($elemcount/$elemperpage));
 		if ($pageno==0) {
 			$pageno=1;
 		}
@@ -123,7 +121,7 @@ class szamlatukorController extends \mkwhelpers\Controller {
 		echo json_encode($result);
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('szamlatukorlista.tpl');
 		$this->generalDataLoader->loadData($view);
 		$view->setVar('pagetitle',t('Számlatükör'));
@@ -144,17 +142,17 @@ class szamlatukorController extends \mkwhelpers\Controller {
 		$view->printTemplateResult();
 	}
 
-	protected function getkarb() {
-		echo $this->_getkarb($this->getIntParam('id'),$this->getStringParam('oper'),'szamlatukorkarbform.tpl');
+	public function getkarb() {
+		echo $this->_getkarb($this->params->getIntRequestParam('id'),$this->params->getStringRequestParam('oper'),'szamlatukorkarbform.tpl');
 	}
 
-	protected function viewkarb() {
-		echo $this->_getkarb($this->getIntParam('id'),$this->getStringParam('oper'),'szamlatukorkarb.tpl');
+	public function viewkarb() {
+		echo $this->_getkarb($this->params->getIntRequestParam('id'),$this->params->getStringRequestParam('oper'),'szamlatukorkarb.tpl');
 	}
 
-	protected function save() {
-		$parancs=$this->getStringParam('oper');
-		$id=$this->getIntParam('id');
+	public function save() {
+		$parancs=$this->params->getStringRequestParam('oper');
+		$id=$this->params->getIntRequestParam('id');
 		switch ($parancs){
 			case 'add':
 				$cl=$this->entityName;

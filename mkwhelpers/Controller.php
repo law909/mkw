@@ -10,10 +10,12 @@ abstract class Controller {
 
 	private $templateFactory;
 	protected $generalDataLoader;
+	protected $params;
 
-	public function __construct() {
+	public function __construct($params) {
 		$this->setTemplateFactory(\mkw\Store::getTemplateFactory());
 		$this->generalDataLoader=\mkw\Store::getGdl();
+		$this->params=$params;
 	}
 
 	protected function setTemplateFactory($path) {

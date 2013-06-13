@@ -4,9 +4,9 @@ use mkw\store;
 
 class valutanemController extends \mkwhelpers\JQGridController {
 
-	public function __construct() {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Valutanem');
-		parent::__construct();
+		parent::__construct($params);
 	}
 
 	protected function loadCells($sor) {
@@ -16,12 +16,12 @@ class valutanemController extends \mkwhelpers\JQGridController {
 				(isset($bank)?$bank->getSzamlaszam():''));
 	}
 
-	protected function setFields($obj,$params) {
-		$obj->setNev($params->getStringRequestParam('nev'));
-		$obj->setKerekit($params->getBoolRequestParam('kerekit'));
-		$obj->setHivatalos($params->getBoolRequestParam('hivatalos'));
-		$obj->setMincimlet($params->getIntRequestParam('mincimlet'));
-		$bankszla=store::getEm()->getReference('Entities\Bankszamla',$params->getIntRequestParam('bankszamla'));
+	protected function setFields($obj) {
+		$obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setKerekit($this->params->getBoolRequestParam('kerekit'));
+		$obj->setHivatalos($this->params->getBoolRequestParam('hivatalos'));
+		$obj->setMincimlet($this->params->getIntRequestParam('mincimlet'));
+		$bankszla=store::getEm()->getReference('Entities\Bankszamla',$this->params->getIntRequestParam('bankszamla'));
 		try {
 			$bankszla->getId();
 			$obj->setBankszamla($bankszla);
@@ -31,15 +31,15 @@ class valutanemController extends \mkwhelpers\JQGridController {
 		return $obj;
 	}
 
-	public function jsonlist($params) {
+	public function jsonlist() {
 		$filter=array();
-		if ($params->getBoolRequestParam('_search',false)) {
-			if (!is_null($params->getRequestParam('nev',NULL))) {
+		if ($this->params->getBoolRequestParam('_search',false)) {
+			if (!is_null($this->params->getRequestParam('nev',NULL))) {
 				$filter['fields'][]='nev';
-				$filter['values'][]=$params->getStringRequestParam('nev');
+				$filter['values'][]=$this->params->getStringRequestParam('nev');
 			}
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
 		echo json_encode($this->loadDataToView($rec));
 	}
 

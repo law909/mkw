@@ -4,86 +4,65 @@ use mkw\store;
 
 class hirController extends \mkwhelpers\MattableController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Hir');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 		$this->setKarbFormTplName('hirkarbform.tpl');
 		$this->setKarbTplName('hirkarb.tpl');
 		$this->setListBodyRowTplName('hirlista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function loadVars($t) {
 		$x=array();
-		if ($t) {
-			$x['id']=$t->getId();
-			$x['cim']=$t->getCim();
-			$x['slug']=$t->getSlug();
-			$x['sorrend']=$t->getSorrend();
-			$x['forras']=$t->getForras();
-			$x['lead']=$t->getLead();
-			$x['szoveg']=$t->getSzoveg();
-			$x['datum']=$t->getDatum();
-			$x['datumstr']=$t->getDatumStr();
-			$x['elsodatum']=$t->getElsodatum();
-			$x['elsodatumstr']=$t->getElsodatumStr();
-			$x['utolsodatum']=$t->getUtolsodatum();
-			$x['utolsodatumstr']=$t->getUtolsodatumStr();
-			$x['lathato']=$t->getLathato();
-			$x['seodescription']=$t->getSeodescription();
-			$x['seokeywords']=$t->getSeokeywords();
+		if (!$t) {
+			$t=new \Entities\Hir();
+			$this->getEm()->detach($t);
 		}
-		else {
-			$x['id']=0;
-			$x['cim']='';
-			$x['slug']='';
-			$x['sorrend']=0;
-			$x['forras']='';
-			$x['lead']='';
-			$x['szoveg']='';
-			$x['datum']='';
-			$x['datumstr']=date(store::$DateFormat);
-			$x['elsodatum']='';
-			$x['elsodatumstr']=date(store::$DateFormat);
-			$x['utolsodatum']='';
-			$x['utolsodatumstr']=date(store::$DateFormat);
-			$x['lathato']=true;
-			$x['seodescription']='';
-			$x['seokeywords']='';
-		}
+		$x['id']=$t->getId();
+		$x['cim']=$t->getCim();
+		$x['slug']=$t->getSlug();
+		$x['sorrend']=$t->getSorrend();
+		$x['forras']=$t->getForras();
+		$x['lead']=$t->getLead();
+		$x['szoveg']=$t->getSzoveg();
+		$x['datum']=$t->getDatum();
+		$x['datumstr']=$t->getDatumStr();
+		$x['elsodatum']=$t->getElsodatum();
+		$x['elsodatumstr']=$t->getElsodatumStr();
+		$x['utolsodatum']=$t->getUtolsodatum();
+		$x['utolsodatumstr']=$t->getUtolsodatumStr();
+		$x['lathato']=$t->getLathato();
+		$x['seodescription']=$t->getSeodescription();
+		$x['seokeywords']=$t->getSeokeywords();
 		return $x;
 	}
 
 	protected function setFields($obj) {
-		$obj->setCim($this->getStringParam('cim'));
-		$obj->setSorrend($this->getIntParam('sorrend'));
-		$obj->setForras($this->getStringParam('forras'));
-		$obj->setLead($this->getStringParam('lead'));
-		$obj->setSzoveg($this->getStringParam('szoveg'));
-		$obj->setLathato($this->getBoolParam('lathato'));
-		$obj->setDatum($this->getDateParam('datum'));
-		$obj->setElsodatum($this->getDateParam('elsodatum'));
-		$obj->setUtolsodatum($this->getDateParam('utolsodatum'));
-		$obj->setSeodescription($this->getStringParam('seodescription'));
-		$obj->setSeokeywords($this->getStringParam('seokeywords'));
+		$obj->setCim($this->params->getStringRequestParam('cim'));
+		$obj->setSorrend($this->params->getIntRequestParam('sorrend'));
+		$obj->setForras($this->params->getStringRequestParam('forras'));
+		$obj->setLead($this->params->getStringRequestParam('lead'));
+		$obj->setSzoveg($this->params->getStringRequestParam('szoveg'));
+		$obj->setLathato($this->params->getBoolRequestParam('lathato'));
+		$obj->setDatum($this->params->getDateRequestParam('datum'));
+		$obj->setElsodatum($this->params->getDateRequestParam('elsodatum'));
+		$obj->setUtolsodatum($this->params->getDateRequestParam('utolsodatum'));
+		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
+		$obj->setSeokeywords($this->params->getStringRequestParam('seokeywords'));
 		return $obj;
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('hirlista_tbody.tpl');
 
 		$filter=array();
-		if (!is_null($this->getParam('nevfilter',NULL))) {
+		if (!is_null($this->params->getRequestParam('nevfilter',NULL))) {
 			$filter['fields'][]='cim';
-			$filter['values'][]=$this->getStringParam('nevfilter');
+			$filter['values'][]=$this->params->getStringRequestParam('nevfilter');
 		}
 
-		$this->initPager(
-			$this->getRepo()->getCount($filter),
-			$this->getIntParam('elemperpage',30),
-			$this->getIntParam('pageno',1));
+		$this->initPager($this->getRepo()->getCount($filter));
 
 		$egyedek=$this->getRepo()->getAll(
 			$filter,
@@ -94,7 +73,7 @@ class hirController extends \mkwhelpers\MattableController {
 		echo json_encode($this->loadDataToView($egyedek,'egyedlista',$view));
 	}
 
-	protected function viewselect() {
+	public function viewselect() {
 		$view=$this->createView('hirlista.tpl');
 
 		$view->setVar('pagetitle',t('Hírek'));
@@ -102,7 +81,7 @@ class hirController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('hirlista.tpl');
 
 		$view->setVar('pagetitle',t('Hír'));
@@ -112,7 +91,9 @@ class hirController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Hír'));
@@ -124,9 +105,9 @@ class hirController extends \mkwhelpers\MattableController {
 		return $view->getTemplateResult();
 	}
 
-	protected function setlathato() {
-		$id=$this->getIntParam('id');
-		$kibe=$this->getBoolParam('kibe');
+	public function setlathato() {
+		$id=$this->params->getIntRequestParam('id');
+		$kibe=$this->params->getBoolRequestParam('kibe');
 		$obj=$this->getRepo()->find($id);
 		if ($obj) {
 			$obj->setLathato($kibe);

@@ -4,15 +4,14 @@ use mkw\store;
 
 class setupController extends \mkwhelpers\Controller {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
-		$this->setTemplateFactory(store::getTemplateFactory());
+	public function __construct($params) {
 		$this->entityName='Entities\Parameterek';
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct();
 	}
 
-	protected function view() {
+	public function view() {
 		$view=$this->createView('setup.tpl');
-		$this->generalDataLoader->loadData($view);
+		$this->params->loadData($view);
 		$view->setVar('pagetitle',t('Beállítások'));
 
 		// tulaj
@@ -67,15 +66,15 @@ class setupController extends \mkwhelpers\Controller {
 
 		// alapertelmezes
 		$p=store::getEm()->getRepository($this->entityName)->find('fizmod');
-		$fizmod=new fizmodController($this->generalDataLoader);
+		$fizmod=new fizmodController($this->params);
 		$view->setVar('fizmodlist',$fizmod->getSelectList(($p?$p->getErtek():0)));
 
 		$p=store::getEm()->getRepository($this->entityName)->find('raktar');
-		$raktar=new raktarController($this->generalDataLoader);
+		$raktar=new raktarController($this->params);
 		$view->setVar('raktarlist',$raktar->getSelectList(($p?$p->getErtek():0)));
 
 		$p=store::getEm()->getRepository($this->entityName)->find('valutanem');
-		$valutanem=new valutanemController($this->generalDataLoader);
+		$valutanem=new valutanemController($this->params);
 		$view->setVar('valutanemlist',$valutanem->getSelectList(($p?$p->getErtek():0)));
 
 		$p=store::getEm()->getRepository($this->entityName)->find('esedekessegalap');
@@ -132,60 +131,60 @@ class setupController extends \mkwhelpers\Controller {
 
 	protected function save() {
 		// tulaj
-		$this->setObj('tulajnev',$this->getStringParam('tulajnev'));
-		$this->setObj('tulajirszam',$this->getStringParam('tulajirszam'));
-		$this->setObj('tulajvaros',$this->getStringParam('tulajvaros'));
-		$this->setObj('tulajutca',$this->getStringParam('tulajutca'));
-		$this->setObj('tulajadoszam',$this->getStringParam('tulajadoszam'));
-		$this->setObj('tulajeuadoszam',$this->getStringParam('tulajeuadoszam'));
+		$this->setObj('tulajnev',$this->params->getStringRequestParam('tulajnev'));
+		$this->setObj('tulajirszam',$this->params->getStringRequestParam('tulajirszam'));
+		$this->setObj('tulajvaros',$this->params->getStringRequestParam('tulajvaros'));
+		$this->setObj('tulajutca',$this->params->getStringRequestParam('tulajutca'));
+		$this->setObj('tulajadoszam',$this->params->getStringRequestParam('tulajadoszam'));
+		$this->setObj('tulajeuadoszam',$this->params->getStringRequestParam('tulajeuadoszam'));
 		// web
-		$this->setObj('smallimagesize',$this->getIntParam('smallimagesize'));
-		$this->setObj('mediumimagesize',$this->getIntParam('mediumimagesize'));
-		$this->setObj('bigimagesize',$this->getIntParam('bigimagesize'));
-		$this->setObj('korhintaimagesize',$this->getIntParam('korhintaimagesize'));
-		$this->setObj('jpgquality',$this->getIntParam('jpgquality'));
-		$this->setObj('pngquality',$this->getIntParam('pngquality'));
-		$this->setObj('smallimgpost',$this->getStringParam('smallimgpost'));
-		$this->setObj('mediumimgpost',$this->getStringParam('mediumimgpost'));
-		$this->setObj('bigimgpost',$this->getStringParam('bigimgpost'));
-		$this->setObj('seodesciption',$this->getStringParam('seodescription'));
-		$this->setObj('seokeywords',$this->getStringParam('seokeywords'));
-		$this->setObj('fooldalajanlotttermekdb',$this->getIntParam('fooldalajanlotttermekdb',6));
-		$this->setObj('fooldalhirdb',$this->getIntParam('fooldalhirdb',1));
-		$this->setObj('fooldalnepszerutermekdb',$this->getIntParam('fooldalnepszerutermekdb',1));
-		$this->setObj('arfilterstep',$this->getIntParam('arfilterstep',500));
-		$this->setObj('kiemelttermekdb',$this->getIntParam('kiemelttermekdb',3));
-		$this->setObj('autologoutmin',$this->getIntParam('autologoutmin',10));
+		$this->setObj('smallimagesize',$this->params->getIntRequestParam('smallimagesize'));
+		$this->setObj('mediumimagesize',$this->params->getIntRequestParam('mediumimagesize'));
+		$this->setObj('bigimagesize',$this->params->getIntRequestParam('bigimagesize'));
+		$this->setObj('korhintaimagesize',$this->params->getIntRequestParam('korhintaimagesize'));
+		$this->setObj('jpgquality',$this->params->getIntRequestParam('jpgquality'));
+		$this->setObj('pngquality',$this->params->getIntRequestParam('pngquality'));
+		$this->setObj('smallimgpost',$this->params->getStringRequestParam('smallimgpost'));
+		$this->setObj('mediumimgpost',$this->params->getStringRequestParam('mediumimgpost'));
+		$this->setObj('bigimgpost',$this->params->getStringRequestParam('bigimgpost'));
+		$this->setObj('seodesciption',$this->params->getStringRequestParam('seodescription'));
+		$this->setObj('seokeywords',$this->params->getStringRequestParam('seokeywords'));
+		$this->setObj('fooldalajanlotttermekdb',$this->params->getIntRequestParam('fooldalajanlotttermekdb',6));
+		$this->setObj('fooldalhirdb',$this->params->getIntRequestParam('fooldalhirdb',1));
+		$this->setObj('fooldalnepszerutermekdb',$this->params->getIntRequestParam('fooldalnepszerutermekdb',1));
+		$this->setObj('arfilterstep',$this->params->getIntRequestParam('arfilterstep',500));
+		$this->setObj('kiemelttermekdb',$this->params->getIntRequestParam('kiemelttermekdb',3));
+		$this->setObj('autologoutmin',$this->params->getIntRequestParam('autologoutmin',10));
 		// alapertelmezes
-		$fizmod=store::getEm()->getRepository('Entities\Fizmod')->find($this->getIntParam('fizmod',0));
+		$fizmod=store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod',0));
 		if ($fizmod) {
 			$this->setObj('fizmod',$fizmod->getId());
 		}
-		$raktar=store::getEm()->getRepository('Entities\Raktar')->find($this->getIntParam('raktar',0));
+		$raktar=store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar',0));
 		if ($raktar) {
 			$this->setObj('raktar',$raktar->getId());
 		}
-		$valutanem=store::getEm()->getRepository('Entities\Valutanem')->find($this->getIntParam('valutanem',0));
+		$valutanem=store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem',0));
 		if ($valutanem) {
 			$this->setObj('valutanem',$valutanem->getId());
 		}
-		$this->setObj('esedekessegalap',$this->getIntParam('esedekessegalap',1));
+		$this->setObj('esedekessegalap',$this->params->getIntRequestParam('esedekessegalap',1));
 		//feed
-		$this->setObj('feedhirdb',$this->getIntParam('feedhirdb',20));
-		$this->setObj('feedhirtitle',$this->getStringParam('feedhirtitle',t('Híreink')));
-		$this->setObj('feedhirdescription',$this->getStringParam('feedhirdescription',t('Híreink')));
-		$this->setObj('feedtermekdb',$this->getIntParam('feedtermekdb',30));
-		$this->setObj('feedtermektitle',$this->getStringParam('feedtermektitle',t('Termékeink')));
-		$this->setObj('feedtermekdescription',$this->getStringParam('feedtermekdescription',t('Termékeink')));
+		$this->setObj('feedhirdb',$this->params->getIntRequestParam('feedhirdb',20));
+		$this->setObj('feedhirtitle',$this->params->getStringRequestParam('feedhirtitle',t('Híreink')));
+		$this->setObj('feedhirdescription',$this->params->getStringRequestParam('feedhirdescription',t('Híreink')));
+		$this->setObj('feedtermekdb',$this->params->getIntRequestParam('feedtermekdb',30));
+		$this->setObj('feedtermektitle',$this->params->getStringRequestParam('feedtermektitle',t('Termékeink')));
+		$this->setObj('feedtermekdescription',$this->params->getStringRequestParam('feedtermekdescription',t('Termékeink')));
 		// sitemap
-		$this->setObj('statlapprior',$this->getNumParam('statlapprior',0.4));
-		$this->setObj('termekprior',$this->getNumParam('termekprior',0.5));
-		$this->setObj('kategoriaprior',$this->getNumParam('kategoriaprior',0.7));
-		$this->setObj('fooldalprior',$this->getNumParam('fooldalprior',1));
-		$this->setObj('statlapchangefreq',$this->getStringParam('statlapchangefreq','monthly'));
-		$this->setObj('termekchangefreq',$this->getStringParam('termekchangefreq','monthly'));
-		$this->setObj('kategoriachangefreq',$this->getStringParam('kategoriachangefreq','daily'));
-		$this->setObj('fooldalchangefreq',$this->getStringParam('fooldalchangefreq','daily'));
+		$this->setObj('statlapprior',$this->params->getNumRequestParam('statlapprior',0.4));
+		$this->setObj('termekprior',$this->params->getNumRequestParam('termekprior',0.5));
+		$this->setObj('kategoriaprior',$this->params->getNumRequestParam('kategoriaprior',0.7));
+		$this->setObj('fooldalprior',$this->params->getNumRequestParam('fooldalprior',1));
+		$this->setObj('statlapchangefreq',$this->params->getStringRequestParam('statlapchangefreq','monthly'));
+		$this->setObj('termekchangefreq',$this->params->getStringRequestParam('termekchangefreq','monthly'));
+		$this->setObj('kategoriachangefreq',$this->params->getStringRequestParam('kategoriachangefreq','daily'));
+		$this->setObj('fooldalchangefreq',$this->params->getStringRequestParam('fooldalchangefreq','daily'));
 		store::getEm()->flush();
 	}
 }

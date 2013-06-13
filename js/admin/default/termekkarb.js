@@ -148,6 +148,7 @@ $(document).ready(function(){
 						'Igen': function() {
 							$.ajax({
 								url:'/admin/termekkep/del',
+								type:'POST',
 								data:{
 									id:$this.attr('data-id')
 								},

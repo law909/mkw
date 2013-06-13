@@ -4,28 +4,28 @@ use mkw\store;
 
 class raktarController extends \mkwhelpers\JQGridController {
 
-	public function __construct() {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Raktar');
-		parent::__construct();
+		parent::__construct($params);
 	}
 
 	protected function loadCells($obj) {
 		return array($obj->getNev(),$obj->getMozgat());
 	}
 
-	protected function setFields($obj,$params) {
-		$obj->setNev($params->getStringRequestParam('nev',$obj->getNev()));
-		$obj->setMozgat($params->getBoolRequestParam('mozgat',$obj->getMozgat()));
+	protected function setFields($obj) {
+		$obj->setNev($this->params->getStringRequestParam('nev',$obj->getNev()));
+		$obj->setMozgat($this->params->getBoolRequestParam('mozgat',$obj->getMozgat()));
 		return $obj;
 	}
 
-	public function jsonlist($params) {
+	public function jsonlist() {
 		$filter=array();
-		if ($params->getBoolRequestParam('_search',false)) {
+		if ($this->params->getBoolRequestParam('_search',false)) {
 			$filter['fields'][]='nev';
-			$filter['values'][]=$params->getStringRequestParam('nev');
+			$filter['values'][]=$this->params->getStringRequestParam('nev');
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
 		echo json_encode($this->loadDataToView($rec));
 	}
 

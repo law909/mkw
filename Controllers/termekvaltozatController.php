@@ -4,71 +4,54 @@ use mkw\store;
 
 class termekvaltozatController extends \mkwhelpers\MattableController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\TermekValtozat');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
 //		$this->setListBodyRowTplName('?howto?lista_tbody_tr.tpl');
 //		$this->setListBodyRowVarName('_egyed');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	public function loadVars($t,$termek,$forKarb=false) {
-		$tvatc=new termekvaltozatadattipusController($this->generalDataLoader);
-		$tkepc=new termekkepController($this->generalDataLoader);
+		$tvatc=new termekvaltozatadattipusController($this->params);
+		$tkepc=new termekkepController($this->params);
 		$x=array();
-		if ($t) {
-			$x['id']=$t->getId();
-			$x['adattipus1id']=$t->getAdatTipus1Id();
-			$x['adattipus1nev']=$t->getAdatTipus1Nev();
-			$x['adattipus1lista']=$tvatc->getSelectList($t->getAdatTipus1Id());
-			$x['ertek1']=$t->getErtek1();
-			$x['adattipus2id']=$t->getAdatTipus2Id();
-			$x['adattipus2nev']=$t->getAdatTipus2Nev();
-			$x['adattipus2lista']=$tvatc->getSelectList($t->getAdatTipus2Id());
-			$x['ertek2']=$t->getErtek2();
-			$x['lathato']=$t->getLathato();
-			$x['elerheto']=$t->getElerheto();
-			$x['termekfokep']=$t->getTermekfokep();
-			$x['kepurl']=$t->getKepurl();
-			$x['kepleiras']=$t->getKepleiras();
-			$x['keplista']=$tkepc->getSelectList($t->getTermek(),$t->getKepid());
-			$x['kepid']=$t->getKepid();
-			$x['netto']=$t->getNetto();
-			$x['brutto']=$t->getBrutto();
-			$x['oper']='edit';
+		if (!$t) {
+			$t=new \Entities\TermekKapcsolodo();
+			$this->getEm()->detach($t);
+			$x['oper']='add';
+			$x['id']=store::createUID();
+			$x['termek']['id']=$termek->getId();
 		}
 		else {
-			$x['id']=store::createUID();
-			$x['adattipus1id']='';
-			$x['adattipus1nev']='';
-			$x['adattipus1lista']=$tvatc->getSelectList(0);
-			$x['ertek1']='';
-			$x['adattipus2id']='';
-			$x['adattipus2nev']='';
-			$x['adattipus2lista']=$tvatc->getSelectList(0);
-			$x['ertek2']='';
-			$x['lathato']=false;
-			$x['elerheto']=false;
-			$x['termekfokep']=false;
-			$x['kepurl']='';
-			$x['kepleiras']='';
-			$x['keplista']=$termek?$tkepc->getSelectList($termek,NULL):array();
-			$x['kepid']=0;
-			$x['netto']=0;
-			$x['brutto']=0;
-			$x['termek']['id']=$termek->getId();
-			$x['oper']='add';
+			$x['oper']='edit';
+			$x['id']=$t->getId();
 		}
+		$x['adattipus1id']=$t->getAdatTipus1Id();
+		$x['adattipus1nev']=$t->getAdatTipus1Nev();
+		$x['adattipus1lista']=$tvatc->getSelectList($t->getAdatTipus1Id());
+		$x['ertek1']=$t->getErtek1();
+		$x['adattipus2id']=$t->getAdatTipus2Id();
+		$x['adattipus2nev']=$t->getAdatTipus2Nev();
+		$x['adattipus2lista']=$tvatc->getSelectList($t->getAdatTipus2Id());
+		$x['ertek2']=$t->getErtek2();
+		$x['lathato']=$t->getLathato();
+		$x['elerheto']=$t->getElerheto();
+		$x['termekfokep']=$t->getTermekfokep();
+		$x['kepurl']=$t->getKepurl();
+		$x['kepleiras']=$t->getKepleiras();
+		$x['keplista']=$tkepc->getSelectList($t->getTermek(),$t->getKepid());
+		$x['kepid']=$t->getKepid();
+		$x['netto']=$t->getNetto();
+		$x['brutto']=$t->getBrutto();
 		return $x;
 	}
 
 	protected function setFields($obj) {
-		$obj->setLathato($this->getBoolParam('lathato',false));
+		$obj->setLathato($this->params->getBoolRequestParam('lathato',false));
 		/* MINTA ha nem kell, dobd ki
-		$ck=store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->getIntParam('cimkecsoport'));
+		$ck=store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->getIntRequestParam('cimkecsoport'));
 		if ($ck) {
 			$obj->setKategoria($ck);
 		}
@@ -76,15 +59,15 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
 		return $obj;
 	}
 
-	protected function getemptyrow() {
-		$termek=store::getEm()->getRepository('Entities\Termek')->find($this->getIntParam('termekid'));
+	public function getemptyrow() {
+		$termek=store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termekid'));
 		$view=$this->createView('termektermekvaltozatkarb.tpl');
 		$view->setVar('valtozat',$this->loadVars(null,$termek,true));
 		echo $view->getTemplateResult();
 	}
 
-	protected function delall() {
-		$termek=store::getEm()->getRepository('Entities\Termek')->find($this->getIntParam('termekid'));
+	public function delall() {
+		$termek=store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termekid'));
 		$valtozatok=$termek->getValtozatok();
 		foreach($valtozatok as $valt) {
 			//$termek->removeValtozat($valt);
@@ -93,19 +76,19 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
 		$this->getEm()->flush();
 	}
 
-	protected function generate() {
-		$termek=store::getEm()->getRepository('Entities\Termek')->find($this->getIntParam('termekid'));
+	public function generate() {
+		$termek=store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termekid'));
 
-		$adattipus1=$this->getIntParam('valtozatadattipus1');
-		$ertek1=$this->getStringParam('valtozatertek1');
-		$adattipus2=$this->getIntParam('valtozatadattipus2');
-		$ertek2=$this->getStringParam('valtozatertek2');
-		$netto=$this->getNumParam('valtozatnettogen');
-		$brutto=$this->getNumParam('valtozatbruttogen');
-		$elerheto=$this->getBoolParam('valtozatelerheto',false);
-		$lathato=$this->getBoolParam('valtozatlathato',false);
-		$termekfokep=$this->getBoolParam('valtozattermekfokep',false);
-		$kepid=$this->getIntParam('valtozatkepid');
+		$adattipus1=$this->params->getIntRequestParam('valtozatadattipus1');
+		$ertek1=$this->params->getStringRequestParam('valtozatertek1');
+		$adattipus2=$this->params->getIntRequestParam('valtozatadattipus2');
+		$ertek2=$this->params->getStringRequestParam('valtozatertek2');
+		$netto=$this->params->getNumRequestParam('valtozatnettogen');
+		$brutto=$this->params->getNumRequestParam('valtozatbruttogen');
+		$elerheto=$this->params->getBoolRequestParam('valtozatelerheto',false);
+		$lathato=$this->params->getBoolRequestParam('valtozatlathato',false);
+		$termekfokep=$this->params->getBoolRequestParam('valtozattermekfokep',false);
+		$kepid=$this->params->getIntRequestParam('valtozatkepid');
 
 		if (($adattipus1&&$ertek1)||($adattipus2&&ertek2)) {
 			$ertekek1=split(';',$ertek1);

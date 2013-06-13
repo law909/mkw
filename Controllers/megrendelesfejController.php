@@ -5,15 +5,13 @@ use mkw\store;
 
 class megrendelesfejController extends bizonylatfejController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Megrendelesfej');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 		$this->setKarbFormTplName('bizonylatfejkarbform.tpl');
 		$this->setKarbTplName('bizonylatfejkarb.tpl');
 		$this->setListBodyRowTplName('bizonylatfejlista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function setVars($view) {
@@ -23,21 +21,18 @@ class megrendelesfejController extends bizonylatfejController {
 		$view->setVar('showvalutanem',true);
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('bizonylatfejlista_tbody.tpl');
 
 		$this->setVars($view);
 
 		$filter=array();
-		if (!is_null($this->getParam('idfilter',NULL))) {
+		if (!is_null($this->params->getRequestParam('idfilter',NULL))) {
 			$filter['fields'][]='id';
-			$filter['values'][]=$this->getStringParam('idfilter');
+			$filter['values'][]=$this->params->getStringRequestParam('idfilter');
 		}
 
-		$this->initPager(
-			$this->getRepo()->getCount($filter),
-			$this->getIntParam('elemperpage',30),
-			$this->getIntParam('pageno',1));
+		$this->initPager($this->getRepo()->getCount($filter));
 
 		$egyedek=$this->getRepo()->getWithJoins(
 			$filter,
@@ -48,7 +43,7 @@ class megrendelesfejController extends bizonylatfejController {
 		echo json_encode($this->loadDataToView($egyedek,'egyedlista',$view));
 	}
 
-	protected function viewselect() {
+	public function viewselect() {
 		$view=$this->createView('bizonylatfejlista.tpl');
 
 		$view->setVar('pagetitle',t('Megrendelések'));
@@ -57,7 +52,7 @@ class megrendelesfejController extends bizonylatfejController {
 		$view->printTemplateResult();
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('bizonylatfejlista.tpl');
 
 		$view->setVar('pagetitle',t('Megrendelések'));
@@ -68,7 +63,9 @@ class megrendelesfejController extends bizonylatfejController {
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Megrendelés'));
@@ -78,9 +75,9 @@ class megrendelesfejController extends bizonylatfejController {
 		$this->setVars($view);
 		$record=$this->getRepo()->findWithJoins($id);
 		$view->setVar('egyed',$this->loadVars($record,true));
-		$partner=new partnerController($this->generalDataLoader);
+		$partner=new partnerController($this->params);
 		$view->setVar('partnerlist',$partner->getSelectList(($record?$record->getPartnerId():0)));
-		$raktar=new raktarController($this->generalDataLoader);
+		$raktar=new raktarController($this->params);
 		if (!$record||!$record->getRaktarId()) {
 			$raktarid=store::getParameter('raktar',0);
 		}
@@ -88,9 +85,9 @@ class megrendelesfejController extends bizonylatfejController {
 			$raktarid=$record->getRaktarId();
 		}
 		$view->setVar('raktarlist',$raktar->getSelectList($raktarid));
-		$fizmod=new fizmodController($this->generalDataLoader);
+		$fizmod=new fizmodController($this->params);
 		$view->setVar('fizmodlist',$fizmod->getSelectList(($record?$record->getFizmodId():0)));
-		$valutanem=new valutanemController($this->generalDataLoader);
+		$valutanem=new valutanemController($this->params);
 		if (!$record||!$record->getValutanemId()) {
 			$valutaid=store::getParameter('valutanem',0);
 		}
@@ -98,7 +95,7 @@ class megrendelesfejController extends bizonylatfejController {
 			$valutaid=$record->getValutanemId();
 		}
 		$view->setVar('valutanemlist',$valutanem->getSelectList($valutaid));
-		$bankszla=new bankszamlaController($this->generalDataLoader);
+		$bankszla=new bankszamlaController($this->params);
 		$view->setVar('bankszamlalist',$bankszla->getSelectList(($record?$record->getBankszamlaId():0)));
 		$view->setVar('esedekessegalap',store::getParameter('esedekessegalap',1));
 		return $view->getTemplateResult();

@@ -44,8 +44,8 @@ function callTheController($target,$params) {
 	$inc=ltrim(implode('/',$path),'/');
 	if (file_exists($inc)&&$methodname) {
 		require_once $inc;
-		$instance=new $classname;
-		$instance->$methodname(new \mkwhelpers\ParameterHandler($params));
+		$instance=new $classname(new \mkwhelpers\ParameterHandler($params));
+		$instance->$methodname();
 		return true;
 	}
 	return false;
@@ -120,25 +120,80 @@ $router->map('GET','/admin/vtsz/jsonlist','vtszController#jsonlist','vtszjsonlis
 $router->map('GET','/admin/vtsz/htmllist','vtszController#htmllist','vtszhtmllist');
 $router->map('POST','/admin/vtsz/save','vtszController#save','vtszsave');
 
-/**
-$router->map('POST','/post/like/[:id]','PostController#like','postlike');
-$router->map('POST','/post/delete/[:id]','PostController#delete','postdelete');
-$router->map('POST','/post/report/[:id]','PostController#report','postreport');
-$router->map('GET','/post/getnewui','PostController#getNewUI','postgetnewui');
-$router->map('POST','/post/add','PostController#add','postadd');
-$router->map('GET','/post/get/[i:from]','PostController#get','postget');
-$router->map('POST','/comment/like/[:id]','CommentController#like','commentlike');
-$router->map('POST','/comment/delete/[:id]','CommentController#delete','commentdelete');
-$router->map('POST','/comment/edit','CommentController#edit','commentedit');
-$router->map('POST','/comment/report/[:id]','CommentController#report','commentreport');
-$router->map('GET','/comment/getnewui/[:postid]','CommentController#getNewUI','commentgetnewui');
-$router->map('GET','/comment/geteditui/[:id]/[:postid]','CommentController#getEditUI','commentgeteditui');
-$router->map('POST','/comment/add','CommentController#add','commentadd');
-$router->map('GET','/comment/get/[:postid]','CommentController#get','commentget');
-*/
+$router->map('GET','/admin/termek/viewlist','termekController#viewlist','termekviewlist');
+$router->map('GET','/admin/termek/getlistbody','termekController#getlistbody','termekgetlistbody');
+$router->map('GET','/admin/termek/getkarb','termekController#getkarb','termekgetkarb');
+$router->map('GET','/admin/termek/viewkarb','termekController#viewkarb','termekviewkarb');
+$router->map('GET','/admin/termek/getnetto','termekController#getnetto','termekgetnetto');
+$router->map('GET','/admin/termek/getbrutto','termekController#getbrutto','termekgetbrutto');
+$router->map('POST','/admin/termek/save','termekController#save','termeksave');
+$router->map('POST','/admin/termek/setflag','termekController#setflag','termeksetflag');
+
+$router->map('GET','/admin/emailtemplate/viewlist','emailtemplateController#viewlist','emailtemplateviewlist');
+$router->map('GET','/admin/emailtemplate/getlistbody','emailtemplateController#getlistbody','emailtemplategetlistbody');
+$router->map('GET','/admin/emailtemplate/getkarb','emailtemplateController#getkarb','emailtemplategetkarb');
+$router->map('GET','/admin/emailtemplate/viewkarb','emailtemplateController#viewkarb','emailtemplateviewkarb');
+$router->map('POST','/admin/emailtemplate/save','emailtemplateController#save','emailtemplatesave');
+
+$router->map('GET','/admin/dolgozo/viewlist','dolgozoController#viewlist','dolgozoviewlist');
+$router->map('GET','/admin/dolgozo/getlistbody','dolgozoController#getlistbody','dolgozogetlistbody');
+$router->map('GET','/admin/dolgozo/getkarb','dolgozoController#getkarb','dolgozogetkarb');
+$router->map('GET','/admin/dolgozo/viewkarb','dolgozoController#viewkarb','dolgozoviewkarb');
+$router->map('POST','/admin/dolgozo/save','dolgozoController#save','dolgozosave');
+
+$router->map('GET','/admin/esemeny/viewlist','esemenyController#viewlist','esemenyviewlist');
+$router->map('GET','/admin/esemeny/getlistbody','esemenyController#getlistbody','esemenygetlistbody');
+$router->map('GET','/admin/esemeny/getkarb','esemenyController#getkarb','esemenygetkarb');
+$router->map('GET','/admin/esemeny/viewkarb','esemenyController#viewkarb','esemenyviewkarb');
+$router->map('POST','/admin/esemeny/save','esemenyController#save','esemenysave');
+
+$router->map('GET','/admin/hir/viewlist','hirController#viewlist','hirviewlist');
+$router->map('GET','/admin/hir/getlistbody','hirController#getlistbody','hirgetlistbody');
+$router->map('GET','/admin/hir/getkarb','hirController#getkarb','hirgetkarb');
+$router->map('GET','/admin/hir/viewkarb','hirController#viewkarb','hirviewkarb');
+$router->map('GET','/admin/hir/gethirlist','hirController#gethirlist','hirgethirlist');
+$router->map('GET','/admin/hir/getfeedhirlist','hirController#getfeedhirlist','hirgetfeedhirlist');
+$router->map('POST','/admin/hir/save','hirController#save','hirsave');
+$router->map('POST','/admin/hir/setlathato','hirController#setlathato','hirsetlathato');
+
+$router->map('GET','/admin/jelenletiiv/viewlist','jelenletiivController#viewlist','jelenletiivviewlist');
+$router->map('GET','/admin/jelenletiiv/getlistbody','jelenletiivController#getlistbody','jelenletiivgetlistbody');
+$router->map('GET','/admin/jelenletiiv/getkarb','jelenletiivController#getkarb','jelenletiivgetkarb');
+$router->map('GET','/admin/jelenletiiv/viewkarb','jelenletiivController#viewkarb','jelenletiivviewkarb');
+$router->map('POST','/admin/jelenletiiv/save','jelenletiivController#save','jelenletiivsave');
+
+$router->map('GET','/admin/keresoszolog/viewlist','keresoszologController#viewlist','keresoszologviewlist');
+$router->map('GET','/admin/keresoszolog/getlistbody','keresoszologController#getlistbody','keresoszologgetlistbody');
+$router->map('GET','/admin/keresoszolog/getkarb','keresoszologController#getkarb','keresoszologgetkarb');
+$router->map('GET','/admin/keresoszolog/viewkarb','keresoszologController#viewkarb','keresoszologviewkarb');
+$router->map('POST','/admin/keresoszolog/save','keresoszologController#save','keresoszologsave');
+
+$router->map('GET','/admin/kontakt/getemptyrow','kontaktController#getemptyrow','kontaktgetemptyrow');
+
+$router->map('GET','/admin/kontaktcimke/viewlist','kontaktcimkeController#viewlist','kontaktcimkeviewlist');
+$router->map('GET','/admin/kontaktcimke/getlistbody','kontaktcimkeController#getlistbody','kontaktcimkegetlistbody');
+$router->map('GET','/admin/kontaktcimke/getkarb','kontaktcimkeController#getkarb','kontaktcimkegetkarb');
+$router->map('GET','/admin/kontaktcimke/viewkarb','kontaktcimkeController#viewkarb','kontaktcimkeviewkarb');
+$router->map('POST','/admin/kontaktcimke/save','kontaktcimkeController#save','kontaktcimkesave');
+
+$router->map('GET','/admin/korhinta/viewlist','korhintaController#viewlist','korhintaviewlist');
+$router->map('GET','/admin/korhinta/getlistbody','korhintaController#getlistbody','korhintagetlistbody');
+$router->map('GET','/admin/korhinta/getkarb','korhintaController#getkarb','korhintagetkarb');
+$router->map('GET','/admin/korhinta/viewkarb','korhintaController#viewkarb','korhintaviewkarb');
+$router->map('POST','/admin/korhinta/save','korhintaController#save','korhintasave');
+
+$router->map('GET','/admin/partner/viewlist','partnerController#viewlist','partnerviewlist');
+$router->map('GET','/admin/partner/getlistbody','partnerController#getlistbody','partnergetlistbody');
+$router->map('GET','/admin/partner/getkarb','partnerController#getkarb','partnergetkarb');
+$router->map('GET','/admin/partner/viewkarb','partnerController#viewkarb','partnerviewkarb');
+$router->map('POST','/admin/partner/save','partnerController#save','partnersave');
+$router->map('POST','/admin/partner/regisztral','partnerController#regisztral','partnerregisztral');
+$router->map('POST','/admin/partner/checkemail','partnerController#checkemail','partnercheckemail');
+
+$router->map('GET','/admin/termekfa/jsonlist','termekfaController#jsonlist','termekfajsonlist');
 
 $match=$router->match();
-fb($match);
 
 if (!callTheController($match['target'], $match)) {
+	echo 'NINCS ROUTE';
 }

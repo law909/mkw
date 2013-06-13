@@ -13,9 +13,10 @@ class JQGridController extends Controller {
 	private $repo;
 	private $em;
 
-	public function __construct() {
-		parent::__construct();
-		$this->setupRepo();
+	public function __construct($params) {
+		parent::__construct($params);
+		$this->em=\mkw\Store::getEm();
+		$this->repo=$this->em->getRepository($this->entityName);
 	}
 
 	public function getEntityName() {
@@ -30,23 +31,14 @@ class JQGridController extends Controller {
 		return $this->em;
 	}
 
-	public function setEm($em) {
-		$this->em=$em;
-	}
-
 	public function getRepo() {
 		return $this->repo;
 	}
 
-	protected function setupRepo() {
-		$this->em=\mkw\Store::getEm();
-		$this->repo=$this->em->getRepository($this->entityName);
-	}
-
-	protected function getOrderArray($params) {
+	protected function getOrderArray() {
 		// TODO SQLINJECTION
 		$order=array();
-		$order[$params->getRequestParam('sidx','nev')]=$params->getRequestParam('sord','ASC');
+		$order[$this->params->getRequestParam('sidx','nev')]=$this->params->getRequestParam('sord','ASC');
 		return $order;
 	}
 
@@ -63,19 +55,19 @@ class JQGridController extends Controller {
 		return $res;
 	}
 
-	public function save($params) {
-		$parancs=$params->getRequestParam($this->operationName,'');
-		$id=$params->getRequestParam($this->idName,0);
+	public function save() {
+		$parancs=$this->params->getRequestParam($this->operationName,'');
+		$id=$this->params->getRequestParam($this->idName,0);
 		switch ($parancs){
 			case $this->addOperation:
 				$cl=$this->entityName;
 				$obj=new $cl();
-				$this->em->persist($this->setFields($obj,$params));
+				$this->em->persist($this->setFields($obj));
 				$this->em->flush();
 				break;
 			case $this->editOperation:
 				$obj=$this->repo->find($id);
-				$this->em->persist($this->setFields($obj,$params));
+				$this->em->persist($this->setFields($obj));
 				$this->em->flush();
 				break;
 			case $this->delOperation:

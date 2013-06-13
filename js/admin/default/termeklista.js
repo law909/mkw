@@ -182,6 +182,7 @@ $('#mattable-select').mattable({
 							'Igen': function() {
 								$.ajax({
 									url:'/admin/termekkep/del',
+									type:'POST',
 									data:{
 										id:$this.attr('data-id')
 									},
@@ -562,6 +563,7 @@ $('#mattable-select').mattable({
 		var $this=$(this);
 		$.ajax({
 			url:'/admin/termek/setflag',
+			type:'POST',
 			data:{
 				id:$this.attr('data-id'),
 				flag:$this.attr('data-flag'),
@@ -735,6 +737,7 @@ $('#mattable-select').mattable({
 													'Igen': function() {
 														$.ajax({
 															url:'/admin/termekfa/delpicture',
+															type:'POST',
 															data:{
 																id:$('#fakarb-form').attr('data-id')
 															},
@@ -804,6 +807,7 @@ $('#mattable-select').mattable({
 											'Igen':function() {
 												$(this).dialog('close');
 												$.ajax({url:'/admin/termekfa/save',
+													type:'POST',
 													data:{
 														id:valasztottid.split('_')[1],
 														oper:'del'
@@ -855,6 +859,7 @@ $('#mattable-select').mattable({
 									var ideid=dialogcenter.jstree('get_selected').children('a').attr('id');
 									$.ajax({
 										url:'/admin/termekfa/move',
+										type:'POST',
 										data:{
 											eztid:valasztottid.split('_')[1],
 											ideid:ideid.split('_')[1]

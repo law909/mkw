@@ -4,9 +4,9 @@ use mkw\store;
 
 class bankszamlaController extends \mkwhelpers\JQGridController {
 
-	public function __construct() {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Bankszamla');
-		parent::__construct();
+		parent::__construct($params);
 	}
 
 	protected function loadCells($sor) {
@@ -16,13 +16,13 @@ class bankszamlaController extends \mkwhelpers\JQGridController {
 			$sor->getSwift(),(isset($valuta)?$valuta->getNev():''));
 	}
 
-	protected function setFields($obj,$params) {
-		$obj->setBanknev($params->getStringRequestParam('banknev'));
-		$obj->setBankcim($params->getStringRequestParam('bankcim'));
-		$obj->setSzamlaszam($params->getStringRequestParam('szamlaszam'));
-		$obj->setSwift($params->getStringRequestParam('swift'));
-		$obj->setIban($params->getStringRequestParam('iban'));
-		$valutanem=store::getEm()->getReference('Entities\Valutanem',$params->getIntRequestParam('valutanem',0));
+	protected function setFields($obj) {
+		$obj->setBanknev($this->params->getStringRequestParam('banknev'));
+		$obj->setBankcim($this->params->getStringRequestParam('bankcim'));
+		$obj->setSzamlaszam($this->params->getStringRequestParam('szamlaszam'));
+		$obj->setSwift($this->params->getStringRequestParam('swift'));
+		$obj->setIban($this->params->getStringRequestParam('iban'));
+		$valutanem=store::getEm()->getReference('Entities\Valutanem',$this->params->getIntRequestParam('valutanem',0));
 		try {
 			$valutanem->getId();
 			$obj->setValutanem($valutanem);
@@ -32,35 +32,35 @@ class bankszamlaController extends \mkwhelpers\JQGridController {
 		return $obj;
 	}
 
-	public function jsonlist($params) {
+	public function jsonlist() {
 		$filter=array();
-		if ($params->getBoolRequestParam('_search',false)) {
-			if (!is_null($params->getRequestParam('banknev',NULL))) {
+		if ($this->params->getBoolRequestParam('_search',false)) {
+			if (!is_null($this->params->getRequestParam('banknev',NULL))) {
 				$filter['fields'][]='banknev';
-				$filter['values'][]=$params->getStringRequestParam('banknev');
+				$filter['values'][]=$this->params->getStringRequestParam('banknev');
 			}
 			if (!is_null($this->getParam('bankcim',NULL))) {
 				$filter['fields'][]='bankcim';
-				$filter['values'][]=$params->getStringRequestParam('bankcim');
+				$filter['values'][]=$this->params->getStringRequestParam('bankcim');
 			}
 			if (!is_null($this->getParam('szamlaszam',NULL))) {
 				$filter['fields'][]='szamlaszam';
-				$filter['values'][]=$params->getStringRequestParam('szamlaszam');
+				$filter['values'][]=$this->params->getStringRequestParam('szamlaszam');
 			}
 			if (!is_null($this->getParam('swift',NULL))) {
 				$filter['fields'][]='swift';
-				$filter['values'][]=$params->getStringRequestParam('swift');
+				$filter['values'][]=$this->params->getStringRequestParam('swift');
 			}
 			if (!is_null($this->getParam('iban',NULL))) {
 				$filter['fields'][]='iban';
-				$filter['values'][]=$params->getStringRequestParam('iban');
+				$filter['values'][]=$this->params->getStringRequestParam('iban');
 			}
 			if (!is_null($this->getParam('valutanem',NULL))) {
 				$filter['fields'][]='v.nev';
-				$filter['values'][]=$params->getStringRequestParam('valutanem');
+				$filter['values'][]=$this->params->getStringRequestParam('valutanem');
 			}
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
 		echo json_encode($this->loadDataToView($rec));
 	}
 

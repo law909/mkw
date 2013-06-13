@@ -5,83 +5,69 @@ use mkw\store;
 
 class partnercimkeController extends \mkwhelpers\MattableController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Partnercimketorzs');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 		$this->setKarbFormTplName('cimkekarbform.tpl');
 		$this->setKarbTplName('cimkekarb.tpl');
 		$this->setListBodyRowTplName('cimkelista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_cimke');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function loadVars($t) {
 		$x=array();
-		if ($t) {
-			$x['id']=$t->getId();
-			$x['nev']=$t->getNev();
-			$x['leiras']=$t->getLeiras();
-			$x['oldalcim']=$t->getOldalcim();
-			if ($kat=$t->getKategoria()) {
-				$x['cimkekatnev']=$kat->getNev();
-			}
-			else {
-				$x['cimkekatnev']='';
-			}
-			$x['menu1lathato']=$t->getMenu1Lathato();
-			$x['menu2lathato']=$t->getMenu2Lathato();
-			$x['menu3lathato']=$t->getMenu3Lathato();
-			$x['menu4lathato']=$t->getMenu4Lathato();
+		if (!$t) {
+			$t=new \Entities\Partnercimketorzs();
+			$this->getEm()->detach($t);
+		}
+		$x['id']=$t->getId();
+		$x['nev']=$t->getNev();
+		$x['leiras']=$t->getLeiras();
+		$x['oldalcim']=$t->getOldalcim();
+		if ($kat=$t->getKategoria()) {
+			$x['cimkekatnev']=$kat->getNev();
 		}
 		else {
-			$x['id']=0;
-			$x['nev']='';
-			$x['leiras']='';
-			$x['oldalcim']='';
 			$x['cimkekatnev']='';
-			$x['menu1lathato']=false;
-			$x['menu2lathato']=false;
-			$x['menu3lathato']=false;
-			$x['menu4lathato']=false;
 		}
+		$x['menu1lathato']=$t->getMenu1Lathato();
+		$x['menu2lathato']=$t->getMenu2Lathato();
+		$x['menu3lathato']=$t->getMenu3Lathato();
+		$x['menu4lathato']=$t->getMenu4Lathato();
 		return $x;
 	}
 
 	protected function setFields($obj) {
-		$ck=store::getEm()->getRepository('Entities\Partnercimkekat')->find($this->getIntParam('cimkecsoport',0));
+		$ck=store::getEm()->getRepository('Entities\Partnercimkekat')->find($this->getIntRequestParam('cimkecsoport',0));
 		if ($ck) {
 			$obj->setKategoria($ck);
 		}
-		$obj->setNev($this->getStringParam('nev'));
-		$obj->setLeiras($this->getStringParam('leiras'));
-		$obj->setOldalcim($this->getStringParam('oldalcim'));
-		$obj->setMenu1Lathato($this->getBoolParam('menu1lathato'));
-		$obj->setMenu2Lathato($this->getBoolParam('menu2lathato'));
-		$obj->setMenu3Lathato($this->getBoolParam('menu3lathato'));
-		$obj->setMenu4Lathato($this->getBoolParam('menu4lathato'));
+		$obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setLeiras($this->params->getStringRequestParam('leiras'));
+		$obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
+		$obj->setMenu1Lathato($this->params->getBoolRequestParam('menu1lathato'));
+		$obj->setMenu2Lathato($this->params->getBoolRequestParam('menu2lathato'));
+		$obj->setMenu3Lathato($this->params->getBoolRequestParam('menu3lathato'));
+		$obj->setMenu4Lathato($this->params->getBoolRequestParam('menu4lathato'));
 		return $obj;
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('cimkelista_tbody.tpl');
 		$view->setVar('kellkep',false);
 
 		$filter=array();
-		if (!is_null($this->getParam('nevfilter',NULL))) {
+		if (!is_null($this->params->getRequestParam('nevfilter',NULL))) {
 			$filter['fields'][]='nev';
-			$filter['values'][]=$this->getStringParam('nevfilter');
+			$filter['values'][]=$this->params->getStringRequestParam('nevfilter');
 		}
-		$fv=$this->getIntParam('ckfilter');
+		$fv=$this->params->getIntRequestParam('ckfilter');
 		if ($fv>0) {
 			$filter['fields'][]='ck.id';
 			$filter['values'][]=$fv;
 		}
 
-		$this->initPager(
-			$this->getRepo()->getCount($filter),
-			$this->getIntParam('elemperpage',30),
-			$this->getIntParam('pageno',1));
+		$this->initPager($this->getRepo()->getCount($filter));
 
 		$egyedek=$this->getRepo()->getWithJoins(
 			$filter,
@@ -92,7 +78,7 @@ class partnercimkeController extends \mkwhelpers\MattableController {
 		echo json_encode($this->loadDataToView($egyedek,'cimkelista',$view));
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('cimkelista.tpl');
 
 		$view->setVar('pagetitle',t('Partnercímkék'));
@@ -100,12 +86,14 @@ class partnercimkeController extends \mkwhelpers\MattableController {
 		$view->setVar('controllerscript','partnercimkelista.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
-		$ckat=new partnercimkekatController($this->generalDataLoader);
+		$ckat=new partnercimkekatController($this->params);
 		$view->setVar('cimkecsoportlist',$ckat->getSelectList(0));
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Partnercímke'));
@@ -115,15 +103,15 @@ class partnercimkeController extends \mkwhelpers\MattableController {
 		$view->setVar('oper',$oper);
 		$record=$this->getRepo()->findWithJoins($id);
 		$view->setVar('cimke',$this->loadVars($record));
-		$ckat=new partnercimkekatController($this->generalDataLoader);
+		$ckat=new partnercimkekatController($this->params);
 		$view->setVar('cimkecsoportlist',$ckat->getSelectList(($record?$record->getKategoriaId():0)));
 		return $view->getTemplateResult();
 	}
 
-	protected function setmenulathato() {
-		$id=$this->getIntParam('id');
-		$kibe=$this->getBoolParam('kibe');
-		$num=$this->getIntParam('num');
+	public function setmenulathato() {
+		$id=$this->params->getIntRequestParam('id');
+		$kibe=$this->params->getBoolRequestParam('kibe');
+		$num=$this->params->getIntRequestParam('num');
 		$obj=$this->getRepo()->find($id);
 		if ($obj) {
 			switch ($num) {
@@ -145,7 +133,7 @@ class partnercimkeController extends \mkwhelpers\MattableController {
 		}
 	}
 
-	protected function add() {
+	public function add() {
 		$obj=new Partnercimketorzs();
 		$this->setFields($obj);
 		$this->getEm()->persist($obj);
@@ -177,7 +165,7 @@ class partnercimkeController extends \mkwhelpers\MattableController {
 		return $res;
 	}
 
-	protected function viewselect() {
+	public function viewselect() {
 		$view=$this->createView('cimkelista.tpl');
 
 		$view->setVar('pagetitle',t('Partnercímkék'));

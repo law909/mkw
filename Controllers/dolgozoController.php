@@ -5,92 +5,72 @@ use mkw\store;
 
 class dolgozoController extends \mkwhelpers\MattableController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Dolgozo');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 		$this->setKarbFormTplName('dolgozokarbform.tpl');
 		$this->setKarbTplName('dolgozokarb.tpl');
 		$this->setListBodyRowTplName('dolgozolista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function loadVars($t) {
 		$x=array();
-		if ($t) {
-			$x['id']=$t->getId();
-			$x['nev']=$t->getNev();
-			$x['irszam']=$t->getIrszam();
-			$x['varos']=$t->getVaros();
-			$x['utca']=$t->getUtca();
-			$x['telefon']=$t->getTelefon();
-			$x['email']=$t->getEmail();
-			$x['szulido']=$t->getSzulido();
-			$x['szulidostr']=$t->getSzulidoStr();
-			$x['szulhely']=$t->getSzulhely();
-			$x['evesmaxszabi']=$t->getEvesmaxszabi();
-			$x['munkaviszonykezdete']=$t->getMunkaviszonykezdete();
-			$x['munkaviszonykezdetestr']=$t->getMunkaviszonykezdeteStr();
-			$x['munkakornev']=$t->getMunkakorNev();
-			$x['muveletnev']=$t->getMuveletNev();
+		if (!$t) {
+			$t=new \Entities\Dolgozo();
+			$this->getEm()->detach($t);
 		}
-		else {
-			$x['id']=0;
-			$x['nev']='';
-			$x['irszam']='';
-			$x['varos']='';
-			$x['utca']='';
-			$x['telefon']='';
-			$x['email']='';
-			$x['szulido']=new \DateTime();
-			$x['szulidostr']=date(store::$DateFormat);
-			$x['szulhely']='';
-			$x['evesmaxszabi']=0;
-			$x['munkaviszonykezdete']=new \DateTime();
-			$x['munkaviszonykezdete']=date(store::$DateFormat);
-			$x['munkakornev']='';
-			$x['muveletnev']='';
-		}
+		$x['id']=$t->getId();
+		$x['nev']=$t->getNev();
+		$x['irszam']=$t->getIrszam();
+		$x['varos']=$t->getVaros();
+		$x['utca']=$t->getUtca();
+		$x['telefon']=$t->getTelefon();
+		$x['email']=$t->getEmail();
+		$x['szulido']=$t->getSzulido();
+		$x['szulidostr']=$t->getSzulidoStr();
+		$x['szulhely']=$t->getSzulhely();
+		$x['evesmaxszabi']=$t->getEvesmaxszabi();
+		$x['munkaviszonykezdete']=$t->getMunkaviszonykezdete();
+		$x['munkaviszonykezdetestr']=$t->getMunkaviszonykezdeteStr();
+		$x['munkakornev']=$t->getMunkakorNev();
+		$x['muveletnev']=$t->getMuveletNev();
 		return $x;
 	}
 
 	protected function setFields($obj) {
-		$obj->setNev($this->getStringParam('nev'));
-		$obj->setIrszam($this->getStringParam('irszam'));
-		$obj->setVaros($this->getStringParam('varos'));
-		$obj->setUtca($this->getStringParam('utca'));
-		$obj->setTelefon($this->getStringParam('telefon'));
-		$obj->setEmail($this->getStringParam('email'));
-		$obj->setSzulido($this->getStringParam('szulido'));
-		$obj->setSzulhely($this->getStringParam('szulhely'));
-		$obj->setEvesmaxszabi($this->getIntParam('evesmaxszabi'));
-		$obj->setMunkaviszonykezdete($this->getStringParam('munkaviszonykezdete'));
+		$obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setIrszam($this->params->getStringRequestParam('irszam'));
+		$obj->setVaros($this->params->getStringRequestParam('varos'));
+		$obj->setUtca($this->params->getStringRequestParam('utca'));
+		$obj->setTelefon($this->params->getStringRequestParam('telefon'));
+		$obj->setEmail($this->params->getStringRequestParam('email'));
+		$obj->setSzulido($this->params->getStringRequestParam('szulido'));
+		$obj->setSzulhely($this->params->getStringRequestParam('szulhely'));
+		$obj->setEvesmaxszabi($this->params->getIntRequestParam('evesmaxszabi'));
+		$obj->setMunkaviszonykezdete($this->params->getStringRequestParam('munkaviszonykezdete'));
 
-		$ck=store::getEm()->getRepository('Entities\Termek')->find($this->getIntParam('muvelet',0));
+		$ck=store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('muvelet',0));
 		if ($ck) {
 			$obj->setMuvelet($ck);
 		}
-		$ck=store::getEm()->getRepository('Entities\Munkakor')->find($this->getIntParam('munkakor',0));
+		$ck=store::getEm()->getRepository('Entities\Munkakor')->find($this->params->getIntRequestParam('munkakor',0));
 		if ($ck) {
 			$obj->setMunkakor($ck);
 		}
 		return $obj;
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('dolgozolista_tbody.tpl');
 
 		$filterarr=array();
-		if (!is_null($this->getParam('nevfilter',NULL))) {
+		if (!is_null($this->params->getRequestParam('nevfilter',NULL))) {
 			$filterarr['fields'][]='nev';
-			$filterarr['values'][]=$this->getStringParam('nevfilter');
+			$filterarr['values'][]=$this->params->getStringRequestParam('nevfilter');
 		}
 
-		$this->initPager(
-			$this->getRepo()->getCount($filterarr),
-			$this->getIntParam('elemperpage',30),
-			$this->getIntParam('pageno',1));
+		$this->initPager($this->getRepo()->getCount($filterarr));
 
 		$egyedek=$this->getRepo()->getWithJoins(
 			$filterarr,
@@ -110,7 +90,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
 		return $res;
 	}
 
-	protected function viewselect() {
+	public function viewselect() {
 		$view=$this->createView('dolgozolista.tpl');
 
 		$view->setVar('pagetitle',t('Dolgozók'));
@@ -118,7 +98,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('dolgozolista.tpl');
 
 		$view->setVar('pagetitle',t('Dolgozók'));
@@ -128,7 +108,9 @@ class dolgozoController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Dolgozó'));
@@ -137,9 +119,9 @@ class dolgozoController extends \mkwhelpers\MattableController {
 		$view->setVar('oper',$oper);
 		$record=$this->getRepo()->findWithJoins($id);
 		$view->setVar('egyed',$this->loadVars($record));
-		$munkakor=new munkakorController($this->generalDataLoader);
+		$munkakor=new munkakorController($this->params);
 		$view->setVar('munkakorlist',$munkakor->getSelectList(($record?$record->getMunkakorId():0)));
-		$muvelet=new termekController($this->generalDataLoader);
+		$muvelet=new termekController($this->params);
 		$view->setVar('muveletlist',$muvelet->getSelectList(($record?$record->getMuveletId():0)));
 		return $view->getTemplateResult();
 	}

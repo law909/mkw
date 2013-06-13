@@ -4,15 +4,13 @@ use mkw\store;
 
 class kosarController extends \mkwhelpers\MattableController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Kosar');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 //		$this->setKarbFormTplName('kosarkarbform.tpl');
 //		$this->setKarbTplName('kosarkarb.tpl');
 		$this->setListBodyRowTplName('kosarlista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function loadVars($t) {
@@ -49,33 +47,30 @@ class kosarController extends \mkwhelpers\MattableController {
 	}
 
 	protected function setFields($obj) {
-		$ck=store::getEm()->getRepository('Entities\Partner')->find($this->getIntParam('partner'));
+		$ck=store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
 		if ($ck) {
 			$obj->setPartner($ck);
 		}
-		$ck=store::getEm()->getRepository('Entities\Termek')->find($this->getIntParam('termek'));
+		$ck=store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
 		if ($ck) {
 			$obj->setTermek($ck);
 		}
-		$obj->setMennyiseg($this->getNumParam('mennyiseg'));
+		$obj->setMennyiseg($this->params->getNumRequestParam('mennyiseg'));
 		return $obj;
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('kosarlista_tbody.tpl');
 
 		$filter=array();
-		if (!is_null($this->getParam('nevfilter',NULL))) {
+		if (!is_null($this->params->getRequestParam('nevfilter',NULL))) {
 			$filter['fields'][]=array('_xx.sessionid','p.nev','t.nev');
 			$filter['clauses'][]='';
-			$filter['values'][]=$this->getStringParam('nevfilter');
-
+			$filter['values'][]=$this->params->getStringRequestParam('nevfilter');
 		}
 
 		$this->initPager(
-			$this->getRepo()->getCount($filter),
-			$this->getIntParam('elemperpage',30),
-			$this->getIntParam('pageno',1));
+			$this->getRepo()->getCount($filter),$this->params);
 
 		$egyedek=$this->getRepo()->getWithJoins(
 			$filter,
@@ -86,7 +81,7 @@ class kosarController extends \mkwhelpers\MattableController {
 		echo json_encode($this->loadDataToView($egyedek,'egyedlista',$view));
 	}
 
-	protected function viewselect() {
+	public function viewselect() {
 		$view=$this->createView('kosarlista.tpl');
 
 		$view->setVar('pagetitle',t('Kosár'));
@@ -94,7 +89,7 @@ class kosarController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('kosarlista.tpl');
 
 		$view->setVar('pagetitle',t('Kosár'));
@@ -104,7 +99,9 @@ class kosarController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Kosár'));
@@ -134,16 +131,16 @@ class kosarController extends \mkwhelpers\MattableController {
 	}
 
 	public function add() {
-		$termek=store::getEm()->getRepository('Entities\Termek')->find($this->getIntParam('id'));
+		$termek=store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('id'));
 		$vid=null;
-		switch ($this->getIntParam('jax',0)) {
+		switch ($this->getIntRequestParam('jax',0)) {
 			case 2:
-				$vid=$this->getIntParam('vid',null);
+				$vid=$this->params->getIntRequestParam('vid',null);
 				$termekvaltozat=store::getEm()->getRepository('Entities\TermekValtozat')->find($vid);
 				break;
 			case 3:
-				$tipusok=$this->getArrayParam('tip');
-				$ertekek=$this->getArrayParam('val');
+				$tipusok=$this->params->getArrayRequestParam('tip');
+				$ertekek=$this->params->getArrayRequestParam('val');
 				$termekvaltozat=store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(),$tipusok,$ertekek);
 				$vid=$termekvaltozat->getId();
 				break;
@@ -174,7 +171,7 @@ class kosarController extends \mkwhelpers\MattableController {
 			}
 			$this->getEm()->persist($k);
 			$this->getEm()->flush();
-			if ($this->getIntParam('jax',0)>0) {
+			if ($this->params->getIntRequestParam('jax',0)>0) {
 				$v=$this->getTemplateFactory()->createMainView('minikosar.tpl');
 				$v->setVar('kosar',$this->getMiniData());
 				$v->printTemplateResult();
@@ -191,13 +188,13 @@ class kosarController extends \mkwhelpers\MattableController {
 	}
 
 	public function del() {
-		$id=$this->getIntParam('id');
+		$id=$this->params->getIntRequestParam('id');
 		$sessionid=\Zend_Session::getId();
 		$sor=$this->getRepo()->find($id);
 		if ($sor&&$sor->getSessionid()==$sessionid) {
 			$this->getEm()->remove($sor);
 			$this->getEm()->flush();
-			if ($this->getIntParam('jax',0)>0) {
+			if ($this->params->getIntRequestParam('jax',0)>0) {
 //				$v=$this->getTemplateFactory()->createMainView('minikosar.tpl');
 //				$v->setVar('kosar',$this->getMiniData());
 //				$v->printTemplateResult();
@@ -215,15 +212,15 @@ class kosarController extends \mkwhelpers\MattableController {
 	}
 
 	public function edit() {
-		$id=$this->getIntParam('id');
-		$menny=$this->getNumParam('mennyiseg');
+		$id=$this->params->getIntRequestParam('id');
+		$menny=$this->params->getNumRequestParam('mennyiseg');
 		$sessionid=\Zend_Session::getId();
 		$sor=$this->getRepo()->find($id);
 		if ($sor&&$sor->getSessionid()==$sessionid) {
 			$sor->setMennyiseg($menny);
 			$this->getEm()->persist($sor);
 			$this->getEm()->flush();
-			if ($this->getIntParam('jax',0)>0) {
+			if ($this->params->getIntRequestParam('jax',0)>0) {
 //				$v=$this->getTemplateFactory()->createMainView('minikosar.tpl');
 //				$v->setVar('kosar',$this->getMiniData());
 //				$v->printTemplateResult();

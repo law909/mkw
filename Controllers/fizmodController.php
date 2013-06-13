@@ -4,44 +4,44 @@ use mkw\store;
 
 class fizmodController extends \mkwhelpers\JQGridController {
 
-	public function __construct() {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Fizmod');
-		parent::__construct();
+		parent::__construct($params);
 	}
 
 	protected function loadCells($sor) {
 		return array($sor->getNev(),$sor->getTipus(),$sor->getHaladek(),$sor->getWebes());
 	}
 
-	protected function setFields($obj,$params) {
-		$obj->setNev($params->getStringRequestParam('nev'));
-		$obj->setTipus($params->getStringRequestParam('tipus'));
-		$obj->setHaladek($params->getIntRequestParam('haladek'));
-		$obj->setWebes($params->getBoolRequestParam('webes'));
+	protected function setFields($obj) {
+		$obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setTipus($this->params->getStringRequestParam('tipus'));
+		$obj->setHaladek($this->params->getIntRequestParam('haladek'));
+		$obj->setWebes($this->params->getBoolRequestParam('webes'));
 		return $obj;
 	}
 
-	public function jsonlist($params) {
+	public function jsonlist() {
 		$filter=array();
-		if ($params->getBoolRequestParam('_search',false)) {
-			if (!is_null($params->getRequestParam('tipus',NULL))) {
+		if ($this->params->getBoolRequestParam('_search',false)) {
+			if (!is_null($this->params->getRequestParam('tipus',NULL))) {
 				$filter['fields'][]='tipus';
-				$filter['values'][]=$params->getStringRequestParam('tipus');
+				$filter['values'][]=$this->params->getStringRequestParam('tipus');
 			}
-			if (!is_null($params->getRequestParam('nev',NULL))) {
+			if (!is_null($this->params->getRequestParam('nev',NULL))) {
 				$filter['fields'][]='nev';
-				$filter['values'][]=$params->getStringRequestParam('nev');
+				$filter['values'][]=$this->params->getStringRequestParam('nev');
 			}
-			if (!is_null($params->getRequestParam('haladek',NULL))) {
+			if (!is_null($this->params->getRequestParam('haladek',NULL))) {
 				$filter['fields'][]='haladek';
-				$filter['values'][]=$params->getIntRequestParam('haladek');
+				$filter['values'][]=$this->params->getIntRequestParam('haladek');
 			}
-			if (!is_null($params->getRequestParam('webes',NULL))) {
+			if (!is_null($this->params->getRequestParam('webes',NULL))) {
 				$filter['fields'][]='webes';
-				$filter['values'][]=$params->getBoolRequestParam('webes');
+				$filter['values'][]=$this->params->getBoolRequestParam('webes');
 			}
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
 		echo json_encode($this->loadDataToView($rec));
 	}
 

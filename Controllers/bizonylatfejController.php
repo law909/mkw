@@ -6,19 +6,17 @@ use mkw\store;
 
 class bizonylatfejController extends \mkwhelpers\MattableController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Megrendelesfej');
-		$this->setEm(store::getEm());
-		$this->setTemplateFactory(store::getTemplateFactory());
 //		$this->setKarbFormTplName('megrendelesfejkarbform.tpl');
 //		$this->setKarbTplName('megrendelesfejkarb.tpl');
 //		$this->setListBodyRowTplName('megrendelesfejlista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct($params);
 	}
 
 	protected function loadVars($t,$forKarb=false) {
-		$tetelCtrl=new bizonylattetelController($this->generalDataLoader);
+		$tetelCtrl=new bizonylattetelController($this->params);
 		$tetel=array();
 		$x=array();
 		if ($t) {
