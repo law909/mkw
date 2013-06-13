@@ -169,7 +169,7 @@ class kontaktcimkeController extends \mkwhelpers\MattableController {
 			$res[]=array(
 				'id'=>$kat->getId(),
 				'caption'=>$kat->getNev(),
-				'sanitizedcaption'=>$kat->getSlug(), //matt\Filter::toPermalink($kat->getNev()),
+				'sanitizedcaption'=>$kat->getSlug(),
 				'cimkek'=>$adat
 			);
 		}

@@ -18,22 +18,9 @@ class MattableController extends Controller {
 	private $karbFormTplName;
 	private $karbTplName;
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+	public function __construct() {
+		parent::__construct();
 		$this->setupRepo();
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new \mkwhelpers\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	public function getEntityName() {

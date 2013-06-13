@@ -1,10 +1,7 @@
 <?php
 namespace Entities;
 
-use Entities\Kosar;
-use matt, \Doctrine\ORM;
-
-class KosarRepository extends matt\Repository {
+class KosarRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

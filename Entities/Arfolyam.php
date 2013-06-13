@@ -1,6 +1,6 @@
 <?php
 namespace Entities;
-use matt;
+
 /**
  * @Entity(repositoryClass="Entities\ArfolyamRepository")
  * @Table(name="arfolyam",uniqueConstraints={@UniqueConstraint(name="arfolyam_egyedi",columns={"datum","valutanem_id"})})
@@ -11,15 +11,15 @@ class Arfolyam {
 	 * @GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** 
+	/**
 	 * @gedmo:Timestampable(on="create")
-	 * @Column(type="datetime",nullable=true) 
+	 * @Column(type="datetime",nullable=true)
 	 */
-	private $created;	
-	/** 
+	private $created;
+	/**
 	 * @gedmo:Timestampable(on="create")
 	 * @gedmo:Timestampable(on="update")
-	 * @Column(type="datetime",nullable=true) 
+	 * @Column(type="datetime",nullable=true)
 	 */
 	private $lastmod;
 	/** @Column(type="date",nullable=false) */
@@ -83,7 +83,7 @@ class Arfolyam {
 	public function getLastmod() {
 		return $this->lastmod;
 	}
-	
+
 	public function getCreated() {
 		return $this->created;
 	}

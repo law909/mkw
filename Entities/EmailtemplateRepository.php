@@ -1,10 +1,7 @@
 <?php
 namespace Entities;
 
-use Entities\Emailtemplate;
-use matt, \Doctrine\ORM;
-
-class EmailtemplateRepository extends matt\Repository {
+class EmailtemplateRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

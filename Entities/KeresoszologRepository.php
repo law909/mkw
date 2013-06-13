@@ -1,10 +1,7 @@
 <?php
 namespace Entities;
 
-use Entities\Keresoszolog;
-use matt, \Doctrine\ORM;
-
-class KeresoszologRepository extends matt\Repository {
+class KeresoszologRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

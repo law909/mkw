@@ -1,10 +1,7 @@
 <?php
 namespace Entities;
 
-use Entities\Raktar;
-use matt, \Doctrine\ORM;
-
-class RaktarRepository extends matt\Repository {
+class RaktarRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

@@ -1,8 +1,9 @@
 <?php
 namespace Entities;
 
-use matt, \Doctrine\ORM, Doctrine\ORM\Query\ResultSetMapping, mkw\Store;
-class TermekRepository extends matt\Repository {
+use Doctrine\ORM\Query\ResultSetMapping;
+
+class TermekRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

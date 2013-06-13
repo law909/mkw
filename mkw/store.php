@@ -9,6 +9,9 @@ class Store {
 	private static $mainsession;
 	private static $adminsession;
 	private static $templateFactory;
+	private static $router;
+	private static $gdl;
+	private static $sanitizer;
 	public static $DateFormat='Y.m.d';
 
 	/**
@@ -141,7 +144,7 @@ class Store {
 
 	public static function getTemplateFactory() {
 		if (!isset(self::$templateFactory)) {
-			self::$templateFactory=new \matt\TemplateFactory(self::$config);
+			self::$templateFactory=new \mkwhelpers\TemplateFactory(self::$config);
 		}
 		return self::$templateFactory;
 	}
@@ -165,4 +168,24 @@ class Store {
 		$v->setVar('user',$user);
 	}
 
+	public static function getRouter() {
+		if (!isset(self::$router)) {
+			self::$router=new \AltoRouter();
+		}
+		return self::$router;
+	}
+
+	public static function getGdl() {
+		if (!isset(self::$gdl)) {
+			self::$gdl=new generalDataLoader();
+		}
+		return self::$gdl;
+	}
+
+	public static function getSanitizer() {
+		if (!isset(self::$sanitizer)) {
+			self::$sanitizer=new \mkwhelpers\HtmlPurifierSanitizer();
+		}
+		return self::$sanitizer;
+	}
 }

@@ -12,24 +12,10 @@ class JQGridController extends Controller {
 	private $entityName='';
 	private $repo;
 	private $em;
-	private $pager;
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+	public function __construct() {
+		parent::__construct();
 		$this->setupRepo();
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new \mkwhelpers\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	public function getEntityName() {
@@ -56,10 +42,10 @@ class JQGridController extends Controller {
 		$this->repo=$this->em->getRepository($this->entityName);
 	}
 
-	protected function getOrderArray() {
+	protected function getOrderArray($params) {
 		// TODO SQLINJECTION
 		$order=array();
-		$order[$this->getParam('sidx','nev')]=$this->getParam('sord','ASC');
+		$order[$params->getParam('sidx','nev')]=$params->getParam('sord','ASC');
 		return $order;
 	}
 
@@ -76,19 +62,19 @@ class JQGridController extends Controller {
 		return $res;
 	}
 
-	protected function save() {
-		$parancs=$this->getParam($this->operationName,'');
-		$id=$this->getParam($this->idName,0);
+	public function save($params) {
+		$parancs=$params->getRequestParam($this->operationName,'');
+		$id=$params->getRequestParam($this->idName,0);
 		switch ($parancs){
 			case $this->addOperation:
 				$cl=$this->entityName;
 				$obj=new $cl();
-				$this->em->persist($this->setFields($obj));
+				$this->em->persist($this->setFields($obj,$params));
 				$this->em->flush();
 				break;
 			case $this->editOperation:
 				$obj=$this->repo->find($id);
-				$this->em->persist($this->setFields($obj));
+				$this->em->persist($this->setFields($obj,$params));
 				$this->em->flush();
 				break;
 			case $this->delOperation:

@@ -1,6 +1,6 @@
 <?php
 namespace Entities;
-use matt;
+
 /**
  * @Entity(repositoryClass="Entities\AfaRepository")
  * @Table(name="afa")
@@ -35,9 +35,7 @@ class Afa {
 	}
 
 	public function setErtek($ertek) {
-		if (matt\Filter::isInt($ertek)) {
-	    	$this->ertek = $ertek;
-		}
+	   	$this->ertek = $ertek;
 	}
 
 	public function calcBrutto($netto) {

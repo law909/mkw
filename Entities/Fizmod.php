@@ -1,6 +1,6 @@
 <?php
 namespace Entities;
-use matt;
+
 /**
  * @Entity(repositoryClass="Entities\FizmodRepository")
  * @Table(name="fizmod")
@@ -51,9 +51,7 @@ class Fizmod {
 	}
 
 	public function setHaladek($haladek) {
-		if (matt\Filter::isInt($haladek)) {
-	    	$this->haladek = $haladek;
-		}
+    	$this->haladek = $haladek;
 	}
 
 	public function getWebes() {
@@ -61,8 +59,6 @@ class Fizmod {
 	}
 
 	public function setWebes($webes) {
-		if (matt\Filter::isBool($webes)) {
-	    	$this->webes = $webes;
-		}
+    	$this->webes = $webes;
 	}
 }

@@ -1,10 +1,7 @@
 <?php
 namespace Entities;
 
-use Entities\TermekKep;
-use matt, \Doctrine\ORM;
-
-class TermekKepRepository extends matt\Repository {
+class TermekKepRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

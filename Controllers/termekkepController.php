@@ -73,7 +73,7 @@ class termekkepController extends \mkwhelpers\MattableController {
 		$pp=pathinfo($_FILES['userfile']['name']);
 		$uploadfile=$uploaddir.$this->getStringParam('nev').'.'.$pp['extension'];
 		if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-			$imageproc=new matt\Images($uploadfile);
+			$imageproc=new \mkwhelpers\Images($uploadfile);
 			$imageproc->setJpgquality(store::getParameter('jpgquality'));
 			$imageproc->setPngquality(store::getParameter('pngquality'));
 			$smallfn=$uploaddir.$this->getStringParam('nev').store::getParameter('smallimgpost','').'.'.$pp['extension'];

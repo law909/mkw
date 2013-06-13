@@ -1,10 +1,7 @@
 <?php
 namespace Entities;
 
-use Entities\Korhinta;
-use matt, \Doctrine\ORM;
-
-class KorhintaRepository extends matt\Repository {
+class KorhintaRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

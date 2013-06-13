@@ -1,6 +1,6 @@
 <?php
 namespace Entities;
-use matt;
+
 /**
  * @Entity(repositoryClass="Entities\ValutanemRepository")
  * @Table(name="valutanem")
@@ -48,9 +48,7 @@ class Valutanem {
 	}
 
 	public function setKerekit($kerekit) {
-		if (matt\Filter::isBool($kerekit)) {
-			$this->kerekit = $kerekit;
-		}
+		$this->kerekit = $kerekit;
 	}
 
 	public function getHivatalos() {
@@ -58,9 +56,7 @@ class Valutanem {
 	}
 
 	public function setHivatalos($hivatalos) {
-		if (matt\Filter::isBool($hivatalos)) {
-			$this->hivatalos = $hivatalos;
-		}
+		$this->hivatalos = $hivatalos;
 	}
 
 	public function getMincimlet() {
@@ -68,9 +64,7 @@ class Valutanem {
 	}
 
 	public function setMincimlet($mincimlet) {
-		if (matt\Filter::isInt($mincimlet)) {
-			$this->mincimlet = $mincimlet;
-		}
+		$this->mincimlet = $mincimlet;
 	}
 
 	public function getBankszamla() {

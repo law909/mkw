@@ -1,9 +1,7 @@
 <?php
 namespace Entities;
 
-use matt, \Doctrine\ORM;
-
-class ArfolyamRepository extends matt\Repository {
+class ArfolyamRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

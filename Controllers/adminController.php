@@ -2,38 +2,10 @@
 namespace Controllers;
 use mkw\ArCalculator;
 
-use Proxies\EntitiesAfaProxy;
-use mkw;
 use mkwhelpers, mkw\store;
 use Entities;
 
 class adminController extends mkwhelpers\Controller {
-
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
-		$this->setTemplateFactory(store::getTemplateFactory());
-		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		if (!$this->checkForIE()) {
-			$this->setControllerName($this->getActionName());
-			if ($this->controllerExists($this->getControllerName())) {
-				$pieces=explode(\mkwhelpers\URLCommandSeparator,$this->getCommandString());
-				$this->setActionName(array_shift($pieces));
-				$this->setCommandString(implode(\mkwhelpers\URLCommandSeparator,$pieces));
-				$this->loadController($this->getControllerName())->handleRequest();
-			}
-			else {
-				$methodname=$this->getActionName();
-				if (!$this->adminMethodExists(__CLASS__,$methodname)) {
-					Header('Location: /admin/view');
-				}
-				else {
-					$this->$methodname();
-				}
-			}
-		}
-	}
 
 	private function checkForIE() {
 		$u_agent=$_SERVER['HTTP_USER_AGENT'];
@@ -392,7 +364,7 @@ class adminController extends mkwhelpers\Controller {
 		writelog('KESZ');
 	}
 
-	protected function view() {
+	public function view($params) {
 		$view=$this->createView('main.tpl');
 		$this->generalDataLoader->loadData($view);
 		$view->setVar('pagetitle',t('Főoldal'));

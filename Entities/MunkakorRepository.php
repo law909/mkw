@@ -1,10 +1,7 @@
 <?php
 namespace Entities;
 
-use Entities\Munkakor;
-use matt, \Doctrine\ORM;
-
-class MunkakorRepository extends matt\Repository {
+class MunkakorRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

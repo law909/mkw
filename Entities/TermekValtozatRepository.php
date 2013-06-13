@@ -1,10 +1,7 @@
 <?php
 namespace Entities;
 
-use Entities\TermekValtozat;
-use matt, \Doctrine\ORM;
-
-class TermekValtozatRepository extends matt\Repository {
+class TermekValtozatRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

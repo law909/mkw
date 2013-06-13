@@ -1,10 +1,9 @@
 <?php
 namespace Entities;
 
-use Entities\Termekcimketorzs;
-use matt, \Doctrine\ORM, Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMapping;
 
-class TermekcimketorzsRepository extends matt\Repository {
+class TermekcimketorzsRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);
@@ -43,7 +42,7 @@ class TermekcimketorzsRepository extends matt\Repository {
 		$q->setParameters($this->getQueryParameters($filter));
 		return $q->getSingleScalarResult();
 	}
-	
+
 	public function getAllNative() {
 		$rsm=new ResultSetMapping();
 		$rsm->addScalarResult('termek_id','termek_id');
@@ -94,7 +93,7 @@ class TermekcimketorzsRepository extends matt\Repository {
 		unset($res);
 		return $ret;
 	}
-	
+
 	public function getByNevAndKategoria($nev,$kat) {
 		$a=$this->alias;
 		$q=$this->_em->createQuery('SELECT '.$a.' FROM '.$this->entityname.' '.$a.

@@ -1,8 +1,6 @@
 <?php
 namespace Entities;
 
-use matt, Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * @Entity(repositoryClass="Entities\SzamlatukorRepository")
  * @Table(name="szamlatukor")

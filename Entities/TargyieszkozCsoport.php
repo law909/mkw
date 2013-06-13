@@ -1,6 +1,6 @@
 <?php
 namespace Entities;
-use matt;
+
 /**
  * @Entity(repositoryClass="Entities\TargyieszkozCsoportRepository")
  * @Table(name="targyieszkozcsoport")

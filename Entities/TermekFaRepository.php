@@ -2,10 +2,8 @@
 namespace Entities;
 
 use Doctrine\ORM\Query\ResultSetMapping;
-use Entities\TermekFa;
-use matt, \Doctrine\ORM;
 
-class TermekFaRepository extends matt\Repository {
+class TermekFaRepository extends \mkwhelpers\Repository {
 
 	private $fatomb;
 

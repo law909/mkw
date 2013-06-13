@@ -29,13 +29,13 @@ $classLoader->register();
 $classLoader=new \Doctrine\Common\ClassLoader('mkw');
 $classLoader->register();
 
-$classLoader=new \matt\ControllerClassLoader('Controllers',__DIR__);
+$classLoader=new \mkwhelpers\ControllerClassLoader('Controllers',__DIR__);
 $classLoader->register();
 
 $config = new \Doctrine\ORM\Configuration();
 
-$config->addCustomStringFunction('YEAR', 'matt\year');
-$config->addCustomStringFunction('IF', 'matt\ifelse');
+$config->addCustomStringFunction('YEAR', 'mkwhelpers\year');
+$config->addCustomStringFunction('IF', 'mkwhelper\ifelse');
 
 $chainDriverImpl = new \Doctrine\ORM\Mapping\Driver\DriverChain();
 
@@ -62,7 +62,7 @@ else {
 }
 
 if ($ini['sqllog']) {
-	$config->setSQLLogger(new \matt\FileSQLLogger('sql.log'));
+	$config->setSQLLogger(new \mkwhelpers\FileSQLLogger('sql.log'));
 }
 $setupini=parse_ini_file('setup.ini');
 

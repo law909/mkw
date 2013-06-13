@@ -1,10 +1,7 @@
 <?php
 namespace Entities;
 
-use Entities\Jelenlettipus;
-use matt, \Doctrine\ORM;
-
-class JelenlettipusRepository extends matt\Repository {
+class JelenlettipusRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

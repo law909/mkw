@@ -1,9 +1,7 @@
 <?php
 namespace Entities;
 
-use matt, \Doctrine\ORM;
-
-class VtszRepository extends matt\Repository {
+class VtszRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

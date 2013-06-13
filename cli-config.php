@@ -14,7 +14,7 @@ $classLoader->register();
 $classLoader=new \Doctrine\Common\ClassLoader('Gedmo','DoctrineExtensions/lib');
 $classLoader->register();
 
-$classLoader=new \Doctrine\Common\ClassLoader('matt');
+$classLoader=new \Doctrine\Common\ClassLoader('mkwhelpers');
 $classLoader->register();
 
 $config = new \Doctrine\ORM\Configuration();

@@ -4,35 +4,35 @@ use mkw\store;
 
 class afaController extends \mkwhelpers\JQGridController {
 
-	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
+	public function __construct() {
 		$this->setEntityName('Entities\Afa');
 		$this->setEm(store::getEm());
-		parent::__construct($generalDataLoader,$actionName,$commandString);
+		parent::__construct();
 	}
 
 	protected function loadCells($sor) {
 		return array($sor->getNev(),$sor->getErtek());
 	}
 
-	protected function setFields($obj) {
-		$obj->setNev($this->getStringParam('nev',$obj->getNev()));
-		$obj->setErtek($this->getIntParam('ertek',$obj->getErtek()));
+	protected function setFields($obj,$params) {
+		$obj->setNev($params->getStringRequestParam('nev',$obj->getNev()));
+		$obj->setErtek($params->getIntRequestParam('ertek',$obj->getErtek()));
 		return $obj;
 	}
 
-	protected function jsonlist() {
+	public function jsonlist($params) {
 		$filter=array();
-		if ($this->getBoolParam('_search',false)) {
-			if (!is_null($this->getParam('ertek',NULL))) {
+		if ($params->getBoolRequestParam('_search',false)) {
+			if (!is_null($params->getRequestParam('ertek',NULL))) {
 				$filter['fields'][]='ertek';
-				$filter['values'][]=$this->getIntParam('ertek');
+				$filter['values'][]=$params->getIntRequestParam('ertek');
 			}
-			if (!is_null($this->getParam('nev',NULL))) {
+			if (!is_null($params->getParam('nev',NULL))) {
 				$filter['fields'][]='nev';
-				$filter['values'][]=$this->getStringParam('nev');
+				$filter['values'][]=$params->getStringRequestParam('nev');
 			}
 		}
-		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray());
+		$rec=$this->getRepo()->getAll($filter,$this->getOrderArray($params));
 		echo json_encode($this->loadDataToView($rec));
 	}
 

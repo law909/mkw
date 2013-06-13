@@ -2,9 +2,7 @@
 namespace Entities;
 use Entities\Targyieszkoz;
 
-use matt, \Doctrine\ORM;
-
-class TargyieszkozRepository extends matt\Repository {
+class TargyieszkozRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

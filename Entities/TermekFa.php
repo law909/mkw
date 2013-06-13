@@ -1,6 +1,6 @@
 <?php
 namespace Entities;
-use matt, mkw\Store;
+
 /**
  * @Entity(repositoryClass="Entities\TermekFaRepository")
  * @Table(name="termekfa",indexes={
@@ -174,9 +174,7 @@ class TermekFa {
 	}
 
 	public function setMenu1lathato($menu1lathato) {
-		if (matt\Filter::isBool($menu1lathato)) {
-			$this->menu1lathato = $menu1lathato;
-		}
+		$this->menu1lathato = $menu1lathato;
 	}
 
 	public function getMenu2lathato() {
@@ -184,9 +182,7 @@ class TermekFa {
 	}
 
 	public function setMenu2lathato($menu2lathato) {
-		if (matt\Filter::isBool($menu2lathato)) {
-			$this->menu2lathato = $menu2lathato;
-		}
+		$this->menu2lathato = $menu2lathato;
 	}
 
 	public function getMenu3lathato() {
@@ -194,9 +190,7 @@ class TermekFa {
 	}
 
 	public function setMenu3lathato($menu3lathato) {
-		if (matt\Filter::isBool($menu3lathato)) {
-			$this->menu3lathato = $menu3lathato;
-		}
+		$this->menu3lathato = $menu3lathato;
 	}
 
 	public function getMenu4lathato() {
@@ -204,9 +198,7 @@ class TermekFa {
 	}
 
 	public function setMenu4lathato($menu4lathato) {
-		if (matt\Filter::isBool($menu4lathato)) {
-			$this->menu4lathato = $menu4lathato;
-		}
+		$this->menu4lathato = $menu4lathato;
 	}
 
 	public function getLeiras() {

@@ -1,11 +1,9 @@
 <?php
 namespace Entities;
 
-use Entities\Statlap;
-use matt, \Doctrine\ORM;
 use Doctrine\ORM\Query\ResultSetMapping;
 
-class StatlapRepository extends matt\Repository {
+class StatlapRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);
@@ -23,6 +21,6 @@ class StatlapRepository extends matt\Repository {
 		$q=$this->_em->createNativeQuery('SELECT id,slug,lastmod'
 			.' FROM statlap '
 			.' ORDER BY id',$rsm);
-		return $q->getScalarResult();		
+		return $q->getScalarResult();
 	}
 }

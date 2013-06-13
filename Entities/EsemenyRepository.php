@@ -1,9 +1,7 @@
 <?php
 namespace Entities;
-use Entities\Esemeny;
-use matt, \Doctrine\ORM;
 
-class EsemenyRepository extends matt\Repository {
+class EsemenyRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

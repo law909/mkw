@@ -1,58 +1,14 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class mainController extends matt\Controller {
+class mainController extends \mkwhelpers\Controller {
 
 	private $view;
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setTemplateFactory(store::getTemplateFactory());
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		store::getMainSession();
-		$pc=new partnerController($this->generalDataLoader);
-		if ($pc->checkloggedin()) {
-			$prevuri=$_SERVER['REQUEST_URI'];
-			if (!$prevuri) {
-				$prevuri='/';
-			}
-			if ($pc->autoLogout()) {
-				header('Location: '.$prevuri);
-			}
-			else {
-				$pc->setUtolsoKlikk();
-			}
-		}
-		$methodname=$this->getActionName();
-		if ($methodname=='') {
-			$methodname='view';
-		}
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname($this->getCommandString());
-		}
-		else {
-			$this->setControllerName($this->getActionName());
-			if ($this->controllerExists($this->getControllerName())) {
-				try {
-//					write_log('<Request>='.$_SERVER['REQUEST_URI']);
-					$pieces=explode(matt\URLCommandSeparator,$this->getCommandString());
-					$this->setActionName(array_shift($pieces));
-					$this->setCommandString(implode(matt\URLCommandSeparator,$pieces));
-					$c=$this->loadController($this->getControllerName());
-					$c->handleRequest();
-					$this->storePrevUri();
-				}
-				catch (matt\Exceptions\UnknownMethodException $e) {
-					$this->redirectTo404($methodname);
-				}
-			}
-			else {
-				$this->redirectTo404($methodname);
-			}
-		}
 	}
 
 	private function storePrevUri() {

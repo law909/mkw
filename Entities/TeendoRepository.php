@@ -1,9 +1,7 @@
 <?php
 namespace Entities;
-use Entities\Teendo;
-use matt, \Doctrine\ORM;
 
-class TeendoRepository extends matt\Repository {
+class TeendoRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

@@ -1,10 +1,7 @@
 <?php
 namespace Entities;
 
-use Entities\Hir;
-use matt, \Doctrine\ORM, mkw\Store;
-
-class HirRepository extends matt\Repository {
+class HirRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);

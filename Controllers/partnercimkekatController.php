@@ -61,7 +61,7 @@ class partnercimkekatController extends \mkwhelpers\JQGridController {
 			$res[]=array(
 				'id'=>$kat->getId(),
 				'caption'=>$kat->getNev(),
-				'sanitizedcaption'=>str_replace('.','',$kat->getSlug()), //matt\Filter::toPermalink($kat->getNev())),
+				'sanitizedcaption'=>str_replace('.','',$kat->getSlug()),
 				'cimkek'=>$adat
 			);
 		}
