@@ -4,10 +4,10 @@ use mkw\ArCalculator;
 
 use Proxies\EntitiesAfaProxy;
 use mkw;
-use matt, mkw\store;
+use mkwhelpers, mkw\store;
 use Entities;
 
-class adminController extends matt\Controller {
+class adminController extends mkwhelpers\Controller {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setTemplateFactory(store::getTemplateFactory());
@@ -18,9 +18,9 @@ class adminController extends matt\Controller {
 		if (!$this->checkForIE()) {
 			$this->setControllerName($this->getActionName());
 			if ($this->controllerExists($this->getControllerName())) {
-				$pieces=explode(matt\URLCommandSeparator,$this->getCommandString());
+				$pieces=explode(\mkwhelpers\URLCommandSeparator,$this->getCommandString());
 				$this->setActionName(array_shift($pieces));
-				$this->setCommandString(implode(matt\URLCommandSeparator,$pieces));
+				$this->setCommandString(implode(\mkwhelpers\URLCommandSeparator,$pieces));
 				$this->loadController($this->getControllerName())->handleRequest();
 			}
 			else {
@@ -406,7 +406,7 @@ class adminController extends matt\Controller {
 	}
 
 	protected function sanitize() {
-		echo matt\Filter::toPermalink($this->getStringParam('text',''));
+		echo \mkwhelpers\Filter::toPermalink($this->getStringParam('text',''));
 	}
 
 	protected function cropimage() {

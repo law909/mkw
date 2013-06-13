@@ -23,7 +23,7 @@ $autoloader->register();
 $classLoader=new \Doctrine\Common\ClassLoader('Gedmo','Doctrine/DoctrineExtensions/lib');
 $classLoader->register();
 
-$classLoader=new \Doctrine\Common\ClassLoader('matt');
+$classLoader=new \Doctrine\Common\ClassLoader('mkwhelpers');
 $classLoader->register();
 
 $classLoader=new \Doctrine\Common\ClassLoader('mkw');

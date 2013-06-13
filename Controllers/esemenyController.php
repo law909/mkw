@@ -1,8 +1,8 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class esemenyController extends matt\MattableController {
+class esemenyController extends \mkwhelpers\MattableController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\Esemeny');
@@ -13,19 +13,6 @@ class esemenyController extends matt\MattableController {
 		$this->setListBodyRowTplName('esemenylista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function loadVars($t) {
@@ -53,17 +40,13 @@ class esemenyController extends matt\MattableController {
 	}
 
 	protected function setFields($obj) {
-		try {
-			$ck=store::getEm()->getRepository('Entities\Partner')->find($this->getIntParam('partner',0));
-			if ($ck) {
-				$obj->setPartner($ck);
-			}
-			$obj->setBejegyzes($this->getStringParam('bejegyzes'));
-			$obj->setLeiras($this->getStringParam('leiras'));
-			$obj->setEsedekes($this->getStringParam('esedekes'));
+		$ck=store::getEm()->getRepository('Entities\Partner')->find($this->getIntParam('partner',0));
+		if ($ck) {
+			$obj->setPartner($ck);
 		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
-		}
+		$obj->setBejegyzes($this->getStringParam('bejegyzes'));
+		$obj->setLeiras($this->getStringParam('leiras'));
+		$obj->setEsedekes($this->getStringParam('esedekes'));
 		return $obj;
 	}
 

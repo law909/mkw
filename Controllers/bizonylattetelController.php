@@ -2,9 +2,9 @@
 namespace Controllers;
 use mkw\ArCalculator;
 
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class bizonylattetelController extends matt\MattableController {
+class bizonylattetelController extends \mkwhelpers\MattableController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\Bizonylattetel');
@@ -15,19 +15,6 @@ class bizonylattetelController extends matt\MattableController {
 //		$this->setListBodyRowTplName('?howto?lista_tbody_tr.tpl');
 //		$this->setListBodyRowVarName('_egyed');
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	public function loadVars($t,$forKarb=false) {
@@ -85,10 +72,6 @@ class bizonylattetelController extends matt\MattableController {
 	}
 
 	protected function setFields($obj) {
-		try {
-		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
-		}
 		return $obj;
 	}
 

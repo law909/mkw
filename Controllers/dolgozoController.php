@@ -1,10 +1,9 @@
 <?php
 namespace Controllers;
-use Entities\Munkakor;
 
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class dolgozoController extends matt\MattableController {
+class dolgozoController extends \mkwhelpers\MattableController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\Dolgozo');
@@ -15,19 +14,6 @@ class dolgozoController extends matt\MattableController {
 		$this->setListBodyRowTplName('dolgozolista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function loadVars($t) {
@@ -70,28 +56,24 @@ class dolgozoController extends matt\MattableController {
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj->setNev($this->getStringParam('nev'));
-			$obj->setIrszam($this->getStringParam('irszam'));
-			$obj->setVaros($this->getStringParam('varos'));
-			$obj->setUtca($this->getStringParam('utca'));
-			$obj->setTelefon($this->getStringParam('telefon'));
-			$obj->setEmail($this->getStringParam('email'));
-			$obj->setSzulido($this->getStringParam('szulido'));
-			$obj->setSzulhely($this->getStringParam('szulhely'));
-			$obj->setEvesmaxszabi($this->getIntParam('evesmaxszabi'));
-			$obj->setMunkaviszonykezdete($this->getStringParam('munkaviszonykezdete'));
+		$obj->setNev($this->getStringParam('nev'));
+		$obj->setIrszam($this->getStringParam('irszam'));
+		$obj->setVaros($this->getStringParam('varos'));
+		$obj->setUtca($this->getStringParam('utca'));
+		$obj->setTelefon($this->getStringParam('telefon'));
+		$obj->setEmail($this->getStringParam('email'));
+		$obj->setSzulido($this->getStringParam('szulido'));
+		$obj->setSzulhely($this->getStringParam('szulhely'));
+		$obj->setEvesmaxszabi($this->getIntParam('evesmaxszabi'));
+		$obj->setMunkaviszonykezdete($this->getStringParam('munkaviszonykezdete'));
 
-			$ck=store::getEm()->getRepository('Entities\Termek')->find($this->getIntParam('muvelet',0));
-			if ($ck) {
-				$obj->setMuvelet($ck);
-			}
-			$ck=store::getEm()->getRepository('Entities\Munkakor')->find($this->getIntParam('munkakor',0));
-			if ($ck) {
-				$obj->setMunkakor($ck);
-			}
+		$ck=store::getEm()->getRepository('Entities\Termek')->find($this->getIntParam('muvelet',0));
+		if ($ck) {
+			$obj->setMuvelet($ck);
 		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
+		$ck=store::getEm()->getRepository('Entities\Munkakor')->find($this->getIntParam('munkakor',0));
+		if ($ck) {
+			$obj->setMunkakor($ck);
 		}
 		return $obj;
 	}

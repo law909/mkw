@@ -1,7 +1,7 @@
 <?php
 namespace Controllers;
 
-use matt\Exceptions, mkw\store;
+use mkw\store;
 
 class nullaslistaController extends bizonylatfejController {
 
@@ -14,19 +14,6 @@ class nullaslistaController extends bizonylatfejController {
 		$this->setKarbTplName('nullaslistafejkarb.tpl');
 		$this->setListBodyRowTplName('nullaslistafejlista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new \matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function setVars($view) {

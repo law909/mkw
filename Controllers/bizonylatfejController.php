@@ -2,9 +2,9 @@
 namespace Controllers;
 use Entities\Bizonylattetel;
 
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class bizonylatfejController extends matt\MattableController {
+class bizonylatfejController extends \mkwhelpers\MattableController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\Megrendelesfej');
@@ -15,19 +15,6 @@ class bizonylatfejController extends matt\MattableController {
 //		$this->setListBodyRowTplName('megrendelesfejlista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function loadVars($t,$forKarb=false) {
@@ -110,54 +97,77 @@ class bizonylatfejController extends matt\MattableController {
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
+		$obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
 
-			$obj->setErbizonylatszam($this->getStringParam('erbizonylatszam'));
-			$ck=store::getEm()->getRepository('Entities\Partner')->find($this->getIntParam('partner'));
-			if ($ck) {
-				$obj->setPartner($ck);
-			}
-			$ck=store::getEm()->getRepository('Entities\Raktar')->find($this->getIntParam('raktar'));
-			if ($ck) {
-				$obj->setRaktar($ck);
-			}
-			$ck=store::getEm()->getRepository('Entities\Fizmod')->find($this->getIntParam('fizmod'));
-			if ($ck) {
-				$obj->setFizmod($ck);
-			}
-			$obj->setKelt($this->getStringParam('kelt'));
-			$obj->setTeljesites($this->getStringParam('teljesites'));
-			$obj->setEsedekesseg($this->getStringParam('esedekesseg'));
-			$obj->setHatarido($this->getStringParam('hatarido'));
+		$obj->setErbizonylatszam($this->getStringParam('erbizonylatszam'));
+		$ck=store::getEm()->getRepository('Entities\Partner')->find($this->getIntParam('partner'));
+		if ($ck) {
+			$obj->setPartner($ck);
+		}
+		$ck=store::getEm()->getRepository('Entities\Raktar')->find($this->getIntParam('raktar'));
+		if ($ck) {
+			$obj->setRaktar($ck);
+		}
+		$ck=store::getEm()->getRepository('Entities\Fizmod')->find($this->getIntParam('fizmod'));
+		if ($ck) {
+			$obj->setFizmod($ck);
+		}
+		$obj->setKelt($this->getStringParam('kelt'));
+		$obj->setTeljesites($this->getStringParam('teljesites'));
+		$obj->setEsedekesseg($this->getStringParam('esedekesseg'));
+		$obj->setHatarido($this->getStringParam('hatarido'));
 
-			$ck=store::getEm()->getRepository('Entities\Valutanem')->find($this->getIntParam('valutanem'));
-			if ($ck) {
-				$obj->setValutanem($ck);
-			}
+		$ck=store::getEm()->getRepository('Entities\Valutanem')->find($this->getIntParam('valutanem'));
+		if ($ck) {
+			$obj->setValutanem($ck);
+		}
 
-			$obj->setArfolyam($this->getNumParam('arfolyam'));
+		$obj->setArfolyam($this->getNumParam('arfolyam'));
 
-			$ck=store::getEm()->getRepository('Entities\Bankszamla')->find($this->getIntParam('bankszamla'));
-			if ($ck) {
-				$obj->setBankszamla($ck);
-			}
+		$ck=store::getEm()->getRepository('Entities\Bankszamla')->find($this->getIntParam('bankszamla'));
+		if ($ck) {
+			$obj->setBankszamla($ck);
+		}
 
-			$obj->setMegjegyzes($this->getStringParam('megjegyzes'));
+		$obj->setMegjegyzes($this->getStringParam('megjegyzes'));
 
-			$obj->generateId(); // az üres kelt miatt került a végére
+		$obj->generateId(); // az üres kelt miatt került a végére
 
-			$tetelids=$this->getArrayParam('tetelid');
-			foreach($tetelids as $tetelid) {
-				if (($this->getIntParam('teteltermek_'.$tetelid)>0)) {
-					$oper=$this->getStringParam('teteloper_'.$tetelid);
-					$termek=$this->getEm()->getRepository('Entities\Termek')->find($this->getIntParam('teteltermek_'.$tetelid));
-					if ($oper=='add') {
-						$tetel=new Bizonylattetel();
-						$obj->addBizonylattetel($tetel);
+		$tetelids=$this->getArrayParam('tetelid');
+		foreach($tetelids as $tetelid) {
+			if (($this->getIntParam('teteltermek_'.$tetelid)>0)) {
+				$oper=$this->getStringParam('teteloper_'.$tetelid);
+				$termek=$this->getEm()->getRepository('Entities\Termek')->find($this->getIntParam('teteltermek_'.$tetelid));
+				if ($oper=='add') {
+					$tetel=new Bizonylattetel();
+					$obj->addBizonylattetel($tetel);
+					$tetel->setPersistentData();
+					$tetel->setTetelsorszam(1);
+					$tetel->setArvaltoztat(0);
+					if ($termek) {
+						$tetel->setTermek($termek);
+					}
+					$tetel->setMozgat();
+					$tetel->setMennyiseg($this->getFloatParam('tetelmennyiseg_'.$tetelid));
+					$tetel->setNettoegysar($this->getFloatParam('tetelnettoegysar_'.$tetelid));
+					$tetel->setBruttoegysar($this->getFloatParam('tetelbruttoegysar_'.$tetelid));
+					$tetel->setNetto($this->getFloatParam('tetelnetto_'.$tetelid));
+					$tetel->setBrutto($this->getFloatParam('tetelbrutto_'.$tetelid));
+					$tetel->setAfaertek($tetel->getBrutto()-$tetel->getNetto());
+					$tetel->setNettoegysarhuf($this->getFloatParam('tetelnettoegysarhuf_'.$tetelid));
+					$tetel->setBruttoegysarhuf($this->getFloatParam('tetelbruttoegysarhuf_'.$tetelid));
+					$tetel->setNettohuf($this->getFloatParam('tetelnettohuf_'.$tetelid));
+					$tetel->setBruttohuf($this->getFloatParam('tetelbruttohuf_'.$tetelid));
+					$tetel->setAfaertekhuf($tetel->getBruttohuf()-$tetel->getNettohuf());
+					$tetel->setHatarido($this->getStringParam('tetelhatarido_'.$tetelid));
+//						$tetel->setArfolyam($this->getFloatParam('arfolyam'));
+					$this->getEm()->persist($tetel);
+				}
+				elseif ($oper=='edit') {
+					$tetel=$this->getEm()->getRepository('Entities\Bizonylattetel')->find($tetelid);
+					if ($tetel) {
 						$tetel->setPersistentData();
-						$tetel->setTetelsorszam(1);
-						$tetel->setArvaltoztat(0);
+						$tetel->setMozgat();
 						if ($termek) {
 							$tetel->setTermek($termek);
 						}
@@ -174,38 +184,11 @@ class bizonylatfejController extends matt\MattableController {
 						$tetel->setBruttohuf($this->getFloatParam('tetelbruttohuf_'.$tetelid));
 						$tetel->setAfaertekhuf($tetel->getBruttohuf()-$tetel->getNettohuf());
 						$tetel->setHatarido($this->getStringParam('tetelhatarido_'.$tetelid));
-//						$tetel->setArfolyam($this->getFloatParam('arfolyam'));
-						$this->getEm()->persist($tetel);
-					}
-					elseif ($oper=='edit') {
-						$tetel=$this->getEm()->getRepository('Entities\Bizonylattetel')->find($tetelid);
-						if ($tetel) {
-							$tetel->setPersistentData();
-							$tetel->setMozgat();
-							if ($termek) {
-								$tetel->setTermek($termek);
-							}
-							$tetel->setMozgat();
-							$tetel->setMennyiseg($this->getFloatParam('tetelmennyiseg_'.$tetelid));
-							$tetel->setNettoegysar($this->getFloatParam('tetelnettoegysar_'.$tetelid));
-							$tetel->setBruttoegysar($this->getFloatParam('tetelbruttoegysar_'.$tetelid));
-							$tetel->setNetto($this->getFloatParam('tetelnetto_'.$tetelid));
-							$tetel->setBrutto($this->getFloatParam('tetelbrutto_'.$tetelid));
-							$tetel->setAfaertek($tetel->getBrutto()-$tetel->getNetto());
-							$tetel->setNettoegysarhuf($this->getFloatParam('tetelnettoegysarhuf_'.$tetelid));
-							$tetel->setBruttoegysarhuf($this->getFloatParam('tetelbruttoegysarhuf_'.$tetelid));
-							$tetel->setNettohuf($this->getFloatParam('tetelnettohuf_'.$tetelid));
-							$tetel->setBruttohuf($this->getFloatParam('tetelbruttohuf_'.$tetelid));
-							$tetel->setAfaertekhuf($tetel->getBruttohuf()-$tetel->getNettohuf());
-							$tetel->setHatarido($this->getStringParam('tetelhatarido_'.$tetelid));
 //							$tetel->setArfolyam($this->getFloatParam('arfolyam'));
-							$this->getEm()->persist($tetel);
-						}
+						$this->getEm()->persist($tetel);
 					}
 				}
 			}
-		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
 		}
 		return $obj;
 	}

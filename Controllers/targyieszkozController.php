@@ -1,8 +1,8 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class targyieszkozController extends matt\MattableController {
+class targyieszkozController extends \mkwhelpers\MattableController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\Targyieszkoz');
@@ -13,19 +13,6 @@ class targyieszkozController extends matt\MattableController {
 		$this->setListBodyRowTplName('targyieszkozlista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function loadVars($t) {
@@ -102,36 +89,32 @@ class targyieszkozController extends matt\MattableController {
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj->setLeltariSzam($this->getStringParam('leltariszam'));
-			$obj->setNev($this->getStringParam('nev'));
-			$obj->setSorozatSzam($this->getStringParam('sorozatszam'));
-			$ck=store::getEm()->getRepository('Entities\Felhasznalo')->find($this->getIntParam('alkalmazott'));
-			if ($ck) {
-				$obj->setAlkalmazott($ck);
-			}
-			$obj->setHasznalatiHely($this->getStringParam('hasznalatihely'));
-			$obj->setTipus($this->getIntParam('tipus'));
-			$obj->setNincsecs($this->getBoolParam('nincsecs'));
-			$ck=store::getEm()->getRepository('Entities\TargyieszkozCsoport')->find($this->getIntParam('csoport'));
-			if ($ck) {
-				$obj->setCsoport($ck);
-			}
-			$obj->setEcselszmod($this->getIntParam('ecselszmod'));
-			//$obj->setSlug($this->getStringParam('slug'));
+		$obj->setLeltariSzam($this->getStringParam('leltariszam'));
+		$obj->setNev($this->getStringParam('nev'));
+		$obj->setSorozatSzam($this->getStringParam('sorozatszam'));
+		$ck=store::getEm()->getRepository('Entities\Felhasznalo')->find($this->getIntParam('alkalmazott'));
+		if ($ck) {
+			$obj->setAlkalmazott($ck);
+		}
+		$obj->setHasznalatiHely($this->getStringParam('hasznalatihely'));
+		$obj->setTipus($this->getIntParam('tipus'));
+		$obj->setNincsecs($this->getBoolParam('nincsecs'));
+		$ck=store::getEm()->getRepository('Entities\TargyieszkozCsoport')->find($this->getIntParam('csoport'));
+		if ($ck) {
+			$obj->setCsoport($ck);
+		}
+		$obj->setEcselszmod($this->getIntParam('ecselszmod'));
+		//$obj->setSlug($this->getStringParam('slug'));
 
-			$obj->setSzvtvleirasikulcs($this->getFloatParam('szvtvleirasikulcs'));
-			$obj->setSzvtvmaradvanyertek($this->getFloatParam('szvtvmaradvanyertek'));
-			$obj->setSzvtvelszkezdete($this->getDateParam('szvtvelszkezdete'));
-			$obj->setTatvleirasikulcs($this->getFloatParam('tatvleirasikulcs'));
-			$obj->setTatvelszkezdete($this->getFloatParam('tatvelszkezdete'));
-			$obj->setAllapot($this->getIntParam('allapot'));
-			$obj->setAllapotDatum($this->getDateParam('allapotdatum'));
-			$obj->setBeszerzesDatum($this->getDateParam('beszerzesdatum'));
-			$obj->setBeszerzesErtek($this->getFloatParam('beszerzesertek'));
-		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
-		}
+		$obj->setSzvtvleirasikulcs($this->getFloatParam('szvtvleirasikulcs'));
+		$obj->setSzvtvmaradvanyertek($this->getFloatParam('szvtvmaradvanyertek'));
+		$obj->setSzvtvelszkezdete($this->getDateParam('szvtvelszkezdete'));
+		$obj->setTatvleirasikulcs($this->getFloatParam('tatvleirasikulcs'));
+		$obj->setTatvelszkezdete($this->getFloatParam('tatvelszkezdete'));
+		$obj->setAllapot($this->getIntParam('allapot'));
+		$obj->setAllapotDatum($this->getDateParam('allapotdatum'));
+		$obj->setBeszerzesDatum($this->getDateParam('beszerzesdatum'));
+		$obj->setBeszerzesErtek($this->getFloatParam('beszerzesertek'));
 		return $obj;
 	}
 

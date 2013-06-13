@@ -1,8 +1,8 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, Entities, mkw\store;
+use mkw\store;
 
-class targyieszkozcsoportController extends matt\JQGridController {
+class targyieszkozcsoportController extends \mkwhelpers\JQGridController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\TargyieszkozCsoport');
@@ -10,32 +10,15 @@ class targyieszkozcsoportController extends matt\JQGridController {
 		parent::__construct($generalDataLoader,$actionName,$commandString);
 	}
 
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
-	}
-
 	protected function loadCells($sor) {
 		return array($sor->getNev(),$sor->getBeszerzesiktgfkviszam(),$sor->getEcsleirasfkviszam(),$sor->getEcsktgfkviszam());
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj->setNev($this->getStringParam('nev'));
-			$obj->setBeszerzesiktgfkviszam($this->getStringParam('beszerzesiktgfkviszam'));
-			$obj->setEcsleirasfkviszam($this->getStringParam('ecsleirasfkviszam'));
-			$obj->setEcsktgfkviszam($this->getStringParam('ecsktgfkviszam'));
-		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
-		}
+		$obj->setNev($this->getStringParam('nev'));
+		$obj->setBeszerzesiktgfkviszam($this->getStringParam('beszerzesiktgfkviszam'));
+		$obj->setEcsleirasfkviszam($this->getStringParam('ecsleirasfkviszam'));
+		$obj->setEcsktgfkviszam($this->getStringParam('ecsktgfkviszam'));
 		return $obj;
 	}
 

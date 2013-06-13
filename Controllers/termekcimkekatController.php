@@ -1,8 +1,8 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class termekcimkekatController extends matt\JQGridController {
+class termekcimkekatController extends \mkwhelpers\JQGridController {
 
 	private $termekcimkek;
 
@@ -10,19 +10,6 @@ class termekcimkekatController extends matt\JQGridController {
 		$this->setEntityName('Entities\Termekcimkekat');
 		$this->setEm(store::getEm());
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function loadCells($obj) {

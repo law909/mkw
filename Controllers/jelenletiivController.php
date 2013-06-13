@@ -1,12 +1,11 @@
 <?php
 namespace Controllers;
-use Entities\DolgozoRepository;
 
 use Entities\Jelenletiiv;
 
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class jelenletiivController extends matt\MattableController {
+class jelenletiivController extends \mkwhelpers\MattableController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\Jelenletiiv');
@@ -17,19 +16,6 @@ class jelenletiivController extends matt\MattableController {
 		$this->setListBodyRowTplName('jelenletiivlista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function loadVars($t) {
@@ -58,19 +44,15 @@ class jelenletiivController extends matt\MattableController {
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj->setDatum($this->getDateParam('datum'));
-			$obj->setMunkaido($this->getIntParam('munkaido'));
-			$ck=store::getEm()->getRepository('Entities\Dolgozo')->find($this->getIntParam('dolgozo',0));
-			if ($ck) {
-				$obj->setDolgozo($ck);
-			}
-			$ck=store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->getIntParam('jelenlettipus',0));
-			if ($ck) {
-				$obj->setJelenlettipus($ck);
-			}
+		$obj->setDatum($this->getDateParam('datum'));
+		$obj->setMunkaido($this->getIntParam('munkaido'));
+		$ck=store::getEm()->getRepository('Entities\Dolgozo')->find($this->getIntParam('dolgozo',0));
+		if ($ck) {
+			$obj->setDolgozo($ck);
 		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
+		$ck=store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->getIntParam('jelenlettipus',0));
+		if ($ck) {
+			$obj->setJelenlettipus($ck);
 		}
 		return $obj;
 	}

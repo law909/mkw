@@ -1,8 +1,8 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class templateController extends matt\MattableController {
+class templateController extends \mkwhelpers\MattableController {
 
 	private $fajlok;
 	private $filedata;
@@ -22,19 +22,6 @@ class templateController extends matt\MattableController {
 			array('id'=>'nincstalalat','caption'=>'Nincs keresési találat','file'=>'tpl/main/'.$theme.'/nincstalalat.tpl')
 		);
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function getFileById($id) {
@@ -106,12 +93,8 @@ class templateController extends matt\MattableController {
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj['id']=$this->getStringParam('id');
-			$obj['szoveg']=$this->getStringParam('szoveg');
-		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
-		}
+		$obj['id']=$this->getStringParam('id');
+		$obj['szoveg']=$this->getStringParam('szoveg');
 		return $obj;
 	}
 

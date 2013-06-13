@@ -1,8 +1,8 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class keresoszologController extends matt\MattableController {
+class keresoszologController extends \mkwhelpers\MattableController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\Keresoszolog');
@@ -13,19 +13,6 @@ class keresoszologController extends matt\MattableController {
 		$this->setListBodyRowTplName('keresoszologlista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function loadVars($t) {
@@ -53,17 +40,13 @@ class keresoszologController extends matt\MattableController {
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj->setNev($this->getStringParam('nev'));
-			/* MINTA ha nem kell, dobd ki
-			$ck=store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->getIntParam('cimkecsoport'));
-			if ($ck) {
-				$obj->setKategoria($ck);
-			}
-			*/
+		$obj->setNev($this->getStringParam('nev'));
+		/* MINTA ha nem kell, dobd ki
+		$ck=store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->getIntParam('cimkecsoport'));
+		if ($ck) {
+			$obj->setKategoria($ck);
 		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
-		}
+		*/
 		return $obj;
 	}
 

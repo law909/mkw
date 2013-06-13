@@ -2,9 +2,9 @@
 namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class termekfaController extends matt\MattableController {
+class termekfaController extends \mkwhelpers\MattableController {
 
 	private $fatomb;
 
@@ -15,19 +15,6 @@ class termekfaController extends matt\MattableController {
 		$this->setKarbFormTplName('termekfakarbform.tpl');
 		$this->setKarbTplName('termekfakarb.tpl');
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function loadVars($t,$forKarb=false) {
@@ -59,26 +46,22 @@ class termekfaController extends matt\MattableController {
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj->setNev($this->getStringParam('nev'));
-			$obj->setOldalcim($this->getStringParam('oldalcim'));
-			$obj->setRovidleiras($this->getStringParam('rovidleiras'));
-			$obj->setLeiras($this->getStringParam('leiras'));
-			$obj->setSeodescription($this->getStringParam('seodescription'));
-			$obj->setSeokeywords($this->getStringParam('seokeywords'));
-			$obj->setMenu1lathato($this->getBoolParam('menu1lathato'));
-			$obj->setMenu2lathato($this->getBoolParam('menu2lathato'));
-			$obj->setMenu3lathato($this->getBoolParam('menu3lathato'));
-			$obj->setMenu4lathato($this->getBoolParam('menu4lathato'));
-			$obj->setKepurl($this->getStringParam('kepurl'));
-			$obj->setKepleiras($this->getStringParam('kepleiras'));
-			$obj->setSorrend($this->getIntParam('sorrend'));
-			$parent=$this->getRepo()->find($this->getIntParam('parentid'));
-			if ($parent) {
-				$obj->setParent($parent);
-			}
-		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
+		$obj->setNev($this->getStringParam('nev'));
+		$obj->setOldalcim($this->getStringParam('oldalcim'));
+		$obj->setRovidleiras($this->getStringParam('rovidleiras'));
+		$obj->setLeiras($this->getStringParam('leiras'));
+		$obj->setSeodescription($this->getStringParam('seodescription'));
+		$obj->setSeokeywords($this->getStringParam('seokeywords'));
+		$obj->setMenu1lathato($this->getBoolParam('menu1lathato'));
+		$obj->setMenu2lathato($this->getBoolParam('menu2lathato'));
+		$obj->setMenu3lathato($this->getBoolParam('menu3lathato'));
+		$obj->setMenu4lathato($this->getBoolParam('menu4lathato'));
+		$obj->setKepurl($this->getStringParam('kepurl'));
+		$obj->setKepleiras($this->getStringParam('kepleiras'));
+		$obj->setSorrend($this->getIntParam('sorrend'));
+		$parent=$this->getRepo()->find($this->getIntParam('parentid'));
+		if ($parent) {
+			$obj->setParent($parent);
 		}
 		return $obj;
 	}

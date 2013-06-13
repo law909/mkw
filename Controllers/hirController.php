@@ -1,8 +1,8 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class hirController extends matt\MattableController {
+class hirController extends \mkwhelpers\MattableController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\Hir');
@@ -13,19 +13,6 @@ class hirController extends matt\MattableController {
 		$this->setListBodyRowTplName('hirlista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function loadVars($t) {
@@ -70,21 +57,17 @@ class hirController extends matt\MattableController {
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj->setCim($this->getStringParam('cim'));
-			$obj->setSorrend($this->getIntParam('sorrend'));
-			$obj->setForras($this->getStringParam('forras'));
-			$obj->setLead($this->getStringParam('lead'));
-			$obj->setSzoveg($this->getStringParam('szoveg'));
-			$obj->setLathato($this->getBoolParam('lathato'));
-			$obj->setDatum($this->getDateParam('datum'));
-			$obj->setElsodatum($this->getDateParam('elsodatum'));
-			$obj->setUtolsodatum($this->getDateParam('utolsodatum'));
-			$obj->setSeodescription($this->getStringParam('seodescription'));
-			$obj->setSeokeywords($this->getStringParam('seokeywords'));
-		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
-		}
+		$obj->setCim($this->getStringParam('cim'));
+		$obj->setSorrend($this->getIntParam('sorrend'));
+		$obj->setForras($this->getStringParam('forras'));
+		$obj->setLead($this->getStringParam('lead'));
+		$obj->setSzoveg($this->getStringParam('szoveg'));
+		$obj->setLathato($this->getBoolParam('lathato'));
+		$obj->setDatum($this->getDateParam('datum'));
+		$obj->setElsodatum($this->getDateParam('elsodatum'));
+		$obj->setUtolsodatum($this->getDateParam('utolsodatum'));
+		$obj->setSeodescription($this->getStringParam('seodescription'));
+		$obj->setSeokeywords($this->getStringParam('seokeywords'));
 		return $obj;
 	}
 

@@ -1,26 +1,13 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, Entities, mkw\store;
+use mkw\store;
 
-class bankszamlaController extends matt\JQGridController {
+class bankszamlaController extends \mkwhelpers\JQGridController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\Bankszamla');
 		$this->setEm(store::getEm());
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function loadCells($sor) {
@@ -31,23 +18,19 @@ class bankszamlaController extends matt\JQGridController {
 	}
 
 	protected function setFields($obj) {
+		$obj->setBanknev($this->getStringParam('banknev'));
+		$obj->setBankcim($this->getStringParam('bankcim'));
+		$obj->setSzamlaszam($this->getStringParam('szamlaszam'));
+		$obj->setSwift($this->getStringParam('swift'));
+		$obj->setIban($this->getStringParam('iban'));
+		$valutanem=store::getEm()->getReference('Entities\Valutanem',$this->getIntParam('valutanem',0));
 		try {
-			$obj->setBanknev($this->getStringParam('banknev'));
-			$obj->setBankcim($this->getStringParam('bankcim'));
-			$obj->setSzamlaszam($this->getStringParam('szamlaszam'));
-			$obj->setSwift($this->getStringParam('swift'));
-			$obj->setIban($this->getStringParam('iban'));
-			$valutanem=store::getEm()->getReference('Entities\Valutanem',$this->getIntParam('valutanem',0));
-			try {
-				$valutanem->getId();
-				$obj->setValutanem($valutanem);
-			}
-			catch (\Doctrine\ORM\EntityNotFoundException $e) {
-			}
-			return $obj;
+			$valutanem->getId();
+			$obj->setValutanem($valutanem);
 		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
+		catch (\Doctrine\ORM\EntityNotFoundException $e) {
 		}
+		return $obj;
 	}
 
 	protected function jsonlist() {

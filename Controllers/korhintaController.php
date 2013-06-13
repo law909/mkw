@@ -1,8 +1,8 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class korhintaController extends matt\MattableController {
+class korhintaController extends \mkwhelpers\MattableController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\Korhinta');
@@ -13,19 +13,6 @@ class korhintaController extends matt\MattableController {
 		$this->setListBodyRowTplName('korhintalista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function loadVars($t) {
@@ -48,16 +35,12 @@ class korhintaController extends matt\MattableController {
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj->setNev($this->getStringParam('nev'));
-			$obj->setUrl($this->getStringParam('url'));
-			$obj->setSzoveg($this->getStringParam('szoveg'));
-			$obj->setKepleiras($this->getStringParam('kepleiras',''));
-			$obj->setLathato($this->getBoolParam('lathato',true));
-			$obj->setSorrend($this->getIntParam('sorrend',0));
-		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
-		}
+		$obj->setNev($this->getStringParam('nev'));
+		$obj->setUrl($this->getStringParam('url'));
+		$obj->setSzoveg($this->getStringParam('szoveg'));
+		$obj->setKepleiras($this->getStringParam('kepleiras',''));
+		$obj->setLathato($this->getBoolParam('lathato',true));
+		$obj->setSorrend($this->getIntParam('sorrend',0));
 		return $obj;
 	}
 

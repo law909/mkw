@@ -1,25 +1,12 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, Entities, mkw\store;
+use mkw\store;
 
-class egyebtorzsController extends matt\Controller {
+class egyebtorzsController extends \mkwhelpers\Controller {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setTemplateFactory(store::getTemplateFactory());
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function view() {

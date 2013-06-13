@@ -1,8 +1,8 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class szamlatukorController extends matt\Controller {
+class szamlatukorController extends \mkwhelpers\Controller {
 
 	private $repo;
 
@@ -10,19 +10,6 @@ class szamlatukorController extends matt\Controller {
 		parent::__construct($generalDataLoader,$actionName,$commandString);
 		$this->entityName='Entities\Szamlatukor';
 		$this->repo=store::getEm()->getRepository($this->entityName);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	private function loadVars($t) {
@@ -45,17 +32,13 @@ class szamlatukorController extends matt\Controller {
 	}
 
 	private function setFields($obj) {
-		try {
-			$obj->setId($this->getStringParam('id'));
-			$obj->setNev($this->getStringParam('nev'));
-			$obj->setMerleg($this->getBoolParam('merleg'));
-			$obj->setAnalitikus($this->getBoolParam('analitikus'));
-			$afa=store::getEm()->getRepository('Entities\Afa')->find($this->getIntParam('afa'));
-			if ($afa) {
-				$obj->setAfa($afa);
-			}
-		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
+		$obj->setId($this->getStringParam('id'));
+		$obj->setNev($this->getStringParam('nev'));
+		$obj->setMerleg($this->getBoolParam('merleg'));
+		$obj->setAnalitikus($this->getBoolParam('analitikus'));
+		$afa=store::getEm()->getRepository('Entities\Afa')->find($this->getIntParam('afa'));
+		if ($afa) {
+			$obj->setAfa($afa);
 		}
 		return $obj;
 	}

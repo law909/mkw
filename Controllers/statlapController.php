@@ -1,8 +1,8 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class statlapController extends matt\MattableController {
+class statlapController extends \mkwhelpers\MattableController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\Statlap');
@@ -13,19 +13,6 @@ class statlapController extends matt\MattableController {
 		$this->setListBodyRowTplName('statlaplista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function loadVars($t) {
@@ -50,14 +37,10 @@ class statlapController extends matt\MattableController {
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj->setOldalcim($this->getStringParam('oldalcim'));
-			$obj->setSzoveg($this->getStringParam('szoveg'));
-			$obj->setSeodescription($this->getStringParam('seodescription'));
-			$obj->setSeokeywords($this->getStringParam('seokeywords'));
-		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
-		}
+		$obj->setOldalcim($this->getStringParam('oldalcim'));
+		$obj->setSzoveg($this->getStringParam('szoveg'));
+		$obj->setSeodescription($this->getStringParam('seodescription'));
+		$obj->setSeokeywords($this->getStringParam('seokeywords'));
 		return $obj;
 	}
 

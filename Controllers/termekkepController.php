@@ -2,9 +2,9 @@
 namespace Controllers;
 use Entities\TermekKep;
 
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class termekkepController extends matt\MattableController {
+class termekkepController extends \mkwhelpers\MattableController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\TermekKep');
@@ -15,19 +15,6 @@ class termekkepController extends matt\MattableController {
 //		$this->setListBodyRowTplName('?howto?lista_tbody_tr.tpl');
 //		$this->setListBodyRowVarName('_egyed');
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	public function loadVars($t) {
@@ -54,12 +41,8 @@ class termekkepController extends matt\MattableController {
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj->setLeiras($this->getStringParam('leiras'));
-			$obj->setUrl($this->getStringParam('url'));
-		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
-		}
+		$obj->setLeiras($this->getStringParam('leiras'));
+		$obj->setUrl($this->getStringParam('url'));
 		return $obj;
 	}
 

@@ -1,7 +1,6 @@
 {
 	"require": {
 		"law909/altorouter": "1.0.*",
-		"law909/mkwhelpers": "1.*",
 		"zendframework/zendframework1": "1.*",
 		"smarty/smarty": "3.*"
 	}

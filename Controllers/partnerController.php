@@ -2,9 +2,9 @@
 namespace Controllers;
 use Entities\Kontakt;
 
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class partnerController extends matt\MattableController {
+class partnerController extends \mkwhelpers\MattableController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\Partner');
@@ -15,19 +15,6 @@ class partnerController extends matt\MattableController {
 		$this->setListBodyRowTplName('partnerlista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_partner');
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function loadVars($t) {
@@ -93,68 +80,80 @@ class partnerController extends matt\MattableController {
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj->setNev($this->getStringParam('nev'));
-			$obj->setVezeteknev($this->getStringParam('vezeteknev'));
-			$obj->setKeresztnev($this->getStringParam('keresztnev'));
-			$obj->setInaktiv($this->getBoolParam('inaktiv'));
-			$obj->setIdegenkod($this->getStringParam('idegenkod'));
-			$obj->setAdoszam($this->getStringParam('adoszam'));
-			$obj->setEuadoszam($this->getStringParam('euadoszam'));
-			$obj->setMukengszam($this->getStringParam('mukengszam'));
-			$obj->setJovengszam($this->getStringParam('jovengszam'));
-			$obj->setOstermszam($this->getStringParam('ostermszam'));
-			$obj->setValligszam($this->getStringParam('valligszam'));
-			$obj->setFvmszam($this->getStringParam('fvmszam'));
-			$obj->setCjszam($this->getStringParam('cjszam'));
-			$obj->setIrszam($this->getStringParam('irszam'));
-			$obj->setVaros($this->getStringParam('varos'));
-			$obj->setUtca($this->getStringParam('utca'));
-			$obj->setLirszam($this->getStringParam('lirszam'));
-			$obj->setLvaros($this->getStringParam('lvaros'));
-			$obj->setLutca($this->getStringParam('lutca'));
-			$obj->setTelefon($this->getStringParam('telefon'));
-			$obj->setMobil($this->getStringParam('mobil'));
-			$obj->setFax($this->getStringParam('fax'));
-			$obj->setEmail($this->getStringParam('email'));
-			$obj->setHonlap($this->getStringParam('honlap'));
-			$obj->setMegjegyzes($this->getStringParam('megjegyzes'));
-			$obj->setSyncid($this->getStringParam('syncid'));
-			$obj->setFizhatido($this->getIntParam('fizhatido'));
-			$obj->setSzamlanev($this->getStringParam('szamlanev'));
-			$obj->setSzamlairszam($this->getStringParam('szamlairszam'));
-			$obj->setSzamlavaros($this->getStringParam('szamlavaros'));
-			$obj->setSzamlautca($this->getStringParam('szamlautca'));
-			$obj->setSzallnev($this->getStringParam('szallnev'));
-			$obj->setSzallirszam($this->getStringParam('szallirszam'));
-			$obj->setSzallvaros($this->getStringParam('szallvaros'));
-			$obj->setSzallutca($this->getStringParam('szallutca'));
-			$obj->setNem($this->getIntParam('nem'));
-			$obj->setSzuletesiido($this->getStringParam('szuletesiido'));
-			$obj->setAkcioshirlevelkell($this->getBoolParam('akcioshirlevelkell'));
-			$obj->setUjdonsaghirlevelkell($this->getBoolParam('ujdonsaghirlevelkell'));
-			$fizmod=store::getEm()->getRepository('Entities\Fizmod')->find($this->getIntParam('fizmod',0));
-			if ($fizmod) {
-				$obj->setFizmod($fizmod);
+		$obj->setNev($this->getStringParam('nev'));
+		$obj->setVezeteknev($this->getStringParam('vezeteknev'));
+		$obj->setKeresztnev($this->getStringParam('keresztnev'));
+		$obj->setInaktiv($this->getBoolParam('inaktiv'));
+		$obj->setIdegenkod($this->getStringParam('idegenkod'));
+		$obj->setAdoszam($this->getStringParam('adoszam'));
+		$obj->setEuadoszam($this->getStringParam('euadoszam'));
+		$obj->setMukengszam($this->getStringParam('mukengszam'));
+		$obj->setJovengszam($this->getStringParam('jovengszam'));
+		$obj->setOstermszam($this->getStringParam('ostermszam'));
+		$obj->setValligszam($this->getStringParam('valligszam'));
+		$obj->setFvmszam($this->getStringParam('fvmszam'));
+		$obj->setCjszam($this->getStringParam('cjszam'));
+		$obj->setIrszam($this->getStringParam('irszam'));
+		$obj->setVaros($this->getStringParam('varos'));
+		$obj->setUtca($this->getStringParam('utca'));
+		$obj->setLirszam($this->getStringParam('lirszam'));
+		$obj->setLvaros($this->getStringParam('lvaros'));
+		$obj->setLutca($this->getStringParam('lutca'));
+		$obj->setTelefon($this->getStringParam('telefon'));
+		$obj->setMobil($this->getStringParam('mobil'));
+		$obj->setFax($this->getStringParam('fax'));
+		$obj->setEmail($this->getStringParam('email'));
+		$obj->setHonlap($this->getStringParam('honlap'));
+		$obj->setMegjegyzes($this->getStringParam('megjegyzes'));
+		$obj->setSyncid($this->getStringParam('syncid'));
+		$obj->setFizhatido($this->getIntParam('fizhatido'));
+		$obj->setSzamlanev($this->getStringParam('szamlanev'));
+		$obj->setSzamlairszam($this->getStringParam('szamlairszam'));
+		$obj->setSzamlavaros($this->getStringParam('szamlavaros'));
+		$obj->setSzamlautca($this->getStringParam('szamlautca'));
+		$obj->setSzallnev($this->getStringParam('szallnev'));
+		$obj->setSzallirszam($this->getStringParam('szallirszam'));
+		$obj->setSzallvaros($this->getStringParam('szallvaros'));
+		$obj->setSzallutca($this->getStringParam('szallutca'));
+		$obj->setNem($this->getIntParam('nem'));
+		$obj->setSzuletesiido($this->getStringParam('szuletesiido'));
+		$obj->setAkcioshirlevelkell($this->getBoolParam('akcioshirlevelkell'));
+		$obj->setUjdonsaghirlevelkell($this->getBoolParam('ujdonsaghirlevelkell'));
+		$fizmod=store::getEm()->getRepository('Entities\Fizmod')->find($this->getIntParam('fizmod',0));
+		if ($fizmod) {
+			$obj->setFizmod($fizmod);
+		}
+		$uk=store::getEm()->getRepository('Entities\Uzletkoto')->find($this->getIntParam('uzletkoto',0));
+		if ($uk) {
+			$obj->setUzletkoto($uk);
+		}
+		$obj->removeAllCimke();
+		$cimkekpar=$this->getArrayParam('cimkek');
+		foreach($cimkekpar as $cimkekod) {
+			$cimke=$this->getEm()->getRepository('Entities\Partnercimketorzs')->find($cimkekod);
+			if ($cimke) {
+				$obj->addCimke($cimke);
 			}
-			$uk=store::getEm()->getRepository('Entities\Uzletkoto')->find($this->getIntParam('uzletkoto',0));
-			if ($uk) {
-				$obj->setUzletkoto($uk);
-			}
-			$obj->removeAllCimke();
-			$cimkekpar=$this->getArrayParam('cimkek');
-			foreach($cimkekpar as $cimkekod) {
-				$cimke=$this->getEm()->getRepository('Entities\Partnercimketorzs')->find($cimkekod);
-				if ($cimke) {
-					$obj->addCimke($cimke);
+		}
+		$kontaktids=$this->getArrayParam('kontaktid');
+		foreach($kontaktids as $kontaktid) {
+			if ($this->getStringParam('kontaktnev_'.$kontaktid)!=='') {
+				$oper=$this->getStringParam('kontaktoper_'.$kontaktid);
+				if ($oper=='add') {
+					$k=new Kontakt();
+					$k->setNev($this->getStringParam('kontaktnev_'.$kontaktid));
+					$k->setTelefon($this->getStringParam('kontakttelefon_'.$kontaktid));
+					$k->setMobil($this->getStringParam('kontaktmobil_'.$kontaktid));
+					$k->setFax($this->getStringParam('kontaktfax_'.$kontaktid));
+					$k->setEmail($this->getStringParam('kontaktemail_'.$kontaktid));
+					$k->setHonlap($this->getStringParam('kontakthonlap_'.$kontaktid));
+					$k->setMegjegyzes($this->getStringParam('kontaktmegjegyzes_'.$kontaktid));
+					$obj->addKontakt($k);
+					$this->getEm()->persist($k);
 				}
-			}
-			$kontaktids=$this->getArrayParam('kontaktid');
-			foreach($kontaktids as $kontaktid) {
-				if ($this->getStringParam('kontaktnev_'.$kontaktid)!=='') {
-					$oper=$this->getStringParam('kontaktoper_'.$kontaktid);
-					if ($oper=='add') {
-						$k=new Kontakt();
+				elseif ($oper=='edit') {
+					$k=$this->getEm()->getRepository('Entities\Kontakt')->find($kontaktid);
+					if ($k) {
 						$k->setNev($this->getStringParam('kontaktnev_'.$kontaktid));
 						$k->setTelefon($this->getStringParam('kontakttelefon_'.$kontaktid));
 						$k->setMobil($this->getStringParam('kontaktmobil_'.$kontaktid));
@@ -162,26 +161,10 @@ class partnerController extends matt\MattableController {
 						$k->setEmail($this->getStringParam('kontaktemail_'.$kontaktid));
 						$k->setHonlap($this->getStringParam('kontakthonlap_'.$kontaktid));
 						$k->setMegjegyzes($this->getStringParam('kontaktmegjegyzes_'.$kontaktid));
-						$obj->addKontakt($k);
 						$this->getEm()->persist($k);
-					}
-					elseif ($oper=='edit') {
-						$k=$this->getEm()->getRepository('Entities\Kontakt')->find($kontaktid);
-						if ($k) {
-							$k->setNev($this->getStringParam('kontaktnev_'.$kontaktid));
-							$k->setTelefon($this->getStringParam('kontakttelefon_'.$kontaktid));
-							$k->setMobil($this->getStringParam('kontaktmobil_'.$kontaktid));
-							$k->setFax($this->getStringParam('kontaktfax_'.$kontaktid));
-							$k->setEmail($this->getStringParam('kontaktemail_'.$kontaktid));
-							$k->setHonlap($this->getStringParam('kontakthonlap_'.$kontaktid));
-							$k->setMegjegyzes($this->getStringParam('kontaktmegjegyzes_'.$kontaktid));
-							$this->getEm()->persist($k);
-						}
 					}
 				}
 			}
-		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
 		}
 		return $obj;
 	}

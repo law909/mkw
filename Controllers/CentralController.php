@@ -1,18 +1,18 @@
 <?php
 namespace Controllers;
-use matt;
+use mkwhelpers;
 
-class CentralController extends matt\Controller {
+class CentralController extends mkwhelpers\Controller {
 
 	public function handleRequest() {
 		$command='';
-		
-		$x=$this->getStringParam(matt\URLCommand,'');
+
+		$x=$this->getStringParam(mkwhelpers\URLCommand,'');
 		if (isset($x)) {
-			$command=$this->getStringParam(matt\URLCommand,'');
+			$command=$this->getStringParam(mkwhelpers\URLCommand,'');
 		}
-		
-		$commandpieces=explode(matt\URLCommandSeparator,$command);
+
+		$commandpieces=explode(mkwhelpers\URLCommandSeparator,$command);
 		$nam=array_shift($commandpieces);
 		if ($nam=='admin') {
 			$this->setControllerName($nam);
@@ -22,7 +22,7 @@ class CentralController extends matt\Controller {
 			$this->setControllerName('main');
 			$this->setActionName($nam);
 		}
-		$this->setCommandString(implode(matt\URLCommandSeparator,$commandpieces));
+		$this->setCommandString(implode(mkwhelpers\URLCommandSeparator,$commandpieces));
 
 		$ctrl=$this->loadController($this->getControllerName());
 		if ($ctrl) {

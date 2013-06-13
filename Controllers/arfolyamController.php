@@ -1,28 +1,14 @@
 <?php
 namespace Controllers;
-use Doctrine\ORM\Query\Expr\Func;
 
-use matt, matt\Exceptions, Entities, mkw\store;
+use mkw\store;
 
-class arfolyamController extends matt\JQGridController {
+class arfolyamController extends \mkwhelpers\JQGridController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\Arfolyam');
 		$this->setEm(store::getEm());
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function loadCells($sor) {
@@ -31,20 +17,16 @@ class arfolyamController extends matt\JQGridController {
 	}
 
 	protected function setFields($obj) {
+		$obj->setDatum(new \DateTime(str_replace('.','-',$this->getStringParam('datum'))));
+		$obj->setArfolyam($this->getNumParam('arfolyam'));
+		$valutanem=store::getEm()->getReference('Entities\Valutanem',$this->getIntParam('valutanem',0));
 		try {
-			$obj->setDatum(new \DateTime(str_replace('.','-',$this->getStringParam('datum'))));
-			$obj->setArfolyam($this->getNumParam('arfolyam'));
-			$valutanem=store::getEm()->getReference('Entities\Valutanem',$this->getIntParam('valutanem',0));
-			try {
-				$valutanem->getId();
-				$obj->setValutanem($valutanem);
-			}
-			catch (\Doctrine\ORM\EntityNotFoundException $e) {
-			}
-			return $obj;
+			$valutanem->getId();
+			$obj->setValutanem($valutanem);
 		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
+		catch (\Doctrine\ORM\EntityNotFoundException $e) {
 		}
+		return $obj;
 	}
 
 	protected function jsonlist() {

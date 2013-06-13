@@ -1,8 +1,8 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, Entities, mkw\store;
+use mkw\store;
 
-class partnercsoportController extends matt\JQGridController {
+class partnercsoportController extends \mkwhelpers\JQGridController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\PartnerCsoport');
@@ -10,31 +10,14 @@ class partnercsoportController extends matt\JQGridController {
 		parent::__construct($generalDataLoader,$actionName,$commandString);
 	}
 
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
-	}
-
 	protected function loadCells($sor) {
 		return array($sor->getNev(),$sor->getTipusnev(),$sor->getFkviszam());
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj->setNev($this->getStringParam('nev'));
-			$obj->setTipus($this->getStringParam('tipus'));
-			$obj->setFkviszam($this->getStringParam('fkviszam'));
-		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
-		}
+		$obj->setNev($this->getStringParam('nev'));
+		$obj->setTipus($this->getStringParam('tipus'));
+		$obj->setFkviszam($this->getStringParam('fkviszam'));
 		return $obj;
 	}
 

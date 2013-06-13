@@ -1,8 +1,8 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, mkw\store;
+use mkw\store;
 
-class termekvaltozatController extends matt\MattableController {
+class termekvaltozatController extends \mkwhelpers\MattableController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\TermekValtozat');
@@ -13,19 +13,6 @@ class termekvaltozatController extends matt\MattableController {
 //		$this->setListBodyRowTplName('?howto?lista_tbody_tr.tpl');
 //		$this->setListBodyRowVarName('_egyed');
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	public function loadVars($t,$termek,$forKarb=false) {
@@ -79,17 +66,13 @@ class termekvaltozatController extends matt\MattableController {
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj->setLathato($this->getBoolParam('lathato',false));
-			/* MINTA ha nem kell, dobd ki
-			$ck=store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->getIntParam('cimkecsoport'));
-			if ($ck) {
-				$obj->setKategoria($ck);
-			}
-			*/
+		$obj->setLathato($this->getBoolParam('lathato',false));
+		/* MINTA ha nem kell, dobd ki
+		$ck=store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->getIntParam('cimkecsoport'));
+		if ($ck) {
+			$obj->setKategoria($ck);
 		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
-		}
+		*/
 		return $obj;
 	}
 

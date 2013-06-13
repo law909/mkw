@@ -1,26 +1,13 @@
 <?php
 namespace Controllers;
-use matt, matt\Exceptions, Entities, mkw\store;
+use mkw\store;
 
-class vtszController extends matt\JQGridController {
+class vtszController extends \mkwhelpers\JQGridController {
 
 	public function __construct($generalDataLoader,$actionName=null,$commandString=null) {
 		$this->setEntityName('Entities\Vtsz');
 		$this->setEm(store::getEm());
 		parent::__construct($generalDataLoader,$actionName,$commandString);
-	}
-
-	public function handleRequest() {
-		$methodname=$this->getActionName();
-		if ($this->mainMethodExists(__CLASS__,$methodname)) {
-			$this->$methodname();
-		}
-		elseif ($this->adminMethodExists(__CLASS__,$methodname)) {
-				$this->$methodname();
-		}
-		else {
-			throw new matt\Exceptions\UnknownMethodException('"'.__CLASS__.'->'.$methodname.'" does not exist.');
-		}
 	}
 
 	protected function loadCells($sor) {
@@ -32,15 +19,11 @@ class vtszController extends matt\JQGridController {
 	}
 
 	protected function setFields($obj) {
-		try {
-			$obj->setNev($this->getStringParam('nev',$obj->getNev()));
-			$afa=store::getEm()->getReference('Entities\Afa',$this->getIntParam('afa',$obj->getAfa()));
-			$obj->setAfa($afa);
-			$obj->setKozvetitett($this->getBoolParam('kozvetitett'));
-			return $obj;
-		}
-		catch (matt\Exceptions\WrongValueTypeException $e){
-		}
+		$obj->setNev($this->getStringParam('nev',$obj->getNev()));
+		$afa=store::getEm()->getReference('Entities\Afa',$this->getIntParam('afa',$obj->getAfa()));
+		$obj->setAfa($afa);
+		$obj->setKozvetitett($this->getBoolParam('kozvetitett'));
+		return $obj;
 	}
 
 	protected function jsonlist() {
