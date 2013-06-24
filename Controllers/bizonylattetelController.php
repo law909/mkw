@@ -20,51 +20,34 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$vtsz=new vtszController($this->params);
 		$afa=new afaController($this->params);
 		$x=array();
-		if ($t) {
-			$x['id']=$t->getId();
-			$x['termek']=$t->getTermekId();
-			$x['termeknev']=$t->getTermeknev();
-			$x['cikkszam']=$t->getCikkszam();
-			$x['me']=$t->getMe();
-			$x['mennyiseg']=$t->getMennyiseg();
-			$x['nettoegysar']=$t->getNettoegysar();
-			$x['bruttoegysar']=$t->getBruttoegysar();
-			$x['netto']=$t->getNetto();
-			$x['brutto']=$t->getBrutto();
-			$x['nettoegysarhuf']=$t->getNettoegysarhuf();
-			$x['bruttoegysarhuf']=$t->getBruttoegysarhuf();
-			$x['nettohuf']=$t->getNettohuf();
-			$x['bruttohuf']=$t->getBruttohuf();
-			$x['hataridostr']=$t->getHataridoStr();
-			if ($forKarb) {
-				$x['termeklist']=$termek->getBizonylattetelSelectList(($t->getTermek()?$t->getTermek()->getId():0));
-				$x['vtszlist']=$vtsz->getSelectList(($t->getVtsz()?$t->getVtsz()->getId():0));
-				$x['afalist']=$afa->getSelectList(($t->getAfa()?$t->getAfa()->getId():0));
-			}
-			$x['oper']='edit';
+		if (!$t) {
+			$t=new \Entities\Megrendelesfej();
+			$this->getEm()->detach($t);
+			$x['id']=store::createUID();
+			$x['oper']='add';
 		}
 		else {
-			$x['id']=store::createUID();
-			$x['termek']=0;
-			$x['termeknev']='';
-			$x['cikkszam']='';
-			$x['me']='';
-			$x['mennyiseg']=0;
-			$x['nettoegysar']=0;
-			$x['bruttoegysar']=0;
-			$x['netto']=0;
-			$x['brutto']=0;
-			$x['nettoegysarhuf']=0;
-			$x['bruttoegysarhuf']=0;
-			$x['nettohuf']=0;
-			$x['bruttohuf']=0;
-			$x['hataridostr']='';
-			if ($forKarb) {
-				$x['termeklist']=$termek->getBizonylattetelSelectList(0);
-				$x['vtszlist']=$vtsz->getSelectList(0);
-				$x['afalist']=$afa->getSelectList(0);
-			}
-			$x['oper']='add';
+			$x['id']=$t->getId();
+			$x['oper']='edit';
+		}
+		$x['termek']=$t->getTermekId();
+		$x['termeknev']=$t->getTermeknev();
+		$x['cikkszam']=$t->getCikkszam();
+		$x['me']=$t->getMe();
+		$x['mennyiseg']=$t->getMennyiseg();
+		$x['nettoegysar']=$t->getNettoegysar();
+		$x['bruttoegysar']=$t->getBruttoegysar();
+		$x['netto']=$t->getNetto();
+		$x['brutto']=$t->getBrutto();
+		$x['nettoegysarhuf']=$t->getNettoegysarhuf();
+		$x['bruttoegysarhuf']=$t->getBruttoegysarhuf();
+		$x['nettohuf']=$t->getNettohuf();
+		$x['bruttohuf']=$t->getBruttohuf();
+		$x['hataridostr']=$t->getHataridoStr();
+		if ($forKarb) {
+			$x['termeklist']=$termek->getBizonylattetelSelectList(($t->getTermek()?$t->getTermek()->getId():0));
+			$x['vtszlist']=$vtsz->getSelectList(($t->getVtsz()?$t->getVtsz()->getId():0));
+			$x['afalist']=$afa->getSelectList(($t->getAfa()?$t->getAfa()->getId():0));
 		}
 		return $x;
 	}

@@ -14,7 +14,7 @@ class nullaslistatetelController extends \mkwhelpers\JQGridController {
 	}
 
 	protected function setFields($obj) {
-		$termek=$this->getEm()->getRepository('Entities\Termek')->find($params->getIntRequestParam('termek'));
+		$termek=$this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
 		if ($termek) {
 			$obj->setTermek($termek);
 		}

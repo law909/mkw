@@ -19,77 +19,44 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$tetelCtrl=new bizonylattetelController($this->params);
 		$tetel=array();
 		$x=array();
-		if ($t) {
-			$x['id']=$t->getId();
-			$x['bizonylatnev']=$t->getBizonylatnev();
-			$x['erbizonylatszam']=$t->getErbizonylatszam();
-			$x['keltstr']=$t->getKeltStr();
-			$x['teljesitesstr']=$t->getTeljesitesStr();
-			$x['esedekessegstr']=$t->getEsedekessegStr();
-			$x['hataridostr']=$t->getHataridoStr();
-			$x['partner']=$t->getPartnerId();
-			$x['partnernev']=$t->getPartnernev();
-			$x['partnerirszam']=$t->getPartnerirszam();
-			$x['partnervaros']=$t->getPartnervaros();
-			$x['partnerutca']=$t->getPartnerutca();
-			$x['raktar']=$t->getRaktarId();
-			$x['raktarnev']=$t->getRaktarnev();
-			$x['fizmod']=$t->getFizmodId();
-			$x['fizmodnev']=$t->getFizmodnev();
-			$x['valutanem']=$t->getValutanemId();
-			$x['valutanemnev']=$t->getValutanemNev();
-			$x['arfolyam']=$t->getArfolyam();
-			$x['bankszamla']=$t->getBankszamlaId();
-			$x['bankszamlanev']=$t->getBankszamlaNev();
-			$x['netto']=$t->getNetto();
-			$x['afa']=$t->getAfa();
-			$x['brutto']=$t->getBrutto();
-			$x['nettohuf']=$t->getNettohuf();
-			$x['afahuf']=$t->getAfahuf();
-			$x['bruttohuf']=$t->getBruttohuf();
-			$x['megjegyzes']=$t->getMegjegyzes();
-			if ($forKarb) {
-				foreach($t->getBizonylattetelek() as $ttetel) {
-					$tetel[]=$tetelCtrl->loadVars($ttetel,true);
-				}
-//				$tetel[]=$tetelCtrl->loadVars(null,true);
-				$x['tetelek']=$tetel;
-			}
+		if (!$t) {
+			$t=new \Entities\Megrendelesfej();
+			$this->getEm()->detach($t);
 		}
-		else {
-			$x['id']='';
-			$x['bizonylatnev']='';
-			$x['erbizonylatszam']='';
-			$ma=new \DateTime();
-			$x['keltstr']=$ma->format(store::$DateFormat);
-			$x['teljesitesstr']=$ma->format(store::$DateFormat);
-			$x['esedekessegstr']=$ma->format(store::$DateFormat);
-			$x['hataridostr']=$ma->format(store::$DateFormat);
-			$x['partner']=0;
-			$x['partnernev']='';
-			$x['partnerirszam']='';
-			$x['partnervaros']='';
-			$x['partnerutca']='';
-			$x['raktar']=0;
-			$x['raktarnev']='';
-			$x['fizmod']=0;
-			$x['fizmodnev']='';
-			$x['valutanem']=0;
-			$x['valutanemnev']='';
-			$x['arfolyam']=0;
-			$x['bankszamla']=0;
-			$x['bankszamlanev']='';
-			$x['netto']=0;
-			$x['afa']=0;
-			$x['brutto']=0;
-			$x['nettohuf']=0;
-			$x['afahuf']=0;
-			$x['bruttohuf']=0;
-			$x['megjegyzes']='';
-			if ($forKarb) {
-//				$tetel[]=$tetelCtrl->loadVars(null,true);
-				$x['tetelek']=$tetel;
+		$x['id']=$t->getId();
+		$x['bizonylatnev']=$t->getBizonylatnev();
+		$x['erbizonylatszam']=$t->getErbizonylatszam();
+		$x['keltstr']=$t->getKeltStr();
+		$x['teljesitesstr']=$t->getTeljesitesStr();
+		$x['esedekessegstr']=$t->getEsedekessegStr();
+		$x['hataridostr']=$t->getHataridoStr();
+		$x['partner']=$t->getPartnerId();
+		$x['partnernev']=$t->getPartnernev();
+		$x['partnerirszam']=$t->getPartnerirszam();
+		$x['partnervaros']=$t->getPartnervaros();
+		$x['partnerutca']=$t->getPartnerutca();
+		$x['raktar']=$t->getRaktarId();
+		$x['raktarnev']=$t->getRaktarnev();
+		$x['fizmod']=$t->getFizmodId();
+		$x['fizmodnev']=$t->getFizmodnev();
+		$x['valutanem']=$t->getValutanemId();
+		$x['valutanemnev']=$t->getValutanemNev();
+		$x['arfolyam']=$t->getArfolyam();
+		$x['bankszamla']=$t->getBankszamlaId();
+		$x['bankszamlanev']=$t->getBankszamlaNev();
+		$x['netto']=$t->getNetto();
+		$x['afa']=$t->getAfa();
+		$x['brutto']=$t->getBrutto();
+		$x['nettohuf']=$t->getNettohuf();
+		$x['afahuf']=$t->getAfahuf();
+		$x['bruttohuf']=$t->getBruttohuf();
+		$x['megjegyzes']=$t->getMegjegyzes();
+		if ($forKarb) {
+			foreach($t->getBizonylattetelek() as $ttetel) {
+				$tetel[]=$tetelCtrl->loadVars($ttetel,true);
 			}
+//				$tetel[]=$tetelCtrl->loadVars(null,true);
+			$x['tetelek']=$tetel;
 		}
 		return $x;
 	}
@@ -97,45 +64,45 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 	protected function setFields($obj) {
 		$obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
 
-		$obj->setErbizonylatszam($this->getStringParam('erbizonylatszam'));
-		$ck=store::getEm()->getRepository('Entities\Partner')->find($this->getIntParam('partner'));
+		$obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
+		$ck=store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
 		if ($ck) {
 			$obj->setPartner($ck);
 		}
-		$ck=store::getEm()->getRepository('Entities\Raktar')->find($this->getIntParam('raktar'));
+		$ck=store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar'));
 		if ($ck) {
 			$obj->setRaktar($ck);
 		}
-		$ck=store::getEm()->getRepository('Entities\Fizmod')->find($this->getIntParam('fizmod'));
+		$ck=store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
 		if ($ck) {
 			$obj->setFizmod($ck);
 		}
-		$obj->setKelt($this->getStringParam('kelt'));
-		$obj->setTeljesites($this->getStringParam('teljesites'));
-		$obj->setEsedekesseg($this->getStringParam('esedekesseg'));
-		$obj->setHatarido($this->getStringParam('hatarido'));
+		$obj->setKelt($this->params->getStringRequestParam('kelt'));
+		$obj->setTeljesites($this->params->getStringRequestParam('teljesites'));
+		$obj->setEsedekesseg($this->params->getStringRequestParam('esedekesseg'));
+		$obj->setHatarido($this->params->getStringRequestParam('hatarido'));
 
-		$ck=store::getEm()->getRepository('Entities\Valutanem')->find($this->getIntParam('valutanem'));
+		$ck=store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
 		if ($ck) {
 			$obj->setValutanem($ck);
 		}
 
-		$obj->setArfolyam($this->getNumParam('arfolyam'));
+		$obj->setArfolyam($this->params->getNumRequestParam('arfolyam'));
 
-		$ck=store::getEm()->getRepository('Entities\Bankszamla')->find($this->getIntParam('bankszamla'));
+		$ck=store::getEm()->getRepository('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
 		if ($ck) {
 			$obj->setBankszamla($ck);
 		}
 
-		$obj->setMegjegyzes($this->getStringParam('megjegyzes'));
+		$obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
 
 		$obj->generateId(); // az üres kelt miatt került a végére
 
-		$tetelids=$this->getArrayParam('tetelid');
+		$tetelids=$this->params->getArrayRequestParam('tetelid');
 		foreach($tetelids as $tetelid) {
-			if (($this->getIntParam('teteltermek_'.$tetelid)>0)) {
-				$oper=$this->getStringParam('teteloper_'.$tetelid);
-				$termek=$this->getEm()->getRepository('Entities\Termek')->find($this->getIntParam('teteltermek_'.$tetelid));
+			if (($this->params->getIntRequestParam('teteltermek_'.$tetelid)>0)) {
+				$oper=$this->params->getStringRequestParam('teteloper_'.$tetelid);
+				$termek=$this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('teteltermek_'.$tetelid));
 				if ($oper=='add') {
 					$tetel=new Bizonylattetel();
 					$obj->addBizonylattetel($tetel);
@@ -146,19 +113,19 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 						$tetel->setTermek($termek);
 					}
 					$tetel->setMozgat();
-					$tetel->setMennyiseg($this->getFloatParam('tetelmennyiseg_'.$tetelid));
-					$tetel->setNettoegysar($this->getFloatParam('tetelnettoegysar_'.$tetelid));
-					$tetel->setBruttoegysar($this->getFloatParam('tetelbruttoegysar_'.$tetelid));
-					$tetel->setNetto($this->getFloatParam('tetelnetto_'.$tetelid));
-					$tetel->setBrutto($this->getFloatParam('tetelbrutto_'.$tetelid));
+					$tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_'.$tetelid));
+					$tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_'.$tetelid));
+					$tetel->setBruttoegysar($this->params->getFloatRequestParam('tetelbruttoegysar_'.$tetelid));
+					$tetel->setNetto($this->params->getFloatRequestParam('tetelnetto_'.$tetelid));
+					$tetel->setBrutto($this->params->getFloatRequestParam('tetelbrutto_'.$tetelid));
 					$tetel->setAfaertek($tetel->getBrutto()-$tetel->getNetto());
-					$tetel->setNettoegysarhuf($this->getFloatParam('tetelnettoegysarhuf_'.$tetelid));
-					$tetel->setBruttoegysarhuf($this->getFloatParam('tetelbruttoegysarhuf_'.$tetelid));
-					$tetel->setNettohuf($this->getFloatParam('tetelnettohuf_'.$tetelid));
-					$tetel->setBruttohuf($this->getFloatParam('tetelbruttohuf_'.$tetelid));
+					$tetel->setNettoegysarhuf($this->params->getFloatRequestParam('tetelnettoegysarhuf_'.$tetelid));
+					$tetel->setBruttoegysarhuf($this->params->getFloatRequestParam('tetelbruttoegysarhuf_'.$tetelid));
+					$tetel->setNettohuf($this->params->getFloatRequestParam('tetelnettohuf_'.$tetelid));
+					$tetel->setBruttohuf($this->params->getFloatRequestParam('tetelbruttohuf_'.$tetelid));
 					$tetel->setAfaertekhuf($tetel->getBruttohuf()-$tetel->getNettohuf());
-					$tetel->setHatarido($this->getStringParam('tetelhatarido_'.$tetelid));
-//						$tetel->setArfolyam($this->getFloatParam('arfolyam'));
+					$tetel->setHatarido($this->params->getStringRequestParam('tetelhatarido_'.$tetelid));
+//						$tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
 					$this->getEm()->persist($tetel);
 				}
 				elseif ($oper=='edit') {
@@ -170,19 +137,19 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 							$tetel->setTermek($termek);
 						}
 						$tetel->setMozgat();
-						$tetel->setMennyiseg($this->getFloatParam('tetelmennyiseg_'.$tetelid));
-						$tetel->setNettoegysar($this->getFloatParam('tetelnettoegysar_'.$tetelid));
-						$tetel->setBruttoegysar($this->getFloatParam('tetelbruttoegysar_'.$tetelid));
-						$tetel->setNetto($this->getFloatParam('tetelnetto_'.$tetelid));
-						$tetel->setBrutto($this->getFloatParam('tetelbrutto_'.$tetelid));
+						$tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_'.$tetelid));
+						$tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_'.$tetelid));
+						$tetel->setBruttoegysar($this->params->getFloatRequestParam('tetelbruttoegysar_'.$tetelid));
+						$tetel->setNetto($this->params->getFloatRequestParam('tetelnetto_'.$tetelid));
+						$tetel->setBrutto($this->params->getFloatRequestParam('tetelbrutto_'.$tetelid));
 						$tetel->setAfaertek($tetel->getBrutto()-$tetel->getNetto());
-						$tetel->setNettoegysarhuf($this->getFloatParam('tetelnettoegysarhuf_'.$tetelid));
-						$tetel->setBruttoegysarhuf($this->getFloatParam('tetelbruttoegysarhuf_'.$tetelid));
-						$tetel->setNettohuf($this->getFloatParam('tetelnettohuf_'.$tetelid));
-						$tetel->setBruttohuf($this->getFloatParam('tetelbruttohuf_'.$tetelid));
+						$tetel->setNettoegysarhuf($this->params->getFloatRequestParam('tetelnettoegysarhuf_'.$tetelid));
+						$tetel->setBruttoegysarhuf($this->params->getFloatRequestParam('tetelbruttoegysarhuf_'.$tetelid));
+						$tetel->setNettohuf($this->params->getFloatRequestParam('tetelnettohuf_'.$tetelid));
+						$tetel->setBruttohuf($this->params->getFloatRequestParam('tetelbruttohuf_'.$tetelid));
 						$tetel->setAfaertekhuf($tetel->getBruttohuf()-$tetel->getNettohuf());
-						$tetel->setHatarido($this->getStringParam('tetelhatarido_'.$tetelid));
-//							$tetel->setArfolyam($this->getFloatParam('arfolyam'));
+						$tetel->setHatarido($this->params->getStringRequestParam('tetelhatarido_'.$tetelid));
+//							$tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
 						$this->getEm()->persist($tetel);
 					}
 				}

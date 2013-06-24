@@ -7,13 +7,13 @@ use mkw\store;
 
 class termekController extends \mkwhelpers\MattableController {
 
-	public function __construct() {
+	public function __construct($params) {
 		$this->setEntityName('Entities\Termek');
 		$this->setKarbFormTplName('termekkarbform.tpl');
 		$this->setKarbTplName('termekkarb.tpl');
 		$this->setListBodyRowTplName('termeklista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_termek');
-		parent::__construct();
+		parent::__construct($params);
 	}
 
 	protected function loadVars($t,$forKarb=false) {
@@ -113,63 +113,63 @@ class termekController extends \mkwhelpers\MattableController {
 		return $x;
 	}
 
-	protected function setFields($obj,$params) {
-		$afa=store::getEm()->getRepository('Entities\Afa')->find($params->getIntRequestParam('afa'));
+	protected function setFields($obj) {
+		$afa=store::getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afa'));
 		if ($afa) {
 			$obj->setAfa($afa);
 		}
-		$vtsz=store::getEm()->getRepository('Entities\Vtsz')->find($params->getIntRequestParam('vtsz'));
+		$vtsz=store::getEm()->getRepository('Entities\Vtsz')->find($this->params->getIntRequestParam('vtsz'));
 		if ($vtsz) {
 			$obj->setVtsz($vtsz);
 		}
-		$valt=store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($params->getIntRequestParam('valtozatadattipus'));
+		$valt=store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozatadattipus'));
 		if ($valt) {
 			$obj->setValtozatadattipus($valt);
 		}
 		else {
 			$obj->setValtozatadattipus(null);
 		}
-		$obj->setNev($params->getStringRequestParam('nev'));
-		$obj->setMe($params->getStringRequestParam('me'));
-		$obj->setCikkszam($params->getStringRequestParam('cikkszam'));
-		$obj->setIdegencikkszam($params->getStringRequestParam('idegencikkszam'));
-		$obj->setOldalcim($params->getStringRequestParam('oldalcim'));
-		$obj->setRovidleiras($params->getStringRequestParam('rovidleiras'));
-		$obj->setLeiras($params->getStringRequestParam('leiras'));
-		$obj->setSeodescription($params->getStringRequestParam('seodescription'));
-		$obj->setSeokeywords($params->getStringRequestParam('seokeywords'));
-		$obj->setLathato($params->getBoolRequestParam('lathato',true));
-		$obj->setHozzaszolas($params->getBoolRequestParam('hozzaszolas',false));
-		$obj->setAjanlott($params->getBoolRequestParam('ajanlott',false));
-		$obj->setKiemelt($params->getBoolRequestParam('kiemelt',false));
-		$obj->setInaktiv($params->getBoolRequestParam('inaktiv',false));
-		$obj->setMozgat($params->getBoolRequestParam('mozgat',true));
-		$obj->setHparany($params->getFloatRequestParam('hparany'));
-		$obj->setSzelesseg($params->getFloatRequestParam('szelesseg'));
-		$obj->setMagassag($params->getFloatRequestParam('magassag'));
-		$obj->setHosszusag($params->getFloatRequestParam('hosszusag'));
-		$obj->setSuly($params->getFloatRequestParam('suly'));
-		$obj->setOsszehajthato($params->getBoolRequestParam('osszehajthato'));
-		$obj->setKepurl($params->getStringRequestParam('kepurl',''));
-		$obj->setKepleiras($params->getStringRequestParam('kepleiras',''));
-		$obj->setTermekexportbanszerepel($params->getBoolRequestParam('termekexportbanszerepel',true));
-		$obj->setNemkaphato($params->getBoolRequestParam('nemkaphato',false));
+		$obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setMe($this->params->getStringRequestParam('me'));
+		$obj->setCikkszam($this->params->getStringRequestParam('cikkszam'));
+		$obj->setIdegencikkszam($this->params->getStringRequestParam('idegencikkszam'));
+		$obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
+		$obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
+		$obj->setLeiras($this->params->getStringRequestParam('leiras'));
+		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
+		$obj->setSeokeywords($this->params->getStringRequestParam('seokeywords'));
+		$obj->setLathato($this->params->getBoolRequestParam('lathato',true));
+		$obj->setHozzaszolas($this->params->getBoolRequestParam('hozzaszolas',false));
+		$obj->setAjanlott($this->params->getBoolRequestParam('ajanlott',false));
+		$obj->setKiemelt($this->params->getBoolRequestParam('kiemelt',false));
+		$obj->setInaktiv($this->params->getBoolRequestParam('inaktiv',false));
+		$obj->setMozgat($this->params->getBoolRequestParam('mozgat',true));
+		$obj->setHparany($this->params->getFloatRequestParam('hparany'));
+		$obj->setSzelesseg($this->params->getFloatRequestParam('szelesseg'));
+		$obj->setMagassag($this->params->getFloatRequestParam('magassag'));
+		$obj->setHosszusag($this->params->getFloatRequestParam('hosszusag'));
+		$obj->setSuly($this->params->getFloatRequestParam('suly'));
+		$obj->setOsszehajthato($this->params->getBoolRequestParam('osszehajthato'));
+		$obj->setKepurl($this->params->getStringRequestParam('kepurl',''));
+		$obj->setKepleiras($this->params->getStringRequestParam('kepleiras',''));
+		$obj->setTermekexportbanszerepel($this->params->getBoolRequestParam('termekexportbanszerepel',true));
+		$obj->setNemkaphato($this->params->getBoolRequestParam('nemkaphato',false));
 		$farepo=store::getEm()->getRepository('Entities\TermekFa');
-		$fa=$farepo->find($params->getIntRequestParam('termekfa1'));
+		$fa=$farepo->find($this->params->getIntRequestParam('termekfa1'));
 		if ($fa) {
 			$obj->setTermekfa1($fa);
 		}
 		else {
 			$obj->setTermekfa1(null);
 		}
-		$fa=$farepo->find($params->getIntRequestParam('termekfa2'));
+		$fa=$farepo->find($this->params->getIntRequestParam('termekfa2'));
 		if ($fa) {
 			$obj->setTermekfa2($fa);
 		}
 		else {
 			$obj->setTermekfa2(null);
 		}
-		$fa=$farepo->find($params->getIntRequestParam('termekfa3'));
+		$fa=$farepo->find($this->params->getIntRequestParam('termekfa3'));
 		if ($fa) {
 			$obj->setTermekfa3($fa);
 		}
@@ -177,45 +177,45 @@ class termekController extends \mkwhelpers\MattableController {
 			$obj->setTermekfa3(null);
 		}
 		$obj->removeAllCimke();
-		$cimkekpar=$params->getArrayRequestParam('cimkek');
+		$cimkekpar=$this->params->getArrayRequestParam('cimkek');
 		foreach($cimkekpar as $cimkekod) {
 			$cimke=$this->getEm()->getRepository('Entities\Termekcimketorzs')->find($cimkekod);
 			if ($cimke) {
 				$obj->addCimke($cimke);
 			}
 		}
-		$obj->setBrutto($params->getNumRequestParam('brutto'));
-		$obj->setNetto($params->getNumRequestParam('netto'));
-		$obj->setAkciosnetto($params->getNumRequestParam('akciosnetto'));
-		//$obj->setAkciosbrutto($params->getNumRequestParam('akciosbrutto'));
-		$obj->setAkciostart($params->getStringRequestParam('akciostart'));
-		$obj->setAkciostop($params->getStringRequestParam('akciostop'));
-		$kepids=$params->getArrayRequestParam('kepid');
+		$obj->setBrutto($this->params->getNumRequestParam('brutto'));
+		$obj->setNetto($this->params->getNumRequestParam('netto'));
+		$obj->setAkciosnetto($this->params->getNumRequestParam('akciosnetto'));
+		//$obj->setAkciosbrutto($this->params->getNumRequestParam('akciosbrutto'));
+		$obj->setAkciostart($this->params->getStringRequestParam('akciostart'));
+		$obj->setAkciostop($this->params->getStringRequestParam('akciostop'));
+		$kepids=$this->params->getArrayRequestParam('kepid');
 		foreach($kepids as $kepid) {
-			if ($params->getStringRequestParam('kepurl_'.$kepid,'')!=='') {
-				$oper=$params->getStringRequestParam('kepoper_'.$kepid);
+			if ($this->params->getStringRequestParam('kepurl_'.$kepid,'')!=='') {
+				$oper=$this->params->getStringRequestParam('kepoper_'.$kepid);
 				if ($oper=='add') {
 					$kep=new \Entities\TermekKep();
 					$obj->addTermekKep($kep);
-					$kep->setUrl($params->getStringRequestParam('kepurl_'.$kepid));
-					$kep->setLeiras($params->getStringRequestParam('kepleiras_'.$kepid));
+					$kep->setUrl($this->params->getStringRequestParam('kepurl_'.$kepid));
+					$kep->setLeiras($this->params->getStringRequestParam('kepleiras_'.$kepid));
 					$this->getEm()->persist($kep);
 				}
 				elseif ($oper=='edit') {
 					$kep=store::getEm()->getRepository('Entities\TermekKep')->find($kepid);
 					if ($kep) {
-						$kep->setUrl($params->getStringRequestParam('kepurl_'.$kepid));
-						$kep->setLeiras($params->getStringRequestParam('kepleiras_'.$kepid));
+						$kep->setUrl($this->params->getStringRequestParam('kepurl_'.$kepid));
+						$kep->setLeiras($this->params->getStringRequestParam('kepleiras_'.$kepid));
 						$this->getEm()->persist($kep);
 					}
 				}
 			}
 		}
-		$kapcsolodoids=$params->getArrayRequestParam('kapcsolodoid');
+		$kapcsolodoids=$this->params->getArrayRequestParam('kapcsolodoid');
 		foreach($kapcsolodoids as $kapcsolodoid) {
-			if (($params->getIntRequestParam('kapcsolodoaltermek_'.$kapcsolodoid)>0)) {
-				$oper=$params->getStringRequestParam('kapcsolodooper_'.$kapcsolodoid);
-				$altermek=$this->getEm()->getRepository('Entities\Termek')->find($params->getIntRequestParam('kapcsolodoaltermek_'.$kapcsolodoid));
+			if (($this->params->getIntRequestParam('kapcsolodoaltermek_'.$kapcsolodoid)>0)) {
+				$oper=$this->params->getStringRequestParam('kapcsolodooper_'.$kapcsolodoid);
+				$altermek=$this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('kapcsolodoaltermek_'.$kapcsolodoid));
 				if ($oper=='add') {
 					$kapcsolodo=new \Entities\TermekKapcsolodo();
 					$obj->addTermekKapcsolodo($kapcsolodo);
@@ -236,19 +236,19 @@ class termekController extends \mkwhelpers\MattableController {
 			}
 		}
 		if (store::getSetupValue('receptura')) {
-			$receptids=$params->getArrayRequestParam('receptid');
+			$receptids=$this->params->getArrayRequestParam('receptid');
 			foreach($receptids as $receptid) {
-				if (($params->getIntRequestParam('receptaltermek_'.$receptid)>0)) {
-					$oper=$params->getStringRequestParam('receptoper_'.$receptid);
-					$altermek=$this->getEm()->getRepository('Entities\Termek')->find($params->getIntRequestParam('receptaltermek_'.$receptid));
+				if (($this->params->getIntRequestParam('receptaltermek_'.$receptid)>0)) {
+					$oper=$this->params->getStringRequestParam('receptoper_'.$receptid);
+					$altermek=$this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('receptaltermek_'.$receptid));
 					if ($oper=='add') {
 						$recept=new TermekRecept();
 						$obj->addTermekRecept($recept);
 						if ($altermek) {
 							$recept->setAlTermek($altermek);
 						}
-						$recept->setMennyiseg($params->getFloatRequestParam('receptmennyiseg_'.$receptid));
-						$recept->setKotelezo($params->getBoolRequestParam('receptkotelezo_'.$receptid));
+						$recept->setMennyiseg($this->params->getFloatRequestParam('receptmennyiseg_'.$receptid));
+						$recept->setKotelezo($this->params->getBoolRequestParam('receptkotelezo_'.$receptid));
 						$this->getEm()->persist($recept);
 					}
 					elseif ($oper=='edit') {
@@ -257,8 +257,8 @@ class termekController extends \mkwhelpers\MattableController {
 							if ($altermek) {
 								$recept->setAlTermek($altermek);
 							}
-							$recept->setMennyiseg($params->getFloatRequestParam('receptmennyiseg_'.$receptid));
-							$recept->setKotelezo($params->getBoolRequestParam('receptkotelezo_'.$receptid));
+							$recept->setMennyiseg($this->params->getFloatRequestParam('receptmennyiseg_'.$receptid));
+							$recept->setKotelezo($this->params->getBoolRequestParam('receptkotelezo_'.$receptid));
 							$this->getEm()->persist($recept);
 						}
 					}
@@ -266,41 +266,41 @@ class termekController extends \mkwhelpers\MattableController {
 			}
 		}
 		if (store::getSetupValue('termekvaltozat')) {
-			$valtozatids=$params->getArrayRequestParam('valtozatid');
+			$valtozatids=$this->params->getArrayRequestParam('valtozatid');
 			foreach($valtozatids as $valtozatid) {
 				$valtdb=0;
-				$oper=$params->getStringRequestParam('valtozatoper_'.$valtozatid);
+				$oper=$this->params->getStringRequestParam('valtozatoper_'.$valtozatid);
 				if ($oper=='add') {
 					$valtozat=new TermekValtozat();
 					$obj->addValtozat($valtozat);
-					$valtozat->setLathato($params->getBoolRequestParam('valtozatlathato_'.$valtozatid));
+					$valtozat->setLathato($this->params->getBoolRequestParam('valtozatlathato_'.$valtozatid));
 					if ($obj->getNemkaphato()) {
 						$valtozat->setElerheto(false);
 					}
 					else {
-						$valtozat->setElerheto($params->getBoolRequestParam('valtozatelerheto_'.$valtozatid));
+						$valtozat->setElerheto($this->params->getBoolRequestParam('valtozatelerheto_'.$valtozatid));
 					}
-//						$valtozat->setBrutto($params->getNumRequestParam('valtozatbrutto_'.$valtozatid));
-					$valtozat->setNetto($params->getNumRequestParam('valtozatnetto_'.$valtozatid));
-					$valtozat->setTermekfokep($params->getBoolRequestParam('valtozattermekfokep_'.$valtozatid));
+//						$valtozat->setBrutto($this->params->getNumRequestParam('valtozatbrutto_'.$valtozatid));
+					$valtozat->setNetto($this->params->getNumRequestParam('valtozatnetto_'.$valtozatid));
+					$valtozat->setTermekfokep($this->params->getBoolRequestParam('valtozattermekfokep_'.$valtozatid));
 
-					$at=$this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($params->getIntRequestParam('valtozatadattipus1_'.$valtozatid));
-					$valtert=$params->getStringRequestParam('valtozatertek1_'.$valtozatid);
+					$at=$this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozatadattipus1_'.$valtozatid));
+					$valtert=$this->params->getStringRequestParam('valtozatertek1_'.$valtozatid);
 					if ($at&&$valtert) {
 						$valtozat->setAdatTipus1($at);
 						$valtozat->setErtek1($valtert);
 						$valtdb++;
 					}
 
-					$at=$this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($params->getIntRequestParam('valtozatadattipus2_'.$valtozatid));
-					$valtert=$params->getStringRequestParam('valtozatertek2_'.$valtozatid);
+					$at=$this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozatadattipus2_'.$valtozatid));
+					$valtert=$this->params->getStringRequestParam('valtozatertek2_'.$valtozatid);
 					if ($at&&$valtert) {
 						$valtozat->setAdatTipus2($at);
 						$valtozat->setErtek2($valtert);
 						$valtdb++;
 					}
 
-					$at=$this->getEm()->getRepository('Entities\TermekKep')->find($params->getIntRequestParam('valtozatkepid_'.$valtozatid));
+					$at=$this->getEm()->getRepository('Entities\TermekKep')->find($this->params->getIntRequestParam('valtozatkepid_'.$valtozatid));
 					if ($at) {
 						$valtozat->setKep($at);
 					}
@@ -315,19 +315,19 @@ class termekController extends \mkwhelpers\MattableController {
 				elseif ($oper=='edit') {
 					$valtozat=$this->getEm()->getRepository('Entities\TermekValtozat')->find($valtozatid);
 					if ($valtozat) {
-						$valtozat->setLathato($params->getBoolRequestParam('valtozatlathato_'.$valtozatid));
+						$valtozat->setLathato($this->params->getBoolRequestParam('valtozatlathato_'.$valtozatid));
 						if ($obj->getNemkaphato()) {
 							$valtozat->setElerheto(false);
 						}
 						else {
-							$valtozat->setElerheto($params->getBoolRequestParam('valtozatelerheto_'.$valtozatid));
+							$valtozat->setElerheto($this->params->getBoolRequestParam('valtozatelerheto_'.$valtozatid));
 						}
-//							$valtozat->setBrutto($params->getNumRequestParam('valtozatbrutto_'.$valtozatid));
-						$valtozat->setNetto($params->getNumRequestParam('valtozatnetto_'.$valtozatid));
-						$valtozat->setTermekfokep($params->getBoolRequestParam('valtozattermekfokep_'.$valtozatid));
+//							$valtozat->setBrutto($this->params->getNumRequestParam('valtozatbrutto_'.$valtozatid));
+						$valtozat->setNetto($this->params->getNumRequestParam('valtozatnetto_'.$valtozatid));
+						$valtozat->setTermekfokep($this->params->getBoolRequestParam('valtozattermekfokep_'.$valtozatid));
 
-						$at=$this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($params->getIntRequestParam('valtozatadattipus1_'.$valtozatid));
-						$valtert=$params->getStringRequestParam('valtozatertek1_'.$valtozatid);
+						$at=$this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozatadattipus1_'.$valtozatid));
+						$valtert=$this->params->getStringRequestParam('valtozatertek1_'.$valtozatid);
 						if ($at&&$valtert) {
 							$valtozat->setAdatTipus1($at);
 							$valtozat->setErtek1($valtert);
@@ -337,8 +337,8 @@ class termekController extends \mkwhelpers\MattableController {
 							$valtozat->setErtek1(null);
 						}
 
-						$at=$this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($params->getIntRequestParam('valtozatadattipus2_'.$valtozatid));
-						$valtert=$params->getStringRequestParam('valtozatertek2_'.$valtozatid);
+						$at=$this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozatadattipus2_'.$valtozatid));
+						$valtert=$this->params->getStringRequestParam('valtozatertek2_'.$valtozatid);
 						if ($at&&$valtert) {
 							$valtozat->setAdatTipus2($at);
 							$valtozat->setErtek2($valtert);
@@ -348,7 +348,7 @@ class termekController extends \mkwhelpers\MattableController {
 							$valtozat->setErtek2(null);
 						}
 
-						$at=$this->getEm()->getRepository('Entities\TermekKep')->find($params->getIntRequestParam('valtozatkepid_'.$valtozatid));
+						$at=$this->getEm()->getRepository('Entities\TermekKep')->find($this->params->getIntRequestParam('valtozatkepid_'.$valtozatid));
 						if ($at) {
 							$valtozat->setKep($at);
 						}
@@ -362,18 +362,18 @@ class termekController extends \mkwhelpers\MattableController {
 		return $obj;
 	}
 
-	public function getlistbody($params) {
+	public function getlistbody() {
 		$view=$this->createView('termeklista_tbody.tpl');
 
 		$filter=array();
-		if (!is_null($params->getRequestParam('nevfilter',NULL))) {
+		if (!is_null($this->params->getRequestParam('nevfilter',NULL))) {
 			$filter['fields'][]=array('nev','rovidleiras','cikkszam');
 			$filter['clauses'][]='';
-			$filter['values'][]=$params->getStringRequestParam('nevfilter');
+			$filter['values'][]=$this->params->getStringRequestParam('nevfilter');
 		}
 
-		if (!is_null($params->getRequestParam('cimkefilter',NULL))) {
-			$fv=$params->getArrayRequestParam('cimkefilter');
+		if (!is_null($this->params->getRequestParam('cimkefilter',NULL))) {
+			$fv=$this->params->getArrayRequestParam('cimkefilter');
 			$res=Store::getEm()->getRepository('Entities\Termekcimketorzs')->getTermekIdsWithCimke($fv);
 			$cimkefilter=array();
 			foreach($res as $sor) {
@@ -384,8 +384,8 @@ class termekController extends \mkwhelpers\MattableController {
 			$filter['values'][]=$cimkefilter;
 		}
 
-		if (!is_null($params->getRequestParam('fafilter',NULL))) {
-			$fv=$params->getArrayRequestParam('fafilter');
+		if (!is_null($this->params->getRequestParam('fafilter',NULL))) {
+			$fv=$this->params->getArrayRequestParam('fafilter');
 			$ff=array();
 			$ff['fields'][]='id';
 			$ff['values'][]=$fv;
@@ -452,7 +452,7 @@ class termekController extends \mkwhelpers\MattableController {
 		return $res;
 	}
 
-	public function viewlist($params) {
+	public function viewlist() {
 		$view=$this->createView('termeklista.tpl');
 		$view->setVar('pagetitle',t('Termékek'));
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
@@ -462,9 +462,9 @@ class termekController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($params,$tplname) {
-		$id=$params->getRequestParam('id',0);
-		$oper=$params->getRequestParam('oper','');
+	protected function _getkarb($tplname) {
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 		$view->setVar('pagetitle',t('Termék'));
 		$view->setVar('oper',$oper);
@@ -487,11 +487,11 @@ class termekController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	public function setflag($params) {
-		$id=$params->getIntRequestParam('id');
-		$kibe=$params->getBoolRequestParam('kibe');
-		$flag=$params->getStringRequestParam('flag');
-		$obj=$params->getRepo()->find($id);
+	public function setflag() {
+		$id=$this->params->getIntRequestParam('id');
+		$kibe=$this->params->getBoolRequestParam('kibe');
+		$flag=$this->params->getStringRequestParam('flag');
+		$obj=$this->params->getRepo()->find($id);
 		if ($obj) {
 			switch ($flag) {
 				case 'inaktiv':
@@ -528,10 +528,10 @@ class termekController extends \mkwhelpers\MattableController {
 		}
 	}
 
-	public function getBrutto($params) {
-		$id=$params->getIntRequestParam('id');
-		$netto=$params->getFloatRequestParam('value');
-		$afa=$this->getEm()->getRepository('Entities\Afa')->find($params->getIntRequestParam('afakod'));
+	public function getBrutto() {
+		$id=$this->params->getIntRequestParam('id');
+		$netto=$this->params->getFloatRequestParam('value');
+		$afa=$this->getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afakod'));
 		if (!$afa) {
 			$termek=$this->getRepo()->find($id);
 			if ($termek) {
@@ -546,10 +546,10 @@ class termekController extends \mkwhelpers\MattableController {
 		}
 	}
 
-	public function getNetto($params) {
-		$id=$params->getIntRequestParam('id');
-		$brutto=$params->getFloatRequestParam('value');
-		$afa=$this->getEm()->getRepository('Entities\Afa')->find($params->getIntRequestParam('afakod'));
+	public function getNetto() {
+		$id=$this->params->getIntRequestParam('id');
+		$brutto=$this->params->getFloatRequestParam('value');
+		$afa=$this->getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afakod'));
 		if (!$afa) {
 			$termek=$this->getRepo()->find($id);
 			if ($termek) {

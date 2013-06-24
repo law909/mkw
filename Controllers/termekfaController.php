@@ -111,7 +111,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function save() {
+	public function save() {
 		$ret=$this->saveData();
 		// TODO ettol faszom lassu a mentes
 //		$this->getRepo()->regenerateKarKod();
@@ -126,7 +126,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		}
 	}
 
-	protected function move() {
+	public function move() {
 		$fa=$this->getRepo()->find($this->getIntParam('eztid'));
 		$ide=$this->getRepo()->find($this->getIntParam('ideid'));
 		if (($fa)&&($ide)) {

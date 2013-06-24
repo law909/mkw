@@ -102,8 +102,8 @@ class termekcimkeController extends \mkwhelpers\MattableController {
 	}
 
 	protected function _getkarb($tplname) {
-		$id=$params->getRequestParam('id',0);
-		$oper=$params->getRequestParam('oper','');
+		$id=$this->params->getRequestParam('id',0);
+		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 		$view->setVar('pagetitle',t('Termékcímke'));
 		$view->setVar('controllerscript','termekcimkekarb.js');

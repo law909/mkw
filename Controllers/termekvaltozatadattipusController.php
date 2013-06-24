@@ -18,7 +18,7 @@ class termekvaltozatadattipusController extends \mkwhelpers\JQGridController {
 		return $obj;
 	}
 
-	public function jsonlist($params) {
+	public function jsonlist() {
 		$filter=array();
 		if ($this->params->getBoolRequestParam('_search',false)) {
 			if (!is_null($this->params->getRequestParam('nev',NULL))) {
