@@ -25,32 +25,6 @@ $.jgrid.useJSON=true;
 	<div id="fizmodgridpager"></div>
 	</div>
 	<div class="egyebadat-grid">
-	<table id="partnercsoportgrid"></table>
-	<div id="partnercsoportgridpager"></div>
-	</div>
-	<div class="egyebadat-grid">
-	<table id="termekcsoportgrid"></table>
-	<div id="termekcsoportgridpager"></div>
-	</div>
-	<div class="egyebadat-grid">
-	<table id="targyieszkozcsoportgrid"></table>
-	<div id="targyieszkozcsoportgridpager"></div>
-	</div>
-	<div class="egyebadat-grid">
-	<table id="munkakorgrid"></table>
-	<div id="munkakorgridpager"></div>
-	</div>
-	<div class="egyebadat-grid">
-	<table id="raktargrid"></table>
-	<div id="raktargridpager"></div>
-	</div>
-	<div class="egyebadat-grid">
-	<table id="kapcsolatfelveteltemagrid"></table>
-	<div id="kapcsolatfelveteltemagridpager"></div>
-	</div>
-</div>
-<div class="egyebadat-wrapper">
-	<div class="egyebadat-grid">
 	<table id="valutanemgrid"></table>
 	<div id="valutanemgridpager"></div>
 	</div>
@@ -58,6 +32,12 @@ $.jgrid.useJSON=true;
 	<table id="arfolyamgrid"></table>
 	<div id="arfolyamgridpager"></div>
 	</div>
+	<div class="egyebadat-grid">
+	<table id="raktargrid"></table>
+	<div id="raktargridpager"></div>
+	</div>
+</div>
+<div class="egyebadat-wrapper">
 	<div class="egyebadat-grid">
 	<table id="partnercimkekatgrid"></table>
 	<div id="partnercimkekatgridpager"></div>
@@ -75,12 +55,20 @@ $.jgrid.useJSON=true;
 	<div id="kontaktcimkekatgridpager"></div>
 	</div-->
 	<div class="egyebadat-grid">
+	<table id="munkakorgrid"></table>
+	<div id="munkakorgridpager"></div>
+	</div>
+	<div class="egyebadat-grid">
 	<table id="felhasznalogrid"></table>
 	<div id="felhasznalogridpager"></div>
 	</div>
 	<div class="egyebadat-grid">
 	<table id="jelenlettipusgrid"></table>
 	<div id="jelenlettipusgridpager"></div>
+	</div>
+	<div class="egyebadat-grid">
+	<table id="kapcsolatfelveteltemagrid"></table>
+	<div id="kapcsolatfelveteltemagridpager"></div>
 	</div>
 </div>
 <div class="egyebadat-longwrapper">

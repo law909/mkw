@@ -19,8 +19,6 @@ class Felhasznalo {
 	 * @JoinColumn(name="uzletkoto_id", referencedColumnName="id",nullable=true,onDelete="set null")
 	 */
 	private $uzletkoto;
-	/** @OneToMany(targetEntity="Targyieszkoz", mappedBy="alkalmazott", cascade={"persist","remove"}) */
-	private $targyieszkozok;
 
 	public function getId() {
 		return $this->getFelhasznalonev();
@@ -83,23 +81,6 @@ class Felhasznalo {
 			return true;
 		}
 		return false;
-	}
-
-	public function addTargyieszkoz($targyieszkoz) {
-		if (!$this->targyieszkozok->contains($targyieszkoz)) {
-			$this->targyieszkozok->add($targyieszkoz);
-			$targyieszkoz->setAlkalmazott($this);
-		}
-	}
-
-	public function getTargyieszkozok() {
-		return $this->targyieszkozok;
-	}
-
-	public function removeTargyieszkoz($targyieszkoz) {
-		if ($this->targyieszkozok->removeElement($targyieszkoz)) {
-			$targyieszkoz->removeAlkalmazott();
-		}
 	}
 
 }

@@ -735,7 +735,7 @@ class EntitiesPartnerProxy extends \Entities\Partner implements \Doctrine\ORM\Pr
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'kontaktok', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szamlanev', 'szamlairszam', 'szamlavaros', 'szamlautca', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'kontaktok', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szamlanev', 'szamlairszam', 'szamlavaros', 'szamlautca', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk', 'termekertesitok');
     }
 
     public function __clone()

@@ -108,28 +108,10 @@ class EntitiesFelhasznaloProxy extends \Entities\Felhasznalo implements \Doctrin
         return parent::removeUzletkoto();
     }
 
-    public function addTargyieszkoz($targyieszkoz)
-    {
-        $this->__load();
-        return parent::addTargyieszkoz($targyieszkoz);
-    }
-
-    public function getTargyieszkozok()
-    {
-        $this->__load();
-        return parent::getTargyieszkozok();
-    }
-
-    public function removeTargyieszkoz($targyieszkoz)
-    {
-        $this->__load();
-        return parent::removeTargyieszkoz($targyieszkoz);
-    }
-
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'felhasznalonev', 'jelszo', 'nev', 'uzletkoto', 'targyieszkozok');
+        return array('__isInitialized__', 'felhasznalonev', 'jelszo', 'nev', 'uzletkoto');
     }
 
     public function __clone()
