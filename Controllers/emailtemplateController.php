@@ -27,7 +27,7 @@ class emailtemplateController extends \mkwhelpers\MattableController {
 
 	protected function setFields($obj) {
 		$obj->setNev($this->params->getStringRequestParam('nev'));
-		$obj->setSzoveg($this->params->getStringRequestParam('szoveg'));
+		$obj->setSzoveg($this->params->getOriginalStringRequestParam('szoveg'));
 		return $obj;
 	}
 
@@ -55,7 +55,6 @@ class emailtemplateController extends \mkwhelpers\MattableController {
 		$view=$this->createView('emailtemplatelista.tpl');
 
 		$view->setVar('pagetitle',t('emailtemplate'));
-		$view->setVar('controllerscript','emailtemplatelista.js');
 		$view->printTemplateResult();
 	}
 
@@ -63,7 +62,6 @@ class emailtemplateController extends \mkwhelpers\MattableController {
 		$view=$this->createView('emailtemplatelista.tpl');
 
 		$view->setVar('pagetitle',t('emailtemplate'));
-		$view->setVar('controllerscript','emailtemplatelista.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
 		$view->printTemplateResult();
@@ -75,7 +73,6 @@ class emailtemplateController extends \mkwhelpers\MattableController {
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('emailtemplate'));
-		$view->setVar('controllerscript','emailtemplatekarb.js');
 		$view->setVar('formaction','/admin/emailtemplate/save');
 		$view->setVar('oper',$oper);
 		$record=$this->getRepo()->find($id);

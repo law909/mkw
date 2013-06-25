@@ -343,6 +343,7 @@
 
 		var doEditLink=function(obj) {
 			$(setup.editLink,obj).each(function(i) {
+				console.log(setup.karb.newWindowUrl+'?id='+$(this).attr(_dataattr.recordid)+'&oper='+$(this).attr(_dataattr.oper));
 				$(this).attr('href',setup.karb.newWindowUrl+'?id='+$(this).attr(_dataattr.recordid)+'&oper='+$(this).attr(_dataattr.oper));
 			});
 		};
@@ -377,13 +378,13 @@
 						switch (resp.oper) {
 							case 'edit':
 								if (isNaN(resp.id)) {
-									var x=$(setup.tableRow+resp.id.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/])/g,'\\$1'));
+									var x=setup.tableRow+resp.id.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/])/g,'\\$1');
 								}
 								else {
-									var x=$(setup.tableRow+resp.id);
+									var x=setup.tableRow+resp.id;
 								}
-								x.replaceWith(resp.html);
-								doEditLink(x);
+								$(x).replaceWith(resp.html);
+								doEditLink($(x));
 								styleTbody();
 								break;
 							case 'add':

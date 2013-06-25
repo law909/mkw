@@ -42,8 +42,8 @@ class hirController extends \mkwhelpers\MattableController {
 		$obj->setCim($this->params->getStringRequestParam('cim'));
 		$obj->setSorrend($this->params->getIntRequestParam('sorrend'));
 		$obj->setForras($this->params->getStringRequestParam('forras'));
-		$obj->setLead($this->params->getStringRequestParam('lead'));
-		$obj->setSzoveg($this->params->getStringRequestParam('szoveg'));
+		$obj->setLead($this->params->getOriginalStringRequestParam('lead'));
+		$obj->setSzoveg($this->params->getOriginalStringRequestParam('szoveg'));
 		$obj->setLathato($this->params->getBoolRequestParam('lathato'));
 		$obj->setDatum($this->params->getDateRequestParam('datum'));
 		$obj->setElsodatum($this->params->getDateRequestParam('elsodatum'));
@@ -77,7 +77,6 @@ class hirController extends \mkwhelpers\MattableController {
 		$view=$this->createView('hirlista.tpl');
 
 		$view->setVar('pagetitle',t('Hírek'));
-		$view->setVar('controllerscript','hirlista.js');
 		$view->printTemplateResult();
 	}
 
@@ -85,7 +84,6 @@ class hirController extends \mkwhelpers\MattableController {
 		$view=$this->createView('hirlista.tpl');
 
 		$view->setVar('pagetitle',t('Hír'));
-		$view->setVar('controllerscript','hirlista.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
 		$view->printTemplateResult();
@@ -97,7 +95,6 @@ class hirController extends \mkwhelpers\MattableController {
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Hír'));
-		$view->setVar('controllerscript','hirkarb.js');
 		$view->setVar('formaction','/admin/hir/save');
 		$view->setVar('oper',$oper);
 		$record=$this->getRepo()->find($id);

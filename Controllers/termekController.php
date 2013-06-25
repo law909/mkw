@@ -135,7 +135,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$obj->setIdegencikkszam($this->params->getStringRequestParam('idegencikkszam'));
 		$obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
 		$obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
-		$obj->setLeiras($this->params->getStringRequestParam('leiras'));
+		$obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
 		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
 		$obj->setSeokeywords($this->params->getStringRequestParam('seokeywords'));
 		$obj->setLathato($this->params->getBoolRequestParam('lathato',true));
@@ -410,7 +410,7 @@ class termekController extends \mkwhelpers\MattableController {
 		echo json_encode($this->loadDataToView($egyedek,'termeklista',$view));
 	}
 
-	public function getSelectList($selid) {
+	public function getselectlist($selid) {
 		// TODO sok termek eseten lassu lehet
 		$rec=$this->getRepo()->getAllForSelectList(array(),array('nev'=>'ASC'));
 		$res=array();
@@ -528,7 +528,7 @@ class termekController extends \mkwhelpers\MattableController {
 		}
 	}
 
-	public function getBrutto() {
+	public function getbrutto() {
 		$id=$this->params->getIntRequestParam('id');
 		$netto=$this->params->getFloatRequestParam('value');
 		$afa=$this->getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afakod'));
@@ -546,7 +546,7 @@ class termekController extends \mkwhelpers\MattableController {
 		}
 	}
 
-	public function getNetto() {
+	public function getnetto() {
 		$id=$this->params->getIntRequestParam('id');
 		$brutto=$this->params->getFloatRequestParam('value');
 		$afa=$this->getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afakod'));

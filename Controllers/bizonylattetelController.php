@@ -21,7 +21,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$afa=new afaController($this->params);
 		$x=array();
 		if (!$t) {
-			$t=new \Entities\Megrendelesfej();
+			$t=new \Entities\Bizonylattetel();
 			$this->getEm()->detach($t);
 			$x['id']=store::createUID();
 			$x['oper']='add';

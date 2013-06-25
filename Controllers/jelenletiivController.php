@@ -88,7 +88,6 @@ class jelenletiivController extends \mkwhelpers\MattableController {
 		$view=$this->createView('jelenletiivlista.tpl');
 
 		$view->setVar('pagetitle',t('Jelenléti ívek'));
-		$view->setVar('controllerscript','jelenletiivlista.js');
 		$view->printTemplateResult();
 	}
 
@@ -96,7 +95,6 @@ class jelenletiivController extends \mkwhelpers\MattableController {
 		$view=$this->createView('jelenletiivlista.tpl');
 
 		$view->setVar('pagetitle',t('Jelenléti ívek'));
-		$view->setVar('controllerscript','jelenletiivlista.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
 		$dolgozo=new dolgozoController($this->params);
@@ -112,7 +110,6 @@ class jelenletiivController extends \mkwhelpers\MattableController {
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Jelenléti ív'));
-		$view->setVar('controllerscript','jelenletiivkarb.js');
 		$view->setVar('formaction','/admin/jelenletiiv/save');
 		$view->setVar('oper',$oper);
 		$record=$this->getRepo()->findWithJoins($id);

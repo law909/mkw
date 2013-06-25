@@ -26,10 +26,12 @@ class ParameterHandler implements IParameterHandler {
 		}
 	}
 
-	public function getParam($key,$default=null) {
+	public function getParam($key,$default=null,$sanitize=true) {
 		if (array_key_exists($key,$this->params['params'])) {
 			$data=$this->trim($this->params['params'][$key]);
-			$data=\mkw\Store::getSanitizer()->sanitize($data);
+			if ($sanitize) {
+				$data=\mkw\Store::getSanitizer()->sanitize($data);
+			}
 			return $this->trim($data);
 		}
 		else {
@@ -37,10 +39,12 @@ class ParameterHandler implements IParameterHandler {
 		}
 	}
 
-	public function getRequestParam($key,$default=null) {
+	public function getRequestParam($key,$default=null,$sanitize=true) {
 		if (array_key_exists($key,$this->params['requestparams'])) {
 			$data=$this->trim($this->params['requestparams'][$key]);
-			$data=\mkw\Store::getSanitizer()->sanitize($data);
+			if ($sanitize) {
+				$data=\mkw\Store::getSanitizer()->sanitize($data);
+			}
 			return $this->trim($data);
 		}
 		else {
@@ -66,6 +70,10 @@ class ParameterHandler implements IParameterHandler {
 
 	public function getStringParam($key,$default='') {
 		return $this->typeconverter->toString($this->getParam($key,$default));
+	}
+
+	public function getOriginalStringParam($key,$default='') {
+		return $this->typeconverter->toString($this->getParam($key,$default,false));
 	}
 
 	public function getDateParam($key,$default='') {
@@ -94,6 +102,10 @@ class ParameterHandler implements IParameterHandler {
 
 	public function getStringRequestParam($key,$default='') {
 		return $this->typeconverter->toString($this->getRequestParam($key,$default));
+	}
+
+	public function getOriginalStringRequestParam($key,$default='') {
+		return $this->typeconverter->toString($this->getRequestParam($key,$default,false));
 	}
 
 	public function getDateRequestParam($key,$default='') {

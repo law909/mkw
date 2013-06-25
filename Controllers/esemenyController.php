@@ -79,7 +79,6 @@ class esemenyController extends \mkwhelpers\MattableController {
 		$view=$this->createView('esemenylista.tpl');
 
 		$view->setVar('pagetitle',t('Események'));
-		$view->setVar('controllerscript','esemenylista.js');
 		$view->printTemplateResult();
 	}
 
@@ -87,7 +86,6 @@ class esemenyController extends \mkwhelpers\MattableController {
 		$view=$this->createView('esemenylista.tpl');
 
 		$view->setVar('pagetitle',t('Események'));
-		$view->setVar('controllerscript','esemenylista.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
 		$view->printTemplateResult();
@@ -99,7 +97,6 @@ class esemenyController extends \mkwhelpers\MattableController {
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Esemény'));
-		$view->setVar('controllerscript','esemenykarb.js');
 		$view->setVar('formaction','/admin/esemeny/save');
 		$view->setVar('oper',$oper);
 		$record=$this->getRepo()->findWithJoins($id);

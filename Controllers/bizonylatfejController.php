@@ -20,7 +20,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$tetel=array();
 		$x=array();
 		if (!$t) {
-			$t=new \Entities\Megrendelesfej();
+			$t=new \Entities\Bizonylatfej();
 			$this->getEm()->detach($t);
 		}
 		$x['id']=$t->getId();

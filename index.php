@@ -78,6 +78,7 @@ $router->map('POST','/admin/afa/save','afaController#save','afasave');
 $router->map('GET','/admin/arfolyam/jsonlist','arfolyamController#jsonlist','arfolyamjsonlist');
 $router->map('GET','/admin/arfolyam/htmllist','arfolyamController#htmllist','arfolyamhtmllist');
 $router->map('POST','/admin/arfolyam/save','arfolyamController#save','arfolyamsave');
+$router->map('GET','/admin/arfolyam/getarfolyam','arfolyamController#getarfolyam','getarfolyam');
 $router->map('GET','/admin/bankszamla/jsonlist','bankszamlaController#jsonlist','bankszamlajsonlist');
 $router->map('GET','/admin/bankszamla/htmllist','bankszamlaController#htmllist','bankszamlahtmllist');
 $router->map('POST','/admin/bankszamla/save','bankszamlaController#save','bankszamlasave');
@@ -94,8 +95,6 @@ $router->map('GET','/admin/kontaktcimkekat/jsonlist','kontaktcimkekatController#
 $router->map('POST','/admin/kontaktcimkekat/save','kontaktcimkekatController#save','kontaktcimkekatsave');
 $router->map('GET','/admin/munkakor/jsonlist','munkakorController#jsonlist','munkakorjsonlist');
 $router->map('POST','/admin/munkakor/save','munkakorController#save','munkakorsave');
-$router->map('GET','/admin/nullaslistatetel/jsonlist','nullaslistatetelController#jsonlist','nullaslistateteljsonlist');
-$router->map('POST','/admin/nullaslistatetel/save','nullaslistatetelController#save','nullaslistatetelsave');
 $router->map('GET','/admin/partnercimkekat/jsonlist','partnercimkekatController#jsonlist','partnercimkekatjsonlist');
 $router->map('POST','/admin/partnercimkekat/save','partnercimkekatController#save','partnercimkekatsave');
 $router->map('GET','/admin/raktar/jsonlist','raktarController#jsonlist','raktarjsonlist');
@@ -111,7 +110,19 @@ $router->map('GET','/admin/vtsz/jsonlist','vtszController#jsonlist','vtszjsonlis
 $router->map('GET','/admin/vtsz/htmllist','vtszController#htmllist','vtszhtmllist');
 $router->map('POST','/admin/vtsz/save','vtszController#save','vtszsave');
 
+$router->map('GET','/admin/bizonylattetel/getar','bizonylattetelController#getar','bizonylattetelgetar');
+$router->map('GET','/admin/bizonylattetel/calcar','bizonylattetelController#calcar','bizonylattetelcalcar');
+$router->map('GET','/admin/bizonylattetel/getemptyrow','bizonylattetelController#getemptyrow','bizonylattetelgetemptyrow');
+$router->map('GET','/admin/bizonylattetel/save','bizonylattetelController#save','bizonylattetelsave');
+
+$router->map('GET','/admin/megrendelesfej/viewlist','megrendelesfejController#viewlist','megrendelesfejviewlist');
+$router->map('GET','/admin/megrendelesfej/getlistbody','megrendelesfejController#getlistbody','megrendelesfejgetlistbody');
+$router->map('GET','/admin/megrendelesfej/getkarb','megrendelesfejController#getkarb','megrendelesfejgetkarb');
+$router->map('GET','/admin/megrendelesfej/viewkarb','megrendelesfejController#viewkarb','megrendelesfejviewkarb');
+$router->map('POST','/admin/megrendelesfej/save','megrendelesfejController#save','megrendelesfejsave');
+
 $router->map('GET','/admin/termek/viewlist','termekController#viewlist','termekviewlist');
+$router->map('GET','/admin/termek/htmllist','termekController#htmllist','termekhtmllist');
 $router->map('GET','/admin/termek/getlistbody','termekController#getlistbody','termekgetlistbody');
 $router->map('GET','/admin/termek/getkarb','termekController#getkarb','termekgetkarb');
 $router->map('GET','/admin/termek/viewkarb','termekController#viewkarb','termekviewkarb');
@@ -119,6 +130,11 @@ $router->map('GET','/admin/termek/getnetto','termekController#getnetto','termekg
 $router->map('GET','/admin/termek/getbrutto','termekController#getbrutto','termekgetbrutto');
 $router->map('POST','/admin/termek/save','termekController#save','termeksave');
 $router->map('POST','/admin/termek/setflag','termekController#setflag','termeksetflag');
+
+$router->map('GET','/admin/termekvaltozat/getemptyrow','termekvaltozatController#getemptyrow','termekvaltozatgetemptyrow');
+$router->map('POST','/admin/termekvaltozat/generate','termekvaltozatController#generate','termekvaltozatgenerate');
+$router->map('POST','/admin/termekvaltozat/save','termekvaltozatController#save','termekvaltozatsave');
+$router->map('POST','/admin/termekvaltozat/delall','termekvaltozatController#delall','termekvaltozatdelall');
 
 $router->map('GET','/admin/emailtemplate/viewlist','emailtemplateController#viewlist','emailtemplateviewlist');
 $router->map('GET','/admin/emailtemplate/getlistbody','emailtemplateController#getlistbody','emailtemplategetlistbody');
@@ -152,12 +168,25 @@ $router->map('GET','/admin/jelenletiiv/getlistbody','jelenletiivController#getli
 $router->map('GET','/admin/jelenletiiv/getkarb','jelenletiivController#getkarb','jelenletiivgetkarb');
 $router->map('GET','/admin/jelenletiiv/viewkarb','jelenletiivController#viewkarb','jelenletiivviewkarb');
 $router->map('POST','/admin/jelenletiiv/save','jelenletiivController#save','jelenletiivsave');
+$router->map('POST','/admin/jelenletiiv/generatenapi','jelenletiivController#generatenapi','jelenletiivgeneratenapi');
 
 $router->map('GET','/admin/keresoszolog/viewlist','keresoszologController#viewlist','keresoszologviewlist');
 $router->map('GET','/admin/keresoszolog/getlistbody','keresoszologController#getlistbody','keresoszologgetlistbody');
 $router->map('GET','/admin/keresoszolog/getkarb','keresoszologController#getkarb','keresoszologgetkarb');
 $router->map('GET','/admin/keresoszolog/viewkarb','keresoszologController#viewkarb','keresoszologviewkarb');
 $router->map('POST','/admin/keresoszolog/save','keresoszologController#save','keresoszologsave');
+
+$router->map('GET','/admin/statlap/viewlist','statlapController#viewlist','statlapviewlist');
+$router->map('GET','/admin/statlap/getlistbody','statlapController#getlistbody','statlapgetlistbody');
+$router->map('GET','/admin/statlap/getkarb','statlapController#getkarb','statlapgetkarb');
+$router->map('GET','/admin/statlap/viewkarb','statlapController#viewkarb','statlapviewkarb');
+$router->map('POST','/admin/statlap/save','statlapController#save','statlapsave');
+
+$router->map('GET','/admin/template/viewlist','templateController#viewlist','templateviewlist');
+$router->map('GET','/admin/template/getlistbody','templateController#getlistbody','templategetlistbody');
+$router->map('GET','/admin/template/getkarb','templateController#getkarb','templategetkarb');
+$router->map('GET','/admin/template/viewkarb','templateController#viewkarb','templateviewkarb');
+$router->map('POST','/admin/template/save','templateController#save','templatesave');
 
 $router->map('GET','/admin/kontakt/getemptyrow','kontaktController#getemptyrow','kontaktgetemptyrow');
 
@@ -166,6 +195,21 @@ $router->map('GET','/admin/kontaktcimke/getlistbody','kontaktcimkeController#get
 $router->map('GET','/admin/kontaktcimke/getkarb','kontaktcimkeController#getkarb','kontaktcimkegetkarb');
 $router->map('GET','/admin/kontaktcimke/viewkarb','kontaktcimkeController#viewkarb','kontaktcimkeviewkarb');
 $router->map('POST','/admin/kontaktcimke/save','kontaktcimkeController#save','kontaktcimkesave');
+$router->map('POST','/admin/kontaktcimke/setmenulathato','kontaktcimkeController#setmenulathato','kontaktcimkesetmenulathato');
+
+$router->map('GET','/admin/termekcimke/viewlist','termekcimkeController#viewlist','termekcimkeviewlist');
+$router->map('GET','/admin/termekcimke/getlistbody','termekcimkeController#getlistbody','termekcimkegetlistbody');
+$router->map('GET','/admin/termekcimke/getkarb','termekcimkeController#getkarb','termekcimkegetkarb');
+$router->map('GET','/admin/termekcimke/viewkarb','termekcimkeController#viewkarb','termekcimkeviewkarb');
+$router->map('POST','/admin/termekcimke/save','termekcimkeController#save','termekcimkesave');
+$router->map('POST','/admin/termekcimke/setmenulathato','termekcimkeController#setmenulathato','termekcimkesetmenulathato');
+
+$router->map('GET','/admin/partnercimke/viewlist','partnercimkeController#viewlist','partnercimkeviewlist');
+$router->map('GET','/admin/partnercimke/getlistbody','partnercimkeController#getlistbody','partnercimkegetlistbody');
+$router->map('GET','/admin/partnercimke/getkarb','partnercimkeController#getkarb','partnercimkegetkarb');
+$router->map('GET','/admin/partnercimke/viewkarb','partnercimkeController#viewkarb','partnercimkeviewkarb');
+$router->map('POST','/admin/partnercimke/save','partnercimkeController#save','partnercimkesave');
+$router->map('POST','/admin/partnercimke/setmenulathato','partnercimkeController#setmenulathato','partnercimkesetmenulathato');
 
 $router->map('GET','/admin/korhinta/viewlist','korhintaController#viewlist','korhintaviewlist');
 $router->map('GET','/admin/korhinta/getlistbody','korhintaController#getlistbody','korhintagetlistbody');
@@ -181,7 +225,12 @@ $router->map('POST','/admin/partner/save','partnerController#save','partnersave'
 $router->map('POST','/admin/partner/regisztral','partnerController#regisztral','partnerregisztral');
 $router->map('POST','/admin/partner/checkemail','partnerController#checkemail','partnercheckemail');
 
+$router->map('GET','/admin/termekfa/getkarb','termekfaController#getkarb','termekfagetkarb');
 $router->map('GET','/admin/termekfa/jsonlist','termekfaController#jsonlist','termekfajsonlist');
+$router->map('POST','/admin/termekfa/save','termekfaController#save','termekfasave');
+$router->map('GET','/admin/termekfa/isedeletable','termekfaController#isdeletable','termekfaisdeletable');
+$router->map('POST','/admin/termekfa/move','termekfaController#move','termekfamove');
+$router->map('GET','/admin/termekfa/viewlist','termekfaController#viewlist','termekfaviewlist');
 
 $match=$router->match();
 

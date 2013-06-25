@@ -62,16 +62,16 @@ class termekcimkeController extends \mkwhelpers\MattableController {
 		return $obj;
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('cimkelista_tbody.tpl');
 		$view->setVar('kellkep',true);
 
 		$filter=array();
-		if (!is_null($this->getRequestParam('nevfilter',NULL))) {
+		if (!is_null($this->params->getRequestParam('nevfilter',NULL))) {
 			$filter['fields'][]='nev';
-			$filter['values'][]=$this->getStringRequestParam('nevfilter');
+			$filter['values'][]=$this->params->getStringRequestParam('nevfilter');
 		}
-		$fv=$this->getIntRequestParam('ckfilter');
+		$fv=$this->params->getIntRequestParam('ckfilter');
 		if ($fv>0) {
 			$filter['fields'][]='ck.id';
 			$filter['values'][]=$fv;
@@ -88,12 +88,12 @@ class termekcimkeController extends \mkwhelpers\MattableController {
 		echo json_encode($this->loadDataToView($egyedek,'cimkelista',$view));
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('cimkelista.tpl');
 
 		$view->setVar('pagetitle',t('Termékcímkék'));
 		$view->setVar('kellkep',true);
-		$view->setVar('controllerscript','termekcimkelista.js');
+		$view->setVar('controllerscript','termekcimke.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
 		$ckat=new termekcimkekatController($this->params);
@@ -106,7 +106,7 @@ class termekcimkeController extends \mkwhelpers\MattableController {
 		$oper=$this->params->getRequestParam('oper','');
 		$view=$this->createView($tplname);
 		$view->setVar('pagetitle',t('Termékcímke'));
-		$view->setVar('controllerscript','termekcimkekarb.js');
+		$view->setVar('controllerscript','termekcimke.js');
 		$view->setVar('kellkep',true);
 		$view->setVar('formaction','/admin/termekcimke/save');
 		$view->setVar('oper',$oper);
@@ -179,7 +179,7 @@ class termekcimkeController extends \mkwhelpers\MattableController {
 
 		$view->setVar('pagetitle',t('Termékcímkék'));
 		$view->setVar('kellkep',true);
-		$view->setVar('controllerscript','termekcimkelista.js');
+		$view->setVar('controllerscript','termekcimke.js');
 		$tc=store::getEm()->getRepository('Entities\Termekcimkekat')->getWithJoins(array(),array('_xx.nev'=>'asc','c.nev'=>'asc'));
 		$view->setVar('cimkekat',$this->cimkekToArray($tc));
 		$view->printTemplateResult();

@@ -84,7 +84,6 @@ class teendoController extends \mkwhelpers\MattableController {
 		$view=$this->createView('teendolista.tpl');
 
 		$view->setVar('pagetitle',t('Teendők'));
-		$view->setVar('controllerscript','teendolista.js');
 		$view->printTemplateResult();
 	}
 
@@ -92,7 +91,6 @@ class teendoController extends \mkwhelpers\MattableController {
 		$view=$this->createView('teendolista.tpl');
 
 		$view->setVar('pagetitle',t('Teendők'));
-		$view->setVar('controllerscript','teendolista.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
 		$view->printTemplateResult();
@@ -104,7 +102,6 @@ class teendoController extends \mkwhelpers\MattableController {
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Teendő'));
-		$view->setVar('controllerscript','teendokarb.js');
 		$view->setVar('formaction','/admin/teendo/save');
 		$view->setVar('oper',$oper);
 		$record=$this->getRepo()->findWithJoins($id);

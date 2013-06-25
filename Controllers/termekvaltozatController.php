@@ -18,15 +18,17 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
 		$tkepc=new termekkepController($this->params);
 		$x=array();
 		if (!$t) {
-			$t=new \Entities\TermekKapcsolodo();
+			$t=new \Entities\TermekValtozat();
 			$this->getEm()->detach($t);
 			$x['oper']='add';
 			$x['id']=store::createUID();
 			$x['termek']['id']=$termek->getId();
+			$x['keplista']=$termek?$tkepc->getSelectList($termek,NULL):array();
 		}
 		else {
 			$x['oper']='edit';
 			$x['id']=$t->getId();
+			$x['keplista']=$tkepc->getSelectList($t->getTermek(),$t->getKepid());
 		}
 		$x['adattipus1id']=$t->getAdatTipus1Id();
 		$x['adattipus1nev']=$t->getAdatTipus1Nev();
@@ -41,7 +43,6 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
 		$x['termekfokep']=$t->getTermekfokep();
 		$x['kepurl']=$t->getKepurl();
 		$x['kepleiras']=$t->getKepleiras();
-		$x['keplista']=$tkepc->getSelectList($t->getTermek(),$t->getKepid());
 		$x['kepid']=$t->getKepid();
 		$x['netto']=$t->getNetto();
 		$x['brutto']=$t->getBrutto();

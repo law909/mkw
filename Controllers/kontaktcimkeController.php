@@ -82,7 +82,7 @@ class kontaktcimkeController extends \mkwhelpers\MattableController {
 
 		$view->setVar('pagetitle',t('Kontaktcímkék'));
 		$view->setVar('kellkep',false);
-		$view->setVar('controllerscript','kontaktcimkelista.js');
+		$view->setVar('controllerscript','kontaktcimke.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
 		$ckat=new kontaktcimkekatController($this->params);
@@ -96,7 +96,7 @@ class kontaktcimkeController extends \mkwhelpers\MattableController {
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Kontaktcímke'));
-		$view->setVar('controllerscript','kontaktcimkekarb.js');
+		$view->setVar('controllerscript','kontaktcimke.js');
 		$view->setVar('kellkep',false);
 		$view->setVar('formaction','/admin/kontaktcimke/save');
 		$view->setVar('oper',$oper);
@@ -169,7 +169,7 @@ class kontaktcimkeController extends \mkwhelpers\MattableController {
 
 		$view->setVar('pagetitle',t('Kontaktcímkék'));
 		$view->setVar('kellkep',false);
-		$view->setVar('controllerscript','kontaktcimkelista.js');
+		$view->setVar('controllerscript','kontaktcimke.js');
 		$tc=store::getEm()->getRepository('Entities\Kontaktcimkekat')->getWithJoins(array(),array('_xx.nev'=>'asc','c.nev'=>'asc'));
 		$view->setVar('cimkekat',$this->cimkekToArray($tc));
 		$view->printTemplateResult();

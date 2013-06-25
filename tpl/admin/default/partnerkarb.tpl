@@ -4,7 +4,7 @@
 <script type="text/javascript" src="/js/admin/default/jquery.form.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.mattkarb.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
-<script type="text/javascript" src="/js/admin/default/partnerkarb.js"></script>
+<script type="text/javascript" src="/js/admin/default/partner.js"></script>
 {/block}
 
 {block "kozep"}

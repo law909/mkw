@@ -94,7 +94,6 @@ class dolgozoController extends \mkwhelpers\MattableController {
 		$view=$this->createView('dolgozolista.tpl');
 
 		$view->setVar('pagetitle',t('Dolgozók'));
-		$view->setVar('controllerscript','dolgozolista.js');
 		$view->printTemplateResult();
 	}
 
@@ -102,7 +101,6 @@ class dolgozoController extends \mkwhelpers\MattableController {
 		$view=$this->createView('dolgozolista.tpl');
 
 		$view->setVar('pagetitle',t('Dolgozók'));
-		$view->setVar('controllerscript','dolgozolista.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
 		$view->printTemplateResult();
@@ -114,7 +112,6 @@ class dolgozoController extends \mkwhelpers\MattableController {
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Dolgozó'));
-		$view->setVar('controllerscript','dolgozokarb.js');
 		$view->setVar('formaction','/admin/dolgozo/save');
 		$view->setVar('oper',$oper);
 		$record=$this->getRepo()->findWithJoins($id);

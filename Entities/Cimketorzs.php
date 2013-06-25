@@ -149,7 +149,6 @@ class Cimketorzs {
 		$this->kepurl = $kepurl;
 		if (!$kepurl) {
 			$this->setKepleiras(null);
-			$this->setKepnev(null);
 		}
 	}
 

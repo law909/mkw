@@ -197,7 +197,6 @@ return array(
 "Mennyiség"=>"Mennyiség",
 "Egységár"=>"Egységár",
 "Érték"=>"Érték",
-"Nullás lista"=>"Nullás lista",
 "Tétel adatok"=>"Tétel adatok",
 "MKW Admin"=>"MKW Admin"
 );

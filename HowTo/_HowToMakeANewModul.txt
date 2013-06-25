@@ -1,0 +1,47 @@
+
+"_1_createNewJQGridModule.bat" VAGY "_1_createNewMattableModule.bat" futtatása 'modulnév Modulnév' paraméterrel
+
+"_2_moveNewModule.bat" futtatása
+
+Entity szerkesztése
+- mezők definiálása
+- getterek + setterek
+- ha kapcsolt tábla van, akkor a kapcsolt entityt is beállítani
+
+Repository szerkesztése
+- rendezések beállítása
+
+Adatbázis alter:
+- "updateschema.bat" futtatása
+- "schema.sql" ellenőrzése
+- "updatedb.bat" futtatása
+
+Controller szerkesztése
+- szűrők bővítése
+- loadvars VAGY loadCells
+--- Ha olyan a Controller, akkor a ->loadvarsba az 'else' ágba is kell minden mező
+- setvars VAGY setfields
+
+"admin...karb.tpl" szerkesztése
+
+"admin...lista.tpl" szerkesztése
+- további szűrőmezők megadása 
+- táblázatfej beállítása
+
+"admin...lista_tbody.tpl" szerkesztése
+
+"admin...lista_tbody_tr.tpl" szerkesztése
+- mezők értékének beállítása a táblázat soraiban
+
+"admin...karbform.tpl" szerkesztése
+- input mezők beállítása szerkesztésre
+- beviteli mezők max-length értéke fontos
+
+"admin...lista.js" szerkesztése
+
+"adminbas.tpl"-be gomb felvétele VAGY "adminegyebtorzslista.tpl"-ba beillesztés
+
+
+
+
+A JS-ekhez: jquery.mattable.js-ben baseOptions

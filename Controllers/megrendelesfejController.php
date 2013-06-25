@@ -47,7 +47,7 @@ class megrendelesfejController extends bizonylatfejController {
 		$view=$this->createView('bizonylatfejlista.tpl');
 
 		$view->setVar('pagetitle',t('Megrendelések'));
-		$view->setVar('controllerscript','megrendelesfejlista.js');
+		$view->setVar('controllerscript','megrendelesfej.js');
 		$this->setVars($view);
 		$view->printTemplateResult();
 	}
@@ -56,7 +56,7 @@ class megrendelesfejController extends bizonylatfejController {
 		$view=$this->createView('bizonylatfejlista.tpl');
 
 		$view->setVar('pagetitle',t('Megrendelések'));
-		$view->setVar('controllerscript','megrendelesfejlista.js');
+		$view->setVar('controllerscript','megrendelesfej.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
 		$this->setVars($view);
@@ -69,7 +69,7 @@ class megrendelesfejController extends bizonylatfejController {
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Megrendelés'));
-		$view->setVar('controllerscript','megrendelesfejkarb.js');
+		$view->setVar('controllerscript','megrendelesfej.js');
 		$view->setVar('formaction','/admin/megrendelesfej/save');
 		$view->setVar('oper',$oper);
 		$this->setVars($view);

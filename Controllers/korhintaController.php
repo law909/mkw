@@ -66,7 +66,6 @@ class korhintaController extends \mkwhelpers\MattableController {
 		$view=$this->createView('korhintalista.tpl');
 
 		$view->setVar('pagetitle',t('Körhinta'));
-		$view->setVar('controllerscript','korhintalista.js');
 		$view->printTemplateResult();
 	}
 
@@ -74,7 +73,6 @@ class korhintaController extends \mkwhelpers\MattableController {
 		$view=$this->createView('korhintalista.tpl');
 
 		$view->setVar('pagetitle',t('Körhinta'));
-		$view->setVar('controllerscript','korhintalista.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
 		$view->printTemplateResult();
@@ -86,7 +84,6 @@ class korhintaController extends \mkwhelpers\MattableController {
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Körhinta'));
-		$view->setVar('controllerscript','korhintakarb.js');
 		$view->setVar('formaction','/admin/korhinta/save');
 		$view->setVar('oper',$oper);
 		$record=$this->getRepo()->find($id);

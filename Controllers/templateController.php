@@ -13,7 +13,7 @@ class templateController extends \mkwhelpers\MattableController {
 		$this->setKarbTplName('templatekarb.tpl');
 		$this->setListBodyRowTplName('templatelista_tbody_tr.tpl');
 		$this->setListBodyRowVarName('_egyed');
-		$theme=$store::getConfigValue('theme');
+		$theme=store::getConfigValue('main.theme');
 		$this->fajlok=array(
 			array('id'=>'fejlecreklam','caption'=>'Fejléc reklámcsík','file'=>'tpl/main'.$theme.'/headerfirstrow.tpl'),
 			array('id'=>'lablec','caption'=>'Lábléc sablon','file'=>'tpl/main/'.$theme.'/footer.tpl'),
@@ -51,7 +51,7 @@ class templateController extends \mkwhelpers\MattableController {
 	protected function saveData() {
 		$parancs=$this->params->getRequestParam($this->operationName,'');
 		$id=$this->params->getRequestParam($this->idName,0);
-		$szoveg=$this->params->getStringRequestParam('szoveg');
+		$szoveg=$this->params->getOriginalStringRequestParam('szoveg');
 		$obj=array();
 		foreach($this->fajlok as $fajl) {
 			if ($id==$fajl['id']) {
@@ -66,7 +66,7 @@ class templateController extends \mkwhelpers\MattableController {
 		return array('id'=>$id,'obj'=>$obj,'operation'=>$parancs);
 	}
 
-	protected function save() {
+	public function save() {
 		$ret=$this->saveData();
 		switch ($ret['operation']) {
 			case $this->editOperation:
@@ -90,9 +90,9 @@ class templateController extends \mkwhelpers\MattableController {
 		return $x;
 	}
 
-	protected function setFields($obj) {
+	public function setFields($obj) {
 		$obj['id']=$this->getStringParam('id');
-		$obj['szoveg']=$this->getStringParam('szoveg');
+		$obj['szoveg']=$this->getOriginalStringParam('szoveg');
 		return $obj;
 	}
 
@@ -106,7 +106,6 @@ class templateController extends \mkwhelpers\MattableController {
 		$view=$this->createView('templatelista.tpl');
 
 		$view->setVar('pagetitle',t('Sablonok'));
-		$view->setVar('controllerscript','templatelista.js');
 		$view->printTemplateResult();
 	}
 
@@ -114,7 +113,6 @@ class templateController extends \mkwhelpers\MattableController {
 		$view=$this->createView('templatelista.tpl');
 
 		$view->setVar('pagetitle',t('Sablonok'));
-		$view->setVar('controllerscript','templatelista.js');
 		$view->setVar('orderselect','');
 		$view->setVar('batchesselect','');
 		$view->printTemplateResult();
@@ -126,7 +124,6 @@ class templateController extends \mkwhelpers\MattableController {
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Sablonok'));
-		$view->setVar('controllerscript','templatekarb.js');
 		$view->setVar('formaction','/admin/template/save');
 		$view->setVar('oper',$oper);
 		$record=$this->getFileById($id);

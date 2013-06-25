@@ -85,7 +85,6 @@ class kosarController extends \mkwhelpers\MattableController {
 		$view=$this->createView('kosarlista.tpl');
 
 		$view->setVar('pagetitle',t('Kosár'));
-		$view->setVar('controllerscript','kosarlista.js');
 		$view->printTemplateResult();
 	}
 
@@ -93,7 +92,6 @@ class kosarController extends \mkwhelpers\MattableController {
 		$view=$this->createView('kosarlista.tpl');
 
 		$view->setVar('pagetitle',t('Kosár'));
-		$view->setVar('controllerscript','kosarlista.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
 		$view->printTemplateResult();
@@ -105,7 +103,6 @@ class kosarController extends \mkwhelpers\MattableController {
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Kosár'));
-		$view->setVar('controllerscript','kosarkarb.js');
 		$view->setVar('formaction','/admin/kosar/save');
 		$view->setVar('oper',$oper);
 		$record=$this->getRepo()->findWithJoins($id);

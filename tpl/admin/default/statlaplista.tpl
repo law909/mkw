@@ -5,7 +5,7 @@
 <script type="text/javascript" src="/js/admin/default/jquery.form.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.mattkarb.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.mattable.js"></script>
-<script type="text/javascript" src="/js/admin/default/{$controllerscript}"></script>
+<script type="text/javascript" src="/js/admin/default/statlap.js"></script>
 {/block}
 
 {block "kozep"}

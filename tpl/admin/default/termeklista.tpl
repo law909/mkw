@@ -9,7 +9,7 @@
 <script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.flyout.js"></script>
 <script type="text/javascript" src="/js/admin/default/ajaxupload.js"></script>
-<script type="text/javascript" src="/js/admin/default/termeklista.js"></script>
+<script type="text/javascript" src="/js/admin/default/termek.js"></script>
 {/block}
 
 {block "kozep"}

@@ -12,7 +12,7 @@
 		{block "inhead"}
 		{/block}
 		<script type="text/javascript" src="/js/admin/default/appinit.js"></script>
-		<title>{$pagetitle} - {t('SIIKerES Admin')}</title>
+		<title>{$pagetitle} - {t('MKW Admin')}</title>
 	</head>
 	<body>
 	<div id="messagecenter"></div>

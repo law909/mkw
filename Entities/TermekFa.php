@@ -1,6 +1,8 @@
 <?php
 namespace Entities;
 
+use mkw\Store;
+
 /**
  * @Entity(repositoryClass="Entities\TermekFaRepository")
  * @Table(name="termekfa",indexes={

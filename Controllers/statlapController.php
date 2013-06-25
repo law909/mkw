@@ -30,7 +30,7 @@ class statlapController extends \mkwhelpers\MattableController {
 
 	protected function setFields($obj) {
 		$obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
-		$obj->setSzoveg($this->params->getStringRequestParam('szoveg'));
+		$obj->setSzoveg($this->params->getOriginalStringRequestParam('szoveg'));
 		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
 		$obj->setSeokeywords($this->params->getStringRequestParam('seokeywords'));
 		return $obj;
@@ -60,7 +60,6 @@ class statlapController extends \mkwhelpers\MattableController {
 		$view=$this->createView('statlaplista.tpl');
 
 		$view->setVar('pagetitle',t('Statikus lapok'));
-		$view->setVar('controllerscript','statlaplista.js');
 		$view->printTemplateResult();
 	}
 
@@ -68,7 +67,6 @@ class statlapController extends \mkwhelpers\MattableController {
 		$view=$this->createView('statlaplista.tpl');
 
 		$view->setVar('pagetitle',t('Statikus lapok'));
-		$view->setVar('controllerscript','statlaplista.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
 		$view->printTemplateResult();
@@ -80,7 +78,6 @@ class statlapController extends \mkwhelpers\MattableController {
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('Statikus lap'));
-		$view->setVar('controllerscript','statlapkarb.js');
 		$view->setVar('formaction','/admin/statlap/save');
 		$view->setVar('oper',$oper);
 		$record=$this->getRepo()->find($id);

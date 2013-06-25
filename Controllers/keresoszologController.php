@@ -53,7 +53,6 @@ class keresoszologController extends \mkwhelpers\MattableController {
 		$view=$this->createView('keresoszologlista.tpl');
 
 		$view->setVar('pagetitle',t('keresoszolog'));
-		$view->setVar('controllerscript','keresoszologlista.js');
 		$view->printTemplateResult();
 	}
 
@@ -61,7 +60,6 @@ class keresoszologController extends \mkwhelpers\MattableController {
 		$view=$this->createView('keresoszologlista.tpl');
 
 		$view->setVar('pagetitle',t('keresoszolog'));
-		$view->setVar('controllerscript','keresoszologlista.js');
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
 		$view->printTemplateResult();
@@ -73,7 +71,6 @@ class keresoszologController extends \mkwhelpers\MattableController {
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('keresoszolog'));
-		$view->setVar('controllerscript','keresoszologkarb.js');
 		$view->setVar('formaction','/admin/keresoszolog/save');
 		$view->setVar('oper',$oper);
 		$record=$this->getRepo()->findWithJoins($id);

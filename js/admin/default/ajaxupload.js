@@ -1,7 +1,7 @@
 /**
- * AJAX Upload ( http://valums.com/ajax-upload/ ) 
+ * AJAX Upload ( http://valums.com/ajax-upload/ )
  * Copyright (c) Andrew Valums
- * Licensed under the MIT license 
+ * Licensed under the MIT license
  */
 (function() {
 	function addEvent(el, type, fn) {
@@ -32,7 +32,7 @@
 			var box = el.getBoundingClientRect();
 			var doc = el.ownerDocument;
 			var body = doc.body;
-			var docElem = doc.documentElement; // for ie 
+			var docElem = doc.documentElement; // for ie
 			var clientTop = docElem.clientTop || body.clientTop || 0;
 			var clientLeft = docElem.clientLeft || body.clientLeft || 0;
 
@@ -61,7 +61,7 @@
 			};
 		};
 	} else {
-		// Get offset adding all offsets 
+		// Get offset adding all offsets
 		var getOffset = function(el) {
 			var top = 0, left = 0;
 			do {
@@ -171,7 +171,7 @@
 			// The type of data that you're expecting back from the server.
 			// html and xml are detected automatically.
 			// Only useful when you are using json data as a response.
-			// Set to "json" in that case. 
+			// Set to "json" in that case.
 			responseType : false,
 			// Class applied to button when mouse is hovered
 			hoverClass : 'hover',
@@ -180,7 +180,7 @@
 			// Class applied to button when AU is disabled
 			disabledClass : 'disabled',
 			// When user selects a file, useful with autoSubmit disabled
-			// You can return false to cancel upload			
+			// You can return false to cancel upload
 			onChange : function(file, extension) {
 			},
 			// Callback to fire before file is uploaded
@@ -206,7 +206,7 @@
 			button = button[0];
 		} else if (typeof button == "string") {
 			if (/^#.*/.test(button)) {
-				// If jQuery user passes #elementId don't break it					
+				// If jQuery user passes #elementId don't break it
 				button = button.slice(1);
 			}
 
@@ -214,13 +214,12 @@
 		}
 
 		if (!button || button.nodeType !== 1) {
-			console.log('NINCS IS ILYEN BUTTON AjaxUpload-nak.');
 			throw new Error(
 					"Please make sure that you're passing a valid element");
 		}
 
 		if (button.nodeName.toUpperCase() == 'A') {
-			// disable link                       
+			// disable link
 			addEvent(button, 'click', function(e) {
 				if (e && e.preventDefault) {
 					e.preventDefault();
@@ -232,7 +231,7 @@
 
 		// DOM element
 		this._button = button;
-		// DOM element                 
+		// DOM element
 		this._input = null;
 		// If disabled clicking on button won't do anything
 		this._disabled = false;
@@ -262,7 +261,7 @@
 			if (this._input) {
 				if (this._input.parentNode) {
 					// We use visibility instead of display to fix problem with Safari 4
-					// The problem is that the value of input doesn't change if it 
+					// The problem is that the value of input doesn't change if it
 					// has display none when user selects a file
 					this._input.parentNode.style.visibility = 'hidden';
 				}
@@ -314,7 +313,7 @@
 			});
 
 			// Make sure that element opacity exists.
-			// Otherwise use IE filter            
+			// Otherwise use IE filter
 			if (div.style.opacity !== "0") {
 				if (typeof (div.filters) == 'undefined') {
 					throw new Error('Opacity not supported by the browser');
@@ -328,8 +327,8 @@
 					return;
 				}
 
-				// Get filename from input, required                
-				// as some browsers have path instead of it          
+				// Get filename from input, required
+				// as some browsers have path instead of it
 				var file = fileFromPath(input.value);
 
 				if (false === self._settings.onChange.call(self, file,
@@ -354,7 +353,7 @@
 
 				if (input.parentNode) {
 					// We use visibility instead of display to fix problem with Safari 4
-					// The problem is that the value of input doesn't change if it 
+					// The problem is that the value of input doesn't change if it
 					// has display none when user selects a file
 					input.parentNode.style.visibility = 'hidden';
 				}
@@ -378,7 +377,7 @@
 				return;
 			}
 
-			// this._input.value = ''; Doesn't work in IE6                               
+			// this._input.value = ''; Doesn't work in IE6
 			removeNode(this._input.parentNode);
 			this._input = null;
 			this._createInput();
@@ -414,7 +413,7 @@
 
 			// commented because we now hide input on mouseleave
 			/**
-			 * When the window is resized the elements 
+			 * When the window is resized the elements
 			 * can be misaligned if button position depends
 			 * on window size
 			 */
@@ -422,7 +421,7 @@
 			//    if (self._input){
 			//        copyLayout(self._button, self._input.parentNode);
 			//    }
-			//});            
+			//});
 		},
 		_createIframe : function() {
 			// We can't use getTime, because it sometimes return
@@ -433,14 +432,14 @@
 			// won't be properly registered in IE6, and new window
 			// on form submit will open
 			// var iframe = document.createElement('iframe');
-			// iframe.setAttribute('name', id);                        
+			// iframe.setAttribute('name', id);
 
 			var iframe = toElement('<iframe src="javascript:false;" name="'
 					+ id + '" />');
 			// src="javascript:false; was added
-			// because it possibly removes ie6 prompt 
+			// because it possibly removes ie6 prompt
 			// "This page contains both secure and nonsecure items"
-			// Anyway, it doesn't do any harm.            
+			// Anyway, it doesn't do any harm.
 			iframe.setAttribute('id', id);
 
 			iframe.style.display = 'none';
@@ -455,7 +454,7 @@
 			// var form = document.createElement('form');
 			// form.setAttribute('method', 'post');
 			// form.setAttribute('enctype', 'multipart/form-data');
-			// Because in this case file won't be attached to request                    
+			// Because in this case file won't be attached to request
 			var form = toElement('<form method="post" enctype="multipart/form-data"></form>');
 
 			form.setAttribute('action', settings.action);
@@ -484,7 +483,7 @@
 					'load',
 					function() {
 
-						if (// For Safari 
+						if (// For Safari
 						iframe.src == "javascript:'%3Chtml%3E%3C/html%3E';" ||
 						// For FF, IE
 						iframe.src == "javascript:'<html></html>';") {
@@ -516,7 +515,7 @@
 						// fixing Opera 9.64
 						if (doc.body && doc.body.innerHTML == "false") {
 							// In Opera 9.64 event was fired second time
-							// when body.innerHTML changed from false 
+							// when body.innerHTML changed from false
 							// to server response approx. after 1 sec
 							return;
 						}
@@ -582,7 +581,7 @@
 				return;
 			}
 
-			// sending request    
+			// sending request
 			var iframe = this._createIframe();
 			var form = this._createForm(iframe);
 
@@ -596,7 +595,7 @@
 
 			form.submit();
 
-			// request set, clean up                
+			// request set, clean up
 			removeNode(form);
 			form = null;
 			removeNode(this._input);
@@ -605,7 +604,7 @@
 			// Get response from iframe and fire onComplete event when ready
 			this._getResponse(iframe, file);
 
-			// get ready for next request            
+			// get ready for next request
 			this._createInput();
 		}
 	};
