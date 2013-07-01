@@ -1,6 +1,6 @@
 <?php
 use mkw\Store;
-use \Controllers\CentralController, \mkw\generalDataLoader;
+
 date_default_timezone_set('Europe/Budapest');
 
 require_once('bootstrap.php');

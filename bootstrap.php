@@ -29,6 +29,9 @@ $classLoader->register();
 $classLoader=new \Doctrine\Common\ClassLoader('mkw');
 $classLoader->register();
 
+$classLoader=new \Doctrine\Common\ClassLoader('Controllers');
+$classLoader->register();
+
 $config = new \Doctrine\ORM\Configuration();
 
 $config->addCustomStringFunction('YEAR', 'mkwhelpers\year');
