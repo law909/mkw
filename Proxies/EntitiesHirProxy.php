@@ -54,6 +54,12 @@ class EntitiesHirProxy extends \Entities\Hir implements \Doctrine\ORM\Proxy\Prox
         return parent::getCim();
     }
 
+    public function getShowCim()
+    {
+        $this->__load();
+        return parent::getShowCim();
+    }
+
     public function setCim($cim)
     {
         $this->__load();

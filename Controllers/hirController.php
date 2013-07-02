@@ -132,7 +132,7 @@ class hirController extends \mkwhelpers\MattableController {
 		if ($hir) {
 			$view=$this->getTemplateFactory()->createMainView('hir.tpl');
 			store::fillTemplate($view);
-			$view->setVar('pagetitle',$hir->getCim());
+			$view->setVar('pagetitle',$hir->getShowCim());
 			$view->setVar('seodescription',$hir->getSeodescription());
 			$view->setVar('seokeywords',$hir->getSeokeywords());
 			$view->setVar('hir',$hir->convertToArray());

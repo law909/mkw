@@ -48,6 +48,12 @@ class EntitiesStatlapProxy extends \Entities\Statlap implements \Doctrine\ORM\Pr
         return parent::getOldalcim();
     }
 
+    public function getShowOldalcim()
+    {
+        $this->__load();
+        return parent::getShowOldalcim();
+    }
+
     public function setOldalcim($adat)
     {
         $this->__load();

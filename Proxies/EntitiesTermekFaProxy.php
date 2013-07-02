@@ -198,6 +198,12 @@ class EntitiesTermekFaProxy extends \Entities\TermekFa implements \Doctrine\ORM\
         return parent::getOldalcim();
     }
 
+    public function getShowOldalcim()
+    {
+        $this->__load();
+        return parent::getShowOldalcim();
+    }
+
     public function setOldalcim($oldalcim)
     {
         $this->__load();
@@ -210,6 +216,12 @@ class EntitiesTermekFaProxy extends \Entities\TermekFa implements \Doctrine\ORM\
         return parent::getSeodescription();
     }
 
+    public function getShowSeodescription()
+    {
+        $this->__load();
+        return parent::getShowSeodescription();
+    }
+
     public function setSeodescription($seodescription)
     {
         $this->__load();
@@ -220,6 +232,12 @@ class EntitiesTermekFaProxy extends \Entities\TermekFa implements \Doctrine\ORM\
     {
         $this->__load();
         return parent::getSeokeywords();
+    }
+
+    public function getShowSeokeywords()
+    {
+        $this->__load();
+        return parent::getShowSeokeywords();
     }
 
     public function setSeokeywords($seokeywords)

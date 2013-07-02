@@ -6,17 +6,17 @@ namespace Entities;
  * @Table(name="statlap")
  */
 class Statlap {
-	/** 
+	/**
 	 * @Id @Column(type="integer")
 	 * @GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** 
+	/**
 	 * @gedmo:Sluggable
-	 * @Column(type="string",length=255,nullable=true) 
+	 * @Column(type="string",length=255,nullable=true)
 	 */
 	private $oldalcim;
-	/** 
+	/**
 	 * @gedmo:Slug
 	 * @Column(type="string",length=255,nullable=true)
 	 */
@@ -27,24 +27,28 @@ class Statlap {
 	private $seodescription;
 	/** @Column(type="text",nullable=true) */
 	private $seokeywords;
-	/** 
+	/**
 	 * @gedmo:Timestampable(on="create")
-	 * @Column(type="datetime",nullable=true) 
+	 * @Column(type="datetime",nullable=true)
 	 */
-	private $created;	
-	/** 
+	private $created;
+	/**
 	 * @gedmo:Timestampable(on="create")
 	 * @gedmo:Timestampable(on="update")
-	 * @Column(type="datetime",nullable=true) 
+	 * @Column(type="datetime",nullable=true)
 	 */
 	private $lastmod;
-	
+
 	public function getId() {
 		return $this->id;
 	}
-	
+
 	public function getOldalcim() {
 		return $this->oldalcim;
+	}
+
+	public function getShowOldalcim() {
+		return $this->oldalcim.' - '.\mkw\Store::getParameter('oldalcim');
 	}
 
 	public function setOldalcim($adat) {
@@ -58,7 +62,7 @@ class Statlap {
 	public function setSlug($adat) {
 		$this->slug=$adat;
 	}
-	
+
 	public function getSzoveg() {
 		return $this->szoveg;
 	}
@@ -66,7 +70,7 @@ class Statlap {
 	public function setSzoveg($adat) {
 		$this->szoveg=$adat;
 	}
-	
+
 	public function getSeodescription() {
 		return $this->seodescription;
 	}
@@ -74,7 +78,7 @@ class Statlap {
 	public function setSeodescription($adat) {
 		$this->seodescription=$adat;
 	}
-	
+
 	public function getSeokeywords() {
 		return $this->seokeywords;
 	}
@@ -86,7 +90,7 @@ class Statlap {
 	public function getLastmod() {
 		return $this->lastmod;
 	}
-	
+
 	public function getCreated() {
 		return $this->created;
 	}

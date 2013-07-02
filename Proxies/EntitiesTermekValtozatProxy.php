@@ -258,10 +258,22 @@ class EntitiesTermekValtozatProxy extends \Entities\TermekValtozat implements \D
         return parent::setIdegencikkszam($idegencikkszam);
     }
 
+    public function getCikkszam()
+    {
+        $this->__load();
+        return parent::getCikkszam();
+    }
+
+    public function setCikkszam($cikkszam)
+    {
+        $this->__load();
+        return parent::setCikkszam($cikkszam);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'termek', 'lathato', 'elerheto', 'termekfokep', 'adattipus1', 'ertek1', 'adattipus2', 'ertek2', 'kosarak', 'netto', 'brutto', 'kep', 'idegencikkszam');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'termek', 'lathato', 'elerheto', 'termekfokep', 'adattipus1', 'ertek1', 'adattipus2', 'ertek2', 'kosarak', 'netto', 'brutto', 'kep', 'cikkszam', 'idegencikkszam');
     }
 
     public function __clone()

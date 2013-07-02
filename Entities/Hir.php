@@ -65,6 +65,10 @@ class Hir {
 		return $this->cim;
 	}
 
+	public function getShowCim() {
+		return $this->cim.' - '.\mkw\Store::getParameter('oldalcim');
+	}
+
 	public function setCim($cim) {
 		$this->cim = $cim;
 	}
