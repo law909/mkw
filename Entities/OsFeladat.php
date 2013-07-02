@@ -1,6 +1,8 @@
 <?php
 namespace Entities;
+
 use mkw\store;
+
 /**
  * @Entity @HasLifecycleCallbacks
  * @Table(name="feladat")

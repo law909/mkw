@@ -1,13 +1,12 @@
 <?php
 namespace Entities;
+
 use mkw\store;
 
 /**
  * @Entity(repositoryClass="Entities\JelenletiivRepository")
  * @Table(name="jelenletiiv")
  */
-use Doctrine\ORM\Query\Expr\Func;
-
 class Jelenletiiv {
 	/**
 	 * @Id @Column(type="integer")

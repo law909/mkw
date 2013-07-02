@@ -1,5 +1,6 @@
 <?php
 namespace Entities;
+
 use mkw\store;
 
 /**

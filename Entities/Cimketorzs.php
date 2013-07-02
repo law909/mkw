@@ -1,6 +1,7 @@
 <?php
 namespace Entities;
-use mkw\Store;
+
+use mkw\store;
 
 /**
  * @Entity

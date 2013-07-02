@@ -1,6 +1,8 @@
 <?php
 namespace Entities;
 
+use mkw\store;
+
 class HirRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {

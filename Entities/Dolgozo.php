@@ -1,7 +1,7 @@
 <?php
 namespace Entities;
-use mkw\store;
-use Doctrine\Common\Collections\ArrayCollection;
+
+use mkw\store, Doctrine\Common\Collections\ArrayCollection;
 
 /** @Entity(repositoryClass="Entities\DolgozoRepository")
  *  @Table(name="dolgozo")
