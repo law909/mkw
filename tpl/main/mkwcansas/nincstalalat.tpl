@@ -1,6 +1,6 @@
 {extends "base.tpl"}
 {block "script"}
-<script src="/js/main/mkwdani/jquery.blockUI.js"></script>
+<script src="/js/main/mkwcansas/jquery.blockUI.js"></script>
 {/block}
 {block "kozep"}
 <div class="container">

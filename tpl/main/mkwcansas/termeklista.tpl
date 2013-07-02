@@ -1,12 +1,12 @@
 {extends "base.tpl"}
 {block "css"}
-<link type="text/css" rel="stylesheet" href="/themes/main/mkwdani/jquery.slider.min.css">
+<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/jquery.slider.min.css">
 {/block}
 {block "script"}
-<script src="/js/main/mkwdani/jquery.blockUI.js"></script>
-<script src="/js/main/mkwdani/matt-accordion.js"></script>
-<script src="/js/main/mkwdani/jquery.slider.min.js"></script>
-<script src="/js/main/mkwdani/bootstrap.min.js"></script>
+<script src="/js/main/mkwcansas/jquery.blockUI.js"></script>
+<script src="/js/main/mkwcansas/matt-accordion.js"></script>
+<script src="/js/main/mkwcansas/jquery.slider.min.js"></script>
+<script src="/js/main/mkwcansas/bootstrap.min.js"></script>
 {/block}
 {block "kozep"}
 <div class="container morzsa">
@@ -57,14 +57,14 @@
 					<table><tbody><tr>
 					<td class="lapozotalalat">
 						{if ($vt==1)}
-							<a href="#" class="termeklistview" data-vt="2" title="{t('Galéria')}"><img src="/themes/main/mkwdani/img/i_grid.png" alt="Galéria"></a>
+							<a href="#" class="termeklistview" data-vt="2" title="{t('Galéria')}"><img src="/themes/main/mkwcansas/img/i_grid.png" alt="Galéria"></a>
 						{else}
-							<img src="/themes/main/mkwdani/img/i_grid.png" alt="Galéria">
+							<img src="/themes/main/mkwcansas/img/i_grid.png" alt="Galéria">
 						{/if}
 						{if ($vt==2)}
-							<a href="#" class="termeklistview" data-vt="1" title="{t('Lista')}"><img src="/themes/main/mkwdani/img/i_list.png" alt="Lista"></a>
+							<a href="#" class="termeklistview" data-vt="1" title="{t('Lista')}"><img src="/themes/main/mkwcansas/img/i_list.png" alt="Lista"></a>
 						{else}
-							<img src="/themes/main/mkwdani/img/i_list.png" alt="Lista">
+							<img src="/themes/main/mkwcansas/img/i_list.png" alt="Lista">
 						{/if}
 						<select name="elemperpage" class="elemperpageedit">
 							{$elemszam=array(10,20,30,40,$lapozo.elemcount)}

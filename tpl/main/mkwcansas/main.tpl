@@ -1,8 +1,8 @@
 {extends "base.tpl"}
 {block "script"}
-<script src="/js/main/mkwdani/bootstrap.min.js"></script>
-<script src="/js/main/mkwdani/jquery-ui.min.js"></script>
-<script src="/js/main/mkwdani/jquery.ui.rcarousel.min.js"></script>
+<script src="/js/main/mkwcansas/bootstrap.min.js"></script>
+<script src="/js/main/mkwcansas/jquery-ui.min.js"></script>
+<script src="/js/main/mkwcansas/jquery.ui.rcarousel.min.js"></script>
 {/block}
 {block "kozep"}
 <div class="container">

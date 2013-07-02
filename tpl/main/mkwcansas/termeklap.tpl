@@ -1,11 +1,11 @@
 {extends "base.tpl"}
 {block "css"}
-<link type="text/css" rel="stylesheet" href="/themes/main/mkwdani/lightbox.css">
+<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/lightbox.css">
 {/block}
 {block "script"}
-<script src="/js/main/mkwdani/jquery.blockUI.js"></script>
-<script src="/js/main/mkwdani/lightbox.js"></script>
-<script src="/js/main/mkwdani/bootstrap.min.js"></script>
+<script src="/js/main/mkwcansas/jquery.blockUI.js"></script>
+<script src="/js/main/mkwcansas/lightbox.js"></script>
+<script src="/js/main/mkwcansas/bootstrap.min.js"></script>
 {/block}
 {block "kozep"}
 <div class="container">

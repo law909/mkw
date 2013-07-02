@@ -9,15 +9,15 @@
 		<title>{$pagetitle}</title>
 		<link type="application/rss+xml" rel="alternate" title="{$feedhirtitle}" href="/feed/hir">
 		<link type="application/rss+xml" rel="alternate" title="{$feedtermektitle}" href="/feed/termek">
-		<link type="text/css" rel="stylesheet" href="/themes/main/mkwdani/bootstrap.min.css">
-		<link type="text/css" rel="stylesheet" href="/themes/main/mkwdani/bootstrap-responsive.min.css">
-		<link type="text/css" rel="stylesheet" href="/themes/main/mkwdani/jquery.autocomplete.css">
-		<link type="text/css" rel="stylesheet" href="/themes/main/mkwdani/style.css">
+		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/bootstrap.min.css">
+		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/bootstrap-responsive.min.css">
+		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/jquery.autocomplete.css">
+		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/style.css">
 		{block "css"}{/block}
-		<script src="/js/main/mkwdani/jquery.js"></script>
-		<script src="/js/main/mkwdani/jquery.autocomplete.min.js"></script>
+		<script src="/js/main/mkwcansas/jquery.js"></script>
+		<script src="/js/main/mkwcansas/jquery.autocomplete.min.js"></script>
 		{block "script"}{/block}
-		<script src="/js/main/mkwdani/mkwdani.js"></script>
+		<script src="/js/main/mkwcansas/mkwcansas.js"></script>
 	</head>
 	<body>
 		<header>
