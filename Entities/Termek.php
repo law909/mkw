@@ -538,7 +538,7 @@ class Termek {
 				$result=str_replace('[termeknev]', $this->getNev(),$result);
 				$result=str_replace('[kategorianev]',$this->getTermekfa1Nev(),$result);
 				$result=str_replace('[global]', store::getParameter('oldalcim'), $result);
-				$result=str_replace('[bruttoar]', number_format($this->getBruttoAr(null,false),0,',',' '), $result);
+				$result=str_replace('[bruttoar]', number_format($this->getBruttoAr(null,false),0,',',''), $result);
 				return $result;
 			}
 			else {
@@ -565,7 +565,7 @@ class Termek {
 				$result=str_replace('[termeknev]', $this->getNev(),$result);
 				$result=str_replace('[kategorianev]',$this->getTermekfa1Nev(),$result);
 				$result=str_replace('[global]', store::getParameter('seodescription'), $result);
-				$result=str_replace('[bruttoar]', number_format($this->getBruttoAr(null,false),0,',',' '), $result);
+				$result=str_replace('[bruttoar]', number_format($this->getBruttoAr(null,false),0,',',''), $result);
 				return $result;
 			}
 			else {
@@ -593,7 +593,7 @@ class Termek {
 				$result=str_replace('[termeknev]', $this->getNev(),$result);
 				$result=str_replace('[kategorianev]',$this->getTermekfa1Nev(),$result);
 				$result=str_replace('[global]', store::getParameter('seokeywords'), $result);
-				$result=str_replace('[bruttoar]', number_format($this->getBruttoAr(null,false),0,',',' '), $result);
+				$result=str_replace('[bruttoar]', number_format($this->getBruttoAr(null,false),0,',',''), $result);
 				return $result;
 			}
 			else {
