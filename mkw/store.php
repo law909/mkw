@@ -188,4 +188,19 @@ class Store {
 		}
 		return self::$sanitizer;
 	}
+
+	public static function storePrevUri() {
+		store::getMainSession()->prevuri=$_SERVER['REQUEST_URI'];
+	}
+
+	public static function redirectTo404($keresendo,$params) {
+		$view=self::getTemplateFactory()->createMainView('404.tpl');
+		$tc=new \Controllers\termekController($params);
+		$view->setVar('ajanlotttermekek',$tc->getAjanlottLista());
+		store::fillTemplate($view);
+		$view->setVar('seodescription',t('Sajnos nem találjuk: ').$keresendo);
+		$view->setVar('pagetitle',t('Sajnos nem találjuk: ').$keresendo);
+		$view->printTemplateResult();
+	}
+
 }

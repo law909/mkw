@@ -90,4 +90,23 @@ class statlapController extends \mkwhelpers\MattableController {
 		$t['szoveg']=$statlap->getSzoveg();
 		return $t;
 	}
+
+	public function show() {
+		$com=$this->params->getStringParam('lap');
+		$statlap=$this->getRepo()->findOneBySlug($com);
+		if ($statlap) {
+			$view=$this->getTemplateFactory()->createMainView('statlap.tpl');
+			store::fillTemplate($view);
+			$view->setVar('pagetitle',$statlap->getOldalcim());
+			$view->setVar('seodescription',$statlap->getSeodescription());
+			$view->setVar('seokeywords',$statlap->getSeokeywords());
+			$view->setVar('statlap',$this->getstatlap($statlap));
+			store::storePrevUri();
+			$view->printTemplateResult();
+		}
+		else {
+			store::redirectTo404($com,$this->params);
+		}
+	}
+
 }

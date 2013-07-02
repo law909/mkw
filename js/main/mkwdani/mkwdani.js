@@ -226,7 +226,7 @@ var kapcscheck={
 			}
 		}
 	}
-}
+};
 
 var logincheck={
 	wasinteraction:{

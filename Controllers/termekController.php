@@ -647,7 +647,31 @@ class termekController extends \mkwhelpers\MattableController {
 		return $ret;
 	}
 
-	public function getfeedtermeklist() {
-		return $this->getRepo()->getFeedTermek();
+	public function feed() {
+		$feedview=$this->getTemplateFactory()->createMainView('feed.tpl');
+		$view=$this->getTemplateFactory()->createMainView('termekfeed.tpl');
+		$feedview->setVar('title',store::getParameter('feedtermektitle',t('Termékeink')));
+		$feedview->setVar('link',store::getRouter()->generate('termekfeed',true));
+		$d=new \DateTime();
+		$feedview->setVar('pubdate',$d->format('D, d M Y H:i:s'));
+		$feedview->setVar('lastbuilddate',$d->format('D, d M Y H:i:s'));
+		$feedview->setVar('description',store::getParameter('feedtermekdescription',''));
+		$entries=array();
+		$termekek=$this->getRepo()->getFeedTermek();
+		foreach($termekek as $termek) {
+			$view->setVar('kepurl',$termek->getKepUrlSmall());
+			$view->setVar('szoveg',$termek->getRovidLeiras());
+			$view->setVar('url',store::getRouter()->generate('showtermek',true,array('slug'=>$termek->getSlug())));
+			$entries[]=array(
+				'title'=>$termek->getNev(),
+				'link'=>store::getRouter()->generate('showtermek',true,array('slug'=>$termek->getSlug())),
+				'guid'=>store::getRouter()->generate('showtermek',true,array('slug'=>$termek->getSlug())),
+				'description'=>$view->getTemplateResult(),
+				'pubdate'=>$d->format('D, d M Y H:i:s')
+			);
+		}
+		$feedview->setVar('entries',$entries);
+		header('Content-type: text/xml');
+		$feedview->printTemplateResult();
 	}
 }

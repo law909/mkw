@@ -23,7 +23,7 @@
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="adataim">
-						<form class="form-horizontal" action="/regisztral/ment" method="post">
+						<form class="form-horizontal" action="/fiok/ment" method="post">
 							<fieldset>
 								<div class="control-group">
 									<label class="control-label" for="VezeteknevEdit">{t('Név')}:</label>

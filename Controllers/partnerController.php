@@ -253,49 +253,6 @@ class partnerController extends \mkwhelpers\MattableController {
 		return $res;
 	}
 
-	public function regisztral() {
-		$hibas=false;
-		$hibak=array();
-		$vezeteknev=$this->params->getStringRequestParam('vezeteknev');
-		$keresztnev=$this->params->getStringRequestParam('keresztnev');
-		$email=$this->params->getStringRequestParam('email');
-		$jelszo1=$this->params->getStringRequestParam('jelszo1');
-		$jelszo2=$this->params->getStringRequestParam('jelszo2');
-		if (!\Zend_Validate::is($email,'EmailAddress')) {
-			$hibas=true;
-			$hibak['email']=t('Rossz az email');
-		}
-		if ($jelszo1!==$jelszo2) {
-			$hibas=true;
-			$hibak['jelszo']=t('Rossz a jelszó');
-		}
-		if ($vezeteknev==''||$keresztnev=='') {
-			$hibas=true;
-			$hibak['nev']=t('Üres a név');
-		}
-		if (!$hibas) {
-			$t=new \Entities\Partner();
-			$t->setVezeteknev($vezeteknev);
-			$t->setKeresztnev($keresztnev);
-			$t->setNev($vezeteknev.' '.$keresztnev);
-			$t->setEmail($email);
-			$t->setJelszo($jelszo1);
-			$t->setSessionid(\Zend_Session::getId());
-			$this->getEm()->persist($t);
-			$this->getEm()->flush();
-			$this->login($email,$jelszo1);
-			Header('Location: /fiok');
-		}
-		else {
-			$view=$this->getTemplateFactory()->createMainView('regisztracio.tpl');
-			$view->setVar('vezeteknev',$vezeteknev);
-			$view->setVar('keresztnev',$keresztnev);
-			$view->setVar('email',$email);
-			$view->setVar('hibak',$hibak);
-		}
-		return $view;
-	}
-
 	public function checkemail() {
 		$email=$this->params->getStringRequestParam('email');
 		$ret=array();
@@ -387,5 +344,114 @@ class partnerController extends \mkwhelpers\MattableController {
 			return $this->getRepo()->find(store::getMainSession()->pk);
 		}
 		return null;
+	}
+
+	public function saveRegistration() {
+		$hibas=false;
+		$hibak=array();
+		$vezeteknev=$this->params->getStringRequestParam('vezeteknev');
+		$keresztnev=$this->params->getStringRequestParam('keresztnev');
+		$email=$this->params->getStringRequestParam('email');
+		$jelszo1=$this->params->getStringRequestParam('jelszo1');
+		$jelszo2=$this->params->getStringRequestParam('jelszo2');
+		if (!\Zend_Validate::is($email,'EmailAddress')) {
+			$hibas=true;
+			$hibak['email']=t('Rossz az email');
+		}
+		if ($jelszo1!==$jelszo2) {
+			$hibas=true;
+			$hibak['jelszo']=t('Rossz a jelszó');
+		}
+		if ($vezeteknev==''||$keresztnev=='') {
+			$hibas=true;
+			$hibak['nev']=t('Üres a név');
+		}
+		if (!$hibas) {
+			$t=new \Entities\Partner();
+			$t->setVezeteknev($vezeteknev);
+			$t->setKeresztnev($keresztnev);
+			$t->setNev($vezeteknev.' '.$keresztnev);
+			$t->setEmail($email);
+			$t->setJelszo($jelszo1);
+			$t->setSessionid(\Zend_Session::getId());
+			$this->getEm()->persist($t);
+			$this->getEm()->flush();
+			$this->login($email,$jelszo1);
+			Header('Location: '.store::getRouter()->generate('showaccount'));
+		}
+		else {
+			$this->showRegistrationForm($vezeteknev,$keresztnev,$email,$hibak);
+		}
+	}
+
+	public function showRegistrationForm($vezeteknev='',$keresztnev='',$email='',$hibak=array()) {
+		$view=$this->getTemplateFactory()->createMainView('regisztracio.tpl');
+		$view->setVar('vezeteknev',$vezeteknev);
+		$view->setVar('keresztnev',$keresztnev);
+		$view->setVar('email',$email);
+		$view->setVar('hibak',$hibak);
+		store::fillTemplate($view);
+		$view->printTemplateResult();
+	}
+
+	public function showLoginForm() {
+		if ($this->checkloggedin()) {
+			header('Location: '.store::getRouter()->generate('showaccount'));
+		}
+		else {
+			$view=$this->getLoginTpl();
+			store::fillTemplate($view);
+			store::storePrevUri();
+			$view->printTemplateResult();
+		}
+	}
+
+	public function doLogin() {
+		if ($this->checkloggedin()) {
+			header('Location: '.store::getRouter()->generate('showaccount'));
+		}
+		else {
+			if ($this->login($this->getStringRequestParam('email'),$this->getStringRequestParam('jelszo'))) {
+				header('Location: '.store::getRouter()->generate('showaccount'));
+			}
+			else {
+				$view=$this->getLoginTpl();
+				store::fillTemplate($view);
+				$view->setVar('sikertelen',true);
+				$view->printTemplateResult();
+			}
+		}
+	}
+
+	public function doLogout() {
+		$prevuri=store::getMainSession()->prevuri;
+		if (!$prevuri) {
+			$prevuri='/';
+		}
+		if ($this->checkloggedin()) {
+			$this->logout();
+		}
+		Header('Location: '.$prevuri);
+	}
+
+	public function showAccount() {
+		if ($this->checkloggedin()) {
+			$view=$this->getFiokTpl();
+			store::fillTemplate($view);
+			store::storePrevUri();
+			$view->printTemplateResult();
+		}
+		else {
+			header('Location: '.store::getRouter()->generate('showlogin'));
+		}
+	}
+
+	public function saveAccount() {
+		if ($this->checkloggedin()) {
+
+		}
+		else {
+			header('Location: '.store::getRouter()->generate('showlogin'));
+		}
 	}
 }

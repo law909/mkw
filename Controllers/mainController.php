@@ -6,27 +6,6 @@ class mainController extends \mkwhelpers\Controller {
 
 	private $view;
 
-	private function storePrevUri() {
-		store::getMainSession()->prevuri=$_SERVER['REQUEST_URI'];
-	}
-
-	protected function redirectTo404($keresendo) {
-		$this->view=$this->getTemplateFactory()->createMainView('404.tpl');
-		$tc=new termekController($this->params);
-		$this->view->setVar('ajanlotttermekek',$tc->getAjanlottLista());
-		$this->fillTemplate();
-		$this->view->setVar('seodescription',t('Sajnos nem találjuk: ').$keresendo);
-		$this->view->setVar('pagetitle',t('Sajnos nem találjuk: ').$keresendo);
-		$this->view->printTemplateResult();
-	}
-
-	protected function fillTemplate($v=null) {
-		if (!$v) {
-			$v=$this->view;
-		}
-		store::fillTemplate($v);
-	}
-
 	protected function createTermekfaParams() {
 		return array(
 			'elemperpage'=>$this->params->getIntRequestParam('elemperpage',20),
@@ -42,7 +21,7 @@ class mainController extends \mkwhelpers\Controller {
 
 	public function view() {
 		$this->view=$this->getTemplateFactory()->createMainView('main.tpl');
-		$this->fillTemplate();
+		store::fillTemplate($this->view);
 		$hc=new hirController($this->params);
 		$tc=new termekController($this->params);
 		$khc=new korhintaController($this->params);
@@ -52,11 +31,12 @@ class mainController extends \mkwhelpers\Controller {
 		$this->view->setVar('legnepszerubbtermekek',$tc->getLegnepszerubbLista());
 		$this->view->setVar('korhintalista',$khc->getLista());
 		$this->view->setVar('topkategorialista',$tfc->getformenu(store::getSetupValue('topkategoriamenunum',3),0));
-		$this->storePrevUri();
+		store::storePrevUri();
 		$this->view->printTemplateResult();
 	}
 
-	public function termekfa($com) {
+	public function termekfa() {
+		$com=$this->params->getStringParam('slug');
 		$tf=new termekfaController($this->params);
 		$ag=$tf->getRepo()->findOneBySlug($com);
 		if ($ag) {
@@ -71,19 +51,19 @@ class mainController extends \mkwhelpers\Controller {
 			foreach($t as $k=>$v) {
 				$this->view->setVar($k,$v);
 			}
-			$this->fillTemplate();
+			store::fillTemplate($this->view);
 			$this->view->setVar('pagetitle',$ag->getOldalcim());
 			$this->view->setVar('seodescription',$ag->getSeodescription());
 			$this->view->setVar('seokeywords',$ag->getSeokeywords());
-			$this->storePrevUri();
+			store::storePrevUri();
 			$this->view->printTemplateResult();
 		}
 		else {
-			$this->redirectTo404($com);
+			store::redirectTo404($com,$this->params);
 		}
 	}
 
-	public function kereses($com) {
+	public function kereses() {
 		$term=trim($this->params->getStringRequestParam('term'));
 		if ($term) {
 			$r=store::getEm()->getRepository('\Entities\Termek');
@@ -91,7 +71,7 @@ class mainController extends \mkwhelpers\Controller {
 			echo json_encode($res);
 		}
 		else {
-			$this->storePrevUri();
+			store::storePrevUri();
 			$keresoszo=trim($this->params->getStringRequestParam('keresett'));
 			if ($keresoszo!='') {
 				$log=new \Entities\Keresoszolog($keresoszo);
@@ -112,7 +92,7 @@ class mainController extends \mkwhelpers\Controller {
 					$tc=new termekController($this->params);
 					$this->view->setVar('ajanlotttermekek',$tc->getAjanlottLista());
 				}
-				$this->fillTemplate();
+				store::fillTemplate($this->view);
 				$this->view->setVar('seodescription',t('A keresett kifejezés: ').$keresoszo);
 				$this->view->setVar('pagetitle',t('A keresett kifejezés: ').$keresoszo);
 				$this->view->printTemplateResult();
@@ -121,7 +101,7 @@ class mainController extends \mkwhelpers\Controller {
 				$this->view=$this->getTemplateFactory()->createMainView('nincstalalat.tpl');
 				$tc=new termekController($this->params);
 				$this->view->setVar('ajanlotttermekek',$tc->getAjanlottLista());
-				$this->fillTemplate();
+				store::fillTemplate($this->view);
 				$this->view->setVar('seodescription',t('Keressen valamit.'));
 				$this->view->setVar('pagetitle',t('Keressen valamit.'));
 				$this->view->printTemplateResult();
@@ -129,12 +109,13 @@ class mainController extends \mkwhelpers\Controller {
 		}
 	}
 
-	public function termek($com) {
+	public function termek() {
+		$com=$this->params->getStringParam('slug');
 		$tc=new termekController($this->params);
 		$termek=$tc->getRepo()->findOneBySlug($com);
 		if ($termek) {
 			$this->view=$this->getTemplateFactory()->createMainView('termeklap.tpl');
-			$this->fillTemplate();
+			store::fillTemplate($this->view);
 			$this->view->setVar('pagetitle',$termek->getOldalcim());
 			$this->view->setVar('seodescription',$termek->getSeodescription());
 			$this->view->setVar('seokeywords',$termek->getSeokeywords());
@@ -142,195 +123,15 @@ class mainController extends \mkwhelpers\Controller {
 			foreach($t as $k=>$v) {
 				$this->view->setVar($k,$v);
 			}
-			$this->storePrevUri();
+			store::storePrevUri();
 			$this->view->printTemplateResult();
 		}
 		else {
-			$this->redirectTo404($com);
+			store::redirectTo404($com,$this->params);
 		}
 	}
 
-	public function regisztracio($com) {
-		$pc=new partnerController($this->params);
-		switch ($com) {
-			case 'ment':
-				$view=$pc->regisztral();
-				$this->fillTemplate($view);
-				$view->printTemplateResult();
-				break;
-			default :
-				$this->view=$this->getTemplateFactory()->createMainView('regisztracio.tpl');
-				$this->fillTemplate();
-				$this->storePrevUri();
-				$this->view->printTemplateResult();
-				break;
-		}
-	}
-
-	public function fiok($com) {
-		$pc=new partnerController($this->params);
-		if ($pc->checkloggedin()) {
-			switch ($com) {
-				case 'ment':
-					break;
-				default :
-					$view=$pc->getFiokTpl();
-					$this->fillTemplate($view);
-					$this->storePrevUri();
-					$view->printTemplateResult();
-					break;
-			}
-		}
-		else {
-			header('Location: /login');
-		}
-	}
-
-	public function login($com) {
-		$pc=new partnerController($this->params);
-		if ($pc->checkloggedin()) {
-			header('Location: /fiok');
-		}
-		else {
-			switch ($com) {
-				case 'ment':
-					if ($pc->login($this->getStringRequestParam('email'),$this->getStringRequestParam('jelszo'))) {
-						header('Location: /fiok');
-					}
-					else {
-						$view=$pc->getLoginTpl();
-						$this->fillTemplate($view);
-						$view->setVar('sikertelen',true);
-						$view->printTemplateResult();
-					}
-					break;
-				default :
-					$view=$pc->getLoginTpl();
-					$this->fillTemplate($view);
-					$this->storePrevUri();
-					$view->printTemplateResult();
-					break;
-			}
-		}
-	}
-
-	public function logout($com) {
-		$pc=new partnerController($this->params);
-		$prevuri=store::getMainSession()->prevuri;
-		if (!$prevuri) {
-			$prevuri='/';
-		}
-		if ($pc->checkloggedin()) {
-			$pc->logout();
-		}
-		Header('Location: '.$prevuri);
-	}
-
-	public function checkemail($com) {
-		$email=$this->params->getStringRequestParam('email');
-		$ret['hibas']=!\Zend_Validate::is($email,'EmailAddress');
-		if ($ret['hibas']) {
-			$ret['uzenet']=t('Kérjük emailcímet adjon meg.');
-		}
-		else {
-			$ret['uzenet']='';
-		}
-		echo json_encode($ret);
-	}
-
-	public function statlap($com) {
-		$sc=new statlapController($this->params);
-		$statlap=$sc->getRepo()->findOneBySlug($com);
-		if ($statlap) {
-			$this->view=$this->getTemplateFactory()->createMainView('statlap.tpl');
-			$this->fillTemplate();
-			$this->view->setVar('pagetitle',$statlap->getOldalcim());
-			$this->view->setVar('seodescription',$statlap->getSeodescription());
-			$this->view->setVar('seokeywords',$statlap->getSeokeywords());
-			$this->view->setVar('statlap',$sc->getstatlap($statlap));
-			$this->storePrevUri();
-			$this->view->printTemplateResult();
-		}
-		else {
-			$this->redirectTo404($com);
-		}
-	}
-
-	public function hir($com) {
-		$sc=new hirController($this->params);
-		$hir=$sc->getRepo()->findOneBySlug($com);
-		if ($hir) {
-			$this->view=$this->getTemplateFactory()->createMainView('hir.tpl');
-			$this->fillTemplate();
-			$this->view->setVar('pagetitle',$hir->getCim());
-			$this->view->setVar('seodescription',$hir->getSeodescription());
-			$this->view->setVar('seokeywords',$hir->getSeokeywords());
-			$this->view->setVar('hir',$hir->convertToArray());
-			$this->storePrevUri();
-			$this->view->printTemplateResult();
-		}
-		else {
-			$this->redirectTo404($com);
-		}
-	}
-
-	public function feed($com) {
-		$feedview=$this->getTemplateFactory()->createMainView('feed.tpl');
-		switch ($com) {
-			case 'hir':
-				$sc=new hirController($this->params);
-				$feedview->setVar('title',store::getParameter('feedhirtitle',t('Híreink')));
-				$feedview->setVar('link','http://'.$_SERVER['SERVER_NAME'].'/feed/hir');
-				$d=new \DateTime();
-				$feedview->setVar('pubdate',$d->format('D, d M Y H:i:s'));
-				$feedview->setVar('lastbuilddate',$d->format('D, d M Y H:i:s'));
-				$feedview->setVar('description',store::getParameter('feedhirdescription',''));
-				$entries=array();
-				$hirek=$sc->getfeedhirlist();
-				foreach($hirek as $hir) {
-					$entries[]=array(
-						'title'=>$hir->getCim(),
-						'link'=>'http://'.$_SERVER['SERVER_NAME'].'/hir/'.$hir->getSlug(),
-						'guid'=>'http://'.$_SERVER['SERVER_NAME'].'/hir/'.$hir->getSlug(),
-						'description'=>$hir->getSzoveg(),
-						'pubdate'=>$hir->getDatum()->format('D, d M Y H:i:s')
-					);
-				}
-				$feedview->setVar('entries',$entries);
-				header('Content-type: text/xml');
-				$feedview->printTemplateResult();
-				break;
-			case 'termek':
-				$tc=new termekController($this->params);
-				$view=$this->getTemplateFactory()->createMainView('termekfeed.tpl');
-				$feedview->setVar('title',store::getParameter('feedtermektitle',t('Termékeink')));
-				$feedview->setVar('link','http://'.$_SERVER['HTTP_HOST'].'/feed/termek');
-				$d=new \DateTime();
-				$feedview->setVar('pubdate',$d->format('D, d M Y H:i:s'));
-				$feedview->setVar('lastbuilddate',$d->format('D, d M Y H:i:s'));
-				$feedview->setVar('description',store::getParameter('feedtermekdescription',''));
-				$entries=array();
-				$termekek=$tc->getfeedtermeklist();
-				foreach($termekek as $termek) {
-					$view->setVar('kepurl',$termek->getKepUrlSmall());
-					$view->setVar('szoveg',$termek->getRovidLeiras());
-					$view->setVar('url','http://'.$_SERVER['HTTP_HOST'].'/termek/'.$termek->getSlug());
-					$entries[]=array(
-						'title'=>$termek->getNev(),
-						'link'=>'http://'.$_SERVER['HTTP_HOST'].'/termek/'.$termek->getSlug(),
-						'guid'=>'http://'.$_SERVER['HTTP_HOST'].'/termek/'.$termek->getSlug(),
-						'description'=>$view->getTemplateResult(),
-						'pubdate'=>$d->format('D, d M Y H:i:s')
-					);
-				}
-				$feedview->setVar('entries',$entries);
-				header('Content-type: text/xml');
-				$feedview->printTemplateResult();
-				break;
-		}
-	}
-
-	public function valtozatar($com) {
+	public function valtozatar() {
 		$termekid=$this->params->getIntRequestParam('t');
 		$valtozatid=$this->params->getIntRequestParam('vid');
 		$termek=store::getEm()->getRepository('Entities\Termek')->find($termekid);
@@ -340,7 +141,7 @@ class mainController extends \mkwhelpers\Controller {
 		echo json_encode($ret);
 	}
 
-	public function valtozat($com) {
+	public function valtozat() {
 		$termekkod=$this->params->getIntRequestParam('t');
 		$tipusid=$this->params->getIntRequestParam('ti');
 		$valtozatertek=$this->params->getRequestParam('v');
@@ -374,7 +175,8 @@ class mainController extends \mkwhelpers\Controller {
 		echo json_encode($ret);
 	}
 
-	public function kapcsolat($com) {
+	public function kapcsolat() {
+		$com=$this->params->getStringParam('todo');
 		switch ($com) {
 			case 'ment':
 				$hibas=false;
@@ -404,8 +206,8 @@ class mainController extends \mkwhelpers\Controller {
 				}
 				if (!$hibas) {
 					$view=$this->getTemplateFactory()->createMainView('kapcsolatkosz.tpl');
-					$this->fillTemplate($view);
-					$this->storePrevUri();
+					store::fillTemplate($view);
+					store::storePrevUri();
 				}
 				else {
 					$kftc=new kapcsolatfelveteltemaController($this->params);
@@ -424,9 +226,9 @@ class mainController extends \mkwhelpers\Controller {
 			default :
 				$kftc=new kapcsolatfelveteltemaController($this->params);
 				$this->view=$this->getTemplateFactory()->createMainView('kapcsolat.tpl');
-				$this->fillTemplate();
+				store::fillTemplate($this->view);
 				$this->view->setVar('temalista',$kftc->getSelectList(0));
-				$this->storePrevUri();
+				store::storePrevUri();
 				$this->view->printTemplateResult();
 				break;
 		}

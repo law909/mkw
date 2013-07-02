@@ -125,4 +125,46 @@ class hirController extends \mkwhelpers\MattableController {
 	public function getfeedhirlist() {
 		return $this->getRepo()->getFeedHirek();
 	}
+
+	public function show() {
+		$com=$this->params->getStringParam('hir');
+		$hir=$this->getRepo()->findOneBySlug($com);
+		if ($hir) {
+			$view=$this->getTemplateFactory()->createMainView('hir.tpl');
+			store::fillTemplate($view);
+			$view->setVar('pagetitle',$hir->getCim());
+			$view->setVar('seodescription',$hir->getSeodescription());
+			$view->setVar('seokeywords',$hir->getSeokeywords());
+			$view->setVar('hir',$hir->convertToArray());
+			store::storePrevUri();
+			$view->printTemplateResult();
+		}
+		else {
+			store::redirectTo404($com,$this->params);
+		}
+	}
+
+	public function feed() {
+		$feedview=$this->getTemplateFactory()->createMainView('feed.tpl');
+		$feedview->setVar('title',store::getParameter('feedhirtitle',t('Híreink')));
+		$feedview->setVar('link',store::getRouter()->generate('hirfeed',true));
+		$d=new \DateTime();
+		$feedview->setVar('pubdate',$d->format('D, d M Y H:i:s'));
+		$feedview->setVar('lastbuilddate',$d->format('D, d M Y H:i:s'));
+		$feedview->setVar('description',store::getParameter('feedhirdescription',''));
+		$entries=array();
+		$hirek=$this->getfeedhirlist();
+		foreach($hirek as $hir) {
+			$entries[]=array(
+				'title'=>$hir->getCim(),
+				'link'=>store::getRouter()->generate('showhir',true,array('hir'=>$hir->getSlug())),
+				'guid'=>store::getRouter()->generate('showhir',true,array('hir'=>$hir->getSlug())),
+				'description'=>$hir->getSzoveg(),
+				'pubdate'=>$hir->getDatum()->format('D, d M Y H:i:s')
+			);
+		}
+		$feedview->setVar('entries',$entries);
+		header('Content-type: text/xml');
+		$feedview->printTemplateResult();
+	}
 }
