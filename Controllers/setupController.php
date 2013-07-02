@@ -33,22 +33,16 @@ class setupController extends \mkwhelpers\Controller {
 		$view->setVar('oldalcim',($p?$p->getErtek():''));
 		$p=$repo->find('seodescription');
 		$view->setVar('seodescription',($p?$p->getErtek():''));
-		$p=$repo->find('seokeywords');
-		$view->setVar('seokeywords',($p?$p->getErtek():''));
 
 		$p=$repo->find('termekoldalcim');
 		$view->setVar('termekoldalcim',($p?$p->getErtek():''));
 		$p=$repo->find('termekseodescription');
 		$view->setVar('termekseodescription',($p?$p->getErtek():''));
-		$p=$repo->find('termekseokeywords');
-		$view->setVar('termekseokeywords',($p?$p->getErtek():''));
 
 		$p=$repo->find('katoldalcim');
 		$view->setVar('katoldalcim',($p?$p->getErtek():''));
 		$p=$repo->find('katseodescription');
 		$view->setVar('katseodescription',($p?$p->getErtek():''));
-		$p=$repo->find('katseokeywords');
-		$view->setVar('katseokeywords',($p?$p->getErtek():''));
 
 		$p=$repo->find('smallimagesize');
 		$view->setVar('smallimagesize',($p?$p->getErtek():80));
@@ -166,7 +160,6 @@ class setupController extends \mkwhelpers\Controller {
 		$this->setObj('bigimgpost',$this->params->getStringRequestParam('bigimgpost'));
 		$this->setObj('oldalcim',$this->params->getStringRequestParam('oldalcim'));
 		$this->setObj('seodescription',$this->params->getStringRequestParam('seodescription'));
-		$this->setObj('seokeywords',$this->params->getStringRequestParam('seokeywords'));
 		$this->setObj('fooldalajanlotttermekdb',$this->params->getIntRequestParam('fooldalajanlotttermekdb',6));
 		$this->setObj('fooldalhirdb',$this->params->getIntRequestParam('fooldalhirdb',1));
 		$this->setObj('fooldalnepszerutermekdb',$this->params->getIntRequestParam('fooldalnepszerutermekdb',1));
@@ -175,10 +168,8 @@ class setupController extends \mkwhelpers\Controller {
 		$this->setObj('autologoutmin',$this->params->getIntRequestParam('autologoutmin',10));
 		$this->setObj('katoldalcim',$this->params->getStringRequestParam('katoldalcim'));
 		$this->setObj('katseodescription',$this->params->getStringRequestParam('katseodescription'));
-		$this->setObj('katseokeywords',$this->params->getStringRequestParam('katseokeywords'));
 		$this->setObj('termekoldalcim',$this->params->getStringRequestParam('termekoldalcim'));
 		$this->setObj('termekseodescription',$this->params->getStringRequestParam('termekseodescription'));
-		$this->setObj('termekseokeywords',$this->params->getStringRequestParam('termekseokeywords'));
 		// alapertelmezes
 		$fizmod=store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod',0));
 		if ($fizmod) {

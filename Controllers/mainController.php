@@ -54,7 +54,6 @@ class mainController extends \mkwhelpers\Controller {
 			store::fillTemplate($this->view);
 			$this->view->setVar('pagetitle',$ag->getShowOldalcim());
 			$this->view->setVar('seodescription',$ag->getShowSeodescription());
-			$this->view->setVar('seokeywords',$ag->getShowSeokeywords());
 			store::storePrevUri();
 			$this->view->printTemplateResult();
 		}
@@ -118,7 +117,6 @@ class mainController extends \mkwhelpers\Controller {
 			store::fillTemplate($this->view);
 			$this->view->setVar('pagetitle',$termek->getShowOldalcim());
 			$this->view->setVar('seodescription',$termek->getShowSeodescription());
-			$this->view->setVar('seokeywords',$termek->getShowSeokeywords());
 			$t=$tc->getTermekLap($termek);
 			foreach($t as $k=>$v) {
 				$this->view->setVar($k,$v);

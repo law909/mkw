@@ -222,15 +222,12 @@ fgetcsv($import,0,';','"');
 $cikl=1;
 while(($data=fgetcsv($import,0,';','"'))!==false) {
 	echo toPermalink(mb($data[6])).'<br>';
-	$sql='INSERT INTO termekfa (id,parent_id,slug,nev,leiras,oldalcim,seodescription,seokeywords,kepurl,karkod) VALUES ('
+	$sql='INSERT INTO termekfa (id,parent_id,slug,nev,leiras,kepurl,karkod) VALUES ('
 		.$data[0].','
 		.($data[5]==''?'1':$data[5]).','
 		.'"'.toPermalink(mb($data[6])).'",'
 		.'"'.mb($data[6]).'",'
 		.'"'.mb($data[7]).'",'
-		.'"'.mb($data[8]).'",'
-		.'"'.mb($data[10]).'",'
-		.'"'.mb($data[9]).'",'
 		.'"'.mindentkapnikep(mb($data[12])).'",'
 		.'"'.$cikl.'")';
 	DBCommand($sql);

@@ -6,7 +6,6 @@
 		{if ($setup.editstyle=='tab')}
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
-			<li><a href="#WebSeoTab">{t('Metaadatok')}</a></li>
 		</ul>
 		{/if}
 		{if ($setup.editstyle=='dropdown')}
@@ -49,20 +48,9 @@
 				<td><label for="SzovegEdit">{t('Szöveg')}:</label></td>
 				<td colspan="5"><textarea id="SzovegEdit" name="szoveg" cols="70">{$egyed.szoveg}</textarea></td>
 			</tr>
-			</tbody></table>
-		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Metaadatok')}" data-refcontrol="#WebSeoTab"></div>
-		{/if}
-		<div id="WebSeoTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
-			<table><tbody>
 			<tr>
 				<td><label for="SeoDescriptionEdit">{t('META leírás')}:</label></td>
 				<td><textarea id="SeoDescriptionEdit" name="seodescription" cols="70">{$egyed.seodescription}</textarea></td>
-			</tr>
-			<tr>
-				<td><label for="SeoKeywordsEdit">{t('META kulcsszavak')}:</label></td>
-				<td><textarea id="SeoKeywordsEdit" name="seokeywords" cols="70">{$egyed.seokeywords}</textarea></td>
 			</tr>
 			</tbody></table>
 		</div>

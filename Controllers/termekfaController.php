@@ -28,7 +28,6 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$x['rovidleiras']=$t->getRovidleiras();
 		$x['leiras']=$t->getLeiras();
 		$x['seodescription']=$t->getSeodescription();
-		$x['seokeywords']=$t->getSeokeywords();
 		$x['menu1lathato']=$t->getMenu1lathato();
 		$x['menu2lathato']=$t->getMenu2lathato();
 		$x['menu3lathato']=$t->getMenu3lathato();
@@ -49,7 +48,6 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
 		$obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
 		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
-		$obj->setSeokeywords($this->params->getStringRequestParam('seokeywords'));
 		$obj->setMenu1lathato($this->params->getBoolRequestParam('menu1lathato'));
 		$obj->setMenu2lathato($this->params->getBoolRequestParam('menu2lathato'));
 		$obj->setMenu3lathato($this->params->getBoolRequestParam('menu3lathato'));
@@ -328,7 +326,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 
 		$keresofilter=array();
 		if ($keresoszo) {
-			$keresofilter['fields'][]=array('_xx.nev','_xx.oldalcim','_xx.seokeywords','_xx.cikkszam','_xx.leiras');
+			$keresofilter['fields'][]=array('_xx.nev','_xx.oldalcim','_xx.cikkszam','_xx.leiras');
 			$keresofilter['clauses'][]='LIKE';
 			$keresofilter['values'][]='%'.$keresoszo.'%';
 		}

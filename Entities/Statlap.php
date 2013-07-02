@@ -25,8 +25,6 @@ class Statlap {
 	private $szoveg;
 	/** @Column(type="text",nullable=true) */
 	private $seodescription;
-	/** @Column(type="text",nullable=true) */
-	private $seokeywords;
 	/**
 	 * @gedmo:Timestampable(on="create")
 	 * @Column(type="datetime",nullable=true)
@@ -77,14 +75,6 @@ class Statlap {
 
 	public function setSeodescription($adat) {
 		$this->seodescription=$adat;
-	}
-
-	public function getSeokeywords() {
-		return $this->seokeywords;
-	}
-
-	public function setSeokeywords($adat) {
-		$this->seokeywords=$adat;
 	}
 
 	public function getLastmod() {

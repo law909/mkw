@@ -228,24 +228,6 @@ class EntitiesTermekFaProxy extends \Entities\TermekFa implements \Doctrine\ORM\
         return parent::setSeodescription($seodescription);
     }
 
-    public function getSeokeywords()
-    {
-        $this->__load();
-        return parent::getSeokeywords();
-    }
-
-    public function getShowSeokeywords()
-    {
-        $this->__load();
-        return parent::getShowSeokeywords();
-    }
-
-    public function setSeokeywords($seokeywords)
-    {
-        $this->__load();
-        return parent::setSeokeywords($seokeywords);
-    }
-
     public function getKepurl($pre = '/')
     {
         $this->__load();
@@ -375,7 +357,7 @@ class EntitiesTermekFaProxy extends \Entities\TermekFa implements \Doctrine\ORM\
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'children', 'parent', 'nev', 'sorrend', 'slug', 'karkod', 'rovidleiras', 'leiras', 'menu1lathato', 'menu2lathato', 'menu3lathato', 'menu4lathato', 'oldalcim', 'seodescription', 'seokeywords', 'kepurl', 'kepleiras', 'termekek1', 'termekek2', 'termekek3');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'children', 'parent', 'nev', 'sorrend', 'slug', 'karkod', 'rovidleiras', 'leiras', 'menu1lathato', 'menu2lathato', 'menu3lathato', 'menu4lathato', 'oldalcim', 'seodescription', 'kepurl', 'kepleiras', 'termekek1', 'termekek2', 'termekek3');
     }
 
     public function __clone()

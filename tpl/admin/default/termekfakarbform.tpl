@@ -7,7 +7,6 @@
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
 			<li><a href="#WebTab">{t('Webes adatok')}</a></li>
-			<li><a href="#WebSeoTab">{t('Metaadatok')}</a></li>
 		</ul>
 		{/if}
 		{if ($setup.editstyle=='dropdown')}
@@ -48,20 +47,9 @@
 				<td><label for="LeirasEdit">{t('Leírás')}:</label></td>
 				<td><textarea id="LeirasEdit" name="leiras">{$fa.leiras}</textarea></td>
 			</tr>
-			</tbody></table>
-		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="fakarb-titlebar" data-caption="{t('Metaadatok')}" data-refcontrol="#WebSeoTab"></div>
-		{/if}
-		<div id="WebSeoTab" class="fakarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
-			<table><tbody>
 			<tr>
 				<td><label for="SeoDescriptionEdit">{t('META leírás')}:</label></td>
 				<td><textarea id="SeoDescriptionEdit" name="seodescription" cols="70">{$fa.seodescription}</textarea></td>
-			</tr>
-			<tr>
-				<td><label for="SeoKeywordsEdit">{t('META kulcsszavak')}:</label></td>
-				<td><textarea id="SeoKeywordsEdit" name="seokeywords" cols="70">{$fa.seokeywords}</textarea></td>
 			</tr>
 			</tbody></table>
 		</div>

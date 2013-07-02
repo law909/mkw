@@ -24,7 +24,6 @@ class statlapController extends \mkwhelpers\MattableController {
 		$x['slug']=$t->getSlug();
 		$x['szoveg']=$t->getSzoveg();
 		$x['seodescription']=$t->getSeodescription();
-		$x['seokeywords']=$t->getSeokeywords();
 		return $x;
 	}
 
@@ -32,7 +31,6 @@ class statlapController extends \mkwhelpers\MattableController {
 		$obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
 		$obj->setSzoveg($this->params->getOriginalStringRequestParam('szoveg'));
 		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
-		$obj->setSeokeywords($this->params->getStringRequestParam('seokeywords'));
 		return $obj;
 	}
 
@@ -99,7 +97,6 @@ class statlapController extends \mkwhelpers\MattableController {
 			store::fillTemplate($view);
 			$view->setVar('pagetitle',$statlap->getShowOldalcim());
 			$view->setVar('seodescription',$statlap->getSeodescription());
-			$view->setVar('seokeywords',$statlap->getSeokeywords());
 			$view->setVar('statlap',$this->getstatlap($statlap));
 			store::storePrevUri();
 			$view->printTemplateResult();

@@ -260,9 +260,6 @@ class adminController extends mkwhelpers\Controller {
 			$termek->setHosszusag($data[16]);
 			$termek->setOsszehajthato($data[17]);
 			$termek->setSuly($data[18]);
-			$termek->setOldalcim(mb_convert_encoding($data[22],'UTF8','ISO-8859-2'));
-			$termek->setSeokeywords(mb_convert_encoding($data[23],'UTF8','ISO-8859-2'));
-			$termek->setSeodescription(mb_convert_encoding($data[24],'UTF8','ISO-8859-2'));
 			$termek->setHparany(ceil($data[19]/$data[28]*100));
 
 			$termek->setAfa($afa);

@@ -152,7 +152,6 @@ class Store {
 	public static function fillTemplate($v) {
 		$tf=new \Controllers\termekfaController(null);
 		$v->setVar('seodescription',self::getParameter('seodescription'));
-		$v->setVar('seokeywords',self::getParameter('seokeywords'));
 		$v->setVar('feedtermektitle',self::getParameter('feedtermektitle',t('Termékeink')));
 		$v->setVar('feedhirtitle',self::getParameter('feedhirtitle',t('Híreink')));
 		$v->setVar('menu1',$tf->getformenu(1,self::getSetupValue('almenunum')));

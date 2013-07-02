@@ -121,9 +121,6 @@
 					<tr><td><label for="SeodescriptionEdit">{t('META leírás')}:</label></td>
 						<td colspan="3"><textarea id="SeodescriptionEdit" name="seodescription" type="text" cols="75">{$seodescription}</textarea></td>
 					</tr>
-					<tr><td><label for="SeokeywordsEdit">{t('META kulcsszavak')}:</label></td>
-						<td colspan="3"><textarea id="SeokeywordsEdit" name="seokeywords" type="text" cols="75">{$seokeywords}</textarea></td>
-					</tr>
 				</tbody></table>
 			</tr>
 			<tr>
@@ -136,9 +133,6 @@
 					<tr><td><label for="KSeodescriptionEdit">{t('META leírás')}:</label></td>
 						<td colspan="3"><textarea id="KSeodescriptionEdit" name="katseodescription" type="text" cols="75">{$katseodescription}</textarea></td>
 					</tr>
-					<tr><td><label for="KSeokeywordsEdit">{t('META kulcsszavak')}:</label></td>
-						<td colspan="3"><textarea id="KSeokeywordsEdit" name="katseokeywords" type="text" cols="75">{$katseokeywords}</textarea></td>
-					</tr>
 				</tbody></table>
 			</tr>
 			<tr>
@@ -150,9 +144,6 @@
 					</tr>
 					<tr><td><label for="TSeodescriptionEdit">{t('META leírás')}:</label></td>
 						<td colspan="3"><textarea id="TSeodescriptionEdit" name="termekseodescription" type="text" cols="75">{$termekseodescription}</textarea></td>
-					</tr>
-					<tr><td><label for="TSeokeywordsEdit">{t('META kulcsszavak')}:</label></td>
-						<td colspan="3"><textarea id="TSeokeywordsEdit" name="termekseokeywords" type="text" cols="75">{$termekseokeywords}</textarea></td>
 					</tr>
 				</tbody></table>
 			</tr>

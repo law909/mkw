@@ -34,7 +34,6 @@ class hirController extends \mkwhelpers\MattableController {
 		$x['utolsodatumstr']=$t->getUtolsodatumStr();
 		$x['lathato']=$t->getLathato();
 		$x['seodescription']=$t->getSeodescription();
-		$x['seokeywords']=$t->getSeokeywords();
 		return $x;
 	}
 
@@ -49,7 +48,6 @@ class hirController extends \mkwhelpers\MattableController {
 		$obj->setElsodatum($this->params->getDateRequestParam('elsodatum'));
 		$obj->setUtolsodatum($this->params->getDateRequestParam('utolsodatum'));
 		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
-		$obj->setSeokeywords($this->params->getStringRequestParam('seokeywords'));
 		return $obj;
 	}
 
@@ -134,7 +132,6 @@ class hirController extends \mkwhelpers\MattableController {
 			store::fillTemplate($view);
 			$view->setVar('pagetitle',$hir->getShowCim());
 			$view->setVar('seodescription',$hir->getSeodescription());
-			$view->setVar('seokeywords',$hir->getSeokeywords());
 			$view->setVar('hir',$hir->convertToArray());
 			store::storePrevUri();
 			$view->printTemplateResult();

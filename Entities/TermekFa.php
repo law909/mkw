@@ -67,8 +67,6 @@ class TermekFa {
 	/** @Column(type="text",nullable=true) */
 	private $seodescription;
 	/** @Column(type="text",nullable=true) */
-	private $seokeywords;
-	/** @Column(type="text",nullable=true) */
 	private $kepurl;
 	/** @Column(type="text",nullable=true) */
 	private $kepleiras;
@@ -268,32 +266,6 @@ class TermekFa {
 
 	public function setSeodescription($seodescription) {
 		$this->seodescription = $seodescription;
-	}
-
-	public function getSeokeywords() {
-		return $this->seokeywords;
-	}
-
-	public function getShowSeokeywords() {
-		if ($this->seokeywords) {
-			return $this->seokeywords;
-		}
-		else {
-			$result=store::getParameter('katseokeywords');
-			if ($result) {
-				$result=str_replace('[kategorianev]', $this->getNev(),$result);
-				$result=str_replace('[global]', store::getParameter('seokeywords'), $result);
-				return $result;
-			}
-			else {
-				return store::getParameter('seokeywords');
-			}
-		}
-	}
-
-	public function setSeokeywords($seokeywords)
-	{
-		$this->seokeywords = $seokeywords;
 	}
 
 	public function getKepurl($pre='/')

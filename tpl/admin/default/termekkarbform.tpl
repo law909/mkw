@@ -16,7 +16,6 @@
 			{/if}
 			<li><a href="#KapcsolodoTab">{t('Kapcsolódó termékek')}</a></li>
 			<li><a href="#WebTab">{t('Webes adatok')}</a></li>
-			<li><a href="#WebSeoTab">{t('Metaadatok')}</a></li>
 			<li><a href="#CsomagolasTab">{t('Csomagolási adatok')}</a></li>
 		</ul>
 		{/if}
@@ -271,6 +270,10 @@
 				<td><label for="LeirasEdit">{t('Leírás')}:</label></td>
 				<td><textarea id="LeirasEdit" name="leiras">{$termek.leiras}</textarea></td>
 			</tr>
+			<tr>
+				<td><label for="SeoDescriptionEdit">{t('META leírás')}:</label></td>
+				<td><textarea id="SeoDescriptionEdit" name="seodescription" cols="70">{$termek.seodescription}</textarea></td>
+			</tr>
 			</tbody></table>
 		</div>
 		{if ($setup.editstyle=='dropdown')}
@@ -282,21 +285,6 @@
 			{include 'termektermekkepkarb.tpl'}
 			{/foreach}
 			<a class="KepNewButton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
-		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Metaadatok')}" data-refcontrol="#WebSeoTab"></div>
-		{/if}
-		<div id="WebSeoTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
-			<table><tbody>
-			<tr>
-				<td><label for="SeoDescriptionEdit">{t('META leírás')}:</label></td>
-				<td><textarea id="SeoDescriptionEdit" name="seodescription" cols="70">{$termek.seodescription}</textarea></td>
-			</tr>
-			<tr>
-				<td><label for="SeoKeywordsEdit">{t('META kulcsszavak')}:</label></td>
-				<td><textarea id="SeoKeywordsEdit" name="seokeywords" cols="70">{$termek.seokeywords}</textarea></td>
-			</tr>
-			</tbody></table>
 		</div>
 		{if ($setup.editstyle=='dropdown')}
 		<div class="mattkarb-titlebar" data-caption="{t('Csomagolási adatok')}" data-refcontrol="#CsomagolasTab"></div>

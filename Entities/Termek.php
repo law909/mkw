@@ -72,8 +72,6 @@ class Termek {
 	private $oldalcim='';
 	/** @Column(type="text",nullable=true) */
 	private $seodescription='';
-	/** @Column(type="text",nullable=true) */
-	private $seokeywords='';
 	/**
 	 * @gedmo:Slug
 	 * @Column(type="string",length=255,nullable=true)
@@ -577,34 +575,6 @@ class Termek {
 	public function setSeodescription($seodescription)
 	{
 		$this->seodescription = $seodescription;
-	}
-
-	public function getSeokeywords() {
-		return $this->seokeywords;
-	}
-
-	public function getShowSeokeywords() {
-		if ($this->seokeywords) {
-			return $this->seokeywords;
-		}
-		else {
-			$result=store::getParameter('termekseokeywords');
-			if ($result) {
-				$result=str_replace('[termeknev]', $this->getNev(),$result);
-				$result=str_replace('[kategorianev]',$this->getTermekfa1Nev(),$result);
-				$result=str_replace('[global]', store::getParameter('seokeywords'), $result);
-				$result=str_replace('[bruttoar]', number_format($this->getBruttoAr(null,false),0,',',''), $result);
-				return $result;
-			}
-			else {
-				return store::getParameter('seokeywords');
-			}
-		}
-	}
-
-	public function setSeokeywords($seokeywords)
-	{
-		$this->seokeywords = $seokeywords;
 	}
 
 	public function getSlug()

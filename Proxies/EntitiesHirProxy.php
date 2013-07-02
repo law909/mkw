@@ -90,18 +90,6 @@ class EntitiesHirProxy extends \Entities\Hir implements \Doctrine\ORM\Proxy\Prox
         return parent::setSeodescription($adat);
     }
 
-    public function getSeokeywords()
-    {
-        $this->__load();
-        return parent::getSeokeywords();
-    }
-
-    public function setSeokeywords($adat)
-    {
-        $this->__load();
-        return parent::setSeokeywords($adat);
-    }
-
     public function getElsodatum()
     {
         $this->__load();
@@ -219,7 +207,7 @@ class EntitiesHirProxy extends \Entities\Hir implements \Doctrine\ORM\Proxy\Prox
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'cim', 'slug', 'sorrend', 'forras', 'lead', 'elsodatum', 'utolsodatum', 'datum', 'lathato', 'szoveg', 'seodescription', 'seokeywords');
+        return array('__isInitialized__', 'id', 'cim', 'slug', 'sorrend', 'forras', 'lead', 'elsodatum', 'utolsodatum', 'datum', 'lathato', 'szoveg', 'seodescription');
     }
 
     public function __clone()

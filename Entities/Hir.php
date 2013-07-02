@@ -43,8 +43,6 @@ class Hir {
 	private $szoveg;
 	/** @Column(type="text",nullable=true) */
 	private $seodescription;
-	/** @Column(type="text",nullable=true) */
-	private $seokeywords;
 
 	public function convertToArray() {
 		$ret=array(
@@ -87,14 +85,6 @@ class Hir {
 
 	public function setSeodescription($adat) {
 		$this->seodescription=$adat;
-	}
-
-	public function getSeokeywords() {
-		return $this->seokeywords;
-	}
-
-	public function setSeokeywords($adat) {
-		$this->seokeywords=$adat;
 	}
 
 	public function getElsodatum() {

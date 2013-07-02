@@ -96,18 +96,6 @@ class EntitiesStatlapProxy extends \Entities\Statlap implements \Doctrine\ORM\Pr
         return parent::setSeodescription($adat);
     }
 
-    public function getSeokeywords()
-    {
-        $this->__load();
-        return parent::getSeokeywords();
-    }
-
-    public function setSeokeywords($adat)
-    {
-        $this->__load();
-        return parent::setSeokeywords($adat);
-    }
-
     public function getLastmod()
     {
         $this->__load();
@@ -123,7 +111,7 @@ class EntitiesStatlapProxy extends \Entities\Statlap implements \Doctrine\ORM\Pr
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'oldalcim', 'slug', 'szoveg', 'seodescription', 'seokeywords', 'created', 'lastmod');
+        return array('__isInitialized__', 'id', 'oldalcim', 'slug', 'szoveg', 'seodescription', 'created', 'lastmod');
     }
 
     public function __clone()

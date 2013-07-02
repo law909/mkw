@@ -44,7 +44,6 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['rovidleiras']=$t->getRovidleiras();
 		$x['leiras']=$t->getLeiras();
 		$x['seodescription']=$t->getSeodescription();
-		$x['seokeywords']=$t->getSeokeywords();
 		$x['lathato']=$t->getLathato();
 		$x['hozzaszolas']=$t->getHozzaszolas();
 		$x['ajanlott']=$t->getAjanlott();
@@ -137,7 +136,6 @@ class termekController extends \mkwhelpers\MattableController {
 		$obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
 		$obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
 		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
-		$obj->setSeokeywords($this->params->getStringRequestParam('seokeywords'));
 		$obj->setLathato($this->params->getBoolRequestParam('lathato',true));
 		$obj->setHozzaszolas($this->params->getBoolRequestParam('hozzaszolas',false));
 		$obj->setAjanlott($this->params->getBoolRequestParam('ajanlott',false));
