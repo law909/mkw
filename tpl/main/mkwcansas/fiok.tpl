@@ -1,7 +1,8 @@
 {extends "base.tpl"}
 
 {block "script"}
-<script src="/js/main/mkwcansas/bootstrap-tab.js"></script>
+<script src="/js/main/mkwcansas/jquery.blockUI.js"></script>
+<script src="/js/main/mkwcansas/bootstrap.min.js"></script>
 <script src="/js/main/mkwcansas/h5f.js"></script>
 {/block}
 

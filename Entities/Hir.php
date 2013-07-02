@@ -83,7 +83,7 @@ class Hir {
 		if ($this->seodescription) {
 			return $this->seodescription;
 		}
-		return \mkw\Store::getParameter('seodescription');
+		return $this->cim.' - '.\mkw\Store::getParameter('seodescription');
 	}
 
 	public function getSeodescription() {

@@ -1,5 +1,10 @@
 {extends "base.tpl"}
 
+{block "script"}
+<script src="/js/main/mkwcansas/jquery.blockUI.js"></script>
+<script src="/js/main/mkwcansas/bootstrap.min.js"></script>
+{/block}
+
 {block "kozep"}
 <div class="container morzsa">
 	<div class="row">
