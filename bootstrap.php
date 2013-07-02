@@ -35,7 +35,7 @@ $classLoader->register();
 $config = new \Doctrine\ORM\Configuration();
 
 $config->addCustomStringFunction('YEAR', 'mkwhelpers\year');
-$config->addCustomStringFunction('IF', 'mkwhelper\ifelse');
+$config->addCustomStringFunction('IF', 'mkwhelpers\ifelse');
 
 $chainDriverImpl = new \Doctrine\ORM\Mapping\Driver\DriverChain();
 
