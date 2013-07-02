@@ -90,6 +90,12 @@ class EntitiesStatlapProxy extends \Entities\Statlap implements \Doctrine\ORM\Pr
         return parent::getSeodescription();
     }
 
+    public function getShowSeodescription()
+    {
+        $this->__load();
+        return parent::getShowSeodescription();
+    }
+
     public function setSeodescription($adat)
     {
         $this->__load();

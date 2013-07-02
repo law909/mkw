@@ -79,6 +79,13 @@ class Hir {
 		$this->slug=$adat;
 	}
 
+	public function getShowSeodescription() {
+		if ($this->seodescription) {
+			return $this->seodescription;
+		}
+		return \mkw\Store::getParameter('seodescription');
+	}
+
 	public function getSeodescription() {
 		return $this->seodescription;
 	}

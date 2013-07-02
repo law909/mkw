@@ -78,6 +78,12 @@ class EntitiesHirProxy extends \Entities\Hir implements \Doctrine\ORM\Proxy\Prox
         return parent::setSlug($adat);
     }
 
+    public function getShowSeodescription()
+    {
+        $this->__load();
+        return parent::getShowSeodescription();
+    }
+
     public function getSeodescription()
     {
         $this->__load();

@@ -73,6 +73,13 @@ class Statlap {
 		return $this->seodescription;
 	}
 
+	public function getShowSeodescription() {
+		if ($this->seodescription) {
+			return $this->seodescription;
+		}
+		return \mkw\Store::getParameter('seodescription');
+	}
+
 	public function setSeodescription($adat) {
 		$this->seodescription=$adat;
 	}
