@@ -128,7 +128,8 @@
 			</tr>
 			<tr>
 				<table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
-					<tr><td>{t('Kategória oldal')}</td></tr>
+					<tr><td colspan="3">{t('Kategória oldal')}</td></tr>
+					<tr><td colspan="3">[kategorianev] [global]</td></tr>
 					<tr><td><label for="KOldalCimEdit">{t('Lap címe')}:</label></td>
 						<td colspan="3"><input id="KOldalCimEdit" name="katoldalcim" type="text" size="75" maxlength="255" value="{$katoldalcim}"></td>
 					</tr>
@@ -142,7 +143,8 @@
 			</tr>
 			<tr>
 				<table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
-					<tr><td>{t('Termék oldal')}</td></tr>
+					<tr><td colspan="3">{t('Termék oldal')}</td></tr>
+					<tr><td colspan="3">[termeknev] [bruttoar] [kategorianev] [global]</td></tr>
 					<tr><td><label for="TOldalCimEdit">{t('Lap címe')}:</label></td>
 						<td colspan="3"><input id="TOldalCimEdit" name="termekoldalcim" type="text" size="75" maxlength="255" value="{$termekoldalcim}"></td>
 					</tr>

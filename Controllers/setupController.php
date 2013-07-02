@@ -165,7 +165,7 @@ class setupController extends \mkwhelpers\Controller {
 		$this->setObj('mediumimgpost',$this->params->getStringRequestParam('mediumimgpost'));
 		$this->setObj('bigimgpost',$this->params->getStringRequestParam('bigimgpost'));
 		$this->setObj('oldalcim',$this->params->getStringRequestParam('oldalcim'));
-		$this->setObj('seodesciption',$this->params->getStringRequestParam('seodescription'));
+		$this->setObj('seodescription',$this->params->getStringRequestParam('seodescription'));
 		$this->setObj('seokeywords',$this->params->getStringRequestParam('seokeywords'));
 		$this->setObj('fooldalajanlotttermekdb',$this->params->getIntRequestParam('fooldalajanlotttermekdb',6));
 		$this->setObj('fooldalhirdb',$this->params->getIntRequestParam('fooldalhirdb',1));
