@@ -275,16 +275,25 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$tck=new termekcimkekatController($this->params);
 
 		$kiemelttermekdb=store::getParameter('kiemelttermekdb',3);
-
-		$elemperpage=$this->params['elemperpage'];
-		$pageno=$this->params['pageno'];
-		$ord=$this->params['order'];
-		$szurostr=$this->params['filter'];
-		if (array_key_exists('cimkekatid',$this->params)) {
-			$klikkeltcimkekatid=$this->params['cimkekatid'];
+/**
+		'elemperpage'=>$this->params->getIntRequestParam('elemperpage',20),
+			'pageno'=>$this->params->getIntRequestParam('pageno',1),
+			'order'=>$this->params->getStringRequestParam('order','ardesc'),
+			'filter'=>$this->params->getStringRequestParam('filter',''),
+			'klikkeltcimkekatid'=>$this->params->getIntRequestParam('cimkekatid'),
+			'arfilter'=>$this->params->getStringRequestParam('arfilter',''),
+			'keresett'=>$this->params->getStringRequestParam('keresett',''),
+			'vt'=>$this->params->getIntRequestParam('vt',1)
+*/
+		$elemperpage=$this->params->getIntRequestParam('elemperpage',20);
+		$pageno=$this->params->getIntRequestParam('pageno',1);
+		$ord=$this->params->getStringRequestParam('order');
+		$szurostr=$this->params->getStringRequestParam('filter');
+		if ($this->params->getIntRequestParam('cimkekatid')) {
+			$klikkeltcimkekatid=$this->params->getIntRequestParam('cimkekatid',false);
 		}
-		$keresoszo=$this->params['keresett'];
-		$arfiltertomb=explode(';',$this->params['arfilter']);
+		$keresoszo=$this->params->getStringRequestParam('keresett');
+		$arfiltertomb=explode(';',$this->params->getStringRequestParam('arfilter'));
 		if (count($arfiltertomb)>0) {
 			$minarfilter=$arfiltertomb[0]*1;
 		}
@@ -436,7 +445,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 				$ret['navigator']=array(array('caption'=>t('A keresett kifejezés').': '.$keresoszo));
 			}
 			$ret['keresett']=$keresoszo;
-			$ret['vt']=($this->params['vt']>0?$this->params['vt']:1);
+			$ret['vt']=($this->params->getIntRequestParam('vt')>0?$this->params->getIntRequestParam('vt'):1);
 			$ret['termekek']=$t;
 			$ret['kiemelttermekek']=$kt;
 			// $tid = termek id-k csak kategoriaval es arral szurve

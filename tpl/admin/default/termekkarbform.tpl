@@ -190,10 +190,24 @@
 						<input name="valtozatertek2" form="valtozatgeneratorform" type="text">
 					</td>
 					<td class="mattable-cell">
-						<label for="BruttoEdit">{t('Bruttó')}:</label>
+						<label for="VBruttoEdit">{t('Bruttó')}:</label>
 					</td>
 					<td class="mattable-cell">
-						<input class="valtozatbruttogen" id="BruttoEdit" form="valtozatgeneratorform" name="valtozatbruttogen">
+						<input class="valtozatbruttogen" id="VBruttoEdit" form="valtozatgeneratorform" name="valtozatbruttogen">
+					</td>
+				</tr>
+				<tr>
+					<td class="mattable-cell">
+						<label for="VCikkszamEdit">{t('Cikkszám')}:</label>
+					</td>
+					<td class="mattable-cell">
+						<input id="VCikkszamEdit" name="valtozatcikkszamgen" type="text" form="valtozatgeneratorform">
+					</td>
+					<td class="mattable-cell">
+						<label for="VIdegenCikkszamEdit">{t('Szállítói cikkszám')}:</label>
+					</td>
+					<td class="mattable-cell">
+						<input id="VIdegenCikkszamEdit" name="valtozatidegencikkszamgen" type="text" form="valtozatgeneratorform">
 					</td>
 				</tr>
 				<tr>

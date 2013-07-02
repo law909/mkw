@@ -55,6 +55,20 @@
 		</td>
 	</tr>
 	<tr>
+		<td class="mattable-cell">
+			<label for="CikkszamEdit_{$valtozat.id}">{t('Cikkszám')}:</label>
+		</td>
+		<td class="mattable-cell">
+			<input id="CikkszamEdit_{$valtozat.id}" name="valtozatcikkszam_{$valtozat.id}" type="text" value="{$valtozat.cikkszam}">
+		</td>
+		<td class="mattable-cell">
+			<label for="IdegenCikkszamEdit_{$valtozat.id}">{t('Szállítói cikkszám')}:</label>
+		</td>
+		<td class="mattable-cell">
+			<input id="IdegenCikkszamEdit_{$valtozat.id}" name="valtozatidegencikkszam_{$valtozat.id}" type="text" value="{$valtozat.idegencikkszam}">
+		</td>
+	</tr>
+	<tr>
 		<td>
 			<label for="ValtozatTermekKepCB_{$valtozat.id}">{t('A kép a termék főképe')}:</label>
 			<input id="ValtozatTermekKepCB__{$valtozat.id}" name="valtozattermekfokep_{$valtozat.id}" type="checkbox"{if ($valtozat.termekfokep)} checked="checked"{/if}>

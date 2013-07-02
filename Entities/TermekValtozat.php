@@ -66,6 +66,10 @@ class TermekValtozat {
 	 * @JoinColumn(name="termekkep_id",referencedColumnName="id",nullable=true,onDelete="restrict",onUpdate="cascade")
 	 */
 	private $kep;
+	/** @Column(type="string",length=50,nullable=true) */
+	private $cikkszam='';
+	/** @Column(type="string",length=50,nullable=true) */
+	private $idegencikkszam='';
 
 	public function __construct() {
 		$this->kosarak=new \Doctrine\Common\Collections\ArrayCollection();
@@ -283,5 +287,21 @@ class TermekValtozat {
 	public function setKep($kep) {
 		$this->kep = $kep;
 //		$kep->addValtozat($this);
+	}
+
+	public function getIdegencikkszam() {
+		return $this->idegencikkszam;
+	}
+
+	public function setIdegencikkszam($idegencikkszam) {
+		$this->idegencikkszam = $idegencikkszam;
+	}
+
+	public function getCikkszam() {
+		return $this->cikkszam;
+	}
+
+	public function setCikkszam($cikkszam) {
+		$this->cikkszam = $cikkszam;
 	}
 }

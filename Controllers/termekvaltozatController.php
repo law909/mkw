@@ -46,6 +46,8 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
 		$x['kepid']=$t->getKepid();
 		$x['netto']=$t->getNetto();
 		$x['brutto']=$t->getBrutto();
+		$x['cikkszam']=$t->getCikkszam();
+		$x['idegencikkszam']=$t->getIdegencikkszam();
 		return $x;
 	}
 
@@ -86,6 +88,8 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
 		$ertek2=$this->params->getStringRequestParam('valtozatertek2');
 		$netto=$this->params->getNumRequestParam('valtozatnettogen');
 		$brutto=$this->params->getNumRequestParam('valtozatbruttogen');
+		$cikkszam=$this->params->getStringRequestParam('valtozatcikkszamgen');
+		$idegencikkszam=$this->params->getStringRequestParam('valtozatidegencikkszamgen');
 		$elerheto=$this->params->getBoolRequestParam('valtozatelerheto',false);
 		$lathato=$this->params->getBoolRequestParam('valtozatlathato',false);
 		$termekfokep=$this->params->getBoolRequestParam('valtozattermekfokep',false);
@@ -94,7 +98,9 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
 		if (($adattipus1&&$ertek1)||($adattipus2&&ertek2)) {
 			$ertekek1=split(';',$ertek1);
 			$ertekek2=split(';',$ertek2);
-
+			$cikkszamok=split(';',$cikkszam);
+			$idegencikkszamok=split(';',$idegencikkszam);
+			$cikl=0;
 			$at1=$this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($adattipus1);
 			$at2=$this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($adattipus2);
 			foreach($ertekek1 as $ertek1) {
@@ -112,6 +118,22 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
 	//					$valtozat->setBrutto($brutto);
 					$valtozat->setNetto($netto);
 					$valtozat->setTermekfokep($termekfokep);
+					if (count($cikkszamok)>0) {
+						if (count($cikkszamok)==1) {
+							$valtozat->setCikkszam($cikkszamok[0]);
+						}
+						elseif (array_key_exists($cikl, $cikkszamok)) {
+							$valtozat->setCikkszam($cikkszamok[$cikl]);
+						}
+					}
+					if (count($idegencikkszamok)>0) {
+						if (count($idegencikkszamok)==1) {
+							$valtozat->setIdegencikkszam($idegencikkszamok[0]);
+						}
+						elseif (array_key_exists($cikl, $idegencikkszamok)) {
+							$valtozat->setIdegencikkszam($idegencikkszamok[$cikl]);
+						}
+					}
 
 					if ($at1&&$ertek1) {
 						$valtozat->setAdatTipus1($at1);
@@ -136,6 +158,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
 					else {
 						$termek->removeValtozat($valtozat);
 					}
+					$cikl++;
 				}
 			}
 			$this->getEm()->flush();
