@@ -52,9 +52,9 @@ class mainController extends \mkwhelpers\Controller {
 				$this->view->setVar($k,$v);
 			}
 			store::fillTemplate($this->view);
-			$this->view->setVar('pagetitle',$ag->getOldalcim());
-			$this->view->setVar('seodescription',$ag->getSeodescription());
-			$this->view->setVar('seokeywords',$ag->getSeokeywords());
+			$this->view->setVar('pagetitle',$ag->getShowOldalcim());
+			$this->view->setVar('seodescription',$ag->getShowSeodescription());
+			$this->view->setVar('seokeywords',$ag->getShowSeokeywords());
 			store::storePrevUri();
 			$this->view->printTemplateResult();
 		}
@@ -116,9 +116,9 @@ class mainController extends \mkwhelpers\Controller {
 		if ($termek) {
 			$this->view=$this->getTemplateFactory()->createMainView('termeklap.tpl');
 			store::fillTemplate($this->view);
-			$this->view->setVar('pagetitle',$termek->getOldalcim());
-			$this->view->setVar('seodescription',$termek->getSeodescription());
-			$this->view->setVar('seokeywords',$termek->getSeokeywords());
+			$this->view->setVar('pagetitle',$termek->getShowOldalcim());
+			$this->view->setVar('seodescription',$termek->getShowSeodescription());
+			$this->view->setVar('seokeywords',$termek->getShowSeokeywords());
 			$t=$tc->getTermekLap($termek);
 			foreach($t as $k=>$v) {
 				$this->view->setVar($k,$v);

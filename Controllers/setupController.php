@@ -6,110 +6,127 @@ class setupController extends \mkwhelpers\Controller {
 
 	public function __construct($params) {
 		$this->entityName='Entities\Parameterek';
-		parent::__construct();
+		parent::__construct($params);
 	}
 
 	public function view() {
+		$repo=store::getEm()->getRepository($this->entityName);
 		$view=$this->createView('setup.tpl');
-		$this->params->loadData($view);
 		$view->setVar('pagetitle',t('Beállítások'));
 
 		// tulaj
-		$p=store::getEm()->getRepository($this->entityName)->find('tulajnev');
+		$p=$repo->find('tulajnev');
 		$view->setVar('tulajnev',($p?$p->getErtek():''));
-		$p=store::getEm()->getRepository($this->entityName)->find('tulajirszam');
+		$p=$repo->find('tulajirszam');
 		$view->setVar('tulajirszam',($p?$p->getErtek():''));
-		$p=store::getEm()->getRepository($this->entityName)->find('tulajvaros');
+		$p=$repo->find('tulajvaros');
 		$view->setVar('tulajvaros',($p?$p->getErtek():''));
-		$p=store::getEm()->getRepository($this->entityName)->find('tulajutca');
+		$p=$repo->find('tulajutca');
 		$view->setVar('tulajutca',($p?$p->getErtek():''));
-		$p=store::getEm()->getRepository($this->entityName)->find('tulajadoszam');
+		$p=$repo->find('tulajadoszam');
 		$view->setVar('tulajadoszam',($p?$p->getErtek():''));
-		$p=store::getEm()->getRepository($this->entityName)->find('tulajeuadoszam');
+		$p=$repo->find('tulajeuadoszam');
 		$view->setVar('tulajeuadoszam',($p?$p->getErtek():''));
-		$p=store::getEm()->getRepository($this->entityName)->find('seodescription');
-		$view->setVar('seodescription',($p?$p->getErtek():''));
-		$p=store::getEm()->getRepository($this->entityName)->find('seokeywords');
-		$view->setVar('seokeywords',($p?$p->getErtek():''));
 
 		// web
-		$p=store::getEm()->getRepository($this->entityName)->find('smallimagesize');
+		$p=$repo->find('oldalcim');
+		$view->setVar('oldalcim',($p?$p->getErtek():''));
+		$p=$repo->find('seodescription');
+		$view->setVar('seodescription',($p?$p->getErtek():''));
+		$p=$repo->find('seokeywords');
+		$view->setVar('seokeywords',($p?$p->getErtek():''));
+
+		$p=$repo->find('termekoldalcim');
+		$view->setVar('termekoldalcim',($p?$p->getErtek():''));
+		$p=$repo->find('termekseodescription');
+		$view->setVar('termekseodescription',($p?$p->getErtek():''));
+		$p=$repo->find('termekseokeywords');
+		$view->setVar('termekseokeywords',($p?$p->getErtek():''));
+
+		$p=$repo->find('katoldalcim');
+		$view->setVar('katoldalcim',($p?$p->getErtek():''));
+		$p=$repo->find('katseodescription');
+		$view->setVar('katseodescription',($p?$p->getErtek():''));
+		$p=$repo->find('katseokeywords');
+		$view->setVar('katseokeywords',($p?$p->getErtek():''));
+
+		$p=$repo->find('smallimagesize');
 		$view->setVar('smallimagesize',($p?$p->getErtek():80));
-		$p=store::getEm()->getRepository($this->entityName)->find('mediumimagesize');
+		$p=$repo->find('mediumimagesize');
 		$view->setVar('mediumimagesize',($p?$p->getErtek():200));
-		$p=store::getEm()->getRepository($this->entityName)->find('bigimagesize');
+		$p=$repo->find('bigimagesize');
 		$view->setVar('bigimagesize',($p?$p->getErtek():800));
-		$p=store::getEm()->getRepository($this->entityName)->find('korhintaimagesize');
+		$p=$repo->find('korhintaimagesize');
 		$view->setVar('korhintaimagesize',($p?$p->getErtek():480));
-		$p=store::getEm()->getRepository($this->entityName)->find('jpgquality');
+		$p=$repo->find('jpgquality');
 		$view->setVar('jpgquality',($p?$p->getErtek():90));
-		$p=store::getEm()->getRepository($this->entityName)->find('pngquality');
+		$p=$repo->find('pngquality');
 		$view->setVar('pngquality',($p?$p->getErtek():9));
-		$p=store::getEm()->getRepository($this->entityName)->find('smallimgpost');
+		$p=$repo->find('smallimgpost');
 		$view->setVar('smallimgpost',($p?$p->getErtek():'_s'));
-		$p=store::getEm()->getRepository($this->entityName)->find('mediumimgpost');
+		$p=$repo->find('mediumimgpost');
 		$view->setVar('mediumimgpost',($p?$p->getErtek():'_m'));
-		$p=store::getEm()->getRepository($this->entityName)->find('bigimgpost');
+		$p=$repo->find('bigimgpost');
 		$view->setVar('bigimgpost',($p?$p->getErtek():'_b'));
-		$p=store::getEm()->getRepository($this->entityName)->find('fooldalajanlotttermekdb');
+		$p=$repo->find('fooldalajanlotttermekdb');
 		$view->setVar('fooldalajanlotttermekdb',($p?$p->getErtek():6));
-		$p=store::getEm()->getRepository($this->entityName)->find('fooldalhirdb');
+		$p=$repo->find('fooldalhirdb');
 		$view->setVar('fooldalhirdb',($p?$p->getErtek():5));
-		$p=store::getEm()->getRepository($this->entityName)->find('fooldalnepszerutermekdb');
+		$p=$repo->find('fooldalnepszerutermekdb');
 		$view->setVar('fooldalnepszerutermekdb',($p?$p->getErtek():6));
-		$p=store::getEm()->getRepository($this->entityName)->find('arfilterstep');
+		$p=$repo->find('arfilterstep');
 		$view->setVar('arfilterstep',($p?$p->getErtek():500));
-		$p=store::getEm()->getRepository($this->entityName)->find('kiemelttermekdb');
+		$p=$repo->find('kiemelttermekdb');
 		$view->setVar('kiemelttermekdb',($p?$p->getErtek():3));
-		$p=store::getEm()->getRepository($this->entityName)->find('autologoutmin');
+		$p=$repo->find('autologoutmin');
 		$view->setVar('autologoutmin',($p?$p->getErtek():10));
 
 		// alapertelmezes
-		$p=store::getEm()->getRepository($this->entityName)->find('fizmod');
+		$p=$repo->find('fizmod');
 		$fizmod=new fizmodController($this->params);
 		$view->setVar('fizmodlist',$fizmod->getSelectList(($p?$p->getErtek():0)));
 
-		$p=store::getEm()->getRepository($this->entityName)->find('raktar');
+		$p=$repo->find('raktar');
 		$raktar=new raktarController($this->params);
 		$view->setVar('raktarlist',$raktar->getSelectList(($p?$p->getErtek():0)));
 
-		$p=store::getEm()->getRepository($this->entityName)->find('valutanem');
+		$p=$repo->find('valutanem');
 		$valutanem=new valutanemController($this->params);
 		$view->setVar('valutanemlist',$valutanem->getSelectList(($p?$p->getErtek():0)));
 
-		$p=store::getEm()->getRepository($this->entityName)->find('esedekessegalap');
+		$p=$repo->find('esedekessegalap');
 		$view->setVar('esedekessegalap',($p?$p->getErtek():'1'));
 
 		// feed
-		$p=store::getEm()->getRepository($this->entityName)->find('feedhirdb');
+		$p=$repo->find('feedhirdb');
 		$view->setVar('feedhirdb',($p?$p->getErtek():20));
-		$p=store::getEm()->getRepository($this->entityName)->find('feedhirtitle');
+		$p=$repo->find('feedhirtitle');
 		$view->setVar('feedhirtitle',($p?$p->getErtek():t('Híreink')));
-		$p=store::getEm()->getRepository($this->entityName)->find('feedhirDescription');
+		$p=$repo->find('feedhirDescription');
 		$view->setVar('feedhirdescription',($p?$p->getErtek():t('Híreink')));
-		$p=store::getEm()->getRepository($this->entityName)->find('feedhirdb');
+		$p=$repo->find('feedtermekdb');
 		$view->setVar('feedtermekdb',($p?$p->getErtek():30));
-		$p=store::getEm()->getRepository($this->entityName)->find('feedtermektitle');
+		$p=$repo->find('feedtermektitle');
 		$view->setVar('feedtermektitle',($p?$p->getErtek():t('Termékeink')));
-		$p=store::getEm()->getRepository($this->entityName)->find('feedtermekdescription');
+		$p=$repo->find('feedtermekdescription');
 		$view->setVar('feedtermekdescription',($p?$p->getErtek():t('Termékeink')));
 
 		// sitemap
-		$p=store::getEm()->getRepository($this->entityName)->find('statlapprior');
+		$p=$repo->find('statlapprior');
 		$view->setVar('statlapprior',($p?$p->getErtek():0.4));
-		$p=store::getEm()->getRepository($this->entityName)->find('termekprior');
+		$p=$repo->find('termekprior');
 		$view->setVar('termekprior',($p?$p->getErtek():0.5));
-		$p=store::getEm()->getRepository($this->entityName)->find('kategoriaprior');
+		$p=$repo->find('kategoriaprior');
 		$view->setVar('kategoriaprior',($p?$p->getErtek():0.7));
-		$p=store::getEm()->getRepository($this->entityName)->find('fooldalprior');
+		$p=$repo->find('fooldalprior');
 		$view->setVar('fooldalprior',($p?$p->getErtek():1));
-		$p=store::getEm()->getRepository($this->entityName)->find('statlapchangefreq');
+		$p=$repo->find('statlapchangefreq');
 		$view->setVar('statlapchangefreq',($p?$p->getErtek():'monthly'));
-		$p=store::getEm()->getRepository($this->entityName)->find('termekchangefreq');
+		$p=$repo->find('termekchangefreq');
 		$view->setVar('termekchangefreq',($p?$p->getErtek():'monthly'));
-		$p=store::getEm()->getRepository($this->entityName)->find('kategoriachangefreq');
+		$p=$repo->find('kategoriachangefreq');
 		$view->setVar('kategoriachangefreq',($p?$p->getErtek():'daily'));
-		$p=store::getEm()->getRepository($this->entityName)->find('fooldalchangefreq');
+		$p=$repo->find('fooldalchangefreq');
 		$view->setVar('fooldalchangefreq',($p?$p->getErtek():'daily'));
 
 		$view->printTemplateResult();
@@ -129,7 +146,7 @@ class setupController extends \mkwhelpers\Controller {
 		store::getEm()->persist($p);
 	}
 
-	protected function save() {
+	public function save() {
 		// tulaj
 		$this->setObj('tulajnev',$this->params->getStringRequestParam('tulajnev'));
 		$this->setObj('tulajirszam',$this->params->getStringRequestParam('tulajirszam'));
@@ -147,6 +164,7 @@ class setupController extends \mkwhelpers\Controller {
 		$this->setObj('smallimgpost',$this->params->getStringRequestParam('smallimgpost'));
 		$this->setObj('mediumimgpost',$this->params->getStringRequestParam('mediumimgpost'));
 		$this->setObj('bigimgpost',$this->params->getStringRequestParam('bigimgpost'));
+		$this->setObj('oldalcim',$this->params->getStringRequestParam('oldalcim'));
 		$this->setObj('seodesciption',$this->params->getStringRequestParam('seodescription'));
 		$this->setObj('seokeywords',$this->params->getStringRequestParam('seokeywords'));
 		$this->setObj('fooldalajanlotttermekdb',$this->params->getIntRequestParam('fooldalajanlotttermekdb',6));
@@ -155,6 +173,12 @@ class setupController extends \mkwhelpers\Controller {
 		$this->setObj('arfilterstep',$this->params->getIntRequestParam('arfilterstep',500));
 		$this->setObj('kiemelttermekdb',$this->params->getIntRequestParam('kiemelttermekdb',3));
 		$this->setObj('autologoutmin',$this->params->getIntRequestParam('autologoutmin',10));
+		$this->setObj('katoldalcim',$this->params->getStringRequestParam('katoldalcim'));
+		$this->setObj('katseodescription',$this->params->getStringRequestParam('katseodescription'));
+		$this->setObj('katseokeywords',$this->params->getStringRequestParam('katseokeywords'));
+		$this->setObj('termekoldalcim',$this->params->getStringRequestParam('termekoldalcim'));
+		$this->setObj('termekseodescription',$this->params->getStringRequestParam('termekseodescription'));
+		$this->setObj('termekseokeywords',$this->params->getStringRequestParam('termekseokeywords'));
 		// alapertelmezes
 		$fizmod=store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod',0));
 		if ($fizmod) {

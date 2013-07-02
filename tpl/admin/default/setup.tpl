@@ -113,11 +113,46 @@
 			<tr><td><label>{t('JPEG minőség')}:</label></td><td><input name="jpgquality" type="number" value="{$jpgquality}"></td>
 				<td><label>{t('PNG minőség')}:</label></td><td><input name="pngquality" type="number" value="{$pngquality}"></td>
 			</tr>
-			<tr><td><label for="SeodescriptionEdit">{t('Leírás')}:</label></td>
-				<td colspan="3"><textarea id="SeodescriptionEdit" name="seodescription" type="text" cols="75">{$seodescription}</textarea></td>
+			<tr>
+				<table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
+					<tr><td><label for="OldalCimEdit">{t('Lap címe')}:</label></td>
+						<td colspan="3"><input id="OldalCimEdit" name="oldalcim" type="text" size="75" maxlength="255" value="{$oldalcim}"></td>
+					</tr>
+					<tr><td><label for="SeodescriptionEdit">{t('META leírás')}:</label></td>
+						<td colspan="3"><textarea id="SeodescriptionEdit" name="seodescription" type="text" cols="75">{$seodescription}</textarea></td>
+					</tr>
+					<tr><td><label for="SeokeywordsEdit">{t('META kulcsszavak')}:</label></td>
+						<td colspan="3"><textarea id="SeokeywordsEdit" name="seokeywords" type="text" cols="75">{$seokeywords}</textarea></td>
+					</tr>
+				</tbody></table>
 			</tr>
-			<tr><td><label for="SeokeywordsEdit">{t('Kulcsszavak')}:</label></td>
-				<td colspan="3"><textarea id="SeokeywordsEdit" name="seokeywords" type="text" cols="75">{$seokeywords}</textarea></td>
+			<tr>
+				<table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
+					<tr><td>{t('Kategória oldal')}</td></tr>
+					<tr><td><label for="KOldalCimEdit">{t('Lap címe')}:</label></td>
+						<td colspan="3"><input id="KOldalCimEdit" name="katoldalcim" type="text" size="75" maxlength="255" value="{$katoldalcim}"></td>
+					</tr>
+					<tr><td><label for="KSeodescriptionEdit">{t('META leírás')}:</label></td>
+						<td colspan="3"><textarea id="KSeodescriptionEdit" name="katseodescription" type="text" cols="75">{$katseodescription}</textarea></td>
+					</tr>
+					<tr><td><label for="KSeokeywordsEdit">{t('META kulcsszavak')}:</label></td>
+						<td colspan="3"><textarea id="KSeokeywordsEdit" name="katseokeywords" type="text" cols="75">{$katseokeywords}</textarea></td>
+					</tr>
+				</tbody></table>
+			</tr>
+			<tr>
+				<table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
+					<tr><td>{t('Termék oldal')}</td></tr>
+					<tr><td><label for="TOldalCimEdit">{t('Lap címe')}:</label></td>
+						<td colspan="3"><input id="TOldalCimEdit" name="termekoldalcim" type="text" size="75" maxlength="255" value="{$termekoldalcim}"></td>
+					</tr>
+					<tr><td><label for="TSeodescriptionEdit">{t('META leírás')}:</label></td>
+						<td colspan="3"><textarea id="TSeodescriptionEdit" name="termekseodescription" type="text" cols="75">{$termekseodescription}</textarea></td>
+					</tr>
+					<tr><td><label for="TSeokeywordsEdit">{t('META kulcsszavak')}:</label></td>
+						<td colspan="3"><textarea id="TSeokeywordsEdit" name="termekseokeywords" type="text" cols="75">{$termekseokeywords}</textarea></td>
+					</tr>
+				</tbody></table>
 			</tr>
 		</tbody></table>
 		</div>

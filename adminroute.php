@@ -40,6 +40,9 @@ $router->map('GET','/admin/vtsz/jsonlist','vtszController#jsonlist','adminvtszjs
 $router->map('GET','/admin/vtsz/htmllist','vtszController#htmllist','adminvtszhtmllist');
 $router->map('POST','/admin/vtsz/save','vtszController#save','adminvtszsave');
 
+$router->map('GET','/admin/setup/view','setupController#view','adminsetupview');
+$router->map('POST','/admin/setup/save','setupController#save','adminsetupsave');
+
 $router->map('GET','/admin/bizonylattetel/getar','bizonylattetelController#getar','adminbizonylattetelgetar');
 $router->map('GET','/admin/bizonylattetel/calcar','bizonylattetelController#calcar','adminbizonylattetelcalcar');
 $router->map('GET','/admin/bizonylattetel/getemptyrow','bizonylattetelController#getemptyrow','adminbizonylattetelgetemptyrow');

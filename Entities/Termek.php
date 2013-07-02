@@ -528,13 +528,48 @@ class Termek {
 		return $this->oldalcim;
 	}
 
+	public function getShowOldalcim() {
+		if ($this->oldalcim) {
+			return $this->oldalcim;
+		}
+		else {
+			$result=store::getParameter('termekoldalcim');
+			if ($result) {
+				$result=str_replace('[termeknev]', $this->getNev(),$result);
+				$result=str_replace('[global]', store::getParameter('oldalcim'), $result);
+				$result=str_replace('[bruttoar]', number_format($this->getBruttoAr(null,false),0,',',' '), $result);
+				return $result;
+			}
+			else {
+				return store::getParameter('oldalcim');
+			}
+		}
+	}
+
 	public function setOldalcim($oldalcim) {
 		$this->oldalcim = $oldalcim;
 	}
 
-	public function getSeodescription()
-	{
+	public function getSeodescription() {
 		return $this->seodescription;
+	}
+
+	public function getShowSeodescription() {
+		if ($this->seodescription) {
+			return $this->seodescription;
+		}
+		else {
+			$result=store::getParameter('termekseodescription');
+			if ($result) {
+				$result=str_replace('[termeknev]', $this->getNev(),$result);
+				$result=str_replace('[global]', store::getParameter('seodescription'), $result);
+				$result=str_replace('[bruttoar]', number_format($this->getBruttoAr(null,false),0,',',' '), $result);
+				return $result;
+			}
+			else {
+				return store::getParameter('seodescription');
+			}
+		}
 	}
 
 	public function setSeodescription($seodescription)
@@ -542,9 +577,26 @@ class Termek {
 		$this->seodescription = $seodescription;
 	}
 
-	public function getSeokeywords()
-	{
+	public function getSeokeywords() {
 		return $this->seokeywords;
+	}
+	
+	public function getShowSeokeywords() {
+		if ($this->seokeywords) {
+			return $this->seokeywords;
+		}
+		else {
+			$result=store::getParameter('termekseokeywords');
+			if ($result) {
+				$result=str_replace('[termeknev]', $this->getNev(),$result);
+				$result=str_replace('[global]', store::getParameter('seokeywords'), $result);
+				$result=str_replace('[bruttoar]', number_format($this->getBruttoAr(null,false),0,',',' '), $result);
+				return $result;
+			}
+			else {
+				return store::getParameter('seokeywords');
+			}
+		}
 	}
 
 	public function setSeokeywords($seokeywords)
