@@ -1,6 +1,6 @@
 <?php
 namespace Controllers;
-use mkw\store;
+use mkw\store, mkw\consts;
 
 class mainController extends \mkwhelpers\Controller {
 
@@ -26,6 +26,8 @@ class mainController extends \mkwhelpers\Controller {
 		$tc=new termekController($this->params);
 		$khc=new korhintaController($this->params);
 		$tfc=new termekfaController($this->params);
+		$this->view->setVar('pagetitle',store::getParameter(consts::pOldalcim));
+		$this->view->setVar('seodescription',store::getParameter(consts::pSeodescription));
 		$this->view->setVar('hirek',$hc->gethirlist());
 		$this->view->setVar('ajanlotttermekek',$tc->getAjanlottLista());
 		$this->view->setVar('legnepszerubbtermekek',$tc->getLegnepszerubbLista());
