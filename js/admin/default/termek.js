@@ -445,6 +445,38 @@ $(document).ready(function(){
 					e.preventDefault();
 					getNetto($(this),'#AkciosNettoEdit');
 				});
+				$('#NemkaphatoCheck').on('click',function(e) {
+					var $this=$(this);
+					if ($this.prop('checked')) {
+						dialogcenter.html('Biztos, hogy nem kaphatóvá teszi a terméket? A változatok automatikusan nem elérhetők lesznek.').dialog({
+							resizable: false,
+							height:200,
+							modal: true,
+							buttons: {
+								'Igen': function() {
+									$('input[name^="valtozatelerheto_"]').prop('checked',false);
+									$(this).dialog('close');
+								},
+								'Nem':function() {
+									$this.prop('checked',false);
+									$(this).dialog('close');
+								}
+							}
+						});
+					}
+					else {
+						dialogcenter.html('Ne felejtse el beállítani az elérhető változatokat!').dialog({
+							resizable: false,
+							height:200,
+							modal: true,
+							buttons: {
+								'OK': function() {
+									$(this).dialog('close');
+								}
+							}
+						});
+					}
+				});
 				akciostartedit.datepicker($.datepicker.regional['hu']);
 				akciostartedit.datepicker('option','dateFormat','yy.mm.dd');
 				akciostartedit.datepicker('setDate',akciostartedit.attr('data-datum'));
@@ -571,20 +603,57 @@ $(document).ready(function(){
 			$('.egyedcheckbox').attr('checked',$(this).attr('checked'));
 		});
 		$('#mattable-body').on('click','.flagcheckbox',function(e) {
+			function doit(succ) {
+				if (succ) {
+					succ();
+				}
+				$.ajax({
+					url:'/admin/termek/setflag',
+					type:'POST',
+					data:{
+						id:$this.attr('data-id'),
+						flag:$this.attr('data-flag'),
+						kibe:!$this.is('.ui-state-hover')
+					},
+					success:function() {
+						$this.toggleClass('ui-state-hover');
+					}
+				});
+			}
 			e.preventDefault();
 			var $this=$(this);
-			$.ajax({
-				url:'/admin/termek/setflag',
-				type:'POST',
-				data:{
-					id:$this.attr('data-id'),
-					flag:$this.attr('data-flag'),
-					kibe:!$this.is('.ui-state-hover')
-				},
-				success:function() {
-					$this.toggleClass('ui-state-hover');
+			if ($this.attr('data-flag')==='nemkaphato') {
+				if (!$this.is('.ui-state-hover')) {
+					dialogcenter.html('Biztos, hogy nem kaphatóvá teszi a terméket? A változatok automatikusan nem elérhetők lesznek.').dialog({
+						resizable: false,
+						height:200,
+						modal: true,
+						buttons: {
+							'Igen': function() {
+								doit(function(){dialogcenter.dialog('close');});
+							},
+							'Nem':function() {
+								$(this).dialog('close');
+							}
+						}
+					});
 				}
-			});
+				else {
+					dialogcenter.html('Ne felejtse el beállítani az elérhető változatokat!').dialog({
+						resizable: false,
+						height:200,
+						modal: true,
+						buttons: {
+							'OK': function() {
+								doit(function(){dialogcenter.dialog('close');});
+							}
+						}
+					});
+				}
+			}
+			else {
+				doit();
+			}
 		});
 		$('#cimkefiltercontainer').mattaccord({
 			header:'#cimkefiltercontainerhead',

@@ -493,7 +493,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$id=$this->params->getIntRequestParam('id');
 		$kibe=$this->params->getBoolRequestParam('kibe');
 		$flag=$this->params->getStringRequestParam('flag');
-		$obj=$this->params->getRepo()->find($id);
+		$obj=$this->getRepo()->find($id);
 		if ($obj) {
 			switch ($flag) {
 				case 'inaktiv':

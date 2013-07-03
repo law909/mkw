@@ -343,7 +343,6 @@
 
 		var doEditLink=function(obj) {
 			$(setup.editLink,obj).each(function(i) {
-				console.log(setup.karb.newWindowUrl+'?id='+$(this).attr(_dataattr.recordid)+'&oper='+$(this).attr(_dataattr.oper));
 				$(this).attr('href',setup.karb.newWindowUrl+'?id='+$(this).attr(_dataattr.recordid)+'&oper='+$(this).attr(_dataattr.oper));
 			});
 		};
