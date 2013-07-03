@@ -226,14 +226,14 @@ class TermekFa {
 			return $this->oldalcim;
 		}
 		else {
-			$result=store::getParameter('katoldalcim');
+			$result=store::getParameter(\mkw\consts::Katoldalcim);
 			if ($result) {
 				$result=str_replace('[kategorianev]', $this->getNev(),$result);
-				$result=str_replace('[global]', store::getParameter('oldalcim'), $result);
+				$result=str_replace('[global]', store::getParameter(\mkw\consts::Oldalcim), $result);
 				return $result;
 			}
 			else {
-				return store::getParameter('oldalcim');
+				return store::getParameter(\mkw\consts::Oldalcim);
 			}
 		}
 	}
@@ -252,14 +252,14 @@ class TermekFa {
 			return $this->seodescription;
 		}
 		else {
-			$result=store::getParameter('katseodescription');
+			$result=store::getParameter(\mkw\consts::Katseodescription);
 			if ($result) {
 				$result=str_replace('[kategorianev]', $this->getNev(),$result);
-				$result=str_replace('[global]', store::getParameter('seodescription'), $result);
+				$result=str_replace('[global]', store::getParameter(\mkw\consts::Seodescription), $result);
 				return $result;
 			}
 			else {
-				return store::getParameter('seodescription');
+				return store::getParameter(\mkw\consts::Seodescription);
 			}
 		}
 	}
@@ -286,7 +286,7 @@ class TermekFa {
 		if ($kepurl) {
 			$t=explode('.',$kepurl);
 			$ext=array_pop($t);
-			return implode('.',$t).store::getParameter('smallimgpost','').'.'.$ext;
+			return implode('.',$t).store::getParameter(\mkw\consts::Smallimgpost,'').'.'.$ext;
 		}
 		return '';
 	}
@@ -296,7 +296,7 @@ class TermekFa {
 		if ($kepurl) {
 			$t=explode('.',$kepurl);
 			$ext=array_pop($t);
-			return implode('.',$t).store::getParameter('mediumimgpost','').'.'.$ext;
+			return implode('.',$t).store::getParameter(\mkw\consts::Mediumimgpost,'').'.'.$ext;
 		}
 		return '';
 	}
@@ -306,7 +306,7 @@ class TermekFa {
 		if ($kepurl) {
 			$t=explode('.',$kepurl);
 			$ext=array_pop($t);
-			return implode('.',$t).store::getParameter('bigimgpost','').'.'.$ext;
+			return implode('.',$t).store::getParameter(\mkw\consts::Bigimgpost,'').'.'.$ext;
 		}
 		return '';
 	}

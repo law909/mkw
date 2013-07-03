@@ -181,7 +181,7 @@ class TermekRepository extends \mkwhelpers\Repository {
 			.' FROM '.$this->entityname.' '.$a
 			.' ORDER BY '.$a.'.id DESC');
 		$q->setFirstResult(0);
-		$q->setMaxResults(store::getParameter('feedtermekdb',30));
+		$q->setMaxResults(store::getParameter(\mkw\consts::Feedtermekdb,30));
 		return $q->getResult();
 	}
 

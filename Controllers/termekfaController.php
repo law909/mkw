@@ -146,53 +146,6 @@ class termekfaController extends \mkwhelpers\MattableController {
 		}
 	}
 
-/*	protected function savepicture() {
-		$fa=$this->getRepo()->find($this->getIntParam('id'));
-		if ($fa) {
-			$uploaddir=store::getConfigValue('path.kategoriakep');
-			$pp=pathinfo($_FILES['userfile']['name']);
-			$uploadfile=$uploaddir.$this->getStringParam('nev').'.'.$pp['extension'];
-			if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-				$imageproc=new \mkwhelpers\Images($uploadfile);
-				$imageproc->setJpgquality(store::getParameter('jpgquality'));
-				$imageproc->setPngquality(store::getParameter('pngquality'));
-				$smallfn=$uploaddir.$this->getStringParam('nev').store::getParameter('smallimgpost','').'.'.$pp['extension'];
-				$mediumfn=$uploaddir.$this->getStringParam('nev').store::getParameter('mediumimgpost','').'.'.$pp['extension'];
-				$largefn=$uploaddir.$this->getStringParam('nev').store::getParameter('bigimgpost','').'.'.$pp['extension'];
-				$imageproc->Resample($smallfn,store::getParameter('smallimagesize',80));
-				$imageproc->Resample($mediumfn,store::getParameter('mediumimagesize',200));
-				$imageproc->Resample($largefn,store::getParameter('bigimagesize',800));
-				$fa->setKepnev($this->getStringParam('nev'));
-				$fa->setKepleiras($this->getStringParam('leiras'));
-				$fa->setKepurl($uploadfile);
-				$this->getEm()->persist($fa);
-				$this->getEm()->flush();
-//				$resp=array('kepurl'=>'/'.$largefn,'kepurlsmall'=>'/'.$smallfn,'kepleiras'=>$this->getStringParam('leiras'));
-//				echo json_encode($resp);
-				$view=$this->createView('termekfaimagekarb.tpl');
-				$view->setVar('oper','edit');
-				$view->setVar('fa',$this->loadVars($fa));
-				$view->printTemplateResult();
-			}
-		}
-	}
-
-	protected function delpicture() {
-		$fa=$this->getRepo()->find($this->getIntParam('id'));
-		if ($fa) {
-			unlink($fa->getKepurl(''));
-			unlink($fa->getKepurlSmall(''));
-			unlink($fa->getKepurlMedium(''));
-			unlink($fa->getKepurlLarge(''));
-			$fa->setKepurl(null);
-			$this->getEm()->persist($fa);
-			$this->getEm()->flush();
-			$view=$this->createView('termekfaimagekarb.tpl');
-			$view->setVar('oper','edit');
-			$view->printTemplateResult();
-		}
-	}
-*/
 	public function getformenu($menunum,$almenunum=0) {
 		$repo=$this->getRepo();
 		$f=$repo->getForMenu($menunum);
@@ -272,7 +225,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$termekrepo=$tc->getRepo();
 		$tck=new termekcimkekatController($this->params);
 
-		$kiemelttermekdb=store::getParameter('kiemelttermekdb',3);
+		$kiemelttermekdb=store::getParameter(\mkw\consts::Kiemelttermekdb,3);
 /**
 		'elemperpage'=>$this->params->getIntRequestParam('elemperpage',20),
 			'pageno'=>$this->params->getIntRequestParam('pageno',1),
@@ -431,7 +384,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 			}
 
 			$ret['maxar']=$maxar;
-			$ret['arfilterstep']=store::getParameter('arfilterstep',500);
+			$ret['arfilterstep']=store::getParameter(\mkw\consts::Arfilterstep,500);
 			$ret['minarfilter']=$minarfilter;
 			$ret['maxarfilter']=(floor($maxarfilter/$ret['arfilterstep'])+1)*$ret['arfilterstep'];
 			if ($parent) {

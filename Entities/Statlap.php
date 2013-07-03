@@ -46,7 +46,7 @@ class Statlap {
 	}
 
 	public function getShowOldalcim() {
-		return $this->oldalcim.' - '.\mkw\Store::getParameter('oldalcim');
+		return $this->oldalcim.' - '.\mkw\Store::getParameter(\mkw\consts::Oldalcim);
 	}
 
 	public function setOldalcim($adat) {
@@ -77,7 +77,7 @@ class Statlap {
 		if ($this->seodescription) {
 			return $this->seodescription;
 		}
-		return $this->oldalcim.' - '.\mkw\Store::getParameter('seodescription');
+		return $this->oldalcim.' - '.\mkw\Store::getParameter(\mkw\consts::Seodescription);
 	}
 
 	public function setSeodescription($adat) {

@@ -207,12 +207,12 @@ class Bizonylatfej {
 	}
 
 	protected function setTulajData() {
-		$this->setTulajnev(store::getParameter('tulajnev'));
-		$this->setTulajirszam(store::getParameter('tulajirszam'));
-		$this->setTulajvaros(store::getParameter('tulajvaros'));
-		$this->setTulajutca(store::getParameter('tulajutca'));
-		$this->setTulajadoszam(store::getParameter('tulajadoszam'));
-		$this->setTulajeuadoszam(store::getParameter('tulajeuadoszam'));
+		$this->setTulajnev(store::getParameter(\mkw\consts::Tulajnev));
+		$this->setTulajirszam(store::getParameter(\mkw\consts::Tulajirszam));
+		$this->setTulajvaros(store::getParameter(\mkw\consts::Tulajvaros));
+		$this->setTulajutca(store::getParameter(\mkw\consts::Tulajutca));
+		$this->setTulajadoszam(store::getParameter(\mkw\consts::Tulajadoszam));
+		$this->setTulajeuadoszam(store::getParameter(\mkw\consts::Tulajeuadoszam));
 	}
 
 	public function getId() {

@@ -3,6 +3,7 @@ namespace mkw;
 use Doctrine\ORM\EntityManager;
 
 class Store {
+
 	private static $em;
 	private static $config;
 	private static $setup;

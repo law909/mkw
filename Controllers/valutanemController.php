@@ -68,7 +68,7 @@ class valutanemController extends \mkwhelpers\JQGridController {
 	}
 
 	public function getRendszerValuta() {
-		$p=$this->getRepo()->find(store::getParameter('valutanem'));
+		$p=$this->getRepo()->find(store::getParameter(\mkw\consts::Valutanem));
 		return $p;
 	}
 }

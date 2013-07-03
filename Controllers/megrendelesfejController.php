@@ -79,7 +79,7 @@ class megrendelesfejController extends bizonylatfejController {
 		$view->setVar('partnerlist',$partner->getSelectList(($record?$record->getPartnerId():0)));
 		$raktar=new raktarController($this->params);
 		if (!$record||!$record->getRaktarId()) {
-			$raktarid=store::getParameter('raktar',0);
+			$raktarid=store::getParameter(\mkw\consts::Raktar,0);
 		}
 		else {
 			$raktarid=$record->getRaktarId();
@@ -89,7 +89,7 @@ class megrendelesfejController extends bizonylatfejController {
 		$view->setVar('fizmodlist',$fizmod->getSelectList(($record?$record->getFizmodId():0)));
 		$valutanem=new valutanemController($this->params);
 		if (!$record||!$record->getValutanemId()) {
-			$valutaid=store::getParameter('valutanem',0);
+			$valutaid=store::getParameter(\mkw\consts::Valutanem,0);
 		}
 		else {
 			$valutaid=$record->getValutanemId();
@@ -97,7 +97,7 @@ class megrendelesfejController extends bizonylatfejController {
 		$view->setVar('valutanemlist',$valutanem->getSelectList($valutaid));
 		$bankszla=new bankszamlaController($this->params);
 		$view->setVar('bankszamlalist',$bankszla->getSelectList(($record?$record->getBankszamlaId():0)));
-		$view->setVar('esedekessegalap',store::getParameter('esedekessegalap',1));
+		$view->setVar('esedekessegalap',store::getParameter(\mkw\consts::Esedekessegalap,1));
 		return $view->getTemplateResult();
 	}
 }

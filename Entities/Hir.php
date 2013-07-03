@@ -64,7 +64,7 @@ class Hir {
 	}
 
 	public function getShowCim() {
-		return $this->cim.' - '.\mkw\Store::getParameter('oldalcim');
+		return $this->cim.' - '.\mkw\Store::getParameter(\mkw\consts::Oldalcim);
 	}
 
 	public function setCim($cim) {
@@ -83,7 +83,7 @@ class Hir {
 		if ($this->seodescription) {
 			return $this->seodescription;
 		}
-		return $this->cim.' - '.\mkw\Store::getParameter('seodescription');
+		return $this->cim.' - '.\mkw\Store::getParameter(\mkw\consts::Seodescription);
 	}
 
 	public function getSeodescription() {

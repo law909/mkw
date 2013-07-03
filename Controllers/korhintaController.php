@@ -99,10 +99,10 @@ class korhintaController extends \mkwhelpers\MattableController {
 			$uploadfile=$uploaddir.$this->params->getStringRequestParam('nev').'.'.$pp['extension'];
 			if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
 				$imageproc=new \mkwhelpers\Images($uploadfile);
-				$imageproc->setJpgquality(store::getParameter('jpgquality'));
-				$imageproc->setPngquality(store::getParameter('pngquality'));
+				$imageproc->setJpgquality(store::getParameter(\mkw\consts::Jpgquality));
+				$imageproc->setPngquality(store::getParameter(\mkw\consts::Pngquality));
 				$fn=$uploaddir.$this->params->getStringRequestParam('nev').'.'.$pp['extension'];
-				$imageproc->Resample($fn,store::getParameter('korhintaimagesize',480));
+				$imageproc->Resample($fn,store::getParameter(\mkw\consts::Korhintaimagesize,480));
 				$fa->setKepnev($this->params->getStringRequestParam('nev'));
 				$fa->setKepleiras($this->params->getStringRequestParam('leiras'));
 				$fa->setKepurl($uploadfile);

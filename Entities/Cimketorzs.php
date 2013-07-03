@@ -120,7 +120,7 @@ class Cimketorzs {
 		if ($kepurl) {
 			$t=explode('.',$kepurl);
 			$ext=array_pop($t);
-			return implode('.',$t).store::getParameter('smallimgpost','').'.'.$ext;
+			return implode('.',$t).store::getParameter(\mkw\consts::Smallimgpost,'').'.'.$ext;
 		}
 		return '';
 	}
@@ -130,7 +130,7 @@ class Cimketorzs {
 		if ($kepurl) {
 			$t=explode('.',$kepurl);
 			$ext=array_pop($t);
-			return implode('.',$t).store::getParameter('mediumimgpost','').'.'.$ext;
+			return implode('.',$t).store::getParameter(\mkw\consts::Mediumimgpost,'').'.'.$ext;
 		}
 		return '';
 	}
@@ -140,7 +140,7 @@ class Cimketorzs {
 		if ($kepurl) {
 			$t=explode('.',$kepurl);
 			$ext=array_pop($t);
-			return implode('.',$t).store::getParameter('bigimgpost','').'.'.$ext;
+			return implode('.',$t).store::getParameter(\mkw\consts::Bigimgpost,'').'.'.$ext;
 		}
 		return '';
 	}

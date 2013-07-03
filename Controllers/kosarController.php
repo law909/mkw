@@ -147,7 +147,7 @@ class kosarController extends \mkwhelpers\MattableController {
 			$sessionid=\Zend_Session::getId();
 			$partnerid=null;
 			$termekid=$termek->getId();
-			$valutanemid=store::getParameter('valutanem');
+			$valutanemid=store::getParameter(\mkw\consts::Valutanem);
 			$valutanem=$this->getEm()->getRepository('Entities\Valutanem')->find($valutanemid);
 
 			$k=$this->getRepo()->getTetelsor($sessionid,$partnerid,$termekid,$vid,$valutanemid);

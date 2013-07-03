@@ -21,11 +21,11 @@ class sitemapController extends \mkwhelpers\Controller {
 		$urls[]=array(
 			'url'=>'http://'.$_SERVER['HTTP_HOST'],
 			'lastmod'=>date('Y-m-d'),
-			'changefreq'=>store::getParameter('fooldalchangefreq','daily'),
-			'priority'=>store::getParameter('fooldalprior','1.0')
+			'changefreq'=>store::getParameter(\mkw\consts::Fooldalchangefreq,'daily'),
+			'priority'=>store::getParameter(\mkw\consts::Fooldalprior,'1.0')
 		);
-		$c=store::getParameter('kategoriachangefreq','daily');
-		$p=store::getParameter('kategoriaprior','0.7');
+		$c=store::getParameter(\mkw\consts::Kategoriachangefreq,'daily');
+		$p=store::getParameter(\mkw\consts::Kategoriaprior,'0.7');
 		$tr=store::getEm()->getRepository('\Entities\TermekFa');
 		$rec=$tr->getForSitemapXml();
 		foreach($rec as $sor) {
@@ -37,8 +37,8 @@ class sitemapController extends \mkwhelpers\Controller {
 				'priority'=>$p
 			);
 		}
-		$c=store::getParameter('termekchangefreq','daily');
-		$p=store::getParameter('termekprior','0.5');
+		$c=store::getParameter(\mkw\consts::Termekchangefreq,'daily');
+		$p=store::getParameter(\mkw\consts::Termekprior,'0.5');
 		$tr=store::getEm()->getRepository('\Entities\Termek');
 		$rec=$tr->getForSitemapXml();
 		foreach($rec as $sor) {
@@ -50,8 +50,8 @@ class sitemapController extends \mkwhelpers\Controller {
 				'priority'=>$p
 			);
 		}
-		$c=store::getParameter('statlapchangefreq','monthly');
-		$p=store::getParameter('statlapprior','0.4');
+		$c=store::getParameter(\mkw\consts::Statlapchangefreq,'monthly');
+		$p=store::getParameter(\mkw\consts::Statlapprior,'0.4');
 		$tr=store::getEm()->getRepository('\Entities\Statlap');
 		$rec=$tr->getForSitemapXml();
 		foreach($rec as $sor) {

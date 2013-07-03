@@ -566,52 +566,6 @@ class termekController extends \mkwhelpers\MattableController {
 		}
 	}
 
-/*	protected function savepicture() {
-		$fa=$this->getRepo()->find($this->getIntParam('id'));
-		if ($fa) {
-			$uploaddir=store::getConfigValue('path.termekkep');
-			$pp=pathinfo($_FILES['userfile']['name']);
-			$uploadfile=$uploaddir.$this->getStringParam('nev').'.'.$pp['extension'];
-			if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-				$imageproc=new \mkwhelpers\Images($uploadfile);
-				$imageproc->setJpgquality(store::getParameter('jpgquality'));
-				$imageproc->setPngquality(store::getParameter('pngquality'));
-				$smallfn=$uploaddir.$this->getStringParam('nev').store::getParameter('smallimgpost','').'.'.$pp['extension'];
-				$mediumfn=$uploaddir.$this->getStringParam('nev').store::getParameter('mediumimgpost','').'.'.$pp['extension'];
-				$largefn=$uploaddir.$this->getStringParam('nev').store::getParameter('bigimgpost','').'.'.$pp['extension'];
-				$imageproc->Resample($smallfn,store::getParameter('smallimagesize',80));
-				$imageproc->Resample($mediumfn,store::getParameter('mediumimagesize',200));
-				$imageproc->Resample($largefn,store::getParameter('bigimagesize',800));
-				$fa->setKepleiras($this->getStringParam('leiras'));
-				$fa->setKepurl($uploadfile);
-				$this->getEm()->persist($fa);
-				$this->getEm()->flush();
-//				$resp=array('kepurl'=>'/'.$largefn,'kepurlsmall'=>'/'.$smallfn,'kepleiras'=>$this->getStringParam('leiras'));
-//				echo json_encode($resp);
-				$view=$this->createView('termekimagekarb.tpl');
-				$view->setVar('oper','edit');
-				$view->setVar('termek',$this->loadVars($fa));
-				$view->printTemplateResult();
-			}
-		}
-	}
-
-	protected function delpicture() {
-		$fa=$this->getRepo()->find($this->getIntParam('id'));
-		if ($fa) {
-			unlink($fa->getKepurl(''));
-			unlink($fa->getKepurlSmall(''));
-			unlink($fa->getKepurlMedium(''));
-			unlink($fa->getKepurlLarge(''));
-			$fa->setKepurl(null);
-			$this->getEm()->persist($fa);
-			$this->getEm()->flush();
-			$view=$this->createView('termekimagekarb.tpl');
-			$view->setVar('oper','edit');
-			$view->printTemplateResult();
-		}
-	}
-*/
 	public function getTermekLap($termek) {
 		$tfc=new termekfaController($this->params);
 
@@ -632,7 +586,7 @@ class termekController extends \mkwhelpers\MattableController {
 	}
 
 	public function getAjanlottLista() {
-		$termekek=$this->getRepo()->getAjanlottTermekek(store::getParameter('fooldalajanlotttermekdb',5));
+		$termekek=$this->getRepo()->getAjanlottTermekek(store::getParameter(\mkw\consts::Fooldalajanlotttermekdb,5));
 		$ret=array();
 		foreach($termekek as $termek) {
 			$ret[]=$termek->toTermekLista();
@@ -641,7 +595,7 @@ class termekController extends \mkwhelpers\MattableController {
 	}
 
 	public function getLegnepszerubbLista() {
-		$termekek=$this->getRepo()->getLegnepszerubbTermekek(store::getParameter('fooldalnepszerutermekdb',5));
+		$termekek=$this->getRepo()->getLegnepszerubbTermekek(store::getParameter(\mkw\consts::Fooldalnepszerutermekdb,5));
 		$ret=array();
 		foreach($termekek as $termek) {
 			$ret[]=$termek->toTermekLista();
@@ -652,12 +606,12 @@ class termekController extends \mkwhelpers\MattableController {
 	public function feed() {
 		$feedview=$this->getTemplateFactory()->createMainView('feed.tpl');
 		$view=$this->getTemplateFactory()->createMainView('termekfeed.tpl');
-		$feedview->setVar('title',store::getParameter('feedtermektitle',t('Termékeink')));
+		$feedview->setVar('title',store::getParameter(\mkw\consts::Feedtermektitle,t('Termékeink')));
 		$feedview->setVar('link',store::getRouter()->generate('termekfeed',true));
 		$d=new \DateTime();
 		$feedview->setVar('pubdate',$d->format('D, d M Y H:i:s'));
 		$feedview->setVar('lastbuilddate',$d->format('D, d M Y H:i:s'));
-		$feedview->setVar('description',store::getParameter('feedtermekdescription',''));
+		$feedview->setVar('description',store::getParameter(\mkw\consts::Feedtermekdescription,''));
 		$entries=array();
 		$termekek=$this->getRepo()->getFeedTermek();
 		foreach($termekek as $termek) {

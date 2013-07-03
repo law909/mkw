@@ -14,10 +14,10 @@ class generalDataLoader {
 			$view->setVar('mobilebrowser',false);
 		}
 		$view->setVar('theme',store::getConfigValue('theme'));
-		$view->setVar('uitheme',store::getParameter('uitheme','sunny'));
+		$view->setVar('uitheme',store::getParameter(consts::Uitheme,'sunny'));
 		$setup=store::getSetup();
-		$setup['grideditbutton']=store::getParameter('grideditbutton','small');
-		$setup['editstyle']=store::getParameter('editstyle','dropdown');
+		$setup['grideditbutton']=store::getParameter(consts::Grideditbutton,'small');
+		$setup['editstyle']=store::getParameter(consts::Editstyle,'dropdown');
 		$view->setVar('setup',$setup);
 		$view->setVar('editstyles',array(
 			'dropdown',

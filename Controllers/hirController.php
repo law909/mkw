@@ -143,12 +143,12 @@ class hirController extends \mkwhelpers\MattableController {
 
 	public function feed() {
 		$feedview=$this->getTemplateFactory()->createMainView('feed.tpl');
-		$feedview->setVar('title',store::getParameter('feedhirtitle',t('Híreink')));
+		$feedview->setVar('title',store::getParameter(\mkw\consts::Feedhirtitle,t('Híreink')));
 		$feedview->setVar('link',store::getRouter()->generate('hirfeed',true));
 		$d=new \DateTime();
 		$feedview->setVar('pubdate',$d->format('D, d M Y H:i:s'));
 		$feedview->setVar('lastbuilddate',$d->format('D, d M Y H:i:s'));
-		$feedview->setVar('description',store::getParameter('feedhirdescription',''));
+		$feedview->setVar('description',store::getParameter(\mkw\consts::Feedhirdescription,''));
 		$entries=array();
 		$hirek=$this->getfeedhirlist();
 		foreach($hirek as $hir) {

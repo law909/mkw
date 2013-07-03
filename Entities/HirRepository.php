@@ -35,7 +35,7 @@ class HirRepository extends \mkwhelpers\Repository {
 		$filter['clauses'][]='=';
 		$filter['values'][]=true;
 		$order=array('_xx.id'=>'DESC');
-		$res=$this->getAll($filter,$order,0,store::getParameter('feedhirdb',20));
+		$res=$this->getAll($filter,$order,0,store::getParameter(\mkw\consts::Feedhirdb,20));
 		return $res;
 	}
 

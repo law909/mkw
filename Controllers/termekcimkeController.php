@@ -190,49 +190,4 @@ class termekcimkeController extends \mkwhelpers\MattableController {
 		return $this->cimkekToArray($tc);
 	}
 
-/*	protected function savepicture() {
-		$fa=$this->getRepo()->find($this->getIntRequestParam('id'));
-		if ($fa) {
-			$uploaddir=store::getConfigValue('path.termekcimkekep');
-			$pp=pathinfo($_FILES['userfile']['name']);
-			$uploadfile=$uploaddir.$this->getStringRequestParam('nev','').'.'.$pp['extension'];
-			if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-				$imageproc=new \mkwhelpers\Images($uploadfile);
-				$imageproc->setJpgquality(store::getParameter('jpgquality'));
-				$imageproc->setPngquality(store::getParameter('pngquality'));
-				$smallfn=$uploaddir.$this->getStringRequestParam('nev','').store::getParameter('smallimgpost','').'.'.$pp['extension'];
-				$mediumfn=$uploaddir.$this->getStringRequestParam('nev','').store::getParameter('mediumimgpost','').'.'.$pp['extension'];
-				$largefn=$uploaddir.$this->getStringRequestParam('nev','').store::getParameter('bigimgpost','').'.'.$pp['extension'];
-				$imageproc->Resample($smallfn,store::getParameter('smallimagesize',80));
-				$imageproc->Resample($mediumfn,store::getParameter('mediumimagesize',200));
-				$imageproc->Resample($largefn,storegetParameter('bigimagesize',800));
-				$fa->setKepnev($this->getStringRequestParam('nev'));
-				$fa->setKepleiras($this->getStringRequestParam('leiras'));
-				$fa->setKepurl($uploadfile);
-				$this->getEm()->persist($fa);
-				$this->getEm()->flush();
-				$view=$this->createView('cimkeimagekarb.tpl');
-				$view->setVar('oper','edit');
-				$view->setVar('cimke',$this->loadVars($fa));
-				$view->printTemplateResult();
-			}
-		}
-	}
-
-	protected function delpicture() {
-		$fa=$this->getRepo()->find($this->getIntRequestParam('id'));
-		if ($fa) {
-			unlink($fa->getKepurl(''));
-			unlink($fa->getKepurlSmall(''));
-			unlink($fa->getKepurlMedium(''));
-			unlink($fa->getKepurlLarge(''));
-			$fa->setKepurl(null);
-			$this->getEm()->persist($fa);
-			$this->getEm()->flush();
-			$view=$this->createView('cimkeimagekarb.tpl');
-			$view->setVar('oper','edit');
-			$view->printTemplateResult();
-		}
-	}
-*/
 }

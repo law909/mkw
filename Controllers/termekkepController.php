@@ -56,47 +56,6 @@ class termekkepController extends \mkwhelpers\MattableController {
 		return $keplista;
 	}
 
-/*	protected function gettablerow($kep) {
-		$view=$this->createView('termektermekkepkarb.tpl');
-		$view->setVar('oper','edit');
-		$view->setVar('kep',$this->loadVars($kep));
-		return $view->getTemplateResult();
-	}
-
-	protected function save() {
-		$uploaddir=store::getConfigValue('path.termekkep');
-		$pp=pathinfo($_FILES['userfile']['name']);
-		$uploadfile=$uploaddir.$this->getStringRequestParam('nev').'.'.$pp['extension'];
-		if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-			$imageproc=new \mkwhelpers\Images($uploadfile);
-			$imageproc->setJpgquality(store::getParameter('jpgquality'));
-			$imageproc->setPngquality(store::getParameter('pngquality'));
-			$smallfn=$uploaddir.$this->getStringRequestParam('nev').store::getParameter('smallimgpost','').'.'.$pp['extension'];
-			$mediumfn=$uploaddir.$this->getStringRequestParam('nev').store::getParameter('mediumimgpost','').'.'.$pp['extension'];
-			$largefn=$uploaddir.$this->getStringRequestParam('nev').store::getParameter('bigimgpost','').'.'.$pp['extension'];
-			$imageproc->Resample($smallfn,store::getParameter('smallimagesize',80));
-			$imageproc->Resample($mediumfn,store::getParameter('mediumimagesize',200));
-			$imageproc->Resample($largefn,store::getParameter('bigimagesize',800));
-			$termek=store::getEm()->getRepository('Entities\Termek')->find($this->getIntRequestParam('termek'));
-			if ($termek) {
-				if ($this->getStringRequestParam('oper')=='add') {
-					$tkep=new TermekKep();
-				}
-				else {
-					$tkep=$this->getRepo()->find($this->getIntRequestParam('id'));
-				}
-				if ($tkep) {
-					$tkep->setLeiras($this->getStringRequestParam('leiras'));
-					$tkep->setUrl($uploadfile);
-					$tkep->setTermek($termek);
-					$this->getEm()->persist($tkep);
-					$this->getEm()->flush();
-					echo $this->gettablerow($tkep).$this->gettablerow(null);
-				}
-			}
-		}
-	}
-*/
 	protected function del() {
 		$kep=$this->getRepo()->find($this->params->getIntRequestParam('id'));
 		if ($kep) {
