@@ -127,6 +127,7 @@
 				setup.beforeShow.call(this);
 			}
 			karbContainer.show();
+			$(document).scrollTop(0);
 		};
 
 		var initialize=function() {

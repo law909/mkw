@@ -106,6 +106,8 @@
 			'</tbody></table></div>';
 		var pagerhidehtml='<div class="mattable-pager"></div>';
 
+		var scrollPosition;
+
 		var selectContainer=this,
 			karbContainer=$(setup.karb.container),
 			header=$(setup.header),
@@ -348,6 +350,7 @@
 		};
 
 		var showKarb=function(elem) {
+			scrollPosition=$(document).scrollTop();
 			$.blockUI({
 				message:'Kérem várjon...',
 				css:{
@@ -397,6 +400,7 @@
 					karbsetup.onCancel=function() {
 						showSelect();
 					};
+					$(document).scrollTop(0);
 					karbContainer.mattkarb(karbsetup);
 				}
 			});
@@ -405,6 +409,7 @@
 		var showSelect=function() {
 			karbContainer.empty().hide();
 			selectContainer.show();
+			$(document).scrollTop(scrollPosition);
 			return false;
 		};
 

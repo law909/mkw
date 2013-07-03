@@ -19,7 +19,8 @@ $(document).ready(function(){
 				_new:{
 					label:'Új',
 					action:function(obj) {
-						var valasztottid=$('#termekfa').jstree('get_selected').children('a').attr('id');
+						var valasztottid=$('#termekfa').jstree('get_selected').children('a').attr('id'),
+								scrollPosition;
 						if (!valasztottid) {
 							dialogcenter.html('Válasszon szülő kategóriát').dialog({resizable:false,modal:true,buttons:{'OK':function() {$(this).dialog('close');}}});
 							return false;
@@ -30,6 +31,8 @@ $(document).ready(function(){
 								oper:'add'
 							},
 							success:function(data) {
+								scrollPosition=$(document).scrollTop();
+								$(document).scrollTop(0);
 								$('#termekfa').hide();
 								$('#termekfakarb').append(data);
 								var karbsetup={
@@ -99,10 +102,12 @@ $(document).ready(function(){
 										$('#termekfakarb').empty().hide();
 										$('#termekfa').jstree('refresh');
 										$('#termekfa').show();
+										$(document).scrollTop(scrollPosition);
 									},
 									onCancel:function() {
 										$('#termekfakarb').empty().hide();
 										$('#termekfa').show();
+										$(document).scrollTop(scrollPosition);
 									}
 								}
 								$('#termekfakarb').mattkarb(karbsetup);
@@ -124,6 +129,8 @@ $(document).ready(function(){
 								oper:'edit'
 							},
 							success:function(data) {
+								scrollPosition=$(document).scrollTop();
+								$(document).scrollTop(0);
 								$('#termekfa').hide();
 								$('#termekfakarb').append(data);
 								var karbsetup={
@@ -193,10 +200,12 @@ $(document).ready(function(){
 										$('#termekfakarb').empty().hide();
 										$('#termekfa').jstree('refresh');
 										$('#termekfa').show();
+										$(document).scrollTop(scrollPosition);
 									},
 									onCancel:function() {
 										$('#termekfakarb').empty().hide();
 										$('#termekfa').show();
+										$(document).scrollTop(scrollPosition);
 									}
 								}
 								$('#termekfakarb').mattkarb(karbsetup);
