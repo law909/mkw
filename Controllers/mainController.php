@@ -165,11 +165,13 @@ class mainController extends \mkwhelpers\Controller {
 
 		$valtozatok=$termek->getValtozatok();
 		foreach($valtozatok as $valtozat) {
-			if ($valtozat->getAdatTipus1Id()==$tipusid&&($valtozat->getErtek1()==$valtozatertek||!$valtozatertek)) {
-				$ret['adat'][$valtozat->getErtek2()]=array('value'=>$valtozat->getErtek2(),'sel'=>$masikselected==$valtozat->getErtek2());
-			}
-			elseif ($valtozat->getAdatTipus2Id()==$tipusid&&($valtozat->getErtek2()==$valtozatertek||!$valtozatertek)) {
-				$ret['adat'][$valtozat->getErtek1()]=array('value'=>$valtozat->getErtek1(),'sel'=>$masikselected==$valtozat->getErtek1());
+			if ($valtozat->getElerheto()) {
+				if ($valtozat->getAdatTipus1Id()==$tipusid&&($valtozat->getErtek1()==$valtozatertek||!$valtozatertek)) {
+					$ret['adat'][$valtozat->getErtek2()]=array('value'=>$valtozat->getErtek2(),'sel'=>$masikselected==$valtozat->getErtek2());
+				}
+				elseif ($valtozat->getAdatTipus2Id()==$tipusid&&($valtozat->getErtek2()==$valtozatertek||!$valtozatertek)) {
+					$ret['adat'][$valtozat->getErtek1()]=array('value'=>$valtozat->getErtek1(),'sel'=>$masikselected==$valtozat->getErtek1());
+				}
 			}
 		}
 		echo json_encode($ret);
