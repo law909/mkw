@@ -14,8 +14,11 @@ $(document).ready(function(){
 						modal: true,
 						buttons: {
 							'Igen': function() {
+								var kep=$('.js-cimkekep');
 								$('#KepUrlEdit').val('');
 								$('#KepLeirasEdit').val('');
+								kep.attr('src','/');
+								kep.parent().attr('href','');
 								$(this).dialog('close');
 							},
 							'Nem':function() {
@@ -31,13 +34,25 @@ $(document).ready(function(){
 						path=$kepurl.val();
 					finder.startupPath='Images:'+path.substring(path.indexOf('/',1));
 					finder.selectActionFunction = function( fileUrl, data ) {
-						$kepurl.val(fileUrl);
+						var kep=$('.js-cimkekep');
+						$.ajax({
+							url:'/admin/getsmallurl',
+							type:'GET',
+							data:{
+								url:fileUrl
+							},
+							success:function(data) {
+								$kepurl.val(fileUrl);
+								kep.attr('src',data);
+								kep.parent().attr('href',fileUrl);
+							}
+						});
 					}
 					finder.popup();
 				});
 				$('#KepDelButton,#KepBrowseButton').button();
 				if (!$.browser.mobile) {
-					$('.toFlyout').flyout();
+					$('.js-toFlyout').flyout();
 					$('#LeirasEdit').ckeditor();
 				}
 			},

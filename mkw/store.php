@@ -86,7 +86,11 @@ class Store {
 	public static function createSmallImageUrl($kepurl,$pre='/') {
 		$t=explode('.',$kepurl);
 		$ext=array_pop($t);
-		return $pre.implode('.',$t).store::getParameter('smallimgpost','').'.'.$ext;
+		$result=implode('.',$t).store::getParameter('smallimgpost','').'.'.$ext;
+		if ($kepurl[0]!=$pre) {
+			return $pre.$result;
+		}
+		return $result;
 	}
 
 	public static function createMediumImageUrl($kepurl,$pre='/') {

@@ -24,6 +24,7 @@ class korhintaController extends \mkwhelpers\MattableController {
 		$x['szoveg']=$t->getSzoveg();
 		$x['url']=$t->getUrl();
 		$x['kepurl']=$t->getKepurl();
+		$x['kepurlsmall']=$t->getKepurlSmall();
 		$x['kepleiras']=$t->getKepleiras();
 		$x['kepnev']=$t->getKepnev();
 		$x['lathato']=$t->getLathato();
@@ -36,6 +37,7 @@ class korhintaController extends \mkwhelpers\MattableController {
 		$obj->setNev($this->params->getStringRequestParam('nev'));
 		$obj->setUrl($this->params->getStringRequestParam('url'));
 		$obj->setSzoveg($this->params->getStringRequestParam('szoveg'));
+		$obj->setKepUrl($this->params->getStringRequestParam('kepurl'));
 		$obj->setKepleiras($this->params->getStringRequestParam('kepleiras',''));
 		$obj->setLathato($this->params->getBoolRequestParam('lathato',true));
 		$obj->setSorrend($this->params->getIntRequestParam('sorrend',0));
@@ -89,31 +91,6 @@ class korhintaController extends \mkwhelpers\MattableController {
 		$record=$this->getRepo()->find($id);
 		$view->setVar('egyed',$this->loadVars($record));
 		return $view->getTemplateResult();
-	}
-
-	public function savepicture() {
-		$fa=$this->getRepo()->find($this->params->getIntRequestParam('id'));
-		if ($fa) {
-			$uploaddir=store::getConfigValue('path.korhintakep');
-			$pp=pathinfo($_FILES['userfile']['name']);
-			$uploadfile=$uploaddir.$this->params->getStringRequestParam('nev').'.'.$pp['extension'];
-			if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-				$imageproc=new \mkwhelpers\Images($uploadfile);
-				$imageproc->setJpgquality(store::getParameter(\mkw\consts::Jpgquality));
-				$imageproc->setPngquality(store::getParameter(\mkw\consts::Pngquality));
-				$fn=$uploaddir.$this->params->getStringRequestParam('nev').'.'.$pp['extension'];
-				$imageproc->Resample($fn,store::getParameter(\mkw\consts::Korhintaimagesize,480));
-				$fa->setKepnev($this->params->getStringRequestParam('nev'));
-				$fa->setKepleiras($this->params->getStringRequestParam('leiras'));
-				$fa->setKepurl($uploadfile);
-				$this->getEm()->persist($fa);
-				$this->getEm()->flush();
-				$view=$this->createView('korhintaimagekarb.tpl');
-				$view->setVar('oper','edit');
-				$view->setVar('egyed',$this->loadVars($fa));
-				$view->printTemplateResult();
-			}
-		}
 	}
 
 	public function delpicture() {

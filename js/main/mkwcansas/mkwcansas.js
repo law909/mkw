@@ -1,3 +1,19 @@
+var mkw=function($) {
+
+	function drawUploadedImage(input) {
+		f = input.files[0],
+		url = window.URL || window.webkitURL,
+		src = url.createObjectURL(f);
+		$('<div style="background-image:url('+url+')"></div>')
+			.appendTo();
+	}
+
+	return {
+		drawUploadedImage: drawUploadedImage
+	};
+
+}(JQuery);
+
 function lapozas() {
 	var lf=$('.lapozoform'),
 		url=lf.data('url')+'?pageno='+lf.data('pageno'),
@@ -24,7 +40,7 @@ var blockuicss={
 	opacity:.5,
 	color:'#fff',
 	'font-size':'16px'
-}
+};
 
 var regcheck={
 	wasinteraction:{
@@ -94,7 +110,7 @@ var regcheck={
 		pw1[0].setCustomValidity('');
 		pw2[0].setCustomValidity('');
 		pwmsg.empty();
-		if (pw1.val()!=pw2.val()) {
+		if (pw1.val()!==pw2.val()) {
 			if (regcheck.wasinteraction.pw) {
 				pwmsg.append(msg2);
 			}

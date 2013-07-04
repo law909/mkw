@@ -385,16 +385,20 @@ class adminController extends mkwhelpers\Controller {
 		$view->printTemplateResult();
 	}
 
-	protected function setUITheme() {
+	public function setUITheme() {
 		store::setParameter('uitheme',$this->getStringParam('uitheme','sunny'));
 	}
 
-	protected function setGridEditButton() {
+	public function setGridEditButton() {
 		store::setParameter('grideditbutton',$this->getStringParam('grideditbutton','small'));
 	}
 
-	protected function setEditStyle() {
+	public function setEditStyle() {
 		store::setParameter('editstyle',$this->getStringParam('editstyle','dropdown'));
+	}
+
+	public function getSmallUrl() {
+		echo \mkw\Store::createSmallImageUrl($this->params->getStringRequestParam('url'));
 	}
 
 	protected function arcalctest() {

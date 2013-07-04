@@ -40,6 +40,8 @@ $router->map('GET','/admin/vtsz/jsonlist','vtszController#jsonlist','adminvtszjs
 $router->map('GET','/admin/vtsz/htmllist','vtszController#htmllist','adminvtszhtmllist');
 $router->map('POST','/admin/vtsz/save','vtszController#save','adminvtszsave');
 
+$router->map('GET','/admin/getsmallurl','adminController#getSmallUrl','admingetsmallurl');
+
 $router->map('GET','/admin/setup/view','setupController#view','adminsetupview');
 $router->map('POST','/admin/setup/save','setupController#save','adminsetupsave');
 

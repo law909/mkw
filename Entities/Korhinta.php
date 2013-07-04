@@ -1,6 +1,8 @@
 <?php
 namespace Entities;
 
+use mkw\Store;
+
 /**
  * @Entity(repositoryClass="Entities\KorhintaRepository")
  * @Table(name="korhinta")
@@ -36,6 +38,7 @@ class Korhinta {
 			'szoveg'=>$this->getSzoveg(),
 			'url'=>$this->getUrl(),
 			'kepurl'=>$this->getKepurl(),
+			'kepurlsmall'=>$this->getKepurlSmall(),
 			'kepleiras'=>$this->getKepleiras()
 		);
 		return $ret;
@@ -71,7 +74,40 @@ class Korhinta {
 
 	public function getKepurl($pre='/') {
 		if ($this->kepurl) {
-			return $pre.$this->kepurl;
+			if ($this->url[0]!==$pre) {
+				return $pre.$this->kepurl;
+			}
+			return $this->kepurl;
+		}
+		return '';
+	}
+
+	public function getKepurlSmall($pre='/') {
+		$url=$this->getKepurl($pre);
+		if ($url) {
+			$t=explode('.',$url);
+			$ext=array_pop($t);
+			return implode('.',$t).store::getParameter(\mkw\consts::Smallimgpost,'').'.'.$ext;
+		}
+		return '';
+	}
+
+	public function getKepurlMedium($pre='/') {
+		$url=$this->getKepurl($pre);
+		if ($url) {
+			$t=explode('.',$url);
+			$ext=array_pop($t);
+			return implode('.',$t).store::getParameter(\mkw\consts::Mediumimgpost,'').'.'.$ext;
+		}
+		return '';
+	}
+
+	public function getKepurlLarge($pre='/') {
+		$url=$this->getKepurl($pre);
+		if ($url) {
+			$t=explode('.',$url);
+			$ext=array_pop($t);
+			return implode('.',$t).store::getParameter(\mkw\consts::Bigimgpost,'').'.'.$ext;
 		}
 		return '';
 	}

@@ -102,15 +102,12 @@ class Cimketorzs {
 	    $this->oldalcim = $oldalcim;
 	}
 
-	public function getKepurl($pre='/')
-	{
+	public function getKepurl($pre='/') {
 		if ($this->kepurl) {
 			if ($this->kepurl[0]!==$pre) {
 				return $pre.$this->kepurl;
 			}
-			else {
-				return $this->kepurl;
-			}
+			return $this->kepurl;
 		}
 		return '';
 	}

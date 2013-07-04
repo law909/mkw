@@ -1,44 +1,34 @@
 $(document).ready(function(){
+	var dialogcenter=$('#dialogcenter');
 	var korhinta={
 			container:'#mattkarb',
 			viewUrl:'/admin/korhinta/getkarb',
 			newWindowUrl:'/admin/korhinta/viewkarb',
 			saveUrl:'/admin/korhinta/save',
 			beforeShow:function() {
-				function morphFoKepUploadButton() {
-					var kepedit=$('#FoKepUploadButton');
-					if (kepedit.length>0) {
-						kepedit.button();
-						new AjaxUpload(kepedit,{
-							action:'/admin/korhinta/savepicture',
-							onSubmit:function(file,ext) {
-								var kepnev=$('#KepNevEdit').val();
-								if (kepnev) {
-									if (ext&&/^(jpg|jpeg|png)$/.test(ext)) {
-										this.setData({
-											id:$('#mattkarb-form').attr('data-id'),
-											nev:kepnev,
-											leiras:$('#KepLeirasEdit').val()
-										});
-									}
-									else {
-										dialogcenter.html('Csak jpg,jpeg,png fájlokat tölthet fel.').dialog({resizable:false,modal:true,buttons:{'OK':function() {$(this).dialog('close');}}});
-										return false;
-									}
-								}
-								else {
-									dialogcenter.html('Adja meg a kép nevét.').dialog({resizable:false,modal:true,buttons:{'OK':function() {$(this).dialog('close');}}});
-									return false;
-								}
+				$('#FoKepBrowseButton').on('click',function(e){
+					e.preventDefault();
+					var finder=new CKFinder(),
+						$kepurl=$('#KepUrlEdit'),
+						path=$kepurl.val();
+					finder.startupPath='Images:'+path.substring(path.indexOf('/',1));
+					finder.selectActionFunction = function( fileUrl, data ) {
+						var kep=$('.js-korhintakep');
+						$.ajax({
+							url:'/admin/getsmallurl',
+							type:'GET',
+							data:{
+								url:fileUrl
 							},
-							onComplete:function(file,response) {
-								$('#FoImageEdit').remove();
-								$('#AltalanosTab').append(response);
-								$('#FoKepDelButton').button();
+							success:function(data) {
+								$kepurl.val(fileUrl);
+								kep.attr('src',data);
+								kep.parent().attr('href',fileUrl);
 							}
 						});
-					}
-				}
+					};
+					finder.popup();
+				});
 				$('#FoKepDelButton').on('click',function(e) {
 					e.preventDefault();
 					dialogcenter.html('Biztos, hogy törli a képet?').dialog({
@@ -47,16 +37,11 @@ $(document).ready(function(){
 						modal: true,
 						buttons: {
 							'Igen': function() {
-								$.ajax({
-									url:'/admin/korhinta/delpicture',
-									data:{
-										id:$('#mattkarb-form').attr('data-id')
-									},
-									success:function(data) {
-										$('#FoImageEdit').replaceWith(data);
-										morphFoKepUploadButton();
-									}
-								});
+								var kep=$('.js-korhintakep');
+								$('#KepUrlEdit').val('');
+								$('#KepLeirasEdit').val('');
+								kep.attr('src','/');
+								kep.parent().attr('href','');
 								$(this).dialog('close');
 							},
 							'Nem':function() {
@@ -65,8 +50,11 @@ $(document).ready(function(){
 						}
 					});
 				});
-				morphFoKepUploadButton();
-				$('#FoKepDelButton').button();
+				$('#FoKepBrowseButton,#FoKepDelButton').button();
+				if (!$.browser.mobile) {
+					$('.js-toFlyout').flyout();
+				}
+
 			},
 			onSubmit:function() {
 				$('#messagecenter')
