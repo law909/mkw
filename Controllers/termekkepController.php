@@ -56,8 +56,8 @@ class termekkepController extends \mkwhelpers\MattableController {
 		return $keplista;
 	}
 
-	protected function del() {
-		$kep=$this->getRepo()->find($this->params->getIntRequestParam('id'));
+	public function del() {
+		$kep=$this->getRepo()->find($this->params->getNumRequestParam('id'));
 		if ($kep) {
 			unlink($kep->getUrl(''));
 			unlink($kep->getUrlSmall(''));
@@ -66,6 +66,6 @@ class termekkepController extends \mkwhelpers\MattableController {
 			$this->getEm()->remove($kep);
 			$this->getEm()->flush();
 		}
-		echo $this->params->getIntRequestParam('id');
+		echo $this->params->getNumRequestParam('id');
 	}
 }

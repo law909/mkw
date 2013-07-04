@@ -152,7 +152,7 @@ class MattableController extends Controller {
 	}
 
 	protected function getListBodyRow($obj,$oper) {
-		$view=$this->getTemplateFactory()->createView($this->listBodyRowTplName);
+		$view=$this->createView($this->listBodyRowTplName);
 		$this->setVars($view);
 		$vl=$this->loadVars($obj);
 		$view->setVar($this->listBodyRowVarName,$vl);

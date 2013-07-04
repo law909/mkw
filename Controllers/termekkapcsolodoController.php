@@ -20,7 +20,7 @@ class termekkapcsolodoController extends \mkwhelpers\MattableController {
 			$t=new \Entities\TermekKapcsolodo();
 			$this->getEm()->detach($t);
 			$x['oper']='add';
-			$x['id']=mkw\Store::createUID();
+			$x['id']=store::createUID();
 		}
 		else {
 			$x['oper']='edit';
@@ -30,7 +30,7 @@ class termekkapcsolodoController extends \mkwhelpers\MattableController {
 		$x['termeknev']=$t->getTermekNev();
 		$x['altermek']=$t->getAlTermek();
 		$x['altermeknev']=$t->getAlTermekNev();
-		$x['altermekkepurl']=$t->getAlTermek()->getKepUrlSmall();
+		$x['altermekkepurl']=$t->getAlTermek()?$t->getAlTermek()->getKepUrlSmall():'';
 		if ($forKarb) {
 			$x['termeklist']=$termek->getSelectList(($t->getAlTermek()?$t->getAlTermek()->getId():0));
 		}

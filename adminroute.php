@@ -64,6 +64,12 @@ $router->map('GET','/admin/termek/getbrutto','termekController#getbrutto','admin
 $router->map('POST','/admin/termek/save','termekController#save','admintermeksave');
 $router->map('POST','/admin/termek/setflag','termekController#setflag','admintermeksetflag');
 
+$router->map('GET','/admin/termekkapcsolodo/getemptyrow','termekkapcsolodoController#getemptyrow','admintermekkapcsolodogetemptyrow');
+$router->map('POST','/admin/termekkapcsolodo/save','termekkapcsolodoController#save','admintermekkapcsolodosave');
+
+$router->map('GET','/admin/termekkep/getemptyrow','termekkepController#getemptyrow','admintermekkepgetemptyrow');
+$router->map('POST','/admin/termekkep/del','termekkepController#del','admintermekkepdel');
+
 $router->map('GET','/admin/termekvaltozat/getemptyrow','termekvaltozatController#getemptyrow','admintermekvaltozatgetemptyrow');
 $router->map('POST','/admin/termekvaltozat/generate','termekvaltozatController#generate','admintermekvaltozatgenerate');
 $router->map('POST','/admin/termekvaltozat/save','termekvaltozatController#save','admintermekvaltozatsave');
@@ -149,6 +155,7 @@ $router->map('GET','/admin/korhinta/getlistbody','korhintaController#getlistbody
 $router->map('GET','/admin/korhinta/getkarb','korhintaController#getkarb','adminkorhintagetkarb');
 $router->map('GET','/admin/korhinta/viewkarb','korhintaController#viewkarb','adminkorhintaviewkarb');
 $router->map('POST','/admin/korhinta/save','korhintaController#save','adminkorhintasave');
+$router->map('POST','/admin/korhinta/setflag','korhintaController#setflag','adminkorhintasetflag');
 
 $router->map('GET','/admin/partner/viewlist','partnerController#viewlist','adminpartnerviewlist');
 $router->map('GET','/admin/partner/getlistbody','partnerController#getlistbody','adminpartnergetlistbody');

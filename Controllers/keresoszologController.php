@@ -77,31 +77,4 @@ class keresoszologController extends \mkwhelpers\MattableController {
 		$view->setVar('egyed',$this->loadVars($record));
 		return $view->getTemplateResult();
 	}
-
-/* MINTA, ha nem kell akkor kidobandó
-	protected function setmenulathato() {
-		$id=$this->getIntRequestParam('id');
-		$kibe=$this->getBoolRequestParam('kibe');
-		$num=$this->getIntRequestParam('num');
-		$obj=$this->getRepo()->find($id);
-		if ($obj) {
-			switch ($num) {
-				case 1:
-					$obj->setMenu1Lathato($kibe);
-					break;
-				case 2:
-					$obj->setMenu2Lathato($kibe);
-					break;
-				case 3:
-					$obj->setMenu3Lathato($kibe);
-					break;
-				case 4:
-					$obj->setMenu4Lathato($kibe);
-					break;
-			}
-			store::getEm()->persist($obj);
-			store::getEm()->flush();
-		}
-	}
-*/
 }

@@ -140,7 +140,7 @@ class Store {
 	}
 
 	public static function getSalt() {
-		return self::getSetupValue('so');
+		return self::getConfigValue('so');
 	}
 
 	public static function getTemplateFactory() {

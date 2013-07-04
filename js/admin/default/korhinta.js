@@ -93,6 +93,7 @@ $(document).ready(function(){
 			var $this=$(this);
 			$.ajax({
 				url:'/admin/korhinta/setflag',
+				type:'POST',
 				data:{
 					id:$this.attr('data-id'),
 					flag:$this.attr('data-flag'),

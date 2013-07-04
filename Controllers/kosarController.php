@@ -130,7 +130,7 @@ class kosarController extends \mkwhelpers\MattableController {
 	public function add() {
 		$termek=store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('id'));
 		$vid=null;
-		switch ($this->getIntRequestParam('jax',0)) {
+		switch ($this->params->getIntRequestParam('jax',0)) {
 			case 2:
 				$vid=$this->params->getIntRequestParam('vid',null);
 				$termekvaltozat=store::getEm()->getRepository('Entities\TermekValtozat')->find($vid);
@@ -233,6 +233,7 @@ class kosarController extends \mkwhelpers\MattableController {
 			}
 		}
 	}
+
 	public function replaceSessionIdAndAddPartner($oldid,$partner) {
 		$filter=array();
 		$filter['fields'][]='sessionid';

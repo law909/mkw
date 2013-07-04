@@ -136,7 +136,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		}
 	}
 
-	protected function isdeletable() {
+	public function isdeletable() {
 		$fa=$this->getRepo()->find($this->getIntParam('id'));
 		if ($fa) {
 			echo $fa->isDeletable()*1;
