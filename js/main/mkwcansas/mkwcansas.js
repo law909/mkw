@@ -1,19 +1,3 @@
-var mkw=function($) {
-
-	function drawUploadedImage(input) {
-		f = input.files[0],
-		url = window.URL || window.webkitURL,
-		src = url.createObjectURL(f);
-		$('<div style="background-image:url('+url+')"></div>')
-			.appendTo();
-	}
-
-	return {
-		drawUploadedImage: drawUploadedImage
-	};
-
-}(JQuery);
-
 function lapozas() {
 	var lf=$('.lapozoform'),
 		url=lf.data('url')+'?pageno='+lf.data('pageno'),
@@ -22,7 +6,7 @@ function lapozas() {
 	$('#szuroform input:checkbox:checked').each(function(){
 		filterstr=filterstr+$(this).prop('name')+',';
 	});
-	if (filterstr!='') {
+	if (filterstr!=='') {
 		url=url+'&filter='+filterstr;
 	}
 	url=url+'&arfilter='+$('#ArSlider').val();
