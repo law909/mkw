@@ -594,7 +594,9 @@ $(document).ready(function(){
 			}
 		}
 		else {
-			document.location=gy.attr('href');
+			if (gy.length>0) {
+				document.location=gy.attr('href');
+			}
 		}
 	});
 	b.mouseup(function(){
