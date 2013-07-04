@@ -74,7 +74,7 @@ class Korhinta {
 
 	public function getKepurl($pre='/') {
 		if ($this->kepurl) {
-			if ($this->url[0]!==$pre) {
+			if ($this->kepurl[0]!==$pre) {
 				return $pre.$this->kepurl;
 			}
 			return $this->kepurl;
