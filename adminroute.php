@@ -41,6 +41,7 @@ $router->map('GET','/admin/vtsz/htmllist','vtszController#htmllist','adminvtszht
 $router->map('POST','/admin/vtsz/save','vtszController#save','adminvtszsave');
 
 $router->map('GET','/admin/getsmallurl','adminController#getSmallUrl','admingetsmallurl');
+$router->map('GET','/admin/regeneratekarkod','adminController#regeneratekarkod','adminregeneratekarkod');
 
 $router->map('GET','/admin/setup/view','setupController#view','adminsetupview');
 $router->map('POST','/admin/setup/save','setupController#save','adminsetupsave');

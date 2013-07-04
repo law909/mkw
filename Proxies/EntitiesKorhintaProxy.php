@@ -90,6 +90,24 @@ class EntitiesKorhintaProxy extends \Entities\Korhinta implements \Doctrine\ORM\
         return parent::getKepurl($pre);
     }
 
+    public function getKepurlSmall($pre = '/')
+    {
+        $this->__load();
+        return parent::getKepurlSmall($pre);
+    }
+
+    public function getKepurlMedium($pre = '/')
+    {
+        $this->__load();
+        return parent::getKepurlMedium($pre);
+    }
+
+    public function getKepurlLarge($pre = '/')
+    {
+        $this->__load();
+        return parent::getKepurlLarge($pre);
+    }
+
     public function setKepurl($kepurl)
     {
         $this->__load();

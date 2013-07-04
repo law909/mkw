@@ -368,7 +368,7 @@ class adminController extends mkwhelpers\Controller {
 		$view->printTemplateResult();
 	}
 
-	protected function regeneratekarkod() {
+	public function regeneratekarkod() {
 		$farepo=store::getEm()->getRepository('Entities\TermekFa');
 		$farepo->regenerateKarKod();
 		$this->view();

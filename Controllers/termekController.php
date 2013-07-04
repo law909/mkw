@@ -374,8 +374,8 @@ class termekController extends \mkwhelpers\MattableController {
 			$filter['values'][]=$this->params->getStringRequestParam('nevfilter');
 		}
 
-		if (!is_null($this->params->getArrayRequestParam('cimkefilter',NULL))) {
-			$fv=$this->params->getArrayRequestParam('cimkefilter');
+		$fv=$this->params->getArrayRequestParam('cimkefilter');
+		if (!empty($fv)) {
 			$res=Store::getEm()->getRepository('Entities\Termekcimketorzs')->getTermekIdsWithCimke($fv);
 			$cimkefilter=array();
 			foreach($res as $sor) {
@@ -386,8 +386,8 @@ class termekController extends \mkwhelpers\MattableController {
 			$filter['values'][]=$cimkefilter;
 		}
 
-		if (!is_null($this->params->getArrayRequestParam('fafilter',NULL))) {
-			$fv=$this->params->getArrayRequestParam('fafilter');
+		$fv=$this->params->getArrayRequestParam('fafilter');
+		if (!empty($fv)) {
 			$ff=array();
 			$ff['fields'][]='id';
 			$ff['values'][]=$fv;
