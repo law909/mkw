@@ -6,6 +6,7 @@ $(document).ready(function(){
 			saveUrl:'/admin/esemeny/save',
 			beforeShow:function() {
 				if (!$.browser.mobile) {
+					CKFinder.setupCKEditor( null, '/ckfinder/' );
 					$('#LeirasEdit').ckeditor();
 				}
 				var esedekesedit=$('#EsedekesEdit');

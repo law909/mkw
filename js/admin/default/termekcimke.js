@@ -53,6 +53,7 @@ $(document).ready(function(){
 				$('#KepDelButton,#KepBrowseButton').button();
 				if (!$.browser.mobile) {
 					$('.js-toFlyout').flyout();
+					CKFinder.setupCKEditor( null, '/ckfinder/' );
 					$('#LeirasEdit').ckeditor();
 				}
 			},

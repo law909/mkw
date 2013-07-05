@@ -525,6 +525,7 @@ $(document).ready(function(){
 				})
 				.button();
 				if (!$.browser.mobile) {
+					CKFinder.setupCKEditor( null, '/ckfinder/' );
 					$('#LeirasEdit').ckeditor();
 				}
 			},
@@ -708,6 +709,7 @@ $(document).ready(function(){
 										saveUrl:'/admin/termekfa/save',
 										beforeShow:function() {
 											if (!$.browser.mobile) {
+												CKFinder.setupCKEditor( null, '/ckfinder/' );
 												$('#LeirasEdit').ckeditor();
 											}
 										},
@@ -806,6 +808,7 @@ $(document).ready(function(){
 										saveUrl:'/admin/termekfa/save',
 										beforeShow:function() {
 											if (!$.browser.mobile) {
+												CKFinder.setupCKEditor( null, '/ckfinder/' );
 												$('#LeirasEdit').ckeditor();
 											}
 											$('#AltalanosTab').on('click','.fakarb-delimage',function(e) {

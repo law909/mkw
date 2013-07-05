@@ -34,18 +34,18 @@ class teendoController extends \mkwhelpers\MattableController {
 	}
 
 	protected function setFields($obj) {
-		$ck=store::getEm()->getRepository('Entities\Partner')->find($this->getIntRequestParam('partner'));
+		$ck=store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
 		if ($ck) {
 			$obj->setPartner($ck);
 		}
-		$obj->setBejegyzes($this->getStringRequestParam('bejegyzes'));
-		$obj->setLeiras($this->getStringRequestParam('leiras'));
-		$obj->setEsedekes($this->getDateRequestParam('esedekes'));
-		$obj->setElvegezve($this->getBoolRequestParam('elvegezve'));
+		$obj->setBejegyzes($this->params->getStringRequestParam('bejegyzes'));
+		$obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
+		$obj->setEsedekes($this->params->getDateRequestParam('esedekes'));
+		$obj->setElvegezve($this->params->getBoolRequestParam('elvegezve'));
 		return $obj;
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('teendolista_tbody.tpl');
 
 		$filterarr=array();

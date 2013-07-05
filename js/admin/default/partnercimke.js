@@ -6,6 +6,7 @@ $(document).ready(function(){
 			saveUrl:'/admin/partnercimke/save',
 			beforeShow:function() {
 				if (!$.browser.mobile) {
+					CKFinder.setupCKEditor( null, '/ckfinder/' );
 					$('#LeirasEdit').ckeditor();
 				}
 			},

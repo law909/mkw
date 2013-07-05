@@ -96,6 +96,13 @@ $router->map('GET','/admin/esemeny/getkarb','esemenyController#getkarb','admines
 $router->map('GET','/admin/esemeny/viewkarb','esemenyController#viewkarb','adminesemenyviewkarb');
 $router->map('POST','/admin/esemeny/save','esemenyController#save','adminesemenysave');
 
+$router->map('GET','/admin/teendo/viewlist','teendoController#viewlist','adminteendoviewlist');
+$router->map('GET','/admin/teendo/getlistbody','teendoController#getlistbody','adminteendogetlistbody');
+$router->map('GET','/admin/teendo/getkarb','teendoController#getkarb','adminteendogetkarb');
+$router->map('GET','/admin/teendo/viewkarb','teendoController#viewkarb','adminteendoviewkarb');
+$router->map('POST','/admin/teendo/save','teendoController#save','adminteendosave');
+$router->map('POST','/admin/teendo/setflag','teendoController#setflag','adminteendossetflag');
+
 $router->map('GET','/admin/hir/viewlist','hirController#viewlist','adminhirviewlist');
 $router->map('GET','/admin/hir/getlistbody','hirController#getlistbody','adminhirgetlistbody');
 $router->map('GET','/admin/hir/getkarb','hirController#getkarb','adminhirgetkarb');

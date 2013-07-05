@@ -6,6 +6,7 @@ $(document).ready(function(){
 			saveUrl:'/admin/teendo/save',
 			beforeShow:function() {
 				if (!$.browser.mobile) {
+					CKFinder.setupCKEditor( null, '/ckfinder/' );
 					$('#LeirasEdit').ckeditor();
 				}
 				var esedekesedit=$('#EsedekesEdit');
@@ -55,6 +56,7 @@ $(document).ready(function(){
 			var $this=$(this);
 			$.ajax({
 				url:'/admin/teendo/setflag',
+				type:'POST',
 				data:{
 					id:$this.attr('data-id'),
 					flag:$this.attr('data-flag'),

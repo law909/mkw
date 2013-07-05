@@ -6,6 +6,7 @@ $(document).ready(function(){
 			saveUrl:'/admin/hir/save',
 			beforeShow:function() {
 				if (!$.browser.mobile) {
+					CKFinder.setupCKEditor( null, '/ckfinder/' );
 					$('#SzovegEdit').ckeditor();
 					$('#LeadEdit').ckeditor();
 				}

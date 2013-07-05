@@ -50,7 +50,7 @@ class termekcimkeController extends \mkwhelpers\MattableController {
 			$obj->setKategoria($ck);
 		}
 		$obj->setNev($this->params->getStringRequestParam('nev'));
-		$obj->setLeiras($this->params->getStringRequestParam('leiras'));
+		$obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
 		$obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
 		$obj->setMenu1Lathato($this->params->getBoolRequestParam('menu1lathato'));
 		$obj->setMenu2Lathato($this->params->getBoolRequestParam('menu2lathato'));
