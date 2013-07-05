@@ -30,10 +30,10 @@
 		<div class="fakarb-titlebar" data-caption="{t('Webes adatok')}" data-refcontrol="#WebTab"></div>
 		{/if}
 		<div id="WebTab" class="fakarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
-			<input id="Menu1LathatoCheck" name="menu1lathato" type="checkbox"{if ($fa.menu1lathato)}checked="checked"{/if}>{t('Menü 1')}</input>
-			<input id="Menu2LathatoCheck" name="menu2lathato" type="checkbox"{if ($fa.menu2lathato)}checked="checked"{/if}>{t('Menü 2')}</input>
-			<input id="Menu3LathatoCheck" name="menu3lathato" type="checkbox"{if ($fa.menu3lathato)}checked="checked"{/if}>{t('Menü 3')}</input>
-			<input id="Menu4LathatoCheck" name="menu4lathato" type="checkbox"{if ($fa.menu4lathato)}checked="checked"{/if}>{t('Menü 4')}</input>
+			<input id="Menu1LathatoCheck" name="menu1lathato" type="checkbox"{if ($fa.menu1lathato)}checked="checked"{/if}>{t('Főmenü')}</input>
+			<input id="Menu2LathatoCheck" name="menu2lathato" type="checkbox"{if ($fa.menu2lathato)}checked="checked"{/if}>{t('Főmenü lenyíló')}</input>
+			<input id="Menu3LathatoCheck" name="menu3lathato" type="checkbox"{if ($fa.menu3lathato)}checked="checked"{/if}>{t('Top kategória')}</input>
+			<input id="Menu4LathatoCheck" name="menu4lathato" type="checkbox"{if ($fa.menu4lathato)}checked="checked"{/if}>{t('Kategória lista')}</input>
 			<table><tbody>
 			<tr>
 				<td><label for="OldalCimEdit">{t('Lap címe')}:</label></td>
