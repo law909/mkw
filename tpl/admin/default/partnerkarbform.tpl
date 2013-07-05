@@ -124,6 +124,10 @@
 					<input id="SzamlaUtcaEdit" name="szamlautca" type="text" size="40" maxlength="60" value="{$partner.szamlautca}" placeholder="{t('utca, házszám')}">
 				</td>
 			</tr>
+			<tr>
+				<td><label for="SzamlaAdoszamEdit">{t('Számlázási adószám')}:</label></td>
+				<td><input id="SzamlaAdoszamEdit" name="szamlaadoszam" type="text" size="13" maxlength="13" value="{$partner.szamlaadoszam}"></td>
+			</tr>
 			</tbody></table>
 			<table><tbody>
 			<tr>

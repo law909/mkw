@@ -588,6 +588,18 @@ class EntitiesPartnerProxy extends \Entities\Partner implements \Doctrine\ORM\Pr
         return parent::setSzamlautca($adat);
     }
 
+    public function getSzamlaadoszam()
+    {
+        $this->__load();
+        return parent::getSzamlaadoszam();
+    }
+
+    public function setSzamlaadoszam($adoszam)
+    {
+        $this->__load();
+        return parent::setSzamlaadoszam($adoszam);
+    }
+
     public function getSzallnev()
     {
         $this->__load();
@@ -735,7 +747,7 @@ class EntitiesPartnerProxy extends \Entities\Partner implements \Doctrine\ORM\Pr
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'kontaktok', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szamlanev', 'szamlairszam', 'szamlavaros', 'szamlautca', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk', 'termekertesitok');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'kontaktok', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szamlanev', 'szamlairszam', 'szamlavaros', 'szamlautca', 'szamlaadoszam', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk', 'termekertesitok');
     }
 
     public function __clone()

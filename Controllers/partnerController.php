@@ -62,6 +62,7 @@ class partnerController extends \mkwhelpers\MattableController {
 		$x['kontaktok']=$kont;
 		$x['fizhatido']=$t->getFizhatido();
 		$x['szamlanev']=$t->getSzamlanev();
+		$x['szamlaadoszam']=$t->getSzamlaadoszam();
 		$x['szamlairszam']=$t->getSzamlairszam();
 		$x['szamlavaros']=$t->getSzamlavaros();
 		$x['szamlautca']=$t->getSzamlautca();
@@ -109,6 +110,7 @@ class partnerController extends \mkwhelpers\MattableController {
 		$obj->setSzamlairszam($this->params->getStringRequestParam('szamlairszam'));
 		$obj->setSzamlavaros($this->params->getStringRequestParam('szamlavaros'));
 		$obj->setSzamlautca($this->params->getStringRequestParam('szamlautca'));
+		$obj->setSzamlaadoszam($this->params->getStringRequestParam('szamlaadoszam'));
 		$obj->setSzallnev($this->params->getStringRequestParam('szallnev'));
 		$obj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
 		$obj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
@@ -411,7 +413,7 @@ class partnerController extends \mkwhelpers\MattableController {
 			header('Location: '.store::getRouter()->generate('showaccount'));
 		}
 		else {
-			if ($this->login($this->getStringRequestParam('email'),$this->getStringRequestParam('jelszo'))) {
+			if ($this->login($this->params->getStringRequestParam('email'),$this->params->getStringRequestParam('jelszo'))) {
 				header('Location: '.store::getRouter()->generate('showaccount'));
 			}
 			else {
@@ -435,10 +437,12 @@ class partnerController extends \mkwhelpers\MattableController {
 	}
 
 	public function showAccount() {
-		if ($this->checkloggedin()) {
+		$user=$this->getLoggedInUser();
+		if ($user) {
 			$view=$this->getFiokTpl();
 			store::fillTemplate($view);
 			store::storePrevUri();
+			$view->setVar('user',$this->loadVars($user));
 			$view->printTemplateResult();
 		}
 		else {
@@ -447,8 +451,59 @@ class partnerController extends \mkwhelpers\MattableController {
 	}
 
 	public function saveAccount() {
-		if ($this->checkloggedin()) {
-
+		$user=$this->getLoggedInUser();
+		if ($user) {
+			switch ($this->params->getStringParam('subject')) {
+				case 'adataim':
+					$vezeteknev=$this->params->getStringRequestParam('vezeteknev');
+					$keresztnev=$this->params->getStringRequestParam('keresztnev');
+					$email=$this->params->getStringRequestParam('email');
+					$telefon=$this->params->getStringRequestParam('telefon');
+					$akcioshirlevelkell=$this->params->getBoolRequestParam('akcioshirlevelkell');
+					$ujdonsaghirlevelkell=$this->params->getBoolRequestParam('ujdonsaghirlevelkell');
+					if (!\Zend_Validate::is($email,'EmailAddress')) {
+						$hibas=true;
+						$hibak['email']=t('Rossz az email');
+					}
+					if ($vezeteknev==''||$keresztnev=='') {
+						$hibas=true;
+						$hibak['nev']=t('Üres a név');
+					}
+					if (!$hibas) {
+						$user->setVezeteknev($vezeteknev);
+						$user->setKeresztnev($keresztnev);
+						$user->setNev($vezeteknev.' '.$keresztnev);
+						$user->setEmail($email);
+						$user->setTelefon($telefon);
+						$user->setAkcioshirlevelkell($akcioshirlevelkell);
+						$user->setUjdonsaghirlevelkell($ujdonsaghirlevelkell);
+						$this->getEm()->persist($user);
+						$this->getEm()->flush();
+						Header('Location: '.store::getRouter()->generate('showaccount'));
+					}
+					else {
+					}
+					break;
+				case 'szamlaadatok':
+					$user->setSzamlanev($this->params->getStringRequestParam('szamlanev'));
+					$user->setSzamlaadoszam($this->params->getStringRequestParam('szamlaadoszam'));
+					$user->setSzamlairszam($this->params->getStringRequestParam('szamlairszam'));
+					$user->setSzamlavaros($this->params->getStringRequestParam('szamlavaros'));
+					$user->setSzamlautca($this->params->getStringRequestParam('szamlautca'));
+					$this->getEm()->persist($user);
+					$this->getEm()->flush();
+					Header('Location: '.store::getRouter()->generate('showaccount'));
+					break;
+				case 'szallitasiadatok':
+					$user->setSzallnev($this->params->getStringRequestParam('szallnev'));
+					$user->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
+					$user->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
+					$user->setSzallutca($this->params->getStringRequestParam('szallutca'));
+					$this->getEm()->persist($user);
+					$this->getEm()->flush();
+					Header('Location: '.store::getRouter()->generate('showaccount'));
+					break;
+			}
 		}
 		else {
 			header('Location: '.store::getRouter()->generate('showlogin'));

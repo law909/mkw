@@ -561,19 +561,6 @@ $(document).ready(function(){
 				logincheck.emailcheck();
 				$(this).off('keydown');
 			})
-			.on('change',function(e) {
-				var $this=$(this);
-				$.ajax({
-					type:'POST',
-					url:'/checkemail',
-					data:{email:$this.val()}
-				})
-				.done(function(data){
-					var d=JSON.parse(data);
-					$this.data('hiba',d);
-					logincheck.emailcheck();
-				});
-			})
 			.on('keydown blur',function(e) {logincheck.wasinteraction.email=true;logincheck.emailcheck()})
 			.each(function(i,ez) {logincheck.emailcheck()});
 	}

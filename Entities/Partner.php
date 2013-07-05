@@ -119,6 +119,8 @@ class Partner {
 	private $szamlavaros='';
 	/** @Column(type="string",length=60,nullable=true) */
 	private $szamlautca='';
+	/** @Column(type="string",length=13,nullable=true) */
+	private $szamlaadoszam='';
 	/** @Column(type="string",length=255,nullable=true) */
 	private $szallnev='';
 	/** @Column(type="string",length=10,nullable=true) */
@@ -637,6 +639,16 @@ class Partner {
 
 	public function setSzamlautca($adat) {
 		$this->szamlautca=$adat;
+	}
+
+	public function getSzamlaadoszam()
+	{
+		return $this->szamlaadoszam;
+	}
+
+	public function setSzamlaadoszam($adoszam)
+	{
+		$this->szamlaadoszam = $adoszam;
 	}
 
 	public function getSzallnev() {
