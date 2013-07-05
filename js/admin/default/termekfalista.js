@@ -107,17 +107,11 @@ $(document).ready(function(){
 						}
 					},
 					onSubmit:function(data) {
-						var resp=JSON.parse(data);
-						switch (resp.oper) {
-							case 'edit':
-								break;
-							case 'add':
-								break;
-						}
 						$('#termekfakarb').empty().hide();
 						$('#termekfa').jstree('refresh');
 						$('#termekfa').show();
 						$(document).scrollTop(scrollPosition);
+						alert('Ne felejtse el a termék kategóriák rendezését!');
 					},
 					onCancel:function() {
 						$('#termekfakarb').empty().hide();
@@ -178,12 +172,14 @@ $(document).ready(function(){
 											'Igen':function() {
 												$(this).dialog('close');
 												$.ajax({url:'/admin/termekfa/save',
+													type:'POST',
 													data:{
 														id:valasztottid.split('_')[1],
 														oper:'del'
 													},
 													success:function(data) {
 														$('#termekfa').jstree('refresh');
+														alert('Ne felejtse el a termék kategóriák rendezését!');
 													}
 												});
 											},
@@ -226,18 +222,21 @@ $(document).ready(function(){
 							modal: true,
 							buttons: {
 								'OK': function() {
-									var ideid=dialogcenter.jstree('get_selected').children('a').attr('id');
+									var ideid=dialogcenter.jstree('get_selected').children('a').attr('id'),
+										$thisdialog=$(this);
 									$.ajax({
 										url:'/admin/termekfa/move',
+										type:'POST',
 										data:{
 											eztid:valasztottid.split('_')[1],
 											ideid:ideid.split('_')[1]
 										},
 										success:function(data) {
 											$('#termekfa').jstree('refresh');
+											$thisdialog.dialog('close');
+											alert('Ne felejtse el a termék kategóriák rendezését!');
 										}
 									});
-									$(this).dialog('close');
 								},
 								'Bezár': function() {
 									$(this).dialog('close');

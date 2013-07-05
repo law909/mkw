@@ -103,7 +103,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$fa=$this->getRepo()->find($id);
 		$fatomb=$this->loadVars($fa,true);
 		if (!$fa) {
-			$fatomb['parentid']=$this->getIntParam('parentid');
+			$fatomb['parentid']=$this->params->getIntRequestParam('parentid');
 		}
 		$view->setVar('fa',$fatomb);
 		$view->printTemplateResult();
@@ -125,8 +125,8 @@ class termekfaController extends \mkwhelpers\MattableController {
 	}
 
 	public function move() {
-		$fa=$this->getRepo()->find($this->getIntParam('eztid'));
-		$ide=$this->getRepo()->find($this->getIntParam('ideid'));
+		$fa=$this->getRepo()->find($this->params->getIntRequestParam('eztid'));
+		$ide=$this->getRepo()->find($this->params->getIntRequestParam('ideid'));
 		if (($fa)&&($ide)) {
 			$fa->removeParent();
 			$fa->setParent($ide);
@@ -137,7 +137,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 	}
 
 	public function isdeletable() {
-		$fa=$this->getRepo()->find($this->getIntParam('id'));
+		$fa=$this->getRepo()->find($this->params->getIntRequestParam('id'));
 		if ($fa) {
 			echo $fa->isDeletable()*1;
 		}

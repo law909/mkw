@@ -99,7 +99,10 @@ class Hir {
 	}
 
 	public function getElsodatumStr() {
-		return $this->getElsodatum()->format(store::$DateFormat);
+		if ($this->getElsodatum()) {
+			return $this->getElsodatum()->format(store::$DateFormat);
+		}
+		return '';
 	}
 
 	public function setElsodatum($adat) {
@@ -112,7 +115,10 @@ class Hir {
 	}
 
 	public function getUtolsodatumStr() {
-		return $this->getUtolsodatum()->format(store::$DateFormat);
+		if ($this->getUtolsodatum()) {
+			return $this->getUtolsodatum()->format(store::$DateFormat);
+		}
+		return '';
 	}
 
 	public function setUtolsodatum($adat) {
@@ -125,7 +131,10 @@ class Hir {
 	}
 
 	public function getDatumStr() {
-		return $this->getDatum()->format(store::$DateFormat);
+		if ($this->getDatum()) {
+			return $this->getDatum()->format(store::$DateFormat);
+		}
+		return '';
 	}
 
 	public function setDatum($adat) {

@@ -48,7 +48,7 @@ class TermekFa {
 	 * @Column(type="string",length=255,nullable=true)
 	 */
 	private $slug;
-	/** @Column(type="string",length=255) */
+	/** @Column(type="string",length=255,nullable=true) */
 	private $karkod;
 	/** @Column(type="string",length=255,nullable=true) */
 	private $rovidleiras='';

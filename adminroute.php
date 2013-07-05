@@ -178,6 +178,10 @@ $router->map('POST','/admin/partner/checkemail','partnerController#checkemail','
 $router->map('GET','/admin/termekfa/getkarb','termekfaController#getkarb','admintermekfagetkarb');
 $router->map('GET','/admin/termekfa/jsonlist','termekfaController#jsonlist','admintermekfajsonlist');
 $router->map('POST','/admin/termekfa/save','termekfaController#save','admintermekfasave');
-$router->map('GET','/admin/termekfa/isedeletable','termekfaController#isdeletable','admintermekfaisdeletable');
+$router->map('GET','/admin/termekfa/isdeletable','termekfaController#isdeletable','admintermekfaisdeletable');
 $router->map('POST','/admin/termekfa/move','termekfaController#move','admintermekfamove');
 $router->map('GET','/admin/termekfa/viewlist','termekfaController#viewlist','admintermekfaviewlist');
+
+$router->map('GET','/admin/kosar/viewlist','kosarController#viewlist','adminkosarviewlist');
+$router->map('GET','/admin/kosar/getlistbody','kosarController#getlistbody','adminkosargetlistbody');
+$router->map('POST','/admin/kosar/save','kosarController#save','adminkosarsave');
