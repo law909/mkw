@@ -418,10 +418,10 @@
 				setup=$.extend({},setup,this.data());
 			}
 			karbContainer.hide();
-			karbContainer.addClass('ui-widget ui-widget-content ui-corner-all');
+			karbContainer.addClass('ui-widget ui-widget-content ui-corner-all mattkarb');
 
 			theme=selectContainer.attr(_dataattr.theme);
-			selectContainer.addClass('ui-widget ui-widget-content ui-corner-all');
+			selectContainer.addClass('ui-widget ui-widget-content ui-corner-all mattable');
 			header.addClass('mattable-titlebar ui-widget-header ui-corner-top ui-helper-clearfix');
 			header.append('<h3><a class="mattable-tablerefresh" href="#" title="'+header.attr(_dataattr.headerTitle)+'">'+header.attr(_dataattr.headerCaption)+'</a></h3>');
 			createHeaderFooter();

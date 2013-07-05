@@ -69,7 +69,7 @@
 					}
 				}
 			});
-			karbContainer.addClass('ui-widget ui-widget-content ui-corner-all');
+			karbContainer.addClass('ui-widget ui-widget-content ui-corner-all mattkarb');
 			header.addClass('mattable-titlebar ui-widget-header ui-corner-top ui-helper-clearfix');
 			titlebar.addClass('mattedit-titlebar ui-widget-header ui-helper-clearfix');
 			titlebar.each(function() {
