@@ -41,10 +41,7 @@
 		<div class="row">
 			<div class="span12">
 			<div class="pull-left">
-				<div class="logo">
-					{t('Mindentkapni.hu')}
-					<div class="logokisszoveg">{t('WEBÁRUHÁZ - 2007 ÓTA AZ ÖNÖK SZOLGÁLATÁBAN')}</div>
-				</div>
+				<a href="/"><img src="/themes/main/mkwcansas/img/mkw-logo.png"></a>
 			</div>
 			<div class="pull-left">
 				<form id="searchform" name="searchbox" method="get" action="/kereses">
@@ -57,7 +54,6 @@
 			</div>
 		</div>
 	</div>
-	<div class="container" style="margin-top: 20px;font-size: 26px;font-weight: bold;">Tisztelt látogatónk, ez egy teszt oldal. Megrendeléseit a <a href="http://www.mindentkapni.hu" style="color: #FF0000;">mindentkapni.hu</a> oldalon várjuk.</div>
 </div>
 <div class="container headernav">
 	<div class="row">

@@ -4,13 +4,10 @@
 
 @fontsize: 13px;
 @headercarttextfontsize: 11px;
-@logofontsize: 67px;
-@logosmallfontsize: 8px;
 @headernavfontsize: 15px;
 @headernavcategoryfontsize: 14px;
 @morzsafontsize: 11px;
 @sectionheaderfontsize: 21px;
-@footerlogofontsize: 37px;
 @hiralairasfontsize: 70%;
 
 @fontcolor: #333;
@@ -32,7 +29,7 @@
 @termekpricefontcolor: #333;
 @okbuttonvilagos: #1ab324;
 @okbuttonsotet: #087510;
-@headerrowmargin: 10px;
+@headerrowmargin: 20px;
 @headermidmargin: 20px;
 @headercarthpadding: 8px;
 @headercartvpadding: 10px;
@@ -56,18 +53,6 @@
 	-webkit-box-shadow: @arguments;
 	-moz-box-shadow: @arguments;
 	box-shadow: @arguments;
-}
-
-@font-face {
-    font-family: 'YanoneKaffeesatzBold';
-    src: url('font/YanoneKaffeesatz-Bold-webfont.eot');
-    src: url('font/YanoneKaffeesatz-Bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('font/YanoneKaffeesatz-Bold-webfont.woff') format('woff'),
-         url('font/YanoneKaffeesatz-Bold-webfont.ttf') format('truetype'),
-         url('font/YanoneKaffeesatz-Bold-webfont.svg#YanoneKaffeesatzBold') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
 }
 
 .textaligncenter {
@@ -229,22 +214,6 @@ a.headercartbtn:active,a.headercartbtn.active {
 	line-height: normal;
 }
 
-.logo {
-	position: relative;
-	font-family: 'YanoneKaffeesatzBold';
-	font-size: @logofontsize;
-	color: @logofontcolor;
-}
-
-.logokisszoveg {
-	position: absolute;
-	left: 0px;
-	bottom: 0px;
-	font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
-	font-size: @logosmallfontsize;
-	color: black;
-}
-
 #searchform, #searchinput {
 	margin: 0;
 }
@@ -388,11 +357,6 @@ footer {
 	.gradient-background(@headersotet,@headervilagos);
 }
 
-footer h2 {
-	font-size: @footerlogofontsize;
-	font-family: 'YanoneKaffeesatzBold';
-}
-
 footer h5 {
 	color: @logofontcolor;
 }
@@ -446,7 +410,6 @@ footer nav {
 
 .sectionheader {
 	font-size: @sectionheaderfontsize;
-	font-family: 'YanoneKaffeesatzBold';
 	color: @highlite;
 	text-align: center;
 }
