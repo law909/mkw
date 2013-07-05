@@ -552,10 +552,34 @@ class EntitiesBizonylattetelProxy extends \Entities\Bizonylattetel implements \D
         return parent::getCreated();
     }
 
+    public function getTermekvaltozat()
+    {
+        $this->__load();
+        return parent::getTermekvaltozat();
+    }
+
+    public function getTermekvaltozatId()
+    {
+        $this->__load();
+        return parent::getTermekvaltozatId();
+    }
+
+    public function setTermekvaltozat(\Entities\TermekValtozat $val)
+    {
+        $this->__load();
+        return parent::setTermekvaltozat($val);
+    }
+
+    public function removeTermekvaltozat()
+    {
+        $this->__load();
+        return parent::removeTermekvaltozat();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'bizonylatfej', 'tetelsorszam', 'mozgat', 'arvaltoztat', 'storno', 'stornozott', 'termek', 'termeknev', 'me', 'kiszereles', 'cikkszam', 'idegencikkszam', 'ehparany', 'hparany', 'szelesseg', 'magassag', 'hosszusag', 'suly', 'osszehajthato', 'vtsz', 'vtsznev', 'afa', 'afanev', 'afakulcs', 'gymennyiseg', 'mennyiseg', 'nettoegysar', 'bruttoegysar', 'nettoegysarhuf', 'bruttoegysarhuf', 'enettoegysar', 'ebruttoegysar', 'enettoegysarhuf', 'ebruttoegysarhuf', 'netto', 'afaertek', 'brutto', 'valutanem', 'valutanemnev', 'nettohuf', 'afaertekhuf', 'bruttohuf', 'arfolyam', 'parbizonylattetel', 'szulobizonylattetelek', 'hatarido');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'bizonylatfej', 'tetelsorszam', 'mozgat', 'arvaltoztat', 'storno', 'stornozott', 'termek', 'termeknev', 'me', 'kiszereles', 'cikkszam', 'idegencikkszam', 'ehparany', 'hparany', 'szelesseg', 'magassag', 'hosszusag', 'suly', 'osszehajthato', 'vtsz', 'vtsznev', 'afa', 'afanev', 'afakulcs', 'gymennyiseg', 'mennyiseg', 'nettoegysar', 'bruttoegysar', 'nettoegysarhuf', 'bruttoegysarhuf', 'enettoegysar', 'ebruttoegysar', 'enettoegysarhuf', 'ebruttoegysarhuf', 'netto', 'afaertek', 'brutto', 'valutanem', 'valutanemnev', 'nettohuf', 'afaertekhuf', 'bruttohuf', 'arfolyam', 'parbizonylattetel', 'szulobizonylattetelek', 'hatarido', 'termekvaltozat');
     }
 
     public function __clone()

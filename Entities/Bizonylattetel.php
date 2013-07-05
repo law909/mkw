@@ -133,6 +133,11 @@ class Bizonylattetel {
 	private $szulobizonylattetelek;
 	/** @Column(type="date",nullable=true) */
 	private $hatarido;
+	/**
+	 * @ManyToOne(targetEntity="TermekValtozat",inversedBy="kosarak")
+	 * @JoinColumn(name="termekvaltozat_id", referencedColumnName="id",nullable=true,onDelete="no action")
+	 */
+	private $termekvaltozat;
 
 	public function __construct() {
 		$this->szulobizonylattetelek=new ArrayCollection();
@@ -614,4 +619,31 @@ class Bizonylattetel {
 	public function getCreated() {
 		return $this->created;
 	}
+
+	public function getTermekvaltozat(){
+		return $this->termekvaltozat;
+	}
+
+	public function getTermekvaltozatId() {
+		if ($this->termekvaltozat) {
+			return $this->termekvaltozat->getId();
+		}
+		return '';
+	}
+
+	public function setTermekvaltozat(TermekValtozat $val) {
+		if ($this->termekvaltozat!==$val) {
+			$this->termekvaltozat=$val;
+//			$val->addBizonylattetelek($this);
+		}
+	}
+
+	public function removeTermekvaltozat() {
+		if ($this->termekvaltozat !==null) {
+//			$val=$this->termek;
+			$this->termekvaltozat=null;
+//			$val->removeBizonylattetelek($this);
+		}
+	}
+
 }
