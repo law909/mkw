@@ -175,7 +175,7 @@ class partnerController extends \mkwhelpers\MattableController {
 		$filter=array();
 		if (!is_null($this->params->getRequestParam('nevfilter',NULL))) {
 			$fv=$this->params->getStringRequestParam('nevfilter');
-			$filter['fields'][]=array('nev','nev2');
+			$filter['fields'][]='nev';
 			$filter['values'][]=$fv;
 		}
 		if (!is_null($this->params->getRequestParam('cimkefilter',NULL))) {

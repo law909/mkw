@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="row">
 		<div class="span3">
-			<a href="/"><img src="/themes/main/mkwcansas/img/mkw-logo-small.png"></a>
+			<a href="/"><img src="/themes/main/mkwcansas/img/mkw-logo-small.png" alt="Mindent Kapni Webáruház" title="Mindent Kapni Webáruház"></a>
 			<p>Az oldalainkon szereplő márkanevek a tulajdonosok védjegyei, itt csak a termékek bemutatására szerepelnek.</p>
 			<p>A webáruház lapjain látható képek csak illusztrációk, a valós termék ezektől némileg eltérhet.</p>
 			<p>Copyright &copy; 2007-2012, Quixoft Informatikai Szolgáltató Bt.</p>

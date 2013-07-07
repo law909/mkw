@@ -1,11 +1,5 @@
 {extends "base.tpl"}
 
-{block "script"}
-<script src="/js/main/mkwcansas/jquery.blockUI.js"></script>
-<script src="/js/main/mkwcansas/bootstrap.min.js"></script>
-<script src="/js/main/mkwcansas/h5f.js"></script>
-{/block}
-
 {block "kozep"}
 <div class="container">
 	<div class="row">
@@ -29,14 +23,14 @@
 						<form class="form-horizontal" action="/fiok/ment/adataim" method="post">
 							<fieldset>
 								<div class="control-group">
-									<label class="control-label" for="VezeteknevEdit">{t('Név')}:</label>
+									<label class="control-label" for="VezeteknevEdit">{t('Név')}*:</label>
 									<div class="controls">
 										<input id="VezeteknevEdit" name="vezeteknev" type="text" class="input-medium" placeholder="{t('vezetéknév')}" value="{$user.vezeteknev}" required>
 										<input id="KeresztnevEdit" name="keresztnev" type="text" class="input-medium" placeholder="{t('keresztnév')}" value="{$user.keresztnev}" required>
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label" for="EmailEdit">{t('Email cím')}:</label>
+									<label class="control-label" for="EmailEdit">{t('Email cím')}*:</label>
 									<div class="controls">
 										<input id="EmailEdit" name="email" type="email" class="input-large" value="{$user.email}" required>
 									</div>

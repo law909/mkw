@@ -1,12 +1,5 @@
 {extends "base.tpl"}
-{block "css"}
-<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/lightbox.css">
-{/block}
-{block "script"}
-<script src="/js/main/mkwcansas/jquery.blockUI.js"></script>
-<script src="/js/main/mkwcansas/lightbox.js"></script>
-<script src="/js/main/mkwcansas/bootstrap.min.js"></script>
-{/block}
+
 {block "kozep"}
 <div class="container">
 	<div class="row">
@@ -31,7 +24,7 @@
 				</div>
 				<div class="row hataroltSor">
 					<div class="span5 textaligncenter">
-						<a href="{$termek.kepurl}" rel="lightbox[termekkep]" title="{$termek.caption}">
+						<a href="{$termek.kepurl}" class="js-lightbox" title="{$termek.caption}">
 							<img src="{$termek.kozepeskepurl}" itemprop="image" alt="{$termek.caption}" title="{$termek.caption}">
 						</a>
 					</div>
@@ -39,7 +32,7 @@
 				<div class="row">
 					<div class="span5 textaligncenter">
 						{foreach $termek.kepek as $_kep}
-							<a href="{$_kep.kepurl}" rel="lightbox[termekkep]" title="{$_kep.leiras}">
+							<a href="{$_kep.kepurl}" class="js-lightbox" title="{$_kep.leiras}">
 							<img src="{$_kep.kiskepurl}" alt="{$_kep.leiras}" title="{$_kep.leiras}">
 							</a>
 						{/foreach}

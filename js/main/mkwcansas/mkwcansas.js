@@ -1,30 +1,88 @@
-function lapozas() {
-	var lf=$('.lapozoform'),
-		url=lf.data('url')+'?pageno='+lf.data('pageno'),
-		filterstr='';
-	url=url+'&elemperpage='+$('.elemperpageedit').val()+'&order='+$('.orderedit').val();
-	$('#szuroform input:checkbox:checked').each(function(){
-		filterstr=filterstr+$(this).prop('name')+',';
-	});
-	if (filterstr!=='') {
-		url=url+'&filter='+filterstr;
-	}
-	url=url+'&arfilter='+$('#ArSlider').val();
-	url=url+'&keresett='+$('.KeresettEdit').val();
-	url=url+'&vt='+$('#ListviewEdit').val();
-	document.location=url;
-}
+var mkw=function($) {
 
-var blockuicss={
-	border:'none',
-	padding:'15px',
-	backgroundColor:'#000',
-	'-webkit-border-radius':'10px',
-	'-moz-border-radius':'10px',
-	opacity:.5,
-	color:'#fff',
-	'font-size':'16px'
-};
+	function showMessage(msg) {
+		var msgcenter=$('#messagecenter');
+		msgcenter.text(msg);
+		$.magnificPopup.open({
+			modal: true,
+			items: [
+				{
+					src: msgcenter,
+					type: 'inline'
+				}
+			]
+		});
+	}
+
+	function closeMessage() {
+		$.magnificPopup.close();
+	}
+
+	function showDialog(msg,options) {
+		var dlgcenter=$('#dialogcenter'),
+			dlgheader=$('.modal-header',dlgcenter),
+			dlgbody=$('.modal-body',dlgcenter).empty(),
+			dlgfooter=$('.modal-footer',dlgcenter).empty(),
+			classes='btn';
+		$('h4',dlgheader).remove();
+		opts=$.extend(null,options,{
+			header: 'Értesítés',
+			buttons: [{
+					caption: 'OK',
+					class: 'btn-primary',
+					click: function(e) {
+						e.preventDefault();
+						mkw.closeDialog();
+					}
+			}]
+		});
+		if (opts.header) {
+			dlgheader.append('<h4>'+opts.header+'</h4>');
+		}
+		if (msg) {
+			dlgbody.append('<p>'+msg+'</p>');
+		}
+		for(var i=0;i<opts.buttons.length;i++) {
+			if (opts.buttons[i].class) {
+				classes=classes+' '+opts.buttons[i].class;
+			}
+			$('<button class="'+classes+'">'+opts.buttons[i].caption+'</button>')
+				.appendTo(dlgfooter)
+				.on('click',opts.buttons[i].click);
+		}
+		dlgcenter.modal();
+	}
+
+	function closeDialog() {
+		var dlgcenter=$('#dialogcenter');
+		dlgcenter.modal('hide');
+	}
+
+	function lapozas() {
+		var lf=$('.lapozoform'),
+			url=lf.data('url')+'?pageno='+lf.data('pageno'),
+			filterstr='';
+		url=url+'&elemperpage='+$('.elemperpageedit').val()+'&order='+$('.orderedit').val();
+		$('#szuroform input:checkbox:checked').each(function(){
+			filterstr=filterstr+$(this).prop('name')+',';
+		});
+		if (filterstr!=='') {
+			url=url+'&filter='+filterstr;
+		}
+		url=url+'&arfilter='+$('#ArSlider').val();
+		url=url+'&keresett='+$('.KeresettEdit').val();
+		url=url+'&vt='+$('#ListviewEdit').val();
+		document.location=url;
+	}
+
+	return {
+		showMessage: showMessage,
+		closeMessage: closeMessage,
+		showDialog: showDialog,
+		closeDialog: closeDialog,
+		lapozas: lapozas
+	};
+}(jQuery);
 
 var regcheck={
 	wasinteraction:{
@@ -265,7 +323,8 @@ var logincheck={
 			}
 		}
 	}
-}
+};
+
 $(document).ready(function(){
 	if ($.fn.mattaccord) {
 		$(document).mattaccord();
@@ -275,21 +334,23 @@ $(document).ready(function(){
 		$('#adamodositasTabbable').tab('show');
 	}
 	if ($.fn.slider) {
-		var $arslider=$('#ArSlider'),
-			maxar=$arslider.data('maxar')*1,
-			ti=$arslider.attr('value'),
-			step=$arslider.data('step')*1;
-		$arslider.slider({
-			from: 0,
-			to: maxar+step,
-			step: step,
-			dimension: '&nbsp;Ft',
-			skin: 'plastic',
-			callback: function(value) {
-				lapozas();
-			}
-		});
-		$arslider.slider('value',ti.split(';')[0],ti.split(';')[1]);
+		var $arslider=$('#ArSlider');
+		if ($arslider.length>0) {
+			var	maxar=$arslider.data('maxar')*1,
+				ti=$arslider.attr('value'),
+				step=$arslider.data('step')*1;
+			$arslider.slider({
+				from: 0,
+				to: maxar+step,
+				step: step,
+				dimension: '&nbsp;Ft',
+				skin: 'plastic',
+				callback: function(value) {
+					mkw.lapozas();
+				}
+			});
+			$arslider.slider('value',ti.split(';')[0],ti.split(';')[1]);
+		}
 	}
 	if ($.fn.autocomplete) {
 		$('#KeresoEdit').autocomplete({
@@ -333,6 +394,17 @@ $(document).ready(function(){
 	$('#termekertesitoModal').modal({
 		show:false
 	});
+	if ($.fn.magnificPopup) {
+		$('.js-lightbox').magnificPopup({
+			gallery: {
+				enabled: true
+			},
+			image: {
+				cursor: null
+			},
+			type: 'image'
+		});
+	}
 	// nincs valtozat
 	$('.kosarba').on('click',function(e){
 		var $this=$(this);
@@ -344,17 +416,14 @@ $(document).ready(function(){
 				jax:1
 			},
 			beforeSend:function(x) {
-				$.blockUI({
-					message:'A terméket a kosarába rakjuk...',
-					css:blockuicss
-				});
+				mkw.showMessage('A terméket a kosarába rakjuk...');
 			}
 		})
 		.done(function(data) {
 			$('#minikosar').html(data);
 		})
 		.always(function() {
-			$.unblockUI();
+			mkw.closeMessage();
 		});
 	});
 	// lathato valtozat van
@@ -371,10 +440,7 @@ $(document).ready(function(){
 				vid:$this.attr('data-vid')
 			},
 			beforeSend:function() {
-				$.blockUI({
-					message:'A terméket a kosarába rakjuk...',
-					css:blockuicss
-				});
+				mkw.showMessage('A terméket a kosarába rakjuk...');
 			}
 		})
 		.done(function(data) {
@@ -382,43 +448,50 @@ $(document).ready(function(){
 			$('#minikosar').html(data);
 		})
 		.always(function() {
-			$.unblockUI();
+			mkw.closeMessage();
 		});
 	});
 	// valaszthato valtozat van
 	$('.kosarbamindenvaltozat').on('click',function(e){
 		var $this=$(this),
 			termekid=$this.attr('data-termek'),
-			tipusok=new Array(),ertekek=new Array();
-
-		$('.mindenValtozatEdit[data-termek="'+termekid+'"]').each(function() {
-			tipusok.push($(this).data('tipusid'));
-			ertekek.push($(this).val());
-		});
+			tipusok=new Array(),ertekek=new Array(),
+			valtozatselect=$('.mindenValtozatEdit[data-termek="'+termekid+'"]');
 
 		e.preventDefault();
-		$.ajax({
-			type:'POST',
-			url:$this.attr('href'),
-			data:{
-				jax:3,
-				tip:tipusok,
-				val:ertekek
-			},
-			beforeSend:function(x) {
-				$.blockUI({
-					message:'A terméket a kosarába rakjuk...',
-					css:blockuicss
-				});
+
+		valtozatselect.each(function() {
+			var $this=$(this);
+			if ($this.val()) {
+				tipusok.push($this.data('tipusid'));
+				ertekek.push($this.val());
 			}
-		})
-		.done(function(data) {
-			$('.mindenValtozatEdit[data-termek="'+termekid+'"]').selectedIndex=0;
-			$('#minikosar').html(data);
-		})
-		.always(function() {
-			$.unblockUI();
 		});
+
+		if (valtozatselect.length!==ertekek.length) {
+			mkw.showDialog('Válassza ki, pontosan milyen terméket szeretne.');
+		}
+		else {
+			$.ajax({
+				type:'POST',
+				url:$this.attr('href'),
+				data:{
+					jax:3,
+					tip:tipusok,
+					val:ertekek
+				},
+				beforeSend:function(x) {
+					mkw.showMessage('A terméket a kosarába rakjuk...');
+				}
+			})
+			.done(function(data) {
+				$('.mindenValtozatEdit[data-termek="'+termekid+'"]').selectedIndex=0;
+				$('#minikosar').html(data);
+			})
+			.always(function() {
+				mkw.closeMessage();
+			});
+		}
 	});
 
 	// valtozat
@@ -485,14 +558,14 @@ $(document).ready(function(){
 				regcheck.nevcheck();
 				$(this).off('keydown');
 			})
-			.on('keydown blur',function(e) {regcheck.wasinteraction.nev=true;regcheck.nevcheck()})
-			.each(function(i,ez) {regcheck.nevcheck()});
+			.on('keydown blur',function(e) {regcheck.wasinteraction.nev=true;regcheck.nevcheck();})
+			.each(function(i,ez) {regcheck.nevcheck();});
 		$('#EmailEdit')
 			.on('input',function(e) {
 				regcheck.emailcheck();
 				$(this).off('keydown');
 			})
-			.on('keydown blur',function(e) {regcheck.wasinteraction.email=true;regcheck.emailcheck()})
+			.on('keydown blur',function(e) {regcheck.wasinteraction.email=true;regcheck.emailcheck();})
 			.on('change',function(e) {
 				var $this=$(this);
 				$.ajax({
@@ -506,14 +579,14 @@ $(document).ready(function(){
 					regcheck.emailcheck();
 				});
 			})
-			.each(function(i,ez) {regcheck.emailcheck()});
+			.each(function(i,ez) {regcheck.emailcheck();});
 		$('#Jelszo1Edit,#Jelszo2Edit')
 			.on('input',function(e) {
 				regcheck.pwcheck();
 				$(this).off('keydown');
 			})
-			.on('keydown blur',function(e) {regcheck.wasinteraction.pw=true;regcheck.pwcheck()})
-			.each(function(i,ez) {regcheck.pwcheck()});
+			.on('keydown blur',function(e) {regcheck.wasinteraction.pw=true;regcheck.pwcheck();})
+			.each(function(i,ez) {regcheck.pwcheck();});
 	}
 	var $kapcsolatform=$('#Kapcsolatform');
 	if ($kapcsolatform.length>0) {
@@ -523,8 +596,8 @@ $(document).ready(function(){
 				kapcscheck.nevcheck();
 				$(this).off('keydown');
 			})
-			.on('keydown blur',function(e) {kapcscheck.wasinteraction.nev=true;kapcscheck.nevcheck()})
-			.each(function(i,ez) {kapcscheck.nevcheck()});
+			.on('keydown blur',function(e) {kapcscheck.wasinteraction.nev=true;kapcscheck.nevcheck();})
+			.each(function(i,ez) {kapcscheck.nevcheck();});
 		$('#Email1Edit,#Email2Edit')
 			.on('input',function(e) {
 				kapcscheck.emailcheck();
@@ -543,15 +616,15 @@ $(document).ready(function(){
 					kapcscheck.emailcheck();
 				});
 			})
-			.on('keydown blur',function(e) {kapcscheck.wasinteraction.email=true;kapcscheck.emailcheck()})
-			.each(function(i,ez) {kapcscheck.emailcheck()});
+			.on('keydown blur',function(e) {kapcscheck.wasinteraction.email=true;kapcscheck.emailcheck();})
+			.each(function(i,ez) {kapcscheck.emailcheck();});
 		$('#TemaEdit')
 			.on('input',function(e) {
 				kapcscheck.temacheck();
 				$(this).off('keydown');
 			})
-			.on('keydown blur',function(e) {kapcscheck.wasinteraction.tema=true;kapcscheck.temacheck()})
-			.each(function(i,ez) {kapcscheck.temacheck()});
+			.on('keydown blur',function(e) {kapcscheck.wasinteraction.tema=true;kapcscheck.temacheck();})
+			.each(function(i,ez) {kapcscheck.temacheck();});
 	}
 	var $loginform=$('#Loginform');
 	if ($loginform.length>0) {
@@ -561,8 +634,8 @@ $(document).ready(function(){
 				logincheck.emailcheck();
 				$(this).off('keydown');
 			})
-			.on('keydown blur',function(e) {logincheck.wasinteraction.email=true;logincheck.emailcheck()})
-			.each(function(i,ez) {logincheck.emailcheck()});
+			.on('keydown blur',function(e) {logincheck.wasinteraction.email=true;logincheck.emailcheck();})
+			.each(function(i,ez) {logincheck.emailcheck();});
 	}
 	// kategoria navigalas
 	var a=$('#navmain li a'),
@@ -602,23 +675,23 @@ $(document).ready(function(){
 	// lapozo es szuroform
 	$('.elemperpageedit').on('change',function() {
 		$('.elemperpageedit').val($(this).val());
-		lapozas();
+		mkw.lapozas();
 	});
 	$('.orderedit').on('change',function() {
 		$('.orderedit').val($(this).val());
-		lapozas();
+		mkw.lapozas();
 	});
 	$('.pageedit').on('click',function() {
 		$('.lapozoform').attr('data-pageno',$(this).attr('data-pageno'));
-		lapozas();
+		mkw.lapozas();
 	});
 	$('.termeklistview').on('click',function() {
 		$('#ListviewEdit').val($(this).attr('data-vt'));
-		lapozas();
+		mkw.lapozas();
 	});
 	$('#szuroform input').on('change',function(){
 		$('.lapozoform input[name="cimkekatid"]').val($(this).attr('name').split('_')[1]);
-		lapozas();
+		mkw.lapozas();
 	});
 	// kosar
 	$('.kosardelbtn').on('click',function(e) {
@@ -631,17 +704,14 @@ $(document).ready(function(){
 				jax:1
 			},
 			beforeSend:function(x) {
-				$.blockUI({
-					message:'A terméket töröljük a kosarából...',
-					css:blockuicss
-				});
+				mkw.showMessage('A terméket töröljük a kosarából...');
 			}
 		})
 		.done(function(data) {
 			window.location='/kosar/get';
 		})
 		.always(function() {
-			$.unblockUI();
+			mkw.closeMessage();
 		});
 	});
 	$('.kosareditbtn').on('click',function(e) {
@@ -657,22 +727,19 @@ $(document).ready(function(){
 				mennyiseg:$('#mennyedit_'+id).val()
 			},
 			beforeSend:function(x) {
-				$.blockUI({
-					message:'A terméket módosítjuk a kosarában...',
-					css:blockuicss
-				});
+				mkw.showMessage('A terméket módosítjuk a kosarában...');
 			}
 		})
 		.done(function(data) {
 			window.location='/kosar/get';
 		})
 		.always(function() {
-			$.unblockUI();
+			mkw.closeMessage();
 		});
 	});
 	$('.termekertesito').on('click',function() {
 		$('#termekertesitoform input[name="termekid"]').val($(this).data('termekid'));
 		$('#termekertesitoModal').modal('show');
 		return false;
-	})
+	});
 });

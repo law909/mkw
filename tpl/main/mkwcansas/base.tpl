@@ -11,10 +11,21 @@
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/bootstrap.min.css">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/bootstrap-responsive.min.css">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/jquery.autocomplete.css">
+		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/jquery.slider.min.css">
+		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/magnific-popup.css">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/style.css">
 		{block "css"}{/block}
-		<script src="/js/main/mkwcansas/jquery.js"></script>
-		<script src="/js/main/mkwcansas/jquery.autocomplete.min.js"></script>
+		<script src="/js/main/mkwcansas/jquery-1.10.2.min.js"></script>
+		<script src="/js/main/mkwcansas/jquery-ui-1.10.3.custom.min.js"></script>
+
+		<script src="/js/main/mkwcansas/jquery-migrate-1.2.1.js"></script>
+
+		<script src="/js/main/mkwcansas/jquery.magnific-popup.min.js"></script>
+		<script src="/js/main/mkwcansas/jquery.slider.min.js"></script>
+		<script src="/js/main/mkwcansas/bootstrap.min.js"></script>
+		<script src="/js/main/mkwcansas/jquery.ui.rcarousel.min.js"></script>
+		<script src="/js/main/mkwcansas/h5f.js"></script>
+		<script src="/js/main/mkwcansas/matt-accordion.js"></script>
 		{block "script"}{/block}
 		<script src="/js/main/mkwcansas/mkwcansas.js"></script>
 	</head>
@@ -27,5 +38,13 @@
 		<footer>
 			{include 'footer.tpl'}
 		</footer>
+		<div id="dialogcenter" class="modal hide fade" tabindex="-1" role="dialog">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">×</button>
+		  </div>
+		  <div class="modal-body"></div>
+		  <div class="modal-footer"></div>
+		</div>
+		<div id="messagecenter" class="mfp-hide"></div>
 	</body>
 </html>
