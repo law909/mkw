@@ -352,14 +352,26 @@ $(document).ready(function(){
 			$arslider.slider('value',ti.split(';')[0],ti.split(';')[1]);
 		}
 	}
-	if ($.fn.autocomplete) {
-		$('#KeresoEdit').autocomplete({
-			source:'/kereses',
-			minLength:4,
-			select:function(event, ui) {
-				$('#KeresoEdit').val(ui.item.value);
+	if ($.fn.typeahead) {
+		$('#searchinput').typeahead({
+			source: function(query, process) {
+				return $.ajax({
+					url: '/kereses',
+					type: 'GET',
+					data: {
+						term: query
+					},
+					success: function(data) {
+						var d=JSON.parse(data);
+						return process(d);
+					}
+				});
+			},
+			onselect: function() {
 				$('#searchform').submit();
-			}
+			},
+			items: 999999,
+			minLength: 4
 		});
 	}
 	if ($.fn.carousel) {

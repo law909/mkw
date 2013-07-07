@@ -10,7 +10,6 @@
 		<link type="application/rss+xml" rel="alternate" title="{$feedtermektitle}" href="/feed/termek">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/bootstrap.min.css">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/bootstrap-responsive.min.css">
-		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/jquery.autocomplete.css">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/jquery.slider.min.css">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/magnific-popup.css">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/style.css">
@@ -22,7 +21,10 @@
 
 		<script src="/js/main/mkwcansas/jquery.magnific-popup.min.js"></script>
 		<script src="/js/main/mkwcansas/jquery.slider.min.js"></script>
-		<script src="/js/main/mkwcansas/bootstrap.min.js"></script>
+		<script src="/js/main/mkwcansas/bootstrap-transition.js"></script>
+		<script src="/js/main/mkwcansas/bootstrap-modal.js"></script>
+		<script src="/js/main/mkwcansas/bootstrap-tab.js"></script>
+		<script src="/js/main/mkwcansas/bootstrap-typeahead.js"></script>
 		<script src="/js/main/mkwcansas/jquery.ui.rcarousel.min.js"></script>
 		<script src="/js/main/mkwcansas/h5f.js"></script>
 		<script src="/js/main/mkwcansas/matt-accordion.js"></script>

@@ -41,10 +41,10 @@
 		<div class="row">
 			<div class="span12">
 			<div class="pull-left">
-				<a href="/"><img src="/themes/main/mkwcansas/img/mkw-logo.png" alt="Mindent Kapni Webáruház" title="Mindent Kapni Webáruház"></a>
+				<a href="/"><img src="/themes/main/mkwcansas/img/mkw-logo.png" alt="Mindent Kapni Webáruház logo" title="Mindent Kapni Webáruház"></a>
 			</div>
 			<div class="pull-left">
-				<form id="searchform" name="searchbox" method="get" action="/kereses">
+				<form id="searchform" name="searchbox" method="get" action="/kereses" autocomplete="off">
 				<div class="searchinputbox">
 					<input id="searchinput" class="siteSearch" type="text" title="{t('Keressen a termékeink között!')}" placeholder="{t('Keressen a termékeink között!')}" accesskey="k" value="" maxlength="300" name="keresett">
 					<input id="searchbutton" type="submit" value="">
