@@ -79,5 +79,5 @@ if (file_exists('mainroute.php')) {
 $match=$router->match();
 
 if (!callTheController($match['target'], $match)) {
-	echo 'NINCS ROUTE';
+	callTheController('mainController#show404', array());
 }

@@ -19,6 +19,16 @@ class mainController extends \mkwhelpers\Controller {
 		);
 	}
 
+	public function show404() {
+		$this->view=$this->getTemplateFactory()->createMainView('404.tpl');
+		store::fillTemplate($this->view);
+		$tc=new termekController($this->params);
+		$this->view->setVar('ajanlotttermekek',$tc->getAjanlottLista());
+		$this->view->setVar('seodescription',t('Sajnos nem találjuk.'));
+		$this->view->setVar('pagetitle',t('Sajnos nem találjuk.'));
+		$this->view->printTemplateResult();
+	}
+
 	public function view() {
 		$this->view=$this->getTemplateFactory()->createMainView('main.tpl');
 		store::fillTemplate($this->view);
