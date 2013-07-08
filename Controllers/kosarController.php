@@ -141,11 +141,15 @@ class kosarController extends \mkwhelpers\MattableController {
 				$termekvaltozat=store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(),$tipusok,$ertekek);
 				$vid=$termekvaltozat->getId();
 				break;
+			default:
+				$termekvaltozat=null;
+				break;
 		}
 
 		if ($termek) {
 			$sessionid=\Zend_Session::getId();
-			$partnerid=null;
+			$pc=new partnerController($this->params);
+			$partner=$pc->getLoggedInUser();
 			$termekid=$termek->getId();
 			$valutanemid=store::getParameter(\mkw\consts::Valutanem);
 			$valutanem=$this->getEm()->getRepository('Entities\Valutanem')->find($valutanemid);
@@ -162,6 +166,7 @@ class kosarController extends \mkwhelpers\MattableController {
 					$k->setTermekvaltozat($termekvaltozat);
 				}
 				$k->setSessionid($sessionid);
+				$k->setPartner($partner);
 				$k->setValutanem($valutanem);
 				$k->setBruttoegysar($termek->getBruttoAr($termekvaltozat));
 				$k->setMennyiseg(1);

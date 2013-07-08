@@ -14,7 +14,7 @@
 			{else}
 			<div class="span8">
 				<div class="headerbutton">
-					<a rel="nofollow" href="/fiok" title="{$user.nev}">{t('Fiókom')}</a>
+					<a rel="nofollow" href="/fiok" title="{t('Fiókom')}">{$user.nev}</a>
 				</div>
 				<div class="headerbutton lastheaderbutton">
 					<a rel="nofollow" href="/logout">{t('Kijelentkezés')}</a>

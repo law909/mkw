@@ -75,6 +75,7 @@ class partnerController extends \mkwhelpers\MattableController {
 		$x['szuletesiidostr']=$t->getSzuletesiidostr();
 		$x['akcioshirlevelkell']=$t->getAkcioshirlevelkell();
 		$x['ujdonsaghirlevelkell']=$t->getUjdonsaghirlevelkell();
+		$x['loggedin']=$this->checkloggedin();
 		return $x;
 	}
 
@@ -403,6 +404,8 @@ class partnerController extends \mkwhelpers\MattableController {
 		else {
 			$view=$this->getLoginTpl();
 			store::fillTemplate($view);
+			$view->setVar('pagetitle',t('Bejelentkezés').' - '.\mkw\Store::getParameter(\mkw\consts::Oldalcim));
+			$view->setVar('sikertelen',false);
 			store::storePrevUri();
 			$view->printTemplateResult();
 		}
@@ -442,7 +445,7 @@ class partnerController extends \mkwhelpers\MattableController {
 			$view=$this->getFiokTpl();
 			store::fillTemplate($view);
 			store::storePrevUri();
-			$view->setVar('user',$this->loadVars($user));
+			$view->setVar('user',$this->loadVars($user)); // fillTemplate-ben megtortenik
 			$view->printTemplateResult();
 		}
 		else {
