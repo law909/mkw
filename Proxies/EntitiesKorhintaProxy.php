@@ -165,7 +165,7 @@ class EntitiesKorhintaProxy extends \Entities\Korhinta implements \Doctrine\ORM\
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'nev', 'szoveg', 'url', 'kepurl', 'kepleiras', 'kepnev', 'lathato', 'sorrend');
+        return array('__isInitialized__', 'id', 'nev', 'szoveg', 'url', 'kepurl', 'kepleiras', 'lathato', 'sorrend');
     }
 
     public function __clone()

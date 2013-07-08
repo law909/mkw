@@ -48,10 +48,10 @@ class EntitiesTermekProxy extends \Entities\Termek implements \Doctrine\ORM\Prox
         return parent::toTermekLista($valtozat);
     }
 
-    public function toKiemeltLista()
+    public function toKiemeltLista($valtozat = NULL)
     {
         $this->__load();
-        return parent::toKiemeltLista();
+        return parent::toKiemeltLista($valtozat);
     }
 
     public function toTermekLap($valtozat = NULL)
@@ -60,10 +60,10 @@ class EntitiesTermekProxy extends \Entities\Termek implements \Doctrine\ORM\Prox
         return parent::toTermekLap($valtozat);
     }
 
-    public function toKapcsolodo()
+    public function toKapcsolodo($valtozat = NULL)
     {
         $this->__load();
-        return parent::toKapcsolodo();
+        return parent::toKapcsolodo($valtozat);
     }
 
     public function toKosar($valtozat)
@@ -876,13 +876,13 @@ class EntitiesTermekProxy extends \Entities\Termek implements \Doctrine\ORM\Prox
         return parent::setValtozatadattipus($a);
     }
 
-    public function getNettoAr($valtozat)
+    public function getNettoAr($valtozat = NULL)
     {
         $this->__load();
         return parent::getNettoAr($valtozat);
     }
 
-    public function getBruttoAr($valtozat, $eredeti = false)
+    public function getBruttoAr($valtozat = NULL, $eredeti = false)
     {
         $this->__load();
         return parent::getBruttoAr($valtozat, $eredeti);
