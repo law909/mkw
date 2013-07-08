@@ -63,11 +63,13 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 	}
 
 	public function getar() {
-		$calc=new ArCalculator(
-			$this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem')),
-			$this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner')),
-			$this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek')));
-		echo $calc->getPartnerAr();
+		$termek=$this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
+		if ($termek) {
+			echo $termek->getNettoAr();
+		}
+		else {
+			echo 0;
+		}
 	}
 
 	public function calcar() {
