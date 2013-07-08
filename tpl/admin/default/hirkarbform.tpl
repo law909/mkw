@@ -14,7 +14,7 @@
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>
-				<td colspan="2"><input id="LathatoCheck" name="lathato" type="checkbox"{if ($termek.lathato)}checked="checked"{/if}>{t('Weboldalon látható')}</input></td>
+				<td colspan="2"><input id="LathatoCheck" name="lathato" type="checkbox"{if ($egyed.lathato)}checked="checked"{/if}>{t('Weboldalon látható')}</input></td>
 			</tr>
 			<tr>
 				<td><label for="DatumEdit">{t('Hír dátuma')}:</label></td>
