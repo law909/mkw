@@ -49,7 +49,6 @@ vendor/
 HowTo/
 js/ckeditor/
 js/tiny_mce/
-themes/ui/
 *.bat
 *.ini
 !/HowTo/

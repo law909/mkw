@@ -26,13 +26,8 @@ class generalDataLoader {
 			'big',
 			'small'));
 		$view->setVar('uithemes',array(
-			'absolution',
-			'Aristo',
-			'base',
 			'black-tie',
 			'blitzer',
-			'bootstrap',
-			'cippo',
 			'cupertino',
 			'dark-hive',
 			'dot-luv',

@@ -4,11 +4,12 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="/themes/ui/{$uitheme}/jquery-ui.css" />
 		<link rel="stylesheet" type="text/css" href="/themes/admin/{$theme}/style.css" />
 		<link rel="stylesheet" type="text/css" href="/themes/admin/{$theme}/matt.css" />
-		<script type="text/javascript" src="/js/admin/default/jquery.js"></script>
-		<script type="text/javascript" src="/js/admin/default/jquery-ui.js"></script>
+		<script type="text/javascript" src="/js/admin/default/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/admin/default/jquery-migrate-1.2.1.js"></script>
+		<script type="text/javascript" src="/js/admin/default/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="/js/admin/default/jquery.blockUI.js"></script>
 		<script type="text/javascript" src="/js/admin/default/dmb.js"></script>
-<script type="text/javascript" src="/ckfinder/ckfinder.js"></script>
+		<script type="text/javascript" src="/ckfinder/ckfinder.js"></script>
 		{block "inhead"}
 		{/block}
 		<script type="text/javascript" src="/js/admin/default/appinit.js"></script>
