@@ -592,6 +592,29 @@ span.aktualislap {
 	max-height: 210px;
 }
 
+.typeahead>.active>a,
+.typeahead>.active>a:hover,
+.typeahead>.active>a:focus
+{
+	color: #fff;
+	text-decoration: none;
+	background-color: #e42721;
+	background-image: -moz-linear-gradient(top,#e42721,#b4130e);
+	background-image: -webkit-gradient(linear,0 0,0 100%,from(#e42721),to(#b4130e));
+	background-image: -webkit-linear-gradient(top,#e42721,#b4130e);
+	background-image: -o-linear-gradient(top,#e42721,#b4130e);
+	background-image: linear-gradient(to bottom,#e42721,#b4130e);
+	background-repeat: repeat-x;
+	outline: 0;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe42721',endColorstr='#ffb4130e',GradientType=0);
+}
+
+.typeahead>li>a:hover,
+.typeahead>li>a:focus {
+	color: #333;
+	background: #fff;
+}
+
 @media (min-width: 480px) {
 	#navmain li .sub {
 		width: 400px;

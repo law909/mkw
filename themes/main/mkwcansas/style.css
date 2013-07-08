@@ -88,4 +88,7 @@ a.pageedit:hover{background-color:white;}
 span.aktualislap{color:#e42721;background-color:white;padding:4px;}
 .hiralairas{font-size:70%;}
 #messagecenter{border:none;padding:15px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;opacity:.5;color:#fff;font-size:16px;max-width:300px;width:auto;background-color:#000;margin:20px auto;text-align:center;}
+.typeahead{overflow-y:auto;max-height:210px;}
+.typeahead>.active>a,.typeahead>.active>a:hover,.typeahead>.active>a:focus{color:#fff;text-decoration:none;background-color:#e42721;background-image:-moz-linear-gradient(top, #e42721, #b4130e);background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#e42721), to(#b4130e));background-image:-webkit-linear-gradient(top, #e42721, #b4130e);background-image:-o-linear-gradient(top, #e42721, #b4130e);background-image:linear-gradient(to bottom, #e42721, #b4130e);background-repeat:repeat-x;outline:0;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe42721', endColorstr='#ffb4130e', GradientType=0);}
+.typeahead>li>a:hover,.typeahead>li>a:focus{color:#333;background:#fff;}
 @media (min-width:480px){#navmain li .sub{width:400px;}}@media (min-width:767px){#navmain li .sub{width:700px;} #navmain li .sub ul{width:125px;float:left;}}@media (min-width:979px){#navmain li .sub{width:940px;} #navmain li .sub ul{width:185px;float:left;}}
