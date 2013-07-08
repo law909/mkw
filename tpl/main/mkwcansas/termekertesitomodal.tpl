@@ -10,8 +10,8 @@
 			<div class="control-group">
 				<label class="control-label" for="EmailEdit">{t('Emailcím')}:</label>
 				<div class="controls">
-					<input id="EmailEdit" name="email" type="email" class="input-large" value="{$email}" required data-errormsg1="{t('Adja meg az emailcímét')}" data-errormsg2="{t('Kérjük emailcímet adjon meg.')}">
-					<span id="EmailMsg" class="help-inline">{$hibak.email}</span>
+					<input id="EmailEdit" name="email" type="email" class="input-large" value="{$email|default}" required data-errormsg1="{t('Adja meg az emailcímét')}" data-errormsg2="{t('Kérjük emailcímet adjon meg.')}">
+					<span id="EmailMsg" class="help-inline">{$hibak.email|default}</span>
 				</div>
 			</div>
 			<input type="hidden" name="termekid">

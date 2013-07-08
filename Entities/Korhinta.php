@@ -25,8 +25,6 @@ class Korhinta {
 	private $kepurl='';
 	/** @Column(type="text",nullable=true) */
 	private $kepleiras='';
-	/** @Column(type="string",length=255,nullable=true) */
-	private $kepnev='';
 	/** @Column(type="boolean",nullable=true) */
 	private $lathato;
 	/** @Column(type="integer",nullable=true) */

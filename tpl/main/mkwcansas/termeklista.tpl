@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="span12 morzsaszoveg">
 		{foreach $navigator as $_navi}
-			{if ($_navi.url!='')}
+			{if ($_navi.url|default)}
 				<a href="{$_navi.url}">
 					{$_navi.caption}
 				</a>
@@ -103,7 +103,7 @@
 								</div>
 							</div>
 							{$_kosarbaclass="kosarba"}
-							{if ($_termek.valtozatok)}
+							{if ($_termek.valtozatok|default)}
 								<div class="termekprice">{$_termek.valtozatok.fixname}: {$_termek.valtozatok.fixvalue}</div>
 								{if ($_termek.valtozatok.name)}
 								<div class="termekprice">
@@ -117,7 +117,7 @@
 								{/if}
 								{$_kosarbaclass="kosarbavaltozat"}
 							{/if}
-							{if ($_termek.mindenvaltozat)}
+							{if ($_termek.mindenvaltozat|default)}
 								{foreach $_termek.mindenvaltozat as $_valtozat}
 									<div class="termekprice">
 									{$_valtozat.name}
@@ -131,7 +131,7 @@
 								{/foreach}
 								{$_kosarbaclass="kosarbamindenvaltozat"}
 							{/if}
-							<div id="termekprice{$_termek.id}-{$_termek.valtozatid}" class="termekprice">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
+							<div id="termekprice{$_termek.id}-{$_termek.valtozatid|default}" class="termekprice">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
 							{if ($_termek.nemkaphato)}
 								<div class="row">
 									<a href="#" rel="nofollow" class="termekertesito btn btn-inverse pull-right" data-termek="{$_termek.id}">
@@ -142,7 +142,7 @@
 									<a href="#" rel="nofollow" class="termekertesito pull-right" data-termek="{$_termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
 								</div>
 							{else}
-								<a href="/kosar/add?id={$_termek.id}" rel="nofollow" class="{$_kosarbaclass} btn cartbtn pull-right" data-termek="{$_termek.id}" data-id="{$_termek.id}-{$_termek.valtozatid}" data-vid="{$_termek.valtozatid}">
+								<a href="/kosar/add?id={$_termek.id}" rel="nofollow" class="{$_kosarbaclass} btn cartbtn pull-right" data-termek="{$_termek.id}" data-id="{$_termek.id}-{$_termek.valtozatid|default}" data-vid="{$_termek.valtozatid|default}">
 									{t('Kosárba')}
 								</a>
 							{/if}
@@ -168,7 +168,7 @@
 									<img src="{$_jelzo.kiskepurl}" title="{$_jelzo.caption}" alt="{$_jelzo.caption}">
 								{/foreach}
 								</td>
-								{if ($_termek.valtozatok)}
+								{if ($_termek.valtozatok|default)}
 									<td>
 										<div>
 										{$_termek.valtozatok.fixname}: {$_termek.valtozatok.fixvalue}
@@ -185,7 +185,7 @@
 										{/if}
 									</td>
 								{/if}
-								{if ($_termek.mindenvaltozat)}
+								{if ($_termek.mindenvaltozat|default)}
 									<td>
 									{foreach $_termek.mindenvaltozat as $_valtozat}
 										<div>

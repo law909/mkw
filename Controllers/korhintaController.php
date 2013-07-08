@@ -26,7 +26,6 @@ class korhintaController extends \mkwhelpers\MattableController {
 		$x['kepurl']=$t->getKepurl();
 		$x['kepurlsmall']=$t->getKepurlSmall();
 		$x['kepleiras']=$t->getKepleiras();
-		$x['kepnev']=$t->getKepnev();
 		$x['lathato']=$t->getLathato();
 		$x['sorrend']=$t->getSorrend();
 

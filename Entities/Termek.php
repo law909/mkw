@@ -278,7 +278,7 @@ class Termek {
 		return $x;
 	}
 
-	public function toKiemeltLista() {
+	public function toKiemeltLista($valtozat=null) {
 		$x=array();
 		$x['id']=$this->getId();
 		$x['kozepeskepurl']=$this->getKepUrlMedium();
@@ -379,7 +379,7 @@ class Termek {
 		return $x;
 	}
 
-	public function toKapcsolodo() {
+	public function toKapcsolodo($valtozat=null) {
 		$x=array();
 		$x['id']=$this->getId();
 		$x['kozepeskepurl']=$this->getKepUrlMedium();
@@ -1196,28 +1196,27 @@ class Termek {
 		return 0;
 	}
 
-	public function setValtozatadattipus($a)
-	{
+	public function setValtozatadattipus($a) {
 		$this->valtozatadattipus = $a;
 	}
 
-	public function getNettoAr($valtozat) {
+	public function getNettoAr($valtozat=null) {
 		$netto=$this->getNetto();
 		if ($this->getAkcios()) {
 			$netto=$this->getAkciosnetto();
 		}
-		if ($valtozat) {
+		if (!is_null($valtozat)) {
 			return $netto+$valtozat->getNetto();
 		}
 		return $netto;
 	}
 
-	public function getBruttoAr($valtozat,$eredeti=false) {
+	public function getBruttoAr($valtozat=null,$eredeti=false) {
 		$brutto=$this->getBrutto();
 		if (!$eredeti&&$this->getAkcios()) {
 			$brutto=$this->getAkciosbrutto();
 		}
-		if ($valtozat) {
+		if (!is_null($valtozat)) {
 			return $brutto+$valtozat->getBrutto();
 		}
 		return $brutto;

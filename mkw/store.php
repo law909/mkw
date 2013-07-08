@@ -87,7 +87,7 @@ class Store {
 		$t=explode('.',$kepurl);
 		$ext=array_pop($t);
 		$result=implode('.',$t).store::getParameter('smallimgpost','').'.'.$ext;
-		if ($kepurl[0]!=$pre) {
+		if ($kepurl&&$kepurl[0]!=$pre) {
 			return $pre.$result;
 		}
 		return $result;
@@ -96,13 +96,21 @@ class Store {
 	public static function createMediumImageUrl($kepurl,$pre='/') {
 		$t=explode('.',$kepurl);
 		$ext=array_pop($t);
-		return $pre.implode('.',$t).store::getParameter('mediumimgpost','').'.'.$ext;
+		$result=implode('.',$t).store::getParameter('mediumimgpost','').'.'.$ext;
+		if ($kepurl&&$kepurl[0]!=$pre) {
+			return $pre.$result;
+		}
+		return $result;
 	}
 
 	public static function createBigImageUrl($kepurl,$pre='/') {
 		$t=explode('.',$kepurl);
 		$ext=array_pop($t);
-		return $pre.implode('.',$t).store::getParameter('bigimgpost','').'.'.$ext;
+		$result=implode('.',$t).store::getParameter('bigimgpost','').'.'.$ext;
+		if ($kepurl&&$kepurl[0]!=$pre) {
+			return $pre.$result;
+		}
+		return $result;
 	}
 
 	/**

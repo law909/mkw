@@ -354,6 +354,9 @@ class termekfaController extends \mkwhelpers\MattableController {
 				case 'iddesc':
 					$order=array('_xx.id'=>'DESC');
 					break;
+				default:
+					$order=array('_xx.nev'=>'ASC');
+					break;
 			}
 			// termekek kategoriaval es cimkevel es arral szurve, lapozva
 			// ez a konkret termeklista

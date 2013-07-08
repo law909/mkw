@@ -46,7 +46,7 @@
 					<div class="carousel-inner">
 						{foreach $korhintalista as $_korhinta}
 						<div class="item{if ($_korhinta@first)} active{/if}">
-							<a href="{$_korhinta.url}"><img src="{$_korhinta.kepurl}" alt="{$_korhinta.kepnev}"></a>
+							<a href="{$_korhinta.url}"><img src="{$_korhinta.kepurl}" alt="{$_korhinta.kepleiras}"></a>
 							<div class="carousel-caption">
 								<h4>{$_korhinta.nev}</h4>
 								<p>{$_korhinta.szoveg}</p>
