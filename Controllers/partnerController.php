@@ -445,6 +445,7 @@ class partnerController extends \mkwhelpers\MattableController {
 			$view=$this->getFiokTpl();
 			store::fillTemplate($view);
 			store::storePrevUri();
+			$view->setVar('pagetitle',t('Fiók').' - '.\mkw\Store::getParameter(\mkw\consts::Oldalcim));
 			$view->setVar('user',$this->loadVars($user)); // fillTemplate-ben megtortenik
 			$view->printTemplateResult();
 		}
@@ -464,6 +465,7 @@ class partnerController extends \mkwhelpers\MattableController {
 					$telefon=$this->params->getStringRequestParam('telefon');
 					$akcioshirlevelkell=$this->params->getBoolRequestParam('akcioshirlevelkell');
 					$ujdonsaghirlevelkell=$this->params->getBoolRequestParam('ujdonsaghirlevelkell');
+					$jax=$this->params->getIntRequestParam('jax',0);
 					if (!\Zend_Validate::is($email,'EmailAddress')) {
 						$hibas=true;
 						$hibak['email']=t('Rossz az email');
@@ -482,9 +484,14 @@ class partnerController extends \mkwhelpers\MattableController {
 						$user->setUjdonsaghirlevelkell($ujdonsaghirlevelkell);
 						$this->getEm()->persist($user);
 						$this->getEm()->flush();
-						Header('Location: '.store::getRouter()->generate('showaccount'));
+						if (!$jax) {
+							Header('Location: '.store::getRouter()->generate('showaccount'));
+						}
 					}
 					else {
+						if ($jax) {
+							echo json_encode($hibak);
+						}
 					}
 					break;
 				case 'szamlaadatok':
@@ -495,7 +502,9 @@ class partnerController extends \mkwhelpers\MattableController {
 					$user->setSzamlautca($this->params->getStringRequestParam('szamlautca'));
 					$this->getEm()->persist($user);
 					$this->getEm()->flush();
-					Header('Location: '.store::getRouter()->generate('showaccount'));
+					if (!$jax) {
+						Header('Location: '.store::getRouter()->generate('showaccount'));
+					}
 					break;
 				case 'szallitasiadatok':
 					$user->setSzallnev($this->params->getStringRequestParam('szallnev'));
@@ -504,7 +513,9 @@ class partnerController extends \mkwhelpers\MattableController {
 					$user->setSzallutca($this->params->getStringRequestParam('szallutca'));
 					$this->getEm()->persist($user);
 					$this->getEm()->flush();
-					Header('Location: '.store::getRouter()->generate('showaccount'));
+					if (!$jax) {
+						Header('Location: '.store::getRouter()->generate('showaccount'));
+					}
 					break;
 			}
 		}

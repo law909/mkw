@@ -20,7 +20,7 @@
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="adataim">
-						<form class="form-horizontal" action="/fiok/ment/adataim" method="post">
+						<form id="FiokAdataim" class="form-horizontal" action="/fiok/ment/adataim" method="post">
 							<fieldset>
 								<div class="control-group">
 									<label class="control-label" for="VezeteknevEdit">{t('Név')}*:</label>
@@ -63,7 +63,7 @@
 						Jelszó
 					</div>
 					<div class="tab-pane" id="szamlaadatok">
-						<form class="form-horizontal" action="/fiok/ment/szamlaadatok" method="post">
+						<form id="FiokSzamlaAdatok" class="form-horizontal" action="/fiok/ment/szamlaadatok" method="post">
 							<fieldset>
 								<div class="control-group">
 									<label class="control-label" for="SzamlazasiNevEdit">{t('Név')}:</label>
@@ -92,7 +92,7 @@
 						</form>
 					</div>
 					<div class="tab-pane" id="szallitasiadatok">
-						<form class="form-horizontal" action="/fiok/ment/szallitasiadatok" method="post">
+						<form id="FiokSzallitasiAdatok" class="form-horizontal" action="/fiok/ment/szallitasiadatok" method="post">
 							<fieldset>
 								<div class="control-group">
 									<label class="control-label" for="SzallitasiNevEdit">{t('Név')}:</label>

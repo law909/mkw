@@ -32,7 +32,7 @@ var mkw=function($) {
 					class: 'btn-primary',
 					click: function(e) {
 						e.preventDefault();
-						mkw.closeDialog();
+						closeDialog();
 					}
 			}]
 		});
@@ -75,12 +75,47 @@ var mkw=function($) {
 		document.location=url;
 	}
 
+	function overrideFormSubmit(form,msg) {
+		var $form=form;
+		if (typeof form == 'string') {
+			$form=$(form);
+		}
+		$form.on('submit',function(e) {
+			e.preventDefault();
+			var data={jax: 1};
+			$form.find('input').each(function() {
+				var $this=$(this);
+				switch ($this.attr('type')) {
+					case 'checkbox':
+						data[$this.attr('name')]=$this.prop('checked');
+						break;
+					default:
+						data[$this.attr('name')]=$this.val();
+						break;
+				}
+			});
+			$.ajax({
+				url: $form.attr('action'),
+				type: 'POST',
+				data: data,
+				beforeSend:function(x) {
+					showMessage('Adatait módosítjuk...');
+				}
+			})
+			.always(function() {
+				closeMessage();
+			});
+		});
+
+	}
+
 	return {
 		showMessage: showMessage,
 		closeMessage: closeMessage,
 		showDialog: showDialog,
 		closeDialog: closeDialog,
-		lapozas: lapozas
+		lapozas: lapozas,
+		overrideFormSubmit: overrideFormSubmit
 	};
 }(jQuery);
 
@@ -754,4 +789,38 @@ $(document).ready(function(){
 		$('#termekertesitoModal').modal('show');
 		return false;
 	});
+	var $fiokadataimform=$('#FiokAdataim');
+	if ($fiokadataimform.length>0) {
+		H5F.setup($fiokadataimform);
+		$('#VezeteknevEdit,#KeresztnevEdit')
+			.on('input',function(e) {
+				regcheck.nevcheck();
+				$(this).off('keydown');
+			})
+			.on('keydown blur',function(e) {regcheck.wasinteraction.nev=true;regcheck.nevcheck();})
+			.each(function(i,ez) {regcheck.nevcheck();});
+		$('#EmailEdit')
+			.on('input',function(e) {
+				regcheck.emailcheck();
+				$(this).off('keydown');
+			})
+			.on('keydown blur',function(e) {regcheck.wasinteraction.email=true;regcheck.emailcheck();})
+			.on('change',function(e) {
+				var $this=$(this);
+				$.ajax({
+					type:'POST',
+					url:'/partner/checkemail',
+					data:{email:$this.val()}
+				})
+				.done(function(data){
+					var d=JSON.parse(data);
+					$this.data('hiba',d);
+					regcheck.emailcheck();
+				});
+			})
+			.each(function(i,ez) {regcheck.emailcheck();});
+		mkw.overrideFormSubmit($fiokadataimform,'Adatait módosítjuk...');
+	}
+	mkw.overrideFormSubmit('#FiokSzamlaAdatok','Adatait módosítjuk...');
+	mkw.overrideFormSubmit('#FiokSzallitasiAdatok','Adatait módosítjuk...');
 });
