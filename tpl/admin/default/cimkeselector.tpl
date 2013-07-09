@@ -1,1 +1,1 @@
-<a class="cimkekarb{if ($_cimke.selected)} selectedcimke ui-state-hover{/if}" href="#" data-id="{$_cimke.id}">{$_cimke.caption}</a>&nbsp;&nbsp;
+<a class="js-cimkekarb{if ($_cimke.selected)} js-selectedcimke ui-state-hover{/if}" href="#" data-id="{$_cimke.id}">{$_cimke.caption}</a>&nbsp;&nbsp;

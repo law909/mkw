@@ -70,17 +70,17 @@
 			</tbody></table>
 				<div id="cimkekarbcontainer">
 				{foreach $cimkekat as $_cimkekat}
-				<div class="mattedit-titlebar ui-widget-header ui-helper-clearfix cimkekarbcloseupbutton" data-refcontrol="#partnerkarb{$_cimkekat.id}">
+				<div class="mattedit-titlebar ui-widget-header ui-helper-clearfix js-cimkekarbcloseupbutton" data-refcontrol="#partnerkarb{$_cimkekat.id}">
 					<a href="#" class="mattedit-titlebar-close">
 						<span class="ui-icon ui-icon-circle-triangle-s"></span>
 					</a>
 					<span>{$_cimkekat.caption}</span>
 				</div>
-				<div id="partnerkarb{$_cimkekat.id}" class="cimkekarbpage cimkelista" data-visible="hidden">
+				<div id="partnerkarb{$_cimkekat.id}" class="js-cimkekarbpage cimkelista" data-visible="hidden">
 					{foreach $_cimkekat.cimkek as $_cimke}
 					{include 'cimkeselector.tpl'}
 					{/foreach}
-					<input id="ujcimkenev_{$_cimkekat.id}" type="text">&nbsp;<a class="cimkeadd" href="#" data-refcontrol="#ujcimkenev_{$_cimkekat.id}">&nbsp;+&nbsp;</a>
+					<input id="ujcimkenev_{$_cimkekat.id}" type="text">&nbsp;<a class="js-cimkeadd" href="#" data-refcontrol="#ujcimkenev_{$_cimkekat.id}">&nbsp;+&nbsp;</a>
 				</div>
 				{/foreach}
 				</div>
@@ -147,16 +147,16 @@
 		{if ($setup.editstyle=='dropdown')}
 		<div class="mattkarb-titlebar" data-caption="{t('Kontaktok')}" data-refcontrol="#KontaktTab"></div>
 		{/if}
-		<div id="KontaktTab" class="karbpage" data-visible="visible">
+		<div id="KontaktTab" class="mattkarb-page" data-visible="visible">
 			{foreach $partner.kontaktok as $kontakt}
 			{include 'partnerkontaktkarb.tpl'}
 			{/foreach}
-			<a class="kontaktnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+			<a class="js-kontaktnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 		</div>
 		{if ($setup.editstyle=='dropdown')}
 		<div class="mattkarb-titlebar" data-caption="{t('Egyéb azonosító adatok')}" data-refcontrol="#EgyebAzonositoTab"></div>
 		{/if}
-		<div id="EgyebAzonositoTab" class="karbpage" data-visible="visible">
+		<div id="EgyebAzonositoTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>
 				<td><label for="NemEdit">{t('Nem')}</label></td>
@@ -192,7 +192,7 @@
 	</div>
 	<input name="oper" type="hidden" value="{$oper}">
 	<input name="id" type="hidden" value="{$partner.id}">
-	<div class="admin-form-footer">
+	<div class="mattkarb-footer">
 		<input id="mattkarb-okbutton" type="submit" value="{t('OK')}">
 		<a id="mattkarb-cancelbutton" href="#">{t('Mégsem')}</a>
 	</div>

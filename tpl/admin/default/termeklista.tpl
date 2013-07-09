@@ -24,7 +24,7 @@
 	<div id="cimkefiltercontainer">
 	<div id="cimkefiltercontainerhead"><a id="cimkefiltercollapse" href="#" data-visible="visible">{t('Kinyit/becsuk')}</a></div>
 	{foreach $cimkekat as $_cimkekat}
-	<div class="mattedit-titlebar ui-widget-header ui-helper-clearfix cimkefiltercloseupbutton" data-refcontrol="#{$_cimkekat.sanitizedcaption}">
+	<div class="mattedit-titlebar ui-widget-header ui-helper-clearfix js-cimkefiltercloseupbutton" data-refcontrol="#{$_cimkekat.sanitizedcaption}">
 		<a href="#" class="mattedit-titlebar-close" >
 			<span class="ui-icon ui-icon-circle-triangle-n"></span>
 		</a>
@@ -32,7 +32,7 @@
 	</div>
 	<div id="{$_cimkekat.sanitizedcaption}" class="accordpage cimkelista" data-visible="visible">
 		{foreach $_cimkekat.cimkek as $_cimke}
-		<a class="cimkefilter" href="#" data-id="{$_cimke.id}">{$_cimke.caption}</a>&nbsp;&nbsp;
+		<a class="js-cimkefilter" href="#" data-id="{$_cimke.id}">{$_cimke.caption}</a>&nbsp;&nbsp;
 		{/foreach}
 	</div>
 	{/foreach}
@@ -59,7 +59,7 @@
 <table id="mattable-table">
 <thead>
 	<tr>
-	<th><input id="maincheckbox" type="checkbox"></th>
+	<th><input class="js-maincheckbox" type="checkbox"></th>
 	<th>{t('Név')}</th>
 	<th>{t('Címkék')}</th>
 	<th>{t('Jellemzők')}</th>

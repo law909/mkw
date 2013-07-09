@@ -45,7 +45,7 @@
 <table id="mattable-table">
 <thead>
 	<tr>
-	<th><input id="maincheckbox" type="checkbox"></th>
+	<th><input class="js-maincheckbox" type="checkbox"></th>
 	<th>{t('Név')}</th>
 	<th>{t('Címkecsoport')}</th>
 	<th>{t('Hol látható')}</th>

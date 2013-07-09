@@ -40,10 +40,10 @@ $(document).ready(function(){
 			},
 			karb:partnercimke
 		});
-		$('#maincheckbox').change(function(){
-			$('.egyedcheckbox').attr('checked',$(this).attr('checked'));
+		$('.js-maincheckbox').change(function(){
+			$('.js-egyedcheckbox').prop('checked',$(this).prop('checked'));
 		});
-		$('#mattable-body').on('click','.menulathatocheckbox',function(e) {
+		$('#mattable-body').on('click','.js-menulathatocheckbox',function(e) {
 			e.preventDefault();
 			var $this=$(this),
 				f=$this.closest('tr');

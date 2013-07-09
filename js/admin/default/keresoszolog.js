@@ -24,8 +24,8 @@ $(document).ready(function(){
 			},
 			karb:keresoszolog
 		});
-		$('#maincheckbox').change(function(){
-			$('.egyedcheckbox').attr('checked',$(this).attr('checked'));
+		$('.js-maincheckbox').change(function(){
+			$('.js-egyedcheckbox').prop('checked',$(this).prop('checked'));
 		});
 	}
 	else {

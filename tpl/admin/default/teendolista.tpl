@@ -31,7 +31,7 @@
 <table id="mattable-table">
 <thead>
 	<tr>
-	<th><input id="maincheckbox" type="checkbox"></th>
+	<th><input class="js-maincheckbox" type="checkbox"></th>
 	<th>{t('Teendő')}</th>
 	<th>{t('Partner')}</th>
 	<th>{t('Esedékes')}</th>

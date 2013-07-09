@@ -123,7 +123,7 @@ $(document).ready(function(){
 					};
 					finder.popup();
 				})
-				.on('click','.KepNewButton',function(e) {
+				.on('click','.js-kepnewbutton',function(e) {
 					var $this=$(this);
 					e.preventDefault();
 					$.ajax({
@@ -131,12 +131,12 @@ $(document).ready(function(){
 						type:'GET',
 						success:function(data) {
 							keptab.append(data);
-							$('.KepNewButton,.KepDelButton,.KepBrowseButton').button();
+							$('.js-kepnewbutton,.js-kepdelbutton,.js-kepbrowsebutton').button();
 							$this.remove();
 						}
 					});
 				})
-				.on('click','.KepDelButton',function(e){
+				.on('click','.js-kepdelbutton',function(e){
 					e.preventDefault();
 					var $this=$(this);
 					dialogcenter.html('Biztos, hogy törli a képet?').dialog({
@@ -163,7 +163,7 @@ $(document).ready(function(){
 						}
 					});
 				})
-				.on('click','.KepBrowseButton',function(e){
+				.on('click','.js-kepbrowsebutton',function(e){
 					e.preventDefault();
 					var finder=new CKFinder(),
 						$kepurledit=$('#KepUrlEdit_'+$(this).attr('data-id')),
@@ -174,21 +174,21 @@ $(document).ready(function(){
 					};
 					finder.popup();
 				});
-				$('#FoKepDelButton,#FoKepBrowseButton,.KepNewButton,.KepBrowseButton,.KepDelButton').button();
+				$('#FoKepDelButton,#FoKepBrowseButton,.js-kepnewbutton,.js-kepbrowsebutton,.js-kepdelbutton').button();
 				if (!$.browser.mobile) {
-					$('.toFlyout').flyout();
+					$('.js-toflyout').flyout();
 				}
 				$('#cimkekarbcontainer').mattaccord({
 					header:'#cimkekarbcontainerhead',
-					page:'.cimkekarbpage',
-					closeUp:'.cimkekarbcloseupbutton',
+					page:'.js-cimkekarbpage',
+					closeUp:'.js-cimkekarbcloseupbutton',
 					collapse:'#cimkekarbcollapse'
 				})
-				.on('click','.cimkekarb',function(e) {
+				.on('click','.js-cimkekarb',function(e) {
 					e.preventDefault();
 					$(this).toggleClass('selectedcimke ui-state-hover');
 				});
-				$('.cimkeadd').on('click',function(e) {
+				$('.js-cimkeadd').on('click',function(e) {
 					e.preventDefault();
 					var ref=$(this).attr('data-refcontrol');
 					var cimkenev=$(ref).val(),
@@ -206,7 +206,7 @@ $(document).ready(function(){
 						}
 					});
 				});
-				recepttab.on('click','.receptnewbutton',function(e) {
+				recepttab.on('click','.js-receptnewbutton',function(e) {
 					var $this=$(this);
 					e.preventDefault();
 					$.ajax({
@@ -215,12 +215,12 @@ $(document).ready(function(){
 						success:function(data) {
 							var tbody=$('#RecepturaTab');
 							tbody.append(data);
-							$('.receptnewbutton,.receptdelbutton').button();
+							$('.js-receptnewbutton,.js-receptdelbutton').button();
 							$this.remove();
 						}
 					});
 				})
-				.on('click','.receptdelbutton',function(e) {
+				.on('click','.js-receptdelbutton',function(e) {
 					e.preventDefault();
 					var receptgomb=$(this),
 						receptid=receptgomb.attr('data-id');
@@ -254,8 +254,8 @@ $(document).ready(function(){
 						});
 					}
 				});
-				$('.receptnewbutton,.receptdelbutton').button();
-				kapcsolodotab.on('click','.kapcsolodonewbutton',function(e) {
+				$('.js-receptnewbutton,.js-receptdelbutton').button();
+				kapcsolodotab.on('click','.js-kapcsolodonewbutton',function(e) {
 					var $this=$(this);
 					e.preventDefault();
 					$.ajax({
@@ -264,12 +264,12 @@ $(document).ready(function(){
 						success:function(data) {
 							var tbody=$('#KapcsolodoTab');
 							tbody.append(data);
-							$('.kapcsolodonewbutton,.kapcsolododelbutton').button();
+							$('.js-kapcsolodonewbutton,.js-kapcsolododelbutton').button();
 							$this.remove();
 						}
 					});
 				})
-				.on('click','.kapcsolododelbutton',function(e) {
+				.on('click','.js-kapcsolododelbutton',function(e) {
 					e.preventDefault();
 					var kapcsgomb=$(this),
 						kapcsid=kapcsgomb.attr('data-id');
@@ -303,8 +303,8 @@ $(document).ready(function(){
 						});
 					}
 				});
-				$('.kapcsolodonewbutton,.kapcsolododelbutton').button();
-				valtozattab.on('click','.valtozatnewbutton',function(e) {
+				$('.js-kapcsolodonewbutton,.js-kapcsolododelbutton').button();
+				valtozattab.on('click','.js-valtozatnewbutton',function(e) {
 					var $this=$(this);
 					e.preventDefault();
 					$.ajax({
@@ -316,13 +316,13 @@ $(document).ready(function(){
 						success:function(data) {
 							var tbody=$('#ValtozatTab');
 							tbody.append(data);
-							$('.valtozatnewbutton,.valtozatdelbutton').button();
-							createImageSelectable('.valtozatkepedit','#ValtozatKepId_');
+							$('.js-valtozatnewbutton,.js-valtozatdelbutton').button();
+							createImageSelectable('.js-valtozatkepedit','#ValtozatKepId_');
 							$this.remove();
 						}
 					});
 				})
-				.on('click','.valtozatdelbutton',function(e) {
+				.on('click','.js-valtozatdelbutton',function(e) {
 					e.preventDefault();
 					var gomb=$(this),
 						vid=gomb.attr('data-id');
@@ -356,33 +356,47 @@ $(document).ready(function(){
 						});
 					}
 				})
-				.on('blur','.valtozatnetto',function(e) {
+				.on('blur','.js-valtozatnetto',function(e) {
 					e.preventDefault();
 					getSorBrutto($(this),'valtozatbrutto_');
 				})
-				.on('blur','.valtozatbrutto',function(e) {
+				.on('blur','.js-valtozatbrutto',function(e) {
 					e.preventDefault();
 					getSorNetto($(this),'valtozatnetto_');
 				})
-				.on('blur','.valtozatnettogen',function(e) {
+				.on('blur','.js-valtozatnettogen',function(e) {
 					e.preventDefault();
 					getSorBrutto($(this),'valtozatbruttogen');
 				})
-				.on('blur','.valtozatbruttogen',function(e) {
+				.on('blur','.js-valtozatbruttogen',function(e) {
 					e.preventDefault();
 					getSorNetto($(this),'valtozatnettogen');
 				})
 				.on('click','input[name^="valtozatelerheto_"]',function(e) {
 					var $this=$(this);
-					if ($this.attr('checked')!=='checked') {
-						return $('input[name="valtozatlathato_'+$this.attr('name').split('_')[1]+'"]').attr('checked')!=='checked';
+					if (!$this.prop('checked')) {
+						return !$('input[name="valtozatlathato_'+$this.attr('name').split('_')[1]+'"]').prop('checked');
 					}
 					return true;
 				})
 				.on('click','input[name^="valtozatlathato_"]',function(e) {
 					var $this=$(this);
-					if ($this.attr('checked')==='checked') {
-						return $('input[name="valtozatelerheto_'+$this.attr('name').split('_')[1]+'"]').attr('checked')==='checked';
+					if ($this.prop('checked')) {
+						return $('input[name="valtozatelerheto_'+$this.attr('name').split('_')[1]+'"]').prop('checked');
+					}
+					return true;
+				})
+				.on('click','input[name="valtozatelerheto"]',function(e) {
+					var $this=$(this);
+					if (!$this.prop('checked')) {
+						return !$('input[name="valtozatlathato"]').prop('checked');
+					}
+					return true;
+				})
+				.on('click','input[name="valtozatlathato"]',function(e) {
+					var $this=$(this);
+					if ($this.prop('checked')) {
+						return $('input[name="valtozatelerheto"]').prop('checked');
 					}
 					return true;
 				});
@@ -395,10 +409,10 @@ $(document).ready(function(){
 					success:function(data) {
 						$('.valtozattable').remove();
 						$('#valtozatgenerator').after(data);
-						$('.valtozatdelbutton').button();
+						$('.js-valtozatdelbutton').button();
 					}
 				});
-				$('.valtozatdelallbutton').button().on('click',function(e) {
+				$('.js-valtozatdelallbutton').button().on('click',function(e) {
 					var $this=$(this);
 					dialogcenter.html('Biztos, hogy törli az összes változatot?').dialog({
 						resizable: false,
@@ -426,8 +440,8 @@ $(document).ready(function(){
 					});
 					return false;
 				});
-				createImageSelectable('.valtozatkepedit','#ValtozatKepId_');
-				$('.valtozatnewbutton,.valtozatdelbutton,#valtozatgeneratorbutton').button();
+				createImageSelectable('.js-valtozatkepedit','#ValtozatKepId_');
+				$('.js-valtozatnewbutton,.js-valtozatdelbutton,#valtozatgeneratorbutton').button();
 
 				$('#NettoEdit').on('blur',function(e) {
 					e.preventDefault();
@@ -484,7 +498,7 @@ $(document).ready(function(){
 				akciostopedit.datepicker('option','dateFormat','yy.mm.dd');
 				akciostopedit.datepicker('setDate',akciostopedit.attr('data-datum'));
 
-				$('.termekfabutton').on('click',function(e) {
+				$('.js-termekfabutton').on('click',function(e) {
 					var edit=$(this);
 					e.preventDefault();
 					dialogcenter.jstree({
@@ -531,12 +545,12 @@ $(document).ready(function(){
 			},
 			beforeSerialize:function(form,opt) {
 				var cimkek=new Array();
-				$('.cimkekarb').filter('.selectedcimke').each(function() {
+				$('.js-cimkekarb').filter('.js-selectedcimke').each(function() {
 					cimkek.push($(this).attr('data-id'));
 				});
 				var x={};
 				x['cimkek[]']=cimkek;
-				$('.termekfabutton').each(function() {
+				$('.js-termekfabutton').each(function() {
 					$this=$(this);
 					x[$this.attr('data-name')]=$this.attr('data-value');
 				});
@@ -566,18 +580,18 @@ $(document).ready(function(){
 			name:'termek',
 			onGetTBody:function() {
 				if (!$.browser.mobile) {
-					$('.toFlyout').flyout();
+					$('.js-toflyout').flyout();
 				}
 			},
 			filter:{
 				fields:['#nevfilter'],
 				onClear:function() {
-					$('.cimkefilter').removeClass('ui-state-hover');
+					$('.js-cimkefilter').removeClass('ui-state-hover');
 					$('#termekfa').jstree('uncheck_all');
 				},
 				onFilter:function(obj) {
 					var cimkek=new Array(),fak=new Array();
-					$('.cimkefilter').filter('.ui-state-hover').each(function() {
+					$('.js-cimkefilter').filter('.ui-state-hover').each(function() {
 						cimkek.push($(this).attr('data-id'));
 					});
 					if (cimkek.length>0) {
@@ -600,10 +614,10 @@ $(document).ready(function(){
 			karb:termek
 		});
 
-		$('#maincheckbox').change(function(){
-			$('.egyedcheckbox').attr('checked',$(this).attr('checked'));
+		$('.js-maincheckbox').change(function(){
+			$('.js-egyedcheckbox').prop('checked',$(this).prop('checked'));
 		});
-		$('#mattable-body').on('click','.flagcheckbox',function(e) {
+		$('#mattable-body').on('click','.js-flagcheckbox',function(e) {
 			function doit(succ) {
 				if (succ) {
 					succ();
@@ -659,10 +673,10 @@ $(document).ready(function(){
 		$('#cimkefiltercontainer').mattaccord({
 			header:'#cimkefiltercontainerhead',
 			page:'.accordpage',
-			closeUp:'.cimkefiltercloseupbutton',
+			closeUp:'.js-cimkefiltercloseupbutton',
 			collapse:'#cimkefiltercollapse'
 		});
-		$('.cimkefilter').on('click',function(e) {
+		$('.js-cimkefilter').on('click',function(e) {
 			e.preventDefault();
 			$(this).toggleClass('ui-state-hover');
 		});
@@ -677,290 +691,7 @@ $(document).ready(function(){
 			contextmenu:{
 				select_node:true,
 				items:{
-					create:false,rename:false,remove:false,ccp:false,
-					_new:{
-						label:'Új',
-						action:function(obj) {
-							var valasztottid=$('#termekfa').jstree('get_selected').children('a').attr('id');
-							if (!valasztottid) {
-								dialogcenter.html('Válasszon szülő kategóriát').dialog({resizable:false,modal:true,buttons:{'OK':function() {$(this).dialog('close');}}});
-								return false;
-							}
-							$.ajax({url:'/admin/termekfa/getkarb',
-								data:{
-									parentid:valasztottid.split('_')[1],
-									oper:'add'
-								},
-								success:function(data) {
-									$('#mattable-select').hide();
-									$('#termekfakarb').append(data);
-									var karbsetup={
-										name:'',
-										independent:false,
-										header:'#fakarb-header',
-										footer:'#fakarb-footer',
-										form:'#fakarb-form',
-										tab:'#fakarb-tabs',
-										page:'.fakarb-page',
-										titlebar:'.fakarb-titlebar',
-										cancel:'#fakarb-cancelbutton',
-										ok:'#fakarb-okbutton',
-										viewUrl:'/admin/termekfa/getkarb',
-										saveUrl:'/admin/termekfa/save',
-										beforeShow:function() {
-											if (!$.browser.mobile) {
-												CKFinder.setupCKEditor( null, '/ckfinder/' );
-												$('#LeirasEdit').ckeditor();
-											}
-										},
-										beforeHide:function() {
-											if (!$.browser.mobile) {
-												editor=$('#LeirasEdit').ckeditorGet();
-												if (editor) {
-													editor.destroy();
-												}
-											}
-										},
-										onSubmit:function(data) {
-											var resp=JSON.parse(data);
-											switch (resp.oper) {
-												case 'edit':
-													break;
-												case 'add':
-													break;
-											}
-											$('#termekfakarb').empty().hide();
-											$('#termekfa').jstree('refresh');
-											$('#mattable-select').show();
-										},
-										onCancel:function() {
-											$('#termekfakarb').empty().hide();
-											$('#mattable-select').show();
-										}
-									};
-									$('#termekfakarb').mattkarb(karbsetup);
-								}
-							});
-						}
-					},
-					_edit:{
-						label:'Szerkeszt',
-						action:function(obj) {
-							var valasztottid=$('#termekfa').jstree('get_selected').children('a').attr('id');
-							function morphFaKepEdit() {
-								var kepedit=$('#KepEdit');
-								if (kepedit.length>0) {
-									kepedit.button();
-									new AjaxUpload(kepedit,{
-										action:'/admin/termekfa/savepicture',
-										onSubmit:function(file,ext) {
-											var kepnev=$('#KepNevEdit').val();
-											if (kepnev) {
-												if (ext&&/^(jpg|jpeg|png)$/.test(ext)) {
-													this.setData({
-														id:valasztottid.split('_')[1],
-														nev:kepnev,
-														leiras:$('#KepLeirasEdit').val()
-													});
-												}
-												else {
-													dialogcenter.html('Csak jpg,jpeg,png fájlokat tölthet fel.').dialog({resizable:false,modal:true,buttons:{'OK':function() {$(this).dialog('close');}}});
-													return false;
-												}
-											}
-											else {
-												dialogcenter.html('Adja meg a kép nevét.').dialog({resizable:false,modal:true,buttons:{'OK':function() {$(this).dialog('close');}}});
-												return false;
-											}
-										},
-										onComplete:function(file,response) {
-											$('#ImageEdit').remove();
-											$('#AltalanosTab').append(response);
-											$('.fakarb-delimage').button();
-										}
-									});
-								}
-							}
-							if (!valasztottid) {
-								dialogcenter.html('Válasszon kategóriát').dialog({resizable:false,modal:true,buttons:{'OK':function() {$(this).dialog('close');}}});
-								return false;
-							}
-							$.ajax({url:'/admin/termekfa/getkarb',
-								data:{
-									id:valasztottid.split('_')[1],
-									oper:'edit'
-								},
-								success:function(data) {
-									$('#mattable-select').hide();
-									$('#termekfakarb').append(data);
-									var karbsetup={
-										name:'',
-										independent:false,
-										header:'#fakarb-header',
-										footer:'#fakarb-footer',
-										form:'#fakarb-form',
-										tab:'#fakarb-tabs',
-										page:'.fakarb-page',
-										titlebar:'.fakarb-titlebar',
-										cancel:'#fakarb-cancelbutton',
-										ok:'#fakarb-okbutton',
-										viewUrl:'/admin/termekfa/getkarb',
-										saveUrl:'/admin/termekfa/save',
-										beforeShow:function() {
-											if (!$.browser.mobile) {
-												CKFinder.setupCKEditor( null, '/ckfinder/' );
-												$('#LeirasEdit').ckeditor();
-											}
-											$('#AltalanosTab').on('click','.fakarb-delimage',function(e) {
-												e.preventDefault();
-												dialogcenter.html('Biztos, hogy törli a képet?').dialog({
-													resizable: false,
-													height:140,
-													modal: true,
-													buttons: {
-														'Igen': function() {
-															$.ajax({
-																url:'/admin/termekfa/delpicture',
-																type:'POST',
-																data:{
-																	id:$('#fakarb-form').attr('data-id')
-																},
-																success:function(data) {
-																	$('#ImageEdit').replaceWith(data);
-																	morphFaKepEdit();
-																}
-															});
-															$(this).dialog('close');
-														},
-														'Nem':function() {
-															$(this).dialog('close');
-														}
-													}
-												});
-											});
-											$('.fakarb-delimage').button();
-											morphFaKepEdit();
-										},
-										beforeHide:function() {
-											if (!$.browser.mobile) {
-												editor=$('#LeirasEdit').ckeditorGet();
-												if (editor) {
-													editor.destroy();
-												}
-											}
-										},
-										onSubmit:function(data) {
-											var resp=JSON.parse(data);
-											switch (resp.oper) {
-												case 'edit':
-													break;
-												case 'add':
-													break;
-											}
-											$('#termekfakarb').empty().hide();
-											$('#termekfa').jstree('refresh');
-											$('#mattable-select').show();
-										},
-										onCancel:function() {
-											$('#termekfakarb').empty().hide();
-											$('#mattable-select').show();
-										}
-									};
-									$('#termekfakarb').mattkarb(karbsetup);
-								}
-							});
-						}
-					},
-					_del:{
-						label:'Töröl',
-						action:function(obj) {
-							var valasztottid=$('#termekfa').jstree('get_selected').children('a').attr('id');
-							if (!valasztottid) {
-								dialogcenter.html('Válasszon kategóriát').dialog({resizable:false,modal:true,buttons:{'OK': function() {$(this).dialog('close');}}});
-								return false;
-							}
-							$.ajax({url:'/admin/termekfa/isdeletable',
-								data:{
-									id:valasztottid.split('_')[1]
-								},
-								success:function(data) {
-									if (data==='1') {
-										dialogcenter.html('Biztosan törli a kategóriát?').dialog({
-											modal:true,
-											buttons:{
-												'Igen':function() {
-													$(this).dialog('close');
-													$.ajax({url:'/admin/termekfa/save',
-														type:'POST',
-														data:{
-															id:valasztottid.split('_')[1],
-															oper:'del'
-														},
-														success:function(data) {
-															$('#termekfa').jstree('refresh');
-														}
-													});
-												},
-												'Nem':function() {
-													$(this).dialog('close');
-												}
-											}
-										});
-									}
-									else {
-										dialogcenter.html('A kategória nem törölhető.').dialog({modal:true,buttons:{'OK':function() {$(this).dialog('close');}}});
-									}
-								}
-							});
-						}
-					},
-					_move:{
-						label:'Áthelyez',
-						action:function(obj) {
-							var valasztottid=$('#termekfa').jstree('get_selected').children('a').attr('id');
-							if (!valasztottid) {
-								dialogcenter.html('Válasszon kategóriát').dialog({resizable:false,modal:true,buttons:{'OK': function() {$(this).dialog('close');}}});
-								return false;
-							}
-							dialogcenter.jstree({
-								core:{animation:100},
-								plugins:['themeroller','json_data','ui'],
-								themeroller:{item:''},
-								json_data:{
-									ajax:{url:'/admin/termekfa/jsonlist'}
-								},
-								ui:{select_limit:1}
-							})
-							.bind('loaded.jstree',function(event,data) {
-								dialogcenter.jstree('open_node',$('#termekfa_1',dialogcenter).parent());
-							});
-							dialogcenter.dialog({
-								resizable: true,
-								height:340,
-								modal: true,
-								buttons: {
-									'OK': function() {
-										var ideid=dialogcenter.jstree('get_selected').children('a').attr('id');
-										$.ajax({
-											url:'/admin/termekfa/move',
-											type:'POST',
-											data:{
-												eztid:valasztottid.split('_')[1],
-												ideid:ideid.split('_')[1]
-											},
-											success:function(data) {
-												$('#termekfa').jstree('refresh');
-											}
-										});
-										$(this).dialog('close');
-									},
-									'Bezár': function() {
-										$(this).dialog('close');
-									}
-								}
-							});
-						}
-					}
+					create:false,rename:false,remove:false,ccp:false
 				}
 			}
 		})

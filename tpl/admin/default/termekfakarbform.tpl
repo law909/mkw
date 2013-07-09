@@ -10,9 +10,9 @@
 		</ul>
 		{/if}
 		{if ($setup.editstyle=='dropdown')}
-		<div class="fakarb-titlebar" data-caption="{t('Általános adatok')}" data-refcontrol="#AltalanosTab"></div>
+		<div class="mattkarb-titlebar" data-caption="{t('Általános adatok')}" data-refcontrol="#AltalanosTab"></div>
 		{/if}
-		<div id="AltalanosTab" class="fakarb-page" data-visible="visible">
+		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>
 				<td><label for="NevEdit">{t('Név')}:</label></td>
@@ -27,9 +27,9 @@
 			{include 'termekfaimagekarb.tpl'}
 		</div>
 		{if ($setup.editstyle=='dropdown')}
-		<div class="fakarb-titlebar" data-caption="{t('Webes adatok')}" data-refcontrol="#WebTab"></div>
+		<div class="mattkarb-titlebar" data-caption="{t('Webes adatok')}" data-refcontrol="#WebTab"></div>
 		{/if}
-		<div id="WebTab" class="fakarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
+		<div id="WebTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
 			<input id="Menu1LathatoCheck" name="menu1lathato" type="checkbox"{if ($fa.menu1lathato)}checked="checked"{/if}>{t('Főmenü')}</input>
 			<input id="Menu2LathatoCheck" name="menu2lathato" type="checkbox"{if ($fa.menu2lathato)}checked="checked"{/if}>{t('Főmenü lenyíló')}</input>
 			<input id="Menu3LathatoCheck" name="menu3lathato" type="checkbox"{if ($fa.menu3lathato)}checked="checked"{/if}>{t('Top kategória')}</input>
@@ -56,7 +56,7 @@
 	</div>
 	<input name="oper" type="hidden" value="{$oper}">
 	<input name="id" type="hidden" value="{$fa.id}">
-	<div class="fakarb-footer">
+	<div class="mattkarb-footer">
 		<input id="fakarb-okbutton" type="submit" value="{t('OK')}">
 		<a id="fakarb-cancelbutton" href="#">{t('Mégsem')}</a>
 	</div>

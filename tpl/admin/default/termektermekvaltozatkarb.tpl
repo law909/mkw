@@ -13,7 +13,7 @@
 			</label>
 		</td>
 		<td colspan="3" class="mattable-cell">
-			<a class="valtozatdelbutton" href="#" data-id="{$valtozat.id}"{if ($valtozat.oper=='add')} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+			<a class="js-valtozatdelbutton" href="#" data-id="{$valtozat.id}"{if ($valtozat.oper=='add')} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
 		</td>
 	</tr>
 	<tr>
@@ -32,7 +32,7 @@
 			<label for="NettoEdit_{$valtozat.id}">{t('Nettó')}:</label>
 		</td>
 		<td class="mattable-cell">
-			<input class="valtozatnetto" id="NettoEdit_{$valtozat.id}" name="valtozatnetto_{$valtozat.id}" type="number" step="any" value="{$valtozat.netto}">
+			<input class="js-valtozatnetto" id="NettoEdit_{$valtozat.id}" name="valtozatnetto_{$valtozat.id}" type="number" step="any" value="{$valtozat.netto}">
 		</td>
 	</tr>
 	<tr>
@@ -51,7 +51,7 @@
 			<label for="BruttoEdit_{$valtozat.id}">{t('Bruttó')}:</label>
 		</td>
 		<td class="mattable-cell">
-			<input class="valtozatbrutto" id="BruttoEdit_{$valtozat.id}" name="valtozatbrutto_{$valtozat.id}" type="number" step="any" value="{$valtozat.brutto}">
+			<input class="js-valtozatbrutto" id="BruttoEdit_{$valtozat.id}" name="valtozatbrutto_{$valtozat.id}" type="number" step="any" value="{$valtozat.brutto}">
 		</td>
 	</tr>
 	<tr>
@@ -77,7 +77,7 @@
 	<tr>
 		<td><label for="ValtozatKepEdit_{$valtozat.id}">{t('Kép')}:</label></td>
 		<td colspan="3">
-			<ul id="ValtozatKepEdit_{$valtozat.id}" class="valtozatkepedit">
+			<ul id="ValtozatKepEdit_{$valtozat.id}" class="valtozatkepedit js-valtozatkepedit">
 				{foreach $valtozat.keplista as $kep}
 					<li data-value="{$kep.id}" data-valtozatid="{$valtozat.id}" class="ui-state-default{if ($valtozat.kepid==$kep.id)} ui-selected ui-state-highlight{/if}"><img src="{$kep.url}"/></li>
 				{/foreach}
@@ -87,5 +87,5 @@
 	</tr>
 </tbody></table>
 {if ($valtozat.oper=='add')}
-<a class="valtozatnewbutton" href="#" title="{t('Új')}" data-termekid="{$valtozat.termek.id}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+<a class="js-valtozatnewbutton" href="#" title="{t('Új')}" data-termekid="{$valtozat.termek.id}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 {/if}

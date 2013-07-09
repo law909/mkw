@@ -20,7 +20,7 @@ $(document).ready(function(){
 					bankszamlaedit.val($('option:selected',this).data('bankszamla'));
 					getArfolyam();
 				});
-				alttab.on('click','.tetelnewbutton',function(e) {
+				alttab.on('click','.js-tetelnewbutton',function(e) {
 					var $this=$(this);
 					e.preventDefault();
 					$.ajax({
@@ -29,12 +29,12 @@ $(document).ready(function(){
 						success:function(data) {
 							var tbody=$('#RecepturaTab');
 							alttab.append(data);
-							$('.tetelnewbutton,.teteldelbutton').button();
+							$('.js-tetelnewbutton,.js-teteldelbutton').button();
 							$this.remove();
 						}
 					});
 				})
-				.on('click','.teteldelbutton',function(e) {
+				.on('click','.js-teteldelbutton',function(e) {
 					e.preventDefault();
 					var removegomb=$(this),
 						removeid=removegomb.attr('data-id');
@@ -81,7 +81,7 @@ $(document).ready(function(){
 						});
 					}
 				})
-				.on('change','.termekselect',function(e) {
+				.on('change','.js-termekselect',function(e) {
 					e.preventDefault();
 					var $this=$(this);
 					var sorid=$this.attr('name').split('_')[1],
@@ -97,7 +97,7 @@ $(document).ready(function(){
 					afa.val(valasztott.data('afa'));
 					afa.change();
 				})
-				.on('change','.vtszselect',function(e) {
+				.on('change','.js-vtszselect',function(e) {
 					e.preventDefault();
 					var $this=$(this);
 					var sorid=$this.attr('name').split('_')[1],
@@ -106,17 +106,17 @@ $(document).ready(function(){
 					afa.val(valasztott.data('afa'));
 					afa.change();
 				})
-				.on('change','.afaselect',function(e) {
+				.on('change','.js-afaselect',function(e) {
 					e.preventDefault();
 					var sorid=$(this).attr('name').split('_')[1];
 					calcArak(sorid);
 				})
-				.on('change','.nettoegysarinput',function(e) {
+				.on('change','.js-nettoegysarinput',function(e) {
 					e.preventDefault();
 					var sorid=$(this).attr('name').split('_')[1];
 					calcArak(sorid);
 				})
-				.on('change','.bruttoegysarinput',function(e) {
+				.on('change','.js-bruttoegysarinput',function(e) {
 					e.preventDefault();
 					var sorid=$(this).attr('name').split('_')[1];
 					var afakulcs=$('select[name="tetelafa_'+sorid+'"] option:selected').data('afakulcs');
@@ -124,14 +124,14 @@ $(document).ready(function(){
 					n.val($(this).val()/(100+afakulcs)*100);
 					n.change();
 				})
-				.on('change','.nettoinput',function(e) {
+				.on('change','.js-nettoinput',function(e) {
 					e.preventDefault();
 					var sorid=$(this).attr('name').split('_')[1];
 					var n=$('input[name="tetelnettoegysar_'+sorid+'"]');
 					n.val($(this).val()/$('input[name="tetelmennyiseg_'+sorid+'"]').val());
 					n.change();
 				})
-				.on('change','.bruttoinput',function(e) {
+				.on('change','.js-bruttoinput',function(e) {
 					e.preventDefault();
 					var sorid=$(this).attr('name').split('_')[1];
 					var afakulcs=$('select[name="tetelafa_'+sorid+'"] option:selected').data('afakulcs');
@@ -139,12 +139,12 @@ $(document).ready(function(){
 					n.val($(this).val()/(100+afakulcs)*100);
 					n.change();
 				})
-				.on('change','.mennyiseginput',function(e) {
+				.on('change','.js-mennyiseginput',function(e) {
 					e.preventDefault();
 					var sorid=$(this).attr('name').split('_')[1];
 					calcArak(sorid);
 				});
-				$('.tetelnewbutton,.teteldelbutton').button();
+				$('.js-tetelnewbutton,.js-teteldelbutton').button();
 				keltedit.datepicker($.datepicker.regional['hu']);
 				keltedit.datepicker('option','dateFormat','yy.mm.dd');
 				keltedit.datepicker('setDate',keltedit.attr('data-datum'));
@@ -172,8 +172,8 @@ $(document).ready(function(){
 			},
 			karb:megrendeles
 		});
-		$('#maincheckbox').change(function(){
-			$('.egyedcheckbox').attr('checked',$(this).attr('checked'));
+		$('.js-maincheckbox').change(function(){
+			$('.js-egyedcheckbox').prop('checked',$(this).prop('checked'));
 		});
 	}
 	else {

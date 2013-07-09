@@ -14,7 +14,7 @@
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>
-				<td class="mattable-important">{t('Partner')}:</td>
+				<td class="mattable-important"><label for="PartnerEdit">{t('Partner')}:</label></td>
 				<td colspan="7"><select id="PartnerEdit" name="partner" class="mattable-important" required="required" autofocus>
 					<option value="">{t('válasszon')}</option>
 					{foreach $partnerlist as $_mk}
@@ -29,7 +29,7 @@
 				<td colspan="7"><span id="PartnerCim">{$egyed.partnerirszam} {$egyed.partnervaros}, {$egyed.partnerutca}</span></td>
 			</tr>
 			<tr>
-				<td>{t('Raktár')}:</td>
+				<td><label for="RaktarEdit">{t('Raktár')}:</label></td>
 				<td colspan="7"><select id="RaktarEdit" name="raktar" required="required">
 					<option value="">{t('válasszon')}</option>
 					{foreach $raktarlist as $_mk}
@@ -39,7 +39,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="mattable-important">{t('Fizetési mód')}:</td>
+				<td class="mattable-important"><label for="FizmodEdit">{t('Fizetési mód')}:</label></td>
 				<td><select id="FizmodEdit" name="fizmod" class="mattable-important" required="required">
 					<option value="">{t('válasszon')}</option>
 					{foreach $fizmodlist as $_mk}
@@ -93,7 +93,7 @@
 			{foreach $egyed.tetelek as $tetel}
 			{include 'bizonylattetelkarb.tpl'}
 			{/foreach}
-			<a class="tetelnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+			<a class="js-tetelnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 			</div>
 		</div>
 	</div>

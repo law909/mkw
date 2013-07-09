@@ -11,14 +11,14 @@ $(document).ready(function(){
 				szuletesiidoedit.datepicker('setDate',szuletesiidoedit.attr('data-datum'));
 				$('#cimkekarbcontainer').mattaccord({
 					header:'',
-					page:'.cimkekarbpage',
-					closeUp:'.cimkekarbcloseupbutton'
+					page:'.js-cimkekarbpage',
+					closeUp:'.js-cimkekarbcloseupbutton'
 				})
-				.on('click','.cimkekarb',function(e) {
+				.on('click','.js-cimkekarb',function(e) {
 					e.preventDefault();
-					$(this).toggleClass('selectedcimke ui-state-hover');
+					$(this).toggleClass('js-selectedcimke ui-state-hover');
 				});
-				$('.cimkeadd').on('click',function(e) {
+				$('.js-cimkeadd').on('click',function(e) {
 					e.preventDefault();
 					var ref=$(this).attr('data-refcontrol');
 					var cimkenev=$(ref).val(),
@@ -36,7 +36,7 @@ $(document).ready(function(){
 						}
 					});
 				});
-				$('#KontaktTab').on('click','.kontaktnewbutton',function(e) {
+				$('#KontaktTab').on('click','.js-kontaktnewbutton',function(e) {
 					var $this=$(this);
 					e.preventDefault();
 					$.ajax({
@@ -45,12 +45,12 @@ $(document).ready(function(){
 						success:function(data) {
 							var tbody=$('#KontaktTab');
 							tbody.append(data);
-							$('.kontaktnewbutton,.kontaktdelbutton').button();
+							$('.js-kontaktnewbutton,.js-kontaktdelbutton').button();
 							$this.remove();
 						}
 					});
 				})
-				.on('click','.kontaktdelbutton',function(e) {
+				.on('click','.js-kontaktdelbutton',function(e) {
 					e.preventDefault();
 					var kontaktgomb=$(this),
 						kontaktid=kontaktgomb.attr('data-id');
@@ -84,11 +84,11 @@ $(document).ready(function(){
 						});
 					}
 				});
-				$('.kontaktnewbutton,.kontaktdelbutton').button();
+				$('.js-kontaktnewbutton,js-kontaktdelbutton').button();
 			},
 			beforeSerialize:function(form,opt) {
 				var cimkek=new Array();
-				$('.cimkekarb').filter('.selectedcimke').each(function() {
+				$('.js-cimkekarb').filter('.js-selectedcimke').each(function() {
 					cimkek.push($(this).attr('data-id'));
 				});
 				var x={};
@@ -112,11 +112,11 @@ $(document).ready(function(){
 			filter:{
 				fields:['#nevfilter'],
 				onClear:function() {
-					$('.cimkefilter').removeClass('ui-state-hover');
+					$('.js-cimkefilter').removeClass('ui-state-hover');
 				},
 				onFilter:function(obj) {
 					var cimkek=new Array();
-					$('.cimkefilter').filter('.ui-state-hover').each(function() {
+					$('.js-cimkefilter').filter('.ui-state-hover').each(function() {
 						cimkek.push($(this).attr('data-id'));
 					});
 					if (cimkek.length>0) {
@@ -129,8 +129,8 @@ $(document).ready(function(){
 			},
 			karb:partner
 		});
-		$('#maincheckbox').change(function(){
-			$('.egyedcheckbox').attr('checked',$(this).attr('checked'));
+		$('.js-maincheckbox').change(function(){
+			$('.js-egyedcheckbox').prop('checked',$(this).prop('checked'));
 		});
 	}
 	else {

@@ -35,11 +35,8 @@ $(document).ready(function(){
 					name:'',
 					independent:false,
 					header:'#fakarb-header',
-					footer:'#fakarb-footer',
 					form:'#fakarb-form',
 					tab:'#fakarb-tabs',
-					page:'.fakarb-page',
-					titlebar:'.fakarb-titlebar',
 					cancel:'#fakarb-cancelbutton',
 					ok:'#fakarb-okbutton',
 					viewUrl:'/admin/termekfa/getkarb',
@@ -95,7 +92,7 @@ $(document).ready(function(){
 						});
 						$('#KepDelButton,#KepBrowseButton').button();
 						if (!$.browser.mobile) {
-							$('.js-toFlyout').flyout();
+							$('.js-toflyout').flyout();
 						}
 					},
 					beforeHide:function() {

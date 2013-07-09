@@ -39,7 +39,7 @@ $(document).ready(function(){
 					bankszamlaedit.val($('option:selected',this).data('bankszamla'));
 					getArfolyam();
 				});
-				alttab.on('click','.tetelnewbutton',function(e) {
+				alttab.on('click','.js-tetelnewbutton',function(e) {
 					e.preventDefault();
 					$.ajax({
 						url:'/admin/bizonylattetel/getemptyrow',
@@ -47,13 +47,13 @@ $(document).ready(function(){
 						success:function(data) {
 							var tbody=$('#RecepturaTab');
 							alttab.append(data);
-							$('.tetelnewbutton,.teteldelbutton,.tetelremovebutton').button();
+							$('.js-tetelnewbutton,.js-teteldelbutton,.js-tetelremovebutton').button();
 						}
 					});
 				})
-				.on('click','.tetelremovebutton',function(e) {
+				.on('click','.js-tetelremovebutton',function(e) {
 					e.preventDefault();
-					if ($('.tetelremovebutton').length>1) {
+					if ($('.js-tetelremovebutton').length>1) {
 						var removegomb=$(this);
 						dialogcenter.html('Biztos, hogy törli a tételt?').dialog({
 							resizable: false,
@@ -71,7 +71,7 @@ $(document).ready(function(){
 						});
 					}
 				})
-				.on('change','.termekselect',function(e) {
+				.on('change','.js-termekselect',function(e) {
 					e.preventDefault();
 					var $this=$(this);
 					var sorid=$this.attr('name').split('_')[1],
@@ -87,7 +87,7 @@ $(document).ready(function(){
 					afa.val(valasztott.data('afa'));
 					afa.change();
 				})
-				.on('change','.vtszselect',function(e) {
+				.on('change','.js-vtszselect',function(e) {
 					e.preventDefault();
 					var $this=$(this);
 					var sorid=$this.attr('name').split('_')[1],
@@ -96,17 +96,17 @@ $(document).ready(function(){
 					afa.val(valasztott.data('afa'));
 					afa.change();
 				})
-				.on('change','.afaselect',function(e) {
+				.on('change','.js-afaselect',function(e) {
 					e.preventDefault();
 					var sorid=$(this).attr('name').split('_')[1];
 					calcArak(sorid);
 				})
-				.on('change','.nettoegysarinput',function(e) {
+				.on('change','.js-nettoegysarinput',function(e) {
 					e.preventDefault();
 					var sorid=$(this).attr('name').split('_')[1];
 					calcArak(sorid);
 				})
-				.on('change','.bruttoegysarinput',function(e) {
+				.on('change','.js-bruttoegysarinput',function(e) {
 					e.preventDefault();
 					var sorid=$(this).attr('name').split('_')[1];
 					var afakulcs=$('select[name="tetelafa_'+sorid+'"] option:selected').data('afakulcs');
@@ -114,14 +114,14 @@ $(document).ready(function(){
 					n.val($(this).val()/(100+afakulcs)*100);
 					n.change();
 				})
-				.on('change','.nettoinput',function(e) {
+				.on('change','.js-nettoinput',function(e) {
 					e.preventDefault();
 					var sorid=$(this).attr('name').split('_')[1];
 					var n=$('input[name="tetelnettoegysar_'+sorid+'"]');
 					n.val($(this).val()/$('input[name="tetelmennyiseg_'+sorid+'"]').val());
 					n.change();
 				})
-				.on('change','.bruttoinput',function(e) {
+				.on('change','.js-bruttoinput',function(e) {
 					e.preventDefault();
 					var sorid=$(this).attr('name').split('_')[1];
 					var afakulcs=$('select[name="tetelafa_'+sorid+'"] option:selected').data('afakulcs');
@@ -129,12 +129,12 @@ $(document).ready(function(){
 					n.val($(this).val()/(100+afakulcs)*100);
 					n.change();
 				})
-				.on('change','.mennyiseginput',function(e) {
+				.on('change','.js-mennyiseginput',function(e) {
 					e.preventDefault();
 					var sorid=$(this).attr('name').split('_')[1];
 					calcArak(sorid);
 				});
-				$('.teteldelbutton').on('click',function(e) {
+				$('.js-teteldelbutton').on('click',function(e) {
 					e.preventDefault();
 					var argomb=$(this);
 					dialogcenter.html('Biztos, hogy törli a tételt?').dialog({
@@ -162,7 +162,7 @@ $(document).ready(function(){
 						}
 					});
 				});
-				$('.tetelnewbutton,.teteldelbutton,.tetelremovebutton').button();
+				$('.js-tetelnewbutton,.js-teteldelbutton,.js-tetelremovebutton').button();
 				keltedit.datepicker($.datepicker.regional['hu']);
 				keltedit.datepicker('option','dateFormat','yy.mm.dd');
 				keltedit.datepicker('setDate',keltedit.attr('data-datum'));
@@ -197,8 +197,8 @@ $(document).ready(function(){
 			karb:szamlafej
 		});
 
-		$('#maincheckbox').change(function(){
-			$('.egyedcheckbox').attr('checked',$(this).attr('checked'));
+		$('.js-maincheckbox').change(function(){
+			$('.js-egyedcheckbox').prop('checked',$(this).prop('checked'));
 		});
 	}
 	else {

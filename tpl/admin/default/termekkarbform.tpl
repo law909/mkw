@@ -26,9 +26,9 @@
 			<table><tbody>
 			<tr>
 				<td><label>{t('Kategóriák')}:</label></td>
-				<td><span id="TermekKategoria1" class="termekfabutton" data-text="{t('válasszon')}" data-name="termekfa1" data-value="{$termek.termekfa1}">{if ($termek.termekfa1nev)}{$termek.termekfa1nev}{else}{t('válasszon')}{/if}</span></td>
-				<td><span id="TermekKategoria2" class="termekfabutton" data-text="{t('válasszon')}" data-name="termekfa2" data-value="{$termek.termekfa2}">{if ($termek.termekfa2nev)}{$termek.termekfa2nev}{else}{t('válasszon')}{/if}</span></td>
-				<td><span id="TermekKategoria3" class="termekfabutton" data-text="{t('válasszon')}" data-name="termekfa3" data-value="{$termek.termekfa3}">{if ($termek.termekfa3nev)}{$termek.termekfa3nev}{else}{t('válasszon')}{/if}</span></td>
+				<td><span id="TermekKategoria1" class="js-termekfabutton" data-text="{t('válasszon')}" data-name="termekfa1" data-value="{$termek.termekfa1}">{if ($termek.termekfa1nev)}{$termek.termekfa1nev}{else}{t('válasszon')}{/if}</span></td>
+				<td><span id="TermekKategoria2" class="js-termekfabutton" data-text="{t('válasszon')}" data-name="termekfa2" data-value="{$termek.termekfa2}">{if ($termek.termekfa2nev)}{$termek.termekfa2nev}{else}{t('válasszon')}{/if}</span></td>
+				<td><span id="TermekKategoria3" class="js-termekfabutton" data-text="{t('válasszon')}" data-name="termekfa3" data-value="{$termek.termekfa3}">{if ($termek.termekfa3nev)}{$termek.termekfa3nev}{else}{t('válasszon')}{/if}</span></td>
 			</tr>
 			</tbody></table>
 			<table><tbody>
@@ -103,17 +103,17 @@
 			<div id="cimkekarbcontainer">
 				<div id="cimkekarbcontainerhead"><a id="cimkekarbcollapse" href="#">{t('Kinyit/becsuk')}</a></div>
 				{foreach $cimkekat as $_cimkekat}
-				<div class="mattedit-titlebar ui-widget-header ui-helper-clearfix cimkekarbcloseupbutton" data-refcontrol="#termekkarb{$_cimkekat.id}">
+				<div class="mattedit-titlebar ui-widget-header ui-helper-clearfix js-cimkekarbcloseupbutton" data-refcontrol="#termekkarb{$_cimkekat.id}">
 					<a href="#" class="mattedit-titlebar-close">
 						<span class="ui-icon ui-icon-circle-triangle-s"></span>
 					</a>
 					<span>{$_cimkekat.caption}</span>
 				</div>
-				<div id="termekkarb{$_cimkekat.id}" class="cimkekarbpage cimkelista" data-visible="hidden">
+				<div id="termekkarb{$_cimkekat.id}" class="js-cimkekarbpage cimkelista" data-visible="hidden">
 					{foreach $_cimkekat.cimkek as $_cimke}
 					{include 'cimkeselector.tpl'}
 					{/foreach}
-					<input id="ujcimkenev_{$_cimkekat.id}" type="text">&nbsp;<a class="cimkeadd" href="#" data-refcontrol="#ujcimkenev_{$_cimkekat.id}">&nbsp;+&nbsp;</a>
+					<input id="ujcimkenev_{$_cimkekat.id}" type="text">&nbsp;<a class="js-cimkeadd" href="#" data-refcontrol="#ujcimkenev_{$_cimkekat.id}">&nbsp;+&nbsp;</a>
 				</div>
 				{/foreach}
 			</div>
@@ -122,18 +122,18 @@
 		{if ($setup.editstyle=='dropdown')}
 		<div class="mattkarb-titlebar" data-caption="{t('Receptúra')}" data-refcontrol="#RecepturaTab"></div>
 		{/if}
-		<div id="RecepturaTab" class="karbpage" data-visible="visible">
+		<div id="RecepturaTab" class="mattkarb-page" data-visible="visible">
 			{foreach $termek.receptek as $recept}
 			{include 'termektermekreceptkarb.tpl'}
 			{/foreach}
-			<a class="receptnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+			<a class="js-receptnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 		</div>
 		{/if}
 		{if ($setup.termekvaltozat)}
 		{if ($setup.editstyle=='dropdown')}
 		<div class="mattkarb-titlebar" data-caption="{t('Változatok')}" data-refcontrol="#ValtozatTab"></div>
 		{/if}
-		<div id="ValtozatTab" class="karbpage" data-visible="visible">
+		<div id="ValtozatTab" class="mattkarb-page" data-visible="visible">
 			<div>
 			<label for="ValtozatAdattipusEdit">{t('Látható tulajdonság')}:</label>
 			<select id="ValtozatAdattipusEdit" name="valtozatadattipus">
@@ -143,7 +143,7 @@
 				{/foreach}
 			</select>
 			</div>
-			<a class="valtozatdelallbutton" href="#" title="{t('Mind törlése')}" data-termekid="{$termek.id}"><span class="ui-button-text">{t('Mind törlése')}</span></a>
+			<a class="js-valtozatdelallbutton" href="#" title="{t('Mind törlése')}" data-termekid="{$termek.id}"><span class="ui-button-text">{t('Mind törlése')}</span></a>
 			<table id="valtozatgenerator"  class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
 				<tr>
 					<td class="mattable-cell">
@@ -173,7 +173,7 @@
 						<label for="NettoEdit">{t('Nettó')}:</label>
 					</td>
 					<td class="mattable-cell">
-						<input class="valtozatnettogen" form="valtozatgeneratorform" id="NettoEdit" name="valtozatnettogen">
+						<input class="js-valtozatnettogen" form="valtozatgeneratorform" id="NettoEdit" name="valtozatnettogen">
 					</td>
 				</tr>
 				<tr>
@@ -192,7 +192,7 @@
 						<label for="VBruttoEdit">{t('Bruttó')}:</label>
 					</td>
 					<td class="mattable-cell">
-						<input class="valtozatbruttogen" id="VBruttoEdit" form="valtozatgeneratorform" name="valtozatbruttogen">
+						<input class="js-valtozatbruttogen" id="VBruttoEdit" form="valtozatgeneratorform" name="valtozatbruttogen">
 					</td>
 				</tr>
 				<tr>
@@ -218,7 +218,7 @@
 				<tr>
 					<td><label for="ValtozatKepEdit_gen">{t('Kép')}:</label></td>
 					<td colspan="3">
-						<ul id="ValtozatKepEdit_gen" class="valtozatkepedit">
+						<ul id="ValtozatKepEdit_gen" class="valtozatkepedit js-valtozatkepedit">
 							{foreach $keplist as $kep}
 								<li data-value="{$kep.id}" data-valtozatid="gen" class="ui-state-default"><img src="{$kep.url}"/></li>
 							{/foreach}
@@ -235,17 +235,17 @@
 			{foreach $termek.valtozatok as $valtozat}
 			{include 'termektermekvaltozatkarb.tpl'}
 			{/foreach}
-			<a class="valtozatnewbutton" href="#" title="{t('Új')}" data-termekid="{$termek.id}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+			<a class="js-valtozatnewbutton" href="#" title="{t('Új')}" data-termekid="{$termek.id}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 		</div>
 		{/if}
 		{if ($setup.editstyle=='dropdown')}
 		<div class="mattkarb-titlebar" data-caption="{t('Receptúra')}" data-refcontrol="#KapcsolodoTab"></div>
 		{/if}
-		<div id="KapcsolodoTab" class="karbpage" data-visible="visible">
+		<div id="KapcsolodoTab" class="mattkarb-page" data-visible="visible">
 			{foreach $termek.kapcsolodok as $kapcsolodo}
 			{include 'termektermekkapcsolodokarb.tpl'}
 			{/foreach}
-			<a class="kapcsolodonewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+			<a class="js-kapcsolodonewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 		</div>
 		{if ($setup.editstyle=='dropdown')}
 		<div class="mattkarb-titlebar" data-caption="{t('Webes adatok')}" data-refcontrol="#WebTab"></div>
@@ -284,7 +284,7 @@
 			{foreach $termek.kepek as $kep}
 			{include 'termektermekkepkarb.tpl'}
 			{/foreach}
-			<a class="KepNewButton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+			<a class="js-kepnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 		</div>
 		{if ($setup.editstyle=='dropdown')}
 		<div class="mattkarb-titlebar" data-caption="{t('Csomagolási adatok')}" data-refcontrol="#CsomagolasTab"></div>

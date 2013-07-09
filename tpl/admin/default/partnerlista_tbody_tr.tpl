@@ -1,5 +1,5 @@
 <tr id="mattable-row_{$_partner.id}">
-<td class="cell"><input class="partnercheckbox" type="checkbox"></td>
+<td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
 <td class="cell">
 <div><div>
 <a class="mattable-editlink" href="#" data-partnerid="{$_partner.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_partner.nev}</a>

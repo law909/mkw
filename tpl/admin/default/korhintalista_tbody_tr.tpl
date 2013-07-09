@@ -1,5 +1,5 @@
 <tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}">
-<td class="cell"><input class="maincheckbox" type="checkbox"></td>
+<td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
 <td class="cell">
 <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_egyed.nev}</a>
 {if ($setup.grideditbutton=='small')}
@@ -8,7 +8,7 @@
 </td>
 <td class="cell">{$_egyed.sorrend}</td>
 <td class="cell"><table><tbody>
-<tr><td><a href="#" data-id="{$_egyed.id}" data-flag="lathato" class="flagcheckbox{if ($_egyed.lathato)} ui-state-hover{/if}">{t('Látható')}</a></td></tr>
+<tr><td><a href="#" data-id="{$_egyed.id}" data-flag="lathato" class="js-flagcheckbox{if ($_egyed.lathato)} ui-state-hover{/if}">{t('Látható')}</a></td></tr>
 </tbody></table></td>
 {if ($setup.grideditbutton=='big')}
 <td class="cell"><table class="kozepre"><tbody>

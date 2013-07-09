@@ -43,15 +43,15 @@ $(document).ready(function(){
 			},
 			karb:teendo
 		});
-		$('#maincheckbox').change(function(){
-			$('.egyedcheckbox').attr('checked',$(this).attr('checked'));
+		$('.js-maincheckbox').change(function(){
+			$('.js-egyedcheckbox').prop('checked',$(this).prop('checked'));
 		});
 		$('#dtfilter').datepicker($.datepicker.regional['hu']);
 		$('#dtfilter').datepicker('option','dateFormat','yy.mm.dd');
 		$('#difilter').datepicker($.datepicker.regional['hu']);
 		$('#difilter').datepicker('option','dateFormat','yy.mm.dd');
 
-		$('#mattable-body').on('click','.flagcheckbox',function(e) {
+		$('#mattable-body').on('click','.js-flagcheckbox',function(e) {
 			e.preventDefault();
 			var $this=$(this);
 			$.ajax({

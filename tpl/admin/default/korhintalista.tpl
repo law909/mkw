@@ -29,7 +29,7 @@
 <table id="mattable-table">
 <thead>
 	<tr>
-	<th><input id="maincheckbox" type="checkbox"></th>
+	<th><input class="js-maincheckbox" type="checkbox"></th>
 	<th>{t('Cím')}</th>
 	<th>{t('Sorrend')}</th>
 	<th>{t('Jelzők')}</th>

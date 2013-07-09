@@ -44,8 +44,8 @@ $(document).ready(function(){
 			karb:esemeny
 		});
 
-		$('#maincheckbox').change(function(){
-			$('.egyedcheckbox').attr('checked',$(this).attr('checked'));
+		$('.js-maincheckbox').change(function(){
+			$('.js-egyedcheckbox').prop('checked',$(this).prop('checked'));
 		});
 		var dfilter=$('#dtfilter');
 		dfilter.datepicker($.datepicker.regional['hu']);

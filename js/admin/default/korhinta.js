@@ -76,7 +76,7 @@ $(document).ready(function(){
 			},
 			karb:korhinta
 		});
-		$('#mattable-body').on('click','.flagcheckbox',function(e) {
+		$('#mattable-body').on('click','.js-flagcheckbox',function(e) {
 			e.preventDefault();
 			var $this=$(this);
 			$.ajax({
@@ -92,8 +92,8 @@ $(document).ready(function(){
 				}
 			});
 		});
-		$('#maincheckbox').change(function(){
-			$('.egyedcheckbox').attr('checked',$(this).attr('checked'));
+		$('.js-maincheckbox').change(function(){
+			$('.js-egyedcheckbox').prop('checked',$(this).prop('checked'));
 		});
 	}
 	else {

@@ -30,8 +30,8 @@ $(document).ready(function(){
 			},
 			karb:jelenletiiv
 		});
-		$('#maincheckbox').change(function(){
-			$('.egyedcheckbox').attr('checked',$(this).attr('checked'));
+		$('.js-maincheckbox').change(function(){
+			$('.js-egyedcheckbox').prop('checked',$(this).prop('checked'));
 		});
 		var gendatumedit=$('#gendatum');
 		gendatumedit.datepicker($.datepicker.regional['hu']);

@@ -36,12 +36,6 @@
 			</tr>
 			</tbody></table>
 		</div>
-		{*if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="Webes adatok" data-refcontrol="#WebTab"></div>
-		{/if}
-		<div id="WebTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
-
-		</div>*}
 	</div>
 	<input name="oper" type="hidden" value="{$oper}">
 	<input name="id" type="hidden" value="{$egyed.id}">

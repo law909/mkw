@@ -24,9 +24,9 @@
 <td colspan="5"><input id="MegjegyzesEdit{$kontakt.id}" name="kontaktmegjegyzes_{$kontakt.id}" type="text" value="{$kontakt.megjegyzes}" size="80"></td>
 </tr>
 <tr><td>
-<a class="kontaktdelbutton" href="#" data-id="{$kontakt.id}"{if ($kontakt.oper=='add')} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+<a class="js-kontaktdelbutton" href="#" data-id="{$kontakt.id}"{if ($kontakt.oper=='add')} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
 </td></tr>
 </tbody></table>
 {if ($kontakt.oper=='add')}
-<a class="kontaktnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+<a class="js-kontaktnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 {/if}

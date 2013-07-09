@@ -27,7 +27,7 @@
 	</div>
 	<div id="{$_cimkekat.sanitizedcaption}" class="accordpage cimkelista" data-visible="visible">
 		{foreach $_cimkekat.cimkek as $_cimke}
-		<a class="cimkefilter" href="#" data-id="{$_cimke.id}">{$_cimke.caption}</a>&nbsp;&nbsp;
+		<a class="js-cimkefilter" href="#" data-id="{$_cimke.id}">{$_cimke.caption}</a>&nbsp;&nbsp;
 		{/foreach}
 	</div>
 	{/foreach}
@@ -54,7 +54,7 @@
 <table id="mattable-table">
 <thead>
 	<tr>
-	<th><input id="maincheckbox" type="checkbox"></th>
+	<th><input class="js-maincheckbox" type="checkbox"></th>
 	<th>{t('Név')}</th>
 	<th>{t('Cím')}</th>
 	<th>{t('Elérhetőségek')}</th>

@@ -14,9 +14,9 @@
 <td><label for="KotelezoEdit{$recept.id}">{t('Kötelező')}:</label></td>
 <td><input id="KotelezoEdit{$recept.id}" class="kotelezoinput" name="receptkotelezo_{$recept.id}" type="checkbox"{if ($recept.kotelezo)} checked="checked"{/if}></td>
 <td>
-<a class="receptdelbutton" href="#" data-id="{$recept.id}"{if ($recept.oper=='add')} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+<a class="js-receptdelbutton" href="#" data-id="{$recept.id}"{if ($recept.oper=='add')} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
 </td></tr>
 </tbody></table>
 {if ($recept.oper=='add')}
-<a class="receptnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+<a class="js-receptnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 {/if}
