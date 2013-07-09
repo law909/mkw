@@ -380,6 +380,7 @@ class partnerController extends \mkwhelpers\MattableController {
 			$this->getEm()->persist($t);
 			$this->getEm()->flush();
 			$this->login($email,$jelszo1);
+			\Zend_Session::writeClose();
 			Header('Location: '.store::getRouter()->generate('showaccount'));
 		}
 		else {
@@ -399,6 +400,7 @@ class partnerController extends \mkwhelpers\MattableController {
 
 	public function showLoginForm() {
 		if ($this->checkloggedin()) {
+			\Zend_Session::writeClose();
 			header('Location: '.store::getRouter()->generate('showaccount'));
 		}
 		else {
@@ -413,10 +415,12 @@ class partnerController extends \mkwhelpers\MattableController {
 
 	public function doLogin() {
 		if ($this->checkloggedin()) {
+			\Zend_Session::writeClose();
 			header('Location: '.store::getRouter()->generate('showaccount'));
 		}
 		else {
 			if ($this->login($this->params->getStringRequestParam('email'),$this->params->getStringRequestParam('jelszo'))) {
+				\Zend_Session::writeClose();
 				header('Location: '.store::getRouter()->generate('showaccount'));
 			}
 			else {
