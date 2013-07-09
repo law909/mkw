@@ -436,22 +436,24 @@ class termekController extends \mkwhelpers\MattableController {
 		echo $ret;
 	}
 
-	public function getBizonylattetelSelectList($selid) {
-		$rec=$this->getRepo()->getAllForBizonylattetel();
-		$res=array();
-		foreach($rec as $sor) {
-			$res[]=array(
-				'id'=>$sor['id'],
-				'caption'=>$sor['nev'],
-				'selected'=>($sor['id']==$selid),
-				'me'=>$sor['me'],
-				'vtsz'=>$sor['vtsz'],
-				'afa'=>$sor['afa'],
-				'kiszereles'=>$sor['kiszereles'],
-				'cikkszam'=>$sor['cikkszam']
-			);
+	public function getBizonylattetelSelectList() {
+		$term=trim($this->params->getStringRequestParam('term'));
+		$ret=array();
+		if ($term) {
+			$r=store::getEm()->getRepository('\Entities\Termek');
+			$res=$r->getBizonylattetelLista($term);
+			foreach($res as $r) {
+				$ret[]=array(
+					'value'=>$r->getNev(),
+					'id'=>$r->getId(),
+					'me'=>$r->getMe(),
+					'cikkszam'=>$r->getCikkszam(),
+					'vtsz'=>$r->getVtszId(),
+					'afa'=>$r->getAfaId()
+				);
+			}
 		}
-		return $res;
+		echo json_encode($ret);
 	}
 
 	public function viewlist() {

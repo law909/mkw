@@ -42,6 +42,9 @@ $router->map('POST','/admin/vtsz/save','vtszController#save','adminvtszsave');
 
 $router->map('GET','/admin/getsmallurl','adminController#getSmallUrl','admingetsmallurl');
 $router->map('GET','/admin/regeneratekarkod','adminController#regeneratekarkod','adminregeneratekarkod');
+$router->map('GET','/admin/setuitheme','adminController#setUITheme','adminsetuitheme');
+$router->map('GET','/admin/setgrideditbutton','adminController#setGridEditButton','adminsetgrideditbutton');
+$router->map('GET','/admin/seteditstyle','adminController#setEditStyle','adminseteditstyle');
 
 $router->map('GET','/admin/setup/view','setupController#view','adminsetupview');
 $router->map('POST','/admin/setup/save','setupController#save','adminsetupsave');
@@ -50,6 +53,7 @@ $router->map('GET','/admin/bizonylattetel/getar','bizonylattetelController#getar
 $router->map('GET','/admin/bizonylattetel/calcar','bizonylattetelController#calcar','adminbizonylattetelcalcar');
 $router->map('GET','/admin/bizonylattetel/getemptyrow','bizonylattetelController#getemptyrow','adminbizonylattetelgetemptyrow');
 $router->map('GET','/admin/bizonylattetel/save','bizonylattetelController#save','adminbizonylattetelsave');
+$router->map('GET','/admin/bizonylattetel/gettermeklist','termekController#getBizonylattetelSelectList','adminbizonylattetelgettermeklist');
 
 $router->map('GET','/admin/megrendelesfej/viewlist','megrendelesfejController#viewlist','adminmegrendelesfejviewlist');
 $router->map('GET','/admin/megrendelesfej/getlistbody','megrendelesfejController#getlistbody','adminmegrendelesfejgetlistbody');

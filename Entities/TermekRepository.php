@@ -37,19 +37,6 @@ class TermekRepository extends \mkwhelpers\Repository {
 		return $q->getScalarResult();
 	}
 
-	public function getAllForBizonylattetel() {
-		$rsm=new ResultSetMapping();
-		$rsm->addScalarResult('id','id');
-		$rsm->addScalarResult('nev','nev');
-		$rsm->addScalarResult('cikkszam','cikkszam');
-		$rsm->addScalarResult('me','me');
-		$rsm->addScalarResult('vtsz_id','vtsz');
-		$rsm->addScalarResult('afa_id','afa');
-		$rsm->addScalarResult('kiszereles','kiszereles');
-		$q=$this->_em->createNativeQuery('SELECT id,nev,cikkszam,me,vtsz_id,afa_id,kiszereles FROM termek WHERE inaktiv=0 ORDER BY nev',$rsm);
-		return $q->getScalarResult();
-	}
-
 	public function getWithJoins($filter,$order,$offset=0,$elemcount=0) {
 		$a=$this->alias;
 		$q=$this->_em->createQuery('SELECT '.$a.',vtsz,afa,fa1,fa2,fa3'
@@ -285,5 +272,26 @@ class TermekRepository extends \mkwhelpers\Repository {
 			$ret[]=$sor['nev'];
 		}
 		return $ret;
+	}
+
+	public function getBizonylattetelLista($keresett) {
+		$a=$this->alias;
+		$filter=array();
+		$filter['fields'][]='_xx.nev';
+		$filter['clauses'][]='LIKE';
+		$filter['values'][]='%'.$keresett.'%';
+		$order=array('_xx.nev'=>'ASC');
+		$q=$this->_em->createQuery('SELECT '.$a
+			.' FROM '.$this->entityname.' '.$a
+			.' LEFT JOIN '.$a.'.vtsz vtsz'
+			.' LEFT JOIN '.$a.'.afa afa'
+			.' LEFT JOIN '.$a.'.termekfa1 fa1'
+			.' LEFT JOIN '.$a.'.termekfa2 fa2'
+			.' LEFT JOIN '.$a.'.termekfa3 fa3'
+			.$this->getFilterString($filter)
+			.$this->getOrderString($order));
+		$q->setParameters($this->getQueryParameters($filter));
+		$res=$q->getResult();
+		return $res;
 	}
 }

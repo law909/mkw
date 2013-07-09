@@ -4,14 +4,10 @@
 <table><tbody>
 <tr>
 <td class="mattable-important"><label for="TermekSelect{$tetel.id}">{t('Termék')}:</label></td>
-<td colspan="5"><select id="TermekSelect{$tetel.id}" name="teteltermek_{$tetel.id}" class="js-termekselect termekselect mattable-important" required="required">
-<option value="">{t('válasszon')}</option>
-{foreach $tetel.termeklist as $_termek}
-<option value="{$_termek.id}"{if ($_termek.selected)} selected="selected"{/if}
-	data-cikkszam="{$_termek.cikkszam}" data-me="{$_termek.me}" data-afa="{$_termek.afa}" data-vtsz="{$_termek.vtsz}"
-	data-kiszereles="{$_termek.kiszereles}">{$_termek.caption}</option>
-{/foreach}
-</select></td>
+<td colspan="5">
+	<input id="TermekEdit" type="text" name="teteltermeknev_{$tetel.id}" class="js-termekselect termekselect mattable-important" value="{$tetel.termeknev}" required="required">
+	<input name="teteltermek_{$tetel.id}" type="hidden" value="{$tetel.termek}">
+</td>
 </tr>
 <tr><td><label for="NevEdit{$tetel.id}">{t('Név')}:</label></td>
 <td colspan="5"><input id="NevEdit{$tetel.id}" name="tetelnev_{$tetel.id}" type="text" size="103" maxlength="255" value="{$tetel.termeknev}" required="required"></td>

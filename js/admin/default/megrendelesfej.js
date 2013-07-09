@@ -81,6 +81,7 @@ $(document).ready(function(){
 						});
 					}
 				})
+				/**
 				.on('change','.js-termekselect',function(e) {
 					e.preventDefault();
 					var $this=$(this);
@@ -97,6 +98,7 @@ $(document).ready(function(){
 					afa.val(valasztott.data('afa'));
 					afa.change();
 				})
+				*/
 				.on('change','.js-vtszselect',function(e) {
 					e.preventDefault();
 					var $this=$(this);
@@ -143,6 +145,28 @@ $(document).ready(function(){
 					e.preventDefault();
 					var sorid=$(this).attr('name').split('_')[1];
 					calcArak(sorid);
+				});
+				$('.js-termekselect').autocomplete({
+					minLength: 4,
+					autoFocus: true,
+					source: '/admin/bizonylattetel/gettermeklist',
+					select: function(event, ui) {
+						if (ui.item) {
+							var $this=$(this),
+								sorid=$this.attr('name').split('_')[1],
+								vtsz=$('select[name="tetelvtsz_'+sorid+'"]'),
+								afa=$('select[name="tetelafa_'+sorid+'"]');
+							$this.siblings().val(ui.item.id);
+							$('input[name="tetelnev_'+sorid+'"]').val(ui.item.value);
+							$('input[name="tetelcikkszam_'+sorid+'"]').val(ui.item.cikkszam);
+							$('input[name="tetelme_'+sorid+'"]').val(ui.item.me);
+							setTermekAr(sorid);
+							vtsz.val(ui.item.vtsz);
+							vtsz.change();
+							afa.val(ui.item.afa);
+							afa.change();
+						}
+					}
 				});
 				$('.js-tetelnewbutton,.js-teteldelbutton').button();
 				keltedit.datepicker($.datepicker.regional['hu']);

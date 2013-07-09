@@ -16,7 +16,7 @@ function setDates() {
 		kezddatum=keltedit.datepicker('getDate');
 	}
 	else {
-		kezddatum=teljedit.datepicker('getDate');		
+		kezddatum=teljedit.datepicker('getDate');
 	}
 	kezddatum.setDate(kezddatum.getDate()+hatido);
 	esededit.datepicker('setDate',kezddatum);
@@ -45,7 +45,7 @@ function setTermekAr(sorId) {
 		data:{
 			valutanem:$('#ValutanemEdit').val(),
 			partner:$('#PartnerEdit').val(),
-			termek:$('select[name="teteltermek_'+sorId+'"]').val()
+			termek:$('input[name="teteltermek_'+sorId+'"]').val()
 		},
 		success:function(data) {
 			var c=$('input[name="tetelnettoegysar_'+sorId+'"]');
@@ -75,7 +75,7 @@ function calcArak(sorId) {
 			$('input[name="tetelbruttoegysarhuf_'+sorId+'"]').val(resp.bruttoegysarhuf);
 			$('input[name="tetelnettohuf_'+sorId+'"]').val(resp.nettohuf);
 			$('input[name="tetelbruttohuf_'+sorId+'"]').val(resp.bruttohuf);
-			
+
 		}
 	});
 }

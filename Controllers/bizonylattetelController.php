@@ -45,7 +45,8 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$x['bruttohuf']=$t->getBruttohuf();
 		$x['hataridostr']=$t->getHataridoStr();
 		if ($forKarb) {
-			$x['termeklist']=$termek->getBizonylattetelSelectList(($t->getTermek()?$t->getTermek()->getId():0));
+			// autocomplete van select helyett
+			//$x['termeklist']=$termek->getBizonylattetelSelectList(($t->getTermek()?$t->getTermek()->getId():0));
 			$x['vtszlist']=$vtsz->getSelectList(($t->getVtsz()?$t->getVtsz()->getId():0));
 			$x['afalist']=$afa->getSelectList(($t->getAfa()?$t->getAfa()->getId():0));
 		}
@@ -73,14 +74,14 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 	}
 
 	public function calcar() {
-		$afa=$this->getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afa'));
+		$afaent=$this->getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afa'));
 		$arfolyam=$this->params->getNumRequestParam('arfolyam',1);
 		$nettoegysar=$this->params->getNumRequestParam('nettoegysar',0);
 		$mennyiseg=$this->params->getNumRequestParam('mennyiseg',0);
 
-		$bruttoegysar=$afa->calcBrutto($nettoegysar);
+		$bruttoegysar=$afaent->calcBrutto($nettoegysar);
 		$netto=$nettoegysar*$mennyiseg;
-		$brutto=$afa->calcBrutto($netto);
+		$brutto=$afaent->calcBrutto($netto);
 		$afa=$brutto-$netto;
 
 		$nettoegysarhuf=$nettoegysar*$arfolyam;

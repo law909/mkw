@@ -374,8 +374,8 @@ class adminController extends mkwhelpers\Controller {
 		$this->view();
 	}
 
-	protected function sanitize() {
-		echo \mkwhelpers\Filter::toPermalink($this->getStringParam('text',''));
+	public function sanitize() {
+		echo \mkwhelpers\Filter::toPermalink($this->params->getStringRequestParam('text',''));
 	}
 
 	protected function cropimage() {
@@ -386,15 +386,15 @@ class adminController extends mkwhelpers\Controller {
 	}
 
 	public function setUITheme() {
-		store::setParameter('uitheme',$this->getStringParam('uitheme','sunny'));
+		store::setParameter('uitheme',$this->params->getStringRequestParam('uitheme','sunny'));
 	}
 
 	public function setGridEditButton() {
-		store::setParameter('grideditbutton',$this->getStringParam('grideditbutton','small'));
+		store::setParameter('grideditbutton',$this->params->getStringRequestParam('grideditbutton','small'));
 	}
 
 	public function setEditStyle() {
-		store::setParameter('editstyle',$this->getStringParam('editstyle','dropdown'));
+		store::setParameter('editstyle',$this->params->getStringRequestParam('editstyle','dropdown'));
 	}
 
 	public function getSmallUrl() {

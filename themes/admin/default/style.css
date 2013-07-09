@@ -73,3 +73,10 @@ img {
 	height: 80px;
 	text-align: center;
 }
+
+.ui-autocomplete {
+	max-height: 200px;
+	overflow-y: auto;
+	/* prevent horizontal scrollbar */
+/*	overflow-x: hidden;*/
+}
