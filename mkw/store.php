@@ -15,6 +15,17 @@ class Store {
 	private static $sanitizer;
 	public static $DateFormat='Y.m.d';
 
+	public static function writelog($text) {
+		$handle = fopen("log.txt", "a");
+		$log = "";
+		$separator = " ## ";
+		$log.=date('Y.m.d. H:i:s') . $separator;
+		$log.=$text;
+		$log.="\n";
+		fwrite($handle, $log);
+		fclose($handle);
+	}
+
 	/**
 	 * @return EntityManager
 	 */

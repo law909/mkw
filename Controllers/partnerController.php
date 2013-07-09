@@ -317,7 +317,11 @@ class partnerController extends \mkwhelpers\MattableController {
 			$ma=new \DateTime();
 			$kul=$ma->diff($user->getUtolsoklikk());
 			$kulonbseg=floor(($kul->y*365*24*60*60+$kul->m*30*24*60*60+$kul->d*24*60*60+$kul->h*60*60+$kul->i*60+$kul->s)/60);
-			if ($kulonbseg>=store::getParameter(\mkw\consts::Autologoutmin,10)) {
+			$perc=store::getParameter(\mkw\consts::Autologoutmin,10);
+			if ($perc<=0) {
+				$perc=10;
+			}
+			if ($kulonbseg>=$perc) {
 				$this->logout();
 				return true;
 			}
@@ -390,6 +394,7 @@ class partnerController extends \mkwhelpers\MattableController {
 
 	public function showRegistrationForm($vezeteknev='',$keresztnev='',$email='',$hibak=array()) {
 		$view=$this->getTemplateFactory()->createMainView('regisztracio.tpl');
+		$view->setVar('pagetitle',t('Regisztráció').' - '.\mkw\Store::getParameter(\mkw\consts::Oldalcim));
 		$view->setVar('vezeteknev',$vezeteknev);
 		$view->setVar('keresztnev',$keresztnev);
 		$view->setVar('email',$email);

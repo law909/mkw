@@ -20,24 +20,24 @@
 					<div class="control-group{if ($hibak.vezeteknev||$hibak.keresztnev)} error{/if}">
 						<label class="control-label" for="VezeteknevEdit">{t('Név')}:</label>
 						<div class="controls">
-							<input id="VezeteknevEdit" name="vezeteknev" type="text" class="input-medium" value="{$vezeteknev}" placeholder="{t('vezetéknév')}" required data-errormsg="{t('Adja meg a nevét')}">
-							<input id="KeresztnevEdit" name="keresztnev" type="text" class="input-medium" value="{$keresztnev}" placeholder="{t('keresztnév')}" required>
-							<span id="NevMsg" class="help-inline">{$hibak.keresztnev}</span>
+							<input id="VezeteknevEdit" name="vezeteknev" type="text" class="input-medium" value="{$vezeteknev|default}" placeholder="{t('vezetéknév')}" required data-errormsg="{t('Adja meg a nevét')}">
+							<input id="KeresztnevEdit" name="keresztnev" type="text" class="input-medium" value="{$keresztnev|default}" placeholder="{t('keresztnév')}" required>
+							<span id="NevMsg" class="help-inline">{$hibak.keresztnev|default}</span>
 						</div>
 					</div>
-					<div class="control-group{if ($hibak.email)} error{/if}">
+					<div class="control-group{if ($hibak.email|default)} error{/if}">
 						<label class="control-label" for="EmailEdit">{t('Emailcím')}:</label>
 						<div class="controls">
-							<input id="EmailEdit" name="email" type="email" class="input-large" value="{$email}" required data-errormsg1="{t('Adja meg az emailcímét')}" data-errormsg2="{t('Kérjük emailcímet adjon meg.')}">
-							<span id="EmailMsg" class="help-inline">{$hibak.email}</span>
+							<input id="EmailEdit" name="email" type="email" class="input-large" value="{$email|default}" required data-errormsg1="{t('Adja meg az emailcímét')}" data-errormsg2="{t('Kérjük emailcímet adjon meg.')}">
+							<span id="EmailMsg" class="help-inline">{$hibak.email|default}</span>
 						</div>
 					</div>
-					<div class="control-group{if ($hibak.jelszo)} error{/if}">
+					<div class="control-group{if ($hibak.jelszo|default)} error{/if}">
 						<label class="control-label" for="Jelszo1Edit">{t('Jelszó')}:</label>
 						<div class="controls">
 							<input id="Jelszo1Edit" name="jelszo1" type="password" class="input-medium" required data-errormsg1="{t('Adjon meg jelszót.')}" data-errormsg2="{t('A két jelszó nem egyezik.')}">
 							<input id="Jelszo2Edit" name="jelszo2" type="password" class="input-medium" required>
-							<span id="JelszoMsg" class="help-inline">{$hibak.jelszo}</span>
+							<span id="JelszoMsg" class="help-inline">{$hibak.jelszo|default}</span>
 							<p class="help-block">Kétszer adja meg jelszavát, így elkerülheti az elgépelést.</p>
 						</div>
 					</div>

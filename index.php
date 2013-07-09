@@ -13,17 +13,6 @@ $__translate = new Zend_Translate(
     )
 );
 
-function write_log($text) {
- $handle=fopen("log.txt","a");
- $log="";
- $separator=" ## ";
- $log.=date('Y.m.d. H:i:s').$separator;
- $log.=$text;
- $log.="\n";
- fwrite($handle,$log);
- fclose($handle);
-}
-
 function t($msgid) {
 	global $__translate;
 	return $__translate->_($msgid);
