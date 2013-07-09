@@ -617,7 +617,7 @@ $(document).ready(function(){
 				var $this=$(this);
 				$.ajax({
 					type:'POST',
-					url:'/partner/checkemail',
+					url:'/checkemail',
 					data:{email:$this.val()}
 				})
 				.done(function(data){
@@ -809,7 +809,7 @@ $(document).ready(function(){
 				var $this=$(this);
 				$.ajax({
 					type:'POST',
-					url:'/partner/checkemail',
+					url:'/checkemail',
 					data:{email:$this.val()}
 				})
 				.done(function(data){
