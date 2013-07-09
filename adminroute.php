@@ -185,3 +185,12 @@ $router->map('GET','/admin/termekfa/viewlist','termekfaController#viewlist','adm
 $router->map('GET','/admin/kosar/viewlist','kosarController#viewlist','adminkosarviewlist');
 $router->map('GET','/admin/kosar/getlistbody','kosarController#getlistbody','adminkosargetlistbody');
 $router->map('POST','/admin/kosar/save','kosarController#save','adminkosarsave');
+
+$router->map('GET','/admin/uzletkoto/viewlist','uzletkotoController#viewlist','adminuzletkotoviewlist');
+$router->map('GET','/admin/uzletkoto/getlistbody','uzletkotoController#getlistbody','adminuzletkotogetlistbody');
+$router->map('GET','/admin/uzletkoto/getkarb','uzletkotoController#getkarb','adminuzletkotogetkarb');
+$router->map('GET','/admin/uzletkoto/viewkarb','uzletkotoController#viewkarb','adminuzletkotoviewkarb');
+$router->map('POST','/admin/uzletkoto/save','uzletkotoController#save','adminuzletkotosave');
+
+$router->map('GET','/admin/sitemap/view','sitemapController#view','adminsitemapview');
+$router->map('GET','/admin/sitemap/create','sitemapController#create','adminsitemapcreate');

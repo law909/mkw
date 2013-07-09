@@ -51,7 +51,7 @@ class uzletkotoController extends \mkwhelpers\MattableController {
 		return $obj;
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('uzletkotolista_tbody.tpl');
 
 		$filter=array();
@@ -72,7 +72,7 @@ class uzletkotoController extends \mkwhelpers\MattableController {
 		echo json_encode($this->loadDataToView($uk,'uzletkotolista',$view));
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('uzletkotolista.tpl');
 		$view->setVar('pagetitle',t('Üzletkötők'));
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
