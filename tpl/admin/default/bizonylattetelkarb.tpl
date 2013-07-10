@@ -5,12 +5,15 @@
 <tr>
 <td class="mattable-important"><label for="TermekSelect{$tetel.id}">{t('Termék')}:</label></td>
 <td colspan="5">
-	<input id="TermekEdit" type="text" name="teteltermeknev_{$tetel.id}" class="js-termekselect termekselect mattable-important" value="{$tetel.termeknev}" required="required">
+	<input id="TermekSelect{$tetel.id}" type="text" name="teteltermeknev_{$tetel.id}" class="js-termekselect termekselect mattable-important" value="{$tetel.termeknev}" required="required">
 	<input name="teteltermek_{$tetel.id}" type="hidden" value="{$tetel.termek}">
 </td>
 </tr>
 <tr><td><label for="NevEdit{$tetel.id}">{t('Név')}:</label></td>
 <td colspan="5"><input id="NevEdit{$tetel.id}" name="tetelnev_{$tetel.id}" type="text" size="103" maxlength="255" value="{$tetel.termeknev}" required="required"></td>
+</tr>
+<tr><td><label for="ValtozatSelect{$tetel.id}">{t('Változat')}:</label></td>
+	<td id="ValtozatPlaceholder{$tetel.id}"></td>
 </tr>
 <tr><td><label for="CikkszamEdit{$tetel.id}">{t('Cikkszám')}:</label></td>
 <td><input id="CikkszamEdit{$tetel.id}" name="tetelcikkszam_{$tetel.id}" type="text" size="30" maxlength="50" value="{$tetel.cikkszam}"></td>

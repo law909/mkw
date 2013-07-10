@@ -65,8 +65,12 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 
 	public function getar() {
 		$termek=$this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
+		$valtoza=null;
+		if ($this->params->getIntRequestParam('valtozat')) {
+			$valtozat=$this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('valtozat'));
+		}
 		if ($termek) {
-			echo $termek->getNettoAr();
+			echo $termek->getNettoAr($valtozat);
 		}
 		else {
 			echo 0;

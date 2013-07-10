@@ -70,6 +70,7 @@ $router->map('GET','/admin/termek/getnetto','termekController#getnetto','adminte
 $router->map('GET','/admin/termek/getbrutto','termekController#getbrutto','admintermekgetbrutto');
 $router->map('POST','/admin/termek/save','termekController#save','admintermeksave');
 $router->map('POST','/admin/termek/setflag','termekController#setflag','admintermeksetflag');
+$router->map('GET','/admin/termek/valtozathtmllist','termekController#valtozathtmllist','adminvaltozathtmllist');
 
 $router->map('GET','/admin/termekkapcsolodo/getemptyrow','termekkapcsolodoController#getemptyrow','admintermekkapcsolodogetemptyrow');
 $router->map('POST','/admin/termekkapcsolodo/save','termekkapcsolodoController#save','admintermekkapcsolodosave');

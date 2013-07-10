@@ -45,7 +45,8 @@ function setTermekAr(sorId) {
 		data:{
 			valutanem:$('#ValutanemEdit').val(),
 			partner:$('#PartnerEdit').val(),
-			termek:$('input[name="teteltermek_'+sorId+'"]').val()
+			termek:$('input[name="teteltermek_'+sorId+'"]').val(),
+			valtozat:$('select[name="tetelvaltozat_'+sorId+'"]').val()
 		},
 		success:function(data) {
 			var c=$('input[name="tetelnettoegysar_'+sorId+'"]');
