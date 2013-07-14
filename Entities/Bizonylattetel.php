@@ -28,8 +28,6 @@ class Bizonylattetel {
 	 * @JoinColumn(name="bizonylatfej_id", referencedColumnName="id",nullable=true,onDelete="cascade")
 	 */
 	private $bizonylatfej;
-	/** @Column(type="integer") */
-	private $tetelsorszam;
 	/** @Column(type="boolean",nullable=false) */
 	private $mozgat;
 	/** @Column(type="boolean",nullable=false) */
@@ -179,14 +177,6 @@ class Bizonylattetel {
 			$this->bizonylatfej=null;
 			$val->removeBizonylattetel($this);
 		}
-	}
-
-	public function getTetelsorszam() {
-		return $this->tetelsorszam;
-	}
-
-	public function setTetelsorszam($val) {
-		$this->tetelsorszam=$val;
 	}
 
 	public function getMozgat() {

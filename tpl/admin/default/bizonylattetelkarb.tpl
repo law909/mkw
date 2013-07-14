@@ -13,7 +13,7 @@
 <td colspan="5"><input id="NevEdit{$tetel.id}" name="tetelnev_{$tetel.id}" type="text" size="103" maxlength="255" value="{$tetel.termeknev}" required="required"></td>
 </tr>
 <tr><td><label for="ValtozatSelect{$tetel.id}">{t('Változat')}:</label></td>
-	<td id="ValtozatPlaceholder{$tetel.id}"></td>
+	<td id="ValtozatPlaceholder{$tetel.id}">{include "bizonylatteteltermekvaltozatselect.tpl"}</td>
 </tr>
 <tr><td><label for="CikkszamEdit{$tetel.id}">{t('Cikkszám')}:</label></td>
 <td><input id="CikkszamEdit{$tetel.id}" name="tetelcikkszam_{$tetel.id}" type="text" size="30" maxlength="50" value="{$tetel.cikkszam}"></td>

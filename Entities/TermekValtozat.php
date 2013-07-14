@@ -304,4 +304,8 @@ class TermekValtozat {
 	public function setCikkszam($cikkszam) {
 		$this->cikkszam = $cikkszam;
 	}
+
+	public function getNev() {
+		return $this->getErtek1().' - '.$this->getErtek2();
+	}
 }

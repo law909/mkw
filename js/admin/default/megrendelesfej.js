@@ -10,6 +10,7 @@ $(document).ready(function(){
 						sorid=$this.attr('name').split('_')[1],
 						vtsz=$('select[name="tetelvtsz_'+sorid+'"]'),
 						afa=$('select[name="tetelafa_'+sorid+'"]'),
+						selvaltozat=$('select[name="tetelvaltozat_'+sorid+'"]').val(),
 						valtozatplace=$('#ValtozatPlaceholder'+sorid);
 					valtozatplace.empty();
 					$this.siblings().val(ui.item.id);
@@ -22,15 +23,14 @@ $(document).ready(function(){
 					afa.val(ui.item.afa);
 					afa.change();
 					$.ajax({
-						url:'/admin/termek/valtozathtmllist',
+						url:'/admin/bizonylattetel/valtozatlist',
 						data:{
-							id:ui.item.id
+							id: ui.item.id,
+							tetelid: sorid,
+							sel: selvaltozat
 						},
 						success:function(data) {
-							$(data)
-								.appendTo(valtozatplace)
-								.attr('name','tetelvaltozat_'+sorid)
-								.addClass('js-tetelvaltozat');
+							$(data).appendTo(valtozatplace);
 						}
 					});
 				}

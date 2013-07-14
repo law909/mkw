@@ -103,14 +103,17 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 			if (($this->params->getIntRequestParam('teteltermek_'.$tetelid)>0)) {
 				$oper=$this->params->getStringRequestParam('teteloper_'.$tetelid);
 				$termek=$this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('teteltermek_'.$tetelid));
+				$termekvaltozat=$this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('tetelvaltozat_'.$tetelid));
 				if ($oper=='add') {
 					$tetel=new Bizonylattetel();
 					$obj->addBizonylattetel($tetel);
 					$tetel->setPersistentData();
-					$tetel->setTetelsorszam(1);
 					$tetel->setArvaltoztat(0);
 					if ($termek) {
 						$tetel->setTermek($termek);
+					}
+					if ($termekvaltozat) {
+						$tetel->setTermekvaltozat($termekvaltozat);
 					}
 					$tetel->setMozgat();
 					$tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_'.$tetelid));
@@ -135,6 +138,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 						$tetel->setMozgat();
 						if ($termek) {
 							$tetel->setTermek($termek);
+						}
+						if ($termekvaltozat) {
+							$tetel->setTermekvaltozat($termekvaltozat);
 						}
 						$tetel->setMozgat();
 						$tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_'.$tetelid));

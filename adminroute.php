@@ -52,8 +52,9 @@ $router->map('POST','/admin/setup/save','setupController#save','adminsetupsave')
 $router->map('GET','/admin/bizonylattetel/getar','bizonylattetelController#getar','adminbizonylattetelgetar');
 $router->map('GET','/admin/bizonylattetel/calcar','bizonylattetelController#calcar','adminbizonylattetelcalcar');
 $router->map('GET','/admin/bizonylattetel/getemptyrow','bizonylattetelController#getemptyrow','adminbizonylattetelgetemptyrow');
-$router->map('GET','/admin/bizonylattetel/save','bizonylattetelController#save','adminbizonylattetelsave');
+$router->map('POST','/admin/bizonylattetel/save','bizonylattetelController#save','adminbizonylattetelsave');
 $router->map('GET','/admin/bizonylattetel/gettermeklist','termekController#getBizonylattetelSelectList','adminbizonylattetelgettermeklist');
+$router->map('GET','/admin/bizonylattetel/valtozatlist','bizonylattetelController#valtozathtmllist','adminvaltozatlist');
 
 $router->map('GET','/admin/megrendelesfej/viewlist','megrendelesfejController#viewlist','adminmegrendelesfejviewlist');
 $router->map('GET','/admin/megrendelesfej/getlistbody','megrendelesfejController#getlistbody','adminmegrendelesfejgetlistbody');
@@ -70,7 +71,6 @@ $router->map('GET','/admin/termek/getnetto','termekController#getnetto','adminte
 $router->map('GET','/admin/termek/getbrutto','termekController#getbrutto','admintermekgetbrutto');
 $router->map('POST','/admin/termek/save','termekController#save','admintermeksave');
 $router->map('POST','/admin/termek/setflag','termekController#setflag','admintermeksetflag');
-$router->map('GET','/admin/termek/valtozathtmllist','termekController#valtozathtmllist','adminvaltozathtmllist');
 
 $router->map('GET','/admin/termekkapcsolodo/getemptyrow','termekkapcsolodoController#getemptyrow','admintermekkapcsolodogetemptyrow');
 $router->map('POST','/admin/termekkapcsolodo/save','termekkapcsolodoController#save','admintermekkapcsolodosave');

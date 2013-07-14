@@ -14,7 +14,7 @@ class megrendelesfejController extends bizonylatfejController {
 		parent::__construct($params);
 	}
 
-	protected function setVars($view) {
+	public function setVars($view) {
 		$view->setVar('showteljesites',false);
 		$view->setVar('showesedekesseg',false);
 		$view->setVar('showhatarido',true);

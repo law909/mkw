@@ -436,16 +436,20 @@ class termekController extends \mkwhelpers\MattableController {
 		echo $ret;
 	}
 
-	public function valtozathtmllist() {
-		$id=$this->params->getRequestParam('id',0);
-		$termek=$this->getRepo()->findWithJoins($id);
-		$valtozatok=$termek->getValtozatok();
-		$ret='<select><option>Válasszon</option>';
-		foreach($valtozatok as $valt) {
-			$ret.='<option value="'.$valt->getId().'">'.$valt->getErtek1().' - '.$valt->getErtek2().'</option>';
+	public function getValtozatList($termekid,$sel) {
+		$ret=array();
+		$termek=$this->getRepo()->findWithJoins($termekid);
+		if ($termek) {
+			$valtozatok=$termek->getValtozatok();
+			foreach($valtozatok as $valt) {
+				$ret[]=array(
+					'id'=>$valt->getId(),
+					'caption'=>$valt->getNev(),
+					'selected'=>$sel==$valt->getId()
+				);
+			}
 		}
-		$ret.='</select>';
-		echo $ret;
+		return $ret;
 	}
 
 	public function getBizonylattetelSelectList() {

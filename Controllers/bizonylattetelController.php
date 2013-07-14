@@ -31,6 +31,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 			$x['oper']='edit';
 		}
 		$x['termek']=$t->getTermekId();
+		$x['termekvaltozat']=$t->getTermekvaltozatId();
 		$x['termeknev']=$t->getTermeknev();
 		$x['cikkszam']=$t->getCikkszam();
 		$x['me']=$t->getMe();
@@ -45,8 +46,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$x['bruttohuf']=$t->getBruttohuf();
 		$x['hataridostr']=$t->getHataridoStr();
 		if ($forKarb) {
-			// autocomplete van select helyett
-			//$x['termeklist']=$termek->getBizonylattetelSelectList(($t->getTermek()?$t->getTermek()->getId():0));
+			$x['valtozatlist']=$termek->getValtozatList($t->getTermekId(), $t->getTermekvaltozatId());
 			$x['vtszlist']=$vtsz->getSelectList(($t->getVtsz()?$t->getVtsz()->getId():0));
 			$x['afalist']=$afa->getSelectList(($t->getAfa()?$t->getAfa()->getId():0));
 		}
@@ -60,6 +60,9 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 	public function getemptyrow() {
 		$view=$this->createView('bizonylattetelkarb.tpl');
 		$view->setVar('tetel',$this->loadVars(null,true));
+		// TODO emeld ki bizonylattipusba
+		$fejc=new megrendelesfejController($this->params);
+		$fejc->setVars($view);
 		echo $view->getTemplateResult();
 	}
 
@@ -107,5 +110,16 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 				'afahuf'=>$afahuf
 			)
 		);
+	}
+
+	public function valtozathtmllist() {
+		$tc=new termekController($this->params);
+		$tomb=array(
+			'id'=>$this->params->getRequestParam('tetelid',0),
+			'valtozatlist'=>$tc->getValtozatList($this->params->getRequestParam('id',0),$this->params->getRequestParam('sel',0))
+		);
+		$view=$this->createView('bizonylatteteltermekvaltozatselect.tpl');
+		$view->setVar('tetel',$tomb);
+		echo $view->getTemplateResult();
 	}
 }
