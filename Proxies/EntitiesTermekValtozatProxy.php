@@ -270,6 +270,12 @@ class EntitiesTermekValtozatProxy extends \Entities\TermekValtozat implements \D
         return parent::setCikkszam($cikkszam);
     }
 
+    public function getNev()
+    {
+        $this->__load();
+        return parent::getNev();
+    }
+
 
     public function __sleep()
     {

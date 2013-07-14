@@ -72,18 +72,6 @@ class EntitiesBizonylattetelProxy extends \Entities\Bizonylattetel implements \D
         return parent::removeBizonylatfej();
     }
 
-    public function getTetelsorszam()
-    {
-        $this->__load();
-        return parent::getTetelsorszam();
-    }
-
-    public function setTetelsorszam($val)
-    {
-        $this->__load();
-        return parent::setTetelsorszam($val);
-    }
-
     public function getMozgat()
     {
         $this->__load();
@@ -579,7 +567,7 @@ class EntitiesBizonylattetelProxy extends \Entities\Bizonylattetel implements \D
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'bizonylatfej', 'tetelsorszam', 'mozgat', 'arvaltoztat', 'storno', 'stornozott', 'termek', 'termeknev', 'me', 'kiszereles', 'cikkszam', 'idegencikkszam', 'ehparany', 'hparany', 'szelesseg', 'magassag', 'hosszusag', 'suly', 'osszehajthato', 'vtsz', 'vtsznev', 'afa', 'afanev', 'afakulcs', 'gymennyiseg', 'mennyiseg', 'nettoegysar', 'bruttoegysar', 'nettoegysarhuf', 'bruttoegysarhuf', 'enettoegysar', 'ebruttoegysar', 'enettoegysarhuf', 'ebruttoegysarhuf', 'netto', 'afaertek', 'brutto', 'valutanem', 'valutanemnev', 'nettohuf', 'afaertekhuf', 'bruttohuf', 'arfolyam', 'parbizonylattetel', 'szulobizonylattetelek', 'hatarido', 'termekvaltozat');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'bizonylatfej', 'mozgat', 'arvaltoztat', 'storno', 'stornozott', 'termek', 'termeknev', 'me', 'kiszereles', 'cikkszam', 'idegencikkszam', 'ehparany', 'hparany', 'szelesseg', 'magassag', 'hosszusag', 'suly', 'osszehajthato', 'vtsz', 'vtsznev', 'afa', 'afanev', 'afakulcs', 'gymennyiseg', 'mennyiseg', 'nettoegysar', 'bruttoegysar', 'nettoegysarhuf', 'bruttoegysarhuf', 'enettoegysar', 'ebruttoegysar', 'enettoegysarhuf', 'ebruttoegysarhuf', 'netto', 'afaertek', 'brutto', 'valutanem', 'valutanemnev', 'nettohuf', 'afaertekhuf', 'bruttohuf', 'arfolyam', 'parbizonylattetel', 'szulobizonylattetelek', 'hatarido', 'termekvaltozat');
     }
 
     public function __clone()
