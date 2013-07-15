@@ -33,6 +33,8 @@ class TermekErtesito {
 	 * @JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="no action")
 	 */
 	private $partner;
+	/** @Column(type="datetime",nullable=true) */
+	private $sent;
 
 	public function getId() {
 		return $this->id;
@@ -109,4 +111,11 @@ class TermekErtesito {
 		}
 	}
 
+	public function getSent() {
+		return $this->sent;
+	}
+
+	public function setSent($val) {
+		$this->sent=$val;
+	}
 }

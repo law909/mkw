@@ -114,10 +114,22 @@ class EntitiesTermekErtesitoProxy extends \Entities\TermekErtesito implements \D
         return parent::removeTermek();
     }
 
+    public function getSent()
+    {
+        $this->__load();
+        return parent::getSent();
+    }
+
+    public function setSent($val)
+    {
+        $this->__load();
+        return parent::setSent($val);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'email', 'termek', 'partner');
+        return array('__isInitialized__', 'id', 'created', 'email', 'termek', 'partner', 'sent');
     }
 
     public function __clone()

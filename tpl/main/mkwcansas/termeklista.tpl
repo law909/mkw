@@ -102,7 +102,7 @@
 									{/foreach}
 								</div>
 							</div>
-							{$_kosarbaclass="kosarba"}
+							{$_kosarbaclass="js-kosarba"}
 							{if ($_termek.valtozatok|default)}
 								<div class="termekprice">{$_termek.valtozatok.fixname}: {$_termek.valtozatok.fixvalue}</div>
 								{if ($_termek.valtozatok.name)}
@@ -115,7 +115,7 @@
 									</select>
 								</div>
 								{/if}
-								{$_kosarbaclass="kosarbavaltozat"}
+								{$_kosarbaclass="js-kosarbavaltozat"}
 							{/if}
 							{if ($_termek.mindenvaltozat|default)}
 								{foreach $_termek.mindenvaltozat as $_valtozat}
@@ -129,17 +129,17 @@
 									</select>
 									</div>
 								{/foreach}
-								{$_kosarbaclass="kosarbamindenvaltozat"}
+								{$_kosarbaclass="js-kosarbamindenvaltozat"}
 							{/if}
 							<div id="termekprice{$_termek.id}-{$_termek.valtozatid|default}" class="termekprice">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
 							{if ($_termek.nemkaphato)}
 								<div class="row">
-									<a href="#" rel="nofollow" class="termekertesito btn btn-inverse pull-right" data-termek="{$_termek.id}">
+									<a href="#" rel="nofollow" class="js-termekertesito btn btn-inverse pull-right" data-termek="{$_termek.id}">
 										{t('Elfogyott')}
 									</a>
 								</div>
 								<div class="row">
-									<a href="#" rel="nofollow" class="termekertesito pull-right" data-termek="{$_termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
+									<a href="#" rel="nofollow" class="js-termekertesito pull-right" data-termek="{$_termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
 								</div>
 							{else}
 								<a href="/kosar/add?id={$_termek.id}" rel="nofollow" class="{$_kosarbaclass} btn cartbtn pull-right" data-termek="{$_termek.id}" data-id="{$_termek.id}-{$_termek.valtozatid|default}" data-vid="{$_termek.valtozatid|default}">
@@ -203,15 +203,15 @@
 								<td class="gtermekprice">{number_format($_termek.bruttohuf,0,',',' ')} Ft
 								{if ($_termek.nemkaphato)}
 									<div class="row">
-										<a href="#" rel="nofollow" class="termekertesito btn btn-inverse pull-right" data-termek="{$_termek.id}">
+										<a href="#" rel="nofollow" class="js-termekertesito btn btn-inverse pull-right" data-termek="{$_termek.id}">
 											{t('Elfogyott')}
 										</a>
 									</div>
 									<div class="row">
-										<a href="#" rel="nofollow" class="termekertesito pull-right" data-termek="{$_termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
+										<a href="#" rel="nofollow" class="js-termekertesito pull-right" data-termek="{$_termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
 									</div>
 								{else}
-									<a href="/kosar/add?id={$_termek.id}" rel="nofollow" class="kosarba btn cartbtn pull-right" data-termek="{$_termek.id}">
+									<a href="/kosar/add?id={$_termek.id}" rel="nofollow" class="js-kosarba btn cartbtn pull-right" data-termek="{$_termek.id}">
 										{t('Kosárba')}
 									</a>
 								{/if}

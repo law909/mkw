@@ -187,6 +187,7 @@ class Store {
 		if ($user['loggedin']) {
 			$u=$pc->getLoggedInUser();
 			$user['nev']=$u->getNev();
+			$user['email']=$u->getEmail();
 		}
 		$v->setVar('user',$user);
 	}

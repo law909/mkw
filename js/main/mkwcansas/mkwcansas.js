@@ -75,7 +75,7 @@ var mkw=function($) {
 		document.location=url;
 	}
 
-	function overrideFormSubmit(form,msg) {
+	function overrideFormSubmit(form,msg,events) {
 		var $form=form;
 		if (typeof form == 'string') {
 			$form=$(form);
@@ -99,11 +99,28 @@ var mkw=function($) {
 				type: 'POST',
 				data: data,
 				beforeSend:function(x) {
-					showMessage('Adatait módosítjuk...');
+					if (msg) {
+						showMessage(msg);
+					}
+				},
+				complete:function(xhr,status) {
+					if (msg) {
+						closeMessage();
+					}
+					if (typeof events.complete == 'function') {
+						events.complete.apply($form,xhr,status);
+					}
+				},
+				error:function(xhr,status,error) {
+					if (typeof events.error == 'function') {
+						events.error.apply($form,xhr,status);
+					}
+				},
+				success:function(data,status,xhr) {
+					if (typeof events.success == 'function') {
+						events.success.apply($form,data,status,xhr);
+					}
 				}
-			})
-			.always(function() {
-				closeMessage();
 			});
 		});
 
@@ -361,6 +378,10 @@ var logincheck={
 };
 
 $(document).ready(function(){
+
+	var $termekertesitomodal=$('#termekertesitoModal'),
+		$termekertesitoform=$('#termekertesitoform');
+
 	if ($.fn.mattaccord) {
 		$(document).mattaccord();
 	}
@@ -438,8 +459,23 @@ $(document).ready(function(){
 			}
 		});
 	}
-	$('#termekertesitoModal').modal({
+	$termekertesitomodal.modal({
 		show:false
+	});
+	$('.js-termekertesito').on('click',function() {
+		$termekertesitoform.find('input[name="termekid"]').val($(this).data('termek'));
+		$termekertesitomodal.modal('show');
+		return false;
+	});
+	mkw.overrideFormSubmit($termekertesitoform,false,{
+		complete: function(){
+			$termekertesitoform.find('input[name="termekid"]').val('');
+			$termekertesitomodal.modal('hide');
+		}
+	});
+	$('.js-termekertesitomodalok').on('click',function(e) {
+		e.preventDefault();
+		$termekertesitoform.submit();
 	});
 	if ($.fn.magnificPopup) {
 		$('.js-lightbox').magnificPopup({
@@ -453,7 +489,7 @@ $(document).ready(function(){
 		});
 	}
 	// nincs valtozat
-	$('.kosarba').on('click',function(e){
+	$('.js-kosarba').on('click',function(e){
 		var $this=$(this);
 		e.preventDefault();
 		$.ajax({
@@ -474,7 +510,7 @@ $(document).ready(function(){
 		});
 	});
 	// lathato valtozat van
-	$('.kosarbavaltozat').on('click',function(e){
+	$('.js-kosarbavaltozat').on('click',function(e){
 		var $this=$(this),
 			id=$this.attr('data-id');
 
@@ -499,7 +535,7 @@ $(document).ready(function(){
 		});
 	});
 	// valaszthato valtozat van
-	$('.kosarbamindenvaltozat').on('click',function(e){
+	$('.js-kosarbamindenvaltozat').on('click',function(e){
 		var $this=$(this),
 			termekid=$this.attr('data-termek'),
 			tipusok=new Array(),ertekek=new Array(),
@@ -559,7 +595,7 @@ $(document).ready(function(){
 			$('#termekprice'+id).text(d['price']);
 		})
 		.always(function() {
-			$('.kosarbavaltozat[data-id="'+id+'"]').attr('data-vid',$this.val());
+			$('.js-kosarbavaltozat[data-id="'+id+'"]').attr('data-vid',$this.val());
 		});
 	});
 	$('.mindenValtozatEdit').on('change',function() {
@@ -783,11 +819,6 @@ $(document).ready(function(){
 		.always(function() {
 			mkw.closeMessage();
 		});
-	});
-	$('.termekertesito').on('click',function() {
-		$('#termekertesitoform input[name="termekid"]').val($(this).data('termekid'));
-		$('#termekertesitoModal').modal('show');
-		return false;
 	});
 	var $fiokadataimform=$('#FiokAdataim');
 	if ($fiokadataimform.length>0) {

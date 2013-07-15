@@ -55,9 +55,9 @@
 							</ul>
 						</div>
 					</div>
-					{$_kosarbaclass="kosarba"}
+					{$_kosarbaclass="js-kosarba"}
 					{if ($termek.valtozatok)}
-					{$_kosarbaclass="kosarbamindenvaltozat"}
+					{$_kosarbaclass="js-kosarbamindenvaltozat"}
 					<div class="row">
 						<div class="span4">
 							<ul class="simalista pull-left">
@@ -81,12 +81,12 @@
 					</div>
 					{if ($termek.nemkaphato)}
 					<div class="row">
-						<a href="#" rel="nofollow" class="termekertesito btn btn-large btn-inverse pull-right" data-termek="{$termek.id}" data-id="{$termek.id}">
+						<a href="#" rel="nofollow" class="js-termekertesito btn btn-large btn-inverse pull-right" data-termek="{$termek.id}" data-id="{$termek.id}">
 							{t('Elfogyott')}
 						</a>
 					</div>
 					<div class="row">
-						<a href="#" rel="nofollow" class="termekertesito pull-right" data-termek="{$termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
+						<a href="#" rel="nofollow" class="js-termekertesito pull-right" data-termek="{$termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
 					</div>
 					{else}
 					<div class="row">
