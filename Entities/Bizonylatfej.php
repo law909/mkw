@@ -5,9 +5,6 @@ use mkw\store;
 
 /** @Entity(repositoryClass="Entities\BizonylatfejRepository")
  *  @Table(name="bizonylatfej")
- *  @InheritanceType("SINGLE_TABLE")
- *  @DiscriminatorColumn(name="bizonylattipus", type="string", length=30)
- *  @DiscriminatorMap({"megrendeles"="Megrendelesfej"})
  *  @HasLifecycleCallbacks
 **/
 class Bizonylatfej {
@@ -26,6 +23,11 @@ class Bizonylatfej {
 	 * @Column(type="datetime",nullable=true)
 	 */
 	private $lastmod;
+	/**
+	 * @ManyToOne(targetEntity="Bizonylattipus", inversedBy="bizonylatfejek")
+	 * @JoinColumn(name="bizonylattipus_id", referencedColumnName="id",nullable=true,onDelete="no action")
+	 */
+	private $bizonylattipus;
 	/** @Column(type="string",length=100,nullable=true) */
 	private $bizonylatnev;
 	/** @Column(type="integer") */
@@ -186,24 +188,8 @@ class Bizonylatfej {
 		$this->bizonylattetelek=new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
-	protected function realgetBizonylattipus($kod) {
-		return store::getEm()->getRepository('Entities\Bizonylattipus')->find($kod);
-	}
-
-	public function getBizonylattipus() {
-		// felül kell írni a gyerekekben
-	}
-
 	public function setPersistentData() {
-		$this->setBizonylattipusData();
 		$this->setTulajData();
-	}
-
-	protected function setBizonylattipusData() {
-		$bt=$this->getBizonylattipus();
-		$this->setIrany($bt->getIrany());
-		$this->setBizonylatnev($bt->getNev());
-		$this->setPenztmozgat($bt->getPenztmozgat());
 	}
 
 	protected function setTulajData() {
@@ -273,6 +259,36 @@ class Bizonylatfej {
 
 	public function setIrany($val) {
 		$this->irany=$val;
+	}
+
+	public function getBizonylattipus(){
+		return $this->bizonylattipus;
+	}
+
+	public function getBizonylattipusId() {
+		if ($this->bizonylattipus) {
+			return $this->bizonylattipus->getId();
+		}
+		return '';
+	}
+
+	public function setBizonylattipus(Bizonylattipus $val) {
+		if ($this->bizonylattipus!==$val) {
+			$this->bizonylattipus=$val;
+			$this->setIrany($val->getIrany());
+			$this->setBizonylatnev($val->getNev());
+			$this->setPenztmozgat($val->getPenztmozgat());
+//			$val->addBizonylat($this);
+		}
+	}
+
+	public function removeBizonylattipus() {
+		if ($this->bizonylattipus !==null) {
+//			$val=$this->bizonylattipus;
+			$this->bizonylattipus=null;
+			$this->bizonylatnev='';
+//			$val->removeBizonylat($this);
+		}
 	}
 
 	public function getBizonylatnev() {

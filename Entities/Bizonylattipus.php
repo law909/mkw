@@ -11,7 +11,7 @@ class Bizonylattipus {
 	 * @Id @Column(type="string",length=30)
 	 */
 	private $id;
-	/** @Column(type="string",length=40) */
+	/** @Column(type="string",length=100) */
 	private $nev;
 	/** @Column(type="integer") */
 	private $irany=-1;
@@ -29,6 +29,20 @@ class Bizonylattipus {
 	private $penztmozgat=true;
 	/** @Column(type="boolean",nullable=false) */
 	private $editprinted=false;
+	/** @Column(type="boolean",nullable=false) */
+	private $showteljesites=false;
+	/** @Column(type="boolean",nullable=false) */
+	private $showesedekesseg=false;
+	/** @Column(type="boolean",nullable=false) */
+	private $showhatarido=false;
+	/** @Column(type="boolean",nullable=false) */
+	private $showvalutanem=false;
+	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylattipus",cascade={"persist","remove"}) */
+	private $bizonylatfejek;
+
+	public function __construct() {
+		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
+	}
 
 	public function getId() {
 		return $this->id;
@@ -104,5 +118,37 @@ class Bizonylattipus {
 
 	public function setEditprinted($val) {
 		$this->editprinted=$val;
+	}
+
+	public function getShowteljesites() {
+		return $this->showteljesites;
+	}
+
+	public function setShowteljesites($show) {
+		$this->showteljesites=$show;
+	}
+
+	public function getShowesedekesseg() {
+		return $this->showesedekesseg;
+	}
+
+	public function setShowesedekesseg($show) {
+		$this->showesedekesseg=$show;
+	}
+
+	public function getShowhatarido() {
+		return $this->showhatarido;
+	}
+
+	public function setShowhatarido($show) {
+		$this->showhatarido=$show;
+	}
+
+	public function getShowvalutanem() {
+		return $this->showvalutanem;
+	}
+
+	public function setShowvalutanem($show) {
+		$this->showvalutanem=$show;
 	}
 }

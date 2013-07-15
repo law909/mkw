@@ -6,7 +6,7 @@ use mkw\store;
 class megrendelesfejController extends bizonylatfejController {
 
 	public function __construct($params) {
-		$this->setEntityName('Entities\Megrendelesfej');
+		$this->setEntityName('Entities\Bizonylatfej');
 		$this->setKarbFormTplName('bizonylatfejkarbform.tpl');
 		$this->setKarbTplName('bizonylatfejkarb.tpl');
 		$this->setListBodyRowTplName('bizonylatfejlista_tbody_tr.tpl');

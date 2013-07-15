@@ -150,10 +150,58 @@ class EntitiesBizonylattipusProxy extends \Entities\Bizonylattipus implements \D
         return parent::setEditprinted($val);
     }
 
+    public function getShowteljesites()
+    {
+        $this->__load();
+        return parent::getShowteljesites();
+    }
+
+    public function setShowteljesites($show)
+    {
+        $this->__load();
+        return parent::setShowteljesites($show);
+    }
+
+    public function getShowesedekesseg()
+    {
+        $this->__load();
+        return parent::getShowesedekesseg();
+    }
+
+    public function setShowesedekesseg($show)
+    {
+        $this->__load();
+        return parent::setShowesedekesseg($show);
+    }
+
+    public function getShowhatarido()
+    {
+        $this->__load();
+        return parent::getShowhatarido();
+    }
+
+    public function setShowhatarido($show)
+    {
+        $this->__load();
+        return parent::setShowhatarido($show);
+    }
+
+    public function getShowvalutanem()
+    {
+        $this->__load();
+        return parent::getShowvalutanem();
+    }
+
+    public function setShowvalutanem($show)
+    {
+        $this->__load();
+        return parent::setShowvalutanem($show);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'nev', 'irany', 'nyomtatni', 'azonosito', 'kezdosorszam', 'peldanyszam', 'mozgat', 'penztmozgat', 'editprinted');
+        return array('__isInitialized__', 'id', 'nev', 'irany', 'nyomtatni', 'azonosito', 'kezdosorszam', 'peldanyszam', 'mozgat', 'penztmozgat', 'editprinted', 'showteljesites', 'showesedekesseg', 'showhatarido', 'showvalutanem', 'bizonylatfejek');
     }
 
     public function __clone()

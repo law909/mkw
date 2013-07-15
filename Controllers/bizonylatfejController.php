@@ -7,7 +7,7 @@ use mkw\store;
 class bizonylatfejController extends \mkwhelpers\MattableController {
 
 	public function __construct($params) {
-		$this->setEntityName('Entities\Megrendelesfej');
+		$this->setEntityName('Entities\Bizonylatfej');
 //		$this->setKarbFormTplName('megrendelesfejkarbform.tpl');
 //		$this->setKarbTplName('megrendelesfejkarb.tpl');
 //		$this->setListBodyRowTplName('megrendelesfejlista_tbody_tr.tpl');
