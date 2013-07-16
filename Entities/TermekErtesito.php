@@ -44,6 +44,13 @@ class TermekErtesito {
 		return $this->created;
 	}
 
+	public function getCreatedStr() {
+		if ($this->getCreated()) {
+			return $this->getCreated()->format(\mkw\Store::$DateFormat);
+		}
+		return '';
+	}
+
 	public function getEmail() {
 		return $this->email;
 	}
@@ -96,6 +103,13 @@ class TermekErtesito {
 		return '';
 	}
 
+	public function getTermekNev() {
+		if ($this->termek) {
+			return $this->termek->getNev();
+		}
+		return '';
+	}
+
 	public function setTermek(Termek $val) {
 		if ($this->termek!==$val) {
 			$this->termek=$val;
@@ -113,6 +127,13 @@ class TermekErtesito {
 
 	public function getSent() {
 		return $this->sent;
+	}
+
+	public function getSentStr() {
+		if ($this->getSent()) {
+			return $this->getSent()->format(\mkw\Store::$DateFormat);
+		}
+		return '';
 	}
 
 	public function setSent($val) {

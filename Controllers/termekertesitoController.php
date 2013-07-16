@@ -10,6 +10,22 @@ class termekertesitoController extends \mkwhelpers\MattableController {
 		parent::__construct($params);
 	}
 
+	protected function loadVars($t) {
+		$x=array();
+		if (!$t) {
+			$t=new \Entities\TermekErtesito();
+			$this->getEm()->detach($t);
+		}
+		$x['id']=$t->getId();
+		$x['createdstr']=$t->getCreatedStr();
+		$x['sentstr']=$t->getSentStr();
+		$termek=$t->getTermek();
+		if ($termek) {
+			$x['termek']=$termek->toKosar(null);
+		}
+		return $x;
+	}
+
 	protected function setFields($obj) {
 		$termek=$this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termekid'));
 		if ($termek) {
@@ -22,5 +38,14 @@ class termekertesitoController extends \mkwhelpers\MattableController {
 			$obj->setEmail($this->params->getStringRequestParam('email'));
 		}
 		return $obj;
+	}
+
+	public function getAllByPartner($partner) {
+		$list=$this->getRepo()->getByPartner($partner);
+		$ret=array();
+		foreach($list as $l) {
+			$ret[]=$this->loadVars($l);
+		}
+		return $ret;
 	}
 }

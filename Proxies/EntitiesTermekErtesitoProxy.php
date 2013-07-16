@@ -48,6 +48,12 @@ class EntitiesTermekErtesitoProxy extends \Entities\TermekErtesito implements \D
         return parent::getCreated();
     }
 
+    public function getCreatedStr()
+    {
+        $this->__load();
+        return parent::getCreatedStr();
+    }
+
     public function getEmail()
     {
         $this->__load();
@@ -102,6 +108,12 @@ class EntitiesTermekErtesitoProxy extends \Entities\TermekErtesito implements \D
         return parent::getTermekId();
     }
 
+    public function getTermekNev()
+    {
+        $this->__load();
+        return parent::getTermekNev();
+    }
+
     public function setTermek(\Entities\Termek $val)
     {
         $this->__load();
@@ -118,6 +130,12 @@ class EntitiesTermekErtesitoProxy extends \Entities\TermekErtesito implements \D
     {
         $this->__load();
         return parent::getSent();
+    }
+
+    public function getSentStr()
+    {
+        $this->__load();
+        return parent::getSentStr();
     }
 
     public function setSent($val)

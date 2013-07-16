@@ -456,6 +456,8 @@ class partnerController extends \mkwhelpers\MattableController {
 			store::storePrevUri();
 			$view->setVar('pagetitle',t('Fiók').' - '.\mkw\Store::getParameter(\mkw\consts::Oldalcim));
 			$view->setVar('user',$this->loadVars($user)); // fillTemplate-ben megtortenik
+			$tec=new termekertesitoController($this->params);
+			$view->setVar('ertesitok',$tec->getAllByPartner($user));
 			$view->printTemplateResult();
 		}
 		else {

@@ -15,6 +15,7 @@
 					<li><a href="#szamlaadatok" data-toggle="tab">Számlázási adatok</a></li>
 					<li><a href="#szallitasiadatok" data-toggle="tab">Szállítási adatok</a></li>
 					<li><a href="#megrend" data-toggle="tab">Eddigi megrendelések</a></li>
+					<li><a href="#termekertesito" data-toggle="tab">Termékértesítők</a></li>
 					<li><a href="#csomag" data-toggle="tab">Csomagkövetés</a></li>
 					<li><a href="#visszajel" data-toggle="tab">Visszajelzések</a></li>
 				</ul>
@@ -116,6 +117,20 @@
 					</div>
 					<div class="tab-pane" id="megrend">
 						Eddigi megrendelések
+					</div>
+					<div class="tab-pane" id="termekertesito">
+						{foreach $ertesitok as $ertesito}
+						<div class="row js-termekertesito">
+							<div class="span1"><a href="/termek/{$ertesito.termek.slug}"><img src="{$ertesito.termek.kiskepurl}" alt="{$ertesito.termek.caption}" title="{$ertesito.termek.caption}"></a></div>
+							<div class="span4">
+								<a href="/termek/{$ertesito.termek.slug}">{$ertesito.termek.caption}</a>
+								<div>Felíratkozás dátuma: {$ertesito.createdstr}</div>
+							</div>
+							<div class="span1"><a href="#" class="js-termekertesitodel" data-id="{$ertesito.id}">Leíratkozás</a></div>
+						</div>
+						{foreachelse}
+							<h3>Nincs termékértesítője</h3>
+						{/foreach}
 					</div>
 					<div class="tab-pane" id="csomag">
 						Csomagkövetés

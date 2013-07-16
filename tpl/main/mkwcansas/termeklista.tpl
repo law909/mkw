@@ -134,12 +134,12 @@
 							<div id="termekprice{$_termek.id}-{$_termek.valtozatid|default}" class="termekprice">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
 							{if ($_termek.nemkaphato)}
 								<div class="row">
-									<a href="#" rel="nofollow" class="js-termekertesito btn btn-inverse pull-right" data-termek="{$_termek.id}">
+									<a href="#" rel="nofollow" class="js-termekertesitobtn btn btn-inverse pull-right" data-termek="{$_termek.id}">
 										{t('Elfogyott')}
 									</a>
 								</div>
 								<div class="row">
-									<a href="#" rel="nofollow" class="js-termekertesito pull-right" data-termek="{$_termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
+									<a href="#" rel="nofollow" class="js-termekertesitobtn pull-right" data-termek="{$_termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
 								</div>
 							{else}
 								<a href="/kosar/add?id={$_termek.id}" rel="nofollow" class="{$_kosarbaclass} btn cartbtn pull-right" data-termek="{$_termek.id}" data-id="{$_termek.id}-{$_termek.valtozatid|default}" data-vid="{$_termek.valtozatid|default}">
@@ -203,12 +203,12 @@
 								<td class="gtermekprice">{number_format($_termek.bruttohuf,0,',',' ')} Ft
 								{if ($_termek.nemkaphato)}
 									<div class="row">
-										<a href="#" rel="nofollow" class="js-termekertesito btn btn-inverse pull-right" data-termek="{$_termek.id}">
+										<a href="#" rel="nofollow" class="js-termekertesitobtn btn btn-inverse pull-right" data-termek="{$_termek.id}">
 											{t('Elfogyott')}
 										</a>
 									</div>
 									<div class="row">
-										<a href="#" rel="nofollow" class="js-termekertesito pull-right" data-termek="{$_termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
+										<a href="#" rel="nofollow" class="js-termekertesitobtn pull-right" data-termek="{$_termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
 									</div>
 								{else}
 									<a href="/kosar/add?id={$_termek.id}" rel="nofollow" class="js-kosarba btn cartbtn pull-right" data-termek="{$_termek.id}">

@@ -462,7 +462,7 @@ $(document).ready(function(){
 	$termekertesitomodal.modal({
 		show:false
 	});
-	$('.js-termekertesito').on('click',function() {
+	$('.js-termekertesitobtn').on('click',function() {
 		$termekertesitoform.find('input[name="termekid"]').val($(this).data('termek'));
 		$termekertesitomodal.modal('show');
 		return false;
@@ -476,6 +476,27 @@ $(document).ready(function(){
 	$('.js-termekertesitomodalok').on('click',function(e) {
 		e.preventDefault();
 		$termekertesitoform.submit();
+	});
+	$('.js-termekertesitodel').on('click',function(e) {
+		var $this=$(this);
+		e.preventDefault();
+		$.ajax({
+			url:'/termekertesito/save',
+			type:'POST',
+			data:{
+				oper: 'del',
+				id: $this.data('id')
+			},
+			beforeSend:function() {
+				mkw.showMessage('A leíratkozás folyamatban van.');
+			},
+			success:function() {
+				$this.parents('div.js-termekertesito').remove();
+			},
+			complete:function() {
+				mkw.closeMessage();
+			}
+		});
 	});
 	if ($.fn.magnificPopup) {
 		$('.js-lightbox').magnificPopup({

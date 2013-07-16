@@ -81,12 +81,12 @@
 					</div>
 					{if ($termek.nemkaphato)}
 					<div class="row">
-						<a href="#" rel="nofollow" class="js-termekertesito btn btn-large btn-inverse pull-right" data-termek="{$termek.id}" data-id="{$termek.id}">
+						<a href="#" rel="nofollow" class="js-termekertesitobtn btn btn-large btn-inverse pull-right" data-termek="{$termek.id}" data-id="{$termek.id}">
 							{t('Elfogyott')}
 						</a>
 					</div>
 					<div class="row">
-						<a href="#" rel="nofollow" class="js-termekertesito pull-right" data-termek="{$termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
+						<a href="#" rel="nofollow" class="js-termekertesitobtn pull-right" data-termek="{$termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
 					</div>
 					{else}
 					<div class="row">
