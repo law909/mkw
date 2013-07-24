@@ -102,8 +102,6 @@ class KosarRepository extends \mkwhelpers\Repository {
 		if (count($r)>0) {
 			return $r[0];
 		}
-		else {
-			return $r;
-		}
+		return null;
 	}
 }

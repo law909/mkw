@@ -103,7 +103,7 @@ class Kosar {
 		return '';
 	}
 
-	public function setPartner(Partner $val) {
+	public function setPartner($val) {
 		if ($this->partner!==$val) {
 			$this->partner=$val;
 //			$val->addBizonylatfej($this);

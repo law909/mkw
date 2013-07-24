@@ -147,15 +147,18 @@ class kosarController extends \mkwhelpers\MattableController {
 		}
 
 		if ($termek) {
+			$termekid=$termek->getId();
 			$sessionid=\Zend_Session::getId();
 			$pc=new partnerController($this->params);
+			$partnerid=null;
 			$partner=$pc->getLoggedInUser();
-			$termekid=$termek->getId();
+			if ($partner) {
+				$partnerid=$partner->getId();
+			}
 			$valutanemid=store::getParameter(\mkw\consts::Valutanem);
 			$valutanem=$this->getEm()->getRepository('Entities\Valutanem')->find($valutanemid);
 
 			$k=$this->getRepo()->getTetelsor($sessionid,$partnerid,$termekid,$vid,$valutanemid);
-
 			if ($k) {
 				$k->novelMennyiseg();
 			}
