@@ -36,6 +36,10 @@ $.jgrid.useJSON=true;
 	<table id="raktargrid"></table>
 	<div id="raktargridpager"></div>
 	</div>
+	<div class="egyebadat-grid">
+	<table id="irszamgrid"></table>
+	<div id="irszamgridpager"></div>
+	</div>
 </div>
 <div class="egyebadat-wrapper">
 	<div class="egyebadat-grid">

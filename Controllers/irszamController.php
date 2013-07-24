@@ -3,25 +3,30 @@ namespace Controllers;
 
 use mkw\store;
 
-class ?howto?Controller extends \mkwhelpers\JQGridController {
+class irszamController extends \mkwhelpers\JQGridController {
 
 	public function __construct($params) {
-		$this->setEntityName('Entities\?Howto?');
+		$this->setEntityName('Entities\Irszam');
 		parent::__construct($params);
 	}
 
 	protected function loadCells($obj) {
-		return array($obj->getNev(),$obj->getLathato());
+		return array($obj->getId(), $obj->getNev());
 	}
 
 	protected function setFields($obj) {
-		$obj->setNev($this->params->getStringRequestParam('nev',$obj->getNev()));
+		$obj->setId($this->params->getStringRequestParam('id', $obj->getId()));
+		$obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
 		return $obj;
 	}
 
 	public function jsonlist() {
 		$filter=array();
 		if ($this->params->getBoolRequestParam('_search',false)) {
+			if (!is_null($this->params->getRequestParam('id',NULL))) {
+				$filter['fields'][]='id';
+				$filter['values'][]=$this->params->getStringRequestParam('id');
+			}
 			if (!is_null($this->params->getRequestParam('nev',NULL))) {
 				$filter['fields'][]='nev';
 				$filter['values'][]=$this->params->getStringRequestParam('nev');
@@ -40,6 +45,7 @@ class ?howto?Controller extends \mkwhelpers\JQGridController {
 		}
 		return $res;
 	}
+	*/
 
 	public function htmllist() {
 		$rec=$this->getRepo()->getAll(array(),array('nev'=>'asc'));
@@ -50,5 +56,4 @@ class ?howto?Controller extends \mkwhelpers\JQGridController {
 		$ret.='</select>';
 		echo $ret;
 	}
-	*/
 }

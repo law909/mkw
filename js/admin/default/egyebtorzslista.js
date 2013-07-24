@@ -848,6 +848,56 @@ $().ready(
 		$(_kft.pager+'_center').hide();
 		$(_kft.pager+'_right').hide();
 
+		// Irszam grid
+		var _irszam={
+				grid:'#irszamgrid',
+				pager:'#irszamgridpager'
+		};
+		var irszamgrid=$(_irszam.grid).jqGrid({
+			url:'/admin/irszam/jsonlist',
+			editurl:'/admin/irszam/save',
+			datatype: 'json',
+			colModel:[
+					{name:'id',index:'id',label:'Ir.szám',width:60,fixed:true,
+							editable:true,
+							editoptions:{size:10,maxlength:10},
+							editrules:{required:true},
+							formoptions:{rowpos:1,label:'Ir.szám:',elmsuffix:'*'}},
+					{name:'nev',index:'nev',label:'Név',width:160,fixed:true,
+							editable:true,
+							editoptions:{size:25,maxlength:255},
+							editrules:{required:true},
+							formoptions:{rowpos:2,label:'Név:',elmsuffix:'*'}}],
+			rowNum:100000,
+			rowList:[10,20,30],
+			pager: _irszam.pager,
+			sortname: 'nev',
+			sortorder: 'asc',
+			viewrecords: true,
+			loadonce: false,
+			gridview: true,
+			height: 100,
+			width: 320,
+			hiddengrid: true,
+			caption:'Irányítószámok'});
+		$(_irszam.grid).jqGrid('navGrid',_irszam.pager,{edit:true,add:true,del:true,search:false},
+			{reloadAfterSubmit:true,jqModal:false,closeOnEscape:true,bottominfo:_txt.req},
+			{reloadAfterSubmit:true,jqModal:false,closeOnEscape:true,bottominfo:_txt.req},
+			{reloadAfterSubmit:true});
+		$(_irszam.grid).jqGrid('navButtonAdd',_irszam.pager,{caption:_txt.srch,title:_txt.srchtoggle,buttonicon:_txt.srchicon,
+			onClickButton:function(){
+				irszamgrid[0].toggleToolbar();
+			}
+		});
+		$(_irszam.grid).jqGrid('navButtonAdd',_irszam.pager,{caption:_txt.clr,title:_txt.clrtitle,buttonicon:_txt.clricon,
+			onClickButton:function(){
+				irszamgrid[0].clearToolbar();
+			}
+		});
+		$(_irszam.grid).jqGrid('filterToolbar');
+		$(_irszam.pager+'_center').hide();
+		$(_irszam.pager+'_right').hide();
+
 		// Altalanos
 		$('.ui-search-toolbar').hide();
 		$('.ui-jqgrid-titlebar').on('click',function(e) {

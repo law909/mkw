@@ -39,6 +39,9 @@ $router->map('POST','/admin/valutanem/save','valutanemController#save','adminval
 $router->map('GET','/admin/vtsz/jsonlist','vtszController#jsonlist','adminvtszjsonlist');
 $router->map('GET','/admin/vtsz/htmllist','vtszController#htmllist','adminvtszhtmllist');
 $router->map('POST','/admin/vtsz/save','vtszController#save','adminvtszsave');
+$router->map('GET','/admin/irszam/jsonlist','irszamController#jsonlist','adminirszamjsonlist');
+$router->map('GET','/admin/irszam/htmllist','irszamController#htmllist','adminirszamhtmllist');
+$router->map('POST','/admin/irszam/save','irszamController#save','adminirszamsave');
 
 $router->map('GET','/admin/getsmallurl','adminController#getSmallUrl','admingetsmallurl');
 $router->map('GET','/admin/regeneratekarkod','adminController#regeneratekarkod','adminregeneratekarkod');
