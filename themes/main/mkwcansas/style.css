@@ -8,6 +8,7 @@ p,input{font-size:13px;}
 select{font-size:13px;width:auto;height:auto;margin:0;padding:2px;}
 .table{margin:0;clear:left;}
 td{vertical-align:top;}
+.notvisible{visibility:hidden;}
 .form-actions{background:none;border:none;}
 .okbtn{color:white;text-shadow:0 0 0;background-color:#1ab324;border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);background-color:#087510;background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#1ab324), to(#087510));background-image:-webkit-linear-gradient(top, #1ab324, #087510);background-image:-moz-linear-gradient(top, #1ab324, #087510);background-image:-o-linear-gradient(top, #1ab324, #087510);background-image:linear-gradient(to bottom, #1ab324, #087510);}
 .okbtn:hover,.okbtn:focus,.okbtn:active,.okbtn.active,.okbtn.disabled,.okbtn[disabled]{color:white;background-color:#087510;background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#1ab324), to(#087510));background-image:-webkit-linear-gradient(top, #1ab324, #087510);background-image:-moz-linear-gradient(top, #1ab324, #087510);background-image:-o-linear-gradient(top, #1ab324, #087510);background-image:linear-gradient(to bottom, #1ab324, #087510);}
