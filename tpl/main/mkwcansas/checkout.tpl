@@ -46,10 +46,11 @@
 					<div class="js-chkszamlazasiadatok js-chkdatacontainer">
 						<div class="controls">
 							<label class="checkbox">
-								<input name="szamlaeqszall" type="checkbox" checked>
+								<input name="szamlaeqszall" type="checkbox">
 								Megegyezik a szállítási adatokkal</span>
 							</label>
 						</div>
+						<div class="js-chkszamlaadatok">
 						<div class="controls">
 							<input class="span5" name="szamlanev" type="text" class="span5" placeholder="{t('számlázási név')}" value="{$user.szamlanev}">
 						</div>
@@ -62,6 +63,7 @@
 						</div>
 						<div class="controls">
 							<input name="szamlautca" type="text" class="span5" placeholder="{t('utca')}" value="{$user.szamlautca}">
+						</div>
 						</div>
 						<div class="row chk-actionrow"><a class="btn btn-primary pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallmoddgh">Szállítás és fizetés</a></div>
 					</div>

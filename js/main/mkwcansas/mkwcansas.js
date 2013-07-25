@@ -892,4 +892,8 @@ $(document).ready(function(){
 		var datagroupheader=$($(this).data('datagroupheader'));
 		datagroupheader.click();
 	});
+
+	$('input[name="szamlaeqszall"]').on('change',function(e) {
+		$('.js-chkszamlaadatok').toggleClass('notvisible');
+	});
 });
