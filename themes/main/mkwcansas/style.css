@@ -6,9 +6,10 @@ a{text-decoration:none;color:#333333;}
 a:hover{text-decoration:none;color:#a2a2a2;}
 p,input{font-size:13px;}
 select{font-size:13px;width:auto;height:auto;margin:0;padding:2px;}
+.table{margin:0;}
 td{vertical-align:top;}
 .form-actions{background:none;border:none;}
-.okbtn{color:white;font-size:13px;text-shadow:0 0 0;background-color:#1ab324;border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);background-color:#087510;background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#1ab324), to(#087510));background-image:-webkit-linear-gradient(top, #1ab324, #087510);background-image:-moz-linear-gradient(top, #1ab324, #087510);background-image:-o-linear-gradient(top, #1ab324, #087510);background-image:linear-gradient(to bottom, #1ab324, #087510);}
+.okbtn{color:white;text-shadow:0 0 0;background-color:#1ab324;border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);background-color:#087510;background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#1ab324), to(#087510));background-image:-webkit-linear-gradient(top, #1ab324, #087510);background-image:-moz-linear-gradient(top, #1ab324, #087510);background-image:-o-linear-gradient(top, #1ab324, #087510);background-image:linear-gradient(to bottom, #1ab324, #087510);}
 .okbtn:hover,.okbtn:focus,.okbtn:active,.okbtn.active,.okbtn.disabled,.okbtn[disabled]{color:white;background-color:#087510;background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#1ab324), to(#087510));background-image:-webkit-linear-gradient(top, #1ab324, #087510);background-image:-moz-linear-gradient(top, #1ab324, #087510);background-image:-o-linear-gradient(top, #1ab324, #087510);background-image:linear-gradient(to bottom, #1ab324, #087510);}
 .okbtn:active,.okbtn.active,.okbtn:focus{background-color:#087510;background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#1ab324), to(#087510));background-image:-webkit-linear-gradient(top, #1ab324, #087510);background-image:-moz-linear-gradient(top, #1ab324, #087510);background-image:-o-linear-gradient(top, #1ab324, #087510);background-image:linear-gradient(to bottom, #1ab324, #087510);}
 header a,footer a{color:#f7f7f7;}
@@ -91,4 +92,16 @@ span.aktualislap{color:#e42721;background-color:white;padding:4px;}
 .typeahead{overflow-y:auto;max-height:210px;}
 .typeahead>.active>a,.typeahead>.active>a:hover,.typeahead>.active>a:focus{color:#fff;text-decoration:none;background-color:#e42721;background-image:-moz-linear-gradient(top, #e42721, #b4130e);background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#e42721), to(#b4130e));background-image:-webkit-linear-gradient(top, #e42721, #b4130e);background-image:-o-linear-gradient(top, #e42721, #b4130e);background-image:linear-gradient(to bottom, #e42721, #b4130e);background-repeat:repeat-x;outline:0;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe42721', endColorstr='#ffb4130e', GradientType=0);}
 .typeahead>li>a:hover,.typeahead>li>a:focus{color:#333;background:#fff;}
+.chk-datagroupheader{background-color:#EFEFEF;-webkit-transition:background-color 0.2s linear;-moz-transition:background-color 0.2s linear;-o-transition:background-color 0.2s linear;padding:8px;margin-bottom:10px;cursor:pointer;font-size:18px;font-weight:bold;}.chk-datagroupheader:hover{background-color:rgba(0, 0, 0, 0.3);}
+.chk-staticheader{background-color:#AFAFAF;padding:8px;font-size:16px;font-weight:bold;}
+.chk-controllabel{margin-top:5px;}
+.chk-colleftborder{border-left-style:solid;border-left-width:1px;border-left-color:#EFEFEF;}
+.col30percent{width:33%;min-height:160px;}
+.chk-colheader{font-size:14px;font-weight:bold;}
+.chk-colmargin>div{margin-left:5px;}
+.chk-coldatabottom{margin-bottom:5px;}
+.chk-actionrow{margin-top:10px;margin-bottom:10px;}
+.chk-columncontainer{margin-bottom:10px;}
+[class^="col"]{float:left;}
+.chk-kosar{background-color:#EFEFEF;}
 @media (min-width:480px){#navmain li .sub{width:400px;}}@media (min-width:767px){#navmain li .sub{width:700px;} #navmain li .sub ul{width:125px;float:left;}}@media (min-width:979px){#navmain li .sub{width:940px;} #navmain li .sub ul{width:185px;float:left;}}
