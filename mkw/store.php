@@ -27,7 +27,7 @@ class Store {
 	}
 
 	/**
-	 * @return EntityManager
+	 * @return \Doctrine\ORM\EntityManager
 	 */
 	public static function getEm() {
 		return self::$em;
@@ -149,7 +149,7 @@ class Store {
 
 	/**
 	 *
-	 * @return Zend_Session_Namespace
+	 * @return \Zend_Session_Namespace
 	 */
 	public static function getAdminSession() {
 		if (!isset(self::$adminsession)) {
@@ -166,6 +166,10 @@ class Store {
 		return self::getConfigValue('so');
 	}
 
+	/**
+	 *
+	 * @return \mkwhelpers\TemplateFactory
+	 */
 	public static function getTemplateFactory() {
 		if (!isset(self::$templateFactory)) {
 			self::$templateFactory=new \mkwhelpers\TemplateFactory(self::$config);
@@ -190,8 +194,19 @@ class Store {
 			$user['email']=$u->getEmail();
 		}
 		$v->setVar('user',$user);
+		$rut = self::getRouter();
+		$v->setVar('showloginlink',$rut->generate('showlogin'));
+		$v->setVar('showregisztraciolink',$rut->generate('showregistration'));
+		$v->setVar('showaccountlink',$rut->generate('showaccount'));
+		$v->setVar('dologoutlink',$rut->generate('dologout'));
+		$v->setVar('kosargetlink',$rut->generate('kosarget'));
+		$v->setVar('showcheckoutlink',$rut->generate('showcheckout'));
 	}
 
+	/**
+	 *
+	 * @return \AltoRouter
+	 */
 	public static function getRouter() {
 		if (!isset(self::$router)) {
 			self::$router=new \AltoRouter();
@@ -206,6 +221,10 @@ class Store {
 		return self::$gdl;
 	}
 
+	/**
+	 *
+	 * @return \mkwhelpers\HtmlPurifierSanitizer
+	 */
 	public static function getSanitizer() {
 		if (!isset(self::$sanitizer)) {
 			self::$sanitizer=new \mkwhelpers\HtmlPurifierSanitizer();

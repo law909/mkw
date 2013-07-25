@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="span14 offset1">
 			<div class="textAlignRight">
-				<a href="#" rel="nofollow" class="btn btn-large okbtn">
+				<a href="{$showcheckoutlink}" rel="nofollow" class="btn btn-large okbtn">
 					<i class="icon-ok icon-white"></i>
 					{t('Megrendelem')}
 				</a>
@@ -24,15 +24,15 @@
 					{$osszesen=0}
 					{foreach $tetellista as $tetel}
 						{$osszesen=$osszesen+$tetel.bruttohuf}
-						<tr class="clickable" data-href="/termek/{$tetel.slug}">
-							<td><div class="textaligncenter"><a href="/termek/{$tetel.slug}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></a></div></td>
-							<td><div><a href="/termek/{$tetel.slug}">{$tetel.caption}</a></div>
+						<tr class="clickable" data-href="{$tetel.link}">
+							<td><div class="textaligncenter"><a href="{$tetel.link}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></a></div></td>
+							<td><div><a href="{$tetel.link}">{$tetel.caption}</a></div>
 								<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}:{$valtozat.ertek}&nbsp;{/foreach}</div>
 								{$tetel.cikkszam}</td>
 							<td><div class="textAlignRight">{number_format($tetel.bruttoegysarhuf,0,',',' ')} Ft</div></td>
 							<td>
 								<div class="textAligncenter">
-									<form class="kosarform" action="/kosar/edit">
+									<form class="kosarform" action="{$tetel.editlink}">
 										<div><input id="mennyedit_{$tetel.id}" class="span1" type="number" step="any" name="mennyiseg" value="{$tetel.mennyiseg}"></div>
 										<div><button class="kosareditbtn btn btn-mini" type="submit" data-id="{$tetel.id}">{t('Módosít')}</button></div>
 										<input type="hidden" name="id" value="{$tetel.id}">
@@ -52,7 +52,7 @@
 				</tfoot>
 			</table>
 			<div class="textAlignRight">
-				<a href="#" rel="nofollow" class="btn btn-large okbtn">
+				<a href="{$showcheckoutlink}" rel="nofollow" class="btn btn-large okbtn">
 					<i class="icon-ok icon-white"></i>
 					{t('Megrendelem')}
 				</a>

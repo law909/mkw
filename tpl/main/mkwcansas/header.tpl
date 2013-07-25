@@ -5,33 +5,33 @@
 			{if (!$user.loggedin)}
 			<div class="span8">
 				<div class="headerbutton firstheaderbutton">
-					<a rel="nofollow" href="/login" class="headerloginicon">{t('Jelentkezzen be')}</a>
+					<a rel="nofollow" href="{$showloginlink}" class="headerloginicon">{t('Jelentkezzen be')}</a>
 				</div>
 				<div class="headerbutton lastheaderbutton">
-					<a rel="nofollow" href="/regisztracio">{t('Hozza létre saját fiókját')}</a>
+					<a rel="nofollow" href="{$showregisztraciolink}">{t('Hozza létre saját fiókját')}</a>
 				</div>
 			</div>
 			{else}
 			<div class="span8">
 				<div class="headerbutton">
-					<a rel="nofollow" href="/fiok" title="{t('Fiókom')}">{$user.nev}</a>
+					<a rel="nofollow" href="{$showaccountlink}" title="{t('Fiókom')}">{$user.nev}</a>
 				</div>
 				<div class="headerbutton lastheaderbutton">
-					<a rel="nofollow" href="/logout">{t('Kijelentkezés')}</a>
+					<a rel="nofollow" href="{$dologoutlink}">{t('Kijelentkezés')}</a>
 				</div>
 			</div>
 			{/if}
 			<div class="headercart hidden-phone">
-				<div><a rel="nofollow" href="/kosar/get" class="headercarticon"></a></div>
+				<div><a rel="nofollow" href="{$kosargetlink}" class="headercarticon"></a></div>
 				<div>
 					<div class="headercarttext">{t('KOSÁRBAN')}</div>
 					<div>
-						<a id="minikosar" href="/kosar/get" rel="nofollow">
+						<a id="minikosar" href="{$kosargetlink}" rel="nofollow">
 							{include "minikosar.tpl"}
 						</a>
 					</div>
 				</div>
-				<div><a class="btn headercartbtn">{t('Pénztárhoz')}</a></div>
+				<div><a href="{$showcheckoutlink}" class="btn headercartbtn">{t('Pénztárhoz')}</a></div>
 			</div>
 		</div>
 	</div>

@@ -53,9 +53,9 @@ class Kosar {
 
 	public function toLista() {
 		$ret=array();
-		$ret['id']=$this->getId();
 		$termek=$this->getTermek();
 		$ret=$ret+$termek->toKosar($this->getTermekvaltozat());
+		$ret['id']=$this->getId();
 		$ret['bruttoegysarhuf']=$this->getBruttoegysar();
 		$ret['mennyiseg']=$this->getMennyiseg();
 		$ret['bruttohuf']=$this->getBruttoegysar()*$this->getMennyiseg();
@@ -70,6 +70,8 @@ class Kosar {
 			}
 		}
 		$ret['valtozatok']=$v;
+		$ret['editlink'] = \mkw\Store::getRouter()->generate('kosaredit');
+		$ret['showcheckoutlink'] = \mkw\Store::getRouter()->generate('showcheckout');
 		return $ret;
 	}
 

@@ -94,6 +94,10 @@ select {
 	padding: 2px;
 }
 
+.table {
+	margin: 0;
+}
+
 td {
 	vertical-align: top;
 }
@@ -105,7 +109,6 @@ td {
 
 .okbtn {
 	color: white;
-	font-size: @fontsize;
 	text-shadow: 0 0 0;
 	background-color: @okbuttonvilagos;
 	border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
@@ -613,6 +616,73 @@ span.aktualislap {
 .typeahead>li>a:focus {
 	color: #333;
 	background: #fff;
+}
+
+.chk-datagroupheader {
+	background-color: #EFEFEF;
+	-webkit-transition: background-color .2s linear;
+	-moz-transition: background-color .2s linear;
+	-o-transition: background-color .2s linear;
+	padding: 8px;
+	margin-bottom: 10px;
+	cursor: pointer;
+	font-size: 18px;
+	font-weight: bold;
+	&:hover {
+		background-color: rgba(0,0,0,0.3);
+	}
+}
+
+.chk-staticheader {
+	background-color: #AFAFAF;
+	padding: 8px;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.chk-controllabel {
+	margin-top: 5px;
+}
+
+.chk-colleftborder {
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-left-color: #EFEFEF;
+}
+
+.col30percent {
+	width: 33%;
+	min-height: 160px;
+}
+
+.chk-colheader {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.chk-colmargin > div {
+	margin-left: 5px;
+}
+
+.chk-coldatabottom {
+	margin-bottom: 5px;
+}
+
+.chk-actionrow {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.chk-columncontainer {
+	margin-bottom: 10px;
+}
+
+[class^="col"] {
+	float: left;
+}
+
+.chk-kosar {
+	background-color: #EFEFEF;
 }
 
 @media (min-width: 480px) {

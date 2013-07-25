@@ -875,4 +875,21 @@ $(document).ready(function(){
 	}
 	mkw.overrideFormSubmit('#FiokSzamlaAdatok','Adatait módosítjuk...');
 	mkw.overrideFormSubmit('#FiokSzallitasiAdatok','Adatait módosítjuk...');
+
+	$('.js-chkszallmod, .js-chkattekintes').hide().addClass('js-chkclosed');
+	$('.js-chkdatagroupheader').on('click',function(e) {
+		e.preventDefault();
+		var $this=$(this),
+			mycontainer=$($this.data('container'));
+		if (mycontainer.hasClass('js-chkclosed')) {
+			$('.js-chkdatacontainer').slideUp(50).addClass('js-chkclosed');
+			mycontainer.slideDown(50).removeClass('js-chkclosed');
+		}
+	});
+
+	$('.js-chkopenbtn').on('click',function(e) {
+		e.preventDefault();
+		var datagroupheader=$($(this).data('datagroupheader'));
+		datagroupheader.click();
+	});
 });

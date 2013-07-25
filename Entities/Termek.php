@@ -410,6 +410,7 @@ class Termek {
 			$x['kiskepurl']=$valtozat->getKepurlSmall();
 			$x['kepurl']=$valtozat->getKepurl();
 		}
+		$x['link'] = \mkw\Store::getRouter()->generate('showtermek',false,array('slug'=>$this->getSlug()));
 		return $x;
 	}
 
