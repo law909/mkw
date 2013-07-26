@@ -896,4 +896,10 @@ $(document).ready(function(){
 	$('input[name="szamlaeqszall"]').on('change',function(e) {
 		$('.js-chkszamlaadatok').toggleClass('notvisible');
 	});
+
+	$('.js-chktooltipbtn').tooltip({
+		html: false,
+		placement: 'right',
+		container: 'body'
+	});
 });

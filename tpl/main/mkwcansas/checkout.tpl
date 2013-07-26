@@ -1,7 +1,7 @@
 {extends "basestone.tpl"}
 
 {block "stonebody"}
-<header>
+<header class="checkout">
 <div class="headermid">
 	<div class="container">
 		<div class="row">
@@ -17,53 +17,58 @@
 		<div class="span10">
 			<form id="FiokSzamlaAdatok" class="" action="" method="post"><fieldset>
 			<div class="row">
-				<div class="span5">
-					<div class="chk-datagroupheader js-chkdatagroupheader" data-container=".js-chkszallitasiadatok, .js-chkszamlazasiadatok">Szállítási adatok</div>
+				<div class="span10">
+					<div class="chk-datagroupheader js-chkdatagroupheader" data-container=".js-chkszallitasiadatok, .js-chkszamlazasiadatok">Szállítási és számlázási adatok</div>
 					<div class="js-chkszallitasiadatok js-chkdatacontainer">
-						<div class="controls">
-							<input name="szallnev" type="text" class="span5" placeholder="{t('szállítási név')}" value="{$user.szallnev}">
+						<small>A <span class="piros">*</span>-gal jelölt adatok kitöltése kötelező.</small>
+						<h5>Kapcsolati adatok</h5>
+						<div class="controls controls-row chk-controloffset">
+							<input name="vezeteknev" type="text" class="span4" placeholder="{t('vezetéknév')} *" value="{$user.vezeteknev}" required>
+							<input name="keresztnev" type="text" class="span4" placeholder="{t('keresztnév')} *" value="{$user.keresztnev}" required>
 						</div>
-						<div class="controls controls-row">
-							<input name="szallirszam" type="text" class="span1" placeholder="{t('ir.szám')}" value="{$user.szallirszam}">
-							<input name="szallvaros" type="text" class="span4" placeholder="{t('város')}" value="{$user.szallvaros}">
+						<div class="controls controls-row chk-controloffset">
+							<div class="chk-relative pull-left chk-tooltippedcontainer">
+								<input name="telefon" type="text" class="span4" placeholder="{t('telefon')} *" value="{$user.telefon}" required>
+								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="Azért kérjük el a telefonszámát, hogy tudjuk értesíteni a megrendelésével kapcsolatos eseményekről"></i>
+							</div>
+							<i class="span inputiconhack"></i>
+							<input name="email" type="text" class="span4" placeholder="{t('email')} *" value="{$user.email}" required>
 						</div>
-						<div class="controls">
-							<input name="szallutca" type="text" class="span5" placeholder="{t('utca')}" value="{$user.szallutca}">
+						<h5>Számlázási adatok</h5>
+						<div class="controls chk-controloffset">
+							<input name="szamlanev" type="text" class="span8" placeholder="{t('számlázási név')}" value="{$user.szamlanev}">
 						</div>
-						<div class="controls">
-							<input name="szallkapcsnev" type="text" class="span5" placeholder="{t('kapcsolattartó neve')}" value="{$user.szallutca}">
+						<div class="controls controls-row chk-controloffset">
+							<input name="szamlairszam" type="text" class="span2" placeholder="{t('ir.szám')} *" value="{$user.szamlairszam}" required>
+							<input name="szamlavaros" type="text" class="span6" placeholder="{t('város')} *" value="{$user.szamlavaros}" required>
 						</div>
-						<div class="controls">
-							<input name="szallkapcsemail" type="text" class="span5" placeholder="{t('kapcsolattartó email címe')}" value="{$user.szallutca}">
+						<div class="controls chk-controloffset">
+							<input name="szamlautca" type="text" class="span8" placeholder="{t('utca')} *" value="{$user.szamlautca}" required>
 						</div>
-						<div class="controls">
-							<input name="szallkapcstelefon" type="text" class="span5" placeholder="{t('kapcsolattartó telefonszáma')}" value="{$user.szallutca}">
+						<div class="controls chk-controloffset">
+							<div class="chk-relative pull-left chk-tooltippedcontainer">
+								<input name="szamlaadoszam" type="text" class="span3" placeholder="{t('adószám')}" value="{$user.szamlaadoszam}">
+								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="Adjad meg, mert tudni akarjuk"></i>
+							</div>
 						</div>
-					</div>
-				</div>
-				<div class="span5">
-					<div class="chk-datagroupheader js-chkdatagroupheader" data-container=".js-chkszallitasiadatok, .js-chkszamlazasiadatok">Számlázási adatok</div>
-					<div class="js-chkszamlazasiadatok js-chkdatacontainer">
-						<div class="controls">
+						<h5 class="clearboth">Szállítási adatok</h5>
+						<div class="controls chk-controloffset">
 							<label class="checkbox">
-								<input name="szamlaeqszall" type="checkbox">
-								Megegyezik a szállítási adatokkal</span>
+								<input name="szamlaeqszall" type="checkbox" checked>
+								Megegyezik a számlázási adatokkal</span>
 							</label>
 						</div>
-						<div class="js-chkszamlaadatok">
-						<div class="controls">
-							<input class="span5" name="szamlanev" type="text" class="span5" placeholder="{t('számlázási név')}" value="{$user.szamlanev}">
-						</div>
-						<div class="controls">
-							<input class="span3" name="szamlaadoszam" type="text" placeholder="{t('adószám')}" value="{$user.szamlaadoszam}">
-						</div>
-						<div class="controls controls-row">
-							<input name="szamlairszam" type="text" class="span1" placeholder="{t('ir.szám')}" value="{$user.szamlairszam}">
-							<input name="szamlavaros" type="text" class="span4" placeholder="{t('város')}" value="{$user.szamlavaros}">
-						</div>
-						<div class="controls">
-							<input name="szamlautca" type="text" class="span5" placeholder="{t('utca')}" value="{$user.szamlautca}">
-						</div>
+						<div class="js-chkszamlaadatok notvisible">
+							<div class="controls chk-controloffset">
+								<input name="szallnev" type="text" class="span8" placeholder="{t('szállítási név')}" value="{$user.szallnev}">
+							</div>
+							<div class="controls controls-row chk-controloffset">
+								<input name="szallirszam" type="text" class="span2" placeholder="{t('ir.szám')} *" value="{$user.szallirszam}" required>
+								<input name="szallvaros" type="text" class="span6" placeholder="{t('város')} *" value="{$user.szallvaros}" required>
+							</div>
+							<div class="controls chk-controloffset">
+								<input name="szallutca" type="text" class="span8" placeholder="{t('utca')} *" value="{$user.szallutca}" required>
+							</div>
 						</div>
 						<div class="row chk-actionrow"><a class="btn btn-primary pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallmoddgh">Szállítás és fizetés</a></div>
 					</div>
@@ -80,10 +85,12 @@
 										<input type="radio" name="szallitasimod" value="1" checked>
 										Futárszolgálat
 									</label>
+									<div class="chk-courierdesc folyoszoveg">Ami azt illeti, a futár az nem fut ám, hanem kocsival jár.</div>
 									<label class="radio">
 										<input type="radio" name="szallitasimod" value="2">
 										Személyes átvétel
 									</label>
+									<div class="chk-courierdesc folyoszoveg">Eger, Akármilyen utca 8.</div>
 								</div>
 								<div class="span2"><label class="chk-controllabel">Fizetési mód:</label></div>
 								<div class="span3 controls js-chkfizmodlist">
@@ -95,6 +102,7 @@
 										<input type="radio" name="fizetesimod" value="2">
 										Előre utalás
 									</label>
+									<div class="chk-courierdesc folyoszoveg">Küldünk egy előlegbekérőt, arra fizetsz. Ekkor mi megcsináljuk a végszámlát, és kiküldjük neked az áruval együtt</div>
 								</div>
 						</div>
 						<div class="row">
@@ -134,8 +142,8 @@
 								<div class="chk-colheader">Szállítás és fizetés</div>
 								<div>Futárszolgálat</div>
 								<div class="chk-coldatabottom">Előre utalás</div>
-								<div class="chk-coldatabottom">Szóljatok annak a köcsögnek, hogy keressen meg a kapucsengőn, mert arra lusta és már a sokadik csomagom megy vissza. Az pedig pénzbe kerül és komoly bosszúság.</div>
-								<div>Köcsög futás, keress meg a kapucsengőn, mert arra lusta és már a sokadik csomagom megy vissza. Az pedig pénzbe kerül és komoly bosszúság.</div>
+								<div class="chk-coldatabottom folyoszoveg">Szóljatok annak a köcsögnek, hogy keressen meg a kapucsengőn, mert arra lusta és már a sokadik csomagom megy vissza. Az pedig pénzbe kerül és komoly bosszúság.</div>
+								<div class="folyoszoveg">Köcsög futár, keress meg a kapucsengőn, mert arra lusta és már a sokadik csomagom megy vissza. Az pedig pénzbe kerül és komoly bosszúság.</div>
 							</div>
 						</div>
 						<table class="table table-bordered">

@@ -25,6 +25,7 @@
 		<script src="/js/main/mkwcansas/bootstrap-modal.js"></script>
 		<script src="/js/main/mkwcansas/bootstrap-tab.js"></script>
 		<script src="/js/main/mkwcansas/bootstrap-typeahead.js"></script>
+		<script src="/js/main/mkwcansas/bootstrap-tooltip.js"></script>
 		<script src="/js/main/mkwcansas/jquery.ui.rcarousel.min.js"></script>
 		<script src="/js/main/mkwcansas/h5f.js"></script>
 		<script src="/js/main/mkwcansas/matt-accordion.js"></script>
