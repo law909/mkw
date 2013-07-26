@@ -70,7 +70,7 @@
 								<input name="szallutca" type="text" class="span8" placeholder="{t('utca')} *" value="{$user.szallutca}" required>
 							</div>
 						</div>
-						<div class="row chk-actionrow"><a class="btn btn-primary pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallmoddgh">Szállítás és fizetés</a></div>
+						<div class="row chk-actionrow"><a class="btn btn-primary pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallmoddgh">Tovább</a></div>
 					</div>
 				</div>
 			</div>
@@ -113,7 +113,7 @@
 							<div class="span3"><label for="CourierMessageEdit">Üzenet a futár részére:</label></div>
 							<div class="span7 controls"><textarea id="CourierMessageEdit" class="span7" name="couriermessage" type="text" rows="2"></textarea></div>
 						</div>
-						<div class="row chk-actionrow"><a class="btn btn-primary pull-right js-chkopenbtn" data-datagroupheader=".js-chkattekintesdgh">Megrendelés áttekintése</a></div>
+						<div class="row chk-actionrow"><a class="btn btn-primary pull-right js-chkopenbtn" data-datagroupheader=".js-chkattekintesdgh">Tovább</a></div>
 					</div>
 				</div>
 			</div>

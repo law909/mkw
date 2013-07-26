@@ -90,9 +90,9 @@
 					</div>
 					{else}
 					<div class="row">
-						<a href="/kosar/add?id={$termek.id}" rel="nofollow" class="{$_kosarbaclass} btn btn-large btn-success pull-right" data-termek="{$termek.id}" data-id="{$termek.id}">
+						<a href="/kosar/add?id={$termek.id}" rel="nofollow" class="{$_kosarbaclass} btn btn-large cartbtn pull-right" data-termek="{$termek.id}" data-id="{$termek.id}">
 							<i class="icon-shopping-cart icon-white"></i>
-							{t('Megveszem')}
+							{t('Kosárba')}
 						</a>
 					</div>
 					{/if}

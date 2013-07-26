@@ -1,6 +1,7 @@
 @navopacity: 0.95;
-@smallradius: 3px;
-@bigradius: 6px;
+@miniradius: 1px;
+@smallradius: 2px;
+@bigradius: 3px;
 
 @fontsize: 13px;
 @headercarttextfontsize: 11px;
@@ -43,7 +44,13 @@
 	background-image: linear-gradient(to bottom,@from,@to);
 }
 
-.border-radius (@a, @b, @c, @d) {
+.border-radius (@a) {
+	-webkit-border-radius: @a;
+	-moz-border-radius: @a;
+	border-radius: @a;
+}
+
+.border-radius-multi (@a, @b, @c, @d) {
 	-webkit-border-radius: @arguments;
 	-moz-border-radius: @arguments;
 	border-radius: @arguments;
@@ -125,6 +132,27 @@ td {
 	border: none;
 }
 
+.btn {
+	border: none;
+	.border-radius(@smallradius);
+}
+
+.btn-large {
+	.border-radius(@bigradius);
+}
+
+.btn-mini {
+	.border-radius(@miniradius);
+}
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+	.border-radius(@smallradius);
+}
+
+.modal {
+	.border-radius(@bigradius);
+}
+
 .okbtn {
 	color: white;
 	text-shadow: 0 0 0;
@@ -182,7 +210,7 @@ header a:hover, footer a:hover {
 	line-height: 15px;
 	padding: @headercarthpadding @headercartvpadding @headercarthpadding 0;
 	.gradient-background(@headercartvilagos,@headercartsotet);
-	.border-radius(0,0,@bigradius,@bigradius);
+	.border-radius-multi(0,0,@bigradius,@bigradius);
 	.box-shadow(0,3px,3px,rgba(0,0,0,0.15));
 }
 
@@ -242,7 +270,7 @@ a.headercartbtn:focus,a.headercartbtn:active,a.headercartbtn.active {
 #searchinput {
 	border-color: @logofontcolor;
 	padding-right: 28px;
-	.border-radius(@smallradius,@smallradius,@smallradius,@smallradius);
+	.border-radius(@smallradius);
 }
 
 #searchinput:focus {
@@ -259,7 +287,7 @@ a.headercartbtn:focus,a.headercartbtn:active,a.headercartbtn.active {
 	position: absolute;
 	right: 4px;
 	bottom: 3px;
-	.border-radius(@smallradius,@smallradius,@smallradius,@smallradius);
+	.border-radius(@smallradius);
 }
 
 .searchinputbox {
@@ -327,7 +355,7 @@ a.headercartbtn:focus,a.headercartbtn:active,a.headercartbtn.active {
 	display: none;
 	opacity: @navopacity;
 	z-index: 100;
-	.border-radius(0,0,@bigradius,@bigradius);
+	.border-radius-multi(0,0,@bigradius,@bigradius);
 }
 
 #navmain .sub ul {
@@ -355,7 +383,7 @@ a.headercartbtn:focus,a.headercartbtn:active,a.headercartbtn.active {
 	text-decoration: none;
 	background-image: none;
 	line-height: 16px;
-	.border-radius(@smallradius,@smallradius,@smallradius,@smallradius);
+	.border-radius(@smallradius);
 }
 
 #navmain .sub ul li a:hover {
@@ -395,7 +423,7 @@ footer nav {
 	font-size: @morzsafontsize;
 	margin-bottom: 20px;
 	background-color: whitesmoke;
-	.border-radius(0,0,0,0);
+	.border-radius(0);
 }
 
 .morzsaszoveg {
@@ -730,12 +758,12 @@ span.aktualislap {
 
 .tooltip-inner {
 	max-width: 350px;
-	background-color: #e82823;
+	background-color: #6E6E6E;
 	font-size: 14px;
 }
 
 .tooltip.right .tooltip-arrow {
-	border-right-color: #e82823;
+	border-right-color: #6E6E6E;
 }
 
 .chk-tooltippedcontainer {
