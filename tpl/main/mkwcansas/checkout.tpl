@@ -16,9 +16,45 @@
 	<div class="row">
 		<div class="span10">
 			<form id="FiokSzamlaAdatok" class="" action="" method="post"><fieldset>
+			{if (!$user)}
 			<div class="row">
 				<div class="span10">
-					<div class="chk-datagroupheader js-chkdatagroupheader" data-container=".js-chkszallitasiadatok, .js-chkszamlazasiadatok">Szállítási és számlázási adatok</div>
+					<div class="chk-datagroupheader js-chkdatagroupheader" data-container=".js-chklogin">Bejelentkezés</div>
+					<div class="js-chklogin js-chkdatacontainer row chk-columncontainer">
+						<div class="span5">
+							<div class="chk-loginrightborder pull-left">
+								<h5>Új vásárló</h5>
+								<div class="span">
+									<label class="radio">
+										<input name="regkell" id="regkell" type="radio">
+										Vásárlás vendégként (regisztráció nélkül)
+									</label>
+									<label class="radio">
+										<input name="regkell" id="regkell" type="radio">
+										Vásárlás regisztrációval
+									</label>
+									<div class="chk-courierdesc folyoszoveg">A regisztráció olyan előnyökkel jár, Küldünk egy előlegbekérőt, arra fizetsz. Ekkor mi megcsináljuk a végszámlát, és kiküldjük nek</div>
+								</div>
+								<div class="row chk-actionrow span"><a class="btn btn-primary pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallitasiadatokgh">Tovább</a></div>
+							</div>
+						</div>
+						<div class="span5">
+							<h5>Regisztrált vásárló</h5>
+							<div class="controls chk-controloffset">
+								<input name="szamlanev" type="text" class="span3" placeholder="{t('email')} *" value="{$user.email}">
+							</div>
+							<div class="controls chk-controloffset">
+								<input name="szamlanev" type="text" class="span3" placeholder="{t('jelszó')} *" value="">
+							</div>
+							<div class="row chk-actionrow span"><a class="btn btn-primary pull-right js-chkopenbtn">Belépés</a></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{/if}
+			<div class="row">
+				<div class="span10">
+					<div class="chk-datagroupheader js-chkdatagroupheader js-chkszallitasiadatokgh" data-container=".js-chkszallitasiadatok">Szállítási és számlázási adatok</div>
 					<div class="js-chkszallitasiadatok js-chkdatacontainer">
 						<small>A <span class="piros">*</span>-gal jelölt adatok kitöltése kötelező.</small>
 						<h5>Kapcsolati adatok</h5>
@@ -55,7 +91,7 @@
 						<div class="controls chk-controloffset">
 							<label class="checkbox">
 								<input name="szamlaeqszall" type="checkbox" checked>
-								Megegyezik a számlázási adatokkal</span>
+								Megegyezik a számlázási adatokkal
 							</label>
 						</div>
 						<div class="js-chkszamlaadatok notvisible">
@@ -79,7 +115,7 @@
 					<div class="chk-datagroupheader js-chkdatagroupheader js-chkszallmoddgh" data-container=".js-chkszallmod">Szállítás és fizetés</div>
 					<div class="js-chkszallmod js-chkdatacontainer">
 						<div class="row">
-								<div class="span2"><label class="chk-controllabel">Szállítási mód:</label></div>
+								<div class="span2"><label class="chk-controllabel bold">Szállítási mód:</label></div>
 								<div class="span3 controls js-chkszallmodlist">
 									<label class="radio">
 										<input type="radio" name="szallitasimod" value="1" checked>
@@ -92,7 +128,7 @@
 									</label>
 									<div class="chk-courierdesc folyoszoveg">Eger, Akármilyen utca 8.</div>
 								</div>
-								<div class="span2"><label class="chk-controllabel">Fizetési mód:</label></div>
+								<div class="span2"><label class="chk-controllabel bold">Fizetési mód:</label></div>
 								<div class="span3 controls js-chkfizmodlist">
 									<label class="radio">
 										<input type="radio" name="fizetesimod" value="1" checked>
@@ -106,12 +142,12 @@
 								</div>
 						</div>
 						<div class="row">
-							<div class="span3"><label for="WebshopMessageEdit">Üzenet a webáruház részére:</label></div>
-							<div class="span7 controls"><textarea id="WebshopMessageEdit" class="span7" name="webshopmessage" type="text" rows="2"></textarea></div>
+							<div class="span2"><label for="WebshopMessageEdit" class="bold">Üzenet a webáruháznak:</label></div>
+							<div class="span7 controls"><textarea id="WebshopMessageEdit" class="span5" name="webshopmessage" type="text" rows="2" placeholder="pl. megrendeléssel, számlázással kapcsolatos kérések"></textarea></div>
 						</div>
 						<div class="row">
-							<div class="span3"><label for="CourierMessageEdit">Üzenet a futár részére:</label></div>
-							<div class="span7 controls"><textarea id="CourierMessageEdit" class="span7" name="couriermessage" type="text" rows="2"></textarea></div>
+							<div class="span2"><label for="CourierMessageEdit" class="bold">Üzenet a futár részére:</label></div>
+							<div class="span7 controls"><textarea id="CourierMessageEdit" class="span5" name="couriermessage" type="text" rows="2" placeholder="pl. kézbesítéssel kapcsolatos kérések"></textarea></div>
 						</div>
 						<div class="row chk-actionrow"><a class="btn btn-primary pull-right js-chkopenbtn" data-datagroupheader=".js-chkattekintesdgh">Tovább</a></div>
 					</div>
@@ -122,6 +158,13 @@
 					<div class="chk-datagroupheader js-chkdatagroupheader js-chkattekintesdgh" data-container=".js-chkattekintes">Megrendelés áttekintése</div>
 					<div class="js-chkattekintes js-chkdatacontainer">
 						<div class="chk-columncontainer pull-left">
+							<div class="col30percent chk-colleftborder chk-colmargin">
+								<div class="chk-colheader">Számlázási adatok</div>
+								<div>Mesemasina Kft.</div>
+								<div class="chk-coldatabottom">12345678-1-23</div>
+								<div>3300 Eger</div>
+								<div>Koháry u. 14. 3/10</div>
+							</div>
 							<div class="col30percent">
 								<div class="chk-colheader">Szállítási adatok</div>
 								<div class="chk-coldatabottom">Lövey Bálint</div>
@@ -130,13 +173,6 @@
 								<div>Kiss Béla</div>
 								<div>bela@kisskocsma.hu</div>
 								<div>+36 30 4445666</div>
-							</div>
-							<div class="col30percent chk-colleftborder chk-colmargin">
-								<div class="chk-colheader">Számlázási adatok</div>
-								<div>Mesemasina Kft.</div>
-								<div class="chk-coldatabottom">12345678-1-23</div>
-								<div>3300 Eger</div>
-								<div>Koháry u. 14. 3/10</div>
 							</div>
 							<div class="col30percent chk-colleftborder chk-colmargin">
 								<div class="chk-colheader">Szállítás és fizetés</div>
@@ -182,7 +218,28 @@
 								</tr>
 							</tfoot>
 						</table>
-						<div class="chk-actionrow"><div><a class="btn cartbtn pull-right">Megrendelés elküldése</a></div></div>
+
+						<div class="">
+							<label class="checkbox">
+								<input name="szamlaeqszall" type="checkbox">
+								{t('Igen, értesítsenek az akciókról')}
+							</label>
+							<label class="checkbox">
+								<input name="szamlaeqszall" type="checkbox">
+								{t('Igen, értesítsenek az újdonságokról')}
+							</label>
+						</div>
+						<div class="pull-right">
+							<div class="chk-savecontainer">
+								<div>
+									<label class="checkbox">
+										<input name="szamlaeqszall" type="checkbox">
+										Elolvastam és elfogadom az ÁSZF-et
+									</label>
+								</div>
+								<div><a class="btn cartbtn chk-sendorderbtn">Megrendelés elküldése</a></div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

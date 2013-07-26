@@ -876,6 +876,10 @@ $(document).ready(function(){
 	mkw.overrideFormSubmit('#FiokSzamlaAdatok','Adatait módosítjuk...');
 	mkw.overrideFormSubmit('#FiokSzallitasiAdatok','Adatait módosítjuk...');
 
+	var $chklogin=$('.js-chklogin');
+	if ($chklogin.length) {
+		$('.js-chkszallitasiadatok').hide().addClass('js-chkclosed');
+	}
 	$('.js-chkszallmod, .js-chkattekintes').hide().addClass('js-chkclosed');
 	$('.js-chkdatagroupheader').on('click',function(e) {
 		e.preventDefault();
@@ -889,7 +893,8 @@ $(document).ready(function(){
 
 	$('.js-chkopenbtn').on('click',function(e) {
 		e.preventDefault();
-		var datagroupheader=$($(this).data('datagroupheader'));
+		var dg=$(this).data('datagroupheader'),
+			datagroupheader=$(dg);
 		datagroupheader.click();
 	});
 
