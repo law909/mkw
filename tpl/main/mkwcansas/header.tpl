@@ -22,16 +22,11 @@
 			</div>
 			{/if}
 			<div class="headercart hidden-phone">
-				<div><a rel="nofollow" href="{$kosargetlink}" class="headercarticon"></a></div>
-				<div>
-					<div class="headercarttext">{t('KOSÁRBAN')}</div>
-					<div>
-						<a id="minikosar" href="{$kosargetlink}" rel="nofollow">
-							{include "minikosar.tpl"}
-						</a>
-					</div>
-				</div>
-				<div><a href="{$showcheckoutlink}" class="btn headercartbtn">{t('Pénztárhoz')}</a></div>
+				<a href="{$kosargetlink}" class="btn cartbtn pull-right">{t('Kosár')}</a>
+				<a id="minikosar" class="pull-right" href="{$kosargetlink}" rel="nofollow">
+					{include "minikosar.tpl"}
+				</a>
+				<a rel="nofollow" href="{$kosargetlink}" class="headercarticon pull-right"></a>
 			</div>
 		</div>
 	</div>

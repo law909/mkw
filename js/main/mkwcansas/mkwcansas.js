@@ -400,7 +400,7 @@ $(document).ready(function(){
 				to: maxar+step,
 				step: step,
 				dimension: '&nbsp;Ft',
-				skin: 'plastic',
+				skin: 'mkwcansas',
 				callback: function(value) {
 					mkw.lapozas();
 				}
@@ -886,8 +886,8 @@ $(document).ready(function(){
 		var $this=$(this),
 			mycontainer=$($this.data('container'));
 		if (mycontainer.hasClass('js-chkclosed')) {
-			$('.js-chkdatacontainer').slideUp(50).addClass('js-chkclosed');
-			mycontainer.slideDown(50).removeClass('js-chkclosed');
+			$('.js-chkdatacontainer').slideUp(100).addClass('js-chkclosed');
+			mycontainer.slideDown(100).removeClass('js-chkclosed');
 		}
 	});
 

@@ -16,10 +16,11 @@
 	<div class="row">
 		<div class="span10">
 			<form id="FiokSzamlaAdatok" class="" action="" method="post"><fieldset>
+			{$sorszam=1}
 			{if (!$user)}
 			<div class="row">
 				<div class="span10">
-					<div class="chk-datagroupheader js-chkdatagroupheader" data-container=".js-chklogin">Bejelentkezés</div>
+					<div class="chk-datagroupheader js-chkdatagroupheader" data-container=".js-chklogin">{$sorszam++}. Bejelentkezés</div>
 					<div class="js-chklogin js-chkdatacontainer row chk-columncontainer">
 						<div class="span5">
 							<div class="chk-loginrightborder pull-left">
@@ -35,7 +36,7 @@
 									</label>
 									<div class="chk-courierdesc folyoszoveg">A regisztráció olyan előnyökkel jár, Küldünk egy előlegbekérőt, arra fizetsz. Ekkor mi megcsináljuk a végszámlát, és kiküldjük nek</div>
 								</div>
-								<div class="row chk-actionrow span"><a class="btn btn-primary pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallitasiadatokgh">Tovább</a></div>
+								<div class="row chk-actionrow span"><a class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallitasiadatokgh">Tovább</a></div>
 							</div>
 						</div>
 						<div class="span5">
@@ -46,7 +47,7 @@
 							<div class="controls chk-controloffset">
 								<input name="szamlanev" type="text" class="span3" placeholder="{t('jelszó')} *" value="">
 							</div>
-							<div class="row chk-actionrow span"><a class="btn btn-primary pull-right js-chkopenbtn">Belépés</a></div>
+							<div class="row chk-actionrow span"><a class="btn okbtn pull-right js-chkopenbtn">Belépés</a></div>
 						</div>
 					</div>
 				</div>
@@ -54,7 +55,7 @@
 			{/if}
 			<div class="row">
 				<div class="span10">
-					<div class="chk-datagroupheader js-chkdatagroupheader js-chkszallitasiadatokgh" data-container=".js-chkszallitasiadatok">Szállítási és számlázási adatok</div>
+					<div class="chk-datagroupheader js-chkdatagroupheader js-chkszallitasiadatokgh" data-container=".js-chkszallitasiadatok">{$sorszam++}. Szállítási és számlázási adatok<a>Módosít</a></div>
 					<div class="js-chkszallitasiadatok js-chkdatacontainer">
 						<small>A <span class="piros">*</span>-gal jelölt adatok kitöltése kötelező.</small>
 						<h5>Kapcsolati adatok</h5>
@@ -106,13 +107,13 @@
 								<input name="szallutca" type="text" class="span8" placeholder="{t('utca')} *" value="{$user.szallutca}" required>
 							</div>
 						</div>
-						<div class="row chk-actionrow"><a class="btn btn-primary pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallmoddgh">Tovább</a></div>
+						<div class="row chk-actionrow"><a class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallmoddgh">Tovább</a></div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="span10">
-					<div class="chk-datagroupheader js-chkdatagroupheader js-chkszallmoddgh" data-container=".js-chkszallmod">Szállítás és fizetés</div>
+					<div class="chk-datagroupheader js-chkdatagroupheader js-chkszallmoddgh" data-container=".js-chkszallmod">{$sorszam++}. Szállítás és fizetés<a>Módosít</a></div>
 					<div class="js-chkszallmod js-chkdatacontainer">
 						<div class="row">
 								<div class="span2"><label class="chk-controllabel bold">Szállítási mód:</label></div>
@@ -149,13 +150,13 @@
 							<div class="span2"><label for="CourierMessageEdit" class="bold">Üzenet a futár részére:</label></div>
 							<div class="span7 controls"><textarea id="CourierMessageEdit" class="span5" name="couriermessage" type="text" rows="2" placeholder="pl. kézbesítéssel kapcsolatos kérések"></textarea></div>
 						</div>
-						<div class="row chk-actionrow"><a class="btn btn-primary pull-right js-chkopenbtn" data-datagroupheader=".js-chkattekintesdgh">Tovább</a></div>
+						<div class="row chk-actionrow"><a class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkattekintesdgh">Tovább</a></div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="span10">
-					<div class="chk-datagroupheader js-chkdatagroupheader js-chkattekintesdgh" data-container=".js-chkattekintes">Megrendelés áttekintése</div>
+					<div class="chk-datagroupheader js-chkdatagroupheader js-chkattekintesdgh" data-container=".js-chkattekintes">{$sorszam++}. Megrendelés áttekintése</div>
 					<div class="js-chkattekintes js-chkdatacontainer">
 						<div class="chk-columncontainer pull-left">
 							<div class="col30percent chk-colleftborder chk-colmargin">
@@ -234,7 +235,7 @@
 								<div>
 									<label class="checkbox">
 										<input name="szamlaeqszall" type="checkbox">
-										Elolvastam és elfogadom az ÁSZF-et
+										Elolvastam és elfogadom az <a>ÁSZF</a>-et
 									</label>
 								</div>
 								<div><a class="btn cartbtn chk-sendorderbtn">Megrendelés elküldése</a></div>

@@ -21,6 +21,6 @@
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal">{t('Mégsem')}</button>
-    <button class="btn btn-primary js-termekertesitomodalok">{t('OK')}</button>
+    <button class="btn okbtn js-termekertesitomodalok">{t('OK')}</button>
   </div>
 </div>

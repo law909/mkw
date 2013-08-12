@@ -3,7 +3,7 @@ $router->map('GET','','mainController#view','home');
 $router->map('GET','/login','partnerController#showLoginForm','showlogin');
 $router->map('POST','/login/ment','partnerController#doLogin','dologin');
 $router->map('GET','/logout','partnerController#doLogout','dologout');
-$router->map('GET','/regisztracio','partnerController#showRegistrationForm','showregistration');
+$router->map('GET','/regisztracio','partnerController#showLoginForm','showregistration');
 $router->map('POST','/regisztracio/ment','partnerController#saveRegistration','saveregistration');
 $router->map('GET','/fiok','partnerController#showAccount','showaccount');
 $router->map('POST','/fiok/ment/[adataim|szamlaadatok|szallitasiadatok:subject]','partnerController#saveAccount','saveaccount');

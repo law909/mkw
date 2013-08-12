@@ -134,7 +134,7 @@
 							<div id="termekprice{$_termek.id}-{$_termek.valtozatid|default}" class="termekprice">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
 							{if ($_termek.nemkaphato)}
 								<div class="row">
-									<a href="#" rel="nofollow" class="js-termekertesitobtn btn btn-inverse pull-right" data-termek="{$_termek.id}">
+									<a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn pull-right" data-termek="{$_termek.id}">
 										{t('Elfogyott')}
 									</a>
 								</div>
@@ -203,7 +203,7 @@
 								<td class="gtermekprice">{number_format($_termek.bruttohuf,0,',',' ')} Ft
 								{if ($_termek.nemkaphato)}
 									<div class="row">
-										<a href="#" rel="nofollow" class="js-termekertesitobtn btn btn-inverse pull-right" data-termek="{$_termek.id}">
+										<a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn pull-right" data-termek="{$_termek.id}">
 											{t('Elfogyott')}
 										</a>
 									</div>
