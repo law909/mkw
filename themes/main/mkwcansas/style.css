@@ -31,7 +31,7 @@ header a:hover,footer a:hover{color:#d2d2d2;}
 .headerbutton{float:left;border-right-style:solid;border-right-width:2px;border-color:#f7f7f7;padding:0 10px;}.headerbutton a{line-height:40px;display:block;}
 .lastheaderbutton{border:none;}
 .firstheaderbutton{padding-left:0;}
-.headercarticon{display:block;background:url("img/i_kosar.png") no-repeat scroll center center;width:40px;height:40px;}
+.headercarticon{display:block;background:url("img/i_kosar.png") no-repeat scroll center center;width:40px;height:40px;margin-right:10px;background-color:#e42721;}
 #minikosar{line-height:40px;}
 .headercart .cartbtn{margin:5px 0 5px 10px;}
 .headerloginicon{display:block;background:url("img/i_emberke.png") no-repeat scroll left center;padding-left:20px;}
