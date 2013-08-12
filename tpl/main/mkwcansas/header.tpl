@@ -21,7 +21,7 @@
 				</div>
 			</div>
 			{/if}
-			<div class="headercart hidden-phone">
+			<div class="headercart">
 				<a href="{$kosargetlink}" class="btn cartbtn pull-right">{t('Kosár')}</a>
 				<a id="minikosar" class="pull-right" href="{$kosargetlink}" rel="nofollow">
 					{include "minikosar.tpl"}

@@ -124,4 +124,4 @@ span.aktualislap{color:#e42721;background-color:white;padding:4px;}
 .tooltip.right .tooltip-arrow{border-right-color:#6E6E6E;}
 .chk-tooltippedcontainer{width:auto;}
 .chk-loginrightborder{border-right-color:#EFEFEF;border-right-style:solid;border-right-width:1px;}
-@media (min-width:480px){#navmain li .sub{width:400px;} .loginform{min-height:0;}}@media (max-width:767px){.chk-tooltippedcontainer{width:100%;} .loginform{min-height:400px;}}@media (min-width:767px){#navmain li .sub{width:700px;} #navmain li .sub ul{width:125px;float:left;} .loginform{min-height:400px;}}@media (min-width:979px){#navmain li .sub{width:940px;} #navmain li .sub ul{width:185px;float:left;} .loginform{min-height:400px;}}
+@media (min-width:480px){#navmain li .sub{width:400px;} .loginform{min-height:0;}}@media (max-width:767px){.chk-tooltippedcontainer{width:100%;} .loginform{min-height:0;}}@media (min-width:767px){#navmain li .sub{width:700px;} #navmain li .sub ul{width:125px;float:left;} .loginform{min-height:400px;}}@media (min-width:979px){#navmain li .sub{width:940px;} #navmain li .sub ul{width:185px;float:left;} .loginform{min-height:400px;}}

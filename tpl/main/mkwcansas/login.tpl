@@ -17,10 +17,10 @@
 				<form id="Loginform" action="/login/ment" method="post">
 					<fieldset>
 						<div class="controls chk-controloffset">
-							<input name="email" type="email" class="span3" placeholder="{t('email')} *" required data-errormsg1="{t('Adja meg az emailcímét')}" data-errormsg2="{t('Kérjük emailcímet adjon meg.')}">
+							<input name="email" type="email" class="" placeholder="{t('email')} *" required data-errormsg1="{t('Adja meg az emailcímét')}" data-errormsg2="{t('Kérjük emailcímet adjon meg.')}">
 						</div>
 						<div class="controls chk-controloffset">
-							<input name="jelszo" type="password" class="span3" placeholder="{t('jelszó')} *" value="">
+							<input name="jelszo" type="password" class="" placeholder="{t('jelszó')} *" value="">
 						</div>
 						<div class="row chk-actionrow span">
 							<button type="submit" class="btn okbtn">{t('Belépés')}</button>
