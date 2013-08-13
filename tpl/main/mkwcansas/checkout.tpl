@@ -27,11 +27,11 @@
 								<h5>Új vásárló</h5>
 								<div class="span">
 									<label class="radio">
-										<input name="regkell" id="regkell" type="radio">
+										<input name="regkell" id="regkell" type="radio" value="0">
 										Vásárlás vendégként (regisztráció nélkül)
 									</label>
 									<label class="radio">
-										<input name="regkell" id="regkell" type="radio">
+										<input name="regkell" id="regkell" type="radio" value="1">
 										Vásárlás regisztrációval
 									</label>
 									<div class="chk-courierdesc folyoszoveg">A regisztráció olyan előnyökkel jár, Küldünk egy előlegbekérőt, arra fizetsz. Ekkor mi megcsináljuk a végszámlát, és kiküldjük nek</div>

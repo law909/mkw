@@ -24,11 +24,17 @@ var checkout=function($) {
 		$('.js-chkszallmod, .js-chkattekintes').hide().addClass('js-chkclosed');
 		$('.js-chkdatagroupheader').on('click',function(e) {
 			e.preventDefault();
-			var $this=$(this),
-				mycontainer=$($this.data('container'));
-			if (mycontainer.hasClass('js-chkclosed')) {
-				$('.js-chkdatacontainer').slideUp(100).addClass('js-chkclosed');
-				mycontainer.slideDown(100).removeClass('js-chkclosed');
+			var regkell=$('input[name="regkell"]:checked');
+			if (!regkell.length) {
+				mkw.showDialog('Válassza ki, hogy szeretne-e regisztrálni a vásárláshoz, vagy jelentkezzen be!');
+			}
+			else {
+				var $this=$(this),
+					mycontainer=$($this.data('container'));
+				if (mycontainer.hasClass('js-chkclosed')) {
+					$('.js-chkdatacontainer').slideUp(100).addClass('js-chkclosed');
+					mycontainer.slideDown(100).removeClass('js-chkclosed');
+				}
 			}
 		});
 

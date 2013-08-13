@@ -29,7 +29,7 @@ var mkw=function($) {
 			header: 'Értesítés',
 			buttons: [{
 					caption: 'OK',
-					class: 'btn-primary',
+					class: 'okbtn',
 					click: function(e) {
 						e.preventDefault();
 						closeDialog();
