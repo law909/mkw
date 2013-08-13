@@ -55,7 +55,7 @@
 									</div>
 								</div>
 								<div class="form-actions">
-									<button type="submit" class="btn btn-primary">OK</button>
+									<button type="submit" class="btn okbtn">OK</button>
 								</div>
 							</fieldset>
 						</form>
@@ -87,7 +87,7 @@
 									</div>
 								</div>
 								<div class="form-actions">
-									<button type="submit" class="btn btn-primary">OK</button>
+									<button type="submit" class="btn okbtn">OK</button>
 								</div>
 							</fieldset>
 						</form>
@@ -110,7 +110,7 @@
 									</div>
 								</div>
 								<div class="form-actions">
-									<button type="submit" class="btn btn-primary">OK</button>
+									<button type="submit" class="btn okbtn">OK</button>
 								</div>
 							</fieldset>
 						</form>

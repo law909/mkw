@@ -46,17 +46,31 @@ class fizmodController extends \mkwhelpers\JQGridController {
 		echo json_encode($this->loadDataToView($rec));
 	}
 
-	public function getSelectList($selid) {
-		$rec=$this->getRepo()->getAll(array(),array('nev'=>'ASC'));
+	public function getSelectList($selid=null, $szallmod=null) {
+		$rec=$this->getRepo()->getAllWebesBySzallitasimod($szallmod);
 		$res=array();
+		$vanvalasztott=false;
 		foreach($rec as $sor) {
-			$res[]=array(
+			$r=array(
 				'id'=>$sor->getId(),
 				'caption'=>$sor->getNev(),
-				'selected'=>($sor->getId()==$selid),
 				'fizhatido'=>$sor->getHaladek(),
+				'leiras'=>$sor->getLeiras(),
 				'bank'=>($sor->getTipus()=='B'?'1':'0')
 			);
+			if ($selid) {
+				$r['selected']=$sor->getId()==$selid;
+			}
+			else {
+				if (!$vanvalasztott) {
+					$r['selected']=true;
+					$vanvalasztott=true;
+				}
+				else {
+					$r['selected']=false;
+				}
+			}
+			$res[]=$r;
 		}
 		return $res;
 	}

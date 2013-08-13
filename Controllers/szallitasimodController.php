@@ -35,10 +35,28 @@ class szallitasimodController extends \mkwhelpers\JQGridController {
 	}
 
 	public function getSelectList($selid) {
-		$rec=$this->getRepo()->getAll(array(),array('nev'=>'ASC'));
+		$rec=$this->getRepo()->getAllWebes();
 		$res=array();
+		$vanvalasztott=false;
 		foreach($rec as $sor) {
-			$res[]=array('id'=>$sor->getId(),'caption'=>$sor->getNev(),'selected'=>($sor->getId()==$selid));
+			$r=array(
+				'id'=>$sor->getId(),
+				'caption'=>$sor->getNev(),
+				'leiras'=>$sor->getLeiras()
+			);
+			if ($selid) {
+				$r['selected']=$sor->getId()==$selid;
+			}
+			else {
+				if (!$vanvalasztott) {
+					$r['selected']=true;
+					$vanvalasztott=true;
+				}
+				else {
+					$r['selected']=false;
+				}
+			}
+			$res[]=$r;
 		}
 		return $res;
 	}

@@ -27,5 +27,6 @@ $router->map('POST','/kosar/edit','kosarController#edit','kosaredit');
 $router->map('POST|GET','/kosar/del','kosarController#del','kosardel');
 $router->map('GET','/kosar/get','kosarController#get','kosarget');
 $router->map('GET','/checkout','checkoutController#getCheckout','showcheckout');
+$router->map('GET','/checkout/getfizmodlist','checkoutController#getFizmodList','checkoutgetfizmod');
 
 $router->map('POST','/termekertesito/save','termekertesitoController#save','termekertesitosave');

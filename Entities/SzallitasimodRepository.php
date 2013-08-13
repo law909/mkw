@@ -9,11 +9,13 @@ class SzallitasimodRepository extends \mkwhelpers\Repository {
 		$this->setOrders(array(
 			'1'=>array('caption'=>'név szerint','order'=>array('_xx.nev'=>'ASC'))
 		));
-/* MINTA
-		$this->setBatches(array(
-			'1'=>'áthelyezés másik címkecsoportba'
-		));
-*/
+	}
+
+	public function getAllWebes() {
+		$filter=array();
+		$filter['fields'][]='webes';
+		$filter['values'][]=true;
+		return $this->getAll($filter,array('nev'=>'ASC'));
 	}
 
 /* Ha van JOIN, ezek akkor kellenek

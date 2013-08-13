@@ -192,6 +192,18 @@ class Store {
 			$u=$pc->getLoggedInUser();
 			$user['nev']=$u->getNev();
 			$user['email']=$u->getEmail();
+			$user['vezeteknev']=$u->getVezeteknev();
+			$user['keresztnev']=$u->getKeresztnev();
+			$user['telefon']=$u->getTelefon();
+			$user['szamlanev']=$u->getSzamlanev();
+			$user['szamlairszam']=$u->getSzamlairszam();
+			$user['szamlavaros']=$u->getSzamlavaros();
+			$user['szamlautca']=$u->getSzamlautca();
+			$user['szamlaadoszam']=$u->getSzamlaadoszam();
+			$user['szallnev']=$u->getSzallnev();
+			$user['szallirszam']=$u->getSzallirszam();
+			$user['szallvaros']=$u->getSzallvaros();
+			$user['szallutca']=$u->getSzallutca();
 		}
 		$v->setVar('user',$user);
 		$rut = self::getRouter();

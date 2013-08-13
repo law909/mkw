@@ -12,12 +12,12 @@
 	</div>
 </div>
 </header>
-<div class="container">
+<div class="container js-checkout">
 	<div class="row">
 		<div class="span10">
 			<form id="FiokSzamlaAdatok" class="" action="" method="post"><fieldset>
 			{$sorszam=1}
-			{if (!$user)}
+			{if (!$user.loggedin)}
 			<div class="row">
 				<div class="span10">
 					<div class="chk-datagroupheader js-chkdatagroupheader" data-container=".js-chklogin">{$sorszam++}. Bejelentkezés</div>
@@ -42,10 +42,10 @@
 						<div class="span5">
 							<h5>Regisztrált vásárló</h5>
 							<div class="controls chk-controloffset">
-								<input name="szamlanev" type="text" class="span3" placeholder="{t('email')} *" value="{$user.email}">
+								<input name="email" type="text" class="span3" placeholder="{t('email')} *" value="{$user.email}">
 							</div>
 							<div class="controls chk-controloffset">
-								<input name="szamlanev" type="text" class="span3" placeholder="{t('jelszó')} *" value="">
+								<input name="jelszo" type="text" class="span3" placeholder="{t('jelszó')} *" value="">
 							</div>
 							<div class="row chk-actionrow span"><a class="btn okbtn pull-right js-chkopenbtn">Belépés</a></div>
 						</div>
@@ -118,28 +118,18 @@
 						<div class="row">
 								<div class="span2"><label class="chk-controllabel bold">Szállítási mód:</label></div>
 								<div class="span3 controls js-chkszallmodlist">
+									{foreach $szallitasimodlist as $szallitasimod}
 									<label class="radio">
-										<input type="radio" name="szallitasimod" value="1" checked>
-										Futárszolgálat
+										<input type="radio" name="szallitasimod" value="{$szallitasimod.id}"{if ($szallitasimod.selected)} checked{/if}>
+										{$szallitasimod.caption}
 									</label>
-									<div class="chk-courierdesc folyoszoveg">Ami azt illeti, a futár az nem fut ám, hanem kocsival jár.</div>
-									<label class="radio">
-										<input type="radio" name="szallitasimod" value="2">
-										Személyes átvétel
-									</label>
-									<div class="chk-courierdesc folyoszoveg">Eger, Akármilyen utca 8.</div>
+									{if ($szallitasimod.leiras)}
+									<div class="chk-courierdesc folyoszoveg">{$szallitasimod.leiras}</div>
+									{/if}
+									{/foreach}
 								</div>
 								<div class="span2"><label class="chk-controllabel bold">Fizetési mód:</label></div>
 								<div class="span3 controls js-chkfizmodlist">
-									<label class="radio">
-										<input type="radio" name="fizetesimod" value="1" checked>
-										Készpénz
-									</label>
-									<label class="radio">
-										<input type="radio" name="fizetesimod" value="2">
-										Előre utalás
-									</label>
-									<div class="chk-courierdesc folyoszoveg">Küldünk egy előlegbekérőt, arra fizetsz. Ekkor mi megcsináljuk a végszámlát, és kiküldjük neked az áruval együtt</div>
 								</div>
 						</div>
 						<div class="row">

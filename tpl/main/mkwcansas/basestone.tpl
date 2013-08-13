@@ -30,6 +30,9 @@
 		<script src="/js/main/mkwcansas/h5f.js"></script>
 		<script src="/js/main/mkwcansas/matt-accordion.js"></script>
 		{block "script"}{/block}
+		<script src="/js/main/mkwcansas/mkw.js"></script>
+		<script src="/js/main/mkwcansas/checks.js"></script>
+		<script src="/js/main/mkwcansas/checkout.js"></script>
 		<script src="/js/main/mkwcansas/mkwcansas.js"></script>
 	</head>
 	<body>
