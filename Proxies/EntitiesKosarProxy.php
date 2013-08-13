@@ -78,7 +78,7 @@ class EntitiesKosarProxy extends \Entities\Kosar implements \Doctrine\ORM\Proxy\
         return parent::getPartnerNev();
     }
 
-    public function setPartner(\Entities\Partner $val)
+    public function setPartner($val)
     {
         $this->__load();
         return parent::setPartner($val);

@@ -67,6 +67,13 @@ class Bizonylatfej {
 	private $fizmod;
 	/** @Column(type="string",length=255,nullable=true) */
 	private $fizmodnev;
+	/**
+	 * @ManyToOne(targetEntity="Szallitasimod",inversedBy="bizonylatfejek")
+	 * @JoinColumn(name="szalliatasimod_id", referencedColumnName="id",nullable=true,onDelete="no action")
+	 */
+	private $szallitasimod;
+	/** @Column(type="string",length=255,nullable=true) */
+	private $szallitasimodnev;
 	/** @Column(type="decimal",precision=14,scale=4,nullable=true) */
 	private $netto;
 	/** @Column(type="decimal",precision=14,scale=4,nullable=true) */
@@ -490,6 +497,37 @@ class Bizonylatfej {
 		}
 	}
 
+	public function getSzallitasimod(){
+		return $this->szallitasimod;
+	}
+
+	public function getSzallitasimodnev() {
+		return $this->szallitasimodnev;
+	}
+
+	public function getSzallitasimodId() {
+		if ($this->szallitasimod) {
+			return $this->szallitasimod->getId();
+		}
+		return '';
+	}
+
+	public function setSzallitasimod(Szallitasimod $val) {
+		if ($this->szallitasimod!==$val) {
+			$this->szallitasimod=$val;
+			$this->szallitasimodnev=$val->getNev();
+//			$val->addBizonylat($this);
+		}
+	}
+
+	public function removeSzallitasimod() {
+		if ($this->szallitasimod !==null) {
+//			$val=$this->szallitasimod;
+			$this->szallitasimod=null;
+			$this->szallitasimodnev='';
+//			$val->removeBizonylat($this);
+		}
+	}
 	public function getNetto() {
 		return $this->netto;
 	}

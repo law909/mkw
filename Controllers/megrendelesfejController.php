@@ -87,6 +87,8 @@ class megrendelesfejController extends bizonylatfejController {
 		$view->setVar('raktarlist',$raktar->getSelectList($raktarid));
 		$fizmod=new fizmodController($this->params);
 		$view->setVar('fizmodlist',$fizmod->getSelectList(($record?$record->getFizmodId():0)));
+		$szallitasimod=new szallitasimodController($this->params);
+		$view->setVar('szallitasimodlist',$szallitasimod->getSelectList(($record?$record->getSzallitasimodId():0)));
 		$valutanem=new valutanemController($this->params);
 		if (!$record||!$record->getValutanemId()) {
 			$valutaid=store::getParameter(\mkw\consts::Valutanem,0);

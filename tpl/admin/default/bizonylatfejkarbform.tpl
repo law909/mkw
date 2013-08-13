@@ -47,6 +47,14 @@
 					{/foreach}
 					</select>
 				</td>
+				<td class="mattable-important"><label for="SzallitasimodEdit">{t('Szállítási mód')}:</label></td>
+				<td><select id="SzallitasimodEdit" name="szallitasimod" class="mattable-important" required="required">
+					<option value="">{t('válasszon')}</option>
+					{foreach $szallitasimodlist as $_mk}
+					<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+					{/foreach}
+					</select>
+				</td>
 				<td class="mattable-important"><label for="KeltEdit">{t('Kelt')}:</label></td>
 				<td><input id="KeltEdit" name="kelt" type="text" size="12" data-datum="{$egyed.keltstr}" class="mattable-important" required="required"></td>
 				{if ($showteljesites)}

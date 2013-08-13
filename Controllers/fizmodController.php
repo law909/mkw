@@ -10,7 +10,7 @@ class fizmodController extends \mkwhelpers\JQGridController {
 	}
 
 	protected function loadCells($sor) {
-		return array($sor->getNev(),$sor->getTipus(),$sor->getHaladek(),$sor->getWebes());
+		return array($sor->getId(),$sor->getNev(),$sor->getTipus(),$sor->getHaladek(),$sor->getWebes(),$sor->getLeiras());
 	}
 
 	protected function setFields($obj) {
@@ -18,6 +18,7 @@ class fizmodController extends \mkwhelpers\JQGridController {
 		$obj->setTipus($this->params->getStringRequestParam('tipus'));
 		$obj->setHaladek($this->params->getIntRequestParam('haladek'));
 		$obj->setWebes($this->params->getBoolRequestParam('webes'));
+		$obj->setLeiras($this->params->getStringRequestParam('leiras'));
 		return $obj;
 	}
 

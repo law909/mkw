@@ -25,6 +25,10 @@ $.jgrid.useJSON=true;
 	<div id="fizmodgridpager"></div>
 	</div>
 	<div class="egyebadat-grid">
+	<table id="szallitasimodgrid"></table>
+	<div id="szallitasimodgridpager"></div>
+	</div>
+	<div class="egyebadat-grid">
 	<table id="valutanemgrid"></table>
 	<div id="valutanemgridpager"></div>
 	</div>

@@ -17,6 +17,9 @@ $router->map('POST','/admin/felhasznalo/save','felhasznaloController#save','admi
 $router->map('GET','/admin/fizmod/jsonlist','fizmodController#jsonlist','adminfizmodjsonlist');
 $router->map('GET','/admin/fizmod/htmllist','fizmodController#htmllist','adminfizmodhtmllist');
 $router->map('POST','/admin/fizmod/save','fizmodController#save','adminfizmodsave');
+$router->map('GET','/admin/szallitasimod/jsonlist','szallitasimodController#jsonlist','adminszallitasimodjsonlist');
+$router->map('GET','/admin/szallitasimod/htmllist','szallitasimodController#htmllist','adminszallitasimodhtmllist');
+$router->map('POST','/admin/szallitasimod/save','szallitasimodController#save','adminszallitasimodsave');
 $router->map('GET','/admin/jelenlettipus/jsonlist','jelenlettipusController#jsonlist','adminjelenlettipusjsonlist');
 $router->map('POST','/admin/jelenlettipus/save','jelenlettipusController#save','adminjelenlettipussave');
 $router->map('GET','/admin/kapcsolatfelveteltema/jsonlist','kapcsolatfelveteltemaController#jsonlist','adminkapcsolatfelveteltemajsonlist');

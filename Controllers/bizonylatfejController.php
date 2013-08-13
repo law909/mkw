@@ -39,6 +39,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$x['raktarnev']=$t->getRaktarnev();
 		$x['fizmod']=$t->getFizmodId();
 		$x['fizmodnev']=$t->getFizmodnev();
+		$x['szallitasimod']=$t->getSzallitasimodId();
+		$x['szallitasimodnev']=$t->getSzallitasimodnev();
 		$x['valutanem']=$t->getValutanemId();
 		$x['valutanemnev']=$t->getValutanemNev();
 		$x['arfolyam']=$t->getArfolyam();
@@ -76,6 +78,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$ck=store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
 		if ($ck) {
 			$obj->setFizmod($ck);
+		}
+		$ck=store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod'));
+		if ($ck) {
+			$obj->setSzallitasimod($ck);
 		}
 		$obj->setKelt($this->params->getStringRequestParam('kelt'));
 		$obj->setTeljesites($this->params->getStringRequestParam('teljesites'));

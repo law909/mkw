@@ -21,6 +21,8 @@ class Fizmod {
 	private $webes=true;
 	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="fizmod",cascade={"persist","remove"}) */
 	private $bizonylatfejek;
+	/** @Column(type="text",nullable=true) */
+	private $leiras;
 
 	public function __construct() {
 		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
@@ -60,5 +62,13 @@ class Fizmod {
 
 	public function setWebes($webes) {
     	$this->webes = $webes;
+	}
+
+	public function getLeiras() {
+		return $this->leiras;
+	}
+
+	public function setLeiras($leiras) {
+		$this->leiras = $leiras;
 	}
 }
