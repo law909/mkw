@@ -29,7 +29,7 @@ var mkw=function($) {
 			header: 'Értesítés',
 			buttons: [{
 					caption: 'OK',
-					class: 'okbtn',
+					_class: 'okbtn',
 					click: function(e) {
 						e.preventDefault();
 						closeDialog();
@@ -43,8 +43,8 @@ var mkw=function($) {
 			dlgbody.append('<p>'+msg+'</p>');
 		}
 		for(var i=0;i<opts.buttons.length;i++) {
-			if (opts.buttons[i].class) {
-				classes=classes+' '+opts.buttons[i].class;
+			if (opts.buttons[i]._class) {
+				classes=classes+' '+opts.buttons[i]._class;
 			}
 			$('<button class="'+classes+'">'+opts.buttons[i].caption+'</button>')
 				.appendTo(dlgfooter)
