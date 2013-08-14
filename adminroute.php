@@ -154,6 +154,7 @@ $router->map('GET','/admin/termekcimke/getkarb','termekcimkeController#getkarb',
 $router->map('GET','/admin/termekcimke/viewkarb','termekcimkeController#viewkarb','admintermekcimkeviewkarb');
 $router->map('POST','/admin/termekcimke/save','termekcimkeController#save','admintermekcimkesave');
 $router->map('POST','/admin/termekcimke/setmenulathato','termekcimkeController#setmenulathato','admintermekcimkesetmenulathato');
+$router->map('POST','/admin/termekcimke/add','termekcimkeController#add','admintermekcimkeadd');
 
 $router->map('GET','/admin/partnercimke/viewlist','partnercimkeController#viewlist','adminpartnercimkeviewlist');
 $router->map('GET','/admin/partnercimke/getlistbody','partnercimkeController#getlistbody','adminpartnercimkegetlistbody');
@@ -161,6 +162,7 @@ $router->map('GET','/admin/partnercimke/getkarb','partnercimkeController#getkarb
 $router->map('GET','/admin/partnercimke/viewkarb','partnercimkeController#viewkarb','adminpartnercimkeviewkarb');
 $router->map('POST','/admin/partnercimke/save','partnercimkeController#save','adminpartnercimkesave');
 $router->map('POST','/admin/partnercimke/setmenulathato','partnercimkeController#setmenulathato','adminpartnercimkesetmenulathato');
+$router->map('POST','/admin/partnercimke/add','partnercimkeController#add','adminpartnercimkeadd');
 
 $router->map('GET','/admin/korhinta/viewlist','korhintaController#viewlist','adminkorhintaviewlist');
 $router->map('GET','/admin/korhinta/getlistbody','korhintaController#getlistbody','adminkorhintagetlistbody');

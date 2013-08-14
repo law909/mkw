@@ -38,7 +38,7 @@ class partnercimkeController extends \mkwhelpers\MattableController {
 	}
 
 	protected function setFields($obj) {
-		$ck=store::getEm()->getRepository('Entities\Partnercimkekat')->find($this->getIntRequestParam('cimkecsoport',0));
+		$ck=store::getEm()->getRepository('Entities\Partnercimkekat')->find($this->params->getIntRequestParam('cimkecsoport',0));
 		if ($ck) {
 			$obj->setKategoria($ck);
 		}

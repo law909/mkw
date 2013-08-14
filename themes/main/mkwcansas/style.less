@@ -30,6 +30,7 @@
 @okbuttonsotet: #007cb5;
 @cartbuttonvilagos: #e42721;
 @cartbuttonsotet: #c11813;
+@fejlecbackground: #e8e8e8;
 
 @headerrowmargin: 20px;
 @headermidmargin: 20px;
@@ -65,7 +66,7 @@
 .tabs-left>.nav-tabs .active>a {
 	font-weight: bold;
 	color: #333;
-	background-color: #efefef;
+	background-color: @fejlecbackground;
 }
 
 .textaligncenter {
@@ -421,7 +422,7 @@ footer nav {
 .morzsa {
 	font-size: @morzsafontsize;
 	margin-bottom: 20px;
-	background-color: whitesmoke;
+	background-color: @fejlecbackground;
 	.border-radius(0);
 }
 
@@ -465,7 +466,7 @@ footer nav {
 .szurokontener {
 	border-width: 1px;
 	border-style: solid;
-	border-color: #efefef;
+	border-color: @fejlecbackground;
 	margin-bottom: 15px;
 }
 
@@ -474,7 +475,7 @@ footer nav {
 }
 
 .szurofej {
-	background-color: #EFEFEF;
+	background-color: @fejlecbackground;
 	-webkit-transition: background-color .2s linear;
 	-moz-transition: background-color .2s linear;
 	-o-transition: background-color .2s linear;
@@ -498,7 +499,7 @@ footer nav {
 	width: 100%;
 	padding: 10px 0;
 	border-bottom: 1px solid;
-	border-color: #efefef;
+	border-color: @fejlecbackground;
 }
 
 .termekimage {
@@ -526,7 +527,7 @@ footer nav {
 	min-height: 1px;
 	border-width: 1px;
 	border-style: solid;
-	border-color: #efefef;
+	border-color: @fejlecbackground;
 	border-width: 0 0 1px 1px;
 }
 
@@ -576,7 +577,7 @@ footer nav {
 
 .lapozo {
 	clear: left;
-	background-color: #EFEFEF;
+	background-color: @fejlecbackground;
 	padding: 4px 8px;
 }
 
@@ -668,7 +669,7 @@ span.aktualislap {
 }
 
 .chk-datagroupheader {
-	background-color: #EFEFEF;
+	background-color: @fejlecbackground;
 	-webkit-transition: background-color .2s linear;
 	-moz-transition: background-color .2s linear;
 	-o-transition: background-color .2s linear;
@@ -681,7 +682,8 @@ span.aktualislap {
 		font-size: 12px;
 		font-weight: normal;
 		margin-left: 10px;
-		float: right;
+		color: @okbuttonsotet;
+		text-decoration: underline;
 		&:hover {
 			color: white;
 		}
@@ -705,7 +707,7 @@ span.aktualislap {
 .chk-colleftborder {
 	border-left-style: solid;
 	border-left-width: 1px;
-	border-left-color: #EFEFEF;
+	border-left-color: @fejlecbackground;
 }
 
 .col30percent {
@@ -755,10 +757,10 @@ span.aktualislap {
 .chk-savecontainer {
 	border-style: solid;
 	border-width: 1px;
-	border-color: #EFEFEF;
+	border-color: @fejlecbackground;
 	padding: 10px;
 	border-radius: 2px;
-	background-color: #EFEFEF;
+	background-color: @fejlecbackground;
 	label a {
 		text-decoration: underline;
 		&:hover {
@@ -798,7 +800,7 @@ span.aktualislap {
 }
 
 .chk-loginrightborder {
-	border-right-color: #EFEFEF;
+	border-right-color: @fejlecbackground;
 	border-right-style: solid;
 	border-right-width: 1px;
 }

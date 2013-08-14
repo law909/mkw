@@ -11,13 +11,13 @@
 			<div id="adatmodositasTabbable" class="tabbable tabs-left">
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="#adataim" data-toggle="tab">Adataim</a></li>
-					<li><a href="#jelszo" data-toggle="tab">Jelszó módosítás</a></li>
 					<li><a href="#szamlaadatok" data-toggle="tab">Számlázási adatok</a></li>
 					<li><a href="#szallitasiadatok" data-toggle="tab">Szállítási adatok</a></li>
 					<li><a href="#megrend" data-toggle="tab">Eddigi megrendelések</a></li>
-					<li><a href="#termekertesito" data-toggle="tab">Termékértesítők</a></li>
-					<li><a href="#csomag" data-toggle="tab">Csomagkövetés</a></li>
 					<li><a href="#visszajel" data-toggle="tab">Visszajelzések</a></li>
+					<li><a href="#csomag" data-toggle="tab">Csomagkövetés</a></li>
+					<li><a href="#termekertesito" data-toggle="tab">Termékértesítők</a></li>
+					<li><a href="#jelszo" data-toggle="tab">Jelszó módosítás</a></li>
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="adataim">
@@ -55,13 +55,10 @@
 									</div>
 								</div>
 								<div class="form-actions">
-									<button type="submit" class="btn okbtn">OK</button>
+									<button type="submit" class="btn okbtn">Adatok módosítása</button>
 								</div>
 							</fieldset>
 						</form>
-					</div>
-					<div class="tab-pane" id="jelszo">
-						Jelszó
 					</div>
 					<div class="tab-pane" id="szamlaadatok">
 						<form id="FiokSzamlaAdatok" class="form-horizontal" action="/fiok/ment/szamlaadatok" method="post">
@@ -87,7 +84,7 @@
 									</div>
 								</div>
 								<div class="form-actions">
-									<button type="submit" class="btn okbtn">OK</button>
+									<button type="submit" class="btn okbtn">Adatok módosítása</button>
 								</div>
 							</fieldset>
 						</form>
@@ -110,7 +107,7 @@
 									</div>
 								</div>
 								<div class="form-actions">
-									<button type="submit" class="btn okbtn">OK</button>
+									<button type="submit" class="btn okbtn">Adatok módosítása</button>
 								</div>
 							</fieldset>
 						</form>
@@ -118,25 +115,28 @@
 					<div class="tab-pane" id="megrend">
 						Eddigi megrendelések
 					</div>
+					<div class="tab-pane" id="visszajel">
+						Visszajelzések
+					</div>
+					<div class="tab-pane" id="csomag">
+						Csomagkövetés
+					</div>
 					<div class="tab-pane" id="termekertesito">
 						{foreach $ertesitok as $ertesito}
 						<div class="row js-termekertesito">
 							<div class="span1"><a href="/termek/{$ertesito.termek.slug}"><img src="{$ertesito.termek.kiskepurl}" alt="{$ertesito.termek.caption}" title="{$ertesito.termek.caption}"></a></div>
 							<div class="span4">
 								<a href="/termek/{$ertesito.termek.slug}">{$ertesito.termek.caption}</a>
-								<div>Felíratkozás dátuma: {$ertesito.createdstr}</div>
+								<div>Feliratkozás dátuma: {$ertesito.createdstr}</div>
 							</div>
-							<div class="span1"><a href="#" class="js-termekertesitodel" data-id="{$ertesito.id}">Leíratkozás</a></div>
+							<div class="span1"><a href="#" class="js-termekertesitodel" data-id="{$ertesito.id}">Leiratkozás</a></div>
 						</div>
 						{foreachelse}
 							<h3>Nincs termékértesítője</h3>
 						{/foreach}
 					</div>
-					<div class="tab-pane" id="csomag">
-						Csomagkövetés
-					</div>
-					<div class="tab-pane" id="visszajel">
-						Visszajelzések
+					<div class="tab-pane" id="jelszo">
+						Jelszó
 					</div>
 				</div>
 			</div>
