@@ -13,11 +13,11 @@
 					<li class="active"><a href="#adataim" data-toggle="tab">Adataim</a></li>
 					<li><a href="#szamlaadatok" data-toggle="tab">Számlázási adatok</a></li>
 					<li><a href="#szallitasiadatok" data-toggle="tab">Szállítási adatok</a></li>
-					<li><a href="#megrend" data-toggle="tab">Eddigi megrendelések</a></li>
+					<li><a href="#megrend" data-toggle="tab">Megrendeléseim</a></li>
 					<li><a href="#visszajel" data-toggle="tab">Visszajelzések</a></li>
 					<li><a href="#csomag" data-toggle="tab">Csomagkövetés</a></li>
 					<li><a href="#termekertesito" data-toggle="tab">Termékértesítők</a></li>
-					<li><a href="#jelszo" data-toggle="tab">Jelszó módosítás</a></li>
+					<li><a href="#jelszo" data-toggle="tab">Jelszó módosítása</a></li>
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="adataim">
@@ -113,7 +113,7 @@
 						</form>
 					</div>
 					<div class="tab-pane" id="megrend">
-						Eddigi megrendelések
+						Megrendeléseim
 					</div>
 					<div class="tab-pane" id="visszajel">
 						Visszajelzések

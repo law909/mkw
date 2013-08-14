@@ -512,5 +512,11 @@ $(document).ready(function(){
 		mkw.overrideFormSubmit($fiokszallitasiadatok,'Adatait módosítjuk...');
 	}
 
+	$('.js-tooltipbtn').tooltip({
+		html: false,
+		placement: 'right',
+		container: 'body'
+	});
+
 	checkout.initUI();
 });

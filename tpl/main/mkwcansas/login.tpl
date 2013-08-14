@@ -30,11 +30,11 @@
 							<div class="chk-relative pull-left">
 								<i class="span inputiconhack"></i>
 								<input id="Jelszo2Edit" name="jelszo2" type="password" class="span" required placeholder="jelszó 2 *">
-								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="" data-original-title="Adja meg kétszer jelszavát, így elkerülheti az elgépelést"></i>
+								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-tooltipbtn" title="" data-original-title="Adja meg kétszer jelszavát, így elkerülheti az elgépelést"></i>
 							</div>
 						</div>
 						<div class="row chk-actionrow span">
-							<button type="submit" class="btn okbtn">OK</button>
+							<button type="submit" class="btn okbtn">Regisztráció</button>
 						</div>
 					</fieldset>
 				</form>

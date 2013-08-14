@@ -16,6 +16,8 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$szm=new szallitasimodController($this->params);
 		$szlist=$szm->getSelectList(null);
 		$view->setVar('szallitasimodlist',$szlist);
+		$view->setVar('showerror', Store::getMainSession()->loginerror);
+		Store::getMainSession()->loginerror = false;
 		$view->printTemplateResult();
 	}
 

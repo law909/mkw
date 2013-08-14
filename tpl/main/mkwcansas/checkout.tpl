@@ -42,8 +42,11 @@
 						</div>
 						<div class="span5">
 							<h5>Regisztrált vásárló</h5>
+							{if ($showerror)}
+								<h4>A bejelentkezés nem sikerült.</h4>
+							{/if}
 							<div class="controls chk-controloffset">
-								<input name="email" type="email" form="LoginForm" class="span3" placeholder="{t('email')} *" value="{$user.email}">
+								<input name="email" type="email" form="LoginForm" class="span3" placeholder="{t('email')} *" value="{$user.email}" required>
 							</div>
 							<div class="controls chk-controloffset">
 								<input name="jelszo" type="text" form="LoginForm" class="span3" placeholder="{t('jelszó')} *" value="">

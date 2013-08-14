@@ -377,14 +377,16 @@ class partnerController extends \mkwhelpers\MattableController {
 			$view=$this->getLoginTpl();
 			store::fillTemplate($view);
 			$view->setVar('pagetitle',t('Bejelentkezés').' - '.\mkw\Store::getParameter(\mkw\consts::Oldalcim));
-			$view->setVar('sikertelen',false);
-			store::storePrevUri();
+			$view->setVar('sikertelen', \mkw\Store::getMainSession()->loginerror);
+			\mkw\Store::getMainSession()->loginerror = false;
+			\mkw\Store::storePrevUri();
 			$view->printTemplateResult();
 		}
 	}
 
 	public function doLogin() {
-		if ($this->params->getStringRequestParam('c')==='c') {
+		$checkout=$this->params->getStringRequestParam('c')==='c';
+		if ($checkout) {
 			$route=store::getRouter()->generate('showcheckout');
 		}
 		else {
@@ -400,10 +402,18 @@ class partnerController extends \mkwhelpers\MattableController {
 				header('Location: '.$route);
 			}
 			else {
-				$view=$this->getLoginTpl();
-				store::fillTemplate($view);
-				$view->setVar('sikertelen',true);
-				$view->printTemplateResult();
+				if ($checkout) {
+					\mkw\Store::getMainSession()->loginerror = true;
+					header('Location: '.store::getRouter()->generate('showcheckout'));
+				}
+				else {
+					\mkw\Store::getMainSession()->loginerror = true;
+					header('Location: '.store::getRouter()->generate('showlogin'));
+/*					$view=$this->getLoginTpl();
+					store::fillTemplate($view);
+					$view->setVar('sikertelen',true);
+					$view->printTemplateResult();
+*/				}
 			}
 		}
 	}
