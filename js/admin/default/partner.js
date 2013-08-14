@@ -36,55 +36,6 @@ $(document).ready(function(){
 						}
 					});
 				});
-				$('#KontaktTab').on('click','.js-kontaktnewbutton',function(e) {
-					var $this=$(this);
-					e.preventDefault();
-					$.ajax({
-						url:'/admin/kontakt/getemptyrow',
-						type:'GET',
-						success:function(data) {
-							var tbody=$('#KontaktTab');
-							tbody.append(data);
-							$('.js-kontaktnewbutton,.js-kontaktdelbutton').button();
-							$this.remove();
-						}
-					});
-				})
-				.on('click','.js-kontaktdelbutton',function(e) {
-					e.preventDefault();
-					var kontaktgomb=$(this),
-						kontaktid=kontaktgomb.attr('data-id');
-					if (kontaktgomb.attr('data-source')=='client') {
-						$('#kontakttable_'+kontaktid).remove();
-					}
-					else {
-						$('#dialogcenter').html('Biztos, hogy törli a kontaktot?').dialog({
-							resizable: false,
-							height:140,
-							modal: true,
-							buttons: {
-								'Igen': function() {
-									$.ajax({
-										url:'/admin/kontakt/save',
-										type:'POST',
-										data:{
-											id:kontaktid,
-											oper:'del'
-										},
-										success:function(data) {
-											$('#kontakttable_'+data).remove();
-										}
-									});
-									$(this).dialog('close');
-								},
-								'Nem': function() {
-									$(this).dialog('close');
-								}
-							}
-						});
-					}
-				});
-				$('.js-kontaktnewbutton,js-kontaktdelbutton').button();
 			},
 			beforeSerialize:function(form,opt) {
 				var cimkek=new Array();

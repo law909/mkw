@@ -384,24 +384,6 @@ class EntitiesPartnerProxy extends \Entities\Partner implements \Doctrine\ORM\Pr
         return parent::removeUzletkoto();
     }
 
-    public function getKontaktok()
-    {
-        $this->__load();
-        return parent::getKontaktok();
-    }
-
-    public function addKontakt(\Entities\Kontakt $kontakt)
-    {
-        $this->__load();
-        return parent::addKontakt($kontakt);
-    }
-
-    public function removeKontakt(\Entities\Kontakt $kontakt)
-    {
-        $this->__load();
-        return parent::removeKontakt($kontakt);
-    }
-
     public function addEsemeny($esemeny)
     {
         $this->__load();
@@ -747,7 +729,7 @@ class EntitiesPartnerProxy extends \Entities\Partner implements \Doctrine\ORM\Pr
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'kontaktok', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szamlanev', 'szamlairszam', 'szamlavaros', 'szamlautca', 'szamlaadoszam', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk', 'termekertesitok');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szamlanev', 'szamlairszam', 'szamlavaros', 'szamlautca', 'szamlaadoszam', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk', 'termekertesitok');
     }
 
     public function __clone()

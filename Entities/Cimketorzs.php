@@ -10,7 +10,7 @@ use mkw\store;
  * })
  * @InheritanceType("SINGLE_TABLE")
  * @DiscriminatorColumn(name="osztaly", type="string", length=30)
- * @DiscriminatorMap({"kontakt"="Kontaktcimketorzs", "partner"="Partnercimketorzs", "termek"="Termekcimketorzs"})
+ * @DiscriminatorMap({"partner"="Partnercimketorzs", "termek"="Termekcimketorzs"})
  */
 
 class Cimketorzs {

@@ -58,10 +58,6 @@ $.jgrid.useJSON=true;
 	<table id="termekvaltozatadattipusgrid"></table>
 	<div id="termekvaltozatadattipusgridpager"></div>
 	</div>
-	<!-- div class="egyebadat-grid">
-	<table id="kontaktcimkekatgrid"></table>
-	<div id="kontaktcimkekatgridpager"></div>
-	</div-->
 	<div class="egyebadat-grid">
 	<table id="munkakorgrid"></table>
 	<div id="munkakorgridpager"></div>

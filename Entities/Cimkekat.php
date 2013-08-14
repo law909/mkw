@@ -8,7 +8,7 @@ namespace Entities;
  * })
  * @InheritanceType("SINGLE_TABLE")
  * @DiscriminatorColumn(name="osztaly", type="string", length=30)
- * @DiscriminatorMap({"kontakt"="Kontaktcimkekat", "partner"="Partnercimkekat", "termek"="Termekcimkekat"})
+ * @DiscriminatorMap({"partner"="Partnercimkekat", "termek"="Termekcimkekat"})
  */
 class Cimkekat {
 	/**
@@ -65,7 +65,7 @@ class Cimkekat {
 	public function getTermeklaponlathato() {
 		return $this->termeklaponlathato;
 	}
-	
+
 	public function setTermeklaponlathato($lathato) {
 		$this->termeklaponlathato=$lathato;
 	}
@@ -73,7 +73,7 @@ class Cimkekat {
 	public function getTermekakciodobozbanlathato() {
 		return $this->termekakciodobozbanlathato;
 	}
-	
+
 	public function setTermekakciodobozbanlathato($lathato) {
 		$this->termekakciodobozbanlathato=$lathato;
 	}
@@ -81,7 +81,7 @@ class Cimkekat {
 	public function getTermeklistabanlathato() {
 		return $this->termeklistabanlathato;
 	}
-	
+
 	public function setTermeklistabanlathato($lathato) {
 		$this->termeklistabanlathato=$lathato;
 	}
@@ -89,7 +89,7 @@ class Cimkekat {
 	public function getTermekszurobenlathato() {
 		return $this->termekszurobenlathato;
 	}
-	
+
 	public function setTermekszurobenlathato($lathato) {
 		$this->termekszurobenlathato=$lathato;
 	}
@@ -97,7 +97,7 @@ class Cimkekat {
 	public function getSorrend() {
 		return $this->sorrend;
 	}
-	
+
 	public function setSorrend($sorrend) {
 		$this->sorrend=$sorrend;
 	}

@@ -90,8 +90,6 @@ class Partner {
 	private $teendok;
 	/** @OneToMany(targetEntity="Esemeny", mappedBy="partner", cascade={"persist","remove"}) */
 	private $esemenyek;
-	/** @OneToMany(targetEntity="Kontakt", mappedBy="partner", cascade={"persist","remove"}) */
-	private $kontaktok;
 	/**
 	 * @ManyToMany(targetEntity="Partnercimketorzs",inversedBy="partnerek")
 	 * @JoinTable(name="partner_cimkek",
@@ -144,7 +142,6 @@ class Partner {
 
 
 	public function __construct() {
-		$this->kontaktok=new \Doctrine\Common\Collections\ArrayCollection();
 		$this->cimkek=new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
 		$this->kosarak=new \Doctrine\Common\Collections\ArrayCollection();
@@ -449,29 +446,6 @@ class Partner {
 			$this->uzletkoto = null;
 			$uzletkoto->removePartner($this);
 		}
-	}
-
-	/**
-	 *
-	 * @return ArrayCollection
-	 */
-	public function getKontaktok() {
-		return $this->kontaktok;
-	}
-
-	public function addKontakt(Kontakt $kontakt) {
-		if (!$this->kontaktok->contains($kontakt)) {
-			$this->kontaktok->add($kontakt);
-			$kontakt->setPartner($this);
-		}
-	}
-
-	public function removeKontakt(Kontakt $kontakt) {
-		if ($this->kontaktok->removeElement($kontakt)) {
-			$kontakt->removePartner($this);
-			return true;
-		}
-		return false;
 	}
 
 	public function addEsemeny($esemeny) {

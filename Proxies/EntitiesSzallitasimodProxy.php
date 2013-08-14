@@ -90,10 +90,22 @@ class EntitiesSzallitasimodProxy extends \Entities\Szallitasimod implements \Doc
         return parent::setFizmodok($fm);
     }
 
+    public function getSorrend()
+    {
+        $this->__load();
+        return parent::getSorrend();
+    }
+
+    public function setSorrend($val)
+    {
+        $this->__load();
+        return parent::setSorrend($val);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'nev', 'webes', 'leiras', 'fizmodok', 'bizonylatfejek');
+        return array('__isInitialized__', 'id', 'nev', 'webes', 'leiras', 'fizmodok', 'bizonylatfejek', 'sorrend');
     }
 
     public function __clone()

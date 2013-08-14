@@ -8,7 +8,6 @@
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
 			<li><a href="#ElerhetosegTab">{t('Elérhetőségek')}</a></li>
-			<li><a href="#KontaktTab">{t('Kontaktok')}</a></li>
 			<li><a href="#EgyebAzonositoTab">{t('Egyéb azonosító adatok')}</a></li>
 		</ul>
 		{/if}
@@ -143,15 +142,6 @@
 				</td>
 			</tr>
 			</tbody></table>
-		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Kontaktok')}" data-refcontrol="#KontaktTab"></div>
-		{/if}
-		<div id="KontaktTab" class="mattkarb-page" data-visible="visible">
-			{foreach $partner.kontaktok as $kontakt}
-			{include 'partnerkontaktkarb.tpl'}
-			{/foreach}
-			<a class="js-kontaktnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 		</div>
 		{if ($setup.editstyle=='dropdown')}
 		<div class="mattkarb-titlebar" data-caption="{t('Egyéb azonosító adatok')}" data-refcontrol="#EgyebAzonositoTab"></div>

@@ -1,6 +1,5 @@
 <?php
 namespace Controllers;
-use Entities\Kontakt;
 
 use mkw\store;
 
@@ -16,8 +15,6 @@ class partnerController extends \mkwhelpers\MattableController {
 	}
 
 	protected function loadVars($t) {
-		$kontaktCtrl=new kontaktController($this->params);
-		$kont=array();
 		$x=array();
 		if (!$t) {
 			$t=new \Entities\Partner();
@@ -55,11 +52,6 @@ class partnerController extends \mkwhelpers\MattableController {
 		$x['cimkek']=$t->getCimkenevek();
 		$x['fizmodnev']=$t->getFizmodNev();
 		$x['uzletkotonev']=$t->getUzletkotoNev();
-		foreach($t->getKontaktok() as $kontakt) {
-			$kont[]=$kontaktCtrl->loadVars($kontakt);
-		}
-		//$kont[]=$kontaktCtrl->loadVars(null);
-		$x['kontaktok']=$kont;
 		$x['fizhatido']=$t->getFizhatido();
 		$x['szamlanev']=$t->getSzamlanev();
 		$x['szamlaadoszam']=$t->getSzamlaadoszam();
@@ -134,37 +126,6 @@ class partnerController extends \mkwhelpers\MattableController {
 			$cimke=$this->getEm()->getRepository('Entities\Partnercimketorzs')->find($cimkekod);
 			if ($cimke) {
 				$obj->addCimke($cimke);
-			}
-		}
-		$kontaktids=$this->params->getArrayRequestParam('kontaktid');
-		foreach($kontaktids as $kontaktid) {
-			if ($this->params->getStringRequestParam('kontaktnev_'.$kontaktid)!=='') {
-				$oper=$this->params->getStringRequestParam('kontaktoper_'.$kontaktid);
-				if ($oper=='add') {
-					$k=new Kontakt();
-					$k->setNev($this->params->getStringRequestParam('kontaktnev_'.$kontaktid));
-					$k->setTelefon($this->params->getStringRequestParam('kontakttelefon_'.$kontaktid));
-					$k->setMobil($this->params->getStringRequestParam('kontaktmobil_'.$kontaktid));
-					$k->setFax($this->params->getStringRequestParam('kontaktfax_'.$kontaktid));
-					$k->setEmail($this->params->getStringRequestParam('kontaktemail_'.$kontaktid));
-					$k->setHonlap($this->params->getStringRequestParam('kontakthonlap_'.$kontaktid));
-					$k->setMegjegyzes($this->params->getStringRequestParam('kontaktmegjegyzes_'.$kontaktid));
-					$obj->addKontakt($k);
-					$this->getEm()->persist($k);
-				}
-				elseif ($oper=='edit') {
-					$k=$this->getEm()->getRepository('Entities\Kontakt')->find($kontaktid);
-					if ($k) {
-						$k->setNev($this->params->getStringRequestParam('kontaktnev_'.$kontaktid));
-						$k->setTelefon($this->params->getStringRequestParam('kontakttelefon_'.$kontaktid));
-						$k->setMobil($this->params->getStringRequestParam('kontaktmobil_'.$kontaktid));
-						$k->setFax($this->params->getStringRequestParam('kontaktfax_'.$kontaktid));
-						$k->setEmail($this->params->getStringRequestParam('kontaktemail_'.$kontaktid));
-						$k->setHonlap($this->params->getStringRequestParam('kontakthonlap_'.$kontaktid));
-						$k->setMegjegyzes($this->params->getStringRequestParam('kontaktmegjegyzes_'.$kontaktid));
-						$this->getEm()->persist($k);
-					}
-				}
 			}
 		}
 		return $obj;

@@ -102,10 +102,22 @@ class EntitiesFizmodProxy extends \Entities\Fizmod implements \Doctrine\ORM\Prox
         return parent::setLeiras($leiras);
     }
 
+    public function getSorrend()
+    {
+        $this->__load();
+        return parent::getSorrend();
+    }
+
+    public function setSorrend($val)
+    {
+        $this->__load();
+        return parent::setSorrend($val);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'nev', 'tipus', 'haladek', 'webes', 'bizonylatfejek', 'leiras');
+        return array('__isInitialized__', 'id', 'nev', 'tipus', 'haladek', 'webes', 'bizonylatfejek', 'leiras', 'sorrend');
     }
 
     public function __clone()

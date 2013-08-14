@@ -24,8 +24,6 @@ $router->map('GET','/admin/jelenlettipus/jsonlist','jelenlettipusController#json
 $router->map('POST','/admin/jelenlettipus/save','jelenlettipusController#save','adminjelenlettipussave');
 $router->map('GET','/admin/kapcsolatfelveteltema/jsonlist','kapcsolatfelveteltemaController#jsonlist','adminkapcsolatfelveteltemajsonlist');
 $router->map('POST','/admin/kapcsolatfelveteltema/save','kapcsolatfelveteltemaController#save','adminkapcsolatfelveteltemasave');
-$router->map('GET','/admin/kontaktcimkekat/jsonlist','kontaktcimkekatController#jsonlist','adminkontaktcimkekatjsonlist');
-$router->map('POST','/admin/kontaktcimkekat/save','kontaktcimkekatController#save','adminkontaktcimkekatsave');
 $router->map('GET','/admin/munkakor/jsonlist','munkakorController#jsonlist','adminmunkakorjsonlist');
 $router->map('POST','/admin/munkakor/save','munkakorController#save','adminmunkakorsave');
 $router->map('GET','/admin/partnercimkekat/jsonlist','partnercimkekatController#jsonlist','adminpartnercimkekatjsonlist');
@@ -147,15 +145,6 @@ $router->map('GET','/admin/template/getlistbody','templateController#getlistbody
 $router->map('GET','/admin/template/getkarb','templateController#getkarb','admintemplategetkarb');
 $router->map('GET','/admin/template/viewkarb','templateController#viewkarb','admintemplateviewkarb');
 $router->map('POST','/admin/template/save','templateController#save','admintemplatesave');
-
-$router->map('GET','/admin/kontakt/getemptyrow','kontaktController#getemptyrow','adminkontaktgetemptyrow');
-
-$router->map('GET','/admin/kontaktcimke/viewlist','kontaktcimkeController#viewlist','adminkontaktcimkeviewlist');
-$router->map('GET','/admin/kontaktcimke/getlistbody','kontaktcimkeController#getlistbody','adminkontaktcimkegetlistbody');
-$router->map('GET','/admin/kontaktcimke/getkarb','kontaktcimkeController#getkarb','adminkontaktcimkegetkarb');
-$router->map('GET','/admin/kontaktcimke/viewkarb','kontaktcimkeController#viewkarb','adminkontaktcimkeviewkarb');
-$router->map('POST','/admin/kontaktcimke/save','kontaktcimkeController#save','adminkontaktcimkesave');
-$router->map('POST','/admin/kontaktcimke/setmenulathato','kontaktcimkeController#setmenulathato','adminkontaktcimkesetmenulathato');
 
 $router->map('GET','/admin/termekcimke/viewlist','termekcimkeController#viewlist','admintermekcimkeviewlist');
 $router->map('GET','/admin/termekcimke/getlistbody','termekcimkeController#getlistbody','admintermekcimkegetlistbody');
