@@ -56,7 +56,7 @@
 					<div class="control-group">
 						<label class="control-label" for="SzovegEdit">{t('Megjegyzés')}:</label>
 						<div class="controls">
-							<textarea id="SzovegEdit" name="szoveg" class="input-large">{$szoveg}</textarea>
+							<textarea id="SzovegEdit" name="szoveg" class="input-large" required>{$szoveg}</textarea>
 						</div>
 					</div>
 					<div class="form-actions">

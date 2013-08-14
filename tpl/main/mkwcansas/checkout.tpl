@@ -49,7 +49,7 @@
 								<input name="email" type="email" form="LoginForm" class="span3" placeholder="{t('email')} *" value="{$user.email}" required>
 							</div>
 							<div class="controls chk-controloffset">
-								<input name="jelszo" type="text" form="LoginForm" class="span3" placeholder="{t('jelszó')} *" value="">
+								<input name="jelszo" type="password" form="LoginForm" class="span3" placeholder="{t('jelszó')} *" value="">
 							</div>
 							<div class="row chk-actionrow span">
 								<input name="c" type="hidden" form="LoginForm" value="c">
@@ -111,11 +111,11 @@
 						<h5 class="clearboth">Szállítási adatok</h5>
 						<div class="controls chk-controloffset">
 							<label class="checkbox">
-								<input name="szamlaeqszall" type="checkbox" checked>
+								<input name="szamlaeqszall" type="checkbox"{if ($user.szalladategyezik)} checked{/if}>
 								Megegyezik a számlázási adatokkal
 							</label>
 						</div>
-						<div class="js-chkszamlaadatok notvisible">
+						<div class="js-chkszamlaadatok{if ($user.szalladategyezik)} notvisible{/if}">
 							<div class="controls chk-controloffset">
 								<input name="szallnev" type="text" class="span8" placeholder="{t('szállítási név')}" value="{$user.szallnev}">
 							</div>

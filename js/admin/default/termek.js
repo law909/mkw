@@ -193,18 +193,20 @@ $(document).ready(function(){
 					var ref=$(this).attr('data-refcontrol');
 					var cimkenev=$(ref).val(),
 						katkod=ref.split('_')[1];
-					$.ajax({
-						url:'/admin/termekcimke/add',
-						type:'POST',
-						data:{
-							cimkecsoport:katkod,
-							nev:cimkenev
-						},
-						success:function(data) {
-							$(ref).val('');
-							$(ref).before(data);
-						}
-					});
+					if (cimkenev.length>0) {
+						$.ajax({
+							url:'/admin/termekcimke/add',
+							type:'POST',
+							data:{
+								cimkecsoport:katkod,
+								nev:cimkenev
+							},
+							success:function(data) {
+								$(ref).val('');
+								$(ref).before(data);
+							}
+						});
+					}
 				});
 				recepttab.on('click','.js-receptnewbutton',function(e) {
 					var $this=$(this);

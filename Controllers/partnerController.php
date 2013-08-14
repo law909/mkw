@@ -409,11 +409,7 @@ class partnerController extends \mkwhelpers\MattableController {
 				else {
 					\mkw\Store::getMainSession()->loginerror = true;
 					header('Location: '.store::getRouter()->generate('showlogin'));
-/*					$view=$this->getLoginTpl();
-					store::fillTemplate($view);
-					$view->setVar('sikertelen',true);
-					$view->printTemplateResult();
-*/				}
+				}
 			}
 		}
 	}

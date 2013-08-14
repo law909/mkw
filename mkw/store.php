@@ -204,6 +204,14 @@ class Store {
 			$user['szallirszam']=$u->getSzallirszam();
 			$user['szallvaros']=$u->getSzallvaros();
 			$user['szallutca']=$u->getSzallutca();
+			$user['szalladategyezik']=!$u->getSzallnev() &&
+					!$u->getSzallirszam() &&
+					!$u->getSzallvaros() &&
+					!$u->getSzallutca() &&
+					!$u->getSzallnev();
+		}
+		else {
+			$user['szalladategyezik']=true;
 		}
 		$v->setVar('user',$user);
 		$rut = self::getRouter();

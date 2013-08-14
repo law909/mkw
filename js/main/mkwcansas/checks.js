@@ -236,7 +236,7 @@ var mkwcheck={
 			tema.removeClass('error').addClass('valid');
 		}
 		if (tema[0].validity.valueMissing) {
-			tema[0].setCustomValidity(temamsg);
+			tema[0].setCustomValidity(msg);
 			if (this.wasinteraction.tema) {
 				temamsg.append(msg);
 			}
