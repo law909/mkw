@@ -61,18 +61,30 @@ class irszamController extends \mkwhelpers\JQGridController {
 		$filter=array();
 		$ret=array();
 		$term=$this->params->getStringRequestParam('term');
+		$tip=$this->params->getIntRequestParam('tip');
 		if ($term) {
 			$filter['fields'][]='szam';
 			$filter['clauses'][]='LIKE';
 			$filter['values'][]=trim($term).'%';
 		}
 		$rec=$this->getRepo()->getAll($filter,array('szam'=>'asc'));
-		foreach($rec as $sor) {
-			$ret[]=array(
-				'szam'=>$sor->getSzam(),
-				'nev'=>$sor->getNev(),
-				'id'=>$sor->getSzam() . ' ' . $sor->getNev()
-			);
+		if ($tip) {
+			foreach($rec as $sor) {
+				$ret[]=array(
+					'label'=>$sor->getSzam() . ' ' . $sor->getNev(),
+					'value'=>$sor->getSzam(),
+					'nev'=>$sor->getNev()
+				);
+			}
+		}
+		else {
+			foreach($rec as $sor) {
+				$ret[]=array(
+					'szam'=>$sor->getSzam(),
+					'nev'=>$sor->getNev(),
+					'id'=>$sor->getSzam() . ' ' . $sor->getNev()
+				);
+			}
 		}
 		echo json_encode($ret);
 	}
@@ -81,18 +93,30 @@ class irszamController extends \mkwhelpers\JQGridController {
 		$filter=array();
 		$ret=array();
 		$term=$this->params->getStringRequestParam('term');
+		$tip=$this->params->getIntRequestParam('tip');
 		if ($term) {
 			$filter['fields'][]='nev';
 //			$filter['clauses'][]='LIKE';
 			$filter['values'][]=trim($term);
 		}
 		$rec=$this->getRepo()->getAll($filter,array('nev'=>'asc'));
-		foreach($rec as $sor) {
-			$ret[]=array(
-				'szam'=>$sor->getSzam(),
-				'nev'=>$sor->getNev(),
-				'id'=>$sor->getSzam() . ' ' . $sor->getNev()
-			);
+		if ($tip) {
+			foreach($rec as $sor) {
+				$ret[]=array(
+					'label'=>$sor->getSzam() . ' ' . $sor->getNev(),
+					'value'=>$sor->getNev(),
+					'szam'=>$sor->getSzam()
+				);
+			}
+		}
+		else {
+			foreach($rec as $sor) {
+				$ret[]=array(
+					'szam'=>$sor->getSzam(),
+					'nev'=>$sor->getNev(),
+					'id'=>$sor->getSzam() . ' ' . $sor->getNev()
+				);
+			}
 		}
 		echo json_encode($ret);
 	}

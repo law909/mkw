@@ -1,3 +1,55 @@
+function irszamAutocomplete(irszam,varos) {
+	$(irszam).autocomplete({
+		minLength: 2,
+		source: function(req,resp) {
+			$.ajax({
+				url: '/admin/irszam',
+				type: 'GET',
+				data: {
+					term: req.term,
+					tip: 1
+				},
+				success: function(data) {
+					var d=JSON.parse(data);
+					resp(d);
+				},
+				error: function() {
+					resp();
+				}
+			});
+		},
+		select: function(event,ui) {
+			$(varos).val(ui.item.nev);
+		}
+	});
+}
+
+function varosAutocomplete(irszam,varos) {
+	$(varos).autocomplete({
+		minLength: 4,
+		source: function(req,resp) {
+			$.ajax({
+				url: '/admin/varos',
+				type: 'GET',
+				data: {
+					term: req.term,
+					tip: 1
+				},
+				success: function(data) {
+					var d=JSON.parse(data);
+					resp(d);
+				},
+				error: function() {
+					resp();
+				}
+			});
+		},
+		select: function(event,ui) {
+			$(irszam).val(ui.item.szam);
+		}
+	});
+}
+
 $(document).ready(function(){
 	var partner={
 			container:'#mattkarb',
@@ -36,6 +88,12 @@ $(document).ready(function(){
 						}
 					});
 				});
+				irszamAutocomplete('#IrszamEdit','#VarosEdit');
+				varosAutocomplete('#IrszamEdit','#VarosEdit');
+				irszamAutocomplete('#SzamlaIrszamEdit','#SzamlaVarosEdit');
+				varosAutocomplete('#SzamlaIrszamEdit','#SzamlaVarosEdit');
+				irszamAutocomplete('#SzallIrszamEdit','#SzallVarosEdit');
+				varosAutocomplete('#SzallIrszamEdit','#SzallVarosEdit');
 			},
 			beforeSerialize:function(form,opt) {
 				var cimkek=new Array();

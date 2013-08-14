@@ -43,6 +43,8 @@ $router->map('POST','/admin/vtsz/save','vtszController#save','adminvtszsave');
 $router->map('GET','/admin/irszam/jsonlist','irszamController#jsonlist','adminirszamjsonlist');
 $router->map('GET','/admin/irszam/htmllist','irszamController#htmllist','adminirszamhtmllist');
 $router->map('POST','/admin/irszam/save','irszamController#save','adminirszamsave');
+$router->map('GET','/admin/irszam','irszamController#typeaheadList','adminirszamtypeahead');
+$router->map('GET','/admin/varos','irszamController#varosTypeaheadList','adminvarostypeahead');
 
 $router->map('GET','/admin/getsmallurl','adminController#getSmallUrl','admingetsmallurl');
 $router->map('GET','/admin/regeneratekarkod','adminController#regeneratekarkod','adminregeneratekarkod');
