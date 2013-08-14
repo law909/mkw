@@ -384,14 +384,20 @@ class partnerController extends \mkwhelpers\MattableController {
 	}
 
 	public function doLogin() {
+		if ($this->params->getStringRequestParam('c')==='c') {
+			$route=store::getRouter()->generate('showcheckout');
+		}
+		else {
+			$route=store::getRouter()->generate('showaccount');
+		}
 		if ($this->checkloggedin()) {
 			\Zend_Session::writeClose();
-			header('Location: '.store::getRouter()->generate('showaccount'));
+			header('Location: '.$route);
 		}
 		else {
 			if ($this->login($this->params->getStringRequestParam('email'),$this->params->getStringRequestParam('jelszo'))) {
 				\Zend_Session::writeClose();
-				header('Location: '.store::getRouter()->generate('showaccount'));
+				header('Location: '.$route);
 			}
 			else {
 				$view=$this->getLoginTpl();

@@ -15,6 +15,7 @@
 <div class="container js-checkout">
 	<div class="row">
 		<div class="span10">
+			<form id="LoginForm" method="post" action="/login/ment"></form>
 			<form id="FiokSzamlaAdatok" class="" action="" method="post"><fieldset>
 			{$sorszam=1}
 			{if (!$user.loggedin)}
@@ -42,12 +43,15 @@
 						<div class="span5">
 							<h5>Regisztrált vásárló</h5>
 							<div class="controls chk-controloffset">
-								<input name="email" type="email" class="span3" placeholder="{t('email')} *" value="{$user.email}">
+								<input name="email" type="email" form="LoginForm" class="span3" placeholder="{t('email')} *" value="{$user.email}">
 							</div>
 							<div class="controls chk-controloffset">
-								<input name="jelszo" type="text" class="span3" placeholder="{t('jelszó')} *" value="">
+								<input name="jelszo" type="text" form="LoginForm" class="span3" placeholder="{t('jelszó')} *" value="">
 							</div>
-							<div class="row chk-actionrow span"><a class="btn okbtn pull-right js-chkopenbtn">Belépés</a></div>
+							<div class="row chk-actionrow span">
+								<input name="c" type="hidden" form="LoginForm" value="c">
+								<input type="submit" form="LoginForm" class="btn okbtn pull-right js-chkloginbtn" value="Belépés">
+							</div>
 						</div>
 					</div>
 				</div>
