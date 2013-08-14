@@ -7,9 +7,14 @@ namespace Entities;
  */
 class Irszam {
 	/**
-	 * @Id @Column(type="string", length=10, nullable=false)
+	 * @Id @Column(type="integer")
+	 * @GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
+	/**
+	 * @Column(type="string", length=10, nullable=false)
+	 */
+	private $szam;
 	/**
 	 * @Column(type="string",length=255)
 	 */
@@ -19,15 +24,19 @@ class Irszam {
 		return $this->id;
 	}
 
-	public function setId($val) {
-		$this->id = $val;
-	}
-
 	public function getNev() {
 		return $this->nev;
 	}
 
 	public function setNev($nev) {
 		$this->nev = $nev;
+	}
+
+	public function getSzam() {
+		return $this->szam;
+	}
+
+	public function setSzam($szam) {
+		$this->szam = $szam;
 	}
 }

@@ -42,7 +42,7 @@
 						<div class="span5">
 							<h5>Regisztrált vásárló</h5>
 							<div class="controls chk-controloffset">
-								<input name="email" type="text" class="span3" placeholder="{t('email')} *" value="{$user.email}">
+								<input name="email" type="email" class="span3" placeholder="{t('email')} *" value="{$user.email}">
 							</div>
 							<div class="controls chk-controloffset">
 								<input name="jelszo" type="text" class="span3" placeholder="{t('jelszó')} *" value="">
@@ -69,14 +69,27 @@
 								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="Azért kérjük el a telefonszámát, hogy tudjuk értesíteni a megrendelésével kapcsolatos eseményekről"></i>
 							</div>
 							<i class="span inputiconhack"></i>
-							<input name="email" type="text" class="span4" placeholder="{t('email')} *" value="{$user.email}" required>
+							<input name="email" type="email" class="span4" placeholder="{t('email')} *" value="{$user.email}" required>
 						</div>
+						{if (!$user.loggedin)}
+						<div class="js-checkoutpasswordcontainer">
+						<div class="controls controls-row chk-controloffset js-checkoutpasswordrow">
+							<input name="jelszo1" type="password" class="span4" placeholder="{t('jelszó')} 1 *" value="" required>
+							<div class="chk-relative pull-left chk-tooltippedcontainer">
+								<i class="span inputiconhack"></i>
+								<input name="jelszo2" type="password" class="span4" placeholder="{t('jelszó')} 2 *" value="" required>
+								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="Adja meg kétszer jelszavát, így elkerülheti az elgépelést"></i>
+							</div>
+						</div>
+						</div>
+						{/if}
 						<h5>Számlázási adatok</h5>
 						<div class="controls chk-controloffset">
 							<input name="szamlanev" type="text" class="span8" placeholder="{t('számlázási név')}" value="{$user.szamlanev}">
 						</div>
 						<div class="controls controls-row chk-controloffset">
 							<input name="szamlairszam" type="text" class="span2" placeholder="{t('ir.szám')} *" value="{$user.szamlairszam}" required>
+							<i class="span inputiconhack"></i>
 							<input name="szamlavaros" type="text" class="span6" placeholder="{t('város')} *" value="{$user.szamlavaros}" required>
 						</div>
 						<div class="controls chk-controloffset">
@@ -101,6 +114,7 @@
 							</div>
 							<div class="controls controls-row chk-controloffset">
 								<input name="szallirszam" type="text" class="span2" placeholder="{t('ir.szám')} *" value="{$user.szallirszam}" required>
+								<i class="span inputiconhack"></i>
 								<input name="szallvaros" type="text" class="span6" placeholder="{t('város')} *" value="{$user.szallvaros}" required>
 							</div>
 							<div class="controls chk-controloffset">
@@ -225,7 +239,7 @@
 								<div>
 									<label class="checkbox">
 										<input name="szamlaeqszall" type="checkbox">
-										Elolvastam és elfogadom az <a>ÁSZF</a>-et
+										Elolvastam és elfogadom az <a href="/statlap/aszf" target="empty">ÁSZF</a>-et
 									</label>
 								</div>
 								<div><a class="btn cartbtn chk-sendorderbtn">Megrendelés elküldése</a></div>

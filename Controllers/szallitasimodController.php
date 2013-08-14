@@ -11,7 +11,7 @@ class szallitasimodController extends \mkwhelpers\JQGridController {
 	}
 
 	protected function loadCells($obj) {
-		return array($obj->getNev(),$obj->getWebes(),$obj->getLeiras(),$obj->getFizmodok());
+		return array($obj->getNev(),$obj->getWebes(),$obj->getLeiras(),$obj->getFizmodok(),$obj->getSorrend());
 	}
 
 	protected function setFields($obj) {
@@ -19,6 +19,7 @@ class szallitasimodController extends \mkwhelpers\JQGridController {
 		$obj->setWebes($this->params->getBoolRequestParam('webes'));
 		$obj->setLeiras($this->params->getStringRequestParam('leiras'));
 		$obj->setFizmodok($this->params->getStringRequestParam('fizmodok'));
+		$obj->setSorrend($this->params->getIntRequestParam('sorrend'));
 		return $obj;
 	}
 

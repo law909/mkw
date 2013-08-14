@@ -27,6 +27,8 @@ class Szallitasimod {
 	private $fizmodok;
 	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="szallitasimod",cascade={"persist","remove"}) */
 	private $bizonylatfejek;
+	/** @Column(type="integer") */
+	private $sorrend=0;
 
 	public function __construct() {
 		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
@@ -66,5 +68,13 @@ class Szallitasimod {
 
 	public function setFizmodok($fm) {
 		$this->fizmodok = $fm;
+	}
+
+	public function getSorrend() {
+		return $this->sorrend;
+	}
+
+	public function setSorrend($val) {
+		$this->sorrend=$val;
 	}
 }

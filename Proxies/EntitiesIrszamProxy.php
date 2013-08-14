@@ -42,12 +42,6 @@ class EntitiesIrszamProxy extends \Entities\Irszam implements \Doctrine\ORM\Prox
         return parent::getId();
     }
 
-    public function setId($val)
-    {
-        $this->__load();
-        return parent::setId($val);
-    }
-
     public function getNev()
     {
         $this->__load();
@@ -60,10 +54,22 @@ class EntitiesIrszamProxy extends \Entities\Irszam implements \Doctrine\ORM\Prox
         return parent::setNev($nev);
     }
 
+    public function getSzam()
+    {
+        $this->__load();
+        return parent::getSzam();
+    }
+
+    public function setSzam($szam)
+    {
+        $this->__load();
+        return parent::setSzam($szam);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'nev');
+        return array('__isInitialized__', 'id', 'szam', 'nev');
     }
 
     public function __clone()

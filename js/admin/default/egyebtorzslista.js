@@ -165,7 +165,12 @@ $().ready(
 						editable:true,
 						editoptions:{size:50},
 						editrules:{required:true},
-						formoptions:{rowpos:6,label:'Leírás:'}}
+						formoptions:{rowpos:6,label:'Leírás:'}},
+					{name:'sorrend',index:'sorrend',label:'Sorrend',width:25,align:'right',fixed:true,
+							editable:true,
+							editoptions:{},
+							editrules:{integer:true},
+							formoptions:{rowpos:7,label:'Sorrend:'}}
 				],
 			rowNum:100000,
 			rowList:[10,20,30],
@@ -513,58 +518,6 @@ $().ready(
 		$(_pck.pager+'_center').hide();
 		$(_pck.pager+'_right').hide();
 
-		/** KontaktCimkeKat grid
-		var _kck={
-				grid:'#kontaktcimkekatgrid',
-				pager:'#kontaktcimkekatgridpager'
-		};
-		var kontaktcimkekatgrid=$(_kck.grid).jqGrid({
-			url:'/admin/kontaktcimkekat/jsonlist',
-			editurl:'/admin/kontaktcimkekat/save',
-			datatype: 'json',
-			colModel:[
-					{name:'nev',index:'nev',label:'Név',width:160,fixed:true,
-							editable:true,
-							editoptions:{size:25,maxlength:255},
-							editrules:{required:true},
-							formoptions:{rowpos:1,label:'Név:',elmsuffix:'*'}},
-					{name:'lathato',index:'lathato',label:'Látható',width:25,align:'center',
-							formatter:'checkbox',
-							editable:true,
-							edittype:'checkbox',
-							editoptions:{value:'1:0'},
-							editrules:{},
-							formoptions:{rowpos:2,label:'Látható:'}}],
-			rowNum:100000,
-			rowList:[10,20,30],
-			pager: _kck.pager,
-			sortname: 'nev',
-			sortorder: 'asc',
-			viewrecords: true,
-			loadonce: false,
-			gridview: true,
-			height: 100,
-			width: 320,
-			hiddengrid: true,
-			caption:'Kontaktcímke csoportok'});
-		$(_kck.grid).jqGrid('navGrid',_kck.pager,{edit:true,add:true,del:true,search:false},
-			{reloadAfterSubmit:true,jqModal:false,closeOnEscape:true,bottominfo:_txt.req},
-			{reloadAfterSubmit:true,jqModal:false,closeOnEscape:true,bottominfo:_txt.req},
-			{reloadAfterSubmit:true});
-		$(_kck.grid).jqGrid('navButtonAdd',_kck.pager,{caption:_txt.srch,title:_txt.srchtoggle,buttonicon:_txt.srchicon,
-			onClickButton:function(){
-				kontaktcimkekatgrid[0].toggleToolbar();
-			}
-		});
-		$(_kck.grid).jqGrid('navButtonAdd',_kck.pager,{caption:_txt.clr,title:_txt.clrtitle,buttonicon:_txt.clricon,
-			onClickButton:function(){
-				kontaktcimkekatgrid[0].clearToolbar();
-			}
-		});
-		$(_kck.grid).jqGrid('filterToolbar');
-		$(_kck.pager+'_center').hide();
-		$(_kck.pager+'_right').hide();
-*/
 		// Felhasználó grid
 		var _felhasznalo={
 				grid:'#felhasznalogrid',
@@ -818,7 +771,7 @@ $().ready(
 				grid:'#kapcsolatfelveteltemagrid',
 				pager:'#kapcsolatfelveteltemagridpager'
 		};
-		var afagrid=$(_kft.grid).jqGrid({
+		var kftgrid=$(_kft.grid).jqGrid({
 			url:'/admin/kapcsolatfelveteltema/jsonlist',
 			editurl:'/admin/kapcsolatfelveteltema/save',
 			datatype: 'json',
@@ -846,12 +799,12 @@ $().ready(
 			{reloadAfterSubmit:true});
 		$(_kft.grid).jqGrid('navButtonAdd',_kft.pager,{caption:_txt.srch,title:_txt.srchtoggle,buttonicon:_txt.srchicon,
 			onClickButton:function(){
-				afagrid[0].toggleToolbar();
+				kftgrid[0].toggleToolbar();
 			}
 		});
 		$(_kft.grid).jqGrid('navButtonAdd',_kft.pager,{caption:_txt.clr,title:_txt.clrtitle,buttonicon:_txt.clricon,
 			onClickButton:function(){
-				afagrid[0].clearToolbar();
+				kftgrid[0].clearToolbar();
 			}
 		});
 		$(_kft.grid).jqGrid('filterToolbar');
@@ -868,7 +821,7 @@ $().ready(
 			editurl:'/admin/irszam/save',
 			datatype: 'json',
 			colModel:[
-					{name:'id',index:'id',label:'Ir.szám',width:60,fixed:true,
+					{name:'szam',index:'szam',label:'Ir.szám',width:60,fixed:true,
 							editable:true,
 							editoptions:{size:10,maxlength:10},
 							editrules:{required:true},
@@ -937,7 +890,12 @@ $().ready(
 					{name:'fizmodok',index:'fizmodok',label:'Fiz.módok',width:160,fixed:true,
 						editable:true,
 						editoptions:{size:50},
-						formoptions:{rowpos:4,label:'Fiz.módok:'}}
+						formoptions:{rowpos:4,label:'Fiz.módok:'}},
+					{name:'sorrend',index:'sorrend',label:'Sorrend',width:25,align:'right',fixed:true,
+							editable:true,
+							editoptions:{},
+							editrules:{integer:true},
+							formoptions:{rowpos:5,label:'Sorrend:'}}
 				],
 			rowNum:100000,
 			rowList:[10,20,30],

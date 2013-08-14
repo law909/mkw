@@ -29,4 +29,7 @@ $router->map('GET','/kosar/get','kosarController#get','kosarget');
 $router->map('GET','/checkout','checkoutController#getCheckout','showcheckout');
 $router->map('GET','/checkout/getfizmodlist','checkoutController#getFizmodList','checkoutgetfizmod');
 
+$router->map('GET','/irszam','irszamController#typeaheadList','irszamtypeahead');
+$router->map('GET','/varos','irszamController#varosTypeaheadList','varostypeahead');
+
 $router->map('POST','/termekertesito/save','termekertesitoController#save','termekertesitosave');

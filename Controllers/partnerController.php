@@ -261,8 +261,12 @@ class partnerController extends \mkwhelpers\MattableController {
 		$ret=array();
 		$ret['hibas']=!\Zend_Validate::is($email,'EmailAddress');
 		if (!$ret['hibas']) {
-			$ret['hibas']=$this->getRepo()->countByEmail($email)>0;
-			$ret['uzenet']=t('Már létezik ez az emailcím.');
+			if (!$this->params->getBoolRequestParam('dce')) {
+				$ret['hibas']=$this->getRepo()->countByEmail($email)>0;
+				if ($ret['hibas']) {
+					$ret['uzenet']=t('Már létezik ez az emailcím.');
+				}
+			}
 		}
 		else {
 			$ret['uzenet']=t('Kérjük emailcímet adjon meg.');

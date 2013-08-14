@@ -23,6 +23,8 @@ class Fizmod {
 	private $bizonylatfejek;
 	/** @Column(type="text",nullable=true) */
 	private $leiras;
+	/** @Column(type="integer") */
+	private $sorrend=0;
 
 	public function __construct() {
 		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
@@ -71,4 +73,13 @@ class Fizmod {
 	public function setLeiras($leiras) {
 		$this->leiras = $leiras;
 	}
+
+	public function getSorrend() {
+		return $this->sorrend;
+	}
+
+	public function setSorrend($val) {
+		$this->sorrend=$val;
+	}
+
 }

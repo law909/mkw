@@ -281,17 +281,17 @@ $(document).ready(function(){
 		H5F.setup($regform);
 		$('#VezeteknevEdit,#KeresztnevEdit')
 			.on('input',function(e) {
-				regcheck.nevcheck();
+				mkwcheck.regNevCheck();
 				$(this).off('keydown');
 			})
-			.on('keydown blur',function(e) {regcheck.wasinteraction.nev=true;regcheck.nevcheck();})
-			.each(function(i,ez) {regcheck.nevcheck();});
+			.on('keydown blur',function(e) {mkwcheck.wasinteraction.doublenev=true;mkwcheck.regNevCheck();})
+			.each(function(i,ez) {mkwcheck.regNevCheck();});
 		$('#EmailEdit')
 			.on('input',function(e) {
-				regcheck.emailcheck();
+				mkwcheck.regEmailCheck();
 				$(this).off('keydown');
 			})
-			.on('keydown blur',function(e) {regcheck.wasinteraction.email=true;regcheck.emailcheck();})
+			.on('keydown blur',function(e) {mkwcheck.wasinteraction.email=true;mkwcheck.regEmailCheck();})
 			.on('change',function(e) {
 				var $this=$(this);
 				$.ajax({
@@ -302,31 +302,31 @@ $(document).ready(function(){
 				.done(function(data){
 					var d=JSON.parse(data);
 					$this.data('hiba',d);
-					regcheck.emailcheck();
+					mkwcheck.regEmailCheck();
 				});
 			})
-			.each(function(i,ez) {regcheck.emailcheck();});
+			.each(function(i,ez) {mkwcheck.regEmailCheck();});
 		$('#Jelszo1Edit,#Jelszo2Edit')
 			.on('input',function(e) {
-				regcheck.pwcheck();
+				mkwcheck.regJelszoCheck();
 				$(this).off('keydown');
 			})
-			.on('keydown blur',function(e) {regcheck.wasinteraction.pw=true;regcheck.pwcheck();})
-			.each(function(i,ez) {regcheck.pwcheck();});
+			.on('keydown blur',function(e) {mkwcheck.wasinteraction.pw=true;mkwcheck.regJelszoCheck();})
+			.each(function(i,ez) {mkwcheck.regJelszoCheck();});
 	}
 	var $kapcsolatform=$('#Kapcsolatform');
 	if ($kapcsolatform.length>0) {
 		H5F.setup($kapcsolatform);
 		$('#NevEdit')
 			.on('input',function(e) {
-				kapcscheck.nevcheck();
+				mkwcheck.kapcsolatNevCheck();
 				$(this).off('keydown');
 			})
-			.on('keydown blur',function(e) {kapcscheck.wasinteraction.nev=true;kapcscheck.nevcheck();})
-			.each(function(i,ez) {kapcscheck.nevcheck();});
+			.on('keydown blur',function(e) {mkwcheck.wasinteraction.nev=true;mkwcheck.kapcsolatNevCheck();})
+			.each(function(i,ez) {mkwcheck.kapcsolatNevCheck();});
 		$('#Email1Edit,#Email2Edit')
 			.on('input',function(e) {
-				kapcscheck.emailcheck();
+				mkwcheck.kapcsolatEmailCheck();
 				$(this).off('keydown');
 			})
 			.on('change',function(e) {
@@ -334,34 +334,37 @@ $(document).ready(function(){
 				$.ajax({
 					type:'POST',
 					url:'/checkemail',
-					data:{email:$this.val()}
+					data:{
+						email:$this.val(),
+						dce: 1
+					}
 				})
 				.done(function(data){
 					var d=JSON.parse(data);
 					$this.data('hiba',d);
-					kapcscheck.emailcheck();
+					mkwcheck.kapcsolatEmailCheck();
 				});
 			})
-			.on('keydown blur',function(e) {kapcscheck.wasinteraction.email=true;kapcscheck.emailcheck();})
-			.each(function(i,ez) {kapcscheck.emailcheck();});
+			.on('keydown blur',function(e) {mkwcheck.wasinteraction.email=true;mkwcheck.kapcsolatEmailCheck();})
+			.each(function(i,ez) {mkwcheck.kapcsolatEmailCheck();});
 		$('#TemaEdit')
 			.on('input',function(e) {
-				kapcscheck.temacheck();
+				mkwcheck.kapcsolatTemaCheck();
 				$(this).off('keydown');
 			})
-			.on('keydown blur',function(e) {kapcscheck.wasinteraction.tema=true;kapcscheck.temacheck();})
-			.each(function(i,ez) {kapcscheck.temacheck();});
+			.on('keydown blur',function(e) {mkwcheck.wasinteraction.tema=true;mkwcheck.kapcsolatTemaCheck();})
+			.each(function(i,ez) {mkwcheck.kapcsolatTemaCheck();});
 	}
 	var $loginform=$('#Loginform');
 	if ($loginform.length>0) {
 		H5F.setup($loginform);
 		$('#EmailEdit')
 			.on('input',function(e) {
-				logincheck.emailcheck();
+				mkwcheck.loginEmailCheck();
 				$(this).off('keydown');
 			})
-			.on('keydown blur',function(e) {logincheck.wasinteraction.email=true;logincheck.emailcheck();})
-			.each(function(i,ez) {logincheck.emailcheck();});
+			.on('keydown blur',function(e) {mkwcheck.wasinteraction.email=true;mkwcheck.loginEmailCheck();})
+			.each(function(i,ez) {mkwcheck.loginEmailCheck();});
 	}
 	// kategoria navigalas
 	var a=$('#navmain li a'),
@@ -468,17 +471,17 @@ $(document).ready(function(){
 		H5F.setup($fiokadataimform);
 		$('#VezeteknevEdit,#KeresztnevEdit')
 			.on('input',function(e) {
-				regcheck.nevcheck();
+				mkwcheck.regNevCheck();
 				$(this).off('keydown');
 			})
-			.on('keydown blur',function(e) {regcheck.wasinteraction.nev=true;regcheck.nevcheck();})
-			.each(function(i,ez) {regcheck.nevcheck();});
+			.on('keydown blur',function(e) {mkwcheck.wasinteraction.doublenev=true;mkwcheck.regNevCheck();})
+			.each(function(i,ez) {mkwcheck.regNevCheck();});
 		$('#EmailEdit')
 			.on('input',function(e) {
-				regcheck.emailcheck();
+				mkwcheck.regEmailCheck();
 				$(this).off('keydown');
 			})
-			.on('keydown blur',function(e) {regcheck.wasinteraction.email=true;regcheck.emailcheck();})
+			.on('keydown blur',function(e) {mkwcheck.wasinteraction.email=true;mkwcheck.regEmailCheck();})
 			.on('change',function(e) {
 				var $this=$(this);
 				$.ajax({
@@ -489,14 +492,25 @@ $(document).ready(function(){
 				.done(function(data){
 					var d=JSON.parse(data);
 					$this.data('hiba',d);
-					regcheck.emailcheck();
+					mkwcheck.regEmailCheck();
 				});
 			})
-			.each(function(i,ez) {regcheck.emailcheck();});
+			.each(function(i,ez) {mkwcheck.regEmailCheck();});
 		mkw.overrideFormSubmit($fiokadataimform,'Adatait módosítjuk...');
+
 	}
-	mkw.overrideFormSubmit('#FiokSzamlaAdatok','Adatait módosítjuk...');
-	mkw.overrideFormSubmit('#FiokSzallitasiAdatok','Adatait módosítjuk...');
+	var $fiokszamlaadatok=$('#FiokSzamlaAdatok');
+	if ($fiokszamlaadatok.length>0) {
+		mkw.irszamTypeahead('input[name="szamlairszam"]', 'input[name="szamlavaros"]');
+		mkw.varosTypeahead('input[name="szamlairszam"]', 'input[name="szamlavaros"]');
+		mkw.overrideFormSubmit($fiokszamlaadatok,'Adatait módosítjuk...');
+	}
+	var $fiokszallitasiadatok=$('#FiokSzallitasiAdatok');
+	if ($fiokszallitasiadatok.length>0) {
+		mkw.irszamTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
+		mkw.varosTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
+		mkw.overrideFormSubmit($fiokszallitasiadatok,'Adatait módosítjuk...');
+	}
 
 	checkout.initUI();
 });

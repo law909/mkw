@@ -77,6 +77,9 @@ var mkw=function($) {
 
 	function overrideFormSubmit(form,msg,events) {
 		var $form=form;
+		if (!events) {
+			events={};
+		}
 		if (typeof form == 'string') {
 			$form=$(form);
 		}
@@ -126,12 +129,82 @@ var mkw=function($) {
 
 	}
 
+	function irszamTypeahead(irszaminput,varosinput) {
+		if ($.fn.typeahead) {
+			var map={};
+			$(irszaminput).typeahead({
+				source: function(query, process) {
+					var	texts=[];
+					return $.ajax({
+						url: '/irszam',
+						type: 'GET',
+						data: {
+							term: query
+						},
+						success: function(data) {
+							var d=JSON.parse(data);
+							$.each(d, function (i, irszam) {
+								map[irszam.id] = irszam;
+								texts.push(irszam.id);
+							});
+							return process(texts);
+						}
+					});
+				},
+				updater: function(item) {
+					var irsz = map[item];
+					item = irsz.szam;
+					$(varosinput).val(irsz.nev);
+					return item;
+				},
+				items: 999999,
+				minLength: 2
+			});
+		}
+	}
+
+	function varosTypeahead(irszaminput,varosinput) {
+		if ($.fn.typeahead) {
+			var map={};
+			$(varosinput).typeahead({
+				source: function(query, process) {
+					var	texts=[];
+					return $.ajax({
+						url: '/varos',
+						type: 'GET',
+						data: {
+							term: query
+						},
+						success: function(data) {
+							var d=JSON.parse(data);
+							$.each(d, function (i, irszam) {
+								map[irszam.id] = irszam;
+								texts.push(irszam.id);
+							});
+							return process(texts);
+						}
+					});
+				},
+				updater: function(item) {
+					var irsz = map[item];
+					item = irsz.nev;
+					$(irszaminput).val(irsz.szam);
+					return item;
+				},
+				items: 999999,
+				minLength: 4
+			});
+		}
+	}
+
 	return {
 		showMessage: showMessage,
 		closeMessage: closeMessage,
 		showDialog: showDialog,
 		closeDialog: closeDialog,
 		lapozas: lapozas,
-		overrideFormSubmit: overrideFormSubmit
+		overrideFormSubmit: overrideFormSubmit,
+		irszamTypeahead: irszamTypeahead,
+		varosTypeahead: varosTypeahead
 	};
 }(jQuery);

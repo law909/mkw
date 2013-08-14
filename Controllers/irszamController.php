@@ -11,11 +11,11 @@ class irszamController extends \mkwhelpers\JQGridController {
 	}
 
 	protected function loadCells($obj) {
-		return array($obj->getId(), $obj->getNev());
+		return array($obj->getSzam(), $obj->getNev());
 	}
 
 	protected function setFields($obj) {
-		$obj->setId($this->params->getStringRequestParam('id', $obj->getId()));
+		$obj->setSzam($this->params->getStringRequestParam('szam', $obj->getSzam()));
 		$obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
 		return $obj;
 	}
@@ -23,8 +23,8 @@ class irszamController extends \mkwhelpers\JQGridController {
 	public function jsonlist() {
 		$filter=array();
 		if ($this->params->getBoolRequestParam('_search',false)) {
-			if (!is_null($this->params->getRequestParam('id',NULL))) {
-				$filter['fields'][]='id';
+			if (!is_null($this->params->getRequestParam('szam',NULL))) {
+				$filter['fields'][]='szam';
 				$filter['values'][]=$this->params->getStringRequestParam('id');
 			}
 			if (!is_null($this->params->getRequestParam('nev',NULL))) {
@@ -51,9 +51,49 @@ class irszamController extends \mkwhelpers\JQGridController {
 		$rec=$this->getRepo()->getAll(array(),array('nev'=>'asc'));
 		$ret='<select>';
 		foreach($rec as $sor) {
-			$ret.='<option value="'.$sor->getId().'">'.$sor->getNev().'</option>';
+			$ret.='<option value="'.$sor->getId().'">'.$sor->getSzam() . ' ' . $sor->getNev().'</option>';
 		}
 		$ret.='</select>';
 		echo $ret;
+	}
+
+	public function typeaheadList() {
+		$filter=array();
+		$ret=array();
+		$term=$this->params->getStringRequestParam('term');
+		if ($term) {
+			$filter['fields'][]='szam';
+			$filter['clauses'][]='LIKE';
+			$filter['values'][]=trim($term).'%';
+		}
+		$rec=$this->getRepo()->getAll($filter,array('szam'=>'asc'));
+		foreach($rec as $sor) {
+			$ret[]=array(
+				'szam'=>$sor->getSzam(),
+				'nev'=>$sor->getNev(),
+				'id'=>$sor->getSzam() . ' ' . $sor->getNev()
+			);
+		}
+		echo json_encode($ret);
+	}
+
+	public function varosTypeaheadList() {
+		$filter=array();
+		$ret=array();
+		$term=$this->params->getStringRequestParam('term');
+		if ($term) {
+			$filter['fields'][]='nev';
+//			$filter['clauses'][]='LIKE';
+			$filter['values'][]=trim($term);
+		}
+		$rec=$this->getRepo()->getAll($filter,array('nev'=>'asc'));
+		foreach($rec as $sor) {
+			$ret[]=array(
+				'szam'=>$sor->getSzam(),
+				'nev'=>$sor->getNev(),
+				'id'=>$sor->getSzam() . ' ' . $sor->getNev()
+			);
+		}
+		echo json_encode($ret);
 	}
 }

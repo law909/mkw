@@ -14,9 +14,11 @@ class FizmodRepository extends \mkwhelpers\Repository {
 		$filter['fields'][]='webes';
 		$filter['clauses'][]='=';
 		$filter['values'][]=true;
-		$filter['fields'][]='id';
-		$filter['clauses'][]='IN';
-		$filter['values'][]=explode(',', $szm->getFizmodok());
-		return $this->getAll($filter,array('nev'=>'ASC'));
+		if ($szm) {
+			$filter['fields'][]='id';
+			$filter['clauses'][]='IN';
+			$filter['values'][]=explode(',', $szm->getFizmodok());
+		}
+		return $this->getAll($filter,array('sorrend'=>'ASC','nev'=>'ASC'));
 	}
 }

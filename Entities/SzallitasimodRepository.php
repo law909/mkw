@@ -15,7 +15,7 @@ class SzallitasimodRepository extends \mkwhelpers\Repository {
 		$filter=array();
 		$filter['fields'][]='webes';
 		$filter['values'][]=true;
-		return $this->getAll($filter,array('nev'=>'ASC'));
+		return $this->getAll($filter,array('sorrend'=>'ASC','nev'=>'ASC'));
 	}
 
 /* Ha van JOIN, ezek akkor kellenek
