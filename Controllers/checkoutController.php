@@ -17,6 +17,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$szlist=$szm->getSelectList(null);
 		$view->setVar('szallitasimodlist',$szlist);
 		$view->setVar('showerror', Store::getMainSession()->loginerror);
+		$view->setVar('showaszflink', Store::getRouter()->generate('showstatlappopup',false,array('lap'=>'aszf')));
 		Store::getMainSession()->loginerror = false;
 		$view->printTemplateResult();
 	}

@@ -1,7 +1,12 @@
 var checkout=function($) {
 
 	var checkoutpasswordrow,
-		checkoutpasswordcontainer;
+		checkoutpasswordcontainer,
+		vezeteknevinput,keresztnevinput,telefoninput,kapcsemailinput,
+		szamlanevinput,szamlairszaminput,szamlavarosinput,szamlautcainput,szamlaadoszaminput,
+		szallnevinput,szallirszaminput,szallvarosinput,szallutcainput,
+		webshopmessageinput,couriermessageinput,
+		szamlaeqszall;
 
 	function loadFizmodList() {
 		$.ajax({
@@ -11,16 +16,66 @@ var checkout=function($) {
 			},
 			success: function(data) {
 				$('.js-chkfizmodlist').html(data);
+				refreshAttekintes();
 			}
 		});
+	}
+
+	function refreshAttekintes() {
+		$('.js-chkvezeteknev').text(vezeteknevinput.val());
+		$('.js-chkkeresztnev').text(keresztnevinput.val());
+		$('.js-chktelefon').text(telefoninput.val());
+		$('.js-chkkapcsemail').text(kapcsemailinput.val());
+		$('.js-chkszamlanev').text(szamlanevinput.val());
+		$('.js-chkszamlairszam').text(szamlairszaminput.val());
+		$('.js-chkszamlavaros').text(szamlavarosinput.val());
+		$('.js-chkszamlautca').text(szamlautcainput.val());
+		$('.js-chkszamlaadoszam').text(szamlaadoszaminput.val());
+		if (szamlaeqszall.prop('checked')) {
+			szallnevinput.val(szamlanevinput.val());
+			szallirszaminput.val(szamlairszaminput.val());
+			szallvarosinput.val(szamlavarosinput.val());
+			szallutcainput.val(szamlautcainput.val());
+		}
+		else {
+			szallnevinput.val('');
+			szallirszaminput.val('');
+			szallvarosinput.val('');
+			szallutcainput.val('');
+		}
+		$('.js-chkszallnev').text(szallnevinput.val());
+		$('.js-chkszallirszam').text(szallirszaminput.val());
+		$('.js-chkszallvaros').text(szallvarosinput.val());
+		$('.js-chkszallutca').text(szallutcainput.val());
+		$('.js-chkszallitasimod').text($('input[name="szallitasimod"]:checked').data('caption'));
+		$('.js-chkfizmod').text($('input[name="fizetesimod"]:checked').data('caption'));
+		$('.js-chkwebshopmessage').text(webshopmessageinput.val());
+		$('.js-chkcouriermessage').text(couriermessageinput.val());
 	}
 
 	function initUI() {
 		var $checkout=$('.js-checkout');
 
 		if ($checkout.length) {
+
 			checkoutpasswordcontainer=$('.js-checkoutpasswordcontainer');
 			checkoutpasswordrow=$('.js-checkoutpasswordrow').detach();
+			vezeteknevinput=$('input[name="vezeteknev"]');
+			keresztnevinput=$('input[name="keresztnev"]');
+			telefoninput=$('input[name="telefon"]');
+			kapcsemailinput=$('input[name="kapcsemail"]');
+			szamlanevinput=$('input[name="szamlanev"]');
+			szamlairszaminput=$('input[name="szamlairszam"]');
+			szamlavarosinput=$('input[name="szamlavaros"]');
+			szamlautcainput=$('input[name="szamlautca"]');
+			szamlaadoszaminput=$('input[name="szamlaadoszam"]');
+			szallnevinput=$('input[name="szallnev"]');
+			szallirszaminput=$('input[name="szallirszam"]');
+			szallvarosinput=$('input[name="szallvaros"]');
+			szallutcainput=$('input[name="szallutca"]');
+			szamlaeqszall=$('input[name="szamlaeqszall"]');
+			webshopmessageinput=$('textarea[name="webshopmessage"]');
+			couriermessageinput=$('textarea[name="couriermessage"]');
 
 			loadFizmodList();
 
@@ -63,8 +118,9 @@ var checkout=function($) {
 				datagroupheader.click();
 			});
 
-			$('input[name="szamlaeqszall"]').on('change',function(e) {
+			szamlaeqszall.on('change',function(e) {
 				$('.js-chkszamlaadatok').toggleClass('notvisible');
+				refreshAttekintes();
 			});
 
 			$('.js-chktooltipbtn').tooltip({
@@ -77,6 +133,15 @@ var checkout=function($) {
 			mkw.varosTypeahead('input[name="szamlairszam"]', 'input[name="szamlavaros"]');
 			mkw.irszamTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
 			mkw.varosTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
+
+			$('.js-chkrefresh').on('change', function() {
+				refreshAttekintes();
+			});
+
+			$('.js-chkaszf').magnificPopup({
+				type: 'ajax'
+			});
+
 		}
 	}
 

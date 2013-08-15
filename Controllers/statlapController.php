@@ -106,4 +106,15 @@ class statlapController extends \mkwhelpers\MattableController {
 		}
 	}
 
+	public function showPopup() {
+		$com=$this->params->getStringParam('lap');
+		$statlap=$this->getRepo()->findOneBySlug($com);
+		if ($statlap) {
+			echo $statlap->getSzoveg();
+		}
+		else {
+			echo '';
+		}
+	}
+
 }

@@ -10,6 +10,7 @@ $router->map('POST','/fiok/ment/[adataim|szamlaadatok|szallitasiadatok:subject]'
 $router->map('POST','/checkemail','partnerController#checkemail','partnercheckemail');
 
 $router->map('GET','/statlap/[:lap]','statlapController#show','showstatlap');
+$router->map('GET','/statlap/p/[:lap]','statlapController#showPopup','showstatlappopup');
 $router->map('GET','/hir/[:hir]','hirController#show','showhir');
 $router->map('GET','/feed/hir','hirController#feed','hirfeed');
 $router->map('GET','/feed/termek','termekController#feed','termekfeed');
