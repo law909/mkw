@@ -58,8 +58,15 @@ var checkout=function($) {
 
 		if ($checkout.length) {
 
+			$('.js-chktooltipbtn').tooltip({
+				html: false,
+				placement: 'right',
+				container: 'body'
+			});
+
 			checkoutpasswordcontainer=$('.js-checkoutpasswordcontainer');
 			checkoutpasswordrow=$('.js-checkoutpasswordrow').detach();
+
 			vezeteknevinput=$('input[name="vezeteknev"]');
 			keresztnevinput=$('input[name="keresztnev"]');
 			telefoninput=$('input[name="telefon"]');
@@ -87,6 +94,11 @@ var checkout=function($) {
 			checkoutpasswordcontainer.empty();
 			if ($('input[name="regkell"]:checked').val()*1) {
 					checkoutpasswordrow.appendTo(checkoutpasswordcontainer);
+					$('.js-chktooltipbtn').tooltip({
+						html: false,
+						placement: 'right',
+						container: 'body'
+					});
 				}
 			});
 
@@ -121,12 +133,6 @@ var checkout=function($) {
 			szamlaeqszall.on('change',function(e) {
 				$('.js-chkszamlaadatok').toggleClass('notvisible');
 				refreshAttekintes();
-			});
-
-			$('.js-chktooltipbtn').tooltip({
-				html: false,
-				placement: 'right',
-				container: 'body'
 			});
 
 			mkw.irszamTypeahead('input[name="szamlairszam"]', 'input[name="szamlavaros"]');
