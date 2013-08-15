@@ -2,12 +2,12 @@
 <html lang="hu">
 	<head>
 		<meta charset="utf-8">
-		<meta name="description" content="{$seodescription}">
+		<meta name="description" content="{$seodescription|default}">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title>{$pagetitle}</title>
-		<link type="application/rss+xml" rel="alternate" title="{$feedhirtitle}" href="/feed/hir">
-		<link type="application/rss+xml" rel="alternate" title="{$feedtermektitle}" href="/feed/termek">
+		<title>{$pagetitle|default}</title>
+		<link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">
+		<link type="application/rss+xml" rel="alternate" title="{$feedtermektitle|default}" href="/feed/termek">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/bootstrap.min.css">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/bootstrap-responsive.min.css">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/jquery.slider.min.css">
