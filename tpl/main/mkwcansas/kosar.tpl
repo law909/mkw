@@ -40,7 +40,7 @@
 								</div>
 							</td>
 							<td><div class="textalignright">{number_format($tetel.bruttohuf,0,',',' ')} Ft</div></td>
-							<td class="textaligncenter"><a class="btn js-kosardelbtn" href="/kosar/del?id={$tetel.id}"><i class="icon-remove-sign"></i>{t('Töröl')}</a></td>
+							<td class="textaligncenter"><a class="btn js-kosardelbtn" href="/kosar/del?id={$tetel.id}" rel="nofollow"><i class="icon-remove-sign"></i>{t('Töröl')}</a></td>
 						</tr>
 					{/foreach}
 				</tbody>
