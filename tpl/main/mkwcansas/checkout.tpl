@@ -200,9 +200,9 @@
 								<tr>
 									<th><div class="textaligncenter">{t('Termék')}</div></th>
 									<th>{t('Megnevezés, cikkszám')}</th>
-									<th><div class="textAlignRight">{t('Egységár')}</div></th>
+									<th><div class="textalignright">{t('Egységár')}</div></th>
 									<th><div class="textaligncenter">{t('Mennyiség')}</div></th>
-									<th><div class="textAlignRight">{t('Érték')}</div></th>
+									<th><div class="textalignright">{t('Érték')}</div></th>
 								</tr>
 							</thead>
 							<tbody>

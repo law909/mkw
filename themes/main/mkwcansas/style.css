@@ -115,7 +115,7 @@ span.aktualislap{color:#e42721;background-color:white;padding:4px;}
 .chk-colmargin>div{margin-left:5px;}
 .chk-coldatabottom{margin-bottom:5px;}
 .chk-actionrow{margin-top:10px;margin-bottom:10px;}
-.chk-columncontainer{margin-bottom:10px;}
+.chk-columncontainer{margin-bottom:20px;}
 .chk-relative{position:relative;}
 .chk-tooltipbtn{position:absolute;right:-16px;top:7px;cursor:pointer;}
 .chk-courierdesc{margin-bottom:10px;margin-left:20px;color:#999;}
