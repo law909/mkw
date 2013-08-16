@@ -36,6 +36,12 @@
 @headermidmargin: 20px;
 @headerheight: 40px;
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 .gradient-background (@from, @to) {
 	background-color: @to;
 	background-image: -webkit-gradient(linear,0 0,0 100%, from(@from), to(@to));

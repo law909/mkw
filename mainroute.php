@@ -24,7 +24,7 @@ $router->map('GET','/valtozat','mainController#valtozat','valtozat');
 $router->map('GET','/kereses','mainController#kereses','kereses');
 
 $router->map('POST','/kosar/add','kosarController#add','kosaradd');
-$router->map('POST','/kosar/edit','kosarController#edit','kosaredit');
+$router->map('POST|GET','/kosar/edit','kosarController#edit','kosaredit');
 $router->map('POST|GET','/kosar/del','kosarController#del','kosardel');
 $router->map('GET','/kosar/get','kosarController#get','kosarget');
 $router->map('GET','/checkout','checkoutController#getCheckout','showcheckout');

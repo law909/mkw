@@ -1,3 +1,4 @@
+input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 .tabs-left>.nav-tabs .active>a{font-weight:bold;color:#333;background-color:#e8e8e8;}
 .textaligncenter{text-align:center;}
 table th.textaligncenter,table td.textaligncenter{text-align:center;}

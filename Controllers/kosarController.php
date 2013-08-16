@@ -207,10 +207,10 @@ class kosarController extends \mkwhelpers\MattableController {
 			}
 			else {
 				if (store::getMainSession()->prevuri) {
-					Header('Location: '.store::getMainSession()->prevuri);
+					Header('Location: '.store::getRouter()->generate('kosarget'));
 				}
 				else {
-					Header('Location: /');
+					Header('Location: '.store::getRouter()->generate('kosarget'));
 				}
 			}
 		}
@@ -233,10 +233,10 @@ class kosarController extends \mkwhelpers\MattableController {
 			}
 			else {
 				if (store::getMainSession()->prevuri) {
-					Header('Location: '.store::getMainSession()->prevuri);
+					Header('Location: '.store::getRouter()->generate('kosarget'));
 				}
 				else {
-					Header('Location: /');
+					Header('Location: '.store::getRouter()->generate('kosarget'));
 				}
 			}
 		}
