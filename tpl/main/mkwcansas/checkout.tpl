@@ -117,15 +117,15 @@
 						</div>
 						<div class="js-chkszamlaadatok{if ($user.szalladategyezik|default)} notvisible{/if}">
 							<div class="controls chk-controloffset">
-								<input name="szallnev" type="text" class="span8 js-chkrefresh" placeholder="{t('szállítási név')}" value="{$user.szallnev|default}">
+								<input name="szallnev" type="text" class="span8 js-chkrefresh" placeholder="{t('szállítási név')}" value="{$user.szallnev|default}" data-orgdata="{$user.szallnev|default}">
 							</div>
 							<div class="controls controls-row chk-controloffset">
-								<input name="szallirszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.szallirszam|default}" required>
+								<input name="szallirszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.szallirszam|default}" data-orgdata="{$user.szallirszam|default}" required>
 								<i class="span inputiconhack"></i>
-								<input name="szallvaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.szallvaros|default}" required>
+								<input name="szallvaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.szallvaros|default}" data-orgdata="{$user.szallvaros|default}" required>
 							</div>
 							<div class="controls chk-controloffset">
-								<input name="szallutca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.szallutca|default}" required>
+								<input name="szallutca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.szallutca|default}" data-orgdata="{$user.szallutca|default}" required>
 							</div>
 						</div>
 						<div class="row chk-actionrow"><a class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallmoddgh">Tovább</a></div>

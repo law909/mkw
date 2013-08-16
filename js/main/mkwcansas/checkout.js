@@ -32,21 +32,17 @@ var checkout=function($) {
 		$('.js-chkszamlautca').text(szamlautcainput.val());
 		$('.js-chkszamlaadoszam').text(szamlaadoszaminput.val());
 		if (szamlaeqszall.prop('checked')) {
-			szallnevinput.val(szamlanevinput.val());
-			szallirszaminput.val(szamlairszaminput.val());
-			szallvarosinput.val(szamlavarosinput.val());
-			szallutcainput.val(szamlautcainput.val());
+			$('.js-chkszallnev').text(szamlanevinput.val());
+			$('.js-chkszallirszam').text(szamlairszaminput.val());
+			$('.js-chkszallvaros').text(szamlavarosinput.val());
+			$('.js-chkszallutca').text(szamlautcainput.val());
 		}
 		else {
-			szallnevinput.val('');
-			szallirszaminput.val('');
-			szallvarosinput.val('');
-			szallutcainput.val('');
+			$('.js-chkszallnev').text(szallnevinput.val());
+			$('.js-chkszallirszam').text(szallirszaminput.val());
+			$('.js-chkszallvaros').text(szallvarosinput.val());
+			$('.js-chkszallutca').text(szallutcainput.val());
 		}
-		$('.js-chkszallnev').text(szallnevinput.val());
-		$('.js-chkszallirszam').text(szallirszaminput.val());
-		$('.js-chkszallvaros').text(szallvarosinput.val());
-		$('.js-chkszallutca').text(szallutcainput.val());
 		$('.js-chkszallitasimod').text($('input[name="szallitasimod"]:checked').data('caption'));
 		$('.js-chkfizmod').text($('input[name="fizetesimod"]:checked').data('caption'));
 		$('.js-chkwebshopmessage').text(webshopmessageinput.val());
@@ -91,8 +87,8 @@ var checkout=function($) {
 				loadFizmodList();
 			})
 			.on('change','input[name="regkell"]',function() {
-			checkoutpasswordcontainer.empty();
-			if ($('input[name="regkell"]:checked').val()*1) {
+				checkoutpasswordcontainer.empty();
+				if ($('input[name="regkell"]:checked').val()*1) {
 					checkoutpasswordrow.appendTo(checkoutpasswordcontainer);
 					$('.js-chktooltipbtn').tooltip({
 						html: false,
@@ -100,6 +96,9 @@ var checkout=function($) {
 						container: 'body'
 					});
 				}
+			})
+			.on('change','.js-chkrefresh',function() {
+				refreshAttekintes();
 			});
 
 			var $chklogin=$('.js-chklogin');
@@ -139,10 +138,6 @@ var checkout=function($) {
 			mkw.varosTypeahead('input[name="szamlairszam"]', 'input[name="szamlavaros"]');
 			mkw.irszamTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
 			mkw.varosTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
-
-			$('.js-chkrefresh').on('change', function() {
-				refreshAttekintes();
-			});
 
 			$('.js-chkaszf').magnificPopup({
 				type: 'ajax'
