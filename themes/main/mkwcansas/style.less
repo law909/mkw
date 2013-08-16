@@ -6,7 +6,7 @@
 @fontsize: 13px;
 @headercarttextfontsize: 11px;
 @headernavfontsize: 15px;
-@headernavcategoryfontsize: 14px;
+@headernavcategoryfontsize: 15px;
 @morzsafontsize: 11px;
 @sectionheaderfontsize: 21px;
 @hiralairasfontsize: 70%;
@@ -70,6 +70,10 @@
 }
 
 .textaligncenter {
+	text-align: center;
+}
+
+table th.textaligncenter, table td.textaligncenter {
 	text-align: center;
 }
 
@@ -400,7 +404,7 @@ header a:hover, footer a:hover {
 	padding: 4px 3px 6px;
 	font-size: @headernavcategoryfontsize;
 	font-weight: bold;
-	color: @termekcaptionfontcolor;
+	color: @headernavlinkcolor;
 }
 
 footer {
@@ -572,6 +576,10 @@ footer nav {
 
 .cartbtn:focus,.cartbtn:active,.cartbtn.active {
 	.gradient-background(@cartbuttonvilagos,@cartbuttonsotet);
+}
+
+.megrendelemcontainer {
+	margin: 20px 0;
 }
 
 .kiemelttermek {

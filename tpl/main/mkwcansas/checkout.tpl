@@ -214,20 +214,20 @@
 										<td><div><a href="{$tetel.link}">{$tetel.caption}</a></div>
 											<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}:{$valtozat.ertek}&nbsp;{/foreach}</div>
 											{$tetel.cikkszam}</td>
-										<td><div class="textAlignRight">{number_format($tetel.bruttoegysarhuf,0,',',' ')} Ft</div></td>
+										<td><div class="textalignright">{number_format($tetel.bruttoegysarhuf,0,',',' ')} Ft</div></td>
 										<td>
-											<div class="textAligncenter">
-												<div>{number_format($tetel.mennyiseg,0,',','')}"</div>
+											<div class="textaligncenter">
+												<div>{number_format($tetel.mennyiseg,0,',','')}</div>
 											</div>
 										</td>
-										<td><div class="textAlignRight">{number_format($tetel.bruttohuf,0,',',' ')} Ft</div></td>
+										<td><div class="textalignright">{number_format($tetel.bruttohuf,0,',',' ')} Ft</div></td>
 									</tr>
 								{/foreach}
 							</tbody>
 							<tfoot>
 								<tr>
-									<th colspan="4"><div class="textAlignRight">{t('Összesen')}:</div></th>
-									<th><div class="textAlignRight">{number_format($osszesen,0,',',' ')} Ft</div></th>
+									<th colspan="4"><div class="textalignright">{t('Összesen')}:</div></th>
+									<th><div class="textalignright">{number_format($osszesen,0,',',' ')} Ft</div></th>
 								</tr>
 							</tfoot>
 						</table>
