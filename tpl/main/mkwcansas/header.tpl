@@ -22,11 +22,11 @@
 			</div>
 			{/if}
 			<div class="headercart">
-				<a href="{$kosargetlink}" class="btn cartbtn pull-right">{t('Kosár')}</a>
+				<a href="{$kosargetlink}" class="btn cartbtn pull-right" rel="nofollow">{t('Kosár')}</a>
 				<a id="minikosar" class="pull-right" href="{$kosargetlink}" rel="nofollow">
 					{include "minikosar.tpl"}
 				</a>
-				<a rel="nofollow" href="{$kosargetlink}" class="headercarticon pull-right"></a>
+				<a href="{$kosargetlink}" class="headercarticon pull-right" rel="nofollow"></a>
 			</div>
 		</div>
 	</div>

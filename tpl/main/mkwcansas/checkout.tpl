@@ -210,8 +210,8 @@
 								{foreach $tetellista as $tetel}
 									{$osszesen=$osszesen+$tetel.bruttohuf}
 									<tr class="clickable" data-href="{$tetel.link}">
-										<td><div class="textaligncenter"><a href="{$tetel.link}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></a></div></td>
-										<td><div><a href="{$tetel.link}">{$tetel.caption}</a></div>
+										<td><div class="textaligncenter"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></div></td>
+										<td><div>{$tetel.caption}</div>
 											<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}:{$valtozat.ertek}&nbsp;{/foreach}</div>
 											{$tetel.cikkszam}</td>
 										<td><div class="textalignright">{number_format($tetel.bruttoegysarhuf,0,',',' ')} Ft</div></td>

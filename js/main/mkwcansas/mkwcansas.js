@@ -474,6 +474,6 @@ $(document).ready(function(){
 		container: 'body'
 	});
 
-	cart.iniUI();
+	cart.initUI();
 	checkout.initUI();
 });
