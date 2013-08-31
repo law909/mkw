@@ -27,8 +27,10 @@ $router->map('POST','/kosar/add','kosarController#add','kosaradd');
 $router->map('POST|GET','/kosar/edit','kosarController#edit','kosaredit');
 $router->map('POST|GET','/kosar/del','kosarController#del','kosardel');
 $router->map('GET','/kosar/get','kosarController#get','kosarget');
+$router->map('GET','/kosar/gethash','kosarController#getHash','kosargethash');
 $router->map('GET','/checkout','checkoutController#getCheckout','showcheckout');
 $router->map('GET','/checkout/getfizmodlist','checkoutController#getFizmodList','checkoutgetfizmod');
+$router->map('GET','/checkout/gettetellist','checkoutController#getTetelList','checkoutgettetellist');
 
 $router->map('GET','/irszam','irszamController#typeaheadList','irszamtypeahead');
 $router->map('GET','/varos','irszamController#varosTypeaheadList','varostypeahead');

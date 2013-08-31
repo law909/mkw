@@ -19,14 +19,13 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$view->setVar('showerror', Store::getMainSession()->loginerror);
 		$view->setVar('showaszflink', Store::getRouter()->generate('showstatlappopup',false,array('lap'=>'aszf')));
 		Store::getMainSession()->loginerror = false;
-		
+
 		$sorok=$this->getEm()->getRepository('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
 		$s=array();
 		foreach($sorok as $sor) {
 			$s[]=$sor->toLista();
 		}
 		$view->setVar('tetellista',$s);
-
 		$view->printTemplateResult();
 	}
 
@@ -37,4 +36,17 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$view->setVar('fizmodlist',$szlist);
 		echo $view->getTemplateResult();
 	}
+
+	public function getTetelList() {
+		$view=Store::getTemplateFactory()->createMainView('checkouttetellist.tpl');
+
+		$sorok=$this->getEm()->getRepository('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
+		$s=array();
+		foreach($sorok as $sor) {
+			$s[]=$sor->toLista();
+		}
+		$view->setVar('tetellista',$s);
+		echo $view->getTemplateResult();
+	}
+
 }

@@ -58,7 +58,7 @@ class KosarRepository extends \mkwhelpers\Repository {
 		$filter['fields'][]='sessionid';
 		$filter['clauses'][]='=';
 		$filter['values'][]=$sessionid;
-		return $this->getWithJoins($filter,array());
+		return $this->getWithJoins($filter,array($this->alias.'.id'=>'ASC'));
 	}
 
 	public function getTetelsor($sessionid,$partnerid,$termekid,$valtozatid,$valutanem) {

@@ -6,7 +6,8 @@ var checkout=function($) {
 		szamlanevinput,szamlairszaminput,szamlavarosinput,szamlautcainput,szamlaadoszaminput,
 		szallnevinput,szallirszaminput,szallvarosinput,szallutcainput,
 		webshopmessageinput,couriermessageinput,
-		szamlaeqszall;
+		szamlaeqszall,
+		kosarhash;
 
 	function loadFizmodList() {
 		$.ajax({
@@ -49,10 +50,26 @@ var checkout=function($) {
 		$('.js-chkcouriermessage').text(couriermessageinput.val());
 	}
 
+	function openDataContainer(obj) {
+		var $this=$(obj).parent().parent().prev(),
+			mycontainer=$($this.data('container'));
+		if (mycontainer.hasClass('js-chkclosed')) {
+			$('.js-chkdatacontainer').slideUp(0).addClass('js-chkclosed');
+			mycontainer.slideDown(0).removeClass('js-chkclosed');
+		}
+	}
+
 	function initUI() {
 		var $checkout=$('.js-checkout');
 
 		if ($checkout.length) {
+
+			$.ajax({
+				url: '/kosar/gethash',
+				success: function(data) {
+					kosarhash=data;
+				}
+			});
 
 			$('.js-chktooltipbtn').tooltip({
 				html: false,
@@ -130,7 +147,14 @@ var checkout=function($) {
 			});
 
 			szamlaeqszall.on('change',function(e) {
-				$('.js-chkszamlaadatok').toggleClass('notvisible');
+				var obj=$('.js-chkszamlaadatok');
+				obj.toggleClass('notvisible');
+				if (obj.hasClass('notvisible')) {
+					$('input',obj).attr('disabled','disabled');
+				}
+				else {
+					$('input',obj).attr('disabled',null);
+				}
 				refreshAttekintes();
 			});
 
@@ -141,6 +165,75 @@ var checkout=function($) {
 
 			$('.js-chkaszf').magnificPopup({
 				type: 'ajax'
+			});
+
+			vezeteknevinput.on('invalid', function() {
+				openDataContainer(this);
+			});
+			keresztnevinput.on('invalid', function() {
+				openDataContainer(this);
+			});
+			telefoninput.on('invalid', function() {
+				openDataContainer(this);
+			});
+			kapcsemailinput.on('invalid', function() {
+				openDataContainer(this);
+			});
+			szamlanevinput.on('invalid', function() {
+				openDataContainer(this);
+			});
+			szamlairszaminput.on('invalid', function() {
+				openDataContainer(this);
+			});
+			szamlavarosinput.on('invalid', function() {
+				openDataContainer(this);
+			});
+			szamlautcainput.on('invalid', function() {
+				openDataContainer(this);
+			});
+			szamlaadoszaminput.on('invalid', function() {
+				openDataContainer(this);
+			});
+			szallnevinput.on('invalid', function() {
+				openDataContainer(this);
+			});
+			szallirszaminput.on('invalid', function() {
+				openDataContainer(this);
+			});
+			szallvarosinput.on('invalid', function() {
+				openDataContainer(this);
+			});
+			szallutcainput.on('invalid', function() {
+				openDataContainer(this);
+			});
+
+
+			$('.js-chksendorderbtn').on('submit',function() {
+				if (!$('input[name="aszfready"]').prop('checked')) {
+					mkw.showDialog('Megrendelés előtt kérjük fogadja el az ÁSZF-et.');
+				}
+				else {
+					$.ajax({
+						url: '/kosar/gethash',
+						success: function(data) {
+							if (kosarhash && kosarhash != data) {
+								var newhash=data;
+								mkw.showDialog('A kosár tartalma megrendelés közben megváltozott, kérem ellenőrizze.');
+								$.ajax({
+									url: '/checkout/gettetellist',
+									success: function(data) {
+										$('.js-chktetellist').html(data);
+										kosarhash=newhash;
+									}
+								});
+							}
+							else {
+								return true;
+							}
+						}
+					});
+				}
+				return false;
 			});
 
 		}

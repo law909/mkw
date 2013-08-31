@@ -122,7 +122,7 @@ span.aktualislap{color:#e42721;background-color:white;padding:4px;}
 .chk-tooltipbtn{position:absolute;right:-16px;top:7px;cursor:pointer;}
 .chk-courierdesc{margin-bottom:10px;margin-left:20px;color:#999;}
 .chk-savecontainer{border-style:solid;border-width:1px;border-color:#e8e8e8;padding:10px;border-radius:2px;background-color:#e8e8e8;}.chk-savecontainer label a{text-decoration:underline;}.chk-savecontainer label a:hover{color:white;}
-.chk-sendorderbtn{display:block;}
+input[type="submit"].chk-sendorderbtn{width:100%;}
 .folyoszoveg{line-height:1.3em;}
 [class^="col"]{float:left;}
 .chk-controloffset{margin-left:30px;}

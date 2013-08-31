@@ -16,7 +16,7 @@
 	<div class="row">
 		<div class="span10">
 			<form id="LoginForm" method="post" action="/login/ment"></form>
-			<form id="FiokSzamlaAdatok" class="" action="" method="post"><fieldset>
+			<form id="FiokSzamlaAdatok" class="" action="/checkout/ment" method="post"><fieldset>
 			{$sorszam=1}
 			{if (!$user.loggedin)}
 			<div class="row">
@@ -195,50 +195,17 @@
 								<div class="folyoszoveg js-chkcouriermessage"></div>
 							</div>
 						</div>
-						<table class="table table-bordered">
-							<thead>
-								<tr>
-									<th><div class="textaligncenter">{t('Termék')}</div></th>
-									<th>{t('Megnevezés, cikkszám')}</th>
-									<th><div class="textalignright">{t('Egységár')}</div></th>
-									<th><div class="textaligncenter">{t('Mennyiség')}</div></th>
-									<th><div class="textalignright">{t('Érték')}</div></th>
-								</tr>
-							</thead>
-							<tbody>
-								{$osszesen=0}
-								{foreach $tetellista as $tetel}
-									{$osszesen=$osszesen+$tetel.bruttohuf}
-									<tr class="clickable" data-href="{$tetel.link}">
-										<td><div class="textaligncenter"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></div></td>
-										<td><div>{$tetel.caption}</div>
-											<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}:{$valtozat.ertek}&nbsp;{/foreach}</div>
-											{$tetel.cikkszam}</td>
-										<td><div class="textalignright">{number_format($tetel.bruttoegysarhuf,0,',',' ')} Ft</div></td>
-										<td>
-											<div class="textaligncenter">
-												<div>{number_format($tetel.mennyiseg,0,',','')}</div>
-											</div>
-										</td>
-										<td><div class="textalignright">{number_format($tetel.bruttohuf,0,',',' ')} Ft</div></td>
-									</tr>
-								{/foreach}
-							</tbody>
-							<tfoot>
-								<tr>
-									<th colspan="4"><div class="textalignright">{t('Összesen')}:</div></th>
-									<th><div class="textalignright">{number_format($osszesen,0,',',' ')} Ft</div></th>
-								</tr>
-							</tfoot>
+						<table class="table table-bordered js-chktetellist">
+							{include 'checkouttetellist.tpl'}
 						</table>
 
 						<div class="">
 							<label class="checkbox">
-								<input name="szamlaeqszall" type="checkbox">
+								<input name="akciohirlevel" type="checkbox">
 								{t('Igen, értesítsenek az akciókról')}
 							</label>
 							<label class="checkbox">
-								<input name="szamlaeqszall" type="checkbox">
+								<input name="ujdonsaghirlevel" type="checkbox">
 								{t('Igen, értesítsenek az újdonságokról')}
 							</label>
 						</div>
@@ -246,11 +213,11 @@
 							<div class="chk-savecontainer">
 								<div>
 									<label class="checkbox">
-										<input name="szamlaeqszall" type="checkbox">
+										<input name="aszfready" type="checkbox">
 										Elolvastam és elfogadom az <a href="{$showaszflink}" target="empty" class="js-chkaszf">ÁSZF</a>-et
 									</label>
 								</div>
-								<div><a class="btn cartbtn chk-sendorderbtn">Megrendelés elküldése</a></div>
+								<div><input type="submit" class="btn cartbtn chk-sendorderbtn js-chksendorderbtn" value="Megrendelés elküldése"></div>
 							</div>
 						</div>
 					</div>

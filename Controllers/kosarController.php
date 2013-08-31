@@ -281,4 +281,13 @@ class kosarController extends \mkwhelpers\MattableController {
 		}
 		$this->getEm()->flush();
 	}
+
+	public function getHash() {
+		$sorok=$this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+		$s=array();
+		foreach($sorok as $sor) {
+			$s[]=$sor->toLista();
+		}
+		echo md5(json_encode($s));
+	}
 }
