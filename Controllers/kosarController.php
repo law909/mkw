@@ -127,6 +127,20 @@ class kosarController extends \mkwhelpers\MattableController {
 		$v->printTemplateResult();
 	}
 
+	public function clear() {
+		$pc=new partnerController($this->params);
+		$partnerid=null;
+		$partner=$pc->getLoggedInUser();
+		if ($partner) {
+			$partnerid=$partner->getId();
+		}
+		$k=$this->getRepo()->getDataByPartner($partner);
+		foreach($k as $sor) {
+			$this->getEm()->remove($sor);
+		}
+		$this->getEm()->flush();
+	}
+
 	public function add() {
 		$termek=store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('id'));
 		$vid=null;

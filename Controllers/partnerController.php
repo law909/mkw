@@ -399,6 +399,10 @@ class partnerController extends \mkwhelpers\MattableController {
 		else {
 			if ($this->login($this->params->getStringRequestParam('email'),$this->params->getStringRequestParam('jelszo'))) {
 				\Zend_Session::writeClose();
+				if (!$checkout) {
+					$kc=new kosarController($this->params);
+					$kc->clear();
+				}
 				header('Location: '.$route);
 			}
 			else {

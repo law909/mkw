@@ -5,6 +5,7 @@ var checkout=function($) {
 		vezeteknevinput,keresztnevinput,telefoninput,kapcsemailinput,
 		szamlanevinput,szamlairszaminput,szamlavarosinput,szamlautcainput,szamlaadoszaminput,
 		szallnevinput,szallirszaminput,szallvarosinput,szallutcainput,
+		checkoutform,
 		webshopmessageinput,couriermessageinput,
 		szamlaeqszall,
 		kosarhash;
@@ -51,7 +52,7 @@ var checkout=function($) {
 	}
 
 	function openDataContainer(obj) {
-		var $this=$(obj).parent().parent().prev(),
+		var $this=$(obj),
 			mycontainer=$($this.data('container'));
 		if (mycontainer.hasClass('js-chkclosed')) {
 			$('.js-chkdatacontainer').slideUp(0).addClass('js-chkclosed');
@@ -77,6 +78,7 @@ var checkout=function($) {
 				container: 'body'
 			});
 
+			checkoutform=$('#CheckoutForm');
 			checkoutpasswordcontainer=$('.js-checkoutpasswordcontainer');
 			checkoutpasswordrow=$('.js-checkoutpasswordrow').detach();
 
@@ -223,9 +225,9 @@ var checkout=function($) {
 				openDataContainer(this);
 			});
 
-			H5F.setup($('#CheckoutForm'));
+			H5F.setup(checkoutform);
 
-			$('.js-chksendorderbtn').on('submit',function() {
+			$('.js-chksendorderbtn').on('click',function(e) {
 				if (!$('input[name="aszfready"]').prop('checked')) {
 					mkw.showDialog('Megrendelés előtt kérjük fogadja el az ÁSZF-et.');
 				}
@@ -245,12 +247,11 @@ var checkout=function($) {
 								});
 							}
 							else {
-								return true;
+								checkoutform.submit();
 							}
 						}
 					});
 				}
-				return false;
 			});
 
 		}

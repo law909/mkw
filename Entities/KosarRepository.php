@@ -61,6 +61,14 @@ class KosarRepository extends \mkwhelpers\Repository {
 		return $this->getWithJoins($filter,array($this->alias.'.id'=>'ASC'));
 	}
 
+	public function getDataByPartner($partner) {
+		$filter=array();
+		$filter['fields'][]='partner';
+		$filter['clauses'][]='=';
+		$filter['values'][]=$partner;
+		return $this->getWithJoins($filter,array($this->alias.'.id'=>'ASC'));
+	}
+
 	public function getTetelsor($sessionid,$partnerid,$termekid,$valtozatid,$valutanem) {
 		$filter=array();
 		if ($sessionid) {
