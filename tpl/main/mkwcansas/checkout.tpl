@@ -16,7 +16,7 @@
 	<div class="row">
 		<div class="span10">
 			<form id="LoginForm" method="post" action="/login/ment"></form>
-			<form id="FiokSzamlaAdatok" class="" action="/checkout/ment" method="post"><fieldset>
+			<form id="CheckoutForm" class="" action="/checkout/ment" method="post"><fieldset>
 			{$sorszam=1}
 			{if (!$user.loggedin)}
 			<div class="row">
@@ -72,16 +72,16 @@
 						</div>
 						<div class="controls controls-row chk-controloffset">
 							<div class="chk-relative pull-left chk-tooltippedcontainer">
-								<input name="telefon" type="text" class="span4 js-chkrefresh" placeholder="{t('telefon')} *" value="{$user.telefon|default}" required>
+								<input name="telefon" type="text" class="span4 js-chkrefresh" placeholder="{t('telefon')} *" value="{$user.telefon|default}" required data-errormsg="Kérem adja meg a telefonszámát">
 								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="Azért kérjük el a telefonszámát, hogy tudjuk értesíteni a megrendelésével kapcsolatos eseményekről"></i>
 							</div>
 							<i class="span inputiconhack"></i>
-							<input name="kapcsemail" type="email" class="span4 js-chkrefresh" placeholder="{t('email')} *" value="{$user.email|default}" required>
+							<input name="kapcsemail" type="email" class="span4 js-chkrefresh" placeholder="{t('email')} *" value="{$user.email|default}" required data-errormsg="Kérem adja meg az emailcímét">
 						</div>
 						{if (!$user.loggedin)}
 						<div class="js-checkoutpasswordcontainer">
 						<div class="controls controls-row chk-controloffset js-checkoutpasswordrow">
-							<input name="jelszo1" type="password" class="span4" placeholder="{t('jelszó')} 1 *" value="" required>
+							<input name="jelszo1" type="password" class="span4" placeholder="{t('jelszó')} 1 *" value="" required data-errormsg1="Adjon meg jelszót" data-errormsg2="A két jelszó nem egyezik">
 							<div class="chk-relative pull-left chk-tooltippedcontainer">
 								<i class="span inputiconhack"></i>
 								<input name="jelszo2" type="password" class="span4" placeholder="{t('jelszó')} 2 *" value="" required>
@@ -95,12 +95,12 @@
 							<input name="szamlanev" type="text" class="span8 js-chkrefresh" placeholder="{t('számlázási név')}" value="{$user.szamlanev|default}">
 						</div>
 						<div class="controls controls-row chk-controloffset">
-							<input name="szamlairszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.szamlairszam|default}" required>
+							<input name="szamlairszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.szamlairszam|default}" required data-errormsg="Kérem adja meg az irányítószámát">
 							<i class="span inputiconhack"></i>
-							<input name="szamlavaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.szamlavaros|default}" required>
+							<input name="szamlavaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.szamlavaros|default}" required data-errormsg="Kérem adja meg a várost">
 						</div>
 						<div class="controls chk-controloffset">
-							<input name="szamlautca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.szamlautca|default}" required>
+							<input name="szamlautca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.szamlautca|default}" required data-errormsg="Kérem adja meg az utcát">
 						</div>
 						<div class="controls chk-controloffset">
 							<div class="chk-relative pull-left chk-tooltippedcontainer">
@@ -120,12 +120,12 @@
 								<input name="szallnev" type="text" class="span8 js-chkrefresh" placeholder="{t('szállítási név')}" value="{$user.szallnev|default}" data-orgdata="{$user.szallnev|default}">
 							</div>
 							<div class="controls controls-row chk-controloffset">
-								<input name="szallirszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.szallirszam|default}" data-orgdata="{$user.szallirszam|default}" required>
+								<input name="szallirszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.szallirszam|default}" data-orgdata="{$user.szallirszam|default}" required data-errormsg="Kérem adja meg az irányítószámát">
 								<i class="span inputiconhack"></i>
-								<input name="szallvaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.szallvaros|default}" data-orgdata="{$user.szallvaros|default}" required>
+								<input name="szallvaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.szallvaros|default}" data-orgdata="{$user.szallvaros|default}" required data-errormsg="Kérem adja meg a várost">
 							</div>
 							<div class="controls chk-controloffset">
-								<input name="szallutca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.szallutca|default}" data-orgdata="{$user.szallutca|default}" required>
+								<input name="szallutca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.szallutca|default}" data-orgdata="{$user.szallutca|default}" required data-errormsg="Kérem adja meg az utcát">
 							</div>
 						</div>
 						<div class="row chk-actionrow"><a class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallmoddgh">Tovább</a></div>

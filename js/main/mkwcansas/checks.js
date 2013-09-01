@@ -34,6 +34,16 @@ var mkwcheck={
 		loginEmail: {
 			email: 'input[name="email"]',
 			msg: ''
+		},
+
+		checkoutJelszo: {
+			jelszo1: 'input[name="jelszo1"]',
+			jelszo2: 'input[name="jelszo2"]',
+			msg: ''
+		},
+		checkoutTelefon: {
+			nev: 'input[name="telefon"]',
+			msg: ''
 		}
 	},
 
@@ -46,6 +56,9 @@ var mkwcheck={
 	regJelszoCheck:function() { this.pwcheck(this.configs.regJelszo); },
 
 	loginEmailCheck:function() { this.emailcheck(this.configs.loginEmail); },
+
+	checkoutJelszoCheck:function() { this.pwcheck(this.configs.checkoutJelszo); },
+	checkoutTelefonCheck:function() {this.nevcheck(this.configs.checkoutTelefon); },
 
 	wasinteraction:{
 		nev:false,

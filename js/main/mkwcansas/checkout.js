@@ -116,7 +116,23 @@ var checkout=function($) {
 			})
 			.on('change','.js-chkrefresh',function() {
 				refreshAttekintes();
+			})
+			.on('input','input[name="jelszo1"],input[name="jelszo2"]',function(e) {
+					mkwcheck.checkoutJelszoCheck();
+					$(this).off('keydown');
+			})
+			.on('keydown blur','input[name="jelszo1"],input[name="jelszo2"]',function(e) {
+				mkwcheck.wasinteraction.pw=true;mkwcheck.checkoutJelszoCheck();
 			});
+
+			telefoninput
+			.on('input',function(e) {
+				mkwcheck.checkoutTelefonCheck();
+				$(this).off('keydown');
+			})
+			.on('keydown blur',function(e) {mkwcheck.wasinteraction.telefon=true;mkwcheck.checkoutTelefonCheck();})
+			.each(function(i,ez) {mkwcheck.checkoutTelefonCheck();});
+
 
 			var $chklogin=$('.js-chklogin');
 			if ($chklogin.length) {
@@ -207,6 +223,7 @@ var checkout=function($) {
 				openDataContainer(this);
 			});
 
+			H5F.setup($('#CheckoutForm'));
 
 			$('.js-chksendorderbtn').on('submit',function() {
 				if (!$('input[name="aszfready"]').prop('checked')) {
