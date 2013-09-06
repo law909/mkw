@@ -24,7 +24,7 @@
 				<h3>Az Ön kosara üres, és ezért ő egy kicsit szomorú.</h3>
                                 A kosár egyedüli célja, hogy tele legyen szép ruházati cikkekkel, kempingfelszereléssel, sportszerekkel és sok egyéb más termékkel, amelyek elérhetők a Mindent Kapni Webáruházban.<br>
                                 Tegye hát boldoggá a kosarat, adjon értelmet az életének!<br><br>
-                                <a href="/" class="btn okbtn">Vásárlás folytatása</a>
+                                <a href="{$prevuri}" class="btn okbtn">Vásárlás folytatása</a>
 			{/if}
 		</div>
 	</div>
