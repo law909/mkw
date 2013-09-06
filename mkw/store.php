@@ -221,6 +221,7 @@ class Store {
 		$v->setVar('dologoutlink',$rut->generate('dologout'));
 		$v->setVar('kosargetlink',$rut->generate('kosarget'));
 		$v->setVar('showcheckoutlink',$rut->generate('showcheckout'));
+		$v->setVar('prevuri',self::getMainSession()->prevuri ? self::getMainSession()->prevuri : '/');
 	}
 
 	/**
