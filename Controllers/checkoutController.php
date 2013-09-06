@@ -49,4 +49,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 		echo $view->getTemplateResult();
 	}
 
+	public function save() {
+		
+	}
 }
