@@ -22,7 +22,7 @@
 			</div>
 			{else}
 				<h3>Az Ön kosara üres</h3>
-                                <a href="/" class="btn okbtn">Vásárlás folytatása</a>
+				<a href="{$prevuri}" class="btn okbtn">Vásárlás folytatása</a>
 			{/if}
 		</div>
 	</div>

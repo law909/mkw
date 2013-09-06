@@ -26,7 +26,7 @@ class mainController extends \mkwhelpers\Controller {
 		$this->view->setVar('ajanlotttermekek',$tc->getAjanlottLista());
 		$this->view->setVar('seodescription',t('Sajnos nem találjuk.'));
 		$this->view->setVar('pagetitle',t('Sajnos nem találjuk.'));
-		$this->view->printTemplateResult();
+		$this->view->printTemplateResult(false);
 	}
 
 	public function view() {
