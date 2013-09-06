@@ -21,7 +21,8 @@
 				</a>
 			</div>
 			{else}
-				Az Ön kosara üres
+				<h3>Az Ön kosara üres</h3>
+                                <a href="/" class="btn okbtn">Vásárlás folytatása</a>
 			{/if}
 		</div>
 	</div>
