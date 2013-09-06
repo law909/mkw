@@ -7,8 +7,8 @@
 			<div class="loginform chk-loginrightborder">
 				<div class="form-header">
 				<h2>Regisztráljon</h2>
-				<h3>Hozza létre saját felhasználói fiókját.</h3>
-				<h4>A Mindent Kapni fiók előnyei:</h4>
+				<h4>Hozza létre saját felhasználói fiókját.</h4>
+				<h5>A Mindent Kapni fiók előnyei:</h5>
 				<ul>
 					<li>gyorsabb rendelés, mert vásárláskor már nem kell kitöltenie adatait</li>
 					<li>nyomon követheti rendeléseit</li>
@@ -35,7 +35,7 @@
 							<div class="chk-relative pull-left">
 								<i class="span inputiconhack"></i>
 								<input id="Jelszo2Edit" name="jelszo2" type="password" class="span" required placeholder="jelszó 2 *">
-								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-tooltipbtn" title="" data-original-title="Adja meg kétszer jelszavát, így elkerülheti az elgépelést"></i>
+								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-tooltipbtn" title="" data-original-title="Azért kérjük kétszer a jelszót, hogy biztosan elkerülhessük az elgépelést."></i>
 							</div>
 						</div>
 						<div class="row chk-actionrow span">
