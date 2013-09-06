@@ -1,1 +1,1 @@
-<span>{number_format($kosar.termekdb,0,',',' ')} {t('termék')}</span>:<span>{number_format($kosar.osszeg,0,',',' ')} Ft</span>
+<span>{number_format($kosar.termekdb,0,',',' ')}&nbsp;{t('termék')}</span>:&nbsp;<span>{number_format($kosar.osszeg,0,',',' ')} Ft</span>

@@ -246,12 +246,21 @@ class kosarController extends \mkwhelpers\MattableController {
 				echo 'ok';
 			}
 			else {
-				if (store::getMainSession()->prevuri) {
-					Header('Location: '.store::getRouter()->generate('kosarget'));
+				$v=$this->getTemplateFactory()->createMainView('minikosar.tpl');
+				$v->setVar('kosar',$this->getMiniData());
+
+				$view=Store::getTemplateFactory()->createMainView('kosartetellist.tpl');
+
+				$sorok=$this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+				$s=array();
+				foreach($sorok as $sor) {
+					$s[]=$sor->toLista();
 				}
-				else {
-					Header('Location: '.store::getRouter()->generate('kosarget'));
-				}
+				$view->setVar('tetellista',$s);
+				echo json_encode(array(
+					'tetellist' => $view->getTemplateResult(),
+					'minikosar' => $v->getTemplateResult()
+				));
 			}
 		}
 	}

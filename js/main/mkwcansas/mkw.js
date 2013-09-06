@@ -197,6 +197,14 @@ var mkw=function($) {
 		}
 	}
 
+	function initTooltips() {
+		$('.js-tooltipbtn').tooltip({
+			html: false,
+			placement: 'right',
+			container: 'body'
+		});
+	}
+
 	return {
 		showMessage: showMessage,
 		closeMessage: closeMessage,
@@ -205,6 +213,7 @@ var mkw=function($) {
 		lapozas: lapozas,
 		overrideFormSubmit: overrideFormSubmit,
 		irszamTypeahead: irszamTypeahead,
-		varosTypeahead: varosTypeahead
+		varosTypeahead: varosTypeahead,
+		initTooltips: initTooltips
 	};
 }(jQuery);

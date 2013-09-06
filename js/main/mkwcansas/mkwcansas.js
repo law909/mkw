@@ -468,11 +468,7 @@ $(document).ready(function(){
 		mkw.overrideFormSubmit($fiokszallitasiadatok,'Adatait módosítjuk...');
 	}
 
-	$('.js-tooltipbtn').tooltip({
-		html: false,
-		placement: 'right',
-		container: 'body'
-	});
+	mkw.initTooltips();
 
 	cart.initUI();
 	checkout.initUI();
