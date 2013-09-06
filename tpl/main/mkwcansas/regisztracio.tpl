@@ -6,13 +6,15 @@
 		<div class="span14 offset1">
 			<div class="form-header">
 				<h2>Regisztráljon</h2>
-				<h4>Hozza létre saját felhasználói fiókját, mert:</h4>
+				<h3>Hozza létre saját felhasználói fiókját.</h3>
+				<h4>A Mindent Kapni fiók előnyei:</h4>
 				<ul>
-					<li>vásárláskor már nem kell kitöltenie adatait;</li>
-					<li>követheti rendeléseit;</li>
-					<li>hűségpontokat gyűjthet és válthat be;</li>
-					<li>megírhatja véleményét termékeinkről;</li>
-					<li>személyre szabott ajánlatokkal bombázhatjuk önt.</li>
+					<li>gyorsabb rendelés, mert vásárláskor már nem kell kitöltenie adatait</li>
+					<li>nyomon követheti rendeléseit</li>
+					<li>összeállíthatja kívánságlistáját jövőbeni vásárlásaihoz</li>
+					<li>hűségpontokat gyűjthet és válthat be</li>
+					<li>megírhatja véleményét termékeinkről</li>
+					<li>elsők között értesülhet akciós termékeinkről, legfrissebb híreinkről</li>
 				</ul>
 			</div>
 			<form id="Regform" class="form-horizontal" action="/regisztracio/ment" method="post">
