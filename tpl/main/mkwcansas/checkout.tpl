@@ -35,7 +35,7 @@
 										<input name="regkell" id="regkell" type="radio" value="1">
 										Vásárlás regisztrációval
 									</label>
-									<div class="chk-courierdesc folyoszoveg">A regisztráció olyan előnyökkel jár, Küldünk egy előlegbekérőt, arra fizetsz. Ekkor mi megcsináljuk a végszámlát, és kiküldjük nek</div>
+									<div class="chk-courierdesc folyoszoveg">Regisztrációval olyan előnyökhöz juthat, mint például a hűségpontok gyűjtése és beváltása, rendelések nyomon követése, termékértékelések írása, és sokminden más.</div>
 								</div>
 								<div class="row chk-actionrow span"><a class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallitasiadatokgh">Tovább</a></div>
 							</div>
@@ -73,7 +73,7 @@
 						<div class="controls controls-row chk-controloffset">
 							<div class="chk-relative pull-left chk-tooltippedcontainer">
 								<input name="telefon" type="text" class="span4 js-chkrefresh" placeholder="{t('telefon')} *" value="{$user.telefon|default}" required data-errormsg="Kérem adja meg a telefonszámát" data-container=".js-chkszallitasiadatok">
-								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="Azért kérjük el a telefonszámát, hogy tudjuk értesíteni a megrendelésével kapcsolatos eseményekről"></i>
+								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="A telefonszámra azért van szükségünk, mert ezen keresztül egyeztetünk Önnel a kiszállításról, illetve a futár is így fogja tudni Önnel felvenni a kapcsolatot."></i>
 							</div>
 							<i class="span inputiconhack"></i>
 							<input name="kapcsemail" type="email" class="span4 js-chkrefresh" placeholder="{t('email')} *" value="{$user.email|default}" required data-errormsg="Kérem adja meg az emailcímét" data-container=".js-chkszallitasiadatok">
@@ -105,7 +105,7 @@
 						<div class="controls chk-controloffset">
 							<div class="chk-relative pull-left chk-tooltippedcontainer">
 								<input name="szamlaadoszam" type="text" class="span3 js-chkrefresh" placeholder="{t('adószám')}" value="{$user.szamlaadoszam|default}">
-								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="Adjad meg, mert tudni akarjuk"></i>
+								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="Nem kötelező kitölteni az adószámot. Akkor adja meg, ha cég nevére vásárol, és szeretné, ha a számlán szerepelne ez az adat is."></i>
 							</div>
 						</div>
 						<h5 class="clearboth">Szállítási adatok</h5>
