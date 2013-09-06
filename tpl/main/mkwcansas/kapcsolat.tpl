@@ -6,7 +6,8 @@
 		<div class="span8 offset1">
 			<div class="form-header">
 				<h2>Küldjön nekünk üzenetet</h2>
-				<h4>Töltse ki a következő mezőket.</h4>
+				<h4>Információra lenne szüksége a megrendelésével, vagy valamely termékkel kapcsolatban? Örömmel állunk rendelkezésére!</h4>
+                                <h4>Töltse ki a következő adatokat, és munkatársunk hamarosan felveszi Önnel a kapcsolatot.</h4>
 			</div>
 			<form id="Kapcsolatform" class="form-horizontal" action="/kapcsolat/ment" method="post">
 				<fieldset>
