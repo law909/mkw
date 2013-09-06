@@ -22,5 +22,6 @@ class SmartyView extends View {
 
 	public function printTemplateResult() {
 		$this->tplengine->display($this->tplfile);
+		\mkw\Store::storePrevUri();
 	}
 }

@@ -43,7 +43,6 @@ class mainController extends \mkwhelpers\Controller {
 		$this->view->setVar('legnepszerubbtermekek',$tc->getLegnepszerubbLista());
 		$this->view->setVar('korhintalista',$khc->getLista());
 		$this->view->setVar('topkategorialista',$tfc->getformenu(store::getSetupValue('topkategoriamenunum',3),0));
-		store::storePrevUri();
 		$this->view->printTemplateResult();
 	}
 
@@ -66,7 +65,6 @@ class mainController extends \mkwhelpers\Controller {
 			store::fillTemplate($this->view);
 			$this->view->setVar('pagetitle',$ag->getShowOldalcim());
 			$this->view->setVar('seodescription',$ag->getShowSeodescription());
-			store::storePrevUri();
 			$this->view->printTemplateResult();
 		}
 		else {
@@ -82,7 +80,6 @@ class mainController extends \mkwhelpers\Controller {
 			echo json_encode($res);
 		}
 		else {
-			store::storePrevUri();
 			$keresoszo=trim($this->params->getStringRequestParam('keresett'));
 			if ($keresoszo!='') {
 				$log=new \Entities\Keresoszolog($keresoszo);
@@ -133,7 +130,6 @@ class mainController extends \mkwhelpers\Controller {
 			foreach($t as $k=>$v) {
 				$this->view->setVar($k,$v);
 			}
-			store::storePrevUri();
 			$this->view->printTemplateResult();
 		}
 		else {
@@ -219,7 +215,6 @@ class mainController extends \mkwhelpers\Controller {
 				if (!$hibas) {
 					$view=$this->getTemplateFactory()->createMainView('kapcsolatkosz.tpl');
 					store::fillTemplate($view);
-					store::storePrevUri();
 				}
 				else {
 					$kftc=new kapcsolatfelveteltemaController($this->params);
@@ -240,7 +235,6 @@ class mainController extends \mkwhelpers\Controller {
 				$this->view=$this->getTemplateFactory()->createMainView('kapcsolat.tpl');
 				store::fillTemplate($this->view);
 				$this->view->setVar('temalista',$kftc->getSelectList(0));
-				store::storePrevUri();
 				$this->view->printTemplateResult();
 				break;
 		}

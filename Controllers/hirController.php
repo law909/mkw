@@ -133,7 +133,6 @@ class hirController extends \mkwhelpers\MattableController {
 			$view->setVar('pagetitle',$hir->getShowCim());
 			$view->setVar('seodescription',$hir->getShowSeodescription());
 			$view->setVar('hir',$hir->convertToArray());
-			store::storePrevUri();
 			$view->printTemplateResult();
 		}
 		else {

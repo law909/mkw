@@ -379,7 +379,6 @@ class partnerController extends \mkwhelpers\MattableController {
 			$view->setVar('pagetitle',t('Bejelentkezés').' - '.\mkw\Store::getParameter(\mkw\consts::Oldalcim));
 			$view->setVar('sikertelen', \mkw\Store::getMainSession()->loginerror);
 			\mkw\Store::getMainSession()->loginerror = false;
-			\mkw\Store::storePrevUri();
 			$view->printTemplateResult();
 		}
 	}
@@ -434,7 +433,6 @@ class partnerController extends \mkwhelpers\MattableController {
 		if ($user) {
 			$view=$this->getFiokTpl();
 			store::fillTemplate($view);
-			store::storePrevUri();
 			$view->setVar('pagetitle',t('Fiók').' - '.\mkw\Store::getParameter(\mkw\consts::Oldalcim));
 			$view->setVar('user',$this->loadVars($user)); // fillTemplate-ben megtortenik
 			$tec=new termekertesitoController($this->params);
