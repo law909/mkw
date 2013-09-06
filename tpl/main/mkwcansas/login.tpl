@@ -28,7 +28,10 @@
 							<input id="EmailEdit" name="email" type="email" class="span" value="{$email|default}" placeholder="{t('email')} *" required data-errormsg1="{t('Adja meg az emailcímét')}" data-errormsg2="{t('Kérjük emailcímet adjon meg.')}">
 						</div>
 						<div class="controls controls-row chk-controloffset">
-							<input id="Jelszo1Edit" name="jelszo1" type="password" class="span" required placeholder="jelszó 1 *" data-errormsg1="{t('Adjon meg jelszót.')}" data-errormsg2="{t('A két jelszó nem egyezik.')}">
+							<div class="chk-relative pull-left">
+								<input id="Jelszo1Edit" name="jelszo1" type="password" class="span" required placeholder="jelszó 1 *" data-errormsg1="{t('Adjon meg jelszót.')}" data-errormsg2="{t('A két jelszó nem egyezik.')}">
+								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-tooltipbtn" title="" data-original-title="Adja meg kétszer jelszavát"></i>
+							</div>
 							<div class="chk-relative pull-left">
 								<i class="span inputiconhack"></i>
 								<input id="Jelszo2Edit" name="jelszo2" type="password" class="span" required placeholder="jelszó 2 *">
