@@ -247,7 +247,7 @@ var checkout=function($) {
 								});
 							}
 							else {
-								checkoutform.submit();
+								$('.js-checkoutsubmit').click();
 							}
 						}
 					});
