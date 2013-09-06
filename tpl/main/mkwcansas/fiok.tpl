@@ -5,8 +5,8 @@
 	<div class="row">
 		<div class="span10 offset1">
 			<div class="form-header">
-				<h2>Módosítsa az adatait</h2>
-				<h4>Vagy főleg tűnjön már inkább <a href="/" title="Vásárolok">VÁSÁROLNI</a></h4>
+				<h2>Módosítsa adatait</h2>
+				<h4>Vagy főleg tűnjön már inkább <a href="/" title="Vásárolok">vásárolni</a></h4>
 			</div>
 			<div id="adatmodositasTabbable" class="tabbable tabs-left">
 				<ul class="nav nav-tabs">
