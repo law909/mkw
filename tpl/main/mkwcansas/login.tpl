@@ -30,7 +30,7 @@
 						<div class="controls controls-row chk-controloffset">
 							<div class="chk-relative pull-left">
 								<input id="Jelszo1Edit" name="jelszo1" type="password" class="span" required placeholder="jelszó 1 *" data-errormsg1="{t('Adjon meg jelszót.')}" data-errormsg2="{t('A két jelszó nem egyezik.')}">
-								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-tooltipbtn" title="" data-original-title="Adja meg kétszer jelszavát"></i>
+								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-tooltipbtn" title="" data-original-title="Jelszó azért szükséges, hogy csak Ön férhessen hozzá személyes adataihoz. Használhat kis- és nagybetűket, valamint számokat is a jelszóban (erősen ajánlott)."></i>
 							</div>
 							<div class="chk-relative pull-left">
 								<i class="span inputiconhack"></i>
