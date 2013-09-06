@@ -5,6 +5,7 @@
 	<div class="row">
 		<div class="span10 offset1 js-cart">
 			{if (count($tetellista)>0)}
+                            <div><a href="{$prevuri}" class="btn okbtn">Vásárlás folytatása</a></div>
 			<div class="textalignright megrendelemcontainer">
 				<a href="{$showcheckoutlink}" rel="nofollow" class="btn cartbtn">
 					<i class="icon-ok icon-white"></i>
@@ -14,6 +15,7 @@
 			<table class="table table-bordered">
 				{include 'kosartetellist.tpl'}
 			</table>
+                        <div><a href="{$prevuri}" class="btn okbtn">Vásárlás folytatása</a></div>
 			<div class="textalignright megrendelemcontainer">
 				<a href="{$showcheckoutlink}" rel="nofollow" class="btn cartbtn">
 					<i class="icon-ok icon-white"></i>
