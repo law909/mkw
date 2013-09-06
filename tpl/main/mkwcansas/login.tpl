@@ -6,15 +6,17 @@
 		<div class="span6">
 			<div class="loginform chk-loginrightborder">
 				<div class="form-header">
-					<h3>Regisztráljon</h3>
-					<h5>Hozza létre saját felhasználói fiókját, mert:</h5>
-					<ul>
-						<li>vásárláskor már nem kell kitöltenie adatait;</li>
-						<li>követheti rendeléseit;</li>
-						<li>hűségpontokat gyűjthet és válthat be;</li>
-						<li>megírhatja véleményét termékeinkről;</li>
-						<li>személyre szabott ajánlatokkal bombázhatjuk önt.</li>
-					</ul>
+				<h2>Regisztráljon</h2>
+				<h3>Hozza létre saját felhasználói fiókját.</h3>
+				<h4>A Mindent Kapni fiók előnyei:</h4>
+				<ul>
+					<li>gyorsabb rendelés, mert vásárláskor már nem kell kitöltenie adatait</li>
+					<li>nyomon követheti rendeléseit</li>
+					<li>összeállíthatja kívánságlistáját jövőbeni vásárlásaihoz</li>
+					<li>hűségpontokat gyűjthet és válthat be</li>
+					<li>megírhatja véleményét termékeinkről</li>
+					<li>elsők között értesülhet akciós termékeinkről, legfrissebb híreinkről</li>
+				</ul>
 				</div>
 				<form id="Regform" action="/regisztracio/ment" method="post">
 					<fieldset>
@@ -42,8 +44,8 @@
 		</div>
 		<div class="span6">
 			<div class="form-header">
-				<h3>Üdvözöljük itthon</h3>
-				<h5>Jelentkezzen be újra, és vásároljon.</h5>
+				<h3>Jelentkezzen be</h3>
+				<h5>Üdvözöljük újra itthon! A vásárláshoz jelentkezzen be:</h5>
 			</div>
 			{if ($sikertelen)}
 			<div class="error">
