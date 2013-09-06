@@ -98,7 +98,6 @@ class statlapController extends \mkwhelpers\MattableController {
 			$view->setVar('pagetitle',$statlap->getShowOldalcim());
 			$view->setVar('seodescription',$statlap->getShowSeodescription());
 			$view->setVar('statlap',$this->getstatlap($statlap));
-			store::storePrevUri();
 			$view->printTemplateResult();
 		}
 		else {
