@@ -1,26 +1,33 @@
 var cart=function($) {
 
 	function submitMennyEdit(f) {
-		$.ajax({
-			url: f.attr('action'),
-			type: 'POST',
-			data: {
-				id: $('input[name="id"]',f).val(),
-				mennyiseg: $('input[name="mennyiseg"]',f).val()
-			},
-			beforeSend: function() {
-				mkw.showMessage('Módosítjuk a mennyiséget.');
-			},
-			success: function(data) {
-				var d=JSON.parse(data);
-				$('#minikosar').html(d.minikosar);
-				$('table').html(d.tetellist);
-				mkw.initTooltips();
-			},
-			complete: function() {
-				mkw.closeMessage();
-			}
-		});
+		var menny=Math.round($('input[name="mennyiseg"]',f).val());
+		if (menny>0) {
+			$.ajax({
+				url: f.attr('action'),
+				type: 'POST',
+				data: {
+					id: $('input[name="id"]',f).val(),
+					mennyiseg: menny
+				},
+				beforeSend: function() {
+					mkw.showMessage('Módosítjuk a mennyiséget.');
+				},
+				success: function(data) {
+					var d=JSON.parse(data);
+					$('#minikosar').html(d.minikosar);
+					$('table').html(d.tetellist);
+					mkw.initTooltips();
+				},
+				complete: function() {
+					mkw.closeMessage();
+				}
+			});
+		}
+		else {
+			$('input[name="mennyiseg"]',f).val($('input[name="mennyiseg"]',f).data('org'));
+			mkw.showDialog('Ha nem kíván vásárolni a termékből, törölje a "Töröl" gombbal.');
+		}
 	}
 
 	function initUI() {
