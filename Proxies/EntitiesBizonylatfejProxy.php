@@ -558,6 +558,12 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getPartneradoszam();
     }
 
+    public function setPartneradoszam($val)
+    {
+        $this->__load();
+        return parent::setPartneradoszam($val);
+    }
+
     public function getPartnercjszam()
     {
         $this->__load();
@@ -568,6 +574,12 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
     {
         $this->__load();
         return parent::getPartnereuadoszam();
+    }
+
+    public function setPartnereuadoszam($val)
+    {
+        $this->__load();
+        return parent::setPartnereuadoszam($val);
     }
 
     public function getPartnerfvmszam()
@@ -660,7 +672,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getBankszamlaId();
     }
 
-    public function setBankszamla(\Entities\Bankszamla $val)
+    public function setBankszamla(\Entities\Bankszamla $val = NULL)
     {
         $this->__load();
         return parent::setBankszamla($val);
@@ -774,10 +786,130 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getCreated();
     }
 
+    public function getSzamlanev()
+    {
+        $this->__load();
+        return parent::getSzamlanev();
+    }
+
+    public function setSzamlanev($adat)
+    {
+        $this->__load();
+        return parent::setSzamlanev($adat);
+    }
+
+    public function getSzamlairszam()
+    {
+        $this->__load();
+        return parent::getSzamlairszam();
+    }
+
+    public function setSzamlairszam($adat)
+    {
+        $this->__load();
+        return parent::setSzamlairszam($adat);
+    }
+
+    public function getSzamlavaros()
+    {
+        $this->__load();
+        return parent::getSzamlavaros();
+    }
+
+    public function setSzamlavaros($adat)
+    {
+        $this->__load();
+        return parent::setSzamlavaros($adat);
+    }
+
+    public function getSzamlautca()
+    {
+        $this->__load();
+        return parent::getSzamlautca();
+    }
+
+    public function setSzamlautca($adat)
+    {
+        $this->__load();
+        return parent::setSzamlautca($adat);
+    }
+
+    public function getSzallnev()
+    {
+        $this->__load();
+        return parent::getSzallnev();
+    }
+
+    public function setSzallnev($adat)
+    {
+        $this->__load();
+        return parent::setSzallnev($adat);
+    }
+
+    public function getSzallirszam()
+    {
+        $this->__load();
+        return parent::getSzallirszam();
+    }
+
+    public function setSzallirszam($adat)
+    {
+        $this->__load();
+        return parent::setSzallirszam($adat);
+    }
+
+    public function getSzallvaros()
+    {
+        $this->__load();
+        return parent::getSzallvaros();
+    }
+
+    public function setSzallvaros($adat)
+    {
+        $this->__load();
+        return parent::setSzallvaros($adat);
+    }
+
+    public function getSzallutca()
+    {
+        $this->__load();
+        return parent::getSzallutca();
+    }
+
+    public function setSzallutca($adat)
+    {
+        $this->__load();
+        return parent::setSzallutca($adat);
+    }
+
+    public function getWebshopmessage()
+    {
+        $this->__load();
+        return parent::getWebshopmessage();
+    }
+
+    public function setWebshopmessage($val)
+    {
+        $this->__load();
+        return parent::setWebshopmessage($val);
+    }
+
+    public function getCouriermessage()
+    {
+        $this->__load();
+        return parent::getCouriermessage();
+    }
+
+    public function setCouriermessage($val)
+    {
+        $this->__load();
+        return parent::setCouriermessage($val);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'bizonylattipus', 'bizonylatnev', 'irany', 'nyomtatva', 'storno', 'stornozott', 'penztmozgat', 'tulajnev', 'tulajirszam', 'tulajvaros', 'tulajutca', 'tulajadoszam', 'tulajeuadoszam', 'erbizonylatszam', 'kelt', 'teljesites', 'esedekesseg', 'fizmod', 'fizmodnev', 'szallitasimod', 'szallitasimodnev', 'netto', 'afa', 'brutto', 'fizetendo', 'valutanem', 'valutanemnev', 'nettohuf', 'afahuf', 'bruttohuf', 'arfolyam', 'partner', 'partnernev', 'partnervezeteknev', 'partnerkeresztnev', 'partneradoszam', 'partnereuadoszam', 'partnermukengszam', 'partnerjovengszam', 'partnerostermszam', 'partnervalligszam', 'partnerfvmszam', 'partnercjszam', 'partnerstatszamjel', 'partnerirszam', 'partnervaros', 'partnerutca', 'partnerlirszam', 'partnerlvaros', 'partnerlutca', 'bankszamla', 'bankszamlanev', 'swift', 'uzletkoto', 'uzletkotonev', 'raktar', 'raktarnev', 'bizonylattetelek', 'megjegyzes', 'hatarido');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'bizonylattipus', 'bizonylatnev', 'irany', 'nyomtatva', 'storno', 'stornozott', 'penztmozgat', 'tulajnev', 'tulajirszam', 'tulajvaros', 'tulajutca', 'tulajadoszam', 'tulajeuadoszam', 'erbizonylatszam', 'kelt', 'teljesites', 'esedekesseg', 'fizmod', 'fizmodnev', 'szallitasimod', 'szallitasimodnev', 'netto', 'afa', 'brutto', 'fizetendo', 'valutanem', 'valutanemnev', 'nettohuf', 'afahuf', 'bruttohuf', 'arfolyam', 'partner', 'partnernev', 'partnervezeteknev', 'partnerkeresztnev', 'partneradoszam', 'partnereuadoszam', 'partnermukengszam', 'partnerjovengszam', 'partnerostermszam', 'partnervalligszam', 'partnerfvmszam', 'partnercjszam', 'partnerstatszamjel', 'partnerirszam', 'partnervaros', 'partnerutca', 'partnerlirszam', 'partnerlvaros', 'partnerlutca', 'bankszamla', 'bankszamlanev', 'swift', 'uzletkoto', 'uzletkotonev', 'raktar', 'raktarnev', 'bizonylattetelek', 'megjegyzes', 'webshopmessage', 'couriermessage', 'hatarido', 'szamlanev', 'szamlairszam', 'szamlavaros', 'szamlautca', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca');
     }
 
     public function __clone()

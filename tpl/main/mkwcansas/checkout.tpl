@@ -28,11 +28,11 @@
 								<h5>Új vásárló</h5>
 								<div class="span">
 									<label class="radio">
-										<input name="regkell" id="regkell" type="radio" value="0">
+										<input name="regkell" id="regkell" type="radio" value="1">
 										Vásárlás vendégként (regisztráció nélkül)
 									</label>
 									<label class="radio">
-										<input name="regkell" id="regkell" type="radio" value="1">
+										<input name="regkell" id="regkell" type="radio" value="2">
 										Vásárlás regisztrációval
 									</label>
 									<div class="chk-courierdesc folyoszoveg">Regisztrációval olyan előnyökhöz juthat, mint például a hűségpontok gyűjtése és beváltása, rendelések nyomon követése, termékértékelések írása, és sokminden más.</div>
@@ -92,6 +92,12 @@
 						{/if}
 						<h5>Számlázási adatok</h5>
 						<div class="controls chk-controloffset">
+							<label class="checkbox">
+								<input name="szamlasave" type="checkbox">
+								Ezután mindig ezt fogom használni
+							</label>
+						</div>
+						<div class="controls chk-controloffset">
 							<input name="szamlanev" type="text" class="span8 js-chkrefresh" placeholder="{t('számlázási név')}" value="{$user.szamlanev|default}" data-container=".js-chkszallitasiadatok">
 						</div>
 						<div class="controls controls-row chk-controloffset">
@@ -104,7 +110,7 @@
 						</div>
 						<div class="controls chk-controloffset">
 							<div class="chk-relative pull-left chk-tooltippedcontainer">
-								<input name="szamlaadoszam" type="text" class="span3 js-chkrefresh" placeholder="{t('adószám')}" value="{$user.szamlaadoszam|default}">
+								<input name="adoszam" type="text" class="span3 js-chkrefresh" placeholder="{t('adószám')}" value="{$user.adoszam|default}">
 								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="Nem kötelező kitölteni az adószámot. Akkor adja meg, ha cég nevére vásárol, és szeretné, ha a számlán szerepelne ez az adat is."></i>
 							</div>
 						</div>
@@ -116,6 +122,12 @@
 							</label>
 						</div>
 						<div class="js-chkszamlaadatok{if ($user.szalladategyezik|default)} notvisible{/if}">
+							<div class="controls chk-controloffset">
+								<label class="checkbox">
+									<input name="szallsave" type="checkbox">
+									Ezután mindig ezt fogom használni
+								</label>
+							</div>
 							<div class="controls chk-controloffset">
 								<input name="szallnev" type="text" class="span8 js-chkrefresh" placeholder="{t('szállítási név')}" value="{$user.szallnev|default}" data-orgdata="{$user.szallnev|default}" data-container=".js-chkszallitasiadatok">
 							</div>
@@ -173,7 +185,7 @@
 							<div class="col30percent">
 								<div class="chk-colheader">Számlázási adatok</div>
 								<div class="js-chkszamlanev">{$user.szamlanev|default}</div>
-								<div class="chk-coldatabottom js-chkszamlaadoszam">{$user.szamlaadoszam|default}</div>
+								<div class="chk-coldatabottom js-chkadoszam">{$user.adoszam|default}</div>
 								<div><span class="js-chkszamlairszam">{$user.szamlairszam|default}</span>&nbsp;<span class="js-chkszamlavaros">{$user.szamlavaros|default}</span></div>
 								<div class="js-chkszamlautca">{$user.szamlautca|default}</div>
 								<div class="chk-colheader">Kapcsolati adatok</div>
@@ -199,7 +211,7 @@
 							{include 'checkouttetellist.tpl'}
 						</table>
 
-						<div class="">
+						<div>
 							<label class="checkbox">
 								<input name="akciohirlevel" type="checkbox">
 								{t('Igen, értesítsenek az akciókról')}

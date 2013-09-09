@@ -54,7 +54,7 @@ class partnerController extends \mkwhelpers\MattableController {
 		$x['uzletkotonev']=$t->getUzletkotoNev();
 		$x['fizhatido']=$t->getFizhatido();
 		$x['szamlanev']=$t->getSzamlanev();
-		$x['szamlaadoszam']=$t->getSzamlaadoszam();
+//		$x['szamlaadoszam']=$t->getSzamlaadoszam();
 		$x['szamlairszam']=$t->getSzamlairszam();
 		$x['szamlavaros']=$t->getSzamlavaros();
 		$x['szamlautca']=$t->getSzamlautca();
@@ -103,7 +103,7 @@ class partnerController extends \mkwhelpers\MattableController {
 		$obj->setSzamlairszam($this->params->getStringRequestParam('szamlairszam'));
 		$obj->setSzamlavaros($this->params->getStringRequestParam('szamlavaros'));
 		$obj->setSzamlautca($this->params->getStringRequestParam('szamlautca'));
-		$obj->setSzamlaadoszam($this->params->getStringRequestParam('szamlaadoszam'));
+//		$obj->setSzamlaadoszam($this->params->getStringRequestParam('szamlaadoszam'));
 		$obj->setSzallnev($this->params->getStringRequestParam('szallnev'));
 		$obj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
 		$obj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
@@ -318,6 +318,19 @@ class partnerController extends \mkwhelpers\MattableController {
 		return null;
 	}
 
+	public function saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo) {
+		$t=new \Entities\Partner();
+		$t->setVezeteknev($vezeteknev);
+		$t->setKeresztnev($keresztnev);
+		$t->setNev($vezeteknev.' '.$keresztnev);
+		$t->setEmail($email);
+		$t->setJelszo($jelszo);
+		$t->setSessionid(\Zend_Session::getId());
+		$this->getEm()->persist($t);
+		$this->getEm()->flush();
+		return $t;
+	}
+
 	public function saveRegistration() {
 		$hibas=false;
 		$hibak=array();
@@ -339,15 +352,7 @@ class partnerController extends \mkwhelpers\MattableController {
 			$hibak['nev']=t('Üres a név');
 		}
 		if (!$hibas) {
-			$t=new \Entities\Partner();
-			$t->setVezeteknev($vezeteknev);
-			$t->setKeresztnev($keresztnev);
-			$t->setNev($vezeteknev.' '.$keresztnev);
-			$t->setEmail($email);
-			$t->setJelszo($jelszo1);
-			$t->setSessionid(\Zend_Session::getId());
-			$this->getEm()->persist($t);
-			$this->getEm()->flush();
+			$this->saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo1);
 			$this->login($email,$jelszo1);
 			\Zend_Session::writeClose();
 			Header('Location: '.store::getRouter()->generate('showaccount'));
@@ -486,7 +491,7 @@ class partnerController extends \mkwhelpers\MattableController {
 					break;
 				case 'szamlaadatok':
 					$user->setSzamlanev($this->params->getStringRequestParam('szamlanev'));
-					$user->setSzamlaadoszam($this->params->getStringRequestParam('szamlaadoszam'));
+					$user->setAdoszam($this->params->getStringRequestParam('adoszam'));
 					$user->setSzamlairszam($this->params->getStringRequestParam('szamlairszam'));
 					$user->setSzamlavaros($this->params->getStringRequestParam('szamlavaros'));
 					$user->setSzamlautca($this->params->getStringRequestParam('szamlautca'));

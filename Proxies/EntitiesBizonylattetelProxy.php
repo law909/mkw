@@ -42,6 +42,12 @@ class EntitiesBizonylattetelProxy extends \Entities\Bizonylattetel implements \D
         return parent::setPersistentData();
     }
 
+    public function calc()
+    {
+        $this->__load();
+        return parent::calc();
+    }
+
     public function getId()
     {
         $this->__load();

@@ -1,95 +1,132 @@
 <?php
+
 namespace Entities;
 
 use mkw\store;
 
 /** @Entity(repositoryClass="Entities\PartnerRepository")
  *  @Table(name="partner")
- **/
+ * */
 class Partner {
+
 	/**
 	 * @Id @Column(type="integer")
 	 * @GeneratedValue(strategy="AUTO")
 	 */
-	private $id=0;
+	private $id = 0;
+
 	/**
 	 * @gedmo:Timestampable(on="create")
 	 * @Column(type="datetime",nullable=true)
 	 */
 	private $created;
+
 	/**
 	 * @gedmo:Timestampable(on="create")
 	 * @gedmo:Timestampable(on="update")
 	 * @Column(type="datetime",nullable=true)
 	 */
 	private $lastmod;
+
 	/** @Column(type="string",length=255,nullable=true) */
-	private $idegenkod='';
+	private $idegenkod = '';
+
 	/** @Column(type="string",length=255,nullable=true) */
-	private $sessionid='';
+	private $sessionid = '';
+
 	/** @Column(type="string",length=255,nullable=true) */
 	private $jelszo;
+
 	/** @Column(type="smallint",nullable=true) */
-	private $inaktiv=0;
+	private $inaktiv = 0;
+
 	/** @Column(type="string",length=255,nullable=true) */
-	private $nev='';
+	private $nev = '';
+
 	/** @Column(type="string",length=255,nullable=true) */
-	private $vezeteknev='';
+	private $vezeteknev = '';
+
 	/** @Column(type="string",length=255,nullable=true) */
-	private $keresztnev='';
+	private $keresztnev = '';
+
 	/** @Column(type="string",length=13,nullable=true) */
-	private $adoszam='';
+	private $adoszam = '';
+
 	/** @Column(type="string",length=30,nullable=true) */
-	private $euadoszam='';
+	private $euadoszam = '';
+
 	/** @Column(type="string",length=20,nullable=true) */
-	private $mukengszam='';
+	private $mukengszam = '';
+
 	/** @Column(type="string",length=20,nullable=true) */
-	private $jovengszam='';
+	private $jovengszam = '';
+
 	/** @Column(type="string",length=20,nullable=true) */
-	private $ostermszam='';
+	private $ostermszam = '';
+
 	/** @Column(type="string",length=20,nullable=true) */
-	private $valligszam='';
+	private $valligszam = '';
+
 	/** @Column(type="string",length=20,nullable=true) */
-	private $fvmszam='';
+	private $fvmszam = '';
+
 	/** @Column(type="string",length=20,nullable=true) */
-	private $cjszam='';
+	private $cjszam = '';
+
 	/** @Column(type="string",length=20,nullable=true) */
-	private $statszamjel='';
+	private $statszamjel = '';
+
 	/** @Column(type="string",length=10,nullable=true) */
-	private $irszam='';
+	private $irszam = '';
+
 	/** @Column(type="string",length=40,nullable=true) */
-	private $varos='';
+	private $varos = '';
+
 	/** @Column(type="string",length=60,nullable=true) */
-	private $utca='';
+	private $utca = '';
+
 	/** @Column(type="string",length=10,nullable=true) */
-	private $lirszam='';
+	private $lirszam = '';
+
 	/** @Column(type="string",length=40,nullable=true) */
-	private $lvaros='';
+	private $lvaros = '';
+
 	/** @Column(type="string",length=60,nullable=true) */
-	private $lutca='';
+	private $lutca = '';
+
 	/** @Column(type="string",length=40,nullable=true) */
-	private $telefon='';
+	private $telefon = '';
+
 	/** @Column(type="string",length=40,nullable=true) */
-	private $mobil='';
+	private $mobil = '';
+
 	/** @Column(type="string",length=40,nullable=true) */
-	private $fax='';
+	private $fax = '';
+
 	/** @Column(type="string",length=100,nullable=true) */
-	private $email='';
+	private $email = '';
+
 	/** @Column(type="string",length=200,nullable=true) */
-	private $honlap='';
+	private $honlap = '';
+
 	/** @Column(type="text",nullable=true) */
-	private $megjegyzes='';
+	private $megjegyzes = '';
+
 	/** @Column(type="string",length=36,nullable=true) */
-	private $syncid='';
+	private $syncid = '';
+
 	/**
 	 * @ManyToOne(targetEntity="Uzletkoto",inversedBy="partnerek")
 	 * @JoinColumn(name="uzletkoto_id", referencedColumnName="id",nullable=true,onDelete="no action")
 	 */
 	private $uzletkoto;
+
 	/** @OneToMany(targetEntity="Teendo", mappedBy="partner", cascade={"persist","remove"}) */
 	private $teendok;
+
 	/** @OneToMany(targetEntity="Esemeny", mappedBy="partner", cascade={"persist","remove"}) */
 	private $esemenyek;
+
 	/**
 	 * @ManyToMany(targetEntity="Partnercimketorzs",inversedBy="partnerek")
 	 * @JoinTable(name="partner_cimkek",
@@ -98,63 +135,78 @@ class Partner {
 	 *  )
 	 */
 	private $cimkek;
+
 	/**
 	 * @ManyToOne(targetEntity="Fizmod")
 	 * @JoinColumn(name="fizmod_id",referencedColumnName="id",nullable=true,onDelete="no action")
 	 */
 	private $fizmod;
+
 	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="partner",cascade={"persist","remove"}) */
 	private $bizonylatfejek;
+
 	/** @OneToMany(targetEntity="Kosar", mappedBy="partner",cascade={"persist","remove"}) */
 	private $kosarak;
+
 	/** @Column(type="integer",nullable=true) */
-	private $fizhatido=0;
+	private $fizhatido = 0;
+
 	/** @Column(type="string",length=255,nullable=true) */
-	private $szamlanev='';
+	private $szamlanev = '';
+
 	/** @Column(type="string",length=10,nullable=true) */
-	private $szamlairszam='';
+	private $szamlairszam = '';
+
 	/** @Column(type="string",length=40,nullable=true) */
-	private $szamlavaros='';
+	private $szamlavaros = '';
+
 	/** @Column(type="string",length=60,nullable=true) */
-	private $szamlautca='';
-	/** @Column(type="string",length=13,nullable=true) */
-	private $szamlaadoszam='';
+	private $szamlautca = '';
+
 	/** @Column(type="string",length=255,nullable=true) */
-	private $szallnev='';
+	private $szallnev = '';
+
 	/** @Column(type="string",length=10,nullable=true) */
-	private $szallirszam='';
+	private $szallirszam = '';
+
 	/** @Column(type="string",length=40,nullable=true) */
-	private $szallvaros='';
+	private $szallvaros = '';
+
 	/** @Column(type="string",length=60,nullable=true) */
-	private $szallutca='';
+	private $szallutca = '';
+
 	/** @Column(type="integer",nullable=true) */
 	private $nem;
+
 	/** @Column(type="date",nullable=true) */
 	private $szuletesiido;
+
 	/** @Column(type="boolean") */
-	private $akcioshirlevelkell=false;
+	private $akcioshirlevelkell = false;
+
 	/** @Column(type="boolean") */
-	private $ujdonsaghirlevelkell=false;
+	private $ujdonsaghirlevelkell = false;
+
 	/** @Column(type="datetime",nullable=true) */
 	private $utolsoklikk;
+
 	/** @OneToMany(targetEntity="TermekErtesito", mappedBy="partner",cascade={"persist","remove"}) */
 	private $termekertesitok;
 
-
 	public function __construct() {
-		$this->cimkek=new \Doctrine\Common\Collections\ArrayCollection();
-		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
-		$this->kosarak=new \Doctrine\Common\Collections\ArrayCollection();
-		$this->termekertesitok=new \Doctrine\Common\Collections\ArrayCollection();
+		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->termekertesitok = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function getCim() {
-		$cim=$this->irszam;
-		if (($cim!=='')&&($this->varos!=='')) {
+		$cim = $this->irszam;
+		if (($cim !== '') && ($this->varos !== '')) {
 			$cim.=' ';
 		}
 		$cim.=$this->varos;
-		if (($cim!=='')&&($this->utca!=='')) {
+		if (($cim !== '') && ($this->utca !== '')) {
 			$cim.=', ';
 		}
 		$cim.=$this->utca;
@@ -162,12 +214,12 @@ class Partner {
 	}
 
 	public function getLCim() {
-		$cim=$this->lirszam;
-		if (($cim!=='')&&($this->lvaros!=='')) {
+		$cim = $this->lirszam;
+		if (($cim !== '') && ($this->lvaros !== '')) {
 			$cim.=' ';
 		}
 		$cim.=$this->lvaros;
-		if (($cim!=='')&&($this->lutca!=='')) {
+		if (($cim !== '') && ($this->lutca !== '')) {
 			$cim.=', ';
 		}
 		$cim.=$this->lutca;
@@ -178,23 +230,19 @@ class Partner {
 		return $this->id;
 	}
 
-	public function getInaktiv()
-	{
+	public function getInaktiv() {
 		return $this->inaktiv;
 	}
 
-	public function setInaktiv($inaktiv)
-	{
+	public function setInaktiv($inaktiv) {
 		$this->inaktiv = $inaktiv;
 	}
 
-	public function getNev()
-	{
+	public function getNev() {
 		return $this->nev;
 	}
 
-	public function setNev($nev)
-	{
+	public function setNev($nev) {
 		$this->nev = $nev;
 	}
 
@@ -211,86 +259,70 @@ class Partner {
 	}
 
 	public function setKeresztnev($adat) {
-		$this->keresztnev=$adat;
+		$this->keresztnev = $adat;
 	}
 
-	public function getAdoszam()
-	{
+	public function getAdoszam() {
 		return $this->adoszam;
 	}
 
-	public function setAdoszam($adoszam)
-	{
+	public function setAdoszam($adoszam) {
 		$this->adoszam = $adoszam;
 	}
 
-	public function getEuadoszam()
-	{
+	public function getEuadoszam() {
 		return $this->euadoszam;
 	}
 
-	public function setEuadoszam($euadoszam)
-	{
+	public function setEuadoszam($euadoszam) {
 		$this->euadoszam = $euadoszam;
 	}
 
-	public function getMukengszam()
-	{
+	public function getMukengszam() {
 		return $this->mukengszam;
 	}
 
-	public function setMukengszam($mukengszam)
-	{
+	public function setMukengszam($mukengszam) {
 		$this->mukengszam = $mukengszam;
 	}
 
-	public function getJovengszam()
-	{
+	public function getJovengszam() {
 		return $this->jovengszam;
 	}
 
-	public function setJovengszam($jovengszam)
-	{
+	public function setJovengszam($jovengszam) {
 		$this->jovengszam = $jovengszam;
 	}
 
-	public function getOstermszam()
-	{
+	public function getOstermszam() {
 		return $this->ostermszam;
 	}
 
-	public function setOstermszam($ostermszam)
-	{
+	public function setOstermszam($ostermszam) {
 		$this->ostermszam = $ostermszam;
 	}
 
-	public function getValligszam()
-	{
+	public function getValligszam() {
 		return $this->valligszam;
 	}
 
-	public function setValligszam($valligszam)
-	{
+	public function setValligszam($valligszam) {
 		$this->valligszam = $valligszam;
 	}
 
-	public function getFvmszam()
-	{
+	public function getFvmszam() {
 		return $this->fvmszam;
 	}
 
-	public function setFvmszam($fvmszam)
-	{
+	public function setFvmszam($fvmszam) {
 		$this->fvmszam = $fvmszam;
 	}
 
-	public function getCjszam()
-	{
+	public function getCjszam() {
 		return $this->cjszam;
 	}
 
-	public function setCjszam($cjszam)
-	{
+	public function setCjszam($cjszam) {
 		$this->cjszam = $cjszam;
 	}
 
@@ -318,33 +350,27 @@ class Partner {
 		$this->utca = $utca;
 	}
 
-	public function getLirszam()
-	{
+	public function getLirszam() {
 		return $this->lirszam;
 	}
 
-	public function setLirszam($lirszam)
-	{
+	public function setLirszam($lirszam) {
 		$this->lirszam = $lirszam;
 	}
 
-	public function getLvaros()
-	{
+	public function getLvaros() {
 		return $this->lvaros;
 	}
 
-	public function setLvaros($lvaros)
-	{
+	public function setLvaros($lvaros) {
 		$this->lvaros = $lvaros;
 	}
 
-	public function getLutca()
-	{
+	public function getLutca() {
 		return $this->lutca;
 	}
 
-	public function setLutca($lutca)
-	{
+	public function setLutca($lutca) {
 		$this->lutca = $lutca;
 	}
 
@@ -380,33 +406,27 @@ class Partner {
 		$this->email = $email;
 	}
 
-	public function getHonlap()
-	{
+	public function getHonlap() {
 		return $this->honlap;
 	}
 
-	public function setHonlap($honlap)
-	{
+	public function setHonlap($honlap) {
 		$this->honlap = $honlap;
 	}
 
-	public function getMegjegyzes()
-	{
+	public function getMegjegyzes() {
 		return $this->megjegyzes;
 	}
 
-	public function setMegjegyzes($megjegyzes)
-	{
+	public function setMegjegyzes($megjegyzes) {
 		$this->megjegyzes = $megjegyzes;
 	}
 
-	public function getSyncid()
-	{
+	public function getSyncid() {
 		return $this->syncid;
 	}
 
-	public function setSyncid($syncid)
-	{
+	public function setSyncid($syncid) {
 		$this->syncid = $syncid;
 	}
 
@@ -414,8 +434,7 @@ class Partner {
 	 *
 	 * @return Uzletkoto
 	 */
-	public function getUzletkoto()
-	{
+	public function getUzletkoto() {
 		return $this->uzletkoto;
 	}
 
@@ -434,8 +453,8 @@ class Partner {
 	}
 
 	public function setUzletkoto(Uzletkoto $uzletkoto) {
-		if ($this->uzletkoto!==$uzletkoto) {
-			$this->uzletkoto=$uzletkoto;
+		if ($this->uzletkoto !== $uzletkoto) {
+			$this->uzletkoto = $uzletkoto;
 			$uzletkoto->addPartner($this);
 		}
 	}
@@ -493,9 +512,9 @@ class Partner {
 	}
 
 	public function getCimkeNevek() {
-		$res=array();
-		foreach($this->cimkek as $cimke) {
-			$res[]=array('nev'=>$cimke->getNev());
+		$res = array();
+		foreach ($this->cimkek as $cimke) {
+			$res[] = array('nev' => $cimke->getNev());
 		}
 		return $res;
 	}
@@ -516,16 +535,16 @@ class Partner {
 	}
 
 	public function removeAllCimke() {
-		foreach($this->cimkek as $cimke) {
+		foreach ($this->cimkek as $cimke) {
 			$this->removeCimke($cimke);
 		}
 	}
+
 	/**
 	 *
 	 * @return Fizmod
 	 */
-	public function getFizmod()
-	{
+	public function getFizmod() {
 		return $this->fizmod;
 	}
 
@@ -544,27 +563,23 @@ class Partner {
 	}
 
 	public function setFizmod(Fizmod $fizmod) {
-		$this->fizmod=$fizmod;
+		$this->fizmod = $fizmod;
 	}
 
-	public function getIdegenkod()
-	{
-	    return $this->idegenkod;
+	public function getIdegenkod() {
+		return $this->idegenkod;
 	}
 
-	public function setIdegenkod($idegenkod)
-	{
-	    $this->idegenkod = $idegenkod;
+	public function setIdegenkod($idegenkod) {
+		$this->idegenkod = $idegenkod;
 	}
 
-	public function getStatszamjel()
-	{
-	    return $this->statszamjel;
+	public function getStatszamjel() {
+		return $this->statszamjel;
 	}
 
-	public function setStatszamjel($statszamjel)
-	{
-	    $this->statszamjel = $statszamjel;
+	public function setStatszamjel($statszamjel) {
+		$this->statszamjel = $statszamjel;
 	}
 
 	public function getFizhatido() {
@@ -572,7 +587,7 @@ class Partner {
 	}
 
 	public function setFizhatido($val) {
-		$this->fizhatido=$val;
+		$this->fizhatido = $val;
 	}
 
 	public function getLastmod() {
@@ -588,7 +603,7 @@ class Partner {
 	}
 
 	public function setSzamlanev($adat) {
-		$this->szamlanev=$adat;
+		$this->szamlanev = $adat;
 	}
 
 	public function getSzamlairszam() {
@@ -596,7 +611,7 @@ class Partner {
 	}
 
 	public function setSzamlairszam($adat) {
-		$this->szamlairszam=$adat;
+		$this->szamlairszam = $adat;
 	}
 
 	public function getSzamlavaros() {
@@ -604,7 +619,7 @@ class Partner {
 	}
 
 	public function setSzamlavaros($adat) {
-		$this->szamlavaros=$adat;
+		$this->szamlavaros = $adat;
 	}
 
 	public function getSzamlautca() {
@@ -612,17 +627,7 @@ class Partner {
 	}
 
 	public function setSzamlautca($adat) {
-		$this->szamlautca=$adat;
-	}
-
-	public function getSzamlaadoszam()
-	{
-		return $this->szamlaadoszam;
-	}
-
-	public function setSzamlaadoszam($adoszam)
-	{
-		$this->szamlaadoszam = $adoszam;
+		$this->szamlautca = $adat;
 	}
 
 	public function getSzallnev() {
@@ -630,7 +635,7 @@ class Partner {
 	}
 
 	public function setSzallnev($adat) {
-		$this->szallnev=$adat;
+		$this->szallnev = $adat;
 	}
 
 	public function getSzallirszam() {
@@ -638,7 +643,7 @@ class Partner {
 	}
 
 	public function setSzallirszam($adat) {
-		$this->szallirszam=$adat;
+		$this->szallirszam = $adat;
 	}
 
 	public function getSzallvaros() {
@@ -646,7 +651,7 @@ class Partner {
 	}
 
 	public function setSzallvaros($adat) {
-		$this->szallvaros=$adat;
+		$this->szallvaros = $adat;
 	}
 
 	public function getSzallutca() {
@@ -654,7 +659,7 @@ class Partner {
 	}
 
 	public function setSzallutca($adat) {
-		$this->szallutca=$adat;
+		$this->szallutca = $adat;
 	}
 
 	public function getNem() {
@@ -662,7 +667,7 @@ class Partner {
 	}
 
 	public function setNem($adat) {
-		$this->nem=$adat;
+		$this->nem = $adat;
 	}
 
 	public function getSzuletesiido() {
@@ -676,8 +681,8 @@ class Partner {
 		return '';
 	}
 
-	public function setSzuletesiido($adat='') {
-		if ($adat!='') {
+	public function setSzuletesiido($adat = '') {
+		if ($adat != '') {
 			$this->szuletesiido = new \DateTime(store::convDate($adat));
 		}
 	}
@@ -687,7 +692,7 @@ class Partner {
 	}
 
 	public function setAkcioshirlevelkell($adat) {
-		$this->akcioshirlevelkell=$adat;
+		$this->akcioshirlevelkell = $adat;
 	}
 
 	public function getUjdonsaghirlevelkell() {
@@ -695,7 +700,7 @@ class Partner {
 	}
 
 	public function setUjdonsaghirlevelkell($adat) {
-		$this->ujdonsaghirlevelkell=$adat;
+		$this->ujdonsaghirlevelkell = $adat;
 	}
 
 	public function getSessionid() {
@@ -703,7 +708,7 @@ class Partner {
 	}
 
 	public function setSessionid($adat) {
-		$this->sessionid=$adat;
+		$this->sessionid = $adat;
 	}
 
 	public function getJelszo() {
@@ -711,11 +716,11 @@ class Partner {
 	}
 
 	public function setJelszo($adat) {
-		$this->jelszo=sha1(md5($adat.store::getSalt()).store::getSalt());
+		$this->jelszo = sha1(md5($adat . store::getSalt()) . store::getSalt());
 	}
 
 	public function checkJelszo($adat) {
-		return $this->jelszo===sha1(md5($adat.store::getSalt()).store::getSalt());
+		return $this->jelszo === sha1(md5($adat . store::getSalt()) . store::getSalt());
 	}
 
 	public function getUtolsoklikk() {
@@ -725,4 +730,5 @@ class Partner {
 	public function setUtolsoklikk() {
 		$this->utolsoklikk = new \DateTime();
 	}
+
 }

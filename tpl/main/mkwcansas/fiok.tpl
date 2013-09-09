@@ -72,7 +72,7 @@
 								<div class="control-group">
 									<label class="control-label" for="SzamlazasiAdoszamEdit">{t('Adószám')}:</label>
 									<div class="controls">
-										<input id="SzamlazasiAdoszamEdit" name="szamlaadoszam" type="text" class="input-medium" placeholder="{t('adószám')}" value="{$user.szamlaadoszam}">
+										<input id="SzamlazasiAdoszamEdit" name="adoszam" type="text" class="input-medium" placeholder="{t('adószám')}" value="{$user.adoszam}">
 									</div>
 								</div>
 								<div class="control-group">
