@@ -96,6 +96,9 @@ class checkoutController extends \mkwhelpers\MattableController {
 				break;
 		}
 
+		$kosartetelek = $this->getEm()->getRepository('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
+		$ok = $ok && count($kosartetelek)>0;
+
 		if ($ok) {
 			$pc = new \Controllers\partnerController($this->params);
 			switch ($regkell) {

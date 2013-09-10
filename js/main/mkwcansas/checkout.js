@@ -251,8 +251,9 @@ var checkout = function($) {
 					$.ajax({
 						url: '/kosar/gethash',
 						success: function(data) {
-							if (kosarhash && kosarhash != data) {
-								var newhash = data;
+							var d = JSON.parse(data);
+							if (kosarhash && kosarhash != d.hash) {
+								var newhash = d.hash;
 								mkw.showDialog('A kosár tartalma megrendelés közben megváltozott, kérem ellenőrizze.');
 								$.ajax({
 									url: '/checkout/gettetellist',
@@ -263,7 +264,12 @@ var checkout = function($) {
 								});
 							}
 							else {
-								$('.js-checkoutsubmit').click();
+								if (d.cnt <= 0) {
+									mkw.showDialog('Az Ön kosara üres.');
+								}
+								else {
+									$('.js-checkoutsubmit').click();
+								}
 							}
 						}
 					});
