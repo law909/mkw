@@ -66,7 +66,7 @@
 								<div class="control-group">
 									<label class="control-label" for="SzamlazasiNevEdit">{t('Név')}:</label>
 									<div class="controls">
-										<input id="SzamlazasiNevEdit" name="szamlanev" type="text" class="input-xlarge" placeholder="{t('számlázási név')}" value="{$user.szamlanev}">
+										<input id="SzamlazasiNevEdit" name="nev" type="text" class="input-xlarge" placeholder="{t('számlázási név')}" value="{$user.nev}">
 									</div>
 								</div>
 								<div class="control-group">
@@ -78,9 +78,9 @@
 								<div class="control-group">
 									<label class="control-label" for="SzamlazasiCimEdit">{t('Számlázási cím')}:</label>
 									<div class="controls">
-										<input id="SzamlazasiCimEdit" name="szamlairszam" type="text" class="input-mini" placeholder="{t('ir.szám')}" value="{$user.szamlairszam}">
-										<input name="szamlavaros" type="text" class="input-medium" placeholder="{t('város')}" value="{$user.szamlavaros}">
-										<input name="szamlautca" type="text" class="input-large" placeholder="{t('utca')}" value="{$user.szamlautca}">
+										<input id="SzamlazasiCimEdit" name="irszam" type="text" class="input-mini" placeholder="{t('ir.szám')}" value="{$user.irszam}">
+										<input name="varos" type="text" class="input-medium" placeholder="{t('város')}" value="{$user.varos}">
+										<input name="utca" type="text" class="input-large" placeholder="{t('utca')}" value="{$user.utca}">
 									</div>
 								</div>
 								<div class="form-actions">

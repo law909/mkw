@@ -486,11 +486,11 @@ class partnerController extends \mkwhelpers\MattableController {
 					}
 					break;
 				case 'szamlaadatok':
-					$user->setNev($this->params->getStringRequestParam('szamlanev'));
+					$user->setNev($this->params->getStringRequestParam('nev'));
 					$user->setAdoszam($this->params->getStringRequestParam('adoszam'));
-					$user->setIrszam($this->params->getStringRequestParam('szamlairszam'));
-					$user->setVaros($this->params->getStringRequestParam('szamlavaros'));
-					$user->setUtca($this->params->getStringRequestParam('szamlautca'));
+					$user->setIrszam($this->params->getStringRequestParam('irszam'));
+					$user->setVaros($this->params->getStringRequestParam('varos'));
+					$user->setUtca($this->params->getStringRequestParam('utca'));
 					$this->getEm()->persist($user);
 					$this->getEm()->flush();
 					if (!$jax) {
