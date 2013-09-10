@@ -17,7 +17,7 @@
 {$_egyed.partnerirszam} {$_egyed.partnervaros}, {$_egyed.partnerutca}
 </td></tr>
 <tr><td>
-{$_egyed.partneremail}
+<a href="mailto:{$_egyed.partneremail}">{$_egyed.partneremail}</a>
 </td></tr>
 <tr><td>
 {$_egyed.partnertelefon}
