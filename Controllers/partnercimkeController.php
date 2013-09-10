@@ -108,6 +108,16 @@ class partnercimkeController extends \mkwhelpers\MattableController {
 		return $view->getTemplateResult();
 	}
 
+	protected function beforeRemove($o) {
+		$r=$o->getPartnerek();
+		echo count($r);
+		$o->getPartnerek()->clear();
+		$r=$o->getPartnerek();
+		echo count($r);
+		$this->getEm()->persist($o);
+		$this->getEm()->flush();
+	}
+
 	public function setmenulathato() {
 		$id=$this->params->getIntRequestParam('id');
 		$kibe=$this->params->getBoolRequestParam('kibe');

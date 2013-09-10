@@ -87,6 +87,10 @@ class MattableController extends Controller {
 
 	}
 
+	protected function beforeRemove($o) {
+
+	}
+
 	protected function saveData() {
 		$parancs=$this->params->getRequestParam($this->operationName,'');
 		$id=$this->params->getRequestParam($this->idName,0);
@@ -104,6 +108,7 @@ class MattableController extends Controller {
 				break;
 			case $this->delOperation:
 				$obj=$this->repo->find($id);
+				$this->beforeRemove($obj);
 				$this->em->remove($obj);
 				$this->em->flush();
 				break;

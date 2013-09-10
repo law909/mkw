@@ -15,7 +15,7 @@ class Partnercimketorzs extends Cimketorzs {
 	 * @Column(type="string",length=255,nullable=true)
 	 */
 	private $slug;
-	/** @ManyToMany(targetEntity="Partner", mappedBy="cimkek", cascade={"persist","remove"}) */
+	/** @ManyToMany(targetEntity="Partner", mappedBy="cimkek", cascade={"persist"}) */
 	private $partnerek;
 	/**
 	 * @ManyToOne(targetEntity="Partnercimkekat",inversedBy="cimkek")
@@ -27,7 +27,7 @@ class Partnercimketorzs extends Cimketorzs {
 		$this->partnerek=new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
-		public function getKategoria() {
+	public function getKategoria() {
 	    return $this->kategoria;
 	}
 

@@ -15,7 +15,7 @@ class Termekcimketorzs extends Cimketorzs {
 	 * @Column(type="string",length=255,nullable=true)
 	 */
 	private $slug;
-	/** @ManyToMany(targetEntity="Termek", mappedBy="cimkek", cascade={"persist","remove"}) */
+	/** @ManyToMany(targetEntity="Termek", mappedBy="cimkek", cascade={"persist"}) */
 	private $termekek;
 	/**
 	 * @ManyToOne(targetEntity="Termekcimkekat",inversedBy="cimkek")
