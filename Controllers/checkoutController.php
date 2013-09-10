@@ -154,6 +154,8 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$megrendfej->setPartnerirszam($szamlairszam);
 			$megrendfej->setPartnervaros($szamlavaros);
 			$megrendfej->setPartnerutca($szamlautca);
+			$megrendfej->setPartnertelefon($telefon);
+			$megrendfej->setPartneremail($email);
 			$megrendfej->setFizmod($this->getEm()->getRepository('Entities\Fizmod')->find($fizetesimod));
 			$megrendfej->setSzallitasimod($this->getEm()->getRepository('Entities\Szallitasimod')->find($szallitasimod));
 			$valutanemid = store::getParameter(\mkw\consts::Valutanem);

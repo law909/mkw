@@ -193,6 +193,12 @@ class Bizonylatfej {
 	/** @Column(type="string",length=60,nullable=true) */
 	private $partnerlutca;
 
+	/** @Column(type="string",length=100,nullable=true) */
+	private $partneremail = '';
+
+	/** @Column(type="string",length=40,nullable=true) */
+	private $partnertelefon = '';
+
 	/**
 	 * @ManyToOne(targetEntity="Bankszamla",inversedBy="bizonylatfejek")
 	 * @JoinColumn(name="bankszamla_id", referencedColumnName="id",nullable=true,onDelete="no action")
@@ -738,6 +744,8 @@ class Bizonylatfej {
 			$this->partnerlirszam = $val->getLirszam();
 			$this->partnerlutca = $val->getLutca();
 			$this->partnerlvaros = $val->getLvaros();
+			$this->partnertelefon = $val->getTelefon();
+			$this->partneremail = $val->getEmail();
 			$this->partnermukengszam = $val->getMukengszam();
 			$this->partnerostermszam = $val->getOstermszam();
 			$this->partnerstatszamjel = $val->getStatszamjel();
@@ -1073,4 +1081,21 @@ class Bizonylatfej {
 	public function setCouriermessage($val) {
 		$this->couriermessage = $val;
 	}
+
+	public function getPartnertelefon() {
+		return $this->partnertelefon;
+	}
+
+	public function setPartnertelefon($telefon) {
+		$this->partnertelefon = $telefon;
+	}
+
+	public function getPartneremail() {
+		return $this->partneremail;
+	}
+
+	public function setPartneremail($email) {
+		$this->partneremail = $email;
+	}
+
 }
