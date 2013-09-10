@@ -21,7 +21,7 @@
 			<td>
 				<div class="textaligncenter">
 					<form class="kosarform" action="{$tetel.editlink}">
-						<div><input id="mennyedit_{$tetel.id}" class="span1" type="number" min="1" step="any" name="mennyiseg" value="{$tetel.mennyiseg}" data-org="{$tetel.mennyiseg}"></div>
+						<div><input id="mennyedit_{$tetel.id}" class="span1" type="number" min="1" step="any" name="mennyiseg" value="{number_format($tetel.mennyiseg,0,'','')}" data-org="{$tetel.mennyiseg}"></div>
 						<input type="hidden" name="id" value="{$tetel.id}">
 					</form>
 				</div>
