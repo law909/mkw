@@ -68,7 +68,8 @@ var checkout = function($) {
 			$.ajax({
 				url: '/kosar/gethash',
 				success: function(data) {
-					kosarhash = data;
+					var d = JSON.parse(data);
+					kosarhash = d.hash;
 				}
 			});
 

@@ -181,6 +181,9 @@ class Partner {
 	/** @OneToMany(targetEntity="TermekErtesito", mappedBy="partner",cascade={"persist","remove"}) */
 	private $termekertesitok;
 
+	/** @Column(type="boolean") */
+	private $vendeg = false;
+
 	public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -687,4 +690,12 @@ class Partner {
 		$this->utolsoklikk = new \DateTime();
 	}
 
+	public function getVendeg() {
+		return $this->vendeg;
+	}
+
+	public function setVendeg($val) {
+		$this->vendeg = $val;
+	}
+	
 }

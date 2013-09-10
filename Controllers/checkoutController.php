@@ -103,6 +103,9 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$pc = new \Controllers\partnerController($this->params);
 			switch ($regkell) {
 				case 1: // vendég
+					$partner = $pc->saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo1, true);
+					$szamlasave = true;
+					$szallsave = true;
 					break;
 				case 2: // regisztráció
 					$partner = $pc->saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo1);
@@ -119,10 +122,18 @@ class checkoutController extends \mkwhelpers\MattableController {
 				$partner->setUtca($szamlautca);
 			}
 			if ($szallsave) {
-				$partner->setSzallnev($szallnev);
-				$partner->setSzallirszam($szallirszam);
-				$partner->setSzallvaros($szallvaros);
-				$partner->setSzallutca($szallutca);
+				if ($szamlaeqszall) {
+					$partner->setSzallnev($szamlanev);
+					$partner->setSzallirszam($szamlairszam);
+					$partner->setSzallvaros($szamlavaros);
+					$partner->setSzallutca($szamlautca);
+				}
+				else {
+					$partner->setSzallnev($szallnev);
+					$partner->setSzallirszam($szallirszam);
+					$partner->setSzallvaros($szallvaros);
+					$partner->setSzallutca($szallutca);
+				}
 			}
 			if ($szallsave || $szamlasave) {
 				$this->getEm()->persist($partner);

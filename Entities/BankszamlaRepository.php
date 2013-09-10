@@ -19,6 +19,7 @@ class BankszamlaRepository extends \mkwhelpers\Repository {
 	}
 
 	public function getByValutanem($valutanem) {
+		$filter = array();
 		$filter['fields'][] = 'valutanem';
 		$filter['clauses'][] = '=';
 		$filter['values'][] = $valutanem;

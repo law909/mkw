@@ -80,3 +80,7 @@ img {
 	/* prevent horizontal scrollbar */
 /*	overflow-x: hidden;*/
 }
+
+.guestpartner {
+	color: red;
+}

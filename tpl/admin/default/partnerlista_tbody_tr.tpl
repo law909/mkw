@@ -1,4 +1,4 @@
-<tr id="mattable-row_{$_partner.id}">
+<tr id="mattable-row_{$_partner.id}"{if ($_partner.vendeg)} class="guestpartner"{/if}>
 <td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
 <td class="cell">
 <div><div>
