@@ -135,9 +135,9 @@ class checkoutController extends \mkwhelpers\MattableController {
 					$partner->setSzallutca($szallutca);
 				}
 			}
-			if ($szallsave || $szamlasave) {
-				$this->getEm()->persist($partner);
-			}
+			$partner->setTelefon($telefon);
+			$this->getEm()->persist($partner);
+
 			$biztipus = $this->getEm()->getRepository('Entities\Bizonylattipus')->find('megrendeles');
 			$megrendfej = new \Entities\Bizonylatfej();
 			$megrendfej->setBizonylattipus($biztipus);
