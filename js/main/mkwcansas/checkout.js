@@ -137,6 +137,11 @@ var checkout = function($) {
 			.on('keydown blur', 'input[name="jelszo1"],input[name="jelszo2"]', function(e) {
 				mkwcheck.wasinteraction.pw = true;
 				mkwcheck.checkoutJelszoCheck();
+			})
+			.on('blur', 'input[name="vezeteknev"],input[name="keresztnev"]', function() {
+				if (!szamlanevinput.val() && vezeteknevinput.val() && keresztnevinput.val()) {
+					szamlanevinput.val(vezeteknevinput.val() + ' ' + keresztnevinput.val());
+				}
 			});
 
 			telefoninput
