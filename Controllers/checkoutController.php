@@ -75,6 +75,8 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$aszfready = $this->params->getBoolRequestParam('aszfready');
 		$szamlasave = $this->params->getBoolRequestParam('szamlasave');
 		$szallsave = $this->params->getBoolRequestParam('szallsave');
+		$akciohirlevel = $this->params->getBoolRequestParam('akciohirlevel');
+		$ujdonsaghirlevel = $this->params->getBoolRequestParam('ujdonsaghirlevel');
 
 		$ok = ($vezeteknev && $keresztnev && $telefon &&
 				$szamlairszam && $szamlavaros && $szamlautca &&
@@ -136,6 +138,9 @@ class checkoutController extends \mkwhelpers\MattableController {
 				}
 			}
 			$partner->setTelefon($telefon);
+			$partner->setAdoszam($adoszam);
+			$partner->setAkcioshirlevelkell($akciohirlevel);
+			$partner->setUjdonsaghirlevelkell($ujdonsaghirlevel);
 			$this->getEm()->persist($partner);
 
 			$biztipus = $this->getEm()->getRepository('Entities\Bizonylattipus')->find('megrendeles');

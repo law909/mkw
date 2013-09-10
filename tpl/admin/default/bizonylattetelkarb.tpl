@@ -9,6 +9,10 @@
 	<input name="teteltermek_{$tetel.id}" type="hidden" value="{$tetel.termek}">
 </td>
 </tr>
+<tr class="js-termekpicturerow_{$tetel.id}">
+	<td><a class="js-toflyout" href="{$tetel.kepurl}" target="_blank"><img src="{$tetel.kiskepurl}"/></a></td>
+	<td>{t('Link')}:<a class="js-termeklink" href="/termek/{$tetel.slug}" target="_blank">/termek/{$tetel.slug}</a></td>
+</tr>
 <tr><td><label for="NevEdit{$tetel.id}">{t('Név')}:</label></td>
 <td colspan="5"><input id="NevEdit{$tetel.id}" name="tetelnev_{$tetel.id}" type="text" size="103" maxlength="255" value="{$tetel.termeknev}" required="required"></td>
 </tr>

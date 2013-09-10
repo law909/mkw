@@ -465,7 +465,11 @@ class termekController extends \mkwhelpers\MattableController {
 					'me'=>$r->getMe(),
 					'cikkszam'=>$r->getCikkszam(),
 					'vtsz'=>$r->getVtszId(),
-					'afa'=>$r->getAfaId()
+					'afa'=>$r->getAfaId(),
+					'kozepeskepurl'=>$r->getKepUrlMedium(),
+					'kiskepurl'=>$r->getKepUrlSmall(),
+					'kepurl'=>$r->getKepUrlLarge(),
+					'slug'=>$r->getSlug()
 				);
 			}
 		}
