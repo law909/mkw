@@ -1,7 +1,7 @@
 <thead>
 	<tr>
 		<th><div class="textaligncenter">{t('Termék')}</div></th>
-		<th>{t('Megnevezés, cikkszám')}</th>
+		<th>{t('Megnevezés, cikkszám, változat')}</th>
 		<th><div class="textalignright">{t('Egységár')}</div></th>
 		<th><div class="textaligncenter">{t('Mennyiség')}<i class="icon-question-sign cartheader-tooltipbtn hidden-phone js-tooltipbtn" title="A mennyiség módosításához adja meg a kívánt mennyiséget, majd nyomja meg az Enter-t"></i></div></th>
 		<th><div class="textalignright">{t('Érték')}</div></th>
