@@ -16,6 +16,12 @@
 <tr><td>
 {$_egyed.partnerirszam} {$_egyed.partnervaros}, {$_egyed.partnerutca}
 </td></tr>
+<tr><td>
+{$_egyed.partneremail}
+</td></tr>
+<tr><td>
+{$_egyed.partnertelefon}
+</td></tr>
 </tbody></table>
 </td>
 <td class="cell">

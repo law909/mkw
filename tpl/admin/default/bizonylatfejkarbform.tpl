@@ -33,6 +33,12 @@
 				</td>
 			</tr>
 			<tr>
+				<td><label for="AdoszamEdit">{t('Adószám')}:</label></td>
+				<td colspan="7">
+					<input id="AdoszamEdit" name="partneradoszam" value="{$egyed.partneradoszam}">
+				</td>
+			</tr>
+			<tr>
 				<td><label for="SzallnevEdit">{t('Szállítási név')}:</label></td>
 				<td colspan="7">
 					<input id="SzallnevEdit" name="szallnev" value="{$egyed.szallnev}">
@@ -44,6 +50,16 @@
 					<input id="SzallirszamEdit" name="szallirszam" value="{$egyed.szallirszam}">
 					<input name="szallvaros" value="{$egyed.szallvaros}">
 					<input name="szallutca" value="{$egyed.szallutca}">
+				</td>
+			</tr>
+			<tr>
+				<td><label for="TelefonEdit">{t('Telefon')}:</label></td>
+				<td>
+					<input id="TelefonEdit" name="partnertelefon" value="{$egyed.partnertelefon}">
+				</td>
+				<td><label for="EmailEdit">{t('Email')}:</label></td>
+				<td colspan="5">
+					<input id="EmailEdit" name="partneremail" value="{$egyed.partneremail}">
 				</td>
 			</tr>
 			<tr>
