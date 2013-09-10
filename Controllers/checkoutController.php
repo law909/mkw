@@ -195,11 +195,20 @@ class checkoutController extends \mkwhelpers\MattableController {
 			}
 			$this->getEm()->persist($megrendfej);
 			$this->getEm()->flush();
-			Header('Location: /checkout/koszonjuk');
+			Store::getMainSession()->lastmegrendeles = $megrendfej->getId();
+			Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
 		}
 		else {
 			echo 'error van';
 		}
 	}
 
+	public function thanks() {
+		$view = Store::getTemplateFactory()->createMainView('checkoutkoszonjuk.tpl');
+		Store::fillTemplate($view);
+		$view->setVar('megrendelesszam', Store::getMainSession()->lastmegrendeles);
+		Store::getMainSession()->lastmegrendeles = '';
+
+		$view->printTemplateResult();
+	}
 }
