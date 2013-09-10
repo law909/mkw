@@ -522,54 +522,6 @@ class EntitiesPartnerProxy extends \Entities\Partner implements \Doctrine\ORM\Pr
         return parent::getCreated();
     }
 
-    public function getSzamlanev()
-    {
-        $this->__load();
-        return parent::getSzamlanev();
-    }
-
-    public function setSzamlanev($adat)
-    {
-        $this->__load();
-        return parent::setSzamlanev($adat);
-    }
-
-    public function getSzamlairszam()
-    {
-        $this->__load();
-        return parent::getSzamlairszam();
-    }
-
-    public function setSzamlairszam($adat)
-    {
-        $this->__load();
-        return parent::setSzamlairszam($adat);
-    }
-
-    public function getSzamlavaros()
-    {
-        $this->__load();
-        return parent::getSzamlavaros();
-    }
-
-    public function setSzamlavaros($adat)
-    {
-        $this->__load();
-        return parent::setSzamlavaros($adat);
-    }
-
-    public function getSzamlautca()
-    {
-        $this->__load();
-        return parent::getSzamlautca();
-    }
-
-    public function setSzamlautca($adat)
-    {
-        $this->__load();
-        return parent::setSzamlautca($adat);
-    }
-
     public function getSzallnev()
     {
         $this->__load();
@@ -717,7 +669,7 @@ class EntitiesPartnerProxy extends \Entities\Partner implements \Doctrine\ORM\Pr
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szamlanev', 'szamlairszam', 'szamlavaros', 'szamlautca', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk', 'termekertesitok');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk', 'termekertesitok');
     }
 
     public function __clone()

@@ -54,10 +54,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$x['afahuf'] = $t->getAfahuf();
 		$x['bruttohuf'] = $t->getBruttohuf();
 		$x['megjegyzes'] = $t->getMegjegyzes();
-		$x['szamlanev'] = $t->getSzamlanev();
-		$x['szamlairszam'] = $t->getSzamlairszam();
-		$x['szamlavaros'] = $t->getSzamlavaros();
-		$x['szamlautca'] = $t->getSzamlautca();
 		$x['szallnev'] = $t->getSzallnev();
 		$x['szallirszam'] = $t->getSzallirszam();
 		$x['szallvaros'] = $t->getSzallvaros();
@@ -99,6 +95,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$obj->setEsedekesseg($this->params->getStringRequestParam('esedekesseg'));
 		$obj->setHatarido($this->params->getStringRequestParam('hatarido'));
 
+		$obj->setPartnerirszam($this->params->getStringRequestParam('partnerirszam'));
+		$obj->setPartnervaros($this->params->getStringRequestParam('partnervaros'));
+		$obj->setPartnerutca($this->params->getStringRequestParam('partnerutca'));
+
+		$obj->setSzallnev($this->params->getStringRequestParam('szallnev'));
+		$obj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
+		$obj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
+		$obj->setSzallutca($this->params->getStringRequestParam('szallutca'));
+
 		$ck = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
 		if ($ck) {
 			$obj->setValutanem($ck);
@@ -112,6 +117,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		}
 
 		$obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
+		$obj->setWebshopmessage($this->params->getStringRequestParam('webshopmessage'));
+		$obj->setCouriermessage($this->params->getStringRequestParam('couriermessage'));
 
 		$obj->generateId(); // az üres kelt miatt került a végére
 

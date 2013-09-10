@@ -26,7 +26,25 @@
 			</tr>
 			<tr>
 				<td></td>
-				<td colspan="7"><span id="PartnerCim">{$egyed.partnerirszam} {$egyed.partnervaros}, {$egyed.partnerutca}</span></td>
+				<td colspan="7">
+					<input name="partnerirszam" value="{$egyed.partnerirszam}">
+					<input name="partnervaros" value="{$egyed.partnervaros}">
+					<input name="partnerutca" value="{$egyed.partnerutca}">
+				</td>
+			</tr>
+			<tr>
+				<td><label for="SzallnevEdit">{t('Szállítási név')}:</label></td>
+				<td colspan="7">
+					<input id="SzallnevEdit" name="szallnev" value="{$egyed.szallnev}">
+				</td>
+			</tr>
+			<tr>
+				<td><label for="SzallirszamEdit">{t('Szállítási cím')}:</label></td>
+				<td colspan="7">
+					<input id="SzallirszamEdit" name="szallirszam" value="{$egyed.szallirszam}">
+					<input name="szallvaros" value="{$egyed.szallvaros}">
+					<input name="szallutca" value="{$egyed.szallutca}">
+				</td>
 			</tr>
 			<tr>
 				<td><label for="RaktarEdit">{t('Raktár')}:</label></td>
@@ -95,6 +113,14 @@
 			<tr>
 				<td><label for="MegjegyzesEdit">{t('Megjegyzés')}:</label></td>
 				<td colspan="7"><textarea id="MegjegyzesEdit" name="megjegyzes" rows="1" cols="100">{$egyed.megjegyzes}</textarea></td>
+			</tr>
+			<tr>
+				<td><label for="WebshopmessageEdit">{t('Üzenet a webáruháznak')}:</label></td>
+				<td colspan="7"><textarea id="WebshopmessageEdit" name="webshopmessage" rows="1" cols="100">{$egyed.webshopmessage}</textarea></td>
+			</tr>
+			<tr>
+				<td><label for="CouriermessageEdit">{t('Üzenet a futárnak')}:</label></td>
+				<td colspan="7"><textarea id="CouriermessageEdit" name="couriermessage" rows="1" cols="100">{$egyed.couriermessage}</textarea></td>
 			</tr>
 			</tbody></table>
 			<div>

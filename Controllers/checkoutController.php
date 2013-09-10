@@ -76,7 +76,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$szamlasave = $this->params->getBoolRequestParam('szamlasave');
 		$szallsave = $this->params->getBoolRequestParam('szallsave');
 
-		$ok = ($vezeteknev && $keresztnev && $telefon && $email &&
+		$ok = ($vezeteknev && $keresztnev && $telefon &&
 				$szamlairszam && $szamlavaros && $szamlautca &&
 				(!$szamlaeqszall ? $szallirszam : true) &&
 				(!$szamlaeqszall ? $szallvaros : true) &&
@@ -87,9 +87,10 @@ class checkoutController extends \mkwhelpers\MattableController {
 				);
 		switch ($regkell) {
 			case 1: // vendég
+				$ok = $ok && $email;
 				break;
 			case 2: // regisztráció
-				$ok = $ok && $jelszo1 && $jelszo2 && ($jelszo1 === $jelszo2);
+				$ok = $ok && $jelszo1 && $jelszo2 && ($jelszo1 === $jelszo2) && $email;
 				break;
 			default: // be van jelentkezve elvileg
 				break;
@@ -109,10 +110,10 @@ class checkoutController extends \mkwhelpers\MattableController {
 					break;
 			}
 			if ($szamlasave) {
-				$partner->setSzamlanev($szamlanev);
-				$partner->setSzamlairszam($szamlairszam);
-				$partner->setSzamlavaros($szamlavaros);
-				$partner->setSzamlautca($szamlautca);
+				$partner->setNev($szamlanev);
+				$partner->setIrszam($szamlairszam);
+				$partner->setVaros($szamlavaros);
+				$partner->setUtca($szamlautca);
 			}
 			if ($szallsave) {
 				$partner->setSzallnev($szallnev);
@@ -132,6 +133,13 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$megrendfej->setHatarido('');
 			$megrendfej->setArfolyam(1);
 			$megrendfej->setPartner($partner);
+			$megrendfej->setPartnernev($szamlanev);
+			$megrendfej->setPartnerkeresztnev($keresztnev);
+			$megrendfej->setPartnervezeteknev($vezeteknev);
+			$megrendfej->setPartneradoszam($adoszam);
+			$megrendfej->setPartnerirszam($szamlairszam);
+			$megrendfej->setPartnervaros($szamlavaros);
+			$megrendfej->setPartnerutca($szamlautca);
 			$megrendfej->setFizmod($this->getEm()->getRepository('Entities\Fizmod')->find($fizetesimod));
 			$megrendfej->setSzallitasimod($this->getEm()->getRepository('Entities\Szallitasimod')->find($szallitasimod));
 			$valutanemid = store::getParameter(\mkw\consts::Valutanem);
@@ -152,11 +160,6 @@ class checkoutController extends \mkwhelpers\MattableController {
 				$megrendfej->setSzallvaros($szallvaros);
 				$megrendfej->setSzallutca($szallutca);
 			}
-			$megrendfej->setSzamlanev($szamlanev);
-			$megrendfej->setSzamlairszam($szamlairszam);
-			$megrendfej->setSzamlavaros($szamlavaros);
-			$megrendfej->setSzamlautca($szamlautca);
-			$megrendfej->setPartneradoszam($adoszam);
 			$megrendfej->setWebshopmessage($webshopmessage);
 			$megrendfej->setCouriermessage($couriermessage);
 

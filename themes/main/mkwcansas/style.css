@@ -120,6 +120,7 @@ span.aktualislap{color:#e42721;background-color:white;padding:4px;}
 .chk-columncontainer{margin-bottom:20px;}
 .chk-relative{position:relative;}
 .chk-tooltipbtn{position:absolute;right:-16px;top:7px;cursor:pointer;z-index:100;}
+.chk-inlinetooltipbtn{cursor:pointer;z-index:100;}
 .chk-courierdesc{margin-bottom:10px;margin-left:20px;color:#999;}
 .chk-savecontainer{border-style:solid;border-width:1px;border-color:#e8e8e8;padding:10px;border-radius:2px;background-color:#e8e8e8;}.chk-savecontainer label a{text-decoration:underline;}.chk-savecontainer label a:hover{color:white;}
 input[type="button"].chk-sendorderbtn{width:100%;}

@@ -112,24 +112,6 @@
 			</tbody></table>
 			<table><tbody>
 			<tr>
-				<td><label for="SzamlaNevEdit">{t('Számlázási név')}:</label></td>
-				<td colspan="3"><input id="SzamlaNevEdit" name="szamlanev" type="text" size="80" maxlength="255" value="{$partner.szamlanev}"></td>
-			</tr>
-			<tr>
-				<td><label for="SzamlaIrszamEdit">{t('Cím')}:</label></td>
-				<td colspan="3">
-					<input id="SzamlaIrszamEdit" name="szamlairszam" type="text" size="6" maxlength="10" value="{$partner.szamlairszam}" placeholder="{t('ir.szám')}">
-					<input id="SzamlaVarosEdit" name="szamlavaros" type="text" size="20" maxlength="40" value="{$partner.szamlavaros}" placeholder="{t('város')}">
-					<input id="SzamlaUtcaEdit" name="szamlautca" type="text" size="40" maxlength="60" value="{$partner.szamlautca}" placeholder="{t('utca, házszám')}">
-				</td>
-			</tr>
-			<tr>
-				<td><label for="SzamlaAdoszamEdit">{t('Számlázási adószám')}:</label></td>
-				<td><input id="SzamlaAdoszamEdit" name="szamlaadoszam" type="text" size="13" maxlength="13" value="{$partner.szamlaadoszam}"></td>
-			</tr>
-			</tbody></table>
-			<table><tbody>
-			<tr>
 				<td><label for="SzallNevEdit">{t('Szállítási név')}:</label></td>
 				<td colspan="3"><input id="SzallNevEdit" name="szallnev" type="text" size="80" maxlength="255" value="{$partner.szallnev}"></td>
 			</tr>

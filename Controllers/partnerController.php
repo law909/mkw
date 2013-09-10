@@ -53,11 +53,6 @@ class partnerController extends \mkwhelpers\MattableController {
 		$x['fizmodnev']=$t->getFizmodNev();
 		$x['uzletkotonev']=$t->getUzletkotoNev();
 		$x['fizhatido']=$t->getFizhatido();
-		$x['szamlanev']=$t->getSzamlanev();
-//		$x['szamlaadoszam']=$t->getSzamlaadoszam();
-		$x['szamlairszam']=$t->getSzamlairszam();
-		$x['szamlavaros']=$t->getSzamlavaros();
-		$x['szamlautca']=$t->getSzamlautca();
 		$x['szallnev']=$t->getSzallnev();
 		$x['szallirszam']=$t->getSzallirszam();
 		$x['szallvaros']=$t->getSzallvaros();
@@ -99,11 +94,6 @@ class partnerController extends \mkwhelpers\MattableController {
 		$obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
 		$obj->setSyncid($this->params->getStringRequestParam('syncid'));
 		$obj->setFizhatido($this->params->getIntRequestParam('fizhatido'));
-		$obj->setSzamlanev($this->params->getStringRequestParam('szamlanev'));
-		$obj->setSzamlairszam($this->params->getStringRequestParam('szamlairszam'));
-		$obj->setSzamlavaros($this->params->getStringRequestParam('szamlavaros'));
-		$obj->setSzamlautca($this->params->getStringRequestParam('szamlautca'));
-//		$obj->setSzamlaadoszam($this->params->getStringRequestParam('szamlaadoszam'));
 		$obj->setSzallnev($this->params->getStringRequestParam('szallnev'));
 		$obj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
 		$obj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
@@ -490,11 +480,11 @@ class partnerController extends \mkwhelpers\MattableController {
 					}
 					break;
 				case 'szamlaadatok':
-					$user->setSzamlanev($this->params->getStringRequestParam('szamlanev'));
+					$user->setNev($this->params->getStringRequestParam('szamlanev'));
 					$user->setAdoszam($this->params->getStringRequestParam('adoszam'));
-					$user->setSzamlairszam($this->params->getStringRequestParam('szamlairszam'));
-					$user->setSzamlavaros($this->params->getStringRequestParam('szamlavaros'));
-					$user->setSzamlautca($this->params->getStringRequestParam('szamlautca'));
+					$user->setIrszam($this->params->getStringRequestParam('szamlairszam'));
+					$user->setVaros($this->params->getStringRequestParam('szamlavaros'));
+					$user->setUtca($this->params->getStringRequestParam('szamlautca'));
 					$this->getEm()->persist($user);
 					$this->getEm()->flush();
 					if (!$jax) {

@@ -239,18 +239,6 @@ class Bizonylatfej {
 	private $hatarido;
 
 	/** @Column(type="string",length=255,nullable=true) */
-	private $szamlanev = '';
-
-	/** @Column(type="string",length=10,nullable=true) */
-	private $szamlairszam = '';
-
-	/** @Column(type="string",length=40,nullable=true) */
-	private $szamlavaros = '';
-
-	/** @Column(type="string",length=60,nullable=true) */
-	private $szamlautca = '';
-
-	/** @Column(type="string",length=255,nullable=true) */
 	private $szallnev = '';
 
 	/** @Column(type="string",length=10,nullable=true) */
@@ -757,11 +745,6 @@ class Bizonylatfej {
 			$this->partnervalligszam = $val->getValligszam();
 			$this->partnervaros = $val->getVaros();
 
-			$this->szamlanev = $val->getSzamlanev();
-			$this->szamlairszam = $val->getSzamlairszam();
-			$this->szamlavaros = $val->getSzamlavaros();
-			$this->szamlautca = $val->getSzamlautca();
-
 			$this->szallnev = $val->getSzallnev();
 			$this->szallirszam = $val->getSzallirszam();
 			$this->szallvaros = $val->getSzallvaros();
@@ -817,12 +800,24 @@ class Bizonylatfej {
 		return $this->partnernev;
 	}
 
+	public function setPartnernev($val) {
+		$this->partnernev = $val;
+	}
+
 	public function getPartnervezeteknev() {
 		return $this->partnervezeteknev;
 	}
 
+	public function setPartnervezeteknev($val) {
+		$this->partnervezeteknev = $val;
+	}
+
 	public function getPartnerkeresztnev() {
 		return $this->partnerkeresztnev;
+	}
+
+	public function setPartnerkeresztnev($val) {
+		$this->partnerkeresztnev = $val;
 	}
 
 	public function getPartneradoszam() {
@@ -851,6 +846,10 @@ class Bizonylatfej {
 
 	public function getPartnerirszam() {
 		return $this->partnerirszam;
+	}
+
+	public function setPartnerirszam($val) {
+		$this->partnerirszam = $val;
 	}
 
 	public function getPartnerjovengszam() {
@@ -885,12 +884,20 @@ class Bizonylatfej {
 		return $this->partnerutca;
 	}
 
+	public function setPartnerutca($val) {
+		$this->partnerutca = $val;
+	}
+
 	public function getPartnervalligszam() {
 		return $this->partnervalligszam;
 	}
 
 	public function getPartnervaros() {
 		return $this->partnervaros;
+	}
+
+	public function setPartnervaros($val) {
+		$this->partnervaros = $val;
 	}
 
 	public function getBankszamla() {
@@ -1017,38 +1024,6 @@ class Bizonylatfej {
 
 	public function getCreated() {
 		return $this->created;
-	}
-
-	public function getSzamlanev() {
-		return $this->szamlanev;
-	}
-
-	public function setSzamlanev($adat) {
-		$this->szamlanev = $adat;
-	}
-
-	public function getSzamlairszam() {
-		return $this->szamlairszam;
-	}
-
-	public function setSzamlairszam($adat) {
-		$this->szamlairszam = $adat;
-	}
-
-	public function getSzamlavaros() {
-		return $this->szamlavaros;
-	}
-
-	public function setSzamlavaros($adat) {
-		$this->szamlavaros = $adat;
-	}
-
-	public function getSzamlautca() {
-		return $this->szamlautca;
-	}
-
-	public function setSzamlautca($adat) {
-		$this->szamlautca = $adat;
 	}
 
 	public function getSzallnev() {

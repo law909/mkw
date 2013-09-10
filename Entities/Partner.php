@@ -152,18 +152,6 @@ class Partner {
 	private $fizhatido = 0;
 
 	/** @Column(type="string",length=255,nullable=true) */
-	private $szamlanev = '';
-
-	/** @Column(type="string",length=10,nullable=true) */
-	private $szamlairszam = '';
-
-	/** @Column(type="string",length=40,nullable=true) */
-	private $szamlavaros = '';
-
-	/** @Column(type="string",length=60,nullable=true) */
-	private $szamlautca = '';
-
-	/** @Column(type="string",length=255,nullable=true) */
 	private $szallnev = '';
 
 	/** @Column(type="string",length=10,nullable=true) */
@@ -596,38 +584,6 @@ class Partner {
 
 	public function getCreated() {
 		return $this->created;
-	}
-
-	public function getSzamlanev() {
-		return $this->szamlanev;
-	}
-
-	public function setSzamlanev($adat) {
-		$this->szamlanev = $adat;
-	}
-
-	public function getSzamlairszam() {
-		return $this->szamlairszam;
-	}
-
-	public function setSzamlairszam($adat) {
-		$this->szamlairszam = $adat;
-	}
-
-	public function getSzamlavaros() {
-		return $this->szamlavaros;
-	}
-
-	public function setSzamlavaros($adat) {
-		$this->szamlavaros = $adat;
-	}
-
-	public function getSzamlautca() {
-		return $this->szamlautca;
-	}
-
-	public function setSzamlautca($adat) {
-		$this->szamlautca = $adat;
 	}
 
 	public function getSzallnev() {

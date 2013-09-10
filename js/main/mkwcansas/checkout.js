@@ -102,12 +102,16 @@ var checkout = function($) {
 			loadFizmodList();
 
 			$checkout
-					.on('change', 'input[name="szallitasimod"]', function() {
+			.on('change', 'input[name="szallitasimod"]', function() {
 				loadFizmodList();
 			})
-					.on('change', 'input[name="regkell"]', function() {
+			.on('change', 'input[name="regkell"]', function() {
 				checkoutpasswordcontainer.empty();
 				if ($('input[name="regkell"]:checked').val() * 1 === 2) {
+					$('input[name="szamlasave"]').prop('checked',true);
+					$('.js-szamlasave').removeClass('notvisible');
+					$('input[name="szallsave"]').prop('checked',true);
+					$('.js-szallsave').removeClass('notvisible');
 					checkoutpasswordrow.appendTo(checkoutpasswordcontainer);
 					$('.js-chktooltipbtn').tooltip({
 						html: false,
@@ -115,29 +119,35 @@ var checkout = function($) {
 						container: 'body'
 					});
 				}
+				else {
+					$('input[name="szamlasave"]').prop('checked',false);
+					$('.js-szamlasave').addClass('notvisible');
+					$('input[name="szallsave"]').prop('checked',false)
+					$('.js-szallsave').addClass('notvisible');
+				}
 			})
-					.on('change', '.js-chkrefresh', function() {
+			.on('change', '.js-chkrefresh', function() {
 				refreshAttekintes();
 			})
-					.on('input', 'input[name="jelszo1"],input[name="jelszo2"]', function(e) {
+			.on('input', 'input[name="jelszo1"],input[name="jelszo2"]', function(e) {
 				mkwcheck.checkoutJelszoCheck();
 				$(this).off('keydown');
 			})
-					.on('keydown blur', 'input[name="jelszo1"],input[name="jelszo2"]', function(e) {
+			.on('keydown blur', 'input[name="jelszo1"],input[name="jelszo2"]', function(e) {
 				mkwcheck.wasinteraction.pw = true;
 				mkwcheck.checkoutJelszoCheck();
 			});
 
 			telefoninput
-					.on('input', function(e) {
+			.on('input', function(e) {
 				mkwcheck.checkoutTelefonCheck();
 				$(this).off('keydown');
 			})
-					.on('keydown blur', function(e) {
+			.on('keydown blur', function(e) {
 				mkwcheck.wasinteraction.telefon = true;
 				mkwcheck.checkoutTelefonCheck();
 			})
-					.each(function(i, ez) {
+			.each(function(i, ez) {
 				mkwcheck.checkoutTelefonCheck();
 			});
 

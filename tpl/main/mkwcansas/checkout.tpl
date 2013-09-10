@@ -76,7 +76,7 @@
 								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="A telefonszámra azért van szükségünk, mert ezen keresztül egyeztetünk Önnel a kiszállításról, illetve a futár is így fogja tudni Önnel felvenni a kapcsolatot."></i>
 							</div>
 							<i class="span inputiconhack"></i>
-							<input name="kapcsemail" type="email" class="span4 js-chkrefresh" placeholder="{t('email')} *" value="{$user.email|default}" required data-errormsg="Kérem adja meg az emailcímét" data-container=".js-chkszallitasiadatok">
+							<input name="kapcsemail" type="email" class="span4 js-chkrefresh" placeholder="{t('email')} *" value="{$user.email|default}" required {if ($user.loggedin)}disabled {/if}data-errormsg="Kérem adja meg az emailcímét" data-container=".js-chkszallitasiadatok">
 						</div>
 						{if (!$user.loggedin)}
 						<div class="js-checkoutpasswordcontainer">
@@ -91,10 +91,10 @@
 						</div>
 						{/if}
 						<h5>Számlázási adatok</h5>
-						<div class="controls chk-controloffset">
+						<div class="controls chk-controloffset js-szamlasave">
 							<label class="checkbox">
 								<input name="szamlasave" type="checkbox">
-								Ezután mindig ezt fogom használni
+								Ezután mindig ezt fogom használni <i class="icon-question-sign chk-inlinetooltipbtn hidden-phone js-chktooltipbtn" title="Elmentjük az adatbázisba"></i>
 							</label>
 						</div>
 						<div class="controls chk-controloffset">
@@ -122,10 +122,10 @@
 							</label>
 						</div>
 						<div class="js-chkszamlaadatok{if ($user.szalladategyezik|default)} notvisible{/if}">
-							<div class="controls chk-controloffset">
+							<div class="controls chk-controloffset js-szallsave">
 								<label class="checkbox">
 									<input name="szallsave" type="checkbox">
-									Ezután mindig ezt fogom használni
+									Ezután mindig ezt fogom használni <i class="icon-question-sign chk-inlinetooltipbtn hidden-phone js-chktooltipbtn" title="Elmentjük az adatbázisba"></i>
 								</label>
 							</div>
 							<div class="controls chk-controloffset">
