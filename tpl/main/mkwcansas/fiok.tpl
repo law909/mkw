@@ -90,6 +90,9 @@
 						</form>
 					</div>
 					<div class="tab-pane" id="szallitasiadatok">
+						<div class="acc-copyszamlaadat">
+						<a class="js-copyszamlaadat">Számlázási adatok másolása </a><i class="icon-question-sign chk-inlinetooltipbtn hidden-phone js-tooltipbtn" title="Átmásolja az adatokat onnan, felülírja ezeket itt"></i>
+						</div>
 						<form id="FiokSzallitasiAdatok" class="form-horizontal" action="/fiok/ment/szallitasiadatok" method="post">
 							<fieldset>
 								<div class="control-group">

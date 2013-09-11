@@ -422,54 +422,11 @@ $(document).ready(function(){
 		$('.lapozoform input[name="cimkekatid"]').val($(this).attr('name').split('_')[1]);
 		mkw.lapozas();
 	});
-	var $fiokadataimform=$('#FiokAdataim');
-	if ($fiokadataimform.length>0) {
-		H5F.setup($fiokadataimform);
-		$('#VezeteknevEdit,#KeresztnevEdit')
-			.on('input',function(e) {
-				mkwcheck.regNevCheck();
-				$(this).off('keydown');
-			})
-			.on('keydown blur',function(e) {mkwcheck.wasinteraction.doublenev=true;mkwcheck.regNevCheck();})
-			.each(function(i,ez) {mkwcheck.regNevCheck();});
-		$('#EmailEdit')
-			.on('input',function(e) {
-				mkwcheck.regEmailCheck();
-				$(this).off('keydown');
-			})
-			.on('keydown blur',function(e) {mkwcheck.wasinteraction.email=true;mkwcheck.regEmailCheck();})
-			.on('change',function(e) {
-				var $this=$(this);
-				$.ajax({
-					type:'POST',
-					url:'/checkemail',
-					data:{email:$this.val()}
-				})
-				.done(function(data){
-					var d=JSON.parse(data);
-					$this.data('hiba',d);
-					mkwcheck.regEmailCheck();
-				});
-			})
-			.each(function(i,ez) {mkwcheck.regEmailCheck();});
-		mkw.overrideFormSubmit($fiokadataimform,'Adatait módosítjuk...');
-
-	}
-	var $fiokszamlaadatok=$('#FiokSzamlaAdatok');
-	if ($fiokszamlaadatok.length>0) {
-		mkw.irszamTypeahead('input[name="szamlairszam"]', 'input[name="szamlavaros"]');
-		mkw.varosTypeahead('input[name="szamlairszam"]', 'input[name="szamlavaros"]');
-		mkw.overrideFormSubmit($fiokszamlaadatok,'Adatait módosítjuk...');
-	}
-	var $fiokszallitasiadatok=$('#FiokSzallitasiAdatok');
-	if ($fiokszallitasiadatok.length>0) {
-		mkw.irszamTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
-		mkw.varosTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
-		mkw.overrideFormSubmit($fiokszallitasiadatok,'Adatait módosítjuk...');
-	}
 
 	mkw.initTooltips();
 
 	cart.initUI();
 	checkout.initUI();
+	fiok.initUI();
+	
 });
