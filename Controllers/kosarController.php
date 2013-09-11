@@ -132,8 +132,11 @@ class kosarController extends \mkwhelpers\MattableController {
 		$partner = $pc->getLoggedInUser();
 		if ($partner) {
 			$partnerid = $partner->getId();
+			$k = $this->getRepo()->getDataByPartner($partner);
 		}
-		$k = $this->getRepo()->getDataByPartner($partner);
+		else {
+			$k = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+		}
 		foreach ($k as $sor) {
 			$this->getEm()->remove($sor);
 		}

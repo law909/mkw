@@ -98,15 +98,15 @@
 							</label>
 						</div>
 						<div class="controls chk-controloffset">
-							<input name="szamlanev" type="text" class="span8 js-chkrefresh" placeholder="{t('számlázási név')}" value="{$user.szamlanev|default}" data-container=".js-chkszallitasiadatok">
+							<input name="szamlanev" type="text" class="span8 js-chkrefresh" placeholder="{t('számlázási név')}" value="{$user.nev|default}" data-container=".js-chkszallitasiadatok">
 						</div>
 						<div class="controls controls-row chk-controloffset">
-							<input name="szamlairszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.szamlairszam|default}" required data-errormsg="Kérem adja meg az irányítószámát" data-container=".js-chkszallitasiadatok">
+							<input name="szamlairszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.irszam|default}" required data-errormsg="Kérem adja meg az irányítószámát" data-container=".js-chkszallitasiadatok">
 							<i class="span inputiconhack"></i>
-							<input name="szamlavaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.szamlavaros|default}" required data-errormsg="Kérem adja meg a várost" data-container=".js-chkszallitasiadatok">
+							<input name="szamlavaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.varos|default}" required data-errormsg="Kérem adja meg a várost" data-container=".js-chkszallitasiadatok">
 						</div>
 						<div class="controls chk-controloffset">
-							<input name="szamlautca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.szamlautca|default}" required data-errormsg="Kérem adja meg az utcát" data-container=".js-chkszallitasiadatok">
+							<input name="szamlautca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.utca|default}" required data-errormsg="Kérem adja meg az utcát" data-container=".js-chkszallitasiadatok">
 						</div>
 						<div class="controls chk-controloffset">
 							<div class="chk-relative pull-left chk-tooltippedcontainer">
@@ -184,10 +184,10 @@
 						<div class="chk-columncontainer pull-left width100percent">
 							<div class="col30percent">
 								<div class="chk-colheader">Számlázási adatok</div>
-								<div class="js-chkszamlanev">{$user.szamlanev|default}</div>
+								<div class="js-chkszamlanev">{$user.nev|default}</div>
 								<div class="chk-coldatabottom js-chkadoszam">{$user.adoszam|default}</div>
-								<div><span class="js-chkszamlairszam">{$user.szamlairszam|default}</span>&nbsp;<span class="js-chkszamlavaros">{$user.szamlavaros|default}</span></div>
-								<div class="js-chkszamlautca">{$user.szamlautca|default}</div>
+								<div><span class="js-chkszamlairszam">{$user.irszam|default}</span>&nbsp;<span class="js-chkszamlavaros">{$user.varos|default}</span></div>
+								<div class="js-chkszamlautca">{$user.utca|default}</div>
 								<div class="chk-colheader">Kapcsolati adatok</div>
 								<div><span class="js-chkvezeteknev">{$user.vezeteknev|default}</span>&nbsp;<span class="js-chkkeresztnev">{$user.keresztnev|default}</span></div>
 								<div class="js-chktelefon">{$user.telefon|default}</div>

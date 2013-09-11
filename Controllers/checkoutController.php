@@ -203,6 +203,8 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$this->getEm()->persist($megrendfej);
 			$this->getEm()->flush();
 			Store::getMainSession()->lastmegrendeles = $megrendfej->getId();
+			$kc = new kosarController($this->params);
+			$kc->clear();
 			Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
 		}
 		else {

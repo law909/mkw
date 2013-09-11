@@ -198,11 +198,10 @@ class Store {
 			$user['vezeteknev'] = $u->getVezeteknev();
 			$user['keresztnev'] = $u->getKeresztnev();
 			$user['telefon'] = $u->getTelefon();
-			$user['szamlanev'] = $u->getNev();
-			$user['szamlairszam'] = $u->getIrszam();
-			$user['szamlavaros'] = $u->getVaros();
-			$user['szamlautca'] = $u->getUtca();
-			$user['szamlaadoszam'] = $u->getAdoszam();
+			$user['irszam'] = $u->getIrszam();
+			$user['varos'] = $u->getVaros();
+			$user['utca'] = $u->getUtca();
+			$user['adoszam'] = $u->getAdoszam();
 			$user['szallnev'] = $u->getSzallnev();
 			$user['szallirszam'] = $u->getSzallirszam();
 			$user['szallvaros'] = $u->getSzallvaros();
