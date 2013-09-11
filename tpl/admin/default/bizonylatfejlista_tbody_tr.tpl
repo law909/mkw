@@ -2,25 +2,31 @@
 <td class="cell"><input class="maincheckbox" type="checkbox"></td>
 <td class="cell">
 <table><tbody>
-<tr><td>
+<tr><td colspan="2">
 <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_egyed.id}</a>
 </td>
 {if ($setup.grideditbutton=='small')}
-<td><span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
+<td colspan="2"><span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
 </td>
 {/if}
 </tr>
-<tr><td class="mattable-important">
+<tr><td  colspan="2" class="mattable-important">
 {$_egyed.partnernev}
 </td></tr>
-<tr><td>
+<tr><td colspan="2">
 {$_egyed.partnerirszam} {$_egyed.partnervaros}, {$_egyed.partnerutca}
 </td></tr>
-<tr><td>
+<tr><td colspan="2">
 <a href="mailto:{$_egyed.partneremail}">{$_egyed.partneremail}</a>
 </td></tr>
-<tr><td>
+<tr><td colspan="2">
 {$_egyed.partnertelefon}
+</td></tr>
+<tr><td>
+IP: {$_egyed.ip}
+</td>
+<td>
+Ref.: {$_egyed.referrer}
 </td></tr>
 </tbody></table>
 </td>

@@ -145,6 +145,8 @@ class checkoutController extends \mkwhelpers\MattableController {
 
 			$biztipus = $this->getEm()->getRepository('Entities\Bizonylattipus')->find('megrendeles');
 			$megrendfej = new \Entities\Bizonylatfej();
+			$megrendfej->setIp($_SERVER['REMOTE_ADDR']);
+			$megrendfej->setReferrer(Store::getMainSession()->referrer);
 			$megrendfej->setBizonylattipus($biztipus);
 			$megrendfej->setKelt('');
 			$megrendfej->setTeljesites('');

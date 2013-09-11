@@ -666,10 +666,46 @@ class EntitiesPartnerProxy extends \Entities\Partner implements \Doctrine\ORM\Pr
         return parent::setUtolsoklikk();
     }
 
+    public function getVendeg()
+    {
+        $this->__load();
+        return parent::getVendeg();
+    }
+
+    public function setVendeg($val)
+    {
+        $this->__load();
+        return parent::setVendeg($val);
+    }
+
+    public function getIp()
+    {
+        $this->__load();
+        return parent::getIp();
+    }
+
+    public function setIp($val)
+    {
+        $this->__load();
+        return parent::setIp($val);
+    }
+
+    public function getReferrer()
+    {
+        $this->__load();
+        return parent::getReferrer();
+    }
+
+    public function setReferrer($val)
+    {
+        $this->__load();
+        return parent::setReferrer($val);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk', 'termekertesitok');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk', 'termekertesitok', 'vendeg', 'ip', 'referrer');
     }
 
     public function __clone()

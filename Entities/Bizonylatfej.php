@@ -256,6 +256,13 @@ class Bizonylatfej {
 	/** @Column(type="string",length=60,nullable=true) */
 	private $szallutca = '';
 
+	/** @Column(type="string",length=32,nullable=true) */
+	private $ip;
+
+	/** @Column(type="string",length=255,nullable=true) */
+	private $referrer;
+
+
 	/**
 	 * @PrePersist
 	 * @PreUpdate
@@ -1096,6 +1103,22 @@ class Bizonylatfej {
 
 	public function setPartneremail($email) {
 		$this->partneremail = $email;
+	}
+
+	public function getIp() {
+		return $this->ip;
+	}
+
+	public function setIp($val) {
+		$this->ip = $val;
+	}
+
+	public function getReferrer() {
+		return $this->referrer;
+	}
+
+	public function setReferrer($val) {
+		$this->referrer = $val;
 	}
 
 }

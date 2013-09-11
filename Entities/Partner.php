@@ -184,6 +184,12 @@ class Partner {
 	/** @Column(type="boolean") */
 	private $vendeg = false;
 
+	/** @Column(type="string",length=32,nullable=true) */
+	private $ip;
+
+	/** @Column(type="string",length=255,nullable=true) */
+	private $referrer;
+
 	public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -697,5 +703,21 @@ class Partner {
 	public function setVendeg($val) {
 		$this->vendeg = $val;
 	}
-	
+
+	public function getIp() {
+		return $this->ip;
+	}
+
+	public function setIp($val) {
+		$this->ip = $val;
+	}
+
+	public function getReferrer() {
+		return $this->referrer;
+	}
+
+	public function setReferrer($val) {
+		$this->referrer = $val;
+	}
+
 }

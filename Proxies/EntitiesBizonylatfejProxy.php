@@ -894,10 +894,58 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::setCouriermessage($val);
     }
 
+    public function getPartnertelefon()
+    {
+        $this->__load();
+        return parent::getPartnertelefon();
+    }
+
+    public function setPartnertelefon($telefon)
+    {
+        $this->__load();
+        return parent::setPartnertelefon($telefon);
+    }
+
+    public function getPartneremail()
+    {
+        $this->__load();
+        return parent::getPartneremail();
+    }
+
+    public function setPartneremail($email)
+    {
+        $this->__load();
+        return parent::setPartneremail($email);
+    }
+
+    public function getIp()
+    {
+        $this->__load();
+        return parent::getIp();
+    }
+
+    public function setIp($val)
+    {
+        $this->__load();
+        return parent::setIp($val);
+    }
+
+    public function getReferrer()
+    {
+        $this->__load();
+        return parent::getReferrer();
+    }
+
+    public function setReferrer($val)
+    {
+        $this->__load();
+        return parent::setReferrer($val);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'bizonylattipus', 'bizonylatnev', 'irany', 'nyomtatva', 'storno', 'stornozott', 'penztmozgat', 'tulajnev', 'tulajirszam', 'tulajvaros', 'tulajutca', 'tulajadoszam', 'tulajeuadoszam', 'erbizonylatszam', 'kelt', 'teljesites', 'esedekesseg', 'fizmod', 'fizmodnev', 'szallitasimod', 'szallitasimodnev', 'netto', 'afa', 'brutto', 'fizetendo', 'valutanem', 'valutanemnev', 'nettohuf', 'afahuf', 'bruttohuf', 'arfolyam', 'partner', 'partnernev', 'partnervezeteknev', 'partnerkeresztnev', 'partneradoszam', 'partnereuadoszam', 'partnermukengszam', 'partnerjovengszam', 'partnerostermszam', 'partnervalligszam', 'partnerfvmszam', 'partnercjszam', 'partnerstatszamjel', 'partnerirszam', 'partnervaros', 'partnerutca', 'partnerlirszam', 'partnerlvaros', 'partnerlutca', 'bankszamla', 'bankszamlanev', 'swift', 'uzletkoto', 'uzletkotonev', 'raktar', 'raktarnev', 'bizonylattetelek', 'megjegyzes', 'webshopmessage', 'couriermessage', 'hatarido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'bizonylattipus', 'bizonylatnev', 'irany', 'nyomtatva', 'storno', 'stornozott', 'penztmozgat', 'tulajnev', 'tulajirszam', 'tulajvaros', 'tulajutca', 'tulajadoszam', 'tulajeuadoszam', 'erbizonylatszam', 'kelt', 'teljesites', 'esedekesseg', 'fizmod', 'fizmodnev', 'szallitasimod', 'szallitasimodnev', 'netto', 'afa', 'brutto', 'fizetendo', 'valutanem', 'valutanemnev', 'nettohuf', 'afahuf', 'bruttohuf', 'arfolyam', 'partner', 'partnernev', 'partnervezeteknev', 'partnerkeresztnev', 'partneradoszam', 'partnereuadoszam', 'partnermukengszam', 'partnerjovengszam', 'partnerostermszam', 'partnervalligszam', 'partnerfvmszam', 'partnercjszam', 'partnerstatszamjel', 'partnerirszam', 'partnervaros', 'partnerutca', 'partnerlirszam', 'partnerlvaros', 'partnerlutca', 'partneremail', 'partnertelefon', 'bankszamla', 'bankszamlanev', 'swift', 'uzletkoto', 'uzletkotonev', 'raktar', 'raktarnev', 'bizonylattetelek', 'megjegyzes', 'webshopmessage', 'couriermessage', 'hatarido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'ip', 'referrer');
     }
 
     public function __clone()

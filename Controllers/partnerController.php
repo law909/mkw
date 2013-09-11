@@ -65,6 +65,8 @@ class partnerController extends \mkwhelpers\MattableController {
 		$x['ujdonsaghirlevelkell'] = $t->getUjdonsaghirlevelkell();
 		$x['loggedin'] = $this->checkloggedin();
 		$x['vendeg'] = $t->getVendeg();
+		$x['ip'] = $t->getIp();
+		$x['referrer'] = $t->getReferrer();
 		return $x;
 	}
 
@@ -326,6 +328,8 @@ class partnerController extends \mkwhelpers\MattableController {
 		$t->setJelszo($jelszo);
 		$t->setVendeg($vendeg);
 		$t->setSessionid(\Zend_Session::getId());
+		$t->setIp($_SERVER['REMOTE_ADDR']);
+		$t->setReferrer(Store::getMainSession()->referrer);
 		$this->getEm()->persist($t);
 		$this->getEm()->flush();
 		return $t;

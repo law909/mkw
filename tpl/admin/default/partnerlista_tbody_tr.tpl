@@ -9,6 +9,7 @@
 <table><tbody>
 <tr><td colspan="2">{$_partner.vezeteknev} {$_partner.keresztnev}</td></tr>
 <tr><td>{t('Üzletkötő')}:</td><td>{$_partner.uzletkotonev}</td></tr><tr><td>{t('Adószám')}:</td><td>{$_partner.adoszam}</td></tr><tr><td>{t('Fizetési mód')}:</td><td>{$_partner.fizmodnev}</td></tr>
+<tr><td>IP: {$_partner.ip}</td><td>Ref.: {$_partner.referrer}</td></tr>
 </tbody></table>
 </td>
 <td class="cell">{$_partner.cim}<br />{if ($_partner.lcim!=='')}({t('Levélcím')}: {$_partner.lcim}){/if}</td>

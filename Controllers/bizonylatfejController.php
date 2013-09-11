@@ -63,6 +63,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$x['szallutca'] = $t->getSzallutca();
 		$x['webshopmessage'] = $t->getWebshopmessage();
 		$x['couriermessage'] = $t->getCouriermessage();
+		$x['ip'] = $t->getIp();
+		$x['referrer'] = $t->getReferrer();
 		if ($forKarb) {
 			foreach ($t->getBizonylattetelek() as $ttetel) {
 				$tetel[] = $tetelCtrl->loadVars($ttetel, true);
