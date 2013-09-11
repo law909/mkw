@@ -238,6 +238,11 @@ class partnerController extends \mkwhelpers\MattableController {
 		$users = $this->getRepo()->findByUserPass($user, $pass);
 		if (count($users) > 0) {
 			$user = $users[0];
+			if ($user->getVendeg()) {
+				return false;
+			}
+			$kc = new kosarController($this->params);
+			$kc->clear($user->getId()); // csak partner alapján
 			$oldid = \Zend_Session::getId();
 			\Zend_Session::regenerateId();
 			$user->setSessionid(\Zend_Session::getId());
@@ -245,7 +250,6 @@ class partnerController extends \mkwhelpers\MattableController {
 			$this->getEm()->persist($user);
 			$this->getEm()->flush();
 			store::getMainSession()->pk = $user->getId();
-			$kc = new kosarController($this->params);
 			$kc->replaceSessionIdAndAddPartner($oldid, $user);
 			$kc->addSessionIdByPartner($user);
 			return true;
@@ -393,12 +397,12 @@ class partnerController extends \mkwhelpers\MattableController {
 			$route = store::getRouter()->generate('showaccount');
 		}
 		if ($this->checkloggedin()) {
-			\Zend_Session::writeClose();
+//			\Zend_Session::writeClose();
 			header('Location: ' . $route);
 		}
 		else {
 			if ($this->login($this->params->getStringRequestParam('email'), $this->params->getStringRequestParam('jelszo'))) {
-				\Zend_Session::writeClose();
+//				\Zend_Session::writeClose();
 				if (!$checkout) {
 					$kc = new kosarController($this->params);
 					$kc->clear();

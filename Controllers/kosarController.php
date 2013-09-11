@@ -126,21 +126,31 @@ class kosarController extends \mkwhelpers\MattableController {
 		$v->printTemplateResult();
 	}
 
-	public function clear() {
+	public function clear($partnerid = false) {
 		$pc = new partnerController($this->params);
-		$partnerid = null;
-		$partner = $pc->getLoggedInUser();
+		if ($partnerid) {
+			$partner = $this->getEm()->getRepository('Entities\Partner')->find($partnerid);
+		}
+		else {
+			$partner = $pc->getLoggedInUser();
+		}
 		if ($partner) {
-			$partnerid = $partner->getId();
 			$k = $this->getRepo()->getDataByPartner($partner);
 		}
 		else {
-			$k = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+			if ($partnerid) {
+				$k = false;
+			}
+			else {
+				$k = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+			}
 		}
 		foreach ($k as $sor) {
 			$this->getEm()->remove($sor);
 		}
-		$this->getEm()->flush();
+		if ($k) {
+			$this->getEm()->flush();
+		}
 	}
 
 	public function add() {
