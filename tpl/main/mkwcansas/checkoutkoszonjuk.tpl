@@ -29,7 +29,7 @@
                             <li>Általános szerződési feltételek</li>
                         </ul>
                         <p>Ha mégsem találja meg az Önt érdeklő témakört, természetesen bármikor hívhat minket, vagy küldhet emailt, boldogan állunk rendelkezésére!</p>
-                        <a href="{$prevuri}" class="btn okbtn">Folytatom a vásárlást</a>
+                        <a href="/" class="btn okbtn">Folytatom a vásárlást</a>
 		</div>
 	</div>
 </div>
