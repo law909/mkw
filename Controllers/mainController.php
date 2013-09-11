@@ -121,7 +121,7 @@ class mainController extends \mkwhelpers\Controller {
 		$com=$this->params->getStringParam('slug');
 		$tc=new termekController($this->params);
 		$termek=$tc->getRepo()->findOneBySlug($com);
-		if ($termek) {
+		if ($termek && !$termek->getInaktiv() && $termek->getLathato()) {
 			$this->view=$this->getTemplateFactory()->createMainView('termeklap.tpl');
 			store::fillTemplate($this->view);
 			$this->view->setVar('pagetitle',$termek->getShowOldalcim());
