@@ -92,11 +92,13 @@ $(document).ready(function(){
 	mkw.overrideFormSubmit($termekertesitoform,false,{
 		complete: function(){
 			$termekertesitoform.find('input[name="termekid"]').val('');
-			$termekertesitomodal.modal('hide');
+			mkw.closeMessage();
 		}
 	});
 	$('.js-termekertesitomodalok').on('click',function(e) {
 		e.preventDefault();
+		$termekertesitomodal.modal('hide');
+		mkw.showMessage('Értesíteni fogjuk, amikor a termék kapható lesz.');
 		$termekertesitoform.submit();
 	});
 	$('.js-termekertesitodel').on('click',function(e) {
@@ -428,5 +430,5 @@ $(document).ready(function(){
 	cart.initUI();
 	checkout.initUI();
 	fiok.initUI();
-	
+
 });
