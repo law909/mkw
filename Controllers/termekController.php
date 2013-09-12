@@ -137,12 +137,12 @@ class termekController extends \mkwhelpers\MattableController {
 		$obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
 		$obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
 		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
-		$obj->setLathato($this->params->getBoolRequestParam('lathato', true));
-		$obj->setHozzaszolas($this->params->getBoolRequestParam('hozzaszolas', false));
-		$obj->setAjanlott($this->params->getBoolRequestParam('ajanlott', false));
-		$obj->setKiemelt($this->params->getBoolRequestParam('kiemelt', false));
-		$obj->setInaktiv($this->params->getBoolRequestParam('inaktiv', false));
-		$obj->setMozgat($this->params->getBoolRequestParam('mozgat', true));
+		$obj->setLathato($this->params->getBoolRequestParam('lathato'));
+		$obj->setHozzaszolas($this->params->getBoolRequestParam('hozzaszolas'));
+		$obj->setAjanlott($this->params->getBoolRequestParam('ajanlott'));
+		$obj->setKiemelt($this->params->getBoolRequestParam('kiemelt'));
+		$obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
+		$obj->setMozgat($this->params->getBoolRequestParam('mozgat'));
 		$obj->setHparany($this->params->getFloatRequestParam('hparany'));
 		$obj->setSzelesseg($this->params->getFloatRequestParam('szelesseg'));
 		$obj->setMagassag($this->params->getFloatRequestParam('magassag'));
@@ -151,8 +151,8 @@ class termekController extends \mkwhelpers\MattableController {
 		$obj->setOsszehajthato($this->params->getBoolRequestParam('osszehajthato'));
 		$obj->setKepurl($this->params->getStringRequestParam('kepurl', ''));
 		$obj->setKepleiras($this->params->getStringRequestParam('kepleiras', ''));
-		$obj->setTermekexportbanszerepel($this->params->getBoolRequestParam('termekexportbanszerepel', true));
-		$obj->setNemkaphato($this->params->getBoolRequestParam('nemkaphato', false));
+		$obj->setTermekexportbanszerepel($this->params->getBoolRequestParam('termekexportbanszerepel'));
+		$obj->setNemkaphato($this->params->getBoolRequestParam('nemkaphato'));
 		$farepo = store::getEm()->getRepository('Entities\TermekFa');
 		$fa = $farepo->find($this->params->getIntRequestParam('termekfa1'));
 		if ($fa) {
