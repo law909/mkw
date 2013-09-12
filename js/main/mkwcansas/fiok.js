@@ -63,7 +63,7 @@ var fiok = function($) {
 			mkw.overrideFormSubmit($fiokadataimform, mkwmsg.FiokAdataitModositjuk);
 
 			$('.js-accmegrendelesopen').on('click', function() {
-				$(this).parents('tr').next('tr').toggleClass('notvisible');
+				$(this).next('tr').toggleClass('notvisible');
 				return false;
 			});
 		}

@@ -128,30 +128,45 @@
 							</thead>
 							<tbody class="acc-megrendeles">
 								{foreach $megrendeleslist as $megr}
-								<tr class="acc-megrendelesbordertop acc-megrendelestablekiemelt">
+								<tr class="acc-megrendelesbordertop acc-megrendelestablekiemelt js-accmegrendelesopen">
 									<td>{$megr.id}</td>
 									<td>{$megr.kelt}</td>
 									<td></td>
 									<td>{number_format($megr.ertek,0,'',' ')} Ft</td>
 									<td></td>
-									<td><a href="#" class="js-accmegrendelesopen">V</a></td>
+									<td><a href="#" class="">V</a></td>
 								</tr>
 								<tr class="notvisible acc-megrendelesborderbottom">
 									<td colspan="6">
-										<div><span class="acc-megrendelescaption">Számlázási cím:</span> {$megr.szamlanev|default} {$megr.szamlairszam|default} {$megr.szamlavaros|default} {$megr.szamlautca}</div>
-										<div><span class="acc-megrendelescaption">Adószám:</span> {$megr.adoszam|default}</div>
-										<div><span class="acc-megrendelescaption">Szállítási cím:</span> {$megr.szallnev|default} {$megr.szallirszam|default} {$megr.szallvaros|default} {$megr.szallutca}</div>
-										<div><span class="acc-megrendelescaption">Szállítási mód:</span> {$megr.szallitasimodnev|default}</div>
-										<div><span class="acc-megrendelescaption">Fizetési mód:</span> {$megr.fizmodnev|default}</div>
+										<table>
+											<tr>
+												<td><span class="acc-megrendelescaption">Számlázási cím:</span></td>
+												<td>{$megr.szamlanev|default} {$megr.szamlairszam|default} {$megr.szamlavaros|default} {$megr.szamlautca}</td>
+											</tr>
+											<tr>
+												<td><span class="acc-megrendelescaption">Adószám:</span></td>
+												<td>{$megr.adoszam|default}</td>
+											</tr>
+											<tr>
+												<td><span class="acc-megrendelescaption">Szállítási cím:</span></td>
+												<td>{$megr.szallnev|default} {$megr.szallirszam|default} {$megr.szallvaros|default} {$megr.szallutca}</td>
+											</tr>
+											<tr>
+												<td><span class="acc-megrendelescaption">Szállítási mód:</span></td>
+												<td>{$megr.szallitasimodnev|default}</td>
+											</tr>
+											<tr>
+												<td><span class="acc-megrendelescaption">Fizetési mód:</span></td>
+												<td>{$megr.fizmodnev|default}</td>
+											</tr>
+										</table>
 										<table class="acc-megrendelestetellist">
-											<thead>
-												<tr>
-													<th><div class="textaligncenter">{t('Termék')}</div></th>
-													<th>{t('Megnevezés, cikkszám')}</th>
-													<th><div class="textalignright">{t('Egységár')}</div></th>
-													<th><div class="textaligncenter">{t('Mennyiség')}</div></th>
-													<th><div class="textalignright">{t('Érték')}</div></th>
-												</tr>
+											<thead class="acc-megrendelestetellist">
+													<td><div class="textaligncenter">{t('Termék')}</div></td>
+													<td>{t('Megnevezés, cikkszám')}</td>
+													<td><div class="textalignright">{t('Egységár')}</div></td>
+													<td><div class="textaligncenter">{t('Mennyiség')}</div></td>
+													<td><div class="textalignright">{t('Érték')}</div></td>
 											</thead>
 											<tbody>
 											{foreach $megr.tetellista as $tetel}
@@ -170,13 +185,8 @@
 												</tr>
 											{/foreach}
 											</tbody>
-											<tfoot>
-												<tr>
-													<th colspan="4"><div class="textalignright">{t('Összesen')}:</div></th>
-													<th><div class="textalignright">{number_format($osszesen,0,',',' ')} Ft</div></th>
-												</tr>
-											</tfoot>
 										</table>
+										<div class="textalignright">Összesen: {number_format($osszesen,0,',',' ')} Ft</div>
 									</td>
 								</tr>
 								{/foreach}
