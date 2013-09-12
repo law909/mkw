@@ -26,9 +26,9 @@ var mkw=function($) {
 			classes='btn';
 		$('h4',dlgheader).remove();
 		opts=$.extend(null,options,{
-			header: 'Értesítés',
+			header: mkwmsg.DialogFejlec,
 			buttons: [{
-					caption: 'OK',
+					caption: mkwmsg.DialogOk,
 					_class: 'okbtn',
 					click: function(e) {
 						e.preventDefault();

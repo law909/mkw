@@ -167,7 +167,7 @@ var checkout = function($) {
 				e.preventDefault();
 				var regkell = $('input[name="regkell"]:checked');
 				if (!regkell.length && $chklogin.length) {
-					mkw.showDialog('Válassza ki, hogy szeretne-e regisztrálni a vásárláshoz, vagy jelentkezzen be!');
+					mkw.showDialog(mkwmsg.ChkRegLogin);
 				}
 				else {
 					var $this = $(this),
@@ -251,7 +251,7 @@ var checkout = function($) {
 
 			$('.js-chksendorderbtn').on('click', function(e) {
 				if (!$('input[name="aszfready"]').prop('checked')) {
-					mkw.showDialog('Megrendelés előtt kérjük fogadja el az ÁSZF-et.');
+					mkw.showDialog(mkwmsg.ChkASZF);
 				}
 				else {
 					$.ajax({
@@ -260,7 +260,7 @@ var checkout = function($) {
 							var d = JSON.parse(data);
 							if (kosarhash && kosarhash != d.hash) {
 								var newhash = d.hash;
-								mkw.showDialog('A kosár tartalma megrendelés közben megváltozott, kérem ellenőrizze.');
+								mkw.showDialog(mkwmsg.ChkKosarValtozott);
 								$.ajax({
 									url: '/checkout/gettetellist',
 									success: function(data) {
@@ -271,7 +271,7 @@ var checkout = function($) {
 							}
 							else {
 								if (d.cnt <= 0) {
-									mkw.showDialog('Az Ön kosara üres.');
+									mkw.showDialog(mkwmsg.ChkKosarUres);
 								}
 								else {
 									$('.js-checkoutsubmit').click();

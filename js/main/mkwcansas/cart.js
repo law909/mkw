@@ -1,20 +1,20 @@
-var cart=function($) {
+var cart = function($) {
 
 	function submitMennyEdit(f) {
-		var menny=Math.round($('input[name="mennyiseg"]',f).val());
-		if (menny>0) {
+		var menny = Math.round($('input[name="mennyiseg"]', f).val());
+		if (menny > 0) {
 			$.ajax({
 				url: f.attr('action'),
 				type: 'POST',
 				data: {
-					id: $('input[name="id"]',f).val(),
+					id: $('input[name="id"]', f).val(),
 					mennyiseg: menny
 				},
 				beforeSend: function() {
-					mkw.showMessage('Módosítjuk a mennyiséget.');
+					mkw.showMessage(mkwmsg.KosarMennyisegModositas);
 				},
 				success: function(data) {
-					var d=JSON.parse(data);
+					var d = JSON.parse(data);
 					$('#minikosar').html(d.minikosar);
 					$('table').html(d.tetellist);
 					mkw.initTooltips();
@@ -25,23 +25,23 @@ var cart=function($) {
 			});
 		}
 		else {
-			$('input[name="mennyiseg"]',f).val($('input[name="mennyiseg"]',f).data('org'));
-			mkw.showDialog('Ha nem kíván vásárolni a termékből, törölje a "Töröl" gombbal.');
+			$('input[name="mennyiseg"]', f).val($('input[name="mennyiseg"]', f).data('org'));
+			mkw.showDialog(mkwmsg.KosarMennyisegNulla);
 		}
 	}
 
 	function initUI() {
-		var $cart=$('.js-cart');
+		var $cart = $('.js-cart');
 
-		if ($cart.length>0) {
+		if ($cart.length > 0) {
 			$cart
-			.on('blur','input[name="mennyiseg"]', function() {
-				var $this=$(this);
-				if ($this.val()*1!==$this.data('org')*1) {
+			.on('blur', 'input[name="mennyiseg"]', function() {
+				var $this = $(this);
+				if ($this.val() * 1 !== $this.data('org') * 1) {
 					submitMennyEdit($(this).parents('form.kosarform'));
 				}
 			})
-			.on('submit','.kosarform', function() {
+			.on('submit', '.kosarform', function() {
 				submitMennyEdit($(this));
 				return false;
 			});

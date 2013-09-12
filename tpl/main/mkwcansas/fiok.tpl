@@ -116,7 +116,30 @@
 						</form>
 					</div>
 					<div class="tab-pane" id="megrend">
-						Megrendeléseim
+						{if (count($megrendeleslist)>0)}
+						<table>
+							<thead>
+								<td>Rendelésszám</td>
+								<td>Dátum</td>
+								<td>Állapot</td>
+								<td>Érték</td>
+								<td>Fuvarlevélszám</td>
+							</thead>
+							<tbody>
+								{foreach $megrendeleslist as $megr}
+								<tr>
+									<td>{$megr.id}</td>
+									<td>{$megr.kelt}</td>
+									<td></td>
+									<td>{$megr.ertek}</td>
+									<td></td>
+								</tr>
+								{/foreach}
+							</tbody>
+						</table>
+						{else}
+							Ön sajnos még nem vásárolt tőlünk, szomorúak vagyunk.
+						{/if}
 					</div>
 					<div class="tab-pane" id="visszajel">
 						Visszajelzések

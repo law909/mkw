@@ -1,40 +1,50 @@
 var fiok = function($) {
 
 	function initUI() {
-		var $fiokadataimform=$('#FiokAdataim');
+		var $fiokadataimform = $('#FiokAdataim');
 
-		if ($fiokadataimform.length>0) {
+		if ($fiokadataimform.length > 0) {
 
 			H5F.setup($fiokadataimform);
 
 			$('#VezeteknevEdit,#KeresztnevEdit')
-				.on('input',function(e) {
-					mkwcheck.regNevCheck();
-					$(this).off('keydown');
-				})
-				.on('keydown blur',function(e) {mkwcheck.wasinteraction.doublenev=true;mkwcheck.regNevCheck();})
-				.each(function(i,ez) {mkwcheck.regNevCheck();});
+					.on('input', function(e) {
+				mkwcheck.regNevCheck();
+				$(this).off('keydown');
+			})
+					.on('keydown blur', function(e) {
+				mkwcheck.wasinteraction.doublenev = true;
+				mkwcheck.regNevCheck();
+			})
+					.each(function(i, ez) {
+				mkwcheck.regNevCheck();
+			});
 
 			$('#EmailEdit')
-				.on('input',function(e) {
+					.on('input', function(e) {
+				mkwcheck.regEmailCheck();
+				$(this).off('keydown');
+			})
+					.on('keydown blur', function(e) {
+				mkwcheck.wasinteraction.email = true;
+				mkwcheck.regEmailCheck();
+			})
+					.on('change', function(e) {
+				var $this = $(this);
+				$.ajax({
+					type: 'POST',
+					url: '/checkemail',
+					data: {email: $this.val()}
+				})
+						.done(function(data) {
+					var d = JSON.parse(data);
+					$this.data('hiba', d);
 					mkwcheck.regEmailCheck();
-					$(this).off('keydown');
-				})
-				.on('keydown blur',function(e) {mkwcheck.wasinteraction.email=true;mkwcheck.regEmailCheck();})
-				.on('change',function(e) {
-					var $this=$(this);
-					$.ajax({
-						type:'POST',
-						url:'/checkemail',
-						data:{email:$this.val()}
-					})
-					.done(function(data){
-						var d=JSON.parse(data);
-						$this.data('hiba',d);
-						mkwcheck.regEmailCheck();
-					});
-				})
-				.each(function(i,ez) {mkwcheck.regEmailCheck();});
+				});
+			})
+					.each(function(i, ez) {
+				mkwcheck.regEmailCheck();
+			});
 
 			$('.js-copyszamlaadat').on('click', function() {
 				$('input[name="szallnev"]').val($('input[name="nev"]').val());
@@ -50,21 +60,21 @@ var fiok = function($) {
 				container: 'body'
 			});
 
-			mkw.overrideFormSubmit($fiokadataimform,'Adatait módosítjuk...');
+			mkw.overrideFormSubmit($fiokadataimform, mkwmsg.FiokAdataitModositjuk);
 		}
 
-		var $fiokszamlaadatok=$('#FiokSzamlaAdatok');
-		if ($fiokszamlaadatok.length>0) {
+		var $fiokszamlaadatok = $('#FiokSzamlaAdatok');
+		if ($fiokszamlaadatok.length > 0) {
 			mkw.irszamTypeahead('input[name="irszam"]', 'input[name="varos"]');
 			mkw.varosTypeahead('input[name="irszam"]', 'input[name="varos"]');
-			mkw.overrideFormSubmit($fiokszamlaadatok,'Adatait módosítjuk...');
+			mkw.overrideFormSubmit($fiokszamlaadatok, mkwmsg.FiokAdataitModositjuk);
 		}
 
-		var $fiokszallitasiadatok=$('#FiokSzallitasiAdatok');
-		if ($fiokszallitasiadatok.length>0) {
+		var $fiokszallitasiadatok = $('#FiokSzallitasiAdatok');
+		if ($fiokszallitasiadatok.length > 0) {
 			mkw.irszamTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
 			mkw.varosTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
-			mkw.overrideFormSubmit($fiokszallitasiadatok,'Adatait módosítjuk...');
+			mkw.overrideFormSubmit($fiokszallitasiadatok, mkwmsg.FiokAdataitModositjuk);
 		}
 	}
 

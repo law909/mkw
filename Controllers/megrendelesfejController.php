@@ -102,4 +102,22 @@ class megrendelesfejController extends bizonylatfejController {
 		$view->setVar('esedekessegalap',store::getParameter(\mkw\consts::Esedekessegalap,1));
 		return $view->getTemplateResult();
 	}
+
+	public function getFiokList() {
+		$pc = new partnerController($this->params);
+		$filter=array();
+		$filter['fields'][] = 'partner';
+		$filter['clauses'][] = '=';
+		$filter['values'][] = $pc->getLoggedInUser();
+		$l = $this->getRepo()->getWithJoins($filter, array('kelt' => 'ASC'));
+		$ret = array();
+		foreach($l as $it) {
+			$ret[] = array(
+				'id' => $it->getId(),
+				'kelt' => $it->getKeltStr(),
+				'ertek' => $it->getBrutto()
+			);
+		}
+		return $ret;
+	}
 }
