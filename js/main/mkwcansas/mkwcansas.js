@@ -92,13 +92,15 @@ $(document).ready(function() {
 	mkw.overrideFormSubmit($termekertesitoform, false, {
 		complete: function() {
 			$termekertesitoform.find('input[name="termekid"]').val('');
-			mkw.closeMessage();
 		}
 	});
 	$('.js-termekertesitomodalok').on('click', function(e) {
 		e.preventDefault();
 		$termekertesitomodal.modal('hide');
 		mkw.showMessage(mkwmsg.TermekErtesitoKoszonjuk);
+		window.setTimeout(function() {
+			mkw.closeMessage();
+		}, 2500);
 		$termekertesitoform.submit();
 	});
 	$('.js-termekertesitodel').on('click', function(e) {
