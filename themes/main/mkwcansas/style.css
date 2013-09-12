@@ -132,7 +132,7 @@ input[type="button"].chk-sendorderbtn{width:100%;}
 .chk-tooltippedcontainer{width:auto;}
 .chk-loginrightborder{border-right-color:#e8e8e8;border-right-style:solid;border-right-width:1px;}
 .acc-copyszamlaadat{padding-left:180px;padding-bottom:10px;}.acc-copyszamlaadat a{cursor:pointer;}
-.acc-megrendelestable thead{background-color:#6e6e6e;color:#f7f7f7;font-weight:bold;}.acc-megrendelestable thead td{padding:5px 10px;}
-.acc-megrendelestable tbody td{padding:5px 10px;}
+thead.acc-megrendeles{background-color:#6e6e6e;color:#f7f7f7;font-weight:bold;}thead.acc-megrendeles td{padding:5px 10px;}
+tbody.acc-megrendeles td{padding:5px 10px;}
 .acc-megrendelestablekiemelt{background:#e8e8e8;}
 @media (min-width:480px){#navmain li .sub{width:400px;}}@media (max-width:767px){.chk-tooltippedcontainer{width:100%;}}@media (min-width:767px){#navmain li .sub{width:700px;} #navmain li .sub ul{width:125px;float:left;}}@media (min-width:979px){#navmain li .sub{width:940px;} #navmain li .sub ul{width:185px;float:left;}}

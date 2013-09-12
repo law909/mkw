@@ -310,9 +310,11 @@ class Bizonylatfej {
 		$ret['adoszam'] = $this->getPartneradoszam();
 		$ret['webshopmessage'] = $this->getWebshopmessage();
 		$ret['couriermessage'] = $this->getCouriermessage();
+		$tetellist = array();
 		foreach($this->bizonylattetelek as $tetel) {
-			$ret = $ret + $tetel->toLista();
+			$tetellist[] = $tetel->toLista();
 		}
+		$ret['tetellista'] = $tetellist;
 		return $ret;
 	}
 
