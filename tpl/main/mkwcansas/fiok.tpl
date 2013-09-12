@@ -128,7 +128,7 @@
 							</thead>
 							<tbody class="acc-megrendeles">
 								{foreach $megrendeleslist as $megr}
-								<tr{if ($megr@index mod 2==1)} class="acc-megrendelestablekiemelt"{/if}>
+								<tr class="acc-megrendelesbordertop{if ($megr@index mod 2==1)} acc-megrendelestablekiemelt{/if}">
 									<td>{$megr.id}</td>
 									<td>{$megr.kelt}</td>
 									<td></td>
@@ -136,12 +136,13 @@
 									<td></td>
 									<td><a href="#" class="js-accmegrendelesopen">V</a></td>
 								</tr>
-								<tr class="notvisible">
+								<tr class="notvisible acc-megrendelesborderbottom">
 									<td colspan="5">
-										<div><span>Számlázási cím:</span> {$megr.szamlanev|default} {$megr.szamlairszam|default} {$megr.szamlavaros|default} {$megr.szamlautca}</div>
-										<div><span>Szállítási cím:</span> {$megr.szallnev|default} {$megr.szallirszam|default} {$megr.szallvaros|default} {$megr.szallutca}</div>
-										<div><span>Szállítási mód:</span> {$megr.szallitasimod|default}</div>
-										<div><span>Fizetési mód:</span> {$megr.fizmod|default}</div>
+										<div><span class="acc-megrendelescaption">Számlázási cím:</span> {$megr.szamlanev|default} {$megr.szamlairszam|default} {$megr.szamlavaros|default} {$megr.szamlautca}</div>
+										<div><span class="acc-megrendelescaption">Adószám:</span> {$megr.adoszam|default}</div>
+										<div><span class="acc-megrendelescaption">Szállítási cím:</span> {$megr.szallnev|default} {$megr.szallirszam|default} {$megr.szallvaros|default} {$megr.szallutca}</div>
+										<div><span class="acc-megrendelescaption">Szállítási mód:</span> {$megr.szallitasimodnev|default}</div>
+										<div><span class="acc-megrendelescaption">Fizetési mód:</span> {$megr.fizmodnev|default}</div>
 										<table>
 											<thead>
 												<tr>
@@ -155,8 +156,8 @@
 											<tbody>
 											{foreach $megr.tetellista as $tetel}
 												<tr class="clickable" data-href="{$tetel.link}">
-													<td><div class="textaligncenter"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></div></td>
-													<td><div>{$tetel.caption}</div>
+													<td><div class="textaligncenter"><a href="{$tetel.link}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></a></div></td>
+													<td><div><a href="{$tetel.link}">{$tetel.caption}</a></div>
 														<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}:{$valtozat.ertek}&nbsp;{/foreach}</div>
 														{$tetel.cikkszam}</td>
 													<td><div class="textalignright">{number_format($tetel.bruttoegysarhuf,0,',',' ')} Ft</div></td>
