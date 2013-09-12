@@ -138,4 +138,5 @@ tbody.acc-megrendeles td{padding:5px 10px;}
 .acc-megrendelesbordertop{border-top:solid;}
 .acc-megrendelesborderbottom{border-bottom:solid;}
 .acc-megrendelescaption{font-weight:bold;}
+.acc-megrendelestetellist{border:solid 1px;width:100%;}
 @media (min-width:480px){#navmain li .sub{width:400px;}}@media (max-width:767px){.chk-tooltippedcontainer{width:100%;}}@media (min-width:767px){#navmain li .sub{width:700px;} #navmain li .sub ul{width:125px;float:left;}}@media (min-width:979px){#navmain li .sub{width:940px;} #navmain li .sub ul{width:185px;float:left;}}

@@ -128,7 +128,7 @@
 							</thead>
 							<tbody class="acc-megrendeles">
 								{foreach $megrendeleslist as $megr}
-								<tr class="acc-megrendelesbordertop{if ($megr@index mod 2==1)} acc-megrendelestablekiemelt{/if}">
+								<tr class="acc-megrendelesbordertop acc-megrendelestablekiemelt">
 									<td>{$megr.id}</td>
 									<td>{$megr.kelt}</td>
 									<td></td>
@@ -137,13 +137,13 @@
 									<td><a href="#" class="js-accmegrendelesopen">V</a></td>
 								</tr>
 								<tr class="notvisible acc-megrendelesborderbottom">
-									<td colspan="5">
+									<td colspan="6">
 										<div><span class="acc-megrendelescaption">Számlázási cím:</span> {$megr.szamlanev|default} {$megr.szamlairszam|default} {$megr.szamlavaros|default} {$megr.szamlautca}</div>
 										<div><span class="acc-megrendelescaption">Adószám:</span> {$megr.adoszam|default}</div>
 										<div><span class="acc-megrendelescaption">Szállítási cím:</span> {$megr.szallnev|default} {$megr.szallirszam|default} {$megr.szallvaros|default} {$megr.szallutca}</div>
 										<div><span class="acc-megrendelescaption">Szállítási mód:</span> {$megr.szallitasimodnev|default}</div>
 										<div><span class="acc-megrendelescaption">Fizetési mód:</span> {$megr.fizmodnev|default}</div>
-										<table>
+										<table class="acc-megrendelestetellist">
 											<thead>
 												<tr>
 													<th><div class="textaligncenter">{t('Termék')}</div></th>
