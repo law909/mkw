@@ -291,6 +291,31 @@ class Bizonylatfej {
 		$this->setPersistentData();
 	}
 
+	public function toLista() {
+		$ret = array();
+		$ret['id'] = $this->getId();
+		$ret['kelt'] = $this->getKeltStr();
+		$ret['ertek'] = $this->getBrutto();
+		$ret['fizmodnev'] = $this->getFizmodnev();
+		$ret['szallitasimodnev'] = $this->getSzallitasimodnev();
+		$ret['szamlanev'] = $this->getPartnernev();
+		$ret['szamlairszam'] = $this->getPartnerirszam();
+		$ret['szamlavaros'] = $this->getPartnervaros();
+		$ret['szamlautca'] = $this->getPartnerutca();
+		$ret['telefon'] = $this->getPartnertelefon();
+		$ret['szallnev'] = $this->getSzallnev();
+		$ret['szallirszam'] = $this->getSzallirszam();
+		$ret['szallvaros'] = $this->getSzallvaros();
+		$ret['szallutca'] = $this->getSzallutca();
+		$ret['adoszam'] = $this->getPartneradoszam();
+		$ret['webshopmessage'] = $this->getWebshopmessage();
+		$ret['couriermessage'] = $this->getCouriermessage();
+		foreach($this->bizonylattetelek as $tetel) {
+			$ret = $ret + $tetel->toLista();
+		}
+		return $ret;
+	}
+
 	public function setPersistentData() {
 		$this->setTulajData();
 	}

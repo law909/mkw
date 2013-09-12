@@ -112,11 +112,7 @@ class megrendelesfejController extends bizonylatfejController {
 		$l = $this->getRepo()->getWithJoins($filter, array('kelt' => 'ASC'));
 		$ret = array();
 		foreach($l as $it) {
-			$ret[] = array(
-				'id' => $it->getId(),
-				'kelt' => $it->getKeltStr(),
-				'ertek' => $it->getBrutto()
-			);
+			$ret[] = $it->toLista();
 		}
 		return $ret;
 	}

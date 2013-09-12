@@ -8,28 +8,28 @@ var fiok = function($) {
 			H5F.setup($fiokadataimform);
 
 			$('#VezeteknevEdit,#KeresztnevEdit')
-					.on('input', function(e) {
+			.on('input', function(e) {
 				mkwcheck.regNevCheck();
 				$(this).off('keydown');
 			})
-					.on('keydown blur', function(e) {
+			.on('keydown blur', function(e) {
 				mkwcheck.wasinteraction.doublenev = true;
 				mkwcheck.regNevCheck();
 			})
-					.each(function(i, ez) {
+			.each(function(i, ez) {
 				mkwcheck.regNevCheck();
 			});
 
 			$('#EmailEdit')
-					.on('input', function(e) {
+			.on('input', function(e) {
 				mkwcheck.regEmailCheck();
 				$(this).off('keydown');
 			})
-					.on('keydown blur', function(e) {
+			.on('keydown blur', function(e) {
 				mkwcheck.wasinteraction.email = true;
 				mkwcheck.regEmailCheck();
 			})
-					.on('change', function(e) {
+			.on('change', function(e) {
 				var $this = $(this);
 				$.ajax({
 					type: 'POST',
@@ -42,7 +42,7 @@ var fiok = function($) {
 					mkwcheck.regEmailCheck();
 				});
 			})
-					.each(function(i, ez) {
+			.each(function(i, ez) {
 				mkwcheck.regEmailCheck();
 			});
 
@@ -61,6 +61,11 @@ var fiok = function($) {
 			});
 
 			mkw.overrideFormSubmit($fiokadataimform, mkwmsg.FiokAdataitModositjuk);
+
+			$('.js-accmegrendelesopen').on('click', function() {
+				$(this).parents('tr').next('tr').toggleClass('notvisible');
+				return false;
+			});
 		}
 
 		var $fiokszamlaadatok = $('#FiokSzamlaAdatok');
