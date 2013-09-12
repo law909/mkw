@@ -128,7 +128,7 @@
 							</thead>
 							<tbody class="acc-megrendeles">
 								{foreach $megrendeleslist as $megr}
-								<tr class="acc-megrendelesbordertop acc-megrendelestablekiemelt js-accmegrendelesopen">
+								<tr class="acc-megrendelesbordertop acc-megrendelestablerow js-accmegrendelesopen">
 									<td>{$megr.id}</td>
 									<td>{$megr.kelt}</td>
 									<td></td>

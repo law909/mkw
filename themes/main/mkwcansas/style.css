@@ -134,7 +134,7 @@ input[type="button"].chk-sendorderbtn{width:100%;}
 .acc-copyszamlaadat{padding-left:180px;padding-bottom:10px;}.acc-copyszamlaadat a{cursor:pointer;}
 thead.acc-megrendeles{background-color:#6e6e6e;color:#f7f7f7;font-weight:bold;}thead.acc-megrendeles td{padding:5px 10px;}
 tbody.acc-megrendeles td{padding:5px 10px;}
-.acc-megrendelestablekiemelt{background:#e8e8e8;}
+.acc-megrendelestablerow{background:#e8e8e8;cursor:pointer;}
 .acc-megrendelesbordertop{border-top:solid;}
 .acc-megrendelesborderbottom{border-bottom:solid;}
 .acc-megrendelescaption{font-weight:bold;}
