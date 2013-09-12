@@ -117,22 +117,27 @@
 					</div>
 					<div class="tab-pane" id="megrend">
 						{if (count($megrendeleslist)>0)}
-						<table>
+						<table class="acc-megrendelestable">
 							<thead>
 								<td>Rendelésszám</td>
 								<td>Dátum</td>
 								<td>Állapot</td>
 								<td>Érték</td>
 								<td>Fuvarlevélszám</td>
+								<td></td>
 							</thead>
 							<tbody>
 								{foreach $megrendeleslist as $megr}
-								<tr>
+								<tr{if ($megr@index mod 2==1)} class="acc-megrendelestablekiemelt"{/if}>
 									<td>{$megr.id}</td>
 									<td>{$megr.kelt}</td>
 									<td></td>
-									<td>{$megr.ertek}</td>
+									<td>{number_format($megr.ertek,0,'',' ')}</td>
 									<td></td>
+									<td><a href="#" class="js-accmegrendelesopen">V</a></td>
+								</tr>
+								<tr class="notvisible">
+									<td>tételek</td>
 								</tr>
 								{/foreach}
 							</tbody>

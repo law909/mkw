@@ -192,6 +192,18 @@ class Bizonylattetel {
 		$this->szulobizonylattetelek = new ArrayCollection();
 	}
 
+	public function toLista() {
+		$ret = array();
+		$termek = $this->getTermek();
+		$ret = $ret + $termek->toKosar($this->getTermekvaltozat());
+		$ret['mennyiseg'] = $this->getMennyiseg();
+		$ret['nettoegysar'] = $this->getNettoegysar();
+		$ret['bruttoegysar'] = $this->getBruttoegysar();
+		$ret['netto'] = $this->getNetto();
+		$ret['brutto'] = $this->getBrutto();
+		return $ret;
+	}
+
 	public function setPersistentData() {
 		$bf = $this->bizonylatfej;
 		if ($bf) {

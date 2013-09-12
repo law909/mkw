@@ -2,7 +2,7 @@ var mkw=function($) {
 
 	function showMessage(msg) {
 		var msgcenter=$('#messagecenter');
-		msgcenter.text(msg);
+		msgcenter.html(msg);
 		$.magnificPopup.open({
 			modal: true,
 			items: [

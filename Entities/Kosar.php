@@ -1,4 +1,5 @@
 <?php
+
 namespace Entities;
 
 /**
@@ -6,70 +7,81 @@ namespace Entities;
  * @Table(name="kosar")
  */
 class Kosar {
+
 	/**
 	 * @Id @Column(type="integer")
 	 * @GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
+
 	/**
 	 * @gedmo:Timestampable(on="create")
 	 * @Column(type="datetime",nullable=true)
 	 */
 	private $created;
+
 	/**
 	 * @gedmo:Timestampable(on="create")
 	 * @gedmo:Timestampable(on="update")
 	 * @Column(type="datetime",nullable=true)
 	 */
 	private $lastmod;
+
 	/** @Column(type="string",length=255,nullable=true) */
 	private $sessionid;
+
 	/**
 	 * @ManyToOne(targetEntity="Partner",inversedBy="kosarak")
 	 * @JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="no action")
 	 */
 	private $partner;
+
 	/**
 	 * @ManyToOne(targetEntity="Termek",inversedBy="kosarak")
 	 * @JoinColumn(name="termek_id", referencedColumnName="id",nullable=true,onDelete="no action")
 	 */
 	private $termek;
+
 	/**
 	 * @ManyToOne(targetEntity="TermekValtozat",inversedBy="kosarak")
 	 * @JoinColumn(name="termekvaltozat_id", referencedColumnName="id",nullable=true,onDelete="no action")
 	 */
 	private $termekvaltozat;
+
 	/** @Column(type="decimal",precision=14,scale=2,nullable=true) */
-	private $mennyiseg=0;
+	private $mennyiseg = 0;
+
 	/**
 	 * @ManyToOne(targetEntity="Valutanem",inversedBy="kosarak")
 	 * @JoinColumn(name="valutanem_id",referencedColumnName="id",onDelete="cascade")
 	 */
 	private $valutanem;
+
 	/** @Column(type="decimal",precision=14,scale=4,nullable=true) */
 	private $nettoegysar;
+
 	/** @Column(type="decimal",precision=14,scale=4,nullable=true) */
 	private $bruttoegysar;
 
 	public function toLista() {
-		$ret=array();
-		$termek=$this->getTermek();
-		$ret=$ret+$termek->toKosar($this->getTermekvaltozat());
-		$ret['id']=$this->getId();
-		$ret['bruttoegysarhuf']=$this->getBruttoegysar();
-		$ret['mennyiseg']=$this->getMennyiseg();
-		$ret['bruttohuf']=$this->getBruttoegysar()*$this->getMennyiseg();
-		$valt=$this->getTermekvaltozat();
-		$v=array();
+		$ret = array();
+		$termek = $this->getTermek();
+		$ret = $ret + $termek->toKosar($this->getTermekvaltozat());
+		$ret['id'] = $this->getId();
+		$ret['bruttoegysarhuf'] = $this->getBruttoegysar();
+		$ret['mennyiseg'] = $this->getMennyiseg();
+		$ret['bruttohuf'] = $this->getBruttoegysar() * $this->getMennyiseg();
+		$valt = $this->getTermekvaltozat();
+		$v = array();
 		if ($valt) {
 			if ($valt->getAdatTipus1()) {
-				$v[]=array('nev'=>$valt->getAdatTipus1Nev(),'ertek'=>$valt->getErtek1());
+				$v[] = array('nev' => $valt->getAdatTipus1Nev(), 'ertek' => $valt->getErtek1());
 			}
 			if ($valt->getAdatTipus2()) {
-				$v[]=array('nev'=>$valt->getAdatTipus2Nev(),'ertek'=>$valt->getErtek2());
+				$v[] = array('nev' => $valt->getAdatTipus2Nev(), 'ertek' => $valt->getErtek2());
 			}
 		}
-		$ret['valtozatok']=$v;
+		$ret['valtozatok'] = $v;
 		$ret['editlink'] = \mkw\Store::getRouter()->generate('kosaredit');
 		$ret['showcheckoutlink'] = \mkw\Store::getRouter()->generate('showcheckout');
 		return $ret;
@@ -87,7 +99,7 @@ class Kosar {
 		$this->sessionid = $adat;
 	}
 
-	public function getPartner(){
+	public function getPartner() {
 		return $this->partner;
 	}
 
@@ -106,21 +118,21 @@ class Kosar {
 	}
 
 	public function setPartner($val) {
-		if ($this->partner!==$val) {
-			$this->partner=$val;
+		if ($this->partner !== $val) {
+			$this->partner = $val;
 //			$val->addBizonylatfej($this);
 		}
 	}
 
 	public function removePartner() {
-		if ($this->partner!==null) {
+		if ($this->partner !== null) {
 //			$val=$this->partner;
-			$this->partner=null;
+			$this->partner = null;
 //			$val->removeBizonylatfej($this);
 		}
 	}
 
-	public function getTermek(){
+	public function getTermek() {
 		return $this->termek;
 	}
 
@@ -132,21 +144,21 @@ class Kosar {
 	}
 
 	public function setTermek(Termek $val) {
-		if ($this->termek!==$val) {
-			$this->termek=$val;
+		if ($this->termek !== $val) {
+			$this->termek = $val;
 //			$val->addBizonylattetelek($this);
 		}
 	}
 
 	public function removeTermek() {
-		if ($this->termek !==null) {
+		if ($this->termek !== null) {
 //			$val=$this->termek;
-			$this->termek=null;
+			$this->termek = null;
 //			$val->removeBizonylattetelek($this);
 		}
 	}
 
-	public function getTermekvaltozat(){
+	public function getTermekvaltozat() {
 		return $this->termekvaltozat;
 	}
 
@@ -158,16 +170,16 @@ class Kosar {
 	}
 
 	public function setTermekvaltozat(TermekValtozat $val) {
-		if ($this->termekvaltozat!==$val) {
-			$this->termekvaltozat=$val;
+		if ($this->termekvaltozat !== $val) {
+			$this->termekvaltozat = $val;
 //			$val->addBizonylattetelek($this);
 		}
 	}
 
 	public function removeTermekvaltozat() {
-		if ($this->termekvaltozat !==null) {
+		if ($this->termekvaltozat !== null) {
 //			$val=$this->termek;
-			$this->termekvaltozat=null;
+			$this->termekvaltozat = null;
 //			$val->removeBizonylattetelek($this);
 		}
 	}
@@ -181,7 +193,7 @@ class Kosar {
 	}
 
 	public function setMennyiseg($val) {
-		$this->mennyiseg=$val;
+		$this->mennyiseg = $val;
 	}
 
 	public function getLastmod() {
@@ -197,8 +209,8 @@ class Kosar {
 	}
 
 	public function setNettoegysar($netto) {
-		$this->nettoegysar=$netto;
-		$this->bruttoegysar=$this->termek->getAfa()->calcBrutto($netto);
+		$this->nettoegysar = $netto;
+		$this->bruttoegysar = $this->termek->getAfa()->calcBrutto($netto);
 	}
 
 	public function getBruttoegysar() {
@@ -206,8 +218,8 @@ class Kosar {
 	}
 
 	public function setBruttoegysar($brutto) {
-		$this->bruttoegysar=$brutto;
-		$this->nettoegysar=$this->termek->getAfa()->calcNetto($brutto);
+		$this->bruttoegysar = $brutto;
+		$this->nettoegysar = $this->termek->getAfa()->calcNetto($brutto);
 	}
 
 	public function getValutanem() {
@@ -215,7 +227,7 @@ class Kosar {
 	}
 
 	public function setValutanem($valutanem) {
-		$this->valutanem=$valutanem;
+		$this->valutanem = $valutanem;
 	}
 
 	public function getValutanemNev() {
@@ -224,4 +236,5 @@ class Kosar {
 		}
 		return '';
 	}
+
 }

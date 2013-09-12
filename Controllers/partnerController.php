@@ -446,6 +446,9 @@ class partnerController extends \mkwhelpers\MattableController {
 			$view->setVar('user', $this->loadVars($user)); // fillTemplate-ben megtortenik
 			$tec = new termekertesitoController($this->params);
 			$view->setVar('ertesitok', $tec->getAllByPartner($user));
+			$megrc = new megrendelesfejController($this->params);
+			$megrlist = $megrc->getFiokList();
+			$view->setVar('megrendeleslist', $megrlist);
 			$view->printTemplateResult();
 		}
 		else {
