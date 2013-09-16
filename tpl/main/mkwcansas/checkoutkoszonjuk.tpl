@@ -19,7 +19,7 @@
                         <p>Természetesen igen, mindaddig, amíg ki nem küldjük, Önnek módjában áll változtatni a rendelésén. Ennek két módja van:</p>
                         <ul>
                             <li>telefonon: <b>20/342-1511</b></li>
-                            <li>emailben: <a href="mailto:info@mindentkapni.hu?subject=Megrendelés módosítása '{$megrendelesszam}'">info@mindentkapni.hu</a></li>
+                            <li>emailben: <a href="mailto:info@mindentkapni.hu?subject=Megrendelés módosítása {$megrendelesszam}">info@mindentkapni.hu</a></li>
                         </ul>
                         <h5>Kérdéseim lennének, hol találok válaszokat?</h5>
                         <p>Csokorba gyűjtöttük a leggyakrabban felmerült kérdéseket, melyeket a következő oldalakon meg is válaszoltunk:</p>
