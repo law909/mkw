@@ -27,6 +27,10 @@
 				<td><input id="KeresztnevEdit" name="keresztnev" type="text" size="20" maxlength="255" value="{$partner.keresztnev}">
 			</tr>
 			<tr>
+				<td><label for="SzallitoEdit">{t('Beszállító')}:</label></td>
+				<td><input id="SzallitoEdit" name="szallito" type="checkbox"{if ($partner.szallito==1)} checked="checked"{/if}></td>
+			</tr>
+			<tr>
 				<td><label for="IrszamEdit">{t('Cím')}:</label></td>
 				<td colspan="3">
 					<input id="IrszamEdit" name="irszam" type="text" size="6" maxlength="10" value="{$partner.irszam}" placeholder="{t('ir.szám')}" required="required">

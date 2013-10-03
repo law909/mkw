@@ -67,6 +67,7 @@ class partnerController extends \mkwhelpers\MattableController {
 		$x['vendeg'] = $t->getVendeg();
 		$x['ip'] = $t->getIp();
 		$x['referrer'] = $t->getReferrer();
+		$x['szallito'] = $t->getSzallito();
 		return $x;
 	}
 
@@ -106,6 +107,7 @@ class partnerController extends \mkwhelpers\MattableController {
 		$obj->setSzuletesiido($this->params->getStringRequestParam('szuletesiido'));
 		$obj->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));
 		$obj->setUjdonsaghirlevelkell($this->params->getBoolRequestParam('ujdonsaghirlevelkell'));
+		$obj->setSzallito($this->params->getBoolRequestParam('szallito'));
 		$fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
 		if ($fizmod) {
 			$obj->setFizmod($fizmod);

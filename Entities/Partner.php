@@ -190,6 +190,9 @@ class Partner {
 	/** @Column(type="string",length=255,nullable=true) */
 	private $referrer;
 
+	/** @Column(type="boolean") */
+	private $szallito = false;
+
 	public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -720,4 +723,11 @@ class Partner {
 		$this->referrer = $val;
 	}
 
+	public function getSzallito() {
+		return $this->szallito;
+	}
+
+	public function setSzallito($val) {
+		$this->szallito = $val;
+	}
 }

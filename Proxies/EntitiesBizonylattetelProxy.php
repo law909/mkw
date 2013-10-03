@@ -36,6 +36,12 @@ class EntitiesBizonylattetelProxy extends \Entities\Bizonylattetel implements \D
     }
     
     
+    public function toLista()
+    {
+        $this->__load();
+        return parent::toLista();
+    }
+
     public function setPersistentData()
     {
         $this->__load();

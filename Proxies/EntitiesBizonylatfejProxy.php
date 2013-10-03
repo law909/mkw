@@ -42,6 +42,12 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::doStuffOnPrePersist();
     }
 
+    public function toLista()
+    {
+        $this->__load();
+        return parent::toLista();
+    }
+
     public function setPersistentData()
     {
         $this->__load();
