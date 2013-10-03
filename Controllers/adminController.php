@@ -31,7 +31,7 @@ class adminController extends mkwhelpers\Controller {
 			$cimke1=new Entities\Termekcimketorzs();
 			$cimke1->setKategoria($marka);
 			$cimke1->setNev($nev);
-			$cimke1->setKepurl($filenev);
+//			$cimke1->setKepurl($filenev);
 			store::getEm()->persist($cimke1);
 		}
 		return $cimke1;
@@ -49,7 +49,7 @@ class adminController extends mkwhelpers\Controller {
 			$cimke1=new Entities\Termekcimketorzs();
 			$cimke1->setKategoria($jelzo);
 			$cimke1->setNev($nev);
-			$cimke1->setKepurl($filenev);
+//			$cimke1->setKepurl($filenev);
 			store::getEm()->persist($cimke1);
 		}
 		return $cimke1;
@@ -122,14 +122,85 @@ class adminController extends mkwhelpers\Controller {
 		}
 		fclose($import);
 
+		$nemkellmarka = array(
+			'Best Body Nutrition',
+			'Bremshey',
+			'Buff',
+			'Columbia',
+			'Copag',
+			'Daum Electronic',
+			'Esso',
+			'EURO SuperCompact',
+			'Ezekiel',
+			'Finnlo',
+			'Gold Game',
+			'Hammer',
+			'Horizon Fitness',
+			'Kensho',
+			'Kettler',
+			'Lando',
+			'Life Fitness',
+			'Mammut Nutrition',
+			'Maranello',
+			'Marcy',
+			'Millenium',
+			'MOL',
+			'MrRoy',
+			'Omni Fitness',
+			'Pro Energy',
+			'Quixoft',
+			'Rapid',
+			'Rebel',
+			'Reebok',
+			'Robust',
+			'Stamm Bodyfit',
+			'TAMA',
+			'Technogym',
+			'Texaco',
+			'Thor Steinar',
+			'Tunturi',
+			'Veneziana',
+			'Victorinox',
+			'Vision Fitness',
+			'Vital Force'
+		);
 		$markatomb=array();
 		$import=fopen('marka.csv','r');
 		fgetcsv($import,0,';','"');
 		while(($data=fgetcsv($import,0,';','"'))!==false) {
-			$kepneve=$this->mindentkapnikep(mb_convert_encoding($data[6],'UTF8','ISO-8859-2'));
-			$markatomb[$data[0]]=array(mb_convert_encoding($data[5],'UTF8','ISO-8859-2'),$kepneve);
+//			$kepneve=$this->mindentkapnikep(mb_convert_encoding($data[6],'UTF8','ISO-8859-2'));
+			if (!in_array($data[5], $nemkellmarka)) {
+				$kepneve='';
+				$markatomb[$data[0]]=array(mb_convert_encoding($data[5],'UTF8','ISO-8859-2'),$kepneve);
+			}
 		}
 		fclose($import);
+
+		$nemkellgyarto = array(
+			'Dynamol',
+			'GLS',
+			'Gold Line Hungary Kft',
+			'Hifly Distribution Kft',
+			'JELKÉPZŐ',
+			'Kormos',
+			'Kunerth Károlyné Marcsi',
+			'Kunertné',
+			'Lovely Shop',
+			'Mráz Tamás',
+			'Peti',
+			'Skolik Ágnes',
+			'Smart Direkt Hungária Kft',
+			'Tüske Bt',
+			'Vital Force'
+		);
+		$gyartotomb = array();
+		$import = fopen('partner.csv', 'r');
+		fgetcsv($import, 0, ';', '"');
+		while(($data = fgetcsv($import, 0, ';', '"'))!== false) {
+			if (!in_array(mb_convert_encoding($data[5], 'UTF8', 'ISO-8859-2'), $nemkellgyarto)) {
+				$gyartotomb[$data[0]] = mb_convert_encoding($data[5], 'UTF8', 'ISO-8859-2');
+			}
+		}
 
 		$cimkecsoporttomb=array();
 		$import=fopen('kategoria_attributum.csv','r');
@@ -148,7 +219,8 @@ class adminController extends mkwhelpers\Controller {
 		$import=fopen('jelzo.csv','r');
 		fgetcsv($import,0,';','"');
 		while(($data=fgetcsv($import,0,';','"'))!==false) {
-			$kepneve=$this->mindentkapnikep(mb_convert_encoding($data[6],'UTF8','ISO-8859-2'));
+//			$kepneve=$this->mindentkapnikep(mb_convert_encoding($data[6],'UTF8','ISO-8859-2'));
+			$kepneve = '';
 			$jelzolista[$data[0]]=array(mb_convert_encoding($data[5],'UTF8','ISO-8859-2'),$kepneve);
 		}
 		fclose($import);
@@ -185,7 +257,7 @@ class adminController extends mkwhelpers\Controller {
 		fclose($import);
 		unset($cimkecsoporttomb);
 
-		$keptomb=array();
+/*		$keptomb=array();
 		$import=fopen('termek_kep.csv','r');
 		fgetcsv($import,0,';','"');
 		while(($data=fgetcsv($import,0,';','"'))!==false) {
@@ -193,12 +265,15 @@ class adminController extends mkwhelpers\Controller {
 			$keptomb[$data[5]][]=array(mb_convert_encoding($data[6],'UTF8','ISO-8859-2'),$kepneve);
 		}
 		fclose($import);
-
+*/
 		$termekvertek=array();
 		$import=fopen('termek_valtozat_ertek.csv','r');
 		fgetcsv($import,0,';','"');
 		while(($data=fgetcsv($import,0,';','"'))!==false) {
-			$termekvertek[$data[5]][]=mb_convert_encoding($data[6],'UTF8','ISO-8859-2');
+			$termekvertek[$data[5]][]=array(
+				'nev'=>mb_convert_encoding($data[6],'UTF8','ISO-8859-2'),
+				'elerheto'=>$data[7]*1
+			);
 		}
 		fclose($import);
 
@@ -240,121 +315,122 @@ class adminController extends mkwhelpers\Controller {
 		fgetcsv($import,0,';','"');
 		$szam=0;
 		while((($data=fgetcsv($import,0,';','"'))!==false)) {
-			$szam++;
-			$termek=new Entities\Termek();
-			$termek->setIdegenkod($data[0]);
-			$kat=store::getEm()->getRepository('Entities\TermekFa')->find($data[5]);
-			if ($kat) {
-				$termek->setTermekfa1($kat);
-			}
-			$termek->setNev(mb_convert_encoding($data[6],'UTF8','ISO-8859-2'));
-			$termek->setRovidleiras(mb_substr(mb_convert_encoding($data[7],'UTF8','ISO-8859-2'),0,255,'UTF-8'));
-			$termek->setLeiras(mb_convert_encoding($data[8],'UTF8','ISO-8859-2'));
-			$termek->setCikkszam(mb_convert_encoding($data[10],'UTF8','ISO-8859-2'));
-			$kepneve=$this->mindentkapnikep(mb_convert_encoding($data[11],'UTF8','ISO-8859-2'));
-			$termek->setKepurl($kepneve);
-			$termek->setKiszereles($data[12]);
-			$termek->setMe($metomb[$data[13]]);
-			$termek->setSzelesseg($data[14]);
-			$termek->setMagassag($data[15]);
-			$termek->setHosszusag($data[16]);
-			$termek->setOsszehajthato($data[17]);
-			$termek->setSuly($data[18]);
-			$termek->setHparany(ceil($data[19]/$data[28]*100));
-
-			$termek->setAfa($afa);
-			$termek->setAjanlott(false);
-			$termek->setHozzaszolas(true);
-			$termek->setInaktiv(false);
-			$termek->setLathato(true);
-			$termek->setMozgat(true);
-			$termek->setVtsz($vtsz);
-			$marka=$this->createMindentkapniMarka($markakat,$markatomb[$data[29]]);
-			if ($marka) {
-				$termek->addCimke($marka);
-			}
-
-			$k=new Entities\TermekAr();
-			$termek->addTermekAr($k);
-			$k->setValutanem($valuta);
-			$k->setSav(1);
-			$k->setBrutto($data[28]);
-			store::getEm()->persist($k);
-
-			if (array_key_exists($data[0],$keptomb)) {
-				foreach($keptomb[$data[0]] as $kadat) {
-					$tk=new Entities\TermekKep();
-					$termek->addTermekKep($tk);
-					$tk->setLeiras($kadat[0]);
-					$tk->setUrl($kadat[1]);
-					store::getEm()->persist($tk);
+			if (array_key_exists($data[29], $markatomb)) {
+				$szam++;
+				$termek=new Entities\Termek();
+				$termek->setIdegenkod($data[0]);
+				$kat=store::getEm()->getRepository('Entities\TermekFa')->find($data[5]);
+				if ($kat) {
+					$termek->setTermekfa1($kat);
 				}
-			}
+				$termek->setNev(mb_convert_encoding($data[6],'UTF8','ISO-8859-2'));
+				$termek->setRovidleiras(mb_substr(mb_convert_encoding($data[7],'UTF8','ISO-8859-2'),0,255,'UTF-8'));
+				$termek->setLeiras(mb_convert_encoding($data[8],'UTF8','ISO-8859-2'));
+				$termek->setCikkszam(mb_convert_encoding($data[10],'UTF8','ISO-8859-2'));
+	//			$kepneve=$this->mindentkapnikep(mb_convert_encoding($data[11],'UTF8','ISO-8859-2'));
+	//			$termek->setKepurl($kepneve);
+				$termek->setKiszereles($data[12]);
+				$termek->setMe($metomb[$data[13]]);
+				$termek->setSzelesseg($data[14]);
+				$termek->setMagassag($data[15]);
+				$termek->setHosszusag($data[16]);
+				$termek->setOsszehajthato($data[17]);
+				$termek->setSuly($data[18]);
+				$termek->setHparany(ceil($data[19]/$data[28]*100));
 
-			if (array_key_exists($data[0],$jelzotomb)) {
-				foreach($jelzotomb[$data[0]] as $kadat) {
-					$jelzo=$this->createMindentkapniJelzo($jelzokat, $kadat);
-					if ($jelzo) {
-						$termek->addCimke($jelzo);
+				$termek->setAfa($afa);
+				$termek->setAjanlott(false);
+				$termek->setHozzaszolas(true);
+				$termek->setInaktiv(false);
+				$termek->setLathato(true);
+				$termek->setMozgat(true);
+				$termek->setVtsz($vtsz);
+				$marka=$this->createMindentkapniMarka($markakat,$markatomb[$data[29]]);
+				if ($marka) {
+					$termek->addCimke($marka);
+				}
+
+				$termek->setBrutto($data[28]);
+
+	/*
+				if (array_key_exists($data[0],$keptomb)) {
+					foreach($keptomb[$data[0]] as $kadat) {
+						$tk=new Entities\TermekKep();
+						$termek->addTermekKep($tk);
+						$tk->setLeiras($kadat[0]);
+						$tk->setUrl($kadat[1]);
+						store::getEm()->persist($tk);
 					}
 				}
-			}
-
-			if (array_key_exists($data[0],$termekcimketomb)) {
-				foreach($termekcimketomb[$data[0]] as $cadat) {
-					$ckat=store::getEm()->getRepository('Entities\Termekcimkekat')->findOneBynev($cadat[0]);
-					if (!$ckat) {
-						$ckat=new Entities\Termekcimkekat();
-						$ckat->setLathato(true);
-						$ckat->setNev($cadat[0]);
-						store::getEm()->persist($ckat);
-					}
-					$cimkex=store::getEm()->getRepository('Entities\Termekcimketorzs')->getByNevAndKategoria($cadat[1],$ckat);
-					if (!$cimkex) {
-						$cimkex=new Entities\Termekcimketorzs();
-						$cimkex->setKategoria($ckat);
-						$cimkex->setNev($cadat[1]);
-						store::getEm()->persist($cimkex);
-					}
-					$termek->addCimke($cimkex);
-				}
-			}
-
-			if (array_key_exists($data[0],$termekvaltozattomb)) {
-				$vt=$this->cartesian($termekvaltozattomb[$data[0]]);
-				foreach($vt as $vari) {
-					$valt=new Entities\TermekValtozat();
-					$valt->setTermek($termek);
-					$cnt=0;
-					$valt=new Entities\TermekValtozat();
-					$valt->setTermek($termek);
-					foreach($vari as $k=>$v) {
-						if ($cnt==0) {
-							$adatt=$this->createMindentkapniTVAdatTipus($k);
-							$valt->setAdatTipus1($adatt);
-							$valt->setErtek1($v);
+	*/
+				if (array_key_exists($data[0],$jelzotomb)) {
+					foreach($jelzotomb[$data[0]] as $kadat) {
+						$jelzo=$this->createMindentkapniJelzo($jelzokat, $kadat);
+						if ($jelzo) {
+							$termek->addCimke($jelzo);
 						}
-						if ($cnt==1) {
-							$adatt=$this->createMindentkapniTVAdatTipus($k);
-							$valt->setAdatTipus2($adatt);
-							$valt->setErtek2($v);
-						}
-						if ($cnt==2) {
-							$adatt=$this->createMindentkapniTVAdatTipus($k);
-							$valt->setAdatTipus3($adatt);
-							$valt->setErtek3($v);
-						}
-						$cnt++;
 					}
-					store::getEm()->persist($valt);
 				}
-				unset($vt);
-			}
 
-			store::getEm()->persist($termek);
-			store::getEm()->flush();
-			unset($termek);
-			writelog($data[0]);
+				if (array_key_exists($data[0],$termekcimketomb)) {
+					foreach($termekcimketomb[$data[0]] as $cadat) {
+						$ckat=store::getEm()->getRepository('Entities\Termekcimkekat')->findOneBynev($cadat[0]);
+						if (!$ckat) {
+							$ckat=new Entities\Termekcimkekat();
+							$ckat->setLathato(true);
+							$ckat->setNev($cadat[0]);
+							store::getEm()->persist($ckat);
+						}
+						$cimkex=store::getEm()->getRepository('Entities\Termekcimketorzs')->getByNevAndKategoria($cadat[1],$ckat);
+						if (!$cimkex) {
+							$cimkex=new Entities\Termekcimketorzs();
+							$cimkex->setKategoria($ckat);
+							$cimkex->setNev($cadat[1]);
+							store::getEm()->persist($cimkex);
+						}
+						$termek->addCimke($cimkex);
+					}
+				}
+
+				if (array_key_exists($data[0],$termekvaltozattomb)) {
+//					$termek->setLathato(false);
+					$vt=$this->cartesian($termekvaltozattomb[$data[0]]);
+					foreach($vt as $vari) {
+						//$valt=new Entities\TermekValtozat();
+						//$valt->setTermek($termek);
+						$cnt=0;
+						$valt=new Entities\TermekValtozat();
+						$valt->setTermek($termek);
+						$valt->setLathato(false);
+						$valt->setBrutto($data[28]);
+//						$valt->setCikkszam(mb_convert_encoding($data[10],'UTF8','ISO-8859-2'));
+						$elerheto = true;
+						foreach($vari as $k=>$v) {
+							if ($cnt==0) {
+								$adatt=$this->createMindentkapniTVAdatTipus($k);
+								$valt->setAdatTipus1($adatt);
+								$valt->setErtek1($v['nev']);
+								$elerheto = $elerheto && $v['elerheto'];
+							}
+							if ($cnt==1) {
+								$adatt=$this->createMindentkapniTVAdatTipus($k);
+								$valt->setAdatTipus2($adatt);
+								$valt->setErtek2($v['nev']);
+								$elerheto = $elerheto && $v['elerheto'];
+							}
+							$cnt++;
+						}
+						$valt->setElerheto($elerheto);
+						store::getEm()->persist($valt);
+					}
+					unset($vt);
+				}
+
+				store::getEm()->persist($termek);
+				store::getEm()->flush();
+				unset($termek);
+				writelog($data[0]);
+			}
 		}
 		fclose($import);
 		$this->regeneratekarkod();
