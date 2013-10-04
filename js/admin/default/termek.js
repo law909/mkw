@@ -186,7 +186,7 @@ $(document).ready(function(){
 				})
 				.on('click','.js-cimkekarb',function(e) {
 					e.preventDefault();
-					$(this).toggleClass('selectedcimke ui-state-hover');
+					$(this).toggleClass('js-selectedcimke ui-state-hover');
 				});
 				$('.js-cimkeadd').on('click',function(e) {
 					e.preventDefault();
