@@ -19,6 +19,28 @@ class adminController extends mkwhelpers\Controller {
 		return $ub;
 	}
 
+	private function createMindentkapniGyarto($tomb) {
+		if (!$tomb['nev']) {
+			return null;
+		}
+		$gy = store::getEm()->getRepository('Entities\Partner')->findByNev($tomb['nev']);
+		$gyarto = false;
+		if ($gy) {
+			$gyarto = $gy[0];
+		}
+		if (!$gyarto) {
+			$gyarto = new Entities\Partner();
+			$gyarto->setAdoszam($tomb['adoszam']);
+			$gyarto->setHonlap($tomb['honlap']);
+			$gyarto->setIrszam($tomb['irszam']);
+			$gyarto->setUtca($tomb['utca']);
+			$gyarto->setNev($tomb['nev']);
+			$gyarto->setTelefon($tomb['telefon']);
+			store::getEm()->persist($gyarto);
+		}
+		return $gyarto;
+	}
+
 	private function createMindentkapniMarka($marka,$tomb) {
 		$nev=$tomb[0];
 		$filenev=$tomb[1];
@@ -91,6 +113,7 @@ class adminController extends mkwhelpers\Controller {
 					array_unshift($values, $product[$key]);
 				}
 				$result = array_merge($result, $append);
+				unset($append);
 			}
 		}
 		return $result;
@@ -108,11 +131,24 @@ class adminController extends mkwhelpers\Controller {
 
 	protected function writelog($mit) {
 		$x=fopen('mkw.log','a');
+		$mit .= "\n";
 		fwrite($x,$mit);
 		fclose($x);
 	}
 
-	protected function mindentkapniimport() {
+	public function mindentkapniimport() {
+
+		if (file_exists('mkwimport.lock')) {
+			echo 'locked';
+			die;
+		}
+
+		$x = fopen('mkwimport.lock', 'a');
+		fwrite($x, 'fuckerlocker');
+		fclose($x);
+
+		$record = file_get_contents('mkwrecord.txt');
+		$record = $record * 1;
 
 		$metomb=array();
 		$import=fopen('rep_megyseg.csv','r');
@@ -198,7 +234,14 @@ class adminController extends mkwhelpers\Controller {
 		fgetcsv($import, 0, ';', '"');
 		while(($data = fgetcsv($import, 0, ';', '"'))!== false) {
 			if (!in_array(mb_convert_encoding($data[5], 'UTF8', 'ISO-8859-2'), $nemkellgyarto)) {
-				$gyartotomb[$data[0]] = mb_convert_encoding($data[5], 'UTF8', 'ISO-8859-2');
+				$gyartotomb[$data[0]] = array(
+					'nev' => mb_convert_encoding($data[5], 'UTF8', 'ISO-8859-2'),
+					'irszam' => $data[9],
+					'utca' => mb_convert_encoding($data[10], 'UTF8', 'ISO-8859-2'),
+					'adoszam' => $data[6],
+					'telefon' => $data[14],
+					'honlap' => $data[17]
+				);
 			}
 		}
 
@@ -311,12 +354,16 @@ class adminController extends mkwhelpers\Controller {
 		$vtsz=store::getEm()->getRepository('Entities\Vtsz')->find(2);
 		$afa=store::getEm()->getRepository('Entities\Afa')->find(3);
 		$valuta=store::getEm()->getRepository('Entities\Valutanem')->find(1);
+
 		$import=fopen('termek.csv','r');
-		fgetcsv($import,0,';','"');
-		$szam=0;
-		while((($data=fgetcsv($import,0,';','"'))!==false)) {
-			if (array_key_exists($data[29], $markatomb)) {
-				$szam++;
+		$termekcikl = 0;
+		while ((($buffer = fgets($import, 4096)) != false) && ($termekcikl < $record)) {
+			$termekcikl++;
+		}
+		$szam=$record;
+		while( (($data = fgetcsv($import, 0, ';', '"')) !== false) && ($szam <= $record+400) ) {
+			$szam++;
+			if (array_key_exists($data[29], $markatomb) && array_key_exists($data[9], $gyartotomb)) {
 				$termek=new Entities\Termek();
 				$termek->setIdegenkod($data[0]);
 				$kat=store::getEm()->getRepository('Entities\TermekFa')->find($data[5]);
@@ -345,9 +392,15 @@ class adminController extends mkwhelpers\Controller {
 				$termek->setLathato(true);
 				$termek->setMozgat(true);
 				$termek->setVtsz($vtsz);
+
 				$marka=$this->createMindentkapniMarka($markakat,$markatomb[$data[29]]);
 				if ($marka) {
 					$termek->addCimke($marka);
+				}
+
+				$gyarto = $this->createMindentkapniGyarto($gyartotomb[$data[9]]);
+				if ($gyarto) {
+					$termek->setGyarto($gyarto);
 				}
 
 				$termek->setBrutto($data[28]);
@@ -394,8 +447,8 @@ class adminController extends mkwhelpers\Controller {
 
 				if (array_key_exists($data[0],$termekvaltozattomb)) {
 //					$termek->setLathato(false);
-					$vt=$this->cartesian($termekvaltozattomb[$data[0]]);
-					foreach($vt as $vari) {
+					$valtozattomb=$this->cartesian($termekvaltozattomb[$data[0]]);
+					foreach($valtozattomb as $vari) {
 						//$valt=new Entities\TermekValtozat();
 						//$valt->setTermek($termek);
 						$cnt=0;
@@ -423,18 +476,20 @@ class adminController extends mkwhelpers\Controller {
 						$valt->setElerheto($elerheto);
 						store::getEm()->persist($valt);
 					}
-					unset($vt);
+					unset($valtozattomb);
 				}
 
 				store::getEm()->persist($termek);
 				store::getEm()->flush();
 				unset($termek);
-				writelog($data[0]);
+				$this->writelog($data[0]);
 			}
 		}
 		fclose($import);
 		$this->regeneratekarkod();
-		writelog('KESZ');
+		file_put_contents('mkwrecord.txt', $szam);
+		$this->writelog('KESZ');
+		unlink('mkwimport.lock');
 	}
 
 	public function view() {

@@ -189,7 +189,7 @@ function removeAccents($string,$encoding='UTF-8',$tolower=false) {
 
 		$string = strtr($string, $chars['in'], $chars['out']);
 		$double_chars['in'] = array(chr(140), chr(156), chr(198), chr(208), chr(222), chr(223), chr(230), chr(240), chr(254));
-		$double_chars['out'] = array('OE', 'oe', 'AE', 'DH', 'TH', 'ss', 'ae', 'dh', 'th');
+		$double_chars['out'] = array('O', 'o', 'A', 'DH', 'TH', 'ss', 'a', 'dh', 'th');
 		$string = str_replace($double_chars['in'], $double_chars['out'], $string);
 	}
 	if ($tolower) {
@@ -222,13 +222,13 @@ fgetcsv($import,0,';','"');
 $cikl=1;
 while(($data=fgetcsv($import,0,';','"'))!==false) {
 	echo toPermalink(mb($data[6])).'<br>';
-	$sql='INSERT INTO termekfa (id,parent_id,slug,nev,leiras,kepurl,karkod) VALUES ('
+	$sql='INSERT INTO termekfa (id,parent_id,slug,nev,leiras,karkod) VALUES ('
 		.$data[0].','
 		.($data[5]==''?'1':$data[5]).','
 		.'"'.toPermalink(mb($data[6])).'",'
 		.'"'.mb($data[6]).'",'
 		.'"'.mb($data[7]).'",'
-		.'"'.mindentkapnikep(mb($data[12])).'",'
+//		.'"'.mindentkapnikep(mb($data[12])).'",'
 		.'"'.$cikl.'")';
 	DBCommand($sql);
 	$cikl++;

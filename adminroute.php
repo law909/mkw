@@ -198,3 +198,6 @@ $router->map('POST','/admin/uzletkoto/save','uzletkotoController#save','adminuzl
 
 $router->map('GET','/admin/sitemap/view','sitemapController#view','adminsitemapview');
 $router->map('GET','/admin/sitemap/create','sitemapController#create','adminsitemapcreate');
+
+
+$router->map('GET','/admin/import','adminController#mindentkapniimport','adminimport');

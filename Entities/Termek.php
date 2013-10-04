@@ -171,6 +171,11 @@ class Termek {
 	private $nemkaphato=false;
 	/** @OneToMany(targetEntity="TermekErtesito", mappedBy="termek",cascade={"persist","remove"}) */
 	private $termekertesitok;
+	/**
+	 * @ManyToOne(targetEntity="Partner")
+	 * @JoinColumn(name="gyarto_id",referencedColumnName="id",nullable=true,onDelete="no action")
+	 */
+	private $gyarto;
 
 	/**
 	 * @PrePersist
@@ -1229,5 +1234,28 @@ class Termek {
 
 	public function setNemkaphato($val) {
 		$this->nemkaphato=$val;
+	}
+
+	public function getGyarto()
+	{
+		return $this->gyarto;
+	}
+
+	public function getGyartoNev() {
+		if ($this->gyarto) {
+			return $this->gyarto->getNev();
+		}
+		return '';
+	}
+
+	public function getGyartoId() {
+		if ($this->gyarto) {
+			return $this->gyarto->getId();
+		}
+		return '';
+	}
+
+	public function setGyarto($gyarto) {
+		$this->gyarto = $gyarto;
 	}
 }
