@@ -73,7 +73,8 @@ class TermekcimketorzsRepository extends \mkwhelpers\Repository {
 		foreach ($cimkekodok as $cimkefej) {
 			$cimkestr = implode(',', $cimkefej);
 			$q = $this->_em->createNativeQuery('SELECT tc.termek_id FROM termek_cimkek tc '
-					. 'WHERE (tc.cimketorzs_id IN (' . $cimkestr . ')) AND (t.id=tc.termek_id) AND (t.inaktiv=0) AND (t.lathato=1))', $rsm);
+					. 'LEFT OUTER JOIN termek t ON (t.id=tc.termek_id) '
+					. 'WHERE (tc.cimketorzs_id IN (' . $cimkestr . ')) AND (t.inaktiv=0) AND (t.lathato=1)', $rsm);
 			$res = $q->getScalarResult();
 			foreach ($res as $sor) {
 				if (array_key_exists($sor['termek_id'], $r) && $r[$sor['termek_id']] > 0) {
