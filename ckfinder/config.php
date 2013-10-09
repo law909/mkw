@@ -60,7 +60,7 @@ Examples:
 
 ATTENTION: The trailing slash is required.
 */
-$baseUrl = '/images/';
+$baseUrl = '/kepek/';
 
 /*
 $baseDir : the path to the local directory (in the server) which points to the
@@ -104,9 +104,9 @@ Set the maximum size of uploaded images. If an uploaded image is larger, it
 gets scaled down proportionally. Set to 0 to disable this feature.
 */
 $config['Images'] = Array(
-		'maxWidth' => 1600,
-		'maxHeight' => 1200,
-		'quality' => 80);
+		'maxWidth' => 0,
+		'maxHeight' => 0,
+		'quality' => 0);
 
 /*
 RoleSessionVar : the session variable name that CKFinder must use to retrieve
@@ -317,7 +317,7 @@ For more complex configuration options visit our Developer's Guide
 */
 $config['XSendfile'] = false;
 
-$config['HideFiles'] = Array("*_80_80.*","*_200_200.*","*_800_600.*");
+$config['HideFiles'] = Array("*_100.*","*_150.*","*_250.*","*_1000.*");
 
 //include_once "plugins/imageresize/plugin.php";
 include_once "plugins/fileeditor/plugin.php";
@@ -326,5 +326,5 @@ include_once "plugins/serverresize/plugin.php";
 
 $config['Plugin_Serverresize']=array(
 	'quality'=>80,
-	'sizes'=>array('80_80'=>'80x80','200_200'=>'200x200','800_600'=>'800x600')
+	'sizes'=>array('100'=>'100x100','150'=>'150x150','250'=>'250x250','1000'=>'1000x800')
 );

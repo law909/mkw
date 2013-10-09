@@ -30,6 +30,6 @@ if (empty($config['Plugin_Serverresize']))
 {
     $config['Plugin_Serverresize'] = array(
 		'quality'=>80,
-		'sizes'=>array('s'=>'80x80','m'=>'200x200','l'=>'800x600')
+		'sizes'=>array('100'=>'100x100','150'=>'150x150','250'=>'250x250','1000'=>'1000x800')
     );
 }

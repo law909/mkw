@@ -363,7 +363,8 @@ class adminController extends mkwhelpers\Controller {
 		$szam=$record;
 		while( (($data = fgetcsv($import, 0, ';', '"')) !== false) && ($szam <= $record+400) ) {
 			$szam++;
-			if (array_key_exists($data[29], $markatomb) && array_key_exists($data[9], $gyartotomb)) {
+			if ((array_key_exists($data[29], $markatomb) || (!$data[29])) && array_key_exists($data[9], $gyartotomb)) {
+//			if (true) {
 				$termek=new Entities\Termek();
 				$termek->setIdegenkod($data[0]);
 				$kat=store::getEm()->getRepository('Entities\TermekFa')->find($data[5]);
@@ -455,7 +456,7 @@ class adminController extends mkwhelpers\Controller {
 						$valt=new Entities\TermekValtozat();
 						$valt->setTermek($termek);
 						$valt->setLathato(false);
-						$valt->setBrutto($data[28]);
+//						$valt->setBrutto($data[28]);
 //						$valt->setCikkszam(mb_convert_encoding($data[10],'UTF8','ISO-8859-2'));
 						$elerheto = true;
 						foreach($vari as $k=>$v) {
