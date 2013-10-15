@@ -208,6 +208,7 @@ class Termek {
 		$x['id']=$this->getId();
 		$x['kozepeskepurl']=$this->getKepUrlMedium();
 		$x['kiskepurl']=$this->getKepUrlSmall();
+		$x['minikepurl']=$this->getKepurlMini();
 		$x['kepurl']=$this->getKepUrlLarge();
 		$x['slug']=$this->getSlug();
 		$x['caption']=$this->getNev();
@@ -231,7 +232,8 @@ class Termek {
 
 		if (!is_null($valtozat)) {
 			$x['kiskepurl']=$valtozat->getKepurlSmall();
-			$x['kepurl']=$valtozat->getKepurl();
+			$x['minikepurl']=$valtozat->getKepurlMini();
+			$x['kepurl']=$valtozat->getKepurlLarge();
 			$x['valtozatid']=$valtozat->getId();
 			if ($this->getValtozatadattipusId()==$valtozat->getAdatTipus1Id()) {
 				$ertek=$valtozat->getErtek1();
@@ -288,6 +290,7 @@ class Termek {
 		$x['id']=$this->getId();
 		$x['kozepeskepurl']=$this->getKepUrlMedium();
 		$x['kiskepurl']=$this->getKepUrlSmall();
+		$x['minikepurl']=$this->getKepurlMini();
 		$x['kepurl']=$this->getKepUrlLarge();
 		$x['slug']=$this->getSlug();
 		$x['caption']=$this->getNev();
@@ -318,8 +321,9 @@ class Termek {
 		$x['id']=$this->getId();
 		$x['caption']=$this->getNev();
 		$x['slug']=$this->getSlug();
-		$x['kepurl']=$this->getKepurl();
+		$x['kepurl']=$this->getKepurlLarge();
 		$x['kozepeskepurl']=$this->getKepUrlMedium();
+		$x['minikepurl']=$this->getKepurlMini();
 		$x['rovidleiras']=$this->getRovidleiras();
 		$x['leiras']=$this->getLeiras();
 		$x['cikkszam']=$this->getCikkszam();
@@ -339,6 +343,7 @@ class Termek {
 			$egyed['kepurl']=$kep->getUrlLarge();
 			$egyed['kozepeskepurl']=$kep->getUrlMedium();
 			$egyed['kiskepurl']=$kep->getUrlSmall();
+			$egyed['minikepurl']=$kep->getUrlMini();
 			$egyed['leiras']=$kep->getLeiras();
 			$altomb[]=$egyed;
 		}
@@ -389,6 +394,7 @@ class Termek {
 		$x['id']=$this->getId();
 		$x['kozepeskepurl']=$this->getKepUrlMedium();
 		$x['kiskepurl']=$this->getKepUrlSmall();
+		$x['minikepurl']=$this->getKepurlMini();
 		$x['kepurl']=$this->getKepUrlLarge();
 		$x['slug']=$this->getSlug();
 		$x['caption']=$this->getNev();
@@ -404,6 +410,7 @@ class Termek {
 		$x['id']=$this->getId();
 		$x['kozepeskepurl']=$this->getKepUrlMedium();
 		$x['kiskepurl']=$this->getKepUrlSmall();
+		$x['minikepurl']=$this->getKepurlMini();
 		$x['kepurl']=$this->getKepUrlLarge();
 		$x['slug']=$this->getSlug();
 		$x['caption']=$this->getNev();
@@ -413,7 +420,8 @@ class Termek {
 		if ($valtozat) {
 			$x['kozepeskepurl']=$valtozat->getKepUrlMedium();
 			$x['kiskepurl']=$valtozat->getKepurlSmall();
-			$x['kepurl']=$valtozat->getKepurl();
+			$x['kepurl']=$valtozat->getKepurlLarge();
+			$x['minikepurl']=$valtozat->getKepurlMini();
 		}
 		$x['link'] = \mkw\Store::getRouter()->generate('showtermek',false,array('slug'=>$this->getSlug()));
 		return $x;

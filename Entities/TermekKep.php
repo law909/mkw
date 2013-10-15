@@ -77,6 +77,16 @@ class TermekKep {
 		return '';
 	}
 
+	public function getUrlMini($pre='/') {
+		$url=$this->getUrl($pre);
+		if ($url) {
+			$t=explode('.',$url);
+			$ext=array_pop($t);
+			return implode('.',$t).store::getParameter(\mkw\consts::Miniimgpost,'').'.'.$ext;
+		}
+		return '';
+	}
+
 	public function getUrlSmall($pre='/') {
 		$url=$this->getUrl($pre);
 		if ($url) {

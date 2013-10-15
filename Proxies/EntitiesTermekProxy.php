@@ -588,6 +588,12 @@ class EntitiesTermekProxy extends \Entities\Termek implements \Doctrine\ORM\Prox
         return parent::getKepurl($pre);
     }
 
+    public function getKepurlMini($pre = '/')
+    {
+        $this->__load();
+        return parent::getKepurlMini($pre);
+    }
+
     public function getKepurlSmall($pre = '/')
     {
         $this->__load();
@@ -900,10 +906,34 @@ class EntitiesTermekProxy extends \Entities\Termek implements \Doctrine\ORM\Prox
         return parent::setNemkaphato($val);
     }
 
+    public function getGyarto()
+    {
+        $this->__load();
+        return parent::getGyarto();
+    }
+
+    public function getGyartoNev()
+    {
+        $this->__load();
+        return parent::getGyartoNev();
+    }
+
+    public function getGyartoId()
+    {
+        $this->__load();
+        return parent::getGyartoId();
+    }
+
+    public function setGyarto($gyarto)
+    {
+        $this->__load();
+        return parent::setGyarto($gyarto);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'nev', 'me', 'kiszereles', 'vtsz', 'afa', 'cimkek', 'cimkenevek', 'cikkszam', 'idegencikkszam', 'leiras', 'rovidleiras', 'oldalcim', 'seodescription', 'slug', 'lathato', 'hozzaszolas', 'ajanlott', 'kiemelt', 'mozgat', 'inaktiv', 'termekexportbanszerepel', 'hparany', 'netto', 'brutto', 'akciosnetto', 'akciosbrutto', 'akciostart', 'akciostop', 'termekfa1', 'termekfa1karkod', 'termekfa2', 'termekfa2karkod', 'termekfa3', 'termekfa3karkod', 'kepurl', 'kepleiras', 'szelesseg', 'magassag', 'hosszusag', 'suly', 'osszehajthato', 'termekkepek', 'valtozatok', 'termekreceptek', 'altermekreceptek', 'dolgozok', 'bizonylattetelek', 'kosarak', 'megtekintesdb', 'megvasarlasdb', 'termekkapcsolodok', 'altermekkapcsolodok', 'valtozatadattipus', 'nemkaphato', 'termekertesitok');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'nev', 'me', 'kiszereles', 'vtsz', 'afa', 'cimkek', 'cimkenevek', 'cikkszam', 'idegencikkszam', 'leiras', 'rovidleiras', 'oldalcim', 'seodescription', 'slug', 'lathato', 'hozzaszolas', 'ajanlott', 'kiemelt', 'mozgat', 'inaktiv', 'termekexportbanszerepel', 'hparany', 'netto', 'brutto', 'akciosnetto', 'akciosbrutto', 'akciostart', 'akciostop', 'termekfa1', 'termekfa1karkod', 'termekfa2', 'termekfa2karkod', 'termekfa3', 'termekfa3karkod', 'kepurl', 'kepleiras', 'szelesseg', 'magassag', 'hosszusag', 'suly', 'osszehajthato', 'termekkepek', 'valtozatok', 'termekreceptek', 'altermekreceptek', 'dolgozok', 'bizonylattetelek', 'kosarak', 'megtekintesdb', 'megvasarlasdb', 'termekkapcsolodok', 'altermekkapcsolodok', 'valtozatadattipus', 'nemkaphato', 'termekertesitok', 'gyarto');
     }
 
     public function __clone()

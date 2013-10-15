@@ -214,6 +214,20 @@ class TermekValtozat {
 		return '';
 	}
 
+	public function getKepurlMini($pre='/') {
+		if (!$this->termekfokep) {
+			if ($this->getKep()) {
+				return $this->getKep()->getUrlMini($pre);
+			}
+		}
+		else {
+			if ($this->getTermek()) {
+				return $this->getTermek()->getKepurlMini($pre);
+			}
+		}
+		return '';
+	}
+
 	public function getKepurlSmall($pre='/') {
 		if (!$this->termekfokep) {
 			if ($this->getKep()) {

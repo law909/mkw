@@ -72,6 +72,12 @@ class EntitiesTermekKepProxy extends \Entities\TermekKep implements \Doctrine\OR
         return parent::getUrl($pre);
     }
 
+    public function getUrlMini($pre = '/')
+    {
+        $this->__load();
+        return parent::getUrlMini($pre);
+    }
+
     public function getUrlSmall($pre = '/')
     {
         $this->__load();

@@ -33,7 +33,7 @@
 					<div class="span5 textaligncenter">
 						{foreach $termek.kepek as $_kep}
 							<a href="{$_kep.kepurl}" class="js-lightbox" title="{$_kep.leiras}">
-							<img src="{$_kep.kiskepurl}" alt="{$_kep.leiras}" title="{$_kep.leiras}">
+							<img src="{$_kep.minikepurl}" alt="{$_kep.leiras}" title="{$_kep.leiras}">
 							</a>
 						{/foreach}
 					</div>

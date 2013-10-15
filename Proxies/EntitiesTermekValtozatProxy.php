@@ -204,6 +204,12 @@ class EntitiesTermekValtozatProxy extends \Entities\TermekValtozat implements \D
         return parent::getKepurl($pre);
     }
 
+    public function getKepurlMini($pre = '/')
+    {
+        $this->__load();
+        return parent::getKepurlMini($pre);
+    }
+
     public function getKepurlSmall($pre = '/')
     {
         $this->__load();
