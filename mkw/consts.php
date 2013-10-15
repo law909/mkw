@@ -33,9 +33,11 @@ class consts {
 	const Jpgquality='jpgquality';
 	const Pngquality='pngquality';
 	const Korhintaimagesize='korhintaimagesize';
+	const Miniimgpost='miniimgpost';
 	const Smallimgpost='smallimgpost';
 	const Mediumimgpost='mediumimgpost';
 	const Bigimgpost='bigimgpost';
+	const Miniimagesize='miniimagesize';
 	const Smallimagesize='smallimagesize';
 	const Mediumimagesize='mediumimagesize';
 	const Bigimagesize='bigimagesize';
