@@ -117,7 +117,9 @@ $(document).ready(function(){
 					var finder=new CKFinder(),
 						$kepurl=$('#KepUrlEdit'),
 						path=$kepurl.val();
-					finder.startupPath='Images:'+path.substring(path.indexOf('/',1));
+					if (path) {
+						finder.startupPath='Images:'+path.substring(path.indexOf('/',1));
+					}
 					finder.selectActionFunction = function( fileUrl, data ) {
 						$kepurl.val(fileUrl);
 					};
@@ -168,7 +170,9 @@ $(document).ready(function(){
 					var finder=new CKFinder(),
 						$kepurledit=$('#KepUrlEdit_'+$(this).attr('data-id')),
 						path=$kepurledit.val();
-					finder.startupPath='Images:'+path.substring(path.indexOf('/',1));
+					if (path) {
+						finder.startupPath='Images:'+path.substring(path.indexOf('/',1));
+					}
 					finder.selectActionFunction = function( fileUrl, data ) {
 						$kepurledit.val(fileUrl);
 					};

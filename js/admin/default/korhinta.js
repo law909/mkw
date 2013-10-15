@@ -11,7 +11,9 @@ $(document).ready(function(){
 					var finder=new CKFinder(),
 						$kepurl=$('#KepUrlEdit'),
 						path=$kepurl.val();
-					finder.startupPath='Images:'+path.substring(path.indexOf('/',1));
+					if (path) {
+						finder.startupPath='Images:'+path.substring(path.indexOf('/',1));
+					}
 					finder.selectActionFunction = function( fileUrl, data ) {
 						var kep=$('.js-korhintakep');
 						$.ajax({
