@@ -278,6 +278,16 @@ class TermekFa {
 		return '';
 	}
 
+	public function getKepurlMini($pre='/') {
+		$kepurl=$this->getKepurl($pre);
+		if ($kepurl) {
+			$t=explode('.',$kepurl);
+			$ext=array_pop($t);
+			return implode('.',$t).store::getParameter(\mkw\consts::Miniimgpost,'').'.'.$ext;
+		}
+		return '';
+	}
+
 	public function getKepurlSmall($pre='/') {
 		$kepurl=$this->getKepurl($pre);
 		if ($kepurl) {
