@@ -44,6 +44,9 @@
 			</form>
 		</div>
 		<div class="span9">
+			<div>
+				{$kategoria.leiras2}
+			</div>
 			<div class="lapozo">
 				<form class="lapozoform" action="{$url}" method="post" data-url="{$url}" data-pageno="{$lapozo.pageno}">
 					<table><tbody><tr>
@@ -121,7 +124,7 @@
 								{foreach $_termek.mindenvaltozat as $_valtozat}
 									<div class="termekprice">
 									{$_valtozat.name}
-									<select class="mindenValtozatEdit" data-id="{$_termek.id}-{$_termek.valtozatid}" data-termek="{$_termek.id}" data-tipusid="{$_valtozat.tipusid}">
+									<select class="mindenValtozatEdit" data-id="{$_termek.id}-{$_termek.valtozatid|default}" data-termek="{$_termek.id}" data-tipusid="{$_valtozat.tipusid}">
 										<option value="">{t('Válasszon')}</option>
 										{foreach $_valtozat.value as $_v}
 											<option value="{$_v}">{$_v}</option>

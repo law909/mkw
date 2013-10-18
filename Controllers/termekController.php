@@ -382,9 +382,16 @@ class termekController extends \mkwhelpers\MattableController {
 			foreach ($res as $sor) {
 				$cimkefilter[] = $sor['id'];
 			}
-			$filter['fields'][] = 'id';
-			$filter['clauses'][] = '';
-			$filter['values'][] = $cimkefilter;
+			if ($cimkefilter) {
+				$filter['fields'][] = 'id';
+				$filter['clauses'][] = '';
+				$filter['values'][] = $cimkefilter;
+			}
+			else {
+				$filter['fields'][] = 'id';
+				$filter['clauses'][] = '=';
+				$filter['values'][] = 'false';
+			}
 		}
 
 		$fv = $this->params->getArrayRequestParam('fafilter');

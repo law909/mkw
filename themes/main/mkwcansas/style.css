@@ -81,6 +81,7 @@ footer nav{margin-top:20px;}
 .termekimage{text-align:center;width:150px;float:left;}
 .termekcaption,.termekprice{font-size:15px;font-weight:bold;color:#333333;}
 .termekprice{text-align:right;color:#333333;}
+.termekvaltozat{font-size:13px;font-weight:bold;}
 .gtermek{padding:10px 1.55%;height:370px;width:45%;float:left;min-height:1px;border-width:1px;border-style:solid;border-color:#e8e8e8;border-width:0 0 1px 1px;}
 .gtermekszelso{border-width:0 1px 1px 1px;}
 .gtermekimage{float:left;width:120px;}
@@ -140,4 +141,5 @@ tbody.acc-megrendeles td{padding:5px 10px;}
 .acc-megrendelescaption{font-weight:bold;}
 .acc-megrendelestetellist{border:solid 1px;width:100%;margin-top:5px;}
 thead.acc-megrendelestetellist{font-weight:bold;}thead.acc-megrendelestetellist td{padding:5px 10px;}
+.termekimagecontainer{padding-bottom:15px;}
 @media (min-width:480px){#navmain li .sub{width:400px;}}@media (max-width:767px){.chk-tooltippedcontainer{width:100%;}}@media (min-width:767px){#navmain li .sub{width:700px;} #navmain li .sub ul{width:125px;float:left;}}@media (min-width:979px){#navmain li .sub{width:940px;} #navmain li .sub ul{width:185px;float:left;}}

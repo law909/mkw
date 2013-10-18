@@ -51,7 +51,7 @@ class termekkepController extends \mkwhelpers\MattableController {
 		$kepek=$this->getRepo()->getByTermek($termek);
 		$keplista=array();
 		foreach($kepek as $kep) {
-			$keplista[]=array('id'=>$kep->getId(),'caption'=>$kep->getUrl(),'selected'=>$kep->getId()==$selid,'url'=>$kep->getUrlSmall());
+			$keplista[]=array('id'=>$kep->getId(),'caption'=>$kep->getUrl(),'selected'=>$kep->getId()==$selid,'url'=>$kep->getUrlMini());
 		}
 		return $keplista;
 	}
@@ -60,6 +60,7 @@ class termekkepController extends \mkwhelpers\MattableController {
 		$kep=$this->getRepo()->find($this->params->getNumRequestParam('id'));
 		if ($kep) {
 			unlink($kep->getUrl(''));
+			unlink($kep->getUrlMini(''));
 			unlink($kep->getUrlSmall(''));
 			unlink($kep->getUrlMedium(''));
 			unlink($kep->getUrlLarge(''));

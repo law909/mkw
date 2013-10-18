@@ -47,10 +47,13 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$x['bruttohuf'] = $t->getBruttohuf();
 		$x['hataridostr'] = $t->getHataridoStr();
 		$term = $t->getTermek();
-		$x['kozepeskepurl'] = $term->getKepUrlMedium();
-		$x['kiskepurl'] = $term->getKepUrlSmall();
-		$x['kepurl'] = $term->getKepUrlLarge();
-		$x['slug'] = $term->getSlug();
+		if ($term) {
+			$x['kozepeskepurl'] = $term->getKepUrlMedium();
+			$x['kiskepurl'] = $term->getKepUrlSmall();
+			$x['minikepurl'] = $term->getKepUrlMini();
+			$x['kepurl'] = $term->getKepUrlLarge();
+			$x['slug'] = $term->getSlug();
+		}
 
 		if ($forKarb) {
 			$x['valtozatlist'] = $termek->getValtozatList($t->getTermekId(), $t->getTermekvaltozatId());

@@ -19,7 +19,7 @@
 					<option value="">{t('válasszon')}</option>
 					{foreach $partnerlist as $_mk}
 					<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-fizmod="{$_mk.fizmod}" data-fizhatido="{$_mk.fizhatido}"
-						data-cim="{$_mk.irszam} {$_mk.varos}, {$_mk.utca}">{$_mk.caption}</option>
+						data-irszam="{$_mk.irszam}" data-varos="{$_mk.varos}" data-utca="{$_mk.utca}">{$_mk.caption}</option>
 					{/foreach}
 					</select>
 				</td>
@@ -129,6 +129,10 @@
 			<tr>
 				<td><label for="MegjegyzesEdit">{t('Megjegyzés')}:</label></td>
 				<td colspan="7"><textarea id="MegjegyzesEdit" name="megjegyzes" rows="1" cols="100">{$egyed.megjegyzes}</textarea></td>
+			</tr>
+			<tr>
+				<td><label for="BelsomegjegyzesEdit">{t('Belső megjegyzés')}:</label></td>
+				<td colspan="7"><textarea id="BelsomegjegyzesEdit" name="belsomegjegyzes" rows="1" cols="100">{$egyed.belsomegjegyzes}</textarea></td>
 			</tr>
 			<tr>
 				<td><label for="WebshopmessageEdit">{t('Üzenet a webáruháznak')}:</label></td>

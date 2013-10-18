@@ -45,6 +45,7 @@ $(document).ready(function(){
 						if (!$.browser.mobile) {
 							CKFinder.setupCKEditor( null, '/ckfinder/' );
 							$('#LeirasEdit').ckeditor();
+							$('#Leiras2Edit').ckeditor();
 						}
 						$('#AltalanosTab').on('click','#KepDelButton',function(e) {
 							e.preventDefault();
@@ -100,6 +101,10 @@ $(document).ready(function(){
 					beforeHide:function() {
 						if (!$.browser.mobile) {
 							editor=$('#LeirasEdit').ckeditorGet();
+							if (editor) {
+								editor.destroy();
+							}
+							editor=$('#Leiras2Edit').ckeditorGet();
 							if (editor) {
 								editor.destroy();
 							}

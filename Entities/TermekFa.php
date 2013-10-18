@@ -54,6 +54,8 @@ class TermekFa {
 	private $rovidleiras='';
 	/** @Column(type="text",nullable=true) */
 	private $leiras;
+	/** @Column(type="text",nullable=true) */
+	private $leiras2;
 	/** @Column(type="boolean",nullable=true) */
 	private $menu1lathato=true;
 	/** @Column(type="boolean",nullable=true) */
@@ -207,6 +209,14 @@ class TermekFa {
 
 	public function setLeiras($leiras) {
 		$this->leiras = $leiras;
+	}
+
+	public function getLeiras2() {
+		return $this->leiras2;
+	}
+
+	public function setLeiras2($leiras) {
+		$this->leiras2 = $leiras;
 	}
 
 	public function getKarkod() {

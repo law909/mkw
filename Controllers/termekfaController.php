@@ -28,6 +28,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$x['oldalcim'] = $t->getOldalcim();
 		$x['rovidleiras'] = $t->getRovidleiras();
 		$x['leiras'] = $t->getLeiras();
+		$x['leiras2'] = $t->getLeiras2();
 		$x['seodescription'] = $t->getSeodescription();
 		$x['menu1lathato'] = $t->getMenu1lathato();
 		$x['menu2lathato'] = $t->getMenu2lathato();
@@ -48,6 +49,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
 		$obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
 		$obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
+		$obj->setLeiras2($this->params->getOriginalStringRequestParam('leiras2'));
 		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
 		$obj->setMenu1lathato($this->params->getBoolRequestParam('menu1lathato'));
 		$obj->setMenu2lathato($this->params->getBoolRequestParam('menu2lathato'));
@@ -405,6 +407,10 @@ class termekfaController extends \mkwhelpers\MattableController {
 			$ret['szurok'] = $tck->getForTermekSzuro($tid, $szurotomb, $termekidfiltered);
 			$ret['lapozo'] = $pager->loadValues();
 			$ret['order'] = $ord;
+			$ret['kategoria'] = array(
+				'nev' => $parent->getNev(),
+				'leiras2' => $parent->getLeiras2()
+			);
 		}
 		else {
 			$ret['lapozo'] = 0;

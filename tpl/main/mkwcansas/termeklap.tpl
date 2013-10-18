@@ -22,14 +22,14 @@
 				<div class="row">
 					<div class="span5 textaligncenter"><h3>{$termek.caption}</h3></div>
 				</div>
-				<div class="row hataroltSor">
+				<div class="row termekimagecontainer">
 					<div class="span5 textaligncenter">
 						<a href="{$termek.kepurl}" class="js-lightbox" title="{$termek.caption}">
 							<img src="{$termek.kozepeskepurl}" itemprop="image" alt="{$termek.caption}" title="{$termek.caption}">
 						</a>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row termekimagecontainer">
 					<div class="span5 textaligncenter">
 						{foreach $termek.kepek as $_kep}
 							<a href="{$_kep.kepurl}" class="js-lightbox" title="{$_kep.leiras}">

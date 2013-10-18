@@ -54,7 +54,9 @@ $(document).ready(function() {
 			$('#PartnerEdit').change(function() {
 				var valasz = $('option:selected', this);
 				fizmodedit.val(valasz.data('fizmod'));
-				$('#PartnerCim').text(valasz.data('cim'));
+				$('input[name="partnerirszam"]').val(valasz.data('irszam'));
+				$('input[name="partnervaros"]').val(valasz.data('varos'));
+				$('input[name="partnerutca"]').val(valasz.data('utca'));
 			});
 			$('#ValutanemEdit').change(function() {
 				bankszamlaedit.val($('option:selected', this).data('bankszamla'));

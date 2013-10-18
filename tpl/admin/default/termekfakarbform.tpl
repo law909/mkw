@@ -48,6 +48,10 @@
 				<td><textarea id="LeirasEdit" name="leiras">{$fa.leiras}</textarea></td>
 			</tr>
 			<tr>
+				<td><label for="Leiras2Edit">{t('Leírás 2')}:</label></td>
+				<td><textarea id="Leiras2Edit" name="leiras2">{$fa.leiras2}</textarea></td>
+			</tr>
+			<tr>
 				<td><label for="SeoDescriptionEdit">{t('META leírás')}:</label></td>
 				<td><textarea id="SeoDescriptionEdit" name="seodescription" cols="70">{$fa.seodescription}</textarea></td>
 			</tr>

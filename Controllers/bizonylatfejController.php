@@ -57,6 +57,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$x['afahuf'] = $t->getAfahuf();
 		$x['bruttohuf'] = $t->getBruttohuf();
 		$x['megjegyzes'] = $t->getMegjegyzes();
+		$x['belsomegjegyzes'] = $t->getBelsomegjegyzes();
 		$x['szallnev'] = $t->getSzallnev();
 		$x['szallirszam'] = $t->getSzallirszam();
 		$x['szallvaros'] = $t->getSzallvaros();
@@ -125,6 +126,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		}
 
 		$obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
+		$obj->setBelsomegjegyzes($this->params->getStringRequestParam('belsomegjegyzes'));
 		$obj->setWebshopmessage($this->params->getStringRequestParam('webshopmessage'));
 		$obj->setCouriermessage($this->params->getStringRequestParam('couriermessage'));
 

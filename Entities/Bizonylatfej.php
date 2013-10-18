@@ -236,6 +236,9 @@ class Bizonylatfej {
 	private $megjegyzes;
 
 	/** @Column(type="text",nullable=true) */
+	private $belsomegjegyzes;
+
+	/** @Column(type="text",nullable=true) */
 	private $webshopmessage;
 
 	/** @Column(type="text",nullable=true) */
@@ -1058,6 +1061,14 @@ class Bizonylatfej {
 
 	public function setMegjegyzes($val) {
 		$this->megjegyzes = $val;
+	}
+
+	public function getBelsomegjegyzes() {
+		return $this->belsomegjegyzes;
+	}
+
+	public function setBelsomegjegyzes($val) {
+		$this->belsomegjegyzes = $val;
 	}
 
 	public function getLastmod() {

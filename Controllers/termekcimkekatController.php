@@ -49,7 +49,7 @@ class termekcimkekatController extends \mkwhelpers\JQGridController {
 
 	public function getWithCimkek($selected) {
 		// TODO sok cimke eseten ez meg lehet lassu, bar gyorsitottam
-		$cimkekat=$this->getRepo()->getScalarWithJoins(array(),array('_xx.sorrend'=>'asc','_xx.nev'=>'asc','c.nev'=>'asc'));
+		$cimkekat=$this->getRepo()->getScalarWithJoins(array(),array('_xx.nev'=>'asc','_xx.sorrend'=>'asc','c.nev'=>'asc'));
 		$res=array();
 		foreach($cimkekat as $sor) {
 			if (!array_key_exists($sor['id'],$res)) {
