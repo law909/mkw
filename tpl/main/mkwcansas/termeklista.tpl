@@ -107,7 +107,7 @@
 							</div>
 							{$_kosarbaclass="js-kosarba"}
 							{if ($_termek.valtozatok|default)}
-								<div class="termekprice">{$_termek.valtozatok.fixname}: {$_termek.valtozatok.fixvalue}</div>
+								<div class="termekvaltozat">{$_termek.valtozatok.fixname}: {$_termek.valtozatok.fixvalue}</div>
 								{if ($_termek.valtozatok.name)}
 								<div class="termekprice">
 									{$_termek.valtozatok.name}:
@@ -122,7 +122,7 @@
 							{/if}
 							{if ($_termek.mindenvaltozat|default)}
 								{foreach $_termek.mindenvaltozat as $_valtozat}
-									<div class="termekprice">
+									<div class="termekvaltozat">
 									{$_valtozat.name}
 									<select class="mindenValtozatEdit" data-id="{$_termek.id}-{$_termek.valtozatid|default}" data-termek="{$_termek.id}" data-tipusid="{$_valtozat.tipusid}">
 										<option value="">{t('Válasszon')}</option>

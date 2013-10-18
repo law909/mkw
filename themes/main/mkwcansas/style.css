@@ -81,7 +81,7 @@ footer nav{margin-top:20px;}
 .termekimage{text-align:center;width:150px;float:left;}
 .termekcaption,.termekprice{font-size:15px;font-weight:bold;color:#333333;}
 .termekprice{text-align:right;color:#333333;}
-.termekvaltozat{font-size:13px;font-weight:bold;}
+.termekvaltozat{text-align:right;font-size:13px;font-weight:bold;}
 .gtermek{padding:10px 1.55%;height:370px;width:45%;float:left;min-height:1px;border-width:1px;border-style:solid;border-color:#e8e8e8;border-width:0 0 1px 1px;}
 .gtermekszelso{border-width:0 1px 1px 1px;}
 .gtermekimage{float:left;width:120px;}
