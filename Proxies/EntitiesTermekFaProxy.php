@@ -180,6 +180,18 @@ class EntitiesTermekFaProxy extends \Entities\TermekFa implements \Doctrine\ORM\
         return parent::setLeiras($leiras);
     }
 
+    public function getLeiras2()
+    {
+        $this->__load();
+        return parent::getLeiras2();
+    }
+
+    public function setLeiras2($leiras)
+    {
+        $this->__load();
+        return parent::setLeiras2($leiras);
+    }
+
     public function getKarkod()
     {
         $this->__load();
@@ -232,6 +244,12 @@ class EntitiesTermekFaProxy extends \Entities\TermekFa implements \Doctrine\ORM\
     {
         $this->__load();
         return parent::getKepurl($pre);
+    }
+
+    public function getKepurlMini($pre = '/')
+    {
+        $this->__load();
+        return parent::getKepurlMini($pre);
     }
 
     public function getKepurlSmall($pre = '/')
@@ -357,7 +375,7 @@ class EntitiesTermekFaProxy extends \Entities\TermekFa implements \Doctrine\ORM\
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'children', 'parent', 'nev', 'sorrend', 'slug', 'karkod', 'rovidleiras', 'leiras', 'menu1lathato', 'menu2lathato', 'menu3lathato', 'menu4lathato', 'oldalcim', 'seodescription', 'kepurl', 'kepleiras', 'termekek1', 'termekek2', 'termekek3');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'children', 'parent', 'nev', 'sorrend', 'slug', 'karkod', 'rovidleiras', 'leiras', 'leiras2', 'menu1lathato', 'menu2lathato', 'menu3lathato', 'menu4lathato', 'oldalcim', 'seodescription', 'kepurl', 'kepleiras', 'termekek1', 'termekek2', 'termekek3');
     }
 
     public function __clone()
