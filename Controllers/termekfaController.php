@@ -407,10 +407,18 @@ class termekfaController extends \mkwhelpers\MattableController {
 			$ret['szurok'] = $tck->getForTermekSzuro($tid, $szurotomb, $termekidfiltered);
 			$ret['lapozo'] = $pager->loadValues();
 			$ret['order'] = $ord;
-			$ret['kategoria'] = array(
-				'nev' => $parent->getNev(),
-				'leiras2' => $parent->getLeiras2()
-			);
+            if ($parent) {
+                $ret['kategoria'] = array(
+                    'nev' => $parent->getNev(),
+                    'leiras2' => $parent->getLeiras2()
+                );
+            }
+            else {
+                $ret['kategoria'] = array(
+                    'nev' => '',
+                    'leiras2' => ''
+                );
+            }
 		}
 		else {
 			$ret['lapozo'] = 0;
