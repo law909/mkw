@@ -11,10 +11,7 @@ Require user mindentkapni
    RewriteCond %{REQUEST_FILENAME} !-d
 
 
-#RewriteRule ^/([^\?]*)\?([^\?]*\?.*) /$1_$2 [N]
 #RewriteRule ^/([^\?]*)\?([^\?]*)$ /$1_$2
-#   RewriteRule ^(.*)$ /index.php?com=$1
 #RewriteRule ^pcat_id$ /rewriter.php?com=$1 L
 RewriteRule . index.php [L]
-#RewriteRule (.*) /index.php?com=$1&%{QUERY_STRING}
 </IfModule>
