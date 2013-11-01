@@ -14,5 +14,7 @@ Require user mindentkapni
 #RewriteRule
 #RewriteRule ^pcat_id$ /rewriter.php?com=$1 L
 RewriteRule (.*)\.ini index.php [L]
+RewriteRule (.*)\.sql index.php [L]
+RewriteRule (.*)\.tpl index.php [L]
 RewriteRule . index.php [L]
 </IfModule>
