@@ -4,8 +4,6 @@ AuthBasicProvider file
 AuthUserFile "/home/chroot3/home/umnd001/teszt.mindentkapni.hu/.password"
 Require user mindentkapni
 
-php_value include_path "./:./vendor/Doctrine"
-
 <IfModule mod_rewrite.c>
    RewriteEngine on
    RewriteBase /
