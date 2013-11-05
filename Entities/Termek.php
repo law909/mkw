@@ -231,9 +231,12 @@ class Termek {
 		$x['cimkelistaban']=$listaban;
 
 		if (!is_null($valtozat)) {
-			$x['kiskepurl']=$valtozat->getKepurlSmall();
-			$x['minikepurl']=$valtozat->getKepurlMini();
-			$x['kepurl']=$valtozat->getKepurlLarge();
+            if ($valtozat->getKepurlSmall()) {
+                $x['kozepeskepurl']=$valtozat->getKepurlMedium();
+                $x['kiskepurl']=$valtozat->getKepurlSmall();
+                $x['minikepurl']=$valtozat->getKepurlMini();
+                $x['kepurl']=$valtozat->getKepurlLarge();
+            }
 			$x['valtozatid']=$valtozat->getId();
 			if ($this->getValtozatadattipusId()==$valtozat->getAdatTipus1Id()) {
 				$ertek=$valtozat->getErtek1();
@@ -418,10 +421,12 @@ class Termek {
 		$x['cikkszam']=$this->getCikkszam();
 		$x['me']=$this->getMe();
 		if ($valtozat) {
-			$x['kozepeskepurl']=$valtozat->getKepUrlMedium();
-			$x['kiskepurl']=$valtozat->getKepurlSmall();
-			$x['kepurl']=$valtozat->getKepurlLarge();
-			$x['minikepurl']=$valtozat->getKepurlMini();
+            if ($valtozat->getKepUrlMedium()) {
+                $x['kozepeskepurl']=$valtozat->getKepUrlMedium();
+                $x['kiskepurl']=$valtozat->getKepurlSmall();
+                $x['kepurl']=$valtozat->getKepurlLarge();
+                $x['minikepurl']=$valtozat->getKepurlMini();
+            }
 		}
 		$x['link'] = \mkw\Store::getRouter()->generate('showtermek',false,array('slug'=>$this->getSlug()));
 		return $x;
