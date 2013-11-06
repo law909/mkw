@@ -12,7 +12,7 @@
 <tr><td>{$_termek.termekfa1nev}</td><td>{$_termek.termekfa2nev}</td><td>{$_termek.termekfa3nev}</td></tr>
 </tbody></table>
 <table><tbody>
-		<tr><td>{t('Link')}:</td><td colspan="3"><a href="/termek/{$_termek.slug}" target="_blank">/termek/{$_termek.slug}</a></td></tr>
+		<tr><td>{t('Link')}:</td><td colspan="3"><a href="{$mainurl}/termek/{$_termek.slug}" target="_blank">/termek/{$_termek.slug}</a></td></tr>
 <tr><td>{t('Megtekintve')}:</td><td>{$_termek.megtekintesdb}</td><td>{t('Megvásárolva')}:</td><td>{$_termek.megvasarlasdb}</td></tr>
 <tr><td>{t('Cikkszám')}:</td><td colspan="3">{$_termek.cikkszam}</td>
 <tr><td>{t('ME')}:</td><td colspan="3">{$_termek.me}</td></tr>

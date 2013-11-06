@@ -1,7 +1,7 @@
 <div id="mattkarb-header">
 	<img class="mattedit-headerimage" src="{$mainurl}{$termek.kepurlsmall}"/>
 	<h3>{t('Termék')}</h3>
-	<h4><a href="/termek/{$termek.slug}" target="_blank">{$termek.nev}</a></h4>
+	<h4><a href="{$mainurl}/termek/{$termek.slug}" target="_blank">{$termek.nev}</a></h4>
 </div>
 <form id="mattkarb-form" method="post" action="/admin/termek/save" data-id="{$termek.id}">
 	<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
