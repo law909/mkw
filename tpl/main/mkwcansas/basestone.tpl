@@ -15,18 +15,16 @@
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/style.css">
 		{block "css"}{/block}
 		<script src="/js/main/mkwcansas/jquery-1.10.2.min.js"></script>
-		<script src="/js/main/mkwcansas/jquery-ui-1.10.3.custom.min.js"></script>
 
 		<script src="/js/main/mkwcansas/jquery-migrate-1.2.1.js"></script>
 
 		<script src="/js/main/mkwcansas/jquery.magnific-popup.min.js"></script>
 		<script src="/js/main/mkwcansas/jquery.slider.min.js"></script>
-		<script src="/js/main/mkwcansas/bootstrap-transition.js"></script>
+        <script src="/js/main/mkwcansas/bootstrap-transition.js"></script>
 		<script src="/js/main/mkwcansas/bootstrap-modal.js"></script>
 		<script src="/js/main/mkwcansas/bootstrap-tab.js"></script>
 		<script src="/js/main/mkwcansas/bootstrap-typeahead.js"></script>
 		<script src="/js/main/mkwcansas/bootstrap-tooltip.js"></script>
-		<script src="/js/main/mkwcansas/jquery.ui.rcarousel.min.js"></script>
 		<script src="/js/main/mkwcansas/h5f.js"></script>
 		<script src="/js/main/mkwcansas/matt-accordion.js"></script>
 		{block "script"}{/block}

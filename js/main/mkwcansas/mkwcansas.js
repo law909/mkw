@@ -52,35 +52,6 @@ $(document).ready(function() {
 			minLength: 4
 		});
 	}
-	if ($.fn.carousel) {
-		$('#maincarousel').carousel();
-	}
-	if ($.ui.rcarousel) {
-		$('#ajanlotttermekslider').rcarousel({
-			visible: 3,
-			step: 1,
-			width: 180,
-			height: 200,
-			margin: 10,
-			auto: {
-				enabled: true
-			}
-		});
-		$('#legnepszerubbtermekslider').rcarousel({
-			visible: 3,
-			step: 1,
-			width: 180,
-			height: 200,
-			margin: 10,
-			auto: {
-				enabled: true
-			},
-			navigation: {
-				next: '#nepszeru-ui-carousel-next',
-				prev: '#nepszeru-ui-carousel-prev'
-			}
-		});
-	}
 	$termekertesitomodal.modal({
 		show: false
 	});

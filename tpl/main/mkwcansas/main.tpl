@@ -41,7 +41,7 @@
 				{/if}
 			</div>
 			<div class="span7">
-				{if count($korhintalista)>0}
+				{if (count($korhintalista)>0)}
 				<div id="maincarousel" class="carousel slide">
 					<div class="carousel-inner">
 						{foreach $korhintalista as $_korhinta}
@@ -54,8 +54,6 @@
 						</div>
 						{/foreach}
 					</div>
-					<a class="left carousel-control" href="#maincarousel" data-slide="prev">‹</a>
-					<a class="right carousel-control" href="#maincarousel" data-slide="next">›</a>
 				</div>
 				{/if}
 				{if (count($legnepszerubbtermekek)>0)}
@@ -74,8 +72,6 @@
 								</div>
 						{/foreach}
 					</div>
-					<a href="#" id="nepszeru-ui-carousel-next" class="left carousel-control">‹</a>
-					<a href="#" id="nepszeru-ui-carousel-prev" class="right carousel-control">›</a>
 				</div>
 				{/if}
 				{if (count($ajanlotttermekek)>0)}
@@ -94,8 +90,6 @@
 								</div>
 						{/foreach}
 					</div>
-					<a href="#" id="ui-carousel-next" class="left carousel-control">‹</a>
-					<a href="#" id="ui-carousel-prev" class="right carousel-control">›</a>
 				</div>
 				{/if}
 			</div>
