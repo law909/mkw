@@ -99,6 +99,9 @@
 				<td><label>{t('Kiemelt termékek száma')}:</label></td><td><input name="kiemelttermekdb" type="number" value="{$kiemelttermekdb}"></td></tr>
 			<tr><td><label>{t('Ár szűrő lépésköze')}:</label></td><td><input name="arfilterstep" type="number" value="{$arfilterstep}"></td>
 				<td><label>{t('Automatikus kiléptetés ideje (perc)')}:</label></td><td><input name="autologoutmin" type="number" value="{$autologoutmin}"></td></tr>
+			<tr><td><label>{t('Mini kép mérete')}:</label></td><td><input name="miniimagesize" type="number" value="{$miniimagesize}"></td>
+				<td><label>{t('Mini kép utótag')}:</label></td><td><input name="miniimgpost" type="text" value="{$miniimgpost}"></td>
+			</tr>
 			<tr><td><label>{t('Kis kép mérete')}:</label></td><td><input name="smallimagesize" type="number" value="{$smallimagesize}"></td>
 				<td><label>{t('Kis kép utótag')}:</label></td><td><input name="smallimgpost" type="text" value="{$smallimgpost}"></td>
 			</tr>

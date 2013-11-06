@@ -44,6 +44,8 @@ class setupController extends \mkwhelpers\Controller {
 		$p=$repo->find(\mkw\consts::Katseodescription);
 		$view->setVar(\mkw\consts::Katseodescription,($p?$p->getErtek():''));
 
+		$p=$repo->find(\mkw\consts::Miniimagesize);
+		$view->setVar(\mkw\consts::Miniimagesize,($p?$p->getErtek():80));
 		$p=$repo->find(\mkw\consts::Smallimagesize);
 		$view->setVar(\mkw\consts::Smallimagesize,($p?$p->getErtek():80));
 		$p=$repo->find(\mkw\consts::Mediumimagesize);
@@ -56,6 +58,8 @@ class setupController extends \mkwhelpers\Controller {
 		$view->setVar(\mkw\consts::Jpgquality,($p?$p->getErtek():90));
 		$p=$repo->find(\mkw\consts::Pngquality);
 		$view->setVar(\mkw\consts::Pngquality,($p?$p->getErtek():9));
+		$p=$repo->find(\mkw\consts::Miniimgpost);
+		$view->setVar(\mkw\consts::Miniimgpost,($p?$p->getErtek():'_i'));
 		$p=$repo->find(\mkw\consts::Smallimgpost);
 		$view->setVar(\mkw\consts::Smallimgpost,($p?$p->getErtek():'_s'));
 		$p=$repo->find(\mkw\consts::Mediumimgpost);
@@ -151,12 +155,14 @@ class setupController extends \mkwhelpers\Controller {
 		$this->setObj(\mkw\consts::Tulajadoszam,$this->params->getStringRequestParam('tulajadoszam'));
 		$this->setObj(\mkw\consts::Tulajeuadoszam,$this->params->getStringRequestParam('tulajeuadoszam'));
 		// web
+		$this->setObj(\mkw\consts::Miniimagesize,$this->params->getIntRequestParam('miniimagesize'));
 		$this->setObj(\mkw\consts::Smallimagesize,$this->params->getIntRequestParam('smallimagesize'));
 		$this->setObj(\mkw\consts::Mediumimagesize,$this->params->getIntRequestParam('mediumimagesize'));
 		$this->setObj(\mkw\consts::Bigimagesize,$this->params->getIntRequestParam('bigimagesize'));
 		$this->setObj(\mkw\consts::Korhintaimagesize,$this->params->getIntRequestParam('korhintaimagesize'));
 		$this->setObj(\mkw\consts::Jpgquality,$this->params->getIntRequestParam('jpgquality'));
 		$this->setObj(\mkw\consts::Pngquality,$this->params->getIntRequestParam('pngquality'));
+		$this->setObj(\mkw\consts::Miniimgpost,$this->params->getStringRequestParam('miniimgpost'));
 		$this->setObj(\mkw\consts::Smallimgpost,$this->params->getStringRequestParam('smallimgpost'));
 		$this->setObj(\mkw\consts::Mediumimgpost,$this->params->getStringRequestParam('mediumimgpost'));
 		$this->setObj(\mkw\consts::Bigimgpost,$this->params->getStringRequestParam('bigimgpost'));
