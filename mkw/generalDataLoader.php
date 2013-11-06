@@ -15,7 +15,7 @@ class generalDataLoader {
 		}
 		$view->setVar('theme',store::getConfigValue('theme'));
 		$view->setVar('uitheme',store::getParameter(consts::Uitheme,'sunny'));
-        $view->setVar('adminurl',store::getConfigValue('adminurl'));
+        $view->setVar('mainurl',store::getConfigValue('mainurl'));
 		$setup=store::getSetup();
 		$setup['grideditbutton']=store::getParameter(consts::Grideditbutton,'small');
 		$setup['editstyle']=store::getParameter(consts::Editstyle,'dropdown');

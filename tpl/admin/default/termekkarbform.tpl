@@ -1,5 +1,5 @@
 <div id="mattkarb-header">
-	<img class="mattedit-headerimage" src="{$adminurl}{$termek.kepurlsmall}"/>
+	<img class="mattedit-headerimage" src="{$mainurl}{$termek.kepurlsmall}"/>
 	<h3>{t('Termék')}</h3>
 	<h4><a href="/termek/{$termek.slug}" target="_blank">{$termek.nev}</a></h4>
 </div>
@@ -220,7 +220,7 @@
 					<td colspan="3">
 						<ul id="ValtozatKepEdit_gen" class="valtozatkepedit js-valtozatkepedit">
 							{foreach $keplist as $kep}
-								<li data-value="{$kep.id}" data-valtozatid="gen" class="ui-state-default"><img src="{$adminurl}{$kep.url}"/></li>
+								<li data-value="{$kep.id}" data-valtozatid="gen" class="ui-state-default"><img src="{$mainurl}{$kep.url}"/></li>
 							{/foreach}
 						</ul>
 						<input id="ValtozatKepId_gen" name="valtozatkepid" form="valtozatgeneratorform" type="hidden">

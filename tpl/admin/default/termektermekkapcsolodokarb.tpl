@@ -2,7 +2,7 @@
 <input name="kapcsolodoid[]" type="hidden" value="{$kapcsolodo.id}">
 <input name="kapcsolodooper_{$kapcsolodo.id}" type="hidden" value="{$kapcsolodo.oper}">
 <tr>
-<td><img src="{$adminurl}{$kapcsolodo.altermekkepurl}"></td>
+<td><img src="{$mainurl}{$kapcsolodo.altermekkepurl}"></td>
 <td><label for="KapcsolodoAltermekEdit{$kapcsolodo.id}">{t('Termék')}:</label></td>
 <td><select id="KapcsolodoAltermekEdit{$kapcsolodo.id}" name="kapcsolodoaltermek_{$kapcsolodo.id}" required="required">
 <option value="">{t('válasszon')}</option>

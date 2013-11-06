@@ -2,7 +2,7 @@
 <td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
 <td class="cell">
 <table><tbody>
-<tr>{if ($kellkep)}<td><a class="toFlyout" href="{$adminurl}{$_cimke.kepurl}" target="_blank"><img src="{$adminurl}{$_cimke.kepurlsmall}"/></a></td>{/if}
+<tr>{if ($kellkep)}<td><a class="toFlyout" href="{$mainurl}{$_cimke.kepurl}" target="_blank"><img src="{$mainurl}{$_cimke.kepurlsmall}"/></a></td>{/if}
 <td><a class="mattable-editlink" href="#" data-cimkeid="{$_cimke.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_cimke.nev}</a></td>
 {if ($setup.grideditbutton=='small')}
 <td><span class="jobbra"><a class="mattable-dellink" href="#" data-cimkeid="{$_cimke.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span></td>
