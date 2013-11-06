@@ -97,6 +97,22 @@ class setupController extends \mkwhelpers\Controller {
 		$p=$repo->find(\mkw\consts::Esedekessegalap);
 		$view->setVar(\mkw\consts::Esedekessegalap,($p?$p->getErtek():'1'));
 
+        $p=$repo->find(\mkw\consts::ImportNewKatId);
+        $inkid=$p?$p->getErtek():0;
+        $importnewkat=store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
+        if ($importnewkat) {
+            $view->setVar('importnewkat',array(
+                'caption' => $importnewkat->getNev(),
+                'id' => $importnewkat->getId()
+            ));
+        }
+        else {
+            $view->setVar('importnewkat',array(
+                'caption' => '',
+                'id' => ''
+            ));
+        }
+
 		// feed
 		$p=$repo->find(\mkw\consts::Feedhirdb);
 		$view->setVar(\mkw\consts::Feedhirdb,($p?$p->getErtek():20));
@@ -193,6 +209,14 @@ class setupController extends \mkwhelpers\Controller {
 			$this->setObj(\mkw\consts::Valutanem,$valutanem->getId());
 		}
 		$this->setObj(\mkw\consts::Esedekessegalap,$this->params->getIntRequestParam('esedekessegalap',1));
+        $inkid=$this->params->getIntRequestParam('importnewkatid');
+        if ($inkid) {
+            $importnewkat=store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
+            $this->setObj(\mkw\consts::ImportNewKatId, $importnewkat->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::ImportNewKatId, 0);
+        }
 		//feed
 		$this->setObj(\mkw\consts::Feedhirdb,$this->params->getIntRequestParam('feedhirdb',20));
 		$this->setObj(\mkw\consts::Feedhirtitle,$this->params->getStringRequestParam('feedhirtitle',t('Híreink')));

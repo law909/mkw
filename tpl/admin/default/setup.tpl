@@ -2,6 +2,7 @@
 
 {block "inhead"}
 <script type="text/javascript" src="/js/admin/default/jquery.form.js"></script>
+<script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.mattkarb.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
 <script type="text/javascript" src="/js/admin/default/setupform.js"></script>
@@ -62,6 +63,13 @@
 					<option value="2"{if ($esedekessegalap=='2')} selected="selected"{/if}>{t('teljesítés')}</option>
 				</select></td>
 			</tr>
+            <tr>
+                <td><label>{t('Az importerek ebbe a kategóriába tegyék az új termékeket')}:</label></td>
+                <td>
+                    <span class="js-importnewkatid">{$importnewkat.caption|default:'nincs megadva'}</span>
+                    <input name="importnewkatid" type="hidden" value="{$importnewkat.id}">
+                </td>
+            </tr>
 		</tbody></table>
 		</div>
 		{if ($setup.editstyle=='dropdown')}

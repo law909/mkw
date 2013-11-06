@@ -1,5 +1,7 @@
 $(document).ready(function() {
-	$('#mattkarb').mattkarb({
+	var dialogcenter=$('#dialogcenter');
+
+    $('#mattkarb').mattkarb({
 		independent:true,
 		viewUrl:'/admin/megrendelesfej/getkarb',
 		newWindowUrl:'/admin/megrendelesfej/viewkarb',
@@ -51,6 +53,41 @@ $(document).ready(function() {
 					$('#TulajirszamEdit').val(ui.item.szam);
 				}
 			});
+            $('.js-importnewkatid').on('click',function(e) {
+                dialogcenter.jstree({
+                    core:{animation:100},
+                    plugins:['themeroller','json_data','ui'],
+                    themeroller:{item:''},
+                    json_data:{
+                        ajax:{url:'/admin/termekfa/jsonlist'}
+                    },
+                    ui:{select_limit:1}
+                })
+                .bind('loaded.jstree',function(event,data) {
+                    dialogcenter.jstree('open_node',$('#termekfa_1',dialogcenter).parent());
+                });
+                dialogcenter.dialog({
+                    resizable: true,
+                    height:340,
+                    modal: true,
+                    buttons: {
+                        'OK': function() {
+                            var ide=dialogcenter.jstree('get_selected').children('a').attr('id'),
+                                caption=dialogcenter.jstree('get_selected').children('a').text(),
+                                ideid=ide.split('_')[1],
+                                $thisdialog=$(this);
+                            $('.js-importnewkatid span').text(caption);
+                            $('input[name="importnewkatid"]').val(ideid);
+                            $(this).dialog('close');
+                        },
+                        'Bezár': function() {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+
+                return false;
+            }).button();
 		},
 		onSubmit:function() {
 			$('#messagecenter')

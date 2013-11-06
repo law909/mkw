@@ -13,6 +13,7 @@ class consts {
 	const Fizmod='fizmod';
 	const Esedekessegalap='esedekessegalap';
 	const Autologoutmin='autologoutmin';
+    const ImportNewKatId='importnewkatid';
 
 	const Tulajnev='tulajnev';
 	const Tulajirszam='tulajirszam';
