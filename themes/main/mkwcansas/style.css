@@ -142,4 +142,9 @@ tbody.acc-megrendeles td{padding:5px 10px;}
 .acc-megrendelestetellist{border:solid 1px;width:100%;margin-top:5px;}
 thead.acc-megrendelestetellist{font-weight:bold;}thead.acc-megrendelestetellist td{padding:5px 10px;}
 .termekimagecontainer{padding-bottom:15px;}
+.royalSlider{width:100%;}
+.termekSlider{border:solid 1px #4b4b4b;background:white;}.termekSlider .rsOverflow,.termekSlider .rsSlide{background:white;}
+.termekSliderTermekInner{padding:15px;}.termekSliderTermekInner a{display:block;}
+.termekSliderImageContainer{min-height:100px;}
+.hirListBlock dd.title{font-weight:bold;font-size:14px;}
 @media (min-width:480px){#navmain li .sub{width:400px;}}@media (max-width:767px){.chk-tooltippedcontainer{width:100%;}}@media (min-width:767px){#navmain li .sub{width:700px;} #navmain li .sub ul{width:125px;float:left;}}@media (min-width:979px){#navmain li .sub{width:940px;} #navmain li .sub ul{width:185px;float:left;}}

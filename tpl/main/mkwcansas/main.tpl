@@ -10,12 +10,10 @@
             </div>
             {foreach $topkategorialista as $_topkategoria}
                 <div class="hirListBlock">
-                    <div class="borderBottomColorOneExtraLight">
-                        <dl class="spg-additional">
-                            <dd class="title"><a href="/termekfa/{$_topkategoria.slug}">{$_topkategoria.caption}</a></dd>
-                            <dd class="copy"><p>{$_topkategoria.rovidleiras}</p></dd>
-                        </dl>
-                    </div>
+                    <dl>
+                        <dd class="title"><a href="/termekfa/{$_topkategoria.slug}">{$_topkategoria.caption}</a></dd>
+                        <dd class="copy"><p>{$_topkategoria.rovidleiras}</p></dd>
+                    </dl>
                 </div>
             {/foreach}
             {/if}
