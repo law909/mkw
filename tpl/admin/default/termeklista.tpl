@@ -18,7 +18,36 @@
 <div id="mattable-filterwrapper">
 	<label for="nevfilter">{t('Szűrés')}</label>
 	<input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
-    <label for="lathatofilter">
+    <select id="lathatofilter" name="lathatofilter">
+        <option value="1">Látható</option>
+        <option value="0">Nem látható</option>
+        <option value="9">Mindegy</option>
+    </select>
+    <select id="nemkaphatofilter" name="nemkaphatofilter">
+        <option value="9">Mindegy</option>
+        <option value="1">Nem kapható</option>
+        <option value="0">Kapható</option>
+    </select>
+    <select id="fuggobenfilter" name="fuggobenfilter">
+        <option value="9">Mindegy</option>
+        <option value="1">Függőben</option>
+        <option value="0">Nincs függőben</option>
+    </select>
+    <select id="inaktivfilter" name="inaktivfilter">
+        <option value="9">Mindegy</option>
+        <option value="1">Inaktív</option>
+        <option value="0">Aktív</option>
+    </select>
+    <select id="ajanlottfilter" name="ajanlottfilter">
+        <option value="9">Mindegy</option>
+        <option value="1">Ajánlott</option>
+        <option value="0">Nem ajánlott</option>
+    </select>
+    <select id="kiemeltfilter" name="kiemeltfilter">
+        <option value="9">Mindegy</option>
+        <option value="1">Kiemelt</option>
+        <option value="0">Nem kiemelt</option>
+    </select>
 	<div class="matt-hseparator"></div>
 	<div id="termekfa" class="mattable-filterwrapper ui-widget-content"></div>
 	<div class="matt-hseparator"></div>

@@ -376,6 +376,42 @@ class termekController extends \mkwhelpers\MattableController {
 			$filter['clauses'][] = '';
 			$filter['values'][] = $this->params->getStringRequestParam('nevfilter');
 		}
+        $f = $this->params->getNumRequestParam('lathatofilter',9);
+        if ($f != 9) {
+            $filter['fields'][] = 'lathato';
+            $filter['clauses'][] = '=';
+            $filter['values'][] = $f;
+        }
+        $f = $this->params->getNumRequestParam('nemkaphatofilter',9);
+        if ($f != 9) {
+            $filter['fields'][] = 'nemkaphato';
+            $filter['clauses'][] = '=';
+            $filter['values'][] = $f;
+        }
+        $f = $this->params->getNumRequestParam('fuggobenfilter',9);
+        if ($f != 9) {
+            $filter['fields'][] = 'fuggoben';
+            $filter['clauses'][] = '=';
+            $filter['values'][] = $f;
+        }
+        $f = $this->params->getNumRequestParam('inaktivfilter',9);
+        if ($f != 9) {
+            $filter['fields'][] = 'inaktiv';
+            $filter['clauses'][] = '=';
+            $filter['values'][] = $f;
+        }
+        $f = $this->params->getNumRequestParam('ajanlottfilter',9);
+        if ($f != 9) {
+            $filter['fields'][] = 'ajanlott';
+            $filter['clauses'][] = '=';
+            $filter['values'][] = $f;
+        }
+        $f = $this->params->getNumRequestParam('kiemeltfilter',9);
+        if ($f != 9) {
+            $filter['fields'][] = 'kiemelt';
+            $filter['clauses'][] = '=';
+            $filter['values'][] = $f;
+        }
 
 		$fv = $this->params->getArrayRequestParam('cimkefilter');
 		if (!empty($fv)) {

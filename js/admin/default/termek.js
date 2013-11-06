@@ -590,7 +590,7 @@ $(document).ready(function(){
 				}
 			},
 			filter:{
-				fields:['#nevfilter'],
+				fields:['#nevfilter','#lathatofilter','#nemkaphatofilter','#fuggobenfilter','#inaktivfilter','#ajanlottfilter','#kiemeltfilter'],
 				onClear:function() {
 					$('.js-cimkefilter').removeClass('ui-state-hover');
 					$('#termekfa').jstree('uncheck_all');
