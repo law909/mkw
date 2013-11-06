@@ -34,9 +34,9 @@
         <option value="0">Nincs függőben</option>
     </select>
     <select id="inaktivfilter" name="inaktivfilter">
-        <option value="9">Mindegy</option>
-        <option value="1">Inaktív</option>
         <option value="0">Aktív</option>
+        <option value="1">Inaktív</option>
+        <option value="9">Mindegy</option>
     </select>
     <select id="ajanlottfilter" name="ajanlottfilter">
         <option value="9">Mindegy</option>

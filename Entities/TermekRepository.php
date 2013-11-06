@@ -29,6 +29,9 @@ class TermekRepository extends \mkwhelpers\Repository {
 		$filter['fields'][] = 'lathato';
 		$filter['clauses'][] = '=';
 		$filter['values'][] = true;
+        $filter['fields'][] = 'fuggoben';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = false;
 		return $filter;
 	}
 
@@ -157,7 +160,7 @@ class TermekRepository extends \mkwhelpers\Repository {
 		$rsm->addScalarResult('lastmod', 'lastmod');
 		$q = $this->_em->createNativeQuery('SELECT id,slug,lastmod'
 				. ' FROM termek '
-				. ' WHERE inaktiv=0'
+				. ' WHERE (inaktiv=0) AND (fuggoben=0) AND (nemlathato=0)'
 				. ' ORDER BY id', $rsm);
 		return $q->getScalarResult();
 	}
@@ -179,15 +182,10 @@ class TermekRepository extends \mkwhelpers\Repository {
 
 	public function getFeedTermek() {
         $filter = array();
+        $filter = $this->addAktivLathatoFilter($filter);
         $filter['fields'][] = 'nemkaphato';
         $filter['clauses'][] = '=';
-        $filter['values'][] = 'false';
-        $filter['fields'][] = 'fuggoben';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = 'false';
-        $filter['fields'][] = 'lathato';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = 'true';
+        $filter['values'][] = false;
 		$a = $this->alias;
 		$q = $this->_em->createQuery('SELECT ' . $a
 				. ' FROM ' . $this->entityname . ' ' . $a
