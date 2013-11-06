@@ -59,6 +59,7 @@ $(document).ready(function() {
             keyboardNavEnabled: true,
             globalCaption: true,
             controlNavigation: 'bullets',
+            imageScalePadding: 0,
             autoPlay: {
                 enabled: true
             }
