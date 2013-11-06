@@ -57,7 +57,6 @@ $(document).ready(function() {
             autoScaleSlider: true,
             loopRewind: true,
             keyboardNavEnabled: true,
-            globalCaption: true,
             controlNavigation: 'bullets',
             imageScalePadding: 0,
             autoPlay: {
