@@ -63,6 +63,18 @@ $(document).ready(function() {
                 enabled: true
             }
         });
+        $('#legnepszerubbtermekslider').royalSlider({
+            loopRewind: true,
+            keyboardNavEnabled: true,
+            autoHeight: true,
+            controlNavigation: 'bullets'
+        });
+        $('#ajanlotttermekslider').royalSlider({
+            autoHeight: true,
+            loopRewind: true,
+            keyboardNavEnabled: true,
+            controlNavigation: 'bullets'
+        });
     }
 	$termekertesitomodal.modal({
 		show: false

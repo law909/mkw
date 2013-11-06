@@ -53,36 +53,58 @@
             <div class="blockHeader">
                 <h4>{t('Legnépszerűbb termékeink')}</h4>
             </div>
-            <div class="rcarousel-wrapper">
-                <div id="legnepszerubbtermekslider">
-                    {foreach $legnepszerubbtermekek as $_termek}
-                            <div class="textAlignCenter">
-                                <div class="miniItemPicture"><a href="/termek/{$_termek.slug}"><img src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a></div>
-                                <div class="miniItemCaption"><a href="/termek/{$_termek.slug}"><h4>{$_termek.caption}</h4></a></div>
-                                    <div class="span2">
-                                        <h3 class="itemPrice"><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h3>
+            <div id="legnepszerubbtermekslider" class="royalSlider contentSlider rsDefaultInv termekSlider">
+                {$lntcnt=count($legnepszerubbtermekek)}
+                {$step=3}
+                {for $i=0 to $lntcnt-1 step $step}
+                    <div>
+                    {for $j=0 to $step-1}
+                        {if ($i+$j<$lntcnt)}
+                        {$_termek=$legnepszerubbtermekek[$i+$j]}
+                        <div class="textaligncenter pull-left" style="width:{100/$step}%">
+                            <div class="termekSliderTermekInner">
+                                <a href="/termek/{$_termek.slug}">
+                                    <div class="termekSliderImageContainer">
+                                        <img src="{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                     </div>
+                                    <div>{$_termek.caption}</div>
+                                    <h5 class="itemPrice"><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
+                                </a>
                             </div>
-                    {/foreach}
-                </div>
+                        </div>
+                        {/if}
+                    {/for}
+                    </div>
+                {/for}
             </div>
             {/if}
             {if (count($ajanlotttermekek)>0)}
             <div class="blockHeader">
                 <h4>{t('Ajánlott termékeink')}</h4>
             </div>
-            <div class="rcarousel-wrapper">
-                <div id="ajanlotttermekslider">
-                    {foreach $ajanlotttermekek as $_termek}
-                            <div class="textAlignCenter">
-                                <div class="miniItemPicture"><a href="/termek/{$_termek.slug}"><img src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a></div>
-                                <div class="miniItemCaption"><a href="/termek/{$_termek.slug}"><h4>{$_termek.caption}</h4></a></div>
-                                    <div class="span2">
-                                        <h3 class="itemPrice"><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h3>
+            <div id="ajanlotttermekslider" class="royalSlider contentSlider rsDefaultInv termekSlider">
+                {$lntcnt=count($ajanlotttermekek)}
+                {$step=3}
+                {for $i=0 to $lntcnt-1 step $step}
+                    <div>
+                    {for $j=0 to $step-1}
+                        {if ($i+$j<$lntcnt)}
+                        {$_termek=$ajanlotttermekek[$i+$j]}
+                        <div class="textaligncenter pull-left" style="width:{100/$step}%">
+                            <div class="termekSliderTermekInner">
+                                <a href="/termek/{$_termek.slug}">
+                                    <div class="termekSliderImageContainer">
+                                        <img src="{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                     </div>
+                                    <div>{$_termek.caption}</div>
+                                    <h5 class="itemPrice"><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
+                                </a>
                             </div>
-                    {/foreach}
-                </div>
+                        </div>
+                        {/if}
+                    {/for}
+                    </div>
+                {/for}
             </div>
             {/if}
         </div>

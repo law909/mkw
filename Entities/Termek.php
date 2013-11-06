@@ -206,10 +206,10 @@ class Termek {
 	public function toTermekLista($valtozat=null) {
 		$x=array();
 		$x['id']=$this->getId();
-		$x['kozepeskepurl']=$this->getKepUrlMedium();
-		$x['kiskepurl']=$this->getKepUrlSmall();
+		$x['kozepeskepurl']=$this->getKepurlMedium();
+		$x['kiskepurl']=$this->getKepurlSmall();
 		$x['minikepurl']=$this->getKepurlMini();
-		$x['kepurl']=$this->getKepUrlLarge();
+		$x['kepurl']=$this->getKepurlLarge();
 		$x['slug']=$this->getSlug();
 		$x['caption']=$this->getNev();
 		$x['rovidleiras']=$this->getRovidLeiras();
@@ -291,10 +291,10 @@ class Termek {
 	public function toKiemeltLista($valtozat=null) {
 		$x=array();
 		$x['id']=$this->getId();
-		$x['kozepeskepurl']=$this->getKepUrlMedium();
-		$x['kiskepurl']=$this->getKepUrlSmall();
+		$x['kozepeskepurl']=$this->getKepurlMedium();
+		$x['kiskepurl']=$this->getKepurlSmall();
 		$x['minikepurl']=$this->getKepurlMini();
-		$x['kepurl']=$this->getKepUrlLarge();
+		$x['kepurl']=$this->getKepurlLarge();
 		$x['slug']=$this->getSlug();
 		$x['caption']=$this->getNev();
 		$x['rovidleiras']=$this->getRovidLeiras();
