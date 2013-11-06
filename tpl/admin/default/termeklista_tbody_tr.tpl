@@ -29,6 +29,7 @@
 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="hozzaszolas" class="js-flagcheckbox{if ($_termek.hozzaszolas)} ui-state-hover{/if}">{t('Hozzá lehet szólni')}</a></td></tr>
 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="mozgat" class="js-flagcheckbox{if ($_termek.mozgat)} ui-state-hover{/if}">{t('Készletet mozgat')}</a></td></tr>
 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="nemkaphato" class="js-flagcheckbox{if ($_termek.nemkaphato)} ui-state-hover{/if}">{t('Nem kapható')}</a></td></tr>
+<tr><td><a href="#" data-id="{$_termek.id}" data-flag="fuggoben" class="js-flagcheckbox{if ($_termek.fuggoben)} ui-state-hover{/if}">{t('Függőben')}</a></td></tr>
 <tr><td>{t('Hűségpont arány')}: {$_termek.hparany}</td></tr>
 </tbody></table></td>
 {if ($setup.grideditbutton=='big')}

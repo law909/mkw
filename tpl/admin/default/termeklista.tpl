@@ -18,6 +18,7 @@
 <div id="mattable-filterwrapper">
 	<label for="nevfilter">{t('Szűrés')}</label>
 	<input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
+    <label for="lathatofilter">
 	<div class="matt-hseparator"></div>
 	<div id="termekfa" class="mattable-filterwrapper ui-widget-content"></div>
 	<div class="matt-hseparator"></div>

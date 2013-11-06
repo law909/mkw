@@ -178,9 +178,20 @@ class TermekRepository extends \mkwhelpers\Repository {
 	}
 
 	public function getFeedTermek() {
+        $filter = array();
+        $filter['fields'][] = 'nemkaphato';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = 'false';
+        $filter['fields'][] = 'fuggoben';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = 'false';
+        $filter['fields'][] = 'lathato';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = 'true';
 		$a = $this->alias;
 		$q = $this->_em->createQuery('SELECT ' . $a
 				. ' FROM ' . $this->entityname . ' ' . $a
+                . $this->getFilterString($filter)
 				. ' ORDER BY ' . $a . '.id DESC');
 		$q->setFirstResult(0);
 		$q->setMaxResults(store::getParameter(\mkw\consts::Feedtermekdb, 30));

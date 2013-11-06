@@ -253,6 +253,7 @@
 		<div id="WebTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
 			<input id="LathatoCheck" name="lathato" type="checkbox"{if ($termek.lathato)}checked="checked"{/if}>{t('Weboldalon látható')}
 			<input id="NemkaphatoCheck" name="nemkaphato" type="checkbox"{if ($termek.nemkaphato)}checked="checked"{/if}>{t('Nem kapható')}
+			<input id="FuggobenCheck" name="fuggoben" type="checkbox"{if ($termek.fuggoben)}checked="checked"{/if}>{t('Függőben')}
 			<input id="AjanlottCheck" name="ajanlott" type="checkbox"{if ($termek.ajanlott)}checked="checked"{/if}>{t('Ajánlott')}
 			<input id="KiemeltCheck" name="kiemelt" type="checkbox"{if ($termek.kiemelt)}checked="checked"{/if}>{t('Kiemelt')}
 			<input id="HozzaszolasCheck" name="hozzaszolas" type="checkbox"{if ($termek.hozzaszolas)}checked="checked"{/if}>{t('Hozzá lehet szólni')}

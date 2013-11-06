@@ -90,6 +90,8 @@ class Termek {
 	/** @Column(type="boolean",nullable=false) */
 	private $inaktiv=0;
 	/** @Column(type="boolean",nullable=false) */
+	private $fuggoben=0;
+	/** @Column(type="boolean",nullable=false) */
 	private $termekexportbanszerepel=true;
 	/** @Column(type="decimal",precision=14,scale=2,nullable=true) */
 	private $hparany=0;
@@ -219,7 +221,7 @@ class Termek {
 		$x['akciosbrutto']=$this->getAkciosbrutto();
 		$x['bruttohuf']=$this->getBruttoAr($valtozat);
 		$x['eredetibruttohuf']=$this->getBruttoAr($valtozat,true);
-		$x['nemkaphato']=$this->getNemkaphato();
+		$x['nemkaphato']=$this->getNemkaphato() || $this->getFuggoben();
 
 		$listaban=array();
 		foreach($this->getCimkek() as $cimke) {
@@ -304,7 +306,7 @@ class Termek {
 		$x['akciosbrutto']=$this->getAkciosbrutto();
 		$x['bruttohuf']=$this->getBruttoAr();
 		$x['eredetibruttohuf']=$this->getBruttoAr($valtozat,true);
-		$x['nemkaphato']=$this->getNemkaphato();
+		$x['nemkaphato']=$this->getNemkaphato() || $this->getFuggoben();
 
 		$listaban=array();
 		foreach($this->getCimkek() as $cimke) {
@@ -338,7 +340,7 @@ class Termek {
 		$x['akciosbrutto']=$this->getAkciosbrutto();
 		$x['bruttohuf']=$this->getBruttoAr($valtozat);
 		$x['eredetibruttohuf']=$this->getBruttoAr($valtozat, true);
-		$x['nemkaphato']=$this->getNemkaphato();
+		$x['nemkaphato']=$this->getNemkaphato() || $this->getFuggoben();
 
 		$altomb=array();
 		foreach($this->getTermekKepek() as $kep) {
@@ -1280,4 +1282,12 @@ class Termek {
 	public function setGyarto($gyarto) {
 		$this->gyarto = $gyarto;
 	}
+
+    public function getFuggoben() {
+        return $this->fuggoben;
+    }
+
+    public function setFuggoben($d) {
+        $this->fuggoben = $d;
+    }
 }
