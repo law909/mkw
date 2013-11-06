@@ -10,7 +10,7 @@
 </td>
 </tr>
 <tr class="js-termekpicturerow_{$tetel.id}">
-	<td><a class="js-toflyout" href="{$tetel.kepurl}" target="_blank"><img src="{$tetel.kiskepurl}"/></a></td>
+	<td><a class="js-toflyout" href="{$adminurl}{$tetel.kepurl}" target="_blank"><img src="{$adminurl}{$tetel.kiskepurl}"/></a></td>
 	<td>{t('Link')}:<a class="js-termeklink" href="/termek/{$tetel.slug}" target="_blank">/termek/{$tetel.slug}</a></td>
 </tr>
 <tr><td><label for="NevEdit{$tetel.id}">{t('Név')}:</label></td>

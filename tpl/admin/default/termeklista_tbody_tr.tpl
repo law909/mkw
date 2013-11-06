@@ -3,7 +3,7 @@
 <td class="cell">
 <div><div>
 <table><tbody>
-<tr><td><a class="js-toflyout" href="{$_termek.kepurl}" target="_blank"><img src="{$_termek.kepurlsmall}"/></a></td>
+<tr><td><a class="js-toflyout" href="{$adminurl}{$_termek.kepurl}" target="_blank"><img src="{$adminurl}{$_termek.kepurlsmall}"/></a></td>
 <td><a class="mattable-editlink" href="#" data-termekid="{$_termek.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_termek.nev}</a></td>
 {if ($setup.grideditbutton=='small')}
 <td><span class="jobbra"><a class="mattable-dellink" href="#" data-termekid="{$_termek.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span></td>

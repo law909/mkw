@@ -55,3 +55,4 @@ js/tiny_mce/
 !/setup.ini
 !/themes/main/mkwcansas/img/
 !/config.example.ini
+/ckfinder/config.php

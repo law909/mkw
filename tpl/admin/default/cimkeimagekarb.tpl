@@ -1,6 +1,6 @@
 <table id="FoImageEdit"><tbody>
 <tr>
-	<td><a class="js-toFlyout" href="{$cimke.kepurl}" target="_blank"><img class="js-cimkekep" src="{$cimke.kepurlsmall}" alt="{$cimke.kepleiras}" title="{$cimke.kepleiras}"/></a></td>
+	<td><a class="js-toFlyout" href="{$adminurl}{$cimke.kepurl}" target="_blank"><img class="js-cimkekep" src="{$adminurl}{$cimke.kepurlsmall}" alt="{$cimke.kepleiras}" title="{$cimke.kepleiras}"/></a></td>
 	<td>
 		<table><tbody>
 			<tr>
