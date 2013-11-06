@@ -52,6 +52,18 @@ $(document).ready(function() {
 			minLength: 4
 		});
 	}
+    if ($.fn.royalSlider) {
+        $('#korhinta').royalSlider({
+            autoScaleSlider: true,
+            loopRewind: true,
+            keyboardNavEnabled: true,
+            globalCaption: true,
+            controlNavigation: 'bullets',
+            autoPlay: {
+                enabled: true
+            }
+        });
+    }
 	$termekertesitomodal.modal({
 		show: false
 	});

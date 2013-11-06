@@ -12,7 +12,9 @@
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/bootstrap-responsive.min.css">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/jquery.slider.min.css">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/magnific-popup.css">
-		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/style.css">
+        <link rel="stylesheet" href="/themes/main/mkwcansas/royalslider/royalslider.css">
+        <link rel="stylesheet" href="/themes/main/mkwcansas/royalslider/skins/default-inverted/rs-default-inverted.css">
+        <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/style.css">
 		{block "css"}{/block}
 		<script src="/js/main/mkwcansas/jquery-1.10.2.min.js"></script>
 
@@ -20,6 +22,7 @@
 
 		<script src="/js/main/mkwcansas/jquery.magnific-popup.min.js"></script>
 		<script src="/js/main/mkwcansas/jquery.slider.min.js"></script>
+        <script src="/js/main/mkwcansas/jquery.royalslider.min.js"></script>
         <script src="/js/main/mkwcansas/bootstrap-transition.js"></script>
 		<script src="/js/main/mkwcansas/bootstrap-modal.js"></script>
 		<script src="/js/main/mkwcansas/bootstrap-tab.js"></script>
