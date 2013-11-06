@@ -74,6 +74,8 @@ class setupController extends \mkwhelpers\Controller {
 		$view->setVar(\mkw\consts::Kiemelttermekdb,($p?$p->getErtek():3));
 		$p=$repo->find(\mkw\consts::Autologoutmin);
 		$view->setVar(\mkw\consts::Autologoutmin,($p?$p->getErtek():10));
+        $p = $repo->find(\mkw\consts::GAFollow);
+        $view->setVar(\mkw\consts::GAFollow,($p?$p->getErtek():''));
 
 		// alapertelmezes
 		$p=$repo->find(\mkw\consts::Fizmod);
@@ -170,6 +172,7 @@ class setupController extends \mkwhelpers\Controller {
 		$this->setObj(\mkw\consts::Katseodescription,$this->params->getStringRequestParam('katseodescription'));
 		$this->setObj(\mkw\consts::Termekoldalcim,$this->params->getStringRequestParam('termekoldalcim'));
 		$this->setObj(\mkw\consts::Termekseodescription,$this->params->getStringRequestParam('termekseodescription'));
+        $this->setObj(\mkw\consts::GAFollow, $this->params->getStringRequestParam('gafollow'));
 		// alapertelmezes
 		$fizmod=store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod',0));
 		if ($fizmod) {

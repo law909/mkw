@@ -61,4 +61,6 @@ class consts {
 	const Termekseodescription='termekseodescription';
 	const Katoldalcim='katoldalcim';
 	const Katseodescription='katseodescription';
+
+    const GAFollow='gafollow';
 }

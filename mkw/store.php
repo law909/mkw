@@ -182,6 +182,7 @@ class Store {
 
 	public static function fillTemplate($v) {
 		$tf = new \Controllers\termekfaController(null);
+        $v->setVar('GAFollow', self::getParameter('GAFollow'));
 		$v->setVar('seodescription', self::getParameter('seodescription'));
 		$v->setVar('feedtermektitle', self::getParameter('feedtermektitle', t('Termékeink')));
 		$v->setVar('feedhirtitle', self::getParameter('feedhirtitle', t('Híreink')));
