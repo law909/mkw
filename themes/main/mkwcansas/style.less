@@ -540,15 +540,22 @@ footer nav {
 }
 
 .gtermek {
-	padding: 10px 1.55%; /*border nelkul: 1.6665%;*/
-	height: 370px;
-	width: 30%;
-	float: left;
+/*	width: 30%;
+    float: left;
+    */
 	min-height: 1px;
 	border-width: 1px;
 	border-style: solid;
 	border-color: @fejlecbackground;
 	border-width: 0 0 1px 1px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.gtermekinner {
+	height: 370px;
+	padding: 10px 1.5%;
 }
 
 .gtermekszelso {
@@ -921,6 +928,26 @@ thead.acc-megrendelestetellist {
     dd.title {
         font-weight: bold;
         font-size: 14px;
+    }
+}
+
+/* margo 20px */
+.spanmkw3 {
+    width: 233px;
+    margin-left: 0;
+}
+
+/* margo 30px */
+@media (min-width: 1200px) {
+    .spanmkw3 {
+        width: 290px;
+    }
+}
+
+/* margo 20px */
+@media (max-width: 979px) and (min-width: 768px) {
+    .spanmkw3 {
+        width: 179px;
     }
 }
 

@@ -32,19 +32,6 @@
 				</div>
 			{/foreach}
 		</div>
-		<div class="span2 offset1">
-			<div class="row">
-				<div class="sectionheader">Kiemelt termékeink</div>
-			</div>
-		</div>
-		<div class="span2 offset1">
-			<div class="row">
-				<div class="sectionheader">Best Buy</div>
-			</div>
-			<div class="row">
-				<div class="sectionheader">Legfrissebb híreink</div>
-			</div>
-		</div>
 	</div>
 </div>
 {/block}
