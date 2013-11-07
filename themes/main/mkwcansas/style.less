@@ -554,16 +554,22 @@ footer nav {
 }
 
 .gtermekinner {
-	height: 370px;
-	padding: 10px 1.5%;
+    float: left;
+    height: 250px;
+    width: 100%;
+}
+
+.gtermekinnest {
+	padding: 10px 1.5% 30px;
 }
 
 .gtermekszelso {
 	border-width: 0 1px 1px 1px;
 }
 
-.gtermekimage {
-	width: 50%;
+.gtermekimagecontainer {
+	width: 150px;
+    margin-right: 5px;
 }
 
 .gtermekadat {
@@ -575,9 +581,37 @@ footer nav {
 	font-weight: bold;
 	color: @termekpricefontcolor;
 	text-align: right;
-	clear: left;
 }
 
+.gtermekcaption {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.gvaltozatnev {
+    width: 40%;
+}
+
+.gvaltozatselect {
+    width: 60%;
+}
+
+.gvaltozatcontainer {
+    width: 100%;
+    margin-top: 5px;
+    &>div {
+        margin-bottom: 4px;
+        width: 100%;
+    }
+}
+
+.gtermekupper {
+    height: 150px;
+    width: 100%;
+    overflow-y: hidden;
+}
+.gtermekcenter {
+}
 .cartbtn {
 	color: white;
 	font-weight: bold;
@@ -933,21 +967,21 @@ thead.acc-megrendelestetellist {
 
 /* margo 20px */
 .spanmkw3 {
-    width: 233px;
+    width: 349.5px;
     margin-left: 0;
 }
 
 /* margo 30px */
 @media (min-width: 1200px) {
     .spanmkw3 {
-        width: 290px;
+        width: 435px;
     }
 }
 
 /* margo 20px */
 @media (max-width: 979px) and (min-width: 768px) {
     .spanmkw3 {
-        width: 179px;
+        width: 268.5px;
     }
 }
 
