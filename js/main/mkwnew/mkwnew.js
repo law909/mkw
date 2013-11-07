@@ -337,7 +337,7 @@ $(document).ready(function(){
 			sel=new Array();
 
 		e.preventDefault();
-		$('.valtozatEdit[data-termek="'+termek+'"]').each(function() {
+		$('.js-valtozatedit[data-termek="'+termek+'"]').each(function() {
 			var $ez=$(this);
 			bibi=bibi||this.selectedIndex==0;
 			oszlopok.push($ez.attr('data-oszlop'));
@@ -365,7 +365,7 @@ $(document).ready(function(){
 				}
 			})
 			.done(function(data) {
-				$('.valtozatEdit[data-termek="'+termek+'"]').each(function() {
+				$('.js-valtozatedit[data-termek="'+termek+'"]').each(function() {
 					this.selectedIndex=0;
 				});
 				$('#minikosar').html(data);
@@ -526,7 +526,7 @@ $(document).ready(function(){
 		lapozas();
 	});
 	// valtozat
-	$('.valtozatEdit').on('change',function() {
+	$('.js-valtozatedit').on('change',function() {
 		var $valtedit=$(this),
 			termek=$valtedit.attr('data-termek'),
 			klikkeltoszlop=$valtedit.attr('data-oszlop'),
@@ -536,7 +536,7 @@ $(document).ready(function(){
 
 		// toroljuk az ures selectek tartalmat "valasszon"-t kiveve
 		// kitoltott selectek tartalmat osszeszedjuk
-		$('.valtozatEdit[data-termek="'+termek+'"]').each(function() {
+		$('.js-valtozatedit[data-termek="'+termek+'"]').each(function() {
 			var $ez=$(this);
 			elozooszlopok.push($ez.attr('data-oszlop'));
 			elozoidk.push($ez.attr('data-id'));
@@ -558,7 +558,7 @@ $(document).ready(function(){
 				d=adat['adat'],
 				s=adat['selected'],
 				sel='';
-			$('.valtozatEdit[data-termek="'+termek+'"]').each(function() {
+			$('.js-valtozatedit[data-termek="'+termek+'"]').each(function() {
 				var $ez=$(this);
 				if (klikkeltoszlop!=$ez.attr('data-oszlop')) {
 					$('option[value!=""]',$ez).remove();

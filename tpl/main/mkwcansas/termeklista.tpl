@@ -92,11 +92,11 @@
 			{if ($lapozo.elemcount>0)}
 				{if ($vt==1)}
 					{foreach $termekek as $_termek}
-						<div class="termek">
-							<div class="termekimage">
+						<div class="row termek">
+							<div class="span2 termekimage">
 								<a href="/termek/{$_termek.slug}"><img src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
 							</div>
-							<div class="span6 termektext">
+							<div class="span5 termektext">
 								<a href="/termek/{$_termek.slug}"><span class="termekcaption">{$_termek.caption}</span></a>
 								<p>{$_termek.rovidleiras}</p>
 								<div class="termekjelzok">
@@ -105,50 +105,55 @@
 									{/foreach}
 								</div>
 							</div>
-							{$_kosarbaclass="js-kosarba"}
-							{if ($_termek.valtozatok|default)}
-								<div class="termekvaltozat">{$_termek.valtozatok.fixname}: {$_termek.valtozatok.fixvalue}</div>
-								{if ($_termek.valtozatok.name)}
-								<div class="termekprice">
-									{$_termek.valtozatok.name}:
-									<select class="valtozatEdit" data-id="{$_termek.id}-{$_termek.valtozatid}" data-termek="{$_termek.id}">
-									{foreach $_termek.valtozatok.data as $_data}
-										<option value="{$_data.id}">{$_data.value}</option>
-									{/foreach}
-									</select>
-								</div>
-								{/if}
-								{$_kosarbaclass="js-kosarbavaltozat"}
-							{/if}
-							{if ($_termek.mindenvaltozat|default)}
-								{foreach $_termek.mindenvaltozat as $_valtozat}
-									<div class="termekvaltozat">
-									{$_valtozat.name}
-									<select class="mindenValtozatEdit" data-id="{$_termek.id}-{$_termek.valtozatid|default}" data-termek="{$_termek.id}" data-tipusid="{$_valtozat.tipusid}">
-										<option value="">{t('Válasszon')}</option>
-										{foreach $_valtozat.value as $_v}
-											<option value="{$_v}">{$_v}</option>
-										{/foreach}
-									</select>
-									</div>
-								{/foreach}
-								{$_kosarbaclass="js-kosarbamindenvaltozat"}
-							{/if}
-							<div id="termekprice{$_termek.id}-{$_termek.valtozatid|default}" class="termekprice">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
-							{if ($_termek.nemkaphato)}
-								<div class="row">
-									<a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn pull-right" data-termek="{$_termek.id}">
-										{t('Elfogyott')}
-									</a>
-								</div>
-								<div class="row">
-									<a href="#" rel="nofollow" class="js-termekertesitobtn pull-right" data-termek="{$_termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
-								</div>
-							{else}
-								<a href="/kosar/add?id={$_termek.id}" rel="nofollow" class="{$_kosarbaclass} btn cartbtn pull-right" data-termek="{$_termek.id}" data-id="{$_termek.id}-{$_termek.valtozatid|default}" data-vid="{$_termek.valtozatid|default}">
-									{t('Kosárba')}
-								</a>
-							{/if}
+                            <div class="span2">
+                                {$_kosarbaclass="js-kosarba"}
+                                {if ($_termek.valtozatok|default)}
+                                    <div class="termekvaltozat">{$_termek.valtozatok.fixname}: {$_termek.valtozatok.fixvalue}</div>
+                                    {if ($_termek.valtozatok.name)}
+                                    <div class="termekvaltozat">
+                                        <div>
+                                        {$_termek.valtozatok.name}:
+                                        </div>
+                                        <select class="js-valtozatedit valtozatselect" data-id="{$_termek.id}-{$_termek.valtozatid}" data-termek="{$_termek.id}">
+                                        {foreach $_termek.valtozatok.data as $_data}
+                                            <option value="{$_data.id}">{$_data.value}</option>
+                                        {/foreach}
+                                        </select>
+                                    </div>
+                                    {/if}
+                                    {$_kosarbaclass="js-kosarbavaltozat"}
+                                {/if}
+                                {if ($_termek.mindenvaltozat|default)}
+                                    {foreach $_termek.mindenvaltozat as $_valtozat}
+                                        <div class="termekvaltozat">
+                                            <div>
+                                            {$_valtozat.name}
+                                            </div>
+                                        <select class="js-mindenvaltozatedit valtozatselect" data-id="{$_termek.id}-{$_termek.valtozatid|default}" data-termek="{$_termek.id}" data-tipusid="{$_valtozat.tipusid}">
+                                            <option value="">{t('Válasszon')}</option>
+                                            {foreach $_valtozat.value as $_v}
+                                                <option value="{$_v}">{$_v}</option>
+                                            {/foreach}
+                                        </select>
+                                        </div>
+                                    {/foreach}
+                                    {$_kosarbaclass="js-kosarbamindenvaltozat"}
+                                {/if}
+                                <div id="termekprice{$_termek.id}-{$_termek.valtozatid|default}" class="termekprice">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
+                                {if ($_termek.nemkaphato)}
+                                    <div class="textalignright">
+                                        <a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn" data-termek="{$_termek.id}">
+                                            {t('Elfogyott')}
+                                        </a>
+                                    </div>
+                                {else}
+                                    <div class="textalignright">
+                                    <a href="/kosar/add?id={$_termek.id}" rel="nofollow" class="{$_kosarbaclass} btn cartbtn" data-termek="{$_termek.id}" data-id="{$_termek.id}-{$_termek.valtozatid|default}" data-vid="{$_termek.valtozatid|default}">
+                                        {t('Kosárba')}
+                                    </a>
+                                    </div>
+                                {/if}
+                            </div>
 						</div>
 					{/foreach}
 				{else}
@@ -179,7 +184,7 @@
 										{if ($_termek.valtozatok.name)}
 										<div>
 										{$_termek.valtozatok.name}:
-										<select id="valtozatEdit{$_termek.id}-{$_termek.valtozatid}">
+										<select id="valtozatEdit{$_termek.id}-{$_termek.valtozatid}" class="valtozatselect">
 										{foreach $_termek.valtozatok.data as $_data}
 											<option value="{$_data.id}">{$_data.value}</option>
 										{/foreach}
@@ -193,7 +198,7 @@
 									{foreach $_termek.mindenvaltozat as $_valtozat}
 										<div>
 										{$_valtozat.name}
-										<select class="valtozatEdit" data-termek="{$_termek.id}">
+										<select class="js-valtozatedit valtozatselect" data-termek="{$_termek.id}">
 											<option value="">{t('Válasszon')}</option>
 											{foreach $_valtozat.value as $_v}
 												<option value="{$_v}">{$_v}</option>

@@ -138,7 +138,7 @@
 									<li>
 									{$_ertek}
 									{$_adat=$_termek.valtozatok['adat']}
-									<select class="valtozatEdit" data-oszlop="{$_ertek@index+1}" data-id="{$_ertek@key}" data-termek="{$_termek.id}">
+									<select class="js-valtozatedit" data-oszlop="{$_ertek@index+1}" data-id="{$_ertek@key}" data-termek="{$_termek.id}">
 										<option value="">{t('Válasszon')}</option>
 										{foreach $_adat[$_ertek@key] as $_v}
 											<option value="{$_v}">{$_v}</option>

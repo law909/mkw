@@ -169,7 +169,7 @@ $(document).ready(function() {
 			}
 		})
 		.done(function(data) {
-			$('.valtozatEdit[data-id="' + id + '"]').selectedIndex = 0;
+			$('.js-valtozatedit[data-id="' + id + '"]').selectedIndex = 0;
 			$('#minikosar').html(data);
 		})
 		.always(function() {
@@ -181,7 +181,7 @@ $(document).ready(function() {
 		var $this = $(this),
 				termekid = $this.attr('data-termek'),
 				tipusok = new Array(), ertekek = new Array(),
-				valtozatselect = $('.mindenValtozatEdit[data-termek="' + termekid + '"]');
+				valtozatselect = $('.js-mindenvaltozatedit[data-termek="' + termekid + '"]');
 
 		e.preventDefault();
 
@@ -210,7 +210,7 @@ $(document).ready(function() {
 				}
 			})
 			.done(function(data) {
-				$('.mindenValtozatEdit[data-termek="' + termekid + '"]').selectedIndex = 0;
+				$('.js-mindenvaltozatedit[data-termek="' + termekid + '"]').selectedIndex = 0;
 				$('#minikosar').html(data);
 			})
 			.always(function() {
@@ -220,7 +220,7 @@ $(document).ready(function() {
 	});
 
 	// valtozat
-	$('.valtozatEdit').on('change', function() {
+	$('.js-valtozatedit').on('change', function() {
 		var $this = $(this),
 				termek = $this.data('termek'),
 				id = $this.data('id');
@@ -240,12 +240,12 @@ $(document).ready(function() {
 			$('.js-kosarbavaltozat[data-id="' + id + '"]').attr('data-vid', $this.val());
 		});
 	});
-	$('.mindenValtozatEdit').on('change', function() {
+	$('.js-mindenvaltozatedit').on('change', function() {
 		var $valtedit = $(this),
 				tipusid = $valtedit.data('tipusid'),
 				termek = $valtedit.data('termek'),
 				id = $valtedit.data('id'),
-				$masikedit = $('.mindenValtozatEdit[data-termek="' + termek + '"][data-tipusid!="' + tipusid + '"]');
+				$masikedit = $('.js-mindenvaltozatedit[data-termek="' + termek + '"][data-tipusid!="' + tipusid + '"]');
 
 		$.ajax({
 			url: '/valtozat',

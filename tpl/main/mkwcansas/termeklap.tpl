@@ -18,79 +18,60 @@
 	</div>
 	<article itemtype="http://schema.org/Product" itemscope="">
 		<div class="row">
-			<div class="span5">
-				<div class="row">
-					<div class="span5 textaligncenter"><h3>{$termek.caption}</h3></div>
+			<div class="span6">
+                <div class="textaligncenter"><h3>{$termek.caption}</h3></div>
+				<div class="termekimagecontainer textaligncenter">
+                    <a href="{$termek.kepurl}" class="js-lightbox" title="{$termek.caption}">
+                        <img src="{$termek.kozepeskepurl}" itemprop="image" alt="{$termek.caption}" title="{$termek.caption}">
+                    </a>
 				</div>
-				<div class="row termekimagecontainer">
-					<div class="span5 textaligncenter">
-						<a href="{$termek.kepurl}" class="js-lightbox" title="{$termek.caption}">
-							<img src="{$termek.kozepeskepurl}" itemprop="image" alt="{$termek.caption}" title="{$termek.caption}">
-						</a>
-					</div>
-				</div>
-				<div class="row termekimagecontainer">
-					<div class="span5 textaligncenter">
-						{foreach $termek.kepek as $_kep}
-							<a href="{$_kep.kepurl}" class="js-lightbox" title="{$_kep.leiras}">
-							<img src="{$_kep.minikepurl}" alt="{$_kep.leiras}" title="{$_kep.leiras}">
-							</a>
-						{/foreach}
-					</div>
+				<div class="termekimagecontainer textaligncenter">
+                    {foreach $termek.kepek as $_kep}
+                        <a href="{$_kep.kepurl}" class="js-lightbox" title="{$_kep.leiras}">
+                        <img src="{$_kep.minikepurl}" alt="{$_kep.leiras}" title="{$_kep.leiras}">
+                        </a>
+                    {/foreach}
 				</div>
 			</div>
-			<div class="span4 hatter">
+			<div class="span3 hatter">
 				<div class="korbepadding">
-					<div class="row">
-						<div class="span4">
-							<div class="pull-left">{t('Cikkszám')}: {$termek.cikkszam}</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="span4">
-							<ul class="simalista">
-							{foreach $termek.cimkeakciodobozban as $_jelzo}
-								<li>{if ($_jelzo.kiskepurl!='')}<img src="{$_jelzo.kiskepurl}" alt="{$_jelzo.caption}" title="{$_jelzo.caption}"> {/if}{$_jelzo.caption}</li>
-							{/foreach}
-							</ul>
-						</div>
-					</div>
+					<div>{t('Cikkszám')}: {$termek.cikkszam}</div>
+                    <div>
+                        <ul class="simalista">
+                        {foreach $termek.cimkeakciodobozban as $_jelzo}
+                            <li>{if ($_jelzo.kiskepurl!='')}<img src="{$_jelzo.kiskepurl}" alt="{$_jelzo.caption}" title="{$_jelzo.caption}"> {/if}{$_jelzo.caption}</li>
+                        {/foreach}
+                        </ul>
+                    </div>
 					{$_kosarbaclass="js-kosarba"}
 					{if ($termek.valtozatok)}
 					{$_kosarbaclass="js-kosarbamindenvaltozat"}
 					<div class="row">
-						<div class="span4">
-							<ul class="simalista pull-left">
-								{foreach $termek.valtozatok as $_valtozat}
-									<li>
-									{$_valtozat.name}
-									<select class="mindenValtozatEdit" data-id="{$termek.id}" data-termek="{$termek.id}" data-tipusid="{$_valtozat.tipusid}">
-										<option value="">{t('Válasszon')}</option>
-										{foreach $_valtozat.value as $_v}
-											<option value="{$_v}">{$_v}</option>
-										{/foreach}
-									</select>
-									</li>
-								{/foreach}
-							</ul>
+						<div class="span2">
+                            {foreach $termek.valtozatok as $_valtozat}
+                            <div>{$_valtozat.name}</div>
+                            <div>
+                                <select class="js-mindenvaltozatedit valtozatselect" data-id="{$termek.id}" data-termek="{$termek.id}" data-tipusid="{$_valtozat.tipusid}">
+                                    <option value="">{t('Válasszon')}</option>
+                                    {foreach $_valtozat.value as $_v}
+                                        <option value="{$_v}">{$_v}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            {/foreach}
 						</div>
 					</div>
 					{/if}
-					<div class="row">
-						<h3 class="itemPrice"><span id="termekprice{$termek.id}" class="pull-right">{number_format($termek.bruttohuf,0,',',' ')} Ft</span></h3>
-					</div>
+					<h3 id="termekprice{$termek.id}" class="itemPrice textalignright">{number_format($termek.bruttohuf,0,',',' ')} Ft</h3>
 					{if ($termek.nemkaphato)}
-					<div class="row">
-						<a href="#" rel="nofollow" class="js-termekertesitobtn btn btn-large btn-inverse pull-right" data-termek="{$termek.id}" data-id="{$termek.id}">
+					<div class="textalignright">
+						<a href="#" rel="nofollow" class="js-termekertesitobtn btn btn-large graybtn" data-termek="{$termek.id}" data-id="{$termek.id}">
 							{t('Elfogyott')}
 						</a>
 					</div>
-					<div class="row">
-						<a href="#" rel="nofollow" class="js-termekertesitobtn pull-right" data-termek="{$termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
-					</div>
 					{else}
-					<div class="row">
-						<a href="/kosar/add?id={$termek.id}" rel="nofollow" class="{$_kosarbaclass} btn btn-large cartbtn pull-right" data-termek="{$termek.id}" data-id="{$termek.id}">
+					<div class="textalignright">
+						<a href="/kosar/add?id={$termek.id}" rel="nofollow" class="{$_kosarbaclass} btn btn-large cartbtn" data-termek="{$termek.id}" data-id="{$termek.id}">
 							<i class="icon-shopping-cart icon-white"></i>
 							{t('Kosárba')}
 						</a>
