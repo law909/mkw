@@ -83,9 +83,9 @@ footer nav{margin-top:20px;}
 .termekprice{font-size:18px;text-align:right;color:#333333;}
 .termekvaltozat{font-size:13px;font-weight:bold;}
 .valtozatselect{width:100%;}
-.gtermek{padding:10px 1.55%;height:370px;width:45%;float:left;min-height:1px;border-width:1px;border-style:solid;border-color:#e8e8e8;border-width:0 0 1px 1px;}
+.gtermek{padding:10px 1.55%;height:370px;width:30%;float:left;min-height:1px;border-width:1px;border-style:solid;border-color:#e8e8e8;border-width:0 0 1px 1px;}
 .gtermekszelso{border-width:0 1px 1px 1px;}
-.gtermekimage{float:left;width:120px;}
+.gtermekimage{width:50%;}
 .gtermekadat{height:285px;}
 .gtermekprice{font-size:15px;font-weight:bold;color:#333333;text-align:right;clear:left;}
 .cartbtn{color:white;font-weight:bold;text-shadow:0 0 0;border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);background-color:#c11813;background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#e42721), to(#c11813));background-image:-webkit-linear-gradient(top, #e42721, #c11813);background-image:-moz-linear-gradient(top, #e42721, #c11813);background-image:-o-linear-gradient(top, #e42721, #c11813);background-image:linear-gradient(to bottom, #e42721, #c11813);}

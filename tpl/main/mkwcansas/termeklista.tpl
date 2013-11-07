@@ -215,9 +215,6 @@
 											{t('Elfogyott')}
 										</a>
 									</div>
-									<div class="row">
-										<a href="#" rel="nofollow" class="js-termekertesitobtn pull-right" data-termek="{$_termek.id}">{t('Értesítsen, ha a termék újra elérhető')}</a>
-									</div>
 								{else}
 									<a href="/kosar/add?id={$_termek.id}" rel="nofollow" class="js-kosarba btn cartbtn pull-right" data-termek="{$_termek.id}">
 										{t('Kosárba')}
