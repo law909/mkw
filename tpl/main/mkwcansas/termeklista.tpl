@@ -127,7 +127,7 @@
                                     {foreach $_termek.mindenvaltozat as $_valtozat}
                                         <div class="termekvaltozat">
                                             <div>
-                                            {$_valtozat.name}
+                                            {$_valtozat.name}:
                                             </div>
                                         <select class="js-mindenvaltozatedit valtozatselect" data-id="{$_termek.id}-{$_termek.valtozatid|default}" data-termek="{$_termek.id}" data-tipusid="{$_valtozat.tipusid}">
                                             <option value="">{t('Válasszon')}</option>
@@ -183,14 +183,14 @@
                                         </div>
                                         <div class="gtermekright pull-left">
                                             {if ($_termek.valtozatok|default)}
-                                                <div class="pull-left gvaltozatcontainer">
+                                                <div class="pull-left gvaltozatcontainer termekvaltozat">
                                                     {$_termek.valtozatok.fixname}: {$_termek.valtozatok.fixvalue}
                                                 </div>
                                                 {if ($_termek.valtozatok.name)}
                                                 <div class="pull-left gvaltozatcontainer">
-                                                    <div class="pull-left gvaltozatnev">{$_termek.valtozatok.name}:</div>
+                                                    <div class="pull-left gvaltozatnev termekvaltozat">{$_termek.valtozatok.name}:</div>
                                                     <div class="pull-left gvaltozatselect">
-                                                        <select id="valtozatEdit{$_termek.id}-{$_termek.valtozatid}" class="valtozatselect">
+                                                        <select class="js-valtozatedit valtozatselect" data-id="{$_termek.id}-{$_termek.valtozatid}" data-termek="{$_termek.id}">
                                                         {foreach $_termek.valtozatok.data as $_data}
                                                             <option value="{$_data.id}">{$_data.value}</option>
                                                         {/foreach}
@@ -202,9 +202,9 @@
                                             {if ($_termek.mindenvaltozat|default)}
                                                 {foreach $_termek.mindenvaltozat as $_valtozat}
                                                     <div class="pull-left gvaltozatcontainer">
-                                                        <div class="pull-left gvaltozatnev">{$_valtozat.name}</div>
+                                                        <div class="pull-left gvaltozatnev termekvaltozat">{$_valtozat.name}:</div>
                                                         <div class="pull-left gvaltozatselect">
-                                                            <select class="js-valtozatedit valtozatselect" data-termek="{$_termek.id}">
+                                                            <select class="js-mindenvaltozatedit valtozatselect" data-id="{$_termek.id}-{$_termek.valtozatid|default}" data-termek="{$_termek.id}" data-tipusid="{$_valtozat.tipusid}">
                                                                 <option value="">{t('Válasszon')}</option>
                                                                 {foreach $_valtozat.value as $_v}
                                                                     <option value="{$_v}">{$_v}</option>
@@ -217,7 +217,7 @@
                                         </div>
                                     </div>
                                     <div class="pull-right">
-                                        <div class="gtermekprice">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
+                                        <div class="termekprice">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
                                         <div class="pull-right">
                                         {if ($_termek.nemkaphato)}
                                             <a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn pull-right" data-termek="{$_termek.id}">
