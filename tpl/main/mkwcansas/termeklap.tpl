@@ -25,12 +25,21 @@
                         <img src="{$termek.kozepeskepurl}" itemprop="image" alt="{$termek.caption}" title="{$termek.caption}">
                     </a>
 				</div>
-				<div class="termekimagecontainer textaligncenter">
-                    {foreach $termek.kepek as $_kep}
-                        <a href="{$_kep.kepurl}" class="js-lightbox" title="{$_kep.leiras}">
-                        <img src="{$_kep.minikepurl}" alt="{$_kep.leiras}" title="{$_kep.leiras}">
-                        </a>
-                    {/foreach}
+				<div class="js-termekimageslider termekimageslider termekimagecontainer textaligncenter royalSlider contentSlider rsDefaultInv">
+                    {$kcnt=count($termek.kepek)}
+                    {$step=4}
+                    {for $i=0 to $kcnt-1 step $step}
+                        <div>
+                        {for $j=0 to $step-1}
+                            {if ($i+$j<$kcnt)}
+                                {$_kep=$termek.kepek[$i+$j]}
+                                <a href="{$_kep.kepurl}" class="js-lightbox" title="{$_kep.leiras}">
+                                    <img class="termeksmallimage" src="{$_kep.minikepurl}" alt="{$_kep.leiras}" title="{$_kep.leiras}">
+                                </a>
+                            {/if}
+                        {/for}
+                        </div>
+                    {/for}
 				</div>
 			</div>
 			<div class="span3 hatter">
@@ -87,8 +96,8 @@
 						<li class="active"><a href="#leirasTab" data-toggle="tab">{t('Leírás')}</a></li>
 						<li><a href="#tulajdonsagTab" data-toggle="tab">{t('Tulajdonságok')}</a></li>
 						{if (count($termek.kapcsolodok)!=0)}<li><a href="#kapcsolodoTab" data-toggle="tab">{t('Kapcsolódó termékek')}</a></li>{/if}
-						<li><a href="#ertekelesTab" data-toggle="tab">{t('Értékelések')}</a></li>
-						<li><a href="#hasonlotermekTab" data-toggle="tab">{t('Hasonló termékek')}</a></li>
+						<!--li><a href="#ertekelesTab" data-toggle="tab">{t('Értékelések')}</a></li>
+						<li><a href="#hasonlotermekTab" data-toggle="tab">{t('Hasonló termékek')}</a></li-->
 					</ul>
 					<div class="tab-content keret">
 						<div id="leirasTab" class="tab-pane active">
@@ -126,12 +135,12 @@
 							</tr></table>
 						</div>
 						{/if}
-						<div id="ertekelesTab" class="tab-pane">
+						<!--div id="ertekelesTab" class="tab-pane">
 							<p>mindjart itt lesznek az ertekelesek</p>
 						</div>
 						<div id="hasonlotermekTab" class="tab-pane">
 							<p>mindjart itt lesznek a hasonlo termekek</p>
-						</div>
+						</div-->
 					</div>
 				</div>
 			</div>

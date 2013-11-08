@@ -75,6 +75,12 @@ $(document).ready(function() {
             keyboardNavEnabled: true,
             controlNavigation: 'bullets'
         });
+        $('.js-termekimageslider').royalSlider({
+            loopRewind: true,
+            keyboardNavEnabled: true,
+            controlNavigation: 'bullets',
+            autoHeight: true
+        });
     }
 	$termekertesitomodal.modal({
 		show: false
