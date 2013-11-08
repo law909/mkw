@@ -167,50 +167,54 @@
                             <div class="spanmkw3 gtermek{if (($j==$step-1)||($i+$j>=$termekcnt))} gtermekszelso{/if}">
                                 <div class="gtermekinner"><div class="gtermekinnest">
                                     <div class="pull-left gtermekupper">
-                                        <div class="gtermekimagecontainer pull-left">
+                                        <div class="gtermekleft pull-left">
                                             <a href="/termek/{$_termek.slug}"><img src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
                                         </div>
+                                        <div class="gtermekright pull-left">
                                         <a href="/termek/{$_termek.slug}"><span class="gtermekcaption">{$_termek.caption}</span></a>
                                         <div>{$_termek.rovidleiras}</div>
-                                        <div>
+                                        </div>
+                                    </div>
+                                    <div class="pull-left gtermekcenter">
+                                        <div class="gtermekleft pull-left">
                                             {foreach $_termek.cimkelistaban as $_jelzo}
                                                 <img src="{$_jelzo.kiskepurl}" title="{$_jelzo.caption}" alt="{$_jelzo.caption}">
                                             {/foreach}
                                         </div>
-                                    </div>
-                                    <div class="pull-left gvaltozatcontainer gtermekcenter">
-                                    {if ($_termek.valtozatok|default)}
-                                        <div class="pull-left">
-                                            {$_termek.valtozatok.fixname}: {$_termek.valtozatok.fixvalue}
-                                        </div>
-                                        {if ($_termek.valtozatok.name)}
-                                        <div class="pull-left">
-                                            <div class="pull-left gvaltozatnev">{$_termek.valtozatok.name}:</div>
-                                            <div class="pull-left gvaltozatselect">
-                                                <select id="valtozatEdit{$_termek.id}-{$_termek.valtozatid}" class="valtozatselect">
-                                                {foreach $_termek.valtozatok.data as $_data}
-                                                    <option value="{$_data.id}">{$_data.value}</option>
-                                                {/foreach}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        {/if}
-                                    {/if}
-                                    {if ($_termek.mindenvaltozat|default)}
-                                        {foreach $_termek.mindenvaltozat as $_valtozat}
-                                            <div class="pull-left">
-                                                <div class="pull-left gvaltozatnev">{$_valtozat.name}</div>
-                                                <div class="pull-left gvaltozatselect">
-                                                    <select class="js-valtozatedit valtozatselect" data-termek="{$_termek.id}">
-                                                        <option value="">{t('Válasszon')}</option>
-                                                        {foreach $_valtozat.value as $_v}
-                                                            <option value="{$_v}">{$_v}</option>
-                                                        {/foreach}
-                                                    </select>
+                                        <div class="gtermekright pull-left">
+                                            {if ($_termek.valtozatok|default)}
+                                                <div class="pull-left gvaltozatcontainer">
+                                                    {$_termek.valtozatok.fixname}: {$_termek.valtozatok.fixvalue}
                                                 </div>
-                                            </div>
-                                        {/foreach}
-                                    {/if}
+                                                {if ($_termek.valtozatok.name)}
+                                                <div class="pull-left gvaltozatcontainer">
+                                                    <div class="pull-left gvaltozatnev">{$_termek.valtozatok.name}:</div>
+                                                    <div class="pull-left gvaltozatselect">
+                                                        <select id="valtozatEdit{$_termek.id}-{$_termek.valtozatid}" class="valtozatselect">
+                                                        {foreach $_termek.valtozatok.data as $_data}
+                                                            <option value="{$_data.id}">{$_data.value}</option>
+                                                        {/foreach}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                {/if}
+                                            {/if}
+                                            {if ($_termek.mindenvaltozat|default)}
+                                                {foreach $_termek.mindenvaltozat as $_valtozat}
+                                                    <div class="pull-left gvaltozatcontainer">
+                                                        <div class="pull-left gvaltozatnev">{$_valtozat.name}</div>
+                                                        <div class="pull-left gvaltozatselect">
+                                                            <select class="js-valtozatedit valtozatselect" data-termek="{$_termek.id}">
+                                                                <option value="">{t('Válasszon')}</option>
+                                                                {foreach $_valtozat.value as $_v}
+                                                                    <option value="{$_v}">{$_v}</option>
+                                                                {/foreach}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                {/foreach}
+                                            {/if}
+                                        </div>
                                     </div>
                                     <div class="pull-right">
                                         <div class="gtermekprice">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>

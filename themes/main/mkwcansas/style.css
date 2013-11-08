@@ -87,14 +87,16 @@ footer nav{margin-top:20px;}
 .gtermekinner{float:left;height:280px;width:100%;}
 .gtermekinnest{padding:10px 1.5% 30px;}
 .gtermekszelso{border-width:0 1px 1px 1px;}
-.gtermekimagecontainer{width:150px;margin-right:5px;}
+.gtermekleft{width:150px;margin-right:5px;}
+.gtermekright{width:182px;}
 .gtermekadat{height:285px;}
 .gtermekprice{font-size:15px;font-weight:bold;color:#333333;text-align:right;}
 .gtermekcaption{font-size:13px;font-weight:bold;}
 .gvaltozatnev{width:40%;}
 .gvaltozatselect{width:60%;}
-.gvaltozatcontainer{width:100%;margin-top:5px;}.gvaltozatcontainer>div{margin-bottom:4px;width:100%;}
+.gvaltozatcontainer{margin-bottom:4px;width:100%;}
 .gtermekupper{height:150px;width:100%;overflow-y:hidden;}
+.gtermekcenter{margin-top:5px;width:100%;}
 .cartbtn{color:white;font-weight:bold;text-shadow:0 0 0;border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);background-color:#c11813;background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#e42721), to(#c11813));background-image:-webkit-linear-gradient(top, #e42721, #c11813);background-image:-moz-linear-gradient(top, #e42721, #c11813);background-image:-o-linear-gradient(top, #e42721, #c11813);background-image:linear-gradient(to bottom, #e42721, #c11813);}
 .cartbtn:hover,.cartbtn:focus,.cartbtn:active,.cartbtn.active,.cartbtn.disabled,.cartbtn[disabled]{color:white;background-color:#c11813;background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#e42721), to(#c11813));background-image:-webkit-linear-gradient(top, #e42721, #c11813);background-image:-moz-linear-gradient(top, #e42721, #c11813);background-image:-o-linear-gradient(top, #e42721, #c11813);background-image:linear-gradient(to bottom, #e42721, #c11813);}
 .cartbtn:focus,.cartbtn:active,.cartbtn.active{background-color:#c11813;background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#e42721), to(#c11813));background-image:-webkit-linear-gradient(top, #e42721, #c11813);background-image:-moz-linear-gradient(top, #e42721, #c11813);background-image:-o-linear-gradient(top, #e42721, #c11813);background-image:linear-gradient(to bottom, #e42721, #c11813);}
@@ -156,4 +158,4 @@ thead.acc-megrendelestetellist{font-weight:bold;}thead.acc-megrendelestetellist 
 .termekSliderImageContainer{min-height:100px;}
 .hirListBlock dd.title{font-weight:bold;font-size:14px;}
 .spanmkw3{width:349.5px;margin-left:0;}
-@media (min-width:1200px){.spanmkw3{width:435px;}}@media (max-width:979px) and (min-width:768px){.spanmkw3{width:268.5px;}}@media (min-width:480px){#navmain li .sub{width:400px;}}@media (max-width:767px){.chk-tooltippedcontainer{width:100%;}}@media (min-width:767px){#navmain li .sub{width:700px;} #navmain li .sub ul{width:125px;float:left;}}@media (min-width:979px){#navmain li .sub{width:940px;} #navmain li .sub ul{width:185px;float:left;}}
+@media (min-width:1200px){.spanmkw3{width:435px;} .gtermekleft{width:150px;} .gtermekright{width:265px;}}@media (max-width:979px) and (min-width:768px){.spanmkw3{width:268.5px;} .gtermekleft{width:100px;} .gtermekright{width:153px;}}@media (min-width:480px){#navmain li .sub{width:400px;}}@media (max-width:767px){.chk-tooltippedcontainer{width:100%;} .spanmkw3{width:100%;} .gtermekleft{width:30%;} .gtermekright{width:68%;}}@media (min-width:767px){#navmain li .sub{width:700px;} #navmain li .sub ul{width:125px;float:left;}}@media (min-width:979px){#navmain li .sub{width:940px;} #navmain li .sub ul{width:185px;float:left;}}
