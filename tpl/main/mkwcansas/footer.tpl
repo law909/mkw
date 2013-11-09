@@ -14,7 +14,7 @@
 				<li><a href="#">Elállási jog</a></li>
 				<li><a href="#">Fiókom</a></li>
 				<li><a href="#">Hűségpont gyűjtés</a></li>
-				<li><a href="#">Mérettáblázat</a></li>
+				<li><a href="/statlap/merettablazat">Mérettáblázat</a></li>
 				<li><a href="#">Gy.I.K.</a></li>
 				<li><a href="#">Forgalmazott márkáink</a></li>
 			</ul>
