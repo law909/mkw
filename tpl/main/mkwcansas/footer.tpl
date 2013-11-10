@@ -9,11 +9,11 @@
 		<nav class="span3">
 			<h5>Hasznos információk</h5>
 			<ul>
-				<li><a href="/statlap/mindent-kapni-webaruhaz-ugyfelszolgalat-elerhetosegei">Ügyfélszolgálat elérhetősége</a></li>
+				<li><a href="/statlap/ugyfelszolgalat-elerhetosegei">Ügyfélszolgálat elérhetősége</a></li>
 				<li><a href="/statlap/merettablazat-ruhanemukhoz">Mérettáblázat</a></li>
-				<li><a href="#">Általános szerződési feltételek</a></li>
-				<li><a href="#">Adatvédelem</a></li>
-				<li><a href="#">Elállási jog</a></li>
+				<li><a href="/aszf">Általános szerződési feltételek</a></li>
+				<li><a href="/statlap/vasarloi-adatok-kezelese">Adatvédelem</a></li>
+				<li><a href="/aszf#elallasijog">Elállási jog</a></li>
 				<li><a href="#">Hűségpont gyűjtés</a></li>
 				<li><a href="#">Forgalmazott márkáink</a></li>
 			</ul>
@@ -21,9 +21,9 @@
 		<nav class="span3">
 			<h5>Segítség a vásárláshoz</h5>
 			<ul>
-				<li><a href="#">Gy.I.K. - Gyakori kérdések</a></li>
+				<li><a href="/statlap/gy-i-k-leggyakoribb-kerdesek">Gy.I.K. - Gyakori kérdések</a></li>
 				<li><a href="#">Fontos információk</a></li>
-				<li><a href="#">Szállítási feltételek</a></li>
+				<li><a href="/statlap/szallitasi-feltetelek-es-tudnivalok">Szállítási feltételek</a></li>
 				<li><a href="/statlap/fizetesi-feltetelek">Fizetési feltételek</a></li>
 				<li><a href="#">Akcióink</a></li>
 			</ul>
@@ -31,9 +31,9 @@
 		<nav class="span3">
 			<h5>Egyéb információk</h5>
 			<ul>
-				<li><a href="/statlap/kapcsolat">Kapcsolat</a></li>
+				<li><a href="/kapcsolat">Kapcsolat</a></li>
 				<li><a href="/fiok">Fiókom</a></li>
-				<li><a href="#">Méretcsere</a></li>
+				<li><a href="/statlap/gy-i-k-leggyakoribb-kerdesek#meretcsere">Méretcsere</a></li>
 				<li><a href="#">Honlaptérkép</a></li>
 			</ul>
 		</nav>
