@@ -6,7 +6,7 @@
 		<div class="span10 offset1">
 			<div class="form-header">
 				<h2>Módosítsa adatait</h2>
-				<h4>Vagy főleg tűnjön inkább <a href="/" title="Vásárolok">vásárolni</a></h4>
+				<h4>Vagy <a href="/" title="Vásárolok">vásároljon</a> tovább webáruházunkból</h4>
 			</div>
 			<div id="adatmodositasTabbable" class="tabbable tabs-left">
 				<ul class="nav nav-tabs">

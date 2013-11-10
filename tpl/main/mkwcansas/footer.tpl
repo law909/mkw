@@ -24,6 +24,7 @@
 				<li><a href="#">Gy.I.K. - Gyakori kérdések</a></li>
 				<li><a href="#">Fontos információk</a></li>
 				<li><a href="#">Szállítási feltételek</a></li>
+				<li><a href="/statlap/fizetesi-feltetelek">Fizetési feltételek</a></li>
 				<li><a href="#">Akcióink</a></li>
 			</ul>
 		</nav>
