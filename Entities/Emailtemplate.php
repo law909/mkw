@@ -22,7 +22,7 @@ class Emailtemplate {
     /**
      * @Column(type="string",length=255)
      */
-//    private $almafa;
+    private $almafa;
 
     /**
      * @Column(type="string",length=255)
