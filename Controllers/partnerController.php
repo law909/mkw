@@ -365,11 +365,11 @@ class partnerController extends \mkwhelpers\MattableController {
                 $tpldata = array(
                     'keresztnev' => $keresztnev,
                     'vezeteknev' => $vezeteknev,
-                    'fiokurl' => \mkw\Store::getRouter()->generate('showaccount')
+                    'fiokurl' => \mkw\Store::getRouter()->generate('showaccount', true)
                 );
                 $subject = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                 $subject->setVar('user', $tpldata);
-                $body = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getSzoveg());
+                $body = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
                 $body->setVar('user', $tpldata);
                 $mailer = new \mkw\mkwmailer();
                 $mailer->setTo($email);

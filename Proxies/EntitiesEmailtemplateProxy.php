@@ -60,6 +60,12 @@ class EntitiesEmailtemplateProxy extends \Entities\Emailtemplate implements \Doc
         return parent::getSzoveg();
     }
 
+    public function getHTMLSzoveg()
+    {
+        $this->__load();
+        return parent::getHTMLSzoveg();
+    }
+
     public function setSzoveg($adat)
     {
         $this->__load();

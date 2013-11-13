@@ -20,6 +20,8 @@
 			<li><a href="#DefaTab">{t('Alapértelmezések')}</a></li>
 			<li><a href="#TulajTab">{t('Tulajdonos adatai')}</a></li>
 			<li><a href="#WebTab">{t('Web beállítások')}</a></li>
+			<li><a href="#IdTab">{t('Azonosítók, kódok')}</a></li>
+			<li><a href="#EmailTab">{t('Email')}</a></li>
 			<li><a href="#FeedTab">{t('Feed beállítások')}</a></li>
 			<li><a href="#SitemapTab">{t('Sitemap beállítások')}</a></li>
 		</ul>
@@ -100,7 +102,6 @@
 		{/if}
 		<div id="WebTab" class="mattkarb-page" data-visible="visible">
 		<table><tbody>
-            <tr><td><label>{t('Google analytics kód')}:</label></td><td><input name="gafollow" type="text" value="{$gafollow}"</td></tr>
 			<tr><td><label>{t('Hírek száma a főoldalon')}:</label></td><td><input name="fooldalhirdb" type="number" value="{$fooldalhirdb}"></td>
 				<td><label>{t('Ajánlott termékek száma a főoldalon')}:</label></td><td><input name="fooldalajanlotttermekdb" type="number" value="{$fooldalajanlotttermekdb}"></td></tr>
 			<tr><td><label>{t('Legnépszerűbb termékek száma a főoldalon')}:</label></td><td><input name="fooldalnepszerutermekdb" type="number" value="{$fooldalnepszerutermekdb}"></td>
@@ -161,6 +162,24 @@
 			</tr>
 		</tbody></table>
 		</div>
+		{if ($setup.editstyle=='dropdown')}
+		<div class="mattkarb-titlebar" data-caption="{t('Azonosítók, kódok')}" data-refcontrol="#IdTab"></div>
+		{/if}
+		<div id="IdTab" class="mattkarb-page" data-visible="visible">
+		<table><tbody>
+            <tr><td><label>{t('Google analytics kód')}:</label></td><td><input name="gafollow" type="text" value="{$gafollow}"</td></tr>
+            <tr><td><label>{t('Facebook app-id')}:</label></td><td><input name="fbappid" type="text" value="{$fbappid}"</td></tr>
+        </tbody></table>
+        </div>
+		{if ($setup.editstyle=='dropdown')}
+		<div class="mattkarb-titlebar" data-caption="{t('Email')}" data-refcontrol="#EmailTab"></div>
+		{/if}
+		<div id="EmailTab" class="mattkarb-page" data-visible="visible">
+		<table><tbody>
+            <tr><td><label>{t('Email feladója')}:</label></td><td><input name="emailfrom" type="text" value="{$emailfrom}"</td></tr>
+            <tr><td><label>{t('Válasz cím')}:</label></td><td><input name="emailreplyto" type="text" value="{$emailreplyto}"</td></tr>
+        </tbody></table>
+        </div>
 		{if ($setup.editstyle=='dropdown')}
 		<div class="mattkarb-titlebar" data-caption="{t('Feed beállítások')}" data-refcontrol="#FeedTab"></div>
 		{/if}

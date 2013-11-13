@@ -28,7 +28,12 @@ class setupController extends \mkwhelpers\Controller {
 		$p=$repo->find(\mkw\consts::Tulajeuadoszam);
 		$view->setVar(\mkw\consts::Tulajeuadoszam,($p?$p->getErtek():''));
 
-		// web
+		$p=$repo->find(\mkw\consts::EmailFrom);
+		$view->setVar(\mkw\consts::EmailFrom,($p?$p->getErtek():''));
+		$p=$repo->find(\mkw\consts::EmailReplyTo);
+		$view->setVar(\mkw\consts::EmailReplyTo,($p?$p->getErtek():''));
+
+        // web
 		$p=$repo->find(\mkw\consts::Oldalcim);
 		$view->setVar(\mkw\consts::Oldalcim,($p?$p->getErtek():''));
 		$p=$repo->find(\mkw\consts::Seodescription);
@@ -80,6 +85,8 @@ class setupController extends \mkwhelpers\Controller {
 		$view->setVar(\mkw\consts::Autologoutmin,($p?$p->getErtek():10));
         $p = $repo->find(\mkw\consts::GAFollow);
         $view->setVar(\mkw\consts::GAFollow,($p?$p->getErtek():''));
+        $p = $repo->find(\mkw\consts::FBAppId);
+        $view->setVar(\mkw\consts::FBAppId,($p?$p->getErtek():''));
 
 		// alapertelmezes
 		$p=$repo->find(\mkw\consts::Fizmod);
@@ -170,6 +177,9 @@ class setupController extends \mkwhelpers\Controller {
 		$this->setObj(\mkw\consts::Tulajutca,$this->params->getStringRequestParam('tulajutca'));
 		$this->setObj(\mkw\consts::Tulajadoszam,$this->params->getStringRequestParam('tulajadoszam'));
 		$this->setObj(\mkw\consts::Tulajeuadoszam,$this->params->getStringRequestParam('tulajeuadoszam'));
+
+        $this->setObj(\mkw\consts::EmailFrom,$this->params->getStringRequestParam('emailfrom'));
+		$this->setObj(\mkw\consts::EmailReplyTo,$this->params->getStringRequestParam('emailreplyto'));
 		// web
 		$this->setObj(\mkw\consts::Miniimagesize,$this->params->getIntRequestParam('miniimagesize'));
 		$this->setObj(\mkw\consts::Smallimagesize,$this->params->getIntRequestParam('smallimagesize'));
@@ -195,6 +205,7 @@ class setupController extends \mkwhelpers\Controller {
 		$this->setObj(\mkw\consts::Termekoldalcim,$this->params->getStringRequestParam('termekoldalcim'));
 		$this->setObj(\mkw\consts::Termekseodescription,$this->params->getStringRequestParam('termekseodescription'));
         $this->setObj(\mkw\consts::GAFollow, $this->params->getStringRequestParam('gafollow'));
+        $this->setObj(\mkw\consts::FBAppId, $this->params->getStringRequestParam('fbappid'));
 		// alapertelmezes
 		$fizmod=store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod',0));
 		if ($fizmod) {

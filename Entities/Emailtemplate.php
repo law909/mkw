@@ -43,6 +43,17 @@ class Emailtemplate {
         return $this->szoveg;
     }
 
+    public function getHTMLSzoveg() {
+        return
+            '<html>'.
+            '<head>'.
+            '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">'.
+            '<title>Individual Has Requested Association</title>'.
+            '</head>'.
+            '<body>' . $this->getSzoveg() . '</body>'.
+            '</html>';
+    }
+
     public function setSzoveg($adat) {
         $this->szoveg = $adat;
     }
