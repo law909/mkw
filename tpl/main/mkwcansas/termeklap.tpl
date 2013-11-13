@@ -5,6 +5,7 @@
     <meta property="og:url" content="{$termek.fullurl}"/>
     <meta property="og:description" content="{$termek.rovidleiras}"/>
     <meta property="og:image" content="{$termek.fullkepurl}"/>
+    <meta property="og:type" content="website"/>
 {/block}
 
 {block "kozep"}
