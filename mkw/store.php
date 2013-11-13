@@ -187,6 +187,7 @@ class Store {
 		$v->setVar('feedtermektitle', self::getParameter('feedtermektitle', t('Termékeink')));
 		$v->setVar('feedhirtitle', self::getParameter('feedhirtitle', t('Híreink')));
 		$v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
+        $v->setVar('serverurl', self::getFullUrl());
 		$kc = new \Controllers\kosarController(null);
 		$v->setVar('kosar', $kc->getMiniData());
 		$pc = new \Controllers\partnerController(null);
@@ -270,7 +271,7 @@ class Store {
 		$view->printTemplateResult();
 	}
 
-    public static function getFullUrl($slug) {
+    public static function getFullUrl($slug = null) {
         if (array_key_exists('SCRIPT_URI', $_SERVER)) {
             $uri = parse_url($_SERVER['SCRIPT_URI']);
             if (!array_key_exists('scheme', $uri) || !$uri['scheme']) {
@@ -287,7 +288,7 @@ class Store {
             );
         }
         $rag = '';
-        if ($slug[0] !== '/') {
+        if (($slug[0] !== '/') && $slug) {
             $rag = '/';
         }
         return $uri['scheme'] . '://' . $uri['host'] . $rag . $slug;

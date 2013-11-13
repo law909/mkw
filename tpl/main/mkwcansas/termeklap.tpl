@@ -2,7 +2,7 @@
 
 {block "meta"}
     <meta property="og:title" content="{$pagetitle|default}"/>
-    <meta property="og:url" content="{$termek.fullurl}/termek"/>
+    <meta property="og:url" content="{$serverurl}/termek/{$termek.slug}"/>
     <meta property="og:description" content="{$termek.rovidleiras}"/>
     <meta property="og:image" content="{$termek.fullkepurl}"/>
     <meta property="og:type" content="website"/>
