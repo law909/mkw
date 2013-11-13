@@ -24,6 +24,7 @@ class consts {
 
     const EmailFrom = 'emailfrom';
     const EmailReplyTo = 'emailreplyto';
+    const EmailBcc = 'emailbcc';
 
     const Oldalcim = 'oldalcim';
     const Seodescription = 'seodescription';

@@ -178,6 +178,7 @@
 		<table><tbody>
             <tr><td><label>{t('Email feladója')}:</label></td><td><input name="emailfrom" type="text" value="{$emailfrom}"</td></tr>
             <tr><td><label>{t('Válasz cím')}:</label></td><td><input name="emailreplyto" type="text" value="{$emailreplyto}"</td></tr>
+            <tr><td><label>{t('Bcc')}:</label></td><td><input name="emailbcc" type="text" value="{$emailbcc}"</td></tr>
         </tbody></table>
         </div>
 		{if ($setup.editstyle=='dropdown')}

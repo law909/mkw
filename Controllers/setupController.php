@@ -32,6 +32,8 @@ class setupController extends \mkwhelpers\Controller {
 		$view->setVar(\mkw\consts::EmailFrom,($p?$p->getErtek():''));
 		$p=$repo->find(\mkw\consts::EmailReplyTo);
 		$view->setVar(\mkw\consts::EmailReplyTo,($p?$p->getErtek():''));
+		$p=$repo->find(\mkw\consts::EmailBcc);
+		$view->setVar(\mkw\consts::EmailBcc,($p?$p->getErtek():''));
 
         // web
 		$p=$repo->find(\mkw\consts::Oldalcim);
@@ -178,8 +180,10 @@ class setupController extends \mkwhelpers\Controller {
 		$this->setObj(\mkw\consts::Tulajadoszam,$this->params->getStringRequestParam('tulajadoszam'));
 		$this->setObj(\mkw\consts::Tulajeuadoszam,$this->params->getStringRequestParam('tulajeuadoszam'));
 
-        $this->setObj(\mkw\consts::EmailFrom,$this->params->getStringRequestParam('emailfrom'));
-		$this->setObj(\mkw\consts::EmailReplyTo,$this->params->getStringRequestParam('emailreplyto'));
+        $this->setObj(\mkw\consts::EmailFrom,$this->params->getOriginalStringRequestParam('emailfrom'));
+		$this->setObj(\mkw\consts::EmailReplyTo,$this->params->getOriginalStringRequestParam('emailreplyto'));
+		$this->setObj(\mkw\consts::EmailBcc,$this->params->getStringRequestParam('emailbcc'));
+
 		// web
 		$this->setObj(\mkw\consts::Miniimagesize,$this->params->getIntRequestParam('miniimagesize'));
 		$this->setObj(\mkw\consts::Smallimagesize,$this->params->getIntRequestParam('smallimagesize'));
