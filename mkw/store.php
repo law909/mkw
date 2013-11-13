@@ -270,4 +270,13 @@ class Store {
 		$view->printTemplateResult();
 	}
 
+    public static function getFullUrl($slug) {
+        $uri = parse_url($_SERVER['SCRIPT_URI']);
+        $rag = '';
+        if ($slug[0] !== '/') {
+            $rag = '/';
+        }
+        return $uri['scheme'] . '://' . $uri['host'] . $rag . $slug;
+    }
+
 }
