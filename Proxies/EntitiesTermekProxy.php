@@ -930,10 +930,22 @@ class EntitiesTermekProxy extends \Entities\Termek implements \Doctrine\ORM\Prox
         return parent::setGyarto($gyarto);
     }
 
+    public function getFuggoben()
+    {
+        $this->__load();
+        return parent::getFuggoben();
+    }
+
+    public function setFuggoben($d)
+    {
+        $this->__load();
+        return parent::setFuggoben($d);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'nev', 'me', 'kiszereles', 'vtsz', 'afa', 'cimkek', 'cimkenevek', 'cikkszam', 'idegencikkszam', 'leiras', 'rovidleiras', 'oldalcim', 'seodescription', 'slug', 'lathato', 'hozzaszolas', 'ajanlott', 'kiemelt', 'mozgat', 'inaktiv', 'termekexportbanszerepel', 'hparany', 'netto', 'brutto', 'akciosnetto', 'akciosbrutto', 'akciostart', 'akciostop', 'termekfa1', 'termekfa1karkod', 'termekfa2', 'termekfa2karkod', 'termekfa3', 'termekfa3karkod', 'kepurl', 'kepleiras', 'szelesseg', 'magassag', 'hosszusag', 'suly', 'osszehajthato', 'termekkepek', 'valtozatok', 'termekreceptek', 'altermekreceptek', 'dolgozok', 'bizonylattetelek', 'kosarak', 'megtekintesdb', 'megvasarlasdb', 'termekkapcsolodok', 'altermekkapcsolodok', 'valtozatadattipus', 'nemkaphato', 'termekertesitok', 'gyarto');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'nev', 'me', 'kiszereles', 'vtsz', 'afa', 'cimkek', 'cimkenevek', 'cikkszam', 'idegencikkszam', 'leiras', 'rovidleiras', 'oldalcim', 'seodescription', 'slug', 'lathato', 'hozzaszolas', 'ajanlott', 'kiemelt', 'mozgat', 'inaktiv', 'fuggoben', 'termekexportbanszerepel', 'hparany', 'netto', 'brutto', 'akciosnetto', 'akciosbrutto', 'akciostart', 'akciostop', 'termekfa1', 'termekfa1karkod', 'termekfa2', 'termekfa2karkod', 'termekfa3', 'termekfa3karkod', 'kepurl', 'kepleiras', 'szelesseg', 'magassag', 'hosszusag', 'suly', 'osszehajthato', 'termekkepek', 'valtozatok', 'termekreceptek', 'altermekreceptek', 'dolgozok', 'bizonylattetelek', 'kosarak', 'megtekintesdb', 'megvasarlasdb', 'termekkapcsolodok', 'altermekkapcsolodok', 'valtozatadattipus', 'nemkaphato', 'termekertesitok', 'gyarto');
     }
 
     public function __clone()

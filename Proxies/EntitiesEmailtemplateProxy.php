@@ -66,10 +66,22 @@ class EntitiesEmailtemplateProxy extends \Entities\Emailtemplate implements \Doc
         return parent::setSzoveg($adat);
     }
 
+    public function getTargy()
+    {
+        $this->__load();
+        return parent::getTargy();
+    }
+
+    public function setTargy($t)
+    {
+        $this->__load();
+        return parent::setTargy($t);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'nev', 'szoveg');
+        return array('__isInitialized__', 'id', 'nev', 'targy', 'szoveg');
     }
 
     public function __clone()
