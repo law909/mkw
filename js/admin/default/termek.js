@@ -550,6 +550,14 @@ $(document).ready(function(){
 				}
 			},
 			beforeSerialize:function(form,opt) {
+                var netto = $('#AkciosNettoEdit').val() * 1,
+                    brutto = $('#AkciosBruttoEdit').val() * 1,
+                    astart = $('#AkcioStartEdit').val(),
+                    astop = $('#AkcioStopEdit').val();
+                if ((netto || brutto) && (!astart && !astop)) {
+                    alert('Adja meg az akció kezdetét vagy végét.');
+                    return false;
+                }
 				var cimkek=new Array();
 				$('.js-cimkekarb').filter('.js-selectedcimke').each(function() {
 					cimkek.push($(this).attr('data-id'));
@@ -561,6 +569,7 @@ $(document).ready(function(){
 					x[$this.attr('data-name')]=$this.attr('data-value');
 				});
 				opt['data']=x;
+                return true;
 			},
 			beforeHide:function() {
 				if (!$.browser.mobile) {
