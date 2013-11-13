@@ -14,8 +14,12 @@
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>
-				<td><label for="NevEdit">{t('Név')}:</label></td>
+				<td><label for="NevEdit">{t('Azonosító')}:</label></td>
 				<td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}"></td>
+			</tr>
+			<tr>
+				<td><label for="TargyEdit">{t('Tárgy')}:</label></td>
+				<td><input id="TargyEdit" name="targy" type="text" size="80" maxlength="255" value="{$egyed.targy}"></td>
 			</tr>
 			<tr>
 				<td><label for="LeirasEdit">{t('Szöveg')}:</label></td>

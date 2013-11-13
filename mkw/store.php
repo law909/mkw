@@ -277,8 +277,12 @@ class Store {
             $rag = '/';
         }
         $scheme = $uri['scheme'];
-        if (!$uri['scheme']) {
+        if (!$scheme) {
             $scheme = 'http';
+        }
+        $host = $uri['host'];
+        if ($host) {
+            $host = $_SERVER['HTTP_HOST'];
         }
         return $scheme . '://' . $uri['host'] . $rag . $slug;
     }

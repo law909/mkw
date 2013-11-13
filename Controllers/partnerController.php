@@ -360,6 +360,23 @@ class partnerController extends \mkwhelpers\MattableController {
 		if (!$hibas) {
 			$this->saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo1);
 			$this->login($email, $jelszo1);
+            $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->find('regisztracio');
+            if ($emailtpl) {
+                $tpldata = array(
+                    'keresztnev' => $keresztnev,
+                    'vezeteknev' => $vezeteknev,
+                    'fiokurl' => \mkw\Store::getRouter()->generate('showaccount')
+                );
+                $subject = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                $subject->setVar('user', $tpldata);
+                $body = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getSzoveg());
+                $body->setVar('user', $tpldata);
+                $mailer = new \mkw\mkwMailer();
+                $mailer->setTo($email);
+                $mailer->setSubject($subject->getTemplateResult());
+                $mailer->setMessage($body->getTemplateResult());
+                $mailer->send();
+            }
 			\Zend_Session::writeClose();
 			Header('Location: ' . store::getRouter()->generate('showaccount'));
 		}

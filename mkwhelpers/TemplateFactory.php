@@ -76,4 +76,5 @@ class TemplateFactory {
 		}
 		return $view;
 	}
+
 }
