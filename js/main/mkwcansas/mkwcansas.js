@@ -1,57 +1,57 @@
 
 $(document).ready(function() {
 
-	var $termekertesitomodal = $('#termekertesitoModal'),
-			$termekertesitoform = $('#termekertesitoform');
+    var $termekertesitomodal = $('#termekertesitoModal'),
+            $termekertesitoform = $('#termekertesitoform');
 
-	if ($.fn.mattaccord) {
-		$(document).mattaccord();
-	}
-	if ($.fn.tab) {
-		$('#termekTabbable').tab('show');
-		$('#adamodositasTabbable').tab('show');
-	}
-	if ($.fn.slider) {
-		var $arslider = $('#ArSlider');
-		if ($arslider.length > 0) {
-			var maxar = $arslider.data('maxar') * 1,
-					ti = $arslider.attr('value'),
-					step = $arslider.data('step') * 1;
-			$arslider.slider({
-				from: 0,
-				to: maxar + step,
-				step: step,
-				dimension: '&nbsp;Ft',
-				skin: 'mkwcansas',
-				callback: function(value) {
-					mkw.lapozas();
-				}
-			});
-			$arslider.slider('value', ti.split(';')[0], ti.split(';')[1]);
-		}
-	}
-	if ($.fn.typeahead) {
-		$('#searchinput').typeahead({
-			source: function(query, process) {
-				return $.ajax({
-					url: '/kereses',
-					type: 'GET',
-					data: {
-						term: query
-					},
-					success: function(data) {
-						var d = JSON.parse(data);
-						return process(d);
-					}
-				});
-			},
-			onselect: function() {
-				$('#searchform').submit();
-			},
-			items: 999999,
-			minLength: 4
-		});
-	}
+    if ($.fn.mattaccord) {
+        $(document).mattaccord();
+    }
+    if ($.fn.tab) {
+        $('#termekTabbable').tab('show');
+        $('#adamodositasTabbable').tab('show');
+    }
+    if ($.fn.slider) {
+        var $arslider = $('#ArSlider');
+        if ($arslider.length > 0) {
+            var maxar = $arslider.data('maxar') * 1,
+                    ti = $arslider.attr('value'),
+                    step = $arslider.data('step') * 1;
+            $arslider.slider({
+                from: 0,
+                to: maxar + step,
+                step: step,
+                dimension: '&nbsp;Ft',
+                skin: 'mkwcansas',
+                callback: function(value) {
+                    mkw.lapozas();
+                }
+            });
+            $arslider.slider('value', ti.split(';')[0], ti.split(';')[1]);
+        }
+    }
+    if ($.fn.typeahead) {
+        $('#searchinput').typeahead({
+            source: function(query, process) {
+                return $.ajax({
+                    url: '/kereses',
+                    type: 'GET',
+                    data: {
+                        term: query
+                    },
+                    success: function(data) {
+                        var d = JSON.parse(data);
+                        return process(d);
+                    }
+                });
+            },
+            onselect: function() {
+                $('#searchform').submit();
+            },
+            items: 999999,
+            minLength: 4
+        });
+    }
     if ($.fn.royalSlider) {
         $('#korhinta').royalSlider({
             autoScaleSlider: true,
@@ -82,391 +82,400 @@ $(document).ready(function() {
             autoHeight: true
         });
     }
-	$termekertesitomodal.modal({
-		show: false
-	});
-	$('.js-termekertesitobtn').on('click', function() {
-		$termekertesitoform.find('input[name="termekid"]').val($(this).data('termek'));
-		$termekertesitomodal.modal('show');
-		return false;
-	});
-	mkw.overrideFormSubmit($termekertesitoform, false, {
-		complete: function() {
-			$termekertesitoform.find('input[name="termekid"]').val('');
-		}
-	});
-	$('.js-termekertesitomodalok').on('click', function(e) {
-		e.preventDefault();
-		$termekertesitomodal.modal('hide');
-		mkw.showMessage(mkwmsg.TermekErtesitoKoszonjuk);
-		window.setTimeout(function() {
-			mkw.closeMessage();
-		}, 2500);
-		$termekertesitoform.submit();
-	});
-	$('.js-termekertesitodel').on('click', function(e) {
-		var $this = $(this);
-		e.preventDefault();
-		$.ajax({
-			url: '/termekertesito/save',
-			type: 'POST',
-			data: {
-				oper: 'del',
-				id: $this.data('id')
-			},
-			beforeSend: function() {
-				mkw.showMessage(mkwmsg.TermekErtesitoLeiratkozas);
-			},
-			success: function() {
-				$this.parents('div.js-termekertesito').remove();
-			},
-			complete: function() {
-				mkw.closeMessage();
-			}
-		});
-	});
-	if ($.fn.magnificPopup) {
-		$('.js-lightbox').magnificPopup({
-			gallery: {
-				enabled: true
-			},
-			image: {
-				cursor: null
-			},
-			type: 'image'
-		});
-	}
-	// nincs valtozat
-	$('.js-kosarba').on('click', function(e) {
-		var $this = $(this);
-		e.preventDefault();
-		$.ajax({
-			type: 'POST',
-			url: $this.attr('href'),
-			data: {
-				jax: 1
-			},
-			beforeSend: function(x) {
-				mkw.showMessage(mkwmsg.TermekKosarba);
-			}
-		})
-		.done(function(data) {
-			$('#minikosar').html(data);
-		})
-		.always(function() {
-			mkw.closeMessage();
-		});
-	});
-	// lathato valtozat van
-	$('.js-kosarbavaltozat').on('click', function(e) {
-		var $this = $(this),
-				id = $this.attr('data-id');
+    $termekertesitomodal.modal({
+        show: false
+    });
+    $('.js-termekertesitobtn').on('click', function() {
+        $termekertesitoform.find('input[name="termekid"]').val($(this).data('termek'));
+        $termekertesitomodal.modal('show');
+        return false;
+    });
+    mkw.overrideFormSubmit($termekertesitoform, false, {
+        beforeSend: function(xhr, settings, data) {
+            if (!data['email']) {
+                alert('Adjon meg email címet.');
+                return false;
+            }
+            return true;
+        },
+        success: function() {
+            mkw.showMessage(mkwmsg.TermekErtesitoKoszonjuk);
+            window.setTimeout(function() {
+                mkw.closeMessage();
+            }, 2500);
+        },
+        complete: function() {
+            $termekertesitomodal.modal('hide');
+            $termekertesitoform.find('input[name="termekid"]').val('');
+        }
+    });
+    $('.js-termekertesitomodalok').on('click', function(e) {
+        e.preventDefault();
+        $termekertesitoform.submit();
+    });
+    $('.js-termekertesitodel').on('click', function(e) {
+        var $this = $(this);
+        e.preventDefault();
+        $.ajax({
+            url: '/termekertesito/save',
+            type: 'POST',
+            data: {
+                oper: 'del',
+                id: $this.data('id')
+            },
+            beforeSend: function() {
+                mkw.showMessage(mkwmsg.TermekErtesitoLeiratkozas);
+            },
+            success: function() {
+                $this.parents('div.js-termekertesito').remove();
+            },
+            complete: function() {
+                mkw.closeMessage();
+            }
+        });
+    });
+    if ($.fn.magnificPopup) {
+        $('.js-lightbox').magnificPopup({
+            gallery: {
+                enabled: true
+            },
+            image: {
+                cursor: null
+            },
+            type: 'image'
+        });
+    }
+    // nincs valtozat
+    $('.js-kosarba').on('click', function(e) {
+        var $this = $(this);
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: $this.attr('href'),
+            data: {
+                jax: 1
+            },
+            beforeSend: function(x) {
+                mkw.showMessage(mkwmsg.TermekKosarba);
+            }
+        })
+                .done(function(data) {
+                    $('#minikosar').html(data);
+                })
+                .always(function() {
+                    mkw.closeMessage();
+                });
+    });
+    // lathato valtozat van
+    $('.js-kosarbavaltozat').on('click', function(e) {
+        var $this = $(this),
+                id = $this.attr('data-id');
 
-		e.preventDefault();
-		$.ajax({
-			type: 'POST',
-			url: $this.attr('href'),
-			data: {
-				jax: 2,
-				vid: $this.attr('data-vid')
-			},
-			beforeSend: function() {
-				mkw.showMessage(mkwmsg.TermekKosarba);
-			}
-		})
-		.done(function(data) {
-			$('.js-valtozatedit[data-id="' + id + '"]').selectedIndex = 0;
-			$('#minikosar').html(data);
-		})
-		.always(function() {
-			mkw.closeMessage();
-		});
-	});
-	// valaszthato valtozat van
-	$('.js-kosarbamindenvaltozat').on('click', function(e) {
-		var $this = $(this),
-				termekid = $this.attr('data-termek'),
-				tipusok = new Array(), ertekek = new Array(),
-				valtozatselect = $('.js-mindenvaltozatedit[data-termek="' + termekid + '"]');
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: $this.attr('href'),
+            data: {
+                jax: 2,
+                vid: $this.attr('data-vid')
+            },
+            beforeSend: function() {
+                mkw.showMessage(mkwmsg.TermekKosarba);
+            }
+        })
+                .done(function(data) {
+                    $('.js-valtozatedit[data-id="' + id + '"]').selectedIndex = 0;
+                    $('#minikosar').html(data);
+                })
+                .always(function() {
+                    mkw.closeMessage();
+                });
+    });
+    // valaszthato valtozat van
+    $('.js-kosarbamindenvaltozat').on('click', function(e) {
+        var $this = $(this),
+                termekid = $this.attr('data-termek'),
+                tipusok = new Array(), ertekek = new Array(),
+                valtozatselect = $('.js-mindenvaltozatedit[data-termek="' + termekid + '"]');
 
-		e.preventDefault();
+        e.preventDefault();
 
-		valtozatselect.each(function() {
-			var $this = $(this);
-			if ($this.val()) {
-				tipusok.push($this.data('tipusid'));
-				ertekek.push($this.val());
-			}
-		});
+        valtozatselect.each(function() {
+            var $this = $(this);
+            if ($this.val()) {
+                tipusok.push($this.data('tipusid'));
+                ertekek.push($this.val());
+            }
+        });
 
-		if (valtozatselect.length !== ertekek.length) {
-			mkw.showDialog(mkwmsg.TermekValtozatotValassz);
-		}
-		else {
-			$.ajax({
-				type: 'POST',
-				url: $this.attr('href'),
-				data: {
-					jax: 3,
-					tip: tipusok,
-					val: ertekek
-				},
-				beforeSend: function(x) {
-					mkw.showMessage(mkwmsg.TermekKosarba);
-				}
-			})
-			.done(function(data) {
-				$('.js-mindenvaltozatedit[data-termek="' + termekid + '"]').selectedIndex = 0;
-				$('#minikosar').html(data);
-			})
-			.always(function() {
-				mkw.closeMessage();
-			});
-		}
-	});
+        if (valtozatselect.length !== ertekek.length) {
+            mkw.showDialog(mkwmsg.TermekValtozatotValassz);
+        }
+        else {
+            $.ajax({
+                type: 'POST',
+                url: $this.attr('href'),
+                data: {
+                    jax: 3,
+                    tip: tipusok,
+                    val: ertekek
+                },
+                beforeSend: function(x) {
+                    mkw.showMessage(mkwmsg.TermekKosarba);
+                }
+            })
+                    .done(function(data) {
+                        $('.js-mindenvaltozatedit[data-termek="' + termekid + '"]').selectedIndex = 0;
+                        $('#minikosar').html(data);
+                    })
+                    .always(function() {
+                        mkw.closeMessage();
+                    });
+        }
+    });
 
-	// valtozat
-	$('.js-valtozatedit').on('change', function() {
-		var $this = $(this),
-				termek = $this.data('termek'),
-				id = $this.data('id');
+    // valtozat
+    $('.js-valtozatedit').on('change', function() {
+        var $this = $(this),
+                termek = $this.data('termek'),
+                id = $this.data('id');
 
-		$.ajax({
-			url: '/valtozatar',
-			data: {
-				t: termek,
-				vid: $this.val()
-			}
-		})
-		.done(function(data) {
-			var d = JSON.parse(data);
-			$('#termekprice' + id).text(d['price']);
-		})
-		.always(function() {
-			$('.js-kosarbavaltozat[data-id="' + id + '"]').attr('data-vid', $this.val());
-		});
-	});
-	$('.js-mindenvaltozatedit').on('change', function() {
-		var $valtedit = $(this),
-				tipusid = $valtedit.data('tipusid'),
-				termek = $valtedit.data('termek'),
-				id = $valtedit.data('id'),
-				$masikedit = $('.js-mindenvaltozatedit[data-termek="' + termek + '"][data-tipusid!="' + tipusid + '"]');
+        $.ajax({
+            url: '/valtozatar',
+            data: {
+                t: termek,
+                vid: $this.val()
+            }
+        })
+                .done(function(data) {
+                    var d = JSON.parse(data);
+                    $('#termekprice' + id).text(d['price']);
+                })
+                .always(function() {
+                    $('.js-kosarbavaltozat[data-id="' + id + '"]').attr('data-vid', $this.val());
+                });
+    });
+    $('.js-mindenvaltozatedit').on('change', function() {
+        var $valtedit = $(this),
+                tipusid = $valtedit.data('tipusid'),
+                termek = $valtedit.data('termek'),
+                id = $valtedit.data('id'),
+                $masikedit = $('.js-mindenvaltozatedit[data-termek="' + termek + '"][data-tipusid!="' + tipusid + '"]');
 
-		$.ajax({
-			url: '/valtozat',
-			data: {
-				t: termek,
-				ti: tipusid,
-				v: $valtedit.val(),
-				sel: $masikedit.val(),
-				mti: $masikedit.data('tipusid')
-			}
-		})
-		.done(function(data) {
-			var d = JSON.parse(data),
-					adat = d['adat'];
-			sel = '';
+        $.ajax({
+            url: '/valtozat',
+            data: {
+                t: termek,
+                ti: tipusid,
+                v: $valtedit.val(),
+                sel: $masikedit.val(),
+                mti: $masikedit.data('tipusid')
+            }
+        })
+                .done(function(data) {
+                    var d = JSON.parse(data),
+                            adat = d['adat'];
+                    sel = '';
 
-			$('#termekprice' + id).text(d['price']);
-			$('option[value!=""]', $masikedit).remove();
-			$.each(adat, function(i, v) {
-				if (v['sel']) {
-					sel = ' selected="selected"';
-				}
-				else {
-					sel = '';
-				}
-				$masikedit.append('<option value="' + v['value'] + '"' + sel + '>' + v['value'] + '</option>');
-			});
-		});
-	});
-	var $regform = $('#Regform');
-	if ($regform.length > 0) {
-		H5F.setup($regform);
-		$('#VezeteknevEdit,#KeresztnevEdit')
-		.on('input', function(e) {
-			mkwcheck.regNevCheck();
-			$(this).off('keydown');
-		})
-		.on('keydown blur', function(e) {
-			mkwcheck.wasinteraction.doublenev = true;
-			mkwcheck.regNevCheck();
-		})
-		.each(function(i, ez) {
-			mkwcheck.regNevCheck();
-		});
-		$('#EmailEdit')
-				.on('input', function(e) {
-			mkwcheck.regEmailCheck();
-			$(this).off('keydown');
-		})
-		.on('keydown blur', function(e) {
-			mkwcheck.wasinteraction.email = true;
-			mkwcheck.regEmailCheck();
-		})
-		.on('change', function(e) {
-			var $this = $(this);
-			$.ajax({
-				type: 'POST',
-				url: '/checkemail',
-				data: {email: $this.val()}
-			})
-					.done(function(data) {
-				var d = JSON.parse(data);
-				$this.data('hiba', d);
-				mkwcheck.regEmailCheck();
-			});
-		})
-		.each(function(i, ez) {
-			mkwcheck.regEmailCheck();
-		});
-		$('#Jelszo1Edit,#Jelszo2Edit')
-		.on('input', function(e) {
-			mkwcheck.regJelszoCheck();
-			$(this).off('keydown');
-		})
-		.on('keydown blur', function(e) {
-			mkwcheck.wasinteraction.pw = true;
-			mkwcheck.regJelszoCheck();
-		})
-		.each(function(i, ez) {
-			mkwcheck.regJelszoCheck();
-		});
-	}
-	var $kapcsolatform = $('#Kapcsolatform');
-	if ($kapcsolatform.length > 0) {
-		H5F.setup($kapcsolatform);
-		$('#NevEdit')
-		.on('input', function(e) {
-			mkwcheck.kapcsolatNevCheck();
-			$(this).off('keydown');
-		})
-		.on('keydown blur', function(e) {
-			mkwcheck.wasinteraction.nev = true;
-			mkwcheck.kapcsolatNevCheck();
-		})
-		.each(function(i, ez) {
-			mkwcheck.kapcsolatNevCheck();
-		});
-		$('#Email1Edit,#Email2Edit')
-				.on('input', function(e) {
-			mkwcheck.kapcsolatEmailCheck();
-			$(this).off('keydown');
-		})
-		.on('change', function(e) {
-			var $this = $(this);
-			$.ajax({
-				type: 'POST',
-				url: '/checkemail',
-				data: {
-					email: $this.val(),
-					dce: 1
-				}
-			})
-					.done(function(data) {
-				var d = JSON.parse(data);
-				$this.data('hiba', d);
-				mkwcheck.kapcsolatEmailCheck();
-			});
-		})
-		.on('keydown blur', function(e) {
-			mkwcheck.wasinteraction.email = true;
-			mkwcheck.kapcsolatEmailCheck();
-		})
-		.each(function(i, ez) {
-			mkwcheck.kapcsolatEmailCheck();
-		});
-		$('#TemaEdit')
-		.on('input', function(e) {
-			mkwcheck.kapcsolatTemaCheck();
-			$(this).off('keydown');
-		})
-		.on('keydown blur', function(e) {
-			mkwcheck.wasinteraction.tema = true;
-			mkwcheck.kapcsolatTemaCheck();
-		})
-		.each(function(i, ez) {
-			mkwcheck.kapcsolatTemaCheck();
-		});
-	}
-	var $loginform = $('#Loginform');
-	if ($loginform.length > 0) {
-		H5F.setup($loginform);
-		$('#EmailEdit')
-		.on('input', function(e) {
-			mkwcheck.loginEmailCheck();
-			$(this).off('keydown');
-		})
-		.on('keydown blur', function(e) {
-			mkwcheck.wasinteraction.email = true;
-			mkwcheck.loginEmailCheck();
-		})
-		.each(function(i, ez) {
-			mkwcheck.loginEmailCheck();
-		});
-	}
-	// kategoria navigalas
-	var a = $('#navmain li a'),
-			b = $('#navmain li .sub');
-	$('#navmain li').on('click', function(e) {
-		var $this = $(this),
-				gy = $this.children('a');
-		v = gy.hasClass('active');
-		e.preventDefault();
-		if (gy.attr('data-cnt') > 0) {
-			a.removeClass('active');
-			b.hide();
-			if (!v) {
-				gy.addClass('active');
-				$this.children('.sub').toggle();
-			}
-		}
-		else {
-			if (gy.length > 0) {
-				document.location = gy.attr('href');
-			}
-		}
-	});
-	b.mouseup(function() {
-		return false;
-	});
-	$(document).on('mouseup', function(c) {
-		if ($(c.target).parent("#navmain li").length == 0) {
-			a.removeClass("active");
-			b.hide();
-		}
-	});
-	$('div.kat').on('click', function(e) {
-		e.preventDefault();
-		document.location = $(this).attr('data-href');
-	});
-	// lapozo es szuroform
-	$('.elemperpageedit').on('change', function() {
-		$('.elemperpageedit').val($(this).val());
-		mkw.lapozas();
-	});
-	$('.orderedit').on('change', function() {
-		$('.orderedit').val($(this).val());
-		mkw.lapozas();
-	});
-	$('.pageedit').on('click', function() {
-		$('.lapozoform').attr('data-pageno', $(this).attr('data-pageno'));
-		mkw.lapozas();
-	});
-	$('.termeklistview').on('click', function() {
-		$('#ListviewEdit').val($(this).attr('data-vt'));
-		mkw.lapozas();
-	});
-	$('#szuroform input').on('change', function() {
-		$('.lapozoform input[name="cimkekatid"]').val($(this).attr('name').split('_')[1]);
-		mkw.lapozas();
-	});
+                    $('#termekprice' + id).text(d['price']);
+                    $('option[value!=""]', $masikedit).remove();
+                    $.each(adat, function(i, v) {
+                        if (v['sel']) {
+                            sel = ' selected="selected"';
+                        }
+                        else {
+                            sel = '';
+                        }
+                        $masikedit.append('<option value="' + v['value'] + '"' + sel + '>' + v['value'] + '</option>');
+                    });
+                });
+    });
+    var $regform = $('#Regform');
+    if ($regform.length > 0) {
+        H5F.setup($regform);
+        $('#VezeteknevEdit,#KeresztnevEdit')
+                .on('input', function(e) {
+                    mkwcheck.regNevCheck();
+                    $(this).off('keydown');
+                })
+                .on('keydown blur', function(e) {
+                    mkwcheck.wasinteraction.doublenev = true;
+                    mkwcheck.regNevCheck();
+                })
+                .each(function(i, ez) {
+                    mkwcheck.regNevCheck();
+                });
+        $('#EmailEdit')
+                .on('input', function(e) {
+                    mkwcheck.regEmailCheck();
+                    $(this).off('keydown');
+                })
+                .on('keydown blur', function(e) {
+                    mkwcheck.wasinteraction.email = true;
+                    mkwcheck.regEmailCheck();
+                })
+                .on('change', function(e) {
+                    var $this = $(this);
+                    $.ajax({
+                        type: 'POST',
+                        url: '/checkemail',
+                        data: {email: $this.val()}
+                    })
+                            .done(function(data) {
+                                var d = JSON.parse(data);
+                                $this.data('hiba', d);
+                                mkwcheck.regEmailCheck();
+                            });
+                })
+                .each(function(i, ez) {
+                    mkwcheck.regEmailCheck();
+                });
+        $('#Jelszo1Edit,#Jelszo2Edit')
+                .on('input', function(e) {
+                    mkwcheck.regJelszoCheck();
+                    $(this).off('keydown');
+                })
+                .on('keydown blur', function(e) {
+                    mkwcheck.wasinteraction.pw = true;
+                    mkwcheck.regJelszoCheck();
+                })
+                .each(function(i, ez) {
+                    mkwcheck.regJelszoCheck();
+                });
+    }
+    var $kapcsolatform = $('#Kapcsolatform');
+    if ($kapcsolatform.length > 0) {
+        H5F.setup($kapcsolatform);
+        $('#NevEdit')
+                .on('input', function(e) {
+                    mkwcheck.kapcsolatNevCheck();
+                    $(this).off('keydown');
+                })
+                .on('keydown blur', function(e) {
+                    mkwcheck.wasinteraction.nev = true;
+                    mkwcheck.kapcsolatNevCheck();
+                })
+                .each(function(i, ez) {
+                    mkwcheck.kapcsolatNevCheck();
+                });
+        $('#Email1Edit,#Email2Edit')
+                .on('input', function(e) {
+                    mkwcheck.kapcsolatEmailCheck();
+                    $(this).off('keydown');
+                })
+                .on('change', function(e) {
+                    var $this = $(this);
+                    $.ajax({
+                        type: 'POST',
+                        url: '/checkemail',
+                        data: {
+                            email: $this.val(),
+                            dce: 1
+                        }
+                    })
+                            .done(function(data) {
+                                var d = JSON.parse(data);
+                                $this.data('hiba', d);
+                                mkwcheck.kapcsolatEmailCheck();
+                            });
+                })
+                .on('keydown blur', function(e) {
+                    mkwcheck.wasinteraction.email = true;
+                    mkwcheck.kapcsolatEmailCheck();
+                })
+                .each(function(i, ez) {
+                    mkwcheck.kapcsolatEmailCheck();
+                });
+        $('#TemaEdit')
+                .on('input', function(e) {
+                    mkwcheck.kapcsolatTemaCheck();
+                    $(this).off('keydown');
+                })
+                .on('keydown blur', function(e) {
+                    mkwcheck.wasinteraction.tema = true;
+                    mkwcheck.kapcsolatTemaCheck();
+                })
+                .each(function(i, ez) {
+                    mkwcheck.kapcsolatTemaCheck();
+                });
+    }
+    var $loginform = $('#Loginform');
+    if ($loginform.length > 0) {
+        H5F.setup($loginform);
+        $('#EmailEdit')
+                .on('input', function(e) {
+                    mkwcheck.loginEmailCheck();
+                    $(this).off('keydown');
+                })
+                .on('keydown blur', function(e) {
+                    mkwcheck.wasinteraction.email = true;
+                    mkwcheck.loginEmailCheck();
+                })
+                .each(function(i, ez) {
+                    mkwcheck.loginEmailCheck();
+                });
+    }
+    // kategoria navigalas
+    var a = $('#navmain li a'),
+            b = $('#navmain li .sub');
+    $('#navmain li').on('click', function(e) {
+        var $this = $(this),
+                gy = $this.children('a');
+        v = gy.hasClass('active');
+        e.preventDefault();
+        if (gy.attr('data-cnt') > 0) {
+            a.removeClass('active');
+            b.hide();
+            if (!v) {
+                gy.addClass('active');
+                $this.children('.sub').toggle();
+            }
+        }
+        else {
+            if (gy.length > 0) {
+                document.location = gy.attr('href');
+            }
+        }
+    });
+    b.mouseup(function() {
+        return false;
+    });
+    $(document).on('mouseup', function(c) {
+        if ($(c.target).parent("#navmain li").length == 0) {
+            a.removeClass("active");
+            b.hide();
+        }
+    });
+    $('div.kat').on('click', function(e) {
+        e.preventDefault();
+        document.location = $(this).attr('data-href');
+    });
+    // lapozo es szuroform
+    $('.elemperpageedit').on('change', function() {
+        $('.elemperpageedit').val($(this).val());
+        mkw.lapozas();
+    });
+    $('.orderedit').on('change', function() {
+        $('.orderedit').val($(this).val());
+        mkw.lapozas();
+    });
+    $('.pageedit').on('click', function() {
+        $('.lapozoform').attr('data-pageno', $(this).attr('data-pageno'));
+        mkw.lapozas();
+    });
+    $('.termeklistview').on('click', function() {
+        $('#ListviewEdit').val($(this).attr('data-vt'));
+        mkw.lapozas();
+    });
+    $('#szuroform input').on('change', function() {
+        $('.lapozoform input[name="cimkekatid"]').val($(this).attr('name').split('_')[1]);
+        mkw.lapozas();
+    });
 
-	mkw.initTooltips();
+    mkw.initTooltips();
 
-	cart.initUI();
-	checkout.initUI();
-	fiok.initUI();
+    cart.initUI();
+    checkout.initUI();
+    fiok.initUI();
 
 });

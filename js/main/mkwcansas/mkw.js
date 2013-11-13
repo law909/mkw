@@ -104,7 +104,7 @@ var mkw=function($) {
 				beforeSend:function(xhr, settings) {
                     var ret = true;
                     if (typeof events.beforeSend == 'function') {
-                        ret = events.beforeSend.apply($form, xhr, settings, data);
+                        ret = events.beforeSend.call($form, xhr, settings, data);
                     }
 					if (msg) {
 						showMessage(msg);
@@ -116,17 +116,17 @@ var mkw=function($) {
 						closeMessage();
 					}
 					if (typeof events.complete == 'function') {
-						events.complete.apply($form,xhr,status);
+						events.complete.call($form,xhr,status);
 					}
 				},
 				error:function(xhr,status,error) {
 					if (typeof events.error == 'function') {
-						events.error.apply($form,xhr,status);
+						events.error.call($form,xhr,status);
 					}
 				},
 				success:function(data,status,xhr) {
 					if (typeof events.success == 'function') {
-						events.success.apply($form,data,status,xhr);
+						events.success.call($form,data,status,xhr);
 					}
 				}
 			});
