@@ -360,7 +360,7 @@ class partnerController extends \mkwhelpers\MattableController {
 		if (!$hibas) {
 			$this->saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo1);
 			$this->login($email, $jelszo1);
-            $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->findByNev('regisztracio');
+            $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->findOneByNev('regisztracio');
             if ($emailtpl) {
                 $tpldata = array(
                     'keresztnev' => $keresztnev,
@@ -371,7 +371,7 @@ class partnerController extends \mkwhelpers\MattableController {
                 $subject->setVar('user', $tpldata);
                 $body = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getSzoveg());
                 $body->setVar('user', $tpldata);
-                $mailer = new \mkw\mkwMailer();
+                $mailer = new \mkw\mkwmailer();
                 $mailer->setTo($email);
                 $mailer->setSubject($subject->getTemplateResult());
                 $mailer->setMessage($body->getTemplateResult());

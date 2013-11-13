@@ -1,7 +1,7 @@
 <?php
 namespace mkw;
 
-class mkwMailer {
+class mkwmailer {
     private $to;
     private $subject;
     private $message;
@@ -31,9 +31,6 @@ class mkwMailer {
     }
 
     public function send() {
-        Store::writelog($this->to);
-        Store::writelog($this->subject);
-        Store::writelog($this->message);
         return mail($this->to, $this->subject, $this->message);
     }
 }
