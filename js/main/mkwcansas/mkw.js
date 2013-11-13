@@ -101,10 +101,15 @@ var mkw=function($) {
 				url: $form.attr('action'),
 				type: 'POST',
 				data: data,
-				beforeSend:function(x) {
+				beforeSend:function(xhr, settings) {
+                    var ret = true;
+                    if (typeof events.beforeSend == 'function') {
+                        ret = events.beforeSend.apply($form, xhr, settings, data);
+                    }
 					if (msg) {
 						showMessage(msg);
 					}
+                    return ret;
 				},
 				complete:function(xhr,status) {
 					if (msg) {
