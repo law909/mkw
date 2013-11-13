@@ -284,7 +284,7 @@ class Store {
         if (!$host) {
             $host = $_SERVER['HTTP_HOST'];
         }
-        return $scheme . '://' . $uri['host'] . $rag . $slug;
+        return $scheme . '://' . $host . $rag . $slug;
     }
 
 }
