@@ -22,11 +22,6 @@ class Emailtemplate {
     /**
      * @Column(type="string",length=255)
      */
-    private $almafa;
-
-    /**
-     * @Column(type="string",length=255)
-     */
     private $targy;
 
     /** @Column(type="text",nullable=true) */
