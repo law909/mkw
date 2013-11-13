@@ -281,7 +281,7 @@ class Store {
             $scheme = 'http';
         }
         $host = $uri['host'];
-        if ($host) {
+        if (!$host) {
             $host = $_SERVER['HTTP_HOST'];
         }
         return $scheme . '://' . $uri['host'] . $rag . $slug;
