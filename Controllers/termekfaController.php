@@ -396,7 +396,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 				$ret['navigator'] = $this->getNavigator($parent);
 			}
 			else {
-				$ret['url'] = '/kereses/';
+				$ret['url'] = '/kereses';
 				$ret['navigator'] = array(array('caption' => t('A keresett kifejezés') . ': ' . $keresoszo));
 			}
 			$ret['keresett'] = $keresoszo;
