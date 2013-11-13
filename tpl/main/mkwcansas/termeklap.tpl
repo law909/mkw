@@ -52,7 +52,7 @@
 			</div>
 			<div class="span3 hatter">
 				<div class="korbepadding">
-                    <div>{t('Cikkszám')}: <span itemprop="productID"{$termek.cikkszam}</span></div>
+                    <div>{t('Cikkszám')}: <span itemprop="productID">{$termek.cikkszam}</span></div>
                     <div>
                         <ul class="simalista">
                         {foreach $termek.cimkeakciodobozban as $_jelzo}
