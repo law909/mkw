@@ -19,10 +19,10 @@
 	<article itemtype="http://schema.org/Product" itemscope="">
 		<div class="row">
 			<div class="span6">
-                <div class="textaligncenter"><h3>{$termek.caption}</h3></div>
+                <div class="textaligncenter"><h3 itemprop="name">{$termek.caption}</h3></div>
 				<div class="termekimagecontainer textaligncenter">
                     <a href="{$termek.kepurl}" class="js-lightbox" title="{$termek.caption}">
-                        <img src="{$termek.kozepeskepurl}" itemprop="image" alt="{$termek.caption}" title="{$termek.caption}">
+                        <img itemprop="image" src="{$termek.kozepeskepurl}" alt="{$termek.caption}" title="{$termek.caption}">
                     </a>
 				</div>
 				<div class="js-termekimageslider termekimageslider termekimagecontainer textaligncenter royalSlider contentSlider rsDefaultInv">
@@ -44,7 +44,7 @@
 			</div>
 			<div class="span3 hatter">
 				<div class="korbepadding">
-					<div>{t('Cikkszám')}: {$termek.cikkszam}</div>
+                    <div>{t('Cikkszám')}: <span itemprop="productID"{$termek.cikkszam}</span></div>
                     <div>
                         <ul class="simalista">
                         {foreach $termek.cimkeakciodobozban as $_jelzo}
@@ -71,7 +71,7 @@
 						</div>
 					</div>
 					{/if}
-					<h3 id="termekprice{$termek.id}" class="itemPrice textalignright">{number_format($termek.bruttohuf,0,',',' ')} Ft</h3>
+					<h3 id="termekprice{$termek.id}" class="itemPrice textalignright" itemprop="price">{number_format($termek.bruttohuf,0,',',' ')} Ft</h3>
 					{if ($termek.nemkaphato)}
 					<div class="textalignright">
 						<a href="#" rel="nofollow" class="js-termekertesitobtn btn btn-large graybtn" data-termek="{$termek.id}" data-id="{$termek.id}">
@@ -101,7 +101,7 @@
 					</ul>
 					<div class="tab-content keret">
 						<div id="leirasTab" class="tab-pane active">
-							<p>{$termek.leiras}</p>
+							<p itemprop="description">{$termek.leiras}</p>
 						</div>
 						<div id="tulajdonsagTab" class="tab-pane">
 							<div class="span6 nincsbalmargo">

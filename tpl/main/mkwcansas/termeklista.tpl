@@ -92,13 +92,13 @@
 			{if ($lapozo.elemcount>0)}
 				{if ($vt==1)}
 					{foreach $termekek as $_termek}
-						<div class="row termek">
+						<div class="row termek" itemscope itemtype="http://schema.org/Product">
 							<div class="span2 termekimage">
-								<a href="/termek/{$_termek.slug}"><img src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
+								<a href="/termek/{$_termek.slug}"><img itemprop="image" src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
 							</div>
 							<div class="span5 termektext">
-								<a href="/termek/{$_termek.slug}"><span class="termekcaption">{$_termek.caption}</span></a>
-								<p>{$_termek.rovidleiras}</p>
+								<a href="/termek/{$_termek.slug}" itemprop="url"><span class="termekcaption" itemprop="name">{$_termek.caption}</span></a>
+								<p itemprop="description">{$_termek.rovidleiras}</p>
 								<div class="termekjelzok">
 									{foreach $_termek.cimkelistaban as $_jelzo}
 										<img src="{$_jelzo.kiskepurl}" title="{$_jelzo.caption}" alt="{$_jelzo.caption}">
@@ -139,7 +139,7 @@
                                     {/foreach}
                                     {$_kosarbaclass="js-kosarbamindenvaltozat"}
                                 {/if}
-                                <div id="termekprice{$_termek.id}-{$_termek.valtozatid|default}" class="termekprice">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
+                                <div id="termekprice{$_termek.id}-{$_termek.valtozatid|default}" class="termekprice" itemprop="price">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
                                 {if ($_termek.nemkaphato)}
                                     <div class="textalignright">
                                         <a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn" data-termek="{$_termek.id}">
@@ -164,15 +164,15 @@
                         {for $j=0 to $step-1}
                         {$_termek=$termekek[$i+$j]}
                         {if ($_termek)}
-                            <div class="spanmkw3 gtermek{if (($j==$step-1)||($i+$j>=$termekcnt))} gtermekszelso{/if}">
+                            <div class="spanmkw3 gtermek{if (($j==$step-1)||($i+$j>=$termekcnt))} gtermekszelso{/if} itemscope itemtype="http://schema.org/Product">
                                 <div class="gtermekinner"><div class="gtermekinnest">
                                     <div class="pull-left gtermekupper">
                                         <div class="gtermekleft pull-left">
-                                            <a href="/termek/{$_termek.slug}"><img src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
+                                            <a href="/termek/{$_termek.slug}"><img itemprop="image" src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
                                         </div>
                                         <div class="gtermekright pull-left">
-                                        <a href="/termek/{$_termek.slug}"><span class="gtermekcaption">{$_termek.caption}</span></a>
-                                        <div>{$_termek.rovidleiras}</div>
+                                        <a itemprop="url" href="/termek/{$_termek.slug}"><span class="gtermekcaption" itemprop="name">{$_termek.caption}</span></a>
+                                        <div itemprop="description">{$_termek.rovidleiras}</div>
                                         </div>
                                     </div>
                                     <div class="pull-left gtermekcenter">
@@ -217,7 +217,7 @@
                                         </div>
                                     </div>
                                     <div class="pull-right">
-                                        <div class="termekprice">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
+                                        <div class="termekprice" itemprop="price">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
                                         <div class="pull-right">
                                         {if ($_termek.nemkaphato)}
                                             <a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn pull-right" data-termek="{$_termek.id}">
