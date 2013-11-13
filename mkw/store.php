@@ -271,20 +271,26 @@ class Store {
 	}
 
     public static function getFullUrl($slug) {
-        $uri = parse_url($_SERVER['SCRIPT_URI']);
+        if (array_key_exists('SCRIPT_URI', $_SERVER)) {
+            $uri = parse_url($_SERVER['SCRIPT_URI']);
+            if (!array_key_exists('scheme', $uri) || !$uri['scheme']) {
+                $uri['scheme'] = 'http';
+            }
+            if (!array_key_exists('host', $uri) || !$uri['host']) {
+                $uri['host'] = '';
+            }
+        }
+        else {
+            $uri = array(
+                'scheme' => 'http',
+                'host' => $_SERVER['HTTP_HOST']
+            );
+        }
         $rag = '';
         if ($slug[0] !== '/') {
             $rag = '/';
         }
-        $scheme = $uri['scheme'];
-        if (!$scheme) {
-            $scheme = 'http';
-        }
-        $host = $uri['host'];
-        if (!$host) {
-            $host = $_SERVER['HTTP_HOST'];
-        }
-        return $scheme . '://' . $host . $rag . $slug;
+        return $uri['scheme'] . '://' . $uri['host'] . $rag . $slug;
     }
 
 }
