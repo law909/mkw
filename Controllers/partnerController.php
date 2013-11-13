@@ -365,7 +365,8 @@ class partnerController extends \mkwhelpers\MattableController {
                 $tpldata = array(
                     'keresztnev' => $keresztnev,
                     'vezeteknev' => $vezeteknev,
-                    'fiokurl' => \mkw\Store::getRouter()->generate('showaccount', true)
+                    'fiokurl' => \mkw\Store::getRouter()->generate('showaccount', true),
+                    'url' => \mkw\Store::getFullUrl()
                 );
                 $subject = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                 $subject->setVar('user', $tpldata);
