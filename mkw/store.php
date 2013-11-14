@@ -271,27 +271,30 @@ class Store {
 		$view->printTemplateResult();
 	}
 
-    public static function getFullUrl($slug = null) {
-        if (array_key_exists('SCRIPT_URI', $_SERVER)) {
-            $uri = parse_url($_SERVER['SCRIPT_URI']);
-            if (!array_key_exists('scheme', $uri) || !$uri['scheme']) {
-                $uri['scheme'] = 'http';
+    public static function getFullUrl($slug = null, $url = null) {
+        if (!$url) {
+            if (array_key_exists('SCRIPT_URI', $_SERVER)) {
+                $uri = parse_url($_SERVER['SCRIPT_URI']);
+                if (!array_key_exists('scheme', $uri) || !$uri['scheme']) {
+                    $uri['scheme'] = 'http';
+                }
+                if (!array_key_exists('host', $uri) || !$uri['host']) {
+                    $uri['host'] = '';
+                }
             }
-            if (!array_key_exists('host', $uri) || !$uri['host']) {
-                $uri['host'] = '';
+            else {
+                $uri = array(
+                    'scheme' => 'http',
+                    'host' => $_SERVER['HTTP_HOST']
+                );
             }
-        }
-        else {
-            $uri = array(
-                'scheme' => 'http',
-                'host' => $_SERVER['HTTP_HOST']
-            );
+            $url = $uri['scheme'] . '://' . $uri['host'];
         }
         $rag = '';
         if (($slug[0] !== '/') && $slug) {
             $rag = '/';
         }
-        return $uri['scheme'] . '://' . $uri['host'] . $rag . $slug;
+        return $url . $rag . $slug;
     }
 
 }

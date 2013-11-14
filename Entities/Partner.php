@@ -193,6 +193,12 @@ class Partner {
 	/** @Column(type="boolean") */
 	private $szallito = false;
 
+    /** @Column(type="string",length=64,nullable=true) */
+    private $passwordreminder;
+
+    /** @Column(type="string",length=64,nullable=true) */
+    private $oldloginname;
+
 	public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -730,4 +736,21 @@ class Partner {
 	public function setSzallito($val) {
 		$this->szallito = $val;
 	}
+
+    public function getPasswordreminder() {
+        return $this->passwordreminder;
+    }
+
+    public function setPasswordreminder() {
+        $this->passwordreminder = sha1(md5(time() . \mkw\Store::getSalt()) . \mkw\Store::getSalt());
+        return $this->passwordreminder;
+    }
+
+    public function getOldloginname() {
+        return $this->oldloginname;
+    }
+
+    public function setOldloginname($name) {
+        $this->oldloginname = $name;
+    }
 }

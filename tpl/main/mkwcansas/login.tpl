@@ -63,9 +63,16 @@
 					<div class="controls chk-controloffset">
 						<input name="jelszo" type="password" class="" placeholder="{t('jelszó')} *" value="">
 					</div>
-					<div class="row chk-actionrow span">
-						<button type="submit" class="btn okbtn">{t('Belépés')}</button>
+					<div class="row chk-actionrow">
+                        <div class="span">
+                            <button type="submit" class="span btn okbtn">{t('Belépés')}</button>
+                        </div>
 					</div>
+                    <div class="row chk-actionrow">
+                        <div class="span">
+                            <a class="span" href="">Elfelejtettem a jelszavam</a>
+                        </div>
+                    </div>
 				</fieldset>
 			</form>
 		</div>

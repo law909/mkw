@@ -44,9 +44,9 @@ class exportController extends \mkwhelpers\Controller {
                 '"' . number_format($t->getBruttoAr(), 0, ',', '') . '"', //number_format($tetel.bruttoegysarhuf,0,',',' ')
                 '"1"',
                 '"' . ($cimke ? $cimke->getNev() : '') . '"',
-                '"' . $t->getKepurlLarge() . '"',
+                '"' . \mkw\Store::getFullUrl($t->getKepurlLarge(), \mkw\Store::getConfigValue('mainurl')) . '"',
                 '"' . $t->getTermekfa1Nev() . '"',
-                '"' . \mkw\Store::getFullUrl($t->getSlug()). '"',
+                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')). '"',
                 '"-1"',
                 '"' . $leiras . '"'
             );
