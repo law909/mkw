@@ -51,6 +51,24 @@ class TermekRepository extends \mkwhelpers\Repository {
 		return $q->getScalarResult();
 	}
 
+    public function getAllForExport() {
+        $filter = array();
+        $filter = $this->addAktivLathatoFilter($filter);
+        $filter['fields'][] = 'termekexportbanszerepel';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = true;
+        $filter['fields'][] = 'nemkaphato';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = false;
+		$a = $this->alias;
+		$q = $this->_em->createQuery('SELECT ' . $a
+				. ' FROM ' . $this->entityname . ' ' . $a
+				. $this->getFilterString($filter)
+				. $this->getOrderString(array()));
+		$q->setParameters($this->getQueryParameters($filter));
+		return $q->getResult();
+    }
+
 	public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
 		$a = $this->alias;
 		$q = $this->_em->createQuery('SELECT ' . $a . ',vtsz,afa,fa1,fa2,fa3'

@@ -839,6 +839,17 @@ class Termek {
         }
     }
 
+    public function getCimkeByCategory($cat) {
+        $ret = null;
+        foreach ($this->getCimkek() as $cimke) {
+            if ($cat == $cimke->getKategoriaId()) {
+                $ret = $cimke;
+                break;
+            }
+        }
+        return $ret;
+    }
+
     public function getIdegenkod() {
         return $this->idegenkod;
     }

@@ -462,6 +462,12 @@ class EntitiesTermekProxy extends \Entities\Termek implements \Doctrine\ORM\Prox
         return parent::removeAllCimke();
     }
 
+    public function getCimkeByCategory($cat)
+    {
+        $this->__load();
+        return parent::getCimkeByCategory($cat);
+    }
+
     public function getIdegenkod()
     {
         $this->__load();
