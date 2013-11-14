@@ -59,6 +59,15 @@
 				</select></td>
 			</tr>
 			<tr>
+				<td><label for="MarkaCsEdit">{t('Márka csoport')}:</label></td>
+				<td><select id="MarkaCsEdit" name="markacs">
+					<option value="">{t('válasszon')}</option>
+					{foreach $markacslist as $_markacs}
+					<option value="{$_markacs.id}"{if ($_markacs.selected)} selected="selected"{/if}>{$_markacs.caption}</option>
+					{/foreach}
+				</select></td>
+			</tr>
+			<tr>
 				<td><label for="EsedAlapEdit">{t('Esedékesség alapja')}:</label></td>
 				<td><select id="EsedAlapEdit" name="esedekessegalap">
 					<option value="1"{if ($esedekessegalap=='1')} selected="selected"{/if}>{t('kelt')}</option>

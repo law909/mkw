@@ -67,4 +67,5 @@ class consts {
     const GAFollow = 'gafollow';
     const FBAppId = 'fbappid';
 
+    const MarkaCs = 'markacs';
 }
