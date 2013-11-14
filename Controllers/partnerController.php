@@ -573,4 +573,37 @@ class partnerController extends \mkwhelpers\MattableController {
         }
     }
 
+    public function createPassReminder() {
+        $email = $this->params->getStringRequestParam('email');
+        if ($email) {
+            $p = $this->getRepo()->findNemVendegByEmail($email);
+            if (count($p)) {
+                $p = $p[0];
+                $pr = $p->setPasswordreminder();
+                $this->getEm()->persist($p);
+                $this->getEm()->flush();
+                $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->findOneByNev('jelszoemlekezteto');
+                if ($emailtpl) {
+                    $tpldata = array(
+                        'keresztnev' => $keresztnev,
+                        'vezeteknev' => $vezeteknev,
+                        'fiokurl' => \mkw\Store::getRouter()->generate('showaccount', true),
+                        'url' => \mkw\Store::getFullUrl(),
+                        'reminder' => \mkw\Store::getRouter()->generate('usepassreminder', true, array(
+                            'id' => $pr))
+                    );
+                    $subject = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                    $subject->setVar('user', $tpldata);
+                    $body = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
+                    $body->setVar('user', $tpldata);
+                    $mailer = new \mkw\mkwmailer();
+                    $mailer->setTo($email);
+                    $mailer->setSubject($subject->getTemplateResult());
+                    $mailer->setMessage($body->getTemplateResult());
+                    $mailer->send();
+                }
+            }
+
+        }
+    }
 }

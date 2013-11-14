@@ -91,4 +91,14 @@ class PartnerRepository extends \mkwhelpers\Repository {
 		return $this->getAll($filter, array());
 	}
 
+    public function findNemVendegByEmail($email) {
+		$filter = array();
+		$filter['fields'][] = 'email';
+		$filter['clauses'][] = '=';
+		$filter['values'][] = $email;
+		$filter['fields'][] = 'vendeg';
+		$filter['clauses'][] = '=';
+		$filter['values'][] = false;
+		return $this->getAll($filter, array());
+    }
 }

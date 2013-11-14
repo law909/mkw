@@ -70,7 +70,7 @@
 					</div>
                     <div class="row chk-actionrow">
                         <div class="span">
-                            <a class="span" href="">Elfelejtettem a jelszavam</a>
+                            <a class="span js-passreminder" href>Elfelejtettem a jelszavam</a>
                         </div>
                     </div>
 				</fieldset>

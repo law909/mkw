@@ -414,6 +414,24 @@ $(document).ready(function() {
                 .each(function(i, ez) {
                     mkwcheck.loginEmailCheck();
                 });
+        $('.js-passreminder').on('click', function() {
+            var email = $('input[name="email"]', $loginform).val();
+            if (!email) {
+                mkw.showDialog('Nem adott meg emailcímet.');
+                return false;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/getpassreminder',
+                data: {
+                    email: email
+                },
+                success: function() {
+                    mkw.showDialog(mkwmsg.PassReminderCreated);
+                }
+            })
+            return false;
+        })
     }
     var $passwordchangeform = $('#JelszoChangeForm');
     if ($passwordchangeform.length > 0) {

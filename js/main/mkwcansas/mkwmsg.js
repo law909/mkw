@@ -12,5 +12,6 @@ var mkwmsg = {
 	FiokAdataitModositjuk: 'Adatait módosítjuk...',
 	DialogFejlec: 'Értesítés',
 	DialogOk: 'OK',
-    PassChange: ['A jelszó módosítás sikerült.', 'A két jelszó nem egyezik.', 'Hibás jelszót adott meg.']
+    PassChange: ['A jelszó módosítás sikerült.', 'A két jelszó nem egyezik.', 'Hibás jelszót adott meg.'],
+    PassReminderCreated: 'Emailcímére elküldtünk egy jelszó emlékeztető linket.'
 }
