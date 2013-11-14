@@ -6,7 +6,7 @@ $router->map('GET','/logout','partnerController#doLogout','dologout');
 $router->map('GET','/regisztracio','partnerController#showLoginForm','showregistration');
 $router->map('POST','/regisztracio/ment','partnerController#saveRegistration','saveregistration');
 $router->map('GET','/fiok','partnerController#showAccount','showaccount');
-$router->map('POST','/fiok/ment/[adataim|szamlaadatok|szallitasiadatok:subject]','partnerController#saveAccount','saveaccount');
+$router->map('POST','/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:subject]','partnerController#saveAccount','saveaccount');
 $router->map('POST','/checkemail','partnerController#checkemail','partnercheckemail');
 
 $router->map('GET','/statlap/[:lap]','statlapController#show','showstatlap');

@@ -65,7 +65,7 @@ class PartnerRepository extends \mkwhelpers\Repository {
 		$filter['values'][] = $user;
 		$filter['fields'][] = 'jelszo';
 		$filter['clauses'][] = '=';
-		$filter['values'][] = sha1(md5($pass . store::getSalt()) . store::getSalt());
+		$filter['values'][] = sha1(strtoupper(md5($pass)) . store::getSalt());
 		return $this->getAll($filter, array());
 	}
 

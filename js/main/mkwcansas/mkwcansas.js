@@ -415,6 +415,34 @@ $(document).ready(function() {
                     mkwcheck.loginEmailCheck();
                 });
     }
+    var $passwordchangeform = $('#JelszoChangeForm');
+    if ($passwordchangeform.length > 0) {
+        mkw.overrideFormSubmit($passwordchangeform, false, {
+           beforeSend: function(xhr, settings, data) {
+               if (!data['jelszo1'] || !data['jelszo2']) {
+                   mkw.showDialog('Nem adott meg új jelszót.');
+                   return false;
+               }
+               if (data['jelszo1'] !== data['jelszo2']) {
+                   mkw.showDialog('A két jelszó nem egyezik.');
+                   return false;
+               }
+               return true;
+           },
+           success: function(data) {
+               var d = data * 1;
+               if (!d) {
+                   mkw.showMessage(mkwmsg.PassChange[d]);
+                   window.setTimeout(function() {
+                       mkw.closeMessage();
+                   }, 2500);
+               }
+               else {
+                   mkw.showDialog(mkwmsg.PassChange[d]);
+               }
+           }
+        });
+    }
     // kategoria navigalas
     var a = $('#navmain li a'),
             b = $('#navmain li .sub');

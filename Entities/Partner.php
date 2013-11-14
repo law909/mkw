@@ -684,11 +684,11 @@ class Partner {
 	}
 
 	public function setJelszo($adat) {
-		$this->jelszo = sha1(md5($adat . store::getSalt()) . store::getSalt());
+		$this->jelszo = sha1(strtoupper(md5($adat)) . store::getSalt());
 	}
 
 	public function checkJelszo($adat) {
-		return $this->jelszo === sha1(md5($adat . store::getSalt()) . store::getSalt());
+		return $this->jelszo === sha1(strtoupper(md5($adat)) . store::getSalt());
 	}
 
 	public function getUtolsoklikk() {

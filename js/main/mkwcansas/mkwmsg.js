@@ -11,5 +11,6 @@ var mkwmsg = {
 	ChkKosarUres: 'Az Ön kosara üres.',
 	FiokAdataitModositjuk: 'Adatait módosítjuk...',
 	DialogFejlec: 'Értesítés',
-	DialogOk: 'OK'
+	DialogOk: 'OK',
+    PassChange: ['A jelszó módosítás sikerült.', 'A két jelszó nem egyezik.', 'Hibás jelszót adott meg.']
 }

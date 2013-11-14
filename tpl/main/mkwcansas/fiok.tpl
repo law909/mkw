@@ -217,7 +217,35 @@
 						{/foreach}
 					</div>
 					<div class="tab-pane" id="jelszo">
-						Jelszó
+						<form id="JelszoChangeForm" class="form-horizontal" action="/fiok/ment/jelszo" method="post">
+							<fieldset>
+								<div class="control-group">
+									<label class="control-label" for="RegijelszoEdit">{t('Régi jelszó')}:</label>
+									<div class="controls">
+										<input id="RegijelszoEdit" name="regijelszo" type="password" class="input-xlarge" placeholder="{t('régi jelszó')}">
+									</div>
+								</div>
+                                <div class="control-group">
+                                    <label class="control-label">Új jelszó:</label>
+                                    <div class="controls">
+                                        <div class="chk-relative pull-left">
+                                            <input id="Jelszo1Edit" name="jelszo1" type="password" class="span" required placeholder="jelszó 1 *" data-errormsg1="{t('Adjon meg jelszót.')}" data-errormsg2="{t('A két jelszó nem egyezik.')}">
+                                            <i class="icon-question-sign chk-tooltipbtn hidden-phone js-tooltipbtn" title="" data-original-title="Jelszó azért szükséges, hogy csak Ön férhessen hozzá személyes adataihoz. Használhat kis- és nagybetűket, valamint számokat is a jelszóban (erősen ajánlott)."></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <div class="controls chk-relative pull-left">
+                                        <i class="span inputiconhack"></i>
+                                        <input id="Jelszo2Edit" name="jelszo2" type="password" class="span" required placeholder="jelszó 2 *">
+                                        <i class="icon-question-sign chk-tooltipbtn hidden-phone js-tooltipbtn" title="" data-original-title="Azért kérjük kétszer a jelszót, hogy biztosan elkerülhessük az elgépelést."></i>
+                                    </div>
+                                </div>
+								<div class="form-actions">
+									<button type="submit" class="btn okbtn">Adatok módosítása</button>
+								</div>
+							</fieldset>
+						</form>
 					</div>
 				</div>
 			</div>
