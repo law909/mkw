@@ -25,7 +25,7 @@ class exportController extends \mkwhelpers\Controller {
             '"availability_371"',
             '"description"'
         );
-        fwrite($handle, implode(',', $sor) . "\n");
+        fwrite($handle, implode(';', $sor) . "\n");
 
         $tr = \mkw\Store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
@@ -50,7 +50,7 @@ class exportController extends \mkwhelpers\Controller {
                 '"-1"',
                 '"' . $leiras . '"'
             );
-            fwrite($handle, implode(',', $sor) . "\n");
+            fwrite($handle, implode(';', $sor) . "\n");
         }
         fclose($handle);
 
