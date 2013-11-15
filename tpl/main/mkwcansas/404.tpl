@@ -3,7 +3,7 @@
 {block "kozep"}
 <div class="container">
 	<div class="row">
-	<h2 class="textaligncenter">404 Nem ismerjük az oldalt, amit keres.</h2>
+	<h2 class="textaligncenter">Hoppá! Nem ismerjük az oldalt, amit keres.</h2>
 	</div>
 	<div class="row">
 		<div class="span16">
