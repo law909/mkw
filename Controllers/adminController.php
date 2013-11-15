@@ -142,14 +142,26 @@ class adminController extends mkwhelpers\Controller {
 			die;
 		}
 
-		$x = fopen('mkwimport.lock', 'a');
+        $record = file_get_contents('mkwrecord.txt');
+		$record = $record * 1;
+
+        $vevotomb = array();
+        if ($record = 0) {
+            fgetcsv($import, 0 ,';', '"');
+        }
+
+        $x = fopen('mkwimport.lock', 'a');
 		fwrite($x, 'fuckerlocker');
 		fclose($x);
 
-        $vevotomb = array();
         $import = fopen('vevo.csv', 'r');
-        fgetcsv($import, 0 ,';', '"');
-		while(($data=fgetcsv($import,0,';','"'))!==false) {
+		$vevocikl = 0;
+		while ((($buffer = fgets($import, 4096)) != false) && ($vevocikl < $record)) {
+			$vevocikl++;
+		}
+		$szam=$record;
+		while ((($data=fgetcsv($import,0,';','"'))!==false)&& ($szam <= $record+1200)) {
+            $szam++;
             $p = new Entities\Partner();
             $p->setIdegenkod(trim($data[0]));
             $p->setVezeteknev(mb_convert_encoding(trim($data[7]),'UTF8','ISO-8859-2'));
@@ -179,7 +191,9 @@ class adminController extends mkwhelpers\Controller {
             store::getEm()->flush();
         }
         fclose($import);
+		file_put_contents('mkwrecord.txt', $szam);
 		$this->writelog('KESZ');
+        echo 'KESZ';
 		unlink('mkwimport.lock');
     }
 
