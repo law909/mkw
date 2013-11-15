@@ -1,4 +1,5 @@
 <?php
+
 namespace Entities;
 
 /**
@@ -6,89 +7,108 @@ namespace Entities;
  * @Table(name="statlap")
  */
 class Statlap {
-	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
-	 */
-	private $id;
-	/**
-	 * @gedmo:Sluggable
-	 * @Column(type="string",length=255,nullable=true)
-	 */
-	private $oldalcim;
-	/**
-	 * @gedmo:Slug
-	 * @Column(type="string",length=255,nullable=true)
-	 */
-	private $slug;
-	/** @Column(type="text",nullable=true) */
-	private $szoveg;
-	/** @Column(type="text",nullable=true) */
-	private $seodescription;
-	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @Column(type="datetime",nullable=true)
-	 */
-	private $created;
-	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @gedmo:Timestampable(on="update")
-	 * @Column(type="datetime",nullable=true)
-	 */
-	private $lastmod;
 
-	public function getId() {
-		return $this->id;
-	}
+    /**
+     * @Id @Column(type="integer")
+     * @GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
-	public function getOldalcim() {
-		return $this->oldalcim;
-	}
+    /**
+     * @gedmo:Sluggable
+     * @Column(type="string",length=255,nullable=true)
+     */
+    private $oldalcim;
 
-	public function getShowOldalcim() {
-		return $this->oldalcim.' - '.\mkw\Store::getParameter(\mkw\consts::Oldalcim);
-	}
+    /**
+     * @gedmo:Slug
+     * @Column(type="string",length=255,nullable=true)
+     */
+    private $slug;
 
-	public function setOldalcim($adat) {
-		$this->oldalcim=$adat;
-	}
+    /** @Column(type="text",nullable=true) */
+    private $szoveg;
 
-	public function getSlug() {
-		return $this->slug;
-	}
+    /** @Column(type="text",nullable=true) */
+    private $seodescription;
 
-	public function setSlug($adat) {
-		$this->slug=$adat;
-	}
+    /**
+     * @gedmo:Timestampable(on="create")
+     * @Column(type="datetime",nullable=true)
+     */
+    private $created;
 
-	public function getSzoveg() {
-		return $this->szoveg;
-	}
+    /**
+     * @gedmo:Timestampable(on="create")
+     * @gedmo:Timestampable(on="update")
+     * @Column(type="datetime",nullable=true)
+     */
+    private $lastmod;
+    
+    /** @Column(type="string", length=255, nullable=true) */
+    private $oldurl;
 
-	public function setSzoveg($adat) {
-		$this->szoveg=$adat;
-	}
+    public function getId() {
+        return $this->id;
+    }
 
-	public function getSeodescription() {
-		return $this->seodescription;
-	}
+    public function getOldalcim() {
+        return $this->oldalcim;
+    }
 
-	public function getShowSeodescription() {
-		if ($this->seodescription) {
-			return $this->seodescription;
-		}
-		return $this->oldalcim.' - '.\mkw\Store::getParameter(\mkw\consts::Seodescription);
-	}
+    public function getShowOldalcim() {
+        return $this->oldalcim . ' - ' . \mkw\Store::getParameter(\mkw\consts::Oldalcim);
+    }
 
-	public function setSeodescription($adat) {
-		$this->seodescription=$adat;
-	}
+    public function setOldalcim($adat) {
+        $this->oldalcim = $adat;
+    }
 
-	public function getLastmod() {
-		return $this->lastmod;
-	}
+    public function getSlug() {
+        return $this->slug;
+    }
 
-	public function getCreated() {
-		return $this->created;
-	}
+    public function setSlug($adat) {
+        $this->slug = $adat;
+    }
+
+    public function getSzoveg() {
+        return $this->szoveg;
+    }
+
+    public function setSzoveg($adat) {
+        $this->szoveg = $adat;
+    }
+
+    public function getSeodescription() {
+        return $this->seodescription;
+    }
+
+    public function getShowSeodescription() {
+        if ($this->seodescription) {
+            return $this->seodescription;
+        }
+        return $this->oldalcim . ' - ' . \mkw\Store::getParameter(\mkw\consts::Seodescription);
+    }
+
+    public function setSeodescription($adat) {
+        $this->seodescription = $adat;
+    }
+
+    public function getLastmod() {
+        return $this->lastmod;
+    }
+
+    public function getCreated() {
+        return $this->created;
+    }
+
+    public function getOldurl() {
+        return $this->oldurl;
+    }
+
+    public function setOldurl($u) {
+        $this->oldurl = $u;
+    }
+
 }

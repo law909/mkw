@@ -699,4 +699,17 @@ class termekController extends \mkwhelpers\MattableController {
 		$feedview->printTemplateResult();
 	}
 
+    public function redirectOldUrl() {
+        $tid = $this->params->getStringRequestParam('pid');
+        if ($tid) {
+            $termek = $this->getRepo()->findOneByIdegenkod($tid);
+            $newlink = \mkw\Store::getRouter()->generate('showtermek', false, array('slug' => $termek->getSlug()));
+        }
+        else {
+            $newlink = \mkw\Store::getRouter()->generate('show404');
+        }
+        header("HTTP/1.1 301 Moved Permanently");
+        header('Location: ' . $newlink);
+    }
+
 }

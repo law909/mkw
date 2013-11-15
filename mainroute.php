@@ -1,5 +1,6 @@
 <?php
 $router->map('GET','','mainController#view','home');
+$router->map('GET', '/404', 'mainController#show404', 'show404');
 $router->map('GET','/login','partnerController#showLoginForm','showlogin');
 $router->map('POST','/login/ment','partnerController#doLogin','dologin');
 $router->map('GET','/logout','partnerController#doLogout','dologout');
@@ -40,3 +41,8 @@ $router->map('GET','/irszam','irszamController#typeaheadList','irszamtypeahead')
 $router->map('GET','/varos','irszamController#varosTypeaheadList','varostypeahead');
 
 $router->map('POST','/termekertesito/save','termekertesitoController#save','termekertesitosave');
+
+$router->map('GET', '/ProductDetails', 'termekController#redirectOldUrl', 'termekredirectoldurl');
+$router->map('GET', '/', 'termekfaController#redirectOldUrl', 'termekfaredirectoldurl');
+$router->map('GET', '/Static', 'statlapController#redirectOldUrl', 'statlapredirectoldurl');
+

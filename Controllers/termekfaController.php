@@ -426,4 +426,22 @@ class termekfaController extends \mkwhelpers\MattableController {
 		return $ret;
 	}
 
+    public function redirectOldUrl() {
+        $faid = $this->params->getStringRequestParam('pcat_id');
+        if ($faid) {
+            $fa = $this->getRepo()->findOneById($faid);
+            if ($fa) {
+                $newlink = \mkw\Store::getRouter()->generate('showtermekfa', false, array('slug' => $fa->getSlug()));
+            }
+            else {
+                $newlink = \mkw\Store::getRouter()->generate('show404');
+            }
+        }
+        else {
+            $newlink = \mkw\Store::getRouter()->generate('show404');
+        }
+        header("HTTP/1.1 301 Moved Permanently");
+        header('Location: ' . $newlink);
+    }
+
 }

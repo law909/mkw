@@ -18,6 +18,10 @@
 				<td><input id="NevEdit" name="oldalcim" type="text" size="80" maxlength="255" value="{$egyed.oldalcim}"></td>
 			</tr>
 			<tr>
+				<td><label for="OldurlEdit">{t('Régi oldalcím')}:</label></td>
+				<td><input id="OldurlEdit" name="oldurl" type="text" size="80" maxlength="255" value="{$egyed.oldurl}"></td>
+			</tr>
+			<tr>
 				<td><label for="LeirasEdit">{t('Szöveg')}:</label></td>
 				<td><textarea id="LeirasEdit" name="szoveg">{$egyed.szoveg}</textarea></td>
 			</tr>

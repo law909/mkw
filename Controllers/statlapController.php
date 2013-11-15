@@ -24,6 +24,7 @@ class statlapController extends \mkwhelpers\MattableController {
 		$x['slug']=$t->getSlug();
 		$x['szoveg']=$t->getSzoveg();
 		$x['seodescription']=$t->getSeodescription();
+        $x['oldurl'] = $t->getOldurl();
 		return $x;
 	}
 
@@ -31,6 +32,7 @@ class statlapController extends \mkwhelpers\MattableController {
 		$obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
 		$obj->setSzoveg($this->params->getOriginalStringRequestParam('szoveg'));
 		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
+        $obj->setOldurl($this->params->getStringRequestParam('oldurl'));
 		return $obj;
 	}
 
@@ -115,5 +117,23 @@ class statlapController extends \mkwhelpers\MattableController {
 			echo '';
 		}
 	}
+
+    public function redirectOldUrl() {
+        $lapid = $this->params->getStringRequestParam('page');
+        if ($lapid) {
+            $lap = $this->getRepo()->findOneByOldurl($lapid);
+            if ($lap) {
+                $newlink = \mkw\Store::getRouter()->generate('showstatlap', false, array('lap' => $lap->getSlug()));
+            }
+            else {
+                $newlink = \mkw\Store::getRouter()->generate('show404');
+            }
+        }
+        else {
+            $newlink = \mkw\Store::getRouter()->generate('show404');
+        }
+        header("HTTP/1.1 301 Moved Permanently");
+        header('Location: ' . $newlink);
+    }
 
 }
