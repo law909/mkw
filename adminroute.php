@@ -202,4 +202,5 @@ $router->map('GET', '/admin/sitemap/create', 'sitemapController#create', 'admins
 
 $router->map('GET', '/admin/export/view', 'exportController#view', 'adminexportview');
 $router->map('GET', '/admin/export/grando', 'exportController#GrandoExport', 'admingrandoexport');
-$router->map('GET', '/admin/import', 'adminController#mindentkapniimport', 'adminimport');
+$router->map('GET', '/admin/mkwimport', 'adminController#mindentkapniimport', 'adminmkwimport');
+$router->map('GET', '/admin/mkwvevo', 'adminController#mindentkapnivevo', 'adminmkwvevo');

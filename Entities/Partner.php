@@ -689,12 +689,16 @@ class Partner {
 		return $this->jelszo;
 	}
 
+    public function setMkwJelszo($adat) {
+        $this->jelszo = sha1($adat . \mkw\Store::getSalt());
+    }
+
 	public function setJelszo($adat) {
-		$this->jelszo = sha1(strtoupper(md5($adat)) . store::getSalt());
+		$this->jelszo = sha1(strtoupper(md5($adat)) . \mkw\Store::getSalt());
 	}
 
 	public function checkJelszo($adat) {
-		return $this->jelszo === sha1(strtoupper(md5($adat)) . store::getSalt());
+		return $this->jelszo === sha1(strtoupper(md5($adat)) . \mkw\Store::getSalt());
 	}
 
 	public function getUtolsoklikk() {

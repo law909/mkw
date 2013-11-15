@@ -642,6 +642,12 @@ class EntitiesPartnerProxy extends \Entities\Partner implements \Doctrine\ORM\Pr
         return parent::getJelszo();
     }
 
+    public function setMkwJelszo($adat)
+    {
+        $this->__load();
+        return parent::setMkwJelszo($adat);
+    }
+
     public function setJelszo($adat)
     {
         $this->__load();
@@ -714,10 +720,34 @@ class EntitiesPartnerProxy extends \Entities\Partner implements \Doctrine\ORM\Pr
         return parent::setSzallito($val);
     }
 
+    public function getPasswordreminder()
+    {
+        $this->__load();
+        return parent::getPasswordreminder();
+    }
+
+    public function setPasswordreminder()
+    {
+        $this->__load();
+        return parent::setPasswordreminder();
+    }
+
+    public function getOldloginname()
+    {
+        $this->__load();
+        return parent::getOldloginname();
+    }
+
+    public function setOldloginname($name)
+    {
+        $this->__load();
+        return parent::setOldloginname($name);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk', 'termekertesitok', 'vendeg', 'ip', 'referrer', 'szallito');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk', 'termekertesitok', 'vendeg', 'ip', 'referrer', 'szallito', 'passwordreminder', 'oldloginname');
     }
 
     public function __clone()

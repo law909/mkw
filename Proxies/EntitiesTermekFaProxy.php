@@ -372,10 +372,22 @@ class EntitiesTermekFaProxy extends \Entities\TermekFa implements \Doctrine\ORM\
         return parent::setRovidleiras($rovidleiras);
     }
 
+    public function getInaktiv()
+    {
+        $this->__load();
+        return parent::getInaktiv();
+    }
+
+    public function setInaktiv($i)
+    {
+        $this->__load();
+        return parent::setInaktiv($i);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'children', 'parent', 'nev', 'sorrend', 'slug', 'karkod', 'rovidleiras', 'leiras', 'leiras2', 'menu1lathato', 'menu2lathato', 'menu3lathato', 'menu4lathato', 'oldalcim', 'seodescription', 'kepurl', 'kepleiras', 'termekek1', 'termekek2', 'termekek3');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'children', 'parent', 'nev', 'sorrend', 'slug', 'karkod', 'rovidleiras', 'leiras', 'leiras2', 'menu1lathato', 'menu2lathato', 'menu3lathato', 'menu4lathato', 'oldalcim', 'seodescription', 'kepurl', 'kepleiras', 'termekek1', 'termekek2', 'termekek3', 'inaktiv');
     }
 
     public function __clone()

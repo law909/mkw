@@ -136,6 +136,53 @@ class adminController extends mkwhelpers\Controller {
 		fclose($x);
 	}
 
+    public function mindentkapnivevo() {
+		if (file_exists('mkwimport.lock')) {
+			echo 'locked';
+			die;
+		}
+
+		$x = fopen('mkwimport.lock', 'a');
+		fwrite($x, 'fuckerlocker');
+		fclose($x);
+
+        $vevotomb = array();
+        $import = fopen('vevo.csv', 'r');
+        fgetcsv($import, 0 ,';', '"');
+		while(($data=fgetcsv($import,0,';','"'))!==false) {
+            $p = new Entities\Partner();
+            $p->setIdegenkod(trim($data[0]));
+            $p->setVezeteknev(mb_convert_encoding(trim($data[7]),'UTF8','ISO-8859-2'));
+            $p->setKeresztnev(mb_convert_encoding(trim($data[8]),'UTF8','ISO-8859-2'));
+            $p->setNev(mb_convert_encoding(trim($data[10]),'UTF8','ISO-8859-2'));
+            $p->setIrszam(mb_convert_encoding(trim($data[12]),'UTF8','ISO-8859-2'));
+            $p->setVaros(mb_convert_encoding(trim($data[11]),'UTF8','ISO-8859-2'));
+            $p->setUtca(mb_convert_encoding(trim($data[13] . ' ' .$data[14]),'UTF8','ISO-8859-2'));
+            $p->setSzallnev(mb_convert_encoding(trim($data[15]),'UTF8','ISO-8859-2'));
+            $p->setSzallirszam(mb_convert_encoding(trim($data[17]),'UTF8','ISO-8859-2'));
+            $p->setSzallvaros(mb_convert_encoding(trim($data[16]),'UTF8','ISO-8859-2'));
+            $p->setSzallutca(mb_convert_encoding(trim($data[18] . ' ' .$data[19]),'UTF8','ISO-8859-2'));
+            if ($data[22] == '1') {
+                $p->setAkcioshirlevelkell(true);
+                $p->setUjdonsaghirlevelkell(true);
+            }
+            else {
+                $p->setAkcioshirlevelkell(false);
+                $p->setUjdonsaghirlevelkell(false);
+            }
+            $p->setMegjegyzes(mb_convert_encoding(trim($data[23]),'UTF8','ISO-8859-2'));
+            $p->setTelefon(mb_convert_encoding(trim($data[24]),'UTF8','ISO-8859-2'));
+            $p->setOldloginname(trim($data[5]));
+            $p->setMkwJelszo(trim($data[12]));
+            $p->setEmail(trim($data[9]));
+            store::getEm()->persist($p);
+            store::getEm()->flush();
+        }
+        fclose($import);
+		$this->writelog('KESZ');
+		unlink('mkwimport.lock');
+    }
+
 	public function mindentkapniimport() {
 
 		if (file_exists('mkwimport.lock')) {

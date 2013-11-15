@@ -114,10 +114,22 @@ class EntitiesStatlapProxy extends \Entities\Statlap implements \Doctrine\ORM\Pr
         return parent::getCreated();
     }
 
+    public function getOldurl()
+    {
+        $this->__load();
+        return parent::getOldurl();
+    }
+
+    public function setOldurl($u)
+    {
+        $this->__load();
+        return parent::setOldurl($u);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'oldalcim', 'slug', 'szoveg', 'seodescription', 'created', 'lastmod');
+        return array('__isInitialized__', 'id', 'oldalcim', 'slug', 'szoveg', 'seodescription', 'created', 'lastmod', 'oldurl');
     }
 
     public function __clone()
