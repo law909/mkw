@@ -14,7 +14,7 @@
 				<li><a href="/statlap/aszf">Általános szerződési feltételek</a></li>
 				<li><a href="/statlap/vasarloi-adatok-kezelese">Adatvédelem</a></li>
 				<li><a href="/statlap/penzvisszafizetesi-garancia">Pénzvisszafizetési garancia</a></li>
-				<li><a href="#">Hűségpont gyűjtés</a></li>
+				<li><a href="#">Hűségpontok</a></li>
 				<li><a href="#">Forgalmazott márkáink</a></li>
 			</ul>
 		</nav>
