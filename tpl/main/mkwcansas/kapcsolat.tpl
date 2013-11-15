@@ -71,10 +71,10 @@
 				<div class="szurofej">{t('Kérdése van?')}</div>
 				<div class="szurodoboz korbepadding">
 					<ul>
-						<li><a href="/statlap/husegpontok">{t('Hűségpontok')}</a></li>
 						<li><a href="/statlap/gy-i-k-leggyakoribb-kerdesek">{t('Gy.I.K. - Gyakori kérdések')}</a></li>
 						<li><a href="/statlap/szallitasi-feltetelek-es-tudnivalok">{t('Szállítási tudnivalók')}</a></li>
 						<li><a href="/statlap/fizetesi-feltetelek">{t('Fizetési tudnivalók')}</a></li>
+						<li><a href="/statlap/husegpontok">{t('Hűségpontok')}</a></li>
 					</ul>
 				</div>
 			</div>
@@ -82,7 +82,8 @@
 				<div class="szurofej">{t('Biztonságos vásárlás')}</div>
 				<div class="szurodoboz korbepadding">
 					<ul>
-						<li><a href="/statlap/penzgarancia">{t('Pénzvisszafizetési garancia')}</a></li>
+						<li><a href="/statlap/penzvisszafizetesi-garancia">{t('Pénzvisszafizetési garancia')}</a></li>
+						<li><a href="/statlap/vasarloink-visszajelzesei">{t('Vásárlóink visszajelzései')}</a></li>
 						<li><a href="/statlap/vasarloi-adatok-kezelese">{t('Személyes adatok védelme')}</a></li>
 					</ul>
 				</div>

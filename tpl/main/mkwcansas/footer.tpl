@@ -13,7 +13,7 @@
 				<li><a href="/statlap/merettablazat-ruhanemukhoz">Mérettáblázat</a></li>
 				<li><a href="/statlap/aszf">Általános szerződési feltételek</a></li>
 				<li><a href="/statlap/vasarloi-adatok-kezelese">Adatvédelem</a></li>
-				<li><a href="/statlap/aszf#elallasijog">Elállási jog</a></li>
+				<li><a href="/statlap/penzvisszafizetesi-garancia">Pénzvisszafizetési garancia</a></li>
 				<li><a href="#">Hűségpont gyűjtés</a></li>
 				<li><a href="#">Forgalmazott márkáink</a></li>
 			</ul>
@@ -34,6 +34,7 @@
 				<li><a href="/kapcsolat">Kapcsolat</a></li>
 				<li><a href="/fiok">Fiókom</a></li>
 				<li><a href="/statlap/gy-i-k-leggyakoribb-kerdesek#meretcsere">Méretcsere</a></li>
+				<li><a href="/statlap/vasarloink-visszajelzesei">Vásárlóink visszajelzései</a></li>
 				<li><a href="#">Honlaptérkép</a></li>
 			</ul>
 		</nav>
