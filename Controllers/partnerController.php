@@ -589,7 +589,7 @@ class partnerController extends \mkwhelpers\MattableController {
                         'vezeteknev' => $vezeteknev,
                         'fiokurl' => \mkw\Store::getRouter()->generate('showaccount', true),
                         'url' => \mkw\Store::getFullUrl(),
-                        'reminder' => \mkw\Store::getRouter()->generate('usepassreminder', true, array(
+                        'reminder' => \mkw\Store::getRouter()->generate('showpassreminder', true, array(
                             'id' => $pr))
                     );
                     $subject = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
