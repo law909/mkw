@@ -30,6 +30,7 @@
 		<div class="mattkarb-titlebar" data-caption="{t('Webes adatok')}" data-refcontrol="#WebTab"></div>
 		{/if}
 		<div id="WebTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
+			<input id="InaktivCheck" name="inaktiv" type="checkbox"{if ($fa.inaktiv)}checked="checked"{/if}>{t('Inaktív')}</input>
 			<input id="Menu1LathatoCheck" name="menu1lathato" type="checkbox"{if ($fa.menu1lathato)}checked="checked"{/if}>{t('Főmenü')}</input>
 			<input id="Menu2LathatoCheck" name="menu2lathato" type="checkbox"{if ($fa.menu2lathato)}checked="checked"{/if}>{t('Főmenü lenyíló')}</input>
 			<input id="Menu3LathatoCheck" name="menu3lathato" type="checkbox"{if ($fa.menu3lathato)}checked="checked"{/if}>{t('Top kategória')}</input>

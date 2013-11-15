@@ -84,6 +84,8 @@ class TermekFa {
 	 * @OneToMany(targetEntity="Termek",mappedBy="termekfa3")
 	 */
 	private $termekek3;
+	/** @Column(type="boolean",nullable=true) */
+	private $inaktiv=false;
 
 	public function __construct() {
 		$this->children=new \Doctrine\Common\Collections\ArrayCollection();
@@ -422,4 +424,12 @@ class TermekFa {
 	public function setRovidleiras($rovidleiras) {
 		$this->rovidleiras = $rovidleiras;
 	}
+
+    public function getInaktiv() {
+        return $this->inaktiv;
+    }
+
+    public function setInaktiv($i) {
+        $this->inaktiv = $i;
+    }
 }

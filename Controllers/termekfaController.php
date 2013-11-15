@@ -41,6 +41,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$x['kepleiras'] = $t->getKepleiras();
 		$x['parentid'] = $t->getParentId();
 		$x['parentnev'] = $t->getParentNev();
+        $x['inaktiv'] = $t->getInaktiv();
 		return $x;
 	}
 
@@ -58,6 +59,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$obj->setKepurl($this->params->getStringRequestParam('kepurl'));
 		$obj->setKepleiras($this->params->getStringRequestParam('kepleiras'));
 		$obj->setSorrend($this->params->getIntRequestParam('sorrend'));
+        $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
 		$parent = $this->getRepo()->find($this->params->getIntRequestParam('parentid'));
 		if ($parent) {
 			$obj->setParent($parent);

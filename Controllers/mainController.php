@@ -53,7 +53,7 @@ class mainController extends \mkwhelpers\Controller {
 		$com = $this->params->getStringParam('slug');
 		$tf = new termekfaController($this->params);
 		$ag = $tf->getRepo()->findOneBySlug($com);
-		if ($ag) {
+		if ($ag && !$ag->getInaktiv()) {
 			if (count($ag->getChildren()) > 0) {
 				$this->view = $this->getTemplateFactory()->createMainView('katlista.tpl');
 				$t = $tf->getkatlista($ag);
