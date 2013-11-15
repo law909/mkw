@@ -1,5 +1,4 @@
 <?php
-
 use mkw\Store;
 
 date_default_timezone_set('Europe/Budapest');
