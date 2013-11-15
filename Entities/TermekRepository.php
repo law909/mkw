@@ -209,6 +209,7 @@ class TermekRepository extends \mkwhelpers\Repository {
 				. ' FROM ' . $this->entityname . ' ' . $a
                 . $this->getFilterString($filter)
 				. ' ORDER BY ' . $a . '.id DESC');
+        $q->setParameters($this->getQueryParameters($filter));
 		$q->setFirstResult(0);
 		$q->setMaxResults(\mkw\Store::getParameter(\mkw\consts::Feedtermekdb, 30));
 		return $q->getResult();
