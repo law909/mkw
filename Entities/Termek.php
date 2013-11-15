@@ -608,16 +608,16 @@ class Termek {
             return $this->oldalcim;
         }
         else {
-            $result = store::getParameter(\mkw\consts::Termekoldalcim);
+            $result = \mkw\Store::getParameter(\mkw\consts::Termekoldalcim);
             if ($result) {
                 $result = str_replace('[termeknev]', $this->getNev(), $result);
                 $result = str_replace('[kategorianev]', $this->getTermekfa1Nev(), $result);
-                $result = str_replace('[global]', store::getParameter(\mkw\consts::Oldalcim), $result);
+                $result = str_replace('[global]', \mkw\Store::getParameter(\mkw\consts::Oldalcim), $result);
                 $result = str_replace('[bruttoar]', number_format($this->getBruttoAr(null, false), 0, ',', ''), $result);
                 return $result;
             }
             else {
-                return store::getParameter(\mkw\consts::Oldalcim);
+                return \mkw\Store::getParameter(\mkw\consts::Oldalcim);
             }
         }
     }
@@ -635,16 +635,16 @@ class Termek {
             return $this->seodescription;
         }
         else {
-            $result = store::getParameter(\mkw\consts::Termekseodescription);
+            $result = \mkw\Store::getParameter(\mkw\consts::Termekseodescription);
             if ($result) {
                 $result = str_replace('[termeknev]', $this->getNev(), $result);
                 $result = str_replace('[kategorianev]', $this->getTermekfa1Nev(), $result);
-                $result = str_replace('[global]', store::getParameter(\mkw\consts::Seodescription), $result);
+                $result = str_replace('[global]', \mkw\Store::getParameter(\mkw\consts::Seodescription), $result);
                 $result = str_replace('[bruttoar]', number_format($this->getBruttoAr(null, false), 0, ',', ''), $result);
                 return $result;
             }
             else {
-                return store::getParameter(\mkw\consts::Seodescription);
+                return \mkw\Store::getParameter(\mkw\consts::Seodescription);
             }
         }
     }
@@ -736,7 +736,7 @@ class Termek {
     }
 
     public function getAkcios() {
-        return $this->getAkciostartStr() <= date(store::$DateFormat) && $this->getAkciostopStr() >= date(store::$DateFormat);
+        return $this->getAkciostartStr() <= date(\mkw\Store::$DateFormat) && $this->getAkciostopStr() >= date(\mkw\Store::$DateFormat);
     }
 
     public function getAkciosnetto() {
@@ -763,14 +763,14 @@ class Termek {
 
     public function getAkciostartStr() {
         if ($this->getAkciostart()) {
-            return $this->getAkciostart()->format(store::$DateFormat);
+            return $this->getAkciostart()->format(\mkw\Store::$DateFormat);
         }
         return '';
     }
 
     public function setAkciostart($adat = '') {
         if ($adat != '') {
-            $this->akciostart = new \DateTime(store::convDate($adat));
+            $this->akciostart = new \DateTime(\mkw\Store::convDate($adat));
         }
     }
 
@@ -780,14 +780,14 @@ class Termek {
 
     public function getAkciostopStr() {
         if ($this->getAkciostop()) {
-            return $this->getAkciostop()->format(store::$DateFormat);
+            return $this->getAkciostop()->format(\mkw\Store::$DateFormat);
         }
         return '';
     }
 
     public function setAkciostop($adat = '') {
         if ($adat != '') {
-            $this->akciostop = new \DateTime(store::convDate($adat));
+            $this->akciostop = new \DateTime(\mkw\Store::convDate($adat));
         }
     }
 
@@ -1000,7 +1000,7 @@ class Termek {
         if ($kepurl) {
             $t = explode('.', $kepurl);
             $ext = array_pop($t);
-            return implode('.', $t) . store::getParameter(\mkw\consts::Miniimgpost, '') . '.' . $ext;
+            return implode('.', $t) . \mkw\Store::getParameter(\mkw\consts::Miniimgpost, '') . '.' . $ext;
         }
         return '';
     }
@@ -1010,7 +1010,7 @@ class Termek {
         if ($kepurl) {
             $t = explode('.', $kepurl);
             $ext = array_pop($t);
-            return implode('.', $t) . store::getParameter(\mkw\consts::Smallimgpost, '') . '.' . $ext;
+            return implode('.', $t) . \mkw\Store::getParameter(\mkw\consts::Smallimgpost, '') . '.' . $ext;
         }
         return '';
     }
@@ -1020,7 +1020,7 @@ class Termek {
         if ($kepurl) {
             $t = explode('.', $kepurl);
             $ext = array_pop($t);
-            return implode('.', $t) . store::getParameter(\mkw\consts::Mediumimgpost, '') . '.' . $ext;
+            return implode('.', $t) . \mkw\Store::getParameter(\mkw\consts::Mediumimgpost, '') . '.' . $ext;
         }
         return '';
     }
@@ -1030,7 +1030,7 @@ class Termek {
         if ($kepurl) {
             $t = explode('.', $kepurl);
             $ext = array_pop($t);
-            return implode('.', $t) . store::getParameter(\mkw\consts::Bigimgpost, '') . '.' . $ext;
+            return implode('.', $t) . \mkw\Store::getParameter(\mkw\consts::Bigimgpost, '') . '.' . $ext;
         }
         return '';
     }
