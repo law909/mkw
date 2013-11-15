@@ -585,8 +585,8 @@ class partnerController extends \mkwhelpers\MattableController {
                 $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->findOneByNev('jelszoemlekezteto');
                 if ($emailtpl) {
                     $tpldata = array(
-                        'keresztnev' => $keresztnev,
-                        'vezeteknev' => $vezeteknev,
+                        'keresztnev' => $p->getKeresztnev(),
+                        'vezeteknev' => $p->getVezeteknev(),
                         'fiokurl' => \mkw\Store::getRouter()->generate('showaccount', true),
                         'url' => \mkw\Store::getFullUrl(),
                         'reminder' => \mkw\Store::getRouter()->generate('showpassreminder', true, array(
