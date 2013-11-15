@@ -142,25 +142,24 @@ class adminController extends mkwhelpers\Controller {
 			die;
 		}
 
+        $import = fopen('vevo.csv', 'r');
+
         $record = file_get_contents('mkwrecord.txt');
 		$record = $record * 1;
 
         $vevotomb = array();
-        if ($record = 0) {
-            fgetcsv($import, 0 ,';', '"');
-        }
 
         $x = fopen('mkwimport.lock', 'a');
 		fwrite($x, 'fuckerlocker');
 		fclose($x);
 
-        $import = fopen('vevo.csv', 'r');
 		$vevocikl = 0;
 		while ((($buffer = fgets($import, 4096)) != false) && ($vevocikl < $record)) {
 			$vevocikl++;
 		}
-		$szam=$record;
-		while ((($data=fgetcsv($import,0,';','"'))!==false)&& ($szam <= $record+1200)) {
+		$szam = $record;
+		while ((($data=fgetcsv($import,0,';','"'))!==false)&& ($szam <= $record+1000)) {
+            \mkw\Store::writelog('szam='.$szam.' idegenkod='.trim($data[0]));
             $szam++;
             $p = new Entities\Partner();
             $p->setIdegenkod(trim($data[0]));
@@ -185,7 +184,7 @@ class adminController extends mkwhelpers\Controller {
             $p->setMegjegyzes(mb_convert_encoding(trim($data[23]),'UTF8','ISO-8859-2'));
             $p->setTelefon(mb_convert_encoding(trim($data[24]),'UTF8','ISO-8859-2'));
             $p->setOldloginname(trim($data[5]));
-            $p->setMkwJelszo(trim($data[12]));
+            $p->setMkwJelszo(trim($data[6]));
             $p->setEmail(trim($data[9]));
             store::getEm()->persist($p);
             store::getEm()->flush();
