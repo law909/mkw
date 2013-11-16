@@ -89,7 +89,6 @@
 					{else}
 					<div class="textalignright">
 						<a href="/kosar/add?id={$termek.id}" rel="nofollow" class="{$_kosarbaclass} btn btn-large cartbtn" data-termek="{$termek.id}" data-id="{$termek.id}">
-							<i class="icon-shopping-cart icon-white"></i>
 							{t('Kosárba')}
 						</a>
 					</div>
