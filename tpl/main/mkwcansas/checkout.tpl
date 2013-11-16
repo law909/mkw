@@ -239,10 +239,27 @@
 			</fieldset>
 			</form>
 		</div>
-		<div class="span2">
-			<div>
-				<h5>Hívjon és segítünk!</h5>
-				<div>+36 20 342 1511</div>
+		<div class="span2 chk-helpcontainer">
+			<div class="keret">
+				<div class="szurofej">{t('Kérdése van?')}</div>
+				<div class="szurodoboz korbepadding">
+					<ul>
+						<li><a href="/statlap/p/gy-i-k-leggyakoribb-kerdesek" target="empty" class="js-chkhelp">{t('Gy.I.K. - Gyakori kérdések')}</a></li>
+						<li><a href="/statlap/p/szallitasi-feltetelek-es-tudnivalok" target="empty" class="js-chkhelp">{t('Szállítási tudnivalók')}</a></li>
+						<li><a href="/statlap/p/fizetesi-feltetelek" target="empty" class="js-chkhelp">{t('Fizetési tudnivalók')}</a></li>
+						<li><a href="/statlap/p/husegpontok" target="empty" class="js-chkhelp">{t('Hűségpontok')}</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="keret">
+				<div class="szurofej">{t('Biztonságos vásárlás')}</div>
+				<div class="szurodoboz korbepadding">
+					<ul>
+						<li><a href="/statlap/p/penzvisszafizetesi-garancia" target="empty" class="js-chkhelp">{t('Pénzvisszafizetési garancia')}</a></li>
+						<li><a href="/statlap/p/vasarloink-visszajelzesei" target="empty" class="js-chkhelp">{t('Vásárlóink visszajelzései')}</a></li>
+						<li><a href="/statlap/p/vasarloi-adatok-kezelese" target="empty" class="js-chkhelp">{t('Személyes adatok védelme')}</a></li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>

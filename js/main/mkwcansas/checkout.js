@@ -203,7 +203,7 @@ var checkout = function($) {
 			mkw.irszamTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
 			mkw.varosTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
 
-			$('.js-chkaszf').magnificPopup({
+			$('.js-chkaszf, .js-chkhelp').magnificPopup({
 				type: 'ajax'
 			});
 

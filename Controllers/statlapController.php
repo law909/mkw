@@ -111,7 +111,10 @@ class statlapController extends \mkwhelpers\MattableController {
 		$com=$this->params->getStringParam('lap');
 		$statlap=$this->getRepo()->findOneBySlug($com);
 		if ($statlap) {
-			echo $statlap->getSzoveg();
+			$view=$this->getTemplateFactory()->createMainView('statlappopup.tpl');
+			store::fillTemplate($view);
+			$view->setVar('szoveg',$statlap->getSzoveg());
+			$view->printTemplateResult();
 		}
 		else {
 			echo '';
