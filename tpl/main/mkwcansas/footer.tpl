@@ -10,11 +10,10 @@
 			<h5>Hasznos információk</h5>
 			<ul>
 				<li><a href="/statlap/ugyfelszolgalat-elerhetosegei">Ügyfélszolgálat elérhetősége</a></li>
-				<li><a href="/statlap/merettablazat-ruhanemukhoz">Mérettáblázat</a></li>
+				<li><a href="/statlap/merettablazat-ruhanemukhoz">Mérettáblázat ruhaneműkhöz</a></li>
 				<li><a href="/statlap/aszf">Általános szerződési feltételek</a></li>
-				<li><a href="/statlap/vasarloi-adatok-kezelese">Adatvédelem</a></li>
 				<li><a href="/statlap/penzvisszafizetesi-garancia">Pénzvisszafizetési garancia</a></li>
-				<li><a href="#">Hűségpontok</a></li>
+				<li><a href="/statlap/husegpontok">Hűségpontok</a></li>
 				<li><a href="#">Forgalmazott márkáink</a></li>
 			</ul>
 		</nav>
@@ -22,7 +21,7 @@
 			<h5>Segítség a vásárláshoz</h5>
 			<ul>
 				<li><a href="/statlap/gy-i-k-leggyakoribb-kerdesek">Gy.I.K. - Gyakori kérdések</a></li>
-				<li><a href="#">Fontos információk</a></li>
+				<li><a href="/statlap/fontos-informaciok">Fontos információk</a></li>
 				<li><a href="/statlap/szallitasi-feltetelek-es-tudnivalok">Szállítási feltételek</a></li>
 				<li><a href="/statlap/fizetesi-feltetelek">Fizetési feltételek</a></li>
 				<li><a href="#">Akcióink</a></li>
@@ -35,7 +34,7 @@
 				<li><a href="/fiok">Fiókom</a></li>
 				<li><a href="/statlap/gy-i-k-leggyakoribb-kerdesek#meretcsere">Méretcsere</a></li>
 				<li><a href="/statlap/vasarloink-visszajelzesei">Vásárlóink visszajelzései</a></li>
-				<li><a href="#">Honlaptérkép</a></li>
+				<li><a href="/statlap/vasarloi-adatok-kezelese">Vásárlói adatok védelme</a></li>
 			</ul>
 		</nav>
 	</div>
