@@ -57,7 +57,7 @@ if ($pc->checkloggedin()) {
 }
 
 $router = Store::getRouter();
-if ($ini['main'] && file_exists('mainroute.php')) {
+if (file_exists('mainroute.php')) {
 	require_once 'mainroute.php';
 }
 
