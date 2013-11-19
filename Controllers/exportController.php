@@ -35,6 +35,7 @@ class exportController extends \mkwhelpers\Controller {
             $leiras = str_replace("\n", '', $leiras);
             $leiras = str_replace("\r", '', $leiras);
             $leiras = str_replace("\n\r", '', $leiras);
+            $leiras = str_replace('"', '""', $leiras);
 
 //        $cimke = false;
             $sor = array(
