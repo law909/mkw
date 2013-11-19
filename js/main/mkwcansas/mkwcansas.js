@@ -417,7 +417,7 @@ $(document).ready(function() {
         $('.js-passreminder').on('click', function() {
             var email = $('input[name="email"]', $loginform).val();
             if (!email) {
-                mkw.showDialog('Nem adott meg emailcímet.');
+                mkw.showDialog(mkwmsg.PassReminderRequiredEmail);
                 return false;
             }
             $.ajax({
@@ -438,11 +438,11 @@ $(document).ready(function() {
         mkw.overrideFormSubmit($passwordchangeform, false, {
            beforeSend: function(xhr, settings, data) {
                if (!data['jelszo1'] || !data['jelszo2']) {
-                   mkw.showDialog('Nem adott meg új jelszót.');
+                   mkw.showDialog(mkwmsg.PassChange[3]);
                    return false;
                }
                if (data['jelszo1'] !== data['jelszo2']) {
-                   mkw.showDialog('A két jelszó nem egyezik.');
+                   mkw.showDialog(mkwmsg.PassChange[1]);
                    return false;
                }
                return true;
