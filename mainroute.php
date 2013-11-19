@@ -11,6 +11,7 @@ $router->map('POST','/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:su
 $router->map('POST','/checkemail','partnerController#checkemail','partnercheckemail');
 $router->map('POST', '/getpassreminder', 'partnerController#createPassReminder', 'createpassreminder');
 $router->map('GET', '/passreminder/[:id]', 'partnerController#showPassReminder', 'showpassreminder');
+$router->map('POST', '/passreminder/ment', 'partnerController#savePassReminder', 'savepassreminder');
 
 $router->map('GET','/statlap/[:lap]','statlapController#show','showstatlap');
 $router->map('GET','/statlap/p/[:lap]','statlapController#showPopup','showstatlappopup');

@@ -101,4 +101,5 @@ class PartnerRepository extends \mkwhelpers\Repository {
 		$filter['values'][] = false;
 		return $this->getAll($filter, array());
     }
+
 }

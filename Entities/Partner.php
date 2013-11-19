@@ -750,6 +750,10 @@ class Partner {
         return $this->passwordreminder;
     }
 
+    public function clearPasswordreminder() {
+        unset($this->passwordreminder);
+    }
+
     public function getOldloginname() {
         return $this->oldloginname;
     }

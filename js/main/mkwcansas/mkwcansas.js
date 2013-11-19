@@ -343,6 +343,21 @@ $(document).ready(function() {
                     mkwcheck.regJelszoCheck();
                 });
     }
+    var $passreminderform = $('#passreminderform');
+    if ($passreminderform.length >0) {
+        $('#Jelszo1Edit,#Jelszo2Edit')
+                .on('input', function(e) {
+                    mkwcheck.regJelszoCheck();
+                    $(this).off('keydown');
+                })
+                .on('keydown blur', function(e) {
+                    mkwcheck.wasinteraction.pw = true;
+                    mkwcheck.regJelszoCheck();
+                })
+                .each(function(i, ez) {
+                    mkwcheck.regJelszoCheck();
+                });
+    }
     var $kapcsolatform = $('#Kapcsolatform');
     if ($kapcsolatform.length > 0) {
         H5F.setup($kapcsolatform);

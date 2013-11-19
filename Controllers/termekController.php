@@ -375,7 +375,7 @@ class termekController extends \mkwhelpers\MattableController {
     protected function afterSave($o) {
         if ($this->kaphatolett) {
             $tec = new termekertesitoController($this->params);
-            $tec->sendErtesito($obj);
+            $tec->sendErtesito($o);
         }
         parent::afterSave($o);
     }

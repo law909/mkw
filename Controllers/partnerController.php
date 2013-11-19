@@ -238,10 +238,18 @@ class partnerController extends \mkwhelpers\MattableController {
         return $view;
     }
 
-    public function login($user, $pass) {
-        $users = $this->getRepo()->findByUserPass($user, $pass);
-        if (count($users) > 0) {
-            $user = $users[0];
+    public function login($user, $pass = null) {
+        if ($user instanceof \Entities\Partner) {
+            $ok = true;
+        }
+        else {
+            $users = $this->getRepo()->findByUserPass($user, $pass);
+            if (count($users) > 0) {
+                $user = $users[0];
+                $ok = true;
+            }
+        }
+        if ($ok) {
             if ($user->getVendeg()) {
                 return false;
             }
@@ -251,6 +259,7 @@ class partnerController extends \mkwhelpers\MattableController {
             \Zend_Session::regenerateId();
             $user->setSessionid(\Zend_Session::getId());
             $user->setUtolsoklikk();
+            $user->clearPasswordreminder();
             $this->getEm()->persist($user);
             $this->getEm()->flush();
             store::getMainSession()->pk = $user->getId();
@@ -605,5 +614,49 @@ class partnerController extends \mkwhelpers\MattableController {
             }
 
         }
+    }
+
+    public function showPassReminder() {
+        $route = store::getRouter()->generate('show404');
+        $pr = $this->params->getStringParam('id');
+        if ($pr) {
+            $partner = $this->getRepo()->findOneByPasswordreminder($pr);
+            if ($partner) {
+                $tpl = $this->getTemplateFactory()->createMainView('passreminder.tpl');
+                \mkw\Store::fillTemplate($tpl);
+                $tpl->setVar('reminder', $pr);
+                $tpl->printTemplateResult();
+                return;
+            }
+        }
+        header('Location: ' . $route);
+    }
+
+    public function savePassReminder() {
+        $route = store::getRouter()->generate('show404');
+        $pr = $this->params->getStringRequestParam('id');
+        \mkw\Store::writelog($pr);
+        if ($pr) {
+            $user = $this->getRepo()->findOneByPasswordreminder($pr);
+            if ($user) {
+                \mkw\Store::writelog($user->getNev());
+                $j1 = $this->params->getStringRequestParam('jelszo1');
+                $j2 = $this->params->getStringRequestParam('jelszo2');
+                if ($j1 === $j2) {
+                    \mkw\Store::writelog($j1);
+                    $user->setJelszo($j1);
+                    $user->clearPasswordreminder();
+                    $this->getEm()->persist($user);
+                    $this->getEm()->flush();
+                    \mkw\Store::writelog($user->getJelszo());
+                    if ($this->login($user)) {
+                        $kc = new kosarController($this->params);
+                        $kc->clear();
+                        $route = \mkw\Store::getRouter()->generate('showaccount');
+                    }
+                }
+            }
+        }
+        header('Location: ' . $route);
     }
 }
