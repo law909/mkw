@@ -58,4 +58,49 @@ class termekertesitoController extends \mkwhelpers\MattableController {
         return $ret;
     }
 
+    public function sendErtesito($termek) {
+        $mailer = new \mkw\mkwmailer();
+        $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->findOneByNev('termekertesito');
+        if ($emailtpl) {
+            $ertesitok = $this->getRepo()->getByTermek($termek);
+            foreach($ertesitok as $ert) {
+                if ($ert->getEmail()) {
+                    $p = $this->getEm()->getRepository('Entities\Partner')->findNemVendegByEmail($ert->getEmail());
+                    if (count($p)) {
+                        $p = $p[0];
+                        $knev = $p->getKeresztnev();
+                        $vnev = $p->getVezeteknev();
+                    }
+                    else {
+                        $knev = null;
+                        $vnev = null;
+                    }
+                    $user = array(
+                        'keresztnev' => $knev,
+                        'vezeteknev' => $vnev,
+                        'fiokurl' => \mkw\Store::getRouter()->generate('showaccount', true),
+                        'url' => \mkw\Store::getFullUrl()
+                    );
+                    $term = array(
+                        'nev' => $termek->getNev(),
+                        'url' => \mkw\Store::getRouter()->generate('showtermek', true, array('slug' => $termek->getSlug())),
+                        'kepurl' => \mkw\Store::getFullUrl($termek->getKepurlSmall())
+                    );
+                    $subject = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                    $subject->setVar('user', $user);
+                    $subject->setVar('termek', $term);
+                    $body = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
+                    $body->setVar('user', $user);
+                    $body->setVar('termek', $term);
+                    $mailer->setTo($ert->getEmail());
+                    $mailer->setSubject($subject->getTemplateResult());
+                    $mailer->setMessage($body->getTemplateResult());
+                    $mailer->send();
+                    $ert->setSent('');
+                    $this->getEm()->persist($ert);
+                    $this->getEm()->flush();
+                }
+            }
+        }
+    }
 }

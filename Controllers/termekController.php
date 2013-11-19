@@ -8,6 +8,8 @@ use mkw\store;
 
 class termekController extends \mkwhelpers\MattableController {
 
+    private $kaphatolett = false;
+
 	public function __construct($params) {
 		$this->setEntityName('Entities\Termek');
 		$this->setKarbFormTplName('termekkarbform.tpl');
@@ -115,6 +117,8 @@ class termekController extends \mkwhelpers\MattableController {
 	}
 
 	protected function setFields($obj) {
+        $oldnemkaphato = $obj->getNemkaphato();
+
 		$afa = store::getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afa'));
 		if ($afa) {
 			$obj->setAfa($afa);
@@ -363,9 +367,18 @@ class termekController extends \mkwhelpers\MattableController {
 				}
 			}
 		}
+        $this->kaphatolett = $oldnemkaphato && !$obj->getNemkaphato();
 		$obj->doStuffOnPrePersist();  // ha csak kapcsolódó adat változott, akkor prepresist/preupdate nem hívódik, de cimke gyorsítás miatt nekünk kell
 		return $obj;
 	}
+
+    protected function afterSave($o) {
+        if ($this->kaphatolett) {
+            $tec = new termekertesitoController($this->params);
+            $tec->sendErtesito($obj);
+        }
+        parent::afterSave($o);
+    }
 
 	public function getlistbody() {
 		$view = $this->createView('termeklista_tbody.tpl');
@@ -555,6 +568,7 @@ class termekController extends \mkwhelpers\MattableController {
 	}
 
 	public function setflag() {
+        $kaphatolett = false;
 		$id = $this->params->getIntRequestParam('id');
 		$kibe = $this->params->getBoolRequestParam('kibe');
 		$flag = $this->params->getStringRequestParam('flag');
@@ -580,7 +594,9 @@ class termekController extends \mkwhelpers\MattableController {
 					$obj->setKiemelt($kibe);
 					break;
 				case 'nemkaphato':
+                    $oldnemkaphato = $obj->getNemkaphato();
 					$obj->setNemkaphato($kibe);
+                    $kaphatolett = $oldnemkaphato && !$obj->getNemkaphato();
 					if ($obj->getNemkaphato()) {
 						$valtozatok = $obj->getValtozatok();
 						foreach ($valtozatok as $valt) {
@@ -595,6 +611,10 @@ class termekController extends \mkwhelpers\MattableController {
 			}
 			$this->getEm()->persist($obj);
 			$this->getEm()->flush();
+            if ($kaphatolett) {
+                $tec = new termekertesitoController($this->params);
+                $tec->sendErtesito($obj);
+            }
 		}
 	}
 

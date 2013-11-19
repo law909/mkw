@@ -20,6 +20,15 @@ class TermekErtesitoRepository extends \mkwhelpers\Repository {
 		return $this->getAll($filter,array('created'=>'ASC'));
 	}
 
+    public function getByTermek($termek) {
+		$filter=array();
+		$filter['fields'][]='termek';
+		$filter['clauses'][]='=';
+		$filter['values'][]=$termek;
+		$filter['sql'][]='(_xx.sent IS NULL)';
+		return $this->getAll($filter,array('created'=>'ASC'));
+    }
+
 /* Ha van JOIN, ezek akkor kellenek
 	public function getWithJoins($filter,$order,$offset=0,$elemcount=0) {
 		$a=$this->alias;

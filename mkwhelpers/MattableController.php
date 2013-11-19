@@ -91,6 +91,10 @@ class MattableController extends Controller {
 
 	}
 
+    protected function afterSave($o) {
+
+    }
+
 	protected function saveData() {
 		$parancs=$this->params->getRequestParam($this->operationName,'');
 		$id=$this->params->getRequestParam($this->idName,0);
@@ -100,17 +104,20 @@ class MattableController extends Controller {
 				$obj=new $cl();
 				$this->em->persist($this->setFields($obj));
 				$this->em->flush();
+                $this->afterSave($obj);
 				break;
 			case $this->editOperation:
 				$obj=$this->repo->find($id);
 				$this->em->persist($this->setFields($obj));
 				$this->em->flush();
+                $this->afterSave($obj);
 				break;
 			case $this->delOperation:
 				$obj=$this->repo->find($id);
 				$this->beforeRemove($obj);
 				$this->em->remove($obj);
 				$this->em->flush();
+                $this->afterSave($obj);
 				break;
 		}
 		return array('id'=>$id,'obj'=>$obj,'operation'=>$parancs);
