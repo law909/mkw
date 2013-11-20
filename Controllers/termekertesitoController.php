@@ -78,13 +78,13 @@ class termekertesitoController extends \mkwhelpers\MattableController {
                     $user = array(
                         'keresztnev' => $knev,
                         'vezeteknev' => $vnev,
-                        'fiokurl' => \mkw\Store::getRouter()->generate('showaccount', true),
-                        'url' => \mkw\Store::getFullUrl()
+                        'fiokurl' => \mkw\Store::getRouter()->generate('showaccount', \mkw\Store::getConfigValue('mainurl', true)),
+                        'url' => \mkw\Store::getFullUrl(null, \mkw\Store::getConfigValue('mainurl'))
                     );
                     $term = array(
                         'nev' => $termek->getNev(),
-                        'url' => \mkw\Store::getRouter()->generate('showtermek', true, array('slug' => $termek->getSlug())),
-                        'kepurl' => \mkw\Store::getFullUrl($termek->getKepurlSmall())
+                        'url' => \mkw\Store::getRouter()->generate('showtermek', \mkw\Store::getConfigValue('mainurl', true), array('slug' => $termek->getSlug())),
+                        'kepurl' => \mkw\Store::getFullUrl($termek->getKepurlSmall(), \mkw\Store::getConfigValue('mainurl'))
                     );
                     $subject = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                     $subject->setVar('user', $user);

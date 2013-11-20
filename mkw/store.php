@@ -43,8 +43,11 @@ class Store {
 		return self::$config;
 	}
 
-	public static function getConfigValue($key) {
-		return self::$config[$key];
+	public static function getConfigValue($key, $def = null) {
+        if (array_key_exists($key, self::$config)) {
+            return self::$config[$key];
+        }
+        return $def;
 	}
 
 	public static function setConfig($config) {
