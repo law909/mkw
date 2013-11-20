@@ -132,7 +132,7 @@
                                         <select class="js-mindenvaltozatedit valtozatselect" data-id="{$_termek.id}-{$_termek.valtozatid|default}" data-termek="{$_termek.id}" data-tipusid="{$_valtozat.tipusid}">
                                             <option value="">{t('Válasszon')}</option>
                                             {foreach $_valtozat.value as $_v}
-                                                <option value="{$_v}">{$_v}</option>
+                                                <option value="{$_v}"{if ($_valtozat.selected[$_v])} selected{/if}>{$_v}</option>
                                             {/foreach}
                                         </select>
                                         </div>
@@ -192,7 +192,7 @@
                                                     <div class="pull-left gvaltozatselect">
                                                         <select class="js-valtozatedit valtozatselect" data-id="{$_termek.id}-{$_termek.valtozatid}" data-termek="{$_termek.id}">
                                                         {foreach $_termek.valtozatok.data as $_data}
-                                                            <option value="{$_data.id}">{$_data.value}</option>
+                                                            <option value="{$_data.id}"{if ($_data.selected)} selected{/if}>{$_data.value}</option>
                                                         {/foreach}
                                                         </select>
                                                     </div>

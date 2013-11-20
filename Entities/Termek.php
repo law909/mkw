@@ -333,17 +333,25 @@ class Termek {
         else {
             $vtt = array();
             $valtozatok = $this->getValtozatok();
+            $db = 0;
+            foreach ($valtozatok as $valt) {
+                if ($valt->getElerheto()) {
+                    $db++;
+                }
+            }
             foreach ($valtozatok as $valt) {
                 if ($valt->getElerheto()) {
                     if ($valt->getAdatTipus1Id() && $valt->getAdatTipus1Nev()) {
                         $vtt[$valt->getAdatTipus1Id()]['tipusid'] = $valt->getAdatTipus1Id();
                         $vtt[$valt->getAdatTipus1Id()]['name'] = $valt->getAdatTipus1Nev();
                         $vtt[$valt->getAdatTipus1Id()]['value'][$valt->getErtek1()] = $valt->getErtek1();
+                        $vtt[$valt->getAdatTipus1Id()]['selected'][$valt->getErtek1()] = $db === 1;
                     }
                     if ($valt->getAdatTipus2Id() && $valt->getAdatTipus2Nev()) {
                         $vtt[$valt->getAdatTipus2Id()]['tipusid'] = $valt->getAdatTipus2Id();
                         $vtt[$valt->getAdatTipus2Id()]['name'] = $valt->getAdatTipus2Nev();
                         $vtt[$valt->getAdatTipus2Id()]['value'][$valt->getErtek2()] = $valt->getErtek2();
+                        $vtt[$valt->getAdatTipus2Id()]['selected'][$valt->getErtek2()] = $db === 1;
                     }
                 }
             }
