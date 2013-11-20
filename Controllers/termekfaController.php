@@ -241,7 +241,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		  'keresett'=>$this->params->getStringRequestParam('keresett',''),
 		  'vt'=>$this->params->getIntRequestParam('vt',1)
 		 */
-		$elemperpage = $this->params->getIntRequestParam('elemperpage', 20);
+		$elemperpage = $this->params->getIntRequestParam('elemperpage', \mkw\Store::getParameter(\mkw\consts::Termeklistatermekdb, 30));
 		$pageno = $this->params->getIntRequestParam('pageno', 1);
 		$ord = $this->params->getStringRequestParam('order');
 		$szurostr = $this->params->getStringRequestParam('filter');

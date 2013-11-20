@@ -60,6 +60,7 @@ class consts {
     const Kiemelttermekdb = 'kiemelttermekdb';
     const Arfilterstep = 'arfilterstep';
     const Fooldalhirdb = 'fooldalhirdb';
+    const Termeklistatermekdb = 'termeklistatermekdb';
     const Termekoldalcim = 'termekoldalcim';
     const Termekseodescription = 'termekseodescription';
     const Katoldalcim = 'katoldalcim';
