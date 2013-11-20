@@ -116,7 +116,7 @@
                                         </div>
                                         <select class="js-valtozatedit valtozatselect" data-id="{$_termek.id}-{$_termek.valtozatid}" data-termek="{$_termek.id}">
                                         {foreach $_termek.valtozatok.data as $_data}
-                                            <option value="{$_data.id}">{$_data.value}</option>
+                                            <option value="{$_data.id}"{if ($_data.selected)} selected{/if}>{$_data.value}</option>
                                         {/foreach}
                                         </select>
                                     </div>

@@ -320,11 +320,11 @@ class Termek {
                 if ($valt->getElerheto()) {
                     if ($this->getValtozatadattipusId() == $valt->getAdatTipus1Id() && $valt->getErtek1() == $ertek &&
                             $valt->getAdatTipus2Id()) {
-                        $adatt[] = array('id' => $valt->getId(), 'value' => $valt->getErtek2());
+                        $adatt[] = array('id' => $valt->getId(), 'value' => $valt->getErtek2(), 'selected' => $valt->getId() == $valtozat->getId());
                     }
                     elseif ($this->getValtozatadattipusId() == $valt->getAdatTipus2Id() && $valt->getErtek2() == $ertek &&
                             $valt->getAdatTipus1Id()) {
-                        $adatt[] = array('id' => $valt->getId(), 'value' => $valt->getErtek1());
+                        $adatt[] = array('id' => $valt->getId(), 'value' => $valt->getErtek1(), 'selected' => $valt->getId() == $valtozat->getId());
                     }
                 }
             }
