@@ -1,6 +1,7 @@
 {extends "base.tpl"}
 
 {block "inhead"}
+{include 'ckeditor.tpl'}
 <script type="text/javascript" src="/js/admin/default/jquery.form.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.mattkarb.js"></script>
@@ -129,6 +130,11 @@
 		{/if}
 		<div id="WebTab" class="mattkarb-page" data-visible="visible">
 		<table><tbody>
+            <tr>
+                <td><label>{t('Logo')}:</label></td>
+                <td><input name="logo" type="text" value="{$logo}"></td>
+        		<td><a class="js-logobrowsebutton" href="#" title="{t('Browse')}">{t('...')}</a></td>
+            </tr>
 			<tr><td><label>{t('Hírek száma a főoldalon')}:</label></td><td><input name="fooldalhirdb" type="number" value="{$fooldalhirdb}"></td>
 				<td><label>{t('Ajánlott termékek száma a főoldalon')}:</label></td><td><input name="fooldalajanlotttermekdb" type="number" value="{$fooldalajanlotttermekdb}"></td></tr>
 			<tr><td><label>{t('Legnépszerűbb termékek száma a főoldalon')}:</label></td><td><input name="fooldalnepszerutermekdb" type="number" value="{$fooldalnepszerutermekdb}"></td>

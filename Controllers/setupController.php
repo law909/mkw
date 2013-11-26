@@ -53,6 +53,8 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::Katseodescription);
         $view->setVar(\mkw\consts::Katseodescription, ($p ? $p->getErtek() : ''));
 
+        $p = $repo->find(\mkw\consts::Logo);
+        $view->setVar(\mkw\consts::Logo, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::Miniimagesize);
         $view->setVar(\mkw\consts::Miniimagesize, ($p ? $p->getErtek() : 80));
         $p = $repo->find(\mkw\consts::Smallimagesize);
@@ -200,6 +202,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::EmailBcc, $this->params->getStringRequestParam('emailbcc'));
 
         // web
+        $this->setObj(\mkw\consts::Logo, $this->params->getStringRequestParam('logo'));
         $this->setObj(\mkw\consts::Miniimagesize, $this->params->getIntRequestParam('miniimagesize'));
         $this->setObj(\mkw\consts::Smallimagesize, $this->params->getIntRequestParam('smallimagesize'));
         $this->setObj(\mkw\consts::Mediumimagesize, $this->params->getIntRequestParam('mediumimagesize'));

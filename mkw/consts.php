@@ -14,6 +14,7 @@ class consts {
     const Esedekessegalap = 'esedekessegalap';
     const Autologoutmin = 'autologoutmin';
     const ImportNewKatId = 'importnewkatid';
+    const Logo = 'logo';
 
     const Tulajnev = 'tulajnev';
     const Tulajirszam = 'tulajirszam';

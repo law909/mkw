@@ -88,6 +88,20 @@ $(document).ready(function() {
 
                 return false;
             }).button();
+            $('.js-logobrowsebutton').on('click', function(e) {
+                e.preventDefault();
+                var finder=new CKFinder(),
+                    $kepurledit=$('input[name="logo"]'),
+                    path=$kepurledit.val();
+                if (path) {
+                    finder.startupPath='Images:'+path.substring(path.indexOf('/',1));
+                }
+                finder.selectActionFunction = function( fileUrl, data ) {
+                    $kepurledit.val(fileUrl);
+                };
+                finder.popup();
+                return false;
+            }).button();
 		},
 		onSubmit:function() {
 			$('#messagecenter')

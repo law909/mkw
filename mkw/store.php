@@ -203,6 +203,7 @@ class Store {
 		$v->setVar('feedhirtitle', self::getParameter('feedhirtitle', t('Híreink')));
 		$v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
         $v->setVar('serverurl', self::getFullUrl());
+        $v->setVar('logo', self::getParameter(consts::Logo));
 		$kc = new \Controllers\kosarController(null);
 		$v->setVar('kosar', $kc->getMiniData());
 		$pc = new \Controllers\partnerController(null);
