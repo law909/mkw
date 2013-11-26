@@ -44,7 +44,7 @@ class ?howto?Controller extends \mkwhelpers\MattableController {
 		return $obj;
 	}
 
-	protected function getlistbody() {
+	public function getlistbody() {
 		$view=$this->createView('?howto?lista_tbody.tpl');
 
 		$filter=array();
@@ -67,7 +67,7 @@ class ?howto?Controller extends \mkwhelpers\MattableController {
 		echo json_encode($this->loadDataToView($egyedek,'egyedlista',$view));
 	}
 
-	protected function viewselect() {
+	public function viewselect() {
 		$view=$this->createView('?howto?lista.tpl');
 
 		$view->setVar('pagetitle',t('?howto?'));
@@ -75,7 +75,7 @@ class ?howto?Controller extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function viewlist() {
+	public function viewlist() {
 		$view=$this->createView('?howto?lista.tpl');
 
 		$view->setVar('pagetitle',t('?howto?'));

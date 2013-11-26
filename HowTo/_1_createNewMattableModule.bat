@@ -12,6 +12,6 @@ copy howtoMattableController.php Controllers\%1Controller.php
 copy howtokarb.tpl tpl\default\%1karb.tpl
 copy howtokarbform.tpl tpl\default\%1karbform.tpl
 copy howtolista.tpl tpl\default\%1lista.tpl
-copy howtolista_tbody.tpl tpl\admin\default\%1lista_tbody.tpl
-copy howtolista_tbody_tr.tpl tpl\admin\default\%1lista_tbody_tr.tpl
+copy howtolista_tbody.tpl tpl\default\%1lista_tbody.tpl
+copy howtolista_tbody_tr.tpl tpl\default\%1lista_tbody_tr.tpl
 copy HowtoRepository.php Entities\%2Repository.php

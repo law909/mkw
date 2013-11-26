@@ -68,6 +68,14 @@ if (!$match) {
 		require_once 'adminroute.php';
 	}
 	$match = $router->match();
+    if ($match &&
+            (substr($match['name'], 0, 5) === 'admin') &&
+            (!in_array($match['name'], array('adminshowlogin', 'adminlogin')))) {
+        $linuser = Store::getAdminSession()->pk;
+        if (!$linuser) {
+            Header('Location: ' . $router->generate('adminshowlogin'));
+        }
+    }
 }
 else {
 	if (!$mainsess->referrer) {

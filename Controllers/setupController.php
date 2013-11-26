@@ -112,6 +112,12 @@ class setupController extends \mkwhelpers\Controller {
         $markacs = new termekcimkekatController($this->params);
         $view->setVar('markacslist', $markacs->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $mkcs = new munkakorController($this->params);
+        $p = $repo->find(\mkw\consts::AdminRole);
+        $view->setVar('adminrolelist', $mkcs->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::TermekfeltoltoRole);
+        $view->setVar('termekfeltoltorolelist', $mkcs->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::Esedekessegalap);
         $view->setVar(\mkw\consts::Esedekessegalap, ($p ? $p->getErtek() : '1'));
 
@@ -238,6 +244,17 @@ class setupController extends \mkwhelpers\Controller {
         if ($markacs) {
             $this->setObj(\mkw\consts::MarkaCs, $markacs->getId());
         }
+
+        $rolerep = store::getEm()->getRepository('Entities\Munkakor');
+        $role = $rolerep->find($this->params->getIntRequestParam('adminrole', 0));
+        if ($role) {
+            $this->setObj(\mkw\consts::AdminRole, $role->getId());
+        }
+        $role = $rolerep->find($this->params->getIntRequestParam('termekfeltoltorole', 0));
+        if ($role) {
+            $this->setObj(\mkw\consts::TermekfeltoltoRole, $role->getId());
+        }
+
         $this->setObj(\mkw\consts::Esedekessegalap, $this->params->getIntRequestParam('esedekessegalap', 1));
         $inkid = $this->params->getIntRequestParam('importnewkatid');
         if ($inkid) {

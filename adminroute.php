@@ -204,3 +204,7 @@ $router->map('GET', '/admin/export/view', 'exportController#view', 'adminexportv
 $router->map('GET', '/admin/export/grando', 'exportController#GrandoExport', 'admingrandoexport');
 $router->map('GET', '/admin/mkwimport', 'adminController#mindentkapniimport', 'adminmkwimport');
 $router->map('GET', '/admin/mkwvevo', 'adminController#mindentkapnivevo', 'adminmkwvevo');
+
+$router->map('GET', '/admin/login/show', 'dolgozoController#showlogin', 'adminshowlogin');
+$router->map('POST', '/admin/login', 'dolgozoController#login', 'adminlogin');
+$router->map('GET', '/admin/logout', 'dolgozoController#logout', 'adminlogout');

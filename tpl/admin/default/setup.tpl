@@ -68,6 +68,24 @@
 				</select></td>
 			</tr>
 			<tr>
+				<td><label for="AdminroleEdit">{t('Admin szerepkör')}:</label></td>
+				<td><select id="AdminroleEdit" name="adminrole">
+					<option value="">{t('válasszon')}</option>
+					{foreach $adminrolelist as $_role}
+					<option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+					{/foreach}
+				</select></td>
+			</tr>
+			<tr>
+				<td><label for="TermekfeltoltoroleEdit">{t('Termékfeltöltő szerepkör')}:</label></td>
+				<td><select id="TermekfeltoltoroleEdit" name="termekfeltoltorole">
+					<option value="">{t('válasszon')}</option>
+					{foreach $termekfeltoltorolelist as $_role}
+					<option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+					{/foreach}
+				</select></td>
+			</tr>
+			<tr>
 				<td><label for="EsedAlapEdit">{t('Esedékesség alapja')}:</label></td>
 				<td><select id="EsedAlapEdit" name="esedekessegalap">
 					<option value="1"{if ($esedekessegalap=='1')} selected="selected"{/if}>{t('kelt')}</option>

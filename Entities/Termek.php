@@ -202,9 +202,6 @@ class Termek {
     /** @OneToMany(targetEntity="TermekRecept", mappedBy="altermek", cascade={"persist","remove"}) */
     private $altermekreceptek;
 
-    /** @OneToMany(targetEntity="Dolgozo", mappedBy="muvelet", cascade={"persist","remove"}) */
-    private $dolgozok;
-
     /** @OneToMany(targetEntity="Bizonylattetel", mappedBy="termek",cascade={"persist","remove"}) */
     private $bizonylattetelek;
 
@@ -259,7 +256,6 @@ class Termek {
         $this->valtozatok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekreceptek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->altermekreceptek = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->dolgozok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekkapcsolodok = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1150,25 +1146,6 @@ class Termek {
     public function removeAlTermekRecept(TermekRecept $recept) {
         if ($this->altermekreceptek->removeElement($recept)) {
             $recept->removeAlTermek($this);
-            return true;
-        }
-        return false;
-    }
-
-    public function getDolgozok() {
-        return $this->dolgozok;
-    }
-
-    public function addDolgozo(Dolgozo $dolgozo) {
-        if (!$this->dolgozok->contains($dolgozo)) {
-            $this->dolgozok->add($dolgozo);
-            $dolgozo->setMuvelet($this);
-        }
-    }
-
-    public function removeDolgozo(Dolgozo $dolgozo) {
-        if ($this->dolgozok->removeElement($dolgozo)) {
-            $dolgozo->removeMuvelet();
             return true;
         }
         return false;

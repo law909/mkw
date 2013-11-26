@@ -11,6 +11,10 @@ body {
 	position: absolute;
 }
 
+.textaligncenter {
+    text-align: center;
+}
+
 .egyebadat-grid {
 	margin-bottom: 5px;
 }

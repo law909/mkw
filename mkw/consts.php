@@ -69,4 +69,6 @@ class consts {
     const FBAppId = 'fbappid';
 
     const MarkaCs = 'markacs';
+    const AdminRole = 'adminrole';
+    const TermekfeltoltoRole = 'termekfeltoltorole';
 }

@@ -102,13 +102,13 @@ class MattableController extends Controller {
             case $this->addOperation:
                 $cl = $this->entityName;
                 $obj = new $cl();
-                $this->em->persist($this->setFields($obj));
+                $this->em->persist($this->setFields($obj, $parancs));
                 $this->em->flush();
                 $this->afterSave($obj);
                 break;
             case $this->editOperation:
                 $obj = $this->repo->find($id);
-                $this->em->persist($this->setFields($obj));
+                $this->em->persist($this->setFields($obj, $parancs));
                 $this->em->flush();
                 $this->afterSave($obj);
                 break;

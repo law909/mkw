@@ -168,11 +168,23 @@ class Store {
 		return self::$adminsession;
 	}
 
-	public static function getSalt() {
+	public static function destroyAdminSession() {
+		if (isset(self::$adminsession)) {
+			\Zend_Session::namespaceUnset('a');
+			\Zend_Session::destroy(true);
+			self::$adminsession = null;
+		}
+	}
+
+    public static function getSalt() {
 		return self::getConfigValue('so');
 	}
 
-	/**
+	public static function getAdminSalt() {
+		return self::getConfigValue('aso');
+	}
+
+    /**
 	 *
 	 * @return \mkwhelpers\TemplateFactory
 	 */

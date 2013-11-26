@@ -13,19 +13,22 @@
 		{block "inhead"}
 		{/block}
 		<script type="text/javascript" src="/js/admin/default/appinit.js"></script>
-		<title>{$pagetitle} - {t('MKW Admin')}</title>
+		<title>{$pagetitle|default} - {t('MKW Admin')}</title>
 	</head>
 	<body>
 	<div id="messagecenter"></div>
 	<div id="dialogcenter"></div>
 	<div>
+    {if ($userloggedin)}
 	<div id="menu" class="matt-container ui-widget ui-widget-content ui-corner-all">
 		{if ($setup.gyartas==1)}
 		<div class="menu-titlebar" data-caption="{t('Gyártás')}" data-refcontrol="#GyartasTab"></div>
 		<div id="GyartasTab">
 			<div><a class="menupont" href="/admin/nullaslista/viewlist">{t('Nullás lista')}</a></div>
 		</div>
-		{/if}
+        {/if}
+        <div class="textaligncenter">{$loggedinuser.name}</div>
+		<div><a class="menupont" href="/admin/logout">{t('Kijelentkezés')}</a></div>
 		<div class="menu-titlebar" data-caption="{t('Kereskedelem')}" data-refcontrol="#KereskedelemTab"></div>
 		<div id="KereskedelemTab">
 			<div><a class="menupont" href="/admin/megrendelesfej/viewlist">{t('Megrendelések')}</a></div>
@@ -57,11 +60,11 @@
 			<div><a class="menupont" href="/admin/teendo/viewlist">{t('Teendők')}</a></div>
 			<div><a class="menupont" href="/admin/esemeny/viewlist">{t('Események')}</a></div>
 		</div>
+		<div><a class="menupont" href="/admin/dolgozo/viewlist">{t('Felhasználók')}</a></div>
 		<div><a class="menupont" href="/admin/egyebtorzs/view">{t('Egyéb adatok')}</a></div>
 		<div><a class="menupont" href="/admin/export/view">{t('Termék exportok')}</a></div>
 		<div><a class="menupont" href="/admin/setup/view">{t('Beállítások')}</a></div>
 		<div><a class="menupont" href="/admin/regeneratekarkod">{t('Termék kat. rendezése')}</a></div>
-		<div><a id="fm" class="menupont" href="#">File Manager</a></div>
 		<div>
 			<select id="ThemeSelect">
 				{foreach $uithemes as $_uitheme}
@@ -85,21 +88,11 @@
 		</div>
 		<div><a class="menupont" href="/admin/">{t('Főoldal')}</a></div>
 	</div>
+    {/if}
 	<div id="kozep">
 	{block "kozep"}
 	{/block}
 	</div>
 	</div>
-	<script>
-		$('#fm').on('click',function(e) {
-			var finder=new CKFinder();
-			finder.selectActionFunction = function( fileUrl, data ) {
-				alert( 'Selected file: ' + fileUrl );
-				this.openMsgDialog( '', 'Additional data: ' + data['selectActionData'] );
-				document.getElementById( data['selectActionData'] ).innerHTML = fileUrl;
-			}
-			finder.popup();
-		});
-	</script>
 	</body>
 </html>

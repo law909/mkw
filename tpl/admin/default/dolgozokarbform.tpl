@@ -32,9 +32,20 @@
 			<tr>
 				<td><label for="TelefonEdit">{t('Telefon')}:</label></td>
 				<td><input id="TelefonEdit" name="telefon" type="text" size="20" maxlength="40" value="{$egyed.telefon}"></td>
+            </tr>
+            <tr>
 				<td><label for="EmailEdit">{t('Email')}:</label></td>
-				<td><input id="EmailEdit" name="email" type="email" size="40" maxlength="100" value="{$egyed.email}"></td>
+				<td><input id="EmailEdit" name="email" type="email" size="40" maxlength="100" value="{$egyed.email}" required></td>
 			</tr>
+            {if (($egyed.id == $loggedinuser.id) || $loggedinuser.admin)}
+            <tr>
+				<td><label for="Pass1Edit">{t('Jelszó 1')}:</label></td>
+				<td><input id="Pass1Edit" name="jelszo1" type="password" size="40"{if ($oper == 'add')} required{/if}></td>
+				<td><label for="Pass2Edit">{t('Jelszó 2')}:</label></td>
+				<td><input id="Pass2Edit" name="jelszo2" type="password" size="40"{if ($oper == 'add')} required{/if}></td>
+			</tr>
+            {/if}
+            {if ($loggedinuser.admin)}
 			<tr>
 				<td><label for="MunkakorEdit">{t('Munkakör')}:</label></td>
 				<td><select id="MunkakorEdit" name="munkakor">
@@ -48,19 +59,10 @@
 				<td><input id="MunkaviszonykezdeteEdit" name="munkaviszonykezdete" type="text" size="12" data-datum="{$egyed.munkaviszonykezdetestr}" required></td>
 			</tr>
 			<tr>
-				<td><label for="MuveletEdit">{t('Művelet')}:</label></td>
-				<td colspan="3"><select id="MuveletEdit" name="muvelet">
-					<option value="">{t('válasszon')}</option>
-					{foreach $muveletlist as $_mv}
-					<option value="{$_mv.id}"{if ($_mv.selected)} selected="selected"{/if}>{$_mv.caption}</option>
-					{/foreach}
-					</select>
-				</td>
-			</tr>
-			<tr>
 				<td><label for="EvesmaxszabiEdit">{t('Éves max. szabadság')}:</label></td>
 				<td colspan="3"><input id="EvesmaxszabiEdit" name="evesmaxszabi" type="number" size="5" maxlength="5" value="{$egyed.evesmaxszabi}"> {t('nap')}</td>
 			</tr>
+            {/if}
 			</tbody></table>
 		</div>
 	</div>
