@@ -11,9 +11,12 @@ class TermekKepRepository extends \mkwhelpers\Repository {
 
 	public function getByTermek($termek) {
 		$filter=array();
-		$filter['fields'][]='termek';
-		$filter['clauses'][]='=';
-		$filter['values'][]=$termek;
-		return $this->getAll($filter,array());
+        if ($termek) {
+            $filter['fields'][]='termek';
+            $filter['clauses'][]='=';
+            $filter['values'][]=$termek;
+    		return $this->getAll($filter,array());
+        }
+        return null;
 	}
 }

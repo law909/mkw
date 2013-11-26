@@ -44,7 +44,10 @@ class Repository extends EntityRepository {
 		$filter['clauses'][]='=';
 		$filter['values'][]=$id;
 		$res=$this->getWithJoins($filter,array());
-		return $res[0];
+        if (count($res)) {
+            return $res[0];
+        }
+        return null;
 	}
 
 	public function getCount($filter) {
