@@ -66,6 +66,28 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::IngyenszallitasJelolo);
         $view->setVar(\mkw\consts::IngyenszallitasJelolo, ($p ? $p->getErtek() : ''));
 
+        $p = $repo->find(\mkw\consts::SzallitasiKtg1Tol);
+        $view->setVar(\mkw\consts::SzallitasiKtg1Tol, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::SzallitasiKtg1Ig);
+        $view->setVar(\mkw\consts::SzallitasiKtg1Ig, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::SzallitasiKtg1Ertek);
+        $view->setVar(\mkw\consts::SzallitasiKtg1Ertek, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::SzallitasiKtg2Tol);
+        $view->setVar(\mkw\consts::SzallitasiKtg2Tol, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::SzallitasiKtg2Ig);
+        $view->setVar(\mkw\consts::SzallitasiKtg2Ig, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::SzallitasiKtg2Ertek);
+        $view->setVar(\mkw\consts::SzallitasiKtg2Ertek, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::SzallitasiKtg3Tol);
+        $view->setVar(\mkw\consts::SzallitasiKtg3Tol, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::SzallitasiKtg3Ig);
+        $view->setVar(\mkw\consts::SzallitasiKtg3Ig, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::SzallitasiKtg3Ertek);
+        $view->setVar(\mkw\consts::SzallitasiKtg3Ertek, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::SzallitasiKtgTermek);
+        $fizmod = new termekController($this->params);
+        $view->setVar('szallitasiktgtermeklist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::Miniimagesize);
         $view->setVar(\mkw\consts::Miniimagesize, ($p ? $p->getErtek() : 80));
         $p = $repo->find(\mkw\consts::Smallimagesize);
@@ -219,6 +241,22 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::AkcioJelolo, $this->params->getStringRequestParam('akciojelolo'));
         $this->setObj(\mkw\consts::MegszunoJelolo, $this->params->getStringRequestParam('megszunojelolo'));
         $this->setObj(\mkw\consts::IngyenszallitasJelolo, $this->params->getStringRequestParam('ingyenszallitasjelolo'));
+
+        $this->setObj(\mkw\consts::SzallitasiKtg1Tol, $this->params->getStringRequestParam('szallitasiktg1tol'));
+        $this->setObj(\mkw\consts::SzallitasiKtg1Ig, $this->params->getStringRequestParam('szallitasiktg1ig'));
+        $this->setObj(\mkw\consts::SzallitasiKtg1Ertek, $this->params->getStringRequestParam('szallitasiktg1ertek'));
+
+        $this->setObj(\mkw\consts::SzallitasiKtg2Tol, $this->params->getStringRequestParam('szallitasiktg2tol'));
+        $this->setObj(\mkw\consts::SzallitasiKtg2Ig, $this->params->getStringRequestParam('szallitasiktg2ig'));
+        $this->setObj(\mkw\consts::SzallitasiKtg2Ertek, $this->params->getStringRequestParam('szallitasiktg2ertek'));
+
+        $this->setObj(\mkw\consts::SzallitasiKtg3Tol, $this->params->getStringRequestParam('szallitasiktg3tol'));
+        $this->setObj(\mkw\consts::SzallitasiKtg3Ig, $this->params->getStringRequestParam('szallitasiktg3ig'));
+        $this->setObj(\mkw\consts::SzallitasiKtg3Ertek, $this->params->getStringRequestParam('szallitasiktg3ertek'));
+        $szkt = store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('szallitasiktgtermek', 0));
+        if ($szkt) {
+            $this->setObj(\mkw\consts::SzallitasiKtgTermek, $szkt->getId());
+        }
 
         $this->setObj(\mkw\consts::Miniimagesize, $this->params->getIntRequestParam('miniimagesize'));
         $this->setObj(\mkw\consts::Smallimagesize, $this->params->getIntRequestParam('smallimagesize'));

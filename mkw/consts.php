@@ -78,4 +78,15 @@ class consts {
     const AkcioJelolo = 'akciojelolo';
     const MegszunoJelolo = 'megszunojelolo';
     const IngyenszallitasJelolo = 'ingyenszallitasjelolo';
+
+    const SzallitasiKtg1Tol = 'szallitasiktg1tol';
+    const SzallitasiKtg1Ig = 'szallitasiktg1ig';
+    const SzallitasiKtg1Ertek = 'szallitasiktg1ertek';
+    const SzallitasiKtg2Tol = 'szallitasiktg2tol';
+    const SzallitasiKtg2Ig = 'szallitasiktg2ig';
+    const SzallitasiKtg2Ertek = 'szallitasiktg2ertek';
+    const SzallitasiKtg3Tol = 'szallitasiktg3tol';
+    const SzallitasiKtg3Ig = 'szallitasiktg3ig';
+    const SzallitasiKtg3Ertek = 'szallitasiktg3ertek';
+    const SzallitasiKtgTermek = 'szallitasiktgtermek';
 }

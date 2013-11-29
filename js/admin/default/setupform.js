@@ -102,12 +102,10 @@ $(document).ready(function() {
             }).button();
         },
         onSubmit: function() {
-            $('#messagecenter')
-                    .html('A mentés sikerült.')
-                    .hide()
-                    .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                    .one('click', messagecenterclick)
-                    .slideToggle('slow');
+            pleaseWait('A mentés sikerült.');
+            setTimeout((function() {
+                $.unblockUI;
+            }), 8000);
         }
     });
 });

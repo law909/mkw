@@ -21,6 +21,7 @@
 			<li><a href="#DefaTab">{t('Alapértelmezések')}</a></li>
 			<li><a href="#TulajTab">{t('Tulajdonos adatai')}</a></li>
 			<li><a href="#WebTab">{t('Web beállítások')}</a></li>
+			<li><a href="#SzallitasiKtgTab">{t('Szállítási költség')}</a></li>
 			<li><a href="#IdTab">{t('Azonosítók, kódok')}</a></li>
 			<li><a href="#EmailTab">{t('Email')}</a></li>
 			<li><a href="#FeedTab">{t('Feed beállítások')}</a></li>
@@ -93,6 +94,8 @@
 					<option value="2"{if ($esedekessegalap=='2')} selected="selected"{/if}>{t('teljesítés')}</option>
 				</select></td>
 			</tr>
+        </tbody></table>
+        <table><tbody>
             <tr>
                 <td><label>{t('Az importerek ebbe a kategóriába tegyék az új termékeket')}:</label></td>
                 <td>
@@ -129,7 +132,7 @@
 		<div class="mattkarb-titlebar" data-caption="{t('Web beállítások')}" data-refcontrol="#WebTab"></div>
 		{/if}
 		<div id="WebTab" class="mattkarb-page" data-visible="visible">
-        <table><tbody>
+        <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
             <tr>
                 <td><label>{t('Logo')}:</label></td>
                 <td><input name="logo" type="text" value="{$logo}"></td>
@@ -158,7 +161,7 @@
             </tr>
         </tbody></table>
 
-		<table><tbody>
+		<table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
 			<tr><td><label>{t('Hírek száma a főoldalon')}:</label></td><td><input name="fooldalhirdb" type="number" value="{$fooldalhirdb}"></td>
 				<td><label>{t('Ajánlott termékek száma a főoldalon')}:</label></td><td><input name="fooldalajanlotttermekdb" type="number" value="{$fooldalajanlotttermekdb}"></td></tr>
 			<tr><td><label>{t('Legnépszerűbb termékek száma a főoldalon')}:</label></td><td><input name="fooldalnepszerutermekdb" type="number" value="{$fooldalnepszerutermekdb}"></td>
@@ -166,57 +169,77 @@
             <tr><td><label>{t('Termékek száma a terméklistában')}:</label></td><td><input name="termeklistatermekdb" type="number" value="{$termeklistatermekdb}"></td></tr>
 			<tr><td><label>{t('Ár szűrő lépésköze')}:</label></td><td><input name="arfilterstep" type="number" value="{$arfilterstep}"></td>
 				<td><label>{t('Automatikus kiléptetés ideje (perc)')}:</label></td><td><input name="autologoutmin" type="number" value="{$autologoutmin}"></td></tr>
-			<tr><td><label>{t('Mini kép mérete')}:</label></td><td><input name="miniimagesize" type="number" value="{$miniimagesize}"></td>
+		</tbody></table>
+        <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
+			<tr>
 				<td><label>{t('Mini kép utótag')}:</label></td><td><input name="miniimgpost" type="text" value="{$miniimgpost}"></td>
+                <td><label>{t('Kis kép utótag')}:</label></td><td><input name="smallimgpost" type="text" value="{$smallimgpost}"></td>
 			</tr>
-			<tr><td><label>{t('Kis kép mérete')}:</label></td><td><input name="smallimagesize" type="number" value="{$smallimagesize}"></td>
-				<td><label>{t('Kis kép utótag')}:</label></td><td><input name="smallimgpost" type="text" value="{$smallimgpost}"></td>
-			</tr>
-			<tr><td><label>{t('Közepes kép mérete')}:</label></td><td><input name="mediumimagesize" type="number" value="{$mediumimagesize}"></td>
+			<tr>
 				<td><label>{t('Közepes kép utótag')}:</label></td><td><input name="mediumimgpost" type="text" value="{$mediumimgpost}"></td>
-
-			</tr>
-			<tr><td><label>{t('Nagy kép mérete')}:</label></td><td><input name="bigimagesize" type="number" value="{$bigimagesize}"></td>
 				<td><label>{t('Nagy kép utótag')}:</label></td><td><input name="bigimgpost" type="text" value="{$bigimgpost}"></td>
 			</tr>
-			<tr><td><label>{t('Körhinta kép mérete')}:</label></td><td><input name="korhintaimagesize" type="number" value="{$korhintaimagesize}"></td>
-			</tr>
-			<tr><td><label>{t('JPEG minőség')}:</label></td><td><input name="jpgquality" type="number" value="{$jpgquality}"></td>
-				<td><label>{t('PNG minőség')}:</label></td><td><input name="pngquality" type="number" value="{$pngquality}"></td>
-			</tr>
+		</tbody></table>
+        <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
+            <tr><td><label for="OldalCimEdit">{t('Lap címe')}:</label></td>
+                <td colspan="3"><input id="OldalCimEdit" name="oldalcim" type="text" size="75" maxlength="255" value="{$oldalcim}"></td>
+            </tr>
+            <tr><td><label for="SeodescriptionEdit">{t('META leírás')}:</label></td>
+                <td colspan="3"><textarea id="SeodescriptionEdit" name="seodescription" type="text" cols="75">{$seodescription}</textarea></td>
+            </tr>
+        </tbody></table>
+        <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
+            <tr><td colspan="3">{t('Kategória oldal')}</td></tr>
+            <tr><td colspan="3">[kategorianev] [global]</td></tr>
+            <tr><td><label for="KOldalCimEdit">{t('Lap címe')}:</label></td>
+                <td colspan="3"><input id="KOldalCimEdit" name="katoldalcim" type="text" size="75" maxlength="255" value="{$katoldalcim}"></td>
+            </tr>
+            <tr><td><label for="KSeodescriptionEdit">{t('META leírás')}:</label></td>
+                <td colspan="3"><textarea id="KSeodescriptionEdit" name="katseodescription" type="text" cols="75">{$katseodescription}</textarea></td>
+            </tr>
+        </tbody></table>
+        <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
+            <tr><td colspan="3">{t('Termék oldal')}</td></tr>
+            <tr><td colspan="3">[termeknev] [bruttoar] [kategorianev] [global]</td></tr>
+            <tr><td><label for="TOldalCimEdit">{t('Lap címe')}:</label></td>
+                <td colspan="3"><input id="TOldalCimEdit" name="termekoldalcim" type="text" size="75" maxlength="255" value="{$termekoldalcim}"></td>
+            </tr>
+            <tr><td><label for="TSeodescriptionEdit">{t('META leírás')}:</label></td>
+                <td colspan="3"><textarea id="TSeodescriptionEdit" name="termekseodescription" type="text" cols="75">{$termekseodescription}</textarea></td>
+            </tr>
+        </tbody></table>
+		</div>
+		{if ($setup.editstyle=='dropdown')}
+		<div class="mattkarb-titlebar" data-caption="{t('Szállítási költség')}" data-refcontrol="#SzallitasiKtgTab"></div>
+		{/if}
+		<div id="SzallitasiKtgTab" class="mattkarb-page" data-visible="visible">
+		<table><tbody>
+            <tr>
+                <td><label for="SzallitasiKtg1TolEdit">{t('Értékhatár 1')}:</label></td>
+                <td><input id="SzallitasiKtg1TolEdit" name="szallitasiktg1tol" type="text" value="{$szallitasiktg1tol}"> - <input name="szallitasiktg1ig" type="text" value="{$szallitasiktg1ig}">
+                </td>
+                <td><input name="szallitasiktg1ertek" value="{$szallitasiktg1ertek}"></td>
+            </tr>
+            <tr>
+                <td><label for="SzallitasiKtg2TolEdit">{t('Értékhatár 2')}:</label></td>
+                <td><input id="SzallitasiKtg2TolEdit" name="szallitasiktg2tol" type="text" value="{$szallitasiktg2tol}"> - <input name="szallitasiktg2ig" type="text" value="{$szallitasiktg2ig}">
+                </td>
+                <td><input name="szallitasiktg2ertek" value="{$szallitasiktg2ertek}"></td>
+            </tr>
+            <tr>
+                <td><label for="SzallitasiKtg3TolEdit">{t('Értékhatár 3')}:</label></td>
+                <td><input id="SzallitasiKtg3TolEdit" name="szallitasiktg3tol" type="text" value="{$szallitasiktg3tol}"> - <input name="szallitasiktg3ig" type="text" value="{$szallitasiktg3ig}">
+                </td>
+                <td><input name="szallitasiktg3ertek" value="{$szallitasiktg3ertek}"></td>
+            </tr>
 			<tr>
-				<table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
-					<tr><td><label for="OldalCimEdit">{t('Lap címe')}:</label></td>
-						<td colspan="3"><input id="OldalCimEdit" name="oldalcim" type="text" size="75" maxlength="255" value="{$oldalcim}"></td>
-					</tr>
-					<tr><td><label for="SeodescriptionEdit">{t('META leírás')}:</label></td>
-						<td colspan="3"><textarea id="SeodescriptionEdit" name="seodescription" type="text" cols="75">{$seodescription}</textarea></td>
-					</tr>
-				</tbody></table>
-			</tr>
-			<tr>
-				<table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
-					<tr><td colspan="3">{t('Kategória oldal')}</td></tr>
-					<tr><td colspan="3">[kategorianev] [global]</td></tr>
-					<tr><td><label for="KOldalCimEdit">{t('Lap címe')}:</label></td>
-						<td colspan="3"><input id="KOldalCimEdit" name="katoldalcim" type="text" size="75" maxlength="255" value="{$katoldalcim}"></td>
-					</tr>
-					<tr><td><label for="KSeodescriptionEdit">{t('META leírás')}:</label></td>
-						<td colspan="3"><textarea id="KSeodescriptionEdit" name="katseodescription" type="text" cols="75">{$katseodescription}</textarea></td>
-					</tr>
-				</tbody></table>
-			</tr>
-			<tr>
-				<table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
-					<tr><td colspan="3">{t('Termék oldal')}</td></tr>
-					<tr><td colspan="3">[termeknev] [bruttoar] [kategorianev] [global]</td></tr>
-					<tr><td><label for="TOldalCimEdit">{t('Lap címe')}:</label></td>
-						<td colspan="3"><input id="TOldalCimEdit" name="termekoldalcim" type="text" size="75" maxlength="255" value="{$termekoldalcim}"></td>
-					</tr>
-					<tr><td><label for="TSeodescriptionEdit">{t('META leírás')}:</label></td>
-						<td colspan="3"><textarea id="TSeodescriptionEdit" name="termekseodescription" type="text" cols="75">{$termekseodescription}</textarea></td>
-					</tr>
-				</tbody></table>
+				<td><label for="SzallitasiKtgTermekEdit">{t('Szállítási költség')}:</label></td>
+				<td colspan="2"><select id="SzallitasiKtgTermekEdit" name="szallitasiktgtermek">
+					<option value="">{t('válasszon')}</option>
+					{foreach $szallitasiktgtermeklist as $_szallitasiktgtermek}
+					<option value="{$_szallitasiktgtermek.id}"{if ($_szallitasiktgtermek.selected)} selected="selected"{/if}>{$_szallitasiktgtermek.caption}</option>
+					{/foreach}
+				</select></td>
 			</tr>
 		</tbody></table>
 		</div>
