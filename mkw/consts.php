@@ -72,4 +72,10 @@ class consts {
     const MarkaCs = 'markacs';
     const AdminRole = 'adminrole';
     const TermekfeltoltoRole = 'termekfeltoltorole';
+
+    const UjtermekJelolo = 'ujtermekjelolo';
+    const Top10Jelolo = 'top10jelolo';
+    const AkcioJelolo = 'akciojelolo';
+    const MegszunoJelolo = 'megszunojelolo';
+    const IngyenszallitasJelolo = 'ingyenszallitasjelolo';
 }

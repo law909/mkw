@@ -129,12 +129,36 @@
 		<div class="mattkarb-titlebar" data-caption="{t('Web beállítások')}" data-refcontrol="#WebTab"></div>
 		{/if}
 		<div id="WebTab" class="mattkarb-page" data-visible="visible">
-		<table><tbody>
+        <table><tbody>
             <tr>
                 <td><label>{t('Logo')}:</label></td>
                 <td><input name="logo" type="text" value="{$logo}"></td>
-        		<td><a class="js-logobrowsebutton" href="#" title="{t('Browse')}">{t('...')}</a></td>
+        		<td><a class="js-kepbrowsebutton" data-name="logo" href="#" title="{t('Browse')}">{t('...')}</a></td>
             </tr>
+            <tr>
+                <td><label>{t('Új termék jelölő')}:</label></td>
+                <td><input name="ujtermekjelolo" type="text" value="{$ujtermekjelolo}"></td>
+        		<td><a class="js-kepbrowsebutton" data-name="ujtermekjelolo" href="#" title="{t('Browse')}">{t('...')}</a></td>
+                <td><label>{t('Top 10 jelölő')}:</label></td>
+                <td><input name="top10jelolo" type="text" value="{$top10jelolo}"></td>
+        		<td><a class="js-kepbrowsebutton" data-name="top10jelolo" href="#" title="{t('Browse')}">{t('...')}</a></td>
+            </tr>
+            <tr>
+                <td><label>{t('Akció jelölő')}:</label></td>
+                <td><input name="akciojelolo" type="text" value="{$akciojelolo}"></td>
+        		<td><a class="js-kepbrowsebutton" data-name="akciojelolo" href="#" title="{t('Browse')}">{t('...')}</a></td>
+                <td><label>{t('Megszűnő termék jelölő')}:</label></td>
+                <td><input name="megszunojelolo" type="text" value="{$megszunojelolo}"></td>
+        		<td><a class="js-kepbrowsebutton" data-name="megszunojelolo" href="#" title="{t('Browse')}">{t('...')}</a></td>
+            </tr>
+            <tr>
+                <td><label>{t('Ingyen szállítás jelölő')}:</label></td>
+                <td><input name="ingyenszallitasjelolo" type="text" value="{$ingyenszallitasjelolo}"></td>
+        		<td><a class="js-kepbrowsebutton" data-name="ingyenszallitasjelolo" href="#" title="{t('Browse')}">{t('...')}</a></td>
+            </tr>
+        </tbody></table>
+
+		<table><tbody>
 			<tr><td><label>{t('Hírek száma a főoldalon')}:</label></td><td><input name="fooldalhirdb" type="number" value="{$fooldalhirdb}"></td>
 				<td><label>{t('Ajánlott termékek száma a főoldalon')}:</label></td><td><input name="fooldalajanlotttermekdb" type="number" value="{$fooldalajanlotttermekdb}"></td></tr>
 			<tr><td><label>{t('Legnépszerűbb termékek száma a főoldalon')}:</label></td><td><input name="fooldalnepszerutermekdb" type="number" value="{$fooldalnepszerutermekdb}"></td>

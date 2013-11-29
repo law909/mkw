@@ -55,6 +55,17 @@ class setupController extends \mkwhelpers\Controller {
 
         $p = $repo->find(\mkw\consts::Logo);
         $view->setVar(\mkw\consts::Logo, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UjtermekJelolo);
+        $view->setVar(\mkw\consts::UjtermekJelolo, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Top10Jelolo);
+        $view->setVar(\mkw\consts::Top10Jelolo, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::AkcioJelolo);
+        $view->setVar(\mkw\consts::AkcioJelolo, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MegszunoJelolo);
+        $view->setVar(\mkw\consts::MegszunoJelolo, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::IngyenszallitasJelolo);
+        $view->setVar(\mkw\consts::IngyenszallitasJelolo, ($p ? $p->getErtek() : ''));
+
         $p = $repo->find(\mkw\consts::Miniimagesize);
         $view->setVar(\mkw\consts::Miniimagesize, ($p ? $p->getErtek() : 80));
         $p = $repo->find(\mkw\consts::Smallimagesize);
@@ -203,6 +214,12 @@ class setupController extends \mkwhelpers\Controller {
 
         // web
         $this->setObj(\mkw\consts::Logo, $this->params->getStringRequestParam('logo'));
+        $this->setObj(\mkw\consts::UjtermekJelolo, $this->params->getStringRequestParam('ujtermekjelolo'));
+        $this->setObj(\mkw\consts::Top10Jelolo, $this->params->getStringRequestParam('top10jelolo'));
+        $this->setObj(\mkw\consts::AkcioJelolo, $this->params->getStringRequestParam('akciojelolo'));
+        $this->setObj(\mkw\consts::MegszunoJelolo, $this->params->getStringRequestParam('megszunojelolo'));
+        $this->setObj(\mkw\consts::IngyenszallitasJelolo, $this->params->getStringRequestParam('ingyenszallitasjelolo'));
+
         $this->setObj(\mkw\consts::Miniimagesize, $this->params->getIntRequestParam('miniimagesize'));
         $this->setObj(\mkw\consts::Smallimagesize, $this->params->getIntRequestParam('smallimagesize'));
         $this->setObj(\mkw\consts::Mediumimagesize, $this->params->getIntRequestParam('mediumimagesize'));
