@@ -138,10 +138,10 @@ class EntitiesTermekErtesitoProxy extends \Entities\TermekErtesito implements \D
         return parent::getSentStr();
     }
 
-    public function setSent($val)
+    public function setSent($adat)
     {
         $this->__load();
-        return parent::setSent($val);
+        return parent::setSent($adat);
     }
 
 

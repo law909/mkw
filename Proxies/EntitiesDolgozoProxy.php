@@ -204,36 +204,6 @@ class EntitiesDolgozoProxy extends \Entities\Dolgozo implements \Doctrine\ORM\Pr
         return parent::removeMunkakor();
     }
 
-    public function getMuvelet()
-    {
-        $this->__load();
-        return parent::getMuvelet();
-    }
-
-    public function getMuveletNev()
-    {
-        $this->__load();
-        return parent::getMuveletNev();
-    }
-
-    public function getMuveletId()
-    {
-        $this->__load();
-        return parent::getMuveletId();
-    }
-
-    public function setMuvelet(\Entities\Termek $muvelet)
-    {
-        $this->__load();
-        return parent::setMuvelet($muvelet);
-    }
-
-    public function removeMuvelet()
-    {
-        $this->__load();
-        return parent::removeMuvelet();
-    }
-
     public function getJelenletek()
     {
         $this->__load();
@@ -252,10 +222,40 @@ class EntitiesDolgozoProxy extends \Entities\Dolgozo implements \Doctrine\ORM\Pr
         return parent::removeJelenlet($adat);
     }
 
+    public function getJelszo()
+    {
+        $this->__load();
+        return parent::getJelszo();
+    }
+
+    public function setPlainJelszo($adat)
+    {
+        $this->__load();
+        return parent::setPlainJelszo($adat);
+    }
+
+    public function checkPlainJelszo($adat)
+    {
+        $this->__load();
+        return parent::checkPlainJelszo($adat);
+    }
+
+    public function setJelszo($adat)
+    {
+        $this->__load();
+        return parent::setJelszo($adat);
+    }
+
+    public function checkJelszo($adat)
+    {
+        $this->__load();
+        return parent::checkJelszo($adat);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'nev', 'irszam', 'varos', 'utca', 'telefon', 'email', 'munkakor', 'muvelet', 'szulido', 'szulhely', 'evesmaxszabi', 'munkaviszonykezdete', 'jelenletek');
+        return array('__isInitialized__', 'id', 'nev', 'jelszo', 'irszam', 'varos', 'utca', 'telefon', 'email', 'munkakor', 'szulido', 'szulhely', 'evesmaxszabi', 'munkaviszonykezdete', 'jelenletek');
     }
 
     public function __clone()

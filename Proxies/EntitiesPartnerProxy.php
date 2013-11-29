@@ -732,6 +732,12 @@ class EntitiesPartnerProxy extends \Entities\Partner implements \Doctrine\ORM\Pr
         return parent::setPasswordreminder();
     }
 
+    public function clearPasswordreminder()
+    {
+        $this->__load();
+        return parent::clearPasswordreminder();
+    }
+
     public function getOldloginname()
     {
         $this->__load();
