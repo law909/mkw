@@ -49,11 +49,11 @@ class kosarController extends \mkwhelpers\MattableController {
 	}
 
 	protected function setFields($obj) {
-		$ck = store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
+		$ck = $this->getRepo('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
 		if ($ck) {
 			$obj->setPartner($ck);
 		}
-		$ck = store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
+		$ck = $this->getRepo('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
 		if ($ck) {
 			$obj->setTermek($ck);
 		}
@@ -127,44 +127,21 @@ class kosarController extends \mkwhelpers\MattableController {
 	}
 
 	public function clear($partnerid = false) {
-		$pc = new partnerController($this->params);
-		if ($partnerid) {
-			$partner = $this->getEm()->getRepository('Entities\Partner')->find($partnerid);
-		}
-		else {
-			$partner = $pc->getLoggedInUser();
-		}
-		if ($partner) {
-			$k = $this->getRepo()->getDataByPartner($partner);
-		}
-		else {
-			if ($partnerid) {
-				$k = false;
-			}
-			else {
-				$k = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
-			}
-		}
-		foreach ($k as $sor) {
-			$this->getEm()->remove($sor);
-		}
-		if ($k) {
-			$this->getEm()->flush();
-		}
+        $this->getRepo()->clear($partnerid);
 	}
 
 	public function add() {
-		$termek = store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('id'));
+		$termek = $this->getRepo('Entities\Termek')->find($this->params->getIntRequestParam('id'));
 		$vid = null;
 		switch ($this->params->getIntRequestParam('jax', 0)) {
 			case 2:
 				$vid = $this->params->getIntRequestParam('vid', null);
-				$termekvaltozat = store::getEm()->getRepository('Entities\TermekValtozat')->find($vid);
+				$termekvaltozat = $this->getRepo('Entities\TermekValtozat')->find($vid);
 				break;
 			case 3:
 				$tipusok = $this->params->getArrayRequestParam('tip');
 				$ertekek = $this->params->getArrayRequestParam('val');
-				$termekvaltozat = store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(), $tipusok, $ertekek);
+				$termekvaltozat = $this->getRepo('Entities\TermekValtozat')->getByProperties($termek->getId(), $tipusok, $ertekek);
 				$vid = $termekvaltozat->getId();
 				break;
 			default:
@@ -174,41 +151,16 @@ class kosarController extends \mkwhelpers\MattableController {
 
 		if ($termek) {
 			$termekid = $termek->getId();
-			$sessionid = \Zend_Session::getId();
-			$pc = new partnerController($this->params);
-			$partnerid = null;
-			$partner = $pc->getLoggedInUser();
-			if ($partner) {
-				$partnerid = $partner->getId();
-			}
-			$valutanemid = store::getParameter(\mkw\consts::Valutanem);
-			$valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($valutanemid);
 
-			$k = $this->getRepo()->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanemid);
-			if ($k) {
-				$k->novelMennyiseg();
-			}
-			else {
-				$k = new \Entities\Kosar();
-				$k->setTermek($termek);
-				if ($vid) {
-					$k->setTermekvaltozat($termekvaltozat);
-				}
-				$k->setSessionid($sessionid);
-				$k->setPartner($partner);
-				$k->setValutanem($valutanem);
-				$k->setBruttoegysar($termek->getBruttoAr($termekvaltozat));
-				$k->setMennyiseg(1);
-			}
-			$this->getEm()->persist($k);
-			$this->getEm()->flush();
+            $this->getRepo()->add($termekid, $vid);
+
 			if ($this->params->getIntRequestParam('jax', 0) > 0) {
 				$v = $this->getTemplateFactory()->createMainView('minikosar.tpl');
 				$v->setVar('kosar', $this->getMiniData());
 				$v->printTemplateResult();
 			}
 			else {
-				if (store::getMainSession()->prevuri) {
+				if (\mkw\Store::getMainSession()->prevuri) {
 					Header('Location: ' . store::getMainSession()->prevuri);
 				}
 				else {
@@ -220,11 +172,7 @@ class kosarController extends \mkwhelpers\MattableController {
 
 	public function del() {
 		$id = $this->params->getIntRequestParam('id');
-		$sessionid = \Zend_Session::getId();
-		$sor = $this->getRepo()->find($id);
-		if ($sor && $sor->getSessionid() == $sessionid) {
-			$this->getEm()->remove($sor);
-			$this->getEm()->flush();
+        if ($this->getRepo()->del($id)) {
 			if ($this->params->getIntRequestParam('jax', 0) > 0) {
 //				$v=$this->getTemplateFactory()->createMainView('minikosar.tpl');
 //				$v->setVar('kosar',$this->getMiniData());
@@ -232,7 +180,7 @@ class kosarController extends \mkwhelpers\MattableController {
 				echo 'ok';
 			}
 			else {
-				if (store::getMainSession()->prevuri) {
+				if (\mkw\Store::getMainSession()->prevuri) {
 					Header('Location: ' . store::getRouter()->generate('kosarget'));
 				}
 				else {
@@ -245,12 +193,7 @@ class kosarController extends \mkwhelpers\MattableController {
 	public function edit() {
 		$id = $this->params->getIntRequestParam('id');
 		$menny = $this->params->getNumRequestParam('mennyiseg');
-		$sessionid = \Zend_Session::getId();
-		$sor = $this->getRepo()->find($id);
-		if ($sor && $sor->getSessionid() == $sessionid) {
-			$sor->setMennyiseg($menny);
-			$this->getEm()->persist($sor);
-			$this->getEm()->flush();
+        if ($this->getRepo()->edit($id, $menny)) {
 			if ($this->params->getIntRequestParam('jax', 0) > 0) {
 //				$v=$this->getTemplateFactory()->createMainView('minikosar.tpl');
 //				$v->setVar('kosar',$this->getMiniData());

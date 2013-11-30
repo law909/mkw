@@ -271,7 +271,7 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     public function logout() {
-        $user = $this->getLoggedInUser();
+        $user = $this->getRepo()->getLoggedInUser();
         if ($user) {
             $user->setSessionid('');
             $this->getEm()->persist($user);
@@ -283,7 +283,7 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     public function autologout() {
-        $user = $this->getLoggedInUser();
+        $user = $this->getRepo()->getLoggedInUser();
         if ($user) {
             $ma = new \DateTime();
             $kul = $ma->diff($user->getUtolsoklikk());
@@ -301,7 +301,7 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     public function setUtolsoKlikk() {
-        $user = $this->getLoggedInUser();
+        $user = $this->getRepo()->getLoggedInUser();
         if ($user) {
             $user->setUtolsoKlikk();
             $this->getEm()->persist($user);
@@ -310,20 +310,13 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     public function checkloggedin() {
-        if (isset(store::getMainSession()->pk)) {
-            $users = $this->getRepo()->findByIdSessionid(store::getMainSession()->pk, \Zend_Session::getId());
-            return count($users) == 1;
-        }
-        return false;
+        return $this->getRepo()->checkloggedin();
     }
 
-    public function getLoggedInUser() {
-        if ($this->checkloggedin()) {
-            return $this->getRepo()->find(store::getMainSession()->pk);
-        }
-        return null;
+/*    public function getLoggedInUser() {
+        return $this->getRepo()->getLoggedInUser();
     }
-
+*/
     public function saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo, $vendeg = false) {
         $ps = $this->getRepo()->findVendegByEmail($email);
         if (count($ps) > 0) {
@@ -472,7 +465,7 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     public function showAccount() {
-        $user = $this->getLoggedInUser();
+        $user = $this->getRepo()->getLoggedInUser();
         if ($user) {
             $view = $this->getFiokTpl();
             store::fillTemplate($view);
@@ -491,7 +484,7 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     public function saveAccount() {
-        $user = $this->getLoggedInUser();
+        $user = $this->getRepo()->getLoggedInUser();
         $jax = $this->params->getIntRequestParam('jax', 0);
         if ($user) {
             switch ($this->params->getStringParam('subject')) {

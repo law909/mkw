@@ -102,19 +102,20 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$ok = $ok && count($kosartetelek)>0;
 
 		if ($ok) {
-			$pc = new \Controllers\partnerController($this->params);
 			switch ($regkell) {
 				case 1: // vendég
+        			$pc = new \Controllers\partnerController($this->params);
 					$partner = $pc->saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo1, true);
 					$szamlasave = true;
 					$szallsave = true;
 					break;
 				case 2: // regisztráció
+        			$pc = new \Controllers\partnerController($this->params);
 					$partner = $pc->saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo1);
 					$pc->login($email, $jelszo1);
 					break;
 				default: // be van jelentkezve
-					$partner = $pc->getLoggedInUser();
+					$partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
 					break;
 			}
 			if ($szamlasave) {
@@ -143,7 +144,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$partner->setUjdonsaghirlevelkell($ujdonsaghirlevel);
 			$this->getEm()->persist($partner);
 
-			$biztipus = $this->getEm()->getRepository('Entities\Bizonylattipus')->find('megrendeles');
+			$biztipus = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
 			$megrendfej = new \Entities\Bizonylatfej();
 			$megrendfej->setIp($_SERVER['REMOTE_ADDR']);
 			$megrendfej->setReferrer(Store::getMainSession()->referrer);
@@ -166,11 +167,11 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$megrendfej->setFizmod($this->getEm()->getRepository('Entities\Fizmod')->find($fizetesimod));
 			$megrendfej->setSzallitasimod($this->getEm()->getRepository('Entities\Szallitasimod')->find($szallitasimod));
 			$valutanemid = store::getParameter(\mkw\consts::Valutanem);
-			$valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($valutanemid);
+			$valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
 			$megrendfej->setValutanem($valutanem);
 			$raktarid = store::getParameter(\mkw\consts::Raktar);
-			$megrendfej->setRaktar($this->getEm()->getRepository('Entities\Raktar')->find($raktarid));
-			$megrendfej->setBankszamla($this->getEm()->getRepository('Entities\Bankszamla')->getByValutanem($valutanem));
+			$megrendfej->setRaktar($this->getRepo('Entities\Raktar')->find($raktarid));
+			$megrendfej->setBankszamla($this->getRepo('Entities\Bankszamla')->getByValutanem($valutanem));
 			if ($szamlaeqszall) {
 				$megrendfej->setSzallnev($szamlanev);
 				$megrendfej->setSzallirszam($szamlairszam);
@@ -188,7 +189,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 
 			$megrendfej->generateId();
 
-			$kosartetelek = $this->getEm()->getRepository('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
+			$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
 			foreach ($kosartetelek as $kt) {
 				$t = new \Entities\Bizonylattetel();
 				$t->setBizonylatfej($megrendfej);

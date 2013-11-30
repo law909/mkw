@@ -42,10 +42,16 @@ class KosarRepository extends \mkwhelpers\Repository {
 	}
 
 	public function getMiniDataBySessionId($sessionid) {
+        $szktid = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
 		$filter = array();
 		$filter['fields'][] = 'sessionid';
 		$filter['clauses'][] = '=';
 		$filter['values'][] = $sessionid;
+        if ($szktid) {
+            $filter['fields'][] = 'termek';
+            $filter['clauses'][] = '<>';
+            $filter['values'][] = $szktid;
+        }
 		$a = $this->alias;
 		$q = $this->_em->createQuery('SELECT SUM(' . $a . '.mennyiseg),SUM(' . $a . '.bruttoegysar*' . $a . '.mennyiseg)'
 				. ' FROM ' . $this->entityname . ' ' . $a
@@ -59,7 +65,7 @@ class KosarRepository extends \mkwhelpers\Repository {
 		$filter['fields'][] = 'sessionid';
 		$filter['clauses'][] = '=';
 		$filter['values'][] = $sessionid;
-		return $this->getWithJoins($filter, array($this->alias . '.id' => 'ASC'));
+		return $this->getWithJoins($filter, array($this->alias . '.sorrend' => 'ASC'));
 	}
 
 	public function getDataByPartner($partner) {
@@ -67,10 +73,33 @@ class KosarRepository extends \mkwhelpers\Repository {
 		$filter['fields'][] = 'partner';
 		$filter['clauses'][] = '=';
 		$filter['values'][] = $partner;
-		return $this->getWithJoins($filter, array($this->alias . '.id' => 'ASC'));
+		return $this->getWithJoins($filter, array($this->alias . '.sorrend' => 'ASC'));
 	}
 
-	public function getTetelsor($sessionid, $partnerid, $termekid, $valtozatid, $valutanem) {
+    public function calcSumBySessionId($sessionid) {
+        $szktid = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
+		$filter = array();
+		$filter['fields'][] = 'sessionid';
+		$filter['clauses'][] = '=';
+		$filter['values'][] = $sessionid;
+        if ($szktid) {
+            $filter['fields'][] = 'termek';
+            $filter['clauses'][] = '<>';
+            $filter['values'][] = $szktid;
+        }
+		$a = $this->alias;
+		$q = $this->_em->createQuery('SELECT SUM(' . $a . '.bruttoegysar*' . $a . '.mennyiseg)'
+				. ' FROM ' . $this->entityname . ' ' . $a
+				. $this->getFilterString($filter));
+		$q->setParameters($this->getQueryParameters($filter));
+        $res = $q->getScalarResult();
+        if (count($res)) {
+            return $res[0][1];
+        }
+        return 0;
+    }
+
+	public function getTetelsor($sessionid, $partnerid, $termekid, $valtozatid = null, $valutanem = null) {
 		$filter = array();
 		if ($sessionid) {
 			$filter['fields'][] = 'sessionid';
@@ -113,5 +142,155 @@ class KosarRepository extends \mkwhelpers\Repository {
 		}
 		return null;
 	}
+
+    public function add($termekid, $vid = null, $bruttoegysar = null, $mennyiseg = null) {
+        $sessionid = \Zend_Session::getId();
+
+        $partnerid = null;
+        $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
+        if ($partner) {
+            $partnerid = $partner->getId();
+        }
+
+        $valutanemid = \mkw\Store::getParameter(\mkw\consts::Valutanem);
+
+        $k = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanemid);
+        if ($termekid == \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek)) {
+            if ($k) {
+                $k->setMennyiseg(1);
+                $k->setBruttoegysar($bruttoegysar);
+            }
+            else {
+                $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
+                $termek = $this->getRepo('Entities\Termek')->find($termekid);
+                $k = new \Entities\Kosar();
+                $k->setTermek($termek);
+                $k->setSessionid($sessionid);
+                $k->setPartner($partner);
+                $k->setValutanem($valutanem);
+                $k->setBruttoegysar($bruttoegysar);
+                $k->setMennyiseg(1);
+                $k->setSorrend(100);
+            }
+        }
+        else {
+            if ($k) {
+                if ($mennyiseg) {
+                    $k->setMennyiseg($mennyiseg);
+                }
+                else {
+                    $k->novelMennyiseg();
+                }
+            }
+            else {
+                $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
+                $termek = $this->getRepo('Entities\Termek')->find($termekid);
+                $termekvaltozat = $this->getRepo('Entities\TermekValtozat')->find($vid);
+                $k = new \Entities\Kosar();
+                $k->setTermek($termek);
+                if ($vid) {
+                    $k->setTermekvaltozat($termekvaltozat);
+                }
+                $k->setSessionid($sessionid);
+                $k->setPartner($partner);
+                $k->setValutanem($valutanem);
+                $k->setBruttoegysar($termek->getBruttoAr($termekvaltozat));
+                if ($mennyiseg) {
+                    $k->setMennyiseg($mennyiseg);
+                }
+                else {
+                    $k->setMennyiseg(1);
+                }
+            }
+        }
+        $this->_em->persist($k);
+        $this->_em->flush();
+        if ($termekid != \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek)) {
+            $this->createSzallitasiKtg();
+        }
+    }
+
+    public function del($id) {
+		$sessionid = \Zend_Session::getId();
+		$sor = $this->find($id);
+		if ($sor && $sor->getSessionid() == $sessionid) {
+			$this->_em->remove($sor);
+			$this->_em->flush();
+            $this->createSzallitasiKtg();
+            return true;
+        }
+        return false;
+    }
+
+    public function edit($id, $mennyiseg) {
+		$sessionid = \Zend_Session::getId();
+		$sor = $this->find($id);
+		if ($sor && $sor->getSessionid() == $sessionid) {
+			$sor->setMennyiseg($mennyiseg);
+			$this->getEm()->persist($sor);
+			$this->getEm()->flush();
+            $this->createSzallitasiKtg();
+            return true;
+        }
+        return false;
+    }
+
+	public function clear($partnerid = false) {
+		if ($partnerid) {
+			$partner = $this->getRepo('Entities\Partner')->find($partnerid);
+		}
+		else {
+			$partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
+		}
+		if ($partner) {
+			$k = $this->getDataByPartner($partner);
+		}
+		else {
+			if ($partnerid) {
+				$k = false;
+			}
+			else {
+				$k = $this->getDataBySessionId(\Zend_Session::getId());
+			}
+		}
+		foreach ($k as $sor) {
+			$this->_em->remove($sor);
+		}
+		if ($k) {
+			$this->_em->flush();
+		}
+	}
+
+    public function createSzallitasiKtg() {
+        $ktg = 0;
+        $ertek = $this->calcSumBySessionId(\Zend_Session::getId());
+        $termek = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
+        $h = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg1Ig);
+        if (($ertek <= $h) || ($h == 0)) {
+            $h = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg1Tol);
+            if ($ertek >= $h) {
+                $ktg = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg1Ertek);
+            }
+        }
+        else {
+            $h = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg2Ig);
+            if (($ertek <= $h) || ($h == 0)) {
+                $h = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg2Tol);
+                if ($ertek >= $h) {
+                    $ktg = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg2Ertek);
+                }
+            }
+            else {
+                $h = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg3Ig);
+                if (($ertek <= $h) || ($h == 0)) {
+                    $h = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg3Tol);
+                    if ($ertek >= $h) {
+                        $ktg = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg3Ertek);
+                    }
+                }
+            }
+        }
+        $this->add($termek, null, $ktg);
+    }
 
 }

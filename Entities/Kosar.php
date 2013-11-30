@@ -63,10 +63,14 @@ class Kosar {
 	/** @Column(type="decimal",precision=14,scale=4,nullable=true) */
 	private $bruttoegysar;
 
+    /** @Column(type="integer",nullable=true) */
+	private $sorrend = 0;
+
 	public function toLista() {
 		$ret = array();
 		$termek = $this->getTermek();
 		$ret = $ret + $termek->toKosar($this->getTermekvaltozat());
+        $ret['noedit'] = $termek->getId() == \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
 		$ret['id'] = $this->getId();
 		$ret['bruttoegysarhuf'] = $this->getBruttoegysar();
 		$ret['mennyiseg'] = $this->getMennyiseg();
@@ -237,4 +241,11 @@ class Kosar {
 		return '';
 	}
 
+    public function getSorrend() {
+        return $this->sorrend;
+    }
+
+    public function setSorrend($s) {
+        $this->sorrend = $s;
+    }
 }

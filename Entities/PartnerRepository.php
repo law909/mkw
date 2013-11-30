@@ -102,4 +102,19 @@ class PartnerRepository extends \mkwhelpers\Repository {
 		return $this->getAll($filter, array());
     }
 
+    public function checkloggedin() {
+        if (isset(\mkw\Store::getMainSession()->pk)) {
+            $users = $this->findByIdSessionid(\mkw\Store::getMainSession()->pk, \Zend_Session::getId());
+            return count($users) == 1;
+        }
+        return false;
+    }
+
+    public function getLoggedInUser() {
+        if ($this->checkloggedin()) {
+            return $this->find(\mkw\Store::getMainSession()->pk);
+        }
+        return null;
+    }
+
 }

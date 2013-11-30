@@ -104,11 +104,10 @@ class megrendelesfejController extends bizonylatfejController {
 	}
 
 	public function getFiokList() {
-		$pc = new partnerController($this->params);
 		$filter=array();
 		$filter['fields'][] = 'partner';
 		$filter['clauses'][] = '=';
-		$filter['values'][] = $pc->getLoggedInUser();
+		$filter['values'][] = $this->getRepo('Entities\Partner')->getLoggedInUser();
 		$l = $this->getRepo()->getWithJoins($filter, array('kelt' => 'ASC'));
 		$ret = array();
 		foreach($l as $it) {

@@ -10,6 +10,10 @@ class Repository extends EntityRepository {
 	protected $orders;
 	protected $batches;
 
+    public function getRepo($entityname) {
+        return $this->_em->getRepository($entityname);
+    }
+
 	public function getAll($filter,$order,$offset=0,$elemcount=0) {
 		$q=$this->_em->createQuery('SELECT '.$this->alias.' FROM '.$this->entityname.' '.$this->alias
 			.$this->getFilterString($filter)

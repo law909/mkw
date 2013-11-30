@@ -36,11 +36,10 @@ class termekertesitoController extends \mkwhelpers\MattableController {
     }
 
     protected function setFields($obj) {
-        $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termekid'));
+        $termek = $this->getRepo('Entities\Termek')->find($this->params->getIntRequestParam('termekid'));
         if ($termek) {
             $obj->setTermek($termek);
-            $pc = new partnerController($this->params);
-            $partner = $pc->getLoggedInUser();
+            $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
             if ($partner) {
                 $obj->setPartner($partner);
             }

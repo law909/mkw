@@ -21,13 +21,18 @@
 			<td>
 				<div class="textaligncenter">
 					<form class="kosarform" action="{$tetel.editlink}">
-						<div><input id="mennyedit_{$tetel.id}" class="span1" type="number" min="1" step="any" name="mennyiseg" value="{number_format($tetel.mennyiseg,0,'','')}" data-org="{$tetel.mennyiseg}"></div>
+						<div>{if ($tetel.noedit)}
+                            {number_format($tetel.mennyiseg,0,'','')}
+                            {else}
+                            <input id="mennyedit_{$tetel.id}" class="span1" type="number" min="1" step="any" name="mennyiseg" value="{number_format($tetel.mennyiseg,0,'','')}" data-org="{$tetel.mennyiseg}">
+                            {/if}
+                        </div>
 						<input type="hidden" name="id" value="{$tetel.id}">
 					</form>
 				</div>
 			</td>
 			<td><div class="textalignright">{number_format($tetel.bruttohuf,0,',',' ')} Ft</div></td>
-			<td class="textaligncenter"><a class="btn js-kosardelbtn" href="/kosar/del?id={$tetel.id}" rel="nofollow"><i class="icon-remove-sign"></i>{t('Töröl')}</a></td>
+			<td class="textaligncenter">{if (!$tetel.noedit)}<a class="btn js-kosardelbtn" href="/kosar/del?id={$tetel.id}" rel="nofollow"><i class="icon-remove-sign"></i>{t('Töröl')}</a>{/if}</td>
 		</tr>
 	{/foreach}
 </tbody>

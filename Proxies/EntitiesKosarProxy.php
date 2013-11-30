@@ -210,10 +210,22 @@ class EntitiesKosarProxy extends \Entities\Kosar implements \Doctrine\ORM\Proxy\
         return parent::getValutanemNev();
     }
 
+    public function getSorrend()
+    {
+        $this->__load();
+        return parent::getSorrend();
+    }
+
+    public function setSorrend($s)
+    {
+        $this->__load();
+        return parent::setSorrend($s);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'sessionid', 'partner', 'termek', 'termekvaltozat', 'mennyiseg', 'valutanem', 'nettoegysar', 'bruttoegysar');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'sessionid', 'partner', 'termek', 'termekvaltozat', 'mennyiseg', 'valutanem', 'nettoegysar', 'bruttoegysar', 'sorrend');
     }
 
     public function __clone()

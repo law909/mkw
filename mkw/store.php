@@ -206,11 +206,11 @@ class Store {
         $v->setVar('logo', self::getParameter(consts::Logo));
 		$kc = new \Controllers\kosarController(null);
 		$v->setVar('kosar', $kc->getMiniData());
-		$pc = new \Controllers\partnerController(null);
+		$pr = self::getEm()->getRepository('Entities\Partner');
 		$user = array();
-		$user['loggedin'] = $pc->checkloggedin();
+		$user['loggedin'] = $pr->checkloggedin();
 		if ($user['loggedin']) {
-			$u = $pc->getLoggedInUser();
+			$u = $pr->getLoggedInUser();
 			$user['nev'] = $u->getNev();
 			$user['email'] = $u->getEmail();
 			$user['vezeteknev'] = $u->getVezeteknev();

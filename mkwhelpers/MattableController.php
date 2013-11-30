@@ -43,8 +43,11 @@ class MattableController extends Controller {
         return $this->em;
     }
 
-    public function getRepo() {
-        return $this->repo;
+    public function getRepo($entityname = null) {
+        if (!$entityname) {
+            return $this->repo;
+        }
+        return $this->em->getRepository($entityname);
     }
 
     protected function getPager() {
