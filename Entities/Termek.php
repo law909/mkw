@@ -274,9 +274,9 @@ class Termek {
         $x['caption'] = $this->getNev();
         $x['rovidleiras'] = $this->getRovidLeiras();
         $x['akcios'] = $this->getAkcios();
+        $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
-        $x['akciosbrutto'] = $this->getAkciosbrutto();
         $x['bruttohuf'] = $this->getBruttoAr($valtozat);
         $x['eredetibruttohuf'] = $this->getBruttoAr($valtozat, true);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
@@ -367,9 +367,9 @@ class Termek {
         $x['caption'] = $this->getNev();
         $x['rovidleiras'] = $this->getRovidLeiras();
         $x['akcios'] = $this->getAkcios();
+        $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
-        $x['akciosbrutto'] = $this->getAkciosbrutto();
         $x['bruttohuf'] = $this->getBruttoAr();
         $x['eredetibruttohuf'] = $this->getBruttoAr($valtozat, true);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
@@ -402,9 +402,9 @@ class Termek {
         $x['me'] = $this->getMe();
         $x['hozzaszolas'] = $this->getHozzaszolas();
         $x['akcios'] = $this->getAkcios();
+        $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
-        $x['akciosbrutto'] = $this->getAkciosbrutto();
         $x['bruttohuf'] = $this->getBruttoAr($valtozat);
         $x['eredetibruttohuf'] = $this->getBruttoAr($valtozat, true);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
@@ -740,7 +740,29 @@ class Termek {
     }
 
     public function getAkcios() {
-        return $this->getAkciostartStr() <= date(\mkw\Store::$DateFormat) && $this->getAkciostopStr() >= date(\mkw\Store::$DateFormat);
+        $ma = date(\mkw\Store::$DateFormat);
+        return
+            (
+                ($this->getAkciostartStr() != '') || ($this->getAkciostopStr() != '')
+            ) &&
+            (
+                ($this->getAkciostartStr() <= $ma && $this->getAkciostopStr() >= $ma) ||
+                ($this->getAkciostartStr() <= $ma && $this->getAkciostopStr() == '') ||
+                ($this->getAkciostartStr() == '' && $this->getAkciostopStr() >= $ma)
+            );
+    }
+
+    public function getAkcioTipus() {
+        if ($this->getAkciostartStr() && $this->getAkciostopStr()) { // tol-ig
+            return 1;
+        }
+        if ($this->getAkciostopStr()) { // ig
+            return 2;
+        }
+        if ($this->getAkciostartStr()) { // keszlet erejeig
+            return 3;
+        }
+        return 0;
     }
 
     public function getAkciosnetto() {

@@ -80,6 +80,14 @@
 					</div>
 					{/if}
 					<h3 id="termekprice{$termek.id}" class="itemPrice textalignright" itemprop="price">{number_format($termek.bruttohuf,0,',',' ')} Ft</h3>
+                    {if ($termek.akcios)}
+                        <div>AKCIÓ! Eredeti ár: {number_format($termek.eredetibruttohuf,0,',',' ')} Ft</div>
+                        <div>Az akció {if ($termek.akciotipus == 1)}{$termek.akciostart} - {$termek.akciostop} között érvényes
+                            {elseif ($termek.akciotipus == 2)}{$termek.akciostop}-ig érvényes
+                            {else}a készlet erejéig érvényes
+                            {/if}
+                        </div>
+                    {/if}
 					{if ($termek.nemkaphato)}
 					<div class="textalignright">
 						<a href="#" rel="nofollow" class="js-termekertesitobtn btn btn-large graybtn" data-termek="{$termek.id}" data-id="{$termek.id}">

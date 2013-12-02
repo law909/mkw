@@ -142,6 +142,14 @@
                                             {$_kosarbaclass="js-kosarbamindenvaltozat"}
                                         {/if}
                                         <div id="termekprice{$_termek.id}-{$_termek.valtozatid|default}" class="termekprice" itemprop="price">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
+                                        {if ($_termek.akcios)}
+                                            <div>AKCIÓ! Eredeti ár: {number_format($_termek.eredetibruttohuf,0,',',' ')} Ft</div>
+                                            <div>Az akció {if ($_termek.akciotipus == 1)}{$_termek.akciostart} - {$_termek.akciostop} között érvényes
+                                                {elseif ($_termek.akciotipus == 2)}{$_termek.akciostop}-ig érvényes
+                                                {else}a készlet erejéig érvényes
+                                                {/if}
+                                            </div>
+                                        {/if}
                                         {if ($_termek.nemkaphato)}
                                             <div class="textalignright">
                                                 <a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn" data-termek="{$_termek.id}">
@@ -222,6 +230,14 @@
                                     </div>
                                     <div class="pull-right">
                                         <div class="termekprice" itemprop="price">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
+                                        {if ($_termek.akcios)}
+                                            <div>AKCIÓ! Eredeti ár: {number_format($_termek.eredetibruttohuf,0,',',' ')} Ft</div>
+                                            <div>Az akció {if ($_termek.akciotipus == 1)}{$_termek.akciostart} - {$_termek.akciostop} között érvényes
+                                                {elseif ($_termek.akciotipus == 2)}{$_termek.akciostop}-ig érvényes
+                                                {else}a készlet erejéig érvényes
+                                                {/if}
+                                            </div>
+                                        {/if}
                                         <div class="pull-right">
                                         {if ($_termek.nemkaphato)}
                                             <a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn pull-right" data-termek="{$_termek.id}">
