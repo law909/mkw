@@ -3,6 +3,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 .textaligncenter{text-align:center;}
 table th.textaligncenter,table td.textaligncenter{text-align:center;}
 .textalignright{text-align:right;}
+.textalignjustify{text-align:justify;}
 .simalista{list-style:none;margin:0;}
 .width100percent{width:100%;}
 body{font-size:13px;}

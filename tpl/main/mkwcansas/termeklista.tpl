@@ -100,7 +100,7 @@
                                     </div>
                                     <div class="span5 termektext">
                                         <a href="/termek/{$_termek.slug}" itemprop="url"><span class="termekcaption" itemprop="name">{$_termek.caption}</span></a>
-                                        <p itemprop="description">{$_termek.rovidleiras}</p>
+                                        <p itemprop="description" class="textalignjustify">{$_termek.rovidleiras}</p>
                                         <div class="termekjelzok">
                                             {foreach $_termek.cimkelistaban as $_jelzo}
                                                 <img src="{$_jelzo.kiskepurl}" title="{$_jelzo.caption}" alt="{$_jelzo.caption}">
@@ -185,7 +185,7 @@
                                         </div>
                                         <div class="gtermekright pull-left">
                                         <a itemprop="url" href="/termek/{$_termek.slug}"><span class="gtermekcaption" itemprop="name">{$_termek.caption}</span></a>
-                                        <div itemprop="description">{$_termek.rovidleiras}</div>
+                                        <div itemprop="description" class="textalignjustify">{$_termek.rovidleiras}</div>
                                         </div>
                                     </div>
                                     <div class="pull-left gtermekcenter">
