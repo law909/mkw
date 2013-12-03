@@ -242,6 +242,10 @@ class Store {
 		$v->setVar('kosargetlink', $rut->generate('kosarget'));
 		$v->setVar('showcheckoutlink', $rut->generate('showcheckout'));
 		$v->setVar('prevuri', self::getMainSession()->prevuri ? self::getMainSession()->prevuri : '/');
+        $v->setVar('ujtermekjelolourl', self::getParameter(consts::UjtermekJelolo));
+        $v->setVar('akciosjelolourl', self::getParameter(consts::AkcioJelolo));
+        $v->setVar('top10jelolourl', self::getParameter(consts::Top10Jelolo));
+        $v->setVar('ingyenszallitasjelolourl', self::getParameter(consts::IngyenszallitasJelolo));
 	}
 
 	/**
@@ -311,6 +315,36 @@ class Store {
             $rag = '/';
         }
         return $url . $rag . $slug;
+    }
+
+    public static function calcSzallitasiKoltseg($ertek) {
+        $ktg = 0;
+        $h = Store::getParameter(\mkw\consts::SzallitasiKtg1Ig);
+        if (($ertek <= $h) || ($h == 0)) {
+            $h = Store::getParameter(\mkw\consts::SzallitasiKtg1Tol);
+            if ($ertek >= $h) {
+                $ktg = Store::getParameter(\mkw\consts::SzallitasiKtg1Ertek);
+            }
+        }
+        else {
+            $h = Store::getParameter(\mkw\consts::SzallitasiKtg2Ig);
+            if (($ertek <= $h) || ($h == 0)) {
+                $h = Store::getParameter(\mkw\consts::SzallitasiKtg2Tol);
+                if ($ertek >= $h) {
+                    $ktg = Store::getParameter(\mkw\consts::SzallitasiKtg2Ertek);
+                }
+            }
+            else {
+                $h = Store::getParameter(\mkw\consts::SzallitasiKtg3Ig);
+                if (($ertek <= $h) || ($h == 0)) {
+                    $h = Store::getParameter(\mkw\consts::SzallitasiKtg3Tol);
+                    if ($ertek >= $h) {
+                        $ktg = Store::getParameter(\mkw\consts::SzallitasiKtg3Ertek);
+                    }
+                }
+            }
+        }
+        return $ktg;
     }
 
 }

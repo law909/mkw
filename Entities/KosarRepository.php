@@ -293,37 +293,12 @@ class KosarRepository extends \mkwhelpers\Repository {
     }
 
     public function createSzallitasiKtg() {
-        $ktg = 0;
         $e = $this->calcSumBySessionId(\Zend_Session::getId());
         $ertek = $e['sum'];
         $cnt = $e['count'];
         $termek = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
         if ($cnt != 0) {
-            $h = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg1Ig);
-            if (($ertek <= $h) || ($h == 0)) {
-                $h = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg1Tol);
-                if ($ertek >= $h) {
-                    $ktg = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg1Ertek);
-                }
-            }
-            else {
-                $h = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg2Ig);
-                if (($ertek <= $h) || ($h == 0)) {
-                    $h = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg2Tol);
-                    if ($ertek >= $h) {
-                        $ktg = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg2Ertek);
-                    }
-                }
-                else {
-                    $h = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg3Ig);
-                    if (($ertek <= $h) || ($h == 0)) {
-                        $h = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg3Tol);
-                        if ($ertek >= $h) {
-                            $ktg = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg3Ertek);
-                        }
-                    }
-                }
-            }
+            $ktg = \mkw\Store::calcSzallitasiKoltseg($ertek);
             $this->add($termek, null, $ktg);
         }
         else {

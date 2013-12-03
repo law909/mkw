@@ -330,4 +330,47 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $res;
     }
 
+    public function getUjTermekId() {
+        $a = $this->alias;
+        $filter = array();
+        $filter = $this->addAktivLathatoFilter($filter);
+        $filter['fields'][] = 'nemkaphato';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = false;
+
+        $q = $this->_em->createQuery('SELECT ' . $a .'.id '
+                . ' FROM ' . $this->entityname . ' ' . $a
+                . $this->getFilterString($filter)
+                . $this->getOrderString(array('id' => 'DESC'))
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+        $q->setMaxResults(100);
+        $res = $q->getScalarResult();
+        foreach($res as $r) {
+            $ret = $r['id'];
+        }
+        return $ret;
+    }
+
+    public function getTop10Mennyiseg() {
+        $a = $this->alias;
+        $filter = array();
+        $filter = $this->addAktivLathatoFilter($filter);
+        $filter['fields'][] = 'nemkaphato';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = false;
+
+        $q = $this->_em->createQuery('SELECT ' . $a .'.megvasarlasdb '
+                . ' FROM ' . $this->entityname . ' ' . $a
+                . $this->getFilterString($filter)
+                . $this->getOrderString(array('megvasarlasdb' => 'DESC'))
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+        $q->setMaxResults(10);
+        $res = $q->getScalarResult();
+        foreach($res as $r) {
+            $ret = $r['megvasarlasdb'];
+        }
+        return $ret;
+    }
 }

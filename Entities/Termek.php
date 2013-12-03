@@ -263,8 +263,18 @@ class Termek {
         $this->termekertesitok = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    public function toTermekLista($valtozat = null) {
+    public function getUjTermek($min) {
+        return $this->id >= $min;
+    }
+
+    public function getTop10($top10min) {
+        return $this->megvasarlasdb >= $top10min;
+    }
+
+    public function toTermekLista($valtozat = null, $ujtermekid = null, $top10min = null) {
         $x = array();
+        $x['ujtermek'] = $this->getUjTermek($ujtermekid);
+        $x['top10'] = $this->getTop10($top10min);
         $x['id'] = $this->getId();
         $x['kozepeskepurl'] = $this->getKepurlMedium();
         $x['kiskepurl'] = $this->getKepurlSmall();
@@ -280,6 +290,7 @@ class Termek {
         $x['bruttohuf'] = $this->getBruttoAr($valtozat);
         $x['eredetibruttohuf'] = $this->getBruttoAr($valtozat, true);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
+        $x['ingyenszallitas'] = (\mkw\Store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
 
         $listaban = array();
         foreach ($this->getCimkek() as $cimke) {

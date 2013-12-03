@@ -361,6 +361,10 @@ class termekfaController extends \mkwhelpers\MattableController {
 					$order = array('_xx.nev' => 'ASC');
 					break;
 			}
+
+            $ujtermekminid = $termekrepo->getUjTermekId();
+            $top10min = $termekrepo->getTop10Mennyiseg();
+            \mkw\Store::writelog('top10min: ' . $top10min);
 			// termekek kategoriaval es cimkevel es arral szurve, lapozva
 			// ez a konkret termeklista
 			$termekek = $termekrepo->getTermekLista(array_merge_recursive($keresofilter, $kategoriafilter, $termekidfilter, $arfilter), $order, $pager->getOffset(), $elemperpage);
@@ -373,7 +377,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 				else {
 					$valt = null;
 				}
-				$t[] = $term->toTermekLista($valt);
+                $t[] = $term->toTermekLista($valt, $ujtermekminid, $top10min);
 			}
 			// kiemelt termekek, kategoriaszures es kereses
 			$kiemelttermekek = $termekrepo->getKiemeltTermekek(array_merge_recursive($keresofilter, $kategoriafilter), $kiemelttermekdb);
