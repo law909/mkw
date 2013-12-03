@@ -422,7 +422,7 @@ class Termek {
         $x['eredetibruttohuf'] = $this->getBruttoAr($valtozat, true);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['ingyenszallitas'] = (\mkw\Store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
-        $x['husegpont'] = $x['bruttohuf'] * $this->getHparany() / 100;
+        $x['husegpont'] = floor($x['bruttohuf'] * $this->getHparany() / 100);
 
         $altomb = array();
         foreach ($this->getTermekKepek() as $kep) {

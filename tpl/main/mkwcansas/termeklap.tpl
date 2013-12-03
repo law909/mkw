@@ -72,8 +72,8 @@
 			</div>
 			<div class="span3 hatter">
 				<div class="korbepadding">
-                    <div>{t('Cikkszám')}: <span itemprop="productID">{$termek.cikkszam}</span></div>
-                    <div>Kapható hűségpont: {$termek.husegpont}</div>
+                    <div><span class="bold">Cikkszám:</span> <span itemprop="productID">{$termek.cikkszam}</span></div>
+                    <div><span class="bold">Kapható hűségpont:</span> {$termek.husegpont}</div>
                     <div>
                         <ul class="simalista">
                         {foreach $termek.cimkeakciodobozban as $_jelzo}
@@ -93,7 +93,7 @@
 					<div class="row">
 						<div class="span2 kosarbacontainer">
                             {foreach $termek.valtozatok as $_valtozat}
-                            <div>{$_valtozat.name}</div>
+                            <div class="bold">{$_valtozat.name}</div>
                             <div>
                                 <select class="js-mindenvaltozatedit valtozatselect" data-id="{$termek.id}" data-termek="{$termek.id}" data-tipusid="{$_valtozat.tipusid}">
                                     <option value="">{t('Válasszon')}</option>
