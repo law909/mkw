@@ -53,18 +53,25 @@
 			<div class="span3 hatter">
 				<div class="korbepadding">
                     <div>{t('Cikkszám')}: <span itemprop="productID">{$termek.cikkszam}</span></div>
+                    <div>Kapható hűségpont: {$termek.husegpont}</div>
                     <div>
                         <ul class="simalista">
                         {foreach $termek.cimkeakciodobozban as $_jelzo}
-                            <li>{if ($_jelzo.kiskepurl!='')}<img src="{$_jelzo.kiskepurl}" alt="{$_jelzo.caption}" title="{$_jelzo.caption}"> {/if}{$_jelzo.caption}</li>
+                            <li>{$_jelzo.caption}</li>
                         {/foreach}
                         </ul>
+                    </div>
+                    <div>
+                        {if ($termek.ujtermek)}<img src="{$ujtermekjelolourl}" title="Új termék" alt="Új termék">{/if}
+                        {if ($termek.akcios)}<img src="{$akciosjelolourl}" title="Akciós termék" alt="Akciós termék">{/if}
+                        {if ($termek.top10)}<img src="{$top10jelolourl}" title="Top 10 termék" alt="Top 10 termék">{/if}
+                        {if ($termek.ingyenszallitas)}<img src="{$ingyenszallitasjelolourl}" title="Ingyenes szállítás" alt="Ingyenes szállítás">{/if}
                     </div>
 					{$_kosarbaclass="js-kosarba"}
 					{if ($termek.valtozatok)}
 					{$_kosarbaclass="js-kosarbamindenvaltozat"}
 					<div class="row">
-						<div class="span2">
+						<div class="span2 kosarbacontainer">
                             {foreach $termek.valtozatok as $_valtozat}
                             <div>{$_valtozat.name}</div>
                             <div>
@@ -79,12 +86,7 @@
 						</div>
 					</div>
 					{/if}
-                    <div>
-                        {if ($termek.ujtermek)}<img src="{$ujtermekjelolourl}" title="Új termék" alt="Új termék">{/if}
-                        {if ($termek.akcios)}<img src="{$akciosjelolourl}" title="Akciós termék" alt="Akciós termék">{/if}
-                        {if ($termek.top10)}<img src="{$top10jelolourl}" title="Top 10 termék" alt="Top 10 termék">{/if}
-                        {if ($termek.ingyenszallitas)}<img src="{$ingyenszallitasjelolourl}" title="Ingyenes szállítás" alt="Ingyenes szállítás">{/if}
-                    </div>
+                    <div class="kosarbacontainer">
                     {if ($termek.akcios)}
                     <div class="akciosarszoveg akciosarszovegtermeklap textalignright">Eredeti ár: <span class="akciosar">{number_format($termek.eredetibruttohuf,0,',',' ')} Ft</span></div>
                     {/if}
@@ -102,6 +104,14 @@
 						</a>
 					</div>
 					{/if}
+                    {if ($termek.akcios)}
+                    <div class="textalignright">Az akció {if ($termek.akciotipus == 1)}{$termek.akciostart} - {$termek.akciostop}-ig tart
+                        {elseif ($termek.akciotipus == 2)}{$termek.akciostop}-ig tart
+                        {else}a készlet erejéig tart
+                        {/if}
+                    </div>
+					{/if}
+                    </div>
 				</div>
 			</div>
 		</div>

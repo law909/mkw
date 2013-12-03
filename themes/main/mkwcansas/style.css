@@ -165,4 +165,5 @@ thead.acc-megrendelestetellist{font-weight:bold;}thead.acc-megrendelestetellist 
 .akciosar{text-decoration:line-through;}
 .akciosarszovegtermeklap{font-size:18px;}
 .itemPrice{font-size:24.5px;font-weight:bold;margin:5px 0;}
+.kosarbacontainer{padding-top:15px;}
 @media (min-width:1200px){.spanmkw3{width:435px;} .gtermekleft{width:150px;} .gtermekright{width:265px;}}@media (max-width:979px) and (min-width:768px){.spanmkw3{width:268.5px;} .gtermekleft{width:100px;} .gtermekright{width:153px;}}@media (min-width:480px){#navmain li .sub{width:400px;}}@media (max-width:767px){.chk-tooltippedcontainer{width:100%;} .spanmkw3{width:100%;} .gtermekleft{width:30%;} .gtermekright{width:68%;}}@media (min-width:767px){#navmain li .sub{width:700px;} #navmain li .sub ul{width:125px;float:left;}}@media (min-width:979px){#navmain li .sub{width:940px;} #navmain li .sub ul{width:185px;float:left;}}

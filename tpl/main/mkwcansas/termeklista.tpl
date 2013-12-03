@@ -103,7 +103,7 @@
                                         <p itemprop="description" class="textalignjustify">{$_termek.rovidleiras}</p>
                                         <div class="termekjelzok">
                                             {foreach $_termek.cimkelistaban as $_jelzo}
-                                                <img src="{$_jelzo.kiskepurl}" title="{$_jelzo.caption}" alt="{$_jelzo.caption}">
+                                                <span>{$_jelzo.caption}&nbsp;</span>
                                             {/foreach}
                                         </div>
                                         <div class="termekjelzok">
@@ -191,7 +191,7 @@
                                     <div class="pull-left gtermekcenter">
                                         <div class="gtermekleft pull-left">
                                             {foreach $_termek.cimkelistaban as $_jelzo}
-                                                <img src="{$_jelzo.kiskepurl}" title="{$_jelzo.caption}" alt="{$_jelzo.caption}">
+                                                <span>{$_jelzo.caption}&nbsp;</span>
                                             {/foreach}
                                         </div>
                                         <div class="gtermekleft pull-left">
