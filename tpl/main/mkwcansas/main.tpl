@@ -94,7 +94,7 @@
                                         <img src="{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                     </div>
                                     <div>{$_termek.caption}</div>
-                                    <h5 class="itemPrice"><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
+                                    <h5><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
                                 </a>
                             </div>
                         </div>
@@ -123,7 +123,7 @@
                                         <img src="{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                     </div>
                                     <div>{$_termek.caption}</div>
-                                    <h5 class="itemPrice"><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
+                                    <h5><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
                                 </a>
                             </div>
                         </div>
