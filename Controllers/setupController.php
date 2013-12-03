@@ -61,8 +61,6 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::Top10Jelolo, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::AkcioJelolo);
         $view->setVar(\mkw\consts::AkcioJelolo, ($p ? $p->getErtek() : ''));
-        $p = $repo->find(\mkw\consts::MegszunoJelolo);
-        $view->setVar(\mkw\consts::MegszunoJelolo, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::IngyenszallitasJelolo);
         $view->setVar(\mkw\consts::IngyenszallitasJelolo, ($p ? $p->getErtek() : ''));
 
@@ -239,7 +237,6 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::UjtermekJelolo, $this->params->getStringRequestParam('ujtermekjelolo'));
         $this->setObj(\mkw\consts::Top10Jelolo, $this->params->getStringRequestParam('top10jelolo'));
         $this->setObj(\mkw\consts::AkcioJelolo, $this->params->getStringRequestParam('akciojelolo'));
-        $this->setObj(\mkw\consts::MegszunoJelolo, $this->params->getStringRequestParam('megszunojelolo'));
         $this->setObj(\mkw\consts::IngyenszallitasJelolo, $this->params->getStringRequestParam('ingyenszallitasjelolo'));
 
         $this->setObj(\mkw\consts::SzallitasiKtg1Tol, $this->params->getStringRequestParam('szallitasiktg1tol'));
