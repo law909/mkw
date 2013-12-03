@@ -660,7 +660,10 @@ class termekController extends \mkwhelpers\MattableController {
 	}
 
 	public function getTermekLap($termek) {
-		$tfc = new termekfaController($this->params);
+        $ujtermekminid = $this->getRepo()->getUjTermekId();
+        $top10min = $this->getRepo()->getTop10Mennyiseg();
+
+        $tfc = new termekfaController($this->params);
 
 		$ret = array();
 
@@ -670,7 +673,7 @@ class termekController extends \mkwhelpers\MattableController {
 		else {
 			$ret['navigator'] = array();
 		}
-		$ret['termek'] = $termek->toTermekLap();
+		$ret['termek'] = $termek->toTermekLap(null, $ujtermekminid, $top10min);
 
 		$termek->incMegtekintesdb();
 		$this->getEm()->persist($termek);

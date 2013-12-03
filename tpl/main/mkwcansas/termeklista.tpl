@@ -199,6 +199,12 @@
                                                 <img src="{$_jelzo.kiskepurl}" title="{$_jelzo.caption}" alt="{$_jelzo.caption}">
                                             {/foreach}
                                         </div>
+                                        <div class="gtermekleft pull-left">
+                                            {if ($_termek.ujtermek)}<img src="{$ujtermekjelolourl}" title="Új termék" alt="Új termék">{/if}
+                                            {if ($_termek.akcios)}<img src="{$akciosjelolourl}" title="Akciós termék" alt="Akciós termék">{/if}
+                                            {if ($_termek.top10)}<img src="{$top10jelolourl}" title="Top 10 termék" alt="Top 10 termék">{/if}
+                                            {if ($_termek.ingyenszallitas)}<img src="{$ingyenszallitasjelolourl}" title="Ingyenes szállítás" alt="Ingyenes szállítás">{/if}
+                                        </div>
                                         <div class="gtermekright pull-left">
                                             {if ($_termek.valtozatok|default)}
                                                 <div class="pull-left gvaltozatcontainer termekvaltozat">

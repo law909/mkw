@@ -397,9 +397,11 @@ class Termek {
         return $x;
     }
 
-    public function toTermekLap($valtozat = null) {
+    public function toTermekLap($valtozat = null, $ujtermekid = null, $top10min = null) {
         $x = array();
 
+        $x['ujtermek'] = $this->getUjTermek($ujtermekid);
+        $x['top10'] = $this->getTop10($top10min);
         $x['id'] = $this->getId();
         $x['caption'] = $this->getNev();
         $x['slug'] = $this->getSlug();
@@ -419,6 +421,7 @@ class Termek {
         $x['bruttohuf'] = $this->getBruttoAr($valtozat);
         $x['eredetibruttohuf'] = $this->getBruttoAr($valtozat, true);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
+        $x['ingyenszallitas'] = (\mkw\Store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
 
         $altomb = array();
         foreach ($this->getTermekKepek() as $kep) {

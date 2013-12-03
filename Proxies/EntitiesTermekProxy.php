@@ -42,10 +42,22 @@ class EntitiesTermekProxy extends \Entities\Termek implements \Doctrine\ORM\Prox
         return parent::doStuffOnPrePersist();
     }
 
-    public function toTermekLista($valtozat = NULL)
+    public function getUjTermek($min)
     {
         $this->__load();
-        return parent::toTermekLista($valtozat);
+        return parent::getUjTermek($min);
+    }
+
+    public function getTop10($top10min)
+    {
+        $this->__load();
+        return parent::getTop10($top10min);
+    }
+
+    public function toTermekLista($valtozat = NULL, $ujtermekid = NULL, $top10min = NULL)
+    {
+        $this->__load();
+        return parent::toTermekLista($valtozat, $ujtermekid, $top10min);
     }
 
     public function toKiemeltLista($valtozat = NULL)
@@ -54,10 +66,10 @@ class EntitiesTermekProxy extends \Entities\Termek implements \Doctrine\ORM\Prox
         return parent::toKiemeltLista($valtozat);
     }
 
-    public function toTermekLap($valtozat = NULL)
+    public function toTermekLap($valtozat = NULL, $ujtermekid = NULL, $top10min = NULL)
     {
         $this->__load();
-        return parent::toTermekLap($valtozat);
+        return parent::toTermekLap($valtozat, $ujtermekid, $top10min);
     }
 
     public function toKapcsolodo($valtozat = NULL)
@@ -358,6 +370,12 @@ class EntitiesTermekProxy extends \Entities\Termek implements \Doctrine\ORM\Prox
     {
         $this->__load();
         return parent::getAkcios();
+    }
+
+    public function getAkcioTipus()
+    {
+        $this->__load();
+        return parent::getAkcioTipus();
     }
 
     public function getAkciosnetto()
