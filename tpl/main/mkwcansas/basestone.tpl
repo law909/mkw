@@ -55,6 +55,8 @@
         {/if}
 	</head>
 	<body>
+        {block "body"}
+        {/block}
 		{block "stonebody"}
 		{/block}
 		<div id="dialogcenter" class="modal hide fade" tabindex="-1" role="dialog">

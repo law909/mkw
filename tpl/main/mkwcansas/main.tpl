@@ -1,5 +1,16 @@
 {extends "base.tpl"}
 
+{block "body"}
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+{/block}
+
 {block "kozep"}
 <div class="container">
 	<div class="row">
@@ -32,6 +43,23 @@
                 </div>
             {/foreach}
             {/if}
+            <div>
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style ">
+<a class="addthis_button_facebook_like" style="cursor:pointer"></a>
+<a class="addthis_button_facebook" style="cursor:pointer"></a>
+<g:plusone size="small"></g:plusone>
+<a class="addthis_button_iwiw" style="cursor:pointer"></a>
+<a class="addthis_button_twitter" style="cursor:pointer"></a>
+<a class="addthis_button_email" style="cursor:pointer"></a>
+<a class="addthis_button_pinterest_pinit" style="cursor:pointer"></a>
+</div>
+<script type="text/javascript">var addthis_config = { "data_track_clickback":true };</script>
+<script type="text/javascript">var addthis_config = { "data_track_addressbar":true };</script>
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=quixoft"></script>
+<!-- AddThis Button END -->
+            </div>
+        <div class="fb-like-box" data-href="http://www.facebook.com/pages/Mindent-Kapni-Web%C3%A1ruh%C3%A1z/182178395162369" data-width="100%" data-height="400" data-colorscheme="light" data-show-faces="true" data-header="false" data-stream="false" data-show-border="false"></div>
         </div>
         <div class="span8">
             {if (count($korhintalista)>0)}
