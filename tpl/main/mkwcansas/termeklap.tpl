@@ -79,21 +79,16 @@
 						</div>
 					</div>
 					{/if}
-					<h3 id="termekprice{$termek.id}" class="itemPrice textalignright" itemprop="price">{number_format($termek.bruttohuf,0,',',' ')} Ft</h3>
-                    {if ($termek.akcios)}
-                        <div>AKCIÓ! Eredeti ár: {number_format($termek.eredetibruttohuf,0,',',' ')} Ft</div>
-                        <div>Az akció {if ($termek.akciotipus == 1)}{$termek.akciostart} - {$termek.akciostop} között érvényes
-                            {elseif ($termek.akciotipus == 2)}{$termek.akciostop}-ig érvényes
-                            {else}a készlet erejéig érvényes
-                            {/if}
-                        </div>
-                    {/if}
                     <div>
                         {if ($termek.ujtermek)}<img src="{$ujtermekjelolourl}" title="Új termék" alt="Új termék">{/if}
                         {if ($termek.akcios)}<img src="{$akciosjelolourl}" title="Akciós termék" alt="Akciós termék">{/if}
                         {if ($termek.top10)}<img src="{$top10jelolourl}" title="Top 10 termék" alt="Top 10 termék">{/if}
                         {if ($termek.ingyenszallitas)}<img src="{$ingyenszallitasjelolourl}" title="Ingyenes szállítás" alt="Ingyenes szállítás">{/if}
                     </div>
+                    {if ($termek.akcios)}
+                    <div class="akciosarszoveg akciosarszovegtermeklap textalignright">Eredeti ár: <span class="akciosar">{number_format($termek.eredetibruttohuf,0,',',' ')} Ft</span></div>
+                    {/if}
+					<div id="termekprice{$termek.id}" class="itemPrice textalignright" itemprop="price">{number_format($termek.bruttohuf,0,',',' ')} Ft</div>
 					{if ($termek.nemkaphato)}
 					<div class="textalignright">
 						<a href="#" rel="nofollow" class="js-termekertesitobtn btn btn-large graybtn" data-termek="{$termek.id}" data-id="{$termek.id}">
