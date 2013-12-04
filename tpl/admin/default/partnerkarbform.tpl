@@ -63,6 +63,8 @@
 			<tr>
 				<td><label for="FizhatidoEdit">{t('Fizetési haladék')}:</label></td>
 				<td><input id="FizhatidoEdit" name="fizhatido" type="number" size="5" maxlength="3" value="{$partner.fizhatido}"></td>
+				<td><label for="SzallitasiidoEdit">{t('Szállítási idő')}:</label></td>
+				<td><input id="SzallitasiidoEdit" name="szallitasiido" type="number" size="5" maxlength="3" value="{$partner.szallitasiido}"></td>
 			</tr>
 			<tr>
 				<td><label for="AkcioshirlevelkellEdit">{t('Kér akciós hírlevelet')}:</label></td>
@@ -111,7 +113,7 @@
 			</tr>
 			<tr>
 				<td><label for="HonlapEdit">{t('Honlap')}:</label></td>
-				<td><input id="HonlapEdit" name="honlap" type="url" size="40" maxlength="200" value="{$partner.honlap}"></td>
+				<td><input id="HonlapEdit" name="honlap" type="text" size="40" maxlength="200" value="{$partner.honlap}"></td>
 			</tr>
 			</tbody></table>
 			<table><tbody>

@@ -364,7 +364,6 @@ class termekfaController extends \mkwhelpers\MattableController {
 
             $ujtermekminid = $termekrepo->getUjTermekId();
             $top10min = $termekrepo->getTop10Mennyiseg();
-            \mkw\Store::writelog('top10min: ' . $top10min);
 			// termekek kategoriaval es cimkevel es arral szurve, lapozva
 			// ez a konkret termeklista
 			$termekek = $termekrepo->getTermekLista(array_merge_recursive($keresofilter, $kategoriafilter, $termekidfilter, $arfilter), $order, $pager->getOffset(), $elemperpage);

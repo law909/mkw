@@ -238,6 +238,9 @@ class Termek {
      */
     private $gyarto;
 
+    /** @Column(type="integer",nullable=true) */
+    private $szallitasiido;
+
     /**
      * @PrePersist
      * @PreUpdate
@@ -291,6 +294,17 @@ class Termek {
         $x['eredetibruttohuf'] = $this->getBruttoAr($valtozat, true);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['ingyenszallitas'] = (\mkw\Store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
+        if ($this->szallitasiido) {
+            $x['szallitasiido'] = $this->szallitasiido;
+        }
+        else {
+            if ($this->gyarto->getSzallitasiido()) {
+                $x['szallitasiido'] = $this->gyarto->getSzallitasiido();
+            }
+            else {
+                $x['szallitasiido'] = 0;
+            }
+        }
 
         $listaban = array();
         foreach ($this->getCimkek() as $cimke) {
@@ -423,6 +437,17 @@ class Termek {
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['ingyenszallitas'] = (\mkw\Store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
         $x['husegpont'] = floor($x['bruttohuf'] * $this->getHparany() / 100);
+        if ($this->szallitasiido) {
+            $x['szallitasiido'] = $this->szallitasiido;
+        }
+        else {
+            if ($this->gyarto->getSzallitasiido()) {
+                $x['szallitasiido'] = $this->gyarto->getSzallitasiido();
+            }
+            else {
+                $x['szallitasiido'] = 0;
+            }
+        }
 
         $altomb = array();
         foreach ($this->getTermekKepek() as $kep) {
@@ -810,7 +835,6 @@ class Termek {
     }
 
     public function setAkciostart($adat = '') {
-        \mkw\Store::writelog('start: X'.$adat.'X');
         if ($adat != '') {
             $this->akciostart = new \DateTime(\mkw\Store::convDate($adat));
         }
@@ -831,7 +855,6 @@ class Termek {
     }
 
     public function setAkciostop($adat = '') {
-        \mkw\Store::writelog('stop: X'.$adat.'X');
         if ($adat != '') {
             $this->akciostop = new \DateTime(\mkw\Store::convDate($adat));
         }
@@ -1358,4 +1381,11 @@ class Termek {
         $this->fuggoben = $d;
     }
 
+    public function getSzallitasiido() {
+        return $this->szallitasiido;
+    }
+
+    public function setSzallitasiido($adat) {
+        $this->szallitasiido = $adat;
+    }
 }

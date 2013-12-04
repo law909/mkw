@@ -68,6 +68,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['ip'] = $t->getIp();
         $x['referrer'] = $t->getReferrer();
         $x['szallito'] = $t->getSzallito();
+        $x['szallitasiido'] = $t->getSzallitasiido();
         return $x;
     }
 
@@ -108,6 +109,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $obj->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));
         $obj->setUjdonsaghirlevelkell($this->params->getBoolRequestParam('ujdonsaghirlevelkell'));
         $obj->setSzallito($this->params->getBoolRequestParam('szallito'));
+        $obj->setSzallitasiido($this->params->getIntRequestParam('szallitasiido'));
         $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
         if ($fizmod) {
             $obj->setFizmod($fizmod);
@@ -628,20 +630,16 @@ class partnerController extends \mkwhelpers\MattableController {
     public function savePassReminder() {
         $route = store::getRouter()->generate('show404');
         $pr = $this->params->getStringRequestParam('id');
-        \mkw\Store::writelog($pr);
         if ($pr) {
             $user = $this->getRepo()->findOneByPasswordreminder($pr);
             if ($user) {
-                \mkw\Store::writelog($user->getNev());
                 $j1 = $this->params->getStringRequestParam('jelszo1');
                 $j2 = $this->params->getStringRequestParam('jelszo2');
                 if ($j1 === $j2) {
-                    \mkw\Store::writelog($j1);
                     $user->setJelszo($j1);
                     $user->clearPasswordreminder();
                     $this->getEm()->persist($user);
                     $this->getEm()->flush();
-                    \mkw\Store::writelog($user->getJelszo());
                     if ($this->login($user)) {
                         $kc = new kosarController($this->params);
                         $kc->clear();

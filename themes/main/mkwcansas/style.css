@@ -87,7 +87,7 @@ footer nav{margin-top:20px;}
 .termekvaltozat{font-size:13px;font-weight:bold;}
 .valtozatselect{width:100%;}
 .gtermek{min-height:1px;border-width:1px;border-style:solid;border-color:#e8e8e8;border-width:0 0 1px 1px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
-.gtermekinner{float:left;height:280px;width:100%;}
+.gtermekinner{float:left;height:300px;width:100%;}
 .gtermekinnest{padding:10px 1.5% 30px;}
 .gtermekszelso{border-width:0 1px 1px 1px;}
 .gtermekleft{width:150px;margin-right:5px;}

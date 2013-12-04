@@ -199,6 +199,9 @@ class Partner {
     /** @Column(type="string",length=64,nullable=true) */
     private $oldloginname;
 
+    /** @Column(type="integer",nullable=true) */
+    private $szallitasiido;
+
 	public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -760,5 +763,13 @@ class Partner {
 
     public function setOldloginname($name) {
         $this->oldloginname = $name;
+    }
+
+    public function getSzallitasiido() {
+        return $this->szallitasiido;
+    }
+
+    public function setSzallitasiido($adat) {
+        $this->szallitasiido = $adat;
     }
 }

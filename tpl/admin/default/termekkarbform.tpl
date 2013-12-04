@@ -67,6 +67,8 @@
 				<tr>
 					<td><label for="HparanyEdit">{t('Hűségpont arány')}:</label></td>
 					<td><input id="HparanyEdit" name="hparany" type="number" step="any" value="{$termek.hparany}" maxlength="5" size="5"></td>
+					<td><label for="SzallitasiidoEdit">{t('Szállítási idő')}:</label></td>
+					<td><input id="SzallitasiidoEdit" name="szallitasiido" type="number" step="any" value="{$termek.szallitasiido}" maxlength="5" size="5"></td>
 				</tr>
 				<tr>
 					<td></td>

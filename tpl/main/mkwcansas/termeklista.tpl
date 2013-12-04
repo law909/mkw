@@ -101,6 +101,9 @@
                                     <div class="span5 termektext">
                                         <a href="/termek/{$_termek.slug}" itemprop="url"><span class="termekcaption" itemprop="name">{$_termek.caption}</span></a>
                                         <p itemprop="description" class="textalignjustify">{$_termek.rovidleiras}</p>
+                                        {if ($_termek.szallitasiido)}
+                                        <div><span class="bold">Szállítási idő: </span>{$_termek.szallitasiido} munkanap</div>
+                                        {/if}
                                         <div class="termekjelzok">
                                             {foreach $_termek.cimkelistaban as $_jelzo}
                                                 <span>{$_jelzo.caption}&nbsp;</span>
@@ -194,13 +197,16 @@
                                                 <span>{$_jelzo.caption}&nbsp;</span>
                                             {/foreach}
                                         </div>
-                                        <div class="gtermekleft pull-left">
-                                            {if ($_termek.ujtermek)}<img src="{$ujtermekjelolourl}" title="Új termék" alt="Új termék">{/if}
-                                            {if ($_termek.akcios)}<img src="{$akciosjelolourl}" title="Akciós termék" alt="Akciós termék">{/if}
-                                            {if ($_termek.top10)}<img src="{$top10jelolourl}" title="Top 10 termék" alt="Top 10 termék">{/if}
-                                            {if ($_termek.ingyenszallitas)}<img src="{$ingyenszallitasjelolourl}" title="Ingyenes szállítás" alt="Ingyenes szállítás">{/if}
-                                        </div>
                                         <div class="gtermekright pull-left">
+                                            <div>
+                                                {if ($_termek.ujtermek)}<img src="{$ujtermekjelolourl}" title="Új termék" alt="Új termék">{/if}
+                                                {if ($_termek.akcios)}<img src="{$akciosjelolourl}" title="Akciós termék" alt="Akciós termék">{/if}
+                                                {if ($_termek.top10)}<img src="{$top10jelolourl}" title="Top 10 termék" alt="Top 10 termék">{/if}
+                                                {if ($_termek.ingyenszallitas)}<img src="{$ingyenszallitasjelolourl}" title="Ingyenes szállítás" alt="Ingyenes szállítás">{/if}
+                                            </div>
+                                            {if ($_termek.szallitasiido)}
+                                            <div><span class="bold">Szállítási idő: </span>{$_termek.szallitasiido} munkanap</div>
+                                            {/if}
                                             {if ($_termek.valtozatok|default)}
                                                 <div class="pull-left gvaltozatcontainer termekvaltozat">
                                                     {$_termek.valtozatok.fixname}: {$_termek.valtozatok.fixvalue}

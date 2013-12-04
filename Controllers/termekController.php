@@ -66,6 +66,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['termekexportbanszerepel'] = $t->getTermekexportbanszerepel();
 		$x['nemkaphato'] = $t->getNemkaphato();
         $x['fuggoben'] = $t->getFuggoben();
+        $x['szallitasiido'] = $t->getSzallitasiido();
 		if ($forKarb) {
 
 			foreach ($t->getTermekKepek() as $kepje) {
@@ -159,6 +160,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$obj->setTermekexportbanszerepel($this->params->getBoolRequestParam('termekexportbanszerepel'));
 		$obj->setNemkaphato($this->params->getBoolRequestParam('nemkaphato'));
         $obj->setFuggoben($this->params->getBoolRequestParam('fuggoben'));
+        $obj->setSzallitasiido($this->params->getIntRequestParam('szallitasiido'));
 		$farepo = store::getEm()->getRepository('Entities\TermekFa');
 		$fa = $farepo->find($this->params->getIntRequestParam('termekfa1'));
 		if ($fa) {
