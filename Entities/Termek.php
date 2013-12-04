@@ -810,8 +810,12 @@ class Termek {
     }
 
     public function setAkciostart($adat = '') {
+        \mkw\Store::writelog('start: X'.$adat.'X');
         if ($adat != '') {
             $this->akciostart = new \DateTime(\mkw\Store::convDate($adat));
+        }
+        else{
+            $this->akciostart = null;
         }
     }
 
@@ -827,8 +831,12 @@ class Termek {
     }
 
     public function setAkciostop($adat = '') {
+        \mkw\Store::writelog('stop: X'.$adat.'X');
         if ($adat != '') {
             $this->akciostop = new \DateTime(\mkw\Store::convDate($adat));
+        }
+        else {
+            $this->akciostop = null;
         }
     }
 
