@@ -8,6 +8,6 @@ class egyebtorzsController extends \mkwhelpers\Controller {
 		$view=$this->createView('egyebtorzslista.tpl');
 		$this->generalDataLoader->loadData($view);
 		$view->setVar('pagetitle',t('Egyéb adatok'));
-		$view->printTemplateResult();
+		$view->printTemplateResult(false);
 	}
 }

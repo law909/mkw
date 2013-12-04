@@ -75,7 +75,7 @@ class hirController extends \mkwhelpers\MattableController {
 		$view=$this->createView('hirlista.tpl');
 
 		$view->setVar('pagetitle',t('Hírek'));
-		$view->printTemplateResult();
+		$view->printTemplateResult(false);
 	}
 
 	public function viewlist() {
@@ -84,7 +84,7 @@ class hirController extends \mkwhelpers\MattableController {
 		$view->setVar('pagetitle',t('Hír'));
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
-		$view->printTemplateResult();
+		$view->printTemplateResult(false);
 	}
 
 	protected function _getkarb($tplname) {
@@ -133,7 +133,7 @@ class hirController extends \mkwhelpers\MattableController {
 			$view->setVar('pagetitle',$hir->getShowCim());
 			$view->setVar('seodescription',$hir->getShowSeodescription());
 			$view->setVar('hir',$hir->convertToArray());
-			$view->printTemplateResult();
+			$view->printTemplateResult(false);
 		}
 		else {
 			store::redirectTo404($com,$this->params);
@@ -161,6 +161,6 @@ class hirController extends \mkwhelpers\MattableController {
 		}
 		$feedview->setVar('entries',$entries);
 		header('Content-type: text/xml');
-		$feedview->printTemplateResult();
+		$feedview->printTemplateResult(false);
 	}
 }

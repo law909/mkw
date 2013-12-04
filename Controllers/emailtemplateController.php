@@ -56,7 +56,7 @@ class emailtemplateController extends \mkwhelpers\MattableController {
         $view = $this->createView('emailtemplatelista.tpl');
 
         $view->setVar('pagetitle', t('emailtemplate'));
-        $view->printTemplateResult();
+        $view->printTemplateResult(false);
     }
 
     public function viewlist() {
@@ -65,7 +65,7 @@ class emailtemplateController extends \mkwhelpers\MattableController {
         $view->setVar('pagetitle', t('emailtemplate'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $view->printTemplateResult();
+        $view->printTemplateResult(false);
     }
 
     protected function _getkarb($tplname) {

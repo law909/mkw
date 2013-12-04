@@ -88,7 +88,7 @@ class jelenletiivController extends \mkwhelpers\MattableController {
 		$view=$this->createView('jelenletiivlista.tpl');
 
 		$view->setVar('pagetitle',t('Jelenléti ívek'));
-		$view->printTemplateResult();
+		$view->printTemplateResult(false);
 	}
 
 	public function viewlist() {
@@ -101,7 +101,7 @@ class jelenletiivController extends \mkwhelpers\MattableController {
 		$view->setVar('dolgozolist',$dolgozo->getSelectList(0));
 		$jt=new jelenlettipusController($this->params);
 		$view->setVar('jelenlettipuslist',$jt->getSelectList(0));
-		$view->printTemplateResult();
+		$view->printTemplateResult(false);
 	}
 
 	protected function _getkarb($tplname) {

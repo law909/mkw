@@ -726,7 +726,7 @@ class termekController extends \mkwhelpers\MattableController {
 		}
 		$feedview->setVar('entries', $entries);
 		header('Content-type: text/xml');
-		$feedview->printTemplateResult();
+		$feedview->printTemplateResult(false);
 	}
 
     public function redirectOldUrl() {

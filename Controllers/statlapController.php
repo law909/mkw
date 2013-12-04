@@ -100,7 +100,7 @@ class statlapController extends \mkwhelpers\MattableController {
 			$view->setVar('pagetitle',$statlap->getShowOldalcim());
 			$view->setVar('seodescription',$statlap->getShowSeodescription());
 			$view->setVar('statlap',$this->getstatlap($statlap));
-			$view->printTemplateResult();
+			$view->printTemplateResult(true);
 		}
 		else {
 			store::redirectTo404($com,$this->params);
@@ -114,7 +114,7 @@ class statlapController extends \mkwhelpers\MattableController {
 			$view=$this->getTemplateFactory()->createMainView('statlappopup.tpl');
 			store::fillTemplate($view);
 			$view->setVar('szoveg',$statlap->getSzoveg());
-			$view->printTemplateResult();
+			$view->printTemplateResult(false);
 		}
 		else {
 			echo '';

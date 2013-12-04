@@ -20,7 +20,7 @@ class SmartyView extends View {
 		return $this->tplengine->fetch($this->tplfile);
 	}
 
-	public function printTemplateResult($storePrevUri = true) {
+	public function printTemplateResult($storePrevUri = false) {
 		$this->tplengine->display($this->tplfile);
 		if ($storePrevUri) {
 			\mkw\Store::storePrevUri();

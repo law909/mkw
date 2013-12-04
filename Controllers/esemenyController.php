@@ -79,7 +79,7 @@ class esemenyController extends \mkwhelpers\MattableController {
 		$view=$this->createView('esemenylista.tpl');
 
 		$view->setVar('pagetitle',t('Események'));
-		$view->printTemplateResult();
+		$view->printTemplateResult(false);
 	}
 
 	public function viewlist() {
@@ -88,7 +88,7 @@ class esemenyController extends \mkwhelpers\MattableController {
 		$view->setVar('pagetitle',t('Események'));
 		$view->setVar('orderselect',$this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect',$this->getRepo()->getBatchesForTpl());
-		$view->printTemplateResult();
+		$view->printTemplateResult(false);
 	}
 
 	protected function _getkarb($tplname) {

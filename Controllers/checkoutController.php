@@ -27,7 +27,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$s[] = $sor->toLista();
 		}
 		$view->setVar('tetellista', $s);
-		$view->printTemplateResult();
+		$view->printTemplateResult(false);
 	}
 
 	public function getFizmodList() {
@@ -221,6 +221,6 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$view->setVar('megrendelesszam', Store::getMainSession()->lastmegrendeles);
 		Store::getMainSession()->lastmegrendeles = '';
 
-		$view->printTemplateResult();
+		$view->printTemplateResult(false);
 	}
 }

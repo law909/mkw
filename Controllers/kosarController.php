@@ -123,7 +123,7 @@ class kosarController extends \mkwhelpers\MattableController {
 			$s[] = $sor->toLista();
 		}
 		$v->setVar('tetellista', $s);
-		$v->printTemplateResult();
+		$v->printTemplateResult(true);
 	}
 
 	public function clear($partnerid = false) {
@@ -157,7 +157,7 @@ class kosarController extends \mkwhelpers\MattableController {
 			if ($this->params->getIntRequestParam('jax', 0) > 0) {
 				$v = $this->getTemplateFactory()->createMainView('minikosar.tpl');
 				$v->setVar('kosar', $this->getMiniData());
-				$v->printTemplateResult();
+				$v->printTemplateResult(false);
 			}
 			else {
 				if (\mkw\Store::getMainSession()->prevuri) {

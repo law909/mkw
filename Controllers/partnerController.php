@@ -398,7 +398,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $view->setVar('email', $email);
         $view->setVar('hibak', $hibak);
         store::fillTemplate($view);
-        $view->printTemplateResult();
+        $view->printTemplateResult(true);
     }
 
     public function showLoginForm() {
@@ -412,7 +412,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $view->setVar('pagetitle', t('Bejelentkezés') . ' - ' . \mkw\Store::getParameter(\mkw\consts::Oldalcim));
             $view->setVar('sikertelen', \mkw\Store::getMainSession()->loginerror);
             \mkw\Store::getMainSession()->loginerror = false;
-            $view->printTemplateResult();
+            $view->printTemplateResult(true);
         }
     }
 
@@ -478,7 +478,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $megrc = new megrendelesfejController($this->params);
             $megrlist = $megrc->getFiokList();
             $view->setVar('megrendeleslist', $megrlist);
-            $view->printTemplateResult();
+            $view->printTemplateResult(true);
         }
         else {
             header('Location: ' . store::getRouter()->generate('showlogin'));
@@ -620,7 +620,7 @@ class partnerController extends \mkwhelpers\MattableController {
                 $tpl = $this->getTemplateFactory()->createMainView('passreminder.tpl');
                 \mkw\Store::fillTemplate($tpl);
                 $tpl->setVar('reminder', $pr);
-                $tpl->printTemplateResult();
+                $tpl->printTemplateResult(false);
                 return;
             }
         }

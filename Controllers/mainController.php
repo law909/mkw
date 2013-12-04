@@ -48,7 +48,7 @@ class mainController extends \mkwhelpers\Controller {
 		$this->view->setVar('korhintalista', $khc->getLista());
 		$this->view->setVar('topkategorialista', $tfc->getformenu(store::getSetupValue('topkategoriamenunum', 3), 0));
         $this->view->setVar('kiemeltmarkalista', $tcc->getKiemeltList());
-		$this->view->printTemplateResult();
+		$this->view->printTemplateResult(true);
 	}
 
 	public function termekfa() {
@@ -70,7 +70,7 @@ class mainController extends \mkwhelpers\Controller {
 			store::fillTemplate($this->view);
 			$this->view->setVar('pagetitle', $ag->getShowOldalcim());
 			$this->view->setVar('seodescription', $ag->getShowSeodescription());
-			$this->view->printTemplateResult();
+			$this->view->printTemplateResult(true);
 		}
 		else {
 			store::redirectTo404($com, $this->params);
@@ -85,7 +85,7 @@ class mainController extends \mkwhelpers\Controller {
             $this->view->setVar($k, $v);
         }
         store::fillTemplate($this->view);
-        $this->view->printTemplateResult();
+        $this->view->printTemplateResult(true);
     }
 
 	public function kereses() {
@@ -119,7 +119,7 @@ class mainController extends \mkwhelpers\Controller {
 				store::fillTemplate($this->view);
 				$this->view->setVar('seodescription', t('A keresett kifejezés: ') . $keresoszo);
 				$this->view->setVar('pagetitle', t('A keresett kifejezés: ') . $keresoszo);
-				$this->view->printTemplateResult();
+				$this->view->printTemplateResult(true);
 			}
 			else {
 				$this->view = $this->getTemplateFactory()->createMainView('nincstalalat.tpl');
@@ -128,7 +128,7 @@ class mainController extends \mkwhelpers\Controller {
 				store::fillTemplate($this->view);
 				$this->view->setVar('seodescription', t('Keressen valamit.'));
 				$this->view->setVar('pagetitle', t('Keressen valamit.'));
-				$this->view->printTemplateResult();
+				$this->view->printTemplateResult(true);
 			}
 		}
 	}
@@ -146,7 +146,7 @@ class mainController extends \mkwhelpers\Controller {
 			foreach ($t as $k => $v) {
 				$this->view->setVar($k, $v);
 			}
-			$this->view->printTemplateResult();
+			$this->view->printTemplateResult(true);
 		}
 		else {
 			store::redirectTo404($com, $this->params);
@@ -244,14 +244,14 @@ class mainController extends \mkwhelpers\Controller {
 					$view->setVar('szoveg', $szoveg);
 					$view->setVar('hibak', $hibak);
 				}
-				$view->printTemplateResult();
+				$view->printTemplateResult(false);
 				break;
 			default :
 				$kftc = new kapcsolatfelveteltemaController($this->params);
 				$this->view = $this->getTemplateFactory()->createMainView('kapcsolat.tpl');
 				store::fillTemplate($this->view);
 				$this->view->setVar('temalista', $kftc->getSelectList(0));
-				$this->view->printTemplateResult();
+				$this->view->printTemplateResult(true);
 				break;
 		}
 	}

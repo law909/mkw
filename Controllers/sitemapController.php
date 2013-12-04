@@ -13,7 +13,7 @@ class sitemapController extends \mkwhelpers\Controller {
 		$gd=new \mkw\generalDataLoader();
 		$view=$this->createView('sitemap.tpl');
 		$gd->loadData($view);
-		$view->printTemplateResult();
+		$view->printTemplateResult(false);
 	}
 
 	public function create() {
@@ -70,6 +70,6 @@ class sitemapController extends \mkwhelpers\Controller {
 		$view=$this->createView('sitemap.tpl');
 		$gd->loadData($view);
 		$view->setVar('szoveg',t('A sitemap kész.'));
-		$view->printTemplateResult();
+		$view->printTemplateResult(false);
 	}
 }

@@ -288,7 +288,7 @@ class Store {
 		store::fillTemplate($view);
 		$view->setVar('seodescription', t('Sajnos nem találjuk: ') . $keresendo);
 		$view->setVar('pagetitle', t('Sajnos nem találjuk: ') . $keresendo);
-		$view->printTemplateResult();
+		$view->printTemplateResult(false);
 	}
 
     public static function getFullUrl($slug = null, $url = null) {

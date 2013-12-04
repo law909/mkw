@@ -98,7 +98,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
         $view = $this->createView('dolgozolista.tpl');
 
         $view->setVar('pagetitle', t('Dolgozók'));
-        $view->printTemplateResult();
+        $view->printTemplateResult(false);
     }
 
     public function viewlist() {
@@ -107,7 +107,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
         $view->setVar('pagetitle', t('Dolgozók'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $view->printTemplateResult();
+        $view->printTemplateResult(false);
     }
 
     protected function _getkarb($tplname) {
@@ -128,7 +128,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
     public function showlogin() {
         $v = $this->createView('login.tpl');
         $v->setVar('loginurl', Store::getRouter()->generate('adminlogin'));
-        $v->printTemplateResult();
+        $v->printTemplateResult(false);
     }
 
     public function login() {

@@ -9,5 +9,5 @@ abstract class View {
 
 	abstract public function setVar($variable,$data);
 	abstract public function getTemplateResult();
-	abstract public function printTemplateResult($storePrevUri = true);
+	abstract public function printTemplateResult($storePrevUri = false);
 }

@@ -7,7 +7,7 @@ class exportController extends \mkwhelpers\Controller {
     public function view() {
         $view = $this->createView('exports.tpl');
         $view->setVar('pagetitle', t('Exportok'));
-        $view->printTemplateResult();
+        $view->printTemplateResult(false);
     }
 
     public function GrandoExport() {
