@@ -123,7 +123,7 @@ class kosarController extends \mkwhelpers\MattableController {
 			$s[] = $sor->toLista();
 		}
 		$v->setVar('tetellista', $s);
-		$v->printTemplateResult(true);
+		$v->printTemplateResult(false);
 	}
 
 	public function clear($partnerid = false) {

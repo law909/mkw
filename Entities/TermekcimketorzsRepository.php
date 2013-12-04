@@ -115,7 +115,7 @@ class TermekcimketorzsRepository extends \mkwhelpers\Repository {
         $filter['fields'][] = 'kiemelt';
         $filter['clauses'][] = '=';
         $filter['values'][] = true;
-        return $this->getWithJoins($filter, array());
+        return $this->getWithJoins($filter, array('sorrend' => 'ASC'));
     }
 
 }

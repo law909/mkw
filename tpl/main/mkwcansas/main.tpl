@@ -53,7 +53,7 @@
                         <dl class="spg-additional">
                             <dd class="title">
                                 <a href="/szuro?pageno=1&filter={$_marka.termekfilter},">
-                                    <img href="{$_marka.kiskepurl}" title="{$_marka.caption}" alt="{$_marka.caption}">
+                                    <img src="{$_marka.kiskepurl}" title="{$_marka.caption}" alt="{$_marka.caption}">
                                 </a>
                             </dd>
                         </dl>

@@ -337,7 +337,8 @@ class termekfaController extends \mkwhelpers\MattableController {
 			$tc->initPager(
 					$termekdb, $elemperpage, $pageno);
 			$pager = $tc->getPager();
-
+            $elemperpage = $pager->getElemPerPage();
+            
 			switch ($ord) {
 				case 'nevasc':
 					$order = array('_xx.nev' => 'ASC');
