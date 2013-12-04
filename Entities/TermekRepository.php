@@ -268,7 +268,21 @@ class TermekRepository extends \mkwhelpers\Repository {
             $kiemeltfilter['fields'][] = 'id';
             $kiemeltfilter['clauses'][] = 'IN';
             $kiemeltfilter['values'][] = $v;
-            return $this->getWithJoins($kiemeltfilter, array(), 0, $db);
+
+            $a = $this->alias;
+            $q = $this->_em->createQuery('SELECT ' . $a . '.id,v.id AS valtozatid'
+                    . ' FROM ' . $this->entityname . ' ' . $a
+                    . ' LEFT JOIN ' . $a . '.termekfa1 fa1'
+                    . ' LEFT JOIN ' . $a . '.termekfa2 fa2'
+                    . ' LEFT JOIN ' . $a . '.termekfa3 fa3'
+                    . ' LEFT JOIN ' . $a . '.valtozatok v WITH v.lathato=true AND v.elerheto=true'
+                    . $this->getFilterString($kiemeltfilter));
+
+            $q->setParameters($this->getQueryParameters($kiemeltfilter));
+            $q->setMaxResults($db);
+            \mkw\Store::writelog(print_r($v, true));
+            \mkw\Store::writelog($q->getSQL());
+            return $q->getScalarResult();
         }
         else {
             return array();

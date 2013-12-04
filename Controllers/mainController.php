@@ -39,6 +39,7 @@ class mainController extends \mkwhelpers\Controller {
 		$tc = new termekController($this->params);
 		$khc = new korhintaController($this->params);
 		$tfc = new termekfaController($this->params);
+        $tcc = new termekcimkeController($this->params);
 		$this->view->setVar('pagetitle', store::getParameter(consts::Oldalcim));
 		$this->view->setVar('seodescription', store::getParameter(consts::Seodescription));
 		$this->view->setVar('hirek', $hc->gethirlist());
@@ -46,6 +47,7 @@ class mainController extends \mkwhelpers\Controller {
 		$this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista());
 		$this->view->setVar('korhintalista', $khc->getLista());
 		$this->view->setVar('topkategorialista', $tfc->getformenu(store::getSetupValue('topkategoriamenunum', 3), 0));
+        $this->view->setVar('kiemeltmarkalista', $tcc->getKiemeltList());
 		$this->view->printTemplateResult();
 	}
 
@@ -60,7 +62,7 @@ class mainController extends \mkwhelpers\Controller {
 			}
 			else {
 				$this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');
-				$t = $tf->gettermeklistaforparent($ag, $this->createTermekfaParams());
+				$t = $tf->gettermeklistaforparent($ag, 'termekfa');
 			}
 			foreach ($t as $k => $v) {
 				$this->view->setVar($k, $v);
@@ -74,6 +76,17 @@ class mainController extends \mkwhelpers\Controller {
 			store::redirectTo404($com, $this->params);
 		}
 	}
+
+    public function szuro() {
+		$tf = new termekfaController($this->params);
+        $this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');
+        $t = $tf->gettermeklistaforparent(null, 'szuro');
+        foreach ($t as $k => $v) {
+            $this->view->setVar($k, $v);
+        }
+        store::fillTemplate($this->view);
+        $this->view->printTemplateResult();
+    }
 
 	public function kereses() {
 		$term = trim($this->params->getStringRequestParam('term'));
@@ -90,7 +103,7 @@ class mainController extends \mkwhelpers\Controller {
 				store::getEm()->flush();
 
 				$tf = new termekfaController($this->params);
-				$t = $tf->gettermeklistaforparent(null, $this->createTermekfaParams());
+				$t = $tf->gettermeklistaforparent(null, 'kereses');
 
 				if ($t['lapozo']['elemcount'] > 0) {
 					$this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');

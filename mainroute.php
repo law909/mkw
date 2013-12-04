@@ -21,6 +21,7 @@ $router->map('GET','/feed/termek','termekController#feed','termekfeed');
 $router->map('GET','/kapcsolat','mainController#kapcsolat','showkapcsolat');
 $router->map('POST','/kapcsolat/[ment:todo]','mainController#kapcsolat','savekapcsolat');
 
+$router->map('GET','/szuro','mainController#szuro','showszuro');
 $router->map('GET','/termekfa/[:slug]','mainController#termekfa','showtermekfa');
 $router->map('GET','/termek/[:slug]','mainController#termek','showtermek');
 $router->map('GET','/valtozatar','mainController#valtozatar','valtozatar');

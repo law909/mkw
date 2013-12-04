@@ -43,6 +43,24 @@
                 </div>
             {/foreach}
             {/if}
+            {if (count($kiemeltmarkalista)>0)}
+            <div class="blockHeader">
+            <h4>{t('Kiemelt márkáink')}</h4>
+            </div>
+            {foreach $kiemeltmarkalista as $_marka}
+                <div class="hirListBlock">
+                    <div class="borderBottomColorOneExtraLight">
+                        <dl class="spg-additional">
+                            <dd class="title">
+                                <a href="/szuro?pageno=1&filter={$_marka.termekfilter},">
+                                    <img href="{$_marka.kiskepurl}" title="{$_marka.caption}" alt="{$_marka.caption}">
+                                </a>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            {/foreach}
+            {/if}
             <div>
 <!-- AddThis Button BEGIN -->
 <div class="addthis_toolbox addthis_default_style ">

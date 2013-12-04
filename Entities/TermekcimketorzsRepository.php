@@ -110,4 +110,12 @@ class TermekcimketorzsRepository extends \mkwhelpers\Repository {
 		return false;
 	}
 
+    public function getKiemelt() {
+        $filter = array();
+        $filter['fields'][] = 'kiemelt';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = true;
+        return $this->getWithJoins($filter, array());
+    }
+
 }

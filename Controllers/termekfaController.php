@@ -220,7 +220,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		return $ret;
 	}
 
-	public function gettermeklistaforparent($parent) {
+	public function gettermeklistaforparent($parent, $caller = null) {
 		$kategoriafilter = array();
 		$arfilter = array();
 		$termekidfilter = array();
@@ -364,10 +364,30 @@ class termekfaController extends \mkwhelpers\MattableController {
 
             $ujtermekminid = $termekrepo->getUjTermekId();
             $top10min = $termekrepo->getTop10Mennyiseg();
+
+            // kiemelt termekek, kategoriaszures es kereses
+			$t = array();
+            $kiemeltdb = 0;
+            if (($kiemelttermekdb>0) && ($pageno == 1) && ($parent)) {
+                $kiemelttermekek = $termekrepo->getKiemeltTermekek(array_merge_recursive($keresofilter, $kategoriafilter), $kiemelttermekdb);
+                $kt = array();
+                foreach ($kiemelttermekek as $termek) {
+                    $term = $termekrepo->find($termek['id']);
+                    if ($termek['valtozatid']) {
+                        $valt = $this->getEm()->getRepository('Entities\TermekValtozat')->find($termek['valtozatid']);
+                    }
+                    else {
+                        $valt = null;
+                    }
+                    $tete = $term->toTermekLista($valt, $ujtermekminid, $top10min);
+                    $tete['kiemelt'] = true;
+                    $t[] = $tete;
+                    $kiemeltdb++;
+                }
+            }
 			// termekek kategoriaval es cimkevel es arral szurve, lapozva
 			// ez a konkret termeklista
-			$termekek = $termekrepo->getTermekLista(array_merge_recursive($keresofilter, $kategoriafilter, $termekidfilter, $arfilter), $order, $pager->getOffset(), $elemperpage);
-			$t = array();
+            $termekek = $termekrepo->getTermekLista(array_merge_recursive($keresofilter, $kategoriafilter, $termekidfilter, $arfilter), $order, $pager->getOffset(), $elemperpage - $kiemeltdb);
 			foreach ($termekek as $termek) {
 				$term = $termekrepo->find($termek['id']);
 				if ($termek['valtozatid']) {
@@ -376,13 +396,9 @@ class termekfaController extends \mkwhelpers\MattableController {
 				else {
 					$valt = null;
 				}
-                $t[] = $term->toTermekLista($valt, $ujtermekminid, $top10min);
-			}
-			// kiemelt termekek, kategoriaszures es kereses
-			$kiemelttermekek = $termekrepo->getKiemeltTermekek(array_merge_recursive($keresofilter, $kategoriafilter), $kiemelttermekdb);
-			$kt = array();
-			foreach ($kiemelttermekek as $termek) {
-				$kt[] = $termek->toKiemeltLista();
+                $tete = $term->toTermekLista($valt, $ujtermekminid, $top10min);
+                $tete['kiemelt'] = false;
+                $t[] = $tete;
 			}
 			// termek id-k csak kategoriaval es arral szurve
 			// a szuroben szereplo cimkek megallapitasahoz
@@ -396,18 +412,23 @@ class termekfaController extends \mkwhelpers\MattableController {
 			$ret['arfilterstep'] = store::getParameter(\mkw\consts::Arfilterstep, 500);
 			$ret['minarfilter'] = $minarfilter;
 			$ret['maxarfilter'] = (floor($maxarfilter / $ret['arfilterstep']) + 1) * $ret['arfilterstep'];
-			if ($parent) {
-				$ret['url'] = '/termekfa/' . $parent->getSlug();
-				$ret['navigator'] = $this->getNavigator($parent);
-			}
-			else {
-				$ret['url'] = '/kereses';
-				$ret['navigator'] = array(array('caption' => t('A keresett kifejezés') . ': ' . $keresoszo));
-			}
+            switch ($caller) {
+                case 'termekfa':
+                    $ret['url'] = '/termekfa/' . $parent->getSlug();
+                    $ret['navigator'] = $this->getNavigator($parent);
+                    break;
+                case 'kereses':
+                    $ret['url'] = '/kereses';
+                    $ret['navigator'] = array(array('caption' => t('A keresett kifejezés') . ': ' . $keresoszo));
+                    break;
+                case 'szuro':
+                    $ret['url'] = '/szuro';
+                    $ret['navigator'] = array(array('caption' => t('Szűrő')));
+                    break;
+            }
 			$ret['keresett'] = $keresoszo;
 			$ret['vt'] = ($this->params->getIntRequestParam('vt') > 0 ? $this->params->getIntRequestParam('vt') : 1);
 			$ret['termekek'] = $t;
-			$ret['kiemelttermekek'] = $kt;
 			// $tid = termek id-k csak kategoriaval es arral szurve
 			$ret['szurok'] = $tck->getForTermekSzuro($tid, $szurotomb, $termekidfiltered);
 			$ret['lapozo'] = $pager->loadValues();

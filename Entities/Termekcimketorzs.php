@@ -28,6 +28,9 @@ class Termekcimketorzs extends Cimketorzs {
      */
     private $kategoria;
 
+    /** @Column(type="boolean") */
+    private $kiemelt = false;
+
     public function __construct() {
         $this->termekek = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -42,6 +45,8 @@ class Termekcimketorzs extends Cimketorzs {
         $x['kategorianev'] = $this->getKategoria()->getNev();
         $mk = \mkw\Store::getParameter(\mkw\consts::MarkaCs);
         $x['dontshowcaption'] = $mk == $this->getKategoriaId();
+        $x['kiemelt'] = $this->getKiemelt();
+        $x['termekfilter'] = 'szuro_' . $this->getKategoriaId() . '_' . $this->getId();
         return $x;
     }
 
@@ -107,4 +112,11 @@ class Termekcimketorzs extends Cimketorzs {
         return false;
     }
 
+    public function getKiemelt() {
+        return $this->kiemelt;
+    }
+
+    public function setKiemelt($adat) {
+        $this->kiemelt = $adat;
+    }
 }

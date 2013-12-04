@@ -47,6 +47,7 @@
 			<input id="Menu2LathatoCheck" name="menu2lathato" type="checkbox"{if ($cimke.menu2lathato)}checked="checked"{/if}>{t('Menü 2')}</input>
 			<input id="Menu3LathatoCheck" name="menu3lathato" type="checkbox"{if ($cimke.menu3lathato)}checked="checked"{/if}>{t('Menü 3')}</input>
 			<input id="Menu4LathatoCheck" name="menu4lathato" type="checkbox"{if ($cimke.menu4lathato)}checked="checked"{/if}>{t('Menü 4')}</input>
+			<input id="KiemeltCheck" name="kiemelt" type="checkbox"{if ($cimke.kiemelt)}checked="checked"{/if}>{t('Kiemelt')}</input>
 			<table><tbody>
 			<tr>
 				<td><label for="OldalCimEdit">{t('Lap címe')}:</label></td>
