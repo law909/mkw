@@ -3,7 +3,9 @@
 {block "kozep"}
 <div class="container">
 	<div class="row">
-	<h2 class="textaligncenter">Hoppá! Nem ismerjük az oldalt, amit keres.</h2>
+	<h2 class="textaligncenter">Hoppá! Nem találjuk, amit keres.</h2>
+	<h4 class="textaligncenter">A következő termékeket ajánljuk Önnek:</h4>
+        
 	</div>
 	<div class="row">
 		<div class="span16">

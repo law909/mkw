@@ -124,7 +124,7 @@
             {/if}
             {if (count($ajanlotttermekek)>0)}
             <div class="blockHeader">
-                <h4>{t('Ajánlott termékeink')}</h4>
+                <h4>{t('Mások ezeket vásárolják most')}</h4>
             </div>
             <div id="ajanlotttermekslider" class="royalSlider contentSlider rsDefaultInv termekSlider">
                 {$lntcnt=count($ajanlotttermekek)}
