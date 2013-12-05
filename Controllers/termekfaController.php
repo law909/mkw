@@ -242,8 +242,6 @@ class termekfaController extends \mkwhelpers\MattableController {
 		  'vt'=>$this->params->getIntRequestParam('vt',1)
 		 */
 		$elemperpage = $this->params->getIntRequestParam('elemperpage', \mkw\Store::getParameter(\mkw\consts::Termeklistatermekdb, 30));
-        \mkw\Store::writelog('termekfaController->gettermeklistaforparent');
-        \mkw\Store::writelog('elemperpage: '.$elemperpage);
 
 		$pageno = $this->params->getIntRequestParam('pageno', 1);
 		$ord = $this->params->getStringRequestParam('order');
