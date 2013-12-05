@@ -105,17 +105,10 @@ class mainController extends \mkwhelpers\Controller {
 				$tf = new termekfaController($this->params);
 				$t = $tf->gettermeklistaforparent(null, 'kereses');
 
-				if ($t['lapozo']['elemcount'] > 0) {
-					$this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');
-					foreach ($t as $k => $v) {
-						$this->view->setVar($k, $v);
-					}
-				}
-				else {
-					$this->view = $this->getTemplateFactory()->createMainView('nincstalalat.tpl');
-					$tc = new termekController($this->params);
-					$this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
-				}
+                $this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');
+                foreach ($t as $k => $v) {
+                    $this->view->setVar($k, $v);
+                }
 				store::fillTemplate($this->view);
 				$this->view->setVar('seodescription', t('A keresett kifejezés: ') . $keresoszo);
 				$this->view->setVar('pagetitle', t('A keresett kifejezés: ') . $keresoszo);

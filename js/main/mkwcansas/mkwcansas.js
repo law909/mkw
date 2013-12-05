@@ -536,7 +536,7 @@ $(document).ready(function() {
         e.preventDefault();
         $('#szuroform input[type="checkbox"]').prop('checked',false);
         $('#ArSlider').val('0;0');
-        mkw.lapozas();
+        mkw.lapozas(1);
     });
 
     mkw.initTooltips();
