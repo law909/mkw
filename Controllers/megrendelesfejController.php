@@ -115,4 +115,10 @@ class megrendelesfejController extends bizonylatfejController {
 		}
 		return $ret;
 	}
+
+    protected function setFields($obj) {
+        $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find('megrendeles'));
+        return parent::setFields($obj);
+    }
+
 }

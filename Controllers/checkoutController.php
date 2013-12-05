@@ -146,8 +146,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 
 			$biztipus = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
 			$megrendfej = new \Entities\Bizonylatfej();
-			$megrendfej->setIp($_SERVER['REMOTE_ADDR']);
-			$megrendfej->setReferrer(Store::getMainSession()->referrer);
+            $megrendfej->setPersistentData();
 			$megrendfej->setBizonylattipus($biztipus);
 			$megrendfej->setKelt('');
 			$megrendfej->setTeljesites('');
@@ -211,7 +210,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 			Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
 		}
 		else {
-			echo 'error van';
+			echo 'error';
 		}
 	}
 
