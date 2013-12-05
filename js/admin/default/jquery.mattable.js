@@ -187,7 +187,6 @@
 					if ($.isFunction(setup.filter.onClear)) {
 						setup.filter.onClear.call(this);
 					}
-					$('.'+_pagerIds.elemperpage).val(setup.numberOfRows);
 					reloadTbody();
 				})
 				.button();

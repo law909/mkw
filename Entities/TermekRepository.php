@@ -280,8 +280,6 @@ class TermekRepository extends \mkwhelpers\Repository {
 
             $q->setParameters($this->getQueryParameters($kiemeltfilter));
             $q->setMaxResults($db);
-            \mkw\Store::writelog(print_r($v, true));
-            \mkw\Store::writelog($q->getSQL());
             return $q->getScalarResult();
         }
         else {

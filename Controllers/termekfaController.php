@@ -242,6 +242,9 @@ class termekfaController extends \mkwhelpers\MattableController {
 		  'vt'=>$this->params->getIntRequestParam('vt',1)
 		 */
 		$elemperpage = $this->params->getIntRequestParam('elemperpage', \mkw\Store::getParameter(\mkw\consts::Termeklistatermekdb, 30));
+        \mkw\Store::writelog('termekfaController->gettermeklistaforparent');
+        \mkw\Store::writelog('elemperpage: '.$elemperpage);
+
 		$pageno = $this->params->getIntRequestParam('pageno', 1);
 		$ord = $this->params->getStringRequestParam('order');
 		$szurostr = $this->params->getStringRequestParam('filter');
@@ -289,13 +292,6 @@ class termekfaController extends \mkwhelpers\MattableController {
 			$keresofilter['values'][] = '%' . $keresoszo . '%';
 		}
 
-		$arfilterstring = '(_xx.brutto+IF(v.brutto IS NULL,0,v.brutto)>=' . $minarfilter . ')';
-		if ($maxarfilter > 0) {
-			$arfilterstring = $arfilterstring . ' AND (_xx.brutto+IF(v.brutto IS NULL,0,v.brutto)<=' . $maxarfilter . ')';
-		}
-		$arfilterstring = '((' . $arfilterstring . ') OR (_xx.brutto IS NULL))';
-		$arfilter['sql'][] = $arfilterstring;
-
 		$szurok = explode(',', $szurostr);
 		$szurotomb = array();
 		foreach ($szurok as $egyszuro) {
@@ -322,15 +318,22 @@ class termekfaController extends \mkwhelpers\MattableController {
 			}
 		}
 
-		$termekdb = $termekrepo->getTermekListaCount(array_merge_recursive($keresofilter, $kategoriafilter, $termekidfilter, $arfilter));
+        // termek max ar kategoriaval es cimkevel szurve
+        $maxar = $termekrepo->getTermekListaMaxAr(array_merge_recursive($keresofilter, $kategoriafilter));
+
+        if ($maxarfilter == 0 || \mkw\Store::getMainSession()->autoepp) {
+            $maxarfilter = $maxar;
+        }
+
+		$arfilterstring = '(_xx.brutto+IF(v.brutto IS NULL,0,v.brutto)>=' . $minarfilter . ')';
+		if ($maxarfilter > 0) {
+			$arfilterstring = $arfilterstring . ' AND (_xx.brutto+IF(v.brutto IS NULL,0,v.brutto)<=' . $maxarfilter . ')';
+		}
+		$arfilterstring = '((' . $arfilterstring . ') OR (_xx.brutto IS NULL))';
+		$arfilter['sql'][] = $arfilterstring;
+
+        $termekdb = $termekrepo->getTermekListaCount(array_merge_recursive($keresofilter, $kategoriafilter, $termekidfilter, $arfilter));
 		if ($termekdb > 0) {
-
-			// termek max ar kategoriaval es cimkevel szurve
-			$maxar = $termekrepo->getTermekListaMaxAr(array_merge_recursive($keresofilter, $kategoriafilter, $termekidfilter));
-
-			if ($maxarfilter == 0) {
-				$maxarfilter = $maxar;
-			}
 
 			// termekdarabszam kategoriaval es cimkevel es arral szurve
 			// lapozohoz kell
@@ -338,7 +341,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 					$termekdb, $elemperpage, $pageno);
 			$pager = $tc->getPager();
             $elemperpage = $pager->getElemPerPage();
-            
+
 			switch ($ord) {
 				case 'nevasc':
 					$order = array('_xx.nev' => 'ASC');
@@ -369,7 +372,7 @@ class termekfaController extends \mkwhelpers\MattableController {
             // kiemelt termekek, kategoriaszures es kereses
 			$t = array();
             $kiemeltdb = 0;
-            if (($kiemelttermekdb>0) && ($pageno == 1) && ($parent)) {
+            if (($kiemelttermekdb>0) && (($pageno == 1) || ($pager->getPageCount() == 1)) && ($parent)) {
                 $kiemelttermekek = $termekrepo->getKiemeltTermekek(array_merge_recursive($keresofilter, $kategoriafilter), $kiemelttermekdb);
                 $kt = array();
                 foreach ($kiemelttermekek as $termek) {
@@ -388,7 +391,7 @@ class termekfaController extends \mkwhelpers\MattableController {
             }
 			// termekek kategoriaval es cimkevel es arral szurve, lapozva
 			// ez a konkret termeklista
-            $termekek = $termekrepo->getTermekLista(array_merge_recursive($keresofilter, $kategoriafilter, $termekidfilter, $arfilter), $order, $pager->getOffset(), $elemperpage - $kiemeltdb);
+            $termekek = $termekrepo->getTermekLista(array_merge_recursive($keresofilter, $kategoriafilter, $termekidfilter, $arfilter), $order, $pager->getOffset(), $elemperpage);
 			foreach ($termekek as $termek) {
 				$term = $termekrepo->find($termek['id']);
 				if ($termek['valtozatid']) {
