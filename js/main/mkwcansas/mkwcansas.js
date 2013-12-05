@@ -532,8 +532,15 @@ $(document).ready(function() {
         $('.lapozoform input[name="cimkekatid"]').val($(this).attr('name').split('_')[1]);
         mkw.lapozas();
     });
+    $('.js-filterclear').on('click', function(e) {
+        e.preventDefault();
+        $('#szuroform input[type="checkbox"]').prop('checked',false);
+        $('#ArSlider').val('0;0');
+        mkw.lapozas();
+    });
 
     mkw.initTooltips();
+    mkw.showhideFilterClear();
 
     cart.initUI();
     checkout.initUI();

@@ -20,6 +20,9 @@
 <div class="container">
 	<div class="row">
 		<div class="span3">
+            <div class="szurofej szurokontener js-filterclear">
+                Szűrőfeltételek törlése
+            </div>
 			<form id="szuroform">
 				<div class="szurokontener">
 					<div class="szurofej closeupbutton" data-refcontrol="#ArSzuro">{t('Ár')} <i class="icon-chevron-up"></i></div>
