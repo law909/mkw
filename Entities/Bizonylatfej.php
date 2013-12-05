@@ -323,6 +323,8 @@ class Bizonylatfej {
 
 	public function setPersistentData() {
 		$this->setTulajData();
+        $this->setIp($_SERVER['REMOTE_ADDR']);
+        $this->setReferrer(\mkw\Store::getMainSession()->referrer);
 	}
 
 	protected function setTulajData() {
@@ -405,7 +407,7 @@ class Bizonylatfej {
 		return '';
 	}
 
-	public function setBizonylattipus(Bizonylattipus $val) {
+	public function setBizonylattipus($val) {
 		if ($this->bizonylattipus !== $val) {
 			$this->bizonylattipus = $val;
 			$this->setIrany($val->getIrany());
@@ -528,6 +530,9 @@ class Bizonylatfej {
 	}
 
 	public function getKelt() {
+        if (!$this->id && !$this->kelt) {
+            $this->kelt = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+        }
 		return $this->kelt;
 	}
 
@@ -545,6 +550,9 @@ class Bizonylatfej {
 	}
 
 	public function getTeljesites() {
+        if (!$this->id && !$this->teljesites) {
+            $this->teljesites = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+        }
 		return $this->teljesites;
 	}
 
@@ -562,6 +570,9 @@ class Bizonylatfej {
 	}
 
 	public function getEsedekesseg() {
+        if (!$this->id && !$this->esedekesseg) {
+            $this->esedekesseg = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+        }
 		return $this->esedekesseg;
 	}
 
@@ -579,6 +590,9 @@ class Bizonylatfej {
 	}
 
 	public function getHatarido() {
+        if (!$this->id && !$this->hatarido) {
+            $this->hatarido = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+        }
 		return $this->hatarido;
 	}
 
@@ -596,6 +610,9 @@ class Bizonylatfej {
 	}
 
 	public function getFizmod() {
+        if (!$this->id && !$this->fizmod) {
+            $this->setFizmod(\mkw\Store::getParameter(\mkw\consts::Fizmod));
+        }
 		return $this->fizmod;
 	}
 
@@ -604,13 +621,17 @@ class Bizonylatfej {
 	}
 
 	public function getFizmodId() {
-		if ($this->fizmod) {
-			return $this->fizmod->getId();
+        $fm = $this->getFizmod();
+		if ($fm) {
+			return $fm->getId();
 		}
 		return '';
 	}
 
-	public function setFizmod(Fizmod $val) {
+	public function setFizmod($val) {
+        if (!($val instanceof \Entities\Fizmod)) {
+            $val = \mkw\Store::getEm()->getRepository('Entities\Fizmod')->find($val);
+        }
 		if ($this->fizmod !== $val) {
 			$this->fizmod = $val;
 			$this->fizmodnev = $val->getNev();
@@ -642,7 +663,7 @@ class Bizonylatfej {
 		return '';
 	}
 
-	public function setSzallitasimod(Szallitasimod $val) {
+	public function setSzallitasimod($val) {
 		if ($this->szallitasimod !== $val) {
 			$this->szallitasimod = $val;
 			$this->szallitasimodnev = $val->getNev();
@@ -692,6 +713,9 @@ class Bizonylatfej {
 	}
 
 	public function getValutanem() {
+        if (!$this->id && !$this->valutanem) {
+            $this->setValutanem(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+        }
 		return $this->valutanem;
 	}
 
@@ -700,13 +724,17 @@ class Bizonylatfej {
 	}
 
 	public function getValutanemId() {
-		if ($this->valutanem) {
-			return $this->valutanem->getId();
+        $vn = $this->getValutanem();
+		if ($vn) {
+			return $vn->getId();
 		}
 		return '';
 	}
 
-	public function setValutanem(Valutanem $val) {
+	public function setValutanem($val) {
+        if (!($val instanceof \Entities\Valutanem)) {
+            $val = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find($val);
+        }
 		if ($this->valutanem !== $val) {
 			$this->valutanem = $val;
 			$this->valutanemnev = $val->getNev();
@@ -748,6 +776,14 @@ class Bizonylatfej {
 	}
 
 	public function getArfolyam() {
+        if (!$this->id && !$this->arfolyam) {
+            if ($this->getValutanemId() == \mkw\Store::getParameter(\mkw\consts::Valutanem)) {
+                $this->setArfolyam(1);
+            }
+            else {
+
+            }
+        }
 		return $this->arfolyam;
 	}
 
@@ -766,7 +802,7 @@ class Bizonylatfej {
 		return '';
 	}
 
-	public function setPartner(Partner $val) {
+	public function setPartner($val) {
 		if ($this->partner !== $val) {
 			$this->partner = $val;
 			$this->partnernev = $val->getNev();
@@ -960,7 +996,7 @@ class Bizonylatfej {
 		return '';
 	}
 
-	public function setBankszamla(Bankszamla $val = null) {
+	public function setBankszamla($val = null) {
 		if ($this->bankszamla !== $val && $val) {
 			$this->bankszamla = $val;
 			$this->bankszamlanev = $val->getSzamlaszam();
@@ -998,7 +1034,7 @@ class Bizonylatfej {
 		return '';
 	}
 
-	public function setUzletkoto(Uzletkoto $val) {
+	public function setUzletkoto($val) {
 		if ($this->uzletkoto !== $val) {
 			$this->uzletkoto = $val;
 			$this->uzletkotonev = $val->getNev();
@@ -1030,7 +1066,7 @@ class Bizonylatfej {
 		return '';
 	}
 
-	public function setRaktar(Raktar $val) {
+	public function setRaktar($val) {
 		if ($this->raktar !== $val) {
 			$this->raktar = $val;
 			$this->raktarnev = $val->getNev();

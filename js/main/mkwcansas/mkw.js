@@ -215,11 +215,17 @@ var mkw = function($) {
 
     function showhideFilterClear() {
         var $arslider = $('#ArSlider'),
-                arfi = $arslider.val(), arfiarr = arfi.split(';'),
+                arfi = $arslider.val(), arfiarr,
                 maxar = $arslider.data('maxar');
 
-        if ((arfiarr[0] * 1 !== 0) || (arfiarr[1] * 1 <= maxar) || $('#szuroform input[type="checkbox"]:checked').length) {
-            $('.js-filterclear').show();
+        if (arfi) {
+            arfiarr = arfi.split(';');
+            if ((arfiarr[0] * 1 !== 0) || (arfiarr[1] * 1 <= maxar) || $('#szuroform input[type="checkbox"]:checked').length) {
+                $('.js-filterclear').show();
+            }
+            else {
+                $('.js-filterclear').hide();
+            }
         }
         else {
             $('.js-filterclear').hide();
