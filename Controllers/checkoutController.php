@@ -35,6 +35,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$szm = new fizmodController($this->params);
 		$szlist = $szm->getSelectList(null, $this->params->getIntRequestParam('szallitasimod'));
 		$view->setVar('fizmodlist', $szlist);
+        $this->getRepo('Entities\Kosar')->createSzallitasiKtg($this->params->getIntRequestParam('szallitasimod'));
 		echo $view->getTemplateResult();
 	}
 

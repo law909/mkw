@@ -370,7 +370,7 @@ class termekfaController extends \mkwhelpers\MattableController {
             // kiemelt termekek, kategoriaszures es kereses
 			$t = array();
             $kiemeltdb = 0;
-            if (($kiemelttermekdb>0) && (($pageno == 1) || ($pager->getPageCount() == 1)) && ($parent)) {
+            if (($kiemelttermekdb>0) && (($pageno == 1) || ($pager->getPageCount() == 1)) && ($caller !== 'szuro')) {
                 $kiemelttermekek = $termekrepo->getKiemeltTermekek(array_merge_recursive($keresofilter, $kategoriafilter), $kiemelttermekdb);
                 $kt = array();
                 foreach ($kiemelttermekek as $termek) {
