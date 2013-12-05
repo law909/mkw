@@ -93,6 +93,10 @@
                 {/foreach}
             </div>
             {/if}
+            <div>
+                <h4>{t('Üdvözöljük webáruházunkban!')}</h4>
+                Gyere el hozzánk személyesen Egerbe.
+            </div>
             {if (count($legnepszerubbtermekek)>0)}
             <div class="blockHeader">
                 <h4>{t('Legnépszerűbb termékeink')}</h4>
