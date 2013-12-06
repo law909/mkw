@@ -585,7 +585,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$view->setVar('keplist', $kep->getSelectList($termek, null));
 
         $gyarto = new partnerController($this->params);
-        $view->setVar('gyartolist', $gyarto->getSelectList(($termek ? $termek->getGyartoId() : 0)));
+        $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(($termek ? $termek->getGyartoId() : 0)));
 
         $view->printTemplateResult();
 	}
