@@ -108,7 +108,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getBizonylattipusId();
     }
 
-    public function setBizonylattipus(\Entities\Bizonylattipus $val)
+    public function setBizonylattipus($val)
     {
         $this->__load();
         return parent::setBizonylattipus($val);
@@ -348,7 +348,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getFizmodId();
     }
 
-    public function setFizmod(\Entities\Fizmod $val)
+    public function setFizmod($val)
     {
         $this->__load();
         return parent::setFizmod($val);
@@ -378,7 +378,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getSzallitasimodId();
     }
 
-    public function setSzallitasimod(\Entities\Szallitasimod $val)
+    public function setSzallitasimod($val)
     {
         $this->__load();
         return parent::setSzallitasimod($val);
@@ -456,7 +456,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getValutanemId();
     }
 
-    public function setValutanem(\Entities\Valutanem $val)
+    public function setValutanem($val)
     {
         $this->__load();
         return parent::setValutanem($val);
@@ -528,7 +528,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getPartnerId();
     }
 
-    public function setPartner(\Entities\Partner $val)
+    public function setPartner($val)
     {
         $this->__load();
         return parent::setPartner($val);
@@ -714,7 +714,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getBankszamlaId();
     }
 
-    public function setBankszamla(\Entities\Bankszamla $val = NULL)
+    public function setBankszamla($val = NULL)
     {
         $this->__load();
         return parent::setBankszamla($val);
@@ -750,7 +750,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getUzletkotoId();
     }
 
-    public function setUzletkoto(\Entities\Uzletkoto $val)
+    public function setUzletkoto($val)
     {
         $this->__load();
         return parent::setUzletkoto($val);
@@ -780,7 +780,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getRaktarId();
     }
 
-    public function setRaktar(\Entities\Raktar $val)
+    public function setRaktar($val)
     {
         $this->__load();
         return parent::setRaktar($val);
@@ -960,10 +960,40 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::setReferrer($val);
     }
 
+    public function getBizonylatstatusz()
+    {
+        $this->__load();
+        return parent::getBizonylatstatusz();
+    }
+
+    public function getBizonylatstatusznev()
+    {
+        $this->__load();
+        return parent::getBizonylatstatusznev();
+    }
+
+    public function getBizonylatstatuszId()
+    {
+        $this->__load();
+        return parent::getBizonylatstatuszId();
+    }
+
+    public function setBizonylatstatusz($val)
+    {
+        $this->__load();
+        return parent::setBizonylatstatusz($val);
+    }
+
+    public function removeBizonylatstatusz()
+    {
+        $this->__load();
+        return parent::removeBizonylatstatusz();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'bizonylattipus', 'bizonylatnev', 'irany', 'nyomtatva', 'storno', 'stornozott', 'penztmozgat', 'tulajnev', 'tulajirszam', 'tulajvaros', 'tulajutca', 'tulajadoszam', 'tulajeuadoszam', 'erbizonylatszam', 'kelt', 'teljesites', 'esedekesseg', 'fizmod', 'fizmodnev', 'szallitasimod', 'szallitasimodnev', 'netto', 'afa', 'brutto', 'fizetendo', 'valutanem', 'valutanemnev', 'nettohuf', 'afahuf', 'bruttohuf', 'arfolyam', 'partner', 'partnernev', 'partnervezeteknev', 'partnerkeresztnev', 'partneradoszam', 'partnereuadoszam', 'partnermukengszam', 'partnerjovengszam', 'partnerostermszam', 'partnervalligszam', 'partnerfvmszam', 'partnercjszam', 'partnerstatszamjel', 'partnerirszam', 'partnervaros', 'partnerutca', 'partnerlirszam', 'partnerlvaros', 'partnerlutca', 'partneremail', 'partnertelefon', 'bankszamla', 'bankszamlanev', 'swift', 'uzletkoto', 'uzletkotonev', 'raktar', 'raktarnev', 'bizonylattetelek', 'megjegyzes', 'belsomegjegyzes', 'webshopmessage', 'couriermessage', 'hatarido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'ip', 'referrer');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'bizonylattipus', 'bizonylatnev', 'irany', 'nyomtatva', 'storno', 'stornozott', 'penztmozgat', 'tulajnev', 'tulajirszam', 'tulajvaros', 'tulajutca', 'tulajadoszam', 'tulajeuadoszam', 'erbizonylatszam', 'kelt', 'teljesites', 'esedekesseg', 'fizmod', 'fizmodnev', 'szallitasimod', 'szallitasimodnev', 'netto', 'afa', 'brutto', 'fizetendo', 'valutanem', 'valutanemnev', 'nettohuf', 'afahuf', 'bruttohuf', 'arfolyam', 'partner', 'partnernev', 'partnervezeteknev', 'partnerkeresztnev', 'partneradoszam', 'partnereuadoszam', 'partnermukengszam', 'partnerjovengszam', 'partnerostermszam', 'partnervalligszam', 'partnerfvmszam', 'partnercjszam', 'partnerstatszamjel', 'partnerirszam', 'partnervaros', 'partnerutca', 'partnerlirszam', 'partnerlvaros', 'partnerlutca', 'partneremail', 'partnertelefon', 'bankszamla', 'bankszamlanev', 'swift', 'uzletkoto', 'uzletkotonev', 'raktar', 'raktarnev', 'bizonylattetelek', 'megjegyzes', 'belsomegjegyzes', 'webshopmessage', 'couriermessage', 'hatarido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'ip', 'referrer', 'bizonylatstatusz');
     }
 
     public function __clone()

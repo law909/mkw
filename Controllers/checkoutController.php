@@ -21,12 +21,13 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$view->setVar('showaszflink', Store::getRouter()->generate('showstatlappopup', false, array('lap' => 'aszf')));
 		Store::getMainSession()->loginerror = false;
 
-		$sorok = $this->getEm()->getRepository('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
+/*        $this->getRepo('Entities\Kosar')->createSzallitasiKtg($this->params->getIntRequestParam('szallitasimod'));
+		$sorok = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
 		$s = array();
 		foreach ($sorok as $sor) {
 			$s[] = $sor->toLista();
 		}
-		$view->setVar('tetellista', $s);
+*/		$view->setVar('tetellista', $s);
 		$view->printTemplateResult(false);
 	}
 
@@ -35,20 +36,26 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$szm = new fizmodController($this->params);
 		$szlist = $szm->getSelectList(null, $this->params->getIntRequestParam('szallitasimod'));
 		$view->setVar('fizmodlist', $szlist);
-        $this->getRepo('Entities\Kosar')->createSzallitasiKtg($this->params->getIntRequestParam('szallitasimod'));
-		echo $view->getTemplateResult();
+		echo json_encode(array(
+            'html' => $view->getTemplateResult()
+        ));
 	}
 
 	public function getTetelList() {
+        $this->getRepo('Entities\Kosar')->createSzallitasiKtg($this->params->getIntRequestParam('szallitasimod'));
 		$view = Store::getTemplateFactory()->createMainView('checkouttetellist.tpl');
 
-		$sorok = $this->getEm()->getRepository('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
+        $kr = $this->getRepo('Entities\Kosar');
+		$sorok = $kr->getDataBySessionId(\Zend_Session::getId());
 		$s = array();
 		foreach ($sorok as $sor) {
 			$s[] = $sor->toLista();
 		}
 		$view->setVar('tetellista', $s);
-		echo $view->getTemplateResult();
+		echo json_encode(array(
+            'html' => $view->getTemplateResult(),
+            'hash' => $kr->getHash()
+        ));
 	}
 
 	public function save() {

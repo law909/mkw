@@ -87,7 +87,7 @@ class EntitiesEmailtemplateProxy extends \Entities\Emailtemplate implements \Doc
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'nev', 'targy', 'szoveg');
+        return array('__isInitialized__', 'id', 'nev', 'targy', 'szoveg', 'bizonylatstatuszok');
     }
 
     public function __clone()

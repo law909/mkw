@@ -117,6 +117,7 @@ class kosarController extends \mkwhelpers\MattableController {
 	public function get() {
 		$v = $this->getTemplateFactory()->createMainView('kosar.tpl');
 		store::fillTemplate($v);
+        $this->getRepo()->remove(\mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek));
 		$sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
 		$s = array();
 		foreach ($sorok as $sor) {
@@ -261,15 +262,8 @@ class kosarController extends \mkwhelpers\MattableController {
 	}
 
 	public function getHash() {
-		$sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
-		$s = array();
-		foreach ($sorok as $sor) {
-			$s[] = $sor->toLista();
-		}
-		echo json_encode(array(
-			'hash' => md5(json_encode($s)),
-			'cnt' => count($sorok)
-		));
+		$sorok = $this->getRepo()->getHash();
+		echo json_encode($sorok);
 	}
 
 }

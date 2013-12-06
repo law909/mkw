@@ -1,21 +1,27 @@
 <tr id="mattable-row_{$_termek.id}">
 <td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
 <td class="cell">
-<div><div>
 <table><tbody>
 <tr><td><a class="js-toflyout" href="{$mainurl}{$_termek.kepurl}" target="_blank"><img src="{$mainurl}{$_termek.kepurlsmall}"/></a></td>
-<td><a class="mattable-editlink" href="#" data-termekid="{$_termek.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_termek.nev}</a></td>
-{if ($setup.grideditbutton=='small')}
-<td><span class="jobbra"><a class="mattable-dellink" href="#" data-termekid="{$_termek.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span></td>
-{/if}
-</tr>
-<tr><td>{$_termek.termekfa1nev}</td><td>{$_termek.termekfa2nev}</td><td>{$_termek.termekfa3nev}</td></tr>
-</tbody></table>
+<td>
 <table><tbody>
-		<tr><td>{t('Link')}:</td><td colspan="3"><a href="{$mainurl}/termek/{$_termek.slug}" target="_blank">/termek/{$_termek.slug}</a></td></tr>
+<tr>
+    <td colspan="3"><a class="mattable-editlink" href="#" data-termekid="{$_termek.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_termek.nev}</a></td>
+    {if ($setup.grideditbutton=='small')}
+    <td><span class="jobbra"><a class="mattable-dellink" href="#" data-termekid="{$_termek.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span></td>
+    {/if}
+</tr>
+<tr><td colspan="3">{$_termek.termekfa1nev} | {$_termek.termekfa2nev} | {$_termek.termekfa3nev}</td></tr>
+<tr><td>{t('Link')}:</td><td colspan="3"><a href="{$mainurl}/termek/{$_termek.slug}" target="_blank">/termek/{$_termek.slug}</a></td></tr>
+<tr><td>{t('Gyártó')}:</td><td colspan="3">{$_termek.gyartonev}</td></tr>
 <tr><td>{t('Megtekintve')}:</td><td>{$_termek.megtekintesdb}</td><td>{t('Megvásárolva')}:</td><td>{$_termek.megvasarlasdb}</td></tr>
 <tr><td>{t('Cikkszám')}:</td><td colspan="3">{$_termek.cikkszam}</td>
 <tr><td>{t('ME')}:</td><td colspan="3">{$_termek.me}</td></tr>
+<tr><td>{t('Nettó ár')}:</td><td>{$_termek.netto}</td><td>{t('Bruttó ár')}:</td><td>{$_termek.brutto}</td>
+<tr><td>{t('Akciós n.ár')}:</td><td>{$_termek.akciosnetto}</td><td>{t('Akciós b.ár')}:</td><td>{$_termek.akciosbrutto}</td>
+</tbody></table>
+</td>
+</tr>
 </tbody></table>
 </td>
 <td class="cell">

@@ -60,6 +60,7 @@
 			<div><a class="menupont" href="/admin/teendo/viewlist">{t('Teendők')}</a></div>
 			<div><a class="menupont" href="/admin/esemeny/viewlist">{t('Események')}</a></div>
 		</div>
+		<div><a class="menupont" href="/admin/bizonylatstatusz/viewlist">{t('Bizonylat státuszok')}</a></div>
 		<div><a class="menupont" href="/admin/dolgozo/viewlist">{t('Felhasználók')}</a></div>
 		<div><a class="menupont" href="/admin/egyebtorzs/view">{t('Egyéb adatok')}</a></div>
 		<div><a class="menupont" href="/admin/export/view">{t('Termék exportok')}</a></div>

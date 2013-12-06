@@ -208,3 +208,9 @@ $router->map('GET', '/admin/mkwvevo', 'adminController#mindentkapnivevo', 'admin
 $router->map('GET', '/admin/login/show', 'dolgozoController#showlogin', 'adminshowlogin');
 $router->map('POST', '/admin/login', 'dolgozoController#login', 'adminlogin');
 $router->map('GET', '/admin/logout', 'dolgozoController#logout', 'adminlogout');
+
+$router->map('GET', '/admin/bizonylatstatusz/viewlist', 'bizonylatstatuszController#viewlist', 'adminbizonylatstatuszviewlist');
+$router->map('GET', '/admin/bizonylatstatusz/getlistbody', 'bizonylatstatuszController#getlistbody', 'adminbizonylatstatuszgetlistbody');
+$router->map('GET', '/admin/bizonylatstatusz/getkarb', 'bizonylatstatuszController#getkarb', 'adminbizonylatstatuszgetkarb');
+$router->map('GET', '/admin/bizonylatstatusz/viewkarb', 'bizonylatstatuszController#viewkarb', 'adminbizonylatstatuszviewkarb');
+$router->map('POST', '/admin/bizonylatstatusz/save', 'bizonylatstatuszController#save', 'adminbizonylatstatuszsave');

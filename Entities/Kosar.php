@@ -72,9 +72,9 @@ class Kosar {
 		$ret = $ret + $termek->toKosar($this->getTermekvaltozat());
         $ret['noedit'] = $termek->getId() == \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
 		$ret['id'] = $this->getId();
-		$ret['bruttoegysarhuf'] = $this->getBruttoegysar();
-		$ret['mennyiseg'] = $this->getMennyiseg();
-		$ret['bruttohuf'] = $this->getBruttoegysar() * $this->getMennyiseg();
+		$ret['bruttoegysarhuf'] = $this->getBruttoegysar() * 1;
+		$ret['mennyiseg'] = $this->getMennyiseg() * 1;
+		$ret['bruttohuf'] = $this->getBruttoegysar() * $this->getMennyiseg() * 1;
 		$valt = $this->getTermekvaltozat();
 		$v = array();
 		if ($valt) {

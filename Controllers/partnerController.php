@@ -212,6 +212,28 @@ class partnerController extends \mkwhelpers\MattableController {
         return $res;
     }
 
+    public function getSzallitoSelectList($selid) {
+        $filter = array();
+        $filter['fields'][] = 'szallito';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = true;
+        $rec = $this->getRepo()->getAll($filter, array('nev' => 'ASC'));
+        $res = array();
+        foreach ($rec as $sor) {
+            $res[] = array(
+                'id' => $sor->getId(),
+                'caption' => $sor->getNev(),
+                'selected' => ($sor->getId() == $selid),
+                'fizmod' => $sor->getFizmodId(),
+                'fizhatido' => $sor->getFizhatido(),
+                'irszam' => $sor->getIrszam(),
+                'varos' => $sor->getVaros(),
+                'utca' => $sor->getUtca()
+            );
+        }
+        return $res;
+    }
+
     public function checkemail() {
         $email = $this->params->getStringRequestParam('email');
         $ret = array();

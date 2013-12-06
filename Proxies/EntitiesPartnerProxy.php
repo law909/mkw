@@ -750,10 +750,22 @@ class EntitiesPartnerProxy extends \Entities\Partner implements \Doctrine\ORM\Pr
         return parent::setOldloginname($name);
     }
 
+    public function getSzallitasiido()
+    {
+        $this->__load();
+        return parent::getSzallitasiido();
+    }
+
+    public function setSzallitasiido($adat)
+    {
+        $this->__load();
+        return parent::setSzallitasiido($adat);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk', 'termekertesitok', 'vendeg', 'ip', 'referrer', 'szallito', 'passwordreminder', 'oldloginname');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk', 'termekertesitok', 'vendeg', 'ip', 'referrer', 'szallito', 'passwordreminder', 'oldloginname', 'szallitasiido');
     }
 
     public function __clone()

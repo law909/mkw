@@ -108,6 +108,18 @@ class EntitiesTermekcimketorzsProxy extends \Entities\Termekcimketorzs implement
         return parent::removeTermek($termek);
     }
 
+    public function getKiemelt()
+    {
+        $this->__load();
+        return parent::getKiemelt();
+    }
+
+    public function setKiemelt($adat)
+    {
+        $this->__load();
+        return parent::setKiemelt($adat);
+    }
+
     public function getId()
     {
         $this->__load();
@@ -243,7 +255,7 @@ class EntitiesTermekcimketorzsProxy extends \Entities\Termekcimketorzs implement
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'menu1lathato', 'menu2lathato', 'menu3lathato', 'menu4lathato', 'leiras', 'oldalcim', 'kepurl', 'kepleiras', 'sorrend', 'nev', 'slug', 'termekek', 'kategoria');
+        return array('__isInitialized__', 'id', 'menu1lathato', 'menu2lathato', 'menu3lathato', 'menu4lathato', 'leiras', 'oldalcim', 'kepurl', 'kepleiras', 'sorrend', 'nev', 'slug', 'termekek', 'kategoria', 'kiemelt');
     }
 
     public function __clone()
