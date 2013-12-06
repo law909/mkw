@@ -6,6 +6,7 @@
 <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
 {/if}
 </td>
+<td class="cell">{$_egyed.sorrend}</td>
 
 {if ($setup.grideditbutton=='big')}
 <td class="cell"><table class="kozepre"><tbody>

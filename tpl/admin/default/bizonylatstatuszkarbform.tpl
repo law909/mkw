@@ -18,8 +18,12 @@
 				<td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}"></td>
 			</tr>
 			<tr>
+				<td><label for="SorrendEdit">{t('Sorrend')}:</label></td>
+				<td><input id="SorrendEdit" name="sorrend" type="text" size="80" maxlength="255" value="{$egyed.sorrend}"></td>
+			</tr>
+			<tr>
 				<td><label for="EmailEdit">{t('Email sablon')}:</label></td>
-				<td colspan="7"><select id="EmailEdit" name="emailtemplate" required="required">
+				<td colspan="7"><select id="EmailEdit" name="emailtemplate">
 					<option value="">{t('válasszon')}</option>
 					{foreach $emailtemplatelist as $_mk}
 					<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>

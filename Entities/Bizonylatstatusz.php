@@ -19,6 +19,9 @@ class Bizonylatstatusz {
      */
     private $nev;
 
+    /** @Column(type="integer"),nullable=true) */
+    private $sorrend;
+
     /**
      * @ManyToOne(targetEntity="Emailtemplate",inversedBy="bizonylatstatuszok")
      * @JoinColumn(name="emailtemplate_id", referencedColumnName="id",nullable=true,onDelete="no action")
@@ -73,4 +76,11 @@ class Bizonylatstatusz {
         }
     }
 
+    public function getSorrend() {
+        return $this->sorrend;
+    }
+
+    public function setSorrend($s) {
+        $this->sorrend = $s;
+    }
 }

@@ -84,10 +84,22 @@ class EntitiesBizonylatstatuszProxy extends \Entities\Bizonylatstatusz implement
         return parent::removeEmailtemplate();
     }
 
+    public function getSorrend()
+    {
+        $this->__load();
+        return parent::getSorrend();
+    }
+
+    public function setSorrend($s)
+    {
+        $this->__load();
+        return parent::setSorrend($s);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'nev', 'emailtemplate', 'bizonylatfejek');
+        return array('__isInitialized__', 'id', 'nev', 'sorrend', 'emailtemplate', 'bizonylatfejek');
     }
 
     public function __clone()

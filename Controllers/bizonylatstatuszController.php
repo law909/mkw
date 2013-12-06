@@ -23,12 +23,14 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
         }
         $x['id'] = $t->getId();
         $x['nev'] = $t->getNev();
+        $x['sorrend'] = $t->getSorrend();
         $x['emailtemplatenev'] = $t->getEmailtemplateNev();
         return $x;
     }
 
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev'));
+        $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $ck = store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('emailtemplate'));
         if ($ck) {
             $obj->setEmailtemplate($ck);
