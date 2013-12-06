@@ -20,7 +20,7 @@
 <div class="container">
 	<div class="row">
 		<div class="span3">
-            <div class="szurofej szurokontener js-filterclear">
+            <div class="szurofej szurokontener js-filterclear bold">
                 Szűrőfeltételek törlése
             </div>
 			<form id="szuroform">

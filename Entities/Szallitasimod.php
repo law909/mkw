@@ -17,6 +17,8 @@ class Szallitasimod {
 	private $nev;
 	/** @Column(type="boolean") */
 	private $webes=true;
+	/** @Column(type="boolean") */
+	private $vanszallitasiktg=true;
 	/**
 	 * @Column(type="text",nullable=true)
 	 */
@@ -77,4 +79,12 @@ class Szallitasimod {
 	public function setSorrend($val) {
 		$this->sorrend=$val;
 	}
+
+    public function getVanszallitasiktg() {
+        return $this->vanszallitasiktg;
+    }
+
+    public function setVanszallitasiktg($adat) {
+        $this->vanszallitasiktg = $adat;
+    }
 }

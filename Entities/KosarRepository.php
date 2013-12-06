@@ -292,14 +292,24 @@ class KosarRepository extends \mkwhelpers\Repository {
         }
     }
 
-    public function createSzallitasiKtg() {
-        $e = $this->calcSumBySessionId(\Zend_Session::getId());
-        $ertek = $e['sum'];
-        $cnt = $e['count'];
+    public function createSzallitasiKtg($szallmod = null) {
+        $szamol = true;
+        if ($szallmod) {
+            $szm = $this->getRepo('Entities\Szallitasimod')->find($szallmod);
+            $szamol = $szm->getVanszallitasiktg();
+        }
         $termek = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
-        if ($cnt != 0) {
-            $ktg = \mkw\Store::calcSzallitasiKoltseg($ertek);
-            $this->add($termek, null, $ktg);
+        if ($szamol) {
+            $e = $this->calcSumBySessionId(\Zend_Session::getId());
+            $ertek = $e['sum'];
+            $cnt = $e['count'];
+            if ($cnt != 0) {
+                $ktg = \mkw\Store::calcSzallitasiKoltseg($ertek);
+                $this->add($termek, null, $ktg);
+            }
+            else {
+                $this->remove($termek);
+            }
         }
         else {
             $this->remove($termek);

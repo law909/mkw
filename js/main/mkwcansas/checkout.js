@@ -23,6 +23,26 @@ var checkout = function($) {
 		});
 	}
 
+    function loadKosarHash() {
+        $.ajax({
+            url: '/kosar/gethash',
+            success: function(data) {
+                var d = JSON.parse(data);
+                kosarhash = d.hash;
+            }
+        });
+    }
+
+    function loadTetelList() {
+        $.ajax({
+            url: '/checkout/gettetellist',
+            success: function(data) {
+                $('.js-chktetellist').html(data);
+                kosarhash = newhash;
+            }
+        });
+    }
+    
 	function refreshAttekintes() {
 		$('.js-chkvezeteknev').text(vezeteknevinput.val());
 		$('.js-chkkeresztnev').text(keresztnevinput.val());
@@ -65,13 +85,7 @@ var checkout = function($) {
 
 		if ($checkout.length) {
 
-			$.ajax({
-				url: '/kosar/gethash',
-				success: function(data) {
-					var d = JSON.parse(data);
-					kosarhash = d.hash;
-				}
-			});
+            loadKosarHash();
 
 			$('.js-chktooltipbtn').tooltip({
 				html: false,
@@ -261,13 +275,7 @@ var checkout = function($) {
 							if (kosarhash && kosarhash != d.hash) {
 								var newhash = d.hash;
 								mkw.showDialog(mkwmsg.ChkKosarValtozott);
-								$.ajax({
-									url: '/checkout/gettetellist',
-									success: function(data) {
-										$('.js-chktetellist').html(data);
-										kosarhash = newhash;
-									}
-								});
+                                loadTetelList();
 							}
 							else {
 								if (d.cnt <= 0) {
