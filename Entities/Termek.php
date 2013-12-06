@@ -298,7 +298,7 @@ class Termek {
             $x['szallitasiido'] = $this->szallitasiido;
         }
         else {
-            if ($this->gyarto->getSzallitasiido()) {
+            if ($this->gyarto && $this->gyarto->getSzallitasiido()) {
                 $x['szallitasiido'] = $this->gyarto->getSzallitasiido();
             }
             else {
