@@ -17,10 +17,12 @@ var checkout = function($) {
 				szallitasimod: $('input[name="szallitasimod"]:checked').val()
 			},
 			success: function(data) {
-				$('.js-chkfizmodlist').html(data);
+                var d = JSON.parse(data);
+				$('.js-chkfizmodlist').html(d.html);
 				refreshAttekintes();
 			}
 		});
+        loadTetelList();
 	}
 
     function loadKosarHash() {
@@ -28,7 +30,7 @@ var checkout = function($) {
             url: '/kosar/gethash',
             success: function(data) {
                 var d = JSON.parse(data);
-                kosarhash = d.hash;
+                kosarhash = d.value;
             }
         });
     }
@@ -36,13 +38,17 @@ var checkout = function($) {
     function loadTetelList() {
         $.ajax({
             url: '/checkout/gettetellist',
+			data: {
+				szallitasimod: $('input[name="szallitasimod"]:checked').val()
+			},
             success: function(data) {
-                $('.js-chktetellist').html(data);
-                kosarhash = newhash;
+                var d = JSON.parse(data);
+                $('.js-chktetellist').html(d.html);
+                kosarhash = d.hash.value;
             }
         });
     }
-    
+
 	function refreshAttekintes() {
 		$('.js-chkvezeteknev').text(vezeteknevinput.val());
 		$('.js-chkkeresztnev').text(keresztnevinput.val());
@@ -84,8 +90,6 @@ var checkout = function($) {
 		var $checkout = $('.js-checkout');
 
 		if ($checkout.length) {
-
-            loadKosarHash();
 
 			$('.js-chktooltipbtn').tooltip({
 				html: false,
@@ -171,7 +175,6 @@ var checkout = function($) {
 				mkwcheck.checkoutTelefonCheck();
 			});
 
-
 			var $chklogin = $('.js-chklogin');
 			if ($chklogin.length) {
 				$('.js-chkszallitasiadatok').hide().addClass('js-chkclosed');
@@ -218,7 +221,8 @@ var checkout = function($) {
 			mkw.varosTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
 
 			$('.js-chkaszf, .js-chkhelp').magnificPopup({
-				type: 'ajax'
+				type: 'ajax',
+                closeBtnInside: false
 			});
 
 			vezeteknevinput.on('invalid', function() {
@@ -272,8 +276,7 @@ var checkout = function($) {
 						url: '/kosar/gethash',
 						success: function(data) {
 							var d = JSON.parse(data);
-							if (kosarhash && kosarhash != d.hash) {
-								var newhash = d.hash;
+							if (kosarhash && kosarhash != d.value) {
 								mkw.showDialog(mkwmsg.ChkKosarValtozott);
                                 loadTetelList();
 							}

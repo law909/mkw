@@ -108,7 +108,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getBizonylattipusId();
     }
 
-    public function setBizonylattipus(\Entities\Bizonylattipus $val)
+    public function setBizonylattipus($val)
     {
         $this->__load();
         return parent::setBizonylattipus($val);
@@ -348,7 +348,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getFizmodId();
     }
 
-    public function setFizmod(\Entities\Fizmod $val)
+    public function setFizmod($val)
     {
         $this->__load();
         return parent::setFizmod($val);
@@ -378,7 +378,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getSzallitasimodId();
     }
 
-    public function setSzallitasimod(\Entities\Szallitasimod $val)
+    public function setSzallitasimod($val)
     {
         $this->__load();
         return parent::setSzallitasimod($val);
@@ -456,7 +456,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getValutanemId();
     }
 
-    public function setValutanem(\Entities\Valutanem $val)
+    public function setValutanem($val)
     {
         $this->__load();
         return parent::setValutanem($val);
@@ -528,7 +528,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getPartnerId();
     }
 
-    public function setPartner(\Entities\Partner $val)
+    public function setPartner($val)
     {
         $this->__load();
         return parent::setPartner($val);
@@ -714,7 +714,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getBankszamlaId();
     }
 
-    public function setBankszamla(\Entities\Bankszamla $val = NULL)
+    public function setBankszamla($val = NULL)
     {
         $this->__load();
         return parent::setBankszamla($val);
@@ -750,7 +750,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getUzletkotoId();
     }
 
-    public function setUzletkoto(\Entities\Uzletkoto $val)
+    public function setUzletkoto($val)
     {
         $this->__load();
         return parent::setUzletkoto($val);
@@ -780,7 +780,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getRaktarId();
     }
 
-    public function setRaktar(\Entities\Raktar $val)
+    public function setRaktar($val)
     {
         $this->__load();
         return parent::setRaktar($val);

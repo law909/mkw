@@ -208,9 +208,6 @@ class KosarRepository extends \mkwhelpers\Repository {
         }
         $this->_em->persist($k);
         $this->_em->flush();
-        if ($termekid != \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek)) {
-            $this->createSzallitasiKtg();
-        }
     }
 
     public function remove($termekid, $vid = null) {
@@ -229,9 +226,6 @@ class KosarRepository extends \mkwhelpers\Repository {
             $termekid = $sor->getTermekId();
             $this->_em->remove($sor);
             $this->_em->flush();
-            if ($termekid != \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek)) {
-                $this->createSzallitasiKtg();
-            }
         }
     }
 
@@ -242,9 +236,6 @@ class KosarRepository extends \mkwhelpers\Repository {
             $termekid = $sor->getTermekId();
             $this->_em->remove($sor);
             $this->_em->flush();
-            if ($termekid != \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek)) {
-                $this->createSzallitasiKtg();
-            }
             return true;
         }
         return false;
@@ -258,9 +249,6 @@ class KosarRepository extends \mkwhelpers\Repository {
             $sor->setMennyiseg($mennyiseg);
             $this->_em->persist($sor);
             $this->_em->flush();
-            if ($termekid != \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek)) {
-                $this->createSzallitasiKtg();
-            }
             return true;
         }
         return false;
@@ -316,4 +304,18 @@ class KosarRepository extends \mkwhelpers\Repository {
         }
     }
 
+    public function getHash() {
+		$sorok = $this->getDataBySessionId(\Zend_Session::getId());
+		$s = array();
+		foreach ($sorok as $sor) {
+			$s[] = $sor->toLista();
+		}
+        \mkw\Store::writelog(md5(json_encode($s)));
+        \mkw\Store::writelog(json_encode($s));
+        \mkw\Store::writelog(print_r($s,true));
+		return array(
+			'value' => md5(json_encode($s)),
+			'cnt' => count($sorok)
+		);
+    }
 }

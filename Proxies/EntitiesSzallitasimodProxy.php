@@ -102,10 +102,22 @@ class EntitiesSzallitasimodProxy extends \Entities\Szallitasimod implements \Doc
         return parent::setSorrend($val);
     }
 
+    public function getVanszallitasiktg()
+    {
+        $this->__load();
+        return parent::getVanszallitasiktg();
+    }
+
+    public function setVanszallitasiktg($adat)
+    {
+        $this->__load();
+        return parent::setVanszallitasiktg($adat);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'nev', 'webes', 'leiras', 'fizmodok', 'bizonylatfejek', 'sorrend');
+        return array('__isInitialized__', 'id', 'nev', 'webes', 'vanszallitasiktg', 'leiras', 'fizmodok', 'bizonylatfejek', 'sorrend');
     }
 
     public function __clone()
