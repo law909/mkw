@@ -310,9 +310,6 @@ class KosarRepository extends \mkwhelpers\Repository {
 		foreach ($sorok as $sor) {
 			$s[] = $sor->toLista();
 		}
-        \mkw\Store::writelog(md5(json_encode($s)));
-        \mkw\Store::writelog(json_encode($s));
-        \mkw\Store::writelog(print_r($s,true));
 		return array(
 			'value' => md5(json_encode($s)),
 			'cnt' => count($sorok)

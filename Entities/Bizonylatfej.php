@@ -265,6 +265,12 @@ class Bizonylatfej {
 	/** @Column(type="string",length=255,nullable=true) */
 	private $referrer;
 
+    /**
+	 * @ManyToOne(targetEntity="Bizonylatstatusz",inversedBy="bizonylatfejek")
+	 * @JoinColumn(name="bizonylatstatusz_id", referencedColumnName="id",nullable=true,onDelete="no action")
+	 */
+	private $bizonylatstatusz;
+
 
 	/**
 	 * @PrePersist
@@ -1193,6 +1199,42 @@ class Bizonylatfej {
 
 	public function setReferrer($val) {
 		$this->referrer = $val;
+	}
+
+   	public function getBizonylatstatusz() {
+		return $this->bizonylatstatusz;
+	}
+
+	public function getBizonylatstatusznev() {
+		return $this->bizonylatstatusznev;
+	}
+
+	public function getBizonylatstatuszId() {
+        $fm = $this->getBizonylatstatusz();
+		if ($fm) {
+			return $fm->getId();
+		}
+		return '';
+	}
+
+	public function setBizonylatstatusz($val) {
+        if (!($val instanceof \Entities\Bizonylatstatusz)) {
+            $val = \mkw\Store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($val);
+        }
+		if ($this->bizonylatstatusz !== $val) {
+			$this->bizonylatstatusz = $val;
+			$this->bizonylatstatusznev = $val->getNev();
+//			$val->addBizonylat($this);
+		}
+	}
+
+	public function removeBizonylatstatusz() {
+		if ($this->bizonylatstatusz !== null) {
+//			$val=$this->bizonylatstatusz;
+			$this->bizonylatstatusz = null;
+			$this->bizonylatstatusznev = '';
+//			$val->removeBizonylat($this);
+		}
 	}
 
 }

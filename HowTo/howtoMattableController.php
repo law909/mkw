@@ -85,7 +85,9 @@ class ?howto?Controller extends \mkwhelpers\MattableController {
 		$view->printTemplateResult();
 	}
 
-	protected function _getkarb($id,$oper,$tplname) {
+	protected function _getkarb($tplname) {
+        $id = $this->params->getRequestParam('id', 0);
+        $oper = $this->params->getRequestParam('oper', '');
 		$view=$this->createView($tplname);
 
 		$view->setVar('pagetitle',t('?howto?'));

@@ -960,10 +960,40 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::setReferrer($val);
     }
 
+    public function getBizonylatstatusz()
+    {
+        $this->__load();
+        return parent::getBizonylatstatusz();
+    }
+
+    public function getBizonylatstatusznev()
+    {
+        $this->__load();
+        return parent::getBizonylatstatusznev();
+    }
+
+    public function getBizonylatstatuszId()
+    {
+        $this->__load();
+        return parent::getBizonylatstatuszId();
+    }
+
+    public function setBizonylatstatusz($val)
+    {
+        $this->__load();
+        return parent::setBizonylatstatusz($val);
+    }
+
+    public function removeBizonylatstatusz()
+    {
+        $this->__load();
+        return parent::removeBizonylatstatusz();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'bizonylattipus', 'bizonylatnev', 'irany', 'nyomtatva', 'storno', 'stornozott', 'penztmozgat', 'tulajnev', 'tulajirszam', 'tulajvaros', 'tulajutca', 'tulajadoszam', 'tulajeuadoszam', 'erbizonylatszam', 'kelt', 'teljesites', 'esedekesseg', 'fizmod', 'fizmodnev', 'szallitasimod', 'szallitasimodnev', 'netto', 'afa', 'brutto', 'fizetendo', 'valutanem', 'valutanemnev', 'nettohuf', 'afahuf', 'bruttohuf', 'arfolyam', 'partner', 'partnernev', 'partnervezeteknev', 'partnerkeresztnev', 'partneradoszam', 'partnereuadoszam', 'partnermukengszam', 'partnerjovengszam', 'partnerostermszam', 'partnervalligszam', 'partnerfvmszam', 'partnercjszam', 'partnerstatszamjel', 'partnerirszam', 'partnervaros', 'partnerutca', 'partnerlirszam', 'partnerlvaros', 'partnerlutca', 'partneremail', 'partnertelefon', 'bankszamla', 'bankszamlanev', 'swift', 'uzletkoto', 'uzletkotonev', 'raktar', 'raktarnev', 'bizonylattetelek', 'megjegyzes', 'belsomegjegyzes', 'webshopmessage', 'couriermessage', 'hatarido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'ip', 'referrer');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'bizonylattipus', 'bizonylatnev', 'irany', 'nyomtatva', 'storno', 'stornozott', 'penztmozgat', 'tulajnev', 'tulajirszam', 'tulajvaros', 'tulajutca', 'tulajadoszam', 'tulajeuadoszam', 'erbizonylatszam', 'kelt', 'teljesites', 'esedekesseg', 'fizmod', 'fizmodnev', 'szallitasimod', 'szallitasimodnev', 'netto', 'afa', 'brutto', 'fizetendo', 'valutanem', 'valutanemnev', 'nettohuf', 'afahuf', 'bruttohuf', 'arfolyam', 'partner', 'partnernev', 'partnervezeteknev', 'partnerkeresztnev', 'partneradoszam', 'partnereuadoszam', 'partnermukengszam', 'partnerjovengszam', 'partnerostermszam', 'partnervalligszam', 'partnerfvmszam', 'partnercjszam', 'partnerstatszamjel', 'partnerirszam', 'partnervaros', 'partnerutca', 'partnerlirszam', 'partnerlvaros', 'partnerlutca', 'partneremail', 'partnertelefon', 'bankszamla', 'bankszamlanev', 'swift', 'uzletkoto', 'uzletkotonev', 'raktar', 'raktarnev', 'bizonylattetelek', 'megjegyzes', 'belsomegjegyzes', 'webshopmessage', 'couriermessage', 'hatarido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'ip', 'referrer', 'bizonylatstatusz');
     }
 
     public function __clone()
