@@ -60,7 +60,8 @@ $(document).ready(function() {
             controlNavigation: 'bullets',
             imageScalePadding: 0,
             autoPlay: {
-                enabled: true
+                enabled: true,
+                delay: 4000
             }
         });
         $('#legnepszerubbtermekslider').royalSlider({
