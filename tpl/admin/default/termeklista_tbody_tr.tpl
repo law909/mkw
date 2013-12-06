@@ -17,6 +17,8 @@
 <tr><td>{t('Megtekintve')}:</td><td>{$_termek.megtekintesdb}</td><td>{t('Megvásárolva')}:</td><td>{$_termek.megvasarlasdb}</td></tr>
 <tr><td>{t('Cikkszám')}:</td><td colspan="3">{$_termek.cikkszam}</td>
 <tr><td>{t('ME')}:</td><td colspan="3">{$_termek.me}</td></tr>
+<tr><td>{t('Nettó ár')}:</td><td>{$_termek.netto}</td><td>{t('Bruttó ár')}:</td><td>{$_termek.brutto}</td>
+<tr><td>{t('Akciós n.ár')}:</td><td>{$_termek.akciosnetto}</td><td>{t('Akciós b.ár')}:</td><td>{$_termek.akciosbrutto}</td>
 </tbody></table>
 </td>
 </tr>
