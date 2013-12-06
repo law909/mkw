@@ -114,6 +114,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['osszehajthato'] = $t->getOsszehajthato();
 		$x['megtekintesdb'] = $t->getMegtekintesdb();
 		$x['megvasarlasdb'] = $t->getMegvasarlasdb();
+        $x['gyartonev'] = $t->getGyartoNev();
 		return $x;
 	}
 
@@ -135,6 +136,13 @@ class termekController extends \mkwhelpers\MattableController {
 		else {
 			$obj->setValtozatadattipus(null);
 		}
+		$ck = store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('gyarto'));
+		if ($ck) {
+			$obj->setGyarto($ck);
+		}
+        else {
+            $obj->setGyarto(null);
+        }
 		$obj->setNev($this->params->getStringRequestParam('nev'));
 		$obj->setMe($this->params->getStringRequestParam('me'));
 		$obj->setCikkszam($this->params->getStringRequestParam('cikkszam'));
@@ -563,15 +571,23 @@ class termekController extends \mkwhelpers\MattableController {
 		$view->setVar('cimkekat', $tcc->getWithCimkek($cimkek));
 
 		$view->setVar('termek', $this->loadVars($termek, true));
+
 		$vtsz = new vtszController($this->params);
 		$view->setVar('vtszlist', $vtsz->getSelectList(($termek ? $termek->getVtszId() : 0)));
-		$afa = new afaController($this->params);
+
+        $afa = new afaController($this->params);
 		$view->setVar('afalist', $afa->getSelectList(($termek ? $termek->getAfaId() : 0)));
-		$valtozatadattipus = new termekvaltozatadattipusController($this->params);
+
+        $valtozatadattipus = new termekvaltozatadattipusController($this->params);
 		$view->setVar('valtozatadattipuslist', $valtozatadattipus->getSelectList(($termek ? $termek->getValtozatadattipusId() : 0)));
-		$kep = new termekkepController($this->params);
+
+        $kep = new termekkepController($this->params);
 		$view->setVar('keplist', $kep->getSelectList($termek, null));
-		$view->printTemplateResult();
+
+        $gyarto = new partnerController($this->params);
+        $view->setVar('gyartolist', $gyarto->getSelectList(($termek ? $termek->getGyartoId() : 0)));
+
+        $view->printTemplateResult();
 	}
 
 	public function setflag() {

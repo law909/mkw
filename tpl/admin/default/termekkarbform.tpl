@@ -62,6 +62,15 @@
 					{/foreach}
 				</select></td>
 			</tr>
+            <tr>
+                <td><label for="GyartoEdit">Gyártó:</label></td>
+				<td colspan="3"><select id="GyartoEdit" name="gyarto">
+					<option value="">{t('válasszon')}</option>
+					{foreach $gyartolist as $_gyarto}
+						<option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+					{/foreach}
+				</select></td>
+            </tr>
 			</tbody></table>
 			<table><tbody>
 				<tr>
