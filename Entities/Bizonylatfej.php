@@ -363,8 +363,9 @@ class Bizonylatfej {
 				$kezdo = 1;
 			}
 			$szam = $kezdo;
-			$q = store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bizonylatfej bf WHERE (bf.id LIKE \'' . $azon . '%\') AND (YEAR(bf.kelt)=' . $ev . ')');
+			$q = store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bizonylatfej bf WHERE (bf.id LIKE \'' . $azon . $ev . '%\') AND (YEAR(bf.kelt)=' . $ev . ')');
 			$max = $q->getSingleScalarResult();
+            \mkw\Store::writelog($max);
 			if ($max) {
 				$szam = explode('/', $max);
 				if (is_array($szam)) {

@@ -32,6 +32,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 		$a = $this->alias;
 		$q = $this->_em->createQuery('SELECT COUNT(' . $a . ') FROM ' . $this->entityname . ' ' . $a
 				. $this->getFilterString($filter));
+		$q->setParameters($this->getQueryParameters($filter));
 		return $q->getSingleScalarResult();
 	}
 

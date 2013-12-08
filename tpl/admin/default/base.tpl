@@ -32,6 +32,7 @@
 		<div class="menu-titlebar" data-caption="{t('Kereskedelem')}" data-refcontrol="#KereskedelemTab"></div>
 		<div id="KereskedelemTab">
 			<div><a class="menupont" href="/admin/megrendelesfej/viewlist">{t('Megrendelések')}</a></div>
+			<div><a class="menupont" href="/admin/szamlafej/viewlist">{t('Számlák')}</a></div>
 			<div><a class="menupont" href="/admin/partner/viewlist">{t('Partnerek')}</a></div>
 			<div><a class="menupont" href="/admin/termek/viewlist">{t('Termékek')}</a></div>
 			<div><a class="menupont" href="/admin/termekfa/viewlist">{t('Termék kategóriák')}</a></div>

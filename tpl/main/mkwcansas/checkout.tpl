@@ -208,7 +208,6 @@
 							</div>
 						</div>
 						<table class="table table-bordered js-chktetellist">
-							{include 'checkouttetellist.tpl'}
 						</table>
 
 						<div>

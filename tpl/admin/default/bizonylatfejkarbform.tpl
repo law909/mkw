@@ -1,5 +1,5 @@
 <div id="mattkarb-header">
-	<h3>{t('Megrendelés')}</h3>
+	<h3>{$pagetitle}</h3>
 </div>
 <form id="mattkarb-form" method="post" action="{$formaction}">
 	<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
@@ -18,8 +18,7 @@
 				<td colspan="7"><select id="PartnerEdit" name="partner" class="mattable-important" required="required" autofocus>
 					<option value="">{t('válasszon')}</option>
 					{foreach $partnerlist as $_mk}
-					<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-fizmod="{$_mk.fizmod}" data-fizhatido="{$_mk.fizhatido}"
-						data-irszam="{$_mk.irszam}" data-varos="{$_mk.varos}" data-utca="{$_mk.utca}">{$_mk.caption}</option>
+					<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
 					{/foreach}
 					</select>
 				</td>
@@ -89,6 +88,8 @@
 					{/foreach}
 					</select>
 				</td>
+			</tr>
+			<tr>
 				<td class="mattable-important"><label for="KeltEdit">{t('Kelt')}:</label></td>
 				<td><input id="KeltEdit" name="kelt" type="text" size="12" data-datum="{$egyed.keltstr}" class="mattable-important" required="required"></td>
 				{if ($showteljesites)}
