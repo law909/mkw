@@ -75,7 +75,7 @@
                     <div><span class="bold">Cikkszám:</span> <span itemprop="productID">{$termek.cikkszam}</span></div>
                     <div><span class="bold">Kapható hűségpont:</span> {$termek.husegpont}</div>
                     {if ($termek.szallitasiido)}
-                    <div><span class="bold">Szállítási idő:</span> {$termek.szallitasiido} munkanap</div>
+                    <div><span class="bold">Szállítási idő:</span> max. {$termek.szallitasiido} munkanap</div>
                     {/if}
                     <div>
                         <ul class="simalista">
