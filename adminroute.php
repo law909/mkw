@@ -69,6 +69,12 @@ $router->map('GET', '/admin/megrendelesfej/getkarb', 'megrendelesfejController#g
 $router->map('GET', '/admin/megrendelesfej/viewkarb', 'megrendelesfejController#viewkarb', 'adminmegrendelesfejviewkarb');
 $router->map('POST', '/admin/megrendelesfej/save', 'megrendelesfejController#save', 'adminmegrendelesfejsave');
 
+$router->map('GET', '/admin/szamlafej/viewlist', 'szamlafejController#viewlist', 'adminszamlafejviewlist');
+$router->map('GET', '/admin/szamlafej/getlistbody', 'szamlafejController#getlistbody', 'adminszamlafejgetlistbody');
+$router->map('GET', '/admin/szamlafej/getkarb', 'szamlafejController#getkarb', 'adminszamlafejgetkarb');
+$router->map('GET', '/admin/szamlafej/viewkarb', 'szamlafejController#viewkarb', 'adminszamlafejviewkarb');
+$router->map('POST', '/admin/szamlafej/save', 'szamlafejController#save', 'adminszamlafejsave');
+
 $router->map('GET', '/admin/termek/viewlist', 'termekController#viewlist', 'admintermekviewlist');
 $router->map('GET', '/admin/termek/htmllist', 'termekController#htmllist', 'admintermekhtmllist');
 $router->map('GET', '/admin/termek/getlistbody', 'termekController#getlistbody', 'admintermekgetlistbody');
@@ -179,6 +185,7 @@ $router->map('GET', '/admin/partner/viewkarb', 'partnerController#viewkarb', 'ad
 $router->map('POST', '/admin/partner/save', 'partnerController#save', 'adminpartnersave');
 $router->map('POST', '/admin/partner/regisztral', 'partnerController#regisztral', 'adminpartnerregisztral');
 $router->map('POST', '/admin/partner/checkemail', 'partnerController#checkemail', 'adminpartnercheckemail');
+$router->map('GET', '/admin/partner/getdata', 'partnerController#getPartnerData', 'adminpartnergetdata');
 
 $router->map('GET', '/admin/termekfa/getkarb', 'termekfaController#getkarb', 'admintermekfagetkarb');
 $router->map('GET', '/admin/termekfa/jsonlist', 'termekfaController#jsonlist', 'admintermekfajsonlist');

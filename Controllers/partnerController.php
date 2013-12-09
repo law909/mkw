@@ -201,15 +201,31 @@ class partnerController extends \mkwhelpers\MattableController {
             $res[] = array(
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
-                'selected' => ($sor->getId() == $selid),
-                'fizmod' => $sor->getFizmodId(),
-                'fizhatido' => $sor->getFizhatido(),
-                'irszam' => $sor->getIrszam(),
-                'varos' => $sor->getVaros(),
-                'utca' => $sor->getUtca()
+                'selected' => ($sor->getId() == $selid)
             );
         }
         return $res;
+    }
+
+    public function getPartnerData() {
+        $partner = $this->getRepo()->find($this->params->getIntRequestParam('partnerid'));
+        if ($partner) {
+            $ret = array(
+                'fizmod' => $partner->getFizmodId(),
+                'fizhatido' => $partner->getFizhatido(),
+                'irszam' => $partner->getIrszam(),
+                'varos' => $partner->getVaros(),
+                'utca' => $partner->getUtca(),
+                'szallnev' => $partner->getSzallnev(),
+                'szallirszam' => $partner->getSzallirszam(),
+                'szallvaros' => $partner->getSzallvaros(),
+                'szallutca' => $partner->getSzallutca(),
+                'adoszam' => $partner->getAdoszam(),
+                'telefon' => $partner->getTelefon(),
+                'email' => $partner->getEmail()
+            );
+        }
+        echo json_encode($ret);
     }
 
     public function getSzallitoSelectList($selid) {

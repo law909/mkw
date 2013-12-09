@@ -236,7 +236,7 @@ class Bizonylattetel {
 		return '';
 	}
 
-	public function setBizonylatfej(Bizonylatfej $val) {
+	public function setBizonylatfej($val) {
 		if ($this->bizonylatfej !== $val) {
 			$this->bizonylatfej = $val;
 			$val->addBizonylattetel($this);
@@ -307,7 +307,7 @@ class Bizonylattetel {
 		return '';
 	}
 
-	public function setTermek(Termek $val) {
+	public function setTermek($val) {
 		if ($this->termek !== $val) {
 			$this->termek = $val;
 			$this->termeknev = $val->getNev();
@@ -402,7 +402,7 @@ class Bizonylattetel {
 		return '';
 	}
 
-	public function setVtsz(Vtsz $val) {
+	public function setVtsz($val) {
 		if ($this->vtsz !== $val) {
 			$this->vtsz = $val;
 			$this->vtsznev = $val->getNev();
@@ -442,7 +442,7 @@ class Bizonylattetel {
 		return '';
 	}
 
-	public function setAfa(Afa $val) {
+	public function setAfa($val) {
 		if ($this->afa !== $val) {
 			$this->afa = $val;
 			$this->afanev = $val->getNev();
@@ -564,7 +564,7 @@ class Bizonylattetel {
 		return '';
 	}
 
-	public function setValutanem(Valutanem $val) {
+	public function setValutanem($val) {
 		if ($this->valutanem !== $val) {
 			$this->valutanem = $val;
 			$this->valutanemnev = $val->getNev();
@@ -624,7 +624,7 @@ class Bizonylattetel {
 		return '';
 	}
 
-	public function setParbizonylattetel(Bizonylattetel $val) {
+	public function setParbizonylattetel($val) {
 		if ($this->parbizonylattetel !== $val) {
 			$this->parbizonylattetel = $val;
 			$val->addSzulobizonylattetel($this);
@@ -643,14 +643,14 @@ class Bizonylattetel {
 		return $this->szulobizonylattetelek;
 	}
 
-	public function addSzulobizonylattetel(Bizonylattetel $val) {
+	public function addSzulobizonylattetel($val) {
 		if (!$this->szulobizonylattetelek->contains($val)) {
 			$this->szulobizonylattetelek->add($val);
 			$val->setParbizonylattetel($this);
 		}
 	}
 
-	public function removeSzulobizonylattetel(Bizonylattetel $val) {
+	public function removeSzulobizonylattetel($val) {
 		if ($this->szulobizonylattetelek->removeElement($val)) {
 			$val->removeParbizonylattetel();
 			return true;
@@ -694,7 +694,7 @@ class Bizonylattetel {
 		return '';
 	}
 
-	public function setTermekvaltozat(TermekValtozat $val) {
+	public function setTermekvaltozat($val) {
 		if ($this->termekvaltozat !== $val) {
 			$this->termekvaltozat = $val;
 //			$val->addBizonylattetelek($this);

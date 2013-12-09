@@ -27,8 +27,8 @@ class checkoutController extends \mkwhelpers\MattableController {
 		foreach ($sorok as $sor) {
 			$s[] = $sor->toLista();
 		}
-*/		$view->setVar('tetellista', $s);
-		$view->printTemplateResult(false);
+		$view->setVar('tetellista', $s);
+*/		$view->printTemplateResult(false);
 	}
 
 	public function getFizmodList() {
@@ -59,6 +59,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 	}
 
 	public function save() {
+
 		$regkell = $this->params->getIntRequestParam('regkell');
 		$vezeteknev = $this->params->getStringRequestParam('vezeteknev');
 		$keresztnev = $this->params->getStringRequestParam('keresztnev');
@@ -106,7 +107,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 				break;
 		}
 
-		$kosartetelek = $this->getEm()->getRepository('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
+		$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
 		$ok = $ok && count($kosartetelek)>0;
 
 		if ($ok) {
@@ -196,12 +197,13 @@ class checkoutController extends \mkwhelpers\MattableController {
 
 			$megrendfej->generateId();
 
-			$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
+//			$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
 			foreach ($kosartetelek as $kt) {
 				$t = new \Entities\Bizonylattetel();
 				$t->setBizonylatfej($megrendfej);
 				$t->setPersistentData();
 				$t->setTermek($kt->getTermek());
+                $t->setTermekvaltozat($kt->getTermekvaltozat());
 				$t->setMennyiseg($kt->getMennyiseg());
 				$t->setNettoegysar($kt->getNettoegysar());
 				$t->setBruttoegysar($kt->getBruttoegysar());

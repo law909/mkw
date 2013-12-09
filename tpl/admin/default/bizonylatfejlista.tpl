@@ -11,7 +11,7 @@
 
 {block "kozep"}
 <div id="mattable-select" data-theme="{$theme}">
-<div id="mattable-header" data-title="{t('Frissítés')}" data-caption="{t('Megrendelések')}"></div>
+<div id="mattable-header" data-title="{t('Frissítés')}" data-caption="{$pagetitle}"></div>
 <div id="mattable-filterwrapper">
 	<label for="idfilter">{t('Szűrés')}</label>
 	<input id="idfilter" name="idfilter" type="text" size="30" maxlength="30">

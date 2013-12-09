@@ -52,11 +52,30 @@ $(document).ready(function() {
 					bankszamlaedit = $('#BankszamlaEdit'),
 					alttab = $('#AltalanosTab');
 			$('#PartnerEdit').change(function() {
-				var valasz = $('option:selected', this);
-				fizmodedit.val(valasz.data('fizmod'));
-				$('input[name="partnerirszam"]').val(valasz.data('irszam'));
-				$('input[name="partnervaros"]').val(valasz.data('varos'));
-				$('input[name="partnerutca"]').val(valasz.data('utca'));
+                var pe = $(this);
+                $.ajax({
+                    url: '/admin/partner/getdata',
+                    type: 'GET',
+                    data: {
+                        partnerid: pe.val()
+                    },
+                    success: function(data) {
+                        var d = JSON.parse(data);
+                        if (d.fizmod) {
+                            fizmodedit.val(d.fizmod);
+                        }
+                        $('input[name="partnerirszam"]').val(d.irszam);
+                        $('input[name="partnervaros"]').val(d.varos);
+                        $('input[name="partnerutca"]').val(d.utca);
+                        $('input[name="partneradoszam"]').val(d.adoszam);
+                        $('input[name="szallnev"]').val(d.szallnev);
+                        $('input[name="szallirszam"]').val(d.szallirszam);
+                        $('input[name="szallvaros"]').val(d.szallvaros);
+                        $('input[name="szallutca"]').val(d.szallutca);
+                        $('input[name="partnertelefon"]').val(d.telefon);
+                        $('input[name="partneremail"]').val(d.email);
+                    }
+                });
 			});
 			$('#ValutanemEdit').change(function() {
 				bankszamlaedit.val($('option:selected', this).data('bankszamla'));
