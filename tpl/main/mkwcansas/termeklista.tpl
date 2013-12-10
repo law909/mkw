@@ -37,7 +37,7 @@
 						{foreach $_szuro.cimkek as $_ertek}
 							<div>
 								<label class="checkbox" for="SzuroEdit{$_ertek.id}">
-									<input id="SzuroEdit{$_ertek.id}" name="szuro_{$_szuro.id}_{$_ertek.id}" type="checkbox"{if ($_ertek.selected)} checked="checked"{/if}>{$_ertek.caption}{if ($_ertek.termekdb)} ({$_ertek.termekdb}){/if}
+									<input id="SzuroEdit{$_ertek.id}" name="szuro_{$_szuro.id}_{$_ertek.id}" type="checkbox"{if ($_ertek.selected)} checked="checked"{/if}>{$_ertek.caption}{if ($_ertek.termekdb|default)} ({$_ertek.termekdb}){/if}
 								</label>
 							</div>
 						{/foreach}
