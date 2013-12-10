@@ -186,7 +186,19 @@
 											{/foreach}
 											</tbody>
 										</table>
-                                                                                        <div class="textalignright"><b>Összesen: {number_format($osszesen,0,',',' ')} Ft</b></div>
+                                        <div class="textalignright bold"><b>Összesen: {number_format($megr.bruttohuf,0,',',' ')} Ft</b></div>
+                                        {if ($megr.megjegyzes|default)}
+                                        <div class="acc-megrendelescaption">Webáruház megjegyzése:</div>
+                                        <div>{$megr.megjegyzes}</div>
+                                        {/if}
+                                        {if ($megr.webshopmessage|default)}
+                                        <div class="acc-megrendelescaption">Megjegyzés a webáruháznak:</div>
+                                        <div>{$megr.webshopmessage}</div>
+                                        {/if}
+                                        {if ($megr.couriermessage|default)}
+                                        <div class="acc-megrendelescaption">Megjegyzés a futárnak:</div>
+                                        <div>{$megr.couriermessage}</div>
+                                        {/if}
 									</td>
 								</tr>
 								{/foreach}
