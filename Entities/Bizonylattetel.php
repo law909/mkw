@@ -197,10 +197,10 @@ class Bizonylattetel {
 		$termek = $this->getTermek();
 		$ret = $ret + $termek->toKosar($this->getTermekvaltozat());
 		$ret['mennyiseg'] = $this->getMennyiseg();
-		$ret['nettoegysar'] = $this->getNettoegysar();
-		$ret['bruttoegysar'] = $this->getBruttoegysar();
-		$ret['netto'] = $this->getNetto();
-		$ret['brutto'] = $this->getBrutto();
+		$ret['nettoegysarhuf'] = $this->getNettoegysarhuf();
+		$ret['bruttoegysarhuf'] = $this->getBruttoegysarhuf();
+		$ret['nettohuf'] = $this->getNettohuf();
+		$ret['bruttohuf'] = $this->getBruttohuf();
 		return $ret;
 	}
 

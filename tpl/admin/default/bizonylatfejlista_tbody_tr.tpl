@@ -1,15 +1,12 @@
 <tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}">
 <td class="cell"><input class="maincheckbox" type="checkbox"></td>
 <td class="cell">
-<table><tbody>
-<tr><td colspan="2">
 <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_egyed.id}</a>
-</td>
 {if ($setup.grideditbutton=='small')}
-<td colspan="2"><span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
-</td>
+<a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('Nyomtat')}"><span class="ui-icon ui-icon-print"></span></a>
+<a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
 {/if}
-</tr>
+<table><tbody>
 <tr><td  colspan="2" class="mattable-important">
 {$_egyed.partnernev}
 </td></tr>
@@ -22,12 +19,10 @@
 <tr><td colspan="2">
 {$_egyed.partnertelefon}
 </td></tr>
-<tr><td>
-IP: {$_egyed.ip}
+<tr><td colspan="5">
+IP: {$_egyed.ip} Ref.: {$_egyed.referrer}
 </td>
-<td>
-Ref.: {$_egyed.referrer}
-</td></tr>
+</tr>
 </tbody></table>
 </td>
 <td class="cell">
@@ -43,10 +38,10 @@ Ref.: {$_egyed.referrer}
 <td class="cell">
 <table><tbody>
 <tr><td></td><td class="mattable-rightaligned">{$_egyed.valutanemnev}</td>{if ($showvalutanem)}<td class="mattable-rightaligned">HUF?</td>{/if}</tr>
-<tr><td>{t('Nettó')}:</td><td class="mattable-rightaligned">{number_format($_egyed.netto,2)}</td>{if ($showvalutanem)}<td class="mattable-rightaligned">{number_format($_egyed.nettohuf,2)}</td>{/if}</tr>
-<tr><td>{t('ÁFA')}:</td><td class="mattable-rightaligned">{number_format($_egyed.afa,2)}</td>{if ($showvalutanem)}<td class="mattable-rightaligned">{number_format($_egyed.afahuf,2)}</td>{/if}</tr>
-<tr class="mattable-important"><td>{t('Bruttó')}:</td><td class="mattable-rightaligned">{number_format($_egyed.brutto,2)}</td>{if ($showvalutanem)}<td class="mattable-rightaligned">{number_format($_egyed.bruttohuf,2)}</td>{/if}</tr>
-<tr>{if ($showvalutanem)}<td>{t('Árfolyam')}:</td><td class="mattable-rightaligned">{number_format($_egyed.arfolyam,2)}</td>{/if}</tr>
+<tr><td>{t('Nettó')}:</td><td class="mattable-rightaligned">{number_format($_egyed.netto,2,'.',' ')}</td>{if ($showvalutanem)}<td class="mattable-rightaligned">{number_format($_egyed.nettohuf,2,'.',' ')}</td>{/if}</tr>
+<tr><td>{t('ÁFA')}:</td><td class="mattable-rightaligned">{number_format($_egyed.afa,2,'.',' ')}</td>{if ($showvalutanem)}<td class="mattable-rightaligned">{number_format($_egyed.afahuf,2,'.',' ')}</td>{/if}</tr>
+<tr class="mattable-important"><td>{t('Bruttó')}:</td><td class="mattable-rightaligned">{number_format($_egyed.brutto,2,'.',' ')}</td>{if ($showvalutanem)}<td class="mattable-rightaligned">{number_format($_egyed.bruttohuf,2,'.',' ')}</td>{/if}</tr>
+<tr>{if ($showvalutanem)}<td>{t('Árfolyam')}:</td><td class="mattable-rightaligned">{number_format($_egyed.arfolyam,2,'.',' ')}</td>{/if}</tr>
 </tbody></table>
 </td>
 {if ($setup.grideditbutton=='big')}

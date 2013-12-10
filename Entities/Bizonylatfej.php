@@ -304,7 +304,8 @@ class Bizonylatfej {
 		$ret = array();
 		$ret['id'] = $this->getId();
 		$ret['kelt'] = $this->getKeltStr();
-		$ret['ertek'] = $this->getBrutto();
+		$ret['ertek'] = $this->getBruttohuf();
+		$ret['bruttohuf'] = $this->getBruttohuf();
 		$ret['fizmodnev'] = $this->getFizmodnev();
 		$ret['szallitasimodnev'] = $this->getSzallitasimodnev();
 		$ret['szamlanev'] = $this->getPartnernev();
@@ -319,6 +320,7 @@ class Bizonylatfej {
 		$ret['adoszam'] = $this->getPartneradoszam();
 		$ret['webshopmessage'] = $this->getWebshopmessage();
 		$ret['couriermessage'] = $this->getCouriermessage();
+        $ret['allapotnev'] = $this->getBizonylatstatusznev();
 		$tetellist = array();
 		foreach($this->bizonylattetelek as $tetel) {
 			$tetellist[] = $tetel->toLista();

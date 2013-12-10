@@ -160,6 +160,10 @@ thead.acc-megrendelestetellist{font-weight:bold;}thead.acc-megrendelestetellist 
 .termekSlider{border:solid 1px #4b4b4b;background:white;}.termekSlider .rsOverflow,.termekSlider .rsSlide{background:white;}
 .termekSliderTermekInner{padding:15px;}.termekSliderTermekInner a{display:block;}
 .termekSliderImageContainer{min-height:100px;}
+.o404TermekInner{padding:15px;}
+.o404ImageContainer{min-height:150px;}
+.kapcsolodoTermekInner{padding:15px;}
+.kapcsolodoImageContainer{min-height:100px;}
 .hirListBlock dd.title{font-weight:bold;font-size:14px;}
 .spanmkw3{width:349.5px;margin-left:0;}
 .akciosarszoveg{color:#e42721;font-weight:bold;font-size:13px;}
