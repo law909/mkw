@@ -95,7 +95,8 @@
             {/if}
             <div>
                 <h4>{t('Üdvözöljük webáruházunkban!')}</h4>
-                Válogasson kedvére az oldalunkon található több, mint 4000-féle termék közül.
+                <b>Dőljön hátra</b> kedvenc karosszékében, és válogasson kedvére az oldalunkon található több, mint 4000-féle termék közül. A ruhaneműkön keresztül a katonai felszereléseken át a kempingcuccokig Ön is biztosan megtalálja majd a kedvencét nálunk. <b>A munkát bízza ránk</b>: Ön kiválasztja, mi becsomagoljuk és házhoz szállítjuk az Önnek legalkalmasabb időpontban.
+                <br><br>Webáruházunk programja kívül-belül megújult ugyan, de az elveink, lelkesedésünk és vásárlóink iránti elkötelezettségünk továbbra sem változott. Örömünkre szolgál, hogy immáron 7. éve segíthetünk minden kedves régi és új megrendelőnknek.
             </div>
             {if (count($legnepszerubbtermekek)>0)}
             <div class="blockHeader">

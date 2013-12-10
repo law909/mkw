@@ -153,7 +153,7 @@ tbody.acc-megrendeles td{padding:5px 10px;}
 .acc-megrendelesbordertop{border-top:solid;}
 .acc-megrendelesborderbottom{border-bottom:solid;}
 .acc-megrendelescaption{font-weight:bold;}
-.acc-megrendelestetellist{border:solid 1px;width:100%;margin-top:5px;}
+.acc-megrendelestetellist{border:solid 1px;color:rgb(221, 221, 221);width:100%;margin-top:5px;}
 thead.acc-megrendelestetellist{font-weight:bold;}thead.acc-megrendelestetellist td{padding:5px 10px;}
 .termekimagecontainer{padding-bottom:15px;}
 .royalSlider{width:100%;}

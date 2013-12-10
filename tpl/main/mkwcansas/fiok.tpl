@@ -186,7 +186,7 @@
 											{/foreach}
 											</tbody>
 										</table>
-										<div class="textalignright">Összesen: {number_format($osszesen,0,',',' ')} Ft</div>
+                                                                                        <div class="textalignright"><b>Összesen: {number_format($osszesen,0,',',' ')} Ft</b></div>
 									</td>
 								</tr>
 								{/foreach}

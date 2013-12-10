@@ -14,7 +14,6 @@
 				<li><a href="/statlap/aszf">Általános szerződési feltételek</a></li>
 				<li><a href="/statlap/penzvisszafizetesi-garancia">Pénzvisszafizetési garancia</a></li>
 				<li><a href="/statlap/husegpontok">Hűségpontok</a></li>
-				<li><a href="#">Forgalmazott márkáink</a></li>
 			</ul>
 		</nav>
 		<nav class="span3">
@@ -24,7 +23,6 @@
 				<li><a href="/statlap/fontos-informaciok">Fontos információk</a></li>
 				<li><a href="/statlap/szallitasi-feltetelek-es-tudnivalok">Szállítási feltételek</a></li>
 				<li><a href="/statlap/fizetesi-feltetelek">Fizetési feltételek</a></li>
-				<li><a href="#">Akcióink</a></li>
 			</ul>
 		</nav>
 		<nav class="span3">
