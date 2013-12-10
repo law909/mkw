@@ -320,6 +320,7 @@ class Bizonylatfej {
 		$ret['adoszam'] = $this->getPartneradoszam();
 		$ret['webshopmessage'] = $this->getWebshopmessage();
 		$ret['couriermessage'] = $this->getCouriermessage();
+        $ret['megjegyzes'] = $this->getMegjegyzes();
         $ret['allapotnev'] = $this->getBizonylatstatusznev();
 		$tetellist = array();
 		foreach($this->bizonylattetelek as $tetel) {
