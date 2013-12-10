@@ -95,7 +95,7 @@
             {/if}
             <div>
                 <h4>{t('Üdvözöljük webáruházunkban!')}</h4>
-                Gyere el hozzánk személyesen Egerbe.
+                Válogasson kedvére az oldalunkon található több, mint 4000-féle termék közül.
             </div>
             {if (count($legnepszerubbtermekek)>0)}
             <div class="blockHeader">

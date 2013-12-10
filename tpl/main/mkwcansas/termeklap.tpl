@@ -16,6 +16,7 @@
 <div class="container">
 	<div class="row">
 		<div class="span12">
+                    <b>Ön itt áll: </b>
 		{foreach $navigator as $_navi}
 			{if ($_navi.url!='')}
 				<a href="/termekfa/{$_navi.url}">
