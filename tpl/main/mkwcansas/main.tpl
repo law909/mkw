@@ -79,9 +79,10 @@
             {/if}
             <div>
                 <h4>{t('Üdvözöljük webáruházunkban!')}</h4>
-                <h5>Dőljön hátra</h5> kedvenc karosszékében, és válogasson kedvére az oldalunkon található több, mint 4000-féle termék közül. A ruhaneműkön keresztül a katonai felszereléseken át a kempingcuccokig Ön is biztosan megtalálja majd a kedvencét nálunk.
+                <b>Dőljön hátra</b> kedvenc karosszékében, és válogasson kedvére az oldalunkon található több, mint 4000-féle termék közül. A ruhaneműkön keresztül a katonai felszereléseken át a kempingcuccokig Ön is biztosan megtalálja majd a kedvencét nálunk.
                 <br><b>A munkát bízza ránk</b>: Ön kiválasztja, mi becsomagoljuk és házhoz szállítjuk az Önnek legalkalmasabb időpontban.
                 <br><br>Webáruházunk programja kívül-belül megújult ugyan, de az elveink, lelkesedésünk és vásárlóink iránti elkötelezettségünk továbbra sem változott. Örömünkre szolgál, hogy immáron 7. éve segíthetünk minden kedves régi és új megrendelőnknek.
+                <br>
                 <div>
                     <!-- AddThis Button BEGIN -->
                     <div class="addthis_toolbox addthis_default_style ">
