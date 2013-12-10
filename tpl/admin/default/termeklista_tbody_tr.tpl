@@ -4,21 +4,19 @@
 <table><tbody>
 <tr><td><a class="js-toflyout" href="{$mainurl}{$_termek.kepurl}" target="_blank"><img src="{$mainurl}{$_termek.kepurlsmall}"/></a></td>
 <td>
-<table><tbody>
-<tr>
-    <td colspan="3"><a class="mattable-editlink" href="#" data-termekid="{$_termek.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_termek.nev}</a></td>
     {if ($setup.grideditbutton=='small')}
-    <td><span class="jobbra"><a class="mattable-dellink" href="#" data-termekid="{$_termek.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span></td>
+    <a class="mattable-editlink" href="#" data-termekid="{$_termek.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_termek.nev}</a>
+    <a class="mattable-dellink" href="#" data-termekid="{$_termek.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
     {/if}
-</tr>
+<table><tbody>
 <tr><td colspan="3">{$_termek.termekfa1nev} | {$_termek.termekfa2nev} | {$_termek.termekfa3nev}</td></tr>
 <tr><td>{t('Link')}:</td><td colspan="3"><a href="{$mainurl}/termek/{$_termek.slug}" target="_blank">/termek/{$_termek.slug}</a></td></tr>
 <tr><td>{t('Gyártó')}:</td><td colspan="3">{$_termek.gyartonev}</td></tr>
 <tr><td>{t('Megtekintve')}:</td><td>{$_termek.megtekintesdb}</td><td>{t('Megvásárolva')}:</td><td>{$_termek.megvasarlasdb}</td></tr>
 <tr><td>{t('Cikkszám')}:</td><td colspan="3">{$_termek.cikkszam}</td>
 <tr><td>{t('ME')}:</td><td colspan="3">{$_termek.me}</td></tr>
-<tr><td>{t('Nettó ár')}:</td><td>{$_termek.netto}</td><td>{t('Bruttó ár')}:</td><td>{$_termek.brutto}</td>
-<tr><td>{t('Akciós n.ár')}:</td><td>{$_termek.akciosnetto}</td><td>{t('Akciós b.ár')}:</td><td>{$_termek.akciosbrutto}</td>
+<tr><td>{t('Nettó ár')}:</td><td>{number_format($_termek.netto,4,'.',' ')}</td><td>{t('Bruttó ár')}:</td><td>{number_format($_termek.brutto,4,'.',' ')}</td>
+<tr><td>{t('Akciós n.ár')}:</td><td>{number_format($_termek.akciosnetto,4,'.',' ')}</td><td>{t('Akciós b.ár')}:</td><td>{number_format($_termek.akciosbrutto,4,'.',' ')}</td>
 </tbody></table>
 </td>
 </tr>
