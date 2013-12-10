@@ -164,25 +164,29 @@
 						</div>
 						{if (count($termek.kapcsolodok)!=0)}
 						<div id="kapcsolodoTab" class="tab-pane">
-							<table><tr>
-							{foreach $termek.kapcsolodok as $kapcsolodo}
-								<td>
-									<table>
-										<tr><td class="textaligncenter">
-										{if ($kapcsolodo.kiskepurl!='')}<a href="/termek/{$kapcsolodo.slug}"><img src="{$kapcsolodo.kiskepurl}" title="{$kapcsolodo.caption}" alt="{$kapcsolodo.caption}"></a>{/if}
-										</td></tr>
-										<tr><td class="textaligncenter">
-										<a href="/termek/{$kapcsolodo.slug}"><h4>{$kapcsolodo.caption}</h4></a>
-										</td></tr>
-										<tr><td class="textaligncenter">
-											<h3 class="itemPrice">{number_format($kapcsolodo.bruttohuf,0,',',' ')} Ft</h3>
-										</td></tr>
-									</table>
-								</td>
-								<td>
-								</td>
-							{/foreach}
-							</tr></table>
+                        {$lntcnt=count($termek.kapcsolodok)}
+                        {$step=4}
+                        {for $i=0 to $lntcnt-1 step $step}
+                            <div>
+                            {for $j=0 to $step-1}
+                                {if ($i+$j<$lntcnt)}
+                                {$_kapcsolodo=$termek.kapcsolodok[$i+$j]}
+                                <div class="textaligncenter pull-left" style="width:{100/$step}%">
+                                    <div class="kapcsolodoTermekInner">
+                                        <a href="{$_kapcsolodo.link}">
+                                            <div class="kapcsolodoImageContainer">
+                                                <img src="{$_kapcsolodo.minikepurl}" title="{$_kapcsolodo.caption}" alt="{$_kapcsolodo.caption}">
+                                            </div>
+                                            <div>{$_kapcsolodo.caption}</div>
+                                            <h5><span>{number_format($_kapcsolodo.bruttohuf,0,',',' ')} Ft</span></h5>
+                                            <a href="{$_kapcsolodo.link}" class="btn cartbtn">Részletek</a>
+                                        </a>
+                                    </div>
+                                </div>
+                                {/if}
+                            {/for}
+                            </div>
+                        {/for}
 						</div>
 						{/if}
 						<!--div id="ertekelesTab" class="tab-pane">

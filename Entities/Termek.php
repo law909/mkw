@@ -284,6 +284,7 @@ class Termek {
         $x['minikepurl'] = $this->getKepurlMini();
         $x['kepurl'] = $this->getKepurlLarge();
         $x['slug'] = $this->getSlug();
+        $x['link'] = \mkw\Store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
         $x['caption'] = $this->getNev();
         $x['rovidleiras'] = $this->getRovidLeiras();
         $x['akcios'] = $this->getAkcios();
@@ -390,6 +391,7 @@ class Termek {
         $x['kepurl'] = $this->getKepurlLarge();
         $x['slug'] = $this->getSlug();
         $x['caption'] = $this->getNev();
+        $x['link'] = \mkw\Store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
         $x['rovidleiras'] = $this->getRovidLeiras();
         $x['akcios'] = $this->getAkcios();
         $x['akciotipus'] = $this->getAkcioTipus();
@@ -514,6 +516,7 @@ class Termek {
         $x['akcios'] = $this->getAkcios();
         $x['bruttohuf'] = $this->getBruttoAr();
         $x['eredetibruttohuf'] = $this->getBruttoAr($valtozat, true);
+        $x['link'] = \mkw\Store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
         return $x;
     }
 

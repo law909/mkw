@@ -369,6 +369,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 
             // kiemelt termekek, kategoriaszures es kereses
 			$t = array();
+            $kiemelt = array();
             $kiemeltdb = 0;
             if (($kiemelttermekdb>0) && (($pageno == 1) || ($pager->getPageCount() == 1)) && ($caller !== 'szuro')) {
                 $kiemelttermekek = $termekrepo->getKiemeltTermekek(array_merge_recursive($keresofilter, $kategoriafilter), $kiemelttermekdb);
@@ -383,10 +384,11 @@ class termekfaController extends \mkwhelpers\MattableController {
                     }
                     $tete = $term->toTermekLista($valt, $ujtermekminid, $top10min);
                     $tete['kiemelt'] = true;
-                    $t[] = $tete;
+                    $kiemelt[] = $tete;
                     $kiemeltdb++;
                 }
             }
+            $ret['kiemelttermekek'] = $kiemelt;
 			// termekek kategoriaval es cimkevel es arral szurve, lapozva
 			// ez a konkret termeklista
             $osszestermekid = array();

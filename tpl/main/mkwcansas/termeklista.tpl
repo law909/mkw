@@ -50,6 +50,32 @@
 			<div>
 				{$kategoria.leiras2}
 			</div>
+            <div>
+        {$lntcnt=count($kiemelttermekek)}
+        {$step=min(3, $lntcnt)}
+        {for $i=0 to $lntcnt-1 step $step}
+            <div>
+            {for $j=0 to $step-1}
+                {if ($i+$j<$lntcnt)}
+                {$_termek=$kiemelttermekek[$i+$j]}
+                <div class="textaligncenter pull-left" style="width:{100/$step}%">
+                    <div class="o404TermekInner">
+                        <a href="{$_termek.link}">
+                            <div class="o404ImageContainer">
+                                <img src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
+                            </div>
+                            <div>{$_termek.caption}</div>
+                            <h5><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
+                            <a href="{$_termek.link}" class="btn cartbtn">Részletek</a>
+                        </a>
+                    </div>
+                </div>
+                {/if}
+            {/for}
+            </div>
+        {/for}
+
+            </div>
 			<div class="lapozo">
 				<form class="lapozoform" action="{$url}" method="post" data-url="{$url}" data-pageno="{$lapozo.pageno}">
 					<table><tbody><tr>
