@@ -125,6 +125,9 @@ class megrendelesfejController extends bizonylatfejController {
         $filter['fields'][] = 'partner';
         $filter['clauses'][] = '=';
         $filter['values'][] = $this->getRepo('Entities\Partner')->getLoggedInUser();
+        $filter['fields'][] = 'bizonylattipus';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
         $l = $this->getRepo()->getWithJoins($filter, array('kelt' => 'ASC'));
         $ret = array();
         foreach ($l as $it) {

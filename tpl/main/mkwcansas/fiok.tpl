@@ -131,8 +131,8 @@
 								<tr class="acc-megrendelesbordertop acc-megrendelestablerow js-accmegrendelesopen">
 									<td>{$megr.id}</td>
 									<td>{$megr.kelt}</td>
-									<td></td>
-									<td>{number_format($megr.ertek,0,'',' ')} Ft</td>
+									<td>{$megr.allapotnev|default:"ismeretlen"}</td>
+									<td class="textalignright">{number_format($megr.bruttohuf,0,'',' ')} Ft</td>
 									<td></td>
 									<td><a href="#" class="">V</a></td>
 								</tr>
@@ -186,7 +186,7 @@
 											{/foreach}
 											</tbody>
 										</table>
-										<div class="textalignright">Összesen: {number_format($osszesen,0,',',' ')} Ft</div>
+										<div class="textalignright">Összesen: {number_format($megr.bruttohuf,0,',',' ')} Ft</div>
 									</td>
 								</tr>
 								{/foreach}
