@@ -389,8 +389,10 @@ class termekfaController extends \mkwhelpers\MattableController {
             }
 			// termekek kategoriaval es cimkevel es arral szurve, lapozva
 			// ez a konkret termeklista
+            $osszestermekid = array();
             $termekek = $termekrepo->getTermekLista(array_merge_recursive($keresofilter, $kategoriafilter, $termekidfilter, $arfilter), $order, $pager->getOffset(), $elemperpage);
 			foreach ($termekek as $termek) {
+                $osszestermekid[] = $termek['id'];
 				$term = $termekrepo->find($termek['id']);
 				if ($termek['valtozatid']) {
 					$valt = $this->getEm()->getRepository('Entities\TermekValtozat')->find($termek['valtozatid']);
@@ -418,21 +420,25 @@ class termekfaController extends \mkwhelpers\MattableController {
                 case 'termekfa':
                     $ret['url'] = '/termekfa/' . $parent->getSlug();
                     $ret['navigator'] = $this->getNavigator($parent);
+                    // $tid = termek id-k csak kategoriaval es arral szurve
+                    $ret['szurok'] = $tck->getForTermekSzuro($tid, $szurotomb);
                     break;
                 case 'kereses':
                     $ret['url'] = '/kereses';
                     $ret['navigator'] = array(array('caption' => t('A keresett kifejezés') . ': ' . $keresoszo));
+                    // $tid = termek id-k csak kategoriaval es arral szurve
+                    $ret['szurok'] = $tck->getForTermekSzuro($tid, $szurotomb);
                     break;
                 case 'szuro':
                     $ret['url'] = '/szuro';
                     $ret['navigator'] = array(array('caption' => t('Szűrő')));
+                    // $tid = termek id-k csak kategoriaval es arral szurve
+                    $ret['szurok'] = $tck->getForTermekSzuro($osszestermekid, $szurotomb);
                     break;
             }
 			$ret['keresett'] = $keresoszo;
 			$ret['vt'] = ($this->params->getIntRequestParam('vt') > 0 ? $this->params->getIntRequestParam('vt') : 1);
 			$ret['termekek'] = $t;
-			// $tid = termek id-k csak kategoriaval es arral szurve
-			$ret['szurok'] = $tck->getForTermekSzuro($tid, $szurotomb, $termekidfiltered);
 			$ret['lapozo'] = $pager->loadValues();
 			$ret['order'] = $ord;
             if ($parent) {
