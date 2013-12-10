@@ -134,7 +134,7 @@
 									<td>{$megr.allapotnev|default:"ismeretlen"}</td>
 									<td class="textalignright">{number_format($megr.bruttohuf,0,'',' ')} Ft</td>
 									<td></td>
-									<td><a href="#" class="">V</a></td>
+                                    <td><a href="#" class=""><img src="/themes/main/mkwcansas/img/i_down.png"></a></td>
 								</tr>
 								<tr class="notvisible acc-megrendelesborderbottom">
 									<td colspan="6">
