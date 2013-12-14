@@ -66,6 +66,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$x['couriermessage'] = $t->getCouriermessage();
 		$x['ip'] = $t->getIp();
 		$x['referrer'] = $t->getReferrer();
+        $x['szallitasiktgkell'] = $t->getSzallitasiktgkell();
 		if ($forKarb) {
 			foreach ($t->getBizonylattetelek() as $ttetel) {
 				$tetel[] = $tetelCtrl->loadVars($ttetel, true);
@@ -129,6 +130,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$obj->setBelsomegjegyzes($this->params->getStringRequestParam('belsomegjegyzes'));
 		$obj->setWebshopmessage($this->params->getStringRequestParam('webshopmessage'));
 		$obj->setCouriermessage($this->params->getStringRequestParam('couriermessage'));
+
+        $obj->setSzallitasiktgkell($this->params->getBoolRequestParam('szallitasiktgkell'));
 
 		$obj->generateId(); // az üres kelt miatt került a végére
 
@@ -197,5 +200,28 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		}
 		return $obj;
 	}
+
+    public function checkKelt() {
+        $ret = array('response' => 'error');
+        $keltstr = \mkw\Store::convDate($this->params->getDateRequestParam('kelt'));
+        $kelt = strtotime($keltstr);
+        $biztipid = $this->params->getStringRequestParam('biztipus');
+        $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipid);
+        if ($bt) {
+            $filter = array();
+            $filter['fields'][] = 'bizonylattipus';
+            $filter['clauses'][] = '=';
+            $filter['values'][] = $bt;
+            $filter['fields'][] = 'kelt';
+            $filter['clauses'][] = '>';
+            $filter['values'][] = $keltstr;
+            $filter['sql'][] = '(YEAR(_xx.kelt)=' . date('Y', $kelt) . ')';
+            $db = $this->getRepo()->getCount($filter);
+            if ($db == 0) {
+                $ret = array('response' => 'ok');
+            }
+        }
+        echo json_encode($ret);
+    }
 
 }

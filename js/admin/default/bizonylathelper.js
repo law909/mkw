@@ -76,7 +76,60 @@ function calcArak(sorId) {
 			$('input[name="tetelbruttoegysarhuf_'+sorId+'"]').val(resp.bruttoegysarhuf);
 			$('input[name="tetelnettohuf_'+sorId+'"]').val(resp.nettohuf);
 			$('input[name="tetelbruttohuf_'+sorId+'"]').val(resp.bruttohuf);
-
 		}
 	});
+}
+
+function checkKelt(kelt, biztipus) {
+    var retval = false;
+    $.ajax({
+        url: '/admin/bizonylatfej/checkkelt',
+        async: false,
+        data: {
+            kelt: kelt,
+            biztipus: biztipus
+        },
+        success: function(data) {
+            var d = JSON.parse(data);
+            if (d.response == 'ok') {
+                retval = true;
+            }
+        }
+    });
+    return retval;
+}
+
+function checkBizonylatFej(biztipus, dialogcenter) {
+    var keltedit = $('#KeltEdit'),
+        keltchanged = keltedit.attr('data-datum') != keltedit.val(),
+        keltok = (!keltchanged) || (keltchanged && checkKelt($('#KeltEdit').val(), biztipus)),
+        tetelok = ($('.js-termekid').length !==0) && ($('.js-termekid[value=""]').length === 0),
+        ret = keltok && tetelok;
+    if (!keltok) {
+        dialogcenter.html('Már van későbbi keltű bizonylat.').dialog({
+            resizable: false,
+            height: 140,
+            modal: true,
+            buttons: {
+                'OK': function() {
+                    $(this).dialog('close');
+                }
+            }
+        });
+    }
+    else {
+        if (!tetelok) {
+            dialogcenter.html('Nincsenek tételek a bizonylaton.').dialog({
+                resizable: false,
+                height: 140,
+                modal: true,
+                buttons: {
+                    'OK': function() {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+    }
+    return ret;
 }

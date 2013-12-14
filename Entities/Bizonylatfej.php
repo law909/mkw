@@ -271,6 +271,9 @@ class Bizonylatfej {
 	 */
 	private $bizonylatstatusz;
 
+    /** @Column(type="boolean",nullable=false) */
+	private $szallitasiktgkell = true;
+
 
 	/**
 	 * @PrePersist
@@ -357,8 +360,9 @@ class Bizonylatfej {
 				$azon = '';
 			}
 			$kezdo = $bt->getKezdosorszam();
-			$ev = $this->kelt->format('Y');
-			$q = store::getEm()->createQuery('SELECT COUNT(bf) FROM Entities\Bizonylatfej bf WHERE bf.id LIKE \'' . $azon . '%\'');
+			$ev = $this->getKelt()->format('Y');
+			$q = store::getEm()->createQuery('SELECT COUNT(bf) FROM Entities\Bizonylatfej bf WHERE bf.bizonylattipus=:p');
+            $q->setParameters(array('p' => $bt));
 			if ($q->getSingleScalarResult() > 0) {
 				$kezdo = 1;
 			}
@@ -366,9 +370,12 @@ class Bizonylatfej {
 				$kezdo = 1;
 			}
 			$szam = $kezdo;
-			$q = store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bizonylatfej bf WHERE (bf.id LIKE \'' . $azon . $ev . '%\') AND (YEAR(bf.kelt)=' . $ev . ')');
+			$q = store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
+            $q->setParameters(array(
+                'p1' => $bt,
+                'p2' => $ev
+            ));
 			$max = $q->getSingleScalarResult();
-            \mkw\Store::writelog($max);
 			if ($max) {
 				$szam = explode('/', $max);
 				if (is_array($szam)) {
@@ -1240,5 +1247,13 @@ class Bizonylatfej {
 //			$val->removeBizonylat($this);
 		}
 	}
+
+    public function getSzallitasiktgkell() {
+        return $this->szallitasiktgkell;
+    }
+
+    public function setSzallitasiktgkell($adat) {
+        $this->szallitasiktgkell = $adat;
+    }
 
 }

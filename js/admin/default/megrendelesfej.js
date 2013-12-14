@@ -23,9 +23,9 @@ $(document).ready(function() {
 				afa.val(ui.item.afa);
 				afa.change();
 				kepsor = $('.js-termekpicturerow_' + sorid);
-				$('.js-toflyout', kepsor).attr('href', ui.item.kepurl);
-				$('.js-toflyout img', kepsor).attr('src', ui.item.kiskepurl);
-				$('.js-termeklink', kepsor).attr('href','/termek/' + ui.item.slug).html('/termek/' + ui.item.slug);
+				$('.js-toflyout', kepsor).attr('href', ui.item.mainurl + ui.item.kepurl);
+				$('.js-toflyout img', kepsor).attr('src', ui.item.mainurl + ui.item.kiskepurl);
+				$('.js-termeklink', kepsor).attr('href',ui.item.link).html(ui.item.link);
 				$.ajax({
 					url: '/admin/bizonylattetel/valtozatlist',
 					data: {
@@ -207,6 +207,9 @@ $(document).ready(function() {
 				$('.js-toflyout').flyout();
 			}
 		},
+        beforeSerialize: function() {
+            return checkBizonylatFej('megrendeles', dialogcenter);
+        },
 		onSubmit: function() {
 			$('#messagecenter')
 					.html('A mentés sikerült.')
