@@ -46,6 +46,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$x['nettohuf'] = $t->getNettohuf();
 		$x['bruttohuf'] = $t->getBruttohuf();
 		$x['hataridostr'] = $t->getHataridoStr();
+        $x['mainurl'] = store::getConfigValue('mainurl');
 		$term = $t->getTermek();
 		if ($term) {
 			$x['kozepeskepurl'] = $term->getKepUrlMedium();
@@ -53,7 +54,8 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 			$x['minikepurl'] = $term->getKepUrlMini();
 			$x['kepurl'] = $term->getKepUrlLarge();
 			$x['slug'] = $term->getSlug();
-		}
+            $x['link'] = \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $term->getSlug()));
+        }
 
 		if ($forKarb) {
 			$x['valtozatlist'] = $termek->getValtozatList($t->getTermekId(), $t->getTermekvaltozatId());

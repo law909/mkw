@@ -540,7 +540,9 @@ class termekController extends \mkwhelpers\MattableController {
 					'kozepeskepurl' => $r->getKepUrlMedium(),
 					'kiskepurl' => $r->getKepUrlSmall(),
 					'kepurl' => $r->getKepUrlLarge(),
-					'slug' => $r->getSlug()
+					'slug' => $r->getSlug(),
+                    'link' => \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
+                    'mainurl' => store::getConfigValue('mainurl')
 				);
 			}
 		}

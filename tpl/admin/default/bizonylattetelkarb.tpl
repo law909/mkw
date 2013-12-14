@@ -11,7 +11,7 @@
 </tr>
 <tr class="js-termekpicturerow_{$tetel.id}">
 	<td><a class="js-toflyout" href="{$mainurl}{$tetel.kepurl}" target="_blank"><img src="{$mainurl}{$tetel.kiskepurl}"/></a></td>
-	<td>{t('Link')}:<a class="js-termeklink" href="/termek/{$tetel.slug}" target="_blank">/termek/{$tetel.slug}</a></td>
+	<td>{t('Link')}:<a class="js-termeklink" href="{$tetel.link}" target="_blank">{$tetel.link}</a></td>
 </tr>
 <tr><td><label for="NevEdit{$tetel.id}">{t('Név')}:</label></td>
 <td colspan="5"><input id="NevEdit{$tetel.id}" name="tetelnev_{$tetel.id}" type="text" size="103" maxlength="255" value="{$tetel.termeknev}" required="required"></td>
