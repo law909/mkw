@@ -25,7 +25,7 @@
 							<input id="KeresztnevEdit" name="keresztnev" type="text" class="span" value="{$keresztnev|default}" placeholder="{t('keresztnév')} *" required>
 						</div>
 						<div class="controls controls-row chk-controloffset">
-							<input id="EmailEdit" name="email" type="email" class="span" value="{$email|default}" placeholder="{t('email')} *" required data-errormsg1="{t('Adja meg az emailcímét')}" data-errormsg2="{t('Kérjük emailcímet adjon meg.')}">
+							<input id="EmailEdit" name="email" type="email" class="span" value="{$email|default}" placeholder="{t('email')} *" required data-errormsg1="{t('Adja meg az emailcímét')}" data-errormsg2="{t('Kérjük, emailcímet adjon meg.')}">
 						</div>
 						<div class="controls controls-row chk-controloffset">
 							<div class="chk-relative pull-left">
@@ -58,7 +58,7 @@
 			<form id="Loginform" action="/login/ment" method="post">
 				<fieldset>
 					<div class="controls chk-controloffset">
-						<input name="email" type="email" class="" placeholder="{t('email')} *" required data-errormsg1="{t('Adja meg az emailcímét')}" data-errormsg2="{t('Kérjük emailcímet adjon meg.')}">
+						<input name="email" type="email" class="" placeholder="{t('email')} *" required data-errormsg1="{t('Adja meg az emailcímét')}" data-errormsg2="{t('Kérjük, emailcímet adjon meg.')}">
 					</div>
 					<div class="controls chk-controloffset">
 						<input name="jelszo" type="password" class="" placeholder="{t('jelszó')} *" value="">

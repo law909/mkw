@@ -101,12 +101,12 @@
 							<input name="szamlanev" type="text" class="span8 js-chkrefresh" placeholder="{t('számlázási név')}" value="{$user.nev|default}" data-container=".js-chkszallitasiadatok">
 						</div>
 						<div class="controls controls-row chk-controloffset">
-							<input name="szamlairszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.irszam|default}" required data-errormsg="Kérem adja meg az irányítószámát" data-container=".js-chkszallitasiadatok">
+							<input name="szamlairszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.irszam|default}" required data-errormsg="Kérem, adja meg az irányítószámát" data-container=".js-chkszallitasiadatok">
 							<i class="span inputiconhack"></i>
-							<input name="szamlavaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.varos|default}" required data-errormsg="Kérem adja meg a várost" data-container=".js-chkszallitasiadatok">
+							<input name="szamlavaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.varos|default}" required data-errormsg="Kérem, adja meg a várost" data-container=".js-chkszallitasiadatok">
 						</div>
 						<div class="controls chk-controloffset">
-							<input name="szamlautca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.utca|default}" required data-errormsg="Kérem adja meg az utcát" data-container=".js-chkszallitasiadatok">
+							<input name="szamlautca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.utca|default}" required data-errormsg="Kérem, adja meg az utcát" data-container=".js-chkszallitasiadatok">
 						</div>
 						<div class="controls chk-controloffset">
 							<div class="chk-relative pull-left chk-tooltippedcontainer">
@@ -132,12 +132,12 @@
 								<input name="szallnev" type="text" class="span8 js-chkrefresh" placeholder="{t('szállítási név')}" value="{$user.szallnev|default}" data-orgdata="{$user.szallnev|default}" data-container=".js-chkszallitasiadatok">
 							</div>
 							<div class="controls controls-row chk-controloffset">
-								<input name="szallirszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.szallirszam|default}" data-orgdata="{$user.szallirszam|default}" required {if ($user.szalladategyezik|default)}disabled {/if}data-errormsg="Kérem adja meg az irányítószámát" data-container=".js-chkszallitasiadatok">
+								<input name="szallirszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.szallirszam|default}" data-orgdata="{$user.szallirszam|default}" required {if ($user.szalladategyezik|default)}disabled {/if}data-errormsg="Kérem, adja meg az irányítószámát" data-container=".js-chkszallitasiadatok">
 								<i class="span inputiconhack"></i>
-								<input name="szallvaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.szallvaros|default}" data-orgdata="{$user.szallvaros|default}" required {if ($user.szalladategyezik|default)}disabled {/if}data-errormsg="Kérem adja meg a várost" data-container=".js-chkszallitasiadatok">
+								<input name="szallvaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.szallvaros|default}" data-orgdata="{$user.szallvaros|default}" required {if ($user.szalladategyezik|default)}disabled {/if}data-errormsg="Kérem, adja meg a várost" data-container=".js-chkszallitasiadatok">
 							</div>
 							<div class="controls chk-controloffset">
-								<input name="szallutca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.szallutca|default}" data-orgdata="{$user.szallutca|default}" required {if ($user.szalladategyezik|default)}disabled {/if}data-errormsg="Kérem adja meg az utcát" data-container=".js-chkszallitasiadatok">
+								<input name="szallutca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.szallutca|default}" data-orgdata="{$user.szallutca|default}" required {if ($user.szalladategyezik|default)}disabled {/if}data-errormsg="Kérem, adja meg az utcát" data-container=".js-chkszallitasiadatok">
 							</div>
 						</div>
 						<div class="row chk-actionrow"><a class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallmoddgh">Tovább</a></div>

@@ -24,9 +24,9 @@
                         <h5>Kérdéseim lennének, hol találok válaszokat?</h5>
                         <p>Csokorba gyűjtöttük a leggyakrabban felmerült kérdéseket, melyeket a következő oldalakon meg is válaszoltunk:</p>
                         <ul>
-                            <li>Leggyakoribb kérdések és válaszok</li>
-                            <li>Segítség a webáruház használatához</li>
-                            <li>Általános szerződési feltételek</li>
+                            <li><a href="/statlap/gy-i-k-leggyakoribb-kerdesek">{t('Leggyakoribb kérdések és válaszok')}</a></li>
+                            <li><a href="/statlap/szallitasi-feltetelek-es-tudnivalok">{t('Szállítási tudnivalók')}</a></li>
+                            <li><a href="/statlap/aszf">{t('Általános szerződési feltételek')}</a></li>
                         </ul>
                         <p>Ha mégsem találja meg az Önt érdeklő témakört, természetesen bármikor hívhat minket, vagy küldhet emailt, boldogan állunk rendelkezésére!</p>
                         <a href="/" class="btn okbtn">Folytatom a vásárlást</a>
