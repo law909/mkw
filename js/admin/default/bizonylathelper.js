@@ -101,7 +101,7 @@ function checkKelt(kelt, biztipus) {
 
 function checkBizonylatFej(dialogcenter) {
     var keltok = checkKelt($('#KeltEdit').val(), 'szamla'),
-        tetelok = $('.js-termekid[value=""]').length !== 0,
+        tetelok = ($('.js-termekid').length !==0) && ($('.js-termekid[value=""]').length === 0),
         ret = keltok && tetelok;
     if (!keltok) {
         dialogcenter.html('Már van későbbi keltű bizonylat.').dialog({

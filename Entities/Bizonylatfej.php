@@ -271,6 +271,9 @@ class Bizonylatfej {
 	 */
 	private $bizonylatstatusz;
 
+    /** @Column(type="boolean",nullable=false) */
+	private $szallitasiktgkell = true;
+
 
 	/**
 	 * @PrePersist
@@ -1244,5 +1247,13 @@ class Bizonylatfej {
 //			$val->removeBizonylat($this);
 		}
 	}
+
+    public function getSzallitasiktgkell() {
+        return $this->szallitasiktgkell;
+    }
+
+    public function setSzallitasktgkell($adat) {
+        $this->szallitasiktgkell = $adat;
+    }
 
 }
