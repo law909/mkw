@@ -6,7 +6,7 @@
 <td class="mattable-important"><label for="TermekSelect{$tetel.id}">{t('Termék')}:</label></td>
 <td colspan="5">
 	<input id="TermekSelect{$tetel.id}" type="text" name="teteltermeknev_{$tetel.id}" class="js-termekselect termekselect mattable-important" value="{$tetel.termeknev}" required="required">
-	<input name="teteltermek_{$tetel.id}" type="hidden" value="{$tetel.termek}">
+	<input class="js-termekid" name="teteltermek_{$tetel.id}" type="hidden" value="{$tetel.termek}">
 </td>
 </tr>
 <tr class="js-termekpicturerow_{$tetel.id}">

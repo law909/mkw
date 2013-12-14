@@ -198,4 +198,30 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		return $obj;
 	}
 
+    public function checkKelt() {
+        $ret = array('response' => 'error');
+        $keltstr = \mkw\Store::convDate($this->params->getDateRequestParam('kelt'));
+        $kelt = strtotime($keltstr);
+        $biztipid = $this->params->getStringRequestParam('biztipus');
+        $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipid);
+        if ($bt) {
+            $filter = array();
+            $filter['fields'][] = 'bizonylattipus';
+            $filter['clauses'][] = '=';
+            $filter['values'][] = $bt;
+            $filter['fields'][] = 'kelt';
+            $filter['clauses'][] = '>';
+            $filter['values'][] = $keltstr;
+            $filter['sql'][] = '(YEAR(_xx.kelt)=' . date('Y', $kelt) . ')';
+            \mkw\Store::writelog($kelt);
+            \mkw\Store::writelog('(YEAR(_xx.kelt)=' . date('Y', $kelt) . ')');
+            $db = $this->getRepo()->getCount($filter);
+            \mkw\Store::writelog($db);
+            if ($db == 0) {
+                $ret = array('response' => 'ok');
+            }
+        }
+        echo json_encode($ret);
+    }
+
 }

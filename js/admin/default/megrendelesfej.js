@@ -207,6 +207,9 @@ $(document).ready(function() {
 				$('.js-toflyout').flyout();
 			}
 		},
+        beforeSerialize: function() {
+            return checkBizonylatFej(dialogcenter);
+        },
 		onSubmit: function() {
 			$('#messagecenter')
 					.html('A mentés sikerült.')
