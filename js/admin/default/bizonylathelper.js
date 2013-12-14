@@ -99,8 +99,10 @@ function checkKelt(kelt, biztipus) {
     return retval;
 }
 
-function checkBizonylatFej(dialogcenter) {
-    var keltok = checkKelt($('#KeltEdit').val(), 'szamla'),
+function checkBizonylatFej(biztipus, dialogcenter) {
+    var keltedit = $('#KeltEdit'),
+        keltchanged = keltedit.attr('data-datum') != keltedit.val(),
+        keltok = (!keltchanged) || (keltchanged && checkKelt($('#KeltEdit').val(), biztipus)),
         tetelok = ($('.js-termekid').length !==0) && ($('.js-termekid[value=""]').length === 0),
         ret = keltok && tetelok;
     if (!keltok) {

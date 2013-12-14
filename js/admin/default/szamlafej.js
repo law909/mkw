@@ -216,7 +216,7 @@ $(document).ready(function() {
             }
         },
         beforeSerialize: function() {
-            return checkBizonylatFej(dialogcenter);
+            return checkBizonylatFej('szamla', dialogcenter);
         },
         onSubmit: function() {
             $('#messagecenter')

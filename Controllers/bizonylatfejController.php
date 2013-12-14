@@ -66,6 +66,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$x['couriermessage'] = $t->getCouriermessage();
 		$x['ip'] = $t->getIp();
 		$x['referrer'] = $t->getReferrer();
+        $x['szallitasiktgkell'] = $t->getSzallitasiktgkell();
 		if ($forKarb) {
 			foreach ($t->getBizonylattetelek() as $ttetel) {
 				$tetel[] = $tetelCtrl->loadVars($ttetel, true);
@@ -129,6 +130,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$obj->setBelsomegjegyzes($this->params->getStringRequestParam('belsomegjegyzes'));
 		$obj->setWebshopmessage($this->params->getStringRequestParam('webshopmessage'));
 		$obj->setCouriermessage($this->params->getStringRequestParam('couriermessage'));
+
+        $obj->setSzallitasiktgkell($this->params->getBoolRequestParam('szallitasiktgkell'));
 
 		$obj->generateId(); // az üres kelt miatt került a végére
 
@@ -213,10 +216,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $filter['clauses'][] = '>';
             $filter['values'][] = $keltstr;
             $filter['sql'][] = '(YEAR(_xx.kelt)=' . date('Y', $kelt) . ')';
-            \mkw\Store::writelog($kelt);
-            \mkw\Store::writelog('(YEAR(_xx.kelt)=' . date('Y', $kelt) . ')');
             $db = $this->getRepo()->getCount($filter);
-            \mkw\Store::writelog($db);
             if ($db == 0) {
                 $ret = array('response' => 'ok');
             }

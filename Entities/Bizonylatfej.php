@@ -1252,7 +1252,7 @@ class Bizonylatfej {
         return $this->szallitasiktgkell;
     }
 
-    public function setSzallitasktgkell($adat) {
+    public function setSzallitasiktgkell($adat) {
         $this->szallitasiktgkell = $adat;
     }
 

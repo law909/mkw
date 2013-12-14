@@ -127,6 +127,10 @@
 					</select>
 				</td>
 			</tr>
+            <tr>
+                <td><label for="Szallitasiktgkell">Szállítási költséget kell felszámolni:</label></td>
+                <td><input name="szallitasiktgkell" type="checkbox"{if ($egyed.szallitasiktgkell)} checked{/if}></td>
+            </tr>
 			<tr>
 				<td><label for="MegjegyzesEdit">{t('Megjegyzés')}:</label></td>
 				<td colspan="7"><textarea id="MegjegyzesEdit" name="megjegyzes" rows="1" cols="100">{$egyed.megjegyzes}</textarea></td>

@@ -208,7 +208,7 @@ $(document).ready(function() {
 			}
 		},
         beforeSerialize: function() {
-            return checkBizonylatFej(dialogcenter);
+            return checkBizonylatFej('megrendeles', dialogcenter);
         },
 		onSubmit: function() {
 			$('#messagecenter')
