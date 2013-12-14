@@ -226,6 +226,12 @@
 						</div>
 						{foreachelse}
 							<h3>Nincs termékértesítője</h3>
+                                                        <h4>Mi az a termékértesítő?</h4>
+                                                        Ha egy termékünk elfogyott a készletünkről, de Ön mégis szeretné megrendelni, akkor lehetősége van értesítést kapni arról, amikor újra elérhetővé válik.
+                                                        Ehhez csak fel kell iratkoznia az adott termékre. A legközelebbi árubeérkezésről rendszerünk automatikusan kiküldi a levelet Önnek, így Ön elsőként fog erről értesülni.
+                                                        <h4>Hogy tudok feliratkozni?</h4>
+                                                        Nagyon egyszerűen. Csak kattintson a termék képe mellett lévő szürke "Elfogyott" gombra, és adja meg emailcímét. Minden mást rendszerünk intézi.
+                                                        
 						{/foreach}
 					</div>
 					<div class="tab-pane" id="jelszo">
