@@ -1,4 +1,4 @@
-{extends "basestone.tpl"}
+{extends "checkoutbase.tpl"}
 
 {block "stonebody"}
 <header class="checkout">

@@ -54,7 +54,7 @@
         </script>
         {/if}
 	</head>
-	<body class="bgimg">
+	<body>
         {block "body"}
         {/block}
 		{block "stonebody"}
