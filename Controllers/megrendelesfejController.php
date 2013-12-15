@@ -157,7 +157,19 @@ class megrendelesfejController extends bizonylatfejController {
                 $this->getEm()->persist($bf);
                 $this->getEm()->flush();
                 if ($this->params->getBoolRequestParam('bizonylatstatuszertesito')) {
-                    
+                    $template = $bf->getEmailtemplate();
+                    if ($template) {
+                        $tpldata = $bf->toLista();
+                        $subject = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                        $subject->setVar('rendeles', $tpldata);
+                        $body = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
+                        $body->setVar('rendeles', $tpldata);
+                        $mailer = new \mkw\mkwmailer();
+                        $mailer->setTo($email);
+                        $mailer->setSubject($subject->getTemplateResult());
+                        $mailer->setMessage($body->getTemplateResult());
+                        $mailer->send();
+                    }
                 }
             }
         }
