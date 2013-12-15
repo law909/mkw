@@ -31,24 +31,22 @@
 		</div>
 	</div>
 </div>
-<div class="headermid">
-	<div class="container">
-		<div class="row">
-			<div class="span12">
-			<div class="pull-left">
-				<a href="/"><img src="{$logo}" alt="Mindent Kapni Webáruház logo" title="Mindent Kapni Webáruház"></a>
-			</div>
-			<div class="pull-left">
-				<form id="searchform" name="searchbox" method="get" action="/kereses" autocomplete="off">
-				<div class="searchinputbox">
-					<input id="searchinput" class="siteSearch" type="text" title="{t('Keressen a termékeink között!')}" placeholder="{t('Keressen a termékeink között!')}" accesskey="k" value="" maxlength="300" name="keresett">
-					<input id="searchbutton" type="submit" value="">
-				</div>
-				</form>
-			</div>
-			</div>
-		</div>
-	</div>
+<div class="headermid container whitebg">
+    <div class="row">
+        <div class="span12">
+        <div class="pull-left">
+            <a href="/"><img src="{$logo}" alt="Mindent Kapni Webáruház logo" title="Mindent Kapni Webáruház"></a>
+        </div>
+        <div class="pull-left">
+            <form id="searchform" name="searchbox" method="get" action="/kereses" autocomplete="off">
+            <div class="searchinputbox">
+                <input id="searchinput" class="siteSearch" type="text" title="{t('Keressen a termékeink között!')}" placeholder="{t('Keressen a termékeink között!')}" accesskey="k" value="" maxlength="300" name="keresett">
+                <input id="searchbutton" type="submit" value="">
+            </div>
+            </form>
+        </div>
+        </div>
+    </div>
 </div>
 <div class="container headernav">
 	<div class="row">
