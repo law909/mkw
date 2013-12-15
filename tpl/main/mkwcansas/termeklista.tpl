@@ -313,5 +313,5 @@
 		</div>
 	</div>
 </div>
-{include 'termekertesitomodal.tpl'};
+{include 'termekertesitomodal.tpl'}
 {/block}
