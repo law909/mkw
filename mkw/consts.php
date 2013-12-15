@@ -88,4 +88,6 @@ class consts {
     const SzallitasiKtg3Ig = 'szallitasiktg3ig';
     const SzallitasiKtg3Ertek = 'szallitasiktg3ertek';
     const SzallitasiKtgTermek = 'szallitasiktgtermek';
+
+    const BizonylatStatuszFuggoben = 'bizonylatstatuszfuggoben';
 }

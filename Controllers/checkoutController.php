@@ -194,6 +194,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 			}
 			$megrendfej->setWebshopmessage($webshopmessage);
 			$megrendfej->setCouriermessage($couriermessage);
+            $megrendfej->setBizonylatstatusz($this->getRepo('Entities\Bizonylatstatusz')->find(Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
 
 			$megrendfej->generateId();
 

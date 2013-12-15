@@ -88,6 +88,15 @@
 				</select></td>
 			</tr>
 			<tr>
+				<td><label for="BizonylatStatuszFuggobenEdit">{t('"Függőben" biz.státusz')}:</label></td>
+				<td><select id="BizonylatStatuszFuggobenEdit" name="bizonylatstatuszfuggoben">
+					<option value="">{t('válasszon')}</option>
+					{foreach $bizonylatstatuszfuggobenlist as $_role}
+					<option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+					{/foreach}
+				</select></td>
+			</tr>
+			<tr>
 				<td><label for="EsedAlapEdit">{t('Esedékesség alapja')}:</label></td>
 				<td><select id="EsedAlapEdit" name="esedekessegalap">
 					<option value="1"{if ($esedekessegalap=='1')} selected="selected"{/if}>{t('kelt')}</option>

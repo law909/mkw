@@ -151,6 +151,10 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::TermekfeltoltoRole);
         $view->setVar('termekfeltoltorolelist', $mkcs->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $bsf = new bizonylatstatuszController($this->params);
+        $p = $repo->find(\mkw\consts::BizonylatStatuszFuggoben);
+        $view->setVar('bizonylatstatuszfuggobenlist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::Esedekessegalap);
         $view->setVar(\mkw\consts::Esedekessegalap, ($p ? $p->getErtek() : '1'));
 
@@ -308,6 +312,11 @@ class setupController extends \mkwhelpers\Controller {
         $role = $rolerep->find($this->params->getIntRequestParam('termekfeltoltorole', 0));
         if ($role) {
             $this->setObj(\mkw\consts::TermekfeltoltoRole, $role->getId());
+        }
+
+        $bsf = store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatuszfuggoben', 0));
+        if ($bsf) {
+            $this->setObj(\mkw\consts::BizonylatStatuszFuggoben, $bsf->getId());
         }
 
         $this->setObj(\mkw\consts::Esedekessegalap, $this->params->getIntRequestParam('esedekessegalap', 1));

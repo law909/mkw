@@ -1217,7 +1217,11 @@ class Bizonylatfej {
 	}
 
 	public function getBizonylatstatusznev() {
-		return $this->bizonylatstatusznev;
+        $fm = $this->getBizonylatstatusz();
+		if ($fm) {
+			return $fm->getNev();
+		}
+		return '';
 	}
 
 	public function getBizonylatstatuszId() {
