@@ -303,6 +303,27 @@ class Bizonylatfej {
 		$this->setPersistentData();
 	}
 
+    public function sendStatuszEmail($emailtpl, $bf = null) {
+        if (!$bf) {
+            $bf = $this;
+        }
+        if ($emailtpl) {
+            $tpldata = $bf->toLista();
+            $subject = \mkw\Store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+            $subject->setVar('rendeles', $tpldata);
+            $body = \mkw\Store::getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
+            $body->setVar('rendeles', $tpldata);
+            $mailer = new \mkw\mkwmailer();
+            $mailer->setTo($bf->getPartneremail());
+            $mailer->setSubject($subject->getTemplateResult());
+            $mailer->setMessage($body->getTemplateResult());
+            \mkw\Store::writelog($bf->getPartneremail());
+            \mkw\Store::writelog($subject->getTemplateResult());
+            \mkw\Store::writelog($body->getTemplateResult());
+            $mailer->send();
+        }
+    }
+
 	public function toLista() {
 		$ret = array();
 		$ret['id'] = $this->getId();
@@ -311,6 +332,10 @@ class Bizonylatfej {
 		$ret['bruttohuf'] = $this->getBruttohuf();
 		$ret['fizmodnev'] = $this->getFizmodnev();
 		$ret['szallitasimodnev'] = $this->getSzallitasimodnev();
+        $ret['partneremail'] = $this->getPartneremail();
+        $ret['partnertelefon'] = $this->getPartnertelefon();
+        $ret['partnerkeresztnev'] = $this->getPartnerkeresztnev();
+        $ret['partnervezeteknev'] = $this->getPartnervezeteknev();
 		$ret['szamlanev'] = $this->getPartnernev();
 		$ret['szamlairszam'] = $this->getPartnerirszam();
 		$ret['szamlavaros'] = $this->getPartnervaros();
@@ -325,6 +350,10 @@ class Bizonylatfej {
 		$ret['couriermessage'] = $this->getCouriermessage();
         $ret['megjegyzes'] = $this->getMegjegyzes();
         $ret['allapotnev'] = $this->getBizonylatstatusznev();
+        $ret['fuvarlevelszam'] = '';
+        $ret['bruttohuf'] = $this->getBruttohuf();
+        $ret['webshopmessage'] = $this->getWebshopmessage();
+        $ret['couriermessage'] = $this->getCouriermessage();
 		$tetellist = array();
 		foreach($this->bizonylattetelek as $tetel) {
 			$tetellist[] = $tetel->toLista();

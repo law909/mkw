@@ -194,7 +194,8 @@ class checkoutController extends \mkwhelpers\MattableController {
 			}
 			$megrendfej->setWebshopmessage($webshopmessage);
 			$megrendfej->setCouriermessage($couriermessage);
-            $megrendfej->setBizonylatstatusz($this->getRepo('Entities\Bizonylatstatusz')->find(Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
+            $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+            $megrendfej->setBizonylatstatusz($bizstatusz);
 
 			$megrendfej->generateId();
 
@@ -215,6 +216,11 @@ class checkoutController extends \mkwhelpers\MattableController {
 			}
 			$this->getEm()->persist($megrendfej);
 			$this->getEm()->flush();
+
+            if ($bizstatusz) {
+                $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
+            }
+
 			Store::getMainSession()->lastmegrendeles = $megrendfej->getId();
 			$kc = new kosarController($this->params);
 			$kc->clear();
