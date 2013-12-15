@@ -50,7 +50,10 @@
 			<div>
 				{$kategoria.leiras2}
 			</div>
-            <div>
+                <div class="lapozo">
+                    <span class="bold">Kiemelt termékeink</span>
+                </div>
+                <div>
         {$lntcnt=count($kiemelttermekek)}
         {$step=min(3, $lntcnt)}
         {for $i=0 to $lntcnt-1 step $step}
