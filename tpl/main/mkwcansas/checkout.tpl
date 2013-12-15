@@ -2,7 +2,7 @@
 
 {block "stonebody"}
 <header class="checkout">
-<div class="headermid">
+<div class="headermid whitebg">
 	<div class="container">
 		<div class="row">
 			<div class="span12">
@@ -12,7 +12,7 @@
 	</div>
 </div>
 </header>
-<div class="container js-checkout">
+<div class="container whitebg js-checkout">
 	<div class="row">
 		<div class="span10">
 			<form id="LoginForm" method="post" action="/login/ment"></form>

@@ -12,7 +12,7 @@
 {/block}
 
 {block "kozep"}
-<div class="container">
+<div class="container whitebg">
 	<div class="row">
         <div class="span4">
             {if (count($topkategorialista)>0)}
@@ -99,7 +99,7 @@
                     <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=quixoft"></script>
                     <!-- AddThis Button END -->
                 </div>
-            
+
             </div>
             {if (count($legnepszerubbtermekek)>0)}
             <div class="blockHeader">

@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "kozep"}
-<div class="container">
+<div class="container whitebg">
 	<div class="row">
 		<div class="span10 offset1 js-cart">
 			{if (count($tetellista)>0)}

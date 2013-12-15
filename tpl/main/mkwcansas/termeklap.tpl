@@ -13,7 +13,7 @@
 {/block}
 
 {block "kozep"}
-<div class="container">
+<div class="container whitebg">
 	<div class="row">
 		<div class="span12">
                     <b>Ön itt áll: </b>

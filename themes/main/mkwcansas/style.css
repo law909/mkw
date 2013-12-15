@@ -1,5 +1,7 @@
 input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 .whitebg{background-color:white;}
+.bgtakaro{padding:0 10px 10px 10px;}
+.headbgtakaro{padding:0 10px;}
 .tabs-left>.nav-tabs .active>a{font-weight:bold;color:#333;background-color:#e8e8e8;}
 .textaligncenter{text-align:center;}
 table th.textaligncenter,table td.textaligncenter{text-align:center;}
@@ -43,7 +45,7 @@ header a:hover,footer a:hover{color:#d2d2d2;}
 .headercart .cartbtn{margin:5px 0 5px 10px;}
 .headerloginicon{display:block;background:url("img/i_emberke.png") no-repeat scroll left center;padding-left:20px;}
 .headercarttext{font-size:11px;color:white;}
-.headermid{margin-bottom:20px;line-height:normal;}
+.headermid{margin-bottom:20px;line-height:normal;padding-top:10px;}
 #searchform,#searchinput{margin:0;}
 #searchinput{border-color:#6e6e6e;padding-right:28px;-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;}
 #searchinput:focus{-webkit-box-shadow:0 1px 6px #f7f7f7;-moz-box-shadow:0 1px 6px #f7f7f7;box-shadow:0 1px 6px #f7f7f7;}

@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "kozep"}
-<div class="container morzsa">
+<div class="container morzsa whitebg">
 	<div class="row">
 		<div class="span12 morzsaszoveg">
 		{foreach $navigator as $_navi}
@@ -17,7 +17,7 @@
 		</div>
 	</div>
 </div>
-<div class="container">
+<div class="container whitebg">
 	<div class="row">
 		<div class="span3">
             <div class="szurofej szurokontener js-filterclear bold">

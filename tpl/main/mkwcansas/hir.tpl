@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "kozep"}
-<div class="container">
+<div class="container whitebg">
 <article itemtype="http://schema.org/Article" itemscope="">
 		<div class="row">
 			<div class="span14 offset1">

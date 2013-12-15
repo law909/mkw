@@ -17,9 +17,9 @@
 		</div>
 	</div>
 </div>
-<div class="container">
+<div class="container whitebg">
 	<div class="row">
-		<div class="span10">
+		<div class="span12">
 			{foreach $children as $_child}
 				<div class="kat" data-href="/termekfa/{$_child.slug}">
 					<div class="katimage">

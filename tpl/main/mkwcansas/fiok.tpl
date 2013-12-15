@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "kozep"}
-<div class="container">
+<div class="container whitebg">
 	<div class="row">
 		<div class="span10 offset1">
 			<div class="form-header">
@@ -231,7 +231,7 @@
                                                         Ehhez csak fel kell iratkoznia az adott termékre. A legközelebbi árubeérkezésről rendszerünk automatikusan kiküldi a levelet Önnek, így Ön elsőként fog erről értesülni.
                                                         <h4>Hogy tudok feliratkozni?</h4>
                                                         Nagyon egyszerűen. Csak kattintson a termék képe mellett lévő szürke "Elfogyott" gombra, és adja meg emailcímét. Minden mást rendszerünk intézi.
-                                                        
+
 						{/foreach}
 					</div>
 					<div class="tab-pane" id="jelszo">

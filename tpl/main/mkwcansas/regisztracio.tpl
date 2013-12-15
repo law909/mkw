@@ -1,9 +1,9 @@
 {extends "base.tpl"}
 
 {block "kozep"}
-<div class="container">
+<div class="container whitebg">
 	<div class="row">
-		<div class="span14 offset1">
+		<div class="span10 offset1">
 			<div class="form-header">
 				<h2>Regisztráljon</h2>
 				<h3>Hozza létre saját felhasználói fiókját.</h3>

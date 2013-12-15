@@ -31,44 +31,46 @@
 		</div>
 	</div>
 </div>
-<div class="headermid container whitebg">
-    <div class="row">
-        <div class="span12">
-        <div class="pull-left">
-            <a href="/"><img src="{$logo}" alt="Mindent Kapni Webáruház logo" title="Mindent Kapni Webáruház"></a>
-        </div>
-        <div class="pull-left">
-            <form id="searchform" name="searchbox" method="get" action="/kereses" autocomplete="off">
-            <div class="searchinputbox">
-                <input id="searchinput" class="siteSearch" type="text" title="{t('Keressen a termékeink között!')}" placeholder="{t('Keressen a termékeink között!')}" accesskey="k" value="" maxlength="300" name="keresett">
-                <input id="searchbutton" type="submit" value="">
+<div class="container whitebg headbgtakaro">
+    <div class="headermid container whitebg">
+        <div class="row">
+            <div class="span12">
+            <div class="pull-left">
+                <a href="/"><img src="{$logo}" alt="Mindent Kapni Webáruház logo" title="Mindent Kapni Webáruház"></a>
             </div>
-            </form>
-        </div>
+            <div class="pull-left">
+                <form id="searchform" name="searchbox" method="get" action="/kereses" autocomplete="off">
+                <div class="searchinputbox">
+                    <input id="searchinput" class="siteSearch" type="text" title="{t('Keressen a termékeink között!')}" placeholder="{t('Keressen a termékeink között!')}" accesskey="k" value="" maxlength="300" name="keresett">
+                    <input id="searchbutton" type="submit" value="">
+                </div>
+                </form>
+            </div>
+            </div>
         </div>
     </div>
-</div>
-<div class="container headernav">
-	<div class="row">
-		<div class="span16">
-			<nav>
-				<ul id="navmain">
-					{foreach $menu1 as $_menupont}
-						<li{if ($_menupont@last)} class="last"{/if}{if ($_menupont@first)} class="first"{/if}><a href="/termekfa/{$_menupont.slug}" data-cnt="{$_menupont.childcount}">{$_menupont.caption}</a>
-						<div class="sub">
-							{foreach $_menupont.children as $_focsoport}
-							<ul>
-								<li class="categorytitle">{$_focsoport.caption}</li>
-								{foreach $_focsoport.children as $_alcsoport}
-									<li><a href="/termekfa/{$_alcsoport.slug}">{$_alcsoport.caption}</a></li>
-								{/foreach}
-							</ul>
-							{/foreach}
-						</div>
-						</li>
-					{/foreach}
-				</ul>
-			</nav>
-		</div>
-	</div>
+    <div class="container headernav">
+        <div class="row">
+            <div class="span16">
+                <nav>
+                    <ul id="navmain">
+                        {foreach $menu1 as $_menupont}
+                            <li{if ($_menupont@last)} class="last"{/if}{if ($_menupont@first)} class="first"{/if}><a href="/termekfa/{$_menupont.slug}" data-cnt="{$_menupont.childcount}">{$_menupont.caption}</a>
+                            <div class="sub">
+                                {foreach $_menupont.children as $_focsoport}
+                                <ul>
+                                    <li class="categorytitle">{$_focsoport.caption}</li>
+                                    {foreach $_focsoport.children as $_alcsoport}
+                                        <li><a href="/termekfa/{$_alcsoport.slug}">{$_alcsoport.caption}</a></li>
+                                    {/foreach}
+                                </ul>
+                                {/foreach}
+                            </div>
+                            </li>
+                        {/foreach}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
 </div>

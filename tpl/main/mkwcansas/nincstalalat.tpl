@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "kozep"}
-<div class="container">
+<div class="container whitebg">
 	<div class="row">
 	<h2 class="textaligncenter">Nincs találat. Vásároljon ajánlott termékeink közül.</h2>
 	</div>
