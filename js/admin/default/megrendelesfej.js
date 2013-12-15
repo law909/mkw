@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	var dialogcenter = $('#dialogcenter'),
-		termekautocomplete = {
+	termekautocomplete = {
 		minLength: 4,
 		autoFocus: true,
 		source: '/admin/bizonylattetel/gettermeklist',
@@ -17,7 +17,7 @@ $(document).ready(function() {
 				$('input[name="tetelnev_' + sorid + '"]').val(ui.item.value);
 				$('input[name="tetelcikkszam_' + sorid + '"]').val(ui.item.cikkszam);
 				$('input[name="tetelme_' + sorid + '"]').val(ui.item.me);
-				setTermekAr(sorid);
+//				bizonylathelper.setTermekAr(sorid);
 				vtsz.val(ui.item.vtsz);
 				vtsz.change();
 				afa.val(ui.item.afa);
@@ -26,17 +26,7 @@ $(document).ready(function() {
 				$('.js-toflyout', kepsor).attr('href', ui.item.mainurl + ui.item.kepurl);
 				$('.js-toflyout img', kepsor).attr('src', ui.item.mainurl + ui.item.kiskepurl);
 				$('.js-termeklink', kepsor).attr('href',ui.item.link).html(ui.item.link);
-				$.ajax({
-					url: '/admin/bizonylattetel/valtozatlist',
-					data: {
-						id: ui.item.id,
-						tetelid: sorid,
-						sel: selvaltozat
-					},
-					success: function(data) {
-						$(data).appendTo(valtozatplace);
-					}
-				});
+                bizonylathelper.loadValtozatList(ui.item.id, sorid, selvaltozat, valtozatplace);
 			}
 		}
 	},
@@ -79,7 +69,7 @@ $(document).ready(function() {
 			});
 			$('#ValutanemEdit').change(function() {
 				bankszamlaedit.val($('option:selected', this).data('bankszamla'));
-				getArfolyam();
+				bizonylathelper.getArfolyam();
 			});
 			alttab.on('click', '.js-tetelnewbutton', function(e) {
 				var $this = $(this);
@@ -155,12 +145,12 @@ $(document).ready(function() {
 					.on('change', '.js-afaselect', function(e) {
 				e.preventDefault();
 				var sorid = $(this).attr('name').split('_')[1];
-				calcArak(sorid);
+				bizonylathelper.calcArak(sorid);
 			})
 					.on('change', '.js-nettoegysarinput', function(e) {
 				e.preventDefault();
 				var sorid = $(this).attr('name').split('_')[1];
-				calcArak(sorid);
+				bizonylathelper.calcArak(sorid);
 			})
 					.on('change', '.js-bruttoegysarinput', function(e) {
 				e.preventDefault();
@@ -188,12 +178,12 @@ $(document).ready(function() {
 					.on('change', '.js-mennyiseginput', function(e) {
 				e.preventDefault();
 				var sorid = $(this).attr('name').split('_')[1];
-				calcArak(sorid);
+				bizonylathelper.calcArak(sorid);
 			})
 					.on('change', '.js-tetelvaltozat', function(e) {
 				e.preventDefault();
 				var sorid = $(this).attr('name').split('_')[1];
-				setTermekAr(sorid);
+				bizonylathelper.setTermekAr(sorid);
 			});
 			$('.js-termekselect').autocomplete(termekautocomplete);
 			$('.js-tetelnewbutton,.js-teteldelbutton').button();
@@ -208,7 +198,7 @@ $(document).ready(function() {
 			}
 		},
         beforeSerialize: function() {
-            return checkBizonylatFej('megrendeles', dialogcenter);
+            return bizonylathelper.checkBizonylatFej('megrendeles', dialogcenter);
         },
 		onSubmit: function() {
 			$('#messagecenter')

@@ -132,7 +132,10 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		);
 		$view = $this->createView('bizonylatteteltermekvaltozatselect.tpl');
 		$view->setVar('tetel', $tomb);
-		echo $view->getTemplateResult();
+		echo json_encode(array(
+                'html' => $view->getTemplateResult(),
+                'db' => count($tomb['valtozatlist'])
+        ));
 	}
 
 }

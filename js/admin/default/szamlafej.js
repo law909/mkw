@@ -1,45 +1,35 @@
 $(document).ready(function() {
     var dialogcenter = $('#dialogcenter'),
-            termekautocomplete = {
-                minLength: 4,
-                autoFocus: true,
-                source: '/admin/bizonylattetel/gettermeklist',
-                select: function(event, ui) {
-                    if (ui.item) {
-                        var $this = $(this),
-                                sorid = $this.attr('name').split('_')[1],
-                                vtsz = $('select[name="tetelvtsz_' + sorid + '"]'),
-                                afa = $('select[name="tetelafa_' + sorid + '"]'),
-                                selvaltozat = $('select[name="tetelvaltozat_' + sorid + '"]').val(),
-                                valtozatplace = $('#ValtozatPlaceholder' + sorid);
-                        valtozatplace.empty();
-                        $this.siblings().val(ui.item.id);
-                        $('input[name="tetelnev_' + sorid + '"]').val(ui.item.value);
-                        $('input[name="tetelcikkszam_' + sorid + '"]').val(ui.item.cikkszam);
-                        $('input[name="tetelme_' + sorid + '"]').val(ui.item.me);
-                        setTermekAr(sorid);
-                        vtsz.val(ui.item.vtsz);
-                        vtsz.change();
-                        afa.val(ui.item.afa);
-                        afa.change();
-                        kepsor = $('.js-termekpicturerow_' + sorid);
-                        $('.js-toflyout', kepsor).attr('href', ui.item.mainurl + ui.item.kepurl);
-                        $('.js-toflyout img', kepsor).attr('src', ui.item.mainurl + ui.item.kiskepurl);
-                        $('.js-termeklink', kepsor).attr('href', ui.item.link).html(ui.item.link);
-                        $.ajax({
-                            url: '/admin/bizonylattetel/valtozatlist',
-                            data: {
-                                id: ui.item.id,
-                                tetelid: sorid,
-                                sel: selvaltozat
-                            },
-                            success: function(data) {
-                                $(data).appendTo(valtozatplace);
-                            }
-                        });
-                    }
-                }
-            },
+    termekautocomplete = {
+        minLength: 4,
+        autoFocus: true,
+        source: '/admin/bizonylattetel/gettermeklist',
+        select: function(event, ui) {
+            if (ui.item) {
+                var $this = $(this),
+                        sorid = $this.attr('name').split('_')[1],
+                        vtsz = $('select[name="tetelvtsz_' + sorid + '"]'),
+                        afa = $('select[name="tetelafa_' + sorid + '"]'),
+                        selvaltozat = $('select[name="tetelvaltozat_' + sorid + '"]').val(),
+                        valtozatplace = $('#ValtozatPlaceholder' + sorid);
+                valtozatplace.empty();
+                $this.siblings().val(ui.item.id);
+                $('input[name="tetelnev_' + sorid + '"]').val(ui.item.value);
+                $('input[name="tetelcikkszam_' + sorid + '"]').val(ui.item.cikkszam);
+                $('input[name="tetelme_' + sorid + '"]').val(ui.item.me);
+//                        bizonylathelper.setTermekAr(sorid);
+                vtsz.val(ui.item.vtsz);
+                vtsz.change();
+                afa.val(ui.item.afa);
+                afa.change();
+                kepsor = $('.js-termekpicturerow_' + sorid);
+                $('.js-toflyout', kepsor).attr('href', ui.item.mainurl + ui.item.kepurl);
+                $('.js-toflyout img', kepsor).attr('src', ui.item.mainurl + ui.item.kiskepurl);
+                $('.js-termeklink', kepsor).attr('href', ui.item.link).html(ui.item.link);
+                bizonylathelper.loadValtozatList(ui.item.id, sorid, selvaltozat, valtozatplace);
+            }
+        }
+    },
     szamla = {
         container: '#mattkarb',
         viewUrl: '/admin/szamlafej/getkarb',
@@ -56,6 +46,7 @@ $(document).ready(function() {
             $('#PartnerEdit').change(function() {
                 var pe = $(this);
                 $.ajax({
+                    asyn: false,
                     url: '/admin/partner/getdata',
                     type: 'GET',
                     data: {
@@ -81,7 +72,7 @@ $(document).ready(function() {
             });
             $('#ValutanemEdit').change(function() {
                 bankszamlaedit.val($('option:selected', this).data('bankszamla'));
-                getArfolyam();
+                bizonylathelper.getArfolyam();
             });
             alttab.on('click', '.js-tetelnewbutton', function(e) {
                 var $this = $(this);
@@ -157,12 +148,12 @@ $(document).ready(function() {
                     .on('change', '.js-afaselect', function(e) {
                         e.preventDefault();
                         var sorid = $(this).attr('name').split('_')[1];
-                        calcArak(sorid);
+                        bizonylathelper.calcArak(sorid);
                     })
                     .on('change', '.js-nettoegysarinput', function(e) {
                         e.preventDefault();
                         var sorid = $(this).attr('name').split('_')[1];
-                        calcArak(sorid);
+                        bizonylathelper.calcArak(sorid);
                     })
                     .on('change', '.js-bruttoegysarinput', function(e) {
                         e.preventDefault();
@@ -190,12 +181,12 @@ $(document).ready(function() {
                     .on('change', '.js-mennyiseginput', function(e) {
                         e.preventDefault();
                         var sorid = $(this).attr('name').split('_')[1];
-                        calcArak(sorid);
+                        bizonylathelper.calcArak(sorid);
                     })
                     .on('change', '.js-tetelvaltozat', function(e) {
                         e.preventDefault();
                         var sorid = $(this).attr('name').split('_')[1];
-                        setTermekAr(sorid);
+                        bizonylathelper.setTermekAr(sorid);
                     });
             $('.js-termekselect').autocomplete(termekautocomplete);
             $('.js-tetelnewbutton,.js-teteldelbutton').button();
@@ -216,7 +207,7 @@ $(document).ready(function() {
             }
         },
         beforeSerialize: function() {
-            return checkBizonylatFej('szamla', dialogcenter);
+            return bizonylathelper.checkBizonylatFej('szamla', dialogcenter);
         },
         onSubmit: function() {
             $('#messagecenter')
