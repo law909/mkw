@@ -24,8 +24,8 @@
 			</div>
 			{else}
 				<h3>Az Ön kosara üres, és ezért ő egy kicsit szomorú...</h3>
-                                A kosár egyedüli célja, hogy tele legyen szép ruházati cikkekkel, kempingfelszereléssel, sportszerekkel és sok egyéb más termékkel, amelyek elérhetők itt, a Mindent Kapni Webáruházban.<br>
-                                Tegye hát boldoggá a kosarat, adjon értelmet az ő életének!<br><br>
+                                A kosár egyedüli célja, hogy tele legyen szép ruházati cikkekkel, kempingfelszereléssel, sportszerekkel és sok egyéb más termékkel, amelyek elérhetők itt, a Mindent Kapni Webáruházban.<br><br>
+                                <b>Tegye hát boldoggá a kosarat, adjon értelmet az ő életének!</b><br><br>
                                 <a href="{$prevuri}" class="btn okbtn">Folytatom a vásárlást</a>
 			{/if}
 		</div>
