@@ -72,7 +72,7 @@ class EntitiesBizonylattetelProxy extends \Entities\Bizonylattetel implements \D
         return parent::getBizonylatfejId();
     }
 
-    public function setBizonylatfej(\Entities\Bizonylatfej $val)
+    public function setBizonylatfej($val)
     {
         $this->__load();
         return parent::setBizonylatfej($val);
@@ -144,7 +144,7 @@ class EntitiesBizonylattetelProxy extends \Entities\Bizonylattetel implements \D
         return parent::getTermekId();
     }
 
-    public function setTermek(\Entities\Termek $val)
+    public function setTermek($val)
     {
         $this->__load();
         return parent::setTermek($val);
@@ -222,7 +222,7 @@ class EntitiesBizonylattetelProxy extends \Entities\Bizonylattetel implements \D
         return parent::getVtszId();
     }
 
-    public function setVtsz(\Entities\Vtsz $val)
+    public function setVtsz($val)
     {
         $this->__load();
         return parent::setVtsz($val);
@@ -258,7 +258,7 @@ class EntitiesBizonylattetelProxy extends \Entities\Bizonylattetel implements \D
         return parent::getAfaId();
     }
 
-    public function setAfa(\Entities\Afa $val)
+    public function setAfa($val)
     {
         $this->__load();
         return parent::setAfa($val);
@@ -420,7 +420,7 @@ class EntitiesBizonylattetelProxy extends \Entities\Bizonylattetel implements \D
         return parent::getValutanemId();
     }
 
-    public function setValutanem(\Entities\Valutanem $val)
+    public function setValutanem($val)
     {
         $this->__load();
         return parent::setValutanem($val);
@@ -492,7 +492,7 @@ class EntitiesBizonylattetelProxy extends \Entities\Bizonylattetel implements \D
         return parent::getParbizonylattetelId();
     }
 
-    public function setParbizonylattetel(\Entities\Bizonylattetel $val)
+    public function setParbizonylattetel($val)
     {
         $this->__load();
         return parent::setParbizonylattetel($val);
@@ -510,13 +510,13 @@ class EntitiesBizonylattetelProxy extends \Entities\Bizonylattetel implements \D
         return parent::getSzulobizonylattetelek();
     }
 
-    public function addSzulobizonylattetel(\Entities\Bizonylattetel $val)
+    public function addSzulobizonylattetel($val)
     {
         $this->__load();
         return parent::addSzulobizonylattetel($val);
     }
 
-    public function removeSzulobizonylattetel(\Entities\Bizonylattetel $val)
+    public function removeSzulobizonylattetel($val)
     {
         $this->__load();
         return parent::removeSzulobizonylattetel($val);
@@ -564,7 +564,7 @@ class EntitiesBizonylattetelProxy extends \Entities\Bizonylattetel implements \D
         return parent::getTermekvaltozatId();
     }
 
-    public function setTermekvaltozat(\Entities\TermekValtozat $val)
+    public function setTermekvaltozat($val)
     {
         $this->__load();
         return parent::setTermekvaltozat($val);

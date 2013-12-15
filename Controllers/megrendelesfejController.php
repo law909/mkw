@@ -23,7 +23,7 @@ class megrendelesfejController extends bizonylatfejController {
         $view->setVar('showbizonylatstatuszeditor', true);
     }
 
-    public function loadVars($t, $forKarb = false) {
+    protected function loadVars($t, $forKarb = false) {
         $x = parent::loadVars($t, $forKarb);
         $bsc = new bizonylatstatuszController($this->params);
         $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId());
@@ -148,6 +148,17 @@ class megrendelesfejController extends bizonylatfejController {
         return parent::setFields($obj);
     }
 
+    protected function afterSave($o) {
+        if ($this->params->getBoolRequestParam('bizonylatstatuszertesito')) {
+            $statusz = $o->getBizonylatstatusz();
+            if ($statusz) {
+                $emailtpl = $statusz->getEmailtemplate();
+                $o->sendStatuszEmail($emailtpl);
+            }
+        }
+        parent::afterSave($o);
+    }
+
     public function setStatusz() {
         $bf = $this->getRepo()->find($this->params->getStringRequestParam('id'));
         if ($bf) {
@@ -157,19 +168,8 @@ class megrendelesfejController extends bizonylatfejController {
                 $this->getEm()->persist($bf);
                 $this->getEm()->flush();
                 if ($this->params->getBoolRequestParam('bizonylatstatuszertesito')) {
-                    $template = $bf->getEmailtemplate();
-                    if ($template) {
-                        $tpldata = $bf->toLista();
-                        $subject = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
-                        $subject->setVar('rendeles', $tpldata);
-                        $body = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
-                        $body->setVar('rendeles', $tpldata);
-                        $mailer = new \mkw\mkwmailer();
-                        $mailer->setTo($email);
-                        $mailer->setSubject($subject->getTemplateResult());
-                        $mailer->setMessage($body->getTemplateResult());
-                        $mailer->send();
-                    }
+                    $emailtpl = $statusz->getEmailtemplate();
+                    $bf->sendStatuszEmail($emailtpl);
                 }
             }
         }

@@ -1,4 +1,5 @@
 input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.copyright{font-size:11px;text-align:center;margin-top:40px;}
 .whitebg{background-color:white;}
 .bgtakaro{padding:0 10px 10px 10px;}
 .headbgtakaro{padding:0 10px;}
