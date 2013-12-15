@@ -24,7 +24,7 @@
                             </div>
                             <div>{$_termek.caption}</div>
                             <h5><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
-                            <a href="{$_termek.link}" class="btn cartbtn">Részletek</a>
+                            <a href="{$_termek.link}" class="btn okbtn">Részletek</a>
                         </a>
                     </div>
                 </div>
