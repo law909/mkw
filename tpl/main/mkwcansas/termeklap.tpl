@@ -179,7 +179,7 @@
                                             </div>
                                             <div>{$_kapcsolodo.caption}</div>
                                             <h5><span>{number_format($_kapcsolodo.bruttohuf,0,',',' ')} Ft</span></h5>
-                                            <a href="{$_kapcsolodo.link}" class="btn cartbtn">Részletek</a>
+                                            <a href="{$_kapcsolodo.link}" class="btn okbtn">Részletek</a>
                                         </a>
                                     </div>
                                 </div>
