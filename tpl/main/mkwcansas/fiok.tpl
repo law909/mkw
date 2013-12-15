@@ -14,8 +14,8 @@
 					<li><a href="#szamlaadatok" data-toggle="tab">Számlázási adatok</a></li>
 					<li><a href="#szallitasiadatok" data-toggle="tab">Szállítási adatok</a></li>
 					<li><a href="#megrend" data-toggle="tab">Megrendeléseim</a></li>
-					<li><a href="#visszajel" data-toggle="tab">Visszajelzések</a></li>
-					<li><a href="#csomag" data-toggle="tab">Csomagkövetés</a></li>
+					<!--li><a href="#visszajel" data-toggle="tab">Visszajelzések</a></li>
+					<li><a href="#csomag" data-toggle="tab">Csomagkövetés</a></li-->
 					<li><a href="#termekertesito" data-toggle="tab">Termékértesítők</a></li>
 					<li><a href="#jelszo" data-toggle="tab">Jelszó módosítása</a></li>
 				</ul>
@@ -173,7 +173,7 @@
 												<tr class="clickable" data-href="{$tetel.link}">
 													<td><div class="textaligncenter"><a href="{$tetel.link}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></a></div></td>
 													<td><div><a href="{$tetel.link}">{$tetel.caption}</a></div>
-														<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}:{$valtozat.ertek}&nbsp;{/foreach}</div>
+														<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</div>
 														{$tetel.cikkszam}</td>
 													<td><div class="textalignright">{number_format($tetel.bruttoegysarhuf,0,',',' ')} Ft</div></td>
 													<td>
@@ -208,12 +208,12 @@
 							Ön sajnos még nem vásárolt tőlünk, szomorúak vagyunk.
 						{/if}
 					</div>
-					<div class="tab-pane" id="visszajel">
+					<!--div class="tab-pane" id="visszajel">
 						Visszajelzések
 					</div>
 					<div class="tab-pane" id="csomag">
 						Csomagkövetés
-					</div>
+					</div-->
 					<div class="tab-pane" id="termekertesito">
 						{foreach $ertesitok as $ertesito}
 						<div class="row js-termekertesito">
