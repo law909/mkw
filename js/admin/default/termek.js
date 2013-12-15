@@ -203,7 +203,8 @@ $(document).ready(function() {
                         type: 'POST',
                         data: {
                             cimkecsoport: katkod,
-                            nev: cimkenev
+                            nev: cimkenev,
+                            menu1lathato: true
                         },
                         success: function(data) {
                             $(ref).val('');
