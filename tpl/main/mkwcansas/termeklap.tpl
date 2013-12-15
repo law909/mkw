@@ -178,7 +178,13 @@
                                                 <img src="{$_kapcsolodo.minikepurl}" title="{$_kapcsolodo.caption}" alt="{$_kapcsolodo.caption}">
                                             </div>
                                             <div>{$_kapcsolodo.caption}</div>
-                                            <h5><span>{number_format($_kapcsolodo.bruttohuf,0,',',' ')} Ft</span></h5>
+                                            <h5>
+                `                                {if ($_kapcsolodo.akcios)}
+                                                <span>{number_format($_kapcsolodo.eredetibruttohuf,0,',',' ')} Ft helyett {number_format($_kapcsolodo.bruttohuf,0,',',' ')} Ft</span>
+                                                {else}
+                                                <span>{number_format($_kapcsolodo.bruttohuf,0,',',' ')} Ft</span>
+                                                {/if}
+                                            </h5>
                                             <a href="{$_kapcsolodo.link}" class="btn okbtn">Részletek</a>
                                         </a>
                                     </div>

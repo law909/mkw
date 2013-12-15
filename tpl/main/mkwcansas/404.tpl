@@ -23,7 +23,13 @@
                                 <img src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                             </div>
                             <div>{$_termek.caption}</div>
-                            <h5><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
+                            <h5>
+                                {if ($_termek.akcios)}
+                                <span>{number_format($_termek.eredetibruttohuf,0,',',' ')} Ft helyett {number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
+                                {else}
+                                <span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
+                                {/if}
+                            </h5>
                             <a href="{$_termek.link}" class="btn okbtn">Részletek</a>
                         </a>
                     </div>
