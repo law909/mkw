@@ -36,9 +36,11 @@
 	</div>
 	<div class="row">
             <div class="span12">
-                <p align="center">Az oldalainkon szereplő márkanevek a tulajdonosok védjegyei, itt csak a termékek bemutatására szerepelnek.
-                <br>A webáruház lapjain látható képek csak illusztrációk, a valós termék ezektől némileg eltérhet.
-                <br>Copyright &copy; 2007-2013, Quixoft Informatikai Szolgáltató Bt.</p>
+                <div class="copyright">
+                    Az oldalainkon szereplő márkanevek a tulajdonosok védjegyei, itt csak a termékek bemutatására szerepelnek.
+                    <br>A webáruház lapjain látható képek csak illusztrációk, a valós termék ezektől némileg eltérhet.
+                    <br>Copyright &copy; 2007-2013, Quixoft Informatikai Szolgáltató Bt.
+                </div>
             </div>
         </div>
 </div>

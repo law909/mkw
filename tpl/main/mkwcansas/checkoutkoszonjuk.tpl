@@ -5,9 +5,9 @@
 	<div class="row">
 		<div class="span10 offset1">
 			<h3>Sikeres megrendelés!</h3>
-			<p>Köszönjük, hogy a <b>Mindent Kapni Webáruházat</b> választotta!</p>
+			<p>Köszönjük, hogy megtisztelt bizalmával! Bízunk benne, hogy újabb elégedett vásárlót üdvözölhetünk Önben.</p>
 			<h5>Az Ön megrendelésének az azonosítója: <b>{$megrendelesszam}</b></h5>
-                        <p>Kérjük jegyezze föl ezt a számot. A megrendelés megerősítéseként elküldtünk Önnek a megadott emailcímre egy visszaigazolást, amelyet hamarosan meg kell kapnia.</p>
+                        <p>Hamarosan kapnia kell tőlünk egy emailt, melyben a megrendelését igazoljuk vissza. Kérjük írja fel az itt látható rendelési számot, hogy később erre hivatkozva hatékonyabban tudjunk segíteni Önnek.</p>
                         <h5>Mikor kapom meg a megrendelésemet?</h5>
                         <p>Ha a megrendelésében szereplő összes termék készletünkön van, akkor legkorábban a következő munkanapon juthat a csomagjához, ha a megrendelése déli 12 óráig beérkezett hozzánk.</p>
                         <p>Ha valamelyik termék nincs készleten, annak a beszerzése néhány napot igénybe szokott venni, de általában 8 munkanapon belül tudjuk teljesíteni a megrendelését. Amennyiben ezt a határidőt meghaladná a szállítás, erről Önt feltétlenül tájékoztatni fogjuk.</p>
