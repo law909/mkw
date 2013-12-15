@@ -20,7 +20,7 @@ class SzamlafejController extends bizonylatfejController {
         $view->setVar('showesedekesseg', true);
         $view->setVar('showhatarido', false);
         $view->setVar('showvalutanem', true);
-        $view->setVar('showstatuszeditor', false);
+        $view->setVar('showbizonylatstatuszeditor', false);
     }
 
     public function getlistbody() {

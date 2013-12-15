@@ -184,7 +184,10 @@ $(document).ready(function() {
 				e.preventDefault();
 				var sorid = $(this).attr('name').split('_')[1];
 				bizonylathelper.setTermekAr(sorid);
-			});
+			})
+                    .on('change', '.js-bizonylatstatuszedit', function(e) {
+                $('input[name="bizonylatstatuszertesito"]').prop('checked', true);
+            });
 			$('.js-termekselect').autocomplete(termekautocomplete);
 			$('.js-tetelnewbutton,.js-teteldelbutton').button();
 			keltedit.datepicker($.datepicker.regional['hu']);
@@ -223,6 +226,39 @@ $(document).ready(function() {
 		$('.js-maincheckbox').change(function() {
 			$('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
 		});
+        $('#mattable-body').on('change', '.js-bizonylatstatuszedit', function(e) {
+            e.preventDefault();
+            function sendQ(id, s, ertesit) {
+                $.ajax({
+                    url: '/admin/megrendelesfej/setstatusz',
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        statusz: s,
+                        bizonylatstatuszertesito: ertesit
+                    }
+                });
+            }
+            var $this = $(this),
+                id = $this.parents('tr').data('egyedid'),
+                statusz = $this.val();
+            dialogcenter.html('Küld email értesítést a változásról?').dialog({
+                resizable: false,
+                height: 140,
+                modal: true,
+                buttons: {
+                    'Igen': function() {
+                        sendQ(id, statusz, true);
+                        $(this).dialog('close');
+                    },
+                    'Nem': function() {
+                        sendQ(id, statusz, false);
+                        $(this).dialog('close');
+                    }
+                }
+            });
+
+        })
 	}
 	else {
 		if ($.fn.mattkarb) {

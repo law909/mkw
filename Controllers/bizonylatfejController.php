@@ -126,6 +126,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 			$obj->setBankszamla($ck);
 		}
 
+		$ck = store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatusz'));
+		if ($ck) {
+			$obj->setBizonylatstatusz($ck);
+		}
+
 		$obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
 		$obj->setBelsomegjegyzes($this->params->getStringRequestParam('belsomegjegyzes'));
 		$obj->setWebshopmessage($this->params->getStringRequestParam('webshopmessage'));

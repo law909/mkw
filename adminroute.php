@@ -70,6 +70,7 @@ $router->map('GET', '/admin/megrendelesfej/getlistbody', 'megrendelesfejControll
 $router->map('GET', '/admin/megrendelesfej/getkarb', 'megrendelesfejController#getkarb', 'adminmegrendelesfejgetkarb');
 $router->map('GET', '/admin/megrendelesfej/viewkarb', 'megrendelesfejController#viewkarb', 'adminmegrendelesfejviewkarb');
 $router->map('POST', '/admin/megrendelesfej/save', 'megrendelesfejController#save', 'adminmegrendelesfejsave');
+$router->map('POST', '/admin/megrendelesfej/setstatusz', 'megrendelesfejController#setStatusz', 'adminmegrendelesfejsetstatusz');
 
 $router->map('GET', '/admin/szamlafej/viewlist', 'szamlafejController#viewlist', 'adminszamlafejviewlist');
 $router->map('GET', '/admin/szamlafej/getlistbody', 'szamlafejController#getlistbody', 'adminszamlafejgetlistbody');

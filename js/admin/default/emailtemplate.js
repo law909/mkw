@@ -6,8 +6,8 @@ $(document).ready(function(){
 		saveUrl:'/admin/emailtemplate/save',
 		beforeShow:function() {
 			if (!$.browser.mobile) {
-				CKFinder.setupCKEditor( null, '/ckfinder/' );
-				$('#LeirasEdit').ckeditor();
+//				CKFinder.setupCKEditor( null, '/ckfinder/' );
+//				$('#LeirasEdit').ckeditor();
 			}
 		},
 		beforeHide:function() {

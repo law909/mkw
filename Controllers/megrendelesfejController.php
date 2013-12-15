@@ -20,7 +20,14 @@ class megrendelesfejController extends bizonylatfejController {
         $view->setVar('showesedekesseg', false);
         $view->setVar('showhatarido', true);
         $view->setVar('showvalutanem', true);
-        $view->setVar('showstatuszeditor', true);
+        $view->setVar('showbizonylatstatuszeditor', true);
+    }
+
+    public function loadVars($t, $forKarb = false) {
+        $x = parent::loadVars($t, $forKarb);
+        $bsc = new bizonylatstatuszController($this->params);
+        $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId());
+        return $x;
     }
 
     public function getlistbody() {
@@ -141,4 +148,18 @@ class megrendelesfejController extends bizonylatfejController {
         return parent::setFields($obj);
     }
 
+    public function setStatusz() {
+        $bf = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+        if ($bf) {
+            $statusz = $this->getRepo('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('statusz'));
+            if ($statusz) {
+                $bf->setBizonylatstatusz($statusz);
+                $this->getEm()->persist($bf);
+                $this->getEm()->flush();
+                if ($this->params->getBoolRequestParam('bizonylatstatuszertesito')) {
+                    
+                }
+            }
+        }
+    }
 }

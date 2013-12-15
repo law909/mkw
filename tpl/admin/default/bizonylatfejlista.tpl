@@ -38,6 +38,9 @@
 <thead>
 	<tr>
 	<th><input id="maincheckbox" type="checkbox"></th>
+    {if ($showbizonylatstatuszeditor)}
+    <th></th>
+    {/if}
 	<th></th>
 	<th></th>
 	<th></th>

@@ -1,5 +1,13 @@
 <tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}">
 <td class="cell"><input class="maincheckbox" type="checkbox"></td>
+{if ($showbizonylatstatuszeditor)}
+<td class="cell"><select id="BizonylatStatuszFuggobenEdit" name="bizonylatstatusz" class="js-bizonylatstatuszedit">
+    <option value="">{t('válasszon')}</option>
+    {foreach $_egyed.bizonylatstatuszlist as $_role}
+    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+    {/foreach}
+</select></td>
+{/if}
 <td class="cell">
 <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_egyed.id}</a>
 {if ($setup.grideditbutton=='small')}

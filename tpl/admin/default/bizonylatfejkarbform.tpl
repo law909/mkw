@@ -13,6 +13,19 @@
 		{/if}
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
+            {if ($showbizonylatstatuszeditor)}
+			<tr>
+                <td class="mattable-important"><label for="BizonylatStatuszEdit">Státusz:</label></td>
+                <td><select id="BizonylatStatuszEdit" name="bizonylatstatusz" class="js-bizonylatstatuszedit">
+                    <option value="">{t('válasszon')}</option>
+                    {foreach $egyed.bizonylatstatuszlist as $_role}
+                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                    {/foreach}
+                </select></td>
+                <td><label for="BizonylatStatuszErtesitoEdit">Értesítés kell:</label></td>
+                <td><input id="BizonylatStatuszErtesitoEdit" type="checkbox" name="bizonylatstatuszertesito"></td>
+			</tr>
+            {/if}
 			<tr>
 				<td class="mattable-important"><label for="PartnerEdit">{t('Partner')}:</label></td>
 				<td colspan="7"><select id="PartnerEdit" name="partner" class="mattable-important" required="required" autofocus>
