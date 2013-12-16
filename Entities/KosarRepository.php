@@ -223,7 +223,7 @@ class KosarRepository extends \mkwhelpers\Repository {
 
         $sor = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanemid);
         if ($sor) {
-            $termekid = $sor->getTermekId();
+//            $termekid = $sor->getTermekId();
             $this->_em->remove($sor);
             $this->_em->flush();
         }

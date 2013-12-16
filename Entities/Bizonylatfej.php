@@ -274,10 +274,6 @@ class Bizonylatfej {
 	 */
 	private $bizonylatstatusz;
 
-    /** @Column(type="boolean",nullable=false) */
-	private $szallitasiktgkell = true;
-
-
 	/**
 	 * @PrePersist
 	 * @PreUpdate
@@ -320,9 +316,6 @@ class Bizonylatfej {
             $mailer->setTo($bf->getPartneremail());
             $mailer->setSubject($subject->getTemplateResult());
             $mailer->setMessage($body->getTemplateResult());
-            \mkw\Store::writelog($bf->getPartneremail());
-            \mkw\Store::writelog($subject->getTemplateResult());
-            \mkw\Store::writelog($body->getTemplateResult());
             $mailer->send();
         }
     }
@@ -1283,14 +1276,6 @@ class Bizonylatfej {
 //			$val->removeBizonylat($this);
 		}
 	}
-
-    public function getSzallitasiktgkell() {
-        return $this->szallitasiktgkell;
-    }
-
-    public function setSzallitasiktgkell($adat) {
-        $this->szallitasiktgkell = $adat;
-    }
 
     public function getFuvarlevelszam() {
         return $this->fuvarlevelszam;

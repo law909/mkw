@@ -145,8 +145,8 @@
                 <td><input id="FuvarlevelszamEdit" name="fuvarlevelszam" type="text" value="{$egyed.fuvarlevelszam}"></td>
             </tr>
             <tr>
-                <td><label for="Szallitasiktgkell">Szállítási költséget kell felszámolni:</label></td>
-                <td><input name="szallitasiktgkell" type="checkbox"{if ($egyed.szallitasiktgkell)} checked{/if}></td>
+                <td><label for="SzallitasiktgkellEdit">Szállítási költséget kell számolni:</label></td>
+                <td><input id="SzallitasiktgkellEdit" name="szallitasiktgkell" type="checkbox"></td>
             </tr>
 			<tr>
 				<td><label for="MegjegyzesEdit">{t('Megjegyzés')}:</label></td>
