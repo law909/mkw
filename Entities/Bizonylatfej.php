@@ -73,6 +73,9 @@ class Bizonylatfej {
 	/** @Column(type="string",length=30,nullable=true) */
 	private $erbizonylatszam;
 
+  	/** @Column(type="string",length=50,nullable=true) */
+	private $fuvarlevelszam;
+
 	/** @Column(type="date",nullable=false) */
 	private $kelt;
 
@@ -1287,6 +1290,14 @@ class Bizonylatfej {
 
     public function setSzallitasiktgkell($adat) {
         $this->szallitasiktgkell = $adat;
+    }
+
+    public function getFuvarlevelszam() {
+        return $this->fuvarlevelszam;
+    }
+
+    public function setFuvarlevelszam($adat) {
+        $this->fuvarlevelszam = $adat;
     }
 
 }

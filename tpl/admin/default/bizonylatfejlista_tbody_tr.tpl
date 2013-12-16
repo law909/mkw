@@ -37,6 +37,7 @@ IP: {$_egyed.ip} Ref.: {$_egyed.referrer}
 <table><tbody>
 <tr><td></td><td>{$_egyed.fizmodnev}</td></tr>
 <tr><td></td><td>{$_egyed.szallitasimodnev}</td></tr>
+<tr><td>Fuvarlevél:</td><td>{$_egyed.fuvarlevelszam}</td></tr>
 <tr><td>{t('Kelt')}:</td><td>{$_egyed.keltstr}</td></tr>
 {if ($showteljesites)}<tr><td>{t('Teljesítés')}:</td><td>{$_egyed.teljesitesstr}</td></tr>{/if}
 {if ($showesedekesseg)}<tr class="mattable-important"><td>{t('Esedékesség')}:</td><td>{$_egyed.esedekessegstr}</td></tr>{/if}
