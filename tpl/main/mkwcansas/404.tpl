@@ -25,7 +25,7 @@
                             <div>{$_termek.caption}</div>
                             <h5>
                                 {if ($_termek.akcios)}
-                                <span>{number_format($_termek.eredetibruttohuf,0,',',' ')} Ft helyett {number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
+                                <span><span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} Ft</span> helyett {number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
                                 {else}
                                 <span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
                                 {/if}
