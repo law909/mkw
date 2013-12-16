@@ -141,6 +141,10 @@
 				</td>
 			</tr>
             <tr>
+                <td><label for="FuvarlevelszamEdit">Fuvarlevélszám:</label></td>
+                <td><input id="FuvarlevelszamEdit" name="fuvarlevelszam" type="text" value="{$egyed.fuvarlevelszam}"></td>
+            </tr>
+            <tr>
                 <td><label for="Szallitasiktgkell">Szállítási költséget kell felszámolni:</label></td>
                 <td><input name="szallitasiktgkell" type="checkbox"{if ($egyed.szallitasiktgkell)} checked{/if}></td>
             </tr>
