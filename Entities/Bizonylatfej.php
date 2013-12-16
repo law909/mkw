@@ -353,7 +353,7 @@ class Bizonylatfej {
 		$ret['couriermessage'] = $this->getCouriermessage();
         $ret['megjegyzes'] = $this->getMegjegyzes();
         $ret['allapotnev'] = $this->getBizonylatstatusznev();
-        $ret['fuvarlevelszam'] = '';
+        $ret['fuvarlevelszam'] = $this->getFuvarlevelszam();
         $ret['bruttohuf'] = $this->getBruttohuf();
         $ret['webshopmessage'] = $this->getWebshopmessage();
         $ret['couriermessage'] = $this->getCouriermessage();
