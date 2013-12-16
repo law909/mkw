@@ -193,43 +193,54 @@ class adminController extends mkwhelpers\Controller {
             $record = 1000000000;
         }
 
+        $conn = \mkw\Store::getEm()->getConnection();
+
         while ((($data = fgetcsv($import, 0, ';', '"')) !== false) && ($szam <= $record + 1000)) {
+            $this->writelog('1');
             $idegenkod = trim($data[0])*1;
             if ($idegenkod < 3000000) {
                 $idegenkod = $idegenkod + 4000000;
             }
             $email = trim($data[9]);
-            $ppp = \mkw\Store::getEm()->getRepository('Entities\Partner')->findOneByEmail($email);
-            if (!$ppp) {
-                $ppp = \mkw\Store::getEm()->getRepository('Entities\Partner')->findOneByIdegenkod($idegenkod);
-                if (!$ppp) {
-                    \mkw\Store::writelog('szam=' . $szam . ' idegenkod=' . $idegenkod);
+            $q = \mkw\Store::getEm()->createQuery('SELECT COUNT(x) FROM Entities\Partner x WHERE x.email=:e');
+            $q->setParameters(array('e' => $email));
+            $r = $q->getScalarResult();
+            if ($r[0][1] == 0) {
+                $this->writelog('2');
+                $q = \mkw\Store::getEm()->createQuery('SELECT COUNT(x) FROM Entities\Partner x WHERE x.idegenkod=:e');
+                $q->setParameters(array('e' => $idegenkod));
+                $r = $q->getScalarResult();
+                if ($r[0][1] == 0) {
+                    $this->writelog('3');
+                    $this->writelog('szam=' . $szam . ' idegenkod=' . $idegenkod);
                     $szam++;
-                    $p = new Entities\Partner();
-                    $p->setIdegenkod($idegenkod);
-                    $p->setVendeg(true);
-                    $p->setVezeteknev(mb_convert_encoding(trim($data[7]), 'UTF8', 'ISO-8859-2'));
-                    $p->setKeresztnev(mb_convert_encoding(trim($data[8]), 'UTF8', 'ISO-8859-2'));
-                    $p->setEmail($email);
-                    $p->setNev(mb_convert_encoding(trim($data[10]), 'UTF8', 'ISO-8859-2'));
-                    $p->setIrszam(mb_convert_encoding(trim($data[12]), 'UTF8', 'ISO-8859-2'));
-                    $p->setVaros(mb_convert_encoding(trim($data[11]), 'UTF8', 'ISO-8859-2'));
-                    $p->setUtca(mb_convert_encoding(trim($data[13] . ' ' . $data[14]), 'UTF8', 'ISO-8859-2'));
-                    $p->setSzallnev(mb_convert_encoding(trim($data[15]), 'UTF8', 'ISO-8859-2'));
-                    $p->setSzallirszam(mb_convert_encoding(trim($data[17]), 'UTF8', 'ISO-8859-2'));
-                    $p->setSzallvaros(mb_convert_encoding(trim($data[16]), 'UTF8', 'ISO-8859-2'));
-                    $p->setSzallutca(mb_convert_encoding(trim($data[18] . ' ' . $data[19]), 'UTF8', 'ISO-8859-2'));
-                    if ($data[22] == '1') {
-                        $p->setAkcioshirlevelkell(true);
-                        $p->setUjdonsaghirlevelkell(true);
-                    }
-                    else {
-                        $p->setAkcioshirlevelkell(false);
-                        $p->setUjdonsaghirlevelkell(false);
-                    }
-                    $p->setTelefon(mb_convert_encoding(trim($data[24]), 'UTF8', 'ISO-8859-2'));
-                    store::getEm()->persist($p);
-                    store::getEm()->flush();
+
+                    $q = 'INSERT INTO partner (idegenkod,vendeg,vezeteknev,keresztnev,email,nev,irszam,varos,utca,' .
+                            'szallnev,szallirszam,szallvaros,szallutca,akcioshirlevelkell,ujdonsaghirlevelkell,telefon) VALUES ' .
+                            '(:idegenkod,:vendeg,:vezeteknev,:keresztnev,:email,:nev,:irszam,:varos,:utca,' .
+                            ':szallnev,:szallirszam,:szallvaros,:szallutca,:akcioshirlevelkell,:ujdonsaghirlevelkell,:telefon)';
+
+                    $stmt = $conn->prepare($q);
+                    $hirlevel = $data[22] == '1';
+                    $params = array(
+                        'idegenkod' => $idegenkod,
+                        'vendeg' => true,
+                        'vezeteknev' => mb_convert_encoding(trim($data[7]), 'UTF8', 'ISO-8859-2'),
+                        'keresztnev' => mb_convert_encoding(trim($data[8]), 'UTF8', 'ISO-8859-2'),
+                        'email' => $email,
+                        'nev' => mb_convert_encoding(trim($data[10]), 'UTF8', 'ISO-8859-2'),
+                        'irszam' => mb_convert_encoding(trim($data[12]), 'UTF8', 'ISO-8859-2'),
+                        'varos' => mb_convert_encoding(trim($data[11]), 'UTF8', 'ISO-8859-2'),
+                        'utca' => mb_convert_encoding(trim($data[13] . ' ' . $data[14]), 'UTF8', 'ISO-8859-2'),
+                        'szallnev' => mb_convert_encoding(trim($data[15]), 'UTF8', 'ISO-8859-2'),
+                        'szallirszam' => mb_convert_encoding(trim($data[17]), 'UTF8', 'ISO-8859-2'),
+                        'szallvaros' => mb_convert_encoding(trim($data[16]), 'UTF8', 'ISO-8859-2'),
+                        'szallutca' => mb_convert_encoding(trim($data[18] . ' ' . $data[19]), 'UTF8', 'ISO-8859-2'),
+                        'akcioshirlevelkell' => $hirlevel,
+                        'ujdonsaghirlevelkell' => $hirlevel,
+                        'telefon' => mb_convert_encoding(trim($data[24]), 'UTF8', 'ISO-8859-2')
+                    );
+                    $stmt->execute($params);
                 }
             }
         }
