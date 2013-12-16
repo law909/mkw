@@ -138,6 +138,119 @@ class adminController extends mkwhelpers\Controller {
         fclose($x);
     }
 
+    public function mindentkapnimegvasarlasdb() {
+        if (file_exists('mkwimport.lock')) {
+            echo 'locked';
+            die;
+        }
+
+        $x = fopen('mkwimport.lock', 'a');
+        fwrite($x, 'fuckerlocker');
+        fclose($x);
+
+        $import = fopen('toptermekek-id-db.csv', 'r');
+        $data = fgetcsv($import, 0, ';', '"');
+        while (($data = fgetcsv($import, 0, ';', '"')) !== false) {
+            $this->writelog('megvasarlasdb: ' . trim($data[0]));
+            $q = \mkw\Store::getEm()->createQuery('UPDATE Entities\Termek x SET x.megvasarlasdb=' . trim($data[1]) . ' WHERE x.idegenkod=' . trim($data[0]) . '');
+            $this->writelog($q->getSQL());
+            $q->Execute();
+        }
+        fclose($import);
+        unlink('mkwimport.lock');
+        echo 'KESZ';
+    }
+
+    public function mindentkapnimegrendelesvevo() {
+        if (file_exists('mkwimport.lock')) {
+            echo 'locked';
+            die;
+        }
+
+        $import = fopen('megrendeles2vevo.csv', 'r');
+        $data = fgetcsv($import, 0, ';', '"');
+
+        $darabolva = $this->params->getBoolRequestParam('darabolva', false);
+
+        if ($darabolva) {
+            $record = file_get_contents('mkwrecord.txt');
+            $record = $record * 1;
+
+            $vevotomb = array();
+
+            $x = fopen('mkwimport.lock', 'a');
+            fwrite($x, 'fuckerlocker');
+            fclose($x);
+
+            $vevocikl = 0;
+            while ((($buffer = fgetcsv($import, 0, ';', '"')) != false) && ($vevocikl < $record)) {
+                $vevocikl++;
+            }
+            $szam = $record;
+        }
+        else {
+            $szam = 0;
+            $record = 1000000000;
+        }
+
+        $conn = \mkw\Store::getEm()->getConnection();
+
+        while ((($data = fgetcsv($import, 0, ';', '"')) !== false) && ($szam <= $record + 1000)) {
+            $this->writelog('1');
+            $idegenkod = trim($data[0])*1;
+            if ($idegenkod < 3000000) {
+                $idegenkod = $idegenkod + 4000000;
+            }
+            $email = trim($data[9]);
+            $q = \mkw\Store::getEm()->createQuery('SELECT COUNT(x) FROM Entities\Partner x WHERE x.email=:e');
+            $q->setParameters(array('e' => $email));
+            $r = $q->getScalarResult();
+            if ($r[0][1] == 0) {
+                $this->writelog('2');
+                $q = \mkw\Store::getEm()->createQuery('SELECT COUNT(x) FROM Entities\Partner x WHERE x.idegenkod=:e');
+                $q->setParameters(array('e' => $idegenkod));
+                $r = $q->getScalarResult();
+                if ($r[0][1] == 0) {
+                    $this->writelog('3');
+                    $this->writelog('szam=' . $szam . ' idegenkod=' . $idegenkod);
+                    $szam++;
+
+                    $q = 'INSERT INTO partner (idegenkod,vendeg,vezeteknev,keresztnev,email,nev,irszam,varos,utca,' .
+                            'szallnev,szallirszam,szallvaros,szallutca,akcioshirlevelkell,ujdonsaghirlevelkell,telefon) VALUES ' .
+                            '(:idegenkod,:vendeg,:vezeteknev,:keresztnev,:email,:nev,:irszam,:varos,:utca,' .
+                            ':szallnev,:szallirszam,:szallvaros,:szallutca,:akcioshirlevelkell,:ujdonsaghirlevelkell,:telefon)';
+
+                    $stmt = $conn->prepare($q);
+                    $hirlevel = $data[22] == '1';
+                    $params = array(
+                        'idegenkod' => $idegenkod,
+                        'vendeg' => true,
+                        'vezeteknev' => mb_convert_encoding(trim($data[7]), 'UTF8', 'ISO-8859-2'),
+                        'keresztnev' => mb_convert_encoding(trim($data[8]), 'UTF8', 'ISO-8859-2'),
+                        'email' => $email,
+                        'nev' => mb_convert_encoding(trim($data[10]), 'UTF8', 'ISO-8859-2'),
+                        'irszam' => mb_convert_encoding(trim($data[12]), 'UTF8', 'ISO-8859-2'),
+                        'varos' => mb_convert_encoding(trim($data[11]), 'UTF8', 'ISO-8859-2'),
+                        'utca' => mb_convert_encoding(trim($data[13] . ' ' . $data[14]), 'UTF8', 'ISO-8859-2'),
+                        'szallnev' => mb_convert_encoding(trim($data[15]), 'UTF8', 'ISO-8859-2'),
+                        'szallirszam' => mb_convert_encoding(trim($data[17]), 'UTF8', 'ISO-8859-2'),
+                        'szallvaros' => mb_convert_encoding(trim($data[16]), 'UTF8', 'ISO-8859-2'),
+                        'szallutca' => mb_convert_encoding(trim($data[18] . ' ' . $data[19]), 'UTF8', 'ISO-8859-2'),
+                        'akcioshirlevelkell' => $hirlevel,
+                        'ujdonsaghirlevelkell' => $hirlevel,
+                        'telefon' => mb_convert_encoding(trim($data[24]), 'UTF8', 'ISO-8859-2')
+                    );
+                    $stmt->execute($params);
+                }
+            }
+        }
+        fclose($import);
+        file_put_contents('mkwrecord.txt', $szam);
+        $this->writelog('KESZ');
+        echo 'KESZ';
+        unlink('mkwimport.lock');
+    }
+
     public function mindentkapnivevo() {
         if (file_exists('mkwimport.lock')) {
             echo 'locked';
