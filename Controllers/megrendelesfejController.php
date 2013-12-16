@@ -24,6 +24,10 @@ class megrendelesfejController extends bizonylatfejController {
     }
 
     protected function loadVars($t, $forKarb = false) {
+		if (!$t) {
+			$t = new \Entities\Bizonylatfej();
+			$this->getEm()->detach($t);
+		}
         $x = parent::loadVars($t, $forKarb);
         $bsc = new bizonylatstatuszController($this->params);
         $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId());
@@ -149,6 +153,7 @@ class megrendelesfejController extends bizonylatfejController {
     }
 
     protected function afterSave($o) {
+        parent::afterSave($o);
         if ($this->params->getBoolRequestParam('bizonylatstatuszertesito')) {
             $statusz = $o->getBizonylatstatusz();
             if ($statusz) {
@@ -156,7 +161,6 @@ class megrendelesfejController extends bizonylatfejController {
                 $o->sendStatuszEmail($emailtpl);
             }
         }
-        parent::afterSave($o);
     }
 
     public function setStatusz() {

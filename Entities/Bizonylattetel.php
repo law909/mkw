@@ -494,6 +494,7 @@ class Bizonylattetel {
 
 	public function setNettoegysar($val) {
 		$this->nettoegysar = $val;
+		$this->bruttoegysar = $this->getAfa()->calcBrutto($val);
 	}
 
 	public function getBruttoegysar() {
@@ -502,6 +503,7 @@ class Bizonylattetel {
 
 	public function setBruttoegysar($val) {
 		$this->bruttoegysar = $val;
+		$this->nettoegysar = $this->termek->getAfa()->calcNetto($val);
 	}
 
 	public function getNettoegysarhuf() {
@@ -510,6 +512,7 @@ class Bizonylattetel {
 
 	public function setNettoegysarhuf($val) {
 		$this->nettoegysarhuf = $val;
+		$this->bruttoegysarhuf = $this->getAfa()->calcBrutto($val);
 	}
 
 	public function getBruttoegysarhuf() {
@@ -518,6 +521,7 @@ class Bizonylattetel {
 
 	public function setBruttoegysarhuf($val) {
 		$this->bruttoegysarhuf = $val;
+		$this->nettoegysarhuf = $this->termek->getAfa()->calcNetto($val);
 	}
 
 	public function getEnettoegysar() {

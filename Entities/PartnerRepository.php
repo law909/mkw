@@ -47,6 +47,22 @@ class PartnerRepository extends \mkwhelpers\Repository {
 		return $q->getSingleScalarResult();
 	}
 
+    public function getAllForSelectList($filter, $order, $offset = 0, $elemcount = 0) {
+        $a = $this->alias;
+        $q = $this->_em->createQuery('SELECT ' . $a . '.id,' . $a . '.nev, ' . $a . '.irszam, ' . $a . '.varos, ' . $a . '.utca '
+                . ' FROM ' . $this->entityname . ' ' . $a
+                . $this->getFilterString($filter)
+                . $this->getOrderString($order));
+        $q->setParameters($this->getQueryParameters($filter));
+        if ($offset > 0) {
+            $q->setFirstResult($offset);
+        }
+        if ($elemcount > 0) {
+            $q->setMaxResults($elemcount);
+        }
+        return $q->getScalarResult();
+    }
+
 	public function countByEmail($email) {
 		$filter = array();
 		$filter['fields'][] = 'email';
