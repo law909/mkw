@@ -1,8 +1,8 @@
 var mkwmsg = {
-	TermekErtesitoKoszonjuk: 'Köszönjük feliratkozását.<br>Azonnal értesíteni fogjuk, amint a termék kapható lesz.',
+	TermekErtesitoKoszonjuk: 'Köszönjük feliratkozását!<br>Azonnal értesíteni fogjuk, amint a termék kapható lesz.',
 	TermekErtesitoLeiratkozas: 'A leiratkozás folyamatban van.',
 	TermekKosarba: 'A terméket a kosarába tettük...',
-	TermekValtozatotValassz: 'Válassza ki a lenyíló listából, hogy pontosan milyen termékváltozatot szeretne.',
+	TermekValtozatotValassz: 'Válassza ki a lenyíló listából, hogy pontosan milyen termékváltozatot szeretne!',
 	KosarMennyisegModositas: 'Módosítottuk a mennyiséget.',
 	KosarMennyisegNulla: 'Ha nem kíván vásárolni a termékből, a <b>"Töröl"</b> gombbal veheti ki a kosárból.',
 	ChkRegLogin: 'Válassza ki, hogy szeretne-e regisztrálni a vásárláshoz, vagy jelentkezzen be, ha már van nálunk fiókja.',
@@ -12,7 +12,7 @@ var mkwmsg = {
 	FiokAdataitModositjuk: 'Adatait módosítjuk...',
 	DialogFejlec: 'Értesítés',
 	DialogOk: 'OK',
-    PassChange: ['A jelszó módosítás sikerült.', 'A két jelszó nem egyezik.', 'Hibás jelszót adott meg.','Nem adott meg új jelszót.'],
-    PassReminderCreated: 'Emailcímére elküldtünk egy jelszó emlékeztető linket.',
-    PassReminderRequiredEmail: 'Adja meg azt az email címet, amivel regisztrált.'
+    PassChange: ['A jelszómódosítás sikerült.', 'A két jelszó nem egyezik.', 'Hibás jelszót adott meg.','Nem adott meg új jelszót.'],
+    PassReminderCreated: 'Emailcímére elküldtünk egy jelszóemlékeztető linket.',
+    PassReminderRequiredEmail: 'Adja meg azt az emailcímet, amellyel regisztrált.'
 }
