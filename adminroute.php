@@ -1,5 +1,10 @@
 <?php
 
+$router->map('GET', '/admin/devapi/mkwimport', 'adminController#mindentkapniimport', 'adminmkwimport');
+$router->map('GET', '/admin/devapi/mkwvevo', 'adminController#mindentkapnivevo', 'adminmkwvevo');
+$router->map('GET', '/admin/devapi/mkwmegvasarlasdb', 'adminController#mindentkapnimegvasarlasdb', 'adminmkwmegvasarlasdb');
+$router->map('GET', '/admin/devapi/mkwmegrendelesvevo', 'adminController#mindentkapnimegrendelesvevo', 'adminmkwmegrendelesvevo');
+
 $router->map('GET', '/admin', 'adminController#view', 'adminview');
 $router->map('GET', '/admin/view', 'adminController#view', 'adminview2');
 $router->map('GET', '/admin/egyebtorzs/view', 'egyebtorzsController#view', 'adminegyebtorzsview');
@@ -212,8 +217,6 @@ $router->map('GET', '/admin/sitemap/create', 'sitemapController#create', 'admins
 
 $router->map('GET', '/admin/export/view', 'exportController#view', 'adminexportview');
 $router->map('GET', '/admin/export/grando', 'exportController#GrandoExport', 'admingrandoexport');
-$router->map('GET', '/admin/mkwimport', 'adminController#mindentkapniimport', 'adminmkwimport');
-$router->map('GET', '/admin/mkwvevo', 'adminController#mindentkapnivevo', 'adminmkwvevo');
 
 $router->map('GET', '/admin/login/show', 'dolgozoController#showlogin', 'adminshowlogin');
 $router->map('POST', '/admin/login', 'dolgozoController#login', 'adminlogin');

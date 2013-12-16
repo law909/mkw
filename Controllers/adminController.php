@@ -138,6 +138,108 @@ class adminController extends mkwhelpers\Controller {
         fclose($x);
     }
 
+    public function mindentkapnimegvasarlasdb() {
+        if (file_exists('mkwimport.lock')) {
+            echo 'locked';
+            die;
+        }
+
+        $x = fopen('mkwimport.lock', 'a');
+        fwrite($x, 'fuckerlocker');
+        fclose($x);
+
+        $import = fopen('toptermekek-id-db.csv', 'r');
+        $data = fgetcsv($import, 0, ';', '"');
+        while (($data = fgetcsv($import, 0, ';', '"')) !== false) {
+            $this->writelog('megvasarlasdb: ' . trim($data[0]));
+            $q = \mkw\Store::getEm()->createQuery('UPDATE Entities\Termek x SET x.megvasarlasdb=' . trim($data[1]) . ' WHERE x.idegenkod=' . trim($data[0]) . '');
+            $this->writelog($q->getSQL());
+            $q->Execute();
+        }
+        fclose($import);
+        unlink('mkwimport.lock');
+        echo 'KESZ';
+    }
+
+    public function mindentkapnimegrendelesvevo() {
+        if (file_exists('mkwimport.lock')) {
+            echo 'locked';
+            die;
+        }
+
+        $import = fopen('megrendeles2vevo.csv', 'r');
+        $data = fgetcsv($import, 0, ';', '"');
+
+        $darabolva = $this->params->getBoolRequestParam('darabolva', false);
+
+        if ($darabolva) {
+            $record = file_get_contents('mkwrecord.txt');
+            $record = $record * 1;
+
+            $vevotomb = array();
+
+            $x = fopen('mkwimport.lock', 'a');
+            fwrite($x, 'fuckerlocker');
+            fclose($x);
+
+            $vevocikl = 0;
+            while ((($buffer = fgetcsv($import, 0, ';', '"')) != false) && ($vevocikl < $record)) {
+                $vevocikl++;
+            }
+            $szam = $record;
+        }
+        else {
+            $szam = 0;
+            $record = 1000000000;
+        }
+
+        while ((($data = fgetcsv($import, 0, ';', '"')) !== false) && ($szam <= $record + 1000)) {
+            $idegenkod = trim($data[0])*1;
+            if ($idegenkod < 3000000) {
+                $idegenkod = $idegenkod + 4000000;
+            }
+            $email = trim($data[9]);
+            $ppp = \mkw\Store::getEm()->getRepository('Entities\Partner')->findOneByEmail($email);
+            if (!$ppp) {
+                $ppp = \mkw\Store::getEm()->getRepository('Entities\Partner')->findOneByIdegenkod($idegenkod);
+                if (!$ppp) {
+                    \mkw\Store::writelog('szam=' . $szam . ' idegenkod=' . $idegenkod);
+                    $szam++;
+                    $p = new Entities\Partner();
+                    $p->setIdegenkod($idegenkod);
+                    $p->setVendeg(true);
+                    $p->setVezeteknev(mb_convert_encoding(trim($data[7]), 'UTF8', 'ISO-8859-2'));
+                    $p->setKeresztnev(mb_convert_encoding(trim($data[8]), 'UTF8', 'ISO-8859-2'));
+                    $p->setEmail($email);
+                    $p->setNev(mb_convert_encoding(trim($data[10]), 'UTF8', 'ISO-8859-2'));
+                    $p->setIrszam(mb_convert_encoding(trim($data[12]), 'UTF8', 'ISO-8859-2'));
+                    $p->setVaros(mb_convert_encoding(trim($data[11]), 'UTF8', 'ISO-8859-2'));
+                    $p->setUtca(mb_convert_encoding(trim($data[13] . ' ' . $data[14]), 'UTF8', 'ISO-8859-2'));
+                    $p->setSzallnev(mb_convert_encoding(trim($data[15]), 'UTF8', 'ISO-8859-2'));
+                    $p->setSzallirszam(mb_convert_encoding(trim($data[17]), 'UTF8', 'ISO-8859-2'));
+                    $p->setSzallvaros(mb_convert_encoding(trim($data[16]), 'UTF8', 'ISO-8859-2'));
+                    $p->setSzallutca(mb_convert_encoding(trim($data[18] . ' ' . $data[19]), 'UTF8', 'ISO-8859-2'));
+                    if ($data[22] == '1') {
+                        $p->setAkcioshirlevelkell(true);
+                        $p->setUjdonsaghirlevelkell(true);
+                    }
+                    else {
+                        $p->setAkcioshirlevelkell(false);
+                        $p->setUjdonsaghirlevelkell(false);
+                    }
+                    $p->setTelefon(mb_convert_encoding(trim($data[24]), 'UTF8', 'ISO-8859-2'));
+                    store::getEm()->persist($p);
+                    store::getEm()->flush();
+                }
+            }
+        }
+        fclose($import);
+        file_put_contents('mkwrecord.txt', $szam);
+        $this->writelog('KESZ');
+        echo 'KESZ';
+        unlink('mkwimport.lock');
+    }
+
     public function mindentkapnivevo() {
         if (file_exists('mkwimport.lock')) {
             echo 'locked';
