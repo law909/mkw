@@ -178,4 +178,10 @@ class megrendelesfejController extends bizonylatfejController {
             }
         }
     }
+
+    public function getszamlakarb() {
+        $megrendszam = $this->params->getStringRequestParams('id');
+        $szamlac = new SzamlafejController($this->params);
+        echo $szamlac->_getkarb('bizonylatfejkarb.tpl', $megrendszam, 'add');
+    }
 }

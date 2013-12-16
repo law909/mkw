@@ -348,8 +348,6 @@ class Bizonylatfej {
         $ret['allapotnev'] = $this->getBizonylatstatusznev();
         $ret['fuvarlevelszam'] = $this->getFuvarlevelszam();
         $ret['bruttohuf'] = $this->getBruttohuf();
-        $ret['webshopmessage'] = $this->getWebshopmessage();
-        $ret['couriermessage'] = $this->getCouriermessage();
 		$tetellist = array();
 		foreach($this->bizonylattetelek as $tetel) {
 			$tetellist[] = $tetel->toLista();

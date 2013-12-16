@@ -66,9 +66,13 @@ class SzamlafejController extends bizonylatfejController {
         $view->printTemplateResult();
     }
 
-    protected function _getkarb($tplname) {
-        $id = $this->params->getRequestParam('id', 0);
-        $oper = $this->params->getRequestParam('oper', '');
+    public function _getkarb($tplname, $id = null, $oper = null) {
+        if (!$id) {
+            $id = $this->params->getRequestParam('id', 0);
+        }
+        if (!$oper) {
+            $oper = $this->params->getRequestParam('oper', '');
+        }
         $view = $this->createView($tplname);
 
         $view->setVar('pagetitle', t('Számla'));
