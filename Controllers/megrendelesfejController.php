@@ -21,6 +21,7 @@ class megrendelesfejController extends bizonylatfejController {
         $view->setVar('showhatarido', true);
         $view->setVar('showvalutanem', true);
         $view->setVar('showbizonylatstatuszeditor', true);
+        $view->setVar('showinheritbutton', true);
     }
 
     protected function loadVars($t, $forKarb = false) {
@@ -177,5 +178,11 @@ class megrendelesfejController extends bizonylatfejController {
                 }
             }
         }
+    }
+
+    public function getszamlakarb() {
+        $megrendszam = $this->params->getStringRequestParams('id');
+        $szamlac = new SzamlafejController($this->params);
+        echo $szamlac->_getkarb('bizonylatfejkarb.tpl', $megrendszam, 'add');
     }
 }

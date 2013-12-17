@@ -17,7 +17,6 @@ $(document).ready(function() {
 				$('input[name="tetelnev_' + sorid + '"]').val(ui.item.value);
 				$('input[name="tetelcikkszam_' + sorid + '"]').val(ui.item.cikkszam);
 				$('input[name="tetelme_' + sorid + '"]').val(ui.item.me);
-//				bizonylathelper.setTermekAr(sorid);
 				vtsz.val(ui.item.vtsz);
 				vtsz.change();
 				afa.val(ui.item.afa);
@@ -219,7 +218,16 @@ $(document).ready(function() {
 				fields: ['#idfilter']
 			},
 			tablebody: {
-				url: '/admin/megrendelesfej/getlistbody'
+				url: '/admin/megrendelesfej/getlistbody',
+                onStyle: function() {
+                    $('.js-printbizonylat, .js-inheritbizonylat').button();
+                },
+                onDoEditLink: function() {
+                    $('.js-inheritbizonylat').each(function() {
+                        var $this = $(this);
+                        $this.attr('href', '/admin/szamlafej/viewkarb?id=' + $this.data('egyedid') + '&source=megrendeles&oper=' + $this.data('oper'));
+                    });
+                }
 			},
 			karb: megrendeles
 		});
@@ -257,8 +265,11 @@ $(document).ready(function() {
                     }
                 }
             });
-
         })
+                .on('click', '.js-printbizonylat', function(e) {
+                    e.preventDefault();
+                    alert('print ' + $(this).data('egyedid'));
+        });
 	}
 	else {
 		if ($.fn.mattkarb) {

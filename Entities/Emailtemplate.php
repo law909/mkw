@@ -26,7 +26,7 @@ class Emailtemplate {
 
     /** @Column(type="text",nullable=true) */
     private $szoveg;
-	/** @OneToMany(targetEntity="Bizonylatstatusz", mappedBy="emailtemplate",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Bizonylatstatusz", mappedBy="emailtemplate",cascade={"persist"}) */
 	private $bizonylatstatuszok;
 
     public function getId() {

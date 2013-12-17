@@ -21,6 +21,7 @@ class SzamlafejController extends bizonylatfejController {
         $view->setVar('showhatarido', false);
         $view->setVar('showvalutanem', true);
         $view->setVar('showbizonylatstatuszeditor', false);
+        $view->setVar('showinheritbutton', false);
     }
 
     public function getlistbody() {
@@ -66,9 +67,13 @@ class SzamlafejController extends bizonylatfejController {
         $view->printTemplateResult();
     }
 
-    protected function _getkarb($tplname) {
-        $id = $this->params->getRequestParam('id', 0);
-        $oper = $this->params->getRequestParam('oper', '');
+    public function _getkarb($tplname, $id = null, $oper = null) {
+        if (!$id) {
+            $id = $this->params->getRequestParam('id', 0);
+        }
+        if (!$oper) {
+            $oper = $this->params->getRequestParam('oper', '');
+        }
         $view = $this->createView($tplname);
 
         $view->setVar('pagetitle', t('Számla'));
@@ -78,7 +83,26 @@ class SzamlafejController extends bizonylatfejController {
         $this->setVars($view);
 
         $record = $this->getRepo()->findWithJoins($id);
-        $view->setVar('egyed', $this->loadVars($record, true));
+        $egyed = $this->loadVars($record, true);
+
+        if ($oper == 'inherit') {
+            $egyed['id'] = store::createUID();
+            $egyed['parentid'] = $id;
+            $egyed['keltstr'] = date(store::$DateFormat);
+            $egyed['teljesitesstr'] = date(store::$DateFormat);
+            $ttk = array();
+            $cikl = 1;
+            foreach($egyed['tetelek'] as $tetel) {
+                $tetel['parentid'] = $tetel['id'];
+                $tetel['id'] = store::createUID($cikl);
+                $tetel['oper'] = 'inherit';
+                $ttk[] = $tetel;
+                $cikl++;
+            }
+            $egyed['tetelek'] = $ttk;
+        }
+
+        $view->setVar('egyed', $egyed);
 
         $partner = new partnerController($this->params);
         $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
@@ -133,9 +157,9 @@ class SzamlafejController extends bizonylatfejController {
         return $ret;
     }
 
-    protected function setFields($obj) {
+    protected function setFields($obj, $parancs) {
         $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find('szamla'));
-        return parent::setFields($obj);
+        return parent::setFields($obj, $parancs);
     }
 
 }

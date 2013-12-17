@@ -27,7 +27,7 @@ class Bizonylatstatusz {
      * @JoinColumn(name="emailtemplate_id", referencedColumnName="id",nullable=true,onDelete="no action")
      */
     private $emailtemplate;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylatstatusz",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylatstatusz",cascade={"persist"}) */
 	private $bizonylatfejek;
 
 	public function __construct() {

@@ -1,6 +1,7 @@
 <div id="teteltable_{$tetel.id}" class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
 <input name="tetelid[]" type="hidden" value="{$tetel.id}">
 <input name="teteloper_{$tetel.id}" type="hidden" value="{$tetel.oper}">
+<input name="tetelparentid_{$tetel.id}" type="hidden" value="{$tetel.parentid}">
 <table><tbody>
 <tr>
 <td class="mattable-important"><label for="TermekSelect{$tetel.id}">{t('Termék')}:</label></td>
@@ -63,7 +64,7 @@
 {/if}
 </tr>
 </tbody></table>
-<a class="js-teteldelbutton" href="#" data-id="{$tetel.id}"{if ($tetel.oper=='add')} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+<a class="js-teteldelbutton" href="#" data-id="{$tetel.id}"{if (($tetel.oper=='add')||($tetel.oper=='inherit'))} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
 </div>
 {if ($tetel.oper=='add')}
 <a class="js-tetelnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>

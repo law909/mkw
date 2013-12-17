@@ -37,7 +37,7 @@ class Bizonylattipus {
 	private $showhatarido=false;
 	/** @Column(type="boolean",nullable=false) */
 	private $showvalutanem=false;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylattipus",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylattipus",cascade={"persist"}) */
 	private $bizonylatfejek;
 
 	public function __construct() {

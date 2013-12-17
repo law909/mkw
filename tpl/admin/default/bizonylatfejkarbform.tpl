@@ -1,5 +1,5 @@
 <div id="mattkarb-header">
-	<h3>{$pagetitle}</h3>
+	<h3>{$pagetitle} - {$egyed.id}{if ($egyed.parentid|default)} ({$egyed.parentid}){/if}</h3>
 </div>
 <form id="mattkarb-form" method="post" action="{$formaction}">
 	<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
@@ -175,6 +175,7 @@
 	</div>
 	<input name="oper" type="hidden" value="{$oper}">
 	<input name="id" type="hidden" value="{$egyed.id}">
+    <input name="parentid" type="hidden" value="{$egyed.parentid}">
 	<div class="mattkarb-footer">
 		<input id="mattkarb-okbutton" type="submit" value="{t('OK')}">
 		<a id="mattkarb-cancelbutton" href="#">{t('Mégsem')}</a>

@@ -17,7 +17,6 @@ $(document).ready(function() {
                 $('input[name="tetelnev_' + sorid + '"]').val(ui.item.value);
                 $('input[name="tetelcikkszam_' + sorid + '"]').val(ui.item.cikkszam);
                 $('input[name="tetelme_' + sorid + '"]').val(ui.item.me);
-//                        bizonylathelper.setTermekAr(sorid);
                 vtsz.val(ui.item.vtsz);
                 vtsz.change();
                 afa.val(ui.item.afa);
@@ -225,7 +224,10 @@ $(document).ready(function() {
                 fields: ['#idfilter']
             },
             tablebody: {
-                url: '/admin/szamlafej/getlistbody'
+                url: '/admin/szamlafej/getlistbody',
+                onStyle: function() {
+                    $('.js-printbizonylat').button();
+                }
             },
             karb: szamla
         });
