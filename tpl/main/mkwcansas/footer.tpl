@@ -26,7 +26,7 @@
 		<nav class="span3">
 			<h5>Egyéb információk</h5>
 			<ul>
-				<li><a href="/kapcsolat">Kapcsolat</a></li>
+				<!--<li><a href="/kapcsolat">Kapcsolat</a></li>-->
 				<li><a href="/fiok">Fiókom</a></li>
 				<li><a href="/statlap/gy-i-k-leggyakoribb-kerdesek#meretcsere">Méretcsere</a></li>
 				<li><a href="/statlap/vasarloink-visszajelzesei">Vásárlóink visszajelzései</a></li>
