@@ -67,12 +67,18 @@ class sitemapController extends \mkwhelpers\Controller {
             );
         }
         $smview->setVar('urls', $urls);
-        file_put_contents(\mkw\Store::getConfigValue('mainpath') . 'sitemap.xml', $smview->getTemplateResult());
+        \mkw\Store::writelog('megirtam a sitemapot');
+        $r = file_put_contents(\mkw\Store::getConfigValue('mainpath') . 'sitemap.xml', $smview->getTemplateResult());
 
         $gd = new \mkw\generalDataLoader();
         $view = $this->createView('sitemap.tpl');
         $gd->loadData($view);
-        $view->setVar('szoveg', t('A sitemap kész.'));
+        if ($r) {
+            $view->setVar('szoveg', t('A sitemap kész.'));
+        }
+        else {
+            $view->setVar('szoveg', 'Nem sikerült file-ba írni.');
+        }
         $view->printTemplateResult(false);
     }
 
