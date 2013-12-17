@@ -96,8 +96,8 @@ class Store {
 		return str_replace('.', '-', $DateString);
 	}
 
-	public static function createUID() {
-		return str_replace('.', '', microtime(true));
+	public static function createUID($prefix = '') {
+		return uniqid($prefix);//str_replace('.', '', microtime(true));
 	}
 
 	public static function createSmallImageUrl($kepurl, $pre = '/') {

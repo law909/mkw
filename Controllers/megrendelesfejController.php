@@ -21,6 +21,7 @@ class megrendelesfejController extends bizonylatfejController {
         $view->setVar('showhatarido', true);
         $view->setVar('showvalutanem', true);
         $view->setVar('showbizonylatstatuszeditor', true);
+        $view->setVar('showinheritbutton', true);
     }
 
     protected function loadVars($t, $forKarb = false) {

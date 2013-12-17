@@ -77,7 +77,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		return $x;
 	}
 
-	protected function setFields($obj) {
+	protected function setFields($obj, $parancs) {
 		$obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
 
 		$obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
@@ -97,9 +97,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		if ($ck) {
 			$obj->setSzallitasimod($ck);
 		}
-		$obj->setKelt($this->params->getStringRequestParam('kelt'));
-		$obj->setTeljesites($this->params->getStringRequestParam('teljesites'));
-		$obj->setEsedekesseg($this->params->getStringRequestParam('esedekesseg'));
+        $obj->setKelt($this->params->getStringRequestParam('kelt'));
+        $obj->setTeljesites($this->params->getStringRequestParam('teljesites'));
+        $obj->setEsedekesseg($this->params->getStringRequestParam('esedekesseg'));
 		$obj->setHatarido($this->params->getStringRequestParam('hatarido'));
 
         $obj->setFuvarlevelszam($this->params->getStringRequestParam('fuvarlevelszam'));
@@ -140,13 +140,20 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
 		$obj->generateId(); // az üres kelt miatt került a végére
 
+        if ($parancs == $this->inheritOperation) {
+            $parentbiz = $this->getRepo()->find($this->params->getStringRequestParam('parentid'));
+            if ($parentbiz) {
+                $obj->setParbizonylatfej($parentbiz);
+            }
+        }
+
 		$tetelids = $this->params->getArrayRequestParam('tetelid');
 		foreach ($tetelids as $tetelid) {
 			if (($this->params->getIntRequestParam('teteltermek_' . $tetelid) > 0)) {
 				$oper = $this->params->getStringRequestParam('teteloper_' . $tetelid);
 				$termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('teteltermek_' . $tetelid));
 				$termekvaltozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('tetelvaltozat_' . $tetelid));
-				if ($oper == 'add') {
+				if (($oper == $this->addOperation) || ($oper == $this->inheritOperation)) {
 					$tetel = new Bizonylattetel();
 					$obj->addBizonylattetel($tetel);
 					$tetel->setPersistentData();
@@ -158,6 +165,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 						$tetel->setTermekvaltozat($termekvaltozat);
 					}
 					$tetel->setMozgat();
+                    $parenttetel = $this->getRepo('Entities\Bizonylattetel')->find($this->params->getStringRequestParam('tetelparentid_' . $tetelid));
+                    if ($parenttetel) {
+                        $tetel->setParbizonylattetel($parenttetel);
+                    }
 					$tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_' . $tetelid));
 					$tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_' . $tetelid));
 					$tetel->setBruttoegysar($this->params->getFloatRequestParam('tetelbruttoegysar_' . $tetelid));
@@ -173,7 +184,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 //						$tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
 					$this->getEm()->persist($tetel);
 				}
-				elseif ($oper == 'edit') {
+				elseif ($oper == $this->editOperation) {
 					$tetel = $this->getEm()->getRepository('Entities\Bizonylattetel')->find($tetelid);
 					if ($tetel) {
 						$tetel->setPersistentData();

@@ -175,6 +175,7 @@
 	</div>
 	<input name="oper" type="hidden" value="{$oper}">
 	<input name="id" type="hidden" value="{$egyed.id}">
+    <input name="parentid" type="hidden" value="{$egyed.parentid}">
 	<div class="mattkarb-footer">
 		<input id="mattkarb-okbutton" type="submit" value="{t('OK')}">
 		<a id="mattkarb-cancelbutton" href="#">{t('Mégsem')}</a>
