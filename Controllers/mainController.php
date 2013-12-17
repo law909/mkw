@@ -234,13 +234,13 @@ class mainController extends \mkwhelpers\Controller {
                     $mailer->setMessage(
                         'Rendelésszám: ' . $rendelesszam . '<br>' .
                         'Név: ' . $nev . '<br>' .
-                        'Email: ' . $email . '<br>' .
+                        'Email: ' . $email1 . '<br>' .
                         'Telefon: ' . $telefon . '<br>' .
                         'Téma: ' . $temanev . '<br>' .
                         'Szöveg: ' . $szoveg . '<br>'
                     );
-                    $mailer->send("From: " . $email . "\r\n"
-                        . "Reply-to: " . $email . "\r\n"
+                    $mailer->send("From: " . $email1 . "\r\n"
+                        . "Reply-to: " . $email1 . "\r\n"
                         . "MIME-version: 1.0\r\n"
                         . "Content-Type: text/html; charset=utf-8\r\n");
 					$view = $this->getTemplateFactory()->createMainView('kapcsolatkosz.tpl');
