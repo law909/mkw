@@ -203,7 +203,7 @@ class mainController extends \mkwhelpers\Controller {
 				$email2 = $this->params->getStringRequestParam('email2');
 				$telefon = $this->params->getStringRequestParam('telefon');
 				$rendelesszam = $this->params->getStringRequestParam('rendelesszam');
-                $tema = \mkw\Store::getEm()->getRepo('Entities\Kapcsolatfelveteltema')->find($this->params->getStringRequestParam('tema'));
+                $tema = \mkw\Store::getEm()->getRepository('Entities\Kapcsolatfelveteltema')->find($this->params->getStringRequestParam('tema'));
                 if ($tema) {
                     $temanev = $tema->getNev();
                 }
