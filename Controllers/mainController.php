@@ -203,7 +203,13 @@ class mainController extends \mkwhelpers\Controller {
 				$email2 = $this->params->getStringRequestParam('email2');
 				$telefon = $this->params->getStringRequestParam('telefon');
 				$rendelesszam = $this->params->getStringRequestParam('rendelesszam');
-				$tema = $this->params->getStringRequestParam('tema');
+                $tema = \mkw\Store::getEm()->getRepo('Entities\Kapcsolatfelveteltema')->find($this->params->getStringRequestParam('tema'));
+                if ($tema) {
+                    $temanev = $tema->getNev();
+                }
+                else {
+                    $temanev = 'Imseretlen';
+                }
 				$szoveg = $this->params->getStringRequestParam('szoveg');
 				if (!\Zend_Validate::is($email1, 'EmailAddress') || !\Zend_Validate::is($email2, 'EmailAddress')) {
 					$hibas = true;
@@ -230,10 +236,13 @@ class mainController extends \mkwhelpers\Controller {
                         'Név: ' . $nev . '<br>' .
                         'Email: ' . $email . '<br>' .
                         'Telefon: ' . $telefon . '<br>' .
-                        'Téma: ' . $tema . '<br>' .
+                        'Téma: ' . $temanev . '<br>' .
                         'Szöveg: ' . $szoveg . '<br>'
                     );
-                    $mailer->send();
+                    $mailer->send("From: " . $email . "\r\n"
+                        . "Reply-to: " . $email . "\r\n"
+                        . "MIME-version: 1.0\r\n"
+                        . "Content-Type: text/html; charset=utf-8\r\n");
 					$view = $this->getTemplateFactory()->createMainView('kapcsolatkosz.tpl');
 					store::fillTemplate($view);
 				}

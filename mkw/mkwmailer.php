@@ -31,12 +31,17 @@ class mkwmailer {
         return $this->message;
     }
 
-    public function send() {
-        $this->headers = "From: " . Store::getParameter(consts::EmailFrom) . "\r\n"
-            . "Reply-to: " . Store::getParameter(consts::EmailReplyTo) . "\r\n"
-            . "Bcc: " . Store::getParameter(consts::EmailBcc) . "\r\n"
-            . "MIME-version: 1.0\r\n"
-            . "Content-Type: text/html; charset=utf-8\r\n";
+    public function send($headers = null) {
+        if ($headers) {
+            $this->headers = $headers;
+        }
+        else {
+            $this->headers = "From: " . Store::getParameter(consts::EmailFrom) . "\r\n"
+                . "Reply-to: " . Store::getParameter(consts::EmailReplyTo) . "\r\n"
+                . "Bcc: " . Store::getParameter(consts::EmailBcc) . "\r\n"
+                . "MIME-version: 1.0\r\n"
+                . "Content-Type: text/html; charset=utf-8\r\n";
+        }
         return mail($this->to, $this->subject, $this->message, $this->headers);
     }
 }
