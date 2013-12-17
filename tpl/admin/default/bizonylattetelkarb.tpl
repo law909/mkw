@@ -64,7 +64,7 @@
 {/if}
 </tr>
 </tbody></table>
-<a class="js-teteldelbutton" href="#" data-id="{$tetel.id}"{if ($tetel.oper=='add')} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+<a class="js-teteldelbutton" href="#" data-id="{$tetel.id}"{if (($tetel.oper=='add')||($tetel.oper=='inherit'))} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
 </div>
 {if ($tetel.oper=='add')}
 <a class="js-tetelnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>

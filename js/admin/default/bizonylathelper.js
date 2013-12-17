@@ -109,7 +109,7 @@ var bizonylathelper = function($) {
         var keltedit = $('#KeltEdit'),
             keltchanged = keltedit.attr('data-datum') != keltedit.val(),
             keltok = (!keltchanged) || (keltchanged && checkKelt($('#KeltEdit').val(), biztipus)),
-            tetelok = ($('.js-termekid').length !==0) && ($('.js-termekid[value=""]').length === 0),
+            tetelok = ($('.js-termekid').length !==0) && ($('.js-termekid[value=""]').length === 0) && ($('.js-termekid[value="0"]').length === 0),
             ret = keltok && tetelok;
         if (!keltok) {
             dialogcenter.html('Már van későbbi keltű bizonylat.').dialog({

@@ -119,10 +119,12 @@ class MattableController extends Controller {
                 break;
             case $this->delOperation:
                 $obj = $this->repo->find($id);
-                $this->beforeRemove($obj);
-                $this->em->remove($obj);
-                $this->em->flush();
-                $this->afterSave($obj);
+                if ($obj) {
+                    $this->beforeRemove($obj);
+                    $this->em->remove($obj);
+                    $this->em->flush();
+                    $this->afterSave($obj);
+                }
                 break;
         }
         return array('id' => $id, 'obj' => $obj, 'operation' => $parancs);

@@ -1,5 +1,5 @@
 <div id="mattkarb-header">
-	<h3>{$pagetitle}</h3>
+	<h3>{$pagetitle} - {$egyed.id}{if ($egyed.parentid|default)} ({$egyed.parentid}){/if}</h3>
 </div>
 <form id="mattkarb-form" method="post" action="{$formaction}">
 	<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
