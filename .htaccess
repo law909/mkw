@@ -1,8 +1,8 @@
-AuthType Basic
-AuthName "Password required"
-AuthBasicProvider file
-AuthUserFile "/home/chroot3/home/umnd001/mindentkapni.hu/.password"
-Require user mindentkapni
+#AuthType Basic
+#AuthName "Password required"
+#AuthBasicProvider file
+#AuthUserFile "/home/chroot3/home/umnd001/mindentkapni.hu/.password"
+#Require user mindentkapni
 
 <IfModule mod_rewrite.c>
    RewriteEngine on
