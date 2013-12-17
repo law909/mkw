@@ -178,7 +178,7 @@ class TermekRepository extends \mkwhelpers\Repository {
         $rsm->addScalarResult('lastmod', 'lastmod');
         $q = $this->_em->createNativeQuery('SELECT id,slug,lastmod'
                 . ' FROM termek '
-                . ' WHERE (inaktiv=0) AND (fuggoben=0) AND (nemlathato=0)'
+                . ' WHERE (inaktiv=0) AND (fuggoben=0) AND (lathato=1)'
                 . ' ORDER BY id', $rsm);
         return $q->getScalarResult();
     }
