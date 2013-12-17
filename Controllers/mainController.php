@@ -222,6 +222,18 @@ class mainController extends \mkwhelpers\Controller {
 					$hibak['tema'] = t('Nincs megadva téma');
 				}
 				if (!$hibas) {
+                    $mailer = new \mkw\mkwmailer();
+                    $mailer->setTo('info@mindentkapni.hu');
+                    $mailer->setSubject('Kapcsolatfelvétel, ' . $rendelesszam . ' ' . $nev);
+                    $mailer->setMessage(
+                        'Rendelésszám: ' . $rendelesszam . '<br>' .
+                        'Név: ' . $nev . '<br>' .
+                        'Email: ' . $email . '<br>' .
+                        'Telefon: ' . $telefon . '<br>' .
+                        'Téma: ' . $tema . '<br>' .
+                        'Szöveg: ' . $szoveg . '<br>'
+                    );
+                    $mailer->send();
 					$view = $this->getTemplateFactory()->createMainView('kapcsolatkosz.tpl');
 					store::fillTemplate($view);
 				}
