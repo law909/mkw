@@ -40,13 +40,16 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$x['nettoegysar'] = $t->getNettoegysar();
 		$x['bruttoegysar'] = $t->getBruttoegysar();
 		$x['netto'] = $t->getNetto();
+        $x['afa'] = $t->getAfaertek();
 		$x['brutto'] = $t->getBrutto();
 		$x['nettoegysarhuf'] = $t->getNettoegysarhuf();
 		$x['bruttoegysarhuf'] = $t->getBruttoegysarhuf();
 		$x['nettohuf'] = $t->getNettohuf();
+        $x['afahuf'] = $t->getAfaertekhuf();
 		$x['bruttohuf'] = $t->getBruttohuf();
 		$x['hataridostr'] = $t->getHataridoStr();
         $x['mainurl'] = store::getConfigValue('mainurl');
+        $x['afanev'] = $t->getAfanev();
 		$term = $t->getTermek();
 		if ($term) {
 			$x['kozepeskepurl'] = $term->getKepUrlMedium();

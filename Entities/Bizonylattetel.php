@@ -200,7 +200,11 @@ class Bizonylattetel {
         $ret['nettoegysarhuf'] = $this->getNettoegysarhuf();
         $ret['bruttoegysarhuf'] = $this->getBruttoegysarhuf();
         $ret['nettohuf'] = $this->getNettohuf();
+        $ret['afahuf'] = $this->getAfaertekhuf();
         $ret['bruttohuf'] = $this->getBruttohuf();
+        $ret['termeknev'] = $this->getTermeknev();
+        $ret['me'] = $this->getME();
+        $ret['afanev'] = $this->getAfanev();
         $valt = $this->getTermekvaltozat();
         $v = array();
         if ($valt) {

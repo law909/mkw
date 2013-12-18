@@ -198,10 +198,22 @@ class EntitiesBizonylattipusProxy extends \Entities\Bizonylattipus implements \D
         return parent::setShowvalutanem($show);
     }
 
+    public function getTplname()
+    {
+        $this->__load();
+        return parent::getTplname();
+    }
+
+    public function setTplname($d)
+    {
+        $this->__load();
+        return parent::setTplname($d);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'nev', 'irany', 'nyomtatni', 'azonosito', 'kezdosorszam', 'peldanyszam', 'mozgat', 'penztmozgat', 'editprinted', 'showteljesites', 'showesedekesseg', 'showhatarido', 'showvalutanem', 'bizonylatfejek');
+        return array('__isInitialized__', 'id', 'nev', 'irany', 'nyomtatni', 'azonosito', 'kezdosorszam', 'peldanyszam', 'mozgat', 'penztmozgat', 'editprinted', 'showteljesites', 'showesedekesseg', 'showhatarido', 'showvalutanem', 'bizonylatfejek', 'tplname');
     }
 
     public function __clone()

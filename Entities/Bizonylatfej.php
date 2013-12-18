@@ -296,12 +296,12 @@ class Bizonylatfej {
         $this->bruttohuf = 0;
         foreach ($this->bizonylattetelek as $bt) {
             $bt->setMozgat();
-            $this->netto+=$bt->getNetto();
-            $this->afa+=$bt->getAfaertek();
-            $this->brutto+=$bt->getBrutto();
-            $this->nettohuf+=$bt->getNettohuf();
-            $this->afahuf+=$bt->getAfaertekhuf();
-            $this->bruttohuf+=$bt->getBruttohuf();
+            $this->netto += round($bt->getNetto());
+            $this->afa += round($bt->getAfaertek());
+            $this->brutto += round($bt->getBrutto());
+            $this->nettohuf += round($bt->getNettohuf());
+            $this->afahuf += round($bt->getAfaertekhuf());
+            $this->bruttohuf += round($bt->getBruttohuf());
         }
         $this->fizetendo = $this->brutto;
     }
@@ -333,7 +333,16 @@ class Bizonylatfej {
     public function toLista() {
         $ret = array();
         $ret['id'] = $this->getId();
+        $ret['bizonylatnev'] = $this->getBizonylatnev();
         $ret['kelt'] = $this->getKeltStr();
+        $ret['keltstr'] = $this->getKeltStr();
+        $ret['teljesitesstr'] = $this->getTeljesitesStr();
+        $ret['esedekessegstr'] = $this->getEsedekessegStr();
+        $ret['tulajnev'] = $this->getTulajnev();
+        $ret['tulajirszam'] = $this->getTulajirszam();
+        $ret['tulajvaros'] = $this->getTulajvaros();
+        $ret['tulajutca'] = $this->getTulajutca();
+        $ret['tulajadoszam'] = $this->getTulajadoszam();
         $ret['ertek'] = $this->getBruttohuf();
         $ret['bruttohuf'] = $this->getBruttohuf();
         $ret['fizmodnev'] = $this->getFizmodnev();

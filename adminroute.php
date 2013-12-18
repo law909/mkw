@@ -83,6 +83,7 @@ $router->map('GET', '/admin/szamlafej/getlistbody', 'szamlafejController#getlist
 $router->map('GET', '/admin/szamlafej/getkarb', 'szamlafejController#getkarb', 'adminszamlafejgetkarb');
 $router->map('GET', '/admin/szamlafej/viewkarb', 'szamlafejController#viewkarb', 'adminszamlafejviewkarb');
 $router->map('POST', '/admin/szamlafej/save', 'szamlafejController#save', 'adminszamlafejsave');
+$router->map('GET', '/admin/szamlafej/print', 'szamlafejController#doPrint', 'adminszamlafejprint');
 
 $router->map('GET', '/admin/termek/viewlist', 'termekController#viewlist', 'admintermekviewlist');
 $router->map('GET', '/admin/termek/htmllist', 'termekController#htmllist', 'admintermekhtmllist');

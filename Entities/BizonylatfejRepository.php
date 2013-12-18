@@ -131,4 +131,15 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         }
     }
 
+    public function getAFAOsszesito($o) {
+        $ret = array();
+        foreach($o->getBizonylattetelek() as $tetel) {
+            $ret[$tetel->getAfaId()]['netto'] += round($tetel->getNettohuf());
+            $ret[$tetel->getAfaId()]['afa'] += round($tetel->getAfaertekhuf());
+            $ret[$tetel->getAfaId()]['brutto'] += round($tetel->getBruttohuf());
+            $ret[$tetel->getAfaId()]['caption'] = round($tetel->getAfanev());
+        }
+        return $ret;
+    }
+
 }

@@ -25,6 +25,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 			$this->getEm()->detach($t);
 		}
 		$x['id'] = $t->getId();
+        $x['tulajnev'] = $t->getTulajnev();
+        $x['tulajirszam'] = $t->getTulajirszam();
+        $x['tulajvaros'] = $t->getTulajvaros();
+        $x['tulajutca'] = $t->getTulajutca();
+        $x['tulajadoszam'] = $t->getTulajadoszam();
 		$x['bizonylatnev'] = $t->getBizonylatnev();
 		$x['erbizonylatszam'] = $t->getErbizonylatszam();
         $x['fuvarlevelszam'] = $t->getFuvarlevelszam();

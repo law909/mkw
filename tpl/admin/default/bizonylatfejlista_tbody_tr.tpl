@@ -11,7 +11,7 @@
 <td class="cell">
 <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_egyed.id}</a>
 {if ($setup.grideditbutton=='small')}
-<a class="js-printbizonylat" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('Nyomtat')}"><span class="ui-icon ui-icon-print"></span></a>
+<a class="js-printbizonylat" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('Nyomtat')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
 {if ($showinheritbutton)}
 <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-oper="inherit" title="{t('Számláz')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
 {/if}

@@ -162,4 +162,18 @@ class SzamlafejController extends bizonylatfejController {
         return parent::setFields($obj, $parancs);
     }
 
+    public function doPrint() {
+        $o = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+        if ($o) {
+            $biztip = $this->getRepo('Entities\Bizonylattipus')->find('szamla');
+            if ($biztip && $biztip->getTplname()) {
+                $view = $this->createView($biztip->getTplname());
+                $this->setVars($view);
+                $view->setVar('egyed', $o->toLista());
+                $view->setVar('afaosszesito',$this->getRepo()->getAFAOsszesito($o));
+                echo $view->getTemplateResult();
+            }
+        }
+    }
+
 }

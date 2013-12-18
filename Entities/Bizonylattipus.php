@@ -39,6 +39,8 @@ class Bizonylattipus {
 	private $showvalutanem=false;
 	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylattipus",cascade={"persist"}) */
 	private $bizonylatfejek;
+    /** @Column(type="string",length="200",nullable=true) */
+    private $tplname;
 
 	public function __construct() {
 		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
@@ -151,4 +153,12 @@ class Bizonylattipus {
 	public function setShowvalutanem($show) {
 		$this->showvalutanem=$show;
 	}
+
+    public function getTplname() {
+        return $this->tplname;
+    }
+
+    public function setTplname($d) {
+        $this->tplname = $d;
+    }
 }

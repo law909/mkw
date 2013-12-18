@@ -227,6 +227,12 @@ $(document).ready(function() {
                 url: '/admin/szamlafej/getlistbody',
                 onStyle: function() {
                     $('.js-printbizonylat').button();
+                },
+                onDoEditLink: function() {
+                    $('.js-printbizonylat').each(function() {
+                        var $this = $(this);
+                        $this.attr('href', '/admin/szamlafej/print?id=' + $this.data('egyedid'));
+                    });
                 }
             },
             karb: szamla
