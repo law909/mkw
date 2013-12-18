@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-    <table class="teteltable">
+    <table class="teteltable pull-left">
         <thead>
             <th>Cikkszám</th>
             <th>Termék neve</th>
@@ -71,7 +71,7 @@
         </tbody>
     </table>
     <div class="row pull-left"><div class="border"><div class="row-inner bold">ÁFA részletezés</div></div></div>
-    <table class="afaosszesitotable">
+    <table class="afaosszesitotable pull-left">
         <thead>
             <th>ÁFA kulcs</th>
             <th class="textalignright">Nettó érték</th>
@@ -90,38 +90,38 @@
         </tbody>
     </table>
     </div>
-            <div class="lablec pull-left">
-                <div>
-                    Átvevő:
-                </div>
-                <div class="line"></div>
-                <div class="pull-left">
-                    <p>Köszönjük, hogy nálunk vásárolt!</p>
-                </div>
-                <table class="osszesitotable pull-right">
-                    <tbody>
-                        <tr>
-                            <td>Nettó:</td>
-                            <td class="textalignright">{number_format($egyed.nettohuf,0,'',' ')} Ft</td>
-                        </tr>
-                        <tr>
-                            <td>ÁFA:</td>
-                            <td class="textalignright">{number_format($egyed.afahuf,0,'',' ')} Ft</td>
-                        </tr>
-                        <tr>
-                            <td>Bruttó:</td>
-                            <td class="textalignright">{number_format($egyed.bruttohuf,0,'',' ')} Ft</td>
-                        </tr>
-                        <tr>
-                            <td class="bold">Fizetendő:</td>
-                            <td class="textalignright bold">{number_format($egyed.fizetendo,0,'',' ')} Ft</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="fizetendokiirva">{$egyed.fizetendokiirva} forint</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="textaligncenter">A számla 2 eredeti példányban készült, melyből ez az első.</div>
-            <div class="keszult textaligncenter">Készült az MKW Webshop számlázó moduljával.</div>
+    <div class="lablec pull-left">
+        <div>
+            Átvevő:
+        </div>
+        <div class="line"></div>
+        <div class="pull-left">
+            <p>Köszönjük, hogy nálunk vásárolt!</p>
+        </div>
+        <table class="osszesitotable pull-right">
+            <tbody>
+                <tr>
+                    <td>Nettó:</td>
+                    <td class="textalignright">{number_format($egyed.nettohuf,0,'',' ')} Ft</td>
+                </tr>
+                <tr>
+                    <td>ÁFA:</td>
+                    <td class="textalignright">{number_format($egyed.afahuf,0,'',' ')} Ft</td>
+                </tr>
+                <tr>
+                    <td>Bruttó:</td>
+                    <td class="textalignright">{number_format($egyed.bruttohuf,0,'',' ')} Ft</td>
+                </tr>
+                <tr>
+                    <td class="bold">Fizetendő:</td>
+                    <td class="textalignright bold">{number_format($egyed.fizetendo,0,'',' ')} Ft</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="fizetendokiirva">{$egyed.fizetendokiirva} forint</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="textaligncenter">A számla 2 eredeti példányban készült, melyből ez az első.</div>
+    <div class="keszult textaligncenter">Készült az MKW Webshop számlázó moduljával.</div>
 {/block}
