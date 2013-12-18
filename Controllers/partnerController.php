@@ -279,6 +279,7 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     public function login($user, $pass = null) {
+        $ok = false;
         if ($user instanceof \Entities\Partner) {
             $ok = true;
         }
