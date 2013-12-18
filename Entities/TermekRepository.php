@@ -290,6 +290,9 @@ class TermekRepository extends \mkwhelpers\Repository {
     public function getLegnepszerubbTermekek($db) {
         $filter = array();
         $filter = $this->addAktivLathatoFilter($filter);
+        $filter['fields'][] = 'nemkaphato';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = false;
         $order = array('_xx.megvasarlasdb' => 'DESC');
 
         return $this->getWithJoins($filter, $order, 0, $db);
