@@ -63,7 +63,7 @@
             {for $j=0 to $step-1}
                 {if ($i+$j<$lntcnt)}
                 {$_termek=$kiemelttermekek[$i+$j]}
-                <div class="textaligncenter pull-left" style="width:{100/$step}%">
+                <div class="textaligncenter pull-left" style="width:{100/$step|default:0}%">
                     <div class="o404TermekInner">
                         <a href="{$_termek.link}">
                             <div class="o404ImageContainer">

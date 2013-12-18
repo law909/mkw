@@ -751,7 +751,12 @@ class termekController extends \mkwhelpers\MattableController {
         $tid = $this->params->getStringRequestParam('pid');
         if ($tid) {
             $termek = $this->getRepo()->findOneByIdegenkod($tid);
-            $newlink = \mkw\Store::getRouter()->generate('showtermek', false, array('slug' => $termek->getSlug()));
+            if ($termek) {
+                $newlink = \mkw\Store::getRouter()->generate('showtermek', false, array('slug' => $termek->getSlug()));
+            }
+            else {
+                $newlink = \mkw\Store::getRouter()->generate('show404');
+            }
         }
         else {
             $newlink = \mkw\Store::getRouter()->generate('show404');

@@ -79,7 +79,9 @@ if (!$match) {
 }
 else {
 	if (!$mainsess->referrer) {
-		$mainsess->referrer = $_SERVER['HTTP_REFERER'];
+        if (array_key_exists('HTTP_REFERER', $_SERVER)) {
+            $mainsess->referrer = $_SERVER['HTTP_REFERER'];
+        }
 	}
 }
 
