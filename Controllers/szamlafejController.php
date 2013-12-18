@@ -90,6 +90,7 @@ class SzamlafejController extends bizonylatfejController {
             $egyed['parentid'] = $id;
             $egyed['keltstr'] = date(store::$DateFormat);
             $egyed['teljesitesstr'] = date(store::$DateFormat);
+            $egyed['megjegyzes'] = 'Rendelés: ' . $id;
             $ttk = array();
             $cikl = 1;
             foreach($egyed['tetelek'] as $tetel) {

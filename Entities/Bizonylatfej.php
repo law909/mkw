@@ -344,9 +344,14 @@ class Bizonylatfej {
         $ret['tulajutca'] = $this->getTulajutca();
         $ret['tulajadoszam'] = $this->getTulajadoszam();
         $ret['ertek'] = $this->getBruttohuf();
+        $ret['nettohuf'] = $this->getNettohuf();
+        $ret['afahuf'] = $this->getAfahuf();
         $ret['bruttohuf'] = $this->getBruttohuf();
+        $ret['fizetendo'] = $this->getFizetendo();
+        $ret['fizetendokiirva'] = \mkw\Store::Num2Text($this->getFizetendo());
         $ret['fizmodnev'] = $this->getFizmodnev();
         $ret['szallitasimodnev'] = $this->getSzallitasimodnev();
+        $ret['bankszamlanev'] = $this->getBankszamlanev();
         $ret['partneremail'] = $this->getPartneremail();
         $ret['partnertelefon'] = $this->getPartnertelefon();
         $ret['partnerkeresztnev'] = $this->getPartnerkeresztnev();
@@ -366,7 +371,6 @@ class Bizonylatfej {
         $ret['megjegyzes'] = $this->getMegjegyzes();
         $ret['allapotnev'] = $this->getBizonylatstatusznev();
         $ret['fuvarlevelszam'] = $this->getFuvarlevelszam();
-        $ret['bruttohuf'] = $this->getBruttohuf();
         $tetellist = array();
         foreach ($this->bizonylattetelek as $tetel) {
             $tetellist[] = $tetel->toLista();

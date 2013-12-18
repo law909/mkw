@@ -14,6 +14,7 @@
                 <p>{$egyed.tulajirszam} {$egyed.tulajvaros}</p>
                 <p>{$egyed.tulajutca}</p>
                 <p>Adószám: {$egyed.tulajadoszam}</p>
+                <p>Bankszámla: {$egyed.bankszamlanev}</p>
             </div>
         </div>
     </div>
@@ -30,7 +31,6 @@
     </div>
     <div class="row pull-left row-inner">
         <p class="head2label pull-left">Fizetési mód: {$egyed.fizmodnev|default:"&nbsp;"}</p>
-        <p class="head2label pull-left">Szállítási mód: {$egyed.szallmodnev|default:"&nbsp;"}</p>
         <p class="head2label pull-left">Kelt: {$egyed.keltstr|default:"&nbsp;"}</p>
         <p class="head2label pull-left">Teljesítés: {$egyed.teljesitesstr|default:"&nbsp;"}</p>
         <p class="head2label pull-left">Esedékesség: {$egyed.esedekessegstr|default:"&nbsp;"}</p>
@@ -38,7 +38,9 @@
     <div class="row pull-left">
         <div class="border">
             <div class="row-inner">
-                {$egyed.megjegyzes}
+                {if ($egyed.megjegyzes|default)}
+                Közlemény: {$egyed.megjegyzes}
+                {/if}
             </div>
         </div>
     </div>
@@ -55,7 +57,7 @@
         </thead>
         <tbody>
             {foreach $egyed.tetellista as $tetel}
-                <tr>
+                <tr class="tetelsor">
                     <td>{$tetel.cikkszam}</td>
                     <td>{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</td>
                     <td class="textalignright">{number_format($tetel.mennyiseg,0,'',' ')} {$tetel.me}</td>
@@ -88,5 +90,38 @@
         </tbody>
     </table>
     </div>
-    <div class="lablec">FASZ</div>
+            <div class="lablec pull-left">
+                <div>
+                    Átvevő:
+                </div>
+                <div class="line"></div>
+                <div class="pull-left">
+                    <p>Köszönjük, hogy nálunk vásárolt!</p>
+                </div>
+                <table class="osszesitotable pull-right">
+                    <tbody>
+                        <tr>
+                            <td>Nettó:</td>
+                            <td class="textalignright">{number_format($egyed.nettohuf,0,'',' ')} Ft</td>
+                        </tr>
+                        <tr>
+                            <td>ÁFA:</td>
+                            <td class="textalignright">{number_format($egyed.afahuf,0,'',' ')} Ft</td>
+                        </tr>
+                        <tr>
+                            <td>Bruttó:</td>
+                            <td class="textalignright">{number_format($egyed.bruttohuf,0,'',' ')} Ft</td>
+                        </tr>
+                        <tr>
+                            <td class="bold">Fizetendő:</td>
+                            <td class="textalignright bold">{number_format($egyed.fizetendo,0,'',' ')} Ft</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="fizetendokiirva">{$egyed.fizetendokiirva} forint</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="textaligncenter">A számla 2 eredeti példányban készült, melyből ez az első.</div>
+            <div class="keszult textaligncenter">Készült az MKW Webshop számlázó moduljával.</div>
 {/block}
