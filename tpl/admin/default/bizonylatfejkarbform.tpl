@@ -111,7 +111,7 @@
 				{/if}
 				{if ($showesedekesseg)}
 				<td class="mattable-important"><label for="EsedekessegEdit">{t('Esedékesség')}:</label></td>
-				<td><input id="EsedekessegEdit" name="esedekesseg" type="text" size="12" data-datum="{$egyed.esedekessegstr}" data-alap="{$esedekessegalap}" class="mattable-important" required="required"></td>
+				<td><input id="EsedekessegEdit" name="esedekesseg" type="text" size="12" data-datum="{$egyed.esedekessegstr}" class="mattable-important" required="required"></td>
 				{/if}
 				{if ($showhatarido)}
 				<td class="mattable-important"><label for="HataridoEdit">{t('Határidő')}:</label></td>
@@ -175,7 +175,9 @@
 	</div>
 	<input name="oper" type="hidden" value="{$oper}">
 	<input name="id" type="hidden" value="{$egyed.id}">
+    {if ($egyed.parentid|default)}
     <input name="parentid" type="hidden" value="{$egyed.parentid}">
+    {/if}
 	<div class="mattkarb-footer">
 		<input id="mattkarb-okbutton" type="submit" value="{t('OK')}">
 		<a id="mattkarb-cancelbutton" href="#">{t('Mégsem')}</a>

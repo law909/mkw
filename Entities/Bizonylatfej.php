@@ -265,7 +265,7 @@ class Bizonylatfej {
     /** @Column(type="string",length=32,nullable=true) */
     private $ip;
 
-    /** @Column(type="string",length=255,nullable=true) */
+    /** @Column(type="text",nullable=true) */
     private $referrer;
 
     /**
@@ -381,8 +381,6 @@ class Bizonylatfej {
 
     public function setPersistentData() {
         $this->setTulajData();
-        $this->setIp($_SERVER['REMOTE_ADDR']);
-        $this->setReferrer(\mkw\Store::getMainSession()->referrer);
     }
 
     protected function setTulajData() {
@@ -392,6 +390,10 @@ class Bizonylatfej {
         $this->setTulajutca(store::getParameter(\mkw\consts::Tulajutca));
         $this->setTulajadoszam(store::getParameter(\mkw\consts::Tulajadoszam));
         $this->setTulajeuadoszam(store::getParameter(\mkw\consts::Tulajeuadoszam));
+    }
+
+    public function calcEsedekesseg() {
+        $this->esedekesseg = \mkw\Store::calcEsedekesseg($this->getKelt(), $this->getFizmod(), $this->getPartner());
     }
 
     public function getId() {

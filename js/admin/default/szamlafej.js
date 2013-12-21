@@ -66,12 +66,16 @@ $(document).ready(function() {
                         $('input[name="szallutca"]').val(d.szallutca);
                         $('input[name="partnertelefon"]').val(d.telefon);
                         $('input[name="partneremail"]').val(d.email);
+                        bizonylathelper.setDates();
                     }
                 });
             });
             $('#ValutanemEdit').change(function() {
                 bankszamlaedit.val($('option:selected', this).data('bankszamla'));
                 bizonylathelper.getArfolyam();
+            });
+            fizmodedit.on('change', function() {
+                bizonylathelper.setDates();
             });
             alttab.on('click', '.js-tetelnewbutton', function(e) {
                 var $this = $(this);
@@ -192,6 +196,9 @@ $(document).ready(function() {
             keltedit.datepicker($.datepicker.regional['hu']);
             keltedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
             keltedit.datepicker('setDate', keltedit.attr('data-datum'));
+            keltedit.on('change', function(e) {
+                bizonylathelper.setDates();
+            });
             teljesitesedit.datepicker($.datepicker.regional['hu']);
             teljesitesedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
             teljesitesedit.datepicker('setDate', teljesitesedit.attr('data-datum'));

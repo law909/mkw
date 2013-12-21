@@ -255,4 +255,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         echo json_encode($ret);
     }
 
+    public function calcEsedekesseg() {
+        $kelt = $this->params->getDateRequestParam('kelt');
+        $fm = $this->getRepo('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
+        $partner = $this->getRepo('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
+        echo json_encode(array('esedekesseg' => \mkw\Store::calcEsedekesseg($kelt, $fm, $partner)));
+    }
+
 }

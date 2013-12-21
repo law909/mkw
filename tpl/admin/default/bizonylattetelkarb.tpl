@@ -1,7 +1,9 @@
 <div id="teteltable_{$tetel.id}" class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
 <input name="tetelid[]" type="hidden" value="{$tetel.id}">
 <input name="teteloper_{$tetel.id}" type="hidden" value="{$tetel.oper}">
+{if ($tetel.parentid|default)}
 <input name="tetelparentid_{$tetel.id}" type="hidden" value="{$tetel.parentid}">
+{/if}
 <table><tbody>
 <tr>
 <td class="mattable-important"><label for="TermekSelect{$tetel.id}">{t('Termék')}:</label></td>

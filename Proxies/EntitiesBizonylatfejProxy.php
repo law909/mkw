@@ -60,6 +60,12 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::setPersistentData();
     }
 
+    public function calcEsedekesseg()
+    {
+        $this->__load();
+        return parent::calcEsedekesseg();
+    }
+
     public function getId()
     {
         $this->__load();

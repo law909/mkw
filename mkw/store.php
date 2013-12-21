@@ -424,74 +424,24 @@ class Store {
         return $t_txt;
     }
 
-    public static function SzamotBetuvel($szamm, $valuta = null) {
-        $egyesek = array('egy', 'kettő', 'három', 'négy', 'öt', 'hat', 'hét', 'nyolc', 'kilenc');
-        $tizesek0 = array('tíz', 'húsz', 'harminc', 'negyven', 'ötven', 'hatvan', 'hetven', 'nyolcvan', 'kilencven');
-        $tizesek = array('tizen', 'huszon', 'harminc', 'negyven', 'ötven', 'hatvan', 'hetven', 'nyolcvan', 'kilencven');
-        $nagyok = array('', 'ezer', 'millió', 'milliárd');
-
-        if ($szamm < 0) {
-            $szam = abs($szamm);
+    public static function calcEsedekesseg($kelt, $fizmod = null, $partner = null) {
+        $fmhaladek = 0;
+        $partnerhaladek = 0;
+        if ($fizmod) {
+            $fmhaladek = $fizmod->getHaladek();
+        }
+        if ($partner) {
+            $partnerhaladek = $partner->getFizhatido();
+        }
+        $dkelt = new \DateTime(self::convDate($kelt));
+        if ($partnerhaladek) {
+            $dkelt->add(new \DateInterval('P' . $partnerhaladek . 'D'));
         }
         else {
-            $szam = $szamm;
-        }
-
-        if ($szam == 0) {
-            $result = 'nulla';
-        }
-        else {
-            $S = '';
-            $I = 0;
-            if ($szam >= 1) {
-                while ($szam >= 1) {
-                    $I++;
-                    $Y = ($szam % 1000);                            // Az utolsó 3 számjegy
-                    $szam = floor($szam / 1000) + ($szam - floor($szam));                // A tizedesek meghagyásával
-                    if ($Y <> 0) {                              // az utolsó 3 jegy levágása
-                        $E = floor($Y % 10);                         // egyes helyiérték
-                        $Y = floor($Y / 10);
-                        $T = floor($Y % 10);                         // tízes helyiérték
-                        $Y = floor($Y / 10);
-                        $Sz = floor($Y % 10);                        // százas helyiérték
-
-                        if ($I > 1) {
-                            $S = $nagyok[i] . '-' . $S;
-                        }
-                        else {
-                            $S = $nagyok[i] . $S;                            // nagyságrend
-                        }
-
-                        if ($E <> 0) {                                // Ha van egyesek hozzáfüzése
-                            $S = $egyesek[$E] . $S;
-                        }
-
-                        If ($T <> 0) {                                // Ha van tizesek hozzáfüzése
-                            If ($E == 0) {                              // Ha nincs egyes akkor
-                                $S = $tizesek0[$T] . $S;                   // 'tiz','husz',... hozzáfüzése
-                            }
-                            Else {
-                                $S = $tizesek[$T] . $S;                    // 'tizen',... hozzáfüzése
-                            }
-                        }
-
-                        if ($Sz <> 0) {                               // Ha van százasok hozzáfüzése
-                            $S = $egyesek[$Sz] . 'száz' . $S;
-                        }
-                    }
-                }
+            if ($fmhaladek) {
+                $dkelt->add(new \DateInterval('P' . $fmhaladek . 'D'));
             }
         }
-
-//        Delete($S,Length($S) + 1, 1);
-        $S = $S . $valuta;
-        if ($szamm < 0) {
-            $result = ' mínusz ' . $S;
-        }
-        else {
-            $result = $S;
-        }
-        return $result;
+        return $dkelt->format(self::$DateFormat);
     }
-
 }

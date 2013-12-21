@@ -88,8 +88,10 @@ class SzamlafejController extends bizonylatfejController {
         if ($oper == 'inherit') {
             $egyed['id'] = store::createUID();
             $egyed['parentid'] = $id;
-            $egyed['keltstr'] = date(store::$DateFormat);
-            $egyed['teljesitesstr'] = date(store::$DateFormat);
+            $kelt = date(\mkw\Store::$DateFormat);
+            $egyed['keltstr'] = $kelt;
+            $egyed['teljesitesstr'] = $kelt;
+            $egyed['esedekessegstr'] = \mkw\Store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
             $egyed['megjegyzes'] = 'Rendelés: ' . $id;
             $ttk = array();
             $cikl = 1;
