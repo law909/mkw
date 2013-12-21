@@ -168,7 +168,7 @@
                 feed_type : "shared",
                 feed_period : "year",
                 num_links : 5,
-                remove : "| Mindent Kapni Webáruház",
+                remove : "| Mindent Kapni Webáruház - Sok jó dolog egy helyen!",
                 height : "auto",
                 width : "auto"});
             </script>
