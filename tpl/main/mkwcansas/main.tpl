@@ -159,6 +159,20 @@
                 {/for}
             </div>
             {/if}
+            <!-- AddThis Trending Content BEGIN -->
+            <div id="addthis_trendingcontent2"></div>
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=quixoft"></script>
+            <script type="text/javascript">
+            addthis.box("#addthis_trendingcontent2", {
+                feed_title : "Legtöbbet megosztott tartalom",
+                feed_type : "shared",
+                feed_period : "year",
+                num_links : 5,
+                remove : "| Mindent Kapni Webáruház",
+                height : "auto",
+                width : "auto"});
+            </script>
+            <!-- AddThis Trending Content END -->
         </div>
 	</div>
 </div>
