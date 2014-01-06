@@ -47,4 +47,11 @@ $router->map('POST','/termekertesito/save','termekertesitoController#save','term
 $router->map('GET', '/ProductDetails', 'termekController#redirectOldUrl', 'termekredirectoldurl');
 $router->map('GET', '/', 'termekfaController#redirectOldUrl', 'termekfaredirectoldurl');
 $router->map('GET', '/Static', 'statlapController#redirectOldUrl', 'statlapredirectoldurl');
+$router->map('GET', '/mindentkapni.rss', 'termekController#redirectOldRSSUrl', 'termekredirectoldrssurl');
+$router->map('GET', '/hirek.rss', 'hirController#redirectOldRSSUrl', 'hirredirectoldrssurl');
+
+$router->map('GET', '/export/grando', 'exportController#GrandoExport', 'grandoexport');
+$router->map('GET', '/export/shophunter', 'exportController#ShopHunterExport', 'shophunterexport');
+$router->map('GET', '/export/arfurkesz', 'exportController#ArfurkeszExport', 'arfurkeszexport');
+$router->map('GET', '/export/armutato', 'exportController#ArmutatoExport', 'armutatoexport');
 

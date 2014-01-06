@@ -765,4 +765,9 @@ class termekController extends \mkwhelpers\MattableController {
         header('Location: ' . $newlink);
     }
 
+    public function redirectOldRSSUrl() {
+        $newlink = \mkw\Store::getRouter()->generate('termekfeed');
+        header("HTTP/1.1 301 Moved Permanently");
+        header('Location: ' . $newlink);
+    }
 }

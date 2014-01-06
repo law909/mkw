@@ -163,4 +163,11 @@ class hirController extends \mkwhelpers\MattableController {
 		header('Content-type: text/xml');
 		$feedview->printTemplateResult(false);
 	}
+
+    public function redirectOldRSSUrl() {
+        $newlink = \mkw\Store::getRouter()->generate('hirfeed');
+        header("HTTP/1.1 301 Moved Permanently");
+        header('Location: ' . $newlink);
+    }
+
 }
