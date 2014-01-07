@@ -33,25 +33,57 @@ class sitemapController extends \mkwhelpers\Controller {
         $rec = $tr->getForSitemapXml();
         foreach ($rec as $sor) {
             $d = new \DateTime($sor['lastmod']);
-            $urls[] = array(
+            $kep = false;
+            if ($sor['kepurl']) {
+                $kep = array(
+                    array(
+                        'url' => htmlentities(\mkw\Store::getFullUrl($sor['kepurl'], \mkw\Store::getConfigValue('mainurl'))),
+                        'title' => $sor['kepleiras']
+                    )
+                );
+            }
+            $u = array(
                 'url' => htmlentities($router->generate('showtermekfa', \mkw\Store::getConfigValue('mainurl'), array('slug' => $sor['slug']))),
                 'lastmod' => $d->format('Y-m-d'),
                 'changefreq' => $c,
                 'priority' => $p
             );
+            if ($kep) {
+                $u['images'] = $kep;
+            }
+            $urls[] = $u;
         }
         $c = store::getParameter(\mkw\consts::Termekchangefreq, 'daily');
         $p = store::getParameter(\mkw\consts::Termekprior, '0.5');
+        $tkr = store::getEm()->getRepository('\Entities\TermekKep');
         $tr = store::getEm()->getRepository('\Entities\Termek');
         $rec = $tr->getForSitemapXml();
         foreach ($rec as $sor) {
             $d = new \DateTime($sor['lastmod']);
-            $urls[] = array(
+            $kep = array();
+            if ($sor['kepurl']) {
+                $kep[] = array(
+                    'url' => htmlentities(\mkw\Store::getFullUrl($sor['kepurl'], \mkw\Store::getConfigValue('mainurl'))),
+                    'title' => $sor['kepleiras']
+                );
+            }
+            $kepek = $tkr->getByTermekForSitemapXml($sor['id']);
+            foreach($kepek as $k) {
+                $kep[] = array(
+                    'url' => htmlentities(\mkw\Store::getFullUrl($k['url'], \mkw\Store::getConfigValue('mainurl'))),
+                    'title' => $k['leiras']
+                );
+            }
+            $u = array(
                 'url' => htmlentities($router->generate('showtermek', \mkw\Store::getConfigValue('mainurl'), array('slug' => $sor['slug']))),
                 'lastmod' => $d->format('Y-m-d'),
                 'changefreq' => $c,
                 'priority' => $p
             );
+            if ($kep) {
+                $u['images'] = $kep;
+            }
+            $urls[] = $u;
         }
         $c = store::getParameter(\mkw\consts::Statlapchangefreq, 'monthly');
         $p = store::getParameter(\mkw\consts::Statlapprior, '0.4');
@@ -67,7 +99,6 @@ class sitemapController extends \mkwhelpers\Controller {
             );
         }
         $smview->setVar('urls', $urls);
-        \mkw\Store::writelog('megirtam a sitemapot');
         $r = file_put_contents(\mkw\Store::getConfigValue('mainpath') . 'sitemap.xml', $smview->getTemplateResult());
 
         $gd = new \mkw\generalDataLoader();
@@ -81,5 +112,4 @@ class sitemapController extends \mkwhelpers\Controller {
         }
         $view->printTemplateResult(false);
     }
-
 }

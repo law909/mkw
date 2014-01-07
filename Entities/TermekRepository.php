@@ -176,7 +176,9 @@ class TermekRepository extends \mkwhelpers\Repository {
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('slug', 'slug');
         $rsm->addScalarResult('lastmod', 'lastmod');
-        $q = $this->_em->createNativeQuery('SELECT id,slug,lastmod'
+        $rsm->addScalarResult('kepurl', 'kepurl');
+        $rsm->addScalarResult('kepleiras', 'kepleiras');
+        $q = $this->_em->createNativeQuery('SELECT id,slug,lastmod,kepurl,kepleiras'
                 . ' FROM termek '
                 . ' WHERE (inaktiv=0) AND (fuggoben=0) AND (lathato=1)'
                 . ' ORDER BY id', $rsm);
