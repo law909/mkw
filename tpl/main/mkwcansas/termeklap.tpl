@@ -75,7 +75,7 @@
 				<div class="korbepadding">
                     <div><span class="bold">Cikkszám:</span> <span itemprop="productID">{$termek.cikkszam}</span></div>
                     <div><span class="bold">Kapható hűségpont:</span> {$termek.husegpont}</div>
-                    {if ($termek.szallitasiido)}
+                    {if ($termek.szallitasiido && (!$termek.nemkaphato))}
                     <div><span class="bold">Szállítási idő:</span> max. {$termek.szallitasiido} munkanap</div>
                     {/if}
                     <div>

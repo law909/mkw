@@ -141,7 +141,7 @@
                                     <div class="span5 termektext">
                                         <a href="/termek/{$_termek.slug}" itemprop="url"><span class="termekcaption" itemprop="name">{$_termek.caption}</span></a>
                                         <p itemprop="description" class="textalignjustify">{$_termek.rovidleiras}</p>
-                                        {if ($_termek.szallitasiido)}
+                                        {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
                                         <div><span class="bold">Szállítási idő: </span>max. {$_termek.szallitasiido} munkanap</div>
                                         {/if}
                                         <div class="termekjelzok">
@@ -244,7 +244,7 @@
                                                 {if ($_termek.top10)}<img src="{$top10jelolourl}" title="Top 10 termék" alt="Top 10 termék">{/if}
                                                 {if ($_termek.ingyenszallitas)}<img src="{$ingyenszallitasjelolourl}" title="Ingyenes szállítás" alt="Ingyenes szállítás">{/if}
                                             </div>
-                                            {if ($_termek.szallitasiido)}
+                                            {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
                                             <div><span class="bold">Szállítási idő: </span>{$_termek.szallitasiido} munkanap</div>
                                             {/if}
                                             {if ($_termek.valtozatok|default)}
