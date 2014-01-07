@@ -92,7 +92,7 @@ class sitemapController extends \mkwhelpers\Controller {
         foreach ($rec as $sor) {
             $d = new \DateTime($sor['lastmod']);
             $urls[] = array(
-                'url' => htmlentities($router->generate('showstatlap', \mkw\Store::getConfigValue('mainurl'), array('slug' => $sor['slug']))),
+                'url' => htmlentities($router->generate('showstatlap', \mkw\Store::getConfigValue('mainurl'), array('lap' => $sor['slug']))),
                 'lastmod' => $d->format('Y-m-d'),
                 'changefreq' => $c,
                 'priority' => $p
