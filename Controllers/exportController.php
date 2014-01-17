@@ -63,6 +63,17 @@ class exportController extends \mkwhelpers\Controller {
         header("Pragma: no-cache");
         header("Expires: 0");
 
+        $sor = array(
+            'id',
+            'name',
+            'description',
+            'price',
+            'category',
+            'image_url',
+            'product_url'
+        );
+        echo implode(';', $sor) . "\n";
+
         $tr = \mkw\Store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
         foreach($res as $t) {
