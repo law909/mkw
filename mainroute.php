@@ -54,4 +54,5 @@ $router->map('GET', '/export/grando', 'exportController#GrandoExport', 'grandoex
 $router->map('GET', '/export/shophunter', 'exportController#ShopHunterExport', 'shophunterexport');
 $router->map('GET', '/export/arfurkesz', 'exportController#ArfurkeszExport', 'arfurkeszexport');
 $router->map('GET', '/export/armutato', 'exportController#ArmutatoExport', 'armutatoexport');
+$router->map('GET', '/sitemap.xml', 'sitemapController#toBot', 'sitemap');
 

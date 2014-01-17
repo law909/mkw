@@ -111,7 +111,7 @@ class TermekFaRepository extends \mkwhelpers\Repository {
         $rsm->addScalarResult('kepurl', 'kepurl');
         $rsm->addScalarResult('kepleiras', 'kepleiras');
         $q = $this->_em->createNativeQuery('SELECT id,slug,lastmod,kepurl,kepleiras'
-                . ' FROM termekfa '
+                . ' FROM termekfa WHERE (inaktiv=0) OR (inaktiv IS NULL)'
                 . ' ORDER BY id', $rsm);
         return $q->getScalarResult();
     }

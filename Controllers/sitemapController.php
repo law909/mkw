@@ -18,7 +18,7 @@ class sitemapController extends \mkwhelpers\Controller {
         $view->printTemplateResult(false);
     }
 
-    public function create() {
+    protected function generate() {
         $router = \mkw\Store::getRouter();
         $smview = $this->createView('sitemapxml.tpl');
         $urls[] = array(
@@ -99,7 +99,19 @@ class sitemapController extends \mkwhelpers\Controller {
             );
         }
         $smview->setVar('urls', $urls);
-        $r = file_put_contents(\mkw\Store::getConfigValue('mainpath') . 'sitemap.xml', $smview->getTemplateResult());
+        return $smview->getTemplateResult();
+    }
+
+    public function toBot() {
+        $r = $this->generate();
+        header("Content-type: application/xml");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        echo $r;
+    }
+
+    public function create() {
+        $r = file_put_contents(\mkw\Store::getConfigValue('mainpath') . 'sitemap.xml', $this->generate());
 
         $gd = new \mkw\generalDataLoader();
         $view = $this->createView('sitemap.tpl');

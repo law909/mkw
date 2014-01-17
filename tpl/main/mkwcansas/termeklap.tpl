@@ -151,7 +151,7 @@
 					</ul>
 					<div class="tab-content keret">
 						<div id="leirasTab" class="tab-pane active">
-							<p itemprop="description">{$termek.leiras}</p>
+							<span itemprop="description">{$termek.leiras}</span>
 						</div>
 						<div id="tulajdonsagTab" class="tab-pane">
 							<div class="span6 nincsbalmargo">
