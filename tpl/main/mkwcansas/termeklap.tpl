@@ -179,7 +179,7 @@
                                             </div>
                                             <div>{$_kapcsolodo.caption}</div>
                                             <h5>
-                `                                {if ($_kapcsolodo.akcios)}
+                                                {if ($_kapcsolodo.akcios)}
                                                 <span><span class="akciosar">{number_format($_kapcsolodo.eredetibruttohuf,0,',',' ')} Ft</span> helyett {number_format($_kapcsolodo.bruttohuf,0,',',' ')} Ft</span>
                                                 {else}
                                                 <span>{number_format($_kapcsolodo.bruttohuf,0,',',' ')} Ft</span>
