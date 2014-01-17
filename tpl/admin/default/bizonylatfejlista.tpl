@@ -13,8 +13,34 @@
 <div id="mattable-select" data-theme="{$theme}">
 <div id="mattable-header" data-title="{t('Frissítés')}" data-caption="{$pagetitle}"></div>
 <div id="mattable-filterwrapper">
-	<label for="idfilter">{t('Szűrés')}</label>
-	<input id="idfilter" name="idfilter" type="text" size="30" maxlength="30">
+	<label for="idfilter">{t('Sorszám')}:</label>
+	<input id="idfilter" name="idfilter" type="text" size="20" maxlength="20">
+    <label for="vevonevfilter">Vevőnév:</label>
+    <input id="vevonevfilter" name="vevonevfilter" type="text">
+    <label for="vevoemailfilter">Vevő email:</label>
+    <input id="vevoemailfilter" name="vevoemailfilter" type="text">
+    <div>
+        <label for="szallitasiirszamfilter">Szállítási cím:</label>
+        <input id="szallitasiirszamfilter" name="szallitasiirszamfilter" type="text" size="8">
+        <input id="szallitasivarosfilter" name="szallitasivarosfilter" type="text">
+        <input id="szallitasiutcafilter" name="szallitasiutcafilter" type="text">
+    </div>
+    <div>
+        <label for="szamlazasiirszamfilter">Számlázási cím:</label>
+        <input id="szamlazasiirszamfilter" name="szamlazasiirszamfilter" type="text" size="8">
+        <input id="szamlazasivarosfilter" name="szamlazasivarosfilter" type="text">
+        <input id="szamlazasiutcafilter" name="szamlazasiutcafilter" type="text">
+    </div>
+    <div>
+        <label for="datumtipusfilter">Dátum:</label>
+        <select id="datumtipusfilter" name="datumtipusfilter">
+            <option value="1">kelt</option>
+            <option value="2">teljesítés</option>
+            <option value="3">esedékesség</option>
+        </select>
+        <input id="datumtolfilter" name="datumtolfilter" type="text" size="12">
+        <input id="datumigfilter" name="datumigfilter" type="text" size="12">
+    </div>
 </div>
 <div class="mattable-pagerwrapper">
 	<div class="mattable-order">

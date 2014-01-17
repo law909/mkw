@@ -16,6 +16,94 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		parent::__construct($params);
 	}
 
+    protected function loadFilters($filter) {
+        if (!is_null($this->params->getRequestParam('idfilter', NULL))) {
+            $filter['fields'][] = 'id';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $this->params->getStringRequestParam('idfilter');
+        }
+
+        $f = $this->params->getStringRequestParam('vevonevfilter');
+        if ($f) {
+            $filter['fields'][] = 'partnernev';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+
+        $f = $this->params->getStringRequestParam('vevoemailfilter');
+        if ($f) {
+            $filter['fields'][] = 'partneremail';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $f = $this->params->getStringRequestParam('szallitasiirszamfilter');
+        if ($f) {
+            $filter['fields'][] = 'szallirszam';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $f = $this->params->getStringRequestParam('szallitasivarosfilter');
+        if ($f) {
+            $filter['fields'][] = 'szallvaros';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $f = $this->params->getStringRequestParam('szallitasiutcafilter');
+        if ($f) {
+            $filter['fields'][] = 'szallutca';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $f = $this->params->getStringRequestParam('szamlazasiirszamfilter');
+        if ($f) {
+            $filter['fields'][] = 'partnerirszam';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $f = $this->params->getStringRequestParam('szamlazasivarosfilter');
+        if ($f) {
+            $filter['fields'][] = 'partnervaros';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $f = $this->params->getStringRequestParam('szamlazasiutcafilter');
+        if ($f) {
+            $filter['fields'][] = 'partnerutca';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $tip = $this->params->getStringRequestParam('datumtipusfilter');
+        $tol = $this->params->getDateRequestParam('datumtolfilter');
+        $ig = $this->params->getDateRequestParam('datumigfilter');
+        if ($tip && ($tol||$ig)) {
+            switch ($tip) {
+                case 1:
+                    $mezo = 'kelt';
+                    break;
+                case 2:
+                    $mezo = 'teljesites';
+                    break;
+                case 3:
+                    $mezo = 'esedekesseg';
+                    break;
+                default:
+                    $mezo = 'kelt';
+                    break;
+            }
+            if ($tol) {
+                $filter['fields'][] = $mezo;
+                $filter['clauses'][] = '>=';
+                $filter['values'][] = $tol;
+            }
+            if ($ig) {
+                $filter['fields'][] = $mezo;
+                $filter['clauses'][] = '<=';
+                $filter['values'][] = $ig;
+            }
+        }
+        return $filter;
+    }
+
 	protected function loadVars($t, $forKarb = false) {
 		$tetelCtrl = new bizonylattetelController($this->params);
 		$tetel = array();

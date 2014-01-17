@@ -13,9 +13,31 @@
 <div id="mattable-header" data-title="{t('Frissítés')}" data-caption="{t('Partnerek')}"></div>
 <div id="mattable-filterwrapper">
 	<div>
-	<label for="nevfilter">{t('Szűrés')}</label>
-	<input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
+	<label for="nevfilter">Név:</label>
+	<input id="nevfilter" name="nevfilter" type="text" maxlength="255">
+	<label for="emailfilter">Email:</label>
+	<input id="emailfilter" name="emailfilter" type="text" maxlength="255">
 	</div>
+    <div>
+        <label for="szallitasiirszamfilter">Szállítási cím:</label>
+        <input id="szallitasiirszamfilter" name="szallitasiirszamfilter" type="text" size="8">
+        <input id="szallitasivarosfilter" name="szallitasivarosfilter" type="text">
+        <input id="szallitasiutcafilter" name="szallitasiutcafilter" type="text">
+    </div>
+    <div>
+        <label for="szamlazasiirszamfilter">Számlázási cím:</label>
+        <input id="szamlazasiirszamfilter" name="szamlazasiirszamfilter" type="text" size="8">
+        <input id="szamlazasivarosfilter" name="szamlazasivarosfilter" type="text">
+        <input id="szamlazasiutcafilter" name="szamlazasiutcafilter" type="text">
+    </div>
+    <div>
+        <label for="beszallitofilter">Beszállító:</label>
+        <select id="beszallitofilter" name="beszallitofilter">
+            <option value="9">Mindegy</option>
+            <option value="0">Nem</option>
+            <option value="1">Igen</option>
+        </select>
+    </div>
 	<div class="matt-hseparator"></div>
 	<div id="cimkefiltercontainer">
 	{foreach $cimkekat as $_cimkekat}

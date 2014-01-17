@@ -41,10 +41,8 @@ class megrendelesfejController extends bizonylatfejController {
         $this->setVars($view);
 
         $filter = array();
-        if (!is_null($this->params->getRequestParam('idfilter', NULL))) {
-            $filter['fields'][] = 'id';
-            $filter['values'][] = $this->params->getStringRequestParam('idfilter');
-        }
+
+        $filter = $this->loadFilters($filter);
 
         $filter['fields'][] = 'bizonylattipus';
         $filter['clauses'][] = '=';

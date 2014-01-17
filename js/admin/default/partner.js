@@ -121,7 +121,17 @@ $(document).ready(function(){
 		$('#mattable-select').mattable({
 			name:'partner',
 			filter:{
-				fields:['#nevfilter'],
+				fields:[
+                    '#nevfilter',
+                    '#emailfilter',
+                    '#szallitasiirszamfilter',
+                    '#szallitasivarosfilter',
+                    '#szallitasiutcafilter',
+                    '#szamlazasiirszamfilter',
+                    '#szamlazasivarosfilter',
+                    '#szamlazasiutcafilter',
+                    '#beszallitofilter'
+                ],
 				onClear:function() {
 					$('.js-cimkefilter').removeClass('ui-state-hover');
 				},

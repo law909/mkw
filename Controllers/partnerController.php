@@ -135,8 +135,57 @@ class partnerController extends \mkwhelpers\MattableController {
         $filter = array();
         if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
             $fv = $this->params->getStringRequestParam('nevfilter');
-            $filter['fields'][] = 'nev';
-            $filter['values'][] = $fv;
+            $filter['fields'][] = array('nev','keresztnev','vezeteknev','szallnev');
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $fv . '%';
+        }
+        $f = $this->params->getStringRequestParam('emailfilter');
+        if ($f) {
+            $filter['fields'][] = 'email';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $f = $this->params->getStringRequestParam('szallitasiirszamfilter');
+        if ($f) {
+            $filter['fields'][] = 'szallirszam';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $f = $this->params->getStringRequestParam('szallitasivarosfilter');
+        if ($f) {
+            $filter['fields'][] = 'szallvaros';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $f = $this->params->getStringRequestParam('szallitasiutcafilter');
+        if ($f) {
+            $filter['fields'][] = 'szallutca';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $f = $this->params->getStringRequestParam('szamlazasiirszamfilter');
+        if ($f) {
+            $filter['fields'][] = 'irszam';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $f = $this->params->getStringRequestParam('szamlazasivarosfilter');
+        if ($f) {
+            $filter['fields'][] = 'varos';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $f = $this->params->getStringRequestParam('szamlazasiutcafilter');
+        if ($f) {
+            $filter['fields'][] = 'utca';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $f = $this->params->getNumRequestParam('beszallitofilter',9);
+        if ($f != 9) {
+            $filter['fields'][] = 'szallito';
+            $filter['clauses'][] = '=';
+            $filter['values'][] = $f;
         }
         if (!is_null($this->params->getRequestParam('cimkefilter', NULL))) {
             $fv = $this->params->getArrayRequestParam('cimkefilter');

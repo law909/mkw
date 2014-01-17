@@ -228,7 +228,20 @@ $(document).ready(function() {
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
             filter: {
-                fields: ['#idfilter']
+                fields: [
+                    '#idfilter',
+                    '#vevonevfilter',
+                    '#vevoemailfilter',
+                    '#szallitasiirszamfilter',
+                    '#szallitasivarosfilter',
+                    '#szallitasiutcafilter',
+                    '#szamlazasiirszamfilter',
+                    '#szamlazasivarosfilter',
+                    '#szamlazasiutcafilter',
+                    '#datumtipusfilter',
+                    '#datumtolfilter',
+                    '#datumigfilter'
+                ]
             },
             tablebody: {
                 url: '/admin/szamlafej/getlistbody',
@@ -244,6 +257,12 @@ $(document).ready(function() {
             },
             karb: szamla
         });
+        var datumtolfilter = $('#datumtolfilter'),
+            datumigfilter = $('#datumigfilter');
+        datumtolfilter.datepicker($.datepicker.regional['hu']);
+		datumtolfilter.datepicker('option', 'dateFormat', 'yy.mm.dd');
+        datumigfilter.datepicker($.datepicker.regional['hu']);
+		datumigfilter.datepicker('option', 'dateFormat', 'yy.mm.dd');
         $('.js-maincheckbox').change(function() {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
