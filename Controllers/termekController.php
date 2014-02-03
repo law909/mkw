@@ -753,16 +753,13 @@ class termekController extends \mkwhelpers\MattableController {
             $termek = $this->getRepo()->findOneByIdegenkod($tid);
             if ($termek) {
                 $newlink = \mkw\Store::getRouter()->generate('showtermek', false, array('slug' => $termek->getSlug()));
-            }
-            else {
-                $newlink = \mkw\Store::getRouter()->generate('show404');
+                header("HTTP/1.1 301 Moved Permanently");
+                header('Location: ' . $newlink);
+                return;
             }
         }
-        else {
-            $newlink = \mkw\Store::getRouter()->generate('show404');
-        }
-        header("HTTP/1.1 301 Moved Permanently");
-        header('Location: ' . $newlink);
+        $mc = new mainController($this->params);
+        $mc->show404('HTTP/1.1 410 Gone');
     }
 
     public function redirectOldRSSUrl() {

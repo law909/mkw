@@ -127,16 +127,13 @@ class statlapController extends \mkwhelpers\MattableController {
             $lap = $this->getRepo()->findOneByOldurl($lapid);
             if ($lap) {
                 $newlink = \mkw\Store::getRouter()->generate('showstatlap', false, array('lap' => $lap->getSlug()));
-            }
-            else {
-                $newlink = \mkw\Store::getRouter()->generate('show404');
+                header("HTTP/1.1 301 Moved Permanently");
+                header('Location: ' . $newlink);
+                return;
             }
         }
-        else {
-            $newlink = \mkw\Store::getRouter()->generate('show404');
-        }
-        header("HTTP/1.1 301 Moved Permanently");
-        header('Location: ' . $newlink);
+        $mc = new mainController($this->params);
+        $mc->show404('HTTP/1.1 410 Gone');
     }
 
 }
