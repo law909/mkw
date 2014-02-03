@@ -15,11 +15,11 @@
 {block "kozep"}
 <div class="container whitebg">
 	<div class="row">
-		<div class="span12">
+		<div class="span12" itemprop="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
                     <b>Ön itt áll: </b>
 		{foreach $navigator as $_navi}
 			{if ($_navi.url!='')}
-				<a href="/termekfa/{$_navi.url}">
+				<a href="/termekfa/{$_navi.url}" typeof="v:Breadcrumb" rel="v:url" property="v:title">
 					{$_navi.caption}
 				</a>
 				/
