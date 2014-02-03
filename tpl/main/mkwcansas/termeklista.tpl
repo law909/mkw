@@ -3,7 +3,7 @@
 {block "kozep"}
 <div class="container morzsa whitebg">
 	<div class="row">
-		<div class="span12 morzsaszoveg">
+		<div class="span12 morzsaszoveg" itemprop="breadcrumb">
 		{foreach $navigator as $_navi}
 			{if ($_navi.url|default)}
 				<a href="{$_navi.url}">
