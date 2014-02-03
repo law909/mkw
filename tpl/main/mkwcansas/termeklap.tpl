@@ -18,7 +18,8 @@
         <div class="row">
             <div class="span12 morzsaszoveg" xmlns:v="http://rdf.data-vocabulary.org/#">
                         <b>Ön itt áll: </b>
-                <span itemprop="breadcrumb>"
+            <span itemprop="breadcrumb">
+                {if ($navigator|default)}
             {foreach $navigator as $_navi}
                 {if ($_navi.url!='')}
                     <span typeof="v:Breadcrumb">
@@ -31,6 +32,7 @@
                     {$_navi.caption}
                 {/if}
             {/foreach}
+            {/if}
             </span>
             </div>
         </div>
