@@ -193,7 +193,14 @@
                                         {if ($_termek.akcios)}
                                             <div class="akciosarszoveg textalignright">Eredeti ár: <span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} Ft</span></div>
                                         {/if}
-                                        <div id="termekprice{$_termek.id}-{$_termek.valtozatid|default}" class="termekprice" itemprop="price">{number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
+                                        <div id="termekprice{$_termek.id}-{$_termek.valtozatid|default}" class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                            {if ($termek.nemkaphato)}
+                                                <link itemprop="availability" href="http://schema.org/OutOfStock" content="Nem kapható">
+                                            {else}
+                                                <link itemprop="availability" href="http://schema.org/InStock" content="Kapható">
+                                            {/if}
+                                            <span itemprop="price">{number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
+                                        </div>
                                         {if ($_termek.nemkaphato)}
                                             <div class="textalignright">
                                                 <a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn" data-termek="{$_termek.id}">
@@ -282,11 +289,17 @@
                                         </div>
                                     </div>
                                     <div class="pull-right">
-                                        <div class="termekprice" itemprop="price">
+                                        <div class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                                             {if ($_termek.akcios)}
                                             <span class="akciosarszoveg">Eredeti ár: <span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} Ft</span></span>
                                             {/if}
-                                        {number_format($_termek.bruttohuf,0,',',' ')} Ft</div>
+                                            {if ($termek.nemkaphato)}
+                                                <link itemprop="availability" href="http://schema.org/OutOfStock" content="Nem kapható">
+                                            {else}
+                                                <link itemprop="availability" href="http://schema.org/InStock" content="Kapható">
+                                            {/if}
+                                            <span itemprop="price">{number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
+                                        </div>
                                         <div class="pull-right">
                                         {if ($_termek.nemkaphato)}
                                             <a href="#" rel="nofollow" class="js-termekertesitobtn btn graybtn pull-right" data-termek="{$_termek.id}">
