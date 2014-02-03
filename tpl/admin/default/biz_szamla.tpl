@@ -25,7 +25,7 @@
                 <p class="nev bold">{$egyed.szamlanev}</p>
                 <p>{$egyed.szamlairszam} {$egyed.szamlavaros}</p>
                 <p>{$egyed.szamlautca}</p>
-                <p>Adószám: {$egyed.szamlaadoszam}</p>
+                <p>Adószám: {$egyed.adoszam}</p>
             </div>
         </div>
     </div>
