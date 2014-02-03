@@ -3,17 +3,21 @@
 {block "kozep"}
 <div class="container morzsa whitebg">
 	<div class="row">
-		<div class="span12 morzsaszoveg" itemprop="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+		<div class="span12 morzsaszoveg" xmlns:v="http://rdf.data-vocabulary.org/#">
+            <span itemprop="breadcrumb>"
 		{foreach $navigator as $_navi}
 			{if ($_navi.url|default)}
-				<a href="/termekfa/{$_navi.url}" typeof="v:Breadcrumb" rel="v:url" property="v:title">
+                <span typeof="v:Breadcrumb">
+				<a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
 					{$_navi.caption}
 				</a>
+                </span>
 				/
 			{else}
 				{$_navi.caption}
 			{/if}
 		{/foreach}
+        </span>
 		</div>
 	</div>
 </div>
