@@ -4,6 +4,7 @@
 <div class="container morzsa whitebg">
 	<div class="row">
 		<div class="span12 morzsaszoveg" xmlns:v="http://rdf.data-vocabulary.org/#">
+            <b>Ön itt áll: </b>
             <span itemprop="breadcrumb>"
 		{foreach $navigator as $_navi}
 			{if ($_navi.url|default)}

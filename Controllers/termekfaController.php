@@ -184,7 +184,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		return $t;
 	}
 
-	public function getNavigator($parent, $elsourlkell = false) {
+	public function getNavigator($parent, $elsourlkell = true) {
 		$navi = array();
 		if ($elsourlkell) {
 			$navi[] = array('caption' => $parent->getNev(), 'url' => $parent->getSlug());
