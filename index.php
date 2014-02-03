@@ -86,5 +86,6 @@ else {
 }
 
 if (!callTheController($match['target'], $match)) {
+    header('HTTP/1.1 404 Not found');
 	callTheController('mainController#show404', array());
 }
