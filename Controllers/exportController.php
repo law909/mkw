@@ -207,6 +207,7 @@ class exportController extends \mkwhelpers\Controller {
 
         $r = $bizrepo->getAll($filter, array('id' => 'ASC'));
         foreach($r as $bizonylat) {
+            $mar = $bizonylat->getId();
             $fm = $bizonylat->getFizmod();
             $aossz = $bizrepo->getAFAOsszesito($bizonylat);
             $sor = array(
@@ -239,6 +240,9 @@ class exportController extends \mkwhelpers\Controller {
                 $sor[] = 0;
             }
             echo implode(';', $sor) . "\n";
+        }
+        if ($mar) {
+            \mkw\Store::setParameter(\mkw\consts::RLBUtolsoSzamlaszam, $mar);
         }
     }
 
