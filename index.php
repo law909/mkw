@@ -70,7 +70,7 @@ if (!$match) {
 	$match = $router->match();
     if ($match &&
             (substr($match['name'], 0, 5) === 'admin') &&
-            (!in_array($match['name'], array('adminshowlogin', 'adminlogin')))) {
+            (!in_array($match['name'], array('adminshowlogin', 'adminlogin', 'adminrlbexport')))) {
         $linuser = Store::getAdminSession()->pk;
         if (!$linuser) {
             Header('Location: ' . $router->generate('adminshowlogin'));

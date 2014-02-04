@@ -230,3 +230,5 @@ $router->map('GET', '/admin/bizonylatstatusz/getlistbody', 'bizonylatstatuszCont
 $router->map('GET', '/admin/bizonylatstatusz/getkarb', 'bizonylatstatuszController#getkarb', 'adminbizonylatstatuszgetkarb');
 $router->map('GET', '/admin/bizonylatstatusz/viewkarb', 'bizonylatstatuszController#viewkarb', 'adminbizonylatstatuszviewkarb');
 $router->map('POST', '/admin/bizonylatstatusz/save', 'bizonylatstatuszController#save', 'adminbizonylatstatuszsave');
+
+$router->map('GET', '/admin/rlbexport', 'exportController#RLBExport', 'adminrlbexport');

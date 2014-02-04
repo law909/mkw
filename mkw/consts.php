@@ -90,4 +90,6 @@ class consts {
     const SzallitasiKtgTermek = 'szallitasiktgtermek';
 
     const BizonylatStatuszFuggoben = 'bizonylatstatuszfuggoben';
+
+    const RLBUtolsoSzamlaszam = 'rlbutolsoszamlaszam';
 }

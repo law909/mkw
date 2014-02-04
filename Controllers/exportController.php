@@ -181,4 +181,65 @@ class exportController extends \mkwhelpers\Controller {
         }
     }
 
+    private function encstr($str) {
+        return mb_convert_encoding($str, 'ISO-8859-2', 'UTF8');
+    }
+
+    public function RLBExport() {
+        header("Content-type: text/csv");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        $bizrepo = \mkw\Store::getEm()->getRepository('Entities\Bizonylatfej');
+        $bt = \mkw\Store::getEm()->getRepository('Entities\Bizonylattipus')->find('szamla');
+
+        $filter = array();
+        $filter['fields'][] = 'bizonylattipus';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = $bt;
+
+        $mar = \mkw\Store::getParameter(\mkw\consts::RLBUtolsoSzamlaszam);
+        if ($mar) {
+            $filter['fields'][] = 'id';
+            $filter['clauses'][] = '>';
+            $filter['values'][] = $mar;
+        }
+
+        $r = $bizrepo->getAll($filter, array('id' => 'ASC'));
+        foreach($r as $bizonylat) {
+            $fm = $bizonylat->getFizmod();
+            $aossz = $bizrepo->getAFAOsszesito($bizonylat);
+            $sor = array(
+                $bizonylat->getKeltStr(),
+                $bizonylat->getEsedekessegStr(),
+                $bizonylat->getTeljesitesStr(),
+                $bizonylat->getId(),
+                $bizonylat->getPartnerId(),
+                $this->encstr($bizonylat->getPartnernev()),
+                $this->encstr($bizonylat->getPartnerirszam()),
+                $this->encstr($bizonylat->getPartnervaros()),
+                $this->encstr($bizonylat->getPartnerutca()),
+                $this->encstr('Értékesítés árbevétele'),
+                ($fm->getTipus() == 'P' ? 1 : 2)
+            );
+
+            $i = 1;
+            foreach($aossz as $ao) {
+                $sor[] = $ao['rlbkod'];
+                $sor[] = $ao['netto'];
+                $sor[] = $ao['afa'];
+                $i++;
+                if ($i > 4) {
+                    break;
+                }
+            }
+            for($i; $i<=4; $i++) {
+                $sor[] = 0;
+                $sor[] = 0;
+                $sor[] = 0;
+            }
+            echo implode(';', $sor) . "\n";
+        }
+    }
+
 }
