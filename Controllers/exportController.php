@@ -212,8 +212,8 @@ class exportController extends \mkwhelpers\Controller {
             $aossz = $bizrepo->getAFAOsszesito($bizonylat);
             $sor = array(
                 $bizonylat->getKeltStr(),
-                $bizonylat->getEsedekessegStr(),
                 $bizonylat->getTeljesitesStr(),
+                $bizonylat->getEsedekessegStr(),
                 $bizonylat->getId(),
                 $bizonylat->getPartnerId(),
                 $this->encstr($bizonylat->getPartnernev()),

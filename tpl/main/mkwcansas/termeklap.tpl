@@ -40,7 +40,7 @@
 	<article itemtype="http://schema.org/Product" itemscope="">
 		<div class="row">
 			<div class="span6">
-                <div class="textaligncenter"><h3 itemprop="name">{$termek.caption}</h3></div>
+                <div class="textaligncenter"><h1 itemprop="name" class="termeknev">{$termek.caption}</h1></div>
 				<div class="termekimagecontainer textaligncenter">
                     <a href="{$termek.kepurl}" class="js-lightbox" title="{$termek.caption}">
                         <img itemprop="image" src="{$termek.kozepeskepurl}" alt="{$termek.caption}" title="{$termek.caption}">
