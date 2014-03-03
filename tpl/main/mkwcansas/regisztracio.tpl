@@ -6,10 +6,10 @@
 		<div class="span10 offset1">
 			<div class="form-header">
 				<h2>Regisztráljon</h2>
-				<h3>Hozza létre saját felhasználói fiókját.</h3>
+				<h3>Hozza létre saját fiókját 30 másodperc alatt!</h3>
 				<h4>A Mindent Kapni fiók előnyei:</h4>
 				<ul>
-					<li>gyorsabb rendelés, mert vásárláskor már nem kell kitöltenie adatait</li>
+					<li>gyorsabb és könnyebb rendelés, mert vásárláskor már nem kell kitöltenie adatait</li>
 					<li>nyomon követheti rendeléseit</li>
 					<li>összeállíthatja kívánságlistáját jövőbeni vásárlásaihoz</li>
 					<li>hűségpontokat gyűjthet és válthat be</li>

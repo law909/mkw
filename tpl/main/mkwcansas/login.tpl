@@ -7,10 +7,10 @@
 			<div class="loginform chk-loginrightborder">
 				<div class="form-header">
 				<h2>Regisztráljon</h2>
-				<h4>Hozza létre saját felhasználói fiókját.</h4>
+				<h4>Hozza létre saját fiókját 30 másodperc alatt!</h4>
 				<h5>A Mindent Kapni fiók előnyei:</h5>
 				<ul>
-					<li>gyorsabb rendelés, mert vásárláskor már nem kell kitöltenie adatait</li>
+					<li>gyorsabb és könnyebb rendelés, mert vásárláskor már nem kell kitöltenie adatait</li>
 					<li>nyomon követheti rendeléseit</li>
 					<li>összeállíthatja kívánságlistáját jövőbeni vásárlásaihoz</li>
 					<li>hűségpontokat gyűjthet és válthat be</li>
@@ -70,7 +70,7 @@
 					</div>
                     <div class="row chk-actionrow">
                         <div class="span">
-                            <a class="span js-passreminder" href>Elfelejtettem a jelszavam</a>
+                            <a class="span js-passreminder" href>Kattintson ide, ha elfelejtette a jelszavát!</a>
                         </div>
                     </div>
 				</fieldset>
