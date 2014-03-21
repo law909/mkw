@@ -1,5 +1,13 @@
 {extends "base.tpl"}
 
+{block "meta"}
+    <meta property="og:title" content="{$globaltitle}">
+    <meta property="og:url" content="http://www.mindentkapni.hu">
+    <meta property="og:image" content="{$logo}">
+    <meta property="og:type" content="website"/>
+    <meta property="og:description" content="{$seodescription}">
+{/block}
+
 {block "body"}
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

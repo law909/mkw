@@ -5,7 +5,7 @@
     <meta property="og:url" content="{$serverurl}/termek/{$termek.slug}"/>
     <meta property="og:description" content="{$termek.rovidleiras}"/>
     <meta property="og:image" content="{$termek.fullkepurl}"/>
-    <meta property="og:type" content="website"/>
+    <meta property="og:type" content="product"/>
 {/block}
 
 {block "script"}

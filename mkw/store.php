@@ -204,6 +204,7 @@ class Store {
         $v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
         $v->setVar('serverurl', self::getFullUrl());
         $v->setVar('logo', self::getParameter(consts::Logo));
+        $v->setVar('globaltitle', self::getParameter('oldalcim'));
         $kc = new \Controllers\kosarController(null);
         $v->setVar('kosar', $kc->getMiniData());
         $pr = self::getEm()->getRepository('Entities\Partner');
