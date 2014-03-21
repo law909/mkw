@@ -30,7 +30,7 @@
 <tr><td colspan="2">
 {$_egyed.partnertelefon}
 </td></tr>
-<tr><td colspan="5">
+<tr><td colspan="5" class="referrer">
 IP: {$_egyed.ip} Ref.: {$_egyed.referrer}
 </td>
 </tr>
