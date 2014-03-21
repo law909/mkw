@@ -94,3 +94,7 @@ img {
     overflow-x: hidden;
     word-wrap: break-word;
 }
+
+.pricenowrap {
+    white-space: nowrap;
+}

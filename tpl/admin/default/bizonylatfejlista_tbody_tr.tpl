@@ -50,10 +50,10 @@ IP: {$_egyed.ip} Ref.: {$_egyed.referrer}
 <td class="cell">
 <table><tbody>
 <tr><td></td><td class="mattable-rightaligned">{$_egyed.valutanemnev}</td>{if ($showvalutanem)}<td class="mattable-rightaligned">HUF?</td>{/if}</tr>
-<tr><td>{t('Nettó')}:</td><td class="mattable-rightaligned">{number_format($_egyed.netto,2,'.',' ')}</td>{if ($showvalutanem)}<td class="mattable-rightaligned">{number_format($_egyed.nettohuf,2,'.',' ')}</td>{/if}</tr>
-<tr><td>{t('ÁFA')}:</td><td class="mattable-rightaligned">{number_format($_egyed.afa,2,'.',' ')}</td>{if ($showvalutanem)}<td class="mattable-rightaligned">{number_format($_egyed.afahuf,2,'.',' ')}</td>{/if}</tr>
-<tr class="mattable-important"><td>{t('Bruttó')}:</td><td class="mattable-rightaligned">{number_format($_egyed.brutto,2,'.',' ')}</td>{if ($showvalutanem)}<td class="mattable-rightaligned">{number_format($_egyed.bruttohuf,2,'.',' ')}</td>{/if}</tr>
-<tr>{if ($showvalutanem)}<td>{t('Árfolyam')}:</td><td class="mattable-rightaligned">{number_format($_egyed.arfolyam,2,'.',' ')}</td>{/if}</tr>
+<tr><td>{t('Nettó')}:</td><td class="mattable-rightaligned pricenowrap">{number_format($_egyed.netto,2,'.',' ')}</td>{if ($showvalutanem)}<td class="mattable-rightaligned pricenowrap">{number_format($_egyed.nettohuf,2,'.',' ')}</td>{/if}</tr>
+<tr><td>{t('ÁFA')}:</td><td class="mattable-rightaligned pricenowrap">{number_format($_egyed.afa,2,'.',' ')}</td>{if ($showvalutanem)}<td class="mattable-rightaligned pricenowrap">{number_format($_egyed.afahuf,2,'.',' ')}</td>{/if}</tr>
+<tr class="mattable-important"><td>{t('Bruttó')}:</td><td class="mattable-rightaligned pricenowrap">{number_format($_egyed.brutto,2,'.',' ')}</td>{if ($showvalutanem)}<td class="mattable-rightaligned pricenowrap">{number_format($_egyed.bruttohuf,2,'.',' ')}</td>{/if}</tr>
+<tr>{if ($showvalutanem)}<td>{t('Árfolyam')}:</td><td class="mattable-rightaligned pricenowrap">{number_format($_egyed.arfolyam,2,'.',' ')}</td>{/if}</tr>
 </tbody></table>
 </td>
 {if ($setup.grideditbutton=='big')}
