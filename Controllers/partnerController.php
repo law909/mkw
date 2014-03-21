@@ -262,6 +262,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $ret = array(
                 'fizmod' => $partner->getFizmodId(),
                 'fizhatido' => $partner->getFizhatido(),
+                'nev' => $partner->getNev(),
                 'irszam' => $partner->getIrszam(),
                 'varos' => $partner->getVaros(),
                 'utca' => $partner->getUtca(),

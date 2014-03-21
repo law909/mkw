@@ -36,6 +36,12 @@
 					</select>
 				</td>
 			</tr>
+            <tr>
+                <td></td>
+                <td colspan="7">
+                    <input name="partnernev" value="{$egyed.partnernev}">
+                </td>
+            </tr>
 			<tr>
 				<td></td>
 				<td colspan="7">
