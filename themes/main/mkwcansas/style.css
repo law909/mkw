@@ -1,4 +1,9 @@
 input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+h1{font-size:20px;}
+h2{font-size:17px;}
+h3{font-size:15px;}
+h4{font-size:14px;}
+h5{font-size:13px;}
 #korhinta{margin-top:10px;}
 .copyright{font-size:11px;text-align:center;margin-top:40px;}
 .whitebg{background-color:white;}
@@ -179,4 +184,8 @@ thead.acc-megrendelestetellist{font-weight:bold;}thead.acc-megrendelestetellist 
 .itemPrice{font-size:24.5px;font-weight:bold;margin:5px 0;}
 .kosarbacontainer{padding-top:15px;}
 .termeklapaddthis div.addthis_toolbox{width:202px;margin:0 auto;}
+h1.main{font-size:20px;}
+h2.main,h3.main,h4.main,h5.main{font-size:17.5px;}
+h1.termeklista{font-size:11px;line-height:20px;display:inline;}
+h2.termeklista,h3.termeklista,h4.termeklista,h5.termeklista{font-size:17.5px;}
 @media (min-width:1200px){.spanmkw3{width:435px;} .gtermekleft{width:150px;} .gtermekright{width:265px;}}@media (max-width:979px) and (min-width:768px){.spanmkw3{width:268.5px;} .gtermekleft{width:100px;} .gtermekright{width:153px;}}@media (min-width:480px){#navmain li .sub{width:400px;}}@media (max-width:767px){.chk-tooltippedcontainer{width:100%;} .spanmkw3{width:100%;} .gtermekleft{width:30%;} .gtermekright{width:68%;}}@media (min-width:767px){#navmain li .sub{width:700px;} #navmain li .sub ul{width:125px;float:left;}}@media (min-width:979px){#navmain li .sub{width:940px;} #navmain li .sub ul{width:185px;float:left;}}

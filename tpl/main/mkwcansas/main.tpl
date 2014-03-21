@@ -17,7 +17,7 @@
         <div class="span4">
             {if (count($topkategorialista)>0)}
             <div class="blockHeader">
-            <h4>{t('Top')} {count($topkategorialista)} {t('kategória')}</h4>
+            <h2 class="main">{t('Top')} {count($topkategorialista)} {t('kategória')}</h2>
             </div>
             {foreach $topkategorialista as $_topkategoria}
                 <div class="hirListBlock">
@@ -30,7 +30,7 @@
             {/if}
             {if (count($hirek)>0)}
             <div class="blockHeader">
-            <h4>{t('Legfrissebb híreink')}</h4>
+            <h2 class="main">{t('Legfrissebb híreink')}</h2>
             </div>
             {foreach $hirek as $_hir}
                 <div class="hirListBlock">
@@ -45,7 +45,7 @@
             {/if}
             {if (count($kiemeltmarkalista)>0)}
             <div class="blockHeader">
-            <h4>{t('Kiemelt márkáink')}</h4>
+            <h2 class="main">{t('Kiemelt márkáink')}</h2>
             </div>
             {foreach $kiemeltmarkalista as $_marka}
                 <div class="hirListBlock">
@@ -70,7 +70,7 @@
                 <div>
                     <a href="{$_korhinta.url}"><img class="rsImg" src="{$_korhinta.kepurl}" alt="{$_korhinta.kepleiras}"></a>
                     <a class="rsCaption" href="{$_korhinta.url}">
-                        <h4>{$_korhinta.nev}</h4>
+                        <h2 class="main">{$_korhinta.nev}</h2>
                         <p>{$_korhinta.szoveg}</p>
                     </a>
                 </div>
@@ -78,7 +78,7 @@
             </div>
             {/if}
             <div>
-                <h4>{t('Üdvözöljük webáruházunkban!')}</h4>
+                <h1 class="main">{t('Üdvözöljük webáruházunkban!')}</h1>
                 <b>Dőljön hátra</b> kedvenc karosszékében, és válogasson kedvére az oldalunkon található több, mint 4000-féle termék közül. A ruhaneműkön keresztül a katonai felszereléseken át a kempingcuccokig Ön is biztosan megtalálja majd a kedvencét nálunk.
                 <br><b>A munkát bízza ránk</b>: Ön kiválasztja, mi becsomagoljuk és házhoz szállítjuk az Önnek legalkalmasabb időpontban.
                 <br><br>Webáruházunk programja kívül-belül megújult ugyan, de az elveink, lelkesedésünk és vásárlóink iránti elkötelezettségünk továbbra sem változott. Örömünkre szolgál, hogy immáron 7. éve segíthetünk minden kedves régi és új megrendelőnknek.
@@ -103,7 +103,7 @@
             </div>
             {if (count($legnepszerubbtermekek)>0)}
             <div class="blockHeader">
-                <h4>{t('Legnépszerűbb termékeink')}</h4>
+                <h2 class="main">{t('Legnépszerűbb termékeink')}</h2>
             </div>
             <div id="legnepszerubbtermekslider" class="royalSlider contentSlider rsDefaultInv termekSlider">
                 {$lntcnt=count($legnepszerubbtermekek)}
@@ -120,7 +120,7 @@
                                         <img src="{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                     </div>
                                     <div>{$_termek.caption}</div>
-                                    <h5><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
+                                    <h5 class="main"><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
                                 </a>
                             </div>
                         </div>
@@ -132,7 +132,7 @@
             {/if}
             {if (count($ajanlotttermekek)>0)}
             <div class="blockHeader">
-                <h4>{t('Mások ezeket vásárolják most')}</h4>
+                <h2 class="main">{t('Mások ezeket vásárolják most')}</h2>
             </div>
             <div id="ajanlotttermekslider" class="royalSlider contentSlider rsDefaultInv termekSlider">
                 {$lntcnt=count($ajanlotttermekek)}
@@ -149,7 +149,7 @@
                                         <img src="{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                     </div>
                                     <div>{$_termek.caption}</div>
-                                    <h5><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
+                                    <h5 class="main"><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
                                 </a>
                             </div>
                         </div>

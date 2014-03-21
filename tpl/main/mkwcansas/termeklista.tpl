@@ -9,11 +9,11 @@
                 {if ($navigator|default)}
 		{foreach $navigator as $_navi}
 			{if ($_navi.url|default)}
-                <span typeof="v:Breadcrumb">
+                {if ($_navi@last)}<h1 class="termeklista"{else}<span{/if} typeof="v:Breadcrumb">
 				<a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
 					{$_navi.caption}
 				</a>
-                </span>
+                {if ($_navi@last)}</h1>{else}</span>{/if}
 				/
 			{else}
 				{$_navi.caption}
@@ -79,7 +79,7 @@
                                     <img src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                 </div>
                                 <div>{$_termek.caption}</div>
-                                <h5>
+                                <h5 class="termeklista">
                                     {if ($_termek.akcios)}
                                     <span><span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} Ft</span> helyett {number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
                                     {else}
