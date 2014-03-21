@@ -45,9 +45,11 @@
 
   , select: function () {
       var val = this.$menu.find('.active').attr('data-value')
-      this.$element
-        .val(this.updater(val))
-        .change()
+      if (val) {
+        this.$element
+          .val(this.updater(val))
+          .change()
+      }
       this.hide()
 	  if (typeof this.options.onselect == 'function') this.options.onselect.apply(this, this.$element)
 	  return this
@@ -145,7 +147,9 @@
         return i[0]
       })
 
-      items.first().addClass('active')
+      if (items.length === 1) {
+        items.first().addClass('active')
+      }
       this.$menu.html(items)
       return this
     }
