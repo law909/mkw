@@ -53,6 +53,7 @@ $(document).ready(function() {
                         if (d.fizmod) {
                             fizmodedit.val(d.fizmod);
                         }
+                        $('input[name="partnernev"]').val(d.nev);
                         $('input[name="partnerirszam"]').val(d.irszam);
                         $('input[name="partnervaros"]').val(d.varos);
                         $('input[name="partnerutca"]').val(d.utca);

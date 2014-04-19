@@ -88,3 +88,13 @@ img {
 .guestpartner {
 	color: red;
 }
+
+.referrer {
+    max-width: 500px;
+    overflow-x: hidden;
+    word-wrap: break-word;
+}
+
+.pricenowrap {
+    white-space: nowrap;
+}

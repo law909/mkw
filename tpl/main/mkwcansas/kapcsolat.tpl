@@ -1,5 +1,8 @@
 {extends "base.tpl"}
 
+{block "meta"}
+{/block}
+
 {block "kozep"}
 <div class="container whitebg">
 	<div class="row">

@@ -267,6 +267,7 @@ class mainController extends \mkwhelpers\Controller {
 				$kftc = new kapcsolatfelveteltemaController($this->params);
 				$this->view = $this->getTemplateFactory()->createMainView('kapcsolat.tpl');
 				store::fillTemplate($this->view);
+                $this->view->setVar('pagetitle', 'Kapcsolatfelvétel a webáruház ügyfélszolgálatával - ' . \mkw\Store::getParameter('oldalcim'));
 				$this->view->setVar('temalista', $kftc->getSelectList(0));
 				$this->view->printTemplateResult(true);
 				break;
