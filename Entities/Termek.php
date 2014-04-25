@@ -587,7 +587,7 @@ class Termek {
         if ($vtsz) {
             $afa = $vtsz->getAfa();
             if ($afa) {
-                $this->setAfa = $afa;
+                $this->setAfa($afa);
             }
         }
     }

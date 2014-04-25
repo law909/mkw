@@ -216,6 +216,9 @@ $router->map('GET', '/admin/sitemap/create', 'sitemapController#create', 'admins
 $router->map('GET', '/admin/export/view', 'exportController#view', 'adminexportview');
 $router->map('GET', '/admin/export/grando', 'exportController#GrandoExport', 'admingrandoexport');
 
+$router->map('GET', '/admin/import/view', 'importController#view', 'adminimportview');
+$router->map('POST','/admin/import/kreativ', 'importController#kreativpuzzleImport', 'adminkreativpuzzleimport');
+
 $router->map('GET', '/admin/login/show', 'dolgozoController#showlogin', 'adminshowlogin');
 $router->map('POST', '/admin/login', 'dolgozoController#login', 'adminlogin');
 $router->map('GET', '/admin/logout', 'dolgozoController#logout', 'adminlogout');

@@ -24,7 +24,12 @@
 		<div class="mattkarb-titlebar" data-caption="{t('Exportok')}" data-refcontrol="#DefaTab"></div>
 		{/if}
 		<div id="DefaTab" class="mattkarb-page" data-visible="visible">
+            <div>
+                <span id="TermekKategoria1" class="js-termekfabutton" data-text="{t('válasszon')}" data-name="termekfa1" data-value="">Ebbe a kategóriába kerüljenek a termékek</span>
+            </div>
+            <div>
             <a href="/admin/import/kreativ" class="js-kreativimport">Kreativ puzzle import</a>
+            </div>
 		</div>
 	</div>
 	<div class="admin-form-footer">

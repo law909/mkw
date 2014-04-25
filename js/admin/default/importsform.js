@@ -7,7 +7,60 @@ $(document).ready(function() {
 		newWindowUrl:'/admin/viewkarb',
 		saveUrl:'/admin/save',
 		beforeShow:function() {
-            $('.js-grandoexport').button();
+
+            $('.js-kreativimport').on('click', function(e) {
+                e.preventDefault();
+                if (!$('#TermekKategoria1').attr('data-value')) {
+                    alert('Válasszon kategóriát.');
+                }
+                else {
+                    $.ajax({
+                        type: 'POST',
+                        url: $(this).attr('href'),
+                        data: {
+                            katid: $('#TermekKategoria1').attr('data-value')
+                        },
+                        success: function() {
+                            alert('Kész.');
+                        }
+                    });
+                }
+            }).button();
+
+            $('.js-termekfabutton').on('click', function(e) {
+                var edit = $(this);
+                e.preventDefault();
+                dialogcenter.jstree({
+                    core: {animation: 100},
+                    plugins: ['themeroller', 'json_data', 'ui'],
+                    themeroller: {item: ''},
+                    json_data: {
+                        ajax: {url: '/admin/termekfa/jsonlist'}
+                    },
+                    ui: {select_limit: 1}
+                })
+                        .bind('loaded.jstree', function(event, data) {
+                            dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
+                        });
+                dialogcenter.dialog({
+                    resizable: true,
+                    height: 340,
+                    modal: true,
+                    buttons: {
+                        'OK': function() {
+                            dialogcenter.jstree('get_selected').each(function() {
+                                var treenode = $(this).children('a');
+                                edit.attr('data-value', treenode.attr('id').split('_')[1]);
+                                $('span', edit).text(treenode.text());
+                            });
+                            $(this).dialog('close');
+                        },
+                        'Bezár': function() {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            }).button();
 		},
 		onSubmit:function() {
 			$('#messagecenter')
