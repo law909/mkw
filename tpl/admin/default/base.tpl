@@ -65,6 +65,7 @@
 		<div><a class="menupont" href="/admin/dolgozo/viewlist">{t('Felhasználók')}</a></div>
 		<div><a class="menupont" href="/admin/egyebtorzs/view">{t('Egyéb adatok')}</a></div>
 		<div><a class="menupont" href="/admin/export/view">{t('Termék exportok')}</a></div>
+		<div><a class="menupont" href="/admin/import/view">{t('Termék importok')}</a></div>
 		<div><a class="menupont" href="/admin/setup/view">{t('Beállítások')}</a></div>
 		<div><a class="menupont" href="/admin/regeneratekarkod">{t('Termék kat. rendezése')}</a></div>
 		<div>
