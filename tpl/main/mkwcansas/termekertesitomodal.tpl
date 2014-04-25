@@ -4,7 +4,7 @@
     <h3>{t('Termékértesítő')}</h3>
   </div>
   <div class="modal-body">
-    <p>Adja meg emailcímét, és azonnal értesítjük, amint beérkezik a termék!</p>
+    <p>Ez a termék sajnos most nincs készleten.<br>Adja meg emailcímét, és <strong>azonnal értesítjük</strong>, amint ismét elérhető lesz!</p>
 	<form id="termekertesitoform" class="form-horizontal" action="/termekertesito/save" method="post">
 		<fieldset>
 			<div class="control-group">
