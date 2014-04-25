@@ -283,6 +283,10 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$kategoriafilter['clauses'][] = '=';
 		$kategoriafilter['values'][] = 1;
 
+        $kategoriafilter['fields'][] = '_xx.fuggoben';
+		$kategoriafilter['clauses'][] = '=';
+		$kategoriafilter['values'][] = 0;
+
 		$keresofilter = array();
 		if ($keresoszo) {
 			$keresofilter['fields'][] = array('_xx.nev', '_xx.oldalcim', '_xx.cikkszam', '_xx.leiras');
