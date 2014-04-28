@@ -97,6 +97,7 @@
         <div class="line"></div>
         <div class="pull-left">
             <p>Köszönjük, hogy nálunk vásárolt!</p>
+            <p><br>A csomagolás termékdíj-kötelezettség az eladót terheli.</p>
         </div>
         <table class="osszesitotable pull-right">
             <tbody>
