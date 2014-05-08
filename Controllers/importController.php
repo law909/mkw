@@ -1,12 +1,18 @@
 <?php
 namespace Controllers;
-use mkw\store;
+use mkw\store, mkw\thumbnail;
 
 class importController extends \mkwhelpers\Controller {
 
     public function view() {
         $view = $this->createView('imports.tpl');
+
         $view->setVar('pagetitle', t('Importok'));
+        $view->setVar('path', \mkw\Store::getConfigValue('path.termekkep'));
+
+        $gyarto = new partnerController($this->params);
+        $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(0));
+
         $view->printTemplateResult(false);
     }
 
@@ -31,7 +37,19 @@ class importController extends \mkwhelpers\Controller {
     }
 
     public function kreativpuzzleImport() {
+
         $parentid = $this->params->getIntRequestParam('katid', 0);
+        $gyartoid = $this->params->getIntRequestParam('gyarto', 0);
+        $db = $this->params->getIntRequestParam('db', 0);
+
+        $path = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
+        $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
+        if ($mainpath) {
+            $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        }
+        $path = $mainpath . $path;
+        $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+
 
         $ch = curl_init('http://kreativpuzzle.hu/lawstocklist/');
         $fh = fopen('kreativpuzzlestock.txt', 'w');
@@ -45,29 +63,99 @@ class importController extends \mkwhelpers\Controller {
         curl_exec($ch);
         fclose($fh);
 
-        $fh = fopen('kreativpuzzlestock.txt', 'r');
+        $imagelist = array();
+        $fh = fopen('kreativpuzzleimages.txt', 'r');
         if ($fh) {
             fgetcsv($fh, 0, ';', '"');
             while ($data = fgetcsv($fh, 0, ';', '"')) {
+                if ($data[0]) {
+                    if (array_key_exists($data[0], $imagelist)) {
+                        $imagelist[$data[0]][] = $data[1];
+                    }
+                    else {
+                        $imagelist[$data[0]] = array($data[1]);
+                    }
+                }
+            }
+        }
+        fclose($fh);
+
+        $fh = fopen('kreativpuzzlestock.txt', 'r');
+        if ($fh) {
+            $afa = store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
+            $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findByNev('-');
+            $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+            $termekdb = 0;
+            fgetcsv($fh, 0, ';', '"');
+            while (($data = fgetcsv($fh, 0, ';', '"')) && (($db && ($termekdb < $db)) || (!$db))) {
                 if ($data[2] * 1 > 0) {
-                    $parent = $this->createKategoria(mb_convert_encoding(trim($data[7]), 'UTF8', 'ISO-8859-2'), $parentid);
+                    $katnev = mb_convert_encoding(trim($data[7]), 'UTF8', 'ISO-8859-2');
+                    $urlkatnev = \mkw\Store::urlize($katnev);
+                    \mkw\Store::createDirectoryRecursively($path . $urlkatnev);
+                    $parent = $this->createKategoria($katnev, $parentid);
                     $termek = store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('KP' . $data[0]);
                     if (!$termek) {
+                        $termekdb++;
+                        $termeknev = mb_convert_encoding(trim($data[1]), 'UTF8', 'ISO-8859-2');
                         $termek = new \Entities\Termek();
                         $termek->setFuggoben(true);
                         $termek->setMe('db');
-                        $termek->setNev(mb_convert_encoding(trim($data[1]), 'UTF8', 'ISO-8859-2'));
+                        $termek->setNev($termeknev);
                         $termek->setLeiras(mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2'));
                         $termek->setRovidleiras(mb_substr($termek->getLeiras(), 0, 100, 'UTF8') . '...');
                         $termek->setCikkszam($data[0]);
                         $termek->setIdegencikkszam($data[0]);
                         $termek->setIdegenkod('KP' . $data[0]);
                         $termek->setTermekfa1($parent);
+                        $termek->setVtsz($vtsz[0]);
+                        if ($gyarto) {
+                            $termek->setGyarto($gyarto);
+                        }
+                        // kepek
+                        $settings = array(
+                            'quality'=>80,
+                            'sizes'=>array('100'=>'100x100','150'=>'150x150','250'=>'250x250','1000'=>'1000x800')
+                        );
+                        if (array_key_exists($data[0], $imagelist)) {
+                            $imgcnt = 0;
+                            foreach ($imagelist[$data[0]] as $imgurl) {
+                                $imgcnt++;
+
+                                $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev);
+                                if (count($imagelist[$data[0]]) > 1) {
+                                    $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
+                                }
+                                $extension = \mkw\Store::getExtension($imgurl);
+                                $imgpath = $nameWithoutExt . '.' . $extension;
+
+                                $ch = curl_init($imgurl);
+                                $ih = fopen($imgpath, 'w');
+                                curl_setopt($ch, CURLOPT_FILE, $ih);
+                                curl_exec($ch);
+                                fclose($ih);
+
+                                foreach ($settings['sizes'] as $k=>$size) {
+                                        $newFilePath = $nameWithoutExt."_".$k.".".$extension;
+                                        $matches=explode('x',$size);
+                                        \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0]*1, $matches[1]*1, $settings['quality'], true) ;
+                                }
+                                if (((count($imagelist[$data[0]]) > 1) && ($imgcnt == 1)) || (count($imagelist[$data[0]]) == 1)) {
+                                    $termek->setKepurl($imgpath);
+                                    $termek->setKepleiras($termeknev);
+                                }
+                                else {
+                                    $kep = new \Entities\TermekKep();
+                                    $termek->addTermekKep($kep);
+                                    $kep->setUrl($imgpath);
+                                    $kep->setLeiras($termeknev);
+                                    store::getEm()->persist($kep);
+                                }
+                            }
+                        }
                     }
                     else {
                         $termek = $termek[0];
                     }
-                    $afa = store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
                     $termek->setAfa($afa[0]);
                     $termek->setNetto($data[3] * 1);
                     $termek->setBrutto(round($termek->getBrutto(), -1));

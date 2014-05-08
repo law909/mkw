@@ -445,4 +445,45 @@ class Store {
         }
         return $dkelt->format(self::$DateFormat);
     }
+
+    public static function urlize($text) {
+        return \Gedmo\Sluggable\Util\Urlizer::urlize($text);
+    }
+
+    public static function changeDirSeparator($dir) {
+        if (DIRECTORY_SEPARATOR === "\\") {
+            $dir = str_replace("/", "\\", $dir);
+        }
+        else if (DIRECTORY_SEPARATOR === "/") {
+            $dir = str_replace("\\", "/", $dir);
+        }
+        return $dir;
+    }
+
+    public static function createDirectoryRecursively($dir) {
+        $dir = self::changeDirSeparator($dir);
+//            $oldUmask = umask(0);
+//            $bCreated = @mkdir($dir, $perms, true);
+//            umask($oldUmask);
+        $bCreated = @mkdir($dir, 0755, true);
+
+        return $bCreated;
+    }
+
+    /**
+     * Get file extension (only last part - e.g. extension of file.foo.bar.jpg = jpg)
+     *
+     * @static
+     * @access public
+     * @param string $fileName
+     * @return string
+     */
+    public static function getExtension( $fileName ) {
+        $dotPos = strrpos( $fileName, '.' );
+        if (false === $dotPos) {
+            return "";
+        }
+
+        return substr( $fileName, strrpos( $fileName, '.' ) +1 ) ;
+    }
 }

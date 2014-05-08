@@ -18,7 +18,10 @@ $(document).ready(function() {
                         type: 'POST',
                         url: $(this).attr('href'),
                         data: {
-                            katid: $('#TermekKategoria1').attr('data-value')
+                            katid: $('#TermekKategoria1').attr('data-value'),
+                            path: $('input[name="path"]').val(),
+                            gyarto: $('select[name="gyarto"]').val(),
+                            db: $('input[name="db"]').val()
                         },
                         success: function() {
                             alert('Kész.');

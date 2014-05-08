@@ -28,6 +28,22 @@
                 <span id="TermekKategoria1" class="js-termekfabutton" data-text="{t('válasszon')}" data-name="termekfa1" data-value="">Ebbe a kategóriába kerüljenek a termékek</span>
             </div>
             <div>
+                <label>Képek mappája:</label><input name="path" value="{$path}">
+            </div>
+            <div>
+                <label for="GyartoEdit">Gyártó:</label>
+                <select id="GyartoEdit" name="gyarto">
+					<option value="">{t('válasszon')}</option>
+					{foreach $gyartolist as $_gyarto}
+						<option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+					{/foreach}
+				</select>
+            </div>
+            <div>
+                <label>Max. ennyi új termék:</label>
+                <input name="db">
+            </div>
+            <div>
             <a href="/admin/import/kreativ" class="js-kreativimport">Kreativ puzzle import</a>
             </div>
 		</div>
