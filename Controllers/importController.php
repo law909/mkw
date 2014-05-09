@@ -156,6 +156,7 @@ class importController extends \mkwhelpers\Controller {
                     else {
                         $termek = $termek[0];
                     }
+                    $termek->setNemkaphato(($data[6] * 1) == 0);
                     $termek->setAfa($afa[0]);
                     $termek->setNetto($data[3] * 1);
                     $termek->setBrutto(round($termek->getBrutto(), -1));
