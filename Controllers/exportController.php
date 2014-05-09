@@ -58,6 +58,54 @@ class exportController extends \mkwhelpers\Controller {
         }
     }
 
+    public function OlcsoExport() {
+        header("Content-type: text/csv");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        $sor = array(
+            '"title"',
+            '"seller_product_id"',
+            '"status"',
+            '"price"',
+            '"warranty"',
+            '"manufacturer"',
+            '"photo_url_1"',
+            '"seller_category"',
+            '"page_link"',
+            '"availability_371"',
+            '"description"'
+        );
+        echo implode(';', $sor) . "\n";
+
+        $tr = \mkw\Store::getEm()->getRepository('Entities\Termek');
+        $res = $tr->getAllForExport();
+        foreach($res as $t) {
+            $cimke = $t->getCimkeByCategory(\mkw\Store::getParameter(\mkw\consts::MarkaCs));
+            $leiras = $t->getLeiras();
+            $leiras = str_replace("\n", '', $leiras);
+            $leiras = str_replace("\r", '', $leiras);
+            $leiras = str_replace("\n\r", '', $leiras);
+            $leiras = str_replace('"', '""', $leiras);
+
+//        $cimke = false;
+            $sor = array(
+                '"' . $t->getNev() . '"',
+                '"' . $t->getCikkszam() . '"',
+                '"1"',
+                '"' . number_format($t->getBruttoAr(), 0, ',', '') . '"', //number_format($tetel.bruttoegysarhuf,0,',',' ')
+                '"1"',
+                '"' . ($cimke ? $cimke->getNev() : '') . '"',
+                '"' . \mkw\Store::getFullUrl($t->getKepurlLarge(), \mkw\Store::getConfigValue('mainurl')) . '"',
+                '"' . $t->getTermekfa1Nev() . '"',
+                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')). '"',
+                '"-1"',
+                '"' . $leiras . '"'
+            );
+            echo implode(';', $sor) . "\n";
+        }
+    }
+
     public function ShopHunterExport() {
         header("Content-type: text/csv");
         header("Pragma: no-cache");

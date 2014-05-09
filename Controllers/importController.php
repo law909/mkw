@@ -42,6 +42,8 @@ class importController extends \mkwhelpers\Controller {
         $gyartoid = $this->params->getIntRequestParam('gyarto', 0);
         $db = $this->params->getIntRequestParam('db', 0);
 
+        $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
+
         $path = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
         $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
         if ($mainpath) {
@@ -49,6 +51,7 @@ class importController extends \mkwhelpers\Controller {
         }
         $path = $mainpath . $path;
         $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
 
         $ch = curl_init('http://kreativpuzzle.hu/lawstocklist/');
@@ -108,6 +111,7 @@ class importController extends \mkwhelpers\Controller {
                         $termek->setIdegenkod('KP' . $data[0]);
                         $termek->setTermekfa1($parent);
                         $termek->setVtsz($vtsz[0]);
+                        $termek->setHparany(3);
                         if ($gyarto) {
                             $termek->setGyarto($gyarto);
                         }
@@ -122,9 +126,12 @@ class importController extends \mkwhelpers\Controller {
                                 $imgcnt++;
 
                                 $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev);
+                                $kepnev = \mkw\Store::urlize($termeknev);
                                 if (count($imagelist[$data[0]]) > 1) {
                                     $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
+                                    $kepnev = $kepnev . '_' . $imgcnt;
                                 }
+
                                 $extension = \mkw\Store::getExtension($imgurl);
                                 $imgpath = $nameWithoutExt . '.' . $extension;
 
@@ -140,13 +147,13 @@ class importController extends \mkwhelpers\Controller {
                                         \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0]*1, $matches[1]*1, $settings['quality'], true) ;
                                 }
                                 if (((count($imagelist[$data[0]]) > 1) && ($imgcnt == 1)) || (count($imagelist[$data[0]]) == 1)) {
-                                    $termek->setKepurl($imgpath);
+                                    $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
                                     $termek->setKepleiras($termeknev);
                                 }
                                 else {
                                     $kep = new \Entities\TermekKep();
                                     $termek->addTermekKep($kep);
-                                    $kep->setUrl($imgpath);
+                                    $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
                                     $kep->setLeiras($termeknev);
                                     store::getEm()->persist($kep);
                                 }
