@@ -10,6 +10,8 @@ use mkw\store;
  * })
  */
 class TermekFa {
+
+    private $gtnev;
 	/**
 	 * @Id @Column(type="integer")
 	 * @GeneratedValue(strategy="AUTO")
@@ -152,6 +154,19 @@ class TermekFa {
 			$this->setKarkod(null);
 		}
 	}
+
+    private function gtn($level) {
+        if ($level && $level->getParent()) {
+            $this->gtnev = $level->getNev() . '|' . $this->gtnev;
+            $this->gtn($level->getParent());
+        }
+    }
+
+    public function getTeljesNev() {
+        $this->gtnev = $this->getNev();
+        $this->gtn($this->getParent());
+        return $this->gtnev;
+    }
 
 	public function getNev() {
 		return $this->nev;
