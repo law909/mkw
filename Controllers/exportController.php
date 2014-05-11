@@ -97,7 +97,7 @@ class exportController extends \mkwhelpers\Controller {
                 '"1"',
                 '"' . ($cimke ? $cimke->getNev() : '') . '"',
                 '"' . \mkw\Store::getFullUrl($t->getKepurlLarge(), \mkw\Store::getConfigValue('mainurl')) . '"',
-                '"' . $t->getTermekfa1Nev() . '"',
+                '"' . ($t->getTermekfa1() ? $t->getTermekfa1()->getTeljesNev() : '') . '"',
                 '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')). '"',
                 '"-1"',
                 '"' . $leiras . '"'

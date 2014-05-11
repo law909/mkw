@@ -66,6 +66,18 @@ class EntitiesAfaProxy extends \Entities\Afa implements \Doctrine\ORM\Proxy\Prox
         return parent::setErtek($ertek);
     }
 
+    public function getRLBkod()
+    {
+        $this->__load();
+        return parent::getRLBkod();
+    }
+
+    public function setRLBKod($d)
+    {
+        $this->__load();
+        return parent::setRLBKod($d);
+    }
+
     public function calcBrutto($netto)
     {
         $this->__load();
@@ -81,7 +93,7 @@ class EntitiesAfaProxy extends \Entities\Afa implements \Doctrine\ORM\Proxy\Prox
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'nev', 'ertek', 'bizonylattetelek');
+        return array('__isInitialized__', 'id', 'nev', 'ertek', 'rlbkod', 'bizonylattetelek');
     }
 
     public function __clone()
