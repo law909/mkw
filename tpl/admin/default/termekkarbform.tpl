@@ -45,6 +45,8 @@
 			<tr>
 				<td><label for="MEEdit">{t('ME')}:</label></td>
 				<td><input id="MEEdit" name="me" type="text" size="20" maxlength="20" value="{$termek.me}"></td>
+				<td><label for="IdegenkodEdit">{t('Idegen kód')}:</label></td>
+				<td><input id="IdegenkodEdit" name="idegenkod" type="text" size="20" maxlength="255" value="{$termek.idegenkod}"></td>
 			</tr>
 			<tr>
 				<td><label for="VtszEdit">{t('VTSZ')}:</label></td>

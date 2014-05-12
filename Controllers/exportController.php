@@ -229,6 +229,60 @@ class exportController extends \mkwhelpers\Controller {
         }
     }
 
+    public function ArgepExport() {
+        header("Content-type: text/csv");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        $sor = array(
+            'Cikkszám',
+            'Terméknév',
+            'Termékleírás',
+            'BruttóÁr',
+            'Fotólink',
+            'Terméklink',
+            'SzállításiIdő',
+            'SzállításiKöltség'
+        );
+        echo implode('|', $sor) . "\n";
+
+        $tr = \mkw\Store::getEm()->getRepository('Entities\Termek');
+        $res = $tr->getAllForExport();
+        foreach($res as $t) {
+
+            if ($t->getSzallitasiido()) {
+                $szallitasiido = $t->getSzallitasiido();
+            }
+            else {
+                $gyarto = $t->getGyarto();
+                if ($gyarto && $gyarto->getSzallitasiido()) {
+                    $szallitasiido = $gyarto->getSzallitasiido();
+                }
+                else {
+                    $szallitasiido = 0;
+                }
+            }
+
+            $leiras = $t->getLeiras();
+            $leiras = str_replace("\n", '', $leiras);
+            $leiras = str_replace("\r", '', $leiras);
+            $leiras = str_replace("\n\r", '', $leiras);
+            $leiras = str_replace('"', '""', $leiras);
+
+            $sor = array(
+                '"' . $t->getCikkszam() . '"',
+                '"' . $t->getNev() . '"',
+                '"' . $leiras . '"',
+                '"' . number_format($t->getBruttoAr(), 0, ',', '') . '"', //number_format($tetel.bruttoegysarhuf,0,',',' ')
+                '"' . \mkw\Store::getFullUrl($t->getKepurlLarge(), \mkw\Store::getConfigValue('mainurl')) . '"',
+                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')). '"',
+                '"' . ($szallitasiido ? 'max. ' . $szallitasiido . ' munkanap' : '') . '"',
+                '"0"'
+            );
+            echo implode('|', $sor) . "\n";
+        }
+    }
+
     private function encstr($str) {
         return mb_convert_encoding($str, 'ISO-8859-2', 'UTF8');
     }

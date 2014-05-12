@@ -43,6 +43,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['me'] = $t->getMe();
 		$x['cikkszam'] = $t->getCikkszam();
 		$x['idegencikkszam'] = $t->getIdegencikkszam();
+        $x['idegenkod'] = $t->getIdegenkod();
 		$x['oldalcim'] = $t->getOldalcim();
 		$x['rovidleiras'] = $t->getRovidleiras();
 		$x['leiras'] = $t->getLeiras();
@@ -147,6 +148,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$obj->setMe($this->params->getStringRequestParam('me'));
 		$obj->setCikkszam($this->params->getStringRequestParam('cikkszam'));
 		$obj->setIdegencikkszam($this->params->getStringRequestParam('idegencikkszam'));
+        $obj->setIdegenkod($this->params->getStringRequestParam('idegenkod'));
 		$obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
 		$obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
 		$obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));

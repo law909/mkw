@@ -55,5 +55,6 @@ $router->map('GET', '/export/shophunter', 'exportController#ShopHunterExport', '
 $router->map('GET', '/export/arfurkesz', 'exportController#ArfurkeszExport', 'arfurkeszexport');
 $router->map('GET', '/export/armutato', 'exportController#ArmutatoExport', 'armutatoexport');
 $router->map('GET', '/export/olcso', 'exportController#OlcsoExport', 'olcsoexport');
+$router->map('GET', '/export/argep', 'exportController#ArgepExport', 'argepexport');
 $router->map('GET', '/sitemap.xml', 'sitemapController#toBot', 'sitemap');
 
