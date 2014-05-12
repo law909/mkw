@@ -173,7 +173,6 @@ class importController extends \mkwhelpers\Controller {
             store::getEm()->flush();
         }
         fclose($fh);
-
     }
 
 }

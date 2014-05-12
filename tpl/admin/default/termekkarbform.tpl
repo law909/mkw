@@ -294,6 +294,10 @@
 		<div class="mattkarb-titlebar" data-caption="{t('Képek')}" data-refcontrol="#KepTab"></div>
 		{/if}
 		<div id="KepTab" class="mattkarb-page" data-visible="visible">
+            <div>
+                <label for="RegikepurlEdit">Régi kép url:</label>
+                <input id="RegikepurlEdit" type="text" name="regikepurl" size=70 value="{$termek.regikepurl}">
+            </div>
 			{include 'termekimagekarb.tpl'}
 			{foreach $termek.kepek as $kep}
 			{include 'termektermekkepkarb.tpl'}

@@ -108,6 +108,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['kepurlmedium'] = $t->getKepurlMedium();
 		$x['kepurllarge'] = $t->getKepurlLarge();
 		$x['kepleiras'] = $t->getKepleiras();
+        $x['regikepurl'] = $t->getRegikepurl();
 		$x['szelesseg'] = $t->getSzelesseg();
 		$x['magassag'] = $t->getMagassag();
 		$x['hosszusag'] = $t->getHosszusag();
@@ -167,6 +168,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$obj->setOsszehajthato($this->params->getBoolRequestParam('osszehajthato'));
 		$obj->setKepurl($this->params->getStringRequestParam('kepurl', ''));
 		$obj->setKepleiras($this->params->getStringRequestParam('kepleiras', ''));
+        $obj->setRegikepurl($this->params->getStringRequestParam('regikepurl', ''));
 		$obj->setTermekexportbanszerepel($this->params->getBoolRequestParam('termekexportbanszerepel'));
 		$obj->setNemkaphato($this->params->getBoolRequestParam('nemkaphato'));
         $obj->setFuggoben($this->params->getBoolRequestParam('fuggoben'));
@@ -768,5 +770,20 @@ class termekController extends \mkwhelpers\MattableController {
         $newlink = \mkw\Store::getRouter()->generate('termekfeed');
         header("HTTP/1.1 301 Moved Permanently");
         header('Location: ' . $newlink);
+    }
+
+    public function redirectRegikepUrl() {
+        $filename = $this->params->getStringRequestParam('filename');
+        if ($filename) {
+            $termek = $this->getRepo()->findOneByRegikepurl($filename);
+            if ($termek) {
+                $newlink = \mkw\Store::getFullUrl($termek->getKepurlLarge(), \mkw\Store::getConfigValue('mainurl'));
+                header("HTTP/1.1 301 Moved Permanently");
+                header('Location: ' . $newlink);
+                return;
+            }
+        }
+        $mc = new mainController($this->params);
+        $mc->show404('HTTP/1.1 410 Gone');
     }
 }

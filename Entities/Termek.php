@@ -241,6 +241,9 @@ class Termek {
     /** @Column(type="integer",nullable=true) */
     private $szallitasiido;
 
+    /** @Column(type="text",nullable=true) */
+    private $regikepurl = '';
+
     /**
      * @PrePersist
      * @PreUpdate
@@ -1391,4 +1394,13 @@ class Termek {
     public function setSzallitasiido($adat) {
         $this->szallitasiido = $adat;
     }
+
+    public function getRegikepurl() {
+        return $this->regikepurl;
+    }
+
+    public function setRegikepurl($adat) {
+        $this->regikepurl = $adat;
+    }
+
 }
