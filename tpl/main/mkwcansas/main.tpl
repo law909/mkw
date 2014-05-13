@@ -109,18 +109,18 @@
                 </div>
 
             </div>
-            {if (count($legnepszerubbtermekek)>0)}
+            {if (count($legujabbtermekek)>0)}
             <div class="blockHeader">
-                <h2 class="main">{t('Legnépszerűbb termékeink')}</h2>
+                <h2 class="main">{t('Legújabb termékeink')}</h2>
             </div>
             <div id="legnepszerubbtermekslider" class="royalSlider contentSlider rsDefaultInv termekSlider">
-                {$lntcnt=count($legnepszerubbtermekek)}
+                {$lntcnt=count($legujabbtermekek)}
                 {$step=3}
                 {for $i=0 to $lntcnt-1 step $step}
                     <div>
                     {for $j=0 to $step-1}
                         {if ($i+$j<$lntcnt)}
-                        {$_termek=$legnepszerubbtermekek[$i+$j]}
+                        {$_termek=$legujabbtermekek[$i+$j]}
                         <div class="textaligncenter pull-left" style="width:{100/$step}%">
                             <div class="termekSliderTermekInner">
                                 <a href="/termek/{$_termek.slug}">

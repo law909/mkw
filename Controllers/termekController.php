@@ -723,7 +723,16 @@ class termekController extends \mkwhelpers\MattableController {
 		return $ret;
 	}
 
-	public function feed() {
+	public function getLegujabbLista() {
+		$termekek = $this->getRepo()->getLegujabbTermekek(store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5));
+		$ret = array();
+		foreach ($termekek as $termek) {
+			$ret[] = $termek->toTermekLista();
+		}
+		return $ret;
+	}
+
+    public function feed() {
 		$feedview = $this->getTemplateFactory()->createMainView('feed.tpl');
 		$view = $this->getTemplateFactory()->createMainView('termekfeed.tpl');
 		$feedview->setVar('title', store::getParameter(\mkw\consts::Feedtermektitle, t('Termékeink')));

@@ -300,6 +300,17 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $this->getWithJoins($filter, $order, 0, $db);
     }
 
+    public function getLegujabbTermekek($db) {
+        $filter = array();
+        $filter = $this->addAktivLathatoFilter($filter);
+        $filter['fields'][] = 'nemkaphato';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = false;
+        $order = array('_xx.id' => 'DESC');
+
+        return $this->getWithJoins($filter, $order, 0, $db);
+    }
+
     public function getNevek($keresett) {
         $a = $this->alias;
         $filter = array();

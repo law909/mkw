@@ -48,6 +48,7 @@ class mainController extends \mkwhelpers\Controller {
 		$this->view->setVar('hirek', $hc->gethirlist());
 		$this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
 		$this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista());
+		$this->view->setVar('legujabbtermekek', $tc->getLegujabbLista());
 		$this->view->setVar('korhintalista', $khc->getLista());
 		$this->view->setVar('topkategorialista', $tfc->getformenu(store::getSetupValue('topkategoriamenunum', 3), 0));
         $this->view->setVar('kiemeltmarkalista', $tcc->getKiemeltList());
