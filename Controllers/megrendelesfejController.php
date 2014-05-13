@@ -19,7 +19,7 @@ class megrendelesfejController extends bizonylatfejController {
         $view->setVar('showteljesites', false);
         $view->setVar('showesedekesseg', false);
         $view->setVar('showhatarido', true);
-        $view->setVar('showvalutanem', true);
+        $view->setVar('showvalutanem', false);
         $view->setVar('showbizonylatstatuszeditor', true);
         $view->setVar('showinheritbutton', true);
         $bsc = new bizonylatstatuszController($this->params);

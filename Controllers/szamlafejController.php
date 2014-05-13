@@ -19,7 +19,7 @@ class SzamlafejController extends bizonylatfejController {
         $view->setVar('showteljesites', true);
         $view->setVar('showesedekesseg', true);
         $view->setVar('showhatarido', false);
-        $view->setVar('showvalutanem', true);
+        $view->setVar('showvalutanem', false);
         $view->setVar('showbizonylatstatuszeditor', false);
         $view->setVar('showinheritbutton', false);
         $fmc = new fizmodController($this->params);
