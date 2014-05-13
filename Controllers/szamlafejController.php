@@ -22,6 +22,10 @@ class SzamlafejController extends bizonylatfejController {
         $view->setVar('showvalutanem', true);
         $view->setVar('showbizonylatstatuszeditor', false);
         $view->setVar('showinheritbutton', false);
+        $fmc = new fizmodController($this->params);
+        $view->setVar('fizmodlist', $fmc->getSelectList());
+        $a = date(\mkw\Store::$DateFormat, strtotime('-1 week'));
+        $view->setVar('datumtolfilter', $a);
     }
 
     public function getlistbody() {

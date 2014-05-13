@@ -214,6 +214,13 @@ $(document).ready(function() {
 	};
 
 	if ($.fn.mattable) {
+        var datumtolfilter = $('#datumtolfilter'),
+            datumigfilter = $('#datumigfilter');
+        datumtolfilter.datepicker($.datepicker.regional['hu']);
+		datumtolfilter.datepicker('option', 'dateFormat', 'yy.mm.dd');
+        datumtolfilter.datepicker('setDate', datumtolfilter.attr('data-datum'));
+        datumigfilter.datepicker($.datepicker.regional['hu']);
+		datumigfilter.datepicker('option', 'dateFormat', 'yy.mm.dd');
 		$('#mattable-select').mattable({
 			filter: {
 				fields: [
@@ -228,7 +235,9 @@ $(document).ready(function() {
                     '#szamlazasiutcafilter',
                     '#datumtipusfilter',
                     '#datumtolfilter',
-                    '#datumigfilter'
+                    '#datumigfilter',
+                    '#bizonylatstatuszfilter',
+                    '#fizmodfilter'
                 ]
 			},
 			tablebody: {
@@ -245,12 +254,6 @@ $(document).ready(function() {
 			},
 			karb: megrendeles
 		});
-        var datumtolfilter = $('#datumtolfilter'),
-            datumigfilter = $('#datumigfilter');
-        datumtolfilter.datepicker($.datepicker.regional['hu']);
-		datumtolfilter.datepicker('option', 'dateFormat', 'yy.mm.dd');
-        datumigfilter.datepicker($.datepicker.regional['hu']);
-		datumigfilter.datepicker('option', 'dateFormat', 'yy.mm.dd');
 		$('.js-maincheckbox').change(function() {
 			$('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
 		});

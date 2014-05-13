@@ -38,8 +38,28 @@
             <option value="2">teljesítés</option>
             <option value="3">esedékesség</option>
         </select>
-        <input id="datumtolfilter" name="datumtolfilter" type="text" size="12">
+        <input id="datumtolfilter" name="datumtolfilter" type="text" size="12" data-datum="{$datumtolfilter|default}">
         <input id="datumigfilter" name="datumigfilter" type="text" size="12">
+    </div>
+    {if ($showbizonylatstatuszeditor)}
+    <div>
+        <label for="bizonylatstatuszfilter">Státusz:</label>
+        <select id="bizonylatstatuszfilter" name="bizonylatstatuszfilter">
+            <option value="">Mindegy</option>
+            {foreach $bizonylatstatuszlist as $_role}
+            <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+            {/foreach}
+        </select>
+    </div>
+    {/if}
+    <div>
+        <label for="fizmodfilter">Fiz.mód:</label>
+        <select id="fizmodfilter" name="fizmodfilter">
+            <option value="">Mindegy</option>
+            {foreach $fizmodlist as $_role}
+            <option value="{$_role.id}">{$_role.caption}</option>
+            {/foreach}
+        </select>
     </div>
 </div>
 <div class="mattable-pagerwrapper">

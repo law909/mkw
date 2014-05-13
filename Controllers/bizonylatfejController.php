@@ -101,6 +101,24 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $filter['values'][] = $ig;
             }
         }
+        $f = $this->params->getIntRequestParam('bizonylatstatuszfilter');
+        if ($f) {
+            $bs = $this->getRepo('Entities\Bizonylatstatusz')->findOneById($f);
+            if ($bs) {
+                $filter['fields'][] = 'bizonylatstatusz';
+                $filter['clauses'][] = '=';
+                $filter['values'][] = $bs;
+            }
+        }
+        $f = $this->params->getIntRequestParam('fizmodfilter');
+        if ($f) {
+            $bs = $this->getRepo('Entities\Fizmod')->findOneById($f);
+            if ($bs) {
+                $filter['fields'][] = 'fizmod';
+                $filter['clauses'][] = '=';
+                $filter['values'][] = $bs;
+            }
+        }
         return $filter;
     }
 

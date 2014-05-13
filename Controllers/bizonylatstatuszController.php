@@ -90,7 +90,7 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-   	public function getSelectList($selid) {
+   	public function getSelectList($selid = null) {
 		$rec=$this->getRepo()->getAll(array(),array('sorrend'=>'ASC', 'nev' => 'ASC'));
 		$res=array();
 		foreach($rec as $sor) {
