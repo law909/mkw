@@ -356,7 +356,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 					$order = array('_xx.id' => 'DESC');
 					break;
 				default:
-					$order = array();
+					$order = array('_xx.nev' => 'ASC');
 					break;
 			}
 
