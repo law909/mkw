@@ -135,11 +135,18 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $ret = array();
         foreach($o->getBizonylattetelek() as $tetel) {
             $a = $tetel->getAfa();
-            $ret[$tetel->getAfaId()]['netto'] += round($tetel->getNettohuf());
-            $ret[$tetel->getAfaId()]['afa'] += round($tetel->getAfaertekhuf());
-            $ret[$tetel->getAfaId()]['brutto'] += round($tetel->getBruttohuf());
-            $ret[$tetel->getAfaId()]['caption'] = $tetel->getAfanev();
-            $ret[$tetel->getAfaId()]['rlbkod'] = ($a ? $a->getRLBkod() : 0);
+            if (!array_key_exists($tetel->getAfaId(), $ret)) {
+                $ret[$tetel->getAfaId()] = array(
+                    'netto' => 0,
+                    'afa' => 0,
+                    'brutto' => 0,
+                    'caption' => $tetel->getAfanev(),
+                    'rlbkod' => ($a ? $a->getRLBkod() : 0)
+                );
+            }
+            $ret[$tetel->getAfaId()]['netto'] += round($tetel->getNetto());
+            $ret[$tetel->getAfaId()]['afa'] += round($tetel->getAfaertek());
+            $ret[$tetel->getAfaId()]['brutto'] += round($tetel->getBrutto());
         }
         return $ret;
     }

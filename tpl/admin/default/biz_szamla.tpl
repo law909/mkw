@@ -61,11 +61,11 @@
                     <td>{$tetel.cikkszam}</td>
                     <td>{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</td>
                     <td class="textalignright">{number_format($tetel.mennyiseg,0,'',' ')} {$tetel.me}</td>
-                    <td class="textalignright">{number_format($tetel.nettoegysarhuf,0,'',' ')}</td>
-                    <td class="textalignright">{number_format($tetel.nettohuf,0,'',' ')}</td>
+                    <td class="textalignright">{number_format($tetel.nettoegysar,0,'',' ')}</td>
+                    <td class="textalignright">{number_format($tetel.netto,0,'',' ')}</td>
                     <td class="textalignright">{$tetel.afanev}</td>
-                    <td class="textalignright">{number_format($tetel.afahuf,0,'',' ')}</td>
-                    <td class="textalignright">{number_format($tetel.bruttohuf,0,'',' ')}</td>
+                    <td class="textalignright">{number_format($tetel.afa,0,'',' ')}</td>
+                    <td class="textalignright">{number_format($tetel.brutto,0,'',' ')}</td>
                 </tr>
             {/foreach}
         </tbody>
@@ -103,15 +103,15 @@
             <tbody>
                 <tr>
                     <td>Nettó:</td>
-                    <td class="textalignright">{number_format($egyed.nettohuf,0,'',' ')} Ft</td>
+                    <td class="textalignright">{number_format($egyed.netto,0,'',' ')} Ft</td>
                 </tr>
                 <tr>
                     <td>ÁFA:</td>
-                    <td class="textalignright">{number_format($egyed.afahuf,0,'',' ')} Ft</td>
+                    <td class="textalignright">{number_format($egyed.afa,0,'',' ')} Ft</td>
                 </tr>
                 <tr>
                     <td>Bruttó:</td>
-                    <td class="textalignright">{number_format($egyed.bruttohuf,0,'',' ')} Ft</td>
+                    <td class="textalignright">{number_format($egyed.brutto,0,'',' ')} Ft</td>
                 </tr>
                 <tr>
                     <td class="bold">Fizetendő:</td>

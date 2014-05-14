@@ -57,13 +57,17 @@ class termekkepController extends \mkwhelpers\MattableController {
 	}
 
 	public function del() {
+        $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
+        if ($mainpath) {
+            $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        }
 		$kep=$this->getRepo()->find($this->params->getNumRequestParam('id'));
 		if ($kep) {
-			unlink($kep->getUrl(''));
-			unlink($kep->getUrlMini(''));
-			unlink($kep->getUrlSmall(''));
-			unlink($kep->getUrlMedium(''));
-			unlink($kep->getUrlLarge(''));
+			unlink($mainpath . $kep->getUrl(''));
+			unlink($mainpath . $kep->getUrlMini(''));
+			unlink($mainpath . $kep->getUrlSmall(''));
+			unlink($mainpath . $kep->getUrlMedium(''));
+			unlink($mainpath . $kep->getUrlLarge(''));
 			$this->getEm()->remove($kep);
 			$this->getEm()->flush();
 		}
