@@ -8,8 +8,9 @@ class KosarRepository extends \mkwhelpers\Repository {
         parent::__construct($em, $class);
         $this->setEntityname('Entities\Kosar');
         $this->setOrders(array(
-            '1' => array('caption' => 'session szerint', 'order' => array('_xx.sessionid' => 'ASC')),
-            '2' => array('caption' => 'létrehozás dátuma szerint', 'order' => array('_xx.created' => 'ASC'))
+            '1' => array('caption' => 'létrehozás dátuma szerint csökkenő', 'order' => array('_xx.created' => 'DESC', '_xx.sessionid' => 'ASC')),
+            '2' => array('caption' => 'létrehozás dátuma szerint növekvő', 'order' => array('_xx.created' => 'ASC', '_xx.sessionid' => 'ASC')),
+            '3' => array('caption' => 'session szerint növekvő', 'order' => array('_xx.sessionid' => 'ASC')),
         ));
     }
 

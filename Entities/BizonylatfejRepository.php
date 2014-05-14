@@ -8,7 +8,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 		parent::__construct($em, $class);
 		$this->setEntityname('Entities\Bizonylatfej');
 		$this->setOrders(array(
-			'1' => array('caption' => 'biz.szám szerint', 'order' => array('_xx.id' => 'ASC'))
+            '1' => array('caption' => 'kelt szerint csökkenő', 'order' => array('_xx.kelt' => 'DESC','_xx.id' => 'DESC')),
+            '2' => array('caption' => 'kelt szerint növekvő', 'order' => array('_xx.kelt' => 'DESC','_xx.id' => 'DESC')),
+			'3' => array('caption' => 'biz.szám szerint csökkenő', 'order' => array('_xx.id' => 'DESC')),
+			'4' => array('caption' => 'biz.szám szerint növekvő', 'order' => array('_xx.id' => 'ASC'))
 		));
 	}
 

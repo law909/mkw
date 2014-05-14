@@ -9,7 +9,7 @@ class HirRepository extends \mkwhelpers\Repository {
 		parent::__construct($em,$class);
 		$this->setEntityname('Entities\Hir');
 		$this->setOrders(array(
-			'1'=>array('caption'=>'cím szerint','order'=>array('_xx.cim'=>'ASC'))
+			'1'=>array('caption'=>'cím szerint növekvő','order'=>array('_xx.cim'=>'ASC'))
 		));
 	}
 

@@ -9,7 +9,7 @@ class StatlapRepository extends \mkwhelpers\Repository {
 		parent::__construct($em,$class);
 		$this->setEntityname('Entities\Statlap');
 		$this->setOrders(array(
-			'1'=>array('caption'=>'oldalcím szerint','order'=>array('_xx.oldalcim'=>'ASC'))
+			'1'=>array('caption'=>'oldalcím szerint növekvő','order'=>array('_xx.oldalcim'=>'ASC'))
 		));
 	}
 

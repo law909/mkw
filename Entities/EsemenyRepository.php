@@ -7,9 +7,9 @@ class EsemenyRepository extends \mkwhelpers\Repository {
 		parent::__construct($em,$class);
 		$this->setEntityname('Entities\Esemeny');
 		$this->setOrders(array(
-			'1'=>array('caption'=>'esemény szerint','order'=>array('_xx.bejegyzes'=>'ASC')),
-			'2'=>array('caption'=>'partner szerint','order'=>array('a.nev'=>'ASC')),
-			'3'=>array('caption'=>'esedékesség','order'=>array('_xx.esedekes'=>'ASC'))
+			'1'=>array('caption'=>'esemény szerint növekvő','order'=>array('_xx.bejegyzes'=>'ASC')),
+			'2'=>array('caption'=>'partner szerint növekvő','order'=>array('a.nev'=>'ASC')),
+			'3'=>array('caption'=>'esedékesség növekvő','order'=>array('_xx.esedekes'=>'ASC'))
 		));
 	}
 

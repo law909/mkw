@@ -7,8 +7,8 @@ class PartnercimketorzsRepository extends \mkwhelpers\Repository {
 		parent::__construct($em,$class);
 		$this->setEntityname('Entities\Partnercimketorzs');
 		$this->setOrders(array(
-			'1'=>array('caption'=>'név szerint','order'=>array('_xx.nev'=>'ASC')),
-			'2'=>array('caption'=>'csoport szerint','order'=>array('ck.nev'=>'ASC','_xx.nev'=>'ASC'))
+			'1'=>array('caption'=>'név szerint növekvő','order'=>array('_xx.nev'=>'ASC')),
+			'2'=>array('caption'=>'csoport szerint növekvő','order'=>array('ck.nev'=>'ASC','_xx.nev'=>'ASC'))
 		));
 		$this->setBatches(array(
 			'1'=>'áthelyezés másik címkecsoportba'

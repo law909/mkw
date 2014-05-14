@@ -7,8 +7,8 @@ class JelenletiivRepository extends \mkwhelpers\Repository {
 		parent::__construct($em,$class);
 		$this->setEntityname('Entities\Jelenletiiv');
 		$this->setOrders(array(
-			'1'=>array('caption'=>'dátum és dolgozó szerint','order'=>array('_xx.datum'=>'ASC','d.nev'=>'ASC')),
-			'2'=>array('caption'=>'dolgozó és dátum szerint','order'=>array('d.nev'=>'ASC','_xx.datum'=>'ASC'))
+			'1'=>array('caption'=>'dátum és dolgozó szerint növekvő','order'=>array('_xx.datum'=>'ASC','d.nev'=>'ASC')),
+			'2'=>array('caption'=>'dolgozó és dátum szerint növekvő','order'=>array('d.nev'=>'ASC','_xx.datum'=>'ASC'))
 		));
 /* MINTA
 		$this->setBatches(array(

@@ -8,7 +8,7 @@ class DolgozoRepository extends \mkwhelpers\Repository {
         parent::__construct($em, $class);
         $this->setEntityname('Entities\Dolgozo');
         $this->setOrders(array(
-            '1' => array('caption' => 'név szerint', 'order' => array('_xx.nev' => 'ASC'))
+            '1' => array('caption' => 'név szerint növekvő', 'order' => array('_xx.nev' => 'ASC'))
         ));
     }
 

@@ -145,7 +145,7 @@ class MattableController extends Controller {
 
     protected function getOrderArray() {
         //TODO SQLINJECTION
-        return $this->repo->getOrder($this->params->getRequestParam('order', 1), $this->params->getRequestParam('orderdir', 'asc'));
+        return $this->repo->getOrder($this->params->getRequestParam('order', 1));
     }
 
     protected function initPager($elemcount, $elemperpage = null, $pageno = null) {

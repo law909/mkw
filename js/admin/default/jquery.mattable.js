@@ -204,10 +204,11 @@
                 }
             }
             if (orderwrapper.length) {
-                orderwrapper.append('<select class="mattable-orderdirselect">' +
+/*                orderwrapper.append('<select class="mattable-orderdirselect">' +
                         '<option value="asc">' + setup.txt.orderUp + '</option>' +
                         '<option value="desc">' + setup.txt.orderDown + '</option>' +
                         '</select>');
+                        */
                 orderdirselect = $(setup.pager.orderdir);
             }
             if (pager.length) {

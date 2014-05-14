@@ -239,17 +239,11 @@ class Repository extends EntityRepository {
         return '';
     }
 
-    public function getOrder($id, $dir) {
+    public function getOrder($id) {
         if (!is_array($this->orders)) {
             return array();
         }
-        $k = array_keys($this->orders[$id]['order']);
-        $c = count($k);
-        $v = array();
-        for ($i = 0; $i < $c; $i++) {
-            $v[] = $dir;
-        }
-        return array_combine($k, $v);
+        return $this->orders[$id]['order'];
     }
 
     public function getBatchesForTpl() {

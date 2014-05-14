@@ -7,10 +7,10 @@ class TeendoRepository extends \mkwhelpers\Repository {
 		parent::__construct($em,$class);
 		$this->setEntityname('Entities\Teendo');
 		$this->setOrders(array(
-			'1'=>array('caption'=>'teendő szerint','order'=>array('_xx.bejegyzes'=>'ASC')),
-			'2'=>array('caption'=>'partner szerint','order'=>array('a.nev'=>'ASC')),
-			'3'=>array('caption'=>'esedékesség','order'=>array('_xx.esedekes'=>'ASC')),
-			'4'=>array('caption'=>'állapot','order'=>array('_xx.elvegezve'=>'ASC'))
+			'1'=>array('caption'=>'teendő szerint növekvő','order'=>array('_xx.bejegyzes'=>'ASC')),
+			'2'=>array('caption'=>'partner szerint növekvő','order'=>array('a.nev'=>'ASC')),
+			'3'=>array('caption'=>'esedékesség növekvő','order'=>array('_xx.esedekes'=>'ASC')),
+			'4'=>array('caption'=>'állapot növekvő','order'=>array('_xx.elvegezve'=>'ASC'))
 		));
 	}
 

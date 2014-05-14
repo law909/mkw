@@ -7,8 +7,8 @@ class FelhasznaloRepository extends \mkwhelpers\Repository {
 		parent::__construct($em,$class);
 		$this->setEntityname('Entities\Felhasznalo');
 		$this->setOrders(array(
-			'1'=>array('caption'=>'név szerint','order'=>array('_xx.nev'=>'ASC')),
-			'2'=>array('caption'=>'felhasználónév szerint','order'=>array('_xx.felhasznalonev'=>'ASC'))
+			'1'=>array('caption'=>'név szerint növekvő','order'=>array('_xx.nev'=>'ASC')),
+			'2'=>array('caption'=>'felhasználónév szerint növekvő','order'=>array('_xx.felhasznalonev'=>'ASC'))
 		));
 	}
 

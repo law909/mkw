@@ -10,8 +10,8 @@ class PartnerRepository extends \mkwhelpers\Repository {
 		parent::__construct($em, $class);
 		$this->setEntityname('Entities\Partner');
 		$this->setOrders(array(
-			'1' => array('caption' => 'név szerint', 'order' => array('nev' => 'ASC')),
-			'2' => array('caption' => 'cím szerint', 'order' => array('irszam' => 'ASC', 'varos' => 'ASC', 'utca' => 'ASC'))
+			'1' => array('caption' => 'név szerint növekvő', 'order' => array('nev' => 'ASC')),
+			'2' => array('caption' => 'cím szerint növekvő', 'order' => array('irszam' => 'ASC', 'varos' => 'ASC', 'utca' => 'ASC'))
 		));
 		$this->setBatches(array(
 			'1' => 'címke hozzáadás',
