@@ -939,6 +939,56 @@ $().ready(
             $(_szm.pager + '_center').hide();
             $(_szm.pager + '_right').hide();
 
+            // Rewrite301 grid
+            var _rw301 = {
+                grid: '#rw301grid',
+                pager: '#rw301gridpager'
+            };
+            var rw301grid = $(_rw301.grid).jqGrid({
+                url: '/admin/rw301/jsonlist',
+                editurl: '/admin/rw301/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'fromurl', index: 'fromurl', label: 'From',
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'From:', elmsuffix: '*'}},
+                    {name: 'tourl', index: 'tourl', label: 'To',
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 2, label: 'To:', elmsuffix: '*'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _rw301.pager,
+                sortname: 'fromurl',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 647,
+                hiddengrid: true,
+                caption: 'Rewrite 301'});
+            $(_rw301.grid).jqGrid('navGrid', _rw301.pager, {edit: true, add: true, del: true, search: false},
+            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+            {reloadAfterSubmit: true});
+            $(_rw301.grid).jqGrid('navButtonAdd', _rw301.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    rw301grid[0].toggleToolbar();
+                }
+            });
+            $(_rw301.grid).jqGrid('navButtonAdd', _rw301.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    rw301grid[0].clearToolbar();
+                }
+            });
+            $(_rw301.grid).jqGrid('filterToolbar');
+            $(_rw301.pager + '_center').hide();
+            $(_rw301.pager + '_right').hide();
+
             // Altalanos
             $('.ui-search-toolbar').hide();
             $('.ui-jqgrid-titlebar').on('click', function(e) {

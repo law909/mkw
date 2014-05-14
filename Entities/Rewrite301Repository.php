@@ -1,14 +1,11 @@
 <?php
 namespace Entities;
 
-class ?Howto?Repository extends \mkwhelpers\Repository {
+class Rewrite301Repository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
 		parent::__construct($em,$class);
-		$this->setEntityname('Entities\?Howto?');
-		$this->setOrders(array(
-			'1'=>array('caption'=>'név szerint','order'=>array('_xx.nev'=>'ASC'))
-		));
+		$this->setEntityname('Entities\Rewrite301');
 /* MINTA
 		$this->setBatches(array(
 			'1'=>'áthelyezés másik címkecsoportba'

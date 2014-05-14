@@ -80,5 +80,9 @@ $.jgrid.useJSON=true;
 	<table id="bankszamlagrid"></table>
 	<div id="bankszamlagridpager"></div>
 	</div>
+	<div class="egyebadat-grid">
+	<table id="rw301grid"></table>
+	<div id="rw301gridpager"></div>
+	</div>
 </div>
 {/block}

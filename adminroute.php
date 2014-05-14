@@ -46,6 +46,8 @@ $router->map('GET', '/admin/irszam/htmllist', 'irszamController#htmllist', 'admi
 $router->map('POST', '/admin/irszam/save', 'irszamController#save', 'adminirszamsave');
 $router->map('GET', '/admin/irszam', 'irszamController#typeaheadList', 'adminirszamtypeahead');
 $router->map('GET', '/admin/varos', 'irszamController#varosTypeaheadList', 'adminvarostypeahead');
+$router->map('GET', '/admin/rw301/jsonlist', 'rewrite301Controller#jsonlist', 'adminrewrite301jsonlist');
+$router->map('POST', '/admin/rw301/save', 'rewrite301Controller#save', 'adminrewrite301save');
 
 $router->map('GET', '/admin/getsmallurl', 'adminController#getSmallUrl', 'admingetsmallurl');
 $router->map('GET', '/admin/regeneratekarkod', 'adminController#regeneratekarkod', 'adminregeneratekarkod');

@@ -56,6 +56,9 @@ if ($pc->checkloggedin()) {
 	}
 }
 
+$rw301c = new \Controllers\rewrite301Controller();
+$rw301c->rewrite();
+
 $router = Store::getRouter();
 if (file_exists('mainroute.php')) {
 	require_once 'mainroute.php';
