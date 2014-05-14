@@ -222,6 +222,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 
 	public function gettermeklistaforparent($parent, $caller = null) {
 		$kategoriafilter = array();
+		$nativkategoriafilter = array();
 		$arfilter = array();
 		$termekidfilter = array();
 		$ret = array();
@@ -273,19 +274,10 @@ class termekfaController extends \mkwhelpers\MattableController {
 			$kategoriafilter['fields'][] = array('_xx.termekfa1', '_xx.termekfa2', '_xx.termekfa3');
 			$kategoriafilter['clauses'][] = '=';
 			$kategoriafilter['values'][] = $parent->getId();
+			$nativkategoriafilter['fields'][] = array('_xx.termekfa1_id', '_xx.termekfa2_id', '_xx.termekfa3_id');
+			$nativkategoriafilter['clauses'][] = '=';
+			$nativkategoriafilter['values'][] = $parent->getId();
 		}
-
-		$kategoriafilter['fields'][] = '_xx.inaktiv';
-		$kategoriafilter['clauses'][] = '=';
-		$kategoriafilter['values'][] = 0;
-
-		$kategoriafilter['fields'][] = '_xx.lathato';
-		$kategoriafilter['clauses'][] = '=';
-		$kategoriafilter['values'][] = 1;
-
-        $kategoriafilter['fields'][] = '_xx.fuggoben';
-		$kategoriafilter['clauses'][] = '=';
-		$kategoriafilter['values'][] = 0;
 
 		$keresofilter = array();
 		if ($keresoszo) {
@@ -364,7 +356,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 					$order = array('_xx.id' => 'DESC');
 					break;
 				default:
-					$order = array('_xx.nev' => 'ASC');
+					$order = array();
 					break;
 			}
 
@@ -396,7 +388,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 			// termekek kategoriaval es cimkevel es arral szurve, lapozva
 			// ez a konkret termeklista
             $osszestermekid = array();
-            $termekek = $termekrepo->getTermekLista(array_merge_recursive($keresofilter, $kategoriafilter, $termekidfilter, $arfilter), $order, $pager->getOffset(), $elemperpage);
+            $termekek = $termekrepo->getTermekLista(array_merge_recursive($keresofilter, $nativkategoriafilter, $termekidfilter, $arfilter), $order, $pager->getOffset(), $elemperpage);
 			foreach ($termekek as $termek) {
                 $osszestermekid[] = $termek['id'];
 				$term = $termekrepo->find($termek['id']);
