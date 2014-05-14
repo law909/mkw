@@ -145,6 +145,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$x['hataridostr'] = $t->getHataridoStr();
 		$x['partner'] = $t->getPartnerId();
 		$x['partnernev'] = $t->getPartnernev();
+        $x['partnervezeteknev'] = $t->getPartnervezeteknev();
+        $x['partnerkeresztnev'] = $t->getPartnerkeresztnev();
 		$x['partnerirszam'] = $t->getPartnerirszam();
 		$x['partnervaros'] = $t->getPartnervaros();
 		$x['partnerutca'] = $t->getPartnerutca();

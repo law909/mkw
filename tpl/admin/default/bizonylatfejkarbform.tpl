@@ -38,8 +38,12 @@
 			</tr>
             <tr>
                 <td></td>
-                <td colspan="7">
+                <td>
                     <input name="partnernev" value="{$egyed.partnernev}">
+                </td>
+                <td><label>Vezeték és keresztnév:</td>
+                <td colspan="5">
+                    <input name="xpartnernev" value="{$egyed.partnervezeteknev} {$egyed.partnerkeresztnev}">
                 </td>
             </tr>
 			<tr>
