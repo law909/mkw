@@ -20,20 +20,22 @@ var bizonylathelper = function($) {
 
     function getArfolyam() {
         var d = $('#TeljesitesEdit').datepicker('getDate');
-        if (!d) {
+        if (d.getDate === undefined) {
             d = $('#KeltEdit').datepicker('getDate');
         }
-        $.ajax({
-            async: false,
-            url: '/admin/arfolyam/getarfolyam',
-            data: {
-                valutanem: $('#ValutanemEdit').val(),
-                datum: d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + d.getDate()
-            },
-            success: function(data) {
-                $('#ArfolyamEdit').val(data);
-            }
-        });
+        if (d.getDate !== undefined) {
+            $.ajax({
+                async: false,
+                url: '/admin/arfolyam/getarfolyam',
+                data: {
+                    valutanem: $('#ValutanemEdit').val(),
+                    datum: d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + d.getDate()
+                },
+                success: function(data) {
+                    $('#ArfolyamEdit').val(data);
+                }
+            });
+        }
     }
 
     function setTermekAr(sorId) {

@@ -40,7 +40,13 @@ $(document).ready(function() {
 					fizmodedit = $('#FizmodEdit'),
 					bankszamlaedit = $('#BankszamlaEdit'),
 					alttab = $('#AltalanosTab');
-			$('#PartnerEdit').change(function() {
+
+            function ValutanemChange() {
+                bankszamlaedit.val($('option:selected', $('#ValutanemEdit')).data('bankszamla'));
+                bizonylathelper.getArfolyam();
+            }
+
+            $('#PartnerEdit').change(function() {
                 var pe = $(this);
                 $.ajax({
                     url: '/admin/partner/getdata',
@@ -68,8 +74,7 @@ $(document).ready(function() {
                 });
 			});
 			$('#ValutanemEdit').change(function() {
-				bankszamlaedit.val($('option:selected', this).data('bankszamla'));
-				bizonylathelper.getArfolyam();
+                ValutanemChange();
 			});
 			alttab.on('click', '.js-tetelnewbutton', function(e) {
 				var $this = $(this);
@@ -196,6 +201,7 @@ $(document).ready(function() {
 			hatidoedit.datepicker($.datepicker.regional['hu']);
 			hatidoedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
 			hatidoedit.datepicker('setDate', hatidoedit.attr('data-datum'));
+            ValutanemChange();
 			if (!$.browser.mobile) {
 				$('.js-toflyout').flyout();
 			}

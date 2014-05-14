@@ -125,7 +125,6 @@
 				{/if}
 			</tr>
 			<tr>
-				{if ($showvalutanem)}
 				<td><label for="ValutanemEdit">{t('Valutanem')}:</label></td>
 				<td><select id="ValutanemEdit" name="valutanem" required="required">
 					<option value="">{t('válasszon')}</option>
@@ -136,7 +135,6 @@
 				</td>
 				<td><label for="ArfolyamEdit">{t('Árfolyam')}:</label></td>
 				<td><input id="ArfolyamEdit" name="arfolyam" type="number" step="any" size="5" value="{$egyed.arfolyam}" required="required"></td>
-				{/if}
 				<td><label for="BankszamlaEdit">{t('Bankszámla')}:</label></td>
 				<td colspan="3"><select id="BankszamlaEdit" name="bankszamla">
 					<option value="">{t('válasszon')}</option>
