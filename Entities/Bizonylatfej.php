@@ -343,10 +343,13 @@ class Bizonylatfej {
         $ret['tulajvaros'] = $this->getTulajvaros();
         $ret['tulajutca'] = $this->getTulajutca();
         $ret['tulajadoszam'] = $this->getTulajadoszam();
-        $ret['ertek'] = $this->getBruttohuf();
+        $ret['ertek'] = $this->getBrutto();
         $ret['nettohuf'] = $this->getNettohuf();
         $ret['afahuf'] = $this->getAfahuf();
         $ret['bruttohuf'] = $this->getBruttohuf();
+        $ret['netto'] = $this->getNetto();
+        $ret['afa'] = $this->getAfa();
+        $ret['brutto'] = $this->getBrutto();
         $ret['fizetendo'] = $this->getFizetendo();
         $ret['fizetendokiirva'] = \mkw\Store::Num2Text($this->getFizetendo());
         $ret['fizmodnev'] = $this->getFizmodnev();

@@ -202,6 +202,11 @@ class Bizonylattetel {
         $ret['nettohuf'] = $this->getNettohuf();
         $ret['afahuf'] = $this->getAfaertekhuf();
         $ret['bruttohuf'] = $this->getBruttohuf();
+        $ret['nettoegysar'] = $this->getNettoegysar();
+        $ret['bruttoegysar'] = $this->getBruttoegysar();
+        $ret['netto'] = $this->getNetto();
+        $ret['afa'] = $this->getAfaertek();
+        $ret['brutto'] = $this->getBrutto();
         $ret['termeknev'] = $this->getTermeknev();
         $ret['me'] = $this->getME();
         $ret['afanev'] = $this->getAfanev();
