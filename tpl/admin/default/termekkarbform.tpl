@@ -23,6 +23,8 @@
 		<div class="mattkarb-titlebar" data-caption="{t('Általános adatok')}" data-refcontrol="#AltalanosTab"></div>
 		{/if}
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
+			<input id="InaktivCheck" name="inaktiv" type="checkbox"{if ($termek.inaktiv)}checked="checked"{/if}>{t('Inaktív')}
+			<input id="MozgatCheck" name="mozgat" type="checkbox"{if ($termek.mozgat)}checked="checked"{/if}>{t('Készletet mozgat')}
 			<table><tbody>
 			<tr>
 				<td><label>{t('Kategóriák')}:</label></td>
