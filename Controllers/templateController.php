@@ -15,7 +15,7 @@ class templateController extends \mkwhelpers\MattableController {
 		$this->setListBodyRowVarName('_egyed');
 		$theme=store::getConfigValue('main.theme');
 		$this->fajlok=array(
-			array('id'=>'fejlecreklam','caption'=>'Fejléc reklámcsík','file'=>'tpl/main'.$theme.'/headerfirstrow.tpl'),
+			array('id'=>'fejlecreklam','caption'=>'Fejléc reklámcsík','file'=>'tpl/main/'.$theme.'/headerfirstrow.tpl'),
 			array('id'=>'lablec','caption'=>'Lábléc sablon','file'=>'tpl/main/'.$theme.'/footer.tpl'),
 			array('id'=>'nincstalalat','caption'=>'Nincs keresési találat','file'=>'tpl/main/'.$theme.'/nincstalalat.tpl')
 		);
