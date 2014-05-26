@@ -43,6 +43,7 @@ class JQGridController extends Controller {
 	}
 
 	protected function loadDataToView($data) {
+        $res = new \stdClass();
 		$res->page=1;
 		$res->total=1;
 		$res->records=count($data);
