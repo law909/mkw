@@ -283,6 +283,60 @@ class exportController extends \mkwhelpers\Controller {
         }
     }
 
+    public function ArukeresoExport() {
+        header("Content-type: text/csv");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        $sor = array(
+            'manufacturer',
+            'name',
+            'category',
+            'product_url',
+            'price',
+            'image_url',
+            'description',
+            'delivery_time'
+        );
+        echo implode("\t", $sor) . "\n";
+        $tr = \mkw\Store::getEm()->getRepository('Entities\Termek');
+        $res = $tr->getAllForExport();
+        foreach($res as $t) {
+            $cimke = $t->getCimkeByCategory(\mkw\Store::getParameter(\mkw\consts::MarkaCs));
+
+            $leiras = $t->getLeiras();
+            $leiras = str_replace("\n", '', $leiras);
+            $leiras = str_replace("\r", '', $leiras);
+            $leiras = str_replace("\n\r", '', $leiras);
+            $leiras = str_replace('"', '""', $leiras);
+
+            if ($t->getSzallitasiido()) {
+                $szallitasiido = $t->getSzallitasiido();
+            }
+            else {
+                $gyarto = $t->getGyarto();
+                if ($gyarto && $gyarto->getSzallitasiido()) {
+                    $szallitasiido = $gyarto->getSzallitasiido();
+                }
+                else {
+                    $szallitasiido = 0;
+                }
+            }
+
+            $sor = array(
+                '"' . ($cimke ? $cimke->getNev() : '') . '"',
+                '"' . $t->getNev() . '"',
+                '"' . ($t->getTermekfa1() ? $t->getTermekfa1()->getTeljesNev(' > ') : '') . '"',
+                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')). '"',
+                '"' . number_format($t->getBruttoAr(), 0, ',', '') . '"', //number_format($tetel.bruttoegysarhuf,0,',',' ')
+                '"' . \mkw\Store::getFullUrl($t->getKepurlLarge(), \mkw\Store::getConfigValue('mainurl')) . '"',
+                '"' . $leiras . '"',
+                '"' . ($szallitasiido ? $szallitasiido . ' munkanap' : '') . '"'
+            );
+            echo implode("\t", $sor) . "\n";
+        }
+    }
+
     private function encstr($str) {
         return mb_convert_encoding($str, 'ISO-8859-2', 'UTF8');
     }

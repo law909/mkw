@@ -155,16 +155,16 @@ class TermekFa {
 		}
 	}
 
-    private function gtn($level) {
+    private function gtn($level, $elval) {
         if ($level && $level->getParent()) {
-            $this->gtnev = $level->getNev() . '|' . $this->gtnev;
-            $this->gtn($level->getParent());
+            $this->gtnev = $level->getNev() . $elval . $this->gtnev;
+            $this->gtn($level->getParent(), $elval);
         }
     }
 
-    public function getTeljesNev() {
+    public function getTeljesNev($elval = '|') {
         $this->gtnev = $this->getNev();
-        $this->gtn($this->getParent());
+        $this->gtn($this->getParent(), $elval);
         return $this->gtnev;
     }
 

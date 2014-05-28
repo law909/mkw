@@ -90,10 +90,10 @@ class EntitiesTermekFaProxy extends \Entities\TermekFa implements \Doctrine\ORM\
         return parent::removeParent();
     }
 
-    public function getTeljesNev()
+    public function getTeljesNev($elval = '|')
     {
         $this->__load();
-        return parent::getTeljesNev();
+        return parent::getTeljesNev($elval);
     }
 
     public function getNev()
