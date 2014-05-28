@@ -50,15 +50,20 @@ $config->setMetadataDriverImpl($chainDriverImpl);
 $config->setProxyDir(__DIR__ . '/Proxies');
 $config->setProxyNamespace('Proxies');
 
+if ($ini['cache'] === 'apc') {
+    $config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ApcCache());
+}
+else {
+	$config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache());
+}
+
 if ($ini['developer']) {
-	$config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache);
 	$config->setAutoGenerateProxyClasses(true);
 	require_once('fb.php');
 }
 else {
-	$config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache);
 	$config->setAutoGenerateProxyClasses(false);
-	function fb() {};
+	function fb() {}
 }
 
 if ($ini['sqllog']) {
