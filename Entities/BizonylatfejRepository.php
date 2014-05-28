@@ -92,10 +92,11 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         if ($szamol) {
             $ertek = 0;
             $cnt = 0;
+            $btt = $bizfej->getBizonylattetelek();
             foreach($bizfej->getBizonylattetelek() as $btetel) {
                 if ($btetel->getTermekId() != $termekid) {
                     $cnt++;
-                    $ertek = $ertek + $btetel->getBruttohuf();
+                    $ertek = $ertek + $btetel->getBrutto();
                 }
             }
             if ($cnt != 0) {
