@@ -125,8 +125,8 @@ class importController extends \mkwhelpers\Controller {
                             foreach ($imagelist[$data[0]] as $imgurl) {
                                 $imgcnt++;
 
-                                $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev);
-                                $kepnev = \mkw\Store::urlize($termeknev);
+                                $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev . '_' . $data[0]);
+                                $kepnev = \mkw\Store::urlize($termeknev . '_' . $data[0]);
                                 if (count($imagelist[$data[0]]) > 1) {
                                     $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
                                     $kepnev = $kepnev . '_' . $imgcnt;
@@ -168,9 +168,9 @@ class importController extends \mkwhelpers\Controller {
                     $termek->setNetto($data[3] * 1);
                     $termek->setBrutto(round($termek->getBrutto(), -1));
                     store::getEm()->persist($termek);
+                    store::getEm()->flush();
                 }
             }
-            store::getEm()->flush();
         }
         fclose($fh);
     }
