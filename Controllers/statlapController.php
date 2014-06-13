@@ -124,12 +124,20 @@ class statlapController extends \mkwhelpers\MattableController {
     public function redirectOldUrl() {
         $lapid = $this->params->getStringRequestParam('page');
         if ($lapid) {
-            $lap = $this->getRepo()->findOneByOldurl($lapid);
-            if ($lap) {
-                $newlink = \mkw\Store::getRouter()->generate('showstatlap', false, array('lap' => $lap->getSlug()));
-                header("HTTP/1.1 301 Moved Permanently");
-                header('Location: ' . $newlink);
-                return;
+            switch ($lapid) {
+                case 'hirek':
+                    $newlink = \mkw\Store::getRouter()->generate('showhirlist', false, array());
+                    header("HTTP/1.1 301 Moved Permanently");
+                    header('Location: ' . $newlink);
+                    return;
+                default:
+                    $lap = $this->getRepo()->findOneByOldurl($lapid);
+                    if ($lap) {
+                        $newlink = \mkw\Store::getRouter()->generate('showstatlap', false, array('lap' => $lap->getSlug()));
+                        header("HTTP/1.1 301 Moved Permanently");
+                        header('Location: ' . $newlink);
+                        return;
+                    }
             }
         }
         $mc = new mainController($this->params);

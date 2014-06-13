@@ -133,7 +133,7 @@ $router->map('GET', '/admin/hir/viewlist', 'hirController#viewlist', 'adminhirvi
 $router->map('GET', '/admin/hir/getlistbody', 'hirController#getlistbody', 'adminhirgetlistbody');
 $router->map('GET', '/admin/hir/getkarb', 'hirController#getkarb', 'adminhirgetkarb');
 $router->map('GET', '/admin/hir/viewkarb', 'hirController#viewkarb', 'adminhirviewkarb');
-$router->map('GET', '/admin/hir/gethirlist', 'hirController#gethirlist', 'adminhirgethirlist');
+//$router->map('GET', '/admin/hir/gethirlist', 'hirController#gethirlist', 'adminhirgethirlist');
 $router->map('GET', '/admin/hir/getfeedhirlist', 'hirController#getfeedhirlist', 'adminhirgetfeedhirlist');
 $router->map('POST', '/admin/hir/save', 'hirController#save', 'adminhirsave');
 $router->map('POST', '/admin/hir/setlathato', 'hirController#setlathato', 'adminhirsetlathato');

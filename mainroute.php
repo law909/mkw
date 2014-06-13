@@ -16,6 +16,7 @@ $router->map('POST', '/passreminder/ment', 'partnerController#savePassReminder',
 $router->map('GET','/statlap/[:lap]','statlapController#show','showstatlap');
 $router->map('GET','/statlap/p/[:lap]','statlapController#showPopup','showstatlappopup');
 $router->map('GET','/hir/[:hir]','hirController#show','showhir');
+$router->map('GET','/hirek','hirController#showHirList','showhirlist');
 $router->map('GET','/feed/hir','hirController#feed','hirfeed');
 $router->map('GET','/feed/termek','termekController#feed','termekfeed');
 $router->map('GET','/kapcsolat','mainController#kapcsolat','showkapcsolat');
