@@ -21,7 +21,8 @@ $(document).ready(function() {
                             katid: $('#TermekKategoria1').attr('data-value'),
                             path: $('input[name="path"]').val(),
                             gyarto: $('select[name="gyarto"]').val(),
-                            db: $('input[name="db"]').val()
+                            dbtol: $('input[name="dbtol"]').val(),
+                            dbig: $('input[name="dbig"]').val()
                         },
                         success: function() {
                             alert('Kész.');

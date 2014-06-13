@@ -40,8 +40,8 @@
 				</select>
             </div>
             <div>
-                <label>Max. ennyi új termék:</label>
-                <input name="db">
+                <label>Termékek tól-ig:</label>
+                <input name="dbtol"> - <input name="dbig">
             </div>
             <div>
             <a href="/admin/import/kreativ" class="js-kreativimport">Kreativ puzzle import</a>

@@ -40,7 +40,8 @@ class importController extends \mkwhelpers\Controller {
 
         $parentid = $this->params->getIntRequestParam('katid', 0);
         $gyartoid = $this->params->getIntRequestParam('gyarto', 0);
-        $db = $this->params->getIntRequestParam('db', 0);
+        $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+        $dbig = $this->params->getIntRequestParam('dbig', 0);
 
         $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
 
@@ -85,21 +86,32 @@ class importController extends \mkwhelpers\Controller {
 
         $fh = fopen('kreativpuzzlestock.txt', 'r');
         if ($fh) {
+            $settings = array(
+                'quality'=>80,
+                'sizes'=>array('100'=>'100x100','150'=>'150x150','250'=>'250x250','1000'=>'1000x800')
+            );
             $afa = store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
             $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findByNev('-');
             $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
             $termekdb = 0;
             fgetcsv($fh, 0, ';', '"');
-            while (($data = fgetcsv($fh, 0, ';', '"')) && (($db && ($termekdb < $db)) || (!$db))) {
+            while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, ';', '"'))) {
+                $termekdb++;
+            }
+            while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, ';', '"'))) {
+                $termekdb++;
                 if ($data[2] * 1 > 0) {
-                    $katnev = mb_convert_encoding(trim($data[7]), 'UTF8', 'ISO-8859-2');
-                    $urlkatnev = \mkw\Store::urlize($katnev);
-                    \mkw\Store::createDirectoryRecursively($path . $urlkatnev);
-                    $parent = $this->createKategoria($katnev, $parentid);
                     $termek = store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('KP' . $data[0]);
                     if (!$termek) {
-                        $termekdb++;
+
+                        $katnev = mb_convert_encoding(trim($data[7]), 'UTF8', 'ISO-8859-2');
+                        $urlkatnev = \mkw\Store::urlize($katnev);
+                        \mkw\Store::createDirectoryRecursively($path . $urlkatnev);
+                        $parent = $this->createKategoria($katnev, $parentid);
                         $termeknev = mb_convert_encoding(trim($data[1]), 'UTF8', 'ISO-8859-2');
+
+                        $idegenkod = 'KP' . $data[0];
+
                         $termek = new \Entities\Termek();
                         $termek->setFuggoben(true);
                         $termek->setMe('db');
@@ -108,7 +120,7 @@ class importController extends \mkwhelpers\Controller {
                         $termek->setRovidleiras(mb_substr($termek->getLeiras(), 0, 100, 'UTF8') . '...');
                         $termek->setCikkszam($data[0]);
                         $termek->setIdegencikkszam($data[0]);
-                        $termek->setIdegenkod('KP' . $data[0]);
+                        $termek->setIdegenkod($idegenkod);
                         $termek->setTermekfa1($parent);
                         $termek->setVtsz($vtsz[0]);
                         $termek->setHparany(3);
@@ -116,17 +128,13 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setGyarto($gyarto);
                         }
                         // kepek
-                        $settings = array(
-                            'quality'=>80,
-                            'sizes'=>array('100'=>'100x100','150'=>'150x150','250'=>'250x250','1000'=>'1000x800')
-                        );
                         if (array_key_exists($data[0], $imagelist)) {
                             $imgcnt = 0;
                             foreach ($imagelist[$data[0]] as $imgurl) {
                                 $imgcnt++;
 
-                                $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev . '_' . $data[0]);
-                                $kepnev = \mkw\Store::urlize($termeknev . '_' . $data[0]);
+                                $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev . '_' . $idegenkod);
+                                $kepnev = \mkw\Store::urlize($termeknev . '_' . $idegenkod);
                                 if (count($imagelist[$data[0]]) > 1) {
                                     $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
                                     $kepnev = $kepnev . '_' . $imgcnt;
@@ -169,6 +177,16 @@ class importController extends \mkwhelpers\Controller {
                     $termek->setBrutto(round($termek->getBrutto(), -1));
                     store::getEm()->persist($termek);
                     store::getEm()->flush();
+                }
+                else {
+                    $termek = store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('KP' . $data[0]);
+                    if ($termek) {
+                        $termek = $termek[0];
+                        $termek->setNemkaphato(true);
+                        $termek->setLathato(false);
+                        store::getEm()->persist($termek);
+                        store::getEm()->flush();
+                    }
                 }
             }
         }

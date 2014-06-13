@@ -50,7 +50,7 @@ $config->setMetadataDriverImpl($chainDriverImpl);
 $config->setProxyDir(__DIR__ . '/Proxies');
 $config->setProxyNamespace('Proxies');
 
-if ($ini['cache'] === 'apc') {
+if (array_key_exists('cache', $ini) && $ini['cache'] === 'apc') {
     $config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ApcCache());
 }
 else {
