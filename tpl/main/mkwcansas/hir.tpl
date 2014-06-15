@@ -12,7 +12,6 @@
                         <a class="addthis_button_facebook_like" style="cursor:pointer"></a>
                         <a class="addthis_button_facebook" style="cursor:pointer"></a>
                         <g:plusone size="small"></g:plusone>
-                        <a class="addthis_button_iwiw" style="cursor:pointer"></a>
                         <a class="addthis_button_twitter" style="cursor:pointer"></a>
                         <a class="addthis_button_email" style="cursor:pointer"></a>
                         <a class="addthis_button_pinterest_pinit" style="cursor:pointer"></a>
