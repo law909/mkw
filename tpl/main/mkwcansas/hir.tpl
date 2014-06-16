@@ -5,7 +5,7 @@
 <article itemtype="http://schema.org/Article" itemscope="">
 		<div class="row">
                     <div class="span10 offset1">
-                        <h3>{$hir.cim}</h3>
+                        <h2>{$hir.cim}</h2>
                         {$hir.szoveg}
                         <!-- AddThis Button BEGIN -->
                         <div class="addthis_toolbox addthis_default_style ">
