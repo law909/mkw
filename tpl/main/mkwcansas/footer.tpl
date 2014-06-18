@@ -21,6 +21,7 @@
 				<li><a href="/statlap/fontos-informaciok">Fontos információk</a></li>
 				<li><a href="/statlap/szallitasi-feltetelek-es-tudnivalok">Szállítási feltételek</a></li>
 				<li><a href="/statlap/fizetesi-feltetelek">Fizetési feltételek</a></li>
+				<li><a href="/hirek">Legfrissebb híreink</a></li>
 			</ul>
 		</nav>
 		<nav class="span3">
