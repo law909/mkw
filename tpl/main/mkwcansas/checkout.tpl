@@ -225,7 +225,7 @@
 								<div>
 									<label class="checkbox">
 										<input name="aszfready" type="checkbox">
-										Elolvastam és elfogadom az <a href="{$showaszflink}" target="empty" class="js-chkaszf">ÁSZF</a>-et
+										Tudomásul veszem és elfogadom az <a href="{$showaszflink}" target="empty" class="js-chkaszf">ÁSZF</a>-et<br>és a rendeléssel járó fizetési kötelezettséget
 									</label>
 								</div>
 								<div><input type="button" class="btn cartbtn chk-sendorderbtn js-chksendorderbtn" value="Megrendelés elküldése"></div>
