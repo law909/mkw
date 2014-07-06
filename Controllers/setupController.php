@@ -53,6 +53,16 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::Katseodescription);
         $view->setVar(\mkw\consts::Katseodescription, ($p ? $p->getErtek() : ''));
 
+        $p = $repo->find(\mkw\consts::Markaoldalcim);
+        $view->setVar(\mkw\consts::Markaoldalcim, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Markaseodescription);
+        $view->setVar(\mkw\consts::Markaseodescription, ($p ? $p->getErtek() : ''));
+
+        $p = $repo->find(\mkw\consts::Hirekoldalcim);
+        $view->setVar(\mkw\consts::Hirekoldalcim, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Hirekseodescription);
+        $view->setVar(\mkw\consts::Hirekseodescription, ($p ? $p->getErtek() : ''));
+
         $p = $repo->find(\mkw\consts::Logo);
         $view->setVar(\mkw\consts::Logo, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::UjtermekJelolo);
@@ -284,6 +294,10 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Katseodescription, $this->params->getStringRequestParam('katseodescription'));
         $this->setObj(\mkw\consts::Termekoldalcim, $this->params->getStringRequestParam('termekoldalcim'));
         $this->setObj(\mkw\consts::Termekseodescription, $this->params->getStringRequestParam('termekseodescription'));
+        $this->setObj(\mkw\consts::Markaoldalcim, $this->params->getStringRequestParam('markaoldalcim'));
+        $this->setObj(\mkw\consts::Markaseodescription, $this->params->getStringRequestParam('markaseodescription'));
+        $this->setObj(\mkw\consts::Hirekoldalcim, $this->params->getStringRequestParam('hirekoldalcim'));
+        $this->setObj(\mkw\consts::Hirekseodescription, $this->params->getStringRequestParam('hirekseodescription'));
         $this->setObj(\mkw\consts::GAFollow, $this->params->getStringRequestParam('gafollow'));
         $this->setObj(\mkw\consts::FBAppId, $this->params->getStringRequestParam('fbappid'));
         // alapertelmezes

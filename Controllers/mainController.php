@@ -81,6 +81,46 @@ class mainController extends \mkwhelpers\Controller {
 		}
 	}
 
+	public function marka() {
+		$com = $this->params->getStringParam('slug');
+		$tf = new termekfaController($this->params);
+		$tc = new termekcimkeController($this->params);
+		$c = $tc->getRepo()->findOneBySlug($com);
+		if ($c) {
+            $this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');
+            $t = $tf->gettermeklistaforparent(null, 'marka');
+            foreach ($t as $k => $v) {
+                $this->view->setVar($k, $v);
+            }
+            store::fillTemplate($this->view);
+
+            $mpt = store::getParameter(\mkw\consts::Markaoldalcim);
+            if ($mpt) {
+                $mpt = str_replace('[markanev]', $c->getNev(), $mpt);
+                $mpt = str_replace('[global]', store::getParameter(\mkw\consts::Oldalcim), $mpt);
+            }
+            else {
+                $mpt = store::getParameter(\mkw\consts::Oldalcim);
+            }
+            $this->view->setVar('pagetitle', $mpt);
+
+            $msd = store::getParameter(\mkw\consts::Markaseodescription);
+            if ($msd) {
+                $msd = str_replace('[markanev]', $c->getNev(), $msd);
+                $msd = str_replace('[global]', store::getParameter(\mkw\consts::Seodescription), $msd);
+            }
+            else {
+                $msd = store::getParameter(\mkw\consts::Seodescription);
+            }
+            $this->view->setVar('seodescription', $msd);
+
+            $this->view->printTemplateResult(true);
+        }
+        else {
+            store::redirectTo404($com, $this->params);
+        }
+    }
+
     public function szuro() {
 		$tf = new termekfaController($this->params);
         $this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');

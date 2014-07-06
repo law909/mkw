@@ -247,6 +247,16 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$pageno = $this->params->getIntRequestParam('pageno', 1);
 		$ord = $this->params->getStringRequestParam('order');
 		$szurostr = $this->params->getStringRequestParam('filter');
+
+        if ($caller === 'marka') {
+            $markatc = new termekcimkeController($this->params);
+            $marka = $markatc->getRepo()->findOneBySlug($this->params->getStringParam('slug'));
+            if ($marka) {
+                $szuroarr = array($szurostr, $marka->getTermekFilter());
+                $szurostr = implode(',', $szuroarr);
+            }
+        }
+
 		if ($this->params->getIntRequestParam('cimkekatid')) {
 			$klikkeltcimkekatid = $this->params->getIntRequestParam('cimkekatid', false);
 		}
@@ -367,7 +377,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 			$t = array();
             $kiemelt = array();
             $kiemeltdb = 0;
-            if (($kiemelttermekdb>0) && (($pageno == 1) || ($pager->getPageCount() == 1)) && ($caller !== 'szuro')) {
+            if (($kiemelttermekdb>0) && (($pageno == 1) || ($pager->getPageCount() == 1)) && ($caller !== 'szuro') && ($caller !=='marka')) {
                 $kiemelttermekek = $termekrepo->getKiemeltTermekek(array_merge_recursive($keresofilter, $kategoriafilter), $kiemelttermekdb);
                 $kt = array();
                 foreach ($kiemelttermekek as $termek) {
@@ -430,9 +440,12 @@ class termekfaController extends \mkwhelpers\MattableController {
                 case 'szuro':
                     $ret['url'] = '/szuro';
                     $ret['navigator'] = array(array('caption' => t('Szűrő')));
-                    // $tid = termek id-k csak kategoriaval es arral szurve
                     $ret['szurok'] = $tck->getForTermekSzuro($osszestermekid, $szurotomb);
                     break;
+                case 'marka':
+                    $ret['url'] = '/marka/' . $marka->getSlug();
+                    $ret['navigator'] = array(array('caption' => $marka->getNev()));
+                    $ret['szurok'] = $tck->getForTermekSzuro($osszestermekid, $szurotomb);
             }
 			$ret['keresett'] = $keresoszo;
 			$ret['vt'] = ($this->params->getIntRequestParam('vt') > 0 ? $this->params->getIntRequestParam('vt') : 1);

@@ -66,6 +66,10 @@ class consts {
     const Termekseodescription = 'termekseodescription';
     const Katoldalcim = 'katoldalcim';
     const Katseodescription = 'katseodescription';
+    const Markaoldalcim = 'markaoldalcim';
+    const Markaseodescription = 'markaseodescription';
+    const Hirekoldalcim = 'hirekoldalcim';
+    const Hirekseodescription = 'hirekseodescription';
     const GAFollow = 'gafollow';
     const FBAppId = 'fbappid';
 

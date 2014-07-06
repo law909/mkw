@@ -147,6 +147,25 @@ class hirController extends \mkwhelpers\MattableController {
             $t[] = $hir->convertToArray();
         }
         store::fillTemplate($view);
+
+        $mpt = store::getParameter(\mkw\consts::Hirekoldalcim);
+        if ($mpt) {
+            $mpt = str_replace('[global]', store::getParameter(\mkw\consts::Oldalcim), $mpt);
+        }
+        else {
+            $mpt = store::getParameter(\mkw\consts::Oldalcim);
+        }
+        $view->setVar('pagetitle', $mpt);
+
+        $msd = store::getParameter(\mkw\consts::Hirekseodescription);
+        if ($msd) {
+            $msd = str_replace('[global]', store::getParameter(\mkw\consts::Seodescription), $msd);
+        }
+        else {
+            $msd = store::getParameter(\mkw\consts::Seodescription);
+        }
+        $view->setVar('seodescription', $msd);
+
         $view->setVar('children', $t);
         $view->printTemplateResult(false);
     }

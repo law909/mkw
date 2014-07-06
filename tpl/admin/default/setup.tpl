@@ -212,6 +212,26 @@
                 <td colspan="3"><textarea id="TSeodescriptionEdit" name="termekseodescription" type="text" cols="75">{$termekseodescription}</textarea></td>
             </tr>
         </tbody></table>
+        <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
+            <tr><td colspan="3">{t('Márka oldal')}</td></tr>
+            <tr><td colspan="3">[markanev] [global]</td></tr>
+            <tr><td><label for="MOldalCimEdit">{t('Lap címe')}:</label></td>
+                <td colspan="3"><input id="MOldalCimEdit" name="markaoldalcim" type="text" size="75" maxlength="255" value="{$markaoldalcim}"></td>
+            </tr>
+            <tr><td><label for="MSeodescriptionEdit">{t('META leírás')}:</label></td>
+                <td colspan="3"><textarea id="MSeodescriptionEdit" name="markaseodescription" type="text" cols="75">{$markaseodescription}</textarea></td>
+            </tr>
+        </tbody></table>
+        <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
+            <tr><td colspan="3">{t('Hírek')}</td></tr>
+            <tr><td colspan="3">[global]</td></tr>
+            <tr><td><label for="HirekOldalCimEdit">{t('Lap címe')}:</label></td>
+                <td colspan="3"><input id="HirekOldalCimEdit" name="hirekoldalcim" type="text" size="75" maxlength="255" value="{$hirekoldalcim}"></td>
+            </tr>
+            <tr><td><label for="HirekSeodescriptionEdit">{t('META leírás')}:</label></td>
+                <td colspan="3"><textarea id="HirekSeodescriptionEdit" name="hirekseodescription" type="text" cols="75">{$hirekseodescription}</textarea></td>
+            </tr>
+        </tbody></table>
 		</div>
 		{if ($setup.editstyle=='dropdown')}
 		<div class="mattkarb-titlebar" data-caption="{t('Szállítási költség')}" data-refcontrol="#SzallitasiKtgTab"></div>

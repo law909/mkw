@@ -130,6 +130,11 @@ class statlapController extends \mkwhelpers\MattableController {
                     header("HTTP/1.1 301 Moved Permanently");
                     header('Location: ' . $newlink);
                     return;
+                case 'markak':
+                    $newlink = \mkw\Store::getRouter()->generate('markak', false, array());
+                    header("HTTP/1.1 301 Moved Permanently");
+                    header('Location: ' . $newlink);
+                    return;
                 default:
                     $lap = $this->getRepo()->findOneByOldurl($lapid);
                     if ($lap) {

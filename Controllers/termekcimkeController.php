@@ -202,4 +202,16 @@ class termekcimkeController extends \mkwhelpers\MattableController {
         return $ret;
     }
 
+    public function showMarkak() {
+        $view = $this->getTemplateFactory()->createMainView('markak.tpl');
+		store::fillTemplate($view);
+        $tc = $this->getRepo()->getMarkak();
+        $m = array();
+        foreach($tc as $c) {
+            $m[] = $c->toLista();
+        }
+        $view->setVar('markalista', $m);
+        $view->printTemplateResult();
+    }
+
 }
