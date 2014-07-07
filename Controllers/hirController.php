@@ -36,6 +36,7 @@ class hirController extends \mkwhelpers\MattableController {
         $x['utolsodatumstr'] = $t->getUtolsodatumStr();
         $x['lathato'] = $t->getLathato();
         $x['seodescription'] = $t->getSeodescription();
+        $x['link'] = $t->getLink();
         return $x;
     }
 

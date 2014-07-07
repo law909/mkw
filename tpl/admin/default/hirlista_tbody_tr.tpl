@@ -6,7 +6,7 @@
 <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
 {/if}
 <table>
-<tr><td>{t('Link')}:</td><td>/hir/{$_egyed.slug}</td></tr>
+<tr><td>{t('Link')}:</td><td><a href="{$_egyed.link}" target="_blank">{$_egyed.link}</a></td></tr>
 <tr><td>{t('Dátum')}:</td><td>{$_egyed.datumstr}</td></tr>
 <tr><td>{t('Forrás')}:</td><td>{$_egyed.forras}</td></tr>
 <tr><td>{t('Lead')}:</td><td>{$_egyed.lead}</td></tr>
