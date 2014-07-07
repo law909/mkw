@@ -31,6 +31,7 @@
 		<div><a class="menupont" href="/admin/logout">{t('Kijelentkezés')}</a></div>
 		<div class="menu-titlebar" data-caption="{t('Kereskedelem')}" data-refcontrol="#KereskedelemTab"></div>
 		<div id="KereskedelemTab">
+			<div><a class="menupont" href="/admin/bevetfej/viewlist">{t('Bevételezések')}</a></div>
 			<div><a class="menupont" href="/admin/megrendelesfej/viewlist">{t('Megrendelések')}</a></div>
 			<div><a class="menupont" href="/admin/szamlafej/viewlist">{t('Számlák')}</a></div>
 			<div><a class="menupont" href="/admin/partner/viewlist">{t('Partnerek')}</a></div>

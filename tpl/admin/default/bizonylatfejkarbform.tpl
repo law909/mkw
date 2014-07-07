@@ -60,6 +60,7 @@
 					<input id="AdoszamEdit" name="partneradoszam" value="{$egyed.partneradoszam}">
 				</td>
 			</tr>
+            {if ($showszallitasicim)}
 			<tr>
 				<td><label for="SzallnevEdit">{t('Szállítási név')}:</label></td>
 				<td colspan="7">
@@ -74,6 +75,7 @@
 					<input name="szallutca" value="{$egyed.szallutca}">
 				</td>
 			</tr>
+            {/if}
 			<tr>
 				<td><label for="TelefonEdit">{t('Telefon')}:</label></td>
 				<td>
@@ -148,10 +150,18 @@
 					</select>
 				</td>
 			</tr>
+            {if ($showerbizonylatszam)}
+            <tr>
+                <td><label for="ErbizonylatszamEdit">Eredeti biz.szám:</label></td>
+                <td><input id="ErbizonylatszamEdit" name="erbizonylatszam" type="text" value="{$egyed.erbizonylatszam}"></td>
+            </tr>
+            {/if}
+            {if ($showfuvarlevelszam)}
             <tr>
                 <td><label for="FuvarlevelszamEdit">Fuvarlevélszám:</label></td>
                 <td><input id="FuvarlevelszamEdit" name="fuvarlevelszam" type="text" value="{$egyed.fuvarlevelszam}"></td>
             </tr>
+            {/if}
             <tr>
                 <td><label for="SzallitasiktgkellEdit">Szállítási költséget kell számolni:</label></td>
                 <td><input id="SzallitasiktgkellEdit" name="szallitasiktgkell" type="checkbox"></td>
@@ -164,6 +174,7 @@
 				<td><label for="BelsomegjegyzesEdit">{t('Belső megjegyzés')}:</label></td>
 				<td colspan="7"><textarea id="BelsomegjegyzesEdit" name="belsomegjegyzes" rows="1" cols="100">{$egyed.belsomegjegyzes}</textarea></td>
 			</tr>
+            {if ($showuzenet)}
 			<tr>
 				<td><label for="WebshopmessageEdit">{t('Üzenet a webáruháznak')}:</label></td>
 				<td colspan="7"><textarea id="WebshopmessageEdit" name="webshopmessage" rows="1" cols="100">{$egyed.webshopmessage}</textarea></td>
@@ -172,6 +183,7 @@
 				<td><label for="CouriermessageEdit">{t('Üzenet a futárnak')}:</label></td>
 				<td colspan="7"><textarea id="CouriermessageEdit" name="couriermessage" rows="1" cols="100">{$egyed.couriermessage}</textarea></td>
 			</tr>
+            {/if}
 			</tbody></table>
 			<div>
 			{foreach $egyed.tetelek as $tetel}

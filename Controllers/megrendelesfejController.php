@@ -22,6 +22,10 @@ class megrendelesfejController extends bizonylatfejController {
         $view->setVar('showvalutanem', false);
         $view->setVar('showbizonylatstatuszeditor', true);
         $view->setVar('showinheritbutton', true);
+        $view->setVar('showuzenet', true);
+        $view->setVar('showszallitasicim', true);
+        $view->setVar('showerbizonylatszam', false);
+        $view->setVar('showfuvarlevelszam', true);
         $bsc = new bizonylatstatuszController($this->params);
         $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(\mkw\Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
         $fmc = new fizmodController($this->params);

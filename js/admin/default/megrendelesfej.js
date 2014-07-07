@@ -243,7 +243,9 @@ $(document).ready(function() {
                     '#datumtolfilter',
                     '#datumigfilter',
                     '#bizonylatstatuszfilter',
-                    '#fizmodfilter'
+                    '#fizmodfilter',
+                    '#fuvarlevelszamfilter',
+                    '#erbizonylatszamfilter'
                 ]
 			},
 			tablebody: {

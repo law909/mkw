@@ -4,7 +4,9 @@ namespace Controllers;
 
 use mkw\store;
 
-class SzamlafejController extends bizonylatfejController {
+class BevetfejController extends bizonylatfejController {
+
+    const BIZTIPUS = 'bevet';
 
     public function __construct($params) {
         $this->setEntityName('Entities\Bizonylatfej');
@@ -17,15 +19,15 @@ class SzamlafejController extends bizonylatfejController {
 
     public function setVars($view) {
         $view->setVar('showteljesites', true);
-        $view->setVar('showesedekesseg', true);
+        $view->setVar('showesedekesseg', false);
         $view->setVar('showhatarido', false);
         $view->setVar('showvalutanem', false);
         $view->setVar('showbizonylatstatuszeditor', false);
         $view->setVar('showinheritbutton', false);
-        $view->setVar('showuzenet', true);
-        $view->setVar('showszallitasicim', true);
-        $view->setVar('showerbizonylatszam', false);
-        $view->setVar('showfuvarlevelszam', true);
+        $view->setVar('showuzenet', false);
+        $view->setVar('showszallitasicim', false);
+        $view->setVar('showerbizonylatszam', true);
+        $view->setVar('showfuvarlevelszam', false);
         $fmc = new fizmodController($this->params);
         $view->setVar('fizmodlist', $fmc->getSelectList());
         $a = date(\mkw\Store::$DateFormat, strtotime('-1 week'));
@@ -42,7 +44,7 @@ class SzamlafejController extends bizonylatfejController {
 
         $filter['fields'][] = 'bizonylattipus';
         $filter['clauses'][] = '=';
-        $filter['values'][] = $this->getRepo('Entities\Bizonylattipus')->find('szamla');
+        $filter['values'][] = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
 
         $this->initPager($this->getRepo()->getCount($filter));
 
@@ -55,8 +57,8 @@ class SzamlafejController extends bizonylatfejController {
     public function viewselect() {
         $view = $this->createView('bizonylatfejlista.tpl');
 
-        $view->setVar('pagetitle', t('Számlák'));
-        $view->setVar('controllerscript', 'szamlafej.js');
+        $view->setVar('pagetitle', t('Bevételezések'));
+        $view->setVar('controllerscript', 'bevetfej.js');
         $this->setVars($view);
         $view->printTemplateResult();
     }
@@ -64,8 +66,8 @@ class SzamlafejController extends bizonylatfejController {
     public function viewlist() {
         $view = $this->createView('bizonylatfejlista.tpl');
 
-        $view->setVar('pagetitle', t('Számlák'));
-        $view->setVar('controllerscript', 'szamlafej.js');
+        $view->setVar('pagetitle', t('Bevételezések'));
+        $view->setVar('controllerscript', 'bevetfej.js');
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         $this->setVars($view);
@@ -81,9 +83,9 @@ class SzamlafejController extends bizonylatfejController {
         }
         $view = $this->createView($tplname);
 
-        $view->setVar('pagetitle', t('Számla'));
-        $view->setVar('controllerscript', 'szamlafej.js');
-        $view->setVar('formaction', '/admin/szamlafej/save');
+        $view->setVar('pagetitle', t('Bevételezés'));
+        $view->setVar('controllerscript', 'bevetfej.js');
+        $view->setVar('formaction', '/admin/bevetfej/save');
         $view->setVar('oper', $oper);
         $this->setVars($view);
 
@@ -97,7 +99,6 @@ class SzamlafejController extends bizonylatfejController {
             $egyed['keltstr'] = $kelt;
             $egyed['teljesitesstr'] = $kelt;
             $egyed['esedekessegstr'] = \mkw\Store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
-            $egyed['megjegyzes'] = 'Rendelés: ' . $id;
             $ttk = array();
             $cikl = 1;
             foreach($egyed['tetelek'] as $tetel) {
@@ -166,14 +167,14 @@ class SzamlafejController extends bizonylatfejController {
     }
 
     protected function setFields($obj, $parancs) {
-        $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find('szamla'));
+        $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS));
         return parent::setFields($obj, $parancs);
     }
 
     public function doPrint() {
         $o = $this->getRepo()->find($this->params->getStringRequestParam('id'));
         if ($o) {
-            $biztip = $this->getRepo('Entities\Bizonylattipus')->find('szamla');
+            $biztip = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
             if ($biztip && $biztip->getTplname()) {
                 $view = $this->createView($biztip->getTplname());
                 $this->setVars($view);

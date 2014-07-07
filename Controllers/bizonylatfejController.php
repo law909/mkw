@@ -119,6 +119,18 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $filter['values'][] = $bs;
             }
         }
+        $f = $this->params->getStringRequestParam('fuvarlevelszamfilter');
+        if ($f) {
+            $filter['fields'][] = 'fuvarlevelszam';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $f = $this->params->getStringRequestParam('erbizonylatszamfilter');
+        if ($f) {
+            $filter['fields'][] = 'erbizonylatszam';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
         return $filter;
     }
 
@@ -215,6 +227,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $obj->setEsedekesseg($this->params->getStringRequestParam('esedekesseg'));
 		$obj->setHatarido($this->params->getStringRequestParam('hatarido'));
 
+        $obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
         $obj->setFuvarlevelszam($this->params->getStringRequestParam('fuvarlevelszam'));
 
 		$obj->setPartneradoszam($this->params->getStringRequestParam('partneradoszam'));

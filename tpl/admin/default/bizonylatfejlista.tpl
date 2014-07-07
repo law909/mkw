@@ -36,7 +36,9 @@
         <select id="datumtipusfilter" name="datumtipusfilter">
             <option value="1">kelt</option>
             <option value="2">teljesítés</option>
+            {if ($showesedekesseg)}
             <option value="3">esedékesség</option>
+            {/if}
         </select>
         <input id="datumtolfilter" name="datumtolfilter" type="text" size="12" data-datum="{$datumtolfilter|default}">
         <input id="datumigfilter" name="datumigfilter" type="text" size="12">
@@ -61,6 +63,18 @@
             {/foreach}
         </select>
     </div>
+    {if ($showfuvarlevelszam)}
+    <div>
+        <label for="fuvarlevelszamfilter">Fuvarlevélszám:</label>
+        <input id="fuvarlevelszamfilter" name="fuvarlevelszamfilter" type="text" size="20">
+    </div>
+    {/if}
+    {if ($showerbizonylatszam)}
+    <div>
+        <label for="erbizonylatszamfilter">Er.biz.szám:</label>
+        <input id="erbizonylatszamfilter" name="erbizonylatszamfilter" type="text" size="20">
+    </div>
+    {/if}
 </div>
 <div class="mattable-pagerwrapper">
 	<div class="mattable-order">

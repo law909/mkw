@@ -173,16 +173,18 @@
                             if ($.isArray(setup.filter.fields)) {
                                 for (i in setup.filter.fields) {
                                     var elem = $(setup.filter.fields[i])[0];
-                                    var t = elem.type,
-                                            tag = elem.tagName.toLowerCase();
-                                    if (t == 'text' || t == 'password' || tag == 'textarea') {
-                                        elem.value = '';
-                                    }
-                                    else if (t == 'checkbox' || t == 'radio') {
-                                        elem.checked = false;
-                                    }
-                                    else if (tag == 'select') {
-                                        elem.selectedIndex = 0;
+                                    if (elem) {
+                                        var t = elem.type,
+                                                tag = elem.tagName.toLowerCase();
+                                        if (t == 'text' || t == 'password' || tag == 'textarea') {
+                                            elem.value = '';
+                                        }
+                                        else if (t == 'checkbox' || t == 'radio') {
+                                            elem.checked = false;
+                                        }
+                                        else if (tag == 'select') {
+                                            elem.selectedIndex = 0;
+                                        }
                                     }
                                 }
                             }

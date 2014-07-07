@@ -31,9 +31,9 @@ $(document).ready(function() {
     },
     szamla = {
         container: '#mattkarb',
-        viewUrl: '/admin/szamlafej/getkarb',
-        newWindowUrl: '/admin/szamlafej/viewkarb',
-        saveUrl: '/admin/szamlafej/save',
+        viewUrl: '/admin/bevetfej/getkarb',
+        newWindowUrl: '/admin/bevetfej/viewkarb',
+        saveUrl: '/admin/bevetfej/save',
         beforeShow: function() {
             var keltedit = $('#KeltEdit'),
                     teljesitesedit = $('#TeljesitesEdit'),
@@ -220,7 +220,7 @@ $(document).ready(function() {
             }
         },
         beforeSerialize: function() {
-            return bizonylathelper.checkBizonylatFej('szamla', dialogcenter);
+            return bizonylathelper.checkBizonylatFej('bevet', dialogcenter);
         },
         onSubmit: function() {
             $('#messagecenter')
@@ -262,14 +262,14 @@ $(document).ready(function() {
                 ]
             },
             tablebody: {
-                url: '/admin/szamlafej/getlistbody',
+                url: '/admin/bevetfej/getlistbody',
                 onStyle: function() {
                     $('.js-printbizonylat').button();
                 },
                 onDoEditLink: function() {
                     $('.js-printbizonylat').each(function() {
                         var $this = $(this);
-                        $this.attr('href', '/admin/szamlafej/print?id=' + $this.data('egyedid'));
+                        $this.attr('href', '/admin/bevetfej/print?id=' + $this.data('egyedid'));
                     });
                 }
             },
