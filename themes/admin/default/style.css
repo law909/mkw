@@ -98,3 +98,7 @@ img {
 .pricenowrap {
     white-space: nowrap;
 }
+
+.js-saveas, .js-saveandreopen {
+    margin-left: 10px;
+}

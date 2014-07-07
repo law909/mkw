@@ -399,6 +399,12 @@
                                 doEditLink($(x));
                                 styleTbody();
                                 break;
+                            case 'addreopen':
+                                $(setup.tablebody.selector).prepend(resp.html);
+                                doEditLink($(setup.tablebody.selector));
+                                styleTbody();
+                                $('.mattable-editlink[data-termekid="' + resp.id + '"]').click();
+                                break;
                             case 'add':
                                 $(setup.tablebody.selector).prepend(resp.html);
                                 doEditLink($(setup.tablebody.selector));

@@ -105,6 +105,12 @@ $(document).ready(function() {
                 $('input[name^="receptoper_"]').val('add');
                 $('#mattkarb-okbutton').click();
             });
+            $('.js-saveandreopen').on('click', function(e) {
+                e.preventDefault();
+                $('input[name="oper"]').val('addreopen');
+                $('input[name="id"]').val(0);
+                $('#mattkarb-okbutton').click();
+            });
             keptab.on('click', '#FoKepDelButton', function(e) {
                 e.preventDefault();
                 dialogcenter.html('Biztos, hogy törli a képet?').dialog({
