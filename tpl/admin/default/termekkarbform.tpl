@@ -336,6 +336,7 @@
 	<div class="mattkarb-footer">
 		<input id="mattkarb-okbutton" type="submit" value="{t('OK')}">
 		<a id="mattkarb-cancelbutton" href="#">{t('Mégsem')}</a>
+		<a class="js-saveas" href="#">{t('Mentés új termékként')}</a>
 	</div>
 </form>
 <form id="valtozatgeneratorform" method="post" action="/admin/termekvaltozat/generate" data-id="{$termek.id}"></form>

@@ -94,6 +94,17 @@ $(document).ready(function() {
             var valtozattab = $('#ValtozatTab');
             var akciostartedit = $('#AkcioStartEdit'),
                     akciostopedit = $('#AkcioStopEdit');
+            $('.js-saveas').on('click', function(e) {
+                e.preventDefault();
+                $('input[name="oper"]').val('add');
+                $('input[name="id"]').val(0);
+                $('input[name^="kepoper_"]').val('add');
+                $('table[id^="keptable_"]').attr('data-oper','add');
+                $('input[name^="valtozatoper_"]').val('add');
+                $('input[name^="kapcsolodooper_"]').val('add');
+                $('input[name^="receptoper_"]').val('add');
+                $('#mattkarb-okbutton').click();
+            });
             keptab.on('click', '#FoKepDelButton', function(e) {
                 e.preventDefault();
                 dialogcenter.html('Biztos, hogy törli a képet?').dialog({
