@@ -586,6 +586,7 @@ class partnerController extends \mkwhelpers\MattableController {
                     $telefon = $this->params->getStringRequestParam('telefon');
                     $akcioshirlevelkell = $this->params->getBoolRequestParam('akcioshirlevelkell');
                     $ujdonsaghirlevelkell = $this->params->getBoolRequestParam('ujdonsaghirlevelkell');
+                    $hibas = false;
                     if (!\Zend_Validate::is($email, 'EmailAddress')) {
                         $hibas = true;
                         $hibak['email'] = t('Rossz az email');
