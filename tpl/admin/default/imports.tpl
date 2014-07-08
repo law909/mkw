@@ -44,6 +44,10 @@
                 <input name="dbtol"> - <input name="dbig">
             </div>
             <div>
+                <label>Hosszú leírás módosítása létező terméknél is:</label>
+                <input name="editleiras" type="checkbox">
+            </div>
+            <div>
             <a href="/admin/import/kreativ" class="js-kreativimport">Kreativ puzzle import</a>
             </div>
 		</div>
