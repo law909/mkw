@@ -114,7 +114,11 @@ class BevetfejController extends bizonylatfejController {
         $view->setVar('egyed', $egyed);
 
         $partner = new partnerController($this->params);
-        $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
+        $filter = array();
+        $filter['fields'][] = 'szallito';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = true;
+        $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0), $filter));
 
         $raktar = new raktarController($this->params);
         if (!$record || !$record->getRaktarId()) {
