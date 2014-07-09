@@ -493,6 +493,8 @@ $(document).ready(function() {
                         buttons: {
                             'Igen': function() {
                                 $('input[name^="valtozatelerheto_"]').prop('checked', false);
+                                $('input[name="ajanlott"]').prop('checked', false);
+                                $('input[name="kiemelt"]').prop('checked', false);
                                 $(this).dialog('close');
                             },
                             'Nem': function() {
@@ -652,6 +654,9 @@ $(document).ready(function() {
         });
         $('#mattable-body').on('click', '.js-flagcheckbox', function(e) {
             function doit(succ) {
+                var id = $this.attr('data-id'),
+                    flag = $this.attr('data-flag'),
+                    kibe = !$this.is('.ui-state-hover');
                 if (succ) {
                     succ();
                 }
@@ -659,12 +664,16 @@ $(document).ready(function() {
                     url: '/admin/termek/setflag',
                     type: 'POST',
                     data: {
-                        id: $this.attr('data-id'),
-                        flag: $this.attr('data-flag'),
-                        kibe: !$this.is('.ui-state-hover')
+                        id: id,
+                        flag: flag,
+                        kibe: kibe
                     },
                     success: function() {
                         $this.toggleClass('ui-state-hover');
+                        if (kibe && (flag == 'nemkaphato')) {
+                            $('a[data-id="' + id + '"][data-flag="kiemelt"]').removeClass('ui-state-hover');
+                            $('a[data-id="' + id + '"][data-flag="ajanlott"]').removeClass('ui-state-hover');
+                        }
                     }
                 });
             }

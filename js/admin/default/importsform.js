@@ -22,7 +22,8 @@ $(document).ready(function() {
                             path: $('input[name="path"]').val(),
                             gyarto: $('select[name="gyarto"]').val(),
                             dbtol: $('input[name="dbtol"]').val(),
-                            dbig: $('input[name="dbig"]').val()
+                            dbig: $('input[name="dbig"]').val(),
+                            editleiras: $('input[name="editleiras"]').prop('checked')
                         },
                         success: function() {
                             alert('Kész.');

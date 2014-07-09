@@ -627,6 +627,8 @@ class termekController extends \mkwhelpers\MattableController {
 					$obj->setNemkaphato($kibe);
                     $kaphatolett = $oldnemkaphato && !$obj->getNemkaphato();
 					if ($obj->getNemkaphato()) {
+                        $obj->setAjanlott(false);
+                        $obj->setKiemelt(false);
 						$valtozatok = $obj->getValtozatok();
 						foreach ($valtozatok as $valt) {
 							$valt->setElerheto(false);

@@ -42,6 +42,7 @@ class importController extends \mkwhelpers\Controller {
         $gyartoid = $this->params->getIntRequestParam('gyarto', 0);
         $dbtol = $this->params->getIntRequestParam('dbtol', 0);
         $dbig = $this->params->getIntRequestParam('dbig', 0);
+        $editleiras = $this->params->getBoolRequestParam('editleiras', false);
 
         $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
 
@@ -110,14 +111,17 @@ class importController extends \mkwhelpers\Controller {
                         $parent = $this->createKategoria($katnev, $parentid);
                         $termeknev = mb_convert_encoding(trim($data[1]), 'UTF8', 'ISO-8859-2');
 
+                        $hosszuleiras = mb_convert_encoding(trim($data[13]), 'UTF8', 'ISO-8859-2');
+                        $rovidleiras = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
+
                         $idegenkod = 'KP' . $data[0];
 
                         $termek = new \Entities\Termek();
                         $termek->setFuggoben(true);
                         $termek->setMe('db');
                         $termek->setNev($termeknev);
-                        $termek->setLeiras(mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2'));
-                        $termek->setRovidleiras(mb_substr($termek->getLeiras(), 0, 100, 'UTF8') . '...');
+                        $termek->setLeiras($hosszuleiras);
+                        $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
                         $termek->setCikkszam($data[0]);
                         $termek->setIdegencikkszam($data[0]);
                         $termek->setIdegenkod($idegenkod);
@@ -170,6 +174,12 @@ class importController extends \mkwhelpers\Controller {
                     }
                     else {
                         $termek = $termek[0];
+                        if ($editleiras) {
+                            $hosszuleiras = mb_convert_encoding(trim($data[13]), 'UTF8', 'ISO-8859-2');
+                            $termek->setLeiras($hosszuleiras);
+                            //$rovidleiras = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
+                            //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
+                        }
                     }
                     $termek->setNemkaphato(($data[6] * 1) == 0);
                     $termek->setAfa($afa[0]);

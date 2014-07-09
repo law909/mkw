@@ -50,10 +50,15 @@ class Hir {
 			'cim'=>$this->getCim(),
 			'lead'=>$this->getLead(),
 			'datum'=>$this->getDatumStr(),
-			'szoveg'=>$this->getSzoveg()
+			'szoveg'=>$this->getSzoveg(),
+            'url'=> $this->getLink()
 		);
 		return $ret;
 	}
+
+    public function getLink() {
+        return \mkw\Store::getRouter()->generate('showhir', \mkw\Store::getConfigValue('mainurl', true), array('hir' => $this->getSlug()));
+    }
 
 	public function getId() {
 		return $this->id;
