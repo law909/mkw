@@ -8,6 +8,8 @@
 			<p>Köszönjük, hogy megtisztelt bizalmával! Bízunk benne, hogy újabb elégedett vásárlót üdvözölhetünk Önben.</p>
 			<h5>Az Ön megrendelésének az azonosítója: <b>{$megrendelesszam}</b></h5>
                         <p>Hamarosan kapnia kell tőlünk egy emailt, melyben a megrendelését igazoljuk vissza. Kérjük írja fel az itt látható rendelési számot, hogy később erre hivatkozva hatékonyabban tudjunk segíteni Önnek.</p>
+                        <h5>Nem kaptam meg az emailt, érvényes a rendelésem?</h5>
+                        <p>Sajnos sokszor fordul elő főleg gmail-es és freemail-es emailcímeknél, hogy leveleink fennakadnak a spamszűrőkön. <b>Kérjük, ellenőrizze a levélszemét mappáját</b>, nagy valószínűséggel ott lesz a levelünk. A megrendelését természetesen megkaptuk, melyet a fiókjában nyomon követhet.</p>
                         <h5>Mikor kapom meg a megrendelésemet?</h5>
                         <p>Ha a megrendelésében szereplő összes termék készletünkön van, akkor legkorábban a következő munkanapon juthat a csomagjához, ha a megrendelése déli 12 óráig beérkezett hozzánk.</p>
                         <p>Ha valamelyik termék nincs készleten, annak a beszerzése néhány napot igénybe szokott venni, de általában 8 munkanapon belül tudjuk teljesíteni a megrendelését. Amennyiben ezt a határidőt meghaladná a szállítás, erről Önt feltétlenül tájékoztatni fogjuk.</p>
