@@ -54,6 +54,12 @@ class EntitiesTermekProxy extends \Entities\Termek implements \Doctrine\ORM\Prox
         return parent::getTop10($top10min);
     }
 
+    public function getKeszlet()
+    {
+        $this->__load();
+        return parent::getKeszlet();
+    }
+
     public function toTermekLista($valtozat = NULL, $ujtermekid = NULL, $top10min = NULL)
     {
         $this->__load();

@@ -117,6 +117,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['megtekintesdb'] = $t->getMegtekintesdb();
 		$x['megvasarlasdb'] = $t->getMegvasarlasdb();
         $x['gyartonev'] = $t->getGyartoNev();
+        $x['keszlet'] = $t->getKeszlet();
 		return $x;
 	}
 

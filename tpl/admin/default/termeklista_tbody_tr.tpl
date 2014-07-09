@@ -35,6 +35,7 @@
 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="nemkaphato" class="js-flagcheckbox{if ($_termek.nemkaphato)} ui-state-hover{/if}">{t('Nem kapható')}</a></td></tr>
 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="fuggoben" class="js-flagcheckbox{if ($_termek.fuggoben)} ui-state-hover{/if}">{t('Függőben')}</a></td></tr>
 <tr><td>{t('Hűségpont arány')}: {$_termek.hparany}</td></tr>
+<tr><td>{t('Készlet')}: {$_termek.keszlet}</td></tr>
 </tbody></table></td>
 {if ($setup.grideditbutton=='big')}
 <td class="cell"><table class="kozepre"><tbody>

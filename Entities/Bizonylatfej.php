@@ -443,6 +443,7 @@ class Bizonylatfej {
 
     public function addBizonylattetel(Bizonylattetel $val) {
         if (!$this->bizonylattetelek->contains($val)) {
+            $val->setIrany($this->getIrany());
             $this->bizonylattetelek->add($val);
             $val->setBizonylatfej($this);
         }

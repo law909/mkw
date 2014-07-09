@@ -70,10 +70,23 @@ class TermekValtozat {
 	private $cikkszam='';
 	/** @Column(type="string",length=50,nullable=true) */
 	private $idegencikkszam='';
+    /** @OneToMany(targetEntity="Bizonylattetel", mappedBy="termekvaltozat",cascade={"persist","remove"}) */
+    private $bizonylattetelek;
 
 	public function __construct() {
 		$this->kosarak=new \Doctrine\Common\Collections\ArrayCollection();
+        $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
 	}
+
+    public function getKeszlet() {
+        $k = 0;
+        foreach($this->bizonylattetelek as $bt) {
+            if ($bt->getMozgat()) {
+                $k += ($bt->getMennyiseg() * $bt->getIrany());
+            }
+        }
+        return $k;
+    }
 
 	public function getId() {
 		return $this->id;

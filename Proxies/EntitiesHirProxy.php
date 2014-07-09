@@ -42,6 +42,12 @@ class EntitiesHirProxy extends \Entities\Hir implements \Doctrine\ORM\Proxy\Prox
         return parent::convertToArray();
     }
 
+    public function getLink()
+    {
+        $this->__load();
+        return parent::getLink();
+    }
+
     public function getId()
     {
         $this->__load();

@@ -42,6 +42,12 @@ class EntitiesTermekcimketorzsProxy extends \Entities\Termekcimketorzs implement
         return parent::toLista();
     }
 
+    public function getTermekFilter()
+    {
+        $this->__load();
+        return parent::getTermekFilter();
+    }
+
     public function getKategoria()
     {
         $this->__load();

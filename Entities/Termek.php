@@ -277,6 +277,16 @@ class Termek {
         return $this->megvasarlasdb >= $top10min;
     }
 
+    public function getKeszlet() {
+        $k = 0;
+        foreach($this->bizonylattetelek as $bt) {
+            if ($bt->getMozgat()) {
+                $k += ($bt->getMennyiseg() * $bt->getIrany());
+            }
+        }
+        return $k;
+    }
+
     public function toTermekLista($valtozat = null, $ujtermekid = null, $top10min = null) {
         $x = array();
         $x['ujtermek'] = $this->getUjTermek($ujtermekid);

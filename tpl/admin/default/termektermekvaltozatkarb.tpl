@@ -16,6 +16,14 @@
 			<a class="js-valtozatdelbutton" href="#" data-id="{$valtozat.id}"{if ($valtozat.oper=='add')} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
 		</td>
 	</tr>
+    <tr>
+        <td class="mattable-cell">
+            <label>{t('Készlet')}:</label>
+        </td>
+        <td class="mattable-cell">
+            {$valtozat.keszlet}
+        </td>
+    </tr>
 	<tr>
 		<td class="mattable-cell">
 			<select name="valtozatadattipus1_{$valtozat.id}" required="required">

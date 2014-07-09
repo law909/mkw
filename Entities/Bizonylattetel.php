@@ -38,6 +38,9 @@ class Bizonylattetel {
     /** @Column(type="boolean",nullable=false) */
     private $mozgat;
 
+    /** @Column(type="integer") */
+    private $irany;
+
     /** @Column(type="boolean",nullable=false) */
     private $arvaltoztat = 0;
 
@@ -731,6 +734,14 @@ class Bizonylattetel {
             $this->termekvaltozat = null;
 //			$val->removeBizonylattetelek($this);
         }
+    }
+
+    public function getIrany() {
+        return $this->irany;
+    }
+
+    public function setIrany($val) {
+        $this->irany = $val;
     }
 
 }
