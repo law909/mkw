@@ -216,6 +216,9 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::Fooldalchangefreq);
         $view->setVar(\mkw\consts::Fooldalchangefreq, ($p ? $p->getErtek() : 'daily'));
 
+        $p = $repo->find(\mkw\consts::AKTrustedShopApiKey);
+        $view->setVar(\mkw\consts::AKTrustedShopApiKey, ($p ? $p->getErtek() : ''));
+
         $view->printTemplateResult();
     }
 
@@ -358,6 +361,8 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Termekchangefreq, $this->params->getStringRequestParam('termekchangefreq', 'monthly'));
         $this->setObj(\mkw\consts::Kategoriachangefreq, $this->params->getStringRequestParam('kategoriachangefreq', 'daily'));
         $this->setObj(\mkw\consts::Fooldalchangefreq, $this->params->getStringRequestParam('fooldalchangefreq', 'daily'));
+
+        $this->setObj(\mkw\consts::AKTrustedShopApiKey, $this->params->getStringRequestParam('aktrustedshopapikey', ''));
         store::getEm()->flush();
     }
 

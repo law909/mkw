@@ -96,4 +96,6 @@ class consts {
     const BizonylatStatuszFuggoben = 'bizonylatstatuszfuggoben';
 
     const RLBUtolsoSzamlaszam = 'rlbutolsoszamlaszam';
+
+    const AKTrustedShopApiKey = 'aktrustedshopapikey';
 }

@@ -274,6 +274,7 @@
 		<table><tbody>
             <tr><td><label>{t('Google analytics kód')}:</label></td><td><input name="gafollow" type="text" value="{$gafollow}"</td></tr>
             <tr><td><label>{t('Facebook app-id')}:</label></td><td><input name="fbappid" type="text" value="{$fbappid}"</td></tr>
+            <tr><td><label>{t('Árukereső TrustedShop webapi key')}:</label></td><td><input name="aktrustedshopapikey" type="text" value="{$aktrustedshopapikey}"</td></tr>
         </tbody></table>
         </div>
 		{if ($setup.editstyle=='dropdown')}

@@ -1,5 +1,9 @@
 {extends "base.tpl"}
 
+{block "script"}
+    {if ($AKTrustedShopScript|default)}{$AKTrustedShopScript}{/if}
+{/block}
+
 {block "kozep"}
 <div class="container">
 	<div class="row">

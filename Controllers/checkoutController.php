@@ -201,6 +201,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 
 			$megrendfej->generateId();
 
+            $lasttermeknevek = array();
 //			$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
 			foreach ($kosartetelek as $kt) {
 				$t = new \Entities\Bizonylattetel();
@@ -214,6 +215,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 				$t->setNettoegysarhuf($kt->getNettoegysar());
 				$t->setBruttoegysarhuf($kt->getBruttoegysar());
 				$t->calc();
+                $lasttermeknevek[] = $t->getTermeknev();
 				$this->getEm()->persist($t);
 			}
 			$this->getEm()->persist($megrendfej);
@@ -224,6 +226,8 @@ class checkoutController extends \mkwhelpers\MattableController {
             }
 
 			Store::getMainSession()->lastmegrendeles = $megrendfej->getId();
+            Store::getMainSession()->lastemail = $email;
+            Store::getMainSession()->lasttermeknevek = $lasttermeknevek;
 			$kc = new kosarController($this->params);
 			$kc->clear();
 			Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
@@ -237,7 +241,34 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$view = Store::getTemplateFactory()->createMainView('checkoutkoszonjuk.tpl');
 		Store::fillTemplate($view);
 		$view->setVar('megrendelesszam', Store::getMainSession()->lastmegrendeles);
+
+        $aktsapikey = Store::getParameter(\mkw\consts::AKTrustedShopApiKey);
+        $email = Store::getMainSession()->lastemail;
+
+        if ($aktsapikey && $email) {
+            require_once 'busvendor/AKTrustedShop/TrustedShop.php';
+
+            $ts = new \TrustedShop($aktsapikey);
+            $ts->SetEmail($email);
+
+            $ltn = Store::getMainSession()->lasttermeknevek;
+            if ($ltn) {
+                foreach($ltn as $l) {
+                    $ts->AddProduct($l);
+                }
+            }
+
+            ob_start();
+            $ts->Send();
+            $tsret = ob_get_clean();
+
+            if ($tsret) {
+                $view->setVar('AKTrustedShopScript', $tsret);
+            }
+        }
 		Store::getMainSession()->lastmegrendeles = '';
+        Store::getMainSession()->lastemail = '';
+        Store::getMainSession()->lasttermeknevek = array();
 
 		$view->printTemplateResult(false);
 	}
