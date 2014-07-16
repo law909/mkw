@@ -201,5 +201,8 @@
 	<div class="mattkarb-footer">
 		<input id="mattkarb-okbutton" type="submit" value="{t('OK')}">
 		<a id="mattkarb-cancelbutton" href="#">{t('Mégsem')}</a>
+        {if ($showinheritbutton)}
+        <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-oper="inherit" title="{t('Számláz')}" target="_blank">Számláz</a>
+        {/if}
 	</div>
 </form>

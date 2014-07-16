@@ -194,7 +194,11 @@ $(document).ready(function() {
                 $('input[name="bizonylatstatuszertesito"]').prop('checked', true);
             });
 			$('.js-termekselect').autocomplete(termekautocomplete);
-			$('.js-tetelnewbutton,.js-teteldelbutton').button();
+			$('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat').button();
+            $('.js-inheritbizonylat').each(function() {
+                var $this = $(this);
+                $this.attr('href', '/admin/szamlafej/viewkarb?id=' + $this.data('egyedid') + '&source=megrendeles&oper=' + $this.data('oper'));
+            });
 			keltedit.datepicker($.datepicker.regional['hu']);
 			keltedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
 			keltedit.datepicker('setDate', keltedit.attr('data-datum'));
