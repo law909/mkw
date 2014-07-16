@@ -513,6 +513,17 @@ class Termek {
             }
         }
         $x['valtozatok'] = $vtt;
+
+        $hasontomb = array();
+        $r = \mkw\Store::getEm()->getRepository('Entities\Termek');
+        $hason = $r->getHasonloTermekek($this,
+                \mkw\Store::getParameter(\mkw\consts::Hasonlotermekdb, 3),
+                \mkw\Store::getParameter(\mkw\consts::Hasonlotermekarkulonbseg, 10));
+        foreach($hason as $has) {
+            $hasontomb[] = $has->toKapcsolodo();
+        }
+        $x['hasonlotermekek'] = $hasontomb;
+
         return $x;
     }
 

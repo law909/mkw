@@ -163,6 +163,7 @@
 						<li class="active"><a href="#leirasTab" data-toggle="tab">{t('Leírás')}</a></li>
 						<li><a href="#tulajdonsagTab" data-toggle="tab">{t('Tulajdonságok')}</a></li>
 						{if (count($termek.kapcsolodok)!=0)}<li><a href="#kapcsolodoTab" data-toggle="tab">{t('Kapcsolódó termékek')}</a></li>{/if}
+						{if (count($termek.hasonlotermekek)!=0)}<li><a href="#hasonloTermekTab" data-toggle="tab">{t('Hasonló termékek')}</a></li>{/if}
 						<!--li><a href="#ertekelesTab" data-toggle="tab">{t('Értékelések')}</a></li>
 						<li><a href="#hasonlotermekTab" data-toggle="tab">{t('Hasonló termékek')}</a></li-->
 					</ul>
@@ -203,6 +204,39 @@
                                                 {/if}
                                             </h5>
                                             <a href="{$_kapcsolodo.link}" class="btn okbtn">Részletek</a>
+                                        </a>
+                                    </div>
+                                </div>
+                                {/if}
+                            {/for}
+                            </div>
+                        {/for}
+						</div>
+						{/if}
+						{if (count($termek.hasonlotermekek)!=0)}
+						<div id="hasonloTermekTab" class="tab-pane">
+                        {$lntcnt=count($termek.hasonlotermekek)}
+                        {$step=4}
+                        {for $i=0 to $lntcnt-1 step $step}
+                            <div>
+                            {for $j=0 to $step-1}
+                                {if ($i+$j<$lntcnt)}
+                                {$_hasonlo=$termek.hasonlotermekek[$i+$j]}
+                                <div class="textaligncenter pull-left" style="width:{100/$step}%">
+                                    <div class="kapcsolodoTermekInner">
+                                        <a href="{$_hasonlo.link}">
+                                            <div class="kapcsolodoImageContainer">
+                                                <img src="{$_hasonlo.minikepurl}" title="{$_hasonlo.caption}" alt="{$_hasonlo.caption}">
+                                            </div>
+                                            <div>{$_hasonlo.caption}</div>
+                                            <h5>
+                                                {if ($_hasonlo.akcios)}
+                                                <span><span class="akciosar">{number_format($_hasonlo.eredetibruttohuf,0,',',' ')} Ft</span> helyett {number_format($_hasonlo.bruttohuf,0,',',' ')} Ft</span>
+                                                {else}
+                                                <span>{number_format($_hasonlo.bruttohuf,0,',',' ')} Ft</span>
+                                                {/if}
+                                            </h5>
+                                            <a href="{$_hasonlo.link}" class="btn okbtn">Részletek</a>
                                         </a>
                                     </div>
                                 </div>

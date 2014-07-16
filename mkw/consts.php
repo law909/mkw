@@ -59,6 +59,9 @@ class consts {
     const Fooldalajanlotttermekdb = 'fooldalajanlotttermekdb';
     const Fooldalnepszerutermekdb = 'fooldalnepszerutermekdb';
     const Kiemelttermekdb = 'kiemelttermekdb';
+    const Hasonlotermekdb = 'hasonlotermekdb';
+    const Hasonlotermekarkulonbseg = 'hasonlotermekarkulonbseg';
+    
     const Arfilterstep = 'arfilterstep';
     const Fooldalhirdb = 'fooldalhirdb';
     const Termeklistatermekdb = 'termeklistatermekdb';

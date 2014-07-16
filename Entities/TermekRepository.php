@@ -314,6 +314,42 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $this->getWithJoins($filter, $order, 0, $db);
     }
 
+    public function getHasonloTermekek($termek, $db, $arszaz) {
+        $filter = array();
+        $filter = $this->addAktivLathatoFilter($filter);
+        $filter['fields'][] = 'nemkaphato';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = false;
+
+        $filter['fields'][] = array('termekfa1', 'termekfa2', 'termekfa3');
+        $filter['clauses'][] = '=';
+        $a = array();
+        if ($termek->getTermekfa1Id() > 1) {
+            $a[] = $termek->getTermekfa1();
+        }
+        if ($termek->getTermekfa2Id() > 1) {
+            $a[] = $termek->getTermekfa2();
+        }
+        if ($termek->getTermekfa3Id() > 1) {
+            $a[] = $termek->getTermekfa3();
+        }
+        $filter['values'][] = $a;
+
+        $filter['fields'][] = 'brutto';
+        $filter['clauses'][] = '>=';
+        $filter['values'][] =  $termek->getBrutto() * (100 - $arszaz * 1) / 100;
+
+        $filter['fields'][] = 'brutto';
+        $filter['clauses'][] = '<=';
+        $filter['values'][] =  $termek->getBrutto() * (100 + $arszaz * 1) / 100;
+
+        $filter['fields'][] = 'id';
+        $filter['clauses'][] = '<>';
+        $filter['values'][] = $termek->getId();
+
+        return $this->getWithJoins($filter, array(), 0, $db);
+    }
+
     public function getNevek($keresett) {
         $a = $this->alias;
         $filter = array();

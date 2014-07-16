@@ -131,6 +131,10 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::Arfilterstep, ($p ? $p->getErtek() : 500));
         $p = $repo->find(\mkw\consts::Kiemelttermekdb);
         $view->setVar(\mkw\consts::Kiemelttermekdb, ($p ? $p->getErtek() : 3));
+        $p = $repo->find(\mkw\consts::Hasonlotermekdb);
+        $view->setVar(\mkw\consts::Hasonlotermekdb, ($p ? $p->getErtek() : 3));
+        $p = $repo->find(\mkw\consts::Hasonlotermekarkulonbseg);
+        $view->setVar(\mkw\consts::Hasonlotermekarkulonbseg, ($p ? $p->getErtek() : 10));
         $p = $repo->find(\mkw\consts::Autologoutmin);
         $view->setVar(\mkw\consts::Autologoutmin, ($p ? $p->getErtek() : 10));
         $p = $repo->find(\mkw\consts::GAFollow);
@@ -292,6 +296,8 @@ class setupController extends \mkwhelpers\Controller {
 
         $this->setObj(\mkw\consts::Arfilterstep, $this->params->getIntRequestParam('arfilterstep', 500));
         $this->setObj(\mkw\consts::Kiemelttermekdb, $this->params->getIntRequestParam('kiemelttermekdb', 3));
+        $this->setObj(\mkw\consts::Hasonlotermekdb, $this->params->getIntRequestParam('hasonlotermekdb', 3));
+        $this->setObj(\mkw\consts::Hasonlotermekarkulonbseg, $this->params->getIntRequestParam('hasonlotermekarkulonbseg', 10));
         $this->setObj(\mkw\consts::Autologoutmin, $this->params->getIntRequestParam('autologoutmin', 10));
         $this->setObj(\mkw\consts::Katoldalcim, $this->params->getStringRequestParam('katoldalcim'));
         $this->setObj(\mkw\consts::Katseodescription, $this->params->getStringRequestParam('katseodescription'));
