@@ -161,7 +161,7 @@
 				<div id="termekTabbable" class="tabbable">
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#leirasTab" data-toggle="tab">{t('Leírás')}</a></li>
-						<li><a href="#tulajdonsagTab" data-toggle="tab">{t('Tulajdonságok')}</a></li>
+						{if (count($termek.cimkelapon)!=0)}<li><a href="#tulajdonsagTab" data-toggle="tab">{t('Tulajdonságok')}</a></li>{/if}
 						{if (count($termek.kapcsolodok)!=0)}<li><a href="#kapcsolodoTab" data-toggle="tab">{t('Kapcsolódó termékek')}</a></li>{/if}
 						{if (count($termek.hasonlotermekek)!=0)}<li><a href="#hasonloTermekTab" data-toggle="tab">{t('Hasonló termékek')}</a></li>{/if}
 						<!--li><a href="#ertekelesTab" data-toggle="tab">{t('Értékelések')}</a></li>
@@ -171,6 +171,7 @@
 						<div id="leirasTab" class="tab-pane active">
 							<span itemprop="description">{$termek.leiras}</span>
 						</div>
+                        {if (count($termek.cimkelapon)!=0)}
 						<div id="tulajdonsagTab" class="tab-pane">
 							<div class="span6 nincsbalmargo">
 							<table class="table table-striped table-condensed"><tbody>
@@ -180,6 +181,7 @@
 							</tbody></table>
 							</div>
 						</div>
+                        {/if}
 						{if (count($termek.kapcsolodok)!=0)}
 						<div id="kapcsolodoTab" class="tab-pane">
                         {$lntcnt=count($termek.kapcsolodok)}
