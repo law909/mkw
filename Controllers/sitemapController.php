@@ -98,6 +98,12 @@ class sitemapController extends \mkwhelpers\Controller {
                 'priority' => $p
             );
         }
+        $urls[] = array(
+            'url' => htmlentities($router->generate('markak', \mkw\Store::getConfigValue('mainurl'), array())),
+            'lastmod' => date('Y-m-d'),
+            'changefreq' => $c,
+            'priority' => $p
+        );
         $smview->setVar('urls', $urls);
         return $smview->getTemplateResult();
     }
