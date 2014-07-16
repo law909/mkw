@@ -170,7 +170,8 @@
 				<td><label>{t('Ajánlott termékek száma a főoldalon')}:</label></td><td><input name="fooldalajanlotttermekdb" type="number" value="{$fooldalajanlotttermekdb}"></td></tr>
 			<tr><td><label>{t('Legnépszerűbb termékek száma a főoldalon')}:</label></td><td><input name="fooldalnepszerutermekdb" type="number" value="{$fooldalnepszerutermekdb}"></td>
 				<td><label>{t('Kiemelt termékek száma')}:</label></td><td><input name="kiemelttermekdb" type="number" value="{$kiemelttermekdb}"></td></tr>
-            <tr><td><label>{t('Termékek száma a terméklistában')}:</label></td><td><input name="termeklistatermekdb" type="number" value="{$termeklistatermekdb}"></td></tr>
+            <tr><td><label>{t('Termékek száma a terméklistában')}:</label></td><td><input name="termeklistatermekdb" type="number" value="{$termeklistatermekdb}"></td>
+                <td><label>{t('Legnépszerűbb termékek száma a terméklapon')}:</label></td><td><input name="termeklapnepszerutermekdb" type="number" value="{$termeklapnepszerutermekdb}"></td></tr>
             <tr><td><label>{t('Hasonló termékek száma a terméklapon')}:</label></td><td><input name="hasonlotermekdb" type="number" value="{$hasonlotermekdb}"></td>
 				<td><label>{t('Hasonló termék árkülönbség %')}:</label></td><td><input name="hasonlotermekarkulonbseg" type="number" value="{$hasonlotermekarkulonbseg}"></td></tr>
 			<tr><td><label>{t('Ár szűrő lépésköze')}:</label></td><td><input name="arfilterstep" type="number" value="{$arfilterstep}"></td>

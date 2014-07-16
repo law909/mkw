@@ -594,7 +594,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$tcc = new termekcimkekatController($this->params);
 		$cimkek = $termek ? $termek->getAllCimkeId() : null;
 		$view->setVar('cimkekat', $tcc->getWithCimkek($cimkek));
-        
+
 		$view->setVar('termek', $this->loadVars($termek, true));
 
         $vtsz = new vtszController($this->params);
@@ -735,11 +735,11 @@ class termekController extends \mkwhelpers\MattableController {
 		return $ret;
 	}
 
-	public function getLegnepszerubbLista() {
-		$termekek = $this->getRepo()->getLegnepszerubbTermekek(store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5));
+	public function getLegnepszerubbLista($db) {
+		$termekek = $this->getRepo()->getLegnepszerubbTermekek($db);
 		$ret = array();
 		foreach ($termekek as $termek) {
-			$ret[] = $termek->toTermekLista();
+			$ret[] = $termek->toKapcsolodo();
 		}
 		return $ret;
 	}

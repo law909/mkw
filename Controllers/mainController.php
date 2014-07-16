@@ -47,7 +47,7 @@ class mainController extends \mkwhelpers\Controller {
 		$this->view->setVar('seodescription', store::getParameter(consts::Seodescription));
 		$this->view->setVar('hirek', $hc->gethirlist());
 		$this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
-		$this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista());
+		$this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5)));
 		$this->view->setVar('legujabbtermekek', $tc->getLegujabbLista());
 		$this->view->setVar('korhintalista', $khc->getLista());
 		$this->view->setVar('topkategorialista', $tfc->getformenu(store::getSetupValue('topkategoriamenunum', 3), 0));
@@ -179,6 +179,7 @@ class mainController extends \mkwhelpers\Controller {
 			store::fillTemplate($this->view);
 			$this->view->setVar('pagetitle', $termek->getShowOldalcim());
 			$this->view->setVar('seodescription', $termek->getShowSeodescription());
+    		$this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(store::getParameter(\mkw\consts::Termeklapnepszerutermekdb, 5)));
 			$t = $tc->getTermekLap($termek);
 			foreach ($t as $k => $v) {
 				$this->view->setVar($k, $v);

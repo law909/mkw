@@ -298,7 +298,7 @@ class TermekRepository extends \mkwhelpers\Repository {
         $filter['fields'][] = 'nemkaphato';
         $filter['clauses'][] = '=';
         $filter['values'][] = false;
-        $order = array('_xx.megvasarlasdb' => 'DESC');
+        $order = array('_xx.megtekintesdb' => 'DESC');
 
         return $this->getWithJoins($filter, $order, 0, $db);
     }
