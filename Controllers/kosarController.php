@@ -120,10 +120,14 @@ class kosarController extends \mkwhelpers\MattableController {
         $this->getRepo()->remove(\mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek));
 		$sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
 		$s = array();
+        $tids = array();
 		foreach ($sorok as $sor) {
 			$s[] = $sor->toLista();
+            $tids[] = $sor->getTermekId();
 		}
 		$v->setVar('tetellista', $s);
+		$tc = new termekController($this->params);
+    	$v->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($tids));
 		$v->printTemplateResult(false);
 	}
 

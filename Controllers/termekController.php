@@ -756,9 +756,11 @@ class termekController extends \mkwhelpers\MattableController {
     public function getHozzavasaroltLista($termek) {
 		$termekek = $this->getRepo()->getHozzavasaroltTermekek($termek);
 		$ret = array();
-		foreach ($termekek as $termek) {
-			$ret[] = $termek->toKapcsolodo();
-		}
+        if ($termekek) {
+            foreach ($termekek as $termek) {
+                $ret[] = $termek->toKapcsolodo();
+            }
+        }
 		return $ret;
     }
 
