@@ -349,8 +349,7 @@ class exportController extends \mkwhelpers\Controller {
             'product_url',
             'price',
             'image_url',
-            'description',
-            'delivery_time'
+            'description'
         );
         echo implode(";", $sor) . "\n";
         $tr = \mkw\Store::getEm()->getRepository('Entities\Termek');
@@ -384,8 +383,7 @@ class exportController extends \mkwhelpers\Controller {
                 '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')). '"',
                 '"' . number_format($t->getBruttoAr(), 0, ',', '') . '"', //number_format($tetel.bruttoegysarhuf,0,',',' ')
                 '"' . \mkw\Store::getFullUrl($t->getKepurlLarge(), \mkw\Store::getConfigValue('mainurl')) . '"',
-                '"' . $leiras . '"',
-                '"' . ($szallitasiido ? $szallitasiido . ' munkanap' : '') . '"'
+                '"' . $leiras . '"'
             );
             echo implode(";", $sor) . "\n";
         }
