@@ -978,7 +978,7 @@ class Termek {
         $this->termekfa1 = $termekfa;
         if ($termekfa) {
             $this->termekfa1karkod = $termekfa->getKarkod();
-            $termekfa->addTermek1($this);
+//            $termekfa->addTermek1($this);
         }
         else {
             $this->termekfa1karkod = '';
@@ -1009,7 +1009,7 @@ class Termek {
         $this->termekfa2 = $termekfa;
         if ($termekfa) {
             $this->termekfa2karkod = $termekfa->getKarkod();
-            $termekfa->addTermek2($this);
+//            $termekfa->addTermek2($this);
         }
         else {
             $this->termekfa2karkod = '';
@@ -1040,7 +1040,7 @@ class Termek {
         $this->termekfa3 = $termekfa;
         if ($termekfa) {
             $this->termekfa3karkod = $termekfa->getKarkod();
-            $termekfa->addTermek3($this);
+//            $termekfa->addTermek3($this);
         }
         else {
             $this->termekfa3karkod = '';

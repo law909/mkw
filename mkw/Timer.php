@@ -61,4 +61,15 @@ class Timer {
 		}
 		return $result;
 	}
+
+    public static function getRuntimeStrings() {
+        $r = array();
+        foreach(self::$runtimes as $k => $v) {
+            $r[] = $k . ': ' . $v;
+        }
+        self::$starttimes = array();
+        self::$stoptimes = array();
+        self::$runtimes = array();
+        return implode("\n", $r);
+    }
 }
