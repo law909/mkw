@@ -251,12 +251,20 @@ $(document).ready(function() {
 			tablebody: {
 				url: '/admin/megrendelesfej/getlistbody',
                 onStyle: function() {
-                    $('.js-printbizonylat, .js-inheritbizonylat').button();
+                    $('.js-printbizonylat, .js-inheritbizonylat, .js-printelolegbekero').button();
                 },
                 onDoEditLink: function() {
                     $('.js-inheritbizonylat').each(function() {
                         var $this = $(this);
                         $this.attr('href', '/admin/szamlafej/viewkarb?id=' + $this.data('egyedid') + '&source=megrendeles&oper=' + $this.data('oper'));
+                    });
+                    $('.js-printbizonylat').each(function() {
+                        var $this = $(this);
+                        $this.attr('href', '/admin/megrendelesfej/print?id=' + $this.data('egyedid'));
+                    });
+                    $('.js-printelolegbekero').each(function() {
+                        var $this = $(this);
+                        $this.attr('href', '/admin/megrendelesfej/printelolegbekero?id=' + $this.data('egyedid'));
                     });
                 }
 			},
@@ -296,10 +304,6 @@ $(document).ready(function() {
                     }
                 }
             });
-        })
-                .on('click', '.js-printbizonylat', function(e) {
-                    e.preventDefault();
-                    alert('print ' + $(this).data('egyedid'));
         });
 	}
 	else {

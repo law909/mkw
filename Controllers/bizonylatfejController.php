@@ -143,6 +143,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 			$this->getEm()->detach($t);
 		}
 		$x['id'] = $t->getId();
+        $x['bizonylattipusid'] = $t->getBizonylattipusId();
         $x['tulajnev'] = $t->getTulajnev();
         $x['tulajirszam'] = $t->getTulajirszam();
         $x['tulajvaros'] = $t->getTulajvaros();

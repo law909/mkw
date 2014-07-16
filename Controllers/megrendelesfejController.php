@@ -191,4 +191,32 @@ class megrendelesfejController extends bizonylatfejController {
         $szamlac = new SzamlafejController($this->params);
         echo $szamlac->_getkarb('bizonylatfejkarb.tpl', $megrendszam, 'add');
     }
+
+    public function doPrint() {
+        $o = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+        if ($o) {
+            $biztip = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
+            if ($biztip && $biztip->getTplname()) {
+                $view = $this->createView($biztip->getTplname());
+                $this->setVars($view);
+                $view->setVar('egyed', $o->toLista());
+                $view->setVar('afaosszesito',$this->getRepo()->getAFAOsszesito($o));
+                echo $view->getTemplateResult();
+            }
+        }
+    }
+
+    public function doPrintelolegbekero() {
+        $o = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+        if ($o) {
+            $biztip = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
+            if ($biztip) {
+                $view = $this->createView('biz_elolegbekero.tpl');
+                $this->setVars($view);
+                $view->setVar('egyed', $o->toLista());
+                $view->setVar('afaosszesito',$this->getRepo()->getAFAOsszesito($o));
+                echo $view->getTemplateResult();
+            }
+        }
+    }
 }
