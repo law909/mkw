@@ -149,7 +149,7 @@
                             {/if}
                             {if ($termek.akcios)}
                             <div class="textalignright">Az akció {if ($termek.akciotipus == 1)}{$termek.akciostart} - {$termek.akciostop}-ig tart
-                                {elseif ($termek.akciotipus == 2)}{$termek.akciostop}-ig tart
+                                {elseif ($termek.akciotipus == 2)}{$termek.akciostop}-ig<br>vagy a készlet erejéig tart
                                 {else}a készlet erejéig tart
                                 {/if}
                             </div>
