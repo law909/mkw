@@ -180,6 +180,7 @@ class mainController extends \mkwhelpers\Controller {
 			$this->view->setVar('pagetitle', $termek->getShowOldalcim());
 			$this->view->setVar('seodescription', $termek->getShowSeodescription());
     		$this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(store::getParameter(\mkw\consts::Termeklapnepszerutermekdb, 5)));
+    		$this->view->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($termek));
 			$t = $tc->getTermekLap($termek);
 			foreach ($t as $k => $v) {
 				$this->view->setVar($k, $v);

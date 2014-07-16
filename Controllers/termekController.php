@@ -753,6 +753,15 @@ class termekController extends \mkwhelpers\MattableController {
 		return $ret;
 	}
 
+    public function getHozzavasaroltLista($termek) {
+		$termekek = $this->getRepo()->getHozzavasaroltTermekek($termek);
+		$ret = array();
+		foreach ($termekek as $termek) {
+			$ret[] = $termek->toKapcsolodo();
+		}
+		return $ret;
+    }
+
     public function feed() {
 		$feedview = $this->getTemplateFactory()->createMainView('feed.tpl');
 		$view = $this->getTemplateFactory()->createMainView('termekfeed.tpl');

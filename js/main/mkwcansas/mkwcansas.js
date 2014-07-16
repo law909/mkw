@@ -82,6 +82,12 @@ $(document).ready(function() {
             controlNavigation: 'bullets',
             autoHeight: true
         });
+        $('#hozzavasarolttermekslider').royalSlider({
+            autoHeight: true,
+            loopRewind: true,
+            keyboardNavEnabled: true,
+            controlNavigation: 'bullets'
+        });
     }
     $termekertesitomodal.modal({
         show: false

@@ -350,6 +350,51 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $this->getWithJoins($filter, array(), 0, $db);
     }
 
+    public function getHozzavasaroltTermekek($termek) {
+        if (is_array($termek)) {
+            $x = array();
+            if ($termek instanceof \Entities\Termek) {
+                $x[] = $termek->getId();
+            }
+            else {
+                $x[] = $termek * 1;
+            }
+            $tlist = implode(',', $x);
+        }
+        else {
+            if ($termek instanceof \Entities\Termek) {
+                $tlist = $termek->getId();
+            }
+            else {
+                $tlist = $termek * 1;
+            }
+        }
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('termek_id', 'termek_id');
+        $q = $this->_em->createNativeQuery('SELECT DISTINCT termek_id'
+                . ' FROM bizonylattetel bt'
+                . ' WHERE (bizonylatfej_id IN (SELECT bizonylatfej_id FROM bizonylattetel albt WHERE (albt.termek_id IN (' . $tlist . ')) AND (albt.irany<1)))'
+                . ' AND (bt.termek_id NOT IN (' . $tlist . ')) AND (bt.irany<1)'
+                , $rsm);
+        $r = $q->getScalarResult();
+        $rr = array();
+        foreach($r as $_r) {
+            $rr[] = $_r['termek_id'];
+        }
+
+        $filter = array();
+        $filter = $this->addAktivLathatoFilter($filter);
+        $filter['fields'][] = 'nemkaphato';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = false;
+
+        $filter['fields'][] = 'id';
+        $filter['clauses'][] = 'IN';
+        $filter['values'][] = $rr;
+
+        return $this->getWithJoins($filter, array());
+    }
+
     public function getNevek($keresett) {
         $a = $this->alias;
         $filter = array();
