@@ -202,6 +202,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$megrendfej->generateId();
 
             $lasttermeknevek = array();
+            $lasttermekids = array();
 //			$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
 			foreach ($kosartetelek as $kt) {
 				$t = new \Entities\Bizonylattetel();
@@ -216,6 +217,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 				$t->setBruttoegysarhuf($kt->getBruttoegysar());
 				$t->calc();
                 $lasttermeknevek[] = $t->getTermeknev();
+                $lasttermekids[] = $t->getTermekId();
 				$this->getEm()->persist($t);
 			}
 			$this->getEm()->persist($megrendfej);
@@ -228,6 +230,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 			Store::getMainSession()->lastmegrendeles = $megrendfej->getId();
             Store::getMainSession()->lastemail = $email;
             Store::getMainSession()->lasttermeknevek = $lasttermeknevek;
+            Store::getMainSession()->lasttermekids = $lasttermekids;
 			$kc = new kosarController($this->params);
 			$kc->clear();
 			Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
@@ -241,6 +244,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$view = Store::getTemplateFactory()->createMainView('checkoutkoszonjuk.tpl');
 		Store::fillTemplate($view);
 		$view->setVar('megrendelesszam', Store::getMainSession()->lastmegrendeles);
+//itt kell hozza vasarolt termeket keresni session->lasttermekids-re
 
         $aktsapikey = Store::getParameter(\mkw\consts::AKTrustedShopApiKey);
         $email = Store::getMainSession()->lastemail;
@@ -269,6 +273,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 		Store::getMainSession()->lastmegrendeles = '';
         Store::getMainSession()->lastemail = '';
         Store::getMainSession()->lasttermeknevek = array();
+        Store::getMainSession()->lasttermekids = array();
 
 		$view->printTemplateResult(false);
 	}
