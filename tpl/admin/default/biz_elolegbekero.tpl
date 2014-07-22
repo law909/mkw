@@ -3,7 +3,7 @@
 {block "body"}
     <div class="teto">
     <div>
-        <div class="biznev">Előlegbekérő</div>
+        <div class="biznev">Díjbekérő</div>
         <div class="bizszam textalignright">{$egyed.id}</div>
     </div>
     <div class="headbox pull-left">
@@ -122,6 +122,6 @@
             </tbody>
         </table>
     </div>
-    <div class="textaligncenter">A számla 2 eredeti példányban készült, melyből ez az első.</div>
+    <div class="textaligncenter">A díjbekérő 1 eredeti példányban készült.</div>
     <div class="keszult textaligncenter">Készült az MKW Webshop számlázó moduljával.</div>
 {/block}
