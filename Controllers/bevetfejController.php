@@ -18,16 +18,8 @@ class BevetfejController extends bizonylatfejController {
     }
 
     public function setVars($view) {
-        $view->setVar('showteljesites', true);
-        $view->setVar('showesedekesseg', false);
-        $view->setVar('showhatarido', false);
-        $view->setVar('showvalutanem', false);
-        $view->setVar('showbizonylatstatuszeditor', false);
-        $view->setVar('showinheritbutton', false);
-        $view->setVar('showuzenet', false);
-        $view->setVar('showszallitasicim', false);
-        $view->setVar('showerbizonylatszam', true);
-        $view->setVar('showfuvarlevelszam', false);
+        $bt = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
+        $bt->setTemplateVars($view);
         $fmc = new fizmodController($this->params);
         $view->setVar('fizmodlist', $fmc->getSelectList());
         $a = date(\mkw\Store::$DateFormat, strtotime('-1 week'));

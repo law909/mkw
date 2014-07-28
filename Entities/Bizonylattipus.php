@@ -46,6 +46,50 @@ class Bizonylattipus {
 		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
+    public function setTemplateVars($view) {
+        switch ($this->id) {
+            case 'megrendeles':
+                $view->setVar('showteljesites', false);
+                $view->setVar('showesedekesseg', false);
+                $view->setVar('showhatarido', true);
+                $view->setVar('showvalutanem', false);
+                $view->setVar('showbizonylatstatuszeditor', true);
+                $view->setVar('showinheritbutton', true);
+                $view->setVar('showuzenet', true);
+                $view->setVar('showszallitasicim', true);
+                $view->setVar('showerbizonylatszam', false);
+                $view->setVar('showfuvarlevelszam', true);
+                $view->setVar('showhaszonszazalek', false);
+                break;
+            case 'bevet':
+                $view->setVar('showteljesites', true);
+                $view->setVar('showesedekesseg', false);
+                $view->setVar('showhatarido', false);
+                $view->setVar('showvalutanem', false);
+                $view->setVar('showbizonylatstatuszeditor', false);
+                $view->setVar('showinheritbutton', false);
+                $view->setVar('showuzenet', false);
+                $view->setVar('showszallitasicim', false);
+                $view->setVar('showerbizonylatszam', true);
+                $view->setVar('showfuvarlevelszam', false);
+                $view->setVar('showhaszonszazalek', true);
+                break;
+            case 'szamla':
+                $view->setVar('showteljesites', true);
+                $view->setVar('showesedekesseg', true);
+                $view->setVar('showhatarido', false);
+                $view->setVar('showvalutanem', false);
+                $view->setVar('showbizonylatstatuszeditor', false);
+                $view->setVar('showinheritbutton', false);
+                $view->setVar('showuzenet', true);
+                $view->setVar('showszallitasicim', true);
+                $view->setVar('showerbizonylatszam', false);
+                $view->setVar('showfuvarlevelszam', true);
+                $view->setVar('showhaszonszazalek', false);
+                break;
+        }
+    }
+
 	public function getId() {
 		return $this->id;
 	}

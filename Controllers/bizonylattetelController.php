@@ -73,11 +73,12 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 	}
 
 	public function getemptyrow() {
+        $biztipus = $this->params->getStringRequestParam('type');
 		$view = $this->createView('bizonylattetelkarb.tpl');
 		$view->setVar('tetel', $this->loadVars(null, true));
 		// TODO emeld ki bizonylattipusba
-		$fejc = new megrendelesfejController($this->params);
-		$fejc->setVars($view);
+        $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipus);
+        $bt->setTemplateVars($view);
 		echo $view->getTemplateResult();
 	}
 
@@ -88,10 +89,17 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 			$valtozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('valtozat'));
 		}
 		if ($termek) {
-			echo $termek->getNettoAr($valtozat);
+            $r = array(
+                'netto' => $termek->getNettoAr($valtozat),
+                'brutto' => $termek->getBruttoAr($valtozat)
+            );
+			echo json_encode($r);
 		}
 		else {
-			echo 0;
+			echo json_encode(array(
+                'netto' => 0,
+                'brutto' => 0
+            ));
 		}
 	}
 

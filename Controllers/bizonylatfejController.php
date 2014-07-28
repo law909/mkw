@@ -231,6 +231,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
         $obj->setFuvarlevelszam($this->params->getStringRequestParam('fuvarlevelszam'));
 
+		$obj->setPartnernev($this->params->getStringRequestParam('partnernev'));
 		$obj->setPartneradoszam($this->params->getStringRequestParam('partneradoszam'));
 		$obj->setPartnerirszam($this->params->getStringRequestParam('partnerirszam'));
 		$obj->setPartnervaros($this->params->getStringRequestParam('partnervaros'));

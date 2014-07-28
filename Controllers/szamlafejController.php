@@ -6,6 +6,8 @@ use mkw\store;
 
 class SzamlafejController extends bizonylatfejController {
 
+    const BIZTIPUS = 'szamla';
+
     public function __construct($params) {
         $this->setEntityName('Entities\Bizonylatfej');
         $this->setKarbFormTplName('bizonylatfejkarbform.tpl');
@@ -16,16 +18,8 @@ class SzamlafejController extends bizonylatfejController {
     }
 
     public function setVars($view) {
-        $view->setVar('showteljesites', true);
-        $view->setVar('showesedekesseg', true);
-        $view->setVar('showhatarido', false);
-        $view->setVar('showvalutanem', false);
-        $view->setVar('showbizonylatstatuszeditor', false);
-        $view->setVar('showinheritbutton', false);
-        $view->setVar('showuzenet', true);
-        $view->setVar('showszallitasicim', true);
-        $view->setVar('showerbizonylatszam', false);
-        $view->setVar('showfuvarlevelszam', true);
+        $bt = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
+        $bt->setTemplateVars($view);
         $fmc = new fizmodController($this->params);
         $view->setVar('fizmodlist', $fmc->getSelectList());
         $a = date(\mkw\Store::$DateFormat, strtotime('-1 week'));
@@ -42,7 +36,7 @@ class SzamlafejController extends bizonylatfejController {
 
         $filter['fields'][] = 'bizonylattipus';
         $filter['clauses'][] = '=';
-        $filter['values'][] = $this->getRepo('Entities\Bizonylattipus')->find('szamla');
+        $filter['values'][] = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
 
         $this->initPager($this->getRepo()->getCount($filter));
 
@@ -166,14 +160,14 @@ class SzamlafejController extends bizonylatfejController {
     }
 
     protected function setFields($obj, $parancs) {
-        $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find('szamla'));
+        $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS));
         return parent::setFields($obj, $parancs);
     }
 
     public function doPrint() {
         $o = $this->getRepo()->find($this->params->getStringRequestParam('id'));
         if ($o) {
-            $biztip = $this->getRepo('Entities\Bizonylattipus')->find('szamla');
+            $biztip = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
             if ($biztip && $biztip->getTplname()) {
                 $view = $this->createView($biztip->getTplname());
                 $this->setVars($view);

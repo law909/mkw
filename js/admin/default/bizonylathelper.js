@@ -49,8 +49,16 @@ var bizonylathelper = function($) {
                 valtozat: $('select[name="tetelvaltozat_' + sorId + '"]').val()
             },
             success: function(data) {
-                var c = $('input[name="tetelnettoegysar_' + sorId + '"]');
-                c.val(data);
+                var c = $('input[name="tetelnettoegysar_' + sorId + '"]'),
+                    eb = $('#eladasibruttoar_' + sorId),
+                    hasz = $('#haszonszazalek_' + sorId),
+                    adat = JSON.parse(data);
+                c.val(adat.netto);
+                if (eb.length > 0) {
+                    eb.text(adat.brutto);
+                    eb.data('ertek', adat.brutto);
+                    hasz.text('0%');
+                }
                 c.change();
             }
         });
@@ -68,7 +76,10 @@ var bizonylathelper = function($) {
                 mennyiseg: $('input[name="tetelmennyiseg_' + sorId + '"]').val()
             },
             success: function(data) {
-                var resp = JSON.parse(data);
+                var resp = JSON.parse(data),
+                    eb = $('#eladasibruttoar_' + sorId),
+                    hasz = $('#haszonszazalek_' + sorId),
+                    n = eb.data('ertek') / resp.bruttoegysar * 100 - 100;
                 $('input[name="tetelnettoegysar_' + sorId + '"]').val(resp.nettoegysar);
                 $('input[name="tetelbruttoegysar_' + sorId + '"]').val(resp.bruttoegysar);
                 $('input[name="tetelnetto_' + sorId + '"]').val(resp.netto);
@@ -77,6 +88,8 @@ var bizonylathelper = function($) {
                 $('input[name="tetelbruttoegysarhuf_' + sorId + '"]').val(resp.bruttoegysarhuf);
                 $('input[name="tetelnettohuf_' + sorId + '"]').val(resp.nettohuf);
                 $('input[name="tetelbruttohuf_' + sorId + '"]').val(resp.bruttohuf);
+
+                hasz.text(n.toFixed(2));
             }
         });
     }

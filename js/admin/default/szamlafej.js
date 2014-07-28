@@ -88,6 +88,9 @@ $(document).ready(function() {
                 e.preventDefault();
                 $.ajax({
                     url: '/admin/bizonylattetel/getemptyrow',
+                    data: {
+                        type: 'szamla'
+                    },
                     type: 'GET',
                     success: function(data) {
                         var tbody = $('#RecepturaTab');

@@ -45,12 +45,17 @@
 <input name="tetelme_{$tetel.id}" type="text" value="{$tetel.me}" size="10" maxlength="20" placeholder="{t('ME')}"></td>
 </tr>
 </tbody></table>
+{$showhaszonszazalek}
 <table><tbody>
-<tr><td></td><td>{t('Nettó')}</td><td>{t('Bruttó')}</td>{if ($showvalutanem)}<td>{t('Nettó')}</td><td>{t('Bruttó')}</td>{/if}</tr>
+        <tr><td></td><td>{t('Nettó')}</td><td>{t('Bruttó')}</td>{if ($showhaszonszazalek)}<td>Haszon %</td><td>Eladási br.ár</td>{/if}{if ($showvalutanem)}<td>{t('Nettó')}</td><td>{t('Bruttó')}</td>{/if}</tr>
 <tr>
 <td><label for="NettoegysarEdit{$tetel.id}">{t('Egységár')}:</label></td>
 <td><input id="NettoegysarEdit{$tetel.id}" name="tetelnettoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysar}" class="js-nettoegysarinput" required="required"></td>
 <td><input name="tetelbruttoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysar}" class="js-bruttoegysarinput" required="required"></td>
+{if ($showhaszonszazalek)}
+<td id="haszonszazalek_{$tetel.id}"></td>
+<td id="eladasibruttoar_{$tetel.id}"></td>
+{/if}
 {if ($showvalutanem)}
 <td><input name="tetelnettoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysarhuf}" required="required"></td>
 <td><input name="tetelbruttoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysarhuf}" required="required"></td>

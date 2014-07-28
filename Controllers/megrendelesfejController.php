@@ -6,6 +6,8 @@ use mkw\store;
 
 class megrendelesfejController extends bizonylatfejController {
 
+    const BIZTIPUS = 'megrendeles';
+
     public function __construct($params) {
         $this->setEntityName('Entities\Bizonylatfej');
         $this->setKarbFormTplName('bizonylatfejkarbform.tpl');
@@ -16,16 +18,8 @@ class megrendelesfejController extends bizonylatfejController {
     }
 
     public function setVars($view) {
-        $view->setVar('showteljesites', false);
-        $view->setVar('showesedekesseg', false);
-        $view->setVar('showhatarido', true);
-        $view->setVar('showvalutanem', false);
-        $view->setVar('showbizonylatstatuszeditor', true);
-        $view->setVar('showinheritbutton', true);
-        $view->setVar('showuzenet', true);
-        $view->setVar('showszallitasicim', true);
-        $view->setVar('showerbizonylatszam', false);
-        $view->setVar('showfuvarlevelszam', true);
+        $bt = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
+        $bt->setTemplateVars($view);
         $bsc = new bizonylatstatuszController($this->params);
         $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(\mkw\Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
         $fmc = new fizmodController($this->params);
@@ -54,7 +48,7 @@ class megrendelesfejController extends bizonylatfejController {
 
         $filter['fields'][] = 'bizonylattipus';
         $filter['clauses'][] = '=';
-        $filter['values'][] = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
+        $filter['values'][] = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
 
         $this->initPager($this->getRepo()->getCount($filter));
 
@@ -145,7 +139,7 @@ class megrendelesfejController extends bizonylatfejController {
         $filter['values'][] = $this->getRepo('Entities\Partner')->getLoggedInUser();
         $filter['fields'][] = 'bizonylattipus';
         $filter['clauses'][] = '=';
-        $filter['values'][] = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
+        $filter['values'][] = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
         $l = $this->getRepo()->getWithJoins($filter, array('kelt' => 'ASC'));
         $ret = array();
         foreach ($l as $it) {
@@ -155,7 +149,7 @@ class megrendelesfejController extends bizonylatfejController {
     }
 
     protected function setFields($obj, $parancs) {
-        $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find('megrendeles'));
+        $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS));
         return parent::setFields($obj, $parancs);
     }
 
@@ -195,7 +189,7 @@ class megrendelesfejController extends bizonylatfejController {
     public function doPrint() {
         $o = $this->getRepo()->find($this->params->getStringRequestParam('id'));
         if ($o) {
-            $biztip = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
+            $biztip = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
             if ($biztip && $biztip->getTplname()) {
                 $view = $this->createView($biztip->getTplname());
                 $this->setVars($view);
@@ -209,7 +203,7 @@ class megrendelesfejController extends bizonylatfejController {
     public function doPrintelolegbekero() {
         $o = $this->getRepo()->find($this->params->getStringRequestParam('id'));
         if ($o) {
-            $biztip = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
+            $biztip = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
             if ($biztip) {
                 $view = $this->createView('biz_elolegbekero.tpl');
                 $this->setVars($view);
