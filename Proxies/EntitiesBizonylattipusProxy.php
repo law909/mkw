@@ -36,6 +36,12 @@ class EntitiesBizonylattipusProxy extends \Entities\Bizonylattipus implements \D
     }
     
     
+    public function setTemplateVars($view)
+    {
+        $this->__load();
+        return parent::setTemplateVars($view);
+    }
+
     public function getId()
     {
         $this->__load();

@@ -168,6 +168,12 @@ class EntitiesKosarProxy extends \Entities\Kosar implements \Doctrine\ORM\Proxy\
         return parent::getCreated();
     }
 
+    public function getCreatedStr()
+    {
+        $this->__load();
+        return parent::getCreatedStr();
+    }
+
     public function getNettoegysar()
     {
         $this->__load();

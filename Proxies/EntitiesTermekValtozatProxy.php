@@ -36,6 +36,12 @@ class EntitiesTermekValtozatProxy extends \Entities\TermekValtozat implements \D
     }
     
     
+    public function getKeszlet()
+    {
+        $this->__load();
+        return parent::getKeszlet();
+    }
+
     public function getId()
     {
         $this->__load();
@@ -285,7 +291,7 @@ class EntitiesTermekValtozatProxy extends \Entities\TermekValtozat implements \D
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'termek', 'lathato', 'elerheto', 'termekfokep', 'adattipus1', 'ertek1', 'adattipus2', 'ertek2', 'kosarak', 'netto', 'brutto', 'kep', 'cikkszam', 'idegencikkszam');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'termek', 'lathato', 'elerheto', 'termekfokep', 'adattipus1', 'ertek1', 'adattipus2', 'ertek2', 'kosarak', 'netto', 'brutto', 'kep', 'cikkszam', 'idegencikkszam', 'bizonylattetelek');
     }
 
     public function __clone()
