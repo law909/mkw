@@ -151,7 +151,7 @@ class MattableController extends Controller {
                     echo $ret['id'];
             }
         }
-        catch (PDOException $ex)
+        catch (Exception $ex)
         {
 //            echo json_encode(array('error' => $ex->getMessage()));
         }

@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="/themes/main/mkwcansas/royalslider/skins/default-inverted/rs-default-inverted.css">
         <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/style.css">
 		{block "css"}{/block}
-		<script src="/js/main/mkwcansas/jquery-1.10.2.min.js"></script>
+        <script src="/js/main/mkwcansas/jquery-1.11.1.min.js"></script>
 
 		<script src="/js/main/mkwcansas/jquery-migrate-1.2.1.js"></script>
 
