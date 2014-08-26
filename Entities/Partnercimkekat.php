@@ -15,7 +15,7 @@ class Partnercimkekat extends Cimkekat {
 	 * @Column(type="string",length=255,nullable=true)
 	 */
 	private $slug;
-	/** @OneToMany(targetEntity="Partnercimketorzs", mappedBy="kategoria", cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Partnercimketorzs", mappedBy="kategoria", cascade={"persist"}) */
 	private $cimkek;
 
 	public function __construct() {

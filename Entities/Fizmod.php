@@ -19,7 +19,7 @@ class Fizmod {
 	private $haladek=0;
 	/** @Column(type="boolean") */
 	private $webes=true;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="fizmod",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="fizmod",cascade={"persist"}) */
 	private $bizonylatfejek;
 	/** @Column(type="text",nullable=true) */
 	private $leiras;

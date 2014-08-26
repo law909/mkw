@@ -17,7 +17,7 @@ class Afa {
 	private $ertek=0;
     /** @Column(type="integer") */
     private $rlbkod;
-	/** @OneToMany(targetEntity="Bizonylattetel", mappedBy="afa",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Bizonylattetel", mappedBy="afa") */
 	private $bizonylattetelek;
 
 	public function getId() {
@@ -47,7 +47,7 @@ class Afa {
     public function setRLBKod($d) {
         $this->rlbkod = $d;
     }
-    
+
 	public function calcBrutto($netto) {
 		return $netto*(100+$this->ertek)/100;
 	}

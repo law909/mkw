@@ -41,7 +41,7 @@ class Uzletkoto {
  	 * @JoinColumn(name="felhasznalonev", referencedColumnName="felhasznalonev",nullable=true,onDelete="set null")
 	 */
 	private $felhasznalo;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="uzletkoto",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="uzletkoto",cascade={"persist"}) */
 	private $bizonylatfejek;
 
 	public function __construct() {

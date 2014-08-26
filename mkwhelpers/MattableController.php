@@ -103,46 +103,57 @@ class MattableController extends Controller {
     protected function saveData() {
         $parancs = $this->params->getRequestParam($this->operationName, '');
         $id = $this->params->getRequestParam($this->idName, 0);
-        switch ($parancs) {
-            case $this->addOperation:
-            case $this->addreopenOperation:
-            case $this->inheritOperation:
-                $cl = $this->entityName;
-                $obj = new $cl();
-                $this->em->persist($this->setFields($obj, $parancs));
-                $this->em->flush();
-                $this->afterSave($obj);
-                break;
-            case $this->editOperation:
-                $obj = $this->repo->find($id);
-                $this->em->persist($this->setFields($obj, $parancs));
-                $this->em->flush();
-                $this->afterSave($obj);
-                break;
-            case $this->delOperation:
-                $obj = $this->repo->find($id);
-                if ($obj) {
-                    $this->beforeRemove($obj);
-                    $this->em->remove($obj);
+        try {
+            switch ($parancs) {
+                case $this->addOperation:
+                case $this->addreopenOperation:
+                case $this->inheritOperation:
+                    $cl = $this->entityName;
+                    $obj = new $cl();
+                    $this->em->persist($this->setFields($obj, $parancs));
                     $this->em->flush();
                     $this->afterSave($obj);
-                }
-                break;
+                    break;
+                case $this->editOperation:
+                    $obj = $this->repo->find($id);
+                    $this->em->persist($this->setFields($obj, $parancs));
+                    $this->em->flush();
+                    $this->afterSave($obj);
+                    break;
+                case $this->delOperation:
+                    $obj = $this->repo->find($id);
+                    if ($obj) {
+                        $this->beforeRemove($obj);
+                        $this->em->remove($obj);
+                        $this->em->flush();
+                        $this->afterSave($obj);
+                    }
+                    break;
+            }
+            return array('id' => $id, 'obj' => $obj, 'operation' => $parancs);
         }
-        return array('id' => $id, 'obj' => $obj, 'operation' => $parancs);
+        catch (Exception $e) {
+            throw $e;
+        }
     }
 
     public function save() {
-        $ret = $this->saveData();
-        switch ($ret['operation']) {
-            case $this->addOperation:
-            case $this->addreopenOperation:
-            case $this->editOperation:
-            case $this->inheritOperation:
-                echo json_encode($this->getListBodyRow($ret['obj'], $ret['operation']));
-                break;
-            case $this->delOperation:
-                echo $ret['id'];
+        try {
+            $ret = $this->saveData();
+            switch ($ret['operation']) {
+                case $this->addOperation:
+                case $this->addreopenOperation:
+                case $this->editOperation:
+                case $this->inheritOperation:
+                    echo json_encode($this->getListBodyRow($ret['obj'], $ret['operation']));
+                    break;
+                case $this->delOperation:
+                    echo $ret['id'];
+            }
+        }
+        catch (PDOException $ex)
+        {
+//            echo json_encode(array('error' => $ex->getMessage()));
         }
     }
 

@@ -43,8 +43,10 @@ $(document).ready(function() {
                     bankszamlaedit = $('#BankszamlaEdit'),
                     alttab = $('#AltalanosTab');
 
-            function ValutanemChange() {
-                bankszamlaedit.val($('option:selected', $('#ValutanemEdit')).data('bankszamla'));
+            function ValutanemChange(firstrun) {
+                if (!firstrun || $('input[name="oper"]').val()==='add') {
+                    bankszamlaedit.val($('option:selected', $('#ValutanemEdit')).data('bankszamla'));
+                }
                 bizonylathelper.getArfolyam();
             }
 
@@ -217,7 +219,7 @@ $(document).ready(function() {
             hatidoedit.datepicker($.datepicker.regional['hu']);
             hatidoedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
             hatidoedit.datepicker('setDate', hatidoedit.attr('data-datum'));
-            ValutanemChange();
+            ValutanemChange(true);
             if (!$.browser.mobile) {
                 $('.js-toflyout').flyout();
             }

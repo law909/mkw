@@ -15,12 +15,12 @@ class Vtsz {
 	private $nev;
 	/**
 	 * @ManyToOne(targetEntity="Afa")
-	 * @JoinColumn(name="afa_id", referencedColumnName="id",nullable=true,onDelete="no action")
+	 * @JoinColumn(name="afa_id", referencedColumnName="id",nullable=true,onDelete="restrict")
 	 */
 	private $afa;
 	/** @Column(type="boolean") */
 	private $kozvetitett=0;
-	/** @OneToMany(targetEntity="Bizonylattetel", mappedBy="vtsz",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Bizonylattetel", mappedBy="vtsz",cascade={"persist"}) */
 	private $bizonylattetelek;
 
 	public function getId() {

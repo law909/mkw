@@ -24,11 +24,11 @@ class Valutanem {
 	 * @JoinColumn(name="bankszamla_id",referencedColumnName="id",nullable=true,onDelete="set null")
 	 */
 	private $bankszamla;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="valutanem",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="valutanem",cascade={"persist"}) */
 	private $bizonylatfejek;
-	/** @OneToMany(targetEntity="Bizonylattetel", mappedBy="valutanem",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Bizonylattetel", mappedBy="valutanem",cascade={"persist"}) */
 	private $bizonylattetelek;
-	/** @OneToMany(targetEntity="Kosar", mappedBy="valutanem",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Kosar", mappedBy="valutanem",cascade={"persist"}) */
 	private $kosarak;
 
 	public function getId() {

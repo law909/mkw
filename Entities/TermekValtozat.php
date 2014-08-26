@@ -35,7 +35,7 @@ class TermekValtozat {
 	private $termekfokep=false;
 	/**
 	 * @ManyToOne(targetEntity="TermekValtozatAdatTipus",inversedBy="valtozatok1")
-	 * @JoinColumn(name="adattipus1_id",referencedColumnName="id",onDelete="no action")
+	 * @JoinColumn(name="adattipus1_id",referencedColumnName="id",onDelete="restrict")
 	 */
 	private $adattipus1;
 	/**
@@ -44,14 +44,14 @@ class TermekValtozat {
 	private $ertek1;
 	/**
 	 * @ManyToOne(targetEntity="TermekValtozatAdatTipus",inversedBy="valtozatok2")
-	 * @JoinColumn(name="adattipus2_id",referencedColumnName="id",onDelete="no action")
+	 * @JoinColumn(name="adattipus2_id",referencedColumnName="id",onDelete="restrict")
 	 */
 	private $adattipus2;
 	/**
 	 * @Column(type="string",length=255,nullable=true)
 	 */
 	private $ertek2;
-	/** @OneToMany(targetEntity="Kosar", mappedBy="termekvaltozat",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Kosar", mappedBy="termekvaltozat",cascade={"persist"}) */
 	private $kosarak;
 	/**
 	 * @Column(type="decimal",precision=14,scale=4,nullable=true)
@@ -70,7 +70,7 @@ class TermekValtozat {
 	private $cikkszam='';
 	/** @Column(type="string",length=50,nullable=true) */
 	private $idegencikkszam='';
-    /** @OneToMany(targetEntity="Bizonylattetel", mappedBy="termekvaltozat",cascade={"persist","remove"}) */
+    /** @OneToMany(targetEntity="Bizonylattetel", mappedBy="termekvaltozat",cascade={"persist"}) */
     private $bizonylattetelek;
 
 	public function __construct() {

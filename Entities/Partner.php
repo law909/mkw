@@ -117,35 +117,35 @@ class Partner {
 
 	/**
 	 * @ManyToOne(targetEntity="Uzletkoto",inversedBy="partnerek")
-	 * @JoinColumn(name="uzletkoto_id", referencedColumnName="id",nullable=true,onDelete="no action")
+	 * @JoinColumn(name="uzletkoto_id", referencedColumnName="id",nullable=true,onDelete="set null")
 	 */
 	private $uzletkoto;
 
-	/** @OneToMany(targetEntity="Teendo", mappedBy="partner", cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Teendo", mappedBy="partner", cascade={"persist"}) */
 	private $teendok;
 
-	/** @OneToMany(targetEntity="Esemeny", mappedBy="partner", cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Esemeny", mappedBy="partner", cascade={"persist"}) */
 	private $esemenyek;
 
 	/**
 	 * @ManyToMany(targetEntity="Partnercimketorzs",inversedBy="partnerek")
 	 * @JoinTable(name="partner_cimkek",
 	 *  joinColumns={@JoinColumn(name="partner_id",referencedColumnName="id",onDelete="cascade")},
-	 *  inverseJoinColumns={@JoinColumn(name="cimketorzs_id",referencedColumnName="id")}
+	 *  inverseJoinColumns={@JoinColumn(name="cimketorzs_id",referencedColumnName="id",onDelete="cascade")}
 	 *  )
 	 */
 	private $cimkek;
 
 	/**
 	 * @ManyToOne(targetEntity="Fizmod")
-	 * @JoinColumn(name="fizmod_id",referencedColumnName="id",nullable=true,onDelete="no action")
+	 * @JoinColumn(name="fizmod_id",referencedColumnName="id",nullable=true,onDelete="set null")
 	 */
 	private $fizmod;
 
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="partner",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="partner",cascade={"persist"}) */
 	private $bizonylatfejek;
 
-	/** @OneToMany(targetEntity="Kosar", mappedBy="partner",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Kosar", mappedBy="partner",cascade={"persist"}) */
 	private $kosarak;
 
 	/** @Column(type="integer",nullable=true) */
@@ -178,7 +178,7 @@ class Partner {
 	/** @Column(type="datetime",nullable=true) */
 	private $utolsoklikk;
 
-	/** @OneToMany(targetEntity="TermekErtesito", mappedBy="partner",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="TermekErtesito", mappedBy="partner",cascade={"persist"}) */
 	private $termekertesitok;
 
 	/** @Column(type="boolean") */

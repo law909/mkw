@@ -15,7 +15,7 @@ class Termekcimkekat extends Cimkekat {
 	 * @Column(type="string",length=255,nullable=true)
 	 */
 	private $slug;
-	/** @OneToMany(targetEntity="Termekcimketorzs", mappedBy="kategoria", cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Termekcimketorzs", mappedBy="kategoria", cascade={"persist"}) */
 	private $cimkek;
 
 	public function getCimkek() {

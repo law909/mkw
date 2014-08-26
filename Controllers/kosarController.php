@@ -27,6 +27,7 @@ class kosarController extends \mkwhelpers\MattableController {
 		$x['partner'] = $t->getPartnerId();
 		$x['partnernev'] = $t->getPartnernev();
 		$x['created'] = $t->getCreated();
+        $x['createdstr'] = $t->getCreatedStr();
 		$term = $t->getTermek();
 		if ($term) {
 			$x['termek'] = $term->getId();
@@ -71,8 +72,7 @@ class kosarController extends \mkwhelpers\MattableController {
 			$filter['values'][] = $this->params->getStringRequestParam('nevfilter');
 		}
 
-		$this->initPager(
-				$this->getRepo()->getCount($filter), $this->params);
+		$this->initPager($this->getRepo()->getCount($filter));
 
 		$egyedek = $this->getRepo()->getWithJoins(
 				$filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());

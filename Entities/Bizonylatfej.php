@@ -30,7 +30,7 @@ class Bizonylatfej {
 
     /**
      * @ManyToOne(targetEntity="Bizonylattipus", inversedBy="bizonylatfejek")
-     * @JoinColumn(name="bizonylattipus_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="bizonylattipus_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $bizonylattipus;
 
@@ -87,7 +87,7 @@ class Bizonylatfej {
 
     /**
      * @ManyToOne(targetEntity="Fizmod",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="fizmod_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="fizmod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $fizmod;
 
@@ -96,7 +96,7 @@ class Bizonylatfej {
 
     /**
      * @ManyToOne(targetEntity="Szallitasimod",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="szallitasimod_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="szallitasimod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $szallitasimod;
 
@@ -117,7 +117,7 @@ class Bizonylatfej {
 
     /**
      * @ManyToOne(targetEntity="Valutanem",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="valutanem_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="valutanem_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $valutanem;
 
@@ -138,7 +138,7 @@ class Bizonylatfej {
 
     /**
      * @ManyToOne(targetEntity="Partner",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $partner;
 
@@ -204,7 +204,7 @@ class Bizonylatfej {
 
     /**
      * @ManyToOne(targetEntity="Bankszamla",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="bankszamla_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="bankszamla_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $bankszamla;
 
@@ -216,7 +216,7 @@ class Bizonylatfej {
 
     /**
      * @ManyToOne(targetEntity="Uzletkoto",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="uzletkoto_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="uzletkoto_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $uzletkoto;
 
@@ -225,14 +225,14 @@ class Bizonylatfej {
 
     /**
      * @ManyToOne(targetEntity="Raktar",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="raktar_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="raktar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $raktar;
 
     /** @Column(type="string",length=50,nullable=true) */
     private $raktarnev;
 
-    /** @OneToMany(targetEntity="Bizonylattetel", mappedBy="bizonylatfej",cascade={"persist","remove"}) */
+    /** @OneToMany(targetEntity="Bizonylattetel", mappedBy="bizonylatfej",cascade={"persist"}) */
     private $bizonylattetelek;
 
     /** @Column(type="text",nullable=true) */
@@ -270,17 +270,17 @@ class Bizonylatfej {
 
     /**
      * @ManyToOne(targetEntity="Bizonylatstatusz",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="bizonylatstatusz_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="bizonylatstatusz_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $bizonylatstatusz;
 
     /**
      * @ManyToOne(targetEntity="Bizonylatfej",inversedBy="szulobizonylatfejek")
-     * @JoinColumn(name="parbizonylatfej_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="parbizonylatfej_id", referencedColumnName="id",nullable=true,onUpdate="cascade",onDelete="restrict")
      */
     private $parbizonylatfej;
 
-    /** @OneToMany(targetEntity="Bizonylatfej", mappedBy="parbizonylatfej",cascade={"persist","remove"}) */
+    /** @OneToMany(targetEntity="Bizonylatfej", mappedBy="parbizonylatfej",cascade={"persist"}) */
     private $szulobizonylatfejek;
 
     /**

@@ -122,10 +122,7 @@ class termekController extends \mkwhelpers\MattableController {
 	}
 
 	protected function setFields($obj) {
-\mkw\Timer::start('setfields');
-\mkw\Timer::start('mezok');
         $oldnemkaphato = $obj->getNemkaphato();
-\mkw\Timer::start('afavtszvaltozat');
 		$afa = store::getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afa'));
 		if ($afa) {
 			$obj->setAfa($afa);
@@ -148,7 +145,6 @@ class termekController extends \mkwhelpers\MattableController {
         else {
             $obj->setGyarto(null);
         }
-\mkw\Timer::stop('afavtszvaltozat');
 		$obj->setNev($this->params->getStringRequestParam('nev'));
 		$obj->setMe($this->params->getStringRequestParam('me'));
 		$obj->setCikkszam($this->params->getStringRequestParam('cikkszam'));
@@ -177,7 +173,6 @@ class termekController extends \mkwhelpers\MattableController {
 		$obj->setNemkaphato($this->params->getBoolRequestParam('nemkaphato'));
         $obj->setFuggoben($this->params->getBoolRequestParam('fuggoben'));
         $obj->setSzallitasiido($this->params->getIntRequestParam('szallitasiido'));
-\mkw\Timer::start('fa');
 		$farepo = store::getEm()->getRepository('Entities\TermekFa');
 		$fa = $farepo->find($this->params->getIntRequestParam('termekfa1'));
 		if ($fa) {
@@ -200,8 +195,6 @@ class termekController extends \mkwhelpers\MattableController {
 		else {
 			$obj->setTermekfa3(null);
 		}
-\mkw\Timer::stop('fa');
-\mkw\Timer::start('cimke');
 		$obj->removeAllCimke();
 		$cimkekpar = $this->params->getArrayRequestParam('cimkek');
 		foreach ($cimkekpar as $cimkekod) {
@@ -210,15 +203,12 @@ class termekController extends \mkwhelpers\MattableController {
 				$obj->addCimke($cimke);
 			}
 		}
-\mkw\Timer::stop('cimke');
 		$obj->setBrutto($this->params->getNumRequestParam('brutto'));
 		$obj->setNetto($this->params->getNumRequestParam('netto'));
 		$obj->setAkciosnetto($this->params->getNumRequestParam('akciosnetto'));
 		//$obj->setAkciosbrutto($this->params->getNumRequestParam('akciosbrutto'));
 		$obj->setAkciostart($this->params->getStringRequestParam('akciostart'));
 		$obj->setAkciostop($this->params->getStringRequestParam('akciostop'));
-\mkw\Timer::stop('mezok');
-\mkw\Timer::start('kepek');
 		$kepids = $this->params->getArrayRequestParam('kepid');
 		foreach ($kepids as $kepid) {
 			if ($this->params->getStringRequestParam('kepurl_' . $kepid, '') !== '') {
@@ -240,8 +230,6 @@ class termekController extends \mkwhelpers\MattableController {
 				}
 			}
 		}
-\mkw\Timer::stop('kepek');
-\mkw\Timer::start('kapcsolodok');
 		$kapcsolodoids = $this->params->getArrayRequestParam('kapcsolodoid');
 		foreach ($kapcsolodoids as $kapcsolodoid) {
 			if (($this->params->getIntRequestParam('kapcsolodoaltermek_' . $kapcsolodoid) > 0)) {
@@ -266,8 +254,6 @@ class termekController extends \mkwhelpers\MattableController {
 				}
 			}
 		}
-\mkw\Timer::stop('kapcsolodok');
-\mkw\Timer::start('receptura');
 		if (store::getSetupValue('receptura')) {
 			$receptids = $this->params->getArrayRequestParam('receptid');
 			foreach ($receptids as $receptid) {
@@ -298,8 +284,6 @@ class termekController extends \mkwhelpers\MattableController {
 				}
 			}
 		}
-\mkw\Timer::stop('receptura');
-\mkw\Timer::start('termekvaltozat');
 		if (store::getSetupValue('termekvaltozat')) {
 			$valtozatids = $this->params->getArrayRequestParam('valtozatid');
 			foreach ($valtozatids as $valtozatid) {
@@ -397,11 +381,8 @@ class termekController extends \mkwhelpers\MattableController {
 				}
 			}
 		}
-\mkw\Timer::stop('termekvaltozat');
         $this->kaphatolett = $oldnemkaphato && !$obj->getNemkaphato();
 		$obj->doStuffOnPrePersist();  // ha csak kapcsolódó adat változott, akkor prepresist/preupdate nem hívódik, de cimke gyorsítás miatt nekünk kell
-\mkw\Timer::stop('setfields');
-//\mkw\Store::writelog(\mkw\Timer::getRuntimeStrings());
 		return $obj;
 	}
 

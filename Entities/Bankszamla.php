@@ -23,10 +23,10 @@ class Bankszamla {
 	private $iban;
 	/**
 	 * @ManyToOne(targetEntity="Valutanem")
-	 * @JoinColumn(name="valutanem_id",referencedColumnName="id",nullable=true)
+	 * @JoinColumn(name="valutanem_id",referencedColumnName="id",nullable=true,onDelete="set null")
 	 */
 	private $valutanem;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="bankszamla",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="bankszamla") */
 	private $bizonylatfejek;
 
 	public function getId() {

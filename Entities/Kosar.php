@@ -32,19 +32,19 @@ class Kosar {
 
 	/**
 	 * @ManyToOne(targetEntity="Partner",inversedBy="kosarak")
-	 * @JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="no action")
+	 * @JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="restrict")
 	 */
 	private $partner;
 
 	/**
 	 * @ManyToOne(targetEntity="Termek",inversedBy="kosarak")
-	 * @JoinColumn(name="termek_id", referencedColumnName="id",nullable=true,onDelete="no action")
+	 * @JoinColumn(name="termek_id", referencedColumnName="id",nullable=true,onDelete="restrict")
 	 */
 	private $termek;
 
 	/**
 	 * @ManyToOne(targetEntity="TermekValtozat",inversedBy="kosarak")
-	 * @JoinColumn(name="termekvaltozat_id", referencedColumnName="id",nullable=true,onDelete="no action")
+	 * @JoinColumn(name="termekvaltozat_id", referencedColumnName="id",nullable=true,onDelete="restrict")
 	 */
 	private $termekvaltozat;
 
@@ -53,7 +53,7 @@ class Kosar {
 
 	/**
 	 * @ManyToOne(targetEntity="Valutanem",inversedBy="kosarak")
-	 * @JoinColumn(name="valutanem_id",referencedColumnName="id",onDelete="cascade")
+	 * @JoinColumn(name="valutanem_id",referencedColumnName="id",onDelete="restrict")
 	 */
 	private $valutanem;
 
@@ -207,6 +207,13 @@ class Kosar {
 	public function getCreated() {
 		return $this->created;
 	}
+
+    public function getCreatedStr() {
+        if ($this->getCreated()) {
+            return $this->getCreated()->format(\mkw\Store::$DateTimeFormat);
+        }
+        return '';
+    }
 
 	public function getNettoegysar() {
 		return $this->nettoegysar;

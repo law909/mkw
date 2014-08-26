@@ -36,6 +36,7 @@
 <thead>
 	<tr>
 	<th><input class="js-maincheckbox" type="checkbox"></th>
+    <th>{t('Létrehozva')}</th>
 	<th>{t('Session')}</th>
 	<th>{t('Partner')}</th>
 	<th>{t('Termék')}</th>

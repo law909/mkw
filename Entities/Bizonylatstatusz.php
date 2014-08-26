@@ -24,7 +24,7 @@ class Bizonylatstatusz {
 
     /**
      * @ManyToOne(targetEntity="Emailtemplate",inversedBy="bizonylatstatuszok")
-     * @JoinColumn(name="emailtemplate_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="emailtemplate_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $emailtemplate;
 	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylatstatusz",cascade={"persist"}) */

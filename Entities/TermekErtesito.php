@@ -36,7 +36,7 @@ class TermekErtesito {
 
     /**
      * @ManyToOne(targetEntity="Partner",inversedBy="termekertesitok")
-     * @JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="cascade")
      */
     private $partner;
 

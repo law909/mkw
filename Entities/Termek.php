@@ -51,13 +51,13 @@ class Termek {
 
     /**
      * @ManyToOne(targetEntity="Vtsz")
-     * @JoinColumn(name="vtsz_id",referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="vtsz_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $vtsz;
 
     /**
      * @ManyToOne(targetEntity="Afa")
-     * @JoinColumn(name="afa_id",referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="afa_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $afa;
 
@@ -65,7 +65,7 @@ class Termek {
      * @ManyToMany(targetEntity="Termekcimketorzs",inversedBy="termekek")
      * @JoinTable(name="termek_cimkek",
      *  joinColumns={@JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade",onUpdate="cascade")},
-     *  inverseJoinColumns={@JoinColumn(name="cimketorzs_id",referencedColumnName="id")}
+     *  inverseJoinColumns={@JoinColumn(name="cimketorzs_id",referencedColumnName="id",onDelete="cascade")}
      *  )
      */
     private $cimkek;
@@ -144,7 +144,7 @@ class Termek {
 
     /**
      * @ManyToOne(targetEntity="TermekFa",inversedBy="termekek1")
-     * @JoinColumn(name="termekfa1_id",referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="termekfa1_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $termekfa1;
 
@@ -153,7 +153,7 @@ class Termek {
 
     /**
      * @ManyToOne(targetEntity="TermekFa",inversedBy="termekek2")
-     * @JoinColumn(name="termekfa2_id",referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="termekfa2_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $termekfa2;
 
@@ -162,7 +162,7 @@ class Termek {
 
     /**
      * @ManyToOne(targetEntity="TermekFa",inversedBy="termekek3")
-     * @JoinColumn(name="termekfa3_id",referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="termekfa3_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $termekfa3;
 
@@ -190,22 +190,22 @@ class Termek {
     /** @Column(type="boolean",nullable=false) */
     private $osszehajthato = false;
 
-    /** @OneToMany(targetEntity="TermekKep", mappedBy="termek", cascade={"persist","remove"}) */
+    /** @OneToMany(targetEntity="TermekKep", mappedBy="termek", cascade={"persist"}) */
     private $termekkepek;
 
-    /** @OneToMany(targetEntity="TermekValtozat",mappedBy="termek",cascade={"persist","remove"}) */
+    /** @OneToMany(targetEntity="TermekValtozat",mappedBy="termek",cascade={"persist"}) */
     private $valtozatok;
 
-    /** @OneToMany(targetEntity="TermekRecept", mappedBy="termek", cascade={"persist","remove"}) */
+    /** @OneToMany(targetEntity="TermekRecept", mappedBy="termek", cascade={"persist"}) */
     private $termekreceptek;
 
-    /** @OneToMany(targetEntity="TermekRecept", mappedBy="altermek", cascade={"persist","remove"}) */
+    /** @OneToMany(targetEntity="TermekRecept", mappedBy="altermek", cascade={"persist"}) */
     private $altermekreceptek;
 
-    /** @OneToMany(targetEntity="Bizonylattetel", mappedBy="termek",cascade={"persist","remove"}) */
+    /** @OneToMany(targetEntity="Bizonylattetel", mappedBy="termek",cascade={"persist"}) */
     private $bizonylattetelek;
 
-    /** @OneToMany(targetEntity="Kosar", mappedBy="termek",cascade={"persist","remove"}) */
+    /** @OneToMany(targetEntity="Kosar", mappedBy="termek",cascade={"persist"}) */
     private $kosarak;
 
     /** @Column(type="integer",nullable=true) */
@@ -214,27 +214,27 @@ class Termek {
     /** @Column(type="integer",nullable=true) */
     private $megvasarlasdb;
 
-    /** @OneToMany(targetEntity="TermekKapcsolodo", mappedBy="termek", cascade={"persist","remove"}) */
+    /** @OneToMany(targetEntity="TermekKapcsolodo", mappedBy="termek", cascade={"persist"}) */
     private $termekkapcsolodok;
 
-    /** @OneToMany(targetEntity="TermekKapcsolodo", mappedBy="altermek", cascade={"persist","remove"}) */
+    /** @OneToMany(targetEntity="TermekKapcsolodo", mappedBy="altermek", cascade={"persist"}) */
     private $altermekkapcsolodok;
 
     /**
      * @ManyToOne(targetEntity="TermekValtozatAdatTipus")
-     * @JoinColumn(name="valtozatadattipus_id",referencedColumnName="id",onDelete="no action")
+     * @JoinColumn(name="valtozatadattipus_id",referencedColumnName="id",onDelete="restrict")
      */
     private $valtozatadattipus;
 
     /** @Column(type="boolean",nullable=false) */
     private $nemkaphato = false;
 
-    /** @OneToMany(targetEntity="TermekErtesito", mappedBy="termek",cascade={"persist","remove"}) */
+    /** @OneToMany(targetEntity="TermekErtesito", mappedBy="termek",cascade={"persist"}) */
     private $termekertesitok;
 
     /**
      * @ManyToOne(targetEntity="Partner")
-     * @JoinColumn(name="gyarto_id",referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="gyarto_id",referencedColumnName="id",nullable=true,onDelete="set null")
      */
     private $gyarto;
 

@@ -39,7 +39,7 @@ class Dolgozo {
 
     /**
      * @ManyToOne(targetEntity="Munkakor",inversedBy="dolgozok")
-     * @JoinColumn(name="munkakor_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="munkakor_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $munkakor;
 
@@ -227,7 +227,7 @@ class Dolgozo {
     public function checkPlainJelszo($adat) {
         return $this->jelszo === $adat;
     }
-    
+
     public function setJelszo($adat) {
         $this->jelszo = sha1(strtoupper(md5($adat)) . \mkw\Store::getAdminSalt());
     }

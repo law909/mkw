@@ -16,6 +16,7 @@ class Store {
     private static $gdl;
     private static $sanitizer;
     public static $DateFormat = 'Y.m.d';
+    public static $DateTimeFormat = 'Y.m.d. H:i:s';
 
     public static function writelog($text) {
         $handle = fopen("log.txt", "a");

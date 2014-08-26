@@ -27,7 +27,7 @@ class Szallitasimod {
 	 * @Column(type="string",length=255)
 	 */
 	private $fizmodok;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="szallitasimod",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="szallitasimod",cascade={"persist"}) */
 	private $bizonylatfejek;
 	/** @Column(type="integer") */
 	private $sorrend=0;

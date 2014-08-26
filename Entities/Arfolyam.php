@@ -26,7 +26,7 @@ class Arfolyam {
 	private $datum;
 	/**
 	 * @ManyToOne(targetEntity="Valutanem")
-	 * @JoinColumn(name="valutanem_id", referencedColumnName="id",onDelete="cascade")
+	 * @JoinColumn(name="valutanem_id", referencedColumnName="id",onDelete="cascade",onUpdate="cascade")
 	 */
 	private $valutanem;
 	/** @Column(type="decimal",precision=14,scale=4) */

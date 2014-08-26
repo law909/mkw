@@ -11,15 +11,15 @@ class TermekKapcsolodo {
 	 * @GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** 
+	/**
 	 * @gedmo:Timestampable(on="create")
-	 * @Column(type="datetime",nullable=true) 
+	 * @Column(type="datetime",nullable=true)
 	 */
-	private $created;	
-	/** 
+	private $created;
+	/**
 	 * @gedmo:Timestampable(on="create")
 	 * @gedmo:Timestampable(on="update")
-	 * @Column(type="datetime",nullable=true) 
+	 * @Column(type="datetime",nullable=true)
 	 */
 	private $lastmod;
 	/**
@@ -29,7 +29,7 @@ class TermekKapcsolodo {
 	private $termek;
 	/**
 	 * @ManyToOne(targetEntity="Termek",inversedBy="altermekkapcsolodok")
-	 * @JoinColumn(name="altermek_id",referencedColumnName="id",onDelete="no action")
+	 * @JoinColumn(name="altermek_id",referencedColumnName="id",onDelete="cascade")
 	 */
 	private $altermek;
 
@@ -88,7 +88,7 @@ class TermekKapcsolodo {
 	public function getLastmod() {
 		return $this->lastmod;
 	}
-	
+
 	public function getCreated() {
 		return $this->created;
 	}

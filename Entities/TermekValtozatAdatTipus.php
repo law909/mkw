@@ -13,9 +13,9 @@ class TermekValtozatAdatTipus {
 	private $id;
 	/** @Column(type="string",length=255,nullable=false) */
 	private $nev;
-	/** @OneToMany(targetEntity="TermekValtozat",mappedBy="adattipus1",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="TermekValtozat",mappedBy="adattipus1",cascade={"persist"}) */
 	private $valtozatok1;
-	/** @OneToMany(targetEntity="TermekValtozat",mappedBy="adattipus2",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="TermekValtozat",mappedBy="adattipus2",cascade={"persist"}) */
 	private $valtozatok2;
 
 	public function __construct() {

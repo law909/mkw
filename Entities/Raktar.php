@@ -15,7 +15,7 @@ class Raktar {
 	private $nev;
 	/** @Column(type="boolean",nullable=false) */
 	private $mozgat;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="raktar",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="raktar",cascade={"persist"}) */
 	private $bizonylatfejek;
 
 	public function getId() {

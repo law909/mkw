@@ -33,7 +33,7 @@ class TermekKep {
 	private $url;
 	/** @Column(type="text",nullable=true) */
 	private $leiras;
-	/** @OneToMany(targetEntity="TermekValtozat",mappedBy="kep",cascade={"persist","remove"}) */
+	/** @OneToMany(targetEntity="TermekValtozat",mappedBy="kep",cascade={"persist"}) */
 	private $valtozatok;
 
 	public function getId() {

@@ -31,7 +31,7 @@ class Bizonylattetel {
 
     /**
      * @ManyToOne(targetEntity="Bizonylatfej",inversedBy="bizonylattetelek")
-     * @JoinColumn(name="bizonylatfej_id", referencedColumnName="id",nullable=true,onDelete="cascade")
+     * @JoinColumn(name="bizonylatfej_id", referencedColumnName="id",nullable=true,onUpdate="cascade",onDelete="cascade")
      */
     private $bizonylatfej;
 
@@ -52,7 +52,7 @@ class Bizonylattetel {
 
     /**
      * @ManyToOne(targetEntity="Termek",inversedBy="bizonylattetelek")
-     * @JoinColumn(name="termek_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="termek_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $termek;
 
@@ -94,7 +94,7 @@ class Bizonylattetel {
 
     /**
      * @ManyToOne(targetEntity="Vtsz",inversedBy="bizonylattetelek")
-     * @JoinColumn(name="vtsz_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="vtsz_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $vtsz;
 
@@ -103,7 +103,7 @@ class Bizonylattetel {
 
     /**
      * @ManyToOne(targetEntity="Afa",inversedBy="bizonylattetelek")
-     * @JoinColumn(name="afa_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="afa_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $afa;
 
@@ -154,7 +154,7 @@ class Bizonylattetel {
 
     /**
      * @ManyToOne(targetEntity="Valutanem",inversedBy="bizonylattetelek")
-     * @JoinColumn(name="valutanem_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="valutanem_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $valutanem;
 
@@ -175,19 +175,19 @@ class Bizonylattetel {
 
     /**
      * @ManyToOne(targetEntity="Bizonylattetel",inversedBy="szulobizonylattetelek")
-     * @JoinColumn(name="parbizonylattetel_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @JoinColumn(name="parbizonylattetel_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $parbizonylattetel;
 
-    /** @OneToMany(targetEntity="Bizonylattetel", mappedBy="parbizonylattetel",cascade={"persist","remove"}) */
+    /** @OneToMany(targetEntity="Bizonylattetel", mappedBy="parbizonylattetel",cascade={"persist"}) */
     private $szulobizonylattetelek;
 
     /** @Column(type="date",nullable=true) */
     private $hatarido;
 
     /**
-     * @ManyToOne(targetEntity="TermekValtozat",inversedBy="kosarak")
-     * @JoinColumn(name="termekvaltozat_id", referencedColumnName="id",nullable=true,onDelete="no action")
+     * @ManyToOne(targetEntity="TermekValtozat",inversedBy="bizonylattetelek")
+     * @JoinColumn(name="termekvaltozat_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $termekvaltozat;
 

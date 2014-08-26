@@ -35,7 +35,7 @@ class TermekFa {
 	private $children;
 	/**
 	 * @ManyToOne(targetEntity="TermekFa", inversedBy="children")
-	 * @JoinColumn(name="parent_id", referencedColumnName="id",onDelete="no action")
+	 * @JoinColumn(name="parent_id", referencedColumnName="id",onDelete="restrict")
 	 */
 	private $parent;
 	/**
