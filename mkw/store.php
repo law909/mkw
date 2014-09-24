@@ -18,8 +18,8 @@ class Store {
     public static $DateFormat = 'Y.m.d';
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
 
-    public static function writelog($text) {
-        $handle = fopen("log.txt", "a");
+    public static function writelog($text, $fname = 'log.txt') {
+        $handle = fopen($fname, "a");
         $log = "";
         $separator = " ## ";
         $log.=date('Y.m.d. H:i:s') . $separator;

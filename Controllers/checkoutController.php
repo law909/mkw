@@ -12,6 +12,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 	}
 
 	public function getCheckout() {
+        Store::writelog(\Zend_Session::getId() . ' getCheckout: checkout kezdődik', 'checkoutlog.log');
 		$view = Store::getTemplateFactory()->createMainView('checkout.tpl');
 		Store::fillTemplate($view);
 		$szm = new szallitasimodController($this->params);
@@ -29,6 +30,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 		}
 		$view->setVar('tetellista', $s);
 */		$view->printTemplateResult(false);
+        Store::writelog(\Zend_Session::getId() . ' getCheckout: checkout kiküldve', 'checkoutlog.log');
 	}
 
 	public function getFizmodList() {
@@ -60,6 +62,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 
 	public function save() {
 
+        Store::writelog(\Zend_Session::getId() . ' START checkout.save', 'checkoutlog.log');
 		$regkell = $this->params->getIntRequestParam('regkell');
 		$vezeteknev = $this->params->getStringRequestParam('vezeteknev');
 		$keresztnev = $this->params->getStringRequestParam('keresztnev');
@@ -86,6 +89,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$szallsave = $this->params->getBoolRequestParam('szallsave');
 		$akciohirlevel = $this->params->getBoolRequestParam('akciohirlevel');
 		$ujdonsaghirlevel = $this->params->getBoolRequestParam('ujdonsaghirlevel');
+        Store::writelog(\Zend_Session::getId() . ' checkout.nev=' . $vezeteknev . ' ' . $keresztnev, 'checkoutlog.log');
 
 		$ok = ($vezeteknev && $keresztnev && $telefon &&
 				$szamlairszam && $szamlavaros && $szamlautca &&
@@ -96,6 +100,12 @@ class checkoutController extends \mkwhelpers\MattableController {
 				$fizetesimod > 0 &&
 				$aszfready
 				);
+        if ($ok) {
+            Store::writelog(\Zend_Session::getId() . ' adatok rendben', 'checkoutlog.log');
+        }
+        else {
+            Store::writelog(\Zend_Session::getId() . ' ERROR adatok rosszak', 'checkoutlog.log');
+        }
 		switch ($regkell) {
 			case 1: // vendég
 				$ok = $ok && $email;
@@ -106,11 +116,24 @@ class checkoutController extends \mkwhelpers\MattableController {
 			default: // be van jelentkezve elvileg
 				break;
 		}
+        if ($ok) {
+            Store::writelog(\Zend_Session::getId() . ' user adatok rendben', 'checkoutlog.log');
+        }
+        else {
+            Store::writelog(\Zend_Session::getId() . ' ERROR user adatok rosszak', 'checkoutlog.log');
+        }
 
 		$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
 		$ok = $ok && count($kosartetelek)>0;
+        if ($ok) {
+            Store::writelog(\Zend_Session::getId() . ' kosár rendben', 'checkoutlog.log');
+        }
+        else {
+            Store::writelog(\Zend_Session::getId() . ' ERROR kosár üres', 'checkoutlog.log');
+        }
 
 		if ($ok) {
+            Store::writelog(\Zend_Session::getId() . ' mentést kezdjük', 'checkoutlog.log');
 			switch ($regkell) {
 				case 1: // vendég
         			$pc = new \Controllers\partnerController($this->params);
@@ -223,6 +246,8 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$this->getEm()->persist($megrendfej);
 			$this->getEm()->flush();
 
+            Store::writelog(\Zend_Session::getId() . ' mentés kész', 'checkoutlog.log');
+
             if ($bizstatusz) {
                 $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
             }
@@ -233,17 +258,22 @@ class checkoutController extends \mkwhelpers\MattableController {
             Store::getMainSession()->lasttermekids = $lasttermekids;
 			$kc = new kosarController($this->params);
 			$kc->clear();
+            Store::writelog(\Zend_Session::getId() . ' END checkout.save', 'checkoutlog.log');
 			Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
 		}
 		else {
 			echo 'error';
+            Store::writelog(\Zend_Session::getId() . ' ERROR END valami bejövő adat nem volt rendben', 'checkoutlog.log');
 		}
 	}
 
 	public function thanks() {
+        $mrszam = Store::getMainSession()->lastmegrendeles;
+        Store::writelog(\Zend_Session::getId() . ' ' . $mrszam . ' köszönő oldal kezdődik', 'checkoutlog.log');
 		$view = Store::getTemplateFactory()->createMainView('checkoutkoszonjuk.tpl');
 		Store::fillTemplate($view);
-		$view->setVar('megrendelesszam', Store::getMainSession()->lastmegrendeles);
+        $mrszam = Store::getMainSession()->lastmegrendeles;
+		$view->setVar('megrendelesszam', $mrszam);
 //itt kell hozza vasarolt termeket keresni session->lasttermekids-re
 
         $aktsapikey = Store::getParameter(\mkw\consts::AKTrustedShopApiKey);
@@ -276,5 +306,6 @@ class checkoutController extends \mkwhelpers\MattableController {
         Store::getMainSession()->lasttermekids = array();
 
 		$view->printTemplateResult(false);
+        Store::writelog(\Zend_Session::getId() . ' ' . $mrszam . ' köszönő oldal kiment', 'checkoutlog.log');
 	}
 }
