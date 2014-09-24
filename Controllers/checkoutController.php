@@ -181,7 +181,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$megrendfej->setValutanem($valutanem);
 			$raktarid = store::getParameter(\mkw\consts::Raktar);
 			$megrendfej->setRaktar($this->getRepo('Entities\Raktar')->find($raktarid));
-			$megrendfej->setBankszamla($this->getRepo('Entities\Bankszamla')->getByValutanem($valutanem));
+			$megrendfej->setBankszamla($valutanem->getBankszamla());
 			if ($szamlaeqszall) {
 				$megrendfej->setSzallnev($szamlanev);
 				$megrendfej->setSzallirszam($szamlairszam);
