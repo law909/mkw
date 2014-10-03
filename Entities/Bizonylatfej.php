@@ -322,7 +322,7 @@ class Bizonylatfej {
             $subject->setVar('rendeles', $tpldata);
             $body = \mkw\Store::getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
             $body->setVar('rendeles', $tpldata);
-            $mailer = new \mkw\mkwmailer();
+            $mailer = \mkw\Store::getMailer();
             $mailer->setTo($bf->getPartneremail());
             $mailer->setSubject($subject->getTemplateResult());
             $mailer->setMessage($body->getTemplateResult());

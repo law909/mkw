@@ -58,7 +58,7 @@ class termekertesitoController extends \mkwhelpers\MattableController {
     }
 
     public function sendErtesito($termek) {
-        $mailer = new \mkw\mkwmailer();
+        $mailer = \mkw\Store::getMailer();
         $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->findOneByNev('termekertesito');
         if ($emailtpl) {
             $ertesitok = $this->getRepo()->getByTermek($termek);

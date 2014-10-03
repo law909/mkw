@@ -465,7 +465,7 @@ class partnerController extends \mkwhelpers\MattableController {
                 $subject->setVar('user', $tpldata);
                 $body = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
                 $body->setVar('user', $tpldata);
-                $mailer = new \mkw\mkwmailer();
+                $mailer = \mkw\Store::getMailer();
                 $mailer->setTo($email);
                 $mailer->setSubject($subject->getTemplateResult());
                 $mailer->setMessage($body->getTemplateResult());
@@ -690,7 +690,7 @@ class partnerController extends \mkwhelpers\MattableController {
                     $subject->setVar('user', $tpldata);
                     $body = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
                     $body->setVar('user', $tpldata);
-                    $mailer = new \mkw\mkwmailer();
+                    $mailer = \mkw\Store::getMailer();
                     $mailer->setTo($email);
                     $mailer->setSubject($subject->getTemplateResult());
                     $mailer->setMessage($body->getTemplateResult());

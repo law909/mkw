@@ -42,6 +42,19 @@ function callTheController($target, $params) {
 
 $mainsess = store::getMainSession();
 
+if ($ini['mail.smtp'] == 1) {
+    $mailtr = new Zend_Mail_Transport_Smtp($ini['mail.host'],
+            array(
+                'name' => $ini['mail.name'],
+                'port' => $ini['mail.port'],
+                'auth' => 'Login',
+                'username' => $ini['mail.username'],
+                'password' => $ini['mail.password']
+            ));
+    Zend_Mail::setDefaultTransport($mailtr);
+}
+
+
 $pc = new \Controllers\partnerController(Store::getGdl());
 if ($pc->checkloggedin()) {
 	$prevuri = $_SERVER['REQUEST_URI'];

@@ -274,7 +274,7 @@ class mainController extends \mkwhelpers\Controller {
 					$hibak['tema'] = t('Nincs megadva téma');
 				}
 				if (!$hibas) {
-                    $mailer = new \mkw\mkwmailer();
+                    $mailer = \mkw\Store::getMailer();
                     $mailer->setTo('info@mindentkapni.hu');
                     $mailer->setSubject('Kapcsolatfelvétel, ' . $rendelesszam . ' ' . $nev);
                     $mailer->setMessage(

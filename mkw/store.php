@@ -29,6 +29,12 @@ class Store {
         fclose($handle);
     }
 
+    public static function getMailer() {
+        if (self::getConfigValue('mail.smtp', 0)) {
+            return new mkwzendmailer();
+        }
+        return new mkwmailer();
+    }
     /**
      * @return \Doctrine\ORM\EntityManager
      */
