@@ -15,4 +15,4 @@ var mkwmsg = {
     PassChange: ['A jelszómódosítás sikerült.', 'A két jelszó nem egyezik.', 'Hibás jelszót adott meg.','Nem adott meg új jelszót.'],
     PassReminderCreated: 'Emailcímére elküldtünk egy jelszóemlékeztető linket.',
     PassReminderRequiredEmail: 'Adja meg azt az emailcímet, amellyel regisztrált.'
-}
+};

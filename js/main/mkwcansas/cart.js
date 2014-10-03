@@ -1,4 +1,4 @@
-var cart = function($) {
+var cart = (function($) {
 
 	function submitMennyEdit(f) {
 		var menny = Math.round($('input[name="mennyiseg"]', f).val());
@@ -52,4 +52,4 @@ var cart = function($) {
 		initUI: initUI
 	};
 
-}(jQuery);
+})(jQuery);

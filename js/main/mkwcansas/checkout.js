@@ -1,4 +1,4 @@
-var checkout = function($) {
+var checkout = (function($) {
 
 	var checkoutpasswordrow,
 			checkoutpasswordcontainer,
@@ -300,4 +300,4 @@ var checkout = function($) {
 		initUI: initUI
 	};
 
-}(jQuery);
+})(jQuery);

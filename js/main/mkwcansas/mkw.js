@@ -1,4 +1,4 @@
-var mkw = function($) {
+var mkw = (function($) {
 
     function showMessage(msg) {
         var msgcenter = $('#messagecenter');
@@ -244,4 +244,4 @@ var mkw = function($) {
         initTooltips: initTooltips,
         showhideFilterClear: showhideFilterClear
     };
-}(jQuery);
+})(jQuery);

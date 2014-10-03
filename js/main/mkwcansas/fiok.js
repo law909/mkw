@@ -1,4 +1,4 @@
-var fiok = function($) {
+var fiok = (function($) {
 
 	function initUI() {
 		var $fiokadataimform = $('#FiokAdataim');
@@ -86,4 +86,4 @@ var fiok = function($) {
 	return {
 		initUI: initUI
 	};
-}(jQuery);
+})(jQuery);
