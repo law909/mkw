@@ -56,16 +56,16 @@ class importController extends \mkwhelpers\Controller {
         $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
 
-        $ch = curl_init('http://kreativpuzzle.hu/lawstocklist/');
+        $ch = \curl_init('http://kreativpuzzle.hu/lawstocklist/');
         $fh = fopen('kreativpuzzlestock.txt', 'w');
-        curl_setopt($ch, CURLOPT_FILE, $fh);
-        curl_exec($ch);
+        \curl_setopt($ch, CURLOPT_FILE, $fh);
+        \curl_exec($ch);
         fclose($fh);
 
-        $ch = curl_init('http://kreativpuzzle.hu/lawstocklist/images.php');
+        $ch = \curl_init('http://kreativpuzzle.hu/lawstocklist/images.php');
         $fh = fopen('kreativpuzzleimages.txt', 'w');
-        curl_setopt($ch, CURLOPT_FILE, $fh);
-        curl_exec($ch);
+        \curl_setopt($ch, CURLOPT_FILE, $fh);
+        \curl_exec($ch);
         fclose($fh);
 
         $imagelist = array();
@@ -147,10 +147,10 @@ class importController extends \mkwhelpers\Controller {
                                 $extension = \mkw\Store::getExtension($imgurl);
                                 $imgpath = $nameWithoutExt . '.' . $extension;
 
-                                $ch = curl_init($imgurl);
+                                $ch = \curl_init($imgurl);
                                 $ih = fopen($imgpath, 'w');
-                                curl_setopt($ch, CURLOPT_FILE, $ih);
-                                curl_exec($ch);
+                                \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                \curl_exec($ch);
                                 fclose($ih);
 
                                 foreach ($settings['sizes'] as $k=>$size) {
