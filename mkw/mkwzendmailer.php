@@ -58,6 +58,8 @@ class mkwzendmailer {
         $this->mailer->addTo($this->to);
         $this->mailer->addBcc(Store::getParameter(consts::EmailBcc));
         $this->mailer->setReplyTo(Store::getParameter(consts::EmailReplyTo));
-        $this->mailer->send();
+        if ($this->to) {
+            $this->mailer->send();
+        }
     }
 }
