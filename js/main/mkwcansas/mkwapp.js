@@ -527,7 +527,7 @@ var checkout = (function($) {
 			checkoutpasswordcontainer,
 			vezeteknevinput, keresztnevinput, telefoninput, kapcsemailinput,
 			szamlanevinput, szamlairszaminput, szamlavarosinput, szamlautcainput, adoszaminput,
-			szallnevinput, szallirszaminput, szallvarosinput, szallutcainput, jelszo1input, jelszo2input,
+			szallnevinput, szallirszaminput, szallvarosinput, szallutcainput,
 			checkoutform,
 			webshopmessageinput, couriermessageinput,
 			szamlaeqszall,
@@ -622,7 +622,7 @@ var checkout = (function($) {
 
 			checkoutform = $('#CheckoutForm');
 			checkoutpasswordcontainer = $('.js-checkoutpasswordcontainer');
-			checkoutpasswordrow = $('.js-checkoutpasswordrow').detach();
+            checkoutpasswordrow = $('.js-checkoutpasswordrow').remove();
 
 			vezeteknevinput = $('input[name="vezeteknev"]');
 			keresztnevinput = $('input[name="keresztnev"]');
@@ -640,8 +640,6 @@ var checkout = (function($) {
 			szamlaeqszall = $('input[name="szamlaeqszall"]');
 			webshopmessageinput = $('textarea[name="webshopmessage"]');
 			couriermessageinput = $('textarea[name="couriermessage"]');
-            jelszo1input = $('input[name="jelszo1"]');
-            jelszo2input = $('input[name="jelszo2"]');
 
 			loadFizmodList();
 
@@ -657,6 +655,9 @@ var checkout = (function($) {
 					$('input[name="szallsave"]').prop('checked',true);
 					$('.js-szallsave').removeClass('notvisible');
 					checkoutpasswordrow.appendTo(checkoutpasswordcontainer);
+                    $('input[name="jelszo1"],input[name="jelszo2"]').on('invalid', function() {
+                        openDataContainer(this);
+                    });
 					$('.js-chktooltipbtn').tooltip({
 						html: false,
 						placement: 'right',
@@ -789,16 +790,10 @@ var checkout = (function($) {
 			szallutcainput.on('invalid', function() {
 				openDataContainer(this);
 			});
-			jelszo1input.on('invalid', function() {
-				openDataContainer(this);
-			});
-			jelszo2input.on('invalid', function() {
-				openDataContainer(this);
-			});
 
 			H5F.setup(checkoutform);
 
-			$('.js-chksendorderbtn').on('click', function(e) {
+            $('.js-chksendorderbtn').on('click', function(e) {
 /*                var messages = '';
                 $('input:invalid').each(function() {
                     messages += $(this).attr('placeholder') + ': ' + $(this).prop('validationMessage') + '<br>';
@@ -831,7 +826,6 @@ var checkout = (function($) {
 					});
 				}
 			});
-
 		}
 	}
 
