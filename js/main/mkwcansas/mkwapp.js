@@ -16,7 +16,6 @@ var mkwmsg = {
     PassReminderCreated: 'Emailcímére elküldtünk egy jelszóemlékeztető linket.',
     PassReminderRequiredEmail: 'Adja meg azt az emailcímet, amellyel regisztrált.'
 };
-
 var mkw = (function($) {
 
     function showMessage(msg) {
@@ -264,7 +263,6 @@ var mkw = (function($) {
         showhideFilterClear: showhideFilterClear
     };
 })(jQuery);
-
 var mkwcheck={
 
 	configs:{
@@ -523,7 +521,6 @@ var mkwcheck={
 		}
 	}
 };
-
 var checkout = (function($) {
 
 	var checkoutpasswordrow,
@@ -802,6 +799,14 @@ var checkout = (function($) {
 			H5F.setup(checkoutform);
 
 			$('.js-chksendorderbtn').on('click', function(e) {
+/*                var messages = '';
+                $('input:invalid').each(function() {
+                    messages += $(this).attr('placeholder') + ': ' + $(this).prop('validationMessage') + '<br>';
+                });
+                if (messages) {
+                    mkw.showDialog(messages);
+                }
+                */
 				if (!$('input[name="aszfready"]').prop('checked')) {
 					mkw.showDialog(mkwmsg.ChkASZF);
 				}
@@ -835,7 +840,6 @@ var checkout = (function($) {
 	};
 
 })(jQuery);
-
 var cart = (function($) {
 
 	function submitMennyEdit(f) {
@@ -891,7 +895,6 @@ var cart = (function($) {
 	};
 
 })(jQuery);
-
 var fiok = (function($) {
 
 	function initUI() {
@@ -981,7 +984,6 @@ var fiok = (function($) {
 		initUI: initUI
 	};
 })(jQuery);
-
 
 $(document).ready(function() {
 

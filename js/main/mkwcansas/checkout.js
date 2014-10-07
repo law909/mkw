@@ -226,7 +226,7 @@ var checkout = (function($) {
 				type: 'ajax',
                 closeBtnInside: false
 			});
-            
+
 			vezeteknevinput.on('invalid', function() {
 				openDataContainer(this);
 			});
@@ -276,6 +276,14 @@ var checkout = (function($) {
 			H5F.setup(checkoutform);
 
 			$('.js-chksendorderbtn').on('click', function(e) {
+/*                var messages = '';
+                $('input:invalid').each(function() {
+                    messages += $(this).attr('placeholder') + ': ' + $(this).prop('validationMessage') + '<br>';
+                });
+                if (messages) {
+                    mkw.showDialog(messages);
+                }
+                */
 				if (!$('input[name="aszfready"]').prop('checked')) {
 					mkw.showDialog(mkwmsg.ChkASZF);
 				}
