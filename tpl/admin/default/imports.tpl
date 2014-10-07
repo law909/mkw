@@ -49,6 +49,7 @@
             </div>
             <div>
             <a href="/admin/import/kreativ" class="js-kreativimport">Kreativ puzzle import</a>
+            <a href="/admin/import/delton" class="js-deltonimport">Delton import</a>
             </div>
 		</div>
 	</div>

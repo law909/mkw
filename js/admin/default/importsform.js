@@ -8,7 +8,7 @@ $(document).ready(function() {
 		saveUrl:'/admin/save',
 		beforeShow:function() {
 
-            $('.js-kreativimport').on('click', function(e) {
+            $('.js-kreativimport,.js-deltonimport').on('click', function(e) {
                 e.preventDefault();
                 if (!$('#TermekKategoria1').attr('data-value')) {
                     alert('Válasszon kategóriát.');
