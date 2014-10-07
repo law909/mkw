@@ -4,7 +4,7 @@ var checkout = (function($) {
 			checkoutpasswordcontainer,
 			vezeteknevinput, keresztnevinput, telefoninput, kapcsemailinput,
 			szamlanevinput, szamlairszaminput, szamlavarosinput, szamlautcainput, adoszaminput,
-			szallnevinput, szallirszaminput, szallvarosinput, szallutcainput,
+			szallnevinput, szallirszaminput, szallvarosinput, szallutcainput, jelszo1input, jelszo2input,
 			checkoutform,
 			webshopmessageinput, couriermessageinput,
 			szamlaeqszall,
@@ -117,6 +117,8 @@ var checkout = (function($) {
 			szamlaeqszall = $('input[name="szamlaeqszall"]');
 			webshopmessageinput = $('textarea[name="webshopmessage"]');
 			couriermessageinput = $('textarea[name="couriermessage"]');
+            jelszo1input = $('input[name="jelszo1"]');
+            jelszo2input = $('input[name="jelszo2"]');
 
 			loadFizmodList();
 
@@ -224,7 +226,7 @@ var checkout = (function($) {
 				type: 'ajax',
                 closeBtnInside: false
 			});
-
+            
 			vezeteknevinput.on('invalid', function() {
 				openDataContainer(this);
 			});
@@ -262,6 +264,12 @@ var checkout = (function($) {
 				openDataContainer(this);
 			});
 			szallutcainput.on('invalid', function() {
+				openDataContainer(this);
+			});
+			jelszo1input.on('invalid', function() {
+				openDataContainer(this);
+			});
+			jelszo2input.on('invalid', function() {
 				openDataContainer(this);
 			});
 

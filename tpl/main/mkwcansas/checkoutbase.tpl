@@ -10,10 +10,11 @@
 		<title>{$pagetitle|default}</title>
 		<link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">
 		<link type="application/rss+xml" rel="alternate" title="{$feedtermektitle|default}" href="/feed/termek">
-		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/bootstrap.min.css">
+		<!--link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/bootstrap.min.css">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/bootstrap-responsive.min.css">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/jquery.slider.min.css">
-		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/magnific-popup.css">
+		<link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/magnific-popup.css"-->
+        <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/mkw.css">
         <link rel="stylesheet" href="/themes/main/mkwcansas/royalslider/royalslider.css">
         <link rel="stylesheet" href="/themes/main/mkwcansas/royalslider/skins/default-inverted/rs-default-inverted.css">
         <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/style.css">
@@ -25,21 +26,23 @@
 		<script src="/js/main/mkwcansas/jquery.magnific-popup.min.js"></script>
 		<script src="/js/main/mkwcansas/jquery.slider.min.js"></script>
         <script src="/js/main/mkwcansas/jquery.royalslider.min.js"></script>
-        <script src="/js/main/mkwcansas/bootstrap-transition.js"></script>
+        <!--script src="/js/main/mkwcansas/bootstrap-transition.js"></script>
 		<script src="/js/main/mkwcansas/bootstrap-modal.js"></script>
 		<script src="/js/main/mkwcansas/bootstrap-tab.js"></script>
 		<script src="/js/main/mkwcansas/bootstrap-typeahead.js"></script>
 		<script src="/js/main/mkwcansas/bootstrap-tooltip.js"></script>
 		<script src="/js/main/mkwcansas/h5f.js"></script>
-		<script src="/js/main/mkwcansas/matt-accordion.js"></script>
+		<script src="/js/main/mkwcansas/matt-accordion.js"></script-->
+        <script src="/js/main/mkwcansas/mkwbootstrap.js"></script>
 		{block "script"}{/block}
-		<script src="/js/main/mkwcansas/mkwmsg.js"></script>
+		<!--script src="/js/main/mkwcansas/mkwmsg.js"></script>
 		<script src="/js/main/mkwcansas/mkw.js"></script>
 		<script src="/js/main/mkwcansas/checks.js"></script>
 		<script src="/js/main/mkwcansas/checkout.js"></script>
 		<script src="/js/main/mkwcansas/cart.js"></script>
 		<script src="/js/main/mkwcansas/fiok.js"></script>
-		<script src="/js/main/mkwcansas/mkwcansas.js"></script>
+		<script src="/js/main/mkwcansas/mkwcansas.js"></script-->
+        <script src="/js/main/mkwcansas/mkwapp.js"></script>
         {if ($GAFollow)}
         <script type="text/javascript">
             var _gaq = _gaq || [];
