@@ -19,7 +19,8 @@
         <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/mkw.css">
         <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/style.css">
 		{block "css"}{/block}
-        <!--script src="/js/main/mkwcansas/jquery-1.11.1.min.js"></script>
+        {if ($dev)}
+        <script src="/js/main/mkwcansas/jquery-1.11.1.min.js"></script>
 
 		<script src="/js/main/mkwcansas/jquery-migrate-1.2.1.js"></script>
 
@@ -32,17 +33,22 @@
 		<script src="/js/main/mkwcansas/bootstrap-typeahead.js"></script>
 		<script src="/js/main/mkwcansas/bootstrap-tooltip.js"></script>
 		<script src="/js/main/mkwcansas/h5f.js"></script>
-		<script src="/js/main/mkwcansas/matt-accordion.js"></script-->
+		<script src="/js/main/mkwcansas/matt-accordion.js"></script>
+        {else}
         <script src="/js/main/mkwcansas/mkwbootstrap.js"></script>
+        {/if}
 		{block "script"}{/block}
-		<!--script src="/js/main/mkwcansas/mkwmsg.js"></script>
+        {if ($dev)}
+		<script src="/js/main/mkwcansas/mkwmsg.js"></script>
 		<script src="/js/main/mkwcansas/mkw.js"></script>
 		<script src="/js/main/mkwcansas/checks.js"></script>
 		<script src="/js/main/mkwcansas/checkout.js"></script>
 		<script src="/js/main/mkwcansas/cart.js"></script>
 		<script src="/js/main/mkwcansas/fiok.js"></script>
-		<script src="/js/main/mkwcansas/mkwcansas.js"></script-->
+		<script src="/js/main/mkwcansas/mkwcansas.js"></script>
+        {else}
         <script src="/js/main/mkwcansas/mkwapp.js"></script>
+        {/if}
         {if ($GAFollow)}
         <script type="text/javascript">
             var _gaq = _gaq || [];
