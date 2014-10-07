@@ -46,22 +46,6 @@
                 </div>
                 </form>
             </div>
-            <div class="pull-right">
-<!-- SHOP OF THE COUNTRY CODE BEGIN-->
-<script type="text/javascript">
-    /*<![CDATA[*/
-    var __akn=new Date();
-    var __ake=new Date(1405323060000);
-    var __akl=Math.ceil((__ake.getTime()-__akn.getTime())/86400000);
-    if(__akl<=0) {
-        document.write('<a href="//www.orszagboltja.hu/szavazas/415" target="_blank"><img src="//assets2.orszagboltja.hu/soc/widget/hu/vote-banner-220x50-2014.png?p=415" style="border-style:none;" alt="Az ország boltja 2014 - szavazok" /><\/a>');
-    }
-    else {
-        document.write('<div style="margin:0; padding:0; width:220px;height:50px;background:url(\'//assets2.orszagboltja.hu/soc/widget/hu/vote-banner-220x50-1-2014.png?p=415\');color:#FFF;font-size:16px;font-weight:bold;font-family:Arial,sans-serif;text-align:center;overflow:hidden;"><a href="//www.orszagboltja.hu/szavazas/415" target="_blank" style="display:block; margin:0; padding:4px 80px 0 5px; color:#FFF; text-decoration:none;">m&eacute;g <span style="font-size:18px; color:#fe5e0d;">'+__akl+'<\/span> nap<br \/>a szavaz&aacute;sig<\/a><\/div>');
-    }/*]]>*/
-</script>
-<!-- SHOP OF THE COUNTRY CODE END-->
-            </div>
             </div>
         </div>
     </div>
