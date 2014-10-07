@@ -55,11 +55,14 @@ class mkwzendmailer {
         $from = Store::getParameter(consts::EmailFrom);
         $fromdata = explode(';', $from);
         $this->mailer->setFrom($fromdata[0], $fromdata[1]);
-        $this->mailer->addTo($this->to);
+        if (!$this->to) {
+            $this->mailer->addTo(Store::getParameter(consts::EmailBcc));
+        }
+        else {
+            $this->mailer->addTo($this->to);
+        }
         $this->mailer->addBcc(Store::getParameter(consts::EmailBcc));
         $this->mailer->setReplyTo(Store::getParameter(consts::EmailReplyTo));
-        if ($this->to) {
-            $this->mailer->send();
-        }
+        $this->mailer->send();
     }
 }
