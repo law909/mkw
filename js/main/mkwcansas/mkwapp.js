@@ -549,7 +549,7 @@ var checkout = (function($, guid) {
     function ajaxlog(str) {
         $.ajax({
             type: 'POST',
-            url: '/ajaxlogger',
+            url: '/ajaxlogger.php',
             data: {
                 req: 'write',
                 data: egyediid + ' ## ' + str
