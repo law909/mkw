@@ -521,7 +521,19 @@ var mkwcheck={
 		}
 	}
 };
-var checkout = (function($) {
+var guid = (function() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+               .toString(16)
+               .substring(1);
+  }
+  return function() {
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+           s4() + '-' + s4() + s4() + s4();
+  };
+})();
+
+var checkout = (function($, guid) {
 
 	var checkoutpasswordrow,
 			checkoutpasswordcontainer,
@@ -531,7 +543,19 @@ var checkout = (function($) {
 			checkoutform,
 			webshopmessageinput, couriermessageinput,
 			szamlaeqszall,
-			kosarhash;
+			kosarhash,
+            egyediid = guid();
+
+    function ajaxlog(str) {
+        $.ajax({
+            type: 'POST',
+            url: '/ajaxlogger',
+            data: {
+                req: 'write',
+                data: egyediid + ' ## ' + str
+            }
+        });
+    }
 
 	function loadFizmodList() {
 		$.ajax({
@@ -794,31 +818,47 @@ var checkout = (function($) {
 			H5F.setup(checkoutform);
 
             $('.js-chksendorderbtn').on('click', function(e) {
-/*                var messages = '';
+
+                ajaxlog('START: 10 Send order clicked');
+
+                var vals = {};
+                $('input').each(function() {
+                    vals[$(this).attr('name')] = $(this).val();
+                });
+                ajaxlog('DATA: 15 ' + JSON.stringify(vals));
+
+                var messages = '';
                 $('input:invalid').each(function() {
                     messages += $(this).attr('placeholder') + ': ' + $(this).prop('validationMessage') + '<br>';
                 });
                 if (messages) {
-                    mkw.showDialog(messages);
+                    ajaxlog('ERROR: 20 Invalid inputok: ' + messages);
+//                    mkw.showDialog(messages);
                 }
-                */
+
 				if (!$('input[name="aszfready"]').prop('checked')) {
+                    ajaxlog('ERROR: 30 ÁSZF nincs pipálva');
 					mkw.showDialog(mkwmsg.ChkASZF);
 				}
 				else {
 					$.ajax({
 						url: '/kosar/gethash',
 						success: function(data) {
+                            ajaxlog('OK: 40 Kosár gethash success');
 							var d = JSON.parse(data);
+                            ajaxlog('OK: 50 Kosár gethash: ' + data);
 							if (kosarhash && kosarhash != d.value) {
+                                ajaxlog('ERROR: 60 Kosár megváltozott');
 								mkw.showDialog(mkwmsg.ChkKosarValtozott);
                                 loadTetelList();
 							}
 							else {
 								if (d.cnt <= 0) {
+                                    ajaxlog('ERROR: 70 Kosár üres');
 									mkw.showDialog(mkwmsg.ChkKosarUres);
 								}
 								else {
+                                    ajaxlog('END:OK: 80 Submit');
 									$('.js-checkoutsubmit').click();
 								}
 							}
@@ -833,7 +873,7 @@ var checkout = (function($) {
 		initUI: initUI
 	};
 
-})(jQuery);
+})(jQuery, guid);
 var cart = (function($) {
 
 	function submitMennyEdit(f) {

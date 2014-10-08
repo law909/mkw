@@ -19,7 +19,7 @@ class Store {
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
 
     public function getJSVersion() {
-        return 1;
+        return 2;
     }
 
     public static function writelog($text, $fname = 'log.txt') {
