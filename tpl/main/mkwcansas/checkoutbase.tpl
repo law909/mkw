@@ -47,7 +47,7 @@
 		<script src="/js/main/mkwcansas/fiok.js"></script>
 		<script src="/js/main/mkwcansas/mkwcansas.js"></script>
         {else}
-        <script src="/js/main/mkwcansas/mkwapp.js"></script>
+        <script src="/js/main/mkwcansas/mkwapp.js?v={$jsversion}"></script>
         {/if}
         {if ($GAFollow)}
         <script type="text/javascript">

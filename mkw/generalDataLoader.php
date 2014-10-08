@@ -18,6 +18,7 @@ class generalDataLoader {
         $view->setVar('userloggedin', Store::getAdminSession()->pk);
         $view->setVar('loggedinuser', Store::getAdminSession()->loggedinuser);
         $view->setVar('dev', store::getConfigValue('developer', false));
+        $view->setVar('jsversion', store::getJSVersion());
         $setup = store::getSetup();
         $setup['grideditbutton'] = store::getParameter(consts::Grideditbutton, 'small');
         $setup['editstyle'] = store::getParameter(consts::Editstyle, 'dropdown');
