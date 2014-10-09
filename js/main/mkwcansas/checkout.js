@@ -296,17 +296,30 @@ var checkout = (function($, guid) {
 
             $('.js-chksendorderbtn').on('click', function(e) {
 
-                ajaxlog('START: 10 Send order clicked');
+                var x = checkoutform[0].checkValidity();
+
+                ajaxlog('START: 10 Send order clicked, form valid:' + x);
 
                 var vals = {};
-                $('input').each(function() {
-                    vals[$(this).attr('name')] = $(this).val();
+                $('#CheckoutForm input').each(function() {
+                    var $this = $(this),
+                        type = $this.attr('type');
+                    switch (type) {
+                        case 'radio':
+                            vals[$this.attr('name')] = $('#CheckoutForm input[name="'+$this.attr('name')+'"]:checked').val();
+                            break;
+                        case 'checkbox':
+                            vals[$this.attr('name')] = $this.attr('checked');
+                            break;
+                        default:
+                            vals[$this.attr('name')] = $this.val();
+                    }
                 });
                 ajaxlog('DATA: 15 ' + JSON.stringify(vals));
 
                 var messages = '';
-                $('input:invalid').each(function() {
-                    messages += $(this).attr('placeholder') + ': ' + $(this).prop('validationMessage') + '<br>';
+                $('#CheckoutForm input:invalid').each(function() {
+                    messages += $(this).attr('name') + ': ' + $(this).prop('validationMessage') + '<br>';
                 });
                 if (messages) {
                     ajaxlog('ERROR: 20 Invalid inputok: ' + messages);
