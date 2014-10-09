@@ -832,7 +832,7 @@ var checkout = (function($, guid) {
                             vals[$this.attr('name')] = $('#CheckoutForm input[name="'+$this.attr('name')+'"]:checked').val();
                             break;
                         case 'checkbox':
-                            vals[$this.attr('name')] = $this.attr('checked');
+                            vals[$this.attr('name')] = $this.prop('checked');
                             break;
                         default:
                             vals[$this.attr('name')] = $this.val();
