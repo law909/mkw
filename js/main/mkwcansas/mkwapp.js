@@ -854,6 +854,7 @@ var checkout = (function($, guid) {
 					mkw.showDialog(mkwmsg.ChkASZF);
 				}
 				else {
+                    ajaxlog('AJAX: 32 ajax kérés indul');
 					$.ajax({
 						url: '/kosar/gethash',
 						success: function(data) {
@@ -875,7 +876,13 @@ var checkout = (function($, guid) {
 									$('.js-checkoutsubmit').click();
 								}
 							}
-						}
+						},
+                        error: function(xhr, stat, error) {
+                            ajaxlog('AJAX: 90 ERROR. STATUS: ' + stat + ' ERROR TEXT: ' + error);
+                        },
+                        complete: function(xhr, stat) {
+                            ajaxlog('AJAX: 100 COMPLETE. STATUS: ' + stat);
+                        }
 					});
 				}
 			});
