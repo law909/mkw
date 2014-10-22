@@ -85,12 +85,26 @@ $router->map('GET', '/admin/szamlafej/viewkarb', 'szamlafejController#viewkarb',
 $router->map('POST', '/admin/szamlafej/save', 'szamlafejController#save', 'adminszamlafejsave');
 $router->map('GET', '/admin/szamlafej/print', 'szamlafejController#doPrint', 'adminszamlafejprint');
 
+$router->map('GET', '/admin/keziszamlafej/viewlist', 'keziszamlafejController#viewlist', 'adminkeziszamlafejviewlist');
+$router->map('GET', '/admin/keziszamlafej/getlistbody', 'keziszamlafejController#getlistbody', 'adminkeziszamlafejgetlistbody');
+$router->map('GET', '/admin/keziszamlafej/getkarb', 'keziszamlafejController#getkarb', 'adminkeziszamlafejgetkarb');
+$router->map('GET', '/admin/keziszamlafej/viewkarb', 'keziszamlafejController#viewkarb', 'adminkeziszamlafejviewkarb');
+$router->map('POST', '/admin/keziszamlafej/save', 'keziszamlafejController#save', 'adminkeziszamlafejsave');
+$router->map('GET', '/admin/keziszamlafej/print', 'keziszamlafejController#doPrint', 'adminkeziszamlafejprint');
+
 $router->map('GET', '/admin/bevetfej/viewlist', 'bevetfejController#viewlist', 'adminbevetfejviewlist');
 $router->map('GET', '/admin/bevetfej/getlistbody', 'bevetfejController#getlistbody', 'adminbevetfejgetlistbody');
 $router->map('GET', '/admin/bevetfej/getkarb', 'bevetfejController#getkarb', 'adminbevetfejgetkarb');
 $router->map('GET', '/admin/bevetfej/viewkarb', 'bevetfejController#viewkarb', 'adminbevetfejviewkarb');
 $router->map('POST', '/admin/bevetfej/save', 'bevetfejController#save', 'adminbevetfejsave');
 $router->map('GET', '/admin/bevetfej/print', 'bevetfejController#doPrint', 'adminbevetfejprint');
+
+$router->map('GET', '/admin/kivetfej/viewlist', 'kivetfejController#viewlist', 'adminkivetfejviewlist');
+$router->map('GET', '/admin/kivetfej/getlistbody', 'kivetfejController#getlistbody', 'adminkivetfejgetlistbody');
+$router->map('GET', '/admin/kivetfej/getkarb', 'kivetfejController#getkarb', 'adminkivetfejgetkarb');
+$router->map('GET', '/admin/kivetfej/viewkarb', 'kivetfejController#viewkarb', 'adminkivetfejviewkarb');
+$router->map('POST', '/admin/kivetfej/save', 'kivetfejController#save', 'adminkivetfejsave');
+$router->map('GET', '/admin/kivetfej/print', 'kivetfejController#doPrint', 'adminkivetfejprint');
 
 $router->map('GET', '/admin/termek/viewlist', 'termekController#viewlist', 'admintermekviewlist');
 $router->map('GET', '/admin/termek/htmllist', 'termekController#htmllist', 'admintermekhtmllist');

@@ -202,7 +202,7 @@ $(document).ready(function() {
 			$('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat').button();
             $('.js-inheritbizonylat').each(function() {
                 var $this = $(this);
-                $this.attr('href', '/admin/szamlafej/viewkarb?id=' + $this.data('egyedid') + '&source=megrendeles&oper=' + $this.data('oper'));
+                $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + $this.data('egyedid') + '&source=megrendeles&oper=' + $this.data('oper'));
             });
 			keltedit.datepicker($.datepicker.regional['hu']);
 			keltedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
@@ -265,7 +265,7 @@ $(document).ready(function() {
                 onDoEditLink: function() {
                     $('.js-inheritbizonylat').each(function() {
                         var $this = $(this);
-                        $this.attr('href', '/admin/szamlafej/viewkarb?id=' + $this.data('egyedid') + '&source=megrendeles&oper=' + $this.data('oper'));
+                        $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + $this.data('egyedid') + '&source=megrendeles&oper=' + $this.data('oper'));
                     });
                     $('.js-printbizonylat').each(function() {
                         var $this = $(this);

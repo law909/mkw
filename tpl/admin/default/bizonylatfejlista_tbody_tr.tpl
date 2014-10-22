@@ -16,7 +16,9 @@
 <a class="js-printelolegbekero" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('Előleg bekérő')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
 {/if}
 {if ($showinheritbutton)}
-<a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-oper="inherit" title="{t('Számláz')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+<a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="szamlafej" data-oper="inherit" title="{t('Számla')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+<a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="keziszamlafej" data-oper="inherit" title="{t('Kézi számla')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+<a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="kivetfej" data-oper="inherit" title="{t('Kivét')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
 {/if}
 <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
 {/if}

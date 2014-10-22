@@ -87,6 +87,32 @@ class Bizonylattipus {
                 $view->setVar('showfuvarlevelszam', true);
                 $view->setVar('showhaszonszazalek', false);
                 break;
+            case 'kivet':
+                $view->setVar('showteljesites', true);
+                $view->setVar('showesedekesseg', false);
+                $view->setVar('showhatarido', false);
+                $view->setVar('showvalutanem', false);
+                $view->setVar('showbizonylatstatuszeditor', false);
+                $view->setVar('showinheritbutton', false);
+                $view->setVar('showuzenet', false);
+                $view->setVar('showszallitasicim', true);
+                $view->setVar('showerbizonylatszam', false);
+                $view->setVar('showfuvarlevelszam', false);
+                $view->setVar('showhaszonszazalek', false);
+                break;
+            case 'keziszamla':
+                $view->setVar('showteljesites', true);
+                $view->setVar('showesedekesseg', true);
+                $view->setVar('showhatarido', false);
+                $view->setVar('showvalutanem', false);
+                $view->setVar('showbizonylatstatuszeditor', false);
+                $view->setVar('showinheritbutton', false);
+                $view->setVar('showuzenet', false);
+                $view->setVar('showszallitasicim', true);
+                $view->setVar('showerbizonylatszam', true);
+                $view->setVar('showfuvarlevelszam', false);
+                $view->setVar('showhaszonszazalek', false);
+                break;
         }
     }
 
