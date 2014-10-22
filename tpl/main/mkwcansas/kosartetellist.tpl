@@ -43,7 +43,7 @@
 					</form>
 				</div>
 			</td>
-			<td><div class="textalignright">{number_format($tetel.bruttohuf,0,',',' ')} Ft</div></td>
+			<td><div id="ertek_{$tetel.id}" class="textalignright">{number_format($tetel.bruttohuf,0,',',' ')} Ft</div></td>
 			<td class="textaligncenter">{if (!$tetel.noedit)}<a class="btn js-kosardelbtn" href="/kosar/del?id={$tetel.id}" rel="nofollow"><i class="icon-remove-sign"></i>{t('Töröl')}</a>{/if}</td>
 		</tr>
 	{/foreach}
@@ -51,7 +51,7 @@
 <tfoot>
 	<tr>
 		<th colspan="4"><div class="textalignright">{t('Összesen')}:</div></th>
-		<th><div class="textalignright">{number_format($osszesen,0,',',' ')} Ft</div></th>
+		<th><div id="kosarsum" class="textalignright">{number_format($osszesen,0,',',' ')} Ft</div></th>
 		<th></th>
 	</tr>
 </tfoot>

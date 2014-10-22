@@ -27,6 +27,7 @@
 		<script src="/js/main/mkwcansas/jquery.magnific-popup.min.js"></script>
 		<script src="/js/main/mkwcansas/jquery.slider.min.js"></script>
         <script src="/js/main/mkwcansas/jquery.royalslider.min.js"></script>
+        <script src="/js/main/mkwcansas/jquery.debounce.min.js"></script>
         <script src="/js/main/mkwcansas/bootstrap-transition.js"></script>
 		<script src="/js/main/mkwcansas/bootstrap-modal.js"></script>
 		<script src="/js/main/mkwcansas/bootstrap-tab.js"></script>
