@@ -520,7 +520,8 @@ class termekController extends \mkwhelpers\MattableController {
 				$ret[] = array(
 					'id' => $valt->getId(),
 					'caption' => $valt->getNev(),
-					'selected' => $sel == $valt->getId()
+					'selected' => $sel == $valt->getId(),
+                    'elerheto' => $valt->getElerheto()
 				);
 			}
 		}

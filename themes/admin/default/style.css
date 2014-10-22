@@ -102,3 +102,7 @@ img {
 .js-saveas, .js-saveandreopen {
     margin-left: 10px;
 }
+
+.nemelerhetovaltozat {
+    color: red;
+}
