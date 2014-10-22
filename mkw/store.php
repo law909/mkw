@@ -22,6 +22,10 @@ class Store {
         return 5;
     }
 
+    public function getBootstrapJSVersion() {
+        return 1;
+    }
+
     public static function writelog($text, $fname = 'log.txt') {
         $handle = fopen($fname, "a");
         $log = "";
@@ -214,6 +218,7 @@ class Store {
         $v->setVar('feedhirtitle', self::getParameter('feedhirtitle', t('Híreink')));
         $v->setVar('dev', self::getConfigValue('developer', false));
         $v->setVar('jsversion', self::getJSVersion());
+        $v->setVar('bootstrapjsversion', self::getBootstrapJSVersion());
         $v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
         $v->setVar('serverurl', self::getFullUrl());
         $v->setVar('logo', self::getParameter(consts::Logo));

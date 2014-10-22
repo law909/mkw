@@ -36,7 +36,7 @@
 		<script src="/js/main/mkwcansas/h5f.js"></script>
 		<script src="/js/main/mkwcansas/matt-accordion.js"></script>
         {else}
-        <script src="/js/main/mkwcansas/mkwbootstrap.js"></script>
+        <script src="/js/main/mkwcansas/mkwbootstrap.js?v={$bootstrapjsversion}"></script>
         {/if}
 		{block "script"}{/block}
         {if ($dev)}
