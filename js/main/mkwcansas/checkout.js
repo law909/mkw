@@ -175,31 +175,10 @@ var checkout = (function($, guid) {
 			.on('change', '.js-chkrefresh', function() {
 				refreshAttekintes();
 			})
-			.on('input', 'input[name="jelszo1"],input[name="jelszo2"]', function(e) {
-				mkwcheck.checkoutJelszoCheck();
-				$(this).off('keydown');
-			})
-			.on('keydown blur', 'input[name="jelszo1"],input[name="jelszo2"]', function(e) {
-				mkwcheck.wasinteraction.pw = true;
-				mkwcheck.checkoutJelszoCheck();
-			})
 			.on('blur', 'input[name="vezeteknev"],input[name="keresztnev"]', function() {
 				if (!szamlanevinput.val() && vezeteknevinput.val() && keresztnevinput.val()) {
 					szamlanevinput.val(vezeteknevinput.val() + ' ' + keresztnevinput.val());
 				}
-			});
-
-			telefoninput
-			.on('input', function(e) {
-				mkwcheck.checkoutTelefonCheck();
-				$(this).off('keydown');
-			})
-			.on('keydown blur', function(e) {
-				mkwcheck.wasinteraction.telefon = true;
-				mkwcheck.checkoutTelefonCheck();
-			})
-			.each(function(i, ez) {
-				mkwcheck.checkoutTelefonCheck();
 			});
 
 			var $chklogin = $('.js-chklogin');
@@ -292,11 +271,15 @@ var checkout = (function($, guid) {
 				openDataContainer(this);
 			});
 
-			H5F.setup(checkoutform);
 
             $('.js-chksendorderbtn').on('click', function(e) {
 
-                var x = checkoutform[0].checkValidity();
+                if (checkoutform[0].checkValidity) {
+                    var x = checkoutform[0].checkValidity();
+                }
+                else {
+                    var x = 'unknown';
+                }
 
                 ajaxlog('START: 10 Send order clicked, form valid:' + x);
 
@@ -323,46 +306,55 @@ var checkout = (function($, guid) {
                 });
                 if (messages) {
                     ajaxlog('ERROR: 20 Invalid inputok: ' + messages);
-//                    mkw.showDialog(messages);
                 }
 
-				if (!$('input[name="aszfready"]').prop('checked')) {
-                    ajaxlog('ERROR: 30 ÁSZF nincs pipálva');
-					mkw.showDialog(mkwmsg.ChkASZF);
-				}
-				else {
-                    ajaxlog('AJAX: 32 ajax kérés indul');
-					$.ajax({
-						url: '/kosar/gethash',
-						success: function(data) {
-                            ajaxlog('OK: 40 Kosár gethash success');
-							var d = JSON.parse(data);
-                            ajaxlog('OK: 50 Kosár gethash: ' + data);
-							if (kosarhash && kosarhash != d.value) {
-                                ajaxlog('ERROR: 60 Kosár megváltozott');
-								mkw.showDialog(mkwmsg.ChkKosarValtozott);
-                                loadTetelList();
-							}
-							else {
-								if (d.cnt <= 0) {
-                                    ajaxlog('ERROR: 70 Kosár üres');
-									mkw.showDialog(mkwmsg.ChkKosarUres);
-								}
-								else {
-                                    ajaxlog('END:OK: 80 Submit');
-									$('.js-checkoutsubmit').click();
-								}
-							}
-						},
-                        error: function(xhr, stat, error) {
-                            ajaxlog('AJAX: 90 ERROR. STATUS: ' + stat + ' ERROR TEXT: ' + error);
-                        },
-                        complete: function(xhr, stat) {
-                            ajaxlog('AJAX: 100 COMPLETE. STATUS: ' + stat);
-                        }
-					});
-				}
-			});
+                if ($('input[name="jelszo1"]').val() !== $('input[name="jelszo2"]').val()) {
+                    var jel1 = $('input[name="jelszo1"]');
+                    ajaxlog('ERROR: 30 A két jelszó nem egyezik.');
+                    openDataContainer(jel1);
+                    mkw.showDialog(mkwmsg.PassChange[1]).on('hidden',function() {
+                        jel1[0].focus();
+                    });
+                }
+                else {
+                    if (!$('input[name="aszfready"]').prop('checked')) {
+                        ajaxlog('ERROR: 30 ÁSZF nincs pipálva');
+                        mkw.showDialog(mkwmsg.ChkASZF);
+                    }
+                    else {
+                        ajaxlog('AJAX: 32 ajax kérés indul');
+                        $.ajax({
+                            url: '/kosar/gethash',
+                            success: function(data) {
+                                ajaxlog('OK: 40 Kosár gethash success');
+                                var d = JSON.parse(data);
+                                ajaxlog('OK: 50 Kosár gethash: ' + data);
+                                if (kosarhash && kosarhash != d.value) {
+                                    ajaxlog('ERROR: 60 Kosár megváltozott');
+                                    mkw.showDialog(mkwmsg.ChkKosarValtozott);
+                                    loadTetelList();
+                                }
+                                else {
+                                    if (d.cnt <= 0) {
+                                        ajaxlog('ERROR: 70 Kosár üres');
+                                        mkw.showDialog(mkwmsg.ChkKosarUres);
+                                    }
+                                    else {
+                                        ajaxlog('END:OK: 80 Submit');
+                                        checkoutform[0].submit();
+                                    }
+                                }
+                            },
+                            error: function(xhr, stat, error) {
+                                ajaxlog('AJAX: 90 ERROR. STATUS: ' + stat + ' ERROR TEXT: ' + error);
+                            },
+                            complete: function(xhr, stat) {
+                                ajaxlog('AJAX: 100 COMPLETE. STATUS: ' + stat);
+                            }
+                        });
+                    }
+                }
+            });
 		}
 	}
 

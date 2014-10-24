@@ -25,7 +25,7 @@ var mkw = (function($) {
                 dlgfooter = $('.modal-footer', dlgcenter).empty(),
                 classes = 'btn';
         $('h4', dlgheader).remove();
-        opts = $.extend(null, options, {
+        opts = {
             header: mkwmsg.DialogFejlec,
             buttons: [{
                     caption: mkwmsg.DialogOk,
@@ -33,9 +33,12 @@ var mkw = (function($) {
                     click: function(e) {
                         e.preventDefault();
                         closeDialog();
+                        if (options.onOk) {
+                            options.onOk.apply(this);
+                        }
                     }
                 }]
-        });
+        };
         if (opts.header) {
             dlgheader.append('<h4>' + opts.header + '</h4>');
         }
@@ -50,7 +53,7 @@ var mkw = (function($) {
                     .appendTo(dlgfooter)
                     .on('click', opts.buttons[i].click);
         }
-        dlgcenter.modal();
+        return dlgcenter.modal();
     }
 
     function closeDialog() {
