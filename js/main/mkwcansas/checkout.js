@@ -243,9 +243,6 @@ var checkout = (function($, guid) {
 			kapcsemailinput.on('invalid', function() {
 				openDataContainer(this);
 			});
-			szamlanevinput.on('invalid', function() {
-				openDataContainer(this);
-			});
 			szamlairszaminput.on('invalid', function() {
 				openDataContainer(this);
 			});
@@ -271,9 +268,7 @@ var checkout = (function($, guid) {
 				openDataContainer(this);
 			});
 
-
-            $('.js-chksendorderbtn').on('click', function(e) {
-
+            checkoutform.on('submit', function(e) {
                 if (checkoutform[0].checkValidity) {
                     var x = checkoutform[0].checkValidity();
                 }
@@ -310,6 +305,7 @@ var checkout = (function($, guid) {
 
                 if ($('input[name="jelszo1"]').val() !== $('input[name="jelszo2"]').val()) {
                     var jel1 = $('input[name="jelszo1"]');
+                    e.preventDefault();
                     ajaxlog('ERROR: 30 A két jelszó nem egyezik.');
                     openDataContainer(jel1);
                     mkw.showDialog(mkwmsg.PassChange[1]).on('hidden',function() {
@@ -319,6 +315,7 @@ var checkout = (function($, guid) {
                 else {
                     if (!$('input[name="aszfready"]').prop('checked')) {
                         ajaxlog('ERROR: 30 ÁSZF nincs pipálva');
+                        e.preventDefault();
                         mkw.showDialog(mkwmsg.ChkASZF);
                     }
                     else {
@@ -330,25 +327,28 @@ var checkout = (function($, guid) {
                                 var d = JSON.parse(data);
                                 ajaxlog('OK: 50 Kosár gethash: ' + data);
                                 if (kosarhash && kosarhash != d.value) {
+                                    e.preventDefault();
                                     ajaxlog('ERROR: 60 Kosár megváltozott');
                                     mkw.showDialog(mkwmsg.ChkKosarValtozott);
                                     loadTetelList();
                                 }
                                 else {
                                     if (d.cnt <= 0) {
+                                        e.preventDefault();
                                         ajaxlog('ERROR: 70 Kosár üres');
                                         mkw.showDialog(mkwmsg.ChkKosarUres);
                                     }
                                     else {
                                         ajaxlog('END:OK: 80 Submit');
-                                        checkoutform[0].submit();
                                     }
                                 }
                             },
                             error: function(xhr, stat, error) {
+                                e.preventDefault();
                                 ajaxlog('AJAX: 90 ERROR. STATUS: ' + stat + ' ERROR TEXT: ' + error);
                             },
                             complete: function(xhr, stat) {
+                                e.preventDefault();
                                 ajaxlog('AJAX: 100 COMPLETE. STATUS: ' + stat);
                             }
                         });

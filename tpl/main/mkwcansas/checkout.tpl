@@ -228,8 +228,7 @@
 										Tudomásul veszem és elfogadom az <a href="{$showaszflink}" target="empty" class="js-chkaszf">ÁSZF</a>-et<br>és a rendeléssel járó fizetési kötelezettséget
 									</label>
 								</div>
-								<div><input type="button" class="btn cartbtn chk-sendorderbtn js-chksendorderbtn" value="Megrendelés elküldése"></div>
-								<!--input type="submit" class="js-checkoutsubmit notvisible"-->
+								<div><input type="submit" class="btn cartbtn chk-sendorderbtn js-chksendorderbtn" value="Megrendelés elküldése"></div>
 							</div>
 						</div>
 					</div>

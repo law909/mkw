@@ -19,7 +19,7 @@ class Store {
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
 
     public function getJSVersion() {
-        return 6;
+        return 7;
     }
 
     public function getBootstrapJSVersion() {
