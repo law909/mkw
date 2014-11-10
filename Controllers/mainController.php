@@ -285,10 +285,8 @@ class mainController extends \mkwhelpers\Controller {
                         'Téma: ' . $temanev . '<br>' .
                         'Szöveg: ' . $szoveg . '<br>'
                     );
-                    $mailer->send("From: " . $email1 . "\r\n"
-                        . "Reply-to: " . $email1 . "\r\n"
-                        . "MIME-version: 1.0\r\n"
-                        . "Content-Type: text/html; charset=utf-8\r\n");
+                    $mailer->setReplyTo($email1);
+                    $mailer->send();
 					$view = $this->getTemplateFactory()->createMainView('kapcsolatkosz.tpl');
 					store::fillTemplate($view);
 				}

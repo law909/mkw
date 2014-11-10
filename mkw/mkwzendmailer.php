@@ -23,6 +23,7 @@ class mkwzendmailer {
     private $subject;
     private $message;
     private $headers;
+    private $replyto;
 
     public function setTo($to) {
         $this->to = $to;
@@ -48,6 +49,14 @@ class mkwzendmailer {
         return $this->message;
     }
 
+    public function setReplyTo($param) {
+        $this->replyto = $param;
+    }
+
+    public function getReplyTo() {
+        return $this->replyto;
+    }
+
     public function send() {
         $this->mailer = new \Zend_Mail('UTF-8');
         $this->mailer->setBodyHtml($this->message);
@@ -62,7 +71,12 @@ class mkwzendmailer {
             $this->mailer->addTo($this->to);
         }
         $this->mailer->addBcc(Store::getParameter(consts::EmailBcc));
-        $this->mailer->setReplyTo(Store::getParameter(consts::EmailReplyTo));
+        if (!$this->replyto) {
+            $this->mailer->setReplyTo(Store::getParameter(consts::EmailReplyTo));
+        }
+        else {
+            $this->mailer->setReplyTo($this->replyto);
+        }
         $this->mailer->send();
     }
 }
