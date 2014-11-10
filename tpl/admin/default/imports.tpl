@@ -48,8 +48,19 @@
                 <input name="editleiras" type="checkbox">
             </div>
             <div>
+                <label>Nem található termék felvitele újként:</label>
+                <input name="createuj" type="checkbox">
+            </div>
+            <div>
+                <label>Importálandó fájl:</label>
+                <input name="toimport" type="file">
+            </div>
+            <div>
             <a href="/admin/import/kreativ" class="js-kreativimport">Kreativ puzzle import</a>
             <a href="/admin/import/delton" class="js-deltonimport">Delton import</a>
+            <a href="/admin/import/nomad" class="js-nomadimport">Nomád import</a>
+            <a href="/admin/import/reintex" class="js-reinteximport">Reintex import</a>
+            <a href="/admin/import/legavenue" class="js-legavenueimport">Legavenue import</a>
             </div>
 		</div>
 	</div>

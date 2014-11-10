@@ -8,23 +8,20 @@ $(document).ready(function() {
 		saveUrl:'/admin/save',
 		beforeShow:function() {
 
-            $('.js-kreativimport,.js-deltonimport').on('click', function(e) {
+            $('.js-kreativimport,.js-deltonimport,.js-nomadimport,.js-reinteximport,.js-legavenueimport').on('click', function(e) {
                 e.preventDefault();
                 if (!$('#TermekKategoria1').attr('data-value')) {
                     alert('Válasszon kategóriát.');
                 }
                 else {
+                    var data = new FormData($('#mattkarb-form')[0]);
+                    data.append('katid', $('#TermekKategoria1').attr('data-value'));
                     $.ajax({
                         type: 'POST',
                         url: $(this).attr('href'),
-                        data: {
-                            katid: $('#TermekKategoria1').attr('data-value'),
-                            path: $('input[name="path"]').val(),
-                            gyarto: $('select[name="gyarto"]').val(),
-                            dbtol: $('input[name="dbtol"]').val(),
-                            dbig: $('input[name="dbig"]').val(),
-                            editleiras: $('input[name="editleiras"]').prop('checked')
-                        },
+                        processData: false,
+                        contentType: false,
+                        data: data,
                         success: function() {
                             alert('Kész.');
                         }

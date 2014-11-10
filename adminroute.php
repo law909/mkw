@@ -244,6 +244,9 @@ $router->map('GET', '/admin/export/grando', 'exportController#GrandoExport', 'ad
 $router->map('GET', '/admin/import/view', 'importController#view', 'adminimportview');
 $router->map('POST','/admin/import/kreativ', 'importController#kreativpuzzleImport', 'adminkreativpuzzleimport');
 $router->map('POST','/admin/import/delton', 'importController#deltonImport', 'admindeltonimport');
+//$router->map('POST','/admin/import/nomad', 'importController#nomadImport', 'adminnomadimport');
+$router->map('POST','/admin/import/reintex', 'importController#reintexImport', 'adminreinteximport');
+//$router->map('POST','/admin/import/legavenue', 'importController#legavenueImport', 'adminlegavenueimport');
 
 $router->map('GET', '/admin/login/show', 'dolgozoController#showlogin', 'adminshowlogin');
 $router->map('POST', '/admin/login', 'dolgozoController#login', 'adminlogin');
