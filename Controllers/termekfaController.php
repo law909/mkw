@@ -52,6 +52,10 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
 		$obj->setLeiras2($this->params->getOriginalStringRequestParam('leiras2'));
 		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
+        $obj->m1lchanged = $obj->getMenu1lathato() !== $this->params->getBoolRequestParam('menu1lathato');
+        $obj->m2lchanged = $obj->getMenu2lathato() !== $this->params->getBoolRequestParam('menu2lathato');
+        $obj->m3lchanged = $obj->getMenu3lathato() !== $this->params->getBoolRequestParam('menu3lathato');
+        $obj->m4lchanged = $obj->getMenu4lathato() !== $this->params->getBoolRequestParam('menu4lathato');
 		$obj->setMenu1lathato($this->params->getBoolRequestParam('menu1lathato'));
 		$obj->setMenu2lathato($this->params->getBoolRequestParam('menu2lathato'));
 		$obj->setMenu3lathato($this->params->getBoolRequestParam('menu3lathato'));

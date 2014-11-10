@@ -12,6 +12,11 @@ use mkw\store;
 class TermekFa {
 
     private $gtnev;
+    public $m1lchanged = false;
+    public $m2lchanged = false;
+    public $m3lchanged = false;
+    public $m4lchanged = false;
+
 	/**
 	 * @Id @Column(type="integer")
 	 * @GeneratedValue(strategy="AUTO")
