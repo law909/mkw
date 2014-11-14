@@ -199,7 +199,7 @@ class importController extends \mkwhelpers\Controller {
                         $termek->setNemkaphato(($data[6] * 1) == 0);
                         $termek->setAfa($afa[0]);
                         $termek->setNetto($data[3] * 1);
-//                        $termek->setBrutto(round($termek->getBrutto(), -1));
+                        $termek->setBrutto(round($termek->getBrutto(), -1));
                         store::getEm()->persist($termek);
                         store::getEm()->flush();
                     }
@@ -370,6 +370,7 @@ class importController extends \mkwhelpers\Controller {
                     if ($termek) {
                         $termek->setAfa($afa[0]);
                         $termek->setNetto($data[7] * 1);
+                        $termek->setBrutto(round($termek->getBrutto(), -1));
                         store::getEm()->persist($termek);
                         store::getEm()->flush();
                     }
@@ -505,6 +506,7 @@ class importController extends \mkwhelpers\Controller {
                     if ($termek || $createuj) {
                         $termek->setAfa($afa[0]);
                         $termek->setNetto($data[7] * 1);
+                        $termek->setBrutto(round($termek->getBrutto(), -1));
                         store::getEm()->persist($termek);
                         store::getEm()->flush();
                     }
@@ -516,7 +518,7 @@ class importController extends \mkwhelpers\Controller {
 
     public function reintexImport() {
 
-        $sep = ',';
+        $sep = ';';
 
         $parentid = $this->params->getIntRequestParam('katid', 0);
         $gyartoid = $this->params->getIntRequestParam('gyarto', 0);
@@ -534,10 +536,6 @@ class importController extends \mkwhelpers\Controller {
             $parent = store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
             $termekdb = 0;
             $termekdb = 0;
-            // 4 sor az elejen
-            fgetcsv($fh, 0, $sep, '"');
-            fgetcsv($fh, 0, $sep, '"');
-            fgetcsv($fh, 0, $sep, '"');
             fgetcsv($fh, 0, $sep, '"');
             while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                 $termekdb++;
@@ -576,7 +574,7 @@ class importController extends \mkwhelpers\Controller {
                     }
                     if ($termek) {
                         $termek->setAfa($afa[0]);
-                        $termek->setBrutto($data[8] * 1);
+                        $termek->setBrutto(round($data[8] * 1,-1));
                         store::getEm()->persist($termek);
                         store::getEm()->flush();
                     }
