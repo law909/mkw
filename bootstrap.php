@@ -59,11 +59,11 @@ else {
 
 if ($ini['developer']) {
 	$config->setAutoGenerateProxyClasses(true);
-	require_once('fb.php');
+//	require_once('fb.php');
 }
 else {
 	$config->setAutoGenerateProxyClasses(false);
-	function fb() {}
+//	function fb() {}
 }
 
 if ($ini['sqllog']) {
