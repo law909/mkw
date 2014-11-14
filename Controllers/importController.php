@@ -585,6 +585,92 @@ class importController extends \mkwhelpers\Controller {
         }
     }
 
+    public function tutisportImport() {
+        $sep = ';';
+
+        $parentid = $this->params->getIntRequestParam('katid', 0);
+        $gyartoid = $this->params->getIntRequestParam('gyarto', 0);
+        $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+        $dbig = $this->params->getIntRequestParam('dbig', 0);
+        $editleiras = $this->params->getBoolRequestParam('editleiras', false);
+        $createuj = $this->params->getBoolRequestParam('createuj', false);
+        move_uploaded_file($_FILES['toimport']['tmp_name'], 'tutisportimport.csv');
+
+        $fh = fopen('tutisportimport.csv', 'r');
+        if ($fh) {
+            $afa = store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
+            $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findByNev('-');
+            $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+            $parent = store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+            $termekdb = 0;
+            $termekdb = 0;
+            fgetcsv($fh, 0, $sep, '"');
+            while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
+                $termekdb++;
+            }
+            while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
+                $termekdb++;
+                if ($data[0]) {
+                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data[0],'gyarto' => $gyartoid));
+                    if (!$termek) {
+                        $csz = str_replace(' ', '', $data[0]);
+                        $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $csz, 'gyarto' => $gyartoid));
+                    }
+                    if ($data[3] * 1 != 0) {
+                        if (!$termek) {
+
+                            if ($createuj) {
+
+                                $termeknev = mb_convert_encoding(trim($data[1]), 'UTF8', 'ISO-8859-2');
+                                $me = mb_convert_encoding(trim($data[2]), 'UTF8', 'ISO-8859-2');
+
+                                $termek = new \Entities\Termek();
+                                $termek->setFuggoben(true);
+                                $termek->setMe($me);
+                                $termek->setNev($termeknev);
+                                $termek->setCikkszam($data[0]);
+                                $termek->setTermekfa1($parent);
+                                $termek->setVtsz($vtsz[0]);
+                                $termek->setHparany(3);
+                                if ($gyarto) {
+                                    $termek->setGyarto($gyarto);
+                                }
+                            }
+                        }
+                        else {
+                            $termek = $termek[0];
+                            if ($editleiras) {
+                                //$hosszuleiras = mb_convert_encoding(trim($data[3]), 'UTF8', 'ISO-8859-2');
+                                //$termek->setLeiras($hosszuleiras);
+                                //$rovidleiras = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
+                                //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
+                            }
+                        }
+                        if ($termek) {
+                            $termek->setCikkszam($data[0]);
+                            $termek->setAfa($afa[0]);
+                            $termek->setNetto($data[4]);
+                            $termek->setBrutto(round($termek->getBrutto(),-1));
+                            store::getEm()->persist($termek);
+                            store::getEm()->flush();
+                        }
+                    }
+                    else {
+                        if ($termek) {
+                            $termek->setNemkaphato(true);
+                            $termek->setLathato(false);
+                            store::getEm()->persist($termek);
+                            store::getEm()->flush();
+                        }
+                    }
+                }
+            }
+            fclose($fh);
+            \unlink('tutisportimport.csv');
+        }
+
+    }
+
     public function legavenueImport() {
 
     }

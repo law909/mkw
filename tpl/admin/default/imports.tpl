@@ -61,6 +61,7 @@
             <a href="/admin/import/nomad" class="js-nomadimport">Nomád import</a>
             <a href="/admin/import/reintex" class="js-reinteximport">Reintex import</a>
             <a href="/admin/import/legavenue" class="js-legavenueimport">Legavenue import</a>
+            <a href="/admin/import/tutisport" class="js-tutisportimport">Tutisport import</a>
             </div>
 		</div>
 	</div>
