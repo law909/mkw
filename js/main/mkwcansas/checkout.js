@@ -110,6 +110,11 @@ var checkout = (function($, guid) {
 		}
 	}
 
+    function checkEmail(email) {
+        var re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+        return re.test(email);
+    }
+
 	function initUI() {
 		var $checkout = $('.js-checkout');
 
@@ -269,32 +274,175 @@ var checkout = (function($, guid) {
 			});
 
             checkoutform.on('submit', function(e) {
-                if (checkoutform[0].checkValidity) {
-                    var x = checkoutform[0].checkValidity();
+                var hibas = false, tofocus = false;
+
+                ajaxlog('START: 10 Send order clicked');
+
+                if (!vezeteknevinput.val()) {
+                    vezeteknevinput.addClass('hibas');
+                    if (!hibas) {
+                        openDataContainer(vezeteknevinput);
+                        tofocus = vezeteknevinput;
+                    }
+                    hibas = true;
                 }
                 else {
-                    var x = 'unknown';
+                    vezeteknevinput.removeClass('hibas');
                 }
 
-                ajaxlog('START: 10 Send order clicked, form valid:' + x);
-
-                var vals = {};
-                $('#CheckoutForm input').each(function() {
-                    var $this = $(this),
-                        type = $this.attr('type');
-                    switch (type) {
-                        case 'radio':
-                            vals[$this.attr('name')] = $('#CheckoutForm input[name="'+$this.attr('name')+'"]:checked').val();
-                            break;
-                        case 'checkbox':
-                            vals[$this.attr('name')] = $this.prop('checked');
-                            break;
-                        default:
-                            vals[$this.attr('name')] = $this.val();
+                if (!keresztnevinput.val()) {
+                    keresztnevinput.addClass('hibas');
+                    if (!hibas) {
+                        openDataContainer(keresztnevinput);
+                        tofocus = keresztnevinput;
                     }
-                });
-                ajaxlog('DATA: 15 ' + JSON.stringify(vals));
+                    hibas = true;
+                }
+                else {
+                    keresztnevinput.removeClass('hibas');
+                }
 
+                if (!telefoninput.val()) {
+                    telefoninput.addClass('hibas');
+                    if (!hibas) {
+                        openDataContainer(telefoninput);
+                        tofocus = telefoninput;
+                    }
+                    hibas = true;
+                }
+                else {
+                    telefoninput.removeClass('hibas');
+                }
+
+                if (!kapcsemailinput.val() || !checkEmail(kapcsemailinput.val())) {
+                    kapcsemailinput.addClass('hibas');
+                    if (!hibas) {
+                        openDataContainer(kapcsemailinput);
+                        tofocus = kapcsemailinput;
+                    }
+                    hibas = true;
+                }
+                else {
+                    kapcsemailinput.removeClass('hibas');
+                }
+
+                var jelszo1input = $('input[name="jelszo1"]'),
+                    jelszo2input = $('input[name="jelszo2"]');
+                if (jelszo1input.length && jelszo2input.length) {
+                    if ((!jelszo1input.val() || !jelszo2input.val()) || (jelszo1input.val() != jelszo2input.val())) {
+                        jelszo1input.addClass('hibas');
+                        jelszo2input.addClass('hibas');
+                        if (!hibas) {
+                            openDataContainer(jelszo1input);
+                            tofocus = jelszo1input;
+                        }
+                        hibas = true;
+                    }
+                    else {
+                        jelszo1input.removeClass('hibas');
+                        jelszo2input.removeClass('hibas');
+                    }
+                }
+
+                if (!szamlairszaminput.val()) {
+                    szamlairszaminput.addClass('hibas');
+                    if (!hibas) {
+                        openDataContainer(szamlairszaminput);
+                        tofocus = szamlairszaminput;
+                    }
+                    hibas = true;
+                }
+                else {
+                    szamlairszaminput.removeClass('hibas');
+                }
+
+                if (!szamlavarosinput.val()) {
+                    szamlavarosinput.addClass('hibas');
+                    if (!hibas) {
+                        openDataContainer(szamlavarosinput);
+                        tofocus = szamlavarosinput;
+                    }
+                    hibas = true;
+                }
+                else {
+                    szamlavarosinput.removeClass('hibas');
+                }
+
+                if (!szamlautcainput.val()) {
+                    szamlautcainput.addClass('hibas');
+                    if (!hibas) {
+                        openDataContainer(szamlautcainput);
+                        tofocus = szamlautcainput;
+                    }
+                    hibas = true;
+                }
+                else {
+                    szamlautcainput.removeClass('hibas');
+                }
+
+                if (!szallirszaminput.val()) {
+                    szallirszaminput.addClass('hibas');
+                    if (!hibas) {
+                        openDataContainer(szallirszaminput);
+                        tofocus = szallirszaminput;
+                    }
+                    hibas = true;
+                }
+                else {
+                    szallirszaminput.removeClass('hibas');
+                }
+
+                if (!szallvarosinput.val()) {
+                    szallvarosinput.addClass('hibas');
+                    if (!hibas) {
+                        openDataContainer(szallvarosinput);
+                        tofocus = szallvarosinput;
+                    }
+                    hibas = true;
+                }
+                else {
+                    szallvarosinput.removeClass('hibas');
+                }
+
+                if (!szallutcainput.val()) {
+                    szallutcainput.addClass('hibas');
+                    if (!hibas) {
+                        openDataContainer(szallutcainput);
+                        tofocus = szallutcainput;
+                    }
+                    hibas = true;
+                }
+                else {
+                    szallutcainput.removeClass('hibas');
+                }
+
+                if (hibas) {
+                    $('#dialogcenter').on('hidden', function() {
+                        $('#dialogcenter').off('hidden');
+                        if (tofocus) {
+                            tofocus.focus();
+                        }
+                    })
+                    mkw.showDialog('Kérjük, adja meg a hiányzó adatokat. Ezeket pirossal megjelöltük.');
+                    e.preventDefault();
+                    return false;
+                }
+                else {
+                    if (!$('input[name="aszfready"]').prop('checked')) {
+                        ajaxlog('ERROR: 30 ÁSZF nincs pipálva');
+                        e.preventDefault();
+                        mkw.showDialog(mkwmsg.ChkASZF);
+                    }
+                    else {
+                        alert('eddig ok');
+                    }
+
+                }
+            });
+		}
+	}
+
+    function szirszar() {
                 var messages = '';
                 $('#CheckoutForm input:invalid').each(function() {
                     messages += $(this).attr('name') + ': ' + $(this).prop('validationMessage') + '<br>';
@@ -354,9 +502,8 @@ var checkout = (function($, guid) {
                         });
                     }
                 }
-            });
-		}
-	}
+
+    }
 
 	return {
 		initUI: initUI

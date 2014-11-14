@@ -33,7 +33,7 @@ var mkw = (function($) {
                     click: function(e) {
                         e.preventDefault();
                         closeDialog();
-                        if (options.onOk) {
+                        if (options && options.onOk) {
                             options.onOk.apply(this);
                         }
                     }
