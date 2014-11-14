@@ -649,14 +649,14 @@ class importController extends \mkwhelpers\Controller {
                         if ($termek) {
                             $termek->setCikkszam($data[0]);
                             $termek->setAfa($afa[0]);
-                            $termek->setNetto($data[4]);
-                            $termek->setBrutto(round($termek->getBrutto(),-1));
+                            $termek->setBrutto(round($data[4], -1));
                             store::getEm()->persist($termek);
                             store::getEm()->flush();
                         }
                     }
                     else {
                         if ($termek) {
+                            $termek = $termek[0];
                             $termek->setNemkaphato(true);
                             $termek->setLathato(false);
                             store::getEm()->persist($termek);
