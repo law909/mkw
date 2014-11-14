@@ -78,22 +78,23 @@ var checkout = (function($, guid) {
 		$('.js-chkkeresztnev').text(keresztnevinput.val());
 		$('.js-chktelefon').text(telefoninput.val());
 		$('.js-chkkapcsemail').text(kapcsemailinput.val());
-		$('.js-chkszamlanev').text(szamlanevinput.val());
-		$('.js-chkszamlairszam').text(szamlairszaminput.val());
-		$('.js-chkszamlavaros').text(szamlavarosinput.val());
-		$('.js-chkszamlautca').text(szamlautcainput.val());
+        $('.js-chkszallnev').text(szallnevinput.val());
+        $('.js-chkszallirszam').text(szallirszaminput.val());
+        $('.js-chkszallvaros').text(szallvarosinput.val());
+        $('.js-chkszallutca').text(szallutcainput.val());
+
 		$('.js-chkadoszam').text(adoszaminput.val());
 		if (szamlaeqszall.prop('checked')) {
-			$('.js-chkszallnev').text(szamlanevinput.val());
-			$('.js-chkszallirszam').text(szamlairszaminput.val());
-			$('.js-chkszallvaros').text(szamlavarosinput.val());
-			$('.js-chkszallutca').text(szamlautcainput.val());
+			$('.js-chkszamlanev').text(szallnevinput.val());
+			$('.js-chkszamlairszam').text(szallirszaminput.val());
+			$('.js-chkszamlavaros').text(szallvarosinput.val());
+			$('.js-chkszamlautca').text(szallutcainput.val());
 		}
 		else {
-			$('.js-chkszallnev').text(szallnevinput.val());
-			$('.js-chkszallirszam').text(szallirszaminput.val());
-			$('.js-chkszallvaros').text(szallvarosinput.val());
-			$('.js-chkszallutca').text(szallutcainput.val());
+            $('.js-chkszamlanev').text(szamlanevinput.val());
+            $('.js-chkszamlairszam').text(szamlairszaminput.val());
+            $('.js-chkszamlavaros').text(szamlavarosinput.val());
+            $('.js-chkszamlautca').text(szamlautcainput.val());
 		}
 		$('.js-chkszallitasimod').text($('input[name="szallitasimod"]:checked').data('caption'));
 		$('.js-chkfizmod').text($('input[name="fizetesimod"]:checked').data('caption'));
@@ -161,9 +162,6 @@ var checkout = (function($, guid) {
 					$('input[name="szallsave"]').prop('checked',true);
 					$('.js-szallsave').removeClass('notvisible');
 					checkoutpasswordrow.appendTo(checkoutpasswordcontainer);
-                    $('input[name="jelszo1"],input[name="jelszo2"]').on('invalid', function() {
-                        openDataContainer(this);
-                    });
 					$('.js-chktooltipbtn').tooltip({
 						html: false,
 						placement: 'right',
@@ -181,8 +179,8 @@ var checkout = (function($, guid) {
 				refreshAttekintes();
 			})
 			.on('blur', 'input[name="vezeteknev"],input[name="keresztnev"]', function() {
-				if (!szamlanevinput.val() && vezeteknevinput.val() && keresztnevinput.val()) {
-					szamlanevinput.val(vezeteknevinput.val() + ' ' + keresztnevinput.val());
+				if (!szallnevinput.val() && vezeteknevinput.val() && keresztnevinput.val()) {
+					szallnevinput.val(vezeteknevinput.val() + ' ' + keresztnevinput.val());
 				}
 			});
 
@@ -234,43 +232,6 @@ var checkout = (function($, guid) {
 			$('.js-chkaszf, .js-chkhelp').magnificPopup({
 				type: 'ajax',
                 closeBtnInside: false
-			});
-
-			vezeteknevinput.on('invalid', function() {
-				openDataContainer(this);
-			});
-			keresztnevinput.on('invalid', function() {
-				openDataContainer(this);
-			});
-			telefoninput.on('invalid', function() {
-				openDataContainer(this);
-			});
-			kapcsemailinput.on('invalid', function() {
-				openDataContainer(this);
-			});
-			szamlairszaminput.on('invalid', function() {
-				openDataContainer(this);
-			});
-			szamlavarosinput.on('invalid', function() {
-				openDataContainer(this);
-			});
-			szamlautcainput.on('invalid', function() {
-				openDataContainer(this);
-			});
-			adoszaminput.on('invalid', function() {
-				openDataContainer(this);
-			});
-			szallnevinput.on('invalid', function() {
-				openDataContainer(this);
-			});
-			szallirszaminput.on('invalid', function() {
-				openDataContainer(this);
-			});
-			szallvarosinput.on('invalid', function() {
-				openDataContainer(this);
-			});
-			szallutcainput.on('invalid', function() {
-				openDataContainer(this);
 			});
 
             checkoutform.on('submit', function(e) {
@@ -344,42 +305,6 @@ var checkout = (function($, guid) {
                     }
                 }
 
-                if (!szamlairszaminput.val()) {
-                    szamlairszaminput.addClass('hibas');
-                    if (!hibas) {
-                        openDataContainer(szamlairszaminput);
-                        tofocus = szamlairszaminput;
-                    }
-                    hibas = true;
-                }
-                else {
-                    szamlairszaminput.removeClass('hibas');
-                }
-
-                if (!szamlavarosinput.val()) {
-                    szamlavarosinput.addClass('hibas');
-                    if (!hibas) {
-                        openDataContainer(szamlavarosinput);
-                        tofocus = szamlavarosinput;
-                    }
-                    hibas = true;
-                }
-                else {
-                    szamlavarosinput.removeClass('hibas');
-                }
-
-                if (!szamlautcainput.val()) {
-                    szamlautcainput.addClass('hibas');
-                    if (!hibas) {
-                        openDataContainer(szamlautcainput);
-                        tofocus = szamlautcainput;
-                    }
-                    hibas = true;
-                }
-                else {
-                    szamlautcainput.removeClass('hibas');
-                }
-
                 if (!szallirszaminput.val()) {
                     szallirszaminput.addClass('hibas');
                     if (!hibas) {
@@ -416,6 +341,44 @@ var checkout = (function($, guid) {
                     szallutcainput.removeClass('hibas');
                 }
 
+                if (!szamlaeqszall.prop('checked')) {
+                    if (!szamlairszaminput.val()) {
+                        szamlairszaminput.addClass('hibas');
+                        if (!hibas) {
+                            openDataContainer(szamlairszaminput);
+                            tofocus = szamlairszaminput;
+                        }
+                        hibas = true;
+                    }
+                    else {
+                        szamlairszaminput.removeClass('hibas');
+                    }
+
+                    if (!szamlavarosinput.val()) {
+                        szamlavarosinput.addClass('hibas');
+                        if (!hibas) {
+                            openDataContainer(szamlavarosinput);
+                            tofocus = szamlavarosinput;
+                        }
+                        hibas = true;
+                    }
+                    else {
+                        szamlavarosinput.removeClass('hibas');
+                    }
+
+                    if (!szamlautcainput.val()) {
+                        szamlautcainput.addClass('hibas');
+                        if (!hibas) {
+                            openDataContainer(szamlautcainput);
+                            tofocus = szamlautcainput;
+                        }
+                        hibas = true;
+                    }
+                    else {
+                        szamlautcainput.removeClass('hibas');
+                    }
+                }
+
                 if (hibas) {
                     $('#dialogcenter').on('hidden', function() {
                         $('#dialogcenter').off('hidden');
@@ -432,11 +395,13 @@ var checkout = (function($, guid) {
                         ajaxlog('ERROR: 30 ÁSZF nincs pipálva');
                         e.preventDefault();
                         mkw.showDialog(mkwmsg.ChkASZF);
+                        return false;
                     }
                     else {
+                        e.preventDefault();
                         alert('eddig ok');
+                        return false;
                     }
-
                 }
             });
 		}

@@ -90,55 +90,56 @@
 						</div>
 						</div>
 						{/if}
-						<h5>Számlázási adatok</h5>
+						<h5>Szállítási adatok</h5>
+                        <div class="controls chk-controloffset js-szallsave">
+                            <label class="checkbox">
+                                <input name="szallsave" type="checkbox">
+                                Ezután mindig ezt fogom használni <i class="icon-question-sign chk-inlinetooltipbtn hidden-phone js-chktooltipbtn" title="Elmentjük az adatbázisba"></i>
+                            </label>
+                        </div>
+                        <div class="controls chk-controloffset">
+                            <input name="szallnev" type="text" class="span8 js-chkrefresh" placeholder="{t('szállítási név')}" value="{$user.szallnev|default}" data-orgdata="{$user.szallnev|default}" data-container=".js-chkszallitasiadatok">
+                        </div>
+                        <div class="controls controls-row chk-controloffset">
+                            <input name="szallirszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.szallirszam|default}" data-orgdata="{$user.szallirszam|default}" data-container=".js-chkszallitasiadatok">
+                            <i class="span inputiconhack"></i>
+                            <input name="szallvaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.szallvaros|default}" data-orgdata="{$user.szallvaros|default}" data-container=".js-chkszallitasiadatok">
+                        </div>
+                        <div class="controls chk-controloffset">
+                            <input name="szallutca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.szallutca|default}" data-orgdata="{$user.szallutca|default}" data-container=".js-chkszallitasiadatok">
+                        </div>
+
+						<h5 class="clearboth">Számlázási adatok</h5>
+						<div class="controls chk-controloffset">
+							<label class="checkbox">
+								<input name="szamlaeqszall" type="checkbox"{if ($user.szalladategyezik|default)} checked{/if}>
+								Megegyezik a szállítási adatokkal
+							</label>
+						</div>
 						<div class="controls chk-controloffset js-szamlasave">
 							<label class="checkbox">
 								<input name="szamlasave" type="checkbox">
 								Ezután mindig ezt fogom használni <i class="icon-question-sign chk-inlinetooltipbtn hidden-phone js-chktooltipbtn" title="Elmentjük az adatbázisba"></i>
 							</label>
 						</div>
-						<div class="controls chk-controloffset">
-							<input name="szamlanev" type="text" class="span8 js-chkrefresh" placeholder="{t('számlázási név')}" value="{$user.nev|default}" data-container=".js-chkszallitasiadatok">
-						</div>
-						<div class="controls controls-row chk-controloffset">
-							<input name="szamlairszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.irszam|default}" data-container=".js-chkszallitasiadatok">
-							<i class="span inputiconhack"></i>
-							<input name="szamlavaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.varos|default}" data-container=".js-chkszallitasiadatok">
-						</div>
-						<div class="controls chk-controloffset">
-							<input name="szamlautca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.utca|default}" data-container=".js-chkszallitasiadatok">
-						</div>
-						<div class="controls chk-controloffset">
-							<div class="chk-relative pull-left chk-tooltippedcontainer">
-								<input name="adoszam" type="text" class="span3 js-chkrefresh" placeholder="{t('adószám')}" value="{$user.adoszam|default}">
-								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="Nem kötelező kitölteni az adószámot. Akkor adja meg, ha cég nevére vásárol, és szeretné, ha a számlán szerepelne ez az adat is."></i>
-							</div>
-						</div>
-						<h5 class="clearboth">Szállítási adatok</h5>
-						<div class="controls chk-controloffset">
-							<label class="checkbox">
-								<input name="szamlaeqszall" type="checkbox"{if ($user.szalladategyezik|default)} checked{/if}>
-								Megegyezik a számlázási adatokkal
-							</label>
-						</div>
 						<div class="js-chkszamlaadatok{if ($user.szalladategyezik|default)} notvisible{/if}">
-							<div class="controls chk-controloffset js-szallsave">
-								<label class="checkbox">
-									<input name="szallsave" type="checkbox">
-									Ezután mindig ezt fogom használni <i class="icon-question-sign chk-inlinetooltipbtn hidden-phone js-chktooltipbtn" title="Elmentjük az adatbázisba"></i>
-								</label>
-							</div>
-							<div class="controls chk-controloffset">
-								<input name="szallnev" type="text" class="span8 js-chkrefresh" placeholder="{t('szállítási név')}" value="{$user.szallnev|default}" data-orgdata="{$user.szallnev|default}" data-container=".js-chkszallitasiadatok">
-							</div>
-							<div class="controls controls-row chk-controloffset">
-								<input name="szallirszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.szallirszam|default}" data-orgdata="{$user.szallirszam|default}" {if ($user.szalladategyezik|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
-								<i class="span inputiconhack"></i>
-								<input name="szallvaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.szallvaros|default}" data-orgdata="{$user.szallvaros|default}" {if ($user.szalladategyezik|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
-							</div>
-							<div class="controls chk-controloffset">
-								<input name="szallutca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.szallutca|default}" data-orgdata="{$user.szallutca|default}" {if ($user.szalladategyezik|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
-							</div>
+                            <div class="controls chk-controloffset">
+                                <input name="szamlanev" type="text" class="span8 js-chkrefresh" placeholder="{t('számlázási név')}" value="{$user.nev|default}" {if ($user.szalladategyezik|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
+                            </div>
+                            <div class="controls controls-row chk-controloffset">
+                                <input name="szamlairszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$user.irszam|default}" {if ($user.szalladategyezik|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
+                                <i class="span inputiconhack"></i>
+                                <input name="szamlavaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$user.varos|default}" {if ($user.szalladategyezik|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
+                            </div>
+                            <div class="controls chk-controloffset">
+                                <input name="szamlautca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$user.utca|default}" {if ($user.szalladategyezik|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
+                            </div>
+                            <div class="controls chk-controloffset">
+                                <div class="chk-relative pull-left chk-tooltippedcontainer">
+                                    <input name="adoszam" type="text" class="span3 js-chkrefresh" placeholder="{t('adószám')}" value="{$user.adoszam|default}">
+                                    <i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="Nem kötelező kitölteni az adószámot. Akkor adja meg, ha cég nevére vásárol, és szeretné, ha a számlán szerepelne ez az adat is."></i>
+                                </div>
+                            </div>
 						</div>
 						<div class="row chk-actionrow"><a class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallmoddgh">Tovább</a></div>
 					</div>
