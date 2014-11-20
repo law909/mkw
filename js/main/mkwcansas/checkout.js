@@ -385,90 +385,48 @@ var checkout = (function($, guid) {
                         if (tofocus) {
                             tofocus.focus();
                         }
-                    })
+                    });
                     mkw.showDialog('Kérjük, adja meg a hiányzó adatokat. Ezeket pirossal megjelöltük.');
                     e.preventDefault();
                     return false;
                 }
                 else {
                     if (!$('input[name="aszfready"]').prop('checked')) {
-                        ajaxlog('ERROR: 30 ÁSZF nincs pipálva');
                         e.preventDefault();
                         mkw.showDialog(mkwmsg.ChkASZF);
                         return false;
                     }
                     else {
-                        e.preventDefault();
-                        alert('eddig ok');
-                        return false;
+                        $.ajax({
+                            url: '/kosar/gethash',
+                            success: function(data) {
+                                var d = JSON.parse(data);
+                                if (kosarhash && kosarhash != d.value) {
+                                    e.preventDefault();
+                                    mkw.showDialog(mkwmsg.ChkKosarValtozott);
+                                    loadTetelList();
+                                    return false;
+                                }
+                                else {
+                                    if (d.cnt <= 0) {
+                                        e.preventDefault();
+                                        mkw.showDialog(mkwmsg.ChkKosarUres);
+                                        return false;
+                                    }
+                                    else {
+                                    }
+                                }
+                            },
+                            error: function(xhr, stat, error) {
+                            },
+                            complete: function(xhr, stat) {
+                            }
+                        });
                     }
                 }
             });
 		}
 	}
-
-    function szirszar() {
-                var messages = '';
-                $('#CheckoutForm input:invalid').each(function() {
-                    messages += $(this).attr('name') + ': ' + $(this).prop('validationMessage') + '<br>';
-                });
-                if (messages) {
-                    ajaxlog('ERROR: 20 Invalid inputok: ' + messages);
-                }
-
-                if ($('input[name="jelszo1"]').val() !== $('input[name="jelszo2"]').val()) {
-                    var jel1 = $('input[name="jelszo1"]');
-                    e.preventDefault();
-                    ajaxlog('ERROR: 30 A két jelszó nem egyezik.');
-                    openDataContainer(jel1);
-                    mkw.showDialog(mkwmsg.PassChange[1]).on('hidden',function() {
-                        jel1[0].focus();
-                    });
-                }
-                else {
-                    if (!$('input[name="aszfready"]').prop('checked')) {
-                        ajaxlog('ERROR: 30 ÁSZF nincs pipálva');
-                        e.preventDefault();
-                        mkw.showDialog(mkwmsg.ChkASZF);
-                    }
-                    else {
-                        ajaxlog('AJAX: 32 ajax kérés indul');
-                        $.ajax({
-                            url: '/kosar/gethash',
-                            success: function(data) {
-                                ajaxlog('OK: 40 Kosár gethash success');
-                                var d = JSON.parse(data);
-                                ajaxlog('OK: 50 Kosár gethash: ' + data);
-                                if (kosarhash && kosarhash != d.value) {
-                                    e.preventDefault();
-                                    ajaxlog('ERROR: 60 Kosár megváltozott');
-                                    mkw.showDialog(mkwmsg.ChkKosarValtozott);
-                                    loadTetelList();
-                                }
-                                else {
-                                    if (d.cnt <= 0) {
-                                        e.preventDefault();
-                                        ajaxlog('ERROR: 70 Kosár üres');
-                                        mkw.showDialog(mkwmsg.ChkKosarUres);
-                                    }
-                                    else {
-                                        ajaxlog('END:OK: 80 Submit');
-                                    }
-                                }
-                            },
-                            error: function(xhr, stat, error) {
-                                e.preventDefault();
-                                ajaxlog('AJAX: 90 ERROR. STATUS: ' + stat + ' ERROR TEXT: ' + error);
-                            },
-                            complete: function(xhr, stat) {
-                                e.preventDefault();
-                                ajaxlog('AJAX: 100 COMPLETE. STATUS: ' + stat);
-                            }
-                        });
-                    }
-                }
-
-    }
 
 	return {
 		initUI: initUI
