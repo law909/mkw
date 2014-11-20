@@ -9,6 +9,7 @@ var mkwmsg = {
 	ChkASZF: 'Megrendelés előtt kérjük, fogadja el az <b>ÁSZF</b>-et.<br>Ehhez kattintson az <b>"Elolvastam és elfogadom az ÁSZF-et"</b> sor előtti négyzetre.',
 	ChkKosarValtozott: 'A kosár tartalma időközben megváltozott, kérem ellenőrizze.',
 	ChkKosarUres: 'Az Ön kosara üres.',
+    ChkHiba: 'Kérjük, adja meg a hiányzó adatokat. Ezeket pirossal megjelöltük.',
 	FiokAdataitModositjuk: 'Adatait módosítjuk...',
 	DialogFejlec: 'Értesítés',
 	DialogOk: 'OK',

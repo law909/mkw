@@ -386,7 +386,7 @@ var checkout = (function($, guid) {
                             tofocus.focus();
                         }
                     });
-                    mkw.showDialog('Kérjük, adja meg a hiányzó adatokat. Ezeket pirossal megjelöltük.');
+                    mkw.showDialog(mkwmsg.ChkHiba);
                     e.preventDefault();
                     return false;
                 }
@@ -414,10 +414,13 @@ var checkout = (function($, guid) {
                                         return false;
                                     }
                                     else {
+                                        return true;
                                     }
                                 }
                             },
                             error: function(xhr, stat, error) {
+                                e.preventDefault();
+                                return false;
                             },
                             complete: function(xhr, stat) {
                             }
