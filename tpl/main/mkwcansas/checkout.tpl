@@ -91,12 +91,6 @@
 						</div>
 						{/if}
 						<h5>Szállítási adatok</h5>
-                        <div class="controls chk-controloffset js-szallsave">
-                            <label class="checkbox">
-                                <input name="szallsave" type="checkbox">
-                                Ezután mindig ezt fogom használni <i class="icon-question-sign chk-inlinetooltipbtn hidden-phone js-chktooltipbtn" title="Elmentjük az adatbázisba"></i>
-                            </label>
-                        </div>
                         <div class="controls chk-controloffset">
                             <input name="szallnev" type="text" class="span8 js-chkrefresh" placeholder="{t('szállítási név')}" value="{$user.szallnev|default}" data-orgdata="{$user.szallnev|default}" data-container=".js-chkszallitasiadatok">
                         </div>
@@ -114,12 +108,6 @@
 							<label class="checkbox">
 								<input name="szamlaeqszall" type="checkbox"{if ($user.szalladategyezik|default)} checked{/if}>
 								Megegyezik a szállítási adatokkal
-							</label>
-						</div>
-						<div class="controls chk-controloffset js-szamlasave">
-							<label class="checkbox">
-								<input name="szamlasave" type="checkbox">
-								Ezután mindig ezt fogom használni <i class="icon-question-sign chk-inlinetooltipbtn hidden-phone js-chktooltipbtn" title="Elmentjük az adatbázisba"></i>
 							</label>
 						</div>
 						<div class="js-chkszamlaadatok{if ($user.szalladategyezik|default)} notvisible{/if}">

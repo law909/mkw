@@ -144,26 +144,22 @@ class checkoutController extends \mkwhelpers\MattableController {
 					$partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
 					break;
 			}
-            if ($szallsave) {
-                $partner->setSzallnev($szallnev);
-                $partner->setSzallirszam($szallirszam);
-                $partner->setSzallvaros($szallvaros);
-                $partner->setSzallutca($szallutca);
+            $partner->setSzallnev($szallnev);
+            $partner->setSzallirszam($szallirszam);
+            $partner->setSzallvaros($szallvaros);
+            $partner->setSzallutca($szallutca);
+            if ($szamlaeqszall) {
+                $partner->setNev($szallnev);
+                $partner->setIrszam($szallirszam);
+                $partner->setVaros($szallvaros);
+                $partner->setUtca($szallutca);
             }
-			if ($szamlasave) {
-				if ($szamlaeqszall) {
-                    $partner->setNev($szallnev);
-                    $partner->setIrszam($szallirszam);
-                    $partner->setVaros($szallvaros);
-                    $partner->setUtca($szallutca);
-				}
-				else {
-                    $partner->setNev($szamlanev);
-                    $partner->setIrszam($szamlairszam);
-                    $partner->setVaros($szamlavaros);
-                    $partner->setUtca($szamlautca);
-				}
-			}
+            else {
+                $partner->setNev($szamlanev);
+                $partner->setIrszam($szamlairszam);
+                $partner->setVaros($szamlavaros);
+                $partner->setUtca($szamlautca);
+            }
 			$partner->setTelefon($telefon);
 			$partner->setAdoszam($adoszam);
 			$partner->setAkcioshirlevelkell($akciohirlevel);

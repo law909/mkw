@@ -692,22 +692,12 @@ var checkout = (function($, guid) {
 			.on('change', 'input[name="regkell"]', function() {
 				checkoutpasswordcontainer.empty();
 				if ($('input[name="regkell"]:checked').val() * 1 === 2) {
-					$('input[name="szamlasave"]').prop('checked',true);
-					$('.js-szamlasave').removeClass('notvisible');
-					$('input[name="szallsave"]').prop('checked',true);
-					$('.js-szallsave').removeClass('notvisible');
 					checkoutpasswordrow.appendTo(checkoutpasswordcontainer);
 					$('.js-chktooltipbtn').tooltip({
 						html: false,
 						placement: 'right',
 						container: 'body'
 					});
-				}
-				else {
-					$('input[name="szamlasave"]').prop('checked',false);
-					$('.js-szamlasave').addClass('notvisible');
-					$('input[name="szallsave"]').prop('checked',false)
-					$('.js-szallsave').addClass('notvisible');
 				}
 			})
 			.on('change', '.js-chkrefresh', function() {
