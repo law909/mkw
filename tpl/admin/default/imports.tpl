@@ -63,6 +63,17 @@
             <a href="/admin/import/legavenue" class="js-legavenueimport">Legavenue import</a>
             <a href="/admin/import/tutisport" class="js-tutisportimport">Tutisport import</a>
             </div>
+            <div>
+                <div>
+                    <label>Vatera beérkezett rendelések:</label>
+                    <input name="vaterarendeles" type="file">
+                </div>
+                <div>
+                    <label>Vatera eladott termékek:</label>
+                    <input name="vateratermek" type="file">
+                </div>
+                <a href="/admin/import/vatera" class="js-vateraimport">Vatera megrendelések</a>
+            </div>
 		</div>
 	</div>
 	<div class="admin-form-footer">

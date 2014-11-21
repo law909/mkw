@@ -4,6 +4,10 @@ use mkw\store, mkw\thumbnail;
 
 class importController extends \mkwhelpers\Controller {
 
+    private function toutf($mit) {
+        return mb_convert_encoding($mit, 'UTF8', 'ISO-8859-2');
+    }
+
     public function view() {
         $view = $this->createView('imports.tpl');
 
@@ -17,18 +21,8 @@ class importController extends \mkwhelpers\Controller {
     }
 
     public function createKategoria($nev, $parentid) {
-        store::writelog('ezt kell letrehozni:' . $nev . ':', 'delton.log');
-        store::writelog('ez lenne a parentid:' . $parentid . ':', 'delton.log');
-
         $me = store::getEm()->getRepository('Entities\TermekFa')->findBy(array('nev' => $nev, 'parent' => $parentid));
 
-        if ($me) {
-            store::writelog('ezt talaltam:' . $me[0]->getId() . ':', 'delton.log');
-            store::writelog('ez a letezo parentidje:' . $me[0]->getParentId() . ':', 'delton.log');
-        }
-        else {
-            \mkw\Store::writelog('nem talaltam', 'delton.log');
-        }
         if (!$me || $me[0]->getParentId() !== $parentid) {
             $parent = store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
             $me = new \Entities\TermekFa();
@@ -118,14 +112,14 @@ class importController extends \mkwhelpers\Controller {
                     if (!$termek) {
 
                         if ($createuj) {
-                            $katnev = mb_convert_encoding(trim($data[7]), 'UTF8', 'ISO-8859-2');
+                            $katnev = $this->toutf(trim($data[7]));
                             $urlkatnev = \mkw\Store::urlize($katnev);
                             \mkw\Store::createDirectoryRecursively($path . $urlkatnev);
                             $parent = $this->createKategoria($katnev, $parentid);
-                            $termeknev = mb_convert_encoding(trim($data[1]), 'UTF8', 'ISO-8859-2');
+                            $termeknev = $this->toutf(trim($data[1]));
 
-                            $hosszuleiras = mb_convert_encoding(trim($data[13]), 'UTF8', 'ISO-8859-2');
-                            $rovidleiras = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
+                            $hosszuleiras = $this->toutf(trim($data[13]));
+                            $rovidleiras = $this->toutf(trim($data[4]));
 
                             $idegenkod = 'KP' . $data[0];
 
@@ -189,7 +183,7 @@ class importController extends \mkwhelpers\Controller {
                     else {
                         $termek = $termek[0];
                         if ($editleiras) {
-                            $hosszuleiras = mb_convert_encoding(trim($data[13]), 'UTF8', 'ISO-8859-2');
+                            $hosszuleiras = $this->toutf(trim($data[13]));
                             $termek->setLeiras($hosszuleiras);
                             //$rovidleiras = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
                             //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
@@ -297,27 +291,27 @@ class importController extends \mkwhelpers\Controller {
 
                         if ($createuj) {
                             if ($data[6]) {
-                                $katnev = mb_convert_encoding(trim($data[6]), 'UTF8', 'ISO-8859-2');
+                                $katnev = $this->toutf(trim($data[6]));
                             }
                             elseif ($data[5]) {
-                                $katnev = mb_convert_encoding(trim($data[5]), 'UTF8', 'ISO-8859-2');
+                                $katnev = $this->toutf(trim($data[5]));
                             }
                             elseif ($data[4]) {
-                                $katnev = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
+                                $katnev = $this->toutf(trim($data[4]));
                             }
                             $urlkatnev = \mkw\Store::urlize($katnev);
                             \mkw\Store::createDirectoryRecursively($path . $urlkatnev);
                             $parent = $this->createKategoria($katnev, $parentid);
-                            $termeknev = mb_convert_encoding(trim($data[0]), 'UTF8', 'ISO-8859-2');
+                            $termeknev = $this->toutf(trim($data[0]));
 
-                            $hosszuleiras = mb_convert_encoding(trim($data[3]), 'UTF8', 'ISO-8859-2');
-                            $rovidleiras = mb_convert_encoding(trim($data[2]), 'UTF8', 'ISO-8859-2');
+                            $hosszuleiras = $this->toutf(trim($data[3]));
+                            $rovidleiras = $this->toutf(trim($data[2]));
 
                             $idegenkod = 'DT' . $data[1];
 
                             $termek = new \Entities\Termek();
                             $termek->setFuggoben(true);
-                            $termek->setMe(mb_convert_encoding(trim($data[9]), 'UTF8', 'ISO-8859-2'));
+                            $termek->setMe($this->toutf(trim($data[9])));
                             $termek->setNev($termeknev);
                             $termek->setLeiras($hosszuleiras);
                             $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
@@ -360,7 +354,7 @@ class importController extends \mkwhelpers\Controller {
                     else {
                         $termek = $termek[0];
                         if ($editleiras) {
-                            $hosszuleiras = mb_convert_encoding(trim($data[3]), 'UTF8', 'ISO-8859-2');
+                            $hosszuleiras = $this->toutf(trim($data[3]));
                             $termek->setLeiras($hosszuleiras);
                             //$rovidleiras = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
                             //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
@@ -433,33 +427,30 @@ class importController extends \mkwhelpers\Controller {
                         if ($createuj) {
 
                             if ($data[6]) {
-                                $katnev = mb_convert_encoding(trim($data[6]), 'UTF8', 'ISO-8859-2');
+                                $katnev = $this->toutf(trim($data[6]));
                             }
                             elseif ($data[5]) {
-                                $katnev = mb_convert_encoding(trim($data[5]), 'UTF8', 'ISO-8859-2');
+                                $katnev = $this->toutf(trim($data[5]));
                             }
                             elseif ($data[4]) {
-                                $katnev = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
+                                $katnev = $this->toutf(trim($data[4]));
                             }
                             $urlkatnev = \mkw\Store::urlize($katnev);
                             \mkw\Store::createDirectoryRecursively($path . $urlkatnev);
                             $parent = $this->createKategoria($katnev, $parentid);
-                            $termeknev = mb_convert_encoding(trim($data[0]), 'UTF8', 'ISO-8859-2');
+                            $termeknev = $this->toutf(trim($data[0]));
 
-                            $hosszuleiras = mb_convert_encoding(trim($data[3]), 'UTF8', 'ISO-8859-2');
-                            $rovidleiras = mb_convert_encoding(trim($data[2]), 'UTF8', 'ISO-8859-2');
-
-                            $idegenkod = 'DT' . $data[1];
+                            $hosszuleiras = $this->toutf(trim($data[3]));
+                            $rovidleiras = $this->toutf(trim($data[2]));
 
                             $termek = new \Entities\Termek();
                             $termek->setFuggoben(true);
-                            $termek->setMe(mb_convert_encoding(trim($data[9]), 'UTF8', 'ISO-8859-2'));
+                            $termek->setMe($this->toutf(trim($data[9])));
                             $termek->setNev($termeknev);
                             $termek->setLeiras($hosszuleiras);
                             $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
                             $termek->setCikkszam($data[1]);
                             $termek->setIdegencikkszam($data[1]);
-                            $termek->setIdegenkod($idegenkod);
                             $termek->setTermekfa1($parent);
                             $termek->setVtsz($vtsz[0]);
                             $termek->setHparany(3);
@@ -496,7 +487,7 @@ class importController extends \mkwhelpers\Controller {
                     else {
                         $termek = $termek[0];
                         if ($editleiras) {
-                            $hosszuleiras = mb_convert_encoding(trim($data[3]), 'UTF8', 'ISO-8859-2');
+                            $hosszuleiras = $this->toutf(trim($data[3]));
                             $termek->setLeiras($hosszuleiras);
                             //$rovidleiras = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
                             //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
@@ -621,8 +612,8 @@ class importController extends \mkwhelpers\Controller {
 
                             if ($createuj) {
 
-                                $termeknev = mb_convert_encoding(trim($data[1]), 'UTF8', 'ISO-8859-2');
-                                $me = mb_convert_encoding(trim($data[2]), 'UTF8', 'ISO-8859-2');
+                                $termeknev = $this->toutf(trim($data[1]));
+                                $me = $this->toutf(trim($data[2]));
 
                                 $termek = new \Entities\Termek();
                                 $termek->setFuggoben(true);
@@ -673,6 +664,142 @@ class importController extends \mkwhelpers\Controller {
 
     public function legavenueImport() {
 
+    }
+
+    public function createVateraPartner($pa) {
+        $me = store::getEm()->getRepository('Entities\Partner')->findBy(array('email' => $pa[10]));
+
+        if (!$me) {
+            $me = new \Entities\Partner();
+            $me->setVendeg(true);
+            $me->setReferrer('http://' . $pa[11]);
+            $me->setTelefon($pa[9]);
+
+            $me->setVezeteknev($this->toutf($pa[]));
+            $me->setKeresztnev($this->toutf($pa[]));
+
+            $me->setNev($this->toutf($pa[]));
+            $me->setIrszam($this->toutf($pa[]));
+            $me->setVaros($this->toutf($pa[]));
+            $me->setUtca($this->toutf($pa[]));
+
+            $me->setSzallnev($this->toutf($pa[]));
+            $me->setSzallirszam($this->toutf($pa[]));
+            $me->setSzallvaros($this->toutf($pa[]));
+            $me->setSzallutca($this->toutf($pa[]));
+
+            store::getEm()->persist($me);
+            store::getEm()->flush();
+        }
+        else {
+            $me = $me[0];
+        }
+        return $me;
+    }
+
+    public function createVateraSzallitasimod($nev) {
+        $me = store::getEm()->getRepository('Entities\Szallitasimod')->findBy(array('nev' => $nev));
+        if (!$me) {
+            $me = new \Entities\Szallitasimod();
+            $me->setNev($nev);
+            $me->setWebes(false);
+
+            store::getEm()->persist($me);
+            store::getEm()->flush();
+        }
+        else {
+            $me = $me[0];
+        }
+        return $me;
+    }
+
+    public function vateraImport() {
+        $sep = ';';
+
+        move_uploaded_file($_FILES['vaterarendeles']['tmp_name'], 'vaterarendeles.csv');
+        move_uploaded_file($_FILES['vateratermek']['tmp_name'], 'vateratermek.csv');
+
+        $fhrendeles = fopen('vaterarendeles.csv', 'r');
+        $fhtermek = fopen('vateratermek.csv', 'r');
+        if ($fhrendeles && $fhtermek) {
+
+            $rendelesek = array();
+            fgetcsv($fhrendeles, 0, $sep, '"');
+            while ($data = fgetcsv($fhrendeles, 0, $sep, '"')) {
+                $rendelesek[$data[0]] = $data;
+            }
+
+            $termekek = array();
+            fgetcsv($fhtermek, 0, $sep, '"');
+            while ($data = fgetcsv($fhtermek, 0, $sep, '"')) {
+                $termekek[$data[2]] = $data;
+            }
+
+            foreach($rendelesek as $rk => $r) {
+                $fej = new \Entities\Bizonylatfej();
+                $fej->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find('megrendeles'));
+                $fej->setPersistentData();
+        		$fej->setErbizonylatszam($rk);
+                $partner = $this->createVateraPartner($termekek[$r[1]]);
+                $fej->setPartner($partner);
+                $szallmod = $this->createVateraSzallitasimod($this->toutf($r[7]));
+                $fej->setSzallitasimod($szallmod);
+                $ck = store::getParameter(\mkw\consts::Raktar);
+                if ($ck) {
+                    $fej->setRaktar($ck);
+                }
+                $ck = store::getParameter(\mkw\consts::Fizmod);
+                if ($ck) {
+                    $fej->setFizmod($ck);
+                }
+                $fej->setKelt();
+                $fej->setTeljesites();
+                $fej->setEsedekesseg();
+                $fej->setHatarido();
+                $ck = store::getParameter(\mkw\consts::Valutanem);
+                if ($ck) {
+                    $fej->setValutanem($ck);
+                }
+                $fej->setArfolyam(1);
+/*                $ck = store::getEm()->getRepository('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
+                if ($ck) {
+                    $obj->setBankszamla($ck);
+                }
+*/
+                $ck = store::getParameter(\mkw\consts::BizonylatStatuszFuggoben);
+                if ($ck) {
+                    $fej->setBizonylatstatusz($ck);
+                }
+
+                $fej->setWebshopmessage();
+
+                $fej->generateId(); // az üres kelt miatt került a végére
+
+                foreach($r as $rtetel) {
+					$tetel = new Bizonylattetel();
+					$fej->addBizonylattetel($tetel);
+					$tetel->setPersistentData();
+					$tetel->setArvaltoztat(0);
+
+                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $rtetel[1]));
+					if ($termek) {
+						$tetel->setTermek($termek);
+					}
+					$tetel->setMozgat();
+					$tetel->setMennyiseg($rtetel[3] * 1);
+					$tetel->setBruttoegysar($rtetel[4] * 1);
+					$tetel->setBruttoegysarhuf($rtetel[4] * 1);
+					$this->getEm()->persist($tetel);
+                }
+                $fej->doStuffOnPrePersist();
+                $this->getEm()->persist($fej);
+                $this->getEm()->flush();
+            }
+
+        }
+
+        \unlink('vaterarendeles.csv');
+        \unlink('vateratermek.csv');
     }
 
 }
