@@ -332,6 +332,18 @@ var checkout = (function($, guid) {
                 }
 
                 if (!szamlaeqszall.prop('checked')) {
+                    if (!szamlanevinput.val()) {
+                        szamlanevinput.addClass('hibas');
+                        if (!hibas) {
+                            openDataContainer(szamlanevinput);
+                            tofocus = szamlanevinput;
+                        }
+                        hibas = true;
+                    }
+                    else {
+                        szamlanevinput.removeClass('hibas');
+                    }
+
                     if (!szamlairszaminput.val()) {
                         szamlairszaminput.addClass('hibas');
                         if (!hibas) {
