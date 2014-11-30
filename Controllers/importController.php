@@ -220,6 +220,8 @@ class importController extends \mkwhelpers\Controller {
         $str = '';
         while (!$vege && (false !== ($char = fgetc($handle)))) {
             switch ($char) {
+                case "\r":
+                    break;
                 case "\n":
                     if ($escaped || $enclosed) {
                         $str .= $char;
@@ -264,7 +266,7 @@ class importController extends \mkwhelpers\Controller {
         $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
 
-        $ch = \curl_init('http://www.holdpeak.hu/csv.php?verzio=2');
+        $ch = \curl_init('http://delton.hu/csv.php?verzio=2');
         $fh = fopen('delton.txt', 'w');
         \curl_setopt($ch, CURLOPT_FILE, $fh);
         \curl_exec($ch);
