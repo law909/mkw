@@ -24,7 +24,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
             $this->getEm()->detach($t);
             $x['oper'] = 'add';
             $x['id'] = store::createUID();
-            $x['termek']['id'] = $termek->getId();
+            $x['termek']['id'] = $termek ? $termek->getId() : null;
             $x['keplista'] = $termek ? $tkepc->getSelectList($termek, NULL) : array();
         }
         else {
