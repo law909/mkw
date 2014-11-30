@@ -25,6 +25,11 @@
 <td class="cell">
 {$_termek.cimkek}
 </td>
+<td class="cell">
+{foreach $_termek.valtozatkeszlet as $vk}
+    <table><tbody><tr><td>{$vk.ertek1}</td><td>{$vk.ertek2}</td><td>{$vk.keszlet}</td></tr></tbody></table>
+{/foreach}
+</td>
 <td class="cell"><table><tbody>
 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="inaktiv" class="js-flagcheckbox{if ($_termek.inaktiv)} ui-state-hover{/if}">{t('Inaktív')}</a></td></tr>
 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="lathato" class="js-flagcheckbox{if ($_termek.lathato)} ui-state-hover{/if}">{t('Látható')}</a></td></tr>

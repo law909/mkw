@@ -619,7 +619,7 @@ $(document).ready(function() {
                 }
             },
             filter: {
-                fields: ['#nevfilter', '#kepurlfilter', '#lathatofilter', '#nemkaphatofilter', '#fuggobenfilter', '#inaktivfilter', '#ajanlottfilter', '#kiemeltfilter'],
+                fields: ['#gyartofilter','#nevfilter', '#kepurlfilter', '#lathatofilter', '#nemkaphatofilter', '#fuggobenfilter', '#inaktivfilter', '#ajanlottfilter', '#kiemeltfilter'],
                 onClear: function() {
                     $('.js-cimkefilter').removeClass('ui-state-hover');
                     $('#termekfa').jstree('uncheck_all');

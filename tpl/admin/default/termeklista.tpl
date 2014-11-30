@@ -16,10 +16,19 @@
 <div id="mattable-select" data-theme="{$theme}">
 <div id="mattable-header" data-title="{t('Frissítés')}" data-caption="{t('Termékek')}"></div>
 <div id="mattable-filterwrapper">
+    <div>
     <label for="nevfilter">{t('Név')}: </label>
     <input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
     <label for="kepurlfilter">{t('Főkép url')}: </label>
     <input id="kepurlfilter" name="kepurlfilter" type="text" size="30" maxlength="255">
+    <label for="gyartofilter">{t('Gyártó')}: </label>
+    <select id="gyartofilter" name="gyartofilter">
+        <option value="">{t('válasszon')}</option>
+        {foreach $gyartolist as $_gyarto}
+            <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+        {/foreach}
+    </select>
+    </div>
     <div>
         <select id="lathatofilter" name="lathatofilter">
             <option value="1">Látható</option>
@@ -96,6 +105,7 @@
 	<th><input class="js-maincheckbox" type="checkbox"></th>
 	<th>{t('Név')}</th>
 	<th>{t('Címkék')}</th>
+    <th>{t('Készlet')}</th>
 	<th>{t('Jellemzők')}</th>
 	{if ($setup.grideditbutton=='big')}
 	<th></th>

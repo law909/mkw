@@ -118,6 +118,15 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['megvasarlasdb'] = $t->getMegvasarlasdb();
         $x['gyartonev'] = $t->getGyartoNev();
         $x['keszlet'] = $t->getKeszlet();
+        if (store::getSetupValue('termekvaltozat')) {
+            foreach ($t->getValtozatok() as $tvaltozat) {
+                $k = $tvaltozat->getKeszlet();
+                if ($k) {
+                    $lvaltozat[] = $valtozatCtrl->loadVars($tvaltozat, $t);
+                }
+            }
+            $x['valtozatkeszlet'] = $lvaltozat;
+        }
 		return $x;
 	}
 
@@ -398,6 +407,11 @@ class termekController extends \mkwhelpers\MattableController {
 		$view = $this->createView('termeklista_tbody.tpl');
 
 		$filter = array();
+        if (!is_null($this->params->getRequestParam('gyartofilter', null))) {
+            $filter['fields'][] = 'gyarto';
+            $filter['claues'][] = '=';
+            $filter['values'][] = $this->params->getIntRequestParam('gyartofilter');
+        }
 		if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
 			$filter['fields'][] = array('nev', 'rovidleiras', 'cikkszam');
 			$filter['clauses'][] = '';
@@ -561,6 +575,8 @@ class termekController extends \mkwhelpers\MattableController {
 		$view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
 		$tcc = new termekcimkekatController($this->params);
 		$view->setVar('cimkekat', $tcc->getWithCimkek(null));
+        $gyarto = new partnerController($this->params);
+        $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(0));
 		$view->printTemplateResult();
 	}
 
