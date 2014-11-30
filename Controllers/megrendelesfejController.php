@@ -114,7 +114,7 @@ class megrendelesfejController extends bizonylatfejController {
         $view->setVar('fizmodlist', $fizmod->getSelectList($fmid));
 
         $szallitasimod = new szallitasimodController($this->params);
-        $view->setVar('szallitasimodlist', $szallitasimod->getSelectList(($record ? $record->getSzallitasimodId() : 0)));
+        $view->setVar('szallitasimodlist', $szallitasimod->getSelectList(($record ? $record->getSzallitasimodId() : 0), true));
 
         $valutanem = new valutanemController($this->params);
         if (!$record || !$record->getValutanemId()) {

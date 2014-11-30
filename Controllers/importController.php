@@ -8,6 +8,10 @@ class importController extends \mkwhelpers\Controller {
         return mb_convert_encoding($mit, 'UTF8', 'ISO-8859-2');
     }
 
+    private function n($mit) {
+        return ord($mit) - 97;
+    }
+
     public function view() {
         $view = $this->createView('imports.tpl');
 
@@ -841,26 +845,80 @@ class importController extends \mkwhelpers\Controller {
     }
 
     public function createVateraPartner($pa) {
-        $me = store::getEm()->getRepository('Entities\Partner')->findBy(array('email' => $pa[10]));
+        $me = store::getEm()->getRepository('Entities\Partner')->findBy(array('email' => $pa['temail']));
 
         if (!$me) {
             $me = new \Entities\Partner();
             $me->setVendeg(true);
-            $me->setReferrer('http://' . $pa[11]);
-            $me->setTelefon($pa[9]);
+            $me->setReferrer('http://' . $pa['vasarlashelye']);
+            $me->setTelefon($pa['ttelefon']);
+            $me->setEmail($pa['temail']);
 
-            $me->setVezeteknev($this->toutf($pa[]));
-            $me->setKeresztnev($this->toutf($pa[]));
+            $nev = explode(' ', $pa['tnev']);
+            $me->setVezeteknev($nev[0]);
+            $me->setKeresztnev($nev[1]);
 
-            $me->setNev($this->toutf($pa[]));
-            $me->setIrszam($this->toutf($pa[]));
-            $me->setVaros($this->toutf($pa[]));
-            $me->setUtca($this->toutf($pa[]));
+            if ($pa['szamlanev']) {
+                $me->setNev($pa['szamlanev']);
+                $me->setIrszam($pa['szamlairszam']);
+                $me->setVaros($pa['szamlavaros']);
+                $me->setUtca($pa['szamlautca']);
+            }
+            else {
+                if ($pa['tszamlanev']) {
+                    $me->setNev($pa['tszamlanev']);
+                    $me->setIrszam($pa['tszamlairszam']);
+                    $me->setVaros($pa['tszamlavaros']);
+                    $me->setUtca($pa['tszamlautca']);
+                }
+                else {
+                    if ($pa['szallnev']) {
+                        $me->setNev($pa['szallnev']);
+                        $me->setIrszam($pa['szallirszam']);
+                        $me->setVaros($pa['szallvaros']);
+                        $me->setUtca($pa['szallutca']);
+                    }
+                    else {
+                        if ($pa['tszallnev']) {
+                            $me->setNev($pa['tszallnev']);
+                            $me->setIrszam($pa['tszallirszam']);
+                            $me->setVaros($pa['tszallvaros']);
+                            $me->setUtca($pa['tszallutca']);
+                        }
+                    }
+                }
+            }
 
-            $me->setSzallnev($this->toutf($pa[]));
-            $me->setSzallirszam($this->toutf($pa[]));
-            $me->setSzallvaros($this->toutf($pa[]));
-            $me->setSzallutca($this->toutf($pa[]));
+            if ($pa['szallnev']) {
+                $me->setSzallnev($pa['szallnev']);
+                $me->setSzallirszam($pa['szallirszam']);
+                $me->setSzallvaros($pa['szallvaros']);
+                $me->setSzallutca($pa['szallutca']);
+            }
+            else {
+                if ($pa['tszallnev']) {
+                    $me->setSzallnev($pa['tszallnev']);
+                    $me->setSzallirszam($pa['tszallirszam']);
+                    $me->setSzallvaros($pa['tszallvaros']);
+                    $me->setSzallutca($pa['tszallutca']);
+                }
+                else {
+                    if ($pa['szamlanev']) {
+                        $me->setSzallnev($pa['szamlanev']);
+                        $me->setSzallirszam($pa['szamlairszam']);
+                        $me->setSzallvaros($pa['szamlavaros']);
+                        $me->setSzallutca($pa['szamlautca']);
+                    }
+                    else {
+                        if ($pa['tszamlanev']) {
+                            $me->setSzallnev($pa['tszamlanev']);
+                            $me->setSzallirszam($pa['tszamlairszam']);
+                            $me->setSzallvaros($pa['tszamlavaros']);
+                            $me->setSzallutca($pa['tszamlautca']);
+                        }
+                    }
+                }
+            }
 
             store::getEm()->persist($me);
             store::getEm()->flush();
@@ -877,6 +935,7 @@ class importController extends \mkwhelpers\Controller {
             $me = new \Entities\Szallitasimod();
             $me->setNev($nev);
             $me->setWebes(false);
+            $me->setFizmodok('1');
 
             store::getEm()->persist($me);
             store::getEm()->flush();
@@ -897,77 +956,146 @@ class importController extends \mkwhelpers\Controller {
         $fhtermek = fopen('vateratermek.csv', 'r');
         if ($fhrendeles && $fhtermek) {
 
-            $rendelesek = array();
-            fgetcsv($fhrendeles, 0, $sep, '"');
-            while ($data = fgetcsv($fhrendeles, 0, $sep, '"')) {
-                $rendelesek[$data[0]] = $data;
-            }
-
             $termekek = array();
             fgetcsv($fhtermek, 0, $sep, '"');
             while ($data = fgetcsv($fhtermek, 0, $sep, '"')) {
-                $termekek[$data[2]] = $data;
+                $termekek[$data[$this->n('c')]] = $data;
             }
+
+            $rendelesek = array();
+            fgetcsv($fhrendeles, 0, $sep, '"');
+            while ($data = fgetcsv($fhrendeles, 0, $sep, '"')) {
+                if (array_key_exists($data[$this->n('b')], $termekek)) {
+                    $rid = $data[$this->n('a')];
+                    if ($data[$this->n('f')]) {
+                        $rendelesek[$rid]['datum'] = $data[$this->n('g')];
+                        $rendelesek[$rid]['szallmod'] = $this->toutf($data[$this->n('h')]);
+                        $rendelesek[$rid]['szallktg'] = $data[$this->n('i')] * 1;
+                        $rendelesek[$rid]['szallnev'] = $this->toutf($data[$this->n('j')]);
+                        $rendelesek[$rid]['szallirszam'] = $this->toutf($data[$this->n('k')]);
+                        $rendelesek[$rid]['szallvaros'] = $this->toutf($data[$this->n('l')]);
+                        $rendelesek[$rid]['szallutca'] = $this->toutf($data[$this->n('m')]);
+                        $rendelesek[$rid]['szamlanev'] = $this->toutf($data[$this->n('n')]);
+                        $rendelesek[$rid]['szamlairszam'] = $this->toutf($data[$this->n('o')]);
+                        $rendelesek[$rid]['szamlavaros'] = $this->toutf($data[$this->n('p')]);
+                        $rendelesek[$rid]['szamlautca'] = $this->toutf($data[$this->n('q')]);
+                        $rendelesek[$rid]['megjegyzes'] = $this->toutf($data[$this->n('r')]);
+                    }
+                    if (!array_key_exists('termek', $rendelesek[$rid])) {
+                        $rendelesek[$rid]['termek'] = array();
+                    }
+                    $t = $termekek[$data[$this->n('b')]];
+                    $rendelesek[$rid]['tusernev'] = $t[$this->n('h')];
+                    $rendelesek[$rid]['tnev'] = $this->toutf($t[$this->n('i')]);
+                    $rendelesek[$rid]['ttelefon'] = $this->toutf($t[$this->n('j')]);
+                    $rendelesek[$rid]['temail'] = $t[$this->n('k')];
+                    $rendelesek[$rid]['vasarlashelye'] = $this->toutf($t[$this->n('l')]);
+                    $rendelesek[$rid]['tdatum'] = $t[$this->n('o')];
+                    $rendelesek[$rid]['tszallmod'] = $this->toutf($t[$this->n('p')]);
+                    $rendelesek[$rid]['tszallktg'] = $t[$this->n('q')] * 1;
+                    $rendelesek[$rid]['tszallnev'] = $this->toutf($t[$this->n('r')]);
+                    $cim = \mkw\Store::explodeCim($this->toutf($t[$this->n('s')]));
+                    $rendelesek[$rid]['tszallirszam'] = $cim[0];
+                    $rendelesek[$rid]['tszallvaros'] = $cim[1];
+                    $rendelesek[$rid]['tszallutca'] = $cim[2];
+                    $rendelesek[$rid]['tszamlanev'] = $this->toutf($t[$this->n('t')]);
+                    $cim = \mkw\Store::explodeCim($this->toutf($t[$this->n('u')]));
+                    $rendelesek[$rid]['tszamlairszam'] = $cim[0];
+                    $rendelesek[$rid]['tszamlavaros'] = $cim[1];
+                    $rendelesek[$rid]['tszamlautca'] = $cim[2];
+                    $rendelesek[$rid]['tmegjegyzes'] = $this->toutf($t[$this->n('v')]);
+
+                    $rendelesek[$rid]['termek'][] = array(
+                        'kod' => $data[$this->n('b')],
+                        'nev' => $this->toutf($data[$this->n('c')]),
+                        'tnev' => $this->toutf($t[$this->n('a')]),
+                        'tcikkszam' => $this->toutf($t[$this->n('b')]),
+                        'mennyiseg' => $data[$this->n('d')] * 1,
+                        'egysar' => $data[$this->n('e')] * 1,
+                        'tmennyiseg' => $t[$this->n('d')] * 1,
+                        'tegysar' => $t[$this->n('e')] * 1
+                    );
+                }
+            }
+
+            unset($termekek);
+
+            uasort($rendelesek, function($a, $b) {
+                if ($a['datum'] == $b['datum']) {
+                    return 0;
+                }
+                return ($a['datum'] < $b['datum']) ? -1 : 1;
+            });
+
+            //echo '<pre>';print_r($rendelesek);echo '</pre>';
+            //die();
 
             foreach($rendelesek as $rk => $r) {
                 $fej = new \Entities\Bizonylatfej();
-                $fej->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find('megrendeles'));
+                $fej->setBizonylattipus(store::getEm()->getRepository('Entities\Bizonylattipus')->find('megrendeles'));
                 $fej->setPersistentData();
         		$fej->setErbizonylatszam($rk);
-                $partner = $this->createVateraPartner($termekek[$r[1]]);
+                $partner = $this->createVateraPartner($r);
                 $fej->setPartner($partner);
-                $szallmod = $this->createVateraSzallitasimod($this->toutf($r[7]));
+                $szallmod = $this->createVateraSzallitasimod($r['szallmod']);
                 $fej->setSzallitasimod($szallmod);
-                $ck = store::getParameter(\mkw\consts::Raktar);
+                $ck = store::getEm()->getRepository('Entities\Raktar')->find(store::getParameter(\mkw\consts::Raktar));
                 if ($ck) {
                     $fej->setRaktar($ck);
                 }
-                $ck = store::getParameter(\mkw\consts::Fizmod);
+                $ck = store::getEm()->getRepository('Entities\Fizmod')->find(store::getParameter(\mkw\consts::Fizmod));
                 if ($ck) {
                     $fej->setFizmod($ck);
                 }
-                $fej->setKelt();
-                $fej->setTeljesites();
-                $fej->setEsedekesseg();
-                $fej->setHatarido();
-                $ck = store::getParameter(\mkw\consts::Valutanem);
+                $fej->setKelt($r['datum']);
+                $fej->setTeljesites($r['datum']);
+                $fej->setEsedekesseg($r['datum']);
+                $fej->setHatarido($r['datum']);
+                $ck = store::getEm()->getRepository('Entities\Valutanem')->find(store::getParameter(\mkw\consts::Valutanem));
                 if ($ck) {
                     $fej->setValutanem($ck);
+                    $fej->setBankszamla($ck->getBankszamla());
                 }
                 $fej->setArfolyam(1);
-/*                $ck = store::getEm()->getRepository('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
-                if ($ck) {
-                    $obj->setBankszamla($ck);
-                }
-*/
-                $ck = store::getParameter(\mkw\consts::BizonylatStatuszFuggoben);
+
+                $ck = store::getEm()->getRepository('Entities\Bizonylatstatusz')->find(store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
                 if ($ck) {
                     $fej->setBizonylatstatusz($ck);
                 }
 
-                $fej->setWebshopmessage();
+                if ($r['megjegyzes'] || $r['tmegjegyzes']) {
+                    $fej->setWebshopmessage($r['megjegyzes'] . ' ' . $r['tmegjegyzes']);
+                }
+                $fej->setBelsomegjegyzes('Vatera ' . $rk);
 
                 $fej->generateId(); // az üres kelt miatt került a végére
 
-                foreach($r as $rtetel) {
-					$tetel = new Bizonylattetel();
+                foreach($r['termek'] as $rtetel) {
+					$tetel = new \Entities\Bizonylattetel();
 					$fej->addBizonylattetel($tetel);
 					$tetel->setPersistentData();
 					$tetel->setArvaltoztat(0);
 
-                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $rtetel[1]));
+                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $rtetel['tcikkszam']));
 					if ($termek) {
-						$tetel->setTermek($termek);
+						$tetel->setTermek($termek[0]);
 					}
 					$tetel->setMozgat();
-					$tetel->setMennyiseg($rtetel[3] * 1);
-					$tetel->setBruttoegysar($rtetel[4] * 1);
-					$tetel->setBruttoegysarhuf($rtetel[4] * 1);
-					$this->getEm()->persist($tetel);
+					$tetel->setMennyiseg($rtetel['mennyiseg']);
+					$tetel->setBruttoegysar($rtetel['egysar']);
+					$tetel->setBruttoegysarhuf($rtetel['egysar']);
+                    $tetel->calc();
+					store::getEm()->persist($tetel);
                 }
                 $fej->doStuffOnPrePersist();
-                $this->getEm()->persist($fej);
-                $this->getEm()->flush();
+                store::getEm()->persist($fej);
+                store::getEm()->flush();
+                if ($r['szallktg']) {
+                    store::getEm()->getRepository('Entities\Bizonylatfej')->createSzallitasiKtg($fej, false, $r['szallktg']);
+                    $fej->doStuffOnPrePersist();
+                    store::getEm()->persist($fej);
+                    store::getEm()->flush();
+                }
             }
 
         }

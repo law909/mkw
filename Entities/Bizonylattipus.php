@@ -57,7 +57,7 @@ class Bizonylattipus {
                 $view->setVar('showinheritbutton', true);
                 $view->setVar('showuzenet', true);
                 $view->setVar('showszallitasicim', true);
-                $view->setVar('showerbizonylatszam', false);
+                $view->setVar('showerbizonylatszam', true);
                 $view->setVar('showfuvarlevelszam', true);
                 $view->setVar('showhaszonszazalek', false);
                 break;

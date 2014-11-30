@@ -81,7 +81,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         }
     }
 
-    public function createSzallitasiKtg($bizfej, $szallmod = null) {
+    public function createSzallitasiKtg($bizfej, $szallmod = null, $bruttoegysar = null) {
         $szamol = true;
         if ($szallmod) {
             $szm = $this->getRepo('Entities\Szallitasimod')->find($szallmod);
@@ -92,7 +92,6 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         if ($szamol) {
             $ertek = 0;
             $cnt = 0;
-            $btt = $bizfej->getBizonylattetelek();
             foreach($bizfej->getBizonylattetelek() as $btetel) {
                 if ($btetel->getTermekId() != $termekid) {
                     $cnt++;
@@ -100,7 +99,12 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 }
             }
             if ($cnt != 0) {
-                $ktg = \mkw\Store::calcSzallitasiKoltseg($ertek);
+                if (!$bruttoegysar) {
+                    $ktg = \mkw\Store::calcSzallitasiKoltseg($ertek);
+                }
+                else {
+                    $ktg = $bruttoegysar;
+                }
                 $k = $this->getTetelsor($bizfej->getId(), $termekid);
                 if ($k) {
                     $k->setMennyiseg(1);

@@ -504,4 +504,20 @@ class Store {
 
         return substr( $fileName, strrpos( $fileName, '.' ) +1 ) ;
     }
+
+    public static function explodeCim($cim) {
+        if ($cim) {
+            $ret = array();
+            $c = explode(' ', $cim);
+            $ret[] = array_key_exists(0, $c) ? $c[0] : '';
+            $ret[] = array_key_exists(1, $c) ? $c[1] : '';
+            unset($c[0]);
+            unset($c[1]);
+            $ret[] = implode(' ', $c);
+        }
+        else {
+            $ret = array('', '', '');
+        }
+        return $ret;
+    }
 }

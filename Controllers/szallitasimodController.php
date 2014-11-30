@@ -37,8 +37,13 @@ class szallitasimodController extends \mkwhelpers\JQGridController {
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid) {
-        $rec = $this->getRepo()->getAllWebes();
+    public function getSelectList($selid, $mind = false) {
+        if ($mind) {
+            $rec = $this->getRepo()->getAll(array(),array('sorrend'=>'ASC','nev'=>'ASC'));
+        }
+        else {
+            $rec = $this->getRepo()->getAllWebes();
+        }
         $res = array();
         $vanvalasztott = false;
         foreach ($rec as $sor) {
