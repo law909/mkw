@@ -39,6 +39,12 @@
 IP: {$_egyed.ip} Ref.: {$_egyed.referrer}
 </td>
 </tr>
+{if ($_egyed.belsomegjegyzes)}
+<tr><td colspan="5" class="guestpartner">
+{$_egyed.belsomegjegyzes}
+</td>
+</tr>
+{/if}
 </tbody></table>
 </td>
 <td class="cell">

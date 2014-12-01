@@ -815,7 +815,9 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
                 else {
-                    $termek = $termek[0];
+                    if (is_array($termek)) {
+                        $termek = $termek[0];
+                    }
                     if ($valtozat) {
                         if ($termek) {
                             $ar = ($data[$this->n('f')] * 1) - $termek->getBrutto();
@@ -1080,6 +1082,7 @@ class importController extends \mkwhelpers\Controller {
 
                 $fej->generateId(); // az üres kelt miatt került a végére
 
+                $hibascikkszam = array();
                 foreach($r['termek'] as $rtetel) {
                     $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $rtetel['tcikkszam']));
                     if ($termek) {
@@ -1095,6 +1098,12 @@ class importController extends \mkwhelpers\Controller {
                         $tetel->calc();
                         store::getEm()->persist($tetel);
                     }
+                    else {
+                        $hibascikkszam[] = $rtetel['tcikkszam'];
+                    }
+                }
+                if ($hibascikkszam) {
+                    $fej->setBelsomegjegyzes($fej->getBelsomegjegyzes() . ' Hibás cikkszámok: ' . implode(',', $hibascikkszam));
                 }
                 $fej->doStuffOnPrePersist();
                 store::getEm()->persist($fej);
