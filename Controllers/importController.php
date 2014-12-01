@@ -669,6 +669,8 @@ class importController extends \mkwhelpers\Controller {
     }
 
     public function makszutovImport() {
+        $sep = ';';
+
         $parentid = $this->params->getIntRequestParam('katid', 0);
         $gyartoid = $this->params->getIntRequestParam('gyarto', 0);
         $dbtol = $this->params->getIntRequestParam('dbtol', 0);
@@ -703,15 +705,15 @@ class importController extends \mkwhelpers\Controller {
             $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findByNev('-');
             $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
             $termekdb = 0;
-            fgetcsv($fh, 0, ';', '"');
-            while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, ';', '"'))) {
+            fgetcsv($fh, 0, $sep, '"');
+            while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                 $termekdb++;
             }
-            while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, ';', '"'))) {
+            while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                 $termekdb++;
                 $termek = false;
                 $valtozat = false;
-                $valtozatok = store::getEm()->getRepository('Entities\TermekValtozat')->findBy(array('idegencikkszam' => $data[0]));
+                $valtozatok = store::getEm()->getRepository('Entities\TermekValtozat')->findBy(array('idegencikkszam' => $data[$this->n('a')]));
                 if ($valtozatok) {
                     foreach($valtozatok as $v) {
                         $termek = $v->getTermek();
@@ -722,10 +724,10 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
                 else {
-                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $data[0]));
+                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $data[$this->n('a')]));
                 }
-                if ($data[8]) {
-                    $ch = \curl_init($data[8]);
+                if ($data[$this->n('i')]) {
+                    $ch = \curl_init($data[$this->n('i')]);
                     \curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $le = \curl_exec($ch);
 
@@ -742,16 +744,16 @@ class importController extends \mkwhelpers\Controller {
                     $kisleiras = '';
                 }
 
-                $kaphato = (bool)trim($data[6]);
+                $kaphato = (bool)trim($data[$this->n('g')]);
 
                 if (!$termek) {
 
                     if ($createuj && $kaphato) {
-                        $katnev = $data[1];
+                        $katnev = $data[$this->n('b')];
                         $urlkatnev = \mkw\Store::urlize($katnev);
                         \mkw\Store::createDirectoryRecursively($path . $urlkatnev);
                         $parent = $this->createKategoria($katnev, $parentid);
-                        $termeknev = $data[2];
+                        $termeknev = $data[$this->n('c')];
 
                         $termek = new \Entities\Termek();
                         $termek->setFuggoben(true);
@@ -759,7 +761,7 @@ class importController extends \mkwhelpers\Controller {
                         $termek->setNev($termeknev);
                         $termek->setLeiras($leiras);
                         $termek->setRovidleiras(mb_substr($kisleiras, 0, 100, 'UTF8') . '...');
-                        $termek->setIdegencikkszam($data[0]);
+                        $termek->setIdegencikkszam($data[$this->n('a')]);
                         $termek->setTermekfa1($parent);
                         $termek->setVtsz($vtsz[0]);
                         $termek->setHparany(3);
@@ -767,15 +769,15 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setGyarto($gyarto);
                         }
                         $termek->setNemkaphato(false);
-                        $termek->setBrutto(round($data[5] * 1, -1));
+                        $termek->setBrutto(round($data[$this->n('f')] * 1, -1));
                         // kepek
-                        $imagelist = explode(',', $data[7]);
+                        $imagelist = explode(',', $data[$this->n('h')]);
                         $imgcnt = 0;
                         foreach ($imagelist as $imgurl) {
                             $imgcnt++;
 
-                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev . '_' . $data[0]);
-                            $kepnev = \mkw\Store::urlize($termeknev . '_' . $data[0]);
+                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev . '_' . $data[$this->n('a')]);
+                            $kepnev = \mkw\Store::urlize($termeknev . '_' . $data[$this->n('a')]);
                             if (count($imagelist) > 1) {
                                 $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
                                 $kepnev = $kepnev . '_' . $imgcnt;
@@ -812,8 +814,15 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
                 else {
+                    $termek = $termek[0];
                     if ($valtozat) {
-                        $valtozat->setBrutto(round($data[5] * 1, -1));
+                        if ($termek) {
+                            $ar = ($data[$this->n('f')] * 1) - $termek->getBrutto();
+                        }
+                        else {
+                            $ar = $data[$this->n('f')] * 1;
+                        }
+                        $valtozat->setBrutto(round($ar, -1));
                         if (!$kaphato) {
                             $valtozat->setElerheto(false);
                         }
@@ -821,7 +830,6 @@ class importController extends \mkwhelpers\Controller {
                         store::getEm()->flush();
                     }
                     else {
-                        $termek = $termek[0];
                         if ($termek) {
                             if ($editleiras) {
                                 $termek->setLeiras($leiras);
@@ -829,7 +837,7 @@ class importController extends \mkwhelpers\Controller {
                             if (!$kaphato) {
                                 $termek->setNemkaphato(true);
                             }
-                            $termek->setBrutto(round($data[5] * 1, -1));
+                            $termek->setBrutto(round($data[$this->n('f')] * 1, -1));
                             store::getEm()->persist($termek);
                             store::getEm()->flush();
                         }
