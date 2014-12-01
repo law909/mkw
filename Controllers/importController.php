@@ -701,7 +701,7 @@ class importController extends \mkwhelpers\Controller {
                 'quality'=>80,
                 'sizes'=>array('100'=>'100x100','150'=>'150x150','250'=>'250x250','1000'=>'1000x800')
             );
-            $afa = store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
+            //$afa = store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
             $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findByNev('-');
             $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
             $termekdb = 0;
