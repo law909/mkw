@@ -224,8 +224,6 @@ class importController extends \mkwhelpers\Controller {
         $str = '';
         while (!$vege && (false !== ($char = fgetc($handle)))) {
             switch ($char) {
-                case "\r":
-                    break;
                 case "\n":
                     if ($escaped || $enclosed) {
                         $str .= $char;
@@ -378,6 +376,7 @@ class importController extends \mkwhelpers\Controller {
             }
         }
         fclose($fh);
+        \unlink('delton.txt');
     }
 
     public function nomadImport() {
@@ -511,6 +510,7 @@ class importController extends \mkwhelpers\Controller {
             }
         }
         fclose($fh);
+        \unlink('nomad.xml');
     }
 
     public function reintexImport() {
@@ -838,6 +838,7 @@ class importController extends \mkwhelpers\Controller {
             }
         }
         fclose($fh);
+        \unlink('makszutov.txt');
     }
 
     public function legavenueImport() {
