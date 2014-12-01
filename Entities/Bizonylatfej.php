@@ -612,7 +612,7 @@ class Bizonylatfej {
         return '';
     }
 
-    public function setKelt($adat) {
+    public function setKelt($adat = '') {
         if ($adat == '')
             $adat = date(store::$DateFormat);
         $this->kelt = new \DateTime(store::convDate($adat));
@@ -632,7 +632,7 @@ class Bizonylatfej {
         return '';
     }
 
-    public function setTeljesites($adat) {
+    public function setTeljesites($adat = '') {
         if ($adat == '')
             $adat = date(store::$DateFormat);
         $this->teljesites = new \DateTime(store::convDate($adat));
@@ -652,7 +652,7 @@ class Bizonylatfej {
         return '';
     }
 
-    public function setEsedekesseg($adat) {
+    public function setEsedekesseg($adat = '') {
         if ($adat == '')
             $adat = date(store::$DateFormat);
         $this->esedekesseg = new \DateTime(store::convDate($adat));
@@ -672,7 +672,7 @@ class Bizonylatfej {
         return '';
     }
 
-    public function setHatarido($adat) {
+    public function setHatarido($adat = '') {
         if ($adat == '')
             $adat = date(store::$DateFormat);
         $this->hatarido = new \DateTime(store::convDate($adat));
