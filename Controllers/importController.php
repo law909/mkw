@@ -608,25 +608,25 @@ class importController extends \mkwhelpers\Controller {
             }
             while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                 $termekdb++;
-                if ($data[0]) {
-                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data[0],'gyarto' => $gyartoid));
+                if ($data[$this->n('a')]) {
+                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data[$this->n('a')],'gyarto' => $gyartoid));
                     if (!$termek) {
-                        $csz = str_replace(' ', '', $data[0]);
+                        $csz = str_replace(' ', '', $data[$this->n('a')]);
                         $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $csz, 'gyarto' => $gyartoid));
                     }
-                    if ($data[3] * 1 != 0) {
+                    if ($data[$this->n('d')] * 1 != 0) {
                         if (!$termek) {
 
                             if ($createuj) {
 
-                                $termeknev = $this->toutf(trim($data[1]));
-                                $me = $this->toutf(trim($data[2]));
+                                $termeknev = $this->toutf(trim($data[$this->n('b')]));
+                                $me = $this->toutf(trim($data[$this->n('c')]));
 
                                 $termek = new \Entities\Termek();
                                 $termek->setFuggoben(true);
                                 $termek->setMe($me);
                                 $termek->setNev($termeknev);
-                                $termek->setCikkszam($data[0]);
+                                $termek->setCikkszam($data[$this->n('a')]);
                                 $termek->setTermekfa1($parent);
                                 $termek->setVtsz($vtsz[0]);
                                 $termek->setHparany(3);
@@ -645,9 +645,9 @@ class importController extends \mkwhelpers\Controller {
                             }
                         }
                         if ($termek) {
-                            $termek->setCikkszam($data[0]);
+                            $termek->setCikkszam($data[$this->n('a')]);
                             $termek->setAfa($afa[0]);
-                            $termek->setBrutto(round($data[4], -1));
+                            $termek->setBrutto(round($data[$this->n('e')], -1));
                             store::getEm()->persist($termek);
                             store::getEm()->flush();
                         }
@@ -725,7 +725,7 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
                 else {
-                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $data[$this->n('a')]));
+                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $data[$this->n('a')], 'gyarto' => $gyartoid));
                 }
                 if ($data[$this->n('i')]) {
                     $ch = \curl_init($data[$this->n('i')]);
