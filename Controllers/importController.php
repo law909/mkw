@@ -1048,9 +1048,9 @@ class importController extends \mkwhelpers\Controller {
                 if ($ck) {
                     $fej->setFizmod($ck);
                 }
-                $fej->setKelt($r['datum']);
-                $fej->setTeljesites($r['datum']);
-                $fej->setEsedekesseg($r['datum']);
+                $fej->setKelt();
+                $fej->setTeljesites();
+                $fej->setEsedekesseg();
                 $fej->setHatarido($r['datum']);
                 $ck = store::getEm()->getRepository('Entities\Valutanem')->find(store::getParameter(\mkw\consts::Valutanem));
                 if ($ck) {
