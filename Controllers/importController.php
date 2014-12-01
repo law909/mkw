@@ -1081,21 +1081,20 @@ class importController extends \mkwhelpers\Controller {
                 $fej->generateId(); // az üres kelt miatt került a végére
 
                 foreach($r['termek'] as $rtetel) {
-					$tetel = new \Entities\Bizonylattetel();
-					$fej->addBizonylattetel($tetel);
-					$tetel->setPersistentData();
-					$tetel->setArvaltoztat(0);
-
                     $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $rtetel['tcikkszam']));
-					if ($termek) {
-						$tetel->setTermek($termek[0]);
-					}
-					$tetel->setMozgat();
-					$tetel->setMennyiseg($rtetel['mennyiseg']);
-					$tetel->setBruttoegysar($rtetel['egysar']);
-					$tetel->setBruttoegysarhuf($rtetel['egysar']);
-                    $tetel->calc();
-					store::getEm()->persist($tetel);
+                    if ($termek) {
+                        $tetel = new \Entities\Bizonylattetel();
+                        $fej->addBizonylattetel($tetel);
+                        $tetel->setPersistentData();
+                        $tetel->setArvaltoztat(0);
+                        $tetel->setTermek($termek[0]);
+                        $tetel->setMozgat();
+                        $tetel->setMennyiseg($rtetel['mennyiseg']);
+                        $tetel->setBruttoegysar($rtetel['egysar']);
+                        $tetel->setBruttoegysarhuf($rtetel['egysar']);
+                        $tetel->calc();
+                        store::getEm()->persist($tetel);
+                    }
                 }
                 $fej->doStuffOnPrePersist();
                 store::getEm()->persist($fej);
