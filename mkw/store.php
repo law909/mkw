@@ -19,7 +19,7 @@ class Store {
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
 
     public function getJSVersion() {
-        return 10;
+        return 11;
     }
 
     public function getBootstrapJSVersion() {
@@ -243,11 +243,11 @@ class Store {
             $user['szallirszam'] = $u->getSzallirszam();
             $user['szallvaros'] = $u->getSzallvaros();
             $user['szallutca'] = $u->getSzallutca();
-            $user['szalladategyezik'] = !$u->getSzallnev() &&
-                    !$u->getSzallirszam() &&
-                    !$u->getSzallvaros() &&
-                    !$u->getSzallutca() &&
-                    !$u->getSzallnev();
+            $user['szalladategyezik'] = !$u->getNev() &&
+                    !$u->getIrszam() &&
+                    !$u->getVaros() &&
+                    !$u->getUtca() &&
+                    !$u->getNev();
         }
         else {
             $user['szalladategyezik'] = true;

@@ -10,6 +10,7 @@ var mkwmsg = {
 	ChkKosarValtozott: 'A kosár tartalma időközben megváltozott, kérem ellenőrizze.',
 	ChkKosarUres: 'Az Ön kosara üres.',
     ChkHiba: 'Kérjük, adja meg a hiányzó adatokat. Ezeket pirossal megjelöltük.',
+    ChkSave: 'Megrendelésének mentése folyamatban. Kérem várjon.',
 	FiokAdataitModositjuk: 'Adatait módosítjuk...',
 	DialogFejlec: 'Értesítés',
 	DialogOk: 'OK',
@@ -558,13 +559,27 @@ var checkout = (function($, guid) {
 			kosarhash,
             egyediid = guid();
 
+    function getSessid() {
+        var x = document.cookie.match(/PHPSESSID=[^;]+/);
+        if (!x) {
+            return egyediid;
+        }
+        if (typeof(x) == 'object') {
+            x = x[0];
+        }
+        if (typeof(x) == 'string') {
+            return x.substring(10);
+        }
+        return egyediid;
+    }
+
     function ajaxlog(str) {
         $.ajax({
             type: 'POST',
             url: '/ajaxlogger.php',
             data: {
                 req: 'write',
-                data: egyediid + ' ## ' + str
+                data: getSessid() + ' ## ' + str
             }
         });
     }
@@ -762,7 +777,7 @@ var checkout = (function($, guid) {
             checkoutform.on('submit', function(e) {
                 var hibas = false, tofocus = false;
 
-                ajaxlog('START: 10 Send order clicked');
+                ajaxlog('submit start');
 
                 if (!vezeteknevinput.val()) {
                     vezeteknevinput.addClass('hibas');
@@ -923,22 +938,29 @@ var checkout = (function($, guid) {
                             tofocus.focus();
                         }
                     });
+                    ajaxlog('error: hibás adatok');
                     mkw.showDialog(mkwmsg.ChkHiba);
                     e.preventDefault();
                     return false;
                 }
                 else {
                     if (!$('input[name="aszfready"]').prop('checked')) {
+                        ajaxlog('error: nincs ÁSZF');
                         e.preventDefault();
                         mkw.showDialog(mkwmsg.ChkASZF);
                         return false;
                     }
                     else {
+                        mkw.showMessage(mkwmsg.ChkSave);
+                        ajaxlog('ok');
+                        return true;
+                        /*
                         $.ajax({
                             url: '/kosar/gethash',
                             success: function(data) {
                                 var d = JSON.parse(data);
                                 if (kosarhash && kosarhash != d.value) {
+                                    ajaxlog('error: változott kosár');
                                     e.preventDefault();
                                     mkw.showDialog(mkwmsg.ChkKosarValtozott);
                                     loadTetelList();
@@ -946,22 +968,26 @@ var checkout = (function($, guid) {
                                 }
                                 else {
                                     if (d.cnt <= 0) {
+                                        ajaxlog('error: üres kosár');
                                         e.preventDefault();
                                         mkw.showDialog(mkwmsg.ChkKosarUres);
                                         return false;
                                     }
                                     else {
+                                        ajaxlog('ok');
                                         return true;
                                     }
                                 }
                             },
                             error: function(xhr, stat, error) {
+                                ajaxlog('error: ' + error);
                                 e.preventDefault();
                                 return false;
                             },
                             complete: function(xhr, stat) {
                             }
                         });
+                        */
                     }
                 }
             });

@@ -11,17 +11,99 @@ class checkoutController extends \mkwhelpers\MattableController {
 		parent::__construct($params);
 	}
 
+    private function vv($a, $b) {
+        if ($a) {
+            return $a;
+        }
+        return $b;
+    }
+
 	public function getCheckout() {
-        Store::writelog(\Zend_Session::getId() . ' getCheckout: checkout kezdődik', 'checkoutlog.log');
+        $p = Store::getMainSession()->params;
+        if (!$p) {
+            $p = new \mkwhelpers\ParameterHandler(array());
+        }
+        Store::getMainSession()->params = false;
+
 		$view = Store::getTemplateFactory()->createMainView('checkout.tpl');
 		Store::fillTemplate($view);
+
 		$szm = new szallitasimodController($this->params);
 		$szlist = $szm->getSelectList(null);
+
+        $pr = self::getEm()->getRepository('Entities\Partner');
+        $u = $pr->getLoggedInUser();
+        if ($u) {
+            $user['nev'] = $u->getNev();
+            $user['email'] = $u->getEmail();
+            $user['vezeteknev'] = $u->getVezeteknev();
+            $user['keresztnev'] = $u->getKeresztnev();
+            $user['telefon'] = $u->getTelefon();
+            $user['irszam'] = $u->getIrszam();
+            $user['varos'] = $u->getVaros();
+            $user['utca'] = $u->getUtca();
+            $user['adoszam'] = $u->getAdoszam();
+            $user['szallnev'] = $u->getSzallnev();
+            $user['szallirszam'] = $u->getSzallirszam();
+            $user['szallvaros'] = $u->getSzallvaros();
+            $user['szallutca'] = $u->getSzallutca();
+            $user['szalladategyezik'] = !$u->getNev() &&
+                    !$u->getIrszam() &&
+                    !$u->getVaros() &&
+                    !$u->getUtca() &&
+                    !$u->getNev();
+            $user['akcioshirlevelkell'] = $u->getAkcioshirlevelkell();
+            $user['ujdonsaghirlevelkell'] = $u->getUjdonsaghirlevelkell();
+        }
+        else {
+            $user['nev'] = '';
+            $user['email'] = '';
+            $user['vezeteknev'] = '';
+            $user['keresztnev'] = '';
+            $user['telefon'] = '';
+            $user['irszam'] = '';
+            $user['varos'] = '';
+            $user['utca'] = '';
+            $user['adoszam'] = '';
+            $user['szallnev'] = '';
+            $user['szallirszam'] = '';
+            $user['szallvaros'] = '';
+            $user['szallutca'] = '';
+            $user['szalladategyezik'] = true;
+            $user['akcioshirlevelkell'] = false;
+            $user['ujdonsaghirlevelkell'] = false;
+        }
+
 		$view->setVar('szallitasimodlist', $szlist);
 		$view->setVar('showerror', Store::getMainSession()->loginerror);
+        $view->setVar('checkouterrors', Store::getMainSession()->checkoutErrors);
 		$view->setVar('showaszflink', Store::getRouter()->generate('showstatlappopup', false, array('lap' => 'aszf')));
+        $view->setVar('regkell', $p->getIntRequestParam('regkell'));
+        $view->setVar('vezeteknev', $this->vv($p->getStringRequestParam('vezeteknev'), $user['vezeteknev']));
+        $view->setVar('keresztnev', $this->vv($p->getStringRequestParam('keresztnev'), $user['keresztnev']));
+        $view->setVar('telefon', $this->vv($p->getStringRequestParam('telefon'), $user['telefon']));
+        $view->setVar('jelszo1', $p->getStringRequestParam('jelszo1'));
+        $view->setVar('jelszo2', $p->getStringRequestParam('jelszo2'));
+        $view->setVar('email', $this->vv($p->getStringRequestParam('kapcsemail'), $user['email']));
+        $view->setVar('szamlanev', $this->vv($p->getStringRequestParam('szamlanev'), $user['nev']));
+        $view->setVar('szamlairszam', $this->vv($p->getStringRequestParam('szamlairszam'), $user['irszam']));
+        $view->setVar('szamlavaros', $this->vv($p->getStringRequestParam('szamlavaros'), $user['varos']));
+        $view->setVar('szamlautca', $this->vv($p->getStringRequestParam('szamlautca'), $user['utca']));
+        $view->setVar('adoszam', $this->vv($p->getStringRequestParam('adoszam'), $user['adoszam']));
+        $view->setVar('szamlaeqszall', $this->vv($p->getBoolRequestParam('szamlaeqszall'), $user['szalladategyezik']));
+        $view->setVar('szallnev', $this->vv($p->getStringRequestParam('szallnev'), $user['szallnev']));
+        $view->setVar('szallirszam', $this->vv($p->getStringRequestParam('szallirszam'), $user['szallirszam']));
+        $view->setVar('szallvaros', $this->vv($p->getStringRequestParam('szallvaros'), $user['szallvaros']));
+        $view->setVar('szallutca', $this->vv($p->getStringRequestParam('szallutca'), $user['szallutca']));
+        $view->setVar('szallitasimod', $p->getIntRequestParam('szallitasimod'));
+        $view->setVar('fizetesimod', $p->getIntRequestParam('fizetesimod'));
+        $view->setVar('webshopmessage', $p->getStringRequestParam('webshopmessage'));
+        $view->setVar('couriermessage', $p->getStringRequestParam('couriermessage'));
+        $view->setVar('aszfready', $p->getBoolRequestParam('aszfready'));
+        $view->setVar('akciohirlevel', $this->vv($p->getBoolRequestParam('akciohirlevel'), $user['akcioshirlevelkell']));
+        $view->setVar('ujdonsaghirlevel', $this->vv($p->getBoolRequestParam('ujdonsaghirlevel'), $user['ujdonsaghirlevelkell']));
 		Store::getMainSession()->loginerror = false;
-
+        Store::getMainSession()->checkoutErrors = false;
 /*        $this->getRepo('Entities\Kosar')->createSzallitasiKtg($this->params->getIntRequestParam('szallitasimod'));
 		$sorok = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
 		$s = array();
@@ -30,7 +112,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 		}
 		$view->setVar('tetellista', $s);
 */		$view->printTemplateResult(false);
-        Store::writelog(\Zend_Session::getId() . ' getCheckout: checkout kiküldve', 'checkoutlog.log');
+        Store::writelog(\Zend_Session::getId() . ' getCheckout() ok', 'checkoutlog.log');
 	}
 
 	public function getFizmodList() {
@@ -62,7 +144,10 @@ class checkoutController extends \mkwhelpers\MattableController {
 
 	public function save() {
 
+        Store::writelog(\Zend_Session::getId() . ' save() start', 'checkoutlog.log');
+
         $errorlogtext = array();
+        $errors = array();
 
 		$regkell = $this->params->getIntRequestParam('regkell');
 		$vezeteknev = $this->params->getStringRequestParam('vezeteknev');
@@ -103,18 +188,25 @@ class checkoutController extends \mkwhelpers\MattableController {
 
         if (!$ok) {
             $errorlogtext[] = '1alapadat';
+            $errors[] = 'Nem adott meg egy kötelező adatot.';
         }
         switch ($regkell) {
 			case 1: // vendég
 				$ok = $ok && $email;
                 if (!$email) {
                     $errorlogtext[] = '2vendegemail';
+                    $errors[] = 'Nem adott meg emailcímet.';
                 }
 				break;
 			case 2: // regisztráció
 				$ok = $ok && $jelszo1 && $jelszo2 && ($jelszo1 === $jelszo2) && $email;
-                if (!$jelszo1 || !$jelszo2 || ($jelszo1 !== $jelszo2) || !$email) {
-                    $errorlogtext[] = '3regemailjelszo';
+                if (!$jelszo1 || !$jelszo2 || ($jelszo1 !== $jelszo2)) {
+                    $errorlogtext[] = '3regjelszo';
+                    $errors[] = 'Nem adott meg jelszót, vagy a két jelszó nem egyezik.';
+                }
+                if (!$email) {
+                    $errorlogtext[] = '3regemail';
+                    $errors[] = 'Nem adott meg emailcímet.';
                 }
 				break;
 			default: // be van jelentkezve elvileg
@@ -125,9 +217,13 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$ok = $ok && count($kosartetelek)>0;
         if (!count($kosartetelek)) {
             $errorlogtext[] = '4ureskosar';
+            $errors[] = 'Üres a kosara.';
         }
 
 		if ($ok) {
+
+            Store::writelog(\Zend_Session::getId() . ' save() mentés kezdődik', 'checkoutlog.log');
+
 			switch ($regkell) {
 				case 1: // vendég
         			$pc = new \Controllers\partnerController($this->params);
@@ -240,10 +336,13 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$this->getEm()->persist($megrendfej);
 			$this->getEm()->flush();
 
+            Store::writelog(\Zend_Session::getId() . ' save() mentés vége', 'checkoutlog.log');
 
             if ($bizstatusz) {
                 $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
             }
+
+            Store::writelog(\Zend_Session::getId() . ' save() email kiküldve', 'checkoutlog.log');
 
 			Store::getMainSession()->lastmegrendeles = $megrendfej->getId();
             Store::getMainSession()->lastemail = $email;
@@ -251,11 +350,16 @@ class checkoutController extends \mkwhelpers\MattableController {
             Store::getMainSession()->lasttermekids = $lasttermekids;
 			$kc = new kosarController($this->params);
 			$kc->clear();
+
+            Store::writelog(\Zend_Session::getId() . ' save() köszönjükre irányítom', 'checkoutlog.log');
+
 			Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
 		}
 		else {
-			echo 'error';
+			Store::getMainSession()->params = $this->params;
+            Store::getMainSession()->checkoutErrors = $errors;
             Store::writelog(\Zend_Session::getId() . ' ERROR ' . implode(' ', $errorlogtext), 'checkoutlog.log');
+            Header('Location: ' . Store::getRouter()->generate('showcheckout'));
 		}
 	}
 

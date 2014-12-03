@@ -28,7 +28,7 @@ class ParameterHandler implements IParameterHandler {
     }
 
     public function getParam($key, $default = null, $sanitize = true) {
-        if (array_key_exists($key, $this->params['params'])) {
+        if (array_key_exists('params', $this->params) && array_key_exists($key, $this->params['params'])) {
             $data = $this->trim($this->params['params'][$key]);
             if ($sanitize) {
                 $data = \mkw\Store::getSanitizer()->sanitize($data);
@@ -41,7 +41,7 @@ class ParameterHandler implements IParameterHandler {
     }
 
     public function getRequestParam($key, $default = null, $sanitize = true) {
-        if (array_key_exists($key, $this->params['requestparams'])) {
+        if (array_key_exists('requestparams', $this->params) && array_key_exists($key, $this->params['requestparams'])) {
             $data = $this->trim($this->params['requestparams'][$key]);
             if ($sanitize) {
                 $data = \mkw\Store::getSanitizer()->sanitize($data);
