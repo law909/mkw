@@ -18,8 +18,9 @@ class fifoController extends \mkwhelpers\MattableController {
         $id = $this->params->getIntRequestParam('id');
         $vid = $this->params->getIntRequestParam('vid');
         $type = $this->params->getStringRequestParam('type', 'pre');
+        $cikksz = $this->params->getStringRequestParam('cikkszam');
         $rep = $this->getRepo();
-        $rep->loadData($id, $vid);
+        $rep->loadData($id, $vid, $cikksz);
         $rep->calculate();
         switch($type) {
             case 'pre':

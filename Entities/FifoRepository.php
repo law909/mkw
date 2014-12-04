@@ -17,14 +17,25 @@ class FifoRepository extends \mkwhelpers\Repository {
 		));
 	}
 
-    public function loadData($tid, $vid) {
+    public function loadData($tid = null, $vid = null, $cikksz = null) {
         $sql1 = '';
         $sql2 = '';
-        if ($tid) {
-            $sql1 = ' AND (bt.termek_id = ' . $tid . ')';
+        if ($cikksz) {
+            $tr = $this->_em->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikksz));
+            if ($tr) {
+                $sql1 = ' AND (bt.termek_id = ' . $tr[0]->getId() . ')';
+            }
+            else {
+                $sql1 = 'AND (1=0)';
+            }
         }
-        if ($vid) {
-            $sql2 = ' AND (bt.termekvaltozat_id = ' . $vid . ')';
+        else {
+            if ($tid) {
+                $sql1 = ' AND (bt.termek_id = ' . $tid . ')';
+            }
+            if ($vid) {
+                $sql2 = ' AND (bt.termekvaltozat_id = ' . $vid . ')';
+            }
         }
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
