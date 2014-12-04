@@ -52,6 +52,10 @@
 			<div><a class="menupont" href="/admin/template/viewlist">{t('Sablonszerkesztő')}</a></div>
 			<div><a class="menupont" href="/admin/sitemap/view">{t('Sitemap')}</a></div>
 		</div>
+		<div class="menu-titlebar" data-caption="{t('Kimutatások')}" data-refcontrol="#ReportTab"></div>
+		<div id="ReportTab">
+			<div><a class="menupont" href="/admin/fifo/view">{t('Készetérték')}</a></div>
+		</div>
 		<div class="menu-titlebar" data-caption="{t('HR')}" data-refcontrol="#HRTab"></div>
 		<div id="HRTab" data-visible="hidden">
 			<div><a class="menupont" href="/admin/dolgozo/viewlist">{t('Dolgozók')}</a></div>
@@ -64,13 +68,16 @@
 			<div><a class="menupont" href="/admin/teendo/viewlist">{t('Teendők')}</a></div>
 			<div><a class="menupont" href="/admin/esemeny/viewlist">{t('Események')}</a></div>
 		</div>
-		<div><a class="menupont" href="/admin/bizonylatstatusz/viewlist">{t('Bizonylat státuszok')}</a></div>
-		<div><a class="menupont" href="/admin/dolgozo/viewlist">{t('Felhasználók')}</a></div>
-		<div><a class="menupont" href="/admin/egyebtorzs/view">{t('Egyéb adatok')}</a></div>
-		<div><a class="menupont" href="/admin/export/view">{t('Termék exportok')}</a></div>
-		<div><a class="menupont" href="/admin/import/view">{t('Importok')}</a></div>
-		<div><a class="menupont" href="/admin/setup/view">{t('Beállítások')}</a></div>
-		<div><a class="menupont" href="/admin/regeneratekarkod">{t('Termék kat. rendezése')}</a></div>
+		<div class="menu-titlebar" data-caption="{t('Egyebek')}" data-refcontrol="#EgyebTab"></div>
+		<div id="EgyebTab">
+            <div><a class="menupont" href="/admin/bizonylatstatusz/viewlist">{t('Bizonylat státuszok')}</a></div>
+            <div><a class="menupont" href="/admin/dolgozo/viewlist">{t('Felhasználók')}</a></div>
+            <div><a class="menupont" href="/admin/egyebtorzs/view">{t('Egyéb adatok')}</a></div>
+            <div><a class="menupont" href="/admin/export/view">{t('Termék exportok')}</a></div>
+            <div><a class="menupont" href="/admin/import/view">{t('Importok')}</a></div>
+            <div><a class="menupont" href="/admin/setup/view">{t('Beállítások')}</a></div>
+            <div><a class="menupont" href="/admin/regeneratekarkod">{t('Termék kat. rendezése')}</a></div>
+        </div>
 		<div>
 			<select id="ThemeSelect">
 				{foreach $uithemes as $_uitheme}

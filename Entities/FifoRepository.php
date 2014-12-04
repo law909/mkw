@@ -17,6 +17,33 @@ class FifoRepository extends \mkwhelpers\Repository {
 		));
 	}
 
+    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
+        $a = $this->alias;
+        $q = $this->_em->createQuery('SELECT ' . $a . ',kibf,kibt,bebf,bebt,r,t,tv'
+                . ' FROM ' . $this->entityname . ' ' . $a
+                . ' LEFT JOIN ' . $a . '.kibizonylatfej kibf'
+                . ' LEFT JOIN ' . $a . '.kibizonylattetel kibt'
+                . ' LEFT JOIN ' . $a . '.bebizonylatfej bebf'
+                . ' LEFT JOIN ' . $a . '.bebizonylattetel bebt'
+                . ' LEFT JOIN ' . $a . '.raktar r'
+                . ' LEFT JOIN ' . $a . '.termek t'
+                . ' LEFT JOIN ' . $a . '.termekvaltozat tv'
+                . $this->getFilterString($filter)
+                . $this->getOrderString($order));
+        $q->setParameters($this->getQueryParameters($filter));
+        if ($offset > 0) {
+            $q->setFirstResult($offset);
+        }
+        if ($elemcount > 0) {
+            $q->setMaxResults($elemcount);
+        }
+        return $q->getResult();
+    }
+
+    private function clearData() {
+        $this->_em->getConnection()->executeUpdate('DELETE FROM fifo');
+    }
+
     public function loadData($tid = null, $vid = null, $cikksz = null) {
         $sql1 = '';
         $sql2 = '';
@@ -195,7 +222,23 @@ class FifoRepository extends \mkwhelpers\Repository {
     }
 
     public function saveData() {
-
+        $this->clearData();
+        $data = $this->getData();
+        $q = $this->_em->getConnection()->prepare('INSERT INTO fifo (raktar_id, termek_id, termekvaltozat_id, kibizonylatfej_id, kibizonylattetel_id, bebizonylatfej_id, bebizonylattetel_id, mennyiseg) ' .
+                'VALUES (:rid, :tid, :tvid, :id, :tetelid, :beid, :betetelid, :mennyiseg)');
+        foreach($data as $d) {
+            $params = array(
+                'rid' => $d['raktarid'],
+                'tid' => $d['termekid'],
+                'tvid' => (array_key_exists('valtozatid', $d) ? $d['valtozatid'] : null),
+                'id' => $d['id'],
+                'tetelid' => $d['tetelid'],
+                'beid' => (array_key_exists('beid', $d) ? $d['beid'] : null),
+                'betetelid' => (array_key_exists('betetelid', $d) ? $d['betetelid'] : null),
+                'mennyiseg' => $d['mennyiseg']
+            );
+            $q->execute($params);
+        }
     }
 
     public function getDataHeader() {

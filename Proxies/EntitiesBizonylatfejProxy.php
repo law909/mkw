@@ -282,7 +282,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getKeltStr();
     }
 
-    public function setKelt($adat)
+    public function setKelt($adat = '')
     {
         $this->__load();
         return parent::setKelt($adat);
@@ -300,7 +300,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getTeljesitesStr();
     }
 
-    public function setTeljesites($adat)
+    public function setTeljesites($adat = '')
     {
         $this->__load();
         return parent::setTeljesites($adat);
@@ -318,7 +318,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getEsedekessegStr();
     }
 
-    public function setEsedekesseg($adat)
+    public function setEsedekesseg($adat = '')
     {
         $this->__load();
         return parent::setEsedekesseg($adat);
@@ -336,7 +336,7 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getHataridoStr();
     }
 
-    public function setHatarido($adat)
+    public function setHatarido($adat = '')
     {
         $this->__load();
         return parent::setHatarido($adat);
