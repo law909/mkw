@@ -409,7 +409,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$filter = array();
         if (!is_null($this->params->getRequestParam('gyartofilter', null))) {
             $filter['fields'][] = 'gyarto';
-            $filter['claues'][] = '=';
+            $filter['clauses'][] = '=';
             $filter['values'][] = $this->params->getIntRequestParam('gyartofilter');
         }
 		if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
