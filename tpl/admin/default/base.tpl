@@ -54,7 +54,7 @@
 		</div>
 		<div class="menu-titlebar" data-caption="{t('Kimutatások')}" data-refcontrol="#ReportTab"></div>
 		<div id="ReportTab">
-			<div><a class="menupont" href="/admin/fifo/view">{t('Készetérték')}</a></div>
+			<div><a class="menupont" href="/admin/fifo/view">{t('Készletérték')}</a></div>
 		</div>
 		<div class="menu-titlebar" data-caption="{t('HR')}" data-refcontrol="#HRTab"></div>
 		<div id="HRTab" data-visible="hidden">

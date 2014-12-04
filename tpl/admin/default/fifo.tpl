@@ -30,6 +30,9 @@
             <div>
             <a href="/admin/fifo/alapadat" class="js-fifoalapadat">FIFO alapadatok</a>
             </div>
+            <div>
+            <a href="/admin/fifo/keszletertek" class="js-keszletertek">Készletérték</a>
+            </div>
 		</div>
 	</div>
 	<div class="admin-form-footer">

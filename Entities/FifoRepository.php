@@ -42,6 +42,7 @@ class FifoRepository extends \mkwhelpers\Repository {
 
     private function clearData() {
         $this->_em->getConnection()->executeUpdate('DELETE FROM fifo');
+        $this->_em->getConnection()->executeUpdate('DELETE FROM keszlet');
     }
 
     public function loadData($tid = null, $vid = null, $cikksz = null) {
@@ -238,6 +239,22 @@ class FifoRepository extends \mkwhelpers\Repository {
                 'mennyiseg' => $d['mennyiseg']
             );
             $q->execute($params);
+        }
+
+        $q = $this->_em->getConnection()->prepare('INSERT INTO keszlet (raktar_id, termek_id, termekvaltozat_id, bebizonylatfej_id, bebizonylattetel_id, mennyiseg) ' .
+                'VALUES (:rid, :tid, :tvid, :beid, :betetelid, :mennyiseg)');
+        foreach($this->be as $d) {
+            if ($d['maradek'] != 0) {
+                $params = array(
+                    'rid' => $d['raktarid'],
+                    'tid' => $d['termekid'],
+                    'tvid' => (array_key_exists('valtozatid', $d) ? $d['valtozatid'] : null),
+                    'beid' => (array_key_exists('id', $d) ? $d['id'] : null),
+                    'betetelid' => (array_key_exists('tetelid', $d) ? $d['tetelid'] : null),
+                    'mennyiseg' => $d['maradek']
+                );
+                $q->execute($params);
+            }
         }
     }
 

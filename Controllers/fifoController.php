@@ -54,6 +54,8 @@ class fifoController extends \mkwhelpers\Controller {
         $fifok = $rep->getWithJoins(array(), array());
         echo implode(';', array(
             'Raktár',
+            'Termék id',
+            'Változat id',
             'Cikkszám',
             'Termék név',
             'Változat',
@@ -77,6 +79,8 @@ class fifoController extends \mkwhelpers\Controller {
             $betetel = $f->getBebizonylattetel();
             echo implode(';', array(
                 $raktar->getNev(),
+                $termek->getId(),
+                $valtozat ? $valtozat->getId() : '',
                 $termek->getCikkszam(),
                 $termek->getNev(),
                 $valtozat ? $valtozat->getNev() : '',
@@ -92,4 +96,47 @@ class fifoController extends \mkwhelpers\Controller {
             )) . "\r\n";
         }
     }
+
+    public function getKeszletertek() {
+        header("Content-type: text/csv");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        $rep = \mkw\Store::getEm()->getRepository('Entities\Keszlet');
+        $fifok = $rep->getWithJoins(array(), array());
+        echo implode(';', array(
+            'Raktár',
+            'Termék id',
+            'Változat id',
+            'Cikkszám',
+            'Termék név',
+            'Változat',
+            'BE biz.szám',
+            'BE teljesítés',
+            'BE nettó egys.ár',
+            'BE bruttó egys.ár',
+            'Mennyiség'
+        )) . "\r\n";
+        foreach($fifok as $f) {
+            $raktar = $f->getRaktar();
+            $termek = $f->getTermek();
+            $valtozat = $f->getTermekvaltozat();
+            $befej = $f->getBebizonylatfej();
+            $betetel = $f->getBebizonylattetel();
+            echo implode(';', array(
+                $raktar->getNev(),
+                $termek->getId(),
+                $valtozat ? $valtozat->getId() : '',
+                $termek->getCikkszam(),
+                $termek->getNev(),
+                $valtozat ? $valtozat->getNev() : '',
+                $befej ? $befej->getId() : '',
+                $befej ? $befej->getTeljesitesStr() : '',
+                $betetel ? $betetel->getNettoegysar() : 0,
+                $betetel ? $betetel->getBruttoegysar() : 0,
+                $f->getMennyiseg()
+            )) . "\r\n";
+        }
+    }
+
 }

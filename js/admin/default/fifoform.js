@@ -8,8 +8,8 @@ $(document).ready(function() {
 		saveUrl:'/admin/save',
 		beforeShow:function() {
 
-            $('.js-fifoalapadat').button();
-            
+            $('.js-fifoalapadat,.js-keszletertek').button();
+
             $('.js-fifocalc').on('click', function(e) {
                 e.preventDefault();
                 $.ajax({

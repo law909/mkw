@@ -267,3 +267,4 @@ $router->map('GET', '/admin/fifoteszt', 'fifoController#teszt', 'adminfifoteszt'
 $router->map('GET', '/admin/fifo/view', 'fifoController#view', 'adminfifoview');
 $router->map('POST', '/admin/fifo/calc', 'fifoController#calculate', 'adminfifocalc');
 $router->map('GET', '/admin/fifo/alapadat', 'fifoController#getAlapadat', 'adminfifoalapadat');
+$router->map('GET', '/admin/fifo/keszletertek', 'fifoController#getKeszletertek', 'adminkeszletertek');
