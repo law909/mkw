@@ -24,6 +24,8 @@
 
 		<script src="/js/main/mkwcansas/jquery-migrate-1.2.1.js"></script>
 
+        <script src="/js/main/mkwcansas/mkwerrorlog.js"></script>
+
 		<script src="/js/main/mkwcansas/jquery.magnific-popup.min.js"></script>
 		<script src="/js/main/mkwcansas/jquery.slider.min.js"></script>
         <script src="/js/main/mkwcansas/jquery.royalslider.min.js"></script>

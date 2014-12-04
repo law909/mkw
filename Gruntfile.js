@@ -6,6 +6,7 @@ module.exports = function(grunt) {
             lib: {
                 src: [
                     'js/main/mkwcansas/jquery-1.11.1.min.js',
+                    'js/main/mkwcansas/mkwerrorlog.js',
                     'js/main/mkwcansas/jquery-migrate-1.2.1.js',
                     'js/main/mkwcansas/jquery.magnific-popup.min.js',
                     'js/main/mkwcansas/jquery.slider.min.js',

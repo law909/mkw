@@ -23,7 +23,7 @@ class Store {
     }
 
     public function getBootstrapJSVersion() {
-        return 1;
+        return 2;
     }
 
     public static function writelog($text, $fname = 'log.txt') {
