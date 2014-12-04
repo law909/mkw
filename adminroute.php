@@ -262,3 +262,5 @@ $router->map('GET', '/admin/bizonylatstatusz/viewkarb', 'bizonylatstatuszControl
 $router->map('POST', '/admin/bizonylatstatusz/save', 'bizonylatstatuszController#save', 'adminbizonylatstatuszsave');
 
 $router->map('GET', '/admin/rlbexport', 'exportController#RLBExport', 'adminrlbexport');
+
+$router->map('GET', '/admin/fifoteszt', 'fifoController#teszt', 'adminfifoteszt');
