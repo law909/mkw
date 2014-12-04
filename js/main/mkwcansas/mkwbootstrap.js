@@ -41,7 +41,7 @@ window.onerror = function (errorMsg, url, lineNumber) {
             url: '/jslogger.php',
             data: {
                 req: 'write',
-                data: getSessid() + ' ## ' + str + ' ## ' + navigator.userAgent
+                data: getSessid() + ' ## ' + str + ' ## ' + location.href + ' ## ' + navigator.userAgent
             }
         });
     }
