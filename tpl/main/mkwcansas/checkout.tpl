@@ -126,7 +126,7 @@
                             <div class="controls controls-row chk-controloffset">
                                 <input name="szamlairszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$szamlairszam|default}" {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
                                 <i class="span inputiconhack"></i>
-                                <input name="szamlavaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$szamlanev|default}" {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
+                                <input name="szamlavaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$szamlavaros|default}" {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
                             </div>
                             <div class="controls chk-controloffset">
                                 <input name="szamlautca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$szamlautca|default}" {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
