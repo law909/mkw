@@ -15,9 +15,26 @@ class fifoController extends \mkwhelpers\MattableController {
 	}
 
     public function teszt() {
+        $id = $this->params->getIntRequestParam('id');
+        $vid = $this->params->getIntRequestParam('vid');
+        $type = $this->params->getStringRequestParam('type', 'pre');
         $rep = $this->getRepo();
-        $rep->loadData();
+        $rep->loadData($id, $vid);
         $rep->calculate();
-        echo '<pre>' . print_r($rep->getData(), true) . '</pre>';
+        switch($type) {
+            case 'pre':
+                echo '<pre>' . print_r($rep->getData(), true) . '</pre>';
+                break;
+            case 'csv':
+                header("Content-type: text/csv");
+                header("Pragma: no-cache");
+                header("Expires: 0");
+                echo implode(';', $rep->getDataHeader()) . "\n";
+                $d = $rep->getData();
+                foreach($d as $dt) {
+                    echo implode(';', $dt) . "\n";
+                }
+                break;
+        }
     }
 }
