@@ -45,7 +45,6 @@
 <input name="tetelme_{$tetel.id}" type="text" value="{$tetel.me}" size="10" maxlength="20" placeholder="{t('ME')}"></td>
 </tr>
 </tbody></table>
-{$showhaszonszazalek}
 <table><tbody>
         <tr><td></td><td>{t('Nettó')}</td><td>{t('Bruttó')}</td>{if ($showhaszonszazalek)}<td>Haszon %</td><td>Eladási br.ár</td>{/if}{if ($showvalutanem)}<td>{t('Nettó')}</td><td>{t('Bruttó')}</td>{/if}</tr>
 <tr>
