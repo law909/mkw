@@ -63,6 +63,7 @@
                 filterClearTitle: 'Szűrőfeltételek tölése',
                 filterOpenTitle: 'Szűrőt kinyit',
                 filterCloseTitle: 'Szűrőt becsuk',
+                filterOpenCloseTitle: 'Szűrő kinyit/becsuk',
                 orderUp: 'növekvő',
                 orderDown: 'csökkenő',
                 msgDel: 'Biztosan törli a tételt?'
@@ -160,6 +161,22 @@
                         _filtercloseupbutton.attr('title', setup.txt.filterOpenTitle);
                     }
                 });
+                header.append('<a href="#" class="js-mattablefiltercloseup">' + setup.txt.filterOpenCloseTitle + '</a>');
+                var _filtercloseup = $('.js-mattablefiltercloseup');
+                _filtercloseup.on('click', function(e) {
+                    e.preventDefault();
+                    if (!filterwrapper.is(':visible')) {
+                        filterwrapper.slideDown(setup.animationSpeed);
+                        $(this).children('span').removeClass('ui-icon-circle-triangle-s').addClass('ui-icon-circle-triangle-n');
+                        _filtercloseupbutton.attr('title', setup.txt.filterCloseTitle);
+                    }
+                    else {
+                        filterwrapper.slideUp(setup.animationSpeed);
+                        $(this).children('span').removeClass('ui-icon-circle-triangle-n').addClass('ui-icon-circle-triangle-s');
+                        _filtercloseupbutton.attr('title', setup.txt.filterOpenTitle);
+                    }
+                });
+
                 $(setup.filter.refreshButton)
                         .on('click', function(e) {
                             e.preventDefault();
