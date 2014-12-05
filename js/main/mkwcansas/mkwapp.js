@@ -1168,11 +1168,11 @@ $(document).ready(function() {
         var $arslider = $('#ArSlider');
         if ($arslider.length > 0) {
             var maxar = $arslider.data('maxar') * 1,
-                    ti = $arslider.attr('value'),
+                    ti = $arslider.data('value'),
                     step = $arslider.data('step') * 1;
             $arslider.slider({
                 from: 0,
-                to: maxar + step,
+                to: maxar,
                 step: step,
                 dimension: '&nbsp;Ft',
                 skin: 'mkwcansas',
@@ -1180,7 +1180,10 @@ $(document).ready(function() {
                     mkw.lapozas();
                 }
             });
-            $arslider.slider('value', ti.split(';')[0], ti.split(';')[1]);
+/*            var from = ti.split(';')[0] * 1,
+            to = ti.split(';')[1] * 1;
+            $arslider.slider('value', 1000, 3000);
+*/
         }
     }
     if ($.fn.typeahead) {
