@@ -48,8 +48,9 @@
                                 <img itemprop="image" src="{$termek.kozepeskepurl}" alt="{$termek.caption}" title="{$termek.caption}">
                             </a>
                         </div>
+                        {$kcnt=count($termek.kepek)}
+                        {if ($kcnt>0)}
                         <div class="js-termekimageslider termekimageslider termekimagecontainer textaligncenter royalSlider contentSlider rsDefaultInv">
-                            {$kcnt=count($termek.kepek)}
                             {$step=4}
                             {for $i=0 to $kcnt-1 step $step}
                                 <div>
@@ -64,6 +65,7 @@
                                 </div>
                             {/for}
                         </div>
+                        {/if}
                         <div>
         <!-- AddThis Button BEGIN -->
         <div class="addthis_toolbox addthis_default_style ">
