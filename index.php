@@ -96,14 +96,14 @@ if ($pc->checkloggedin()) {
 	}
 }
 
+$rw301c = new \Controllers\rewrite301Controller(array());
+$rw301c->rewrite();
+
 if ($ini['developer']) {
     if (in_array(\mkw\Store::getExtension($_SERVER['REQUEST_URI']), array('jpg', 'gif', 'png', 'jpeg')))  {
         die();
     }
 }
-
-$rw301c = new \Controllers\rewrite301Controller(array());
-$rw301c->rewrite();
 
 $router = Store::getRouter();
 if (file_exists('mainroute.php')) {
