@@ -97,9 +97,9 @@ if ($pc->checkloggedin()) {
 }
 
 if ($ini['developer']) {
-    Store::writelog($_SERVER['SCRIPT_URI']);
-    Store::writelog(\mkw\Store::getExtension($_SERVER['SCRIPT_URI']));
-    if (in_array(\mkw\Store::getExtension($_SERVER['SCRIPT_URI']), array('jpg', 'gif')))  {
+    Store::writelog($_SERVER['REQUEST_URI']);
+    Store::writelog(\mkw\Store::getExtension($_SERVER['REQUEST_URI']));
+    if (in_array(\mkw\Store::getExtension($_SERVER['REQUEST_URI']), array('jpg', 'gif')))  {
         die();
     }
 }
