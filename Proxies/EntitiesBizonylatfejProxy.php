@@ -42,10 +42,10 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::doStuffOnPrePersist();
     }
 
-    public function sendStatuszEmail($emailtpl, $bf = NULL)
+    public function sendStatuszEmail($emailtpl, $bf = NULL, $topartner = true)
     {
         $this->__load();
-        return parent::sendStatuszEmail($emailtpl, $bf);
+        return parent::sendStatuszEmail($emailtpl, $bf, $topartner);
     }
 
     public function toLista()
@@ -1054,6 +1054,12 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
     {
         $this->__load();
         return parent::removeSzulobizonylatfej($val);
+    }
+
+    public function getPartnerCim()
+    {
+        $this->__load();
+        return parent::getPartnerCim();
     }
 
 

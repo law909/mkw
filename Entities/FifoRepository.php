@@ -45,7 +45,13 @@ class FifoRepository extends \mkwhelpers\Repository {
         $this->_em->getConnection()->executeUpdate('DELETE FROM keszlet');
     }
 
-    public function loadData($tid = null, $vid = null, $cikksz = null) {
+    public function loadData($stornokell, $tid = null, $vid = null, $cikksz = null) {
+        if ($stornokell) {
+            $stornosql = '';
+        }
+        else {
+            $stornosql = ' AND ((bf.storno=0) OR (bf.storno IS NULL)) AND ((bf.stornozott=0) OR (bf.stornozott IS NULL)) ';
+        }
         $sql1 = '';
         $sql2 = '';
         if ($cikksz) {
@@ -78,8 +84,8 @@ class FifoRepository extends \mkwhelpers\Repository {
             'SELECT bf.id,bt.id AS btid,bf.irany,bf.teljesites,bf.raktar_id,termek_id,termekvaltozat_id,mennyiseg ' .
             'FROM bizonylatfej bf, bizonylattetel bt ' .
             'WHERE (bf.id=bt.bizonylatfej_id) AND (bt.mozgat=1) AND ' .
-                '(((bf.irany>0) AND (bt.mennyiseg>0)) OR ((bf.irany<0) AND (bt.mennyiseg<0))) AND ' .
-                '((bf.storno=0) OR (bf.storno IS NULL)) AND ((bf.stornozott=0) OR (bf.stornozott IS NULL)) ' . $sql1 . $sql2 .
+                '(((bf.irany>0) AND (bt.mennyiseg>0)) OR ((bf.irany<0) AND (bt.mennyiseg<0))) ' .
+                $stornosql . $sql1 . $sql2 .
             ' ORDER BY raktar_id,termek_id,termekvaltozat_id,teljesites'
                 , $rsm);
         $this->be = $q->getScalarResult();
@@ -95,8 +101,8 @@ class FifoRepository extends \mkwhelpers\Repository {
             'SELECT bf.id,bt.id AS btid,bf.irany,bf.teljesites,bf.raktar_id,termek_id,termekvaltozat_id,mennyiseg ' .
             'FROM bizonylatfej bf, bizonylattetel bt ' .
             'WHERE (bf.id=bt.bizonylatfej_id) AND (bt.mozgat=1) AND ' .
-                '(((bf.irany<0) AND (bt.mennyiseg>0)) OR ((bf.irany>0) AND (bt.mennyiseg<0))) AND ' .
-                '((bf.storno=0) OR (bf.storno IS NULL)) AND ((bf.stornozott=0) OR (bf.stornozott IS NULL)) ' . $sql1 . $sql2 .
+                '(((bf.irany<0) AND (bt.mennyiseg>0)) OR ((bf.irany>0) AND (bt.mennyiseg<0))) ' .
+                $stornosql . $sql1 . $sql2 .
             ' ORDER BY raktar_id,termek_id,termekvaltozat_id,teljesites'
                 , $rsm);
         $this->ki = $q->getScalarResult();

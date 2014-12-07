@@ -1359,4 +1359,10 @@ class Bizonylatfej {
         return false;
     }
 
+    public function getPartnerCim() {
+        $a = array($this->partnerirszam, $this->partnervaros);
+        $cim = implode(' ', $a);
+        $a = array($cim, $this->partnerutca);
+        return  implode(', ', $a);
+    }
 }

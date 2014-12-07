@@ -8,12 +8,19 @@ $(document).ready(function() {
 		saveUrl:'/admin/save',
 		beforeShow:function() {
 
-            $('.js-fifoalapadat,.js-keszletertek').button();
+            $('.js-fifoalapadat,.js-keszletertek').on('click', function(e) {
+                e.preventDefault();
+                $ff = $('#fifoexport');
+                $ff.attr('action', $(this).attr('href'));
+                $ff.submit();
+            }).button();
 
             $('.js-fifocalc').on('click', function(e) {
                 e.preventDefault();
+                var data = new FormData($('#fifocalc')[0]);
                 $.ajax({
                     type: 'POST',
+                    data: data,
                     url: $(this).attr('href'),
                     success: function() {
                         alert('Kész.');

@@ -13,13 +13,33 @@ class fifoController extends \mkwhelpers\Controller {
         $view->printTemplateResult(false);
     }
 
+    private function toiso($mit, $kell) {
+        if ($kell) {
+            if (is_array($mit)) {
+                return array_map(function($el) {
+                    return mb_convert_encoding($el, 'ISO-8859-2', 'UTF8');
+                }, $mit);
+            }
+            return mb_convert_encoding($mit, 'ISO-8859-2', 'UTF8');
+        }
+        return $mit;
+    }
+
+    private function num2xls($s, $kell) {
+        if ($kell) {
+            return str_replace('.', ',', $s);
+        }
+        return $s;
+    }
+
     public function teszt() {
         $id = $this->params->getIntRequestParam('id');
         $vid = $this->params->getIntRequestParam('vid');
         $type = $this->params->getStringRequestParam('type', 'pre');
         $cikksz = $this->params->getStringRequestParam('cikkszam');
+        $stornokell = $this->params->getBoolRequestParam('storno', false);
         $rep = \mkw\Store::getEm()->getRepository('Entities\Fifo');
-        $rep->loadData($id, $vid, $cikksz);
+        $rep->loadData($stornokell, $id, $vid, $cikksz);
         $rep->calculate();
         switch($type) {
             case 'pre':
@@ -39,36 +59,56 @@ class fifoController extends \mkwhelpers\Controller {
     }
 
     public function calculate() {
+        $stornokell = $this->params->getBoolRequestParam('storno', false);
         $rep = \mkw\Store::getEm()->getRepository('Entities\Fifo');
-        $rep->loadData();
+        $rep->loadData($stornokell);
         $rep->calculate();
         $rep->saveData();
     }
 
     public function getAlapadat() {
-        header("Content-type: text/csv");
+        $toexcel = $this->params->getBoolRequestParam('toexcel', false);
+        $iso = $this->params->getBoolRequestParam('toiso', false);
+        if ($iso) {
+            header("Content-type: text/csv; charset=iso-8859-2");
+        }
+        else {
+            header("Content-type: text/csv; charset=utf-8");
+        }
         header("Pragma: no-cache");
         header("Expires: 0");
 
+        $fp = fopen('php://output', 'w');
+
         $rep = \mkw\Store::getEm()->getRepository('Entities\Fifo');
         $fifok = $rep->getWithJoins(array(), array());
-        echo implode(';', array(
+        fputcsv($fp, $this->toiso(array(
             'Raktár',
             'Termék id',
             'Változat id',
+            'Gyártó',
             'Cikkszám',
             'Termék név',
             'Változat',
             'KI biz.szám',
+            'KI er.biz.szám',
             'KI teljesítés',
+            'KI partner neve',
+            'KI partner címe',
+            'KI belső megjegyzés',
             'KI nettó egys.ár',
             'KI bruttó egys.ár',
             'BE biz.szám',
+            'BE er.biz.szám',
             'BE teljesítés',
+            'BE partner neve',
+            'BE belső megjegyzés',
             'BE nettó egys.ár',
             'BE bruttó egys.ár',
             'Mennyiség'
-        )) . "\r\n";
+        ), $iso), ';', '"');
+        //fseek($fp, -1, SEEK_CUR);
+        //fwrite($fp, "\r\n");
         foreach($fifok as $f) {
             $raktar = $f->getRaktar();
             $termek = $f->getTermek();
@@ -77,66 +117,95 @@ class fifoController extends \mkwhelpers\Controller {
             $kitetel = $f->getKibizonylattetel();
             $befej = $f->getBebizonylatfej();
             $betetel = $f->getBebizonylattetel();
-            echo implode(';', array(
+            fputcsv($fp, $this->toiso(array(
                 $raktar->getNev(),
                 $termek->getId(),
                 $valtozat ? $valtozat->getId() : '',
+                $termek->getGyartoNev(),
                 $termek->getCikkszam(),
                 $termek->getNev(),
                 $valtozat ? $valtozat->getNev() : '',
                 $kifej ? $kifej->getId() : '',
+                $kifej ? $kifej->getErbizonylatszam() : '',
                 $kifej ? $kifej->getTeljesitesStr() : '',
-                $kitetel ? $kitetel->getNettoegysar() : 0,
-                $kitetel ? $kitetel->getBruttoegysar() : 0,
+                $kifej ? $kifej->getPartnernev() : '',
+                $kifej ? $kifej->getPartnerCim() : '',
+                $kifej ? $kifej->getBelsomegjegyzes() : '',
+                $kitetel ? $this->num2xls($kitetel->getNettoegysar(), $toexcel) : 0,
+                $kitetel ? $this->num2xls($kitetel->getBruttoegysar(), $toexcel) : 0,
                 $befej ? $befej->getId() : '',
+                $befej ? $befej->getErbizonylatszam() : '',
                 $befej ? $befej->getTeljesitesStr() : '',
-                $betetel ? $betetel->getNettoegysar() : 0,
-                $betetel ? $betetel->getBruttoegysar() : 0,
-                $f->getMennyiseg() * ($kifej ? $kifej->getIrany() : 1)
-            )) . "\r\n";
+                $befej ? $befej->getPartnernev() : '',
+                $befej ? $befej->getBelsomegjegyzes() : '',
+                $betetel ? $this->num2xls($betetel->getNettoegysar(), $toexcel) : 0,
+                $betetel ? $this->num2xls($betetel->getBruttoegysar(), $toexcel) : 0,
+                $this->num2xls($f->getMennyiseg() * ($kifej ? $kifej->getIrany() : 1), $toexcel)
+            ), $iso), ';', '"');
+            //fseek($fp, -1, SEEK_CUR);
+            //fwrite($fp, "\r\n");
         }
+        fclose($fp);
     }
 
     public function getKeszletertek() {
-        header("Content-type: text/csv");
+        $toexcel = $this->params->getBoolRequestParam('toexcel', false);
+        $iso = $this->params->getBoolRequestParam('toiso', false);
+        if ($iso) {
+            header("Content-type: text/csv; charset=iso-8859-2");
+        }
+        else {
+            header("Content-type: text/csv; charset=utf-8");
+        }
         header("Pragma: no-cache");
         header("Expires: 0");
 
+        $fp = fopen('php://output', 'w');
+
         $rep = \mkw\Store::getEm()->getRepository('Entities\Keszlet');
         $fifok = $rep->getWithJoins(array(), array());
-        echo implode(';', array(
+        fputcsv($fp, $this->toiso(array(
             'Raktár',
             'Termék id',
             'Változat id',
+            'Gyártó',
             'Cikkszám',
             'Termék név',
             'Változat',
             'BE biz.szám',
+            'BE er.biz.szám',
             'BE teljesítés',
+            'BE partner neve',
+            'BE belső megjegyzés',
             'BE nettó egys.ár',
             'BE bruttó egys.ár',
             'Mennyiség'
-        )) . "\r\n";
+        ), $iso), ';', '"');
         foreach($fifok as $f) {
             $raktar = $f->getRaktar();
             $termek = $f->getTermek();
             $valtozat = $f->getTermekvaltozat();
             $befej = $f->getBebizonylatfej();
             $betetel = $f->getBebizonylattetel();
-            echo implode(';', array(
+            fputcsv($fp, $this->toiso(array(
                 $raktar->getNev(),
                 $termek->getId(),
                 $valtozat ? $valtozat->getId() : '',
+                $termek->getGyartoNev(),
                 $termek->getCikkszam(),
                 $termek->getNev(),
                 $valtozat ? $valtozat->getNev() : '',
                 $befej ? $befej->getId() : '',
+                $befej ? $befej->getErbizonylatszam() : '',
                 $befej ? $befej->getTeljesitesStr() : '',
-                $betetel ? $betetel->getNettoegysar() : 0,
-                $betetel ? $betetel->getBruttoegysar() : 0,
-                $f->getMennyiseg()
-            )) . "\r\n";
+                $befej ? $befej->getPartnernev() : '',
+                $befej ? $befej->getBelsomegjegyzes() : '',
+                $betetel ? $this->num2xls($betetel->getNettoegysar(), $toexcel) : 0,
+                $betetel ? $this->num2xls($betetel->getBruttoegysar(), $toexcel) : 0,
+                $this->num2xls($f->getMennyiseg(), $toexcel)
+            ), $iso), ';', '"');
         }
+        fclose($fp);
     }
 
 }
