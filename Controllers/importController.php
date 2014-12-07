@@ -54,6 +54,7 @@ class importController extends \mkwhelpers\Controller {
         $dbig = $this->params->getIntRequestParam('dbig', 0);
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
         $createuj = $this->params->getBoolRequestParam('createuj', false);
+        $arszaz = $this->params->getNumRequestParam('arszaz', 100);
 
         $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
 
@@ -196,8 +197,8 @@ class importController extends \mkwhelpers\Controller {
                     }
                     if ($termek) {
                         $termek->setNemkaphato(($data[$this->n('g')] * 1) == 0);
-                        $termek->setAfa($afa[0]);
-                        $termek->setNetto($data[$this->n('d')] * 1);
+                        //$termek->setAfa($afa[0]);
+                        $termek->setNetto($data[$this->n('d')] * 1 * $arszaz / 100);
                         $termek->setBrutto(round($termek->getBrutto(), -1));
                         store::getEm()->persist($termek);
                         store::getEm()->flush();
@@ -256,6 +257,7 @@ class importController extends \mkwhelpers\Controller {
         $dbig = $this->params->getIntRequestParam('dbig', 0);
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
         $createuj = $this->params->getBoolRequestParam('createuj', false);
+        $arszaz = $this->params->getNumRequestParam('arszaz', 100);
 
         $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
 
@@ -367,8 +369,8 @@ class importController extends \mkwhelpers\Controller {
                     }
                     //$termek->setNemkaphato(($data[6] * 1) == 0);
                     if ($termek) {
-                        $termek->setAfa($afa[0]);
-                        $termek->setNetto($data[7] * 1);
+                        //$termek->setAfa($afa[0]);
+                        $termek->setNetto($data[7] * 1 * $arszaz / 100);
                         $termek->setBrutto(round($termek->getBrutto(), -1));
                         store::getEm()->persist($termek);
                         store::getEm()->flush();
@@ -388,6 +390,7 @@ class importController extends \mkwhelpers\Controller {
         $dbig = $this->params->getIntRequestParam('dbig', 0);
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
         $createuj = $this->params->getBoolRequestParam('createuj', false);
+        $arszaz = $this->params->getNumRequestParam('arszaz', 100);
 
         $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
 
@@ -502,7 +505,7 @@ class importController extends \mkwhelpers\Controller {
                     //$termek->setNemkaphato(($data[6] * 1) == 0);
                     if ($termek || $createuj) {
                         $termek->setAfa($afa[0]);
-                        $termek->setNetto($data[7] * 1);
+                        $termek->setNetto($data[7] * 1 * $arszaz / 100);
                         $termek->setBrutto(round($termek->getBrutto(), -1));
                         store::getEm()->persist($termek);
                         store::getEm()->flush();
@@ -524,6 +527,7 @@ class importController extends \mkwhelpers\Controller {
         $dbig = $this->params->getIntRequestParam('dbig', 0);
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
         $createuj = $this->params->getBoolRequestParam('createuj', false);
+        $arszaz = $this->params->getNumRequestParam('arszaz', 100);
         move_uploaded_file($_FILES['toimport']['tmp_name'], 'reinteximport.csv');
 
         $fh = fopen('reinteximport.csv', 'r');
@@ -571,8 +575,8 @@ class importController extends \mkwhelpers\Controller {
                         }
                     }
                     if ($termek) {
-                        $termek->setAfa($afa[0]);
-                        $termek->setBrutto(round($data[$this->n('i')] * 1,-1));
+                        //$termek->setAfa($afa[0]);
+                        $termek->setBrutto(round($data[$this->n('i')] * 1 * $arszaz / 100,-1));
                         store::getEm()->persist($termek);
                         store::getEm()->flush();
                     }
@@ -592,6 +596,7 @@ class importController extends \mkwhelpers\Controller {
         $dbig = $this->params->getIntRequestParam('dbig', 0);
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
         $createuj = $this->params->getBoolRequestParam('createuj', false);
+        $arszaz = $this->params->getNumRequestParam('arszaz', 100);
         move_uploaded_file($_FILES['toimport']['tmp_name'], 'tutisportimport.csv');
 
         $fh = fopen('tutisportimport.csv', 'r');
@@ -646,8 +651,8 @@ class importController extends \mkwhelpers\Controller {
                         }
                         if ($termek) {
                             $termek->setCikkszam($data[$this->n('a')]);
-                            $termek->setAfa($afa[0]);
-                            $termek->setBrutto(round($data[$this->n('e')], -1));
+                            //$termek->setAfa($afa[0]);
+                            $termek->setBrutto(round($data[$this->n('e')] * 1 * $arszaz / 100, -1));
                             store::getEm()->persist($termek);
                             store::getEm()->flush();
                         }
@@ -678,6 +683,7 @@ class importController extends \mkwhelpers\Controller {
         $dbig = $this->params->getIntRequestParam('dbig', 0);
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
         $createuj = $this->params->getBoolRequestParam('createuj', false);
+        $arszaz = $this->params->getNumRequestParam('arszaz', 100);
 
         $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
 
@@ -770,7 +776,7 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setGyarto($gyarto);
                         }
                         $termek->setNemkaphato(false);
-                        $termek->setBrutto(round($data[$this->n('f')] * 1, -1));
+                        $termek->setBrutto(round($data[$this->n('f')] * 1 * $arszaz / 100, -1));
                         // kepek
                         $imagelist = explode(',', $data[$this->n('h')]);
                         $imgcnt = 0;
@@ -820,10 +826,10 @@ class importController extends \mkwhelpers\Controller {
                     }
                     if ($valtozat) {
                         if ($termek) {
-                            $ar = ($data[$this->n('f')] * 1) - $termek->getBrutto();
+                            $ar = ($data[$this->n('f')] * 1 * $arszaz / 100) - $termek->getBrutto();
                         }
                         else {
-                            $ar = $data[$this->n('f')] * 1;
+                            $ar = $data[$this->n('f')] * 1 * $arszaz / 100;
                         }
                         $valtozat->setBrutto(round($ar, -1));
                         if (!$kaphato) {
@@ -840,7 +846,7 @@ class importController extends \mkwhelpers\Controller {
                             if (!$kaphato) {
                                 $termek->setNemkaphato(true);
                             }
-                            $termek->setBrutto(round($data[$this->n('f')] * 1, -1));
+                            $termek->setBrutto(round($data[$this->n('f')] * 1 * $arszaz / 100, -1));
                             store::getEm()->persist($termek);
                             store::getEm()->flush();
                         }
