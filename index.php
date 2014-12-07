@@ -96,6 +96,12 @@ if ($pc->checkloggedin()) {
 	}
 }
 
+if ($ini['developer']) {
+    if (in_array(\mkw\Store::getExtension($_SERVER['SCRIPT_URI']), array('jpg', 'gif')))  {
+        die();
+    }
+}
+
 $rw301c = new \Controllers\rewrite301Controller(array());
 $rw301c->rewrite();
 
