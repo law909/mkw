@@ -312,7 +312,7 @@ class Bizonylatfej {
         $this->setPersistentData();
     }
 
-    public function sendStatuszEmail($emailtpl, $bf = null) {
+    public function sendStatuszEmail($emailtpl, $bf = null, $topartner = true) {
         if (!$bf) {
             $bf = $this;
         }
@@ -323,7 +323,9 @@ class Bizonylatfej {
             $body = \mkw\Store::getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
             $body->setVar('rendeles', $tpldata);
             $mailer = \mkw\Store::getMailer();
-            $mailer->setTo($bf->getPartneremail());
+            if ($topartner) {
+                $mailer->setTo($bf->getPartneremail());
+            }
             $mailer->setSubject($subject->getTemplateResult());
             $mailer->setMessage($body->getTemplateResult());
             $mailer->send();
