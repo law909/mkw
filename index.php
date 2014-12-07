@@ -97,6 +97,7 @@ if ($pc->checkloggedin()) {
 }
 
 if ($ini['developer']) {
+    echo \mkw\Store::getExtension($_SERVER['SCRIPT_URI']);
     if (in_array(\mkw\Store::getExtension($_SERVER['SCRIPT_URI']), array('jpg', 'gif')))  {
         die();
     }
