@@ -17,10 +17,11 @@ $(document).ready(function() {
 
             $('.js-fifocalc').on('click', function(e) {
                 e.preventDefault();
-                var data = new FormData($('#fifocalc')[0]);
                 $.ajax({
                     type: 'POST',
-                    data: data,
+                    data: {
+                        storno: $('input[name="storno"]').prop('checked')
+                    },
                     url: $(this).attr('href'),
                     success: function() {
                         alert('Kész.');
