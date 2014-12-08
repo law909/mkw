@@ -91,7 +91,8 @@ $(document).ready(function() {
 						var tbody = $('#RecepturaTab');
 						alttab.append(data);
 						$('.js-tetelnewbutton,.js-teteldelbutton').button();
-						$('.js-termekselect').autocomplete(termekautocomplete);
+						$('.js-termekselect').autocomplete(termekautocomplete)
+                        .autocomplete( "instance" )._renderItem = bizonylathelper.termekAutocomplete;
 						$this.remove();
 					}
 				});
@@ -198,7 +199,8 @@ $(document).ready(function() {
                     .on('change', '.js-bizonylatstatuszedit', function(e) {
                 $('input[name="bizonylatstatuszertesito"]').prop('checked', true);
             });
-			$('.js-termekselect').autocomplete(termekautocomplete);
+			$('.js-termekselect').autocomplete(termekautocomplete)
+            .autocomplete( "instance" )._renderItem = bizonylathelper.termekAutocomplete;
 			$('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat').button();
             $('.js-inheritbizonylat').each(function() {
                 var $this = $(this);

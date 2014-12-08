@@ -170,6 +170,19 @@ var bizonylathelper = function($) {
         });
     }
 
+    function termekAutocomplete(ul, item) {
+        if (item.nemlathato) {
+            return $('<li>')
+                .append('<a class="nemelerhetovaltozat">' + item.label + '</a>')
+                .appendTo( ul );
+        }
+        else {
+            return $('<li>')
+                .append('<a>' + item.label + '</a>')
+                .appendTo( ul );
+        };
+    }
+
     return {
         setDates: setDates,
         getArfolyam: getArfolyam,
@@ -177,7 +190,8 @@ var bizonylathelper = function($) {
         calcArak: calcArak,
         checkKelt: checkKelt,
         checkBizonylatFej: checkBizonylatFej,
-        loadValtozatList: loadValtozatList
+        loadValtozatList: loadValtozatList,
+        termekAutocomplete: termekAutocomplete
     };
 
 }(jQuery);

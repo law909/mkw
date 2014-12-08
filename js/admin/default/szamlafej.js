@@ -99,18 +99,7 @@ $(document).ready(function() {
                         alttab.append(data);
                         $('.js-tetelnewbutton,.js-teteldelbutton').button();
                         $('.js-termekselect').autocomplete(termekautocomplete)
-                        .autocomplete( "instance" )._renderItem = function( ul, item ) {
-                            if (item.nemlathato) {
-                                return $('<li>')
-                                    .append('<a class="nemelerhetovaltozat">' + item.label + '</a>')
-                                    .appendTo( ul );
-                            }
-                            else {
-                                return $('<li>')
-                                    .append('<a>' + item.label + '</a>')
-                                    .appendTo( ul );
-                            }
-                        };
+                        .autocomplete( "instance" )._renderItem = bizonylathelper.termekAutocomplete;
                         $this.remove();
                     }
                 });
@@ -215,18 +204,7 @@ $(document).ready(function() {
                         bizonylathelper.setTermekAr(sorid);
                     });
             $('.js-termekselect').autocomplete(termekautocomplete)
-            .autocomplete( "instance" )._renderItem = function( ul, item ) {
-                if (item.nemlathato) {
-                    return $('<li>')
-                        .append('<a class="nemelerhetovaltozat">' + item.label + '</a>')
-                        .appendTo( ul );
-                }
-                else {
-                    return $('<li>')
-                        .append('<a>' + item.label + '</a>')
-                        .appendTo( ul );
-                }
-            };
+            .autocomplete( "instance" )._renderItem = bizonylathelper.termekAutocomplete;
             $('.js-tetelnewbutton,.js-teteldelbutton').button();
             keltedit.datepicker($.datepicker.regional['hu']);
             keltedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
