@@ -561,7 +561,8 @@ class termekController extends \mkwhelpers\MattableController {
 					'kepurl' => $r->getKepUrlLarge(),
 					'slug' => $r->getSlug(),
                     'link' => \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
-                    'mainurl' => store::getConfigValue('mainurl')
+                    'mainurl' => store::getConfigValue('mainurl'),
+                    'nemlathato' => (!$r->getLathato()||$r->getInaktiv()||$r->getNemkaphato())
 				);
 			}
 		}

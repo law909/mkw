@@ -104,7 +104,7 @@ img {
 }
 
 .nemelerhetovaltozat {
-    color: red;
+    color: red !important;
 }
 
 .menupont {

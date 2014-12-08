@@ -98,7 +98,19 @@ $(document).ready(function() {
                         var tbody = $('#RecepturaTab');
                         alttab.append(data);
                         $('.js-tetelnewbutton,.js-teteldelbutton').button();
-                        $('.js-termekselect').autocomplete(termekautocomplete);
+                        $('.js-termekselect').autocomplete(termekautocomplete)
+                        .autocomplete( "instance" )._renderItem = function( ul, item ) {
+                            if (item.nemlathato) {
+                                return $('<li>')
+                                    .append('<a class="nemelerhetovaltozat">' + item.label + '</a>')
+                                    .appendTo( ul );
+                            }
+                            else {
+                                return $('<li>')
+                                    .append('<a>' + item.label + '</a>')
+                                    .appendTo( ul );
+                            }
+                        };
                         $this.remove();
                     }
                 });
@@ -202,7 +214,19 @@ $(document).ready(function() {
                         var sorid = $(this).attr('name').split('_')[1];
                         bizonylathelper.setTermekAr(sorid);
                     });
-            $('.js-termekselect').autocomplete(termekautocomplete);
+            $('.js-termekselect').autocomplete(termekautocomplete)
+            .autocomplete( "instance" )._renderItem = function( ul, item ) {
+                if (item.nemlathato) {
+                    return $('<li>')
+                        .append('<a class="nemelerhetovaltozat">' + item.label + '</a>')
+                        .appendTo( ul );
+                }
+                else {
+                    return $('<li>')
+                        .append('<a>' + item.label + '</a>')
+                        .appendTo( ul );
+                }
+            };
             $('.js-tetelnewbutton,.js-teteldelbutton').button();
             keltedit.datepicker($.datepicker.regional['hu']);
             keltedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
