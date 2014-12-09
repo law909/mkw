@@ -17,10 +17,12 @@
 		<div class="span10">
             {if ($checkouterrors)}
             <div class="row">
-            <div class="span10">
-                {foreach $checkouterrors as $_ce}
-                <div class="checkouterror">{$_ce}</div>
-                {/foreach}
+            <div class="span10 checkouterrorblock">
+                <div class="checkouterrorblockinner">
+                    {foreach $checkouterrors as $_ce}
+                    <div class="checkouterror">{$_ce}</div>
+                    {/foreach}
+                </div>
             </div>
             </div>
             {/if}
@@ -55,10 +57,12 @@
 								<h4>A bejelentkezés nem sikerült...</h4>
 							{/if}
 							<div class="controls chk-controloffset">
-								<input name="email" type="email" form="LoginForm" class="span3" placeholder="{t('email')} *" value="{$user.email|default}" required>
+                                <label class="span3 nomargin">Email</label>
+								<input name="email" type="email" form="LoginForm" class="span3 nomargin" value="{$user.email|default}" required>
 							</div>
 							<div class="controls chk-controloffset">
-								<input name="jelszo" type="password" form="LoginForm" class="span3" placeholder="{t('jelszó')} *" value="">
+                                <label class="span3 nomargin">Jelszó</label>
+								<input name="jelszo" type="password" form="LoginForm" class="span3 nomargin" value="">
 							</div>
 							<div class="row chk-actionrow span">
 								<input name="c" type="hidden" form="LoginForm" value="c">
@@ -76,40 +80,61 @@
 						<small>A <span class="piros">*</span>-gal jelölt adatok kitöltése kötelező.</small>
 						<h5>Kapcsolati adatok</h5>
 						<div class="controls controls-row chk-controloffset">
-							<input name="vezeteknev" type="text" class="span4 js-chkrefresh" placeholder="{t('vezetéknév')} *" value="{$vezeteknev|default}" data-container=".js-chkszallitasiadatok">
-							<input name="keresztnev" type="text" class="span4 js-chkrefresh" placeholder="{t('keresztnév')} *" value="{$keresztnev|default}" data-container=".js-chkszallitasiadatok">
+                            <div class="span4 nomargin">
+                                <label class="span4 nomargin">Vezetéknév *</label>
+    							<input name="vezeteknev" type="text" class="span4 nomargin js-chkrefresh" value="{$vezeteknev|default}" data-container=".js-chkszallitasiadatok">
+                            </div>
+                            <div class="span4">
+                                <label class="span4 nomargin">Keresztnév *</label>
+    							<input name="keresztnev" type="text" class="span4 nomargin js-chkrefresh" value="{$keresztnev|default}" data-container=".js-chkszallitasiadatok">
+                            </div>
 						</div>
 						<div class="controls controls-row chk-controloffset">
-							<div class="chk-relative pull-left chk-tooltippedcontainer">
-								<input name="telefon" type="text" class="span4 js-chkrefresh" placeholder="{t('telefon')} *" value="{$telefon|default}" data-container=".js-chkszallitasiadatok">
+                            <div class="span4 nomargin chk-relative">
+                                <label class="span4 nomargin">Telefon *</label>
+								<input name="telefon" type="text" class="span4 nomargin js-chkrefresh" value="{$telefon|default}" data-container=".js-chkszallitasiadatok">
 								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="A telefonszámra azért van szükségünk, mert ezen keresztül egyeztetünk Önnel a kiszállításról, illetve a futár is így fogja tudni Önnel felvenni a kapcsolatot."></i>
-							</div>
-							<i class="span inputiconhack"></i>
-							<input name="kapcsemail" type="text" class="span4 js-chkrefresh" placeholder="{t('email')} *" value="{$email|default}" {if ($user.loggedin)}readonly {/if} data-container=".js-chkszallitasiadatok">
+                            </div>
+                            <div class="span4">
+                                <label class="span4 nomargin">Email *</label>
+        						<input name="kapcsemail" type="text" class="span4 nomargin js-chkrefresh" value="{$email|default}" {if ($user.loggedin)}readonly {/if} data-container=".js-chkszallitasiadatok">
+                            </div>
 						</div>
 						{if (!$user.loggedin)}
 						<div class="js-checkoutpasswordcontainer">
 						<div class="controls controls-row chk-controloffset js-checkoutpasswordrow">
-							<input name="jelszo1" type="password" class="span4" placeholder="{t('jelszó')} 1 *" value="" data-container=".js-chkszallitasiadatok">
-							<div class="chk-relative pull-left chk-tooltippedcontainer">
-								<i class="span inputiconhack"></i>
-								<input name="jelszo2" type="password" class="span4" placeholder="{t('jelszó')} 2 *" value="" data-container=".js-chkszallitasiadatok">
+                            <div class="span4 nomargin">
+                                <label class="span4 nomargin">Jelszó 1 *</label>
+    							<input name="jelszo1" type="password" class="span4 nomargin" value="" data-container=".js-chkszallitasiadatok">
+                            </div>
+                            <div class="span4 chk-relative">
+                                <label class="span4 nomargin">Jelszó 2 *</label>
+								<input name="jelszo2" type="password" class="span4 nomargin" value="" data-container=".js-chkszallitasiadatok">
 								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="Adja meg kétszer jelszavát, így elkerülheti az elgépelést"></i>
-							</div>
+                            </div>
 						</div>
 						</div>
 						{/if}
 						<h5>Szállítási adatok</h5>
                         <div class="controls chk-controloffset">
-                            <input name="szallnev" type="text" class="span8 js-chkrefresh" placeholder="{t('szállítási név')}" value="{$szallnev|default}" data-container=".js-chkszallitasiadatok">
+                            <div class="span10 nomargin">
+                                <label class="span8 nomargin">Szállítási név</label>
+                                <input name="szallnev" type="text" class="span8 js-chkrefresh" value="{$szallnev|default}" data-container=".js-chkszallitasiadatok">
+                            </div>
                         </div>
                         <div class="controls controls-row chk-controloffset">
-                            <input name="szallirszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$szallirszam|default}" data-container=".js-chkszallitasiadatok">
-                            <i class="span inputiconhack"></i>
-                            <input name="szallvaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$szallvaros|default}" data-container=".js-chkszallitasiadatok">
+                            <div class="span2 nomargin">
+                                <label class="span2 nomargin">Ir.szám *</label>
+                                <input name="szallirszam" type="text" class="span2 nomargin js-chkrefresh" value="{$szallirszam|default}" data-container=".js-chkszallitasiadatok">
+                            </div>
+                            <div class="span6">
+                                <label class="span7 nomargin">Város *</label>
+                                <input name="szallvaros" type="text" class="span6 nomargin js-chkrefresh" value="{$szallvaros|default}" data-container=".js-chkszallitasiadatok">
+                            </div>
                         </div>
                         <div class="controls chk-controloffset">
-                            <input name="szallutca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$szallutca|default}" data-container=".js-chkszallitasiadatok">
+                            <label class="span8 nomargin">Utca *</label>
+                            <input name="szallutca" type="text" class="span8 nomargin js-chkrefresh" value="{$szallutca|default}" data-container=".js-chkszallitasiadatok">
                         </div>
 
 						<h5 class="clearboth">Számlázási adatok</h5>
@@ -121,19 +146,29 @@
 						</div>
 						<div class="js-chkszamlaadatok{if ($szamlaeqszall|default)} notvisible{/if}">
                             <div class="controls chk-controloffset">
-                                <input name="szamlanev" type="text" class="span8 js-chkrefresh" placeholder="{t('számlázási név')}" value="{$szamlanev|default}" {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
+                                <div class="span10 nomargin">
+                                    <label class="span8 nomargin">Számlázási név</label>
+                                    <input name="szamlanev" type="text" class="span8 nomargin js-chkrefresh" value="{$szamlanev|default}" {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
+                                </div>
                             </div>
                             <div class="controls controls-row chk-controloffset">
-                                <input name="szamlairszam" type="text" class="span2 js-chkrefresh" placeholder="{t('ir.szám')} *" value="{$szamlairszam|default}" {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
-                                <i class="span inputiconhack"></i>
-                                <input name="szamlavaros" type="text" class="span6 js-chkrefresh" placeholder="{t('város')} *" value="{$szamlavaros|default}" {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
+                                <div class="span2 nomargin">
+                                    <label class="span2 nomargin">Ir.szám *</label>
+                                    <input name="szamlairszam" type="text" class="span2 nomargin js-chkrefresh" value="{$szamlairszam|default}" {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
+                                </div>
+                                <div class="span6">
+                                    <label class="span7 nomargin">Város *</label>
+                                    <input name="szamlavaros" type="text" class="span6 nomargin js-chkrefresh" value="{$szamlavaros|default}" {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
+                                </div>
                             </div>
                             <div class="controls chk-controloffset">
-                                <input name="szamlautca" type="text" class="span8 js-chkrefresh" placeholder="{t('utca')} *" value="{$szamlautca|default}" {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
+                                <label class="span8 nomargin">Utca *</label>
+                                <input name="szamlautca" type="text" class="span8 nomargin js-chkrefresh" value="{$szamlautca|default}" {if ($szamlaeqszall|default)}disabled {/if}data-container=".js-chkszallitasiadatok">
                             </div>
-                            <div class="controls chk-controloffset">
-                                <div class="chk-relative pull-left chk-tooltippedcontainer">
-                                    <input name="adoszam" type="text" class="span3 js-chkrefresh" placeholder="{t('adószám')}" value="{$adoszam|default}">
+                            <div class="controls controls-row chk-controloffset">
+                                <div class="span3 nomargin chk-relative">
+                                    <label class="span3 nomargin">Adószám</label>
+                                    <input name="adoszam" type="text" class="span3 nomargin js-chkrefresh" value="{$adoszam|default}">
                                     <i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="Nem kötelező kitölteni az adószámot. Akkor adja meg, ha cég nevére vásárol, és szeretné, ha a számlán szerepelne ez az adat is."></i>
                                 </div>
                             </div>
