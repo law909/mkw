@@ -1120,11 +1120,13 @@ class importController extends \mkwhelpers\Controller {
                     store::getEm()->persist($fej);
                     store::getEm()->flush();
                 }
-                $statusz = $fej->getBizonylatstatusz();
+/**                $statusz = $fej->getBizonylatstatusz();
                 if ($statusz) {
                     $emailtpl = $statusz->getEmailtemplate();
                     $fej->sendStatuszEmail($emailtpl, null, false);
                 }
+ *
+ */
             }
 
         }
