@@ -26,11 +26,31 @@ class Store {
         return 6;
     }
 
+    public static function getClientIp() {
+        $ipaddress = '';
+        if ($_SERVER['HTTP_CLIENT_IP'])
+            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+        else if ($_SERVER['HTTP_X_FORWARDED_FOR'])
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        else if ($_SERVER['HTTP_X_FORWARDED'])
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+        else if ($_SERVER['HTTP_FORWARDED_FOR'])
+            $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+        else if ($_SERVER['HTTP_FORWARDED'])
+            $ipaddress = $_SERVER['HTTP_FORWARDED'];
+        else if ($_SERVER['REMOTE_ADDR'])
+            $ipaddress = $_SERVER['REMOTE_ADDR'];
+        else
+            $ipaddress = 'UNKNOWN';
+        return $ipaddress;
+    }
+
     public static function writelog($text, $fname = 'log.txt') {
         $handle = fopen($fname, "a");
         $log = "";
         $separator = " ## ";
         $log.=date('Y.m.d. H:i:s') . $separator;
+        $log.=self::getClientIp() . $separator;
         $log.=$text;
         $log.="\n";
         fwrite($handle, $log);
