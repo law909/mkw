@@ -56,12 +56,14 @@ class szallitasimodController extends \mkwhelpers\JQGridController {
                 $r['selected'] = $sor->getId() == $selid;
             }
             else {
-                if (!$vanvalasztott) {
-                    $r['selected'] = true;
-                    $vanvalasztott = true;
-                }
-                else {
-                    $r['selected'] = false;
+                if (!$mind) {
+                    if (!$vanvalasztott) {
+                        $r['selected'] = true;
+                        $vanvalasztott = true;
+                    }
+                    else {
+                        $r['selected'] = false;
+                    }
                 }
             }
             $res[] = $r;
