@@ -53,12 +53,12 @@ var bizonylathelper = function($) {
                     eb = $('#eladasibruttoar_' + sorId),
                     hasz = $('#haszonszazalek_' + sorId),
                     adat = JSON.parse(data);
-                c.val(adat.netto);
                 if (eb.length > 0) {
                     eb.text(adat.brutto);
                     eb.data('ertek', adat.brutto);
                     hasz.text('0%');
                 }
+                c.val(adat.netto);
                 c.change();
             }
         });

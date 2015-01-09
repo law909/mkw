@@ -52,6 +52,9 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
         $x['afanev'] = $t->getAfanev();
 		$term = $t->getTermek();
 		if ($term) {
+            $eb = $term->getBruttoAr($t->getTermekvaltozat());
+            $x['eladasibrutto'] = $eb;
+            $x['haszonszazalek'] = $eb / $x['bruttoegysar'] * 100 - 100;
 			$x['kozepeskepurl'] = $term->getKepUrlMedium();
 			$x['kiskepurl'] = $term->getKepUrlSmall();
 			$x['minikepurl'] = $term->getKepUrlMini();

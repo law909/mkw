@@ -52,8 +52,8 @@
 <td><input id="NettoegysarEdit{$tetel.id}" name="tetelnettoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysar}" class="js-nettoegysarinput" required="required"></td>
 <td><input name="tetelbruttoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysar}" class="js-bruttoegysarinput" required="required"></td>
 {if ($showhaszonszazalek)}
-<td id="haszonszazalek_{$tetel.id}"></td>
-<td id="eladasibruttoar_{$tetel.id}"></td>
+<td id="haszonszazalek_{$tetel.id}">{number_format($tetel.haszonszazalek,2,'.',' ')}</td>
+<td id="eladasibruttoar_{$tetel.id}" data-ertek="{$tetel.eladasibrutto}">{number_format($tetel.eladasibrutto,2,'.',' ')}</td>
 {/if}
 {if ($showvalutanem)}
 <td><input name="tetelnettoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysarhuf}" required="required"></td>
