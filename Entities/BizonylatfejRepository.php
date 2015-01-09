@@ -11,8 +11,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             '1' => array('caption' => 'kelt szerint csökkenő', 'order' => array('_xx.kelt' => 'DESC','_xx.id' => 'DESC')),
             '2' => array('caption' => 'kelt szerint növekvő', 'order' => array('_xx.kelt' => 'DESC','_xx.id' => 'DESC')),
 			'3' => array('caption' => 'biz.szám szerint csökkenő', 'order' => array('_xx.id' => 'DESC')),
-			'4' => array('caption' => 'biz.szám szerint növekvő', 'order' => array('_xx.id' => 'ASC'))
-		));
+			'4' => array('caption' => 'biz.szám szerint növekvő', 'order' => array('_xx.id' => 'ASC')),
+			'5' => array('caption' => 'er.biz.szám szerint csökkenő', 'order' => array('_xx.erbizonylatszam' => 'DESC')),
+			'6' => array('caption' => 'er.biz.szám szerint növekvő', 'order' => array('_xx.erbizonylatszam' => 'ASC'))
+        ));
 	}
 
 	public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
