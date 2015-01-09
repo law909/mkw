@@ -258,6 +258,9 @@ class importController extends \mkwhelpers\Controller {
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
         $createuj = $this->params->getBoolRequestParam('createuj', false);
         $arszaz = $this->params->getNumRequestParam('arszaz', 100);
+        if ($arszaz<115) {
+            $arszaz = 115;
+        }
 
         $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
 
@@ -271,7 +274,7 @@ class importController extends \mkwhelpers\Controller {
         $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
 
-        $ch = \curl_init('http://delton.hu/csv.php?verzio=2');
+        $ch = \curl_init('http://delton.hu/csv.php?verzio=2&jelszo=ORJ194');
         $fh = fopen('delton.txt', 'w');
         \curl_setopt($ch, CURLOPT_FILE, $fh);
         \curl_exec($ch);
@@ -327,7 +330,7 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setIdegenkod($idegenkod);
                             $termek->setTermekfa1($parent);
                             $termek->setVtsz($vtsz[0]);
-                            $termek->setHparany(3);
+                            $termek->setHparany(1);
                             if ($gyarto) {
                                 $termek->setGyarto($gyarto);
                             }
@@ -370,6 +373,9 @@ class importController extends \mkwhelpers\Controller {
                     //$termek->setNemkaphato(($data[6] * 1) == 0);
                     if ($termek) {
                         //$termek->setAfa($afa[0]);
+                        if (substr($data[11],-6) == 'rkezik') {
+                            $termek->setSzallitasiido(15);
+                        }
                         $termek->setNetto($data[7] * 1 * $arszaz / 100);
                         $termek->setBrutto(round($termek->getBrutto(), -1));
                         store::getEm()->persist($termek);
