@@ -882,6 +882,9 @@ class importController extends \mkwhelpers\Controller {
             $me->setVezeteknev($nev[0]);
             $me->setKeresztnev($nev[1]);
 
+            $me->setAkcioshirlevelkell(true);
+            $me->setUjdonsaghirlevelkell(true);
+
             if ($pa['szamlanev']) {
                 $me->setNev($pa['szamlanev']);
                 $me->setIrszam($pa['szamlairszam']);
