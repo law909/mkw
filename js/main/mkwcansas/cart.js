@@ -16,6 +16,7 @@ var cart = (function($) {
             success: function(data) {
                 var d = JSON.parse(data);
                 $('#minikosar').html(d.minikosar);
+                $('#minikosaringyenes').html(d.minikosaringyenes);
                 //$('table').html(d.tetellist);
                 //mkw.initTooltips();
                 $('#ertek_' + $('input[name="id"]', f).val()).text(d.tetelertek);

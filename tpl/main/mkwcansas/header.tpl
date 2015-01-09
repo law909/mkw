@@ -31,6 +31,11 @@
 		</div>
 	</div>
 </div>
+<div class="header-ingyenes">
+    <div id="minikosaringyenes" class="container">
+        {include "minikosaringyenes.tpl"}
+    </div>
+</div>
 <div class="container whitebg headbgtakaro">
     <div class="headermid container whitebg">
         <div class="row">

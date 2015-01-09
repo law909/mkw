@@ -1018,6 +1018,7 @@ var cart = (function($) {
             success: function(data) {
                 var d = JSON.parse(data);
                 $('#minikosar').html(d.minikosar);
+                $('#minikosaringyenes').html(d.minikosaringyenes);
                 //$('table').html(d.tetellist);
                 //mkw.initTooltips();
                 $('#ertek_' + $('input[name="id"]', f).val()).text(d.tetelertek);
@@ -1324,7 +1325,9 @@ $(document).ready(function() {
             }
         })
                 .done(function(data) {
-                    $('#minikosar').html(data);
+                    var d = JSON.parse(data);
+                    $('#minikosar').html(d.minikosar);
+                    $('#minikosaringyenes').html(d.minikosaringyenes);
                 })
                 .always(function() {
                     mkw.closeMessage();
@@ -1349,7 +1352,9 @@ $(document).ready(function() {
         })
                 .done(function(data) {
                     $('.js-valtozatedit[data-id="' + id + '"]').selectedIndex = 0;
-                    $('#minikosar').html(data);
+                    var d = JSON.parse(data);
+                    $('#minikosar').html(d.minikosar);
+                    $('#minikosaringyenes').html(d.minikosaringyenes);
                 })
                 .always(function() {
                     mkw.closeMessage();
@@ -1390,7 +1395,9 @@ $(document).ready(function() {
             })
                     .done(function(data) {
                         $('.js-mindenvaltozatedit[data-termek="' + termekid + '"]').selectedIndex = 0;
-                        $('#minikosar').html(data);
+                        var d = JSON.parse(data);
+                        $('#minikosar').html(d.minikosar);
+                        $('#minikosaringyenes').html(d.minikosaringyenes);
                     })
                     .always(function() {
                         mkw.closeMessage();

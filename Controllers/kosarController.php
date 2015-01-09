@@ -111,7 +111,12 @@ class kosarController extends \mkwhelpers\MattableController {
 
     public function getMiniData() {
         $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
-        return array('termekdb' => $m[0][1], 'osszeg' => $m[0][2] * 1);
+        $hatar = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg3Tol, 0);
+        $osszeg = $m[0][2] * 1;
+        if ($hatar && $osszeg && $osszeg < $hatar) {
+            $megingyeneshez = $hatar - $osszeg;
+        }
+        return array('termekdb' => $m[0][1], 'osszeg' => $osszeg, 'megingyeneshez' => $megingyeneshez);
     }
 
     public function get() {
@@ -160,9 +165,17 @@ class kosarController extends \mkwhelpers\MattableController {
             $this->getRepo()->add($termekid, $vid);
 
             if ($this->params->getIntRequestParam('jax', 0) > 0) {
+                $minidata = $this->getMiniData();
                 $v = $this->getTemplateFactory()->createMainView('minikosar.tpl');
-                $v->setVar('kosar', $this->getMiniData());
-                $v->printTemplateResult(false);
+                $v->setVar('kosar', $minidata);
+
+                $v2 = $this->getTemplateFactory()->createMainView('minikosaringyenes.tpl');
+                $v2->setVar('kosar', $minidata);
+
+                echo json_encode(array(
+                    'minikosar' => $v->getTemplateResult(),
+                    'minikosaringyenes' => $v2->getTemplateResult()
+                ));
             }
             else {
                 if (\mkw\Store::getMainSession()->prevuri) {
@@ -206,8 +219,12 @@ class kosarController extends \mkwhelpers\MattableController {
                 echo 'ok';
             }
             else {
+                $minidata = $this->getMiniData();
                 $v = $this->getTemplateFactory()->createMainView('minikosar.tpl');
-                $v->setVar('kosar', $this->getMiniData());
+                $v->setVar('kosar', $minidata);
+
+                $v2 = $this->getTemplateFactory()->createMainView('minikosaringyenes.tpl');
+                $v2->setVar('kosar', $minidata);
 
                 $sum = 0;
                 $m = $this->getRepo()->calcSumBySessionId(\Zend_Session::getId());
@@ -220,7 +237,8 @@ class kosarController extends \mkwhelpers\MattableController {
                 echo json_encode(array(
                     'tetelertek' => number_format($s['bruttohuf'], 0, ',', ' ') . ' Ft',
                     'kosarertek' => number_format($sum, 0, ',', ' ') . ' Ft',
-                    'minikosar' => $v->getTemplateResult()
+                    'minikosar' => $v->getTemplateResult(),
+                    'minikosaringyenes' => $v2->getTemplateResult()
                 ));
             }
         }
