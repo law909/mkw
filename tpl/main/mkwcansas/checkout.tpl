@@ -48,7 +48,7 @@
 									</label>
 									<div class="chk-courierdesc folyoszoveg">Regisztrációval olyan előnyökhöz juthat, mint például a hűségpontok gyűjtése és beváltása, rendelések nyomon követése, termékértékelések írása, és sokminden más.</div>
 								</div>
-								<div class="row chk-actionrow span"><a class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallitasiadatokgh">Tovább</a></div>
+								<div class="row chk-actionrow span"><a href="#block2" class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallitasiadatokgh">Tovább</a></div>
 							</div>
 						</div>
 						<div class="span5">
@@ -75,7 +75,7 @@
 			{/if}
 			<div class="row">
 				<div class="span10">
-					<div class="chk-datagroupheader js-chkdatagroupheader js-chkszallitasiadatokgh" data-container=".js-chkszallitasiadatok">{$sorszam++}. Szállítási és számlázási adatok<a>Módosít</a></div>
+					<div id="block2" class="chk-datagroupheader js-chkdatagroupheader js-chkszallitasiadatokgh" data-container=".js-chkszallitasiadatok">{$sorszam++}. Szállítási és számlázási adatok<a>Módosít</a></div>
 					<div class="js-chkszallitasiadatok js-chkdatacontainer">
 						<small>A <span class="piros">*</span>-gal jelölt adatok kitöltése kötelező.</small>
 						<h5>Kapcsolati adatok</h5>
@@ -173,13 +173,13 @@
                                 </div>
                             </div>
 						</div>
-						<div class="row chk-actionrow"><a class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallmoddgh">Tovább</a></div>
+						<div class="row chk-actionrow"><a href="#block3" class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallmoddgh">Tovább</a></div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="span10">
-					<div class="chk-datagroupheader js-chkdatagroupheader js-chkszallmoddgh" data-container=".js-chkszallmod">{$sorszam++}. Szállítás és fizetés<a>Módosít</a></div>
+					<div id="block3" class="chk-datagroupheader js-chkdatagroupheader js-chkszallmoddgh" data-container=".js-chkszallmod">{$sorszam++}. Szállítás és fizetés<a>Módosít</a></div>
 					<div class="js-chkszallmod js-chkdatacontainer">
 						<div class="row">
 								<div class="span2"><label class="chk-controllabel bold">Szállítási mód:</label></div>
@@ -206,13 +206,13 @@
 							<div class="span2"><label for="CourierMessageEdit" class="bold">Üzenet a futár részére:</label></div>
 							<div class="span7 controls"><textarea id="CourierMessageEdit" class="span5 js-chkrefresh" name="couriermessage" type="text" rows="2" placeholder="pl. kézbesítéssel kapcsolatos kérések">{$couriermessage}</textarea></div>
 						</div>
-						<div class="row chk-actionrow"><a class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkattekintesdgh">Tovább</a></div>
+						<div class="row chk-actionrow"><a href="#block4" class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkattekintesdgh">Tovább</a></div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="span10">
-					<div class="chk-datagroupheader js-chkdatagroupheader js-chkattekintesdgh" data-container=".js-chkattekintes">{$sorszam++}. Megrendelés áttekintése</div>
+					<div id="block4" class="chk-datagroupheader js-chkdatagroupheader js-chkattekintesdgh" data-container=".js-chkattekintes">{$sorszam++}. Megrendelés áttekintése</div>
 					<div class="js-chkattekintes js-chkdatacontainer">
 						<div class="chk-columncontainer pull-left width100percent">
 							<div class="col30percent">

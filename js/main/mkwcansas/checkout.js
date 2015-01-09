@@ -117,12 +117,13 @@ var checkout = (function($, guid) {
 	}
 
 	function openDataContainer(obj) {
-		var $this = $(obj),
+/*		var $this = $(obj),
 				mycontainer = $($this.data('container'));
 		if (mycontainer.hasClass('js-chkclosed')) {
 			$('.js-chkdatacontainer').slideUp(0).addClass('js-chkclosed');
 			mycontainer.slideDown(0).removeClass('js-chkclosed');
 		}
+*/
 	}
 
     function checkEmail(email) {
@@ -188,7 +189,7 @@ var checkout = (function($, guid) {
 				}
 			});
 
-			var $chklogin = $('.js-chklogin');
+/*			var $chklogin = $('.js-chklogin');
 			if ($chklogin.length) {
 				$('.js-chkszallitasiadatok').hide().addClass('js-chkclosed');
 			}
@@ -215,7 +216,7 @@ var checkout = (function($, guid) {
 						datagroupheader = $(dg);
 				datagroupheader.click();
 			});
-
+*/
 			szamlaeqszall.on('change', function(e) {
 				var obj = $('.js-chkszamlaadatok');
 				obj.toggleClass('notvisible');

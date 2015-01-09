@@ -78,7 +78,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$view->setVar('showerror', Store::getMainSession()->loginerror);
         $view->setVar('checkouterrors', Store::getMainSession()->checkoutErrors);
 		$view->setVar('showaszflink', Store::getRouter()->generate('showstatlappopup', false, array('lap' => 'aszf')));
-        $view->setVar('regkell', $p->getIntRequestParam('regkell'));
+        $view->setVar('regkell', $p->getIntRequestParam('regkell', 2));
         $view->setVar('vezeteknev', $this->vv($p->getStringRequestParam('vezeteknev'), $user['vezeteknev']));
         $view->setVar('keresztnev', $this->vv($p->getStringRequestParam('keresztnev'), $user['keresztnev']));
         $view->setVar('telefon', $this->vv($p->getStringRequestParam('telefon'), $user['telefon']));
