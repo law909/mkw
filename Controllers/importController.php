@@ -258,9 +258,6 @@ class importController extends \mkwhelpers\Controller {
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
         $createuj = $this->params->getBoolRequestParam('createuj', false);
         $arszaz = $this->params->getNumRequestParam('arszaz', 100);
-        if ($arszaz<115) {
-            $arszaz = 115;
-        }
 
         $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
 
@@ -375,6 +372,9 @@ class importController extends \mkwhelpers\Controller {
                         //$termek->setAfa($afa[0]);
                         if (substr($data[11],-6) == 'rkezik') {
                             $termek->setSzallitasiido(15);
+                        }
+                        if (($data[7] * 1 * $arszaz / 100) / ($data[8] * 1) * 100 - 100 < 15) {
+                            $arszaz = 115;
                         }
                         $termek->setNetto($data[7] * 1 * $arszaz / 100);
                         $termek->setBrutto(round($termek->getBrutto(), -1));
