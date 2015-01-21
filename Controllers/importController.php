@@ -373,10 +373,14 @@ class importController extends \mkwhelpers\Controller {
                         if (substr($data[11],-6) == 'rkezik') {
                             $termek->setSzallitasiido(15);
                         }
-                        if (($data[7] * 1 * $arszaz / 100) / ($data[8] * 1) * 100 - 100 < 15) {
-                            $arszaz = 115;
+                        $kiskerar = $data[7] * 1;
+                        $nagykerar = $data[8] * 1;
+                        if (($kiskerar / $nagykerar * 100 < 115) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < 115)) {
+                            $termek->setNetto($nagykerar * 115 / 100);
                         }
-                        $termek->setNetto($data[7] * 1 * $arszaz / 100);
+                        else {
+                            $termek->setNetto($kiskerar * $arszaz / 100);
+                        }
                         $termek->setBrutto(round($termek->getBrutto(), -1));
                         store::getEm()->persist($termek);
                         store::getEm()->flush();
