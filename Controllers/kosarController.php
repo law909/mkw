@@ -111,6 +111,7 @@ class kosarController extends \mkwhelpers\MattableController {
 
     public function getMiniData() {
         $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
+        $megingyeneshez = 0;
         $hatar = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg3Tol, 0);
         $osszeg = $m[0][2] * 1;
         if ($hatar && $osszeg && $osszeg < $hatar) {
