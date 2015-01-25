@@ -78,6 +78,11 @@ $(document).ready(function() {
                     }
                 });
             }).button();
+            $('input[name="dbtol"]').on('change', function(e) {
+                if ($(this).val() * 1 !== 0) {
+                    $('input[name="deltondownload"]').prop('checked', false);
+                }
+            });
 		},
 		onSubmit:function() {
 			$('#messagecenter')

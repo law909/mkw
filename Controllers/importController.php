@@ -258,6 +258,7 @@ class importController extends \mkwhelpers\Controller {
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
         $createuj = $this->params->getBoolRequestParam('createuj', false);
         $arszaz = $this->params->getNumRequestParam('arszaz', 100);
+        $deltondownload = $this->params->getBoolRequestParam('deltondownload',false);
 
         $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
 
@@ -270,12 +271,14 @@ class importController extends \mkwhelpers\Controller {
         $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-
-        $ch = \curl_init('http://delton.hu/csv.php?verzio=2&jelszo=ORJ194');
-        $fh = fopen('delton.txt', 'w');
-        \curl_setopt($ch, CURLOPT_FILE, $fh);
-        \curl_exec($ch);
-        fclose($fh);
+        if ($deltondownload) {
+            \unlink('delton.txt');
+            $ch = \curl_init('http://delton.hu/csv.php?verzio=2&jelszo=ORJ194');
+            $fh = fopen('delton.txt', 'w');
+            \curl_setopt($ch, CURLOPT_FILE, $fh);
+            \curl_exec($ch);
+            fclose($fh);
+        }
         $fh = fopen('delton.txt', 'r');
         if ($fh) {
             $settings = array(
@@ -389,7 +392,6 @@ class importController extends \mkwhelpers\Controller {
             }
         }
         fclose($fh);
-        \unlink('delton.txt');
     }
 
     public function nomadImport() {

@@ -60,6 +60,10 @@
                 <input name="arszaz" value="100">
             </div>
             <div>
+                <label>Delton leöltés kell:<abel>
+                <input name="deltondownload" type="checkbox" checked="checked">
+            </div>
+            <div>
             <a href="/admin/import/kreativ" class="js-kreativimport">Kreativ puzzle</a>
             <a href="/admin/import/delton" class="js-deltonimport">Delton</a>
             <a href="/admin/import/nomad" class="js-nomadimport">Nomád</a>
