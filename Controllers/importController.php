@@ -838,12 +838,9 @@ class importController extends \mkwhelpers\Controller {
                     }
                     if ($valtozat) {
                         if ($termek) {
-                            $ar = ($data[$this->n('f')] * 1 * $arszaz / 100) - $termek->getBrutto();
-                        }
-                        else {
                             $ar = $data[$this->n('f')] * 1 * $arszaz / 100;
+                            $termek->setBrutto(round($ar, -1));
                         }
-                        $valtozat->setBrutto(round($ar, -1));
                         if (!$kaphato) {
                             $valtozat->setElerheto(false);
                         }
