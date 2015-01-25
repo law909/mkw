@@ -885,8 +885,8 @@ class importController extends \mkwhelpers\Controller {
             $me->setEmail($pa['temail']);
 
             $nev = explode(' ', $pa['tnev']);
-            $me->setVezeteknev($nev[0]);
-            $me->setKeresztnev($nev[1]);
+            $me->setKeresztnev(array_pop($nev));
+            $me->setVezeteknev(implode(' ', $nev));
 
             $me->setAkcioshirlevelkell(true);
             $me->setUjdonsaghirlevelkell(true);
