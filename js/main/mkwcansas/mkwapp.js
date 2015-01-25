@@ -725,6 +725,8 @@ var checkout = (function($, guid) {
 				}
 			});
 
+            $('input[name="regkell"]').change();
+
 /*			var $chklogin = $('.js-chklogin');
 			if ($chklogin.length) {
 				$('.js-chkszallitasiadatok').hide().addClass('js-chkclosed');
