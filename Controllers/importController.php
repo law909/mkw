@@ -745,8 +745,8 @@ class importController extends \mkwhelpers\Controller {
                 else {
                     $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $data[$this->n('a')], 'gyarto' => $gyartoid));
                 }
-                if ($data[$this->n('i')]) {
-                    $ch = \curl_init($data[$this->n('i')]);
+                if ($data[$this->n('j')]) {
+                    $ch = \curl_init($data[$this->n('j')]);
                     \curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $le = \curl_exec($ch);
 
@@ -763,7 +763,7 @@ class importController extends \mkwhelpers\Controller {
                     $kisleiras = '';
                 }
 
-                $kaphato = (bool)trim($data[$this->n('g')]);
+                $kaphato = (bool)trim($data[$this->n('h')]);
 
                 if (!$termek) {
 
@@ -772,7 +772,7 @@ class importController extends \mkwhelpers\Controller {
                         $urlkatnev = \mkw\Store::urlize($katnev);
                         \mkw\Store::createDirectoryRecursively($path . $urlkatnev);
                         $parent = $this->createKategoria($katnev, $parentid);
-                        $termeknev = $data[$this->n('c')];
+                        $termeknev = $data[$this->n('d')];
 
                         $termek = new \Entities\Termek();
                         $termek->setFuggoben(true);
@@ -788,9 +788,9 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setGyarto($gyarto);
                         }
                         $termek->setNemkaphato(false);
-                        $termek->setBrutto(round($data[$this->n('f')] * 1 * $arszaz / 100, -1));
+                        $termek->setBrutto(round($data[$this->n('g')] * 1 * $arszaz / 100, -1));
                         // kepek
-                        $imagelist = explode(',', $data[$this->n('h')]);
+                        $imagelist = explode(',', $data[$this->n('i')]);
                         $imgcnt = 0;
                         foreach ($imagelist as $imgurl) {
                             $imgcnt++;
@@ -838,7 +838,7 @@ class importController extends \mkwhelpers\Controller {
                     }
                     if ($valtozat) {
                         if ($termek) {
-                            $ar = $data[$this->n('f')] * 1 * $arszaz / 100;
+                            $ar = $data[$this->n('g')] * 1 * $arszaz / 100;
                             $termek->setBrutto(round($ar, -1));
                         }
                         if (!$kaphato) {
@@ -855,7 +855,7 @@ class importController extends \mkwhelpers\Controller {
                             if (!$kaphato) {
                                 $termek->setNemkaphato(true);
                             }
-                            $termek->setBrutto(round($data[$this->n('f')] * 1 * $arszaz / 100, -1));
+                            $termek->setBrutto(round($data[$this->n('g')] * 1 * $arszaz / 100, -1));
                             store::getEm()->persist($termek);
                             store::getEm()->flush();
                         }
