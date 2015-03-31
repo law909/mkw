@@ -16,6 +16,16 @@ class Bizonylatfej {
     private $id;
 
     /**
+	 * @Column(type="integer")
+	 */
+	private $trxid;
+
+    /**
+     * @Column(type="bigint", columnDefinition="bigint unsigned")
+     */
+    private $otpayid;
+
+    /**
      * @gedmo:Timestampable(on="create")
      * @Column(type="datetime",nullable=true)
      */
@@ -285,6 +295,16 @@ class Bizonylatfej {
 
     /**
      * @PrePersist
+     */
+    public function generateTrxId() {
+        $conn = \mkw\Store::getEm()->getConnection();
+        $stmt = $conn->prepare('INSERT INTO bizonylatseq (data) VALUES (1)');
+        $stmt->execute();
+        $this->trxid = $conn->lastInsertId();
+    }
+
+    /**
+     * @PrePersist
      * @PreUpdate
      */
     public function doStuffOnPrePersist() {
@@ -403,6 +423,18 @@ class Bizonylatfej {
 
     public function getId() {
         return $this->id;
+    }
+
+    public function getTrxId() {
+        return $this->trxid;
+    }
+
+    public function getOtpayId() {
+        return $this->otpayid;
+    }
+
+    public function setOtpayId($val) {
+        $this->otpayid = $val;
     }
 
     public function generateId() {

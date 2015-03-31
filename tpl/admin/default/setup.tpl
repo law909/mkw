@@ -43,6 +43,15 @@
 				</select></td>
 			</tr>
 			<tr>
+				<td><label for="OTPayFizmodEdit">{t('OTPay fizetési mód')}:</label></td>
+				<td><select id="OTPayFizmodEdit" name="otpayfizmod">
+					<option value="">{t('válasszon')}</option>
+					{foreach $otpayfizmodlist as $_fizmod}
+					<option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
+					{/foreach}
+				</select></td>
+			</tr>
+			<tr>
 				<td><label for="RaktarEdit">{t('Raktár')}:</label></td>
 				<td><select id="RaktarEdit" name="raktar">
 					<option value="">{t('válasszon')}</option>

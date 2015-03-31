@@ -112,7 +112,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 		}
 		$view->setVar('tetellista', $s);
 */		$view->printTemplateResult(false);
-        Store::writelog(\Zend_Session::getId() . ' getCheckout() ok', 'checkoutlog.log');
+//        Store::writelog(\Zend_Session::getId() . ' getCheckout() ok', 'checkoutlog.log');
 	}
 
 	public function getFizmodList() {
@@ -144,7 +144,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 
 	public function save() {
 
-        Store::writelog(\Zend_Session::getId() . ' save() start', 'checkoutlog.log');
+//        Store::writelog(\Zend_Session::getId() . ' save() start', 'checkoutlog.log');
 
         $errorlogtext = array();
         $errors = array();
@@ -222,7 +222,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 
 		if ($ok) {
 
-            Store::writelog(\Zend_Session::getId() . ' save() mentés kezdődik', 'checkoutlog.log');
+//            Store::writelog(\Zend_Session::getId() . ' save() mentés kezdődik', 'checkoutlog.log');
 
 			switch ($regkell) {
 				case 1: // vendég
@@ -336,32 +336,86 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$this->getEm()->persist($megrendfej);
 			$this->getEm()->flush();
 
-            Store::writelog(\Zend_Session::getId() . ' save() mentés vége', 'checkoutlog.log');
-
-            if ($bizstatusz) {
-                $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
-            }
-
-            Store::writelog(\Zend_Session::getId() . ' save() email kiküldve', 'checkoutlog.log');
+//            Store::writelog(\Zend_Session::getId() . ' save() mentés vége', 'checkoutlog.log');
 
 			Store::getMainSession()->lastmegrendeles = $megrendfej->getId();
             Store::getMainSession()->lastemail = $email;
             Store::getMainSession()->lasttermeknevek = $lasttermeknevek;
             Store::getMainSession()->lasttermekids = $lasttermekids;
+            Store::getMainSession()->lastszallmod = $szallitasimod;
+            Store::getMainSession()->lastfizmod = $fizetesimod;
 			$kc = new kosarController($this->params);
 			$kc->clear();
 
-            Store::writelog(\Zend_Session::getId() . ' save() köszönjükre irányítom', 'checkoutlog.log');
+            if ($fizetesimod == Store::getParameter(\mkw\consts::OTPayFizmod)) {
+                Header('Location: ' . Store::getRouter()->generate('showcheckoutfizetes'));
+            }
+            else {
+                if ($bizstatusz) {
+                    $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
+                }
 
-			Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
+    //            Store::writelog(\Zend_Session::getId() . ' save() email kiküldve', 'checkoutlog.log');
+    //            Store::writelog(\Zend_Session::getId() . ' save() köszönjükre irányítom', 'checkoutlog.log');
+
+                Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
+            }
 		}
 		else {
 			Store::getMainSession()->params = $this->params;
             Store::getMainSession()->checkoutErrors = $errors;
-            Store::writelog(\Zend_Session::getId() . ' ERROR ' . implode(' ', $errorlogtext), 'checkoutlog.log');
+//            Store::writelog(\Zend_Session::getId() . ' ERROR ' . implode(' ', $errorlogtext), 'checkoutlog.log');
             Header('Location: ' . Store::getRouter()->generate('showcheckout'));
 		}
 	}
+
+	public function showCheckoutFizetes() {
+        $mrszam = Store::getMainSession()->lastmegrendeles;
+        $szallmod = Store::getMainSession()->lastszallmod;
+        $fizmod = Store::getMainSession()->lastfizmod;
+        $fizmodnev = '';
+        $f = $this->getRepo('Entities\Fizmod')->find($fizmod);
+        if ($f) {
+            $fizmodnev = $f->getNev();
+        }
+
+		$view = Store::getTemplateFactory()->createMainView('checkoutfizmodlist.tpl');
+		$fm = new fizmodController($this->params);
+		$szlist = $fm->getSelectList($fizmod, $szallmod);
+		$view->setVar('fizmodlist', $szlist);
+        $fml = $view->getTemplateResult();
+
+        $view = Store::getTemplateFactory()->createMainView('checkoutfizetes.tpl');
+		Store::fillTemplate($view);
+		$view->setVar('megrendelesszam', $mrszam);
+        $view->setVar('fizmodlist', $fml);
+        $view->setVar('fizmodnev', $fizmodnev);
+        $view->setVar('checkouterrors',false);
+		$view->printTemplateResult(false);
+	}
+
+    public function doCheckoutFizetes() {
+        Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
+    }
+
+    public function saveCheckoutFizmod() {
+        $megrendelesszam = $this->params->getStringRequestParam('megrendelesszam');
+        $f = $this->getRepo('Entities\Fizmod')->find($this->params->getIntRequestParam('fizetesimod'));
+
+        $mf = $this->getRepo('Entities\Bizonylatfej')->find($megrendelesszam);
+        if ($mf && $f) {
+            $mf->setFizmod($f);
+			$this->getEm()->persist($mf);
+			$this->getEm()->flush();
+            $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+            if ($bizstatusz) {
+                $mf->sendStatuszEmail($bizstatusz->getEmailtemplate());
+            }
+        }
+
+        Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
+
+    }
 
 	public function thanks() {
         $mrszam = Store::getMainSession()->lastmegrendeles;
@@ -399,6 +453,8 @@ class checkoutController extends \mkwhelpers\MattableController {
         Store::getMainSession()->lastemail = '';
         Store::getMainSession()->lasttermeknevek = array();
         Store::getMainSession()->lasttermekids = array();
+        Store::getMainSession()->lastszallmod = 0;
+        Store::getMainSession()->lastfizmod = 0;
 
 		$view->printTemplateResult(false);
 	}

@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions 
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+  xmlns:tns="http://cellumpay.cellum.com" 
+  targetNamespace="http://cellumpay.cellum.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://cellumpay.cellum.com/Imports">
+      <xsd:import schemaLocation="I_MerchTerm_umg.xsd" namespace="http://cellumpay.cellum.com" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="PostImCreditInitReqMsg">
+    <wsdl:part name="PostImCreditInitReq" element="tns:PostImCreditInitReq" />
+  </wsdl:message>
+  <wsdl:message name="PostImCreditInitRespMsg">
+    <wsdl:part name="PostImCreditInitResp" element="tns:PostImCreditInitResp" />
+  </wsdl:message>
+  <wsdl:message name="PostImAuthCompleteReqMsg">
+    <wsdl:part name="PostImAuthCompleteReq" element="tns:PostImAuthCompleteReq" />
+  </wsdl:message>
+  <wsdl:message name="PostImAuthCompleteRespMsg">
+    <wsdl:part name="PostImAuthCompleteResp" element="tns:PostImAuthCompleteResp" />
+  </wsdl:message>
+  <wsdl:message name="PostImAuthorizationReqMsg">
+    <wsdl:part name="PostImAuthorizationReq" element="tns:PostImAuthorizationReq" />
+  </wsdl:message>
+  <wsdl:message name="PostImAuthorizationRespMsg">
+    <wsdl:part name="PostImAuthorizationResp" element="tns:PostImAuthorizationResp" />
+  </wsdl:message>
+  <wsdl:message name="PostImRefundReqMsg">
+    <wsdl:part name="PostImRefundReq" element="tns:PostImRefundReq" />
+  </wsdl:message>
+  <wsdl:message name="PostImRefundRespMsg">
+    <wsdl:part name="PostImRefundResp" element="tns:PostImRefundResp" />
+  </wsdl:message>
+  <wsdl:message name="PostImStornoReqMsg">
+    <wsdl:part name="PostImStornoReq" element="tns:PostImStornoReq" />
+  </wsdl:message>
+  <wsdl:message name="PostImStornoRespMsg">
+    <wsdl:part name="PostImStornoResp" element="tns:PostImStornoResp" />
+  </wsdl:message>
+  <wsdl:message name="GetImNotifReqMsg">
+    <wsdl:part name="GetImNotifReq" element="tns:GetImNotifReq" />
+  </wsdl:message>
+  <wsdl:message name="GetImNotifRespMsg">
+    <wsdl:part name="GetImNotifResp" element="tns:GetImNotifResp" />
+  </wsdl:message>
+  <wsdl:portType name="I_MerchTerm_umg">
+    <wsdl:operation name="PostImCreditInit">
+      <wsdl:input name="PostImCreditInitReqMsg" message="tns:PostImCreditInitReqMsg" />
+      <wsdl:output name="PostImCreditInitRespMsg" message="tns:PostImCreditInitRespMsg" />
+    </wsdl:operation>
+    <wsdl:operation name="PostImAuthComplete">
+      <wsdl:input name="PostImAuthCompleteReqMsg" message="tns:PostImAuthCompleteReqMsg" />
+      <wsdl:output name="PostImAuthCompleteRespMsg" message="tns:PostImAuthCompleteRespMsg" />
+    </wsdl:operation>
+    <wsdl:operation name="PostImAuthorization">
+      <wsdl:input name="PostImAuthorizationReqMsg" message="tns:PostImAuthorizationReqMsg" />
+      <wsdl:output name="PostImAuthorizationRespMsg" message="tns:PostImAuthorizationRespMsg" />
+    </wsdl:operation>
+    <wsdl:operation name="PostImRefund">
+      <wsdl:input name="PostImRefundReqMsg" message="tns:PostImRefundReqMsg" />
+      <wsdl:output name="PostImRefundRespMsg" message="tns:PostImRefundRespMsg" />
+    </wsdl:operation>
+    <wsdl:operation name="PostImStorno">
+      <wsdl:input name="PostImStornoReqMsg" message="tns:PostImStornoReqMsg" />
+      <wsdl:output name="PostImStornoRespMsg" message="tns:PostImStornoRespMsg" />
+    </wsdl:operation>
+    <wsdl:operation name="GetImNotif">
+      <wsdl:input name="GetImNotifReqMsg" message="tns:GetImNotifReqMsg" />
+      <wsdl:output name="GetImNotifRespMsg" message="tns:GetImNotifRespMsg" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DefaultBinding_I_MerchTerm_umg" type="tns:I_MerchTerm_umg">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="PostImCreditInit">
+      <soap:operation soapAction="http://cellumpay.cellum.com/I_MerchTerm_umg/PostImCreditInit" style="document" />
+      <wsdl:input name="PostImCreditInitReqMsg">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PostImCreditInitRespMsg">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PostImAuthComplete">
+      <soap:operation soapAction="http://cellumpay.cellum.com/I_MerchTerm_umg/PostImAuthComplete" style="document" />
+      <wsdl:input name="PostImAuthCompleteReqMsg">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PostImAuthCompleteRespMsg">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PostImAuthorization">
+      <soap:operation soapAction="http://cellumpay.cellum.com/I_MerchTerm_umg/PostImAuthorization" style="document" />
+      <wsdl:input name="PostImAuthorizationReqMsg">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PostImAuthorizationRespMsg">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PostImRefund">
+      <soap:operation soapAction="http://cellumpay.cellum.com/I_MerchTerm_umg/PostImRefund" style="document" />
+      <wsdl:input name="PostImRefundReqMsg">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PostImRefundRespMsg">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PostImStorno">
+      <soap:operation soapAction="http://cellumpay.cellum.com/I_MerchTerm_umg/PostImStorno" style="document" />
+      <wsdl:input name="PostImStornoReqMsg">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PostImStornoRespMsg">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetImNotif">
+      <soap:operation soapAction="http://cellumpay.cellum.com/I_MerchTerm_umg/GetImNotif" style="document" />
+      <wsdl:input name="GetImNotifReqMsg">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetImNotifRespMsg">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <service name="MerchTerm_umg_service">
+    <port name="I_MerchTerm_umg" binding="tns:DefaultBinding_I_MerchTerm_umg">
+      <soap:address location="https://cpc.mpprt.hu/Cellum.CPC.Merchant.MerchantManagerService.Host/MerchantManagerService.svc/IMerchTermcpcPort" />
+    </port>
+  </service>
+</wsdl:definitions>

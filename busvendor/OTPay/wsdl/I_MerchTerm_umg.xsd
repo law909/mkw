@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://cellumpay.cellum.com" elementFormDefault="qualified" 
+           targetNamespace="http://cellumpay.cellum.com"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+  <!--<xs:import schemaLocation="http://www.w3.org/2000/09/xmldsig#" namespace="http://www.w3.org/2000/09/xmldsig#" />-->
+  <xs:import schemaLocation="xmldsig-core-schema.xsd" namespace="http://www.w3.org/2000/09/xmldsig#" />
+  <xs:complexType name="imCreditInitReq">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:imBaseReq">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="references" type="tns:References">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="imCreditInitReq" type="tns:imCreditInitReq" />
+  <xs:complexType name="imBaseReq">
+    <xs:sequence>
+      <xs:element name="merchTermId" type="xs:int" />
+      <xs:element name="merchTrxId" type="xs:long" />
+      <xs:element name="clientId" type="tns:ClientIdBase" />
+      <xs:element name="amount" type="xs:decimal" />
+      <xs:element name="description" type="xs:string" />
+      <xs:element name="timeout" type="tns:TimeoutBase" />
+      <xs:element name="isRepeated" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="imBaseReq" type="tns:imBaseReq" />
+  <xs:complexType name="ClientIdBase">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="ClientIdBase" type="tns:ClientIdBase" />
+  <xs:complexType name="ClientMpid">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ClientIdBase">
+        <xs:sequence>
+          <xs:element name="value" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ClientMpid" type="tns:ClientMpid" />
+  <xs:complexType name="ClientMsisdn">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ClientIdBase">
+        <xs:sequence>
+          <xs:element name="value" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ClientMsisdn" type="tns:ClientMsisdn" />
+  <xs:complexType name="TimeoutBase">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="TimeoutBase" type="tns:TimeoutBase" />
+  <xs:complexType name="TimeoutValue">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:TimeoutBase">
+        <xs:sequence>
+          <xs:element name="value" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="TimeoutValue" type="tns:TimeoutValue" />
+  <xs:complexType name="TimeoutCategory">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:TimeoutBase">
+        <xs:sequence>
+          <xs:element name="value" type="tns:TimeoutCatTypeEnum" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="TimeoutCategory" type="tns:TimeoutCategory" />
+  <xs:simpleType name="TimeoutCatTypeEnum">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:element name="TimeoutCatTypeEnum" type="tns:TimeoutCatTypeEnum" />
+  <xs:complexType name="References">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Item">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Name" type="xs:string" />
+            <xs:element name="Value" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="References" type="tns:References" />
+  <xs:element name="PostImCreditInitReq" type="tns:imCreditInitReq" />
+  <xs:complexType name="PostImResp">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="bankTrxId" type="xs:long">
+      </xs:element>
+      <xs:element minOccurs="0" name="wasRepeated" type="xs:boolean">
+      </xs:element>
+      <xs:element name="result" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PostImResp" type="tns:PostImResp" />
+  <xs:element name="PostImCreditInitResp" type="tns:PostImResp" />
+  <xs:complexType name="imAuthCompleteReq">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:imBaseReq">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="references" type="tns:References" />
+          <xs:element minOccurs="0" name="origBankTrxId" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="imAuthCompleteReq" type="tns:imAuthCompleteReq" />
+  <xs:element name="PostImAuthCompleteReq" type="tns:imAuthCompleteReq" />
+  <xs:element name="PostImAuthCompleteResp" type="tns:PostImResp" />
+  <xs:complexType name="imAuthorizationReq">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:imBaseReq">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="references" type="tns:References">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="imAuthorizationReq" type="tns:imAuthorizationReq" />
+  <xs:element name="PostImAuthorizationReq" type="tns:imAuthorizationReq" />
+  <xs:element name="PostImAuthorizationResp" type="tns:PostImResp" />
+  <xs:complexType name="imRefundReq">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:imBaseReq">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="origBankTrxId" type="xs:long">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="imRefundReq" type="tns:imRefundReq" />
+  <xs:element name="PostImRefundReq" type="tns:imRefundReq" />
+  <xs:element name="PostImRefundResp" type="tns:PostImResp" />
+  <xs:complexType name="imStornoReq">
+    <xs:sequence>
+      <xs:element name="merchTermId" type="xs:int" />
+      <xs:element name="bankTrxId" type="xs:long" />
+      <xs:element minOccurs="0" name="reasonCode" type="xs:int">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="imStornoReq" type="tns:imStornoReq" />
+  <xs:element name="PostImStornoReq" type="tns:imStornoReq" />
+  <xs:complexType name="PostImStornoResp">
+    <xs:sequence>
+      <xs:element name="result" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PostImStornoResp" type="tns:PostImStornoResp" />
+  <xs:complexType name="GetImNotifReq">
+    <xs:sequence>
+      <xs:element name="merchTermId" type="xs:int" />
+      <xs:element name="imNotifFilter" type="tns:ImNotifFilterBase" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetImNotifReq" type="tns:GetImNotifReq" />
+  <xs:complexType name="ImNotifFilterBase">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="ImNotifFilterBase" type="tns:ImNotifFilterBase" />
+  <xs:complexType name="ImNotifFilterDate">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ImNotifFilterBase">
+        <xs:sequence>
+          <xs:element name="startDate" type="xs:dateTime" />
+	  <xs:element minOccurs="0" name="endDate" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ImNotifFilterDate" type="tns:ImNotifFilterDate" />
+  <xs:complexType name="ImNotifFilterBankTrxId">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ImNotifFilterBase">
+        <xs:sequence>
+          <xs:element name="bankTrxId" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ImNotifFilterBankTrxId" type="tns:ImNotifFilterBankTrxId" />
+  <xs:complexType name="GetImNotifResp">
+    <xs:sequence>
+      <xs:element name="ImNotifList" type="tns:ArrayOfImNotifReq" />
+      <xs:element name="result" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetImNotifResp" type="tns:GetImNotifResp" />
+  <xs:complexType name="ArrayOfImNotifReq">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ImNotifReq" type="tns:ImNotifReq" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfImNotifReq" type="tns:ArrayOfImNotifReq" />
+  <xs:complexType name="ImNotifReq">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="ds:Signature"/>
+      <xs:element name="message" type="tns:ImNotifReqMsg" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ImNotifReq" type="tns:ImNotifReq" />
+  <xs:complexType name="ImNotifReqMsg">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="authCode" type="xs:int">
+      </xs:element>
+      <xs:element name="bankTrxId" type="xs:long" />
+      <xs:element name="bankTrxResult" type="xs:int" />
+      <xs:element name="merchTermId" type="xs:int" />
+      <xs:element name="merchTrxId" type="xs:long" />
+      <xs:element minOccurs="0" name="mpiCat" type="xs:int">
+      </xs:element>
+      <xs:element name="isRepeated" type="xs:boolean" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="optional"/>
+  </xs:complexType>
+  <xs:element name="ImNotifReqMsg" type="tns:ImNotifReqMsg" />
+</xs:schema>

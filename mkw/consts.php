@@ -102,4 +102,6 @@ class consts {
     const RLBUtolsoSzamlaszam = 'rlbutolsoszamlaszam';
 
     const AKTrustedShopApiKey = 'aktrustedshopapikey';
+
+    const OTPayFizmod = 'otpayfizmod';
 }

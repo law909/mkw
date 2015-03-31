@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://cellumpay.cellum.com" elementFormDefault="qualified"
+           targetNamespace="http://cellumpay.cellum.com"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+  <!--xs:import schemaLocation="http://www.w3.org/TR/xmldsig-core/xmldsig-core-schema.xsd" namespace="http://www.w3.org/2000/09/xmldsig#" /-->
+  <xs:import schemaLocation="xmldsig-core-schema.xsd" namespace="http://www.w3.org/2000/09/xmldsig#" />
+  <xs:complexType name="ImNotifReq">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="ds:Signature"/>
+      <xs:element name="message" type="tns:ImNotifReqMsg" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ImNotifReq" type="tns:ImNotifReq" />
+  <xs:complexType name="ImNotifReqMsg">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="authCode" type="xs:int">
+      </xs:element>
+      <xs:element name="bankTrxId" type="xs:long" />
+      <xs:element name="bankTrxResult" type="xs:int" />
+      <xs:element name="merchTermId" type="xs:int" />
+      <xs:element name="merchTrxId" type="xs:long" />
+      <xs:element minOccurs="0" name="mpiCat" type="xs:int">
+      </xs:element>
+      <xs:element name="isRepeated" type="xs:boolean" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="optional"/>
+  </xs:complexType>
+  <xs:element name="ImNotifReqMsg" type="tns:ImNotifReqMsg" />
+  <xs:element name="ReceiveImNotifReq" type="tns:ImNotifReq" />
+  <xs:complexType name="ReceiveImNotifResp">
+    <xs:sequence>
+      <xs:element name="result" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ReceiveImNotifResp" type="tns:ReceiveImNotifResp" />
+</xs:schema>

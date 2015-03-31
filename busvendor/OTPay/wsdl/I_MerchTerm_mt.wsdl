@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+                  xmlns:tns="http://cellumpay.cellum.com" 
+                  targetNamespace="http://cellumpay.cellum.com" 
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://cellumpay.cellum.com/Imports">
+      <xsd:import schemaLocation="I_MerchTerm_mt.xsd" namespace="http://cellumpay.cellum.com" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ReceiveImNotifReqMsg">
+    <wsdl:part name="ReceiveImNotifReq" element="tns:ReceiveImNotifReq" />
+  </wsdl:message>
+  <wsdl:message name="ReceiveImNotifRespMsg">
+    <wsdl:part name="ReceiveImNotifResp" element="tns:ReceiveImNotifResp" />
+  </wsdl:message>
+  <wsdl:portType name="I_MerchTerm_mt">
+    <wsdl:operation name="ReceiveImNotif">
+      <wsdl:input name="ReceiveImNotifReqMsg" message="tns:ReceiveImNotifReqMsg" />
+      <wsdl:output name="ReceiveImNotifRespMsg" message="tns:ReceiveImNotifRespMsg" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DefaultBinding_I_MerchTerm_mt" type="tns:I_MerchTerm_mt">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ReceiveImNotif">
+      <soap:operation soapAction="http://cellumpay.cellum.com/I_MerchTerm_mt/ReceiveImNotif" style="document" />
+      <wsdl:input name="ReceiveImNotifReqMsg">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReceiveImNotifRespMsg">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MerchTerm_mt_service">
+    <wsdl:port name="I_MerchTerm_mt" binding="tns:DefaultBinding_I_MerchTerm_mt">
+      <soap:address location="http://localhost:8080/OTPayTest/soap_server.php" />
+    </wsdl:port> 
+  </wsdl:service>
+</wsdl:definitions>
