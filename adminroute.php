@@ -268,3 +268,6 @@ $router->map('GET', '/admin/fifo/view', 'fifoController#view', 'adminfifoview');
 $router->map('POST', '/admin/fifo/calc', 'fifoController#calculate', 'adminfifocalc');
 $router->map('GET', '/admin/fifo/alapadat', 'fifoController#getAlapadat', 'adminfifoalapadat');
 $router->map('GET', '/admin/fifo/keszletertek', 'fifoController#getKeszletertek', 'adminkeszletertek');
+
+$router->map('POST', '/admin/otpay/refund', 'megrendelesfejController#otpayrefund', 'adminotpayrefund');
+$router->map('POST', '/admin/otpay/storno', 'megrendelesfejController#otpaystorno', 'adminotpaystorno');

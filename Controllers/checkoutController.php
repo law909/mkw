@@ -379,23 +379,129 @@ class checkoutController extends \mkwhelpers\MattableController {
             $fizmodnev = $f->getNev();
         }
 
+        $fizetendo = 0;
+        $mr = $this->getRepo('Entities\Bizonylatfej')->find($mrszam);
+        if ($mr) {
+            $fizetendo = $mr->getFizetendo();
+        }
+
+        $excfm = array();
+        $ooo = Store::getParameter(\mkw\consts::OTPayFizmod);
+        if ($ooo) {
+            $excfm[] = $ooo;
+        }
+        $ooo = Store::getParameter(\mkw\consts::MasterPassFizmod);
+        if ($ooo) {
+            $excfm[] = $ooo;
+        }
+
 		$view = Store::getTemplateFactory()->createMainView('checkoutfizmodlist.tpl');
 		$fm = new fizmodController($this->params);
-		$szlist = $fm->getSelectList($fizmod, $szallmod);
+		$szlist = $fm->getSelectList($fizmod, $szallmod, $excfm);
 		$view->setVar('fizmodlist', $szlist);
         $fml = $view->getTemplateResult();
 
         $view = Store::getTemplateFactory()->createMainView('checkoutfizetes.tpl');
 		Store::fillTemplate($view);
+        $view->setVar('fizetendo', $fizetendo);
 		$view->setVar('megrendelesszam', $mrszam);
         $view->setVar('fizmodlist', $fml);
         $view->setVar('fizmodnev', $fizmodnev);
-        $view->setVar('checkouterrors',false);
+        $view->setVar('checkouterrors',Store::getMainSession()->checkoutfizeteserrors);
 		$view->printTemplateResult(false);
+        Store::getMainSession()->checkoutfizeteserrors = false;
 	}
 
     public function doCheckoutFizetes() {
-        Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
+        require_once('busvendor/OTPay/MerchTerm_umg_client.php');
+
+        $error = false;
+        Store::getMainSession()->fizetesdb = Store::getMainSession()->fizetesdb * 1 + 1;
+
+        $mrszam = $this->params->getStringRequestParam('megrendelesszam');
+        $mobilszam = $this->params->getStringRequestParam('mobilszam');
+        $fizazon = $this->params->getStringRequestParam('fizazon');
+
+        if ($mrszam) {
+            $mr = $this->getRepo('Entities\Bizonylatfej')->find($mrszam);
+            if ($mr) {
+                $fizetendo = $mr->getFizetendo();
+                if ($fizetendo != 0) {
+                    if ($mobilszam) {
+                        $clientId = new \ClientMsisdn();
+                        $clientId->value = $mobilszam;
+                        $mr->setOTPayMSISDN($mobilszam);
+                    }
+                    else {
+                        if ($fizazon) {
+                            $clientId = new \ClientMpid();
+                            $clientId->value = $fizazon;
+                            $mr->setOTPayMPID($fizazon);
+                        }
+                        else {
+                            $error = 'Hiányzik a mobil szám vagy a fizetési azonosító';
+                        }
+                    }
+                    if (!$error) {
+                        $this->getEm()->persist($mr);
+                        $this->getEm()->flush();
+
+                        $timeout = new \TimeoutCategory();
+                        $timeout->value = "mediumPeriod";
+                        // Paraméterek
+                        $request = array(
+                            'merchTermId' => \MerchTerm_config::getConfig("merchTermId"),
+                            'merchTrxId' => $mr->getTrxId(),
+                            'clientId' => $clientId,
+                            'timeout' => $timeout,
+                            'amount' => $fizetendo,
+                            'description' => 'Mindentkapni.hu vásárlás',
+                            'isRepeated' => (Store::getMainSession()->fizetesdb > 1)
+                        );
+
+                        $client = null;
+
+                        try {
+                            $client = new \MerchTerm_umg_client();
+                            $response = $client->PostImCreditInit($request);
+                            /*
+                            if ($response->result == 0) {
+                                $mr->setOTPayId($response->bankTrxId);
+                                $mr->setFizetve(true);
+                                $this->getEm()->persist($mr);
+                                $this->getEm()->flush();
+                            }
+                            else {
+                                $error = Store::getOTPayErrorMessage($response->result);
+                            }
+                             *
+                             */
+
+                        } catch (Exception $e) {
+                            $exception = $e;
+                            $error = $exception->getMessage();
+                        }
+                    }
+                }
+                else {
+                    $error = 'A fizetendő összeg nem lehet nulla';
+                }
+            }
+            else {
+                $error = 'A megrendelés nem található';
+            }
+        }
+        else {
+            $error = 'Hiányzik a megrendelés azonosító';
+        }
+
+        if ($error) {
+            Store::getMainSession()->checkoutfizeteserrors = $error;
+            Header('Location: ' . Store::getRouter()->generate('showcheckoutfizetes'));
+        }
+        else {
+            Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
+        }
     }
 
     public function saveCheckoutFizmod() {

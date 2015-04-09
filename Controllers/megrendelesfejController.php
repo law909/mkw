@@ -213,4 +213,103 @@ class megrendelesfejController extends bizonylatfejController {
             }
         }
     }
+
+    public function otpayrefund() {
+        require_once('busvendor/OTPay/MerchTerm_umg_client.php');
+
+        $szam = $this->params->getStringRequestParam('id');
+        $mr = $this->getRepo()->find($szam);
+
+        $error = '';
+        if ($mr) {
+            $timeout = new \TimeoutCategory();
+            $timeout->value = "mediumPeriod";
+            if ($mr->getOTPayMSISDN()) {
+                $clientId = new \ClientMsisdn();
+                $clientId->value = $mr->getOTPayMSISDN();
+            }
+            else {
+                if ($mr->getOTPayMPID()) {
+                    $clientId = new \ClientMpid();
+                    $clientId->value = $mr->getOTPayMPID();
+                }
+                else {
+                    $error = 'Hiányzik a mobil szám vagy a fizetési azonosító';
+                }
+            }
+            if (!$error) {
+                $request = array(
+                    'merchTermId' => \MerchTerm_config::getConfig("merchTermId"),
+                    'merchTrxId' => $mr->getTrxId(),
+                    'clientId' => $clientId,
+                    'timeout' => $timeout,
+                    'amount' => $mr->getFizetendo(),
+                    'description' => 'refund',
+                    'isRepeated' => false,
+                    'origBankTrxId' => $mr->getOTPayId()
+                );
+
+                $client = null;
+
+                try {
+                    $client = new \MerchTerm_umg_client();
+                    $response = $client->PostImCreditInit($request);
+                    /*
+                    if ($response->result == 0) {
+                        $mr->setFizetve(false);
+                        $this->getEm()->persist($mr);
+                        $this->getEm()->flush();
+                    }
+                    else {
+                        $error = Store::getOTPayErrorMessage($response->result);
+                    }
+                     *
+                     */
+
+                } catch (Exception $e) {
+                    $exception = $e;
+                    $error = $exception->getMessage();
+                }
+            }
+        }
+        echo json_encode($error);
+    }
+
+    public function otpaystorno() {
+        require_once('busvendor/OTPay/MerchTerm_umg_client.php');
+
+        $mr = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+
+        $error = '';
+        if ($mr) {
+            $request = array(
+                'merchTermId' => \MerchTerm_config::getConfig("merchTermId"),
+                'bankTrxId' => $mr->getOTPayId(),
+                'reasonCode' => 1
+            );
+
+            $client = null;
+
+            try {
+                $client = new \MerchTerm_umg_client();
+                $response = $client->PostImCreditInit($request);
+                /*
+                if ($response->result == 0) {
+                    $mr->setFizetve(false);
+                    $this->getEm()->persist($mr);
+                    $this->getEm()->flush();
+                }
+                else {
+                    $error = Store::getOTPayErrorMessage($response->result);
+                }
+                 *
+                 */
+
+            } catch (Exception $e) {
+                $error = $e->getMessage();
+                echo json_encode($error);
+            }
+        }
+        echo json_encode($error);
+    }
 }

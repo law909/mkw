@@ -52,6 +52,15 @@
 				</select></td>
 			</tr>
 			<tr>
+				<td><label for="MasterPassFizmodEdit">{t('MasterPass fizetési mód')}:</label></td>
+				<td><select id="MasterPassFizmodEdit" name="masterpassfizmod">
+					<option value="">{t('válasszon')}</option>
+					{foreach $masterpassfizmodlist as $_fizmod}
+					<option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
+					{/foreach}
+				</select></td>
+			</tr>
+			<tr>
 				<td><label for="RaktarEdit">{t('Raktár')}:</label></td>
 				<td><select id="RaktarEdit" name="raktar">
 					<option value="">{t('válasszon')}</option>

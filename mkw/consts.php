@@ -104,4 +104,5 @@ class consts {
     const AKTrustedShopApiKey = 'aktrustedshopapikey';
 
     const OTPayFizmod = 'otpayfizmod';
+    const MasterPassFizmod = 'masterpassfizmod';
 }

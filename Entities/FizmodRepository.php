@@ -8,7 +8,7 @@ class FizmodRepository extends \mkwhelpers\Repository {
 		$this->setEntityname('Entities\Fizmod');
 	}
 
-	public function getAllWebesBySzallitasimod($szmid) {
+	public function getAllWebesBySzallitasimod($szmid,$exc = array()) {
 		$szm=$this->_em->getRepository('Entities\Szallitasimod')->find($szmid);
 		$filter=array();
 		$filter['fields'][]='webes';
@@ -19,6 +19,11 @@ class FizmodRepository extends \mkwhelpers\Repository {
 			$filter['clauses'][]='IN';
 			$filter['values'][]=explode(',', $szm->getFizmodok());
 		}
+        if ($exc) {
+            $filter['fields'][] = 'id';
+            $filter['clauses'][] = 'NOT IN';
+            $filter['values'][] = $exc;
+        }
 		return $this->getAll($filter,array('sorrend'=>'ASC','nev'=>'ASC'));
 	}
 }

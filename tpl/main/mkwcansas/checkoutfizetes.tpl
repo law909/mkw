@@ -32,6 +32,8 @@
 					<div id="block1" class="chk-datagroupheader js-chkdatagroupheader js-chkfizetesiadatokgh" data-container=".js-chkfizetesiadatok">{$fizmodnev} adatok</div>
 					<div class="js-chkfizetesiadatok js-chkdatacontainer">
 						<h5>Adja meg fizetési adatait, és nyomja meg a Fizetés gombot.</h5>
+                        <div>Megrendelés szám: <span class="bold">{$megrendelesszam}</span></div>
+                        <div>Fizetendő: <span class="bold">{number_format($fizetendo,0,',',' ')} Ft</span></div>
 						<div class="controls controls-row chk-controloffset">
                             <div class="span4 nomargin">
                                 <label class="span4 nomargin">Mobil telefonszám</label>

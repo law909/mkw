@@ -153,6 +153,10 @@ class setupController extends \mkwhelpers\Controller {
 //        $fizmod = new fizmodController($this->params);
         $view->setVar('otpayfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::MasterPassFizmod);
+//        $fizmod = new fizmodController($this->params);
+        $view->setVar('masterpassfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::Raktar);
         $raktar = new raktarController($this->params);
         $view->setVar('raktarlist', $raktar->getSelectList(($p ? $p->getErtek() : 0)));
@@ -324,6 +328,10 @@ class setupController extends \mkwhelpers\Controller {
         $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('otpayfizmod', 0));
         if ($fizmod) {
             $this->setObj(\mkw\consts::OTPayFizmod, $fizmod->getId());
+        }
+        $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('masterpassfizmod', 0));
+        if ($fizmod) {
+            $this->setObj(\mkw\consts::MasterPassFizmod, $fizmod->getId());
         }
         $raktar = store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar', 0));
         if ($raktar) {

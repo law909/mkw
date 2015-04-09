@@ -26,6 +26,16 @@ class Bizonylatfej {
     private $otpayid;
 
     /**
+     * @Column(type="string", length=30)
+     */
+    private $otpaymsisdn;
+
+    /**
+     * @Column(type="string", length=30)
+     */
+    private $otpaympid;
+
+    /**
      * @gedmo:Timestampable(on="create")
      * @Column(type="datetime",nullable=true)
      */
@@ -61,6 +71,9 @@ class Bizonylatfej {
 
     /** @Column(type="boolean",nullable=false) */
     private $penztmozgat;
+
+    /** @Column(type="boolean",nullable=false) */
+    private $fizetve = false;
 
     /** @Column(type="string",length=255,nullable=false) */
     private $tulajnev;
@@ -429,11 +442,11 @@ class Bizonylatfej {
         return $this->trxid;
     }
 
-    public function getOtpayId() {
+    public function getOTPayId() {
         return $this->otpayid;
     }
 
-    public function setOtpayId($val) {
+    public function setOTPayId($val) {
         $this->otpayid = $val;
     }
 
@@ -1396,5 +1409,29 @@ class Bizonylatfej {
         $cim = implode(' ', $a);
         $a = array($cim, $this->partnerutca);
         return  implode(', ', $a);
+    }
+
+    public function getOTPayMSISDN() {
+        return $this->otpaymsisdn;
+    }
+
+    public function setOTPayMSISDN($val) {
+        $this->otpaymsisdn = $val;
+    }
+
+    public function getOTPayMPID() {
+        return $this->otpaympid;
+    }
+
+    public function setOTPayMPID($val) {
+        $this->otpaympid = $val;
+    }
+
+    public function getFizetve() {
+        return $this->fizetve;
+    }
+
+    public function setFizetve($val) {
+        $this->fizetve = $val;
     }
 }

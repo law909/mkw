@@ -262,7 +262,7 @@ $(document).ready(function() {
 			tablebody: {
 				url: '/admin/megrendelesfej/getlistbody',
                 onStyle: function() {
-                    $('.js-printbizonylat, .js-inheritbizonylat, .js-printelolegbekero').button();
+                    $('.js-printbizonylat, .js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno').button();
                 },
                 onDoEditLink: function() {
                     $('.js-inheritbizonylat').each(function() {
@@ -315,7 +315,41 @@ $(document).ready(function() {
                     }
                 }
             });
-        });
+        })
+        .on('click', '.js-otpayrefund', function(e) {
+            var $this = $(this);
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/otpay/refund',
+                type: 'POST',
+                data: {
+                    id: $this.data('egyedid')
+                },
+                success: function(data) {
+                    var d = JSON.parse(data);
+                    if (d) {
+                        alert(d);
+                    }
+                }
+            });
+        })
+        .on('click', '.js-otpaystorno', function(e) {
+            var $this = $(this);
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/otpay/storno',
+                type: 'POST',
+                data: {
+                    id: $this.data('egyedid')
+                },
+                success: function(data) {
+                    var d = JSON.parse(data);
+                    if (d) {
+                        alert(d);
+                    }
+                }
+            });
+        })
 	}
 	else {
 		if ($.fn.mattkarb) {
