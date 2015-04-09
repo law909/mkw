@@ -21,17 +21,17 @@ class Bizonylatfej {
 	private $trxid;
 
     /**
-     * @Column(type="bigint", columnDefinition="bigint unsigned")
+     * @Column(type="bigint", columnDefinition="bigint unsigned",nullable=true)
      */
     private $otpayid;
 
     /**
-     * @Column(type="string", length=30)
+     * @Column(type="string", length=30,nullable=true)
      */
     private $otpaymsisdn;
 
     /**
-     * @Column(type="string", length=30)
+     * @Column(type="string", length=30,nullable=true)
      */
     private $otpaympid;
 
