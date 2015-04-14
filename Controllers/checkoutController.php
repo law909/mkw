@@ -464,6 +464,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                         try {
                             $client = new \MerchTerm_umg_client();
                             $response = $client->PostImCreditInit($request);
+                    \mkw\Store::writelog(print_r($response, true), 'otpay.log');
                             /*
                             if ($response->result == 0) {
                                 $mr->setOTPayId($response->bankTrxId);

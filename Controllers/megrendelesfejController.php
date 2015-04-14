@@ -254,6 +254,7 @@ class megrendelesfejController extends bizonylatfejController {
                 try {
                     $client = new \MerchTerm_umg_client();
                     $response = $client->PostImCreditInit($request);
+                    \mkw\Store::writelog(print_r($response, true), 'otpay.log');
                     /*
                     if ($response->result == 0) {
                         $mr->setFizetve(false);
@@ -293,6 +294,7 @@ class megrendelesfejController extends bizonylatfejController {
             try {
                 $client = new \MerchTerm_umg_client();
                 $response = $client->PostImCreditInit($request);
+                \mkw\Store::writelog(print_r($response, true), 'otpay.log');
                 /*
                 if ($response->result == 0) {
                     $mr->setFizetve(false);
