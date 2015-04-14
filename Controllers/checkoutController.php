@@ -419,8 +419,8 @@ class checkoutController extends \mkwhelpers\MattableController {
         Store::getMainSession()->fizetesdb = Store::getMainSession()->fizetesdb * 1 + 1;
 
         $mrszam = $this->params->getStringRequestParam('megrendelesszam');
-        $mobilszam = $this->params->getStringRequestParam('mobilszam');
-        $fizazon = $this->params->getStringRequestParam('fizazon');
+        $mobilszam = preg_replace('/[^0-9]/','',$this->params->getStringRequestParam('mobilszam'));
+        $fizazon = preg_replace('/[^0-9]/','',$this->params->getStringRequestParam('fizazon'));
 
         if ($mrszam) {
             $mr = $this->getRepo('Entities\Bizonylatfej')->find($mrszam);
