@@ -47,7 +47,9 @@ class MerchTerm_config {
 
 				// Szerver URL beállítása (ha nincs megadva, akkor a WSDL-ben lévő URL-t használja)
 				//a kliens fel kell hogy oldja a 195.56.127.158 -at a lenti hostnévre
-                'location' => 'https://otpaymerchif.mpprt.hu:10443/otp/MerchantProxyDev2/forward.aspx'
+                'location' => 'https://otpaymerchif.mpprt.hu:10443/otp/MerchantProxyDev2/forward.aspx',
+                'uri' => 'http://schemas.xmlsoap.org/wsdl/'
+
 			)
         );
         if (isset($key))
