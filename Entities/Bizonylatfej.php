@@ -36,6 +36,21 @@ class Bizonylatfej {
     private $otpaympid;
 
     /**
+     * @Column(type="string", length=36,nullable=true)
+     */
+    private $masterpasscorrelationid;
+
+    /**
+     * @Column(type="string", length=100,nullable=true)
+     */
+    private $masterpassbanktrxid;
+
+    /**
+     * @Column(type="string", length=100,nullable=true)
+     */
+    private $masterpasstrxid;
+
+    /**
      * @gedmo:Timestampable(on="create")
      * @Column(type="datetime",nullable=true)
      */
@@ -314,6 +329,7 @@ class Bizonylatfej {
         $stmt = $conn->prepare('INSERT INTO bizonylatseq (data) VALUES (1)');
         $stmt->execute();
         $this->trxid = $conn->lastInsertId();
+        $this->setMasterPassCorrelationID(\mkw\Store::createGUID());
     }
 
     /**
@@ -1434,4 +1450,29 @@ class Bizonylatfej {
     public function setFizetve($val) {
         $this->fizetve = $val;
     }
+
+    public function getMasterPassCorrelationID() {
+        return $this->masterpasscorrelationid;
+    }
+
+    public function setMasterPassCorrelationID($val) {
+        $this->masterpasscorrelationid = $val;
+    }
+
+    public function getMasterPassBankTrxId() {
+        return $this->masterpassbanktrxid;
+    }
+
+    public function setMaterPassBankTrxId($val) {
+        $this->masterpassbanktrxid = $val;
+    }
+
+    public function getMasterPassTrxId() {
+        return $this->masterpasstrxid;
+    }
+
+    public function setMaterPassTrxId($val) {
+        $this->masterpasstrxid = $val;
+    }
+
 }
