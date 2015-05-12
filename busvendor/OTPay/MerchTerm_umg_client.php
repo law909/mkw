@@ -4,28 +4,29 @@ ini_set('default_charset', 'utf-8');
 require_once("MerchTerm_config.php");
 
 /**
- * SOAP kliens osztály az OTPay szolgáltatás használatához.  
+ * SOAP kliens osztály az OTPay szolgáltatás használatához.
  */
 class MerchTerm_umg_client extends SoapClient {
 
     private $options;
     private $force_SSLv3;
-	private $stream_context; 
+	private $stream_context;
 
     public function __construct() {
-		
+
         $this->options = MerchTerm_config::getConfig("soap_client_options");
         $this->force_SSLv3 = MerchTerm_config::getConfig("force_SSLv3");
 		$this->stream_context = MerchTerm_config::getConfig("stream_context");
         $this -> checkCertificate();
 		$this->options["stream_context"] = stream_context_create($this->stream_context);
-        parent::__construct((dirname(__FILE__) . '/wsdl/I_MerchTerm_umg.wsdl'), $this->options);
+        //parent::__construct((dirname(__FILE__) . '/wsdl/I_MerchTerm_umg.wsdl'), $this->options);
+        parent::__construct(null, $this->options);
     }
 
     /**
      * Beállítja azokat a paraméter elemeket, amelyek típusa származtatott osztály.
      *
-     * @param SoapClient $request Kérés paramétereit tartalmazó tömb		 
+     * @param SoapClient $request Kérés paramétereit tartalmazó tömb
      * @return object SOAP válasz objektum
      */
     private function SetSoapVars($request) {
@@ -66,7 +67,7 @@ class MerchTerm_umg_client extends SoapClient {
 
     /**
      * PostImCreditInit metódus
-     *  
+     *
      * @return object SOAP válasz objektum
      */
     public function PostImCreditInit($request) {
@@ -77,7 +78,7 @@ class MerchTerm_umg_client extends SoapClient {
 
     /**
      * PostImAuthComplete metódus
-     *  
+     *
      * @return object SOAP válasz objektum
      */
     public function PostImAuthorization($request) {
@@ -88,7 +89,7 @@ class MerchTerm_umg_client extends SoapClient {
 
     /**
      * PostImAuthComplete metódus
-     *  
+     *
      * @return object SOAP válasz objektum
      */
     public function PostImAuthComplete($request) {
@@ -99,7 +100,7 @@ class MerchTerm_umg_client extends SoapClient {
 
     /**
      * PostImRefund metódus
-     *  
+     *
      * @return object SOAP válasz objektum
      */
     public function PostImRefund($request) {
@@ -110,7 +111,7 @@ class MerchTerm_umg_client extends SoapClient {
 
     /**
      * PostImStorno metódus
-     *  
+     *
      * @return object SOAP válasz objektum
      */
     public function PostImStorno($request) {
@@ -120,7 +121,7 @@ class MerchTerm_umg_client extends SoapClient {
 
     /**
      * GetImNotif metódus
-     *  
+     *
      * @return object SOAP válasz objektum
      */
     public function GetImNotif($request) {
@@ -130,9 +131,9 @@ class MerchTerm_umg_client extends SoapClient {
     }
 
     /**
-     * Felüldefiniált __doRequest metódus. Módosítja a SOAP üzenetet küldés előtt. 
-     * Kényszerített SSLv3 beállítás esetén CURL-t használ a küldéshez. 
-     *  
+     * Felüldefiniált __doRequest metódus. Módosítja a SOAP üzenetet küldés előtt.
+     * Kényszerített SSLv3 beállítás esetén CURL-t használ a küldéshez.
+     *
      * @param SoapClient $request  XML SOAP kérés
      * @param SoapClient $location Kérés URl-je
      * @param SoapClient $action   SOAP action
@@ -149,7 +150,7 @@ class MerchTerm_umg_client extends SoapClient {
         $request = str_replace("<PostImAuthorizationReq>", "<PostImAuthorizationReq xmlns=\"http://cellumpay.cellum.com\">", $request);
         $request = str_replace("<PostImAuthCompleteReq>", "<PostImAuthCompleteReq xmlns=\"http://cellumpay.cellum.com\">", $request);
         $request = str_replace("<GetImNotifReq>", "<GetImNotifReq xmlns=\"http://cellumpay.cellum.com\">", $request);
-          
+
 		if ($this->force_SSLv3)
             return $this->doRequestSSLv3($request, $location, $action);
         else
@@ -157,9 +158,9 @@ class MerchTerm_umg_client extends SoapClient {
     }
 
     /**
-     * Kiírja az utolsó SOAP kérést és választ fejléccel együtt, valamint a 
+     * Kiírja az utolsó SOAP kérést és választ fejléccel együtt, valamint a
      * WSDL alapján generált SOAP adattípusokat és függvényeket.
-     *  
+     *
      * @return string
      */
     public function getSoapInfo() {
@@ -190,9 +191,9 @@ class MerchTerm_umg_client extends SoapClient {
     }
 
     /**
-     *      
+     *
      * Ellenőrzi a kliens tanúsítványt
-     * 
+     *
      * @return:  object
      */
     private function checkCertificate() {
@@ -205,16 +206,16 @@ class MerchTerm_umg_client extends SoapClient {
     }
 
     /**
-     *      
+     *
      * SOAP hívás SSLv3 protokollal
-     * 
+     *
 	 * @param SoapClient $request  XML SOAP kérés
      * @param SoapClient $location Kérés URl-je
      * @param SoapClient $action   SOAP action
      * @return string XML SOAP válasz
      */
     private function doRequestSSLv3($request, $location, $action) {
-        
+
 		$handle = curl_init();
         curl_setopt($handle, CURLOPT_URL, $location);
         curl_setopt($handle, CURLOPT_HTTPHEADER, Array("Accept:","User-Agent: PHP-SOAP","Content-Type: text/xml; charset=utf-8", 'SOAPAction: "' . $action . '"'));
@@ -225,13 +226,13 @@ class MerchTerm_umg_client extends SoapClient {
 		curl_setopt($handle, CURLOPT_CAINFO, $this->stream_context["ssl"]["cafile"]);
 		curl_setopt($handle, CURLOPT_SSLCERT, $this->stream_context["ssl"]["local_cert"]);
 		curl_setopt($handle, CURLOPT_SSLCERTPASSWD, $this->stream_context["ssl"]["passphrase"]);
-	
+
 		$response = curl_exec($handle);
         if (empty($response)) {
             throw new SoapFault('CURL error: ' . curl_error($handle), curl_errno($handle));
         }
         curl_close($handle);
-	    
+
         return $response;
     }
 
