@@ -780,6 +780,8 @@ var checkout = (function($, guid) {
             checkoutform.on('submit', function(e) {
                 var hibas = false, tofocus = false;
 
+                $('.chk-sendorderbtn').removeClass('cartbtn').addClass('okbtn').val('Feldolgozás alatt');
+
                 ajaxlog('submit start');
 
                 if (!vezeteknevinput.val()) {
