@@ -253,6 +253,9 @@
 								{t('Igen, értesítsenek az újdonságokról')}
 							</label>
 						</div>
+                        <div>
+                            Amennyiben pár percen belül nem kapná meg a megrendelést visszaigazoló emailünket, kérem hívjon minket a 20/342-1511-es telefonszámon, vagy kérjen visszahívást <a href='mailto:info@mindentkapni.hu'>erre a linkre</a> kattintva, és mi ellenőrizzük megrendelését.
+                        </div>
 						<div class="pull-right">
 							<div class="chk-savecontainer">
 								<div>
