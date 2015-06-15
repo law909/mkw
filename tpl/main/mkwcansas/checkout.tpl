@@ -58,7 +58,7 @@
 							{/if}
 							<div class="controls chk-controloffset">
                                 <label class="span3 nomargin">Email</label>
-								<input name="email" type="email" form="LoginForm" class="span3 nomargin" value="{$user.email|default}" required>
+								<input name="email" type="text" form="LoginForm" class="span3 nomargin" value="{$user.email|default}">
 							</div>
 							<div class="controls chk-controloffset">
                                 <label class="span3 nomargin">Jelszó</label>
