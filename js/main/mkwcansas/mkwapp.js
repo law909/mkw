@@ -951,6 +951,7 @@ var checkout = (function($, guid) {
                 }
                 else {
                     if (!$('input[name="aszfready"]').prop('checked')) {
+                        $('.chk-sendorderbtn').removeClass('okbtn').addClass('cartbtn').val('Megrendelés elküldése');
                         ajaxlog('error: nincs ÁSZF');
                         e.preventDefault();
                         mkw.showDialog(mkwmsg.ChkASZF);
