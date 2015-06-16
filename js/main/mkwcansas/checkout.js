@@ -401,6 +401,7 @@ var checkout = (function($, guid) {
                 }
 
                 if (hibas) {
+                    $('.chk-sendorderbtn').removeClass('okbtn').addClass('cartbtn').val('Megrendelés elküldése');
                     $('#dialogcenter').on('hidden', function() {
                         $('#dialogcenter').off('hidden');
                         if (tofocus) {
