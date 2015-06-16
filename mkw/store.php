@@ -18,11 +18,11 @@ class Store {
     public static $DateFormat = 'Y.m.d';
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
 
-    public function getJSVersion() {
+    public static function getJSVersion() {
         return 17;
     }
 
-    public function getBootstrapJSVersion() {
+    public static function getBootstrapJSVersion() {
         return 6;
     }
 
