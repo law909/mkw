@@ -3,6 +3,7 @@
 		<div class="span3">
 			<a href="/"><img src="/themes/main/mkwcansas/img/mkw-logo-small.png" alt="Mindent Kapni Webáruház" title="Mindent Kapni Webáruház"></a>
 			<h4>Sok jó dolog egy helyen!</h4>
+            <a href="/statlap/fogyaszto-barat"><img src="/themes/main/mkwcansas/img/fogyaszto-barat.png" class="fogyaszto-barat" alt="Mindent Kapni fogyasztó barát webáruház" title="Mindent Kapni fogyasztó barát webáruház"></a>
 		</div>
 		<nav class="span3">
 			<h5>Hasznos információk</h5>
