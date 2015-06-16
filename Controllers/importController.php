@@ -374,7 +374,10 @@ class importController extends \mkwhelpers\Controller {
                     if ($termek) {
                         //$termek->setAfa($afa[0]);
                         if (substr($data[11],-6) == 'rkezik') {
-                            $termek->setSzallitasiido(15);
+                            $termek->setNemkaphato(true);
+                        }
+                        else {
+                            $termek->setNemkaphato(false);
                         }
                         $kiskerar = $data[7] * 1;
                         $nagykerar = $data[8] * 1;
