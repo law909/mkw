@@ -763,7 +763,7 @@ class importController extends \mkwhelpers\Controller {
                     $kisleiras = '';
                 }
 
-                $kaphato = (bool)trim($data[$this->n('h')]);
+                $kaphato = substr($data[$this->n('h')],0,5) !== 'Nincs';
 
                 if (!$termek) {
 
@@ -844,6 +844,9 @@ class importController extends \mkwhelpers\Controller {
                         if (!$kaphato) {
                             $valtozat->setElerheto(false);
                         }
+                        else {
+                            $valtozat->setElerheto(true);
+                        }
                         store::getEm()->persist($valtozat);
                         store::getEm()->flush();
                     }
@@ -854,6 +857,9 @@ class importController extends \mkwhelpers\Controller {
                             }
                             if (!$kaphato) {
                                 $termek->setNemkaphato(true);
+                            }
+                            else {
+                                $termek->setNemkaphato(false);
                             }
                             $termek->setBrutto(round($data[$this->n('g')] * 1 * $arszaz / 100, -1));
                             store::getEm()->persist($termek);
