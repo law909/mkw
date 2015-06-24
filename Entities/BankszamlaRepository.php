@@ -9,7 +9,7 @@ class BankszamlaRepository extends \mkwhelpers\Repository {
 		$this->setEntityname('Entities\Bankszamla');
 	}
 
-	public function getAll($filter, $order) {
+	public function getAll($filter, $order, $offset = 0, $elemcount = 0) {
 		return $this->_em->createQuery('SELECT ' . $this->alias . ',v FROM ' . $this->entityname . ' ' . $this->alias
 								. ' LEFT JOIN ' . $this->alias . '.valutanem v'
 								. $this->getFilterString($filter)

@@ -54,7 +54,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		if ($term) {
             $eb = $term->getBruttoAr($t->getTermekvaltozat());
             $x['eladasibrutto'] = $eb;
-            if ($x['bruttoegysar']) {
+            if ($x['bruttoegysar'] != 0) {
                 $x['haszonszazalek'] = $eb / $x['bruttoegysar'] * 100 - 100;
             }
             else {
