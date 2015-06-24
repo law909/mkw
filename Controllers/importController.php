@@ -732,10 +732,11 @@ class importController extends \mkwhelpers\Controller {
                 $termekdb++;
             }
             while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
+                $idegencikkszam = (string)$data[$this->n('a')];
                 $termekdb++;
                 $termek = false;
                 $valtozat = false;
-                $valtozatok = store::getEm()->getRepository('Entities\TermekValtozat')->findBy(array('idegencikkszam' => $data[$this->n('a')]));
+                $valtozatok = store::getEm()->getRepository('Entities\TermekValtozat')->findBy(array('idegencikkszam' => $idegencikkszam));
                 if ($valtozatok) {
                     foreach($valtozatok as $v) {
                         $termek = $v->getTermek();
@@ -746,7 +747,7 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
                 else {
-                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $data[$this->n('a')], 'gyarto' => $gyartoid));
+                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $idegencikkszam, 'gyarto' => $gyartoid));
                 }
                 if ($data[$this->n('j')]) {
                     $ch = \curl_init($data[$this->n('j')]);
@@ -783,7 +784,7 @@ class importController extends \mkwhelpers\Controller {
                         $termek->setNev($termeknev);
                         $termek->setLeiras($leiras);
                         $termek->setRovidleiras(mb_substr($kisleiras, 0, 100, 'UTF8') . '...');
-                        $termek->setIdegencikkszam($data[$this->n('a')]);
+                        $termek->setIdegencikkszam($idegencikkszam);
                         $termek->setTermekfa1($parent);
                         $termek->setVtsz($vtsz[0]);
                         $termek->setHparany(3);
@@ -798,8 +799,8 @@ class importController extends \mkwhelpers\Controller {
                         foreach ($imagelist as $imgurl) {
                             $imgcnt++;
 
-                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev . '_' . $data[$this->n('a')]);
-                            $kepnev = \mkw\Store::urlize($termeknev . '_' . $data[$this->n('a')]);
+                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev . '_' . $idegencikkszam);
+                            $kepnev = \mkw\Store::urlize($termeknev . '_' . $idegencikkszam);
                             if (count($imagelist) > 1) {
                                 $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
                                 $kepnev = $kepnev . '_' . $imgcnt;
