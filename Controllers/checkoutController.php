@@ -464,6 +464,10 @@ class checkoutController extends \mkwhelpers\MattableController {
                         try {
                             $client = new \MerchTerm_umg_client();
                             $response = $client->PostImCreditInit($request);
+/****
+ * sikeres tranzakcio: object(stdClass)#6 (3) { ["bankTrxId"]=> int(103010001001) ["wasRepeated"]=> bool(false) ["result"]=> int(0) }
+ * Elutasítás, mert a terhelésre megjelölt Mobil Alkalmazás nem azonosítható.: object(stdClass)#6 (3) { ["bankTrxId"]=> int(103010001007) ["wasRepeated"]=> bool(false) ["result"]=> int(0) }
+ */
                     \mkw\Store::writelog(print_r($response, true), 'otpay.log');
                             /*
                             if ($response->result == 0) {

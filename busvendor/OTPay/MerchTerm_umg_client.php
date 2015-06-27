@@ -236,6 +236,243 @@ class MerchTerm_umg_client extends SoapClient {
         return $response;
     }
 
+    public function getRCErrorText($errorcode) {
+        $ret = $errorcode . ' - ';
+        switch ($errorcode) {
+            case 0:
+                $ret .= 'Sikeres hívás az UMG felé.';
+                break;
+            case 2118:
+                $ret .= 'A kereskedő nem azonosítható.';
+                break;
+            case 2120:
+                $ret .= 'A kereskedő státusza felfüggesztett.';
+                break;
+            case 2122:
+                $ret .= 'Az MPG nem elérhető.';
+                break;
+            case 2125:
+                $ret .= 'A megadott kereskedői terminál nem létezik.';
+                break;
+            case 2142:
+                $ret .= 'A megadott azonosító nem teszt azonosító.';
+                break;
+            case 2151:
+                $ret .= 'Az adott terminálhoz nincs a megadott azonosítóval rendelkező kereskedői értesítés.';
+                break;
+            case 2154:
+                $ret .= 'Az origBankTrxId-t kötelező megadni.';
+                break;
+            case 2156:
+                $ret .= 'A megadott időintervallum nagyobb, mint 31 nap.';
+                break;
+            case 2900:
+                $ret .= 'Technikai hiba.';
+                break;
+            default:
+                break;
+        }
+        return $ret;
+    }
+
+    public function getErrorText($errorcode) {
+        $ret = (string)$errorcode . ' - ';
+        switch ($errorcode) {
+            case 0:
+                $ret .= 'A művelet rendben lefutott.';
+                break;
+            case 101:
+                $ret .= 'A terhelésre megjelölt Ügyfél nem azonosítható.';
+                break;
+            case 102:
+                $ret .= 'A terhelésre megjelölt Ügyfélnek nincs regisztrált MF fizetőeszköze.';
+                break;
+            case 103:
+                $ret .= 'A terhelésre megjelölt Ügyfélnek nincs aktív MF fizetőeszköze.';
+                break;
+            case 104:
+                $ret .= 'Nincs közös Küldő Csoport.';
+                break;
+            case 105:
+                $ret .= 'Az Ügyfél Megerősítés kérés kikézbesítése nem sikerült.';
+                break;
+            case 110:
+                $ret .= 'Az Ügyfél Megerősítés elutasításra került.';
+                break;
+            case 112:
+                $ret .= 'Időközben változás történt: a választott fizetőeszköz korábban nem volt alternatíva.';
+                break;
+            case 113:
+                $ret .= 'Időközben változás történt: a terhelésre megjelölt fizetőeszköz már nem aktív.';
+                break;
+            case 114:
+                $ret .= 'Időközben változás történt: a Kereskedői Virtuális terminál adatai nem elérhetők.';
+                break;
+            case 115:
+                $ret .= 'Időközben változás történt: nincs közös Küldő Csoport.';
+                break;
+            case 116:
+                $ret .= 'Ügyfél Megerősítés válaszra adott határidő idő elmúlt.';
+                break;
+            case 140:
+                $ret .= 'A megadott azonosítókkal nincs regisztrált Integrált Kereskedői virtuális terminál.';
+                break;
+            case 154:
+                $ret .= 'A fizetőeszköz Banki hitelesítése sikertelen.';
+                break;
+            case 166:
+                $ret .= 'Elégtelen egyenleg.';
+                break;
+            case 172:
+                $ret .= 'Időközben változás történt: a terhelésre megjelölt SIM-en nincs regisztrált MPI.';
+                break;
+            case 174:
+                $ret .= 'Időközben változás történt: a terhelésre megjelölt fizetőeszköz nem azonosítható.';
+                break;
+            case 189:
+                $ret .= 'A Kereskedői referencia adatok nem találhatók.';
+                break;
+            case 190:
+                $ret .= 'Bankkártya rendszer elutasítás: Nem elfogadott kártya.';
+                break;
+            case 191:
+                $ret .= 'Bankkártya rendszer elutasítás: Lejárt kártya.';
+                break;
+            case 192:
+                $ret .= 'Bankkártya rendszer elutasítás: A tranzakció nem engedélyezett a kártyatulajdonos számára.';
+                break;
+            case 193:
+                $ret .= 'Bankkártya rendszer elutasítás: Elveszett kártya.';
+                break;
+            case 194:
+                $ret .= 'Bankkártya rendszer elutasítás: Korlátozott kártya.';
+                break;
+            case 195:
+                $ret .= 'Bankkártya rendszer elutasítás: Lopott kártya használata.';
+                break;
+            case 196:
+                $ret .= 'Bankkártya rendszer elutasítás: Érvénytelen kártyaszám.';
+                break;
+            case 198:
+                $ret .= 'A kérést a Bankkártya rendszer egyéb okból elutasította.';
+                break;
+            case 199:
+                $ret .= 'A Sztornó válasz nem azonosítható.';
+                break;
+            case 200:
+                $ret .= 'A Bankkártya rendszer nem elérhető.';
+                break;
+            case 203:
+                $ret .= 'A terhelés sikertelen, a kérés egyéb okból elutasításra került.';
+                break;
+            case 215:
+                $ret .= 'Technikai hiba történt, hívja az MF ügyfélszolgálatot.';
+                break;
+            case 218:
+                $ret .= 'A tranzakció kérésben megadott érvényességi idő nem megfelelő.';
+                break;
+            case 226:
+                $ret .= 'A megadott azonosítóval még nincs tranzakció.';
+                break;
+            case 228:
+                $ret .= 'Sztornó nem szükséges, pénzmozgás nem történt.';
+                break;
+            case 234:
+                $ret .= 'A terhelésre megjelölt Mobil Alkalmazáshoz nincs érvényes MPI. A kapcsolódó bankkártya érvényességi ideje lejárt.';
+                break;
+            case 240:
+                $ret .= 'A kérésben megadott bankTrxId által azonosított folyamat nem a kérésben megadott kereskedőre vonatkozik.';
+                break;
+            case 241:
+                $ret .= 'A pénz foglalás elfogadás határideje lejárt. Felszabadításra vonatkozó üzenet kerül elküldésre.';
+                break;
+            case 242:
+                $ret .= 'A foglalás utáni terhelést a vevő elutasította. Felszabadításra vonatkozó üzenet kerül elküldésre.';
+                break;
+            case 243:
+                $ret .= 'A pénzfoglalás folyamata már befejeződött.';
+                break;
+            case 244:
+                $ret .= 'A pénzügyi tranzakció értesítés üzenet fog kiküldésre kerülni.';
+                break;
+            case 246:
+                $ret .= 'Az elszámoló megváltozott az eredeti tranzakció óta.';
+                break;
+            case 247:
+                $ret .= 'A megadott kereskedői terminálnak nincs joga a Refund művelethez.';
+                break;
+            case 248:
+                $ret .= 'A Refund művelethez rendelt napi limit túllépésre került.';
+                break;
+            case 249:
+                $ret .= 'A Refund művelethez rendelt havi limit túllépésre került.';
+                break;
+            case 250:
+                $ret .= 'A jóváírásra kiválasztott MPI nem azonos az eredetileg kiválasztottal.';
+                break;
+            case 253:
+                $ret .= 'A megadott kereskedői terminálnak nincs joga a ’Authorize’ művelethez.';
+                break;
+            case 254:
+                $ret .= 'A jóváírás kérés elutasításra került.';
+                break;
+            case 255:
+                $ret .= 'Nincs megfelelő fizetőeszköz és a központi fizetőeszköz tulajdonságtár nem elérhető.';
+                break;
+            case 256:
+                $ret .= 'A Mobil Kliens eléréshez szükséges MPG nem elérhető.';
+                break;
+            case 257:
+                $ret .= 'A Mobil Kliens eléréshez szükséges MPG nem ismert.';
+                break;
+            case 260:
+                $ret .= 'A megadott origBankTrxId nem létezik.';
+                break;
+            case 261:
+                $ret .= 'A bankkártyához nincs megfelelő tulajdonság csoport hozzárendelés.';
+                break;
+            case 269:
+                $ret .= 'Bankkártya rendszer elutasítás: Zárolt Kártya.';
+                break;
+            case 270:
+                $ret .= 'Bankkártya rendszer elutasítás: Hibás vagy hiányos adatbevitel.';
+                break;
+            case 271:
+                $ret .= 'Bankkártya rendszer elutasítás: Hibás üzenet.';
+                break;
+            case 272:
+                $ret .= 'Bankkártya rendszer elutasítás: Nincs ilyen ügyfél.';
+                break;
+            case 279:
+                $ret .= 'Időközben változás történt: A kereskedőhöz tartozó elszámoló megváltozott.';
+                break;
+            case 281:
+                $ret .= 'A sztornó üzenet kiküldése sikertelen.';
+                break;
+            case 282:
+                $ret .= 'A sztornó művelet végrehajtási ideje lejárt.';
+                break;
+            case 283:
+                $ret .= 'Bankkártya rendszer elutasítás: Nem valós művelet.';
+                break;
+            case 284:
+                $ret .= 'Bankkártya rendszer elutasítás: Visszavonási limit túllépésre került.';
+                break;
+            case 285:
+                $ret .= 'Bankkártya rendszer elutasítás: A Refund limit túllépésre került.';
+                break;
+            case 289:
+                $ret .= 'A folyamat már korábban sikeresen sztornózásra került.';
+                break;
+            case 290:
+                $ret .= 'A folyamat rendben lefutott, majd hibátlanul stornózásra került.';
+                break;
+            default:
+                break;
+        }
+        return $ret;
+    }
+
 }
 
 class ClientMsisdn {
