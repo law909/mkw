@@ -27,9 +27,11 @@
             <div>
                 <span id="TermekKategoria1" class="js-termekfabutton" data-text="{t('válasszon')}" data-name="termekfa1" data-value="">Ebbe a kategóriába kerüljenek a termékek</span>
             </div>
+	<div class="matt-hseparator"></div>
             <div>
                 <label>Képek mappája:</label><input name="path" value="{$path}">
             </div>
+	<div class="matt-hseparator"></div>
             <div>
                 <label for="GyartoEdit">Gyártó:</label>
                 <select id="GyartoEdit" name="gyarto">
@@ -39,30 +41,37 @@
 					{/foreach}
 				</select>
             </div>
+	<div class="matt-hseparator"></div>
             <div>
                 <label>Termékek tól-ig:</label>
                 <input name="dbtol"> - <input name="dbig">
             </div>
+	<div class="matt-hseparator"></div>
             <div>
                 <label>Hosszú leírás módosítása létező terméknél is:</label>
                 <input name="editleiras" type="checkbox">
             </div>
+	<div class="matt-hseparator"></div>
             <div>
                 <label>Nem található termék felvitele újként:</label>
                 <input name="createuj" type="checkbox">
             </div>
+	<div class="matt-hseparator"></div>
             <div>
                 <label>Importálandó fájl:</label>
                 <input name="toimport" type="file">
             </div>
+	<div class="matt-hseparator"></div>
             <div>
                 <label>Az ár az importált ár ennyi százaléka legyen:</label>
                 <input name="arszaz" value="100">
             </div>
+	<div class="matt-hseparator"></div>
             <div>
-                <label>Delton leöltés kell:<abel>
+                <label>Delton letöltés kell:<abel>
                 <input name="deltondownload" type="checkbox" checked="checked">
             </div>
+	<div class="matt-hseparator"></div>
             <div>
             <a href="/admin/import/kreativ" class="js-kreativimport">Kreativ puzzle</a>
             <a href="/admin/import/delton" class="js-deltonimport">Delton</a>
@@ -72,6 +81,7 @@
             <a href="/admin/import/tutisport" class="js-tutisportimport">Tutisport</a>
             <a href="/admin/import/makszutov" class="js-makszutovimport">Makszutov</a>
             </div>
+	<div class="matt-hseparator"></div>
             <div>
                 <div>
                     <label>Vatera beérkezett rendelések:</label>

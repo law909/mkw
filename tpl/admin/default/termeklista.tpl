@@ -16,6 +16,7 @@
 <div id="mattable-select" data-theme="{$theme}">
 <div id="mattable-header" data-title="{t('Frissítés')}" data-caption="{t('Termékek')}"></div>
 <div id="mattable-filterwrapper">
+	<div class="matt-hseparator"></div>
     <div>
     <label for="nevfilter">{t('Név')}: </label>
     <input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
@@ -29,6 +30,7 @@
         {/foreach}
     </select>
     </div>
+	<div class="matt-hseparator"></div>
     <div>
         <select id="lathatofilter" name="lathatofilter">
             <option value="1">Látható</option>
