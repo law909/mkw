@@ -13,9 +13,6 @@
 		{/if}
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
-            {if ($egyed.fizetve)}
-            <tr><td class='mattable-important'>Fizetve</td></tr>
-            {/if}
             {if ($showbizonylatstatuszeditor)}
 			<tr>
                 <td class="mattable-important"><label for="BizonylatStatuszEdit">Státusz:</label></td>
@@ -190,6 +187,11 @@
 			</tbody></table>
             {if ($egyed.showotpay)}
             <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
+                    {if ($egyed.fizetve)}
+                        <tr><td class='mattable-important'>Fizetve</td><td></td></tr>
+                    {/else}
+                        <tr><td class='mattable-important'>Nincs fizetve</td><td></td></tr>
+                    {/if}
                     <tr>
                         <td><label>{t('Merch Trx ID')}:</label></td>
                         <td>{$egyed.trxid}</td>
