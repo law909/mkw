@@ -13,6 +13,9 @@
 		{/if}
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
+            {if ($egyed.fizetve)}
+            <tr><td class='mattable-important'>Fizetve</td></tr>
+            {/if}
             {if ($showbizonylatstatuszeditor)}
 			<tr>
                 <td class="mattable-important"><label for="BizonylatStatuszEdit">Státusz:</label></td>
@@ -187,6 +190,10 @@
 			</tbody></table>
             {if ($egyed.showotpay)}
             <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
+                    <tr>
+                        <td><label>{t('OTPay ID')}:</label></td>
+                        <td>{$egyed.otpayid}</td>
+                    </tr>
                     <tr>
                         <td><label>{t('OTPay MSISDN')}:</label></td>
                         <td>{$egyed.otpaymsisdn}</td>

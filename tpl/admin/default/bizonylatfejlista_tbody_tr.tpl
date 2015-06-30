@@ -69,6 +69,7 @@ IP: {$_egyed.ip} Ref.: {$_egyed.referrer}
 </td>
 <td class="cell">
 <table><tbody>
+{if ($_egyed.fizetve)}<tr><td>Fizetve</td></tr>{/if}
 <tr><td></td><td class="mattable-rightaligned">{$_egyed.valutanemnev}</td>{if ($showvalutanem)}<td class="mattable-rightaligned">HUF?</td>{/if}</tr>
 <tr><td>{t('Nettó')}:</td><td class="mattable-rightaligned pricenowrap">{number_format($_egyed.netto,2,'.',' ')}</td>{if ($showvalutanem)}<td class="mattable-rightaligned pricenowrap">{number_format($_egyed.nettohuf,2,'.',' ')}</td>{/if}</tr>
 <tr><td>{t('ÁFA')}:</td><td class="mattable-rightaligned pricenowrap">{number_format($_egyed.afa,2,'.',' ')}</td>{if ($showvalutanem)}<td class="mattable-rightaligned pricenowrap">{number_format($_egyed.afahuf,2,'.',' ')}</td>{/if}</tr>
