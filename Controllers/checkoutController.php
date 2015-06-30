@@ -481,10 +481,10 @@ class checkoutController extends \mkwhelpers\MattableController {
                                 $response = $client->GetImNotif($request);
                     \mkw\Store::writelog(print_r($response, true), 'otpay.log');
                                 if ($response->result == 0) {
-                                    if (array_key_exists('ImNotifList', $response)) {
-                                        if (array_key_exists('ImNotifReq', $response['ImNotifList'])) {
-                                            $r = $response->ImNotifList->ImNotifReq;
-                                            if (is_array($r)) {
+                                    if (isset($response->ImNotifList)) {
+                                        if (isset($response->ImNotifList->ImNotifReq)) {
+                                            if (is_array(isset($response->ImNotifList->ImNotifReq))) {
+                                                $r = $response->ImNotifList->ImNotifReq;
                                                 $c = 0;
                                                 $response = -1;
                                                 while ($c < count($r)) {
