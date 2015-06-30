@@ -185,7 +185,7 @@
 			</tr>
             {/if}
 			</tbody></table>
-            {if ($showotpay)}
+            {if ($egyed.showotpay)}
             <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
                     <tr>
                         <td><label>{t('OTPay MSISDN')}:</label></td>
