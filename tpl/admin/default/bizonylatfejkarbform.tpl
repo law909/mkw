@@ -191,6 +191,10 @@
             {if ($egyed.showotpay)}
             <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
                     <tr>
+                        <td><label>{t('Merch Trx ID')}:</label></td>
+                        <td>{$egyed.trxid}</td>
+                    </tr>
+                    <tr>
                         <td><label>{t('OTPay ID')}:</label></td>
                         <td>{$egyed.otpayid}</td>
                     </tr>
