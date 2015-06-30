@@ -185,6 +185,22 @@
 			</tr>
             {/if}
 			</tbody></table>
+            {if ($showotpay)}
+            <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
+                    <tr>
+                        <td><label>{t('OTPay MSISDN')}:</label></td>
+                        <td>{$egyed.otpaymsisdn}</td>
+                    </tr>
+                    <tr>
+                        <td><label>{t('OTPay MPID')}:</label></td>
+                        <td>{$egyed.otpaympid}</td>
+                    </tr>
+                    <tr>
+                        <td><label>{t('OTPay result')}:</label></td>
+                        <td>{$egyed.otpayresult}</td>
+                    </tr>
+            <tbody></table>
+            {/if}
 			<div>
 			{foreach $egyed.tetelek as $tetel}
 			{include 'bizonylattetelkarb.tpl'}

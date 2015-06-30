@@ -497,6 +497,19 @@ class checkoutController extends \mkwhelpers\MattableController {
                                             else {
                                                 $response = $response->ImNotifList->ImNotifReq->message->bankTrxResult;
                                             }
+                                            if ($response == 0) {
+                                                $mr->setFizetve(true);
+                                                $mr->setOTPayResult($client->getErrorText($response));
+                                                $this->getEm()->persist($mr);
+                                                $this->getEm()->flush();
+                                            }
+                                            else {
+                                                $error = $client->getErrorText($response);
+                                                $mr->setOTPayResult($error);
+                                                $this->getEm()->persist($mr);
+                                                $this->getEm()->flush();
+                                            }
+
                                         }
                                         else {
                                             $error = 'Ismeretlen UMG válasz.';
