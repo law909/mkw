@@ -488,14 +488,16 @@ class checkoutController extends \mkwhelpers\MattableController {
                                                 $c = 0;
                                                 $response = -1;
                                                 while ($c < count($r)) {
-                                                    if (($r[$c]->message->bankTrxId != $trxid)&&($r[$c]->message->merchTrxId != $mytrxid)) {
+                                                    if (($r[$c]->message->bankTrxId == $trxid)&&($r[$c]->message->merchTrxId == $mytrxid)) {
                                                         $response = $r[$c]->message->bankTrxResult;
                                                     }
                                                     $c++;
                                                 }
+                    \mkw\Store::writelog('111111:' . print_r($response, true), 'otpay.log');
                                             }
                                             else {
                                                 $response = $response->ImNotifList->ImNotifReq->message->bankTrxResult;
+                    \mkw\Store::writelog('222222:' . print_r($response, true), 'otpay.log');
                                             }
                                             if ($response == 0) {
                                                 $mr->setFizetve(true);
