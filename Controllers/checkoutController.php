@@ -483,7 +483,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                                 if ($response->result == 0) {
                                     if (isset($response->ImNotifList)) {
                                         if (isset($response->ImNotifList->ImNotifReq)) {
-                                            if (is_array(isset($response->ImNotifList->ImNotifReq))) {
+                                            if (is_array($response->ImNotifList->ImNotifReq)) {
                                                 $r = $response->ImNotifList->ImNotifReq;
                                                 $c = 0;
                                                 $response = -1;
