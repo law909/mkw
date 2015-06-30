@@ -36,9 +36,14 @@ class Bizonylatfej {
     private $otpaympid;
 
     /**
-     * @Column(type="text", nullable=true)
+     * @Column(type="integer", nullable=true)
      */
     private $otpayresult;
+
+    /**
+     * @Column(type="text", nullable=true)
+     */
+    private $otpayresulttext;
 
     /**
      * @Column(type="string", length=36,nullable=true)
@@ -1488,4 +1493,11 @@ class Bizonylatfej {
         $this->otpayresult = $val;
     }
 
+    public function getOTPayResultText() {
+        return $this->otpayresulttext;
+    }
+
+    public function setOTPayResultText($val) {
+        $this->otpayresulttext = $val;
+    }
 }

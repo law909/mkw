@@ -465,7 +465,6 @@ class checkoutController extends \mkwhelpers\MattableController {
                         try {
                             $client = new \MerchTerm_umg_client();
                             $response = $client->PostImCreditInit($request);
-                    \mkw\Store::writelog(print_r($response, true), 'otpay.log');
                             if ($response->result == 0) {
                                 $trxid = $response->bankTrxId;
                                 $mr->setOTPayId($trxid);
@@ -479,7 +478,6 @@ class checkoutController extends \mkwhelpers\MattableController {
                                     'imNotifFilter' => $imnotiffilter
                                 );
                                 $response = $client->GetImNotif($request);
-                    \mkw\Store::writelog(print_r($response, true), 'otpay.log');
                                 if ($response->result == 0) {
                                     if (isset($response->ImNotifList)) {
                                         if (isset($response->ImNotifList->ImNotifReq)) {
@@ -493,21 +491,21 @@ class checkoutController extends \mkwhelpers\MattableController {
                                                     }
                                                     $c++;
                                                 }
-                    \mkw\Store::writelog('111111:' . print_r($response, true), 'otpay.log');
                                             }
                                             else {
                                                 $response = $response->ImNotifList->ImNotifReq->message->bankTrxResult;
-                    \mkw\Store::writelog('222222:' . print_r($response, true), 'otpay.log');
                                             }
                                             if ($response == 0) {
                                                 $mr->setFizetve(true);
-                                                $mr->setOTPayResult($client->getErrorText($response));
+                                                $mr->setOTPayResult($response);
+                                                $mr->setOTPayResultText($client->getErrorText($response));
                                                 $this->getEm()->persist($mr);
                                                 $this->getEm()->flush();
                                             }
                                             else {
                                                 $error = $client->getErrorText($response);
-                                                $mr->setOTPayResult($error);
+                                                $mr->setOTPayResult($response);
+                                                $mr->setOTPayResultText($error);
                                                 $this->getEm()->persist($mr);
                                                 $this->getEm()->flush();
                                             }
@@ -515,21 +513,24 @@ class checkoutController extends \mkwhelpers\MattableController {
                                         }
                                         else {
                                             $error = 'Ismeretlen UMG válasz.';
-                                            $mr->setOTPayResult($error . ' => ' . print_r($response, true));
+                                            $mr->setOTPayResult(-1);
+                                            $mr->setOTPayResultText($error . ' => ' . print_r($response, true));
                                             $this->getEm()->persist($mr);
                                             $this->getEm()->flush();
                                         }
                                     }
                                     else {
                                         $error = 'Ismeretlen UMG válasz.';
-                                        $mr->setOTPayResult($error . ' => ' . print_r($response, true));
+                                        $mr->setOTPayResult(-1);
+                                        $mr->setOTPayResultText($error . ' => ' . print_r($response, true));
                                         $this->getEm()->persist($mr);
                                         $this->getEm()->flush();
                                     }
                                 }
                                 else {
                                     $error = $client->getRCErrorText($response->result);
-                                    $mr->setOTPayResult($error);
+                                    $mr->setOTPayResult($response->result);
+                                    $mr->setOTPayResultText($error);
                                     $this->getEm()->persist($mr);
                                     $this->getEm()->flush();
                                 }
@@ -537,7 +538,8 @@ class checkoutController extends \mkwhelpers\MattableController {
                             }
                             else {
                                 $error = $client->getRCErrorText($response->result);
-                                $mr->setOTPayResult($error);
+                                $mr->setOTPayResult($response->result);
+                                $mr->setOTPayResultText($error);
                                 $this->getEm()->persist($mr);
                                 $this->getEm()->flush();
                             }

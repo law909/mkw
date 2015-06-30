@@ -208,7 +208,7 @@
                     </tr>
                     <tr>
                         <td><label>{t('OTPay result')}:</label></td>
-                        <td>{$egyed.otpayresult}</td>
+                        <td>{$egyed.otpayresulttext}</td>
                     </tr>
             <tbody></table>
             {/if}
