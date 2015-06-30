@@ -189,7 +189,7 @@
             <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
                     {if ($egyed.fizetve)}
                         <tr><td class='mattable-important'>Fizetve</td><td></td></tr>
-                    {/else}
+                    {else}
                         <tr><td class='mattable-important'>Nincs fizetve</td><td></td></tr>
                     {/if}
                     <tr>
