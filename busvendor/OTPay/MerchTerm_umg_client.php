@@ -19,8 +19,7 @@ class MerchTerm_umg_client extends SoapClient {
 		$this->stream_context = MerchTerm_config::getConfig("stream_context");
         $this -> checkCertificate();
 		$this->options["stream_context"] = stream_context_create($this->stream_context);
-        //parent::__construct((dirname(__FILE__) . '/wsdl/I_MerchTerm_umg.wsdl'), $this->options);
-        parent::__construct(null, $this->options);
+        parent::__construct((dirname(__FILE__) . '/wsdl/I_MerchTerm_umg.wsdl'), $this->options);
     }
 
     /**
