@@ -449,9 +449,10 @@ class checkoutController extends \mkwhelpers\MattableController {
                         $timeout = new \TimeoutCategory();
                         $timeout->value = "mediumPeriod";
                         // Paraméterek
+                        $mytrxid = $mr->getTrxId();
                         $request = array(
                             'merchTermId' => \MerchTerm_config::getConfig("merchTermId"),
-                            'merchTrxId' => $mr->getTrxId(),
+                            'merchTrxId' => $mytrxid,
                             'clientId' => $clientId,
                             'timeout' => $timeout,
                             'amount' => $fizetendo,
@@ -464,24 +465,67 @@ class checkoutController extends \mkwhelpers\MattableController {
                         try {
                             $client = new \MerchTerm_umg_client();
                             $response = $client->PostImCreditInit($request);
-/****
- * sikeres tranzakcio: object(stdClass)#6 (3) { ["bankTrxId"]=> int(103010001001) ["wasRepeated"]=> bool(false) ["result"]=> int(0) }
- * Elutasítás, mert a terhelésre megjelölt Mobil Alkalmazás nem azonosítható.: object(stdClass)#6 (3) { ["bankTrxId"]=> int(103010001007) ["wasRepeated"]=> bool(false) ["result"]=> int(0) }
- */
                     \mkw\Store::writelog(print_r($response, true), 'otpay.log');
-                            /*
                             if ($response->result == 0) {
-                                $mr->setOTPayId($response->bankTrxId);
-                                $mr->setFizetve(true);
+                                $trxid = $response->bankTrxId;
+                                $mr->setOTPayId($trxid);
+                                $this->getEm()->persist($mr);
+                                $this->getEm()->flush();
+
+                                $imnotiffilter = new \ImNotifFilterBankTrxId();
+                                $imnotiffilter->bankTrxId = $trxid;
+                                $request = array(
+                                    'merchTermId' => \MerchTerm_config::getConfig("merchTermId"),
+                                    'imNotifFilter' => $imnotiffilter
+                                );
+                                $response = $client->GetImNotif($request);
+                    \mkw\Store::writelog(print_r($response, true), 'otpay.log');
+                                if ($response->result == 0) {
+                                    if (array_key_exists('ImNotifList', $response)) {
+                                        if (array_key_exists('ImNotifReq', $response['ImNotifList'])) {
+                                            $r = $response->ImNotifList->ImNotifReq;
+                                            if (is_array($r)) {
+                                                $c = 0;
+                                                $response = -1;
+                                                while ($c < count($r)) {
+                                                    if (($r[$c]->message->bankTrxId != $trxid)&&($r[$c]->message->merchTrxId != $mytrxid)) {
+                                                        $response = $r[$c]->message->bankTrxResult;
+                                                    }
+                                                    $c++;
+                                                }
+                                            }
+                                            else {
+                                                $response = $response->ImNotifList->ImNotifReq->message->bankTrxResult;
+                                            }
+                                        }
+                                        else {
+                                            $error = 'Ismeretlen UMG válasz.';
+                                            $mr->setOTPayResult($error . ' => ' . print_r($response, true));
+                                            $this->getEm()->persist($mr);
+                                            $this->getEm()->flush();
+                                        }
+                                    }
+                                    else {
+                                        $error = 'Ismeretlen UMG válasz.';
+                                        $mr->setOTPayResult($error . ' => ' . print_r($response, true));
+                                        $this->getEm()->persist($mr);
+                                        $this->getEm()->flush();
+                                    }
+                                }
+                                else {
+                                    $error = $client->getRCErrorText($response->result);
+                                    $mr->setOTPayResult($error);
+                                    $this->getEm()->persist($mr);
+                                    $this->getEm()->flush();
+                                }
+
+                            }
+                            else {
+                                $error = $client->getRCErrorText($response->result);
+                                $mr->setOTPayResult($error);
                                 $this->getEm()->persist($mr);
                                 $this->getEm()->flush();
                             }
-                            else {
-                                $error = Store::getOTPayErrorMessage($response->result);
-                            }
-                             *
-                             */
-
                         } catch (Exception $e) {
                             $exception = $e;
                             $error = $exception->getMessage();

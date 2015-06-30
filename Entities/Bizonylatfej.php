@@ -36,6 +36,11 @@ class Bizonylatfej {
     private $otpaympid;
 
     /**
+     * @Column(type="text", nullable=true)
+     */
+    private $otpayresult;
+
+    /**
      * @Column(type="string", length=36,nullable=true)
      */
     private $masterpasscorrelationid;
@@ -1473,6 +1478,14 @@ class Bizonylatfej {
 
     public function setMaterPassTrxId($val) {
         $this->masterpasstrxid = $val;
+    }
+
+    public function getOTPayResult() {
+        return $this->otpayresult;
+    }
+
+    public function setOTPayResult($val) {
+        $this->otpayresult = $val;
     }
 
 }

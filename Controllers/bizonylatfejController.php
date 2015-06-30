@@ -197,6 +197,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['otpayid'] = $t->getOTPayId();
         $x['otpaymsisdn'] = $t->getOTPayMSISDN();
         $x['otpaympid'] = $t->getOTPayMPID();
+        $x['otpayresult'] = $t->getOTPayResult();
 		if ($forKarb) {
 			foreach ($t->getBizonylattetelek() as $ttetel) {
 				$tetel[] = $tetelCtrl->loadVars($ttetel, true);
