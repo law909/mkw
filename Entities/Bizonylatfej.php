@@ -331,6 +331,9 @@ class Bizonylatfej {
     /** @OneToMany(targetEntity="Bizonylatfej", mappedBy="parbizonylatfej",cascade={"persist"}) */
     private $szulobizonylatfejek;
 
+    /** @Column(type="integer") */
+    private $partnerszamlatipus;
+
     /**
      * @PrePersist
      */
@@ -973,6 +976,8 @@ class Bizonylatfej {
             $this->szallvaros = $val->getSzallvaros();
             $this->szallutca = $val->getSzallutca();
 
+            $this->partnerszamlatipus = $val->getSzamlatipus();
+
             $uk = $val->getUzletkoto();
             if ($uk) {
                 $this->setUzletkoto($uk);
@@ -1013,6 +1018,11 @@ class Bizonylatfej {
             $this->partnerutca = '';
             $this->partnervalligszam = '';
             $this->partnervaros = '';
+            $this->partnerszamlatipus = 0;
+            $this->szallnev = '';
+            $this->szallirszam = '';
+            $this->szallvaros = '';
+            $this->szallutca = '';
             $this->removeUzletkoto();
             $this->removeFizmod();
 //			$val->removeBizonylatfej($this);
@@ -1499,5 +1509,13 @@ class Bizonylatfej {
 
     public function setOTPayResultText($val) {
         $this->otpayresulttext = $val;
+    }
+
+    public function getPartnerSzamlatipus() {
+        return $this->partnerszamlatipus;
+    }
+
+    public function setPartnerSzamlatipus($val) {
+        $this->partnerszamlatipus = $val;
     }
 }

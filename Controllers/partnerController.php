@@ -69,6 +69,11 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['referrer'] = $t->getReferrer();
         $x['szallito'] = $t->getSzallito();
         $x['szallitasiido'] = $t->getSzallitasiido();
+        $x['szamlatipus'] = $t->getSzamlatipus();
+        $x['banknev'] = $t->getBanknev();
+        $x['bankcim'] = $t->getBankcim();
+        $x['iban'] = $t->getIban();
+        $x['swift'] = $t->getSwift();
         return $x;
     }
 
@@ -110,6 +115,11 @@ class partnerController extends \mkwhelpers\MattableController {
         $obj->setUjdonsaghirlevelkell($this->params->getBoolRequestParam('ujdonsaghirlevelkell'));
         $obj->setSzallito($this->params->getBoolRequestParam('szallito'));
         $obj->setSzallitasiido($this->params->getIntRequestParam('szallitasiido'));
+        $obj->setSzamlatipus($this->params->getIntRequestParam('szamlatipus'));
+        $obj->setBanknev($this->params->getStringRequestParam('banknev'));
+        $obj->setBankcim($this->params->getStringRequestParam('bankcim'));
+        $obj->setIban($this->params->getStringRequestParam('iban'));
+        $obj->setSwift($this->params->getStringRequestParam('swift'));
         $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
         if ($fizmod) {
             $obj->setFizmod($fizmod);
@@ -230,6 +240,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $view->setVar('oper', $oper);
 
         $partner = $this->getRepo()->findWithJoins($id);
+        $view->setVar('szamlatipuslist', $this->getRepo()->getSzamlatipusList($partner->getSzamlatipus()));
         // loadVars utan nem abc sorrendben adja vissza
         $tcc = new partnercimkekatController($this->params);
         $cimkek = $partner ? $partner->getCimkek() : null;

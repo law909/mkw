@@ -202,6 +202,21 @@ class Partner {
     /** @Column(type="integer",nullable=true) */
     private $szallitasiido;
 
+    /** @Column(type="string",length=255,nullable=true) */
+    private $banknev;
+
+    /** @Column(type="string",length=255,nullable=true) */
+    private $bankcim;
+
+    /** @Column(type="string",length=255,nullable=true) */
+    private $iban;
+
+    /** @Column(type="string",length=255,nullable=true) */
+    private $swift;
+
+    /** @Column(type="integer",nullable=false) */
+    private $szamlatipus = 0;
+
 	public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -771,5 +786,45 @@ class Partner {
 
     public function setSzallitasiido($adat) {
         $this->szallitasiido = $adat;
+    }
+
+    public function getBanknev() {
+        return $this->banknev;
+    }
+
+    public function setBanknev($val) {
+        $this->banknev = $val;
+    }
+
+    public function getBankcim() {
+        return $this->bankcim;
+    }
+
+    public function setBankcim($val) {
+        $this->bankcim = $val;
+    }
+
+    public function getIban() {
+        return $this->iban;
+    }
+
+    public function setIban($val) {
+        $this->iban = $val;
+    }
+
+    public function getSwift() {
+        return $this->swift;
+    }
+
+    public function setSwift($val) {
+        $this->swift = $val;
+    }
+
+    public function getSzamlatipus() {
+        return $this->szamlatipus;
+    }
+
+    public function setSzamlatipus($val) {
+        $this->szamlatipus = $val;
     }
 }

@@ -762,10 +762,70 @@ class EntitiesPartnerProxy extends \Entities\Partner implements \Doctrine\ORM\Pr
         return parent::setSzallitasiido($adat);
     }
 
+    public function getBanknev()
+    {
+        $this->__load();
+        return parent::getBanknev();
+    }
+
+    public function setBanknev($val)
+    {
+        $this->__load();
+        return parent::setBanknev($val);
+    }
+
+    public function getBankcim()
+    {
+        $this->__load();
+        return parent::getBankcim();
+    }
+
+    public function setBankcim($val)
+    {
+        $this->__load();
+        return parent::setBankcim($val);
+    }
+
+    public function getIban()
+    {
+        $this->__load();
+        return parent::getIban();
+    }
+
+    public function setIban($val)
+    {
+        $this->__load();
+        return parent::setIban($val);
+    }
+
+    public function getSwift()
+    {
+        $this->__load();
+        return parent::getSwift();
+    }
+
+    public function setSwift($val)
+    {
+        $this->__load();
+        return parent::setSwift($val);
+    }
+
+    public function getSzamlatipus()
+    {
+        $this->__load();
+        return parent::getSzamlatipus();
+    }
+
+    public function setSzamlatipus($val)
+    {
+        $this->__load();
+        return parent::setSzamlatipus($val);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk', 'termekertesitok', 'vendeg', 'ip', 'referrer', 'szallito', 'passwordreminder', 'oldloginname', 'szallitasiido');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'idegenkod', 'sessionid', 'jelszo', 'inaktiv', 'nev', 'vezeteknev', 'keresztnev', 'adoszam', 'euadoszam', 'mukengszam', 'jovengszam', 'ostermszam', 'valligszam', 'fvmszam', 'cjszam', 'statszamjel', 'irszam', 'varos', 'utca', 'lirszam', 'lvaros', 'lutca', 'telefon', 'mobil', 'fax', 'email', 'honlap', 'megjegyzes', 'syncid', 'uzletkoto', 'teendok', 'esemenyek', 'cimkek', 'fizmod', 'bizonylatfejek', 'kosarak', 'fizhatido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'nem', 'szuletesiido', 'akcioshirlevelkell', 'ujdonsaghirlevelkell', 'utolsoklikk', 'termekertesitok', 'vendeg', 'ip', 'referrer', 'szallito', 'passwordreminder', 'oldloginname', 'szallitasiido', 'banknev', 'bankcim', 'iban', 'swift', 'szamlatipus');
     }
 
     public function __clone()

@@ -19,6 +19,26 @@ class PartnerRepository extends \mkwhelpers\Repository {
 		));
 	}
 
+    public function getSzamlatipusList($sel) {
+        return array(
+            array(
+                'id' => 0,
+                'caption' => 'magyar',
+                'selected' => ($sel == 0)
+            ),
+            array(
+                'id' => 1,
+                'caption' => 'EU-n belüli',
+                'selected' => ($sel == 1)
+            ),
+            array(
+                'id' => 2,
+                'caption' => 'EU-n kívüli',
+                'selected' => ($sel == 2)
+            )
+        );
+    }
+
 	public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
 		$a = $this->alias;
 		$q = $this->_em->createQuery('SELECT ' . $a . ',fm,uk'

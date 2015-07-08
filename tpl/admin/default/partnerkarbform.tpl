@@ -8,6 +8,7 @@
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
 			<li><a href="#ElerhetosegTab">{t('Elérhetőségek')}</a></li>
+			<li><a href="#BankTab">{t('Banki adatok')}</a></li>
 			<li><a href="#EgyebAzonositoTab">{t('Egyéb azonosító adatok')}</a></li>
 		</ul>
 		{/if}
@@ -45,6 +46,13 @@
 				<td><input id="EUAdoszamEdit" name="euadoszam" type="text" size="13" maxlength="30" value="{$partner.euadoszam}"></td>
 			</tr>
 			<tr>
+				<td><label for="SzamlatipusEdit">{t('Számla típus')}:</label></td>
+				<td><select id="SzamlatipusEdit" name="szamlatipus">
+					<option value="">{t('válasszon')}</option>
+					{foreach $szamlatipuslist as $_szt}
+					<option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+					{/foreach}
+				</select></td>
 				<td><label for="FizmodEdit">{t('Fizetési mód')}:</label></td>
 				<td><select id="FizmodEdit" name="fizmod">
 					<option value="">{t('válasszon')}</option>
@@ -128,6 +136,29 @@
 					<input id="SzallVarosEdit" name="szallvaros" type="text" size="20" maxlength="40" value="{$partner.szallvaros}" placeholder="{t('város')}">
 					<input id="SzallUtcaEdit" name="szallutca" type="text" size="40" maxlength="60" value="{$partner.szallutca}" placeholder="{t('utca, házszám')}">
 				</td>
+			</tr>
+			</tbody></table>
+		</div>
+		{if ($setup.editstyle=='dropdown')}
+		<div class="mattkarb-titlebar" data-caption="{t('Banki adatok')}" data-refcontrol="#BankTab"></div>
+		{/if}
+		<div id="BankTab" class="mattkarb-page" data-visible="visible">
+			<table><tbody>
+			<tr>
+				<td><label for="BanknevEdit">{t('Bank neve')}:</label></td>
+				<td><input id="BanknevEdit" name="banknev" type="text" size="40" maxlength="255" value="{$partner.banknev}"></td>
+			</tr>
+			<tr>
+				<td><label for="BankcimEdit">{t('Bank címe')}:</label></td>
+				<td><input id="BankcimEdit" name="bankcim" type="text" size="40" maxlength="255" value="{$partner.bankcim}"></td>
+			</tr>
+			<tr>
+				<td><label for="IbanEdit">{t('IBAN')}:</label></td>
+				<td><input id="IbanEdit" name="iban" type="text" size="40" maxlength="255" value="{$partner.iban}"></td>
+			</tr>
+			<tr>
+				<td><label for="SwiftEdit">{t('SWIFT')}:</label></td>
+				<td><input id="SwiftEdit" name="swift" type="text" size="40" maxlength="255" value="{$partner.swift}"></td>
 			</tr>
 			</tbody></table>
 		</div>
