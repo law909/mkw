@@ -1157,4 +1157,45 @@ class importController extends \mkwhelpers\Controller {
         \unlink('vateratermek.csv');
     }
 
+    public function szAtalakit() {
+        header("Content-type: text/csv");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        $sep = ';';
+
+        move_uploaded_file($_FILES['toimport']['tmp_name'], 'szatalakit.csv');
+        $er = fopen('eredmeny.csv', 'w');
+        $fh = fopen('szatalakit.csv', 'r');
+        if ($fh) {
+            fgetcsv($fh, 0, $sep, '"');
+            while ($data = fgetcsv($fh, 0, $sep, '"')) {
+                $nev = str_getcsv($data[$this->n('e')], ' ');
+                $cikkszam = $nev[0];
+                $i = count($nev);
+                $meret = $nev[$i - 1];
+                $szin = $nev[$i - 2];
+                unset($nev[$i - 2]);
+                unset($nev[$i - 1]);
+                unset($nev[0]);
+                $out = array(
+                    $data[$this->n('a')],
+                    $data[$this->n('b')],
+                    $data[$this->n('c')],
+                    $data[$this->n('d')],
+                    $cikkszam,
+                    implode(' ', $nev),
+                    $szin,
+                    $meret,
+                    $data[$this->n('f')],
+                    $data[$this->n('g')]
+                );
+                fwrite($er, implode(';', $out) . "\n\r");
+            }
+        }
+        fclose($fh);
+        fclose($er);
+        \unlink('szatalakit.csv');
+    }
+
 }

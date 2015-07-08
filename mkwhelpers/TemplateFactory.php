@@ -10,9 +10,11 @@ class TemplateFactory {
 	private $main_path_smartyconfig;
 	private $main_path_smartycache;
 	private $templateenginename;
+    private $path_template_default;
 
 	public function __construct($ini) {
 		$this->path_template=$ini['path.template'];
+		$this->path_template_default=$ini['path.template.default'];
 		$this->path_template_c=$ini['path.template_c'];
 		$this->path_smartyconfig=$ini['path.smartyconfig'];
 		$this->path_smartycache=$ini['path.smartycache'];
@@ -24,6 +26,10 @@ class TemplateFactory {
 
 	public function getTemplate() {
 		return $this->path_template;
+	}
+
+	public function getTemplateDefault() {
+		return $this->path_template_default;
 	}
 
 	public function getTemplateC() {
@@ -56,10 +62,15 @@ class TemplateFactory {
 
 	public function createView($tplfilename) {
 		if (strtolower($this->templateenginename)=='dwoo') {
-			$view=new DwooView($this->getTemplateC(),$this->getTemplate(),$tplfilename,$this->getSmartyConfig(),$this->getSmartyCache());
+			$view = new DwooView($this->getTemplateC(),$this->getTemplate(),$tplfilename,$this->getSmartyConfig(),$this->getSmartyCache());
 		}
 		elseif (strtolower($this->templateenginename)=='smarty') {
-			$view=new SmartyView($this->getTemplateC(),$this->getTemplate(),$tplfilename,$this->getSmartyConfig(),$this->getSmartyCache());
+            if (file_exists($this->getTemplate() . $tplfilename)) {
+                $view = new SmartyView($this->getTemplateC(),$this->getTemplate(),$tplfilename,$this->getSmartyConfig(),$this->getSmartyCache());
+            }
+            else {
+                $view = new SmartyView($this->getTemplateC(),$this->getTemplateDefault(),$tplfilename,$this->getSmartyConfig(),$this->getSmartyCache());
+            }
 		}
 		return $view;
 	}

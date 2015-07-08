@@ -250,6 +250,7 @@ $router->map('POST','/admin/import/reintex', 'importController#reintexImport', '
 $router->map('POST','/admin/import/tutisport', 'importController#tutisportImport', 'admintutisportimport');
 $router->map('POST','/admin/import/makszutov', 'importController#makszutovImport', 'adminmakszutovimport');
 $router->map('POST','/admin/import/vatera', 'importController#vateraImport', 'adminvateraimport');
+$router->map('POST','/admin/import/szatalakit', 'importController#szAtalakit', 'adminszatalakit');
 
 $router->map('GET', '/admin/login/show', 'dolgozoController#showlogin', 'adminshowlogin');
 $router->map('POST', '/admin/login', 'dolgozoController#login', 'adminlogin');
