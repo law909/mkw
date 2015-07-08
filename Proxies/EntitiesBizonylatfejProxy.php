@@ -36,6 +36,12 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
     }
     
     
+    public function generateTrxId()
+    {
+        $this->__load();
+        return parent::generateTrxId();
+    }
+
     public function doStuffOnPrePersist()
     {
         $this->__load();
@@ -70,6 +76,24 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
     {
         $this->__load();
         return parent::getId();
+    }
+
+    public function getTrxId()
+    {
+        $this->__load();
+        return parent::getTrxId();
+    }
+
+    public function getOTPayId()
+    {
+        $this->__load();
+        return parent::getOTPayId();
+    }
+
+    public function setOTPayId($val)
+    {
+        $this->__load();
+        return parent::setOTPayId($val);
     }
 
     public function generateId()
@@ -1062,10 +1086,106 @@ class EntitiesBizonylatfejProxy extends \Entities\Bizonylatfej implements \Doctr
         return parent::getPartnerCim();
     }
 
+    public function getOTPayMSISDN()
+    {
+        $this->__load();
+        return parent::getOTPayMSISDN();
+    }
+
+    public function setOTPayMSISDN($val)
+    {
+        $this->__load();
+        return parent::setOTPayMSISDN($val);
+    }
+
+    public function getOTPayMPID()
+    {
+        $this->__load();
+        return parent::getOTPayMPID();
+    }
+
+    public function setOTPayMPID($val)
+    {
+        $this->__load();
+        return parent::setOTPayMPID($val);
+    }
+
+    public function getFizetve()
+    {
+        $this->__load();
+        return parent::getFizetve();
+    }
+
+    public function setFizetve($val)
+    {
+        $this->__load();
+        return parent::setFizetve($val);
+    }
+
+    public function getMasterPassCorrelationID()
+    {
+        $this->__load();
+        return parent::getMasterPassCorrelationID();
+    }
+
+    public function setMasterPassCorrelationID($val)
+    {
+        $this->__load();
+        return parent::setMasterPassCorrelationID($val);
+    }
+
+    public function getMasterPassBankTrxId()
+    {
+        $this->__load();
+        return parent::getMasterPassBankTrxId();
+    }
+
+    public function setMaterPassBankTrxId($val)
+    {
+        $this->__load();
+        return parent::setMaterPassBankTrxId($val);
+    }
+
+    public function getMasterPassTrxId()
+    {
+        $this->__load();
+        return parent::getMasterPassTrxId();
+    }
+
+    public function setMaterPassTrxId($val)
+    {
+        $this->__load();
+        return parent::setMaterPassTrxId($val);
+    }
+
+    public function getOTPayResult()
+    {
+        $this->__load();
+        return parent::getOTPayResult();
+    }
+
+    public function setOTPayResult($val)
+    {
+        $this->__load();
+        return parent::setOTPayResult($val);
+    }
+
+    public function getOTPayResultText()
+    {
+        $this->__load();
+        return parent::getOTPayResultText();
+    }
+
+    public function setOTPayResultText($val)
+    {
+        $this->__load();
+        return parent::setOTPayResultText($val);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'bizonylattipus', 'bizonylatnev', 'irany', 'nyomtatva', 'storno', 'stornozott', 'penztmozgat', 'tulajnev', 'tulajirszam', 'tulajvaros', 'tulajutca', 'tulajadoszam', 'tulajeuadoszam', 'erbizonylatszam', 'fuvarlevelszam', 'kelt', 'teljesites', 'esedekesseg', 'fizmod', 'fizmodnev', 'szallitasimod', 'szallitasimodnev', 'netto', 'afa', 'brutto', 'fizetendo', 'valutanem', 'valutanemnev', 'nettohuf', 'afahuf', 'bruttohuf', 'arfolyam', 'partner', 'partnernev', 'partnervezeteknev', 'partnerkeresztnev', 'partneradoszam', 'partnereuadoszam', 'partnermukengszam', 'partnerjovengszam', 'partnerostermszam', 'partnervalligszam', 'partnerfvmszam', 'partnercjszam', 'partnerstatszamjel', 'partnerirszam', 'partnervaros', 'partnerutca', 'partnerlirszam', 'partnerlvaros', 'partnerlutca', 'partneremail', 'partnertelefon', 'bankszamla', 'bankszamlanev', 'swift', 'uzletkoto', 'uzletkotonev', 'raktar', 'raktarnev', 'bizonylattetelek', 'megjegyzes', 'belsomegjegyzes', 'webshopmessage', 'couriermessage', 'hatarido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'ip', 'referrer', 'bizonylatstatusz', 'parbizonylatfej', 'szulobizonylatfejek');
+        return array('__isInitialized__', 'id', 'trxid', 'otpayid', 'otpaymsisdn', 'otpaympid', 'otpayresult', 'otpayresulttext', 'masterpasscorrelationid', 'masterpassbanktrxid', 'masterpasstrxid', 'created', 'lastmod', 'bizonylattipus', 'bizonylatnev', 'irany', 'nyomtatva', 'storno', 'stornozott', 'penztmozgat', 'fizetve', 'tulajnev', 'tulajirszam', 'tulajvaros', 'tulajutca', 'tulajadoszam', 'tulajeuadoszam', 'erbizonylatszam', 'fuvarlevelszam', 'kelt', 'teljesites', 'esedekesseg', 'fizmod', 'fizmodnev', 'szallitasimod', 'szallitasimodnev', 'netto', 'afa', 'brutto', 'fizetendo', 'valutanem', 'valutanemnev', 'nettohuf', 'afahuf', 'bruttohuf', 'arfolyam', 'partner', 'partnernev', 'partnervezeteknev', 'partnerkeresztnev', 'partneradoszam', 'partnereuadoszam', 'partnermukengszam', 'partnerjovengszam', 'partnerostermszam', 'partnervalligszam', 'partnerfvmszam', 'partnercjszam', 'partnerstatszamjel', 'partnerirszam', 'partnervaros', 'partnerutca', 'partnerlirszam', 'partnerlvaros', 'partnerlutca', 'partneremail', 'partnertelefon', 'bankszamla', 'bankszamlanev', 'swift', 'uzletkoto', 'uzletkotonev', 'raktar', 'raktarnev', 'bizonylattetelek', 'megjegyzes', 'belsomegjegyzes', 'webshopmessage', 'couriermessage', 'hatarido', 'szallnev', 'szallirszam', 'szallvaros', 'szallutca', 'ip', 'referrer', 'bizonylatstatusz', 'parbizonylatfej', 'szulobizonylatfejek');
     }
 
     public function __clone()

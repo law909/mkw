@@ -11,6 +11,10 @@ class Vtsz {
 	 * @GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
+
+    /** @Column(type="string",length=255,nullable=false) */
+	private $szam;
+
 	/** @Column(type="string",length=255,nullable=false) */
 	private $nev;
 	/**
@@ -35,7 +39,15 @@ class Vtsz {
 		$this->nev = $nev;
 	}
 
-	public function getAfa() {
+	public function getSzam() {
+		return $this->szam;
+	}
+
+	public function setSzam($nev) {
+		$this->szam = $nev;
+	}
+
+    public function getAfa() {
 		return $this->afa;
 	}
 

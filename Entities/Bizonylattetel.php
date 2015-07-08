@@ -101,6 +101,9 @@ class Bizonylattetel {
     /** @Column(type="string",length=255,nullable=true) */
     private $vtsznev;
 
+    /** @Column(type="string",length=255,nullable=true) */
+    private $vtszszam;
+
     /**
      * @ManyToOne(targetEntity="Afa",inversedBy="bizonylattetelek")
      * @JoinColumn(name="afa_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -414,6 +417,10 @@ class Bizonylattetel {
         return $this->vtsz;
     }
 
+    public function getVtszszam() {
+        return $this->vtszszam;
+    }
+
     public function getVtsznev() {
         return $this->vtsznev;
     }
@@ -429,6 +436,7 @@ class Bizonylattetel {
         if ($this->vtsz !== $val) {
             $this->vtsz = $val;
             $this->vtsznev = $val->getNev();
+            $this->vtszszam = $val->getSzam();
             $afa = $val->getAfa();
             if ($afa) {
                 $this->setAfa($afa);
@@ -442,6 +450,7 @@ class Bizonylattetel {
 //			$val=$this->vtsz;
             $this->vtsz = null;
             $this->vtsznev = '';
+            $this->vtszszam = '';
 //			$val->removeBizonylattetelek($this);
         }
     }
