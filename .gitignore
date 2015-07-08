@@ -52,7 +52,6 @@ js/tiny_mce/
 *.bat
 *.ini
 !/HowTo/
-!/setup.ini
 !/themes/main/mkwcansas/img/
 !/config.example.ini
 /ckfinder/config.php
