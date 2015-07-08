@@ -119,6 +119,9 @@ $router->map('POST', '/admin/termek/setflag', 'termekController#setflag', 'admin
 $router->map('GET', '/admin/termekkapcsolodo/getemptyrow', 'termekkapcsolodoController#getemptyrow', 'admintermekkapcsolodogetemptyrow');
 $router->map('POST', '/admin/termekkapcsolodo/save', 'termekkapcsolodoController#save', 'admintermekkapcsolodosave');
 
+$router->map('GET', '/admin/termekar/getemptyrow', 'termekarController#getemptyrow', 'admintermekargetemptyrow');
+$router->map('POST', '/admin/termekar/save', 'termekarController#save', 'admintermekarsave');
+
 $router->map('GET', '/admin/termekkep/getemptyrow', 'termekkepController#getemptyrow', 'admintermekkepgetemptyrow');
 $router->map('POST', '/admin/termekkep/del', 'termekkepController#del', 'admintermekkepdel');
 

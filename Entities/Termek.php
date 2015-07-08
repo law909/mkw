@@ -244,6 +244,9 @@ class Termek {
     /** @Column(type="text",nullable=true) */
     private $regikepurl = '';
 
+    /** @OneToMany(targetEntity="TermekAr", mappedBy="termek", cascade={"persist"}) */
+    private $termekarak;
+
     /**
      * @PrePersist
      * @PreUpdate
@@ -267,6 +270,7 @@ class Termek {
         $this->termekkapcsolodok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->altermekkapcsolodok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekertesitok = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->termekarak = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getUjTermek($min) {
@@ -1422,6 +1426,23 @@ class Termek {
 
     public function setRegikepurl($adat) {
         $this->regikepurl = $adat;
+    }
+
+    public function getTermekArak() {
+        return $this->termekarak;
+    }
+
+    public function addTermekAr(TermekAr $adat) {
+        $this->termekarak->add($adat);
+        $adat->setTermek($this);
+    }
+
+    public function removeTermekAr(TermekAr $adat) {
+        if ($this->termekarak->removeElement($adat)) {
+            $adat->removeTermek($this);
+            return true;
+        }
+        return false;
     }
 
 }

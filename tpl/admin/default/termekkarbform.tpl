@@ -5,9 +5,10 @@
 </div>
 <form id="mattkarb-form" method="post" action="/admin/termek/save" data-id="{$termek.id}">
 	<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
-		{if ($setup.editstyle=='tab')}
+        {if ($setup.editstyle=='tab')}
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
+            {if ($setup.arsavok)}<li><a href="#ArsavTab">{t('Ársávok')}</a></li>{/if}
 			<li><a href="#CimkeTab">{t('Címkék')}</a></li>
 			<li><a href="#KepTab">{t('Képek')}</a></li>
 			{if ($setup.receptura)}<li><a href="#RecepturaTab">{t('Receptúra')}</a></li>{/if}
@@ -83,6 +84,7 @@
 					<td><label for="SzallitasiidoEdit">{t('Szállítási idő')}:</label></td>
 					<td><input id="SzallitasiidoEdit" name="szallitasiido" type="number" step="any" value="{$termek.szallitasiido}" maxlength="5" size="5"></td>
 				</tr>
+                {if (!$setup.arsavok)}
 				<tr>
 					<td></td>
 					<td>HUF</td>
@@ -109,8 +111,20 @@
 					<td><label for="AkciosBruttoEdit">{t('Akciós bruttó')}:</label></td>
 					<td><input id="AkciosBruttoEdit" name="akciosbrutto" type="number" step="any" value="{$termek.akciosbrutto}"></td>
 				</tr>
+                {/if}
 			</tbody></table>
 		</div>
+		{if ($setup.arsavok)}
+		{if ($setup.editstyle=='dropdown')}
+		<div class="mattkarb-titlebar" data-caption="{t('Ársávok')}" data-refcontrol="#ArsavTab"></div>
+		{/if}
+		<div id="ArsavTab" class="mattkarb-page" data-visible="visible">
+			{foreach $termek.arak as $ar}
+			{include 'termektermekarkarb.tpl'}
+			{/foreach}
+			<a class="js-arnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+		</div>
+		{/if}
 		{if ($setup.editstyle=='dropdown')}
 		<div class="mattkarb-titlebar" data-caption="{t('Címkék')}" data-refcontrol="#CimkeTab"></div>
 		{/if}

@@ -88,6 +88,7 @@ $(document).ready(function() {
         newWindowUrl: '/admin/termek/viewkarb',
         saveUrl: '/admin/termek/save',
         beforeShow: function() {
+            var artab = $('#ArsavTab');
             var keptab = $('#KepTab');
             var recepttab = $('#RecepturaTab');
             var kapcsolodotab = $('#KapcsolodoTab');
@@ -103,6 +104,7 @@ $(document).ready(function() {
                 $('input[name^="valtozatoper_"]').val('add');
                 $('input[name^="kapcsolodooper_"]').val('add');
                 $('input[name^="receptoper_"]').val('add');
+                $('input[name^="aroper_"]').val('add');
                 $('#mattkarb-okbutton').click();
             });
             $('.js-saveandreopen').on('click', function(e) {
@@ -279,6 +281,55 @@ $(document).ready(function() {
                         }
                     });
             $('.js-receptnewbutton,.js-receptdelbutton').button();
+            artab.on('click', '.js-arnewbutton', function(e) {
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/termekar/getemptyrow',
+                    type: 'GET',
+                    success: function(data) {
+                        var tbody = $('#ArsavTab');
+                        tbody.append(data);
+                        $('.js-arnewbutton,.js-ardelbutton').button();
+                        $this.remove();
+                    }
+                });
+            })
+                    .on('click', '.js-ardelbutton', function(e) {
+                        e.preventDefault();
+                        var argomb = $(this),
+                                arid = argomb.attr('data-id');
+                        if (argomb.attr('data-source') === 'client') {
+                            $('#artable_' + arid).remove();
+                        }
+                        else {
+                            dialogcenter.html('Biztos, hogy törli az ársávot?').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'Igen': function() {
+                                        $.ajax({
+                                            url: '/admin/termekar/save',
+                                            type: 'POST',
+                                            data: {
+                                                id: arid,
+                                                oper: 'del'
+                                            },
+                                            success: function(data) {
+                                                $('#artable_' + data).remove();
+                                            }
+                                        });
+                                        $(this).dialog('close');
+                                    },
+                                    'Nem': function() {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                    });
+            $('.js-arnewbutton,.js-ardelbutton').button();
             kapcsolodotab.on('click', '.js-kapcsolodonewbutton', function(e) {
                 var $this = $(this);
                 e.preventDefault();

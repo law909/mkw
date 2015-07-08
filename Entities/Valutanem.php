@@ -30,6 +30,8 @@ class Valutanem {
 	private $bizonylattetelek;
 	/** @OneToMany(targetEntity="Kosar", mappedBy="valutanem",cascade={"persist"}) */
 	private $kosarak;
+	/** @OneToMany(targetEntity="TermekAr", mappedBy="valutanem",cascade={"persist"}) */
+	private $termekarak;
 
 	public function getId() {
 		return $this->id;

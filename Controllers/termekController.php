@@ -20,6 +20,7 @@ class termekController extends \mkwhelpers\MattableController {
 	}
 
 	protected function loadVars($t, $forKarb = false) {
+        $termekarCtrl = new termekarController($this->params);
 		$kepCtrl = new termekkepController($this->params);
 		$receptCtrl = new termekreceptController($this->params);
 		$valtozatCtrl = new termekvaltozatController($this->params);
@@ -96,6 +97,12 @@ class termekController extends \mkwhelpers\MattableController {
 				//$valtozat[]=$valtozatCtrl->loadVars(null);
 				$x['valtozatok'] = $valtozat;
 			}
+            if (store::getSetupValue('arsavok')) {
+                foreach ($t->getTermekArak() as $tar) {
+                    $ar[] = $termekarCtrl->loadVars($tar, true);
+                }
+                $x['arak'] = $ar;
+            }
 		}
 		$x['termekfa1nev'] = $t->getTermekfa1Nev();
 		$x['termekfa2nev'] = $t->getTermekfa2Nev();
@@ -239,6 +246,39 @@ class termekController extends \mkwhelpers\MattableController {
 				}
 			}
 		}
+        if (store::getSetupValue('arsavok')) {
+            $arids = $this->params->getArrayRequestParam('arid');
+            foreach ($arids as $arid) {
+				$oper = $this->params->getStringRequestParam('aroper_' . $arid);
+                $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('arvalutanem_' . $arid));
+                if (!$valutanem) {
+                    $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find(store::getParameter(\mkw\consts::Valutanem));
+                }
+				if ($oper == 'add') {
+					$ar = new \Entities\TermekAr();
+					$obj->addTermekAr($ar);
+                    $ar->setAzonosito($this->params->getStringRequestParam('arazonosito_' . $arid));
+                    $ar->setNetto($this->params->getNumRequestParam('arnetto_' . $arid));
+                    $ar->setBrutto($this->params->getNumRequestParam('arbrutto_' . $arid));
+                    if ($valutanem) {
+                        $ar->setValutanem($valutanem);
+                    }
+					$this->getEm()->persist($ar);
+				}
+				elseif ($oper == 'edit') {
+					$ar = $this->getEm()->getRepository('Entities\TermekAr')->find($arid);
+					if ($ar) {
+                        $ar->setAzonosito($this->params->getStringRequestParam('arazonosito_' . $arid));
+                        $ar->setNetto($this->params->getNumRequestParam('arnetto_' . $arid));
+                        $ar->setBrutto($this->params->getNumRequestParam('arbrutto_' . $arid));
+                        if ($valutanem) {
+                            $ar->setValutanem($valutanem);
+                        }
+						$this->getEm()->persist($ar);
+					}
+				}
+            }
+        }
 		$kapcsolodoids = $this->params->getArrayRequestParam('kapcsolodoid');
 		foreach ($kapcsolodoids as $kapcsolodoid) {
 			if (($this->params->getIntRequestParam('kapcsolodoaltermek_' . $kapcsolodoid) > 0)) {
