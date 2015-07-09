@@ -12,10 +12,8 @@
 			<li><a href="#CimkeTab">{t('Címkék')}</a></li>
 			<li><a href="#KepTab">{t('Képek')}</a></li>
 			{if ($setup.receptura)}<li><a href="#RecepturaTab">{t('Receptúra')}</a></li>{/if}
-			{if ($setup.termekvaltozat)}
-				<li><a href="#ValtozatTab">{t('Változatok')}</a></li>
-			{/if}
-			<li><a href="#KapcsolodoTab">{t('Kapcsolódó termékek')}</a></li>
+			{if ($setup.termekvaltozat)}<li><a href="#ValtozatTab">{t('Változatok')}</a></li>{/if}
+			{if ($setup.kapcsolodotermekek)}<li><a href="#KapcsolodoTab">{t('Kapcsolódó termékek')}</a></li>{/if}
 			<li><a href="#WebTab">{t('Webes adatok')}</a></li>
 			<li><a href="#CsomagolasTab">{t('Csomagolási adatok')}</a></li>
 		</ul>
@@ -267,8 +265,9 @@
 			<a class="js-valtozatnewbutton" href="#" title="{t('Új')}" data-termekid="{$termek.id}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 		</div>
 		{/if}
+        {if ($setup.kapcsolodotermekek)}
 		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Receptúra')}" data-refcontrol="#KapcsolodoTab"></div>
+		<div class="mattkarb-titlebar" data-caption="{t('Kapcsolódó termékek')}" data-refcontrol="#KapcsolodoTab"></div>
 		{/if}
 		<div id="KapcsolodoTab" class="mattkarb-page" data-visible="visible">
 			{foreach $termek.kapcsolodok as $kapcsolodo}
@@ -276,6 +275,7 @@
 			{/foreach}
 			<a class="js-kapcsolodonewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 		</div>
+        {/if}
 		{if ($setup.editstyle=='dropdown')}
 		<div class="mattkarb-titlebar" data-caption="{t('Webes adatok')}" data-refcontrol="#WebTab"></div>
 		{/if}

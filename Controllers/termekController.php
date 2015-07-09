@@ -77,11 +77,13 @@ class termekController extends \mkwhelpers\MattableController {
 			//$kep[]=$kepCtrl->loadVars(null);
 			$x['kepek'] = $kep;
 
-			foreach ($t->getTermekKapcsolodok() as $tkapcsolodo) {
-				$kapcsolodo[] = $kapcsolodoCtrl->loadVars($tkapcsolodo, true);
-			}
-			//$kapcsolodo[]=$kapcsolodoCtrl->loadVars(null,true);
-			$x['kapcsolodok'] = $kapcsolodo;
+            if (store::getSetupValue('kapcsolodotermekek')) {
+                foreach ($t->getTermekKapcsolodok() as $tkapcsolodo) {
+                    $kapcsolodo[] = $kapcsolodoCtrl->loadVars($tkapcsolodo, true);
+                }
+                //$kapcsolodo[]=$kapcsolodoCtrl->loadVars(null,true);
+                $x['kapcsolodok'] = $kapcsolodo;
+            }
 
 			if (store::getSetupValue('receptura')) {
 				foreach ($t->getTermekReceptek() as $trecept) {
@@ -279,30 +281,32 @@ class termekController extends \mkwhelpers\MattableController {
 				}
             }
         }
-		$kapcsolodoids = $this->params->getArrayRequestParam('kapcsolodoid');
-		foreach ($kapcsolodoids as $kapcsolodoid) {
-			if (($this->params->getIntRequestParam('kapcsolodoaltermek_' . $kapcsolodoid) > 0)) {
-				$oper = $this->params->getStringRequestParam('kapcsolodooper_' . $kapcsolodoid);
-				$altermek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('kapcsolodoaltermek_' . $kapcsolodoid));
-				if ($oper == 'add') {
-					$kapcsolodo = new \Entities\TermekKapcsolodo();
-					$obj->addTermekKapcsolodo($kapcsolodo);
-					if ($altermek) {
-						$kapcsolodo->setAlTermek($altermek);
-					}
-					$this->getEm()->persist($kapcsolodo);
-				}
-				elseif ($oper == 'edit') {
-					$kapcsolodo = $this->getEm()->getRepository('Entities\TermekKapcsolodo')->find($kapcsolodoid);
-					if ($kapcsolodo) {
-						if ($altermek) {
-							$kapcsolodo->setAlTermek($altermek);
-						}
-						$this->getEm()->persist($kapcsolodo);
-					}
-				}
-			}
-		}
+        if (store::getSetupValue('kapcsolodotermekek')) {
+            $kapcsolodoids = $this->params->getArrayRequestParam('kapcsolodoid');
+            foreach ($kapcsolodoids as $kapcsolodoid) {
+                if (($this->params->getIntRequestParam('kapcsolodoaltermek_' . $kapcsolodoid) > 0)) {
+                    $oper = $this->params->getStringRequestParam('kapcsolodooper_' . $kapcsolodoid);
+                    $altermek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('kapcsolodoaltermek_' . $kapcsolodoid));
+                    if ($oper == 'add') {
+                        $kapcsolodo = new \Entities\TermekKapcsolodo();
+                        $obj->addTermekKapcsolodo($kapcsolodo);
+                        if ($altermek) {
+                            $kapcsolodo->setAlTermek($altermek);
+                        }
+                        $this->getEm()->persist($kapcsolodo);
+                    }
+                    elseif ($oper == 'edit') {
+                        $kapcsolodo = $this->getEm()->getRepository('Entities\TermekKapcsolodo')->find($kapcsolodoid);
+                        if ($kapcsolodo) {
+                            if ($altermek) {
+                                $kapcsolodo->setAlTermek($altermek);
+                            }
+                            $this->getEm()->persist($kapcsolodo);
+                        }
+                    }
+                }
+            }
+        }
 		if (store::getSetupValue('receptura')) {
 			$receptids = $this->params->getArrayRequestParam('receptid');
 			foreach ($receptids as $receptid) {
