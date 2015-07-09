@@ -8,7 +8,7 @@ class VtszRepository extends \mkwhelpers\Repository {
 		$this->entityname='Entities\Vtsz';
 	}
 
-	public function getAll($filter,$order) {
+	public function getAll($filter,$order, $offset = 0, $elemcount = 0) {
 		return $this->_em->createQuery('SELECT '.$this->alias.',a FROM '.$this->entityname.' '.$this->alias
 			.' LEFT JOIN '.$this->alias.'.afa a'
 			.$this->getFilterString($filter)
