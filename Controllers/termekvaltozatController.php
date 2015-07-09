@@ -99,10 +99,10 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
         $kepid = $this->params->getIntRequestParam('valtozatkepid');
 
         if (($adattipus1 && $ertek1) || ($adattipus2 && ertek2)) {
-            $ertekek1 = split(';', $ertek1);
-            $ertekek2 = split(';', $ertek2);
-            $cikkszamok = split(';', $cikkszam);
-            $idegencikkszamok = split(';', $idegencikkszam);
+            $ertekek1 = explode(';', $ertek1);
+            $ertekek2 = explode(';', $ertek2);
+            $cikkszamok = explode(';', $cikkszam);
+            $idegencikkszamok = explode(';', $idegencikkszam);
             $cikl = 0;
             $at1 = $this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($adattipus1);
             $at2 = $this->getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($adattipus2);
