@@ -216,10 +216,130 @@ class EntitiesBizonylattipusProxy extends \Entities\Bizonylattipus implements \D
         return parent::setTplname($d);
     }
 
+    public function getShowbizonylatstatuszeditor()
+    {
+        $this->__load();
+        return parent::getShowbizonylatstatuszeditor();
+    }
+
+    public function setShowbizonylatstatuszeditor($val)
+    {
+        $this->__load();
+        return parent::setShowbizonylatstatuszeditor($val);
+    }
+
+    public function getShowszamlabutton()
+    {
+        $this->__load();
+        return parent::getShowszamlabutton();
+    }
+
+    public function setShowszamlabutton($val)
+    {
+        $this->__load();
+        return parent::setShowszamlabutton($val);
+    }
+
+    public function getShowkeziszamlabutton()
+    {
+        $this->__load();
+        return parent::getShowkeziszamlabutton();
+    }
+
+    public function setShowkeziszamlabutton($val)
+    {
+        $this->__load();
+        return parent::setShowkeziszamlabutton($val);
+    }
+
+    public function getShowkivetbutton()
+    {
+        $this->__load();
+        return parent::getShowkivetbutton();
+    }
+
+    public function setShowkivetbutton($val)
+    {
+        $this->__load();
+        return parent::setShowkivetbutton($val);
+    }
+
+    public function getShowszallitobutton()
+    {
+        $this->__load();
+        return parent::getShowszallitobutton();
+    }
+
+    public function setShowszallitobtn($val)
+    {
+        $this->__load();
+        return parent::setShowszallitobtn($val);
+    }
+
+    public function getShowuzenet()
+    {
+        $this->__load();
+        return parent::getShowuzenet();
+    }
+
+    public function setShowuzenet($val)
+    {
+        $this->__load();
+        return parent::setShowuzenet($val);
+    }
+
+    public function getShowszallitasicim()
+    {
+        $this->__load();
+        return parent::getShowszallitasicim();
+    }
+
+    public function setShowszallitasicim($val)
+    {
+        $this->__load();
+        return parent::setShowszallitasicim($val);
+    }
+
+    public function getShowerbizonylatszam()
+    {
+        $this->__load();
+        return parent::getShowerbizonylatszam();
+    }
+
+    public function setShowerbizonylatszam($val)
+    {
+        $this->__load();
+        return parent::setShowerbizonylatszam($val);
+    }
+
+    public function getShowfuvarlevelszam()
+    {
+        $this->__load();
+        return parent::getShowfuvarlevelszam();
+    }
+
+    public function setShowfuvarlevelszam($val)
+    {
+        $this->__load();
+        return parent::setShowfuvarlevelszam($val);
+    }
+
+    public function getShowhaszonszazalek()
+    {
+        $this->__load();
+        return parent::getShowhaszonszazalek();
+    }
+
+    public function setShowhaszonszazalek($val)
+    {
+        $this->__load();
+        return parent::setShowhaszonszazalek($val);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'nev', 'irany', 'nyomtatni', 'azonosito', 'kezdosorszam', 'peldanyszam', 'mozgat', 'penztmozgat', 'editprinted', 'showteljesites', 'showesedekesseg', 'showhatarido', 'showvalutanem', 'bizonylatfejek', 'tplname');
+        return array('__isInitialized__', 'id', 'nev', 'irany', 'nyomtatni', 'azonosito', 'kezdosorszam', 'peldanyszam', 'mozgat', 'penztmozgat', 'editprinted', 'showteljesites', 'showesedekesseg', 'showhatarido', 'showvalutanem', 'showbizonylatstatuszeditor', 'showszamlabutton', 'showszallitobutton', 'showkivetbutton', 'showkeziszamlabutton', 'showuzenet', 'showszallitasicim', 'showerbizonylatszam', 'showfuvarlevelszam', 'showhaszonszazalek', 'bizonylatfejek', 'tplname');
     }
 
     public function __clone()

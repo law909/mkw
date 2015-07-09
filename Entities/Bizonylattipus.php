@@ -37,6 +37,26 @@ class Bizonylattipus {
 	private $showhatarido=false;
 	/** @Column(type="boolean",nullable=false) */
 	private $showvalutanem=false;
+	/** @Column(type="boolean",nullable=false) */
+	private $showbizonylatstatuszeditor=false;
+	/** @Column(type="boolean",nullable=false) */
+	private $showszamlabutton=false;
+	/** @Column(type="boolean",nullable=false) */
+	private $showszallitobutton=false;
+    /** @Column(type="boolean",nullable=false) */
+	private $showkivetbutton=false;
+	/** @Column(type="boolean",nullable=false) */
+	private $showkeziszamlabutton=false;
+    /** @Column(type="boolean",nullable=false) */
+	private $showuzenet=false;
+    /** @Column(type="boolean",nullable=false) */
+	private $showszallitasicim=false;
+    /** @Column(type="boolean",nullable=false) */
+	private $showerbizonylatszam=false;
+    /** @Column(type="boolean",nullable=false) */
+	private $showfuvarlevelszam=false;
+    /** @Column(type="boolean",nullable=false) */
+	private $showhaszonszazalek=false;
 	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylattipus",cascade={"persist"}) */
 	private $bizonylatfejek;
     /** @Column(type="string",length="200",nullable=true) */
@@ -47,73 +67,20 @@ class Bizonylattipus {
 	}
 
     public function setTemplateVars($view) {
-        switch ($this->id) {
-            case 'megrendeles':
-                $view->setVar('showteljesites', false);
-                $view->setVar('showesedekesseg', false);
-                $view->setVar('showhatarido', true);
-                $view->setVar('showvalutanem', false);
-                $view->setVar('showbizonylatstatuszeditor', true);
-                $view->setVar('showinheritbutton', true);
-                $view->setVar('showuzenet', true);
-                $view->setVar('showszallitasicim', true);
-                $view->setVar('showerbizonylatszam', true);
-                $view->setVar('showfuvarlevelszam', true);
-                $view->setVar('showhaszonszazalek', false);
-                break;
-            case 'bevet':
-                $view->setVar('showteljesites', true);
-                $view->setVar('showesedekesseg', false);
-                $view->setVar('showhatarido', false);
-                $view->setVar('showvalutanem', false);
-                $view->setVar('showbizonylatstatuszeditor', false);
-                $view->setVar('showinheritbutton', false);
-                $view->setVar('showuzenet', false);
-                $view->setVar('showszallitasicim', false);
-                $view->setVar('showerbizonylatszam', true);
-                $view->setVar('showfuvarlevelszam', false);
-                $view->setVar('showhaszonszazalek', true);
-                break;
-            case 'szamla':
-                $view->setVar('showteljesites', true);
-                $view->setVar('showesedekesseg', true);
-                $view->setVar('showhatarido', false);
-                $view->setVar('showvalutanem', false);
-                $view->setVar('showbizonylatstatuszeditor', false);
-                $view->setVar('showinheritbutton', false);
-                $view->setVar('showuzenet', true);
-                $view->setVar('showszallitasicim', true);
-                $view->setVar('showerbizonylatszam', false);
-                $view->setVar('showfuvarlevelszam', true);
-                $view->setVar('showhaszonszazalek', false);
-                break;
-            case 'kivet':
-                $view->setVar('showteljesites', true);
-                $view->setVar('showesedekesseg', false);
-                $view->setVar('showhatarido', false);
-                $view->setVar('showvalutanem', false);
-                $view->setVar('showbizonylatstatuszeditor', false);
-                $view->setVar('showinheritbutton', false);
-                $view->setVar('showuzenet', false);
-                $view->setVar('showszallitasicim', true);
-                $view->setVar('showerbizonylatszam', true);
-                $view->setVar('showfuvarlevelszam', false);
-                $view->setVar('showhaszonszazalek', false);
-                break;
-            case 'keziszamla':
-                $view->setVar('showteljesites', true);
-                $view->setVar('showesedekesseg', true);
-                $view->setVar('showhatarido', false);
-                $view->setVar('showvalutanem', false);
-                $view->setVar('showbizonylatstatuszeditor', false);
-                $view->setVar('showinheritbutton', false);
-                $view->setVar('showuzenet', false);
-                $view->setVar('showszallitasicim', true);
-                $view->setVar('showerbizonylatszam', true);
-                $view->setVar('showfuvarlevelszam', false);
-                $view->setVar('showhaszonszazalek', false);
-                break;
-        }
+        $view->setVar('showteljesites', $this->getShowteljesites());
+        $view->setVar('showesedekesseg', $this->getShowesedekesseg());
+        $view->setVar('showhatarido', $this->getShowhatarido());
+        $view->setVar('showvalutanem', $this->getShowvalutanem());
+        $view->setVar('showbizonylatstatuszeditor', $this->getShowbizonylatstatuszeditor());
+        $view->setVar('showszamlabutton', $this->getShowszamlabutton());
+        $view->setVar('showkeziszamlabutton', $this->getShowkeziszamlabutton());
+        $view->setVar('showszallitobutton', $this->getShowszallitobutton());
+        $view->setVar('showkivetbutton', $this->getShowkivetbutton());
+        $view->setVar('showuzenet', $this->getShowuzenet());
+        $view->setVar('showszallitasicim', $this->getShowszallitasicim());
+        $view->setVar('showerbizonylatszam', $this->getShowerbizonylatszam());
+        $view->setVar('showfuvarlevelszam', $this->getShowfuvarlevelszam());
+        $view->setVar('showhaszonszazalek', $this->getShowhaszonszazalek());
     }
 
 	public function getId() {
@@ -230,5 +197,85 @@ class Bizonylattipus {
 
     public function setTplname($d) {
         $this->tplname = $d;
+    }
+
+    public function getShowbizonylatstatuszeditor() {
+        return $this->showbizonylatstatuszeditor;
+    }
+
+    public function setShowbizonylatstatuszeditor($val) {
+        $this->showbizonylatstatuszeditor = $val;
+    }
+
+    public function getShowszamlabutton() {
+        return $this->showszamlabutton;
+    }
+
+    public function setShowszamlabutton($val) {
+        $this->showszamlabutton = $val;
+    }
+
+    public function getShowkeziszamlabutton() {
+        return $this->showkeziszamlabutton;
+    }
+
+    public function setShowkeziszamlabutton($val) {
+        $this->showkeziszamlabutton = $val;
+    }
+
+    public function getShowkivetbutton() {
+        return $this->showkivetbutton;
+    }
+
+    public function setShowkivetbutton($val) {
+        $this->showkivetbutton = $val;
+    }
+
+    public function getShowszallitobutton() {
+        return $this->showszallitobutton;
+    }
+
+    public function setShowszallitobtn($val) {
+        $this->showszallitobutton = $val;
+    }
+
+    public function getShowuzenet() {
+        return $this->showuzenet;
+    }
+
+    public function setShowuzenet($val) {
+        $this->showuzenet = $val;
+    }
+
+    public function getShowszallitasicim() {
+        return $this->showszallitasicim;
+    }
+
+    public function setShowszallitasicim($val) {
+        $this->showszallitasicim = $val;
+    }
+
+    public function getShowerbizonylatszam() {
+        return $this->showerbizonylatszam;
+    }
+
+    public function setShowerbizonylatszam($val) {
+        $this->showerbizonylatszam = $val;
+    }
+
+    public function getShowfuvarlevelszam() {
+        return $this->showfuvarlevelszam;
+    }
+
+    public function setShowfuvarlevelszam($val) {
+        $this->showfuvarlevelszam = $val;
+    }
+
+    public function getShowhaszonszazalek() {
+        return $this->showhaszonszazalek;
+    }
+
+    public function setShowhaszonszazalek($val) {
+        $this->showhaszonszazalek = $val;
     }
 }

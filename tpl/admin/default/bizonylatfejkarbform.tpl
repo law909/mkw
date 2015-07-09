@@ -230,9 +230,13 @@
 	<div class="mattkarb-footer">
 		<input id="mattkarb-okbutton" type="submit" value="{t('OK')}">
 		<a id="mattkarb-cancelbutton" href="#">{t('Mégsem')}</a>
-        {if ($showinheritbutton)}
+        {if ($showszamlabutton)}
         <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="szamlafej" data-oper="inherit" title="{t('Számla')}" target="_blank">Számla</a>
+        {/if}
+        {if ($showkeziszamlabutton)}
         <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="keziszamlafej" data-oper="inherit" title="{t('Kézi számla')}" target="_blank">Kézi számla</a>
+        {/if}
+        {if ($showkivetbutton)}
         <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="kivetfej" data-oper="inherit" title="{t('Kivét')}" target="_blank">Kivét</a>
         {/if}
 	</div>
