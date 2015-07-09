@@ -240,7 +240,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $view->setVar('oper', $oper);
 
         $partner = $this->getRepo()->findWithJoins($id);
-        $view->setVar('szamlatipuslist', $this->getRepo()->getSzamlatipusList($partner->getSzamlatipus()));
+        $view->setVar('szamlatipuslist', $this->getRepo()->getSzamlatipusList(($partner ? $partner->getSzamlatipus() : 0)));
         // loadVars utan nem abc sorrendben adja vissza
         $tcc = new partnercimkekatController($this->params);
         $cimkek = $partner ? $partner->getCimkek() : null;
