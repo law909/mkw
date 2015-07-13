@@ -50,6 +50,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
         $x['brutto'] = $t->getBrutto();
         $x['cikkszam'] = $t->getCikkszam();
         $x['idegencikkszam'] = $t->getIdegencikkszam();
+        $x['vonalkod'] = $t->getVonalkod();
         $x['keszlet'] = $t->getKeszlet();
         return $x;
     }

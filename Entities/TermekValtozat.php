@@ -72,6 +72,8 @@ class TermekValtozat {
 	private $idegencikkszam='';
     /** @OneToMany(targetEntity="Bizonylattetel", mappedBy="termekvaltozat",cascade={"persist"}) */
     private $bizonylattetelek;
+	/** @Column(type="string",length=255,nullable=true) */
+	private $vonalkod;
 
 	public function __construct() {
 		$this->kosarak=new \Doctrine\Common\Collections\ArrayCollection();
@@ -335,4 +337,12 @@ class TermekValtozat {
 	public function getNev() {
 		return $this->getErtek1().' - '.$this->getErtek2();
 	}
+
+    public function getVonalkod() {
+        return $this->vonalkod;
+    }
+
+    public function setVonalkod($vonalkod) {
+        $this->vonalkod = $vonalkod;
+    }
 }

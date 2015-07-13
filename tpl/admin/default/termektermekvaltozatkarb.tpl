@@ -76,6 +76,16 @@
 			<input id="IdegenCikkszamEdit_{$valtozat.id}" name="valtozatidegencikkszam_{$valtozat.id}" type="text" value="{$valtozat.idegencikkszam}">
 		</td>
 	</tr>
+    {if ($setup.vonalkod)}
+	<tr>
+		<td class="mattable-cell">
+			<label for="VonalkodEdit_{$valtozat.id}">{t('Vonalkód')}:</label>
+		</td>
+		<td class="mattable-cell">
+			<input id="VonalkodEdit_{$valtozat.id}" name="valtozatvonalkod_{$valtozat.id}" type="text" value="{$valtozat.vonalkod}">
+		</td>
+	</tr>
+    {/if}
 	<tr>
 		<td>
 			<label for="ValtozatTermekKepCB_{$valtozat.id}">{t('A kép a termék főképe')}:</label>
