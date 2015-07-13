@@ -79,6 +79,9 @@ class Termek {
     /** @Column(type="string",length=50,nullable=true) */
     private $idegencikkszam = '';
 
+    /** @Column(type="string",length=255,nullable=true) */
+    private $vonalkod = '';
+
     /** @Column(type="text",nullable=true) */
     private $leiras = '';
 
@@ -656,6 +659,14 @@ class Termek {
 
     public function setIdegencikkszam($idegencikkszam) {
         $this->idegencikkszam = $idegencikkszam;
+    }
+
+    public function getVonalkod() {
+        return $this->vonalkod;
+    }
+
+    public function setVonalkod($vonalkod) {
+        $this->vonalkod = $vonalkod;
     }
 
     public function getLeiras() {

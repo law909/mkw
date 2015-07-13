@@ -44,6 +44,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['me'] = $t->getMe();
 		$x['cikkszam'] = $t->getCikkszam();
 		$x['idegencikkszam'] = $t->getIdegencikkszam();
+        $x['vonalkod'] = $t->getVonalkod();
         $x['idegenkod'] = $t->getIdegenkod();
 		$x['oldalcim'] = $t->getOldalcim();
 		$x['rovidleiras'] = $t->getRovidleiras();
@@ -167,6 +168,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$obj->setMe($this->params->getStringRequestParam('me'));
 		$obj->setCikkszam($this->params->getStringRequestParam('cikkszam'));
 		$obj->setIdegencikkszam($this->params->getStringRequestParam('idegencikkszam'));
+        $obj->setVonalkod($this->params->getStringRequestParam('vonalkod'));
         $obj->setIdegenkod($this->params->getStringRequestParam('idegenkod'));
 		$obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
 		$obj->setRovidleiras($this->params->getStringRequestParam('rovidleiras'));
@@ -457,7 +459,7 @@ class termekController extends \mkwhelpers\MattableController {
             $filter['values'][] = $this->params->getIntRequestParam('gyartofilter');
         }
 		if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
-			$filter['fields'][] = array('nev', 'rovidleiras', 'cikkszam');
+			$filter['fields'][] = array('nev', 'rovidleiras', 'cikkszam', 'vonalkod');
 			$filter['clauses'][] = '';
 			$filter['values'][] = $this->params->getStringRequestParam('nevfilter');
 		}
