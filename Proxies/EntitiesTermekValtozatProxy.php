@@ -288,10 +288,22 @@ class EntitiesTermekValtozatProxy extends \Entities\TermekValtozat implements \D
         return parent::getNev();
     }
 
+    public function getVonalkod()
+    {
+        $this->__load();
+        return parent::getVonalkod();
+    }
+
+    public function setVonalkod($vonalkod)
+    {
+        $this->__load();
+        return parent::setVonalkod($vonalkod);
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'created', 'lastmod', 'termek', 'lathato', 'elerheto', 'termekfokep', 'adattipus1', 'ertek1', 'adattipus2', 'ertek2', 'kosarak', 'netto', 'brutto', 'kep', 'cikkszam', 'idegencikkszam', 'bizonylattetelek');
+        return array('__isInitialized__', 'id', 'created', 'lastmod', 'termek', 'lathato', 'elerheto', 'termekfokep', 'adattipus1', 'ertek1', 'adattipus2', 'ertek2', 'kosarak', 'netto', 'brutto', 'kep', 'cikkszam', 'idegencikkszam', 'bizonylattetelek', 'vonalkod');
     }
 
     public function __clone()
