@@ -147,6 +147,11 @@ class termekfaController extends \mkwhelpers\MattableController {
 		}
 	}
 
+    public function regenerateSlug() {
+        $this->getRepo()->regenerateSlug();
+        echo 'OK';
+    }
+
 	public function isdeletable() {
 		$fa = $this->getRepo()->find($this->params->getIntRequestParam('id'));
 		if ($fa) {

@@ -47,6 +47,19 @@ class TermekFaRepository extends \mkwhelpers\Repository {
         }
     }
 
+    public function regenerateSlug() {
+        $res = $this->getAll(array(), array());
+        foreach ($res as $a) {
+            $orgnev = $a->getNev();
+            $a->setNev($orgnev . 'x');
+            $this->_em->Persist($a);
+            $this->_em->Flush();
+            $a->setNev($orgnev);
+            $this->_em->Persist($a);
+            $this->_em->Flush();
+        }
+    }
+
     public function getForMenu($menunum) {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');

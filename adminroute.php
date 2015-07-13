@@ -227,6 +227,7 @@ $router->map('POST', '/admin/termekfa/save', 'termekfaController#save', 'adminte
 $router->map('GET', '/admin/termekfa/isdeletable', 'termekfaController#isdeletable', 'admintermekfaisdeletable');
 $router->map('POST', '/admin/termekfa/move', 'termekfaController#move', 'admintermekfamove');
 $router->map('GET', '/admin/termekfa/viewlist', 'termekfaController#viewlist', 'admintermekfaviewlist');
+$router->map('GET', '/admin/termekfa/regenerateslug', 'termekfaController#regenerateSlug', 'admintermekfaregenerateslug');
 
 $router->map('GET', '/admin/kosar/viewlist', 'kosarController#viewlist', 'adminkosarviewlist');
 $router->map('GET', '/admin/kosar/getlistbody', 'kosarController#getlistbody', 'adminkosargetlistbody');
