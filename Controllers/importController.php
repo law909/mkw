@@ -45,6 +45,39 @@ class importController extends \mkwhelpers\Controller {
         return $me;
     }
 
+    public function getKategoriaByIdegenkod($ik) {
+        $me = store::getEm()->getRepository('Entities\TermekFa')->findBy(array('idegenkod' => $ik));
+        if (!$me) {
+            $me = store::getEm()->getRepository('Entities\TermekFa')->find(1);
+        }
+        return $me[0];
+    }
+
+    public function createTermekValtozatAdatTipus($nev) {
+        $res = store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->findByNev($nev);
+        if (!$res) {
+            $res = new \Entities\TermekValtozatAdatTipus();
+            $res->setNev($nev);
+            store::getEm()->persist($res);
+            store::getEm()->flush();
+            return $res;
+        }
+        return $res[0];
+    }
+
+    public function createVtsz($szam, $afa) {
+        $res = store::getEm()->getRepository('Entities\Vtsz')->findBySzam($szam);
+        if (!$res) {
+            $res = new \Entities\Vtsz();
+            $res->setSzam($szam);
+            $res->setAfa($afa);
+            store::getEm()->persist($res);
+            store::getEm()->flush();
+            return $res;
+        }
+        return $res[0];
+    }
+
     public function kreativpuzzleImport() {
         $sep = ';';
 
@@ -1198,4 +1231,75 @@ class importController extends \mkwhelpers\Controller {
         \unlink('szatalakit.csv');
     }
 
+    public function szInvarImport() {
+        $sep = ',';
+        move_uploaded_file($_FILES['toimport']['tmp_name'], 'szinvarimport.csv');
+        $fh = fopen('szinvarimport.csv', 'r');
+        if ($fh) {
+            $afa = store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
+            $afa = $afa[0];
+            $szinvalt = $this->createTermekValtozatAdatTipus('Szín');
+            $meretvalt = $this->createTermekValtozatAdatTipus('Méret');
+            while ($data = fgetcsv($fh, 0, $sep, '"')) {
+                if ($data[$this->n('i')]) {
+                    $vtsz = $this->createVtsz($data[$this->n('i')], $afa);
+                }
+                else {
+                    $vtsz = $this->createVtsz('-', $afa);
+                }
+                $termek = store::getEm()->getRepository('Entities\Termek')->findOneBy(array('cikkszam' => $data[$this->n('e')], 'nev' => $data[$this->n('f')]));
+                if (!$termek) {
+
+                    $parent = $this->getKategoriaByIdegenkod((string)$data[$this->n('a')]);
+
+                    $termek = new \Entities\Termek();
+                    $termek->setMe('db');
+                    $termek->setNev($data[$this->n('f')]);
+                    $termek->setCikkszam($data[$this->n('e')]);
+                    $termek->setVonalkod($data[$this->n('d')]);
+                    $termek->setIdegenkod($data[$this->n('c')]);
+                    $termek->setTermekfa1($parent);
+                    $termek->setVtsz($vtsz);
+
+                    $valt = new \Entities\TermekValtozat();
+                    $valt->setTermek($termek);
+                    $valt->setAdatTipus1($szinvalt);
+                    $valt->setErtek1($data[$this->n('h')]);
+                    $valt->setAdatTipus2($meretvalt);
+                    $valt->setErtek2($data[$this->n('j')]);
+                    $valt->setCikkszam($data[$this->n('e')]);
+                    $valt->setVonalkod($data[$this->n('d')]);
+                    store::getEm()->persist($valt);
+                }
+                else {
+                    $termek->setNev($data[$this->n('f')]);
+                    $termek->setCikkszam($data[$this->n('e')]);
+                    $termek->setTermekfa1($parent);
+                    $termek->setVtsz($vtsz);
+
+                    $valt = store::getEm()->getRepository('Entities\TermekValtozat')->findByVonalkod($data[$this->n('d')]);
+                    if (!$valt) {
+                        $valt = new \Entities\TermekValtozat();
+                        $valt->setTermek($termek);
+                        $valt->setVonalkod($data[$this->n('d')]);
+                    }
+                    else {
+                        $valt = $valt[0];
+                    }
+                    $valt->setAdatTipus1($szinvalt);
+                    $valt->setErtek1($data[$this->n('h')]);
+                    $valt->setAdatTipus2($meretvalt);
+                    $valt->setErtek2($data[$this->n('j')]);
+                    $valt->setCikkszam($data[$this->n('e')]);
+                    store::getEm()->persist($valt);
+                }
+                store::getEm()->persist($termek);
+                store::getEm()->flush();
+            }
+        }
+        fclose($fh);
+        fclose($er);
+        \unlink('szatalakit.csv');
+
+    }
 }

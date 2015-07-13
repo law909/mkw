@@ -15,7 +15,7 @@ class Vtsz {
     /** @Column(type="string",length=255,nullable=false) */
 	private $szam;
 
-	/** @Column(type="string",length=255,nullable=false) */
+	/** @Column(type="string",length=255,nullable=true) */
 	private $nev;
 	/**
 	 * @ManyToOne(targetEntity="Afa")

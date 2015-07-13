@@ -48,7 +48,7 @@
             </div>
 	<div class="matt-hseparator"></div>
             <div>
-            <a href="/admin/import/szatalakit" class="js-szatalakit">Terméktörzs átalakítás</a>
+            <a href="/admin/import/szinvarimport" class="js-szinvarimport">Terméktörzs</a>
             </div>
 		</div>
 	</div>
