@@ -93,6 +93,8 @@ class TermekFa {
 	private $termekek3;
 	/** @Column(type="boolean",nullable=true) */
 	private $inaktiv=false;
+    /** @Column(type="string",length=255,nullable=true) */
+    private $idegenkod = '';
 
 	public function __construct() {
 		$this->children=new \Doctrine\Common\Collections\ArrayCollection();
@@ -451,5 +453,13 @@ class TermekFa {
 
     public function setInaktiv($i) {
         $this->inaktiv = $i;
+    }
+
+    public function getIdegenkod() {
+        return $this->idegenkod;
+    }
+
+    public function setIdegenkod($idegenkod) {
+        $this->idegenkod = $idegenkod;
     }
 }

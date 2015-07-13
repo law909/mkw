@@ -42,6 +42,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$x['parentid'] = $t->getParentId();
 		$x['parentnev'] = $t->getParentNev();
         $x['inaktiv'] = $t->getInaktiv();
+        $x['idegenkod'] = $t->getIdegenkod();
 		return $x;
 	}
 
