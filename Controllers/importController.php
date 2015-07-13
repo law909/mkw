@@ -1233,6 +1233,8 @@ class importController extends \mkwhelpers\Controller {
 
     public function szInvarImport() {
         $sep = ',';
+        $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+        $dbig = $this->params->getIntRequestParam('dbig', 0);
         move_uploaded_file($_FILES['toimport']['tmp_name'], 'szinvarimport.csv');
         $fh = fopen('szinvarimport.csv', 'r');
         if ($fh) {
@@ -1240,7 +1242,12 @@ class importController extends \mkwhelpers\Controller {
             $afa = $afa[0];
             $szinvalt = $this->createTermekValtozatAdatTipus('Szín');
             $meretvalt = $this->createTermekValtozatAdatTipus('Méret');
-            while ($data = fgetcsv($fh, 0, $sep, '"')) {
+            $termekdb = 0;
+            while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
+                $termekdb++;
+            }
+            while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
+                $termekdb++;
                 if ($data[$this->n('i')]) {
                     $vtsz = $this->createVtsz($data[$this->n('i')], $afa);
                 }

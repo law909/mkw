@@ -43,6 +43,11 @@
             </div>
 	<div class="matt-hseparator"></div>
             <div>
+                <label>Termékek tól-ig:</label>
+                <input name="dbtol"> - <input name="dbig">
+            </div>
+	<div class="matt-hseparator"></div>
+            <div>
                 <label>Importálandó fájl:</label>
                 <input name="toimport" type="file">
             </div>
