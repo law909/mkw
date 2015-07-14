@@ -434,7 +434,7 @@ class TermekRepository extends \mkwhelpers\Repository {
     public function getBizonylattetelLista($keresett) {
         $a = $this->alias;
         $filter = array();
-        $filter['fields'][] = '_xx.nev';
+        $filter['fields'][] = array('_xx.nev','_xx.cikkszam','_xx.vonalkod');
         $filter['clauses'][] = 'LIKE';
         $filter['values'][] = '%' . $keresett . '%';
         $order = array('_xx.nev' => 'ASC');
