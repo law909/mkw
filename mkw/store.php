@@ -15,6 +15,7 @@ class Store {
     private static $router;
     private static $gdl;
     private static $sanitizer;
+    private static $translationListener;
     public static $DateFormat = 'Y.m.d';
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
 
@@ -89,6 +90,14 @@ class Store {
 
     public static function setEm($em) {
         self::$em = $em;
+    }
+
+    public static function getTranslationListener() {
+        return self::$translationListener;
+    }
+
+    public static function setTranslationListener($l) {
+        self::$translationListener = $l;
     }
 
     public static function getConfig() {

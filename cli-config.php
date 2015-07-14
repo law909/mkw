@@ -11,7 +11,7 @@ $classLoader->register();
 $classLoader = new \Doctrine\Common\ClassLoader('Proxies', __DIR__);
 $classLoader->register();
 
-$classLoader=new \Doctrine\Common\ClassLoader('Gedmo','DoctrineExtensions/lib');
+$classLoader=new \Doctrine\Common\ClassLoader('Gedmo','Doctrine/DoctrineExtensions/lib');
 $classLoader->register();
 
 $classLoader=new \Doctrine\Common\ClassLoader('mkwhelpers');
@@ -44,7 +44,15 @@ $connectionOptions = array(
 	'port'=>$ini['db.port']
 );
 
-$em = \Doctrine\ORM\EntityManager::create($connectionOptions, $config);
+$evm = new \Doctrine\Common\EventManager();
+$evm->addEventSubscriber(new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit('UTF8','utf8_hungarian_ci'));
+$evm->addEventSubscriber(new \Gedmo\Sluggable\SluggableListener());
+$evm->addEventSubscriber(new \Gedmo\Timestampable\TimestampableListener());
+$translationListener=new Gedmo\Translatable\TranslationListener();
+$translationListener->setTranslatableLocale('hu_hu');
+$evm->addEventSubscriber($translationListener);
+
+$em = \Doctrine\ORM\EntityManager::create($connectionOptions, $config, $evm);
 
 $helperSet = new \Symfony\Component\Console\Helper\HelperSet(array(
     'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($em->getConnection()),

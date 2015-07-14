@@ -45,6 +45,7 @@ class TermekFa {
 	private $parent;
 	/**
 	 * @gedmo:Sluggable
+     * @gedmo:Translatable
 	 * @Column(type="string",length=255,nullable=false)
 	 */
 	private $nev;
@@ -71,7 +72,10 @@ class TermekFa {
 	private $menu3lathato=false;
 	/** @Column(type="boolean",nullable=true) */
 	private $menu4lathato=false;
-	/** @Column(type="string",length=255,nullable=true) */
+	/**
+     * @gedmo:Translatable
+     * @Column(type="string",length=255,nullable=true)
+     */
 	private $oldalcim;
 	/** @Column(type="text",nullable=true) */
 	private $seodescription;
@@ -95,6 +99,10 @@ class TermekFa {
 	private $inaktiv=false;
     /** @Column(type="string",length=255,nullable=true) */
     private $idegenkod = '';
+    /**
+     * @gedmo:Locale
+     */
+    private $locale;
 
 	public function __construct() {
 		$this->children=new \Doctrine\Common\Collections\ArrayCollection();
@@ -461,5 +469,9 @@ class TermekFa {
 
     public function setIdegenkod($idegenkod) {
         $this->idegenkod = $idegenkod;
+    }
+    
+    public function setTranslatableLocale($l) {
+        $this->locale = $l;
     }
 }

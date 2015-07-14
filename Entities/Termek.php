@@ -39,6 +39,7 @@ class Termek {
 
     /**
      * @gedmo:Sluggable
+     * @gedmo:Translatable
      * @Column(type="string",length=255,nullable=false)
      */
     private $nev = '';
@@ -82,16 +83,27 @@ class Termek {
     /** @Column(type="string",length=255,nullable=true) */
     private $vonalkod = '';
 
-    /** @Column(type="text",nullable=true) */
+    /**
+     * @gedmo:Translatable
+     * @Column(type="text",nullable=true)
+     */
     private $leiras = '';
 
-    /** @Column(type="string",length=255,nullable=true) */
+    /**
+     * @gedmo:Translatable
+     * @Column(type="string",length=255,nullable=true)
+     */
     private $rovidleiras = '';
 
-    /** @Column(type="string",length=255,nullable=true) */
+    /**
+     * @gedmo:Translatable
+     * @Column(type="string",length=255,nullable=true)
+     */
     private $oldalcim = '';
 
-    /** @Column(type="text",nullable=true) */
+    /**
+     * @Column(type="text",nullable=true)
+     */
     private $seodescription = '';
 
     /**
@@ -249,6 +261,11 @@ class Termek {
 
     /** @OneToMany(targetEntity="TermekAr", mappedBy="termek", cascade={"persist"}) */
     private $termekarak;
+
+    /**
+     * @gedmo:Locale
+     */
+    private $locale;
 
     /**
      * @PrePersist
@@ -1454,6 +1471,10 @@ class Termek {
             return true;
         }
         return false;
+    }
+
+    public function setTranslatableLocale($l) {
+        $this->locale = $l;
     }
 
 }
