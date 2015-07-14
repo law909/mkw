@@ -428,10 +428,18 @@ class termekController extends \mkwhelpers\MattableController {
 							$valtozat->setErtek2(null);
 						}
 
-						$at = $this->getEm()->getRepository('Entities\TermekKep')->find($this->params->getIntRequestParam('valtozatkepid_' . $valtozatid));
-						if ($at) {
-							$valtozat->setKep($at);
-						}
+                        if ($valtozat->getTermekfokep()) {
+                            $valtozat->setKep(null);
+                        }
+                        else {
+                            $at = $this->getEm()->getRepository('Entities\TermekKep')->find($this->params->getIntRequestParam('valtozatkepid_' . $valtozatid));
+                            if ($at) {
+                                $valtozat->setKep($at);
+                            }
+                            else {
+                                $valtozat->setKep(null);
+                            }
+                        }
 
 						$this->getEm()->persist($valtozat);
 					}
