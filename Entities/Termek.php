@@ -269,6 +269,18 @@ class Termek {
 
     /**
      * @PrePersist
+     */
+    public function generateVonalkod() {
+        if (\mkw\Store::getSetupValue('vonalkod') && !$this->vonalkod) {
+            $conn = \mkw\Store::getEm()->getConnection();
+            $stmt = $conn->prepare('INSERT INTO vonalkodseq (data) VALUES (1)');
+            $stmt->execute();
+            $this->setVonalkod((string)$conn->lastInsertId());
+        }
+    }
+
+    /**
+     * @PrePersist
      * @PreUpdate
      */
     public function doStuffOnPrePersist() {

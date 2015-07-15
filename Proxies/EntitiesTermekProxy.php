@@ -36,6 +36,12 @@ class EntitiesTermekProxy extends \Entities\Termek implements \Doctrine\ORM\Prox
     }
     
     
+    public function generateVonalkod()
+    {
+        $this->__load();
+        return parent::generateVonalkod();
+    }
+
     public function doStuffOnPrePersist()
     {
         $this->__load();
@@ -1006,6 +1012,12 @@ class EntitiesTermekProxy extends \Entities\Termek implements \Doctrine\ORM\Prox
     {
         $this->__load();
         return parent::removeTermekAr($adat);
+    }
+
+    public function setTranslatableLocale($l)
+    {
+        $this->__load();
+        return parent::setTranslatableLocale($l);
     }
 
 

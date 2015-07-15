@@ -36,6 +36,12 @@ class EntitiesTermekValtozatProxy extends \Entities\TermekValtozat implements \D
     }
     
     
+    public function generateVonalkod()
+    {
+        $this->__load();
+        return parent::generateVonalkod();
+    }
+
     public function getKeszlet()
     {
         $this->__load();

@@ -4,6 +4,7 @@ namespace Entities;
 /**
  * @Entity(repositoryClass="Entities\TermekValtozatRepository")
  * @Table(name="termekvaltozat")
+ * @HasLifecycleCallbacks
 */
 class TermekValtozat {
 	/**
@@ -75,7 +76,19 @@ class TermekValtozat {
 	/** @Column(type="string",length=255,nullable=true) */
 	private $vonalkod;
 
-	public function __construct() {
+    /**
+     * @PrePersist
+     */
+    public function generateVonalkod() {
+        if (\mkw\Store::getSetupValue('vonalkod') && !$this->vonalkod) {
+            $conn = \mkw\Store::getEm()->getConnection();
+            $stmt = $conn->prepare('INSERT INTO vonalkodseq (data) VALUES (1)');
+            $stmt->execute();
+            $this->setVonalkod((string)$conn->lastInsertId());
+        }
+    }
+
+    public function __construct() {
 		$this->kosarak=new \Doctrine\Common\Collections\ArrayCollection();
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
 	}

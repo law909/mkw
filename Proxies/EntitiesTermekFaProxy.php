@@ -402,6 +402,12 @@ class EntitiesTermekFaProxy extends \Entities\TermekFa implements \Doctrine\ORM\
         return parent::setIdegenkod($idegenkod);
     }
 
+    public function setTranslatableLocale($l)
+    {
+        $this->__load();
+        return parent::setTranslatableLocale($l);
+    }
+
 
     public function __sleep()
     {
