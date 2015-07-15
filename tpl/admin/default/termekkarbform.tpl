@@ -43,6 +43,12 @@
 				<td><label for="IdegenCikkszamEdit">{t('Szállítói cikkszám')}:</label></td>
 				<td><input id="IdegenCikkszamEdit" name="idegencikkszam" type="text" size="30" maxlength="30" value="{$termek.idegencikkszam}"></td>
 			</tr>
+            {if ($setup.vonalkod)}
+			<tr>
+				<td><label for="VonalkodEdit">{t('Vonalkód')}:</label></td>
+				<td><input id="VonalkodEdit" name="vonalkod" type="text" size="30" maxlength="50" value="{$termek.vonalkod}"></td>
+			</tr>
+            {/if}
 			<tr>
 				<td><label for="MEEdit">{t('ME')}:</label></td>
 				<td><input id="MEEdit" name="me" type="text" size="20" maxlength="20" value="{$termek.me}"></td>
