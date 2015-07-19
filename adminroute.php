@@ -54,6 +54,7 @@ $router->map('GET', '/admin/regeneratekarkod', 'adminController#regeneratekarkod
 $router->map('GET', '/admin/setuitheme', 'adminController#setUITheme', 'adminsetuitheme');
 $router->map('GET', '/admin/setgrideditbutton', 'adminController#setGridEditButton', 'adminsetgrideditbutton');
 $router->map('GET', '/admin/seteditstyle', 'adminController#setEditStyle', 'adminseteditstyle');
+$router->map('GET', '/admin/setvonalkodfromvaltozat', 'adminController#setVonalkodFromValtozat', 'adminsetvonalkodfromvaltozat');
 
 $router->map('GET', '/admin/setup/view', 'setupController#view', 'adminsetupview');
 $router->map('POST', '/admin/setup/save', 'setupController#save', 'adminsetupsave');
@@ -254,8 +255,9 @@ $router->map('POST','/admin/import/reintex', 'importController#reintexImport', '
 $router->map('POST','/admin/import/tutisport', 'importController#tutisportImport', 'admintutisportimport');
 $router->map('POST','/admin/import/makszutov', 'importController#makszutovImport', 'adminmakszutovimport');
 $router->map('POST','/admin/import/vatera', 'importController#vateraImport', 'adminvateraimport');
-$router->map('POST','/admin/import/szatalakit', 'importController#szAtalakit', 'adminszatalakit');
+//$router->map('POST','/admin/import/szatalakit', 'importController#szAtalakit', 'adminszatalakit');
 $router->map('POST','/admin/import/szinvarimport', 'importController#szInvarImport', 'adminszinvarimport');
+$router->map('POST','/admin/import/szimport', 'importController#szImport', 'adminszimport');
 
 $router->map('GET', '/admin/login/show', 'dolgozoController#showlogin', 'adminshowlogin');
 $router->map('POST', '/admin/login', 'dolgozoController#login', 'adminlogin');

@@ -16,6 +16,7 @@ class Store {
     private static $gdl;
     private static $sanitizer;
     private static $translationListener;
+    private static $locales = array('HU' => 'hu_hu', 'EN' => 'en_us', 'DE' => 'de_de');
     public static $DateFormat = 'Y.m.d';
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
 
@@ -583,6 +584,10 @@ class Store {
             $ret = array('', '', '');
         }
         return $ret;
+    }
+
+    public static function getLocale($ny) {
+        return self::$locales[$ny];
     }
 
 }

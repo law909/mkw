@@ -771,4 +771,18 @@ class adminController extends mkwhelpers\Controller {
         $connector->run();
     }
 
+    public function setVonalkodFromValtozat() {
+        $filter['fields'][] = 'vonalkod';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = '';
+        $termekek = store::getEm()->getRepository('Entities\Termek')->getAll($filter, array());
+        foreach($termekek as $termek) {
+            $valtozatok = $termek->getValtozatok();
+            $termek->setVonalkod($valtozatok[0]->getVonalkod());
+            store::getEm()->persist($termek);
+            store::getEm()->flush();
+        }
+        echo 'ok';
+    }
+
 }
