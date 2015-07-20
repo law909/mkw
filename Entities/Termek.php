@@ -9,7 +9,11 @@ use mkw\store;
  * @Table(name="termek",indexes={
  * 		@index(name="termekfakarkod_idx",columns={"termekfa1karkod","termekfa2karkod","termekfa3karkod"}),
  * 		@index(name="termekfacounter_idx",columns={"inaktiv","lathato"}),
- * 		@index(name="termekslug_idx",columns={"slug"})
+ * 		@index(name="termekslug_idx",columns={"slug"}),
+ *      @index(name="termekvonalkod_idx",columns={"vonalkod"}),
+ * 		@index(name="termekcikkszamgyarto_idx",columns={"cikkszam","gyarto_id"}),
+ * 		@index(name="termekidegencikkszamgyarto_idx",columns={"idegencikkszam","gyarto_id"}),
+ *      @index(name="termekidegenkod_idx",columns={"idegenkod"})
  * })
  * @HasLifecycleCallbacks
  */

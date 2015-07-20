@@ -3,7 +3,9 @@ namespace Entities;
 
 /**
  * @Entity(repositoryClass="Entities\TermekValtozatAdatTipusRepository")
- * @Table(name="termekvaltozatadattipus")
+ * @Table(name="termekvaltozatadattipus",indexes={
+ *      @index(name="termekvaltozatadattipusnev_idx",columns={"nev"})
+ * })
 */
 class TermekValtozatAdatTipus {
 	/**

@@ -3,7 +3,9 @@ namespace Entities;
 
 /**
  * @Entity(repositoryClass="Entities\TermekArRepository")
- * @Table(name="termekar")
+ * @Table(name="termekar",indexes={
+ *	@index(name="termekarazonosito_idx",columns={"termek_id","valutanem_id","azonosito"})
+ * })
  */
 class TermekAr {
 	/**
@@ -123,6 +125,7 @@ class TermekAr {
 
     public function setNetto($val) {
         $this->netto = $val;
+        $this->brutto = $this->getTermek()->getAfa()->calcBrutto($val);
     }
 
     public function getBrutto() {
@@ -131,5 +134,6 @@ class TermekAr {
 
     public function setBrutto($val) {
         $this->brutto = $val;
+        $this->netto = $this->getTermek()->getAfa()->calcNetto($val);
     }
 }

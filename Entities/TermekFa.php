@@ -6,7 +6,9 @@ use mkw\store;
 /**
  * @Entity(repositoryClass="Entities\TermekFaRepository")
  * @Table(name="termekfa",indexes={
- *	@index(name="termekfaslug_idx",columns={"slug"})
+ *      @index(name="termekfaslug_idx",columns={"slug"}),
+ *      @index(name="termekfanevparent_idx",columns={"nev","parent_id"}),
+ *      @index(name="termekfaidegenkod_idx",columns={"idegenkod"})
  * })
  */
 class TermekFa {
@@ -470,7 +472,7 @@ class TermekFa {
     public function setIdegenkod($idegenkod) {
         $this->idegenkod = $idegenkod;
     }
-    
+
     public function setTranslatableLocale($l) {
         $this->locale = $l;
     }

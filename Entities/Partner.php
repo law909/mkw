@@ -5,7 +5,9 @@ namespace Entities;
 use mkw\store;
 
 /** @Entity(repositoryClass="Entities\PartnerRepository")
- *  @Table(name="partner")
+ *  @Table(name="partner",indexes={
+ *      @index(name="partneremail_idx",columns={"email"})
+ * })
  * */
 class Partner {
 

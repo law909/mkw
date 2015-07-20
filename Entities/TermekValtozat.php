@@ -3,7 +3,10 @@ namespace Entities;
 
 /**
  * @Entity(repositoryClass="Entities\TermekValtozatRepository")
- * @Table(name="termekvaltozat")
+ * @Table(name="termekvaltozat",indexes={
+ *      @index(name="termekvaltozatvonalkod_idx",columns={"vonalkod"}),
+ *      @index(name="termekvaltozatidegencikkszam_idx",columns={"idegencikkszam"})
+ * })
  * @HasLifecycleCallbacks
 */
 class TermekValtozat {

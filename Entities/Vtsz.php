@@ -3,7 +3,9 @@ namespace Entities;
 
 /**
  * @Entity(repositoryClass="Entities\VtszRepository")
- * @Table(name="vtsz")
+ * @Table(name="vtsz",indexes={
+ *      @index(name="vtszszam_idx",columns={"szam"})
+ * })
  */
 class Vtsz {
 	/**
