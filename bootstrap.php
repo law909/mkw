@@ -95,7 +95,9 @@ $evm->addEventSubscriber(new \Gedmo\Sluggable\SluggableListener());
 $evm->addEventSubscriber(new \Gedmo\Timestampable\TimestampableListener());
 if ($setini['multilang']) {
     $translationListener=new Gedmo\Translatable\TranslationListener();
+    $translationListener->setDefaultLocale('hu_hu');
     $translationListener->setTranslatableLocale('hu_hu');
+    $translationListener->setTranslationFallback(true);
     $evm->addEventSubscriber($translationListener);
     store::setTranslationListener($translationListener);
 }

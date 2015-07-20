@@ -66,16 +66,16 @@ class GedmoTranslatableEntityTranslationProxy extends \Gedmo\Translatable\Entity
         return parent::getField();
     }
 
-    public function setEntity($entity)
+    public function setObjectClass($objectClass)
     {
         $this->__load();
-        return parent::setEntity($entity);
+        return parent::setObjectClass($objectClass);
     }
 
-    public function getEntity()
+    public function getObjectClass()
     {
         $this->__load();
-        return parent::getEntity();
+        return parent::getObjectClass();
     }
 
     public function setForeignKey($foreignKey)
@@ -105,7 +105,7 @@ class GedmoTranslatableEntityTranslationProxy extends \Gedmo\Translatable\Entity
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'locale', 'entity', 'field', 'foreignKey', 'content');
+        return array('__isInitialized__', 'id', 'locale', 'objectClass', 'field', 'foreignKey', 'content');
     }
 
     public function __clone()

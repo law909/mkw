@@ -29,17 +29,8 @@
             </div>
 	<div class="matt-hseparator"></div>
             <div>
-                <label>Képek mappája:</label><input name="path" value="{$path}">
-            </div>
-	<div class="matt-hseparator"></div>
-            <div>
-                <label for="GyartoEdit">Gyártó:</label>
-                <select id="GyartoEdit" name="gyarto">
-					<option value="">{t('válasszon')}</option>
-					{foreach $gyartolist as $_gyarto}
-						<option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-					{/foreach}
-				</select>
+                <label>Importálandó fájl:</label>
+                <input name="toimport" type="file">
             </div>
 	<div class="matt-hseparator"></div>
             <div>
@@ -48,13 +39,27 @@
             </div>
 	<div class="matt-hseparator"></div>
             <div>
-                <label>Importálandó fájl:</label>
-                <input name="toimport" type="file">
+                <label>Nem található termék felvitele újként:</label>
+                <input name="createuj" type="checkbox">
             </div>
 	<div class="matt-hseparator"></div>
             <div>
-            <a href="/admin/import/szinvarimport" class="js-szinvarimport">Terméktörzs</a>
+            <a href="/admin/import/szimport" class="js-szinvarimport">Termék adatok</a>
             </div>
+    <p>Az excel táblában használható fejlécek:</p>
+    <ul>
+        <li>kod - termék kódja</li>
+        <li>vonalkod - termék vonalkódja</li>
+        <li>cikkszam - termék cikkszáma</li>
+        <li>vtsz - termék vtsz</li>
+        <li>nev_hu - termék magyar neve</li>
+        <li>nev_en - termék angol neve</li>
+        <li>netto_huf_vonalkodos - nettó HUF ár "vonalkodos" ársávba</li>
+        <li>brutto_huf_vonalkodos - bruttó HUF ár "vonalkodos" ársávba</li>
+    </ul>
+    <p>A termék azonosítás "kod" vagy "vonalkod" oszlop alapján történik.<br>
+        Ha egy oszlopnak nincs fejléce, a program nem foglalkozik a tartalmával.<br>
+    Ha ugyanolyan valutanemben és ársávban nettó és bruttó ár is szerepel, a program a bruttót fogja betölteni.</p>
 		</div>
 	</div>
 	<div class="admin-form-footer">
