@@ -88,6 +88,7 @@ $(document).ready(function() {
         newWindowUrl: '/admin/termek/viewkarb',
         saveUrl: '/admin/termek/save',
         beforeShow: function() {
+            var translationtab = $('#TranslationTab');
             var artab = $('#ArsavTab');
             var keptab = $('#KepTab');
             var recepttab = $('#RecepturaTab');
@@ -330,6 +331,57 @@ $(document).ready(function() {
                         }
                     });
             $('.js-arnewbutton,.js-ardelbutton').button();
+            translationtab.on('click', '.js-translationnewbutton', function(e) {
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/termektranslation/getemptyrow',
+                    type: 'GET',
+                    success: function(data) {
+                        var tbody = $('#TranslationTab');
+                        tbody.append(data);
+                        $('.js-translationnewbutton,.js-translationdelbutton').button();
+                        $this.remove();
+                    }
+                });
+            })
+                    .on('click', '.js-translationdelbutton', function(e) {
+                        e.preventDefault();
+                        var translationgomb = $(this),
+                                translationid = translationgomb.attr('data-id'),
+                                termekid = translationgomb.attr('data-termekid');
+                        if (translationgomb.attr('data-source') === 'client') {
+                            $('#translationtable_' + translationid).remove();
+                        }
+                        else {
+                            dialogcenter.html('Biztos, hogy törli a fordítást?').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'Igen': function() {
+                                        $.ajax({
+                                            url: '/admin/termektranslation/save',
+                                            type: 'POST',
+                                            data: {
+                                                id: translationid,
+                                                termekid: termekid,
+                                                oper: 'del'
+                                            },
+                                            success: function(data) {
+                                                $('#translationtable_' + data).remove();
+                                            }
+                                        });
+                                        $(this).dialog('close');
+                                    },
+                                    'Nem': function() {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                    });
+            $('.js-translationnewbutton,.js-translationdelbutton').button();
             kapcsolodotab.on('click', '.js-kapcsolodonewbutton', function(e) {
                 var $this = $(this);
                 e.preventDefault();

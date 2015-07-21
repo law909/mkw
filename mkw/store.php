@@ -590,4 +590,8 @@ class Store {
         return self::$locales[$ny];
     }
 
+    public static function getLocaleList() {
+        return array_values(self::$locales);
+    }
+
 }

@@ -4,12 +4,12 @@
 	<h4><a href="{$mainurl}/termek/{$termek.slug}" target="_blank">{$termek.nev}</a></h4>
 </div>
 <form id="mattkarb-form" method="post" action="/admin/termek/save" data-id="{$termek.id}">
-	<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
-        {if ($setup.editstyle=='tab')}
+	<div id="mattkarb-tabs">
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
             {if ($setup.arsavok)}<li><a href="#ArsavTab">{t('Ársávok')}</a></li>{/if}
-			<li><a href="#CimkeTab">{t('Címkék')}</a></li>
+            {if ($setup.multilang)}<li><a href="#TranslationTab">{t('Idegennyelvi adatok')}</a></li>{/if}
+            <li><a href="#CimkeTab">{t('Címkék')}</a></li>
 			<li><a href="#KepTab">{t('Képek')}</a></li>
 			{if ($setup.receptura)}<li><a href="#RecepturaTab">{t('Receptúra')}</a></li>{/if}
 			{if ($setup.termekvaltozat)}<li><a href="#ValtozatTab">{t('Változatok')}</a></li>{/if}
@@ -17,10 +17,6 @@
 			<li><a href="#WebTab">{t('Webes adatok')}</a></li>
 			<li><a href="#CsomagolasTab">{t('Csomagolási adatok')}</a></li>
 		</ul>
-		{/if}
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Általános adatok')}" data-refcontrol="#AltalanosTab"></div>
-		{/if}
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<input id="InaktivCheck" name="inaktiv" type="checkbox"{if ($termek.inaktiv)}checked="checked"{/if}>{t('Inaktív')}
 			<input id="MozgatCheck" name="mozgat" type="checkbox"{if ($termek.mozgat)}checked="checked"{/if}>{t('Készletet mozgat')}
@@ -119,9 +115,6 @@
 			</tbody></table>
 		</div>
 		{if ($setup.arsavok)}
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Ársávok')}" data-refcontrol="#ArsavTab"></div>
-		{/if}
 		<div id="ArsavTab" class="mattkarb-page" data-visible="visible">
 			{foreach $termek.arak as $ar}
 			{include 'termektermekarkarb.tpl'}
@@ -129,8 +122,13 @@
 			<a class="js-arnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 		</div>
 		{/if}
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Címkék')}" data-refcontrol="#CimkeTab"></div>
+		{if ($setup.multilang)}
+		<div id="TranslationTab" class="mattkarb-page" data-visible="visible">
+			{foreach $termek.translations as $locale => $translation}
+			{include 'termektermektranslationkarb.tpl'}
+			{/foreach}
+			<a class="js-translationnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+		</div>
 		{/if}
 		<div id="CimkeTab" class="mattkarb-page" data-visible="visible">
 			<div id="cimkekarbcontainer">
@@ -152,9 +150,6 @@
 			</div>
 		</div>
 		{if ($setup.receptura)}
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Receptúra')}" data-refcontrol="#RecepturaTab"></div>
-		{/if}
 		<div id="RecepturaTab" class="mattkarb-page" data-visible="visible">
 			{foreach $termek.receptek as $recept}
 			{include 'termektermekreceptkarb.tpl'}
@@ -163,9 +158,6 @@
 		</div>
 		{/if}
 		{if ($setup.termekvaltozat)}
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Változatok')}" data-refcontrol="#ValtozatTab"></div>
-		{/if}
 		<div id="ValtozatTab" class="mattkarb-page" data-visible="visible">
 			<div>
 			<label for="ValtozatAdattipusEdit">{t('Látható tulajdonság')}:</label>
@@ -272,9 +264,6 @@
 		</div>
 		{/if}
         {if ($setup.kapcsolodotermekek)}
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Kapcsolódó termékek')}" data-refcontrol="#KapcsolodoTab"></div>
-		{/if}
 		<div id="KapcsolodoTab" class="mattkarb-page" data-visible="visible">
 			{foreach $termek.kapcsolodok as $kapcsolodo}
 			{include 'termektermekkapcsolodokarb.tpl'}
@@ -282,9 +271,6 @@
 			<a class="js-kapcsolodonewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 		</div>
         {/if}
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Webes adatok')}" data-refcontrol="#WebTab"></div>
-		{/if}
 		<div id="WebTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
 			<input id="LathatoCheck" name="lathato" type="checkbox"{if ($termek.lathato)}checked="checked"{/if}>{t('Weboldalon látható')}
 			<input id="NemkaphatoCheck" name="nemkaphato" type="checkbox"{if ($termek.nemkaphato)}checked="checked"{/if}>{t('Nem kapható')}
@@ -312,9 +298,6 @@
 			</tr>
 			</tbody></table>
 		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Képek')}" data-refcontrol="#KepTab"></div>
-		{/if}
 		<div id="KepTab" class="mattkarb-page" data-visible="visible">
             <div>
                 <label for="RegikepurlEdit">Régi kép url:</label>
@@ -326,9 +309,6 @@
 			{/foreach}
 			<a class="js-kepnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Csomagolási adatok')}" data-refcontrol="#CsomagolasTab"></div>
-		{/if}
 		<div id="CsomagolasTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
 			<table><tbody>
 			<tr><td colspan="2"><input id="OsszehajthatoEdit" type="checkbox" name="osszehajthato"{if ($termek.osszehajthato)} checked="checked"{/if}>{t('Összehajtható')}</input></td></tr>

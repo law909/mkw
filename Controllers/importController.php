@@ -1432,7 +1432,9 @@ class importController extends \mkwhelpers\Controller {
                         $valutanem = $valutanemek[$evalu];
                         if ($valutanem) {
                             foreach($bruttox as $ename => $ertek) {
-                                unset($netto[$evalu][$ename]);
+                                if (is_array($netto)) {
+                                    unset($netto[$evalu][$ename]);
+                                }
                                 if (!$ujtermek) {
                                     $ar = $termekarrepo->findBy(array('termek' => $termek->getId(), 'valutanem' => $valutanem->getId(), 'azonosito' => $ename));
                                     if ($ar) {

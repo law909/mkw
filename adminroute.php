@@ -123,6 +123,9 @@ $router->map('POST', '/admin/termekkapcsolodo/save', 'termekkapcsolodoController
 $router->map('GET', '/admin/termekar/getemptyrow', 'termekarController#getemptyrow', 'admintermekargetemptyrow');
 $router->map('POST', '/admin/termekar/save', 'termekarController#save', 'admintermekarsave');
 
+$router->map('GET', '/admin/termektranslation/getemptyrow', 'termektranslationController#getemptyrow', 'admintermektranslationgetemptyrow');
+$router->map('POST', '/admin/termektranslation/save', 'termektranslationController#delete', 'admintermektranslationsave');
+
 $router->map('GET', '/admin/termekkep/getemptyrow', 'termekkepController#getemptyrow', 'admintermekkepgetemptyrow');
 $router->map('POST', '/admin/termekkep/del', 'termekkepController#del', 'admintermekkepdel');
 
