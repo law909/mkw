@@ -1,47 +1,48 @@
 <?php
 namespace Entities;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
 
 /**
- * @Entity(repositoryClass="Entities\HirRepository")
- * @Table(name="hir",indexes={
- *		@index(name="hirslug_idx",columns={"slug"})
+ * @ORM\Entity(repositoryClass="Entities\HirRepository")
+ * @ORM\Table(name="hir",indexes={
+ *		@ORM\index(name="hirslug_idx",columns={"slug"})
  * })
  */
 class Hir {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 	/**
-	 * @gedmo:Sluggable
-	 * @Column(type="string",length=255)
+	 * @ORM\Column(type="string",length=255)
 	 */
 	private $cim;
 	/**
-	 * @gedmo:Slug
-	 * @Column(type="string",length=255)
+	 * @Gedmo\Slug(fields={"cim"})
+	 * @ORM\Column(type="string",length=255)
 	 */
 	private $slug;
-	/** @Column(type="integer",nullable=true) */
+	/** @ORM\Column(type="integer",nullable=true) */
 	private $sorrend;
-	/** @Column(type="string",length=255,nullable=true) */
+	/** @ORM\Column(type="string",length=255,nullable=true) */
 	private $forras;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $lead;
-	/** @Column(type="date",nullable=true) */
+	/** @ORM\Column(type="date",nullable=true) */
 	private $elsodatum;
-	/** @Column(type="date",nullable=true) */
+	/** @ORM\Column(type="date",nullable=true) */
 	private $utolsodatum;
-	/** @Column(type="date",nullable=true) */
+	/** @ORM\Column(type="date",nullable=true) */
 	private $datum;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $lathato;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $szoveg;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $seodescription;
 
 	public function convertToArray() {

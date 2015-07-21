@@ -4,6 +4,8 @@
 		"zendframework/zendframework1": "1.*",
 		"smarty/smarty": "3.*",
 		"ezyang/htmlpurifier": "v4.5.0",
-        "phpoffice/phpexcel": "1.*"
+        "phpoffice/phpexcel": "1.*",
+	"doctrine/orm": "2.5.*",
+	"gedmo/doctrine-extensions": "2.4.*"
 	}
 }

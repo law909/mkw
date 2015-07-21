@@ -1,22 +1,24 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\IrszamRepository")
- * @Table(name="irszam")
+ * @ORM\Entity(repositoryClass="Entities\IrszamRepository")
+ * @ORM\Table(name="irszam")
  */
 class Irszam {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 	/**
-	 * @Column(type="string", length=10, nullable=false)
+	 * @ORM\Column(type="string", length=10, nullable=false)
 	 */
 	private $szam;
 	/**
-	 * @Column(type="string",length=255)
+	 * @ORM\Column(type="string",length=255)
 	 */
 	private $nev;
 

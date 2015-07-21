@@ -1,35 +1,38 @@
 <?php
 namespace Entities;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\TermekKapcsolodoRepository")
- * @Table(name="termekkapcsolodo")
+ * @ORM\Entity(repositoryClass="Entities\TermekKapcsolodoRepository")
+ * @ORM\Table(name="termekkapcsolodo")
  */
 class TermekKapcsolodo {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @Column(type="datetime",nullable=true)
+	 * @Gedmo\Timestampable(on="create")
+	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $created;
 	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @gedmo:Timestampable(on="update")
-	 * @Column(type="datetime",nullable=true)
+	 * @Gedmo\Timestampable(on="create")
+	 * @Gedmo\Timestampable(on="update")
+	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $lastmod;
 	/**
-	 * @ManyToOne(targetEntity="Termek",inversedBy="termekkapcsolodok")
-	 * @JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
+	 * @ORM\ManyToOne(targetEntity="Termek",inversedBy="termekkapcsolodok")
+	 * @ORM\JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
 	 */
 	private $termek;
 	/**
-	 * @ManyToOne(targetEntity="Termek",inversedBy="altermekkapcsolodok")
-	 * @JoinColumn(name="altermek_id",referencedColumnName="id",onDelete="cascade")
+	 * @ORM\ManyToOne(targetEntity="Termek",inversedBy="altermekkapcsolodok")
+	 * @ORM\JoinColumn(name="altermek_id",referencedColumnName="id",onDelete="cascade")
 	 */
 	private $altermek;
 

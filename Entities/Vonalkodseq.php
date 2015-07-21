@@ -1,19 +1,21 @@
 <?php
 namespace Entities;
 
+
+use Doctrine\ORM\Mapping as ORM;
 /**
- * @Entity(repositoryClass="Entities\VonalkodseqRepository")
- * @Table(name="vonalkodseq")
+ * @ORM\Entity(repositoryClass="Entities\VonalkodseqRepository")
+ * @ORM\Table(name="vonalkodseq")
  */
 class Vonalkodseq {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 
     /**
-	 * @Column(type="smallint")
+	 * @ORM\Column(type="smallint")
 	 */
 	private $data;
 

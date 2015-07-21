@@ -1,21 +1,23 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\KeresoszologRepository") @HasLifecycleCallbacks
- * @Table(name="keresoszolog")
+ * @ORM\Entity(repositoryClass="Entities\KeresoszologRepository") @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="keresoszolog")
  */
 class Keresoszolog {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 	/**
-	 * @Column(type="string",length=255)
+	 * @ORM\Column(type="string",length=255)
 	 */
 	private $szo;
-	/** @Column(type="datetime",nullable=true) */
+	/** @ORM\Column(type="datetime",nullable=true) */
 	private $datum;
 
 	public function __construct($szo) {
@@ -37,8 +39,8 @@ class Keresoszolog {
 	public function getDatum() {
 		return $this->datum;
 	}
-	
-	/** @PrePersist */
+
+	/** @ORM\PrePersist */
 	public function setDatumOnPreInsert() {
 		$this->datum = new \DateTime();
 	}

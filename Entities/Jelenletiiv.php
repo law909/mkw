@@ -1,30 +1,31 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
 
 /**
- * @Entity(repositoryClass="Entities\JelenletiivRepository")
- * @Table(name="jelenletiiv")
+ * @ORM\Entity(repositoryClass="Entities\JelenletiivRepository")
+ * @ORM\Table(name="jelenletiiv")
  */
 class Jelenletiiv {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** @Column(type="date") */
+	/** @ORM\Column(type="date") */
 	private $datum;
 	/**
-	 * @ManyToOne(targetEntity="Dolgozo",inversedBy="jelenletek")
-	 * @JoinColumn(name="dolgozo_id", referencedColumnName="id",nullable=true,onDelete="cascade")
+	 * @ORM\ManyToOne(targetEntity="Dolgozo",inversedBy="jelenletek")
+	 * @ORM\JoinColumn(name="dolgozo_id", referencedColumnName="id",nullable=true,onDelete="cascade")
 	 */
 	private $dolgozo;
-	/** @Column(type="integer") */
+	/** @ORM\Column(type="integer") */
 	private $munkaido;
 	/**
-	 * @ManyToOne(targetEntity="Jelenlettipus")
-	 * @JoinColumn(name="jelenlettipus_id", referencedColumnName="id",nullable=true,onDelete="cascade")
+	 * @ORM\ManyToOne(targetEntity="Jelenlettipus")
+	 * @ORM\JoinColumn(name="jelenlettipus_id", referencedColumnName="id",nullable=true,onDelete="cascade")
 	 */
 	private $jelenlettipus;
 

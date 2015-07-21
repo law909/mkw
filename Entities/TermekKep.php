@@ -1,39 +1,41 @@
 <?php
 namespace Entities;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
 
 /**
- * @Entity(repositoryClass="Entities\TermekKepRepository")
- * @Table(name="termekkep")
+ * @ORM\Entity(repositoryClass="Entities\TermekKepRepository")
+ * @ORM\Table(name="termekkep")
  */
 class TermekKep {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @Column(type="datetime",nullable=true)
+	 * @Gedmo\Timestampable(on="create")
+	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $created;
 	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @gedmo:Timestampable(on="update")
-	 * @Column(type="datetime",nullable=true)
+	 * @Gedmo\Timestampable(on="create")
+	 * @Gedmo\Timestampable(on="update")
+	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $lastmod;
 	/**
-	 * @ManyToOne(targetEntity="Termek",inversedBy="termekkepek")
-	 * @JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
+	 * @ORM\ManyToOne(targetEntity="Termek",inversedBy="termekkepek")
+	 * @ORM\JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
 	 */
 	private $termek;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $url;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $leiras;
-	/** @OneToMany(targetEntity="TermekValtozat",mappedBy="kep",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="TermekValtozat",mappedBy="kep",cascade={"persist"}) */
 	private $valtozatok;
 
 	public function getId() {

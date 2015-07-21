@@ -1,33 +1,33 @@
 <?php
 namespace Entities;
 
-use mkw\Store;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity(repositoryClass="Entities\KorhintaRepository")
- * @Table(name="korhinta")
+ * @ORM\Entity(repositoryClass="Entities\KorhintaRepository")
+ * @ORM\Table(name="korhinta")
  */
 class Korhinta {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 	/**
-	 * @Column(type="string",length=255)
+	 * @ORM\Column(type="string",length=255)
 	 */
 	private $nev;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $szoveg;
-	/** @Column(type="string",length=255,nullable=true) */
+	/** @ORM\Column(type="string",length=255,nullable=true) */
 	private $url;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $kepurl='';
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $kepleiras='';
-	/** @Column(type="boolean",nullable=true) */
+	/** @ORM\Column(type="boolean",nullable=true) */
 	private $lathato;
-	/** @Column(type="integer",nullable=true) */
+	/** @ORM\Column(type="integer",nullable=true) */
 	private $sorrend;
 
 	public function convertToArray() {

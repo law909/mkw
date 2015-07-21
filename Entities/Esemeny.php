@@ -1,14 +1,15 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
 /**
- * @Entity(repositoryClass="Entities\EsemenyRepository")
+ * @ORM\Entity(repositoryClass="Entities\EsemenyRepository")
  */
 class Esemeny extends OsFeladat {
 
 	/**
-	 * @ManyToOne(targetEntity="Partner",inversedBy="esemenyek")
-	 * @JoinColumn(name="partner_id", referencedColumnName="id",onDelete="cascade")
+	 * @ORM\ManyToOne(targetEntity="Partner",inversedBy="esemenyek")
+	 * @ORM\JoinColumn(name="partner_id", referencedColumnName="id",onDelete="cascade")
 	 */
 	private $partner;
 

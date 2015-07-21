@@ -1,19 +1,21 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\BizonylatseqRepository")
- * @Table(name="bizonylatseq")
+ * @ORM\Entity(repositoryClass="Entities\BizonylatseqRepository")
+ * @ORM\Table(name="bizonylatseq")
  */
 class Bizonylatseq {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 
     /**
-	 * @Column(type="smallint")
+	 * @ORM\Column(type="smallint")
 	 */
 	private $data;
 

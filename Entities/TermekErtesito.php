@@ -2,45 +2,48 @@
 
 namespace Entities;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\TermekErtesitoRepository")
- * @Table(name="termekertesito",indexes={
- * 		@index(name="termekertesitoemail_idx",columns={"email","termek_id"}),
- * 		@index(name="termekertesitotermek_idx",columns={"termek_id","email"}),
- * 		@index(name="termekertesitopartner_idx",columns={"partner_id","termek_id"})
+ * @ORM\Entity(repositoryClass="Entities\TermekErtesitoRepository")
+ * @ORM\Table(name="termekertesito",indexes={
+ * 		@ORM\index(name="termekertesitoemail_idx",columns={"email","termek_id"}),
+ * 		@ORM\index(name="termekertesitotermek_idx",columns={"termek_id","email"}),
+ * 		@ORM\index(name="termekertesitopartner_idx",columns={"partner_id","termek_id"})
  * })
- * @HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks
  */
 class TermekErtesito {
 
     /**
-     * @Id @Column(type="integer")
-     * @GeneratedValue(strategy="AUTO")
+     * @ORM\Id @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id = 0;
 
     /**
-     * @gedmo:Timestampable(on="create")
-     * @Column(type="datetime",nullable=true)
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime",nullable=true)
      */
     private $created;
 
-    /** @Column(type="string",length=100,nullable=true) */
+    /** @ORM\Column(type="string",length=100,nullable=true) */
     private $email = '';
 
     /**
-     * @ManyToOne(targetEntity="Termek",inversedBy="termekertesitok")
-     * @JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
+     * @ORM\ManyToOne(targetEntity="Termek",inversedBy="termekertesitok")
+     * @ORM\JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
      */
     private $termek;
 
     /**
-     * @ManyToOne(targetEntity="Partner",inversedBy="termekertesitok")
-     * @JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="cascade")
+     * @ORM\ManyToOne(targetEntity="Partner",inversedBy="termekertesitok")
+     * @ORM\JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="cascade")
      */
     private $partner;
 
-    /** @Column(type="datetime",nullable=true) */
+    /** @ORM\Column(type="datetime",nullable=true) */
     private $sent;
 
     public function getId() {

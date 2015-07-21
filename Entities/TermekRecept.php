@@ -1,42 +1,45 @@
 <?php
 namespace Entities;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\TermekReceptRepository")
- * @Table(name="termekrecept")
+ * @ORM\Entity(repositoryClass="Entities\TermekReceptRepository")
+ * @ORM\Table(name="termekrecept")
  */
 class TermekRecept {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @Column(type="datetime",nullable=true)
+	 * @Gedmo\Timestampable(on="create")
+	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $created;
 	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @gedmo:Timestampable(on="update")
-	 * @Column(type="datetime",nullable=true)
+	 * @Gedmo\Timestampable(on="create")
+	 * @Gedmo\Timestampable(on="update")
+	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $lastmod;
 	/**
-	 * @ManyToOne(targetEntity="Termek",inversedBy="termekreceptek")
-	 * @JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
+	 * @ORM\ManyToOne(targetEntity="Termek",inversedBy="termekreceptek")
+	 * @ORM\JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
 	 */
 	private $termek;
 	/**
-	 * @ManyToOne(targetEntity="Termek",inversedBy="altermekreceptek")
-	 * @JoinColumn(name="altermek_id",referencedColumnName="id",onDelete="cascade")
+	 * @ORM\ManyToOne(targetEntity="Termek",inversedBy="altermekreceptek")
+	 * @ORM\JoinColumn(name="altermek_id",referencedColumnName="id",onDelete="cascade")
 	 */
 	private $altermek;
 	/**
-	 * @Column(type="decimal",precision=14,scale=4,nullable=true)
+	 * @ORM\Column(type="decimal",precision=14,scale=4,nullable=true)
 	 */
 	private $mennyiseg;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $kotelezo=false;
 
 	public function getId() {

@@ -1,86 +1,89 @@
 <?php
 namespace Entities;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\TermekValtozatRepository")
- * @Table(name="termekvaltozat",indexes={
- *      @index(name="termekvaltozatvonalkod_idx",columns={"vonalkod"}),
- *      @index(name="termekvaltozatidegencikkszam_idx",columns={"idegencikkszam"})
+ * @ORM\Entity(repositoryClass="Entities\TermekValtozatRepository")
+ * @ORM\Table(name="termekvaltozat",indexes={
+ *      @ORM\index(name="termekvaltozatvonalkod_idx",columns={"vonalkod"}),
+ *      @ORM\index(name="termekvaltozatidegencikkszam_idx",columns={"idegencikkszam"})
  * })
- * @HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks
 */
 class TermekValtozat {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @Column(type="datetime",nullable=true)
+	 * @Gedmo\Timestampable(on="create")
+	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $created;
 	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @gedmo:Timestampable(on="update")
-	 * @Column(type="datetime",nullable=true)
+	 * @Gedmo\Timestampable(on="create")
+	 * @Gedmo\Timestampable(on="update")
+	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $lastmod;
 	/**
-	 * @ManyToOne(targetEntity="Termek",inversedBy="valtozatok")
-	 * @JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
+	 * @ORM\ManyToOne(targetEntity="Termek",inversedBy="valtozatok")
+	 * @ORM\JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
 	 */
 	private $termek;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $lathato=true;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $elerheto=true;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $termekfokep=false;
 	/**
-	 * @ManyToOne(targetEntity="TermekValtozatAdatTipus",inversedBy="valtozatok1")
-	 * @JoinColumn(name="adattipus1_id",referencedColumnName="id",onDelete="restrict")
+	 * @ORM\ManyToOne(targetEntity="TermekValtozatAdatTipus",inversedBy="valtozatok1")
+	 * @ORM\JoinColumn(name="adattipus1_id",referencedColumnName="id",onDelete="restrict")
 	 */
 	private $adattipus1;
 	/**
-	 * @Column(type="string",length=255,nullable=true)
+	 * @ORM\Column(type="string",length=255,nullable=true)
 	 */
 	private $ertek1;
 	/**
-	 * @ManyToOne(targetEntity="TermekValtozatAdatTipus",inversedBy="valtozatok2")
-	 * @JoinColumn(name="adattipus2_id",referencedColumnName="id",onDelete="restrict")
+	 * @ORM\ManyToOne(targetEntity="TermekValtozatAdatTipus",inversedBy="valtozatok2")
+	 * @ORM\JoinColumn(name="adattipus2_id",referencedColumnName="id",onDelete="restrict")
 	 */
 	private $adattipus2;
 	/**
-	 * @Column(type="string",length=255,nullable=true)
+	 * @ORM\Column(type="string",length=255,nullable=true)
 	 */
 	private $ertek2;
-	/** @OneToMany(targetEntity="Kosar", mappedBy="termekvaltozat",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="Kosar", mappedBy="termekvaltozat",cascade={"persist"}) */
 	private $kosarak;
 	/**
-	 * @Column(type="decimal",precision=14,scale=4,nullable=true)
+	 * @ORM\Column(type="decimal",precision=14,scale=4,nullable=true)
 	 */
 	private $netto=0;
 	/**
-	 * @Column(type="decimal",precision=14,scale=4,nullable=true)
+	 * @ORM\Column(type="decimal",precision=14,scale=4,nullable=true)
 	 */
 	private $brutto=0;
 	/**
-	 * @ManyToOne(targetEntity="TermekKep",inversedBy="valtozatok")
-	 * @JoinColumn(name="termekkep_id",referencedColumnName="id",nullable=true,onDelete="restrict",onUpdate="cascade")
+	 * @ORM\ManyToOne(targetEntity="TermekKep",inversedBy="valtozatok")
+	 * @ORM\JoinColumn(name="termekkep_id",referencedColumnName="id",nullable=true,onDelete="restrict")
 	 */
 	private $kep;
-	/** @Column(type="string",length=50,nullable=true) */
+	/** @ORM\Column(type="string",length=50,nullable=true) */
 	private $cikkszam='';
-	/** @Column(type="string",length=50,nullable=true) */
+	/** @ORM\Column(type="string",length=50,nullable=true) */
 	private $idegencikkszam='';
-    /** @OneToMany(targetEntity="Bizonylattetel", mappedBy="termekvaltozat",cascade={"persist"}) */
+    /** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="termekvaltozat",cascade={"persist"}) */
     private $bizonylattetelek;
-	/** @Column(type="string",length=255,nullable=true) */
+	/** @ORM\Column(type="string",length=255,nullable=true) */
 	private $vonalkod;
 
     /**
-     * @PrePersist
+     * @ORM\PrePersist
      */
     public function generateVonalkod() {
         if (\mkw\Store::getSetupValue('vonalkod') && !$this->vonalkod) {

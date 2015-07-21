@@ -1,61 +1,63 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\FifoRepository")
- * @Table(name="fifo")
+ * @ORM\Entity(repositoryClass="Entities\FifoRepository")
+ * @ORM\Table(name="fifo")
  */
 class Fifo {
 
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 
     /**
-     * @ManyToOne(targetEntity="Raktar")
-     * @JoinColumn(name="raktar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\ManyToOne(targetEntity="Raktar")
+     * @ORM\JoinColumn(name="raktar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $raktar;
 
     /**
-     * @ManyToOne(targetEntity="Termek")
-     * @JoinColumn(name="termek_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\ManyToOne(targetEntity="Termek")
+     * @ORM\JoinColumn(name="termek_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $termek;
 
     /**
-     * @ManyToOne(targetEntity="TermekValtozat")
-     * @JoinColumn(name="termekvaltozat_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\ManyToOne(targetEntity="TermekValtozat")
+     * @ORM\JoinColumn(name="termekvaltozat_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $termekvaltozat;
 
     /**
-     * @ManyToOne(targetEntity="Bizonylatfej")
-     * @JoinColumn(name="kibizonylatfej_id", referencedColumnName="id",nullable=true,onUpdate="cascade",onDelete="cascade")
+     * @ORM\ManyToOne(targetEntity="Bizonylatfej")
+     * @ORM\JoinColumn(name="kibizonylatfej_id", referencedColumnName="id",nullable=true,onDelete="cascade")
      */
     private $kibizonylatfej;
 
     /**
-     * @ManyToOne(targetEntity="Bizonylattetel")
-     * @JoinColumn(name="kibizonylattetel_id", referencedColumnName="id",nullable=true,onUpdate="cascade",onDelete="cascade")
+     * @ORM\ManyToOne(targetEntity="Bizonylattetel")
+     * @ORM\JoinColumn(name="kibizonylattetel_id", referencedColumnName="id",nullable=true,onDelete="cascade")
      */
     private $kibizonylattetel;
 
     /**
-     * @ManyToOne(targetEntity="Bizonylatfej")
-     * @JoinColumn(name="bebizonylatfej_id", referencedColumnName="id",nullable=true,onUpdate="cascade",onDelete="cascade")
+     * @ORM\ManyToOne(targetEntity="Bizonylatfej")
+     * @ORM\JoinColumn(name="bebizonylatfej_id", referencedColumnName="id",nullable=true,onDelete="cascade")
      */
     private $bebizonylatfej;
 
     /**
-     * @ManyToOne(targetEntity="Bizonylattetel")
-     * @JoinColumn(name="bebizonylattetel_id", referencedColumnName="id",nullable=true,onUpdate="cascade",onDelete="cascade")
+     * @ORM\ManyToOne(targetEntity="Bizonylattetel")
+     * @ORM\JoinColumn(name="bebizonylattetel_id", referencedColumnName="id",nullable=true,onDelete="cascade")
      */
     private $bebizonylattetel;
 
-    /** @Column(type="decimal",precision=14,scale=2,nullable=true) */
+    /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $mennyiseg = 0;
 
 

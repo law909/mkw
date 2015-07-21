@@ -1,47 +1,48 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @Entity(repositoryClass="Entities\UzletkotoRepository")
- *  @Table(name="uzletkoto")
+/** @ORM\Entity(repositoryClass="Entities\UzletkotoRepository")
+ *  @ORM\Table(name="uzletkoto")
  **/
 class Uzletkoto {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** @Column(type="string",length=50,nullable=true) */
+	/** @ORM\Column(type="string",length=50,nullable=true) */
 	private $nev;
-	/** @Column(type="string",length=6,nullable=true) */
+	/** @ORM\Column(type="string",length=6,nullable=true) */
 	private $irszam;
-	/** @Column(type="string",length=40,nullable=true) */
+	/** @ORM\Column(type="string",length=40,nullable=true) */
 	private $varos;
-	/** @Column(type="string",length=60,nullable=true) */
+	/** @ORM\Column(type="string",length=60,nullable=true) */
 	private $utca;
-	/** @Column(type="string",length=40,nullable=true) */
+	/** @ORM\Column(type="string",length=40,nullable=true) */
 	private $telefon;
-	/** @Column(type="string",length=40,nullable=true) */
+	/** @ORM\Column(type="string",length=40,nullable=true) */
 	private $mobil;
-	/** @Column(type="string",length=40,nullable=true) */
+	/** @ORM\Column(type="string",length=40,nullable=true) */
 	private $fax;
-	/** @Column(type="string",length=100,nullable=true) */
+	/** @ORM\Column(type="string",length=100,nullable=true) */
 	private $email;
-	/** @Column(type="string",length=200,nullable=true) */
+	/** @ORM\Column(type="string",length=200,nullable=true) */
 	private $honlap;
-	/** @Column(type="string",length=40,nullable=true) */
+	/** @ORM\Column(type="string",length=40,nullable=true) */
 	private $pw;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $megjegyzes;
-	/** @OneToMany(targetEntity="Partner", mappedBy="uzletkoto") */
+	/** @ORM\OneToMany(targetEntity="Partner", mappedBy="uzletkoto") */
 	private $partnerek;
 	/**
-	 * @OneToOne(targetEntity="Felhasznalo")
- 	 * @JoinColumn(name="felhasznalonev", referencedColumnName="felhasznalonev",nullable=true,onDelete="set null")
+	 * @ORM\OneToOne(targetEntity="Felhasznalo")
+ 	 * @ORM\JoinColumn(name="felhasznalonev", referencedColumnName="felhasznalonev",nullable=true,onDelete="set null")
 	 */
 	private $felhasznalo;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="uzletkoto",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="uzletkoto",cascade={"persist"}) */
 	private $bizonylatfejek;
 
 	public function __construct() {
@@ -160,7 +161,7 @@ class Uzletkoto {
 
 	/**
 	 *
-	 * @return ArrayCollection
+	 * @ORM\return ArrayCollection
 	 */
 	public function getPartnerek() {
 		return $this->partnerek;

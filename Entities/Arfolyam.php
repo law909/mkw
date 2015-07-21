@@ -1,35 +1,38 @@
 <?php
 namespace Entities;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\ArfolyamRepository")
- * @Table(name="arfolyam",uniqueConstraints={@UniqueConstraint(name="arfolyam_egyedi",columns={"datum","valutanem_id"})})
+ * @ORM\Entity(repositoryClass="Entities\ArfolyamRepository")
+ * @ORM\Table(name="arfolyam",uniqueConstraints={@ORM\UniqueConstraint(name="arfolyam_egyedi",columns={"datum","valutanem_id"})})
  */
 class Arfolyam {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @Column(type="datetime",nullable=true)
+	 * @Gedmo\Timestampable(on="create")
+	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $created;
 	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @gedmo:Timestampable(on="update")
-	 * @Column(type="datetime",nullable=true)
+	 * @Gedmo\Timestampable(on="create")
+	 * @Gedmo\Timestampable(on="update")
+	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $lastmod;
-	/** @Column(type="date",nullable=false) */
+	/** @ORM\Column(type="date",nullable=false) */
 	private $datum;
 	/**
-	 * @ManyToOne(targetEntity="Valutanem")
-	 * @JoinColumn(name="valutanem_id", referencedColumnName="id",onDelete="cascade",onUpdate="cascade")
+	 * @ORM\ManyToOne(targetEntity="Valutanem")
+	 * @ORM\JoinColumn(name="valutanem_id", referencedColumnName="id",onDelete="cascade")
 	 */
 	private $valutanem;
-	/** @Column(type="decimal",precision=14,scale=4) */
+	/** @ORM\Column(type="decimal",precision=14,scale=4) */
 	private $arfolyam=0;
 
 	public function getId() {

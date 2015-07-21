@@ -1,29 +1,31 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\FizmodRepository")
- * @Table(name="fizmod")
+ * @ORM\Entity(repositoryClass="Entities\FizmodRepository")
+ * @ORM\Table(name="fizmod")
  */
 class Fizmod {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** @Column(type="string",length=255,nullable=false) */
+	/** @ORM\Column(type="string",length=255,nullable=false) */
 	private $nev;
-	/** @Column(type="string",length=1,nullable=false) */
+	/** @ORM\Column(type="string",length=1,nullable=false) */
 	private $tipus='B';
-	/** @Column(type="integer") */
+	/** @ORM\Column(type="integer") */
 	private $haladek=0;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $webes=true;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="fizmod",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="fizmod",cascade={"persist"}) */
 	private $bizonylatfejek;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $leiras;
-	/** @Column(type="integer") */
+	/** @ORM\Column(type="integer") */
 	private $sorrend=0;
 
 	public function __construct() {

@@ -1,16 +1,18 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity
- * @Table(name="parameterek")
+ * @ORM\Entity
+ * @ORM\Table(name="parameterek")
  */
 class Parameterek {
 	/**
-	 * @Id @Column(type="string",length=255)
+	 * @ORM\Id @ORM\Column(type="string",length=255)
 	 */
 	private $id;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $ertek;
 
 	public function getId()

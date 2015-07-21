@@ -1,32 +1,34 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity
- * @Table(name="cimkekat",indexes={
- *	@index(name="cimkekatslug_idx",columns={"slug"})
+ * @ORM\Entity
+ * @ORM\Table(name="cimkekat",indexes={
+ *	@ORM\Index(name="cimkekatslug_idx",columns={"slug"})
  * })
- * @InheritanceType("SINGLE_TABLE")
- * @DiscriminatorColumn(name="osztaly", type="string", length=30)
- * @DiscriminatorMap({"partner"="Partnercimkekat", "termek"="Termekcimkekat"})
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="osztaly", type="string", length=30)
+ * @ORM\DiscriminatorMap({"partner"="Partnercimkekat", "termek"="Termekcimkekat"})
  */
-class Cimkekat {
+abstract class Cimkekat {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $lathato=true;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $termeklaponlathato=false;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $termekszurobenlathato=false;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $termeklistabanlathato=false;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $termekakciodobozbanlathato=false;
-	/** @Column(type="integer",nullable=true) */
+	/** @ORM\Column(type="integer",nullable=true) */
 	private $sorrend;
 
 	public function getId() {

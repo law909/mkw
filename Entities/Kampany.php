@@ -1,16 +1,18 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity @Table(name="kampany")
+ * @ORM\Entity @ORM\Table(name="kampany")
  */
 class Kampany {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** @Column(type="string",length=255,nullable=true) */
+	/** @ORM\Column(type="string",length=255,nullable=true) */
 	private $nev;
 
 

@@ -1,32 +1,34 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\BankszamlaRepository")
- * @Table(name="bankszamla")
+ * @ORM\Entity(repositoryClass="Entities\BankszamlaRepository")
+ * @ORM\Table(name="bankszamla")
  */
 class Bankszamla {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** @Column(type="string",length=50) */
+	/** @ORM\Column(type="string",length=50) */
 	private $banknev;
-	/** @Column(type="string",length=70) */
+	/** @ORM\Column(type="string",length=70) */
 	private $bankcim;
-	/** @Column(type="string",length=255,nullable=false) */
+	/** @ORM\Column(type="string",length=255,nullable=false) */
 	private $szamlaszam;
-	/** @Column(type="string",length=20) */
+	/** @ORM\Column(type="string",length=20) */
 	private $swift;
-	/** @Column(type="string",length=20) */
+	/** @ORM\Column(type="string",length=20) */
 	private $iban;
 	/**
-	 * @ManyToOne(targetEntity="Valutanem")
-	 * @JoinColumn(name="valutanem_id",referencedColumnName="id",nullable=true,onDelete="set null")
+	 * @ORM\ManyToOne(targetEntity="Valutanem")
+	 * @ORM\JoinColumn(name="valutanem_id",referencedColumnName="id",nullable=true,onDelete="set null")
 	 */
 	private $valutanem;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="bankszamla") */
+	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="bankszamla") */
 	private $bizonylatfejek;
 
 	public function getId() {

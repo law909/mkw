@@ -1,14 +1,16 @@
 <?php
 namespace Entities;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
 
 /**
- * @Entity(repositoryClass="Entities\TermekFaRepository")
- * @Table(name="termekfa",indexes={
- *      @index(name="termekfaslug_idx",columns={"slug"}),
- *      @index(name="termekfanevparent_idx",columns={"nev","parent_id"}),
- *      @index(name="termekfaidegenkod_idx",columns={"idegenkod"})
+ * @ORM\Entity(repositoryClass="Entities\TermekFaRepository")
+ * @ORM\Table(name="termekfa",indexes={
+ *      @ORM\index(name="termekfaslug_idx",columns={"slug"}),
+ *      @ORM\index(name="termekfanevparent_idx",columns={"nev","parent_id"}),
+ *      @ORM\index(name="termekfaidegenkod_idx",columns={"idegenkod"})
  * })
  */
 class TermekFa {
@@ -20,89 +22,88 @@ class TermekFa {
     public $m4lchanged = false;
 
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @Column(type="datetime",nullable=true)
+	 * @Gedmo\Timestampable(on="create")
+	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $created;
 	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @gedmo:Timestampable(on="update")
-	 * @Column(type="datetime",nullable=true)
+	 * @Gedmo\Timestampable(on="create")
+	 * @Gedmo\Timestampable(on="update")
+	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $lastmod;
 	/**
-	 * @OneToMany(targetEntity="TermekFa", mappedBy="parent")
-	 * @OrderBy({"sorrend"="ASC","nev"="ASC"})
+	 * @ORM\OneToMany(targetEntity="TermekFa", mappedBy="parent")
+	 * @ORM\OrderBy({"sorrend"="ASC","nev"="ASC"})
 	 */
 	private $children;
 	/**
-	 * @ManyToOne(targetEntity="TermekFa", inversedBy="children")
-	 * @JoinColumn(name="parent_id", referencedColumnName="id",onDelete="restrict")
+	 * @ORM\ManyToOne(targetEntity="TermekFa", inversedBy="children")
+	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id",onDelete="restrict")
 	 */
 	private $parent;
 	/**
-	 * @gedmo:Sluggable
-     * @gedmo:Translatable
-	 * @Column(type="string",length=255,nullable=false)
+     * @Gedmo\Translatable
+	 * @ORM\Column(type="string",length=255,nullable=false)
 	 */
 	private $nev;
-	/** @Column(type="integer",nullable=true) */
+	/** @ORM\Column(type="integer",nullable=true) */
 	private $sorrend;
 	/**
-	 * @gedmo:Slug
-	 * @Column(type="string",length=255,nullable=true)
+	 * @Gedmo\Slug(fields={"nev"})
+	 * @ORM\Column(type="string",length=255,nullable=true)
 	 */
 	private $slug;
-	/** @Column(type="string",length=255,nullable=true) */
+	/** @ORM\Column(type="string",length=255,nullable=true) */
 	private $karkod;
-	/** @Column(type="string",length=255,nullable=true) */
+	/** @ORM\Column(type="string",length=255,nullable=true) */
 	private $rovidleiras='';
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $leiras;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $leiras2;
-	/** @Column(type="boolean",nullable=true) */
+	/** @ORM\Column(type="boolean",nullable=true) */
 	private $menu1lathato=true;
-	/** @Column(type="boolean",nullable=true) */
+	/** @ORM\Column(type="boolean",nullable=true) */
 	private $menu2lathato=false;
-	/** @Column(type="boolean",nullable=true) */
+	/** @ORM\Column(type="boolean",nullable=true) */
 	private $menu3lathato=false;
-	/** @Column(type="boolean",nullable=true) */
+	/** @ORM\Column(type="boolean",nullable=true) */
 	private $menu4lathato=false;
 	/**
-     * @gedmo:Translatable
-     * @Column(type="string",length=255,nullable=true)
+     * @Gedmo\Translatable
+     * @ORM\Column(type="string",length=255,nullable=true)
      */
 	private $oldalcim;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $seodescription;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $kepurl;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $kepleiras;
 	/**
-	 * @OneToMany(targetEntity="Termek",mappedBy="termekfa1")
+	 * @ORM\OneToMany(targetEntity="Termek",mappedBy="termekfa1")
 	 */
 	private $termekek1;
 	/**
-	 * @OneToMany(targetEntity="Termek",mappedBy="termekfa2")
+	 * @ORM\OneToMany(targetEntity="Termek",mappedBy="termekfa2")
 	 */
 	private $termekek2;
 	/**
-	 * @OneToMany(targetEntity="Termek",mappedBy="termekfa3")
+	 * @ORM\OneToMany(targetEntity="Termek",mappedBy="termekfa3")
 	 */
 	private $termekek3;
-	/** @Column(type="boolean",nullable=true) */
+	/** @ORM\Column(type="boolean",nullable=true) */
 	private $inaktiv=false;
-    /** @Column(type="string",length=255,nullable=true) */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $idegenkod = '';
     /**
-     * @gedmo:Locale
+     * @Gedmo\Locale
      */
     private $locale;
 

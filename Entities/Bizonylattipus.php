@@ -1,65 +1,65 @@
 <?php
 namespace Entities;
-use mkw\store;
-use Doctrine\Common\Collections\ArrayCollection;
 
-/** @Entity(repositoryClass="Entities\BizonylattipusRepository")
- *  @Table(name="bizonylattipus")
+use Doctrine\ORM\Mapping as ORM;
+
+/** @ORM\Entity(repositoryClass="Entities\BizonylattipusRepository")
+ *  @ORM\Table(name="bizonylattipus")
  **/
 class Bizonylattipus {
 	/**
-	 * @Id @Column(type="string",length=30)
+	 * @ORM\Id @ORM\Column(type="string",length=30)
 	 */
 	private $id;
-	/** @Column(type="string",length=100) */
+	/** @ORM\Column(type="string",length=100) */
 	private $nev;
-	/** @Column(type="integer") */
+	/** @ORM\Column(type="integer") */
 	private $irany=-1;
-	/** @Column(type="boolean",nullable=false) */
+	/** @ORM\Column(type="boolean",nullable=false) */
 	private $nyomtatni=true;
-	/** @Column(type="string",length=10,nullable=true) */
+	/** @ORM\Column(type="string",length=10,nullable=true) */
 	private $azonosito;
-	/** @Column(type="integer") */
+	/** @ORM\Column(type="integer") */
 	private $kezdosorszam=0;
-	/** @Column(type="integer") */
+	/** @ORM\Column(type="integer") */
 	private $peldanyszam=1;
-	/** @Column(type="boolean",nullable=false) */
+	/** @ORM\Column(type="boolean",nullable=false) */
 	private $mozgat=true;
-	/** @Column(type="boolean",nullable=false) */
+	/** @ORM\Column(type="boolean",nullable=false) */
 	private $penztmozgat=true;
-	/** @Column(type="boolean",nullable=false) */
+	/** @ORM\Column(type="boolean",nullable=false) */
 	private $editprinted=false;
-	/** @Column(type="boolean",nullable=false) */
+	/** @ORM\Column(type="boolean",nullable=false) */
 	private $showteljesites=false;
-	/** @Column(type="boolean",nullable=false) */
+	/** @ORM\Column(type="boolean",nullable=false) */
 	private $showesedekesseg=false;
-	/** @Column(type="boolean",nullable=false) */
+	/** @ORM\Column(type="boolean",nullable=false) */
 	private $showhatarido=false;
-	/** @Column(type="boolean",nullable=false) */
+	/** @ORM\Column(type="boolean",nullable=false) */
 	private $showvalutanem=false;
-	/** @Column(type="boolean",nullable=false) */
+	/** @ORM\Column(type="boolean",nullable=false) */
 	private $showbizonylatstatuszeditor=false;
-	/** @Column(type="boolean",nullable=false) */
+	/** @ORM\Column(type="boolean",nullable=false) */
 	private $showszamlabutton=false;
-	/** @Column(type="boolean",nullable=false) */
+	/** @ORM\Column(type="boolean",nullable=false) */
 	private $showszallitobutton=false;
-    /** @Column(type="boolean",nullable=false) */
+    /** @ORM\Column(type="boolean",nullable=false) */
 	private $showkivetbutton=false;
-	/** @Column(type="boolean",nullable=false) */
+	/** @ORM\Column(type="boolean",nullable=false) */
 	private $showkeziszamlabutton=false;
-    /** @Column(type="boolean",nullable=false) */
+    /** @ORM\Column(type="boolean",nullable=false) */
 	private $showuzenet=false;
-    /** @Column(type="boolean",nullable=false) */
+    /** @ORM\Column(type="boolean",nullable=false) */
 	private $showszallitasicim=false;
-    /** @Column(type="boolean",nullable=false) */
+    /** @ORM\Column(type="boolean",nullable=false) */
 	private $showerbizonylatszam=false;
-    /** @Column(type="boolean",nullable=false) */
+    /** @ORM\Column(type="boolean",nullable=false) */
 	private $showfuvarlevelszam=false;
-    /** @Column(type="boolean",nullable=false) */
+    /** @ORM\Column(type="boolean",nullable=false) */
 	private $showhaszonszazalek=false;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylattipus",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylattipus",cascade={"persist"}) */
 	private $bizonylatfejek;
-    /** @Column(type="string",length="200",nullable=true) */
+    /** @ORM\Column(type="string",length=200,nullable=true) */
     private $tplname;
 
 	public function __construct() {

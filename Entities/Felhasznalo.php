@@ -1,22 +1,24 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\FelhasznaloRepository")
- * @Table(name="felhasznalo")
+ * @ORM\Entity(repositoryClass="Entities\FelhasznaloRepository")
+ * @ORM\Table(name="felhasznalo")
  */
 class Felhasznalo {
 	/**
-        * @Id @Column(type="string",length=16,nullable=false)
+        * @ORM\Id @ORM\Column(type="string",length=16,nullable=false)
         */
 	private $felhasznalonev;
-	/** @Column(type="string",length=16) */
+	/** @ORM\Column(type="string",length=16) */
 	private $jelszo;
-	/** @Column(type="string",length=255) */
+	/** @ORM\Column(type="string",length=255) */
 	private $nev;
 	/**
-	 * @OneToOne(targetEntity="Uzletkoto")
-	 * @JoinColumn(name="uzletkoto_id", referencedColumnName="id",nullable=true,onDelete="set null")
+	 * @ORM\OneToOne(targetEntity="Uzletkoto")
+	 * @ORM\JoinColumn(name="uzletkoto_id", referencedColumnName="id",nullable=true,onDelete="set null")
 	 */
 	private $uzletkoto;
 

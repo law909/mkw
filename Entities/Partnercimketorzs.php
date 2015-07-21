@@ -1,25 +1,27 @@
 <?php
 namespace Entities;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\PartnercimketorzsRepository")
+ * @ORM\Entity(repositoryClass="Entities\PartnercimketorzsRepository")
  */
 class Partnercimketorzs extends Cimketorzs {
 	/**
-	 * @gedmo:Sluggable
-	 * @Column(type="string",length=255,nullable=false)
+	 * @ORM\Column(type="string",length=255,nullable=false)
 	 */
 	private $nev;
 	/**
-	 * @gedmo:Slug
-	 * @Column(type="string",length=255,nullable=true)
+	 * @Gedmo\Slug(fields={"nev"})
+	 * @ORM\Column(type="string",length=255,nullable=true)
 	 */
 	private $slug;
-	/** @ManyToMany(targetEntity="Partner", mappedBy="cimkek", cascade={"persist"}) */
+	/** @ORM\ManyToMany(targetEntity="Partner", mappedBy="cimkek", cascade={"persist"}) */
 	private $partnerek;
 	/**
-	 * @ManyToOne(targetEntity="Partnercimkekat",inversedBy="cimkek")
-	 * @JoinColumn(name="cimkekat_id",referencedColumnName="id",onDelete="cascade")
+	 * @ORM\ManyToOne(targetEntity="Partnercimkekat",inversedBy="cimkek")
+	 * @ORM\JoinColumn(name="cimkekat_id",referencedColumnName="id",onDelete="cascade")
 	 */
 	private $kategoria;
 

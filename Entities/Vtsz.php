@@ -1,32 +1,34 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\VtszRepository")
- * @Table(name="vtsz",indexes={
- *      @index(name="vtszszam_idx",columns={"szam"})
+ * @ORM\Entity(repositoryClass="Entities\VtszRepository")
+ * @ORM\Table(name="vtsz",indexes={
+ *      @ORM\index(name="vtszszam_idx",columns={"szam"})
  * })
  */
 class Vtsz {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 
-    /** @Column(type="string",length=255,nullable=false) */
+    /** @ORM\Column(type="string",length=255,nullable=false) */
 	private $szam;
 
-	/** @Column(type="string",length=255,nullable=true) */
+	/** @ORM\Column(type="string",length=255,nullable=true) */
 	private $nev;
 	/**
-	 * @ManyToOne(targetEntity="Afa")
-	 * @JoinColumn(name="afa_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+	 * @ORM\ManyToOne(targetEntity="Afa")
+	 * @ORM\JoinColumn(name="afa_id", referencedColumnName="id",nullable=true,onDelete="restrict")
 	 */
 	private $afa;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $kozvetitett=0;
-	/** @OneToMany(targetEntity="Bizonylattetel", mappedBy="vtsz",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="vtsz",cascade={"persist"}) */
 	private $bizonylattetelek;
 
 	public function getId() {

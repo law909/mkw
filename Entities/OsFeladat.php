@@ -1,28 +1,29 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
 
 /**
- * @Entity @HasLifecycleCallbacks
- * @Table(name="feladat")
- * @InheritanceType("SINGLE_TABLE")
- * @DiscriminatorColumn(name="osztaly", type="string", length=30)
- * @DiscriminatorMap({"teendo"="Teendo", "esemeny"="Esemeny"})
+ * @ORM\Entity @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="feladat")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="osztaly", type="string", length=30)
+ * @ORM\DiscriminatorMap({"teendo"="Teendo", "esemeny"="Esemeny"})
  */
-class OsFeladat {
+abstract class OsFeladat {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** @Column(type="string",length=255) */
+	/** @ORM\Column(type="string",length=255) */
 	private $bejegyzes;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $leiras;
-	/** @Column(type="datetime") */
+	/** @ORM\Column(type="datetime") */
 	private $letrehozva;
-	/** @Column(type="datetime") */
+	/** @ORM\Column(type="datetime") */
 	private $esedekes;
 
 	public function getId() {
@@ -49,7 +50,7 @@ class OsFeladat {
 		return $this->letrehozva;
 	}
 
-	/** @PrePersist */
+	/** @ORM\PrePersist */
 	public function setLetrehozvaOnPreInsert() {
 		$this->letrehozva = new \DateTime();
 	}

@@ -2,60 +2,61 @@
 
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
 use mkw\store,
     Doctrine\Common\Collections\ArrayCollection;
 
-/** @Entity(repositoryClass="Entities\DolgozoRepository")
- *  @Table(name="dolgozo")
+/** @ORM\Entity(repositoryClass="Entities\DolgozoRepository")
+ *  @ORM\Table(name="dolgozo")
  * */
 class Dolgozo {
 
     /**
-     * @Id @Column(type="integer")
-     * @GeneratedValue(strategy="AUTO")
+     * @ORM\Id @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
-    /** @Column(type="string",length=255) */
+    /** @ORM\Column(type="string",length=255) */
     private $nev;
 
-    /** @Column(type="string",length=255,nullable=true) */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $jelszo;
 
-    /** @Column(type="string",length=10,nullable=true) */
+    /** @ORM\Column(type="string",length=10,nullable=true) */
     private $irszam;
 
-    /** @Column(type="string",length=40,nullable=true) */
+    /** @ORM\Column(type="string",length=40,nullable=true) */
     private $varos;
 
-    /** @Column(type="string",length=60,nullable=true) */
+    /** @ORM\Column(type="string",length=60,nullable=true) */
     private $utca;
 
-    /** @Column(type="string",length=40,nullable=true) */
+    /** @ORM\Column(type="string",length=40,nullable=true) */
     private $telefon;
 
-    /** @Column(type="string",length=100,nullable=true) */
+    /** @ORM\Column(type="string",length=100,nullable=true) */
     private $email;
 
     /**
-     * @ManyToOne(targetEntity="Munkakor",inversedBy="dolgozok")
-     * @JoinColumn(name="munkakor_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\ManyToOne(targetEntity="Munkakor",inversedBy="dolgozok")
+     * @ORM\JoinColumn(name="munkakor_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $munkakor;
 
-    /** @Column(type="date",nullable=true) */
+    /** @ORM\Column(type="date",nullable=true) */
     private $szulido;
 
-    /** @Column(type="string",length=60,nullable=true) */
+    /** @ORM\Column(type="string",length=60,nullable=true) */
     private $szulhely;
 
-    /** @Column(type="integer",nullable=true) */
+    /** @ORM\Column(type="integer",nullable=true) */
     private $evesmaxszabi = 0;
 
-    /** @Column(type="date") */
+    /** @ORM\Column(type="date") */
     private $munkaviszonykezdete;
 
-    /** @OneToMany(targetEntity="Jelenletiiv", mappedBy="dolgozo") */
+    /** @ORM\OneToMany(targetEntity="Jelenletiiv", mappedBy="dolgozo") */
     private $jelenletek;
 
     public function __construct() {

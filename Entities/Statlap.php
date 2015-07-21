@@ -2,50 +2,52 @@
 
 namespace Entities;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\StatlapRepository")
- * @Table(name="statlap")
+ * @ORM\Entity(repositoryClass="Entities\StatlapRepository")
+ * @ORM\Table(name="statlap")
  */
 class Statlap {
 
     /**
-     * @Id @Column(type="integer")
-     * @GeneratedValue(strategy="AUTO")
+     * @ORM\Id @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @gedmo:Sluggable
-     * @Column(type="string",length=255,nullable=true)
+     * @ORM\Column(type="string",length=255,nullable=true)
      */
     private $oldalcim;
 
     /**
-     * @gedmo:Slug
-     * @Column(type="string",length=255,nullable=true)
+     * @Gedmo\Slug(fields={"oldalcim"})
+     * @ORM\Column(type="string",length=255,nullable=true)
      */
     private $slug;
 
-    /** @Column(type="text",nullable=true) */
+    /** @ORM\Column(type="text",nullable=true) */
     private $szoveg;
 
-    /** @Column(type="text",nullable=true) */
+    /** @ORM\Column(type="text",nullable=true) */
     private $seodescription;
 
     /**
-     * @gedmo:Timestampable(on="create")
-     * @Column(type="datetime",nullable=true)
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime",nullable=true)
      */
     private $created;
 
     /**
-     * @gedmo:Timestampable(on="create")
-     * @gedmo:Timestampable(on="update")
-     * @Column(type="datetime",nullable=true)
+     * @Gedmo\Timestampable(on="create")
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime",nullable=true)
      */
     private $lastmod;
-    
-    /** @Column(type="string", length=255, nullable=true) */
+
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private $oldurl;
 
     public function getId() {

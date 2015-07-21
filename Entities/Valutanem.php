@@ -1,36 +1,38 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\ValutanemRepository")
- * @Table(name="valutanem")
+ * @ORM\Entity(repositoryClass="Entities\ValutanemRepository")
+ * @ORM\Table(name="valutanem")
  */
 class Valutanem {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** @Column(type="string",length=6,nullable=false) */
+	/** @ORM\Column(type="string",length=6,nullable=false) */
 	private $nev;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $kerekit=false;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $hivatalos=false;
-	/** @Column(type="integer") */
+	/** @ORM\Column(type="integer") */
 	private $mincimlet=0;
 	/**
-	 * @ManyToOne(targetEntity="Bankszamla")
-	 * @JoinColumn(name="bankszamla_id",referencedColumnName="id",nullable=true,onDelete="set null")
+	 * @ORM\ManyToOne(targetEntity="Bankszamla")
+	 * @ORM\JoinColumn(name="bankszamla_id",referencedColumnName="id",nullable=true,onDelete="set null")
 	 */
 	private $bankszamla;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="valutanem",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="valutanem",cascade={"persist"}) */
 	private $bizonylatfejek;
-	/** @OneToMany(targetEntity="Bizonylattetel", mappedBy="valutanem",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="valutanem",cascade={"persist"}) */
 	private $bizonylattetelek;
-	/** @OneToMany(targetEntity="Kosar", mappedBy="valutanem",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="Kosar", mappedBy="valutanem",cascade={"persist"}) */
 	private $kosarak;
-	/** @OneToMany(targetEntity="TermekAr", mappedBy="valutanem",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="TermekAr", mappedBy="valutanem",cascade={"persist"}) */
 	private $termekarak;
 
 	public function getId() {

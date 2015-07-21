@@ -1,23 +1,25 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\AfaRepository")
- * @Table(name="afa")
+ * @ORM\Entity(repositoryClass="Entities\AfaRepository")
+ * @ORM\Table(name="afa")
  */
 class Afa {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** @Column(type="string",length=255,nullable=false) */
+	/** @ORM\Column(type="string",length=255,nullable=false) */
 	private $nev;
-	/** @Column(type="integer") */
+	/** @ORM\Column(type="integer") */
 	private $ertek=0;
-    /** @Column(type="integer") */
+    /** @ORM\Column(type="integer") */
     private $rlbkod;
-	/** @OneToMany(targetEntity="Bizonylattetel", mappedBy="afa") */
+	/** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="afa") */
 	private $bizonylattetelek;
 
 	public function getId() {

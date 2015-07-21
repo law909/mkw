@@ -1,341 +1,342 @@
 <?php
-
 namespace Entities;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
 
-/** @Entity(repositoryClass="Entities\BizonylatfejRepository")
- *  @Table(name="bizonylatfej")
- *  @HasLifecycleCallbacks
+/** @ORM\Entity(repositoryClass="Entities\BizonylatfejRepository")
+ *  @ORM\Table(name="bizonylatfej")
+ *  @ORM\HasLifecycleCallbacks
  * */
 class Bizonylatfej {
 
     /**
-     * @Id @Column(type="string",length=30,nullable=false)
+     * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)
      */
     private $id;
 
     /**
-	 * @Column(type="integer")
+	 * @ORM\Column(type="integer")
 	 */
 	private $trxid;
 
     /**
-     * @Column(type="bigint", columnDefinition="bigint unsigned",nullable=true)
+     * @ORM\Column(type="bigint", options={"unsigned"=true},nullable=true)
      */
     private $otpayid;
 
     /**
-     * @Column(type="string", length=30,nullable=true)
+     * @ORM\Column(type="string", length=30,nullable=true)
      */
     private $otpaymsisdn;
 
     /**
-     * @Column(type="string", length=30,nullable=true)
+     * @ORM\Column(type="string", length=30,nullable=true)
      */
     private $otpaympid;
 
     /**
-     * @Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $otpayresult;
 
     /**
-     * @Column(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $otpayresulttext;
 
     /**
-     * @Column(type="string", length=36,nullable=true)
+     * @ORM\Column(type="string", length=36,nullable=true)
      */
     private $masterpasscorrelationid;
 
     /**
-     * @Column(type="string", length=100,nullable=true)
+     * @ORM\Column(type="string", length=100,nullable=true)
      */
     private $masterpassbanktrxid;
 
     /**
-     * @Column(type="string", length=100,nullable=true)
+     * @ORM\Column(type="string", length=100,nullable=true)
      */
     private $masterpasstrxid;
 
     /**
-     * @gedmo:Timestampable(on="create")
-     * @Column(type="datetime",nullable=true)
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime",nullable=true)
      */
     private $created;
 
     /**
-     * @gedmo:Timestampable(on="create")
-     * @gedmo:Timestampable(on="update")
-     * @Column(type="datetime",nullable=true)
+     * @Gedmo\Timestampable(on="create")
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime",nullable=true)
      */
     private $lastmod;
 
     /**
-     * @ManyToOne(targetEntity="Bizonylattipus", inversedBy="bizonylatfejek")
-     * @JoinColumn(name="bizonylattipus_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\ManyToOne(targetEntity="Bizonylattipus", inversedBy="bizonylatfejek")
+     * @ORM\JoinColumn(name="bizonylattipus_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $bizonylattipus;
 
-    /** @Column(type="string",length=100,nullable=true) */
+    /** @ORM\Column(type="string",length=100,nullable=true) */
     private $bizonylatnev;
 
-    /** @Column(type="integer") */
+    /** @ORM\Column(type="integer") */
     private $irany;
 
-    /** @Column(type="boolean",nullable=false) */
+    /** @ORM\Column(type="boolean",nullable=false) */
     private $nyomtatva = false;
 
-    /** @Column(type="boolean",nullable=false) */
+    /** @ORM\Column(type="boolean",nullable=false) */
     private $storno = false;
 
-    /** @Column(type="boolean",nullable=false) */
+    /** @ORM\Column(type="boolean",nullable=false) */
     private $stornozott = false;
 
-    /** @Column(type="boolean",nullable=false) */
+    /** @ORM\Column(type="boolean",nullable=false) */
     private $penztmozgat;
 
-    /** @Column(type="boolean",nullable=false) */
+    /** @ORM\Column(type="boolean",nullable=false) */
     private $fizetve = false;
 
-    /** @Column(type="string",length=255,nullable=false) */
+    /** @ORM\Column(type="string",length=255,nullable=false) */
     private $tulajnev;
 
-    /** @Column(type="string",length=10,nullable=false) */
+    /** @ORM\Column(type="string",length=10,nullable=false) */
     private $tulajirszam;
 
-    /** @Column(type="string",length=40,nullable=true) */
+    /** @ORM\Column(type="string",length=40,nullable=true) */
     private $tulajvaros;
 
-    /** @Column(type="string",length=60,nullable=true) */
+    /** @ORM\Column(type="string",length=60,nullable=true) */
     private $tulajutca;
 
-    /** @Column(type="string",length=13,nullable=false) */
+    /** @ORM\Column(type="string",length=13,nullable=false) */
     private $tulajadoszam;
 
-    /** @Column(type="string",length=30,nullable=true) */
+    /** @ORM\Column(type="string",length=30,nullable=true) */
     private $tulajeuadoszam;
 
-    /** @Column(type="string",length=30,nullable=true) */
+    /** @ORM\Column(type="string",length=30,nullable=true) */
     private $erbizonylatszam;
 
-    /** @Column(type="string",length=50,nullable=true) */
+    /** @ORM\Column(type="string",length=50,nullable=true) */
     private $fuvarlevelszam;
 
-    /** @Column(type="date",nullable=false) */
+    /** @ORM\Column(type="date",nullable=false) */
     private $kelt;
 
-    /** @Column(type="date",nullable=false) */
+    /** @ORM\Column(type="date",nullable=false) */
     private $teljesites;
 
-    /** @Column(type="date",nullable=true) */
+    /** @ORM\Column(type="date",nullable=true) */
     private $esedekesseg;
 
     /**
-     * @ManyToOne(targetEntity="Fizmod",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="fizmod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\ManyToOne(targetEntity="Fizmod",inversedBy="bizonylatfejek")
+     * @ORM\JoinColumn(name="fizmod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $fizmod;
 
-    /** @Column(type="string",length=255,nullable=true) */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $fizmodnev;
 
     /**
-     * @ManyToOne(targetEntity="Szallitasimod",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="szallitasimod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\ManyToOne(targetEntity="Szallitasimod",inversedBy="bizonylatfejek")
+     * @ORM\JoinColumn(name="szallitasimod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $szallitasimod;
 
-    /** @Column(type="string",length=255,nullable=true) */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $szallitasimodnev;
 
-    /** @Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $netto;
 
-    /** @Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $afa;
 
-    /** @Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $brutto;
 
-    /** @Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $fizetendo;
 
     /**
-     * @ManyToOne(targetEntity="Valutanem",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="valutanem_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\ManyToOne(targetEntity="Valutanem",inversedBy="bizonylatfejek")
+     * @ORM\JoinColumn(name="valutanem_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $valutanem;
 
-    /** @Column(type="string",length=6,nullable=true) */
+    /** @ORM\Column(type="string",length=6,nullable=true) */
     private $valutanemnev;
 
-    /** @Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $nettohuf;
 
-    /** @Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $afahuf;
 
-    /** @Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $bruttohuf;
 
-    /** @Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $arfolyam;
 
     /**
-     * @ManyToOne(targetEntity="Partner",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\ManyToOne(targetEntity="Partner",inversedBy="bizonylatfejek")
+     * @ORM\JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $partner;
 
-    /** @Column(type="string",length=255,nullable=true) */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $partnernev;
 
-    /** @Column(type="string",length=255,nullable=true) */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $partnervezeteknev = '';
 
-    /** @Column(type="string",length=255,nullable=true) */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $partnerkeresztnev = '';
 
-    /** @Column(type="string",length=13,nullable=true) */
+    /** @ORM\Column(type="string",length=13,nullable=true) */
     private $partneradoszam;
 
-    /** @Column(type="string",length=30,nullable=true) */
+    /** @ORM\Column(type="string",length=30,nullable=true) */
     private $partnereuadoszam;
 
-    /** @Column(type="string",length=20,nullable=true) */
+    /** @ORM\Column(type="string",length=20,nullable=true) */
     private $partnermukengszam;
 
-    /** @Column(type="string",length=20,nullable=true) */
+    /** @ORM\Column(type="string",length=20,nullable=true) */
     private $partnerjovengszam;
 
-    /** @Column(type="string",length=20,nullable=true) */
+    /** @ORM\Column(type="string",length=20,nullable=true) */
     private $partnerostermszam;
 
-    /** @Column(type="string",length=20,nullable=true) */
+    /** @ORM\Column(type="string",length=20,nullable=true) */
     private $partnervalligszam;
 
-    /** @Column(type="string",length=20,nullable=true) */
+    /** @ORM\Column(type="string",length=20,nullable=true) */
     private $partnerfvmszam;
 
-    /** @Column(type="string",length=20,nullable=true) */
+    /** @ORM\Column(type="string",length=20,nullable=true) */
     private $partnercjszam;
 
-    /** @Column(type="string",length=20,nullable=true) */
+    /** @ORM\Column(type="string",length=20,nullable=true) */
     private $partnerstatszamjel;
 
-    /** @Column(type="string",length=10,nullable=true) */
+    /** @ORM\Column(type="string",length=10,nullable=true) */
     private $partnerirszam;
 
-    /** @Column(type="string",length=40,nullable=true) */
+    /** @ORM\Column(type="string",length=40,nullable=true) */
     private $partnervaros;
 
-    /** @Column(type="string",length=60,nullable=true) */
+    /** @ORM\Column(type="string",length=60,nullable=true) */
     private $partnerutca;
 
-    /** @Column(type="string",length=10,nullable=true) */
+    /** @ORM\Column(type="string",length=10,nullable=true) */
     private $partnerlirszam;
 
-    /** @Column(type="string",length=40,nullable=true) */
+    /** @ORM\Column(type="string",length=40,nullable=true) */
     private $partnerlvaros;
 
-    /** @Column(type="string",length=60,nullable=true) */
+    /** @ORM\Column(type="string",length=60,nullable=true) */
     private $partnerlutca;
 
-    /** @Column(type="string",length=100,nullable=true) */
+    /** @ORM\Column(type="string",length=100,nullable=true) */
     private $partneremail = '';
 
-    /** @Column(type="string",length=40,nullable=true) */
+    /** @ORM\Column(type="string",length=40,nullable=true) */
     private $partnertelefon = '';
 
     /**
-     * @ManyToOne(targetEntity="Bankszamla",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="bankszamla_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\ManyToOne(targetEntity="Bankszamla",inversedBy="bizonylatfejek")
+     * @ORM\JoinColumn(name="bankszamla_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $bankszamla;
 
-    /** @Column(type="string",length=255,nullable=true) */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $bankszamlanev;
 
-    /** @Column(type="string",length=20,nullable=true) */
+    /** @ORM\Column(type="string",length=20,nullable=true) */
     private $swift;
 
     /**
-     * @ManyToOne(targetEntity="Uzletkoto",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="uzletkoto_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\ManyToOne(targetEntity="Uzletkoto",inversedBy="bizonylatfejek")
+     * @ORM\JoinColumn(name="uzletkoto_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $uzletkoto;
 
-    /** @Column(type="string",length=50,nullable=true) */
+    /** @ORM\Column(type="string",length=50,nullable=true) */
     private $uzletkotonev;
 
     /**
-     * @ManyToOne(targetEntity="Raktar",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="raktar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\ManyToOne(targetEntity="Raktar",inversedBy="bizonylatfejek")
+     * @ORM\JoinColumn(name="raktar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $raktar;
 
-    /** @Column(type="string",length=50,nullable=true) */
+    /** @ORM\Column(type="string",length=50,nullable=true) */
     private $raktarnev;
 
-    /** @OneToMany(targetEntity="Bizonylattetel", mappedBy="bizonylatfej",cascade={"persist"}) */
+    /** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="bizonylatfej",cascade={"persist"}) */
     private $bizonylattetelek;
 
-    /** @Column(type="text",nullable=true) */
+    /** @ORM\Column(type="text",nullable=true) */
     private $megjegyzes;
 
-    /** @Column(type="text",nullable=true) */
+    /** @ORM\Column(type="text",nullable=true) */
     private $belsomegjegyzes;
 
-    /** @Column(type="text",nullable=true) */
+    /** @ORM\Column(type="text",nullable=true) */
     private $webshopmessage;
 
-    /** @Column(type="text",nullable=true) */
+    /** @ORM\Column(type="text",nullable=true) */
     private $couriermessage;
 
-    /** @Column(type="date",nullable=true) */
+    /** @ORM\Column(type="date",nullable=true) */
     private $hatarido;
 
-    /** @Column(type="string",length=255,nullable=true) */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $szallnev = '';
 
-    /** @Column(type="string",length=10,nullable=true) */
+    /** @ORM\Column(type="string",length=10,nullable=true) */
     private $szallirszam = '';
 
-    /** @Column(type="string",length=40,nullable=true) */
+    /** @ORM\Column(type="string",length=40,nullable=true) */
     private $szallvaros = '';
 
-    /** @Column(type="string",length=60,nullable=true) */
+    /** @ORM\Column(type="string",length=60,nullable=true) */
     private $szallutca = '';
 
-    /** @Column(type="string",length=32,nullable=true) */
+    /** @ORM\Column(type="string",length=32,nullable=true) */
     private $ip;
 
-    /** @Column(type="text",nullable=true) */
+    /** @ORM\Column(type="text",nullable=true) */
     private $referrer;
 
     /**
-     * @ManyToOne(targetEntity="Bizonylatstatusz",inversedBy="bizonylatfejek")
-     * @JoinColumn(name="bizonylatstatusz_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\ManyToOne(targetEntity="Bizonylatstatusz",inversedBy="bizonylatfejek")
+     * @ORM\JoinColumn(name="bizonylatstatusz_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $bizonylatstatusz;
 
     /**
-     * @ManyToOne(targetEntity="Bizonylatfej",inversedBy="szulobizonylatfejek")
-     * @JoinColumn(name="parbizonylatfej_id", referencedColumnName="id",nullable=true,onUpdate="cascade",onDelete="restrict")
+     * @ORM\ManyToOne(targetEntity="Bizonylatfej",inversedBy="szulobizonylatfejek")
+     * @ORM\JoinColumn(name="parbizonylatfej_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $parbizonylatfej;
 
-    /** @OneToMany(targetEntity="Bizonylatfej", mappedBy="parbizonylatfej",cascade={"persist"}) */
+    /** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="parbizonylatfej",cascade={"persist"}) */
     private $szulobizonylatfejek;
 
-    /** @Column(type="integer") */
+    /** @ORM\Column(type="integer") */
     private $partnerszamlatipus;
 
     /**
-     * @PrePersist
+     * @ORM\PrePersist
      */
     public function generateTrxId() {
         $conn = \mkw\Store::getEm()->getConnection();
@@ -346,8 +347,8 @@ class Bizonylatfej {
     }
 
     /**
-     * @PrePersist
-     * @PreUpdate
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
      */
     public function doStuffOnPrePersist() {
         $this->netto = 0;

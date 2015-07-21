@@ -1,23 +1,25 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\TermekValtozatAdatTipusRepository")
- * @Table(name="termekvaltozatadattipus",indexes={
- *      @index(name="termekvaltozatadattipusnev_idx",columns={"nev"})
+ * @ORM\Entity(repositoryClass="Entities\TermekValtozatAdatTipusRepository")
+ * @ORM\Table(name="termekvaltozatadattipus",indexes={
+ *      @ORM\index(name="termekvaltozatadattipusnev_idx",columns={"nev"})
  * })
 */
 class TermekValtozatAdatTipus {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** @Column(type="string",length=255,nullable=false) */
+	/** @ORM\Column(type="string",length=255,nullable=false) */
 	private $nev;
-	/** @OneToMany(targetEntity="TermekValtozat",mappedBy="adattipus1",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="TermekValtozat",mappedBy="adattipus1",cascade={"persist"}) */
 	private $valtozatok1;
-	/** @OneToMany(targetEntity="TermekValtozat",mappedBy="adattipus2",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="TermekValtozat",mappedBy="adattipus2",cascade={"persist"}) */
 	private $valtozatok2;
 
 	public function __construct() {

@@ -1,22 +1,24 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\Rewrite301Repository")
- * @Table(name="rewrite301")
+ * @ORM\Entity(repositoryClass="Entities\Rewrite301Repository")
+ * @ORM\Table(name="rewrite301")
  */
 class Rewrite301 {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 	/**
-	 * @Column(type="text")
+	 * @ORM\Column(type="text")
 	 */
 	private $fromurl;
 	/**
-	 * @Column(type="text")
+	 * @ORM\Column(type="text")
 	 */
 	private $tourl;
 

@@ -1,21 +1,23 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\MunkakorRepository")
- * @Table(name="munkakor")
+ * @ORM\Entity(repositoryClass="Entities\MunkakorRepository")
+ * @ORM\Table(name="munkakor")
  */
 class Munkakor {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 	/**
-	 * @Column(type="string",length=255)
+	 * @ORM\Column(type="string",length=255)
 	 */
 	private $nev;
-	/** @OneToMany(targetEntity="Dolgozo", mappedBy="munkakor") */
+	/** @ORM\OneToMany(targetEntity="Dolgozo", mappedBy="munkakor") */
 	private $dolgozok;
 
 	public function __construct() {

@@ -1,21 +1,23 @@
 <?php
 namespace Entities;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\TermekcimkekatRepository")
+ * @ORM\Entity(repositoryClass="Entities\TermekcimkekatRepository")
  */
 class Termekcimkekat extends Cimkekat {
 	/**
-	 * @gedmo:Sluggable
-	 * @Column(type="string",length=100,nullable=true)
+	 * @ORM\Column(type="string",length=100,nullable=true)
 	 */
 	private $nev;
 	/**
-	 * @gedmo:Slug
-	 * @Column(type="string",length=255,nullable=true)
+	 * @Gedmo\Slug(fields={"nev"})
+	 * @ORM\Column(type="string",length=255,nullable=true)
 	 */
 	private $slug;
-	/** @OneToMany(targetEntity="Termekcimketorzs", mappedBy="kategoria", cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="Termekcimketorzs", mappedBy="kategoria", cascade={"persist"}) */
 	private $cimkek;
 
 	public function getCimkek() {

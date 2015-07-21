@@ -1,20 +1,21 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
 
 /**
- * @Entity(repositoryClass="Entities\TeendoRepository")
+ * @ORM\Entity(repositoryClass="Entities\TeendoRepository")
  */
 class Teendo extends OsFeladat {
 
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $elvegezve=false;
-	/** @Column(type="datetime") */
+	/** @ORM\Column(type="datetime") */
 	private $elvegezve_mikor;
 	/**
-	 * @ManyToOne(targetEntity="Partner",inversedBy="teendok")
-	 * @JoinColumn(name="partner_id", referencedColumnName="id",onDelete="cascade")
+	 * @ORM\ManyToOne(targetEntity="Partner",inversedBy="teendok")
+	 * @ORM\JoinColumn(name="partner_id", referencedColumnName="id",onDelete="cascade")
 	 */
 	private $partner;
 

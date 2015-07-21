@@ -2,31 +2,33 @@
 
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\EmailtemplateRepository")
- * @Table(name="emailtemplate")
+ * @ORM\Entity(repositoryClass="Entities\EmailtemplateRepository")
+ * @ORM\Table(name="emailtemplate")
  */
 class Emailtemplate {
 
     /**
-     * @Id @Column(type="integer")
-     * @GeneratedValue(strategy="AUTO")
+     * @ORM\Id @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @Column(type="string",length=255)
+     * @ORM\Column(type="string",length=255)
      */
     private $nev;
 
     /**
-     * @Column(type="string",length=255)
+     * @ORM\Column(type="string",length=255)
      */
     private $targy;
 
-    /** @Column(type="text",nullable=true) */
+    /** @ORM\Column(type="text",nullable=true) */
     private $szoveg;
-	/** @OneToMany(targetEntity="Bizonylatstatusz", mappedBy="emailtemplate",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="Bizonylatstatusz", mappedBy="emailtemplate",cascade={"persist"}) */
 	private $bizonylatstatuszok;
 
     public function getId() {

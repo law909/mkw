@@ -1,35 +1,37 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\SzallitasimodRepository")
- * @Table(name="szallitasimod")
+ * @ORM\Entity(repositoryClass="Entities\SzallitasimodRepository")
+ * @ORM\Table(name="szallitasimod")
  */
 class Szallitasimod {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 	/**
-	 * @Column(type="string",length=255)
+	 * @ORM\Column(type="string",length=255)
 	 */
 	private $nev;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $webes=true;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $vanszallitasiktg=true;
 	/**
-	 * @Column(type="text",nullable=true)
+	 * @ORM\Column(type="text",nullable=true)
 	 */
 	private $leiras;
 	/**
-	 * @Column(type="string",length=255)
+	 * @ORM\Column(type="string",length=255)
 	 */
 	private $fizmodok;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="szallitasimod",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="szallitasimod",cascade={"persist"}) */
 	private $bizonylatfejek;
-	/** @Column(type="integer") */
+	/** @ORM\Column(type="integer") */
 	private $sorrend=0;
 
 	public function __construct() {

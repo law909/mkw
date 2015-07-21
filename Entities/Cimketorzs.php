@@ -1,41 +1,42 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
 
 /**
- * @Entity
- * @Table(name="cimketorzs",indexes={
- *		@index(name="cimketorzsslug_idx",columns={"slug"})
+ * @ORM\Entity
+ * @ORM\Table(name="cimketorzs",indexes={
+ *		@ORM\index(name="cimketorzsslug_idx",columns={"slug"})
  * })
- * @InheritanceType("SINGLE_TABLE")
- * @DiscriminatorColumn(name="osztaly", type="string", length=30)
- * @DiscriminatorMap({"partner"="Partnercimketorzs", "termek"="Termekcimketorzs"})
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="osztaly", type="string", length=30)
+ * @ORM\DiscriminatorMap({"partner"="Partnercimketorzs", "termek"="Termekcimketorzs"})
  */
 
-class Cimketorzs {
+abstract class Cimketorzs {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $menu1lathato=true;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $menu2lathato=false;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $menu3lathato=false;
-	/** @Column(type="boolean") */
+	/** @ORM\Column(type="boolean") */
 	private $menu4lathato=false;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $leiras;
-	/** @Column(type="string",length=255,nullable=true) */
+	/** @ORM\Column(type="string",length=255,nullable=true) */
 	private $oldalcim;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $kepurl;
-	/** @Column(type="text",nullable=true) */
+	/** @ORM\Column(type="text",nullable=true) */
 	private $kepleiras;
-	/** @Column(type="integer",nullable=true) */
+	/** @ORM\Column(type="integer",nullable=true) */
 	private $sorrend;
 
 	public function getId() {

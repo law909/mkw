@@ -1,17 +1,19 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity
- * @Table(name="keszletjelolo")
+ * @ORM\Entity
+ * @ORM\Table(name="keszletjelolo")
  */
 class KeszletJelolo {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** @Column(type="string",length=255,nullable=false) */
+	/** @ORM\Column(type="string",length=255,nullable=false) */
 	private $nev;
 
 	public function getId() {

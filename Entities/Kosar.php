@@ -2,68 +2,71 @@
 
 namespace Entities;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\KosarRepository")
- * @Table(name="kosar")
+ * @ORM\Entity(repositoryClass="Entities\KosarRepository")
+ * @ORM\Table(name="kosar")
  */
 class Kosar {
 
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 
 	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @Column(type="datetime",nullable=true)
+	 * @Gedmo\Timestampable(on="create")
+	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $created;
 
 	/**
-	 * @gedmo:Timestampable(on="create")
-	 * @gedmo:Timestampable(on="update")
-	 * @Column(type="datetime",nullable=true)
+	 * @Gedmo\Timestampable(on="create")
+	 * @Gedmo\Timestampable(on="update")
+	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $lastmod;
 
-	/** @Column(type="string",length=255,nullable=true) */
+	/** @ORM\Column(type="string",length=255,nullable=true) */
 	private $sessionid;
 
 	/**
-	 * @ManyToOne(targetEntity="Partner",inversedBy="kosarak")
-	 * @JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+	 * @ORM\ManyToOne(targetEntity="Partner",inversedBy="kosarak")
+	 * @ORM\JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="restrict")
 	 */
 	private $partner;
 
 	/**
-	 * @ManyToOne(targetEntity="Termek",inversedBy="kosarak")
-	 * @JoinColumn(name="termek_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+	 * @ORM\ManyToOne(targetEntity="Termek",inversedBy="kosarak")
+	 * @ORM\JoinColumn(name="termek_id", referencedColumnName="id",nullable=true,onDelete="restrict")
 	 */
 	private $termek;
 
 	/**
-	 * @ManyToOne(targetEntity="TermekValtozat",inversedBy="kosarak")
-	 * @JoinColumn(name="termekvaltozat_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+	 * @ORM\ManyToOne(targetEntity="TermekValtozat",inversedBy="kosarak")
+	 * @ORM\JoinColumn(name="termekvaltozat_id", referencedColumnName="id",nullable=true,onDelete="restrict")
 	 */
 	private $termekvaltozat;
 
-	/** @Column(type="decimal",precision=14,scale=2,nullable=true) */
+	/** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
 	private $mennyiseg = 0;
 
 	/**
-	 * @ManyToOne(targetEntity="Valutanem",inversedBy="kosarak")
-	 * @JoinColumn(name="valutanem_id",referencedColumnName="id",onDelete="restrict")
+	 * @ORM\ManyToOne(targetEntity="Valutanem",inversedBy="kosarak")
+	 * @ORM\JoinColumn(name="valutanem_id",referencedColumnName="id",onDelete="restrict")
 	 */
 	private $valutanem;
 
-	/** @Column(type="decimal",precision=14,scale=4,nullable=true) */
+	/** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
 	private $nettoegysar;
 
-	/** @Column(type="decimal",precision=14,scale=4,nullable=true) */
+	/** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
 	private $bruttoegysar;
 
-    /** @Column(type="integer",nullable=true) */
+    /** @ORM\Column(type="integer",nullable=true) */
 	private $sorrend = 0;
 
 	public function toLista() {

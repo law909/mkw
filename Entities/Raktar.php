@@ -1,21 +1,23 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\RaktarRepository")
- * @Table(name="raktar")
+ * @ORM\Entity(repositoryClass="Entities\RaktarRepository")
+ * @ORM\Table(name="raktar")
  */
 class Raktar {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** @Column(type="string",length=50) */
+	/** @ORM\Column(type="string",length=50) */
 	private $nev;
-	/** @Column(type="boolean",nullable=false) */
+	/** @ORM\Column(type="boolean",nullable=false) */
 	private $mozgat;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="raktar",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="raktar",cascade={"persist"}) */
 	private $bizonylatfejek;
 
 	public function getId() {

@@ -1,33 +1,34 @@
 <?php
-
 namespace Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\BizonylatstatuszRepository")
- * @Table(name="bizonylatstatusz")
+ * @ORM\Entity(repositoryClass="Entities\BizonylatstatuszRepository")
+ * @ORM\Table(name="bizonylatstatusz")
  */
 class Bizonylatstatusz {
 
     /**
-     * @Id @Column(type="integer")
-     * @GeneratedValue(strategy="AUTO")
+     * @ORM\Id @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @Column(type="string",length=255)
+     * @ORM\Column(type="string",length=255)
      */
     private $nev;
 
-    /** @Column(type="integer"),nullable=true) */
+    /** @ORM\Column(type="integer"),nullable=true) */
     private $sorrend;
 
     /**
-     * @ManyToOne(targetEntity="Emailtemplate",inversedBy="bizonylatstatuszok")
-     * @JoinColumn(name="emailtemplate_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @ORM\ManyToOne(targetEntity="Emailtemplate",inversedBy="bizonylatstatuszok")
+     * @ORM\JoinColumn(name="emailtemplate_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $emailtemplate;
-	/** @OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylatstatusz",cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylatstatusz",cascade={"persist"}) */
 	private $bizonylatfejek;
 
 	public function __construct() {

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-php doctrine.php orm:generate-proxies
+php vendor/bin/doctrine orm:generate-proxies

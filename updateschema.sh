@@ -1,3 +1,3 @@
 #!/bin/bash
 
-php doctrine.php orm:schema-tool:update --force
+php vendor/bin/doctrine orm:schema-tool:update --force

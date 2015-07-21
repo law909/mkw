@@ -1,19 +1,22 @@
 <?php
 namespace Entities;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @Entity(repositoryClass="Entities\?Howto?Repository")
- * @Table(name="?howto?")
+ * @ORM\Entity(repositoryClass="Entities\?Howto?Repository")
+ * @ORM\Table(name="?howto?")
  */
 class ?Howto? {
 	/**
-	 * @Id @Column(type="integer")
-	 * @GeneratedValue(strategy="AUTO")
+	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 	/**
-	 * @gedmo:Sluggable
-	 * @Column(type="string",length=255)
+	 * @ORM\Gedmo\Slug
+	 * @ORM\Column(type="string",length=255)
 	 */
 	private $nev;
 
