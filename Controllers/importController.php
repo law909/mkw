@@ -1308,6 +1308,57 @@ class importController extends \mkwhelpers\Controller {
         \unlink('szatalakit.csv');
     }
 
+    public function szInvarPartnerImport() {
+        $sep = ';';
+        $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+        $dbig = $this->params->getIntRequestParam('dbig', 0);
+        move_uploaded_file($_FILES['toimport']['tmp_name'], 'szinvarpartner.csv');
+        $fh = fopen('szinvarpartner.csv', 'r');
+        if ($fh) {
+            $termekdb = 0;
+            while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
+                $termekdb++;
+            }
+            while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
+                $termekdb++;
+                $me = new \Entities\Partner();
+                $me->setVendeg(false);
+                if ($data[$this->n('b')] != 'NULL') {
+                    $me->setNev($data[$this->n('b')]);
+                }
+                if ($data[$this->n('c')] != 'NULL') {
+                    $me->setIrszam($data[$this->n('c')]);
+                }
+                if ($data[$this->n('d')] != 'NULL') {
+                    $me->setVaros($data[$this->n('d')]);
+                }
+                if ($data[$this->n('e')] != 'NULL') {
+                    $me->setUtca($data[$this->n['e']]);
+                }
+                if ($data[$this->n('f')] != 'NULL') {
+                    $me->setHonlap($data[$this->n('f')]);
+                }
+                if ($data[$this->n('g')] != 'NULL') {
+                    $me->setEmail($data[$this->n('g')]);
+                }
+                $tel = '';
+                if ($data[$this->n('i')] != 'NULL') {
+                    $tel = $data[$this->n('i')];
+                }
+                if ($data[$this->n('j')] != 'NULL') {
+                    $tel .= $data[$this->n('j')];
+                }
+                if ($tel) {
+                    $me->setTelefon($tel);
+                }
+                store::getEm()->persist($me);
+                store::getEm()->flush();
+            }
+        }
+        fclose($fh);
+        \unlink('szatalakit.csv');
+    }
+
     public function szimport() {
 //        $translaterepo = store::getEm()->getRepository('Gedmo\Translatable\Entity\Translation');
 

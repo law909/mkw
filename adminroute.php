@@ -262,7 +262,8 @@ $router->map('POST','/admin/import/tutisport', 'importController#tutisportImport
 $router->map('POST','/admin/import/makszutov', 'importController#makszutovImport', 'adminmakszutovimport');
 $router->map('POST','/admin/import/vatera', 'importController#vateraImport', 'adminvateraimport');
 //$router->map('POST','/admin/import/szatalakit', 'importController#szAtalakit', 'adminszatalakit');
-$router->map('POST','/admin/import/szinvarimport', 'importController#szInvarImport', 'adminszinvarimport');
+//$router->map('POST','/admin/import/szinvarimport', 'importController#szInvarImport', 'adminszinvarimport');
+$router->map('POST','/admin/import/szpartnerimport', 'importController#szInvarPartnerImport', 'adminszinvarpartnerimport');
 $router->map('POST','/admin/import/szimport', 'importController#szImport', 'adminszimport');
 
 $router->map('GET', '/admin/login/show', 'dolgozoController#showlogin', 'adminshowlogin');
