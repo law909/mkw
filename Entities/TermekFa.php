@@ -12,6 +12,7 @@ use mkw\store;
  *      @ORM\index(name="termekfanevparent_idx",columns={"nev","parent_id"}),
  *      @ORM\index(name="termekfaidegenkod_idx",columns={"idegenkod"})
  * })
+ * @Gedmo\TranslationEntity(class="Entities\TermekFaTranslation")
  */
 class TermekFa {
 
@@ -76,7 +77,6 @@ class TermekFa {
 	/** @ORM\Column(type="boolean",nullable=true) */
 	private $menu4lathato=false;
 	/**
-     * @Gedmo\Translatable
      * @ORM\Column(type="string",length=255,nullable=true)
      */
 	private $oldalcim;
@@ -476,5 +476,20 @@ class TermekFa {
 
     public function setTranslatableLocale($l) {
         $this->locale = $l;
+    }
+
+    public function getTranslations() {
+        return $this->translations;
+    }
+
+    public function addTranslation(TermekFaTranslation $t) {
+        if (!$this->translations->contains($t)) {
+            $this->translations[] = $t;
+            $t->setObject($this);
+        }
+    }
+
+    public function removeTranslation(TermekFaTranslation $t) {
+        $this->translations->removeElement($t);
     }
 }

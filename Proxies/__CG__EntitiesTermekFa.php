@@ -859,4 +859,37 @@ class TermekFa extends \Entities\TermekFa implements \Doctrine\ORM\Proxy\Proxy
         return parent::setTranslatableLocale($l);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getTranslations()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslations', array());
+
+        return parent::getTranslations();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addTranslation(\Entities\TermekFaTranslation $t)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTranslation', array($t));
+
+        return parent::addTranslation($t);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeTranslation(\Entities\TermekFaTranslation $t)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTranslation', array($t));
+
+        return parent::removeTranslation($t);
+    }
+
 }
