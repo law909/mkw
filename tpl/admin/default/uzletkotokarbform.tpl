@@ -3,16 +3,11 @@
 	<h4>{$uzletkoto.nev}</h4>
 </div>
 <form id="mattkarb-form" method="post" action="/admin/uzletkoto/save">
-	<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
-		{if ($setup.editstyle=='tab')}
+	<div id="mattkarb-tabs">
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
 			<li><a href="#ElerhetosegTab">{t('Elérhetőségek')}</a></li>
 		</ul>
-		{/if}
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Általános adatok')}" data-refcontrol="#AltalanosTab"></div>
-		{/if}
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>
@@ -29,9 +24,6 @@
 			</tr>
 			</tbody></table>
 		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Elérhetőségek')}" data-refcontrol="#ElerhetosegTab"></div>
-		{/if}
 		<div id="ElerhetosegTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>

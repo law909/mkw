@@ -2,15 +2,10 @@
 	<h3>{t('Dolgozó')}</h3>
 </div>
 <form id="mattkarb-form" method="post" action="{$formaction}">
-	<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
-		{if ($setup.editstyle=='tab')}
+	<div id="mattkarb-tabs">
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
 		</ul>
-		{/if}
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Általános adatok')}" data-refcontrol="#AltalanosTab"></div>
-		{/if}
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>

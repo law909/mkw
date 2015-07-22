@@ -85,20 +85,6 @@
 				{/foreach}
 			</select>
 		</div>
-		<div>
-			<select id="GridEditButtonSelect">
-				{foreach $grideditbuttons as $_geb}
-				<option value="{$_geb}"{if ($setup.grideditbutton==$_geb)} selected="selected"{/if}>{$_geb}</option>
-				{/foreach}
-			</select>
-		</div>
-		<div>
-			<select id="EditStyleSelect">
-				{foreach $editstyles as $_es}
-				<option value="{$_es}"{if ($setup.editstyle==$_es)} selected="selected"{/if}>{$_es}</option>
-				{/foreach}
-			</select>
-		</div>
 		<div><a class="menupont" href="/admin/">{t('Főoldal')}</a></div>
 	</div>
     {/if}

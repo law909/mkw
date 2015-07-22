@@ -15,8 +15,7 @@
 	<h3>{t('Beállítások')}</h3>
 </div>
 <form id="mattkarb-form" action="/admin/setup/save" method="post">
-	<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
-		{if ($setup.editstyle=='tab')}
+	<div id="mattkarb-tabs">
 		<ul>
 			<li><a href="#DefaTab">{t('Alapértelmezések')}</a></li>
 			<li><a href="#TulajTab">{t('Tulajdonos adatai')}</a></li>
@@ -27,10 +26,6 @@
 			<li><a href="#FeedTab">{t('Feed beállítások')}</a></li>
 			<li><a href="#SitemapTab">{t('Sitemap beállítások')}</a></li>
 		</ul>
-		{/if}
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Alapértelmezések')}" data-refcontrol="#DefaTab"></div>
-		{/if}
 		<div id="DefaTab" class="mattkarb-page" data-visible="visible">
 		<table><tbody>
 			<tr>
@@ -132,9 +127,6 @@
             </tr>
 		</tbody></table>
 		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Tulajdonos adatai')}" data-refcontrol="#TulajTab"></div>
-		{/if}
 		<div id="TulajTab" class="mattkarb-page" data-visible="visible">
 		<table><tbody>
 		<tr>
@@ -155,9 +147,6 @@
 		</tr>
 		</tbody></table>
 		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Web beállítások')}" data-refcontrol="#WebTab"></div>
-		{/if}
 		<div id="WebTab" class="mattkarb-page" data-visible="visible">
         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
             <tr>
@@ -254,9 +243,6 @@
             </tr>
         </tbody></table>
 		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Szállítási költség')}" data-refcontrol="#SzallitasiKtgTab"></div>
-		{/if}
 		<div id="SzallitasiKtgTab" class="mattkarb-page" data-visible="visible">
 		<table><tbody>
             <tr>
@@ -288,9 +274,6 @@
 			</tr>
 		</tbody></table>
 		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Azonosítók, kódok')}" data-refcontrol="#IdTab"></div>
-		{/if}
 		<div id="IdTab" class="mattkarb-page" data-visible="visible">
 		<table><tbody>
             <tr><td><label>{t('Google analytics kód')}:</label></td><td><input name="gafollow" type="text" value="{$gafollow}"</td></tr>
@@ -298,9 +281,6 @@
             <tr><td><label>{t('Árukereső TrustedShop webapi key')}:</label></td><td><input name="aktrustedshopapikey" type="text" value="{$aktrustedshopapikey}"</td></tr>
         </tbody></table>
         </div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Email')}" data-refcontrol="#EmailTab"></div>
-		{/if}
 		<div id="EmailTab" class="mattkarb-page" data-visible="visible">
 		<table><tbody>
             <tr><td><label>{t('Email feladója')}:</label></td><td><input name="emailfrom" type="text" value="{$emailfrom}"</td></tr>
@@ -308,9 +288,6 @@
             <tr><td><label>{t('Bcc')}:</label></td><td><input name="emailbcc" type="text" value="{$emailbcc}"</td></tr>
         </tbody></table>
         </div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Feed beállítások')}" data-refcontrol="#FeedTab"></div>
-		{/if}
 		<div id="FeedTab" class="mattkarb-page" data-visible="visible">
 		<table><tbody>
 			<tr><td><label>{t('Hírek száma a feed-ben')}:</label></td><td><input name="feedhirdb" type="number" value="{$feedhirdb}"></td>
@@ -321,9 +298,6 @@
 			<tr><td><label>{t('Termék feed leírása')}:</label></td><td colspan="3"><input name="feedtermekdescription" type="text" value="{$feedtermekdescription}"></td></tr>
 		</tbody></table>
 		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Sitemap beállítások')}" data-refcontrol="#SitemapTab"></div>
-		{/if}
 		<div id="SitemapTab" class="mattkarb-page" data-visible="visible">
 		<table><tbody>
 			<tr><td><label>{t('Statikus lap prioritás')}:</label></td><td><input name="statlapprior" type="text" value="{$statlapprior}"></td>

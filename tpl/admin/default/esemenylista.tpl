@@ -35,9 +35,6 @@
 	<th>{t('Esemény')}</th>
 	<th>{t('Partner')}</th>
 	<th>{t('Esedékes')}</th>
-	{if ($setup.grideditbutton=='big')}
-	<th></th>
-	{/if}
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>

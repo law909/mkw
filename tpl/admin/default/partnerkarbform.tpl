@@ -3,18 +3,13 @@
 	<h4>{$partner.nev}</h4>
 </div>
 <form id="mattkarb-form" method="post" action="/admin/partner/save">
-	<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
-		{if ($setup.editstyle=='tab')}
+	<div id="mattkarb-tabs">
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
 			<li><a href="#ElerhetosegTab">{t('Elérhetőségek')}</a></li>
 			<li><a href="#BankTab">{t('Banki adatok')}</a></li>
 			<li><a href="#EgyebAzonositoTab">{t('Egyéb azonosító adatok')}</a></li>
 		</ul>
-		{/if}
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Általános adatok')}" data-refcontrol="#AltalanosTab"></div>
-		{/if}
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>
@@ -98,9 +93,6 @@
 				{/foreach}
 				</div>
 		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Elérhetőségek')}" data-refcontrol="#ElerhetosegTab"></div>
-		{/if}
 		<div id="ElerhetosegTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>
@@ -139,9 +131,6 @@
 			</tr>
 			</tbody></table>
 		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Banki adatok')}" data-refcontrol="#BankTab"></div>
-		{/if}
 		<div id="BankTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>
@@ -162,9 +151,6 @@
 			</tr>
 			</tbody></table>
 		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Egyéb azonosító adatok')}" data-refcontrol="#EgyebAzonositoTab"></div>
-		{/if}
 		<div id="EgyebAzonositoTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>

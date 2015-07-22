@@ -49,9 +49,6 @@
 	<th>{t('Név')}</th>
 	<th>{t('Címkecsoport')}</th>
 	<th>{t('Hol látható')}</th>
-	{if ($setup.grideditbutton=='big')}
-	<th></th>
-	{/if}
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>

@@ -33,9 +33,6 @@
 	<th>{t('Cím')}</th>
 	<th>{t('Sorrend')}</th>
 	<th>{t('Jelzők')}</th>
-	{if ($setup.grideditbutton=='big')}
-	<th></th>
-	{/if}
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>

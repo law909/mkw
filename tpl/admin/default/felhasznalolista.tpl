@@ -31,9 +31,6 @@
 	<th><input id="maincheckbox" type="checkbox"></th>
 	<th>{t('Név')}</th>
 	<th>{t('Felhasználónév')}</th>
-	{if ($setup.grideditbutton=='big')}
-	<th></th>
-	{/if}
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>

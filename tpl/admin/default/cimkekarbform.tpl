@@ -3,16 +3,11 @@
 	<h4>{$cimke.nev}</h4>
 </div>
 <form id="mattkarb-form" method="post" action="{$formaction}" data-id="{$cimke.id}">
-	<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
-		{if ($setup.editstyle=='tab')}
+	<div id="mattkarb-tabs">
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
 			<li><a href="#WebTab">{t('Webes adatok')}</a></li>
 		</ul>
-		{/if}
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Általános adatok')}" data-refcontrol="#AltalanosTab"></div>
-		{/if}
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>
@@ -39,9 +34,6 @@
 			</tr>
 			</tbody></table>
 		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Webes adatok')}" data-refcontrol="#WebTab"></div>
-		{/if}
 		<div id="WebTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
 			<input id="Menu1LathatoCheck" name="menu1lathato" type="checkbox"{if ($cimke.menu1lathato)}checked="checked"{/if}>{t('Menü 1')}</input>
 			<input id="Menu2LathatoCheck" name="menu2lathato" type="checkbox"{if ($cimke.menu2lathato)}checked="checked"{/if}>{t('Menü 2')}</input>

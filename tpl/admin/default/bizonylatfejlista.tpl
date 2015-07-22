@@ -104,9 +104,6 @@
 	<th></th>
 	<th></th>
 	<th></th>
-	{if ($setup.grideditbutton=='big')}
-	<th></th>
-	{/if}
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>

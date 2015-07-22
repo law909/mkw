@@ -14,9 +14,6 @@
 <thead>
 	<tr>
 	<th>{t('Név')}</th>
-	{if ($setup.grideditbutton=='big')}
-	<th></th>
-	{/if}
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>

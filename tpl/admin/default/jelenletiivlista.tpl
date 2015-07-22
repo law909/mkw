@@ -71,9 +71,6 @@
 	<th>{t('Dolgozó')}</th>
 	<th>{t('Dátum')}</th>
 	<th>{t('Jelenlét')}</th>
-	{if ($setup.grideditbutton=='big')}
-	<th></th>
-	{/if}
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>

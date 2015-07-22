@@ -2,16 +2,11 @@
 	<h3>{$fa.nev}</h3>
 </div>
 <form id="fakarb-form" method="post" action="/admin/termekfa/save" data-id="{$fa.id}">
-	<div{if ($setup.editstyle=='tab')} id="fakarb-tabs"{/if}>
-		{if ($setup.editstyle=='tab')}
+	<div id="fakarb-tabs">
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
 			<li><a href="#WebTab">{t('Webes adatok')}</a></li>
 		</ul>
-		{/if}
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Általános adatok')}" data-refcontrol="#AltalanosTab"></div>
-		{/if}
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>
@@ -26,9 +21,6 @@
 			</tbody></table>
 			{include 'termekfaimagekarb.tpl'}
 		</div>
-		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Webes adatok')}" data-refcontrol="#WebTab"></div>
-		{/if}
 		<div id="WebTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
 			<input id="InaktivCheck" name="inaktiv" type="checkbox"{if ($fa.inaktiv)}checked="checked"{/if}>{t('Inaktív')}</input>
 			<input id="Menu1LathatoCheck" name="menu1lathato" type="checkbox"{if ($fa.menu1lathato)}checked="checked"{/if}>{t('Főmenü')}</input>
