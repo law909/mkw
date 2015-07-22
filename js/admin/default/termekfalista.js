@@ -94,6 +94,57 @@ $(document).ready(function(){
 							finder.popup();
 						});
 						$('#KepDelButton,#KepBrowseButton').button();
+                        $('#TranslationTab').on('click', '.js-translationnewbutton', function(e) {
+                            var $this = $(this);
+                            e.preventDefault();
+                            $.ajax({
+                                url: '/admin/termekfatranslation/getemptyrow',
+                                type: 'GET',
+                                success: function(data) {
+                                    var tbody = $('#TranslationTab');
+                                    tbody.append(data);
+                                    $('.js-translationnewbutton,.js-translationdelbutton').button();
+                                    $this.remove();
+                                }
+                            });
+                        })
+                                .on('click', '.js-translationdelbutton', function(e) {
+                                    e.preventDefault();
+                                    var translationgomb = $(this),
+                                            translationid = translationgomb.attr('data-id'),
+                                            faid = translationgomb.attr('data-faid');
+                                    if (translationgomb.attr('data-source') === 'client') {
+                                        $('#translationtable_' + translationid).remove();
+                                    }
+                                    else {
+                                        dialogcenter.html('Biztos, hogy törli a fordítást?').dialog({
+                                            resizable: false,
+                                            height: 140,
+                                            modal: true,
+                                            buttons: {
+                                                'Igen': function() {
+                                                    $.ajax({
+                                                        url: '/admin/termekfatranslation/save',
+                                                        type: 'POST',
+                                                        data: {
+                                                            id: translationid,
+                                                            faid: faid,
+                                                            oper: 'del'
+                                                        },
+                                                        success: function(data) {
+                                                            $('#translationtable_' + data).remove();
+                                                        }
+                                                    });
+                                                    $(this).dialog('close');
+                                                },
+                                                'Nem': function() {
+                                                    $(this).dialog('close');
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                        $('.js-translationnewbutton,.js-translationdelbutton').button();
 						if (!$.browser.mobile) {
 							$('.js-toflyout').flyout();
 						}

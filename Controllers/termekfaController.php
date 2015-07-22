@@ -43,6 +43,13 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$x['parentnev'] = $t->getParentNev();
         $x['inaktiv'] = $t->getInaktiv();
         $x['idegenkod'] = $t->getIdegenkod();
+        if (\mkw\Store::getSetupValue('multilang')) {
+            $translationsCtrl = new termekfatranslationController($this->params);
+            foreach($t->getTranslations() as $tr) {
+                $translations[] = $translationsCtrl->loadVars($tr);
+            }
+            $x['translations'] = $translations;
+        }
 		return $x;
 	}
 
@@ -65,6 +72,29 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$obj->setKepleiras($this->params->getStringRequestParam('kepleiras'));
 		$obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
+        if (store::getSetupValue('multilang')) {
+            $translationids = $this->params->getArrayRequestParam('translationid');
+            foreach ($translationids as $translationid) {
+				$oper = $this->params->getStringRequestParam('translationoper_' . $translationid);
+				if ($oper == 'add') {
+					$translation = new \Entities\TermekFaTranslation();
+                    $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
+                    $translation->setField('nev');
+                    $translation->setContent($this->params->getStringRequestParam('translationnev_' . $translationid));
+					$obj->addTranslation($translation);
+					$this->getEm()->persist($translation);
+				}
+				elseif ($oper == 'edit') {
+					$translation = $this->getEm()->getRepository('Entities\TermekFaTranslation')->find($translationid);
+					if ($translation) {
+                        $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
+                        $translation->setField('nev');
+                        $translation->setContent($this->params->getStringRequestParam('translationnev_' . $translationid));
+						$this->getEm()->persist($translation);
+					}
+				}
+            }
+        }
 		$parent = $this->getRepo()->find($this->params->getIntRequestParam('parentid'));
 		if ($parent) {
 			$obj->setParent($parent);

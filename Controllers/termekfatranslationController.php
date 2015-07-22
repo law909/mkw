@@ -33,7 +33,7 @@ class termekfatranslationController extends \mkwhelpers\MattableController {
     }
 
     public function getemptyrow() {
-        $view = $this->createView('termektermekfatranslationkarb.tpl');
+        $view = $this->createView('termekfatranslationkarb.tpl');
         $view->setVar('translation', $this->loadVars(null, true));
         $view->setVar('locale', '');
         echo $view->getTemplateResult();

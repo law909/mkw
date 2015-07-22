@@ -5,6 +5,7 @@
 	<div id="fakarb-tabs">
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
+            {if ($setup.multilang)}<li><a href="#TranslationTab">{t('Idegennyelvi adatok')}</a></li>{/if}
 			<li><a href="#WebTab">{t('Webes adatok')}</a></li>
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
@@ -21,6 +22,14 @@
 			</tbody></table>
 			{include 'termekfaimagekarb.tpl'}
 		</div>
+		{if ($setup.multilang)}
+		<div id="TranslationTab" class="mattkarb-page" data-visible="visible">
+			{foreach $fa.translations as $translation}
+			{include 'termekfatranslationkarb.tpl'}
+			{/foreach}
+			<a class="js-translationnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+		</div>
+		{/if}
 		<div id="WebTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
 			<input id="InaktivCheck" name="inaktiv" type="checkbox"{if ($fa.inaktiv)}checked="checked"{/if}>{t('Inaktív')}</input>
 			<input id="Menu1LathatoCheck" name="menu1lathato" type="checkbox"{if ($fa.menu1lathato)}checked="checked"{/if}>{t('Főmenü')}</input>
