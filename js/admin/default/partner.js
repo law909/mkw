@@ -150,6 +150,16 @@ $(document).ready(function(){
 			},
 			karb:partner
 		});
+        $('#cimkefiltercontainer').mattaccord({
+            header: '#cimkefiltercontainerhead',
+            page: '.accordpage',
+            closeUp: '.js-cimkefiltercloseupbutton',
+            collapse: '#cimkefiltercollapse'
+        });
+        $('.js-cimkefilter').on('click', function(e) {
+            e.preventDefault();
+            $(this).toggleClass('ui-state-hover');
+        });
 		$('.js-maincheckbox').change(function(){
 			$('.js-egyedcheckbox').prop('checked',$(this).prop('checked'));
 		});

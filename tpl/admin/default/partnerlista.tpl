@@ -12,24 +12,28 @@
 <div id="mattable-select" data-theme="{$theme}">
 <div id="mattable-header" data-title="{t('Frissítés')}" data-caption="{t('Partnerek')}"></div>
 <div id="mattable-filterwrapper">
+	<div class="matt-hseparator"></div>
 	<div>
-	<label for="nevfilter">Név:</label>
-	<input id="nevfilter" name="nevfilter" type="text" maxlength="255">
-	<label for="emailfilter">Email:</label>
-	<input id="emailfilter" name="emailfilter" type="text" maxlength="255">
+        <label for="nevfilter">Név:</label>
+        <input id="nevfilter" name="nevfilter" type="text" maxlength="255">
+        <label for="emailfilter">Email:</label>
+        <input id="emailfilter" name="emailfilter" type="text" maxlength="255">
 	</div>
+	<div class="matt-hseparator"></div>
     <div>
         <label for="szallitasiirszamfilter">Szállítási cím:</label>
         <input id="szallitasiirszamfilter" name="szallitasiirszamfilter" type="text" size="8">
         <input id="szallitasivarosfilter" name="szallitasivarosfilter" type="text">
         <input id="szallitasiutcafilter" name="szallitasiutcafilter" type="text">
     </div>
+	<div class="matt-hseparator"></div>
     <div>
         <label for="szamlazasiirszamfilter">Számlázási cím:</label>
         <input id="szamlazasiirszamfilter" name="szamlazasiirszamfilter" type="text" size="8">
         <input id="szamlazasivarosfilter" name="szamlazasivarosfilter" type="text">
         <input id="szamlazasiutcafilter" name="szamlazasiutcafilter" type="text">
     </div>
+	<div class="matt-hseparator"></div>
     <div>
         <label for="beszallitofilter">Beszállító:</label>
         <select id="beszallitofilter" name="beszallitofilter">

@@ -49,6 +49,7 @@ $(document).ready(function(){
 				f=$this.closest('tr');
 			$.ajax({
 				url:'/admin/partnercimke/setmenulathato',
+                type: 'POST',
 				data:{
 					id:f.attr('data-cimkeid'),
 					num:$this.attr('data-num'),

@@ -78,6 +78,21 @@ class importController extends \mkwhelpers\Controller {
         return $res[0];
     }
 
+    private function createPartnerCimke($ckat, $nev) {
+        if (!$nev) {
+            return null;
+        }
+        $cimke1 = store::getEm()->getRepository('Entities\Partnercimketorzs')->getByNevAndKategoria($nev, $ckat);
+        if (!$cimke1) {
+            $cimke1 = new \Entities\Partnercimketorzs();
+            $cimke1->setKategoria($ckat);
+            $cimke1->setNev($nev);
+            $cimke1->getMenu1lathato(false);
+            store::getEm()->persist($cimke1);
+        }
+        return $cimke1;
+    }
+
     public function kreativpuzzleImport() {
         $sep = ';';
 
@@ -1315,6 +1330,14 @@ class importController extends \mkwhelpers\Controller {
         move_uploaded_file($_FILES['toimport']['tmp_name'], 'szinvarpartner.csv');
         $fh = fopen('szinvarpartner.csv', 'r');
         if ($fh) {
+            $tipuskat = store::getEm()->getRepository('Entities\Partnercimkekat')->findOneBynev('Típus');
+            if (!$tipuskat) {
+                $tipuskat = new \Entities\Partnercimkekat();
+                $tipuskat->setLathato(true);
+                $tipuskat->setNev('Típus');
+                store::getEm()->persist($tipuskat);
+                store::getEm()->flush();
+            }
             $termekdb = 0;
             while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                 $termekdb++;
@@ -1351,12 +1374,18 @@ class importController extends \mkwhelpers\Controller {
                 if ($tel) {
                     $me->setTelefon($tel);
                 }
+                if ($data[$this->n('h')] != 'NULL') {
+                    $marka = $this->createPartnerCimke($tipuskat, $data[$this->n('h')]);
+                    if ($marka) {
+                        $me->addCimke($marka);
+                    }
+                }
                 store::getEm()->persist($me);
                 store::getEm()->flush();
             }
         }
         fclose($fh);
-        \unlink('szatalakit.csv');
+        \unlink('szinvarpartner.csv');
     }
 
     public function szimport() {
