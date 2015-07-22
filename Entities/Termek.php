@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * 		@ORM\index(name="termekidegencikkszamgyarto_idx",columns={"idegencikkszam","gyarto_id"}),
  *      @ORM\index(name="termekidegenkod_idx",columns={"idegenkod"})
  * })
+ * @Gedmo\TranslationEntity(class="Entities\TermekTranslation")
  * @ORM\HasLifecycleCallbacks
  */
 class Termek {
@@ -88,19 +89,16 @@ class Termek {
     private $vonalkod = '';
 
     /**
-     * @Gedmo\Translatable
      * @ORM\Column(type="text",nullable=true)
      */
     private $leiras = '';
 
     /**
-     * @Gedmo\Translatable
      * @ORM\Column(type="string",length=255,nullable=true)
      */
     private $rovidleiras = '';
 
     /**
-     * @Gedmo\Translatable
      * @ORM\Column(type="string",length=255,nullable=true)
      */
     private $oldalcim = '';
@@ -263,13 +261,14 @@ class Termek {
     /** @ORM\Column(type="text",nullable=true) */
     private $regikepurl = '';
 
-    /** @ORM\OneToMany(targetEntity="TermekAr", mappedBy="termek", cascade={"persist"}) */
+    /** @ORM\OneToMany(targetEntity="TermekAr", mappedBy="termek", cascade={"persist", "remove"}) */
     private $termekarak;
 
-    /**
-     * @Gedmo\Locale
-     */
-    private $locale;
+    /** @ORM\OneToMany(targetEntity="TermekTranslation", mappedBy="object", cascade={"persist", "remove"}) */
+    private $translations;
+
+    /** @Gedmo\Locale */
+    protected $locale;
 
     /**
      * @ORM\PrePersist
@@ -307,6 +306,7 @@ class Termek {
         $this->altermekkapcsolodok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekertesitok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekarak = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getUjTermek($min) {
@@ -1489,8 +1489,26 @@ class Termek {
         return false;
     }
 
-    public function setTranslatableLocale($l) {
-        $this->locale = $l;
+    public function getTranslations() {
+        return $this->translations;
     }
 
+    public function addTranslation(TermekTranslation $t) {
+        if (!$this->translations->contains($t)) {
+            $this->translations[] = $t;
+            $t->setObject($this);
+        }
+    }
+
+    public function removeTranslation(TermekTranslation $t) {
+        $this->translations->removeElement($t);
+    }
+
+    public function getLocale() {
+        return $this->locale;
+    }
+
+    public function setLocale($locale) {
+        $this->locale = $locale;
+    }
 }

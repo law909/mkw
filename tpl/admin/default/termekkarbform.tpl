@@ -124,7 +124,7 @@
 		{/if}
 		{if ($setup.multilang)}
 		<div id="TranslationTab" class="mattkarb-page" data-visible="visible">
-			{foreach $termek.translations as $locale => $translation}
+			{foreach $termek.translations as $translation}
 			{include 'termektermektranslationkarb.tpl'}
 			{/foreach}
 			<a class="js-translationnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>

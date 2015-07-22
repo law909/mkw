@@ -25,12 +25,14 @@ class termekController extends \mkwhelpers\MattableController {
 		$receptCtrl = new termekreceptController($this->params);
 		$valtozatCtrl = new termekvaltozatController($this->params);
 		$kapcsolodoCtrl = new termekkapcsolodoController($this->params);
+        $translationsCtrl = new termektranslationController($this->params);
 		$ar = array();
 		$kep = array();
 		$recept = array();
 		$valtozat = array();
 		$lvaltozat = array();
 		$kapcsolodo = array();
+        $translations = array();
 		$x = array();
 		if (!$t) {
 			$t = new \Entities\Termek();
@@ -107,8 +109,10 @@ class termekController extends \mkwhelpers\MattableController {
                 $x['arak'] = $ar;
             }
             if (\mkw\Store::getSetupValue('multilang')) {
-                $translaterepo = store::getEm()->getRepository('Gedmo\Translatable\Entity\Translation');
-                $x['translations'] = $translaterepo->findTranslations($t);
+                foreach($t->getTranslations() as $tr) {
+                    $translations[] = $translationsCtrl->loadVars($tr);
+                }
+                $x['translations'] = $translations;
             }
 		}
 		$x['termekfa1nev'] = $t->getTermekfa1Nev();
@@ -287,6 +291,30 @@ class termekController extends \mkwhelpers\MattableController {
 				}
             }
         }
+        if (store::getSetupValue('multilang')) {
+            $translationids = $this->params->getArrayRequestParam('translationid');
+            foreach ($translationids as $translationid) {
+				$oper = $this->params->getStringRequestParam('translationoper_' . $translationid);
+				if ($oper == 'add') {
+					$translation = new \Entities\TermekTranslation(
+                        $this->params->getStringRequestParam('translationlocale_' . $translationid),
+                        'nev',
+                        $this->params->getStringRequestParam('translationnev_' . $translationid)
+                    );
+					$obj->addTranslation($translation);
+					$this->getEm()->persist($translation);
+				}
+				elseif ($oper == 'edit') {
+					$translation = $this->getEm()->getRepository('Entities\TermekTranslation')->find($translationid);
+					if ($translation) {
+                        $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
+                        $translation->setField('nev');
+                        $translation->setContent($this->params->getStringRequestParam('translationnev_' . $translationid));
+						$this->getEm()->persist($translation);
+					}
+				}
+            }
+        }
         if (store::getSetupValue('kapcsolodotermekek')) {
             $kapcsolodoids = $this->params->getArrayRequestParam('kapcsolodoid');
             foreach ($kapcsolodoids as $kapcsolodoid) {
@@ -456,18 +484,6 @@ class termekController extends \mkwhelpers\MattableController {
 	}
 
     protected function afterSave($o) {
-        if (store::getSetupValue('multilang')) {
-            $translationids = $this->params->getArrayRequestParam('translationid');
-            foreach ($translationids as $translationid) {
-                $o->setNev($this->params->getStringRequestParam('translationnev_' . $translationid));
-                $o->setOldalcim($this->params->getStringRequestParam('translationoldalcim_' . $translationid));
-                $o->setLeiras($this->params->getStringRequestParam('translationleiras_' . $translationid));
-                $o->setRovidleiras($this->params->getStringRequestParam('translationrovidleiras_' . $translationid));
-                $o->setTranslatableLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
-                $this->getEm()->persist($o);
-                $this->getEm()->flush();
-            }
-        }
         if ($this->kaphatolett) {
             $tec = new termekertesitoController($this->params);
             $tec->sendErtesito($o);

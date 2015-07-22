@@ -1477,26 +1477,44 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
 
-//                if ($nev) {
-//                    foreach($nev as $loc => $text) {
-//                        $translaterepo->translate($termek, 'nev', $loc, $text);
-//                    }
-//                }
-//                store::getEm()->persist($termek);
-//                store::getEm()->flush();
-
-                if (is_array($nev)) {
+                if ($nev) {
                     foreach($nev as $loc => $text) {
-                        $termek->setNev($text);
-                        $termek->setTranslatableLocale($loc);
-                        store::getEm()->persist($termek);
-                        store::getEm()->flush();
+                        if ($loc !== store::getTranslationListener()->getDefaultLocale()) {
+                            if (!$ujtermek) {
+                                $translation = store::getEm()->getRepository('Entities\TermekTranslation')->findBy(
+                                    array('object' => $termek->getId(), 'locale' => $loc, 'field' => 'nev'));
+                                if ($translation) {
+                                    $translation = $translation[0];
+                                }
+                            }
+                            if ($ujtermek || !$translation) {
+                                $translation = new \Entities\TermekTranslation('', 'nev', '');
+                                $translation->setObject($termek);
+                            }
+                            $translation->setLocale($loc);
+                            $translation->setContent($text);
+                            store::getEm()->persist($translation);
+                        }
+                        else {
+                            $termek->setNev($text);
+                        }
                     }
                 }
-                else {
-                    store::getEm()->persist($termek);
-                    store::getEm()->flush();
-                }
+                store::getEm()->persist($termek);
+                store::getEm()->flush();
+
+//                if (is_array($nev)) {
+//                    foreach($nev as $loc => $text) {
+//                        $termek->setNev($text);
+//                        $termek->setTranslatableLocale($loc);
+//                        store::getEm()->persist($termek);
+//                        store::getEm()->flush();
+//                    }
+//                }
+//                else {
+//                    store::getEm()->persist($termek);
+//                    store::getEm()->flush();
+//                }
             }
         }
 
