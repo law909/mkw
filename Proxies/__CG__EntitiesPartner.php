@@ -64,10 +64,10 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Partner' . "\0" . 'id', '' . "\0" . 'Entities\\Partner' . "\0" . 'created', '' . "\0" . 'Entities\\Partner' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Partner' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Partner' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Partner' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Partner' . "\0" . 'nev', '' . "\0" . 'Entities\\Partner' . "\0" . 'vezeteknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'keresztnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'adoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'euadoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'mukengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'jovengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'ostermszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'valligszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'fvmszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'cjszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'statszamjel', '' . "\0" . 'Entities\\Partner' . "\0" . 'irszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'varos', '' . "\0" . 'Entities\\Partner' . "\0" . 'utca', '' . "\0" . 'Entities\\Partner' . "\0" . 'lirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'lvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'lutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'telefon', '' . "\0" . 'Entities\\Partner' . "\0" . 'mobil', '' . "\0" . 'Entities\\Partner' . "\0" . 'fax', '' . "\0" . 'Entities\\Partner' . "\0" . 'email', '' . "\0" . 'Entities\\Partner' . "\0" . 'honlap', '' . "\0" . 'Entities\\Partner' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Partner' . "\0" . 'syncid', '' . "\0" . 'Entities\\Partner' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Partner' . "\0" . 'teendok', '' . "\0" . 'Entities\\Partner' . "\0" . 'esemenyek', '' . "\0" . 'Entities\\Partner' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Partner' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizhatido', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'nem', '' . "\0" . 'Entities\\Partner' . "\0" . 'szuletesiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'akcioshirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'ujdonsaghirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'utolsoklikk', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Partner' . "\0" . 'vendeg', '' . "\0" . 'Entities\\Partner' . "\0" . 'ip', '' . "\0" . 'Entities\\Partner' . "\0" . 'referrer', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallito', '' . "\0" . 'Entities\\Partner' . "\0" . 'passwordreminder', '' . "\0" . 'Entities\\Partner' . "\0" . 'oldloginname', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'banknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Partner' . "\0" . 'iban', '' . "\0" . 'Entities\\Partner' . "\0" . 'swift', '' . "\0" . 'Entities\\Partner' . "\0" . 'szamlatipus');
+            return array('__isInitialized__', '' . "\0" . 'Entities\\Partner' . "\0" . 'id', '' . "\0" . 'Entities\\Partner' . "\0" . 'created', '' . "\0" . 'Entities\\Partner' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Partner' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Partner' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Partner' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Partner' . "\0" . 'nev', '' . "\0" . 'Entities\\Partner' . "\0" . 'vezeteknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'keresztnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'adoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'euadoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'mukengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'jovengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'ostermszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'valligszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'fvmszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'cjszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'statszamjel', '' . "\0" . 'Entities\\Partner' . "\0" . 'irszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'varos', '' . "\0" . 'Entities\\Partner' . "\0" . 'utca', '' . "\0" . 'Entities\\Partner' . "\0" . 'lirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'lvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'lutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'telefon', '' . "\0" . 'Entities\\Partner' . "\0" . 'mobil', '' . "\0" . 'Entities\\Partner' . "\0" . 'fax', '' . "\0" . 'Entities\\Partner' . "\0" . 'email', '' . "\0" . 'Entities\\Partner' . "\0" . 'honlap', '' . "\0" . 'Entities\\Partner' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Partner' . "\0" . 'syncid', '' . "\0" . 'Entities\\Partner' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Partner' . "\0" . 'teendok', '' . "\0" . 'Entities\\Partner' . "\0" . 'esemenyek', '' . "\0" . 'Entities\\Partner' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Partner' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizhatido', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'nem', '' . "\0" . 'Entities\\Partner' . "\0" . 'szuletesiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'akcioshirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'ujdonsaghirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'utolsoklikk', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Partner' . "\0" . 'vendeg', '' . "\0" . 'Entities\\Partner' . "\0" . 'ip', '' . "\0" . 'Entities\\Partner' . "\0" . 'referrer', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallito', '' . "\0" . 'Entities\\Partner' . "\0" . 'passwordreminder', '' . "\0" . 'Entities\\Partner' . "\0" . 'oldloginname', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'banknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Partner' . "\0" . 'iban', '' . "\0" . 'Entities\\Partner' . "\0" . 'swift', '' . "\0" . 'Entities\\Partner' . "\0" . 'szamlatipus', '' . "\0" . 'Entities\\Partner' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekarazonosito');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Partner' . "\0" . 'id', '' . "\0" . 'Entities\\Partner' . "\0" . 'created', '' . "\0" . 'Entities\\Partner' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Partner' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Partner' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Partner' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Partner' . "\0" . 'nev', '' . "\0" . 'Entities\\Partner' . "\0" . 'vezeteknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'keresztnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'adoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'euadoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'mukengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'jovengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'ostermszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'valligszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'fvmszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'cjszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'statszamjel', '' . "\0" . 'Entities\\Partner' . "\0" . 'irszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'varos', '' . "\0" . 'Entities\\Partner' . "\0" . 'utca', '' . "\0" . 'Entities\\Partner' . "\0" . 'lirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'lvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'lutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'telefon', '' . "\0" . 'Entities\\Partner' . "\0" . 'mobil', '' . "\0" . 'Entities\\Partner' . "\0" . 'fax', '' . "\0" . 'Entities\\Partner' . "\0" . 'email', '' . "\0" . 'Entities\\Partner' . "\0" . 'honlap', '' . "\0" . 'Entities\\Partner' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Partner' . "\0" . 'syncid', '' . "\0" . 'Entities\\Partner' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Partner' . "\0" . 'teendok', '' . "\0" . 'Entities\\Partner' . "\0" . 'esemenyek', '' . "\0" . 'Entities\\Partner' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Partner' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizhatido', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'nem', '' . "\0" . 'Entities\\Partner' . "\0" . 'szuletesiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'akcioshirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'ujdonsaghirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'utolsoklikk', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Partner' . "\0" . 'vendeg', '' . "\0" . 'Entities\\Partner' . "\0" . 'ip', '' . "\0" . 'Entities\\Partner' . "\0" . 'referrer', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallito', '' . "\0" . 'Entities\\Partner' . "\0" . 'passwordreminder', '' . "\0" . 'Entities\\Partner' . "\0" . 'oldloginname', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'banknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Partner' . "\0" . 'iban', '' . "\0" . 'Entities\\Partner' . "\0" . 'swift', '' . "\0" . 'Entities\\Partner' . "\0" . 'szamlatipus');
+        return array('__isInitialized__', '' . "\0" . 'Entities\\Partner' . "\0" . 'id', '' . "\0" . 'Entities\\Partner' . "\0" . 'created', '' . "\0" . 'Entities\\Partner' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Partner' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Partner' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Partner' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Partner' . "\0" . 'nev', '' . "\0" . 'Entities\\Partner' . "\0" . 'vezeteknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'keresztnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'adoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'euadoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'mukengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'jovengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'ostermszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'valligszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'fvmszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'cjszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'statszamjel', '' . "\0" . 'Entities\\Partner' . "\0" . 'irszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'varos', '' . "\0" . 'Entities\\Partner' . "\0" . 'utca', '' . "\0" . 'Entities\\Partner' . "\0" . 'lirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'lvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'lutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'telefon', '' . "\0" . 'Entities\\Partner' . "\0" . 'mobil', '' . "\0" . 'Entities\\Partner' . "\0" . 'fax', '' . "\0" . 'Entities\\Partner' . "\0" . 'email', '' . "\0" . 'Entities\\Partner' . "\0" . 'honlap', '' . "\0" . 'Entities\\Partner' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Partner' . "\0" . 'syncid', '' . "\0" . 'Entities\\Partner' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Partner' . "\0" . 'teendok', '' . "\0" . 'Entities\\Partner' . "\0" . 'esemenyek', '' . "\0" . 'Entities\\Partner' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Partner' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizhatido', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'nem', '' . "\0" . 'Entities\\Partner' . "\0" . 'szuletesiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'akcioshirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'ujdonsaghirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'utolsoklikk', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Partner' . "\0" . 'vendeg', '' . "\0" . 'Entities\\Partner' . "\0" . 'ip', '' . "\0" . 'Entities\\Partner' . "\0" . 'referrer', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallito', '' . "\0" . 'Entities\\Partner' . "\0" . 'passwordreminder', '' . "\0" . 'Entities\\Partner' . "\0" . 'oldloginname', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'banknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Partner' . "\0" . 'iban', '' . "\0" . 'Entities\\Partner' . "\0" . 'swift', '' . "\0" . 'Entities\\Partner' . "\0" . 'szamlatipus', '' . "\0" . 'Entities\\Partner' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekarazonosito');
     }
 
     /**
@@ -1616,6 +1616,83 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzamlatipus', array($val));
 
         return parent::setSzamlatipus($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getValutanem()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', array());
+
+        return parent::getValutanem();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getValutanemnev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemnev', array());
+
+        return parent::getValutanemnev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getValutanemId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', array());
+
+        return parent::getValutanemId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setValutanem($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', array($val));
+
+        return parent::setValutanem($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeValutanem()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValutanem', array());
+
+        return parent::removeValutanem();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTermekarazonosito()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekarazonosito', array());
+
+        return parent::getTermekarazonosito();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTermekarazonosito($v)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekarazonosito', array($v));
+
+        return parent::setTermekarazonosito($v);
     }
 
 }

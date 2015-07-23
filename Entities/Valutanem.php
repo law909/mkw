@@ -34,6 +34,8 @@ class Valutanem {
 	private $kosarak;
 	/** @ORM\OneToMany(targetEntity="TermekAr", mappedBy="valutanem",cascade={"persist"}) */
 	private $termekarak;
+	/** @ORM\OneToMany(targetEntity="Partner", mappedBy="valutanem",cascade={"persist"}) */
+	private $partnerek;
 
 	public function getId() {
 		return $this->id;

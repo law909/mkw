@@ -74,6 +74,9 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['bankcim'] = $t->getBankcim();
         $x['iban'] = $t->getIban();
         $x['swift'] = $t->getSwift();
+        $x['valutanem'] = $t->getValutanem();
+        $x['valutanemnev'] = $t->getValutanemnev();
+        $x['termekarazonosito'] = $t->getTermekarazonosito();
         return $x;
     }
 
@@ -120,6 +123,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $obj->setBankcim($this->params->getStringRequestParam('bankcim'));
         $obj->setIban($this->params->getStringRequestParam('iban'));
         $obj->setSwift($this->params->getStringRequestParam('swift'));
+        $obj->setTermekarazonosito($this->params->getStringRequestParam('termekarazonosito'));
         $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
         if ($fizmod) {
             $obj->setFizmod($fizmod);
@@ -127,6 +131,10 @@ class partnerController extends \mkwhelpers\MattableController {
         $uk = store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto', 0));
         if ($uk) {
             $obj->setUzletkoto($uk);
+        }
+        $valutanem = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
+        if ($valutanem) {
+            $obj->setValutanem($valutanem);
         }
         $obj->removeAllCimke();
         $cimkekpar = $this->params->getArrayRequestParam('cimkek');
@@ -249,6 +257,10 @@ class partnerController extends \mkwhelpers\MattableController {
         $view->setVar('fizmodlist', $fizmod->getSelectList(($partner ? $partner->getFizmodId() : 0)));
         $uk = new uzletkotoController($this->params);
         $view->setVar('uzletkotolist', $uk->getSelectList(($partner ? $partner->getUzletkotoId() : 0)));
+        $valutanem = new valutanemController($this->params);
+        $view->setVar('valutanemlist', $valutanem->getSelectList(($partner ? $partner->getValutanemId() : 0)));
+        $termekar = new termekarController($this->params);
+        $view->setVar('termekarazonositolist', $termekar->getSelectList(($partner ? $partner->getTermekarazonosito() : '')));
 
         $view->setVar('partner', $this->loadVars($partner));
         $view->printTemplateResult();

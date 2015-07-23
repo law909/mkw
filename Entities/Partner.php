@@ -220,6 +220,15 @@ class Partner {
     /** @ORM\Column(type="integer",nullable=false) */
     private $szamlatipus = 0;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Valutanem",inversedBy="partnerek")
+     * @ORM\JoinColumn(name="valutanem_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $valutanem;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+	private $termekarazonosito;
+
 	public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -829,5 +838,54 @@ class Partner {
 
     public function setSzamlatipus($val) {
         $this->szamlatipus = $val;
+    }
+
+    public function getValutanem() {
+        if (!$this->id && !$this->valutanem) {
+            $this->setValutanem(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+        }
+        return $this->valutanem;
+    }
+
+    public function getValutanemnev() {
+        $vn = $this->getValutanem();
+        if ($vn) {
+            return $vn->getNev();
+        }
+        return '';
+    }
+
+    public function getValutanemId() {
+        $vn = $this->getValutanem();
+        if ($vn) {
+            return $vn->getId();
+        }
+        return '';
+    }
+
+    public function setValutanem($val) {
+        if (!($val instanceof \Entities\Valutanem)) {
+            $val = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find($val);
+        }
+        if ($this->valutanem !== $val) {
+            $this->valutanem = $val;
+        }
+    }
+
+    public function removeValutanem() {
+        if ($this->valutanem !== null) {
+//			$val=$this->valutanem;
+            $this->valutanem = null;
+            $this->valutanemnev = '';
+//			$val->removeBizonylatfej($this);
+        }
+    }
+
+    public function getTermekarazonosito() {
+        return $this->termekarazonosito;
+    }
+
+    public function setTermekarazonosito($v) {
+        $this->termekarazonosito = $v;
     }
 }

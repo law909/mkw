@@ -1,6 +1,8 @@
 <?php
 namespace Entities;
 
+use Doctrine\ORM\Query\ResultSetMapping;
+
 class TermekArRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
@@ -17,6 +19,13 @@ class TermekArRepository extends \mkwhelpers\Repository {
 		$filter['clauses'][]='=';
 		$filter['values'][]=$termek;
 		return $this->getAll($filter,array('created'=>'ASC'));
+    }
+
+    public function getExistingAzonositok() {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('azonosito', 'azonosito');
+        $q = $this->_em->createNativeQuery('SELECT DISTINCT azonosito FROM termekar ORDER BY azonosito', $rsm);
+        return $q->getScalarResult();
     }
 
 /* Ha van JOIN, ezek akkor kellenek

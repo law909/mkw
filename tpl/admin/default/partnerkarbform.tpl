@@ -63,6 +63,24 @@
 					{/foreach}
 				</select></td>
 			</tr>
+            {if ($setup.arsavok)}
+                <tr>
+                    <td><label for="ValutanemEdit">{t('Valutanem')}:</label></td>
+                    <td><select id="ValutanemEdit" name="valutanem">
+                        <option value="">{t('válasszon')}</option>
+                        {foreach $valutanemlist as $_vt}
+                        <option value="{$_vt.id}"{if ($_vt.selected)} selected="selected"{/if}>{$_vt.caption}</option>
+                        {/foreach}
+                    </select></td>
+                    <td><label for="TermekarEdit">{t('Ársáv')}:</label></td>
+                    <td><select id="TermekarEdit" name="termekarazonosito">
+                        <option value="">{t('válasszon')}</option>
+                        {foreach $termekarazonositolist as $_ta}
+                        <option value="{$_ta.id}"{if ($_ta.selected)} selected="selected"{/if}>{$_ta.caption}</option>
+                        {/foreach}
+                    </select></td>
+                </tr>
+            {/if}
 			<tr>
 				<td><label for="FizhatidoEdit">{t('Fizetési haladék')}:</label></td>
 				<td><input id="FizhatidoEdit" name="fizhatido" type="number" size="5" maxlength="3" value="{$partner.fizhatido}"></td>

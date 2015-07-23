@@ -9,10 +9,7 @@
                 <tr><td>{t('Üzletkötő')}:</td><td>{$_partner.uzletkotonev}</td></tr>
                 <tr><td>{t('Adószám')}:</td><td>{$_partner.adoszam}</td></tr>
                 <tr><td>{t('Fizetési mód')}:</td><td>{$_partner.fizmodnev}</td></tr>
-                {if ($setup.arsavok)}
-                <tr><td>{t('Valutanem')}:</td><td>{$_partner.valutanemnev}</td></tr>
-                <tr><td>{t('Ársáv')}:</td><td>{$_partner.termekarazonosito}</td></tr>
-                {/if}
+                <tr><td>IP: {$_partner.ip}</td><td>Ref.: {$_partner.referrer}</td></tr>
             </tbody>
         </table>
     </td>
