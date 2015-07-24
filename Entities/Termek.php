@@ -1419,10 +1419,14 @@ class Termek {
                 }
             }
             $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, $arsavazon);
-            if ($arsav) {
-                return $arsav->getNetto();
+            if (!$arsav) {
+                $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, \mkw\Store::getParameter(\mkw\consts::Arsav));
+                if ($arsav) {
+                    return $arsav->getNetto();
+                }
+                return 0;
             }
-            return 0;
+            return $arsav->getNetto();
         }
     }
 
@@ -1448,10 +1452,14 @@ class Termek {
                 }
             }
             $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, $arsavazon);
-            if ($arsav) {
-                return $arsav->getBrutto();
+            if (!$arsav) {
+                $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, \mkw\Store::getParameter(\mkw\consts::Arsav));
+                if ($arsav) {
+                    return $arsav->getBrutto();
+                }
+                return 0;
             }
-            return 0;
+            return $arsav->getBrutto();
         }
     }
 

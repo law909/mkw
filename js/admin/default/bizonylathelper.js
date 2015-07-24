@@ -1,5 +1,7 @@
 var bizonylathelper = function($) {
 
+    var nocalcarak = false;
+
     function setDates() {
         var keltedit = $('#KeltEdit'),
                 esededit = $('#EsedekessegEdit'),
@@ -65,33 +67,36 @@ var bizonylathelper = function($) {
     }
 
     function calcArak(sorId) {
-        $.ajax({
-            async: false,
-            url: '/admin/bizonylattetel/calcar',
-            data: {
-                valutanem: $('#ValutanemEdit').val(),
-                arfolyam: $('#ArfolyamEdit').val(),
-                afa: $('select[name="tetelafa_' + sorId + '"]').val(),
-                nettoegysar: $('input[name="tetelnettoegysar_' + sorId + '"]').val(),
-                mennyiseg: $('input[name="tetelmennyiseg_' + sorId + '"]').val()
-            },
-            success: function(data) {
-                var resp = JSON.parse(data),
-                    eb = $('#eladasibruttoar_' + sorId),
-                    hasz = $('#haszonszazalek_' + sorId),
-                    n = eb.data('ertek') / resp.bruttoegysar * 100 - 100;
-                $('input[name="tetelnettoegysar_' + sorId + '"]').val(resp.nettoegysar);
-                $('input[name="tetelbruttoegysar_' + sorId + '"]').val(resp.bruttoegysar);
-                $('input[name="tetelnetto_' + sorId + '"]').val(resp.netto);
-                $('input[name="tetelbrutto_' + sorId + '"]').val(resp.brutto);
-                $('input[name="tetelnettoegysarhuf_' + sorId + '"]').val(resp.nettoegysarhuf);
-                $('input[name="tetelbruttoegysarhuf_' + sorId + '"]').val(resp.bruttoegysarhuf);
-                $('input[name="tetelnettohuf_' + sorId + '"]').val(resp.nettohuf);
-                $('input[name="tetelbruttohuf_' + sorId + '"]').val(resp.bruttohuf);
+        if (!nocalcarak) {
+            $.ajax({
+                async: false,
+                url: '/admin/bizonylattetel/calcar',
+                data: {
+                    valutanem: $('#ValutanemEdit').val(),
+                    arfolyam: $('#ArfolyamEdit').val(),
+                    afa: $('select[name="tetelafa_' + sorId + '"]').val(),
+                    nettoegysar: $('input[name="tetelnettoegysar_' + sorId + '"]').val(),
+                    mennyiseg: $('input[name="tetelmennyiseg_' + sorId + '"]').val()
+                },
+                success: function(data) {
+                    var resp = JSON.parse(data),
+                        eb = $('#eladasibruttoar_' + sorId),
+                        hasz = $('#haszonszazalek_' + sorId),
+                        n = eb.data('ertek') / resp.bruttoegysar * 100 - 100;
+                    $('input[name="tetelnettoegysar_' + sorId + '"]').val(resp.nettoegysar);
+                    $('input[name="tetelbruttoegysar_' + sorId + '"]').val(resp.bruttoegysar);
+                    $('input[name="tetelnetto_' + sorId + '"]').val(resp.netto);
+                    $('input[name="tetelbrutto_' + sorId + '"]').val(resp.brutto);
+                    $('input[name="tetelnettoegysarhuf_' + sorId + '"]').val(resp.nettoegysarhuf);
+                    $('input[name="tetelbruttoegysarhuf_' + sorId + '"]').val(resp.bruttoegysarhuf);
+                    $('input[name="tetelnettohuf_' + sorId + '"]').val(resp.nettohuf);
+                    $('input[name="tetelbruttohuf_' + sorId + '"]').val(resp.bruttohuf);
 
-                hasz.text(n.toFixed(2));
-            }
-        });
+                    hasz.text(n.toFixed(2));
+                }
+            });
+        }
+        nocalcarak = false;
     }
 
     function checkKelt(kelt, biztipus) {
@@ -183,6 +188,10 @@ var bizonylathelper = function($) {
         };
     }
 
+    function setNoCalcArak(n) {
+        nocalcarak = n;
+    }
+
     return {
         setDates: setDates,
         getArfolyam: getArfolyam,
@@ -191,7 +200,8 @@ var bizonylathelper = function($) {
         checkKelt: checkKelt,
         checkBizonylatFej: checkBizonylatFej,
         loadValtozatList: loadValtozatList,
-        termekAutocomplete: termekAutocomplete
+        termekAutocomplete: termekAutocomplete,
+        setNoCalcArak: setNoCalcArak
     };
 
 }(jQuery);

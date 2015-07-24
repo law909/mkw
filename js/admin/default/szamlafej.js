@@ -12,6 +12,7 @@ $(document).ready(function() {
                         afa = $('select[name="tetelafa_' + sorid + '"]'),
                         selvaltozat = $('select[name="tetelvaltozat_' + sorid + '"]').val(),
                         valtozatplace = $('#ValtozatPlaceholder' + sorid);
+                bizonylathelper.setNoCalcArak(true);
                 valtozatplace.empty();
                 $this.siblings().val(ui.item.id);
                 $('input[name="tetelnev_' + sorid + '"]').val(ui.item.value);
