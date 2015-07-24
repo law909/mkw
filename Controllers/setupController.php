@@ -336,9 +336,15 @@ class setupController extends \mkwhelpers\Controller {
         if ($fizmod) {
             $this->setObj(\mkw\consts::OTPayFizmod, $fizmod->getId());
         }
+        else {
+            $this->setObj(\mkw\consts::OTPayFizmod, '');
+        }
         $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('masterpassfizmod', 0));
         if ($fizmod) {
             $this->setObj(\mkw\consts::MasterPassFizmod, $fizmod->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::MasterPassFizmod, '');
         }
         $raktar = store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar', 0));
         if ($raktar) {
@@ -352,6 +358,9 @@ class setupController extends \mkwhelpers\Controller {
         $markacs = store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('markacs', 0));
         if ($markacs) {
             $this->setObj(\mkw\consts::MarkaCs, $markacs->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::MarkaCs, '');
         }
 
         $rolerep = store::getEm()->getRepository('Entities\Munkakor');
@@ -367,6 +376,9 @@ class setupController extends \mkwhelpers\Controller {
         $bsf = store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatuszfuggoben', 0));
         if ($bsf) {
             $this->setObj(\mkw\consts::BizonylatStatuszFuggoben, $bsf->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::BizonylatStatuszFuggoben, '');
         }
 
         $this->setObj(\mkw\consts::Esedekessegalap, $this->params->getIntRequestParam('esedekessegalap', 1));
