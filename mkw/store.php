@@ -594,4 +594,8 @@ class Store {
         return array_values(self::$locales);
     }
 
+    public static function getLoggedInUser() {
+        $pr = self::getEm()->getRepository('Entities\Partner');
+        return $pr->getLoggedInUser();
+    }
 }

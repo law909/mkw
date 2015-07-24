@@ -73,6 +73,17 @@
 					{/foreach}
 				</select></td>
 			</tr>
+            {if ($setup.arsavok)}
+			<tr>
+				<td><label for="ArsavEdit">{t('Ársáv')}:</label></td>
+				<td><select id="ArsavEdit" name="arsav">
+					<option value="">{t('válasszon')}</option>
+					{foreach $arsavlist as $_arsav}
+					<option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
+					{/foreach}
+				</select></td>
+			</tr>
+            {/if}
 			<tr>
 				<td><label for="MarkaCsEdit">{t('Márka csoport')}:</label></td>
 				<td><select id="MarkaCsEdit" name="markacs">

@@ -344,8 +344,8 @@ class Termek {
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
-        $x['bruttohuf'] = $this->getBruttoAr($valtozat);
-        $x['eredetibruttohuf'] = $this->getBruttoAr($valtozat, true);
+        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\Store::getLoggedInUser());
+        $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['ingyenszallitas'] = (\mkw\Store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
         if ($this->szallitasiido) {
@@ -450,8 +450,8 @@ class Termek {
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
-        $x['bruttohuf'] = $this->getBruttoAr();
-        $x['eredetibruttohuf'] = $this->getBruttoAr($valtozat, true);
+        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\Store::getLoggedInUser());
+        $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
 
         $listaban = array();
@@ -487,8 +487,8 @@ class Termek {
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
-        $x['bruttohuf'] = $this->getBruttoAr($valtozat);
-        $x['eredetibruttohuf'] = $this->getBruttoAr($valtozat, true);
+        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\Store::getLoggedInUser());
+        $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['ingyenszallitas'] = (\mkw\Store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
         $x['husegpont'] = floor($x['bruttohuf'] * $this->getHparany() / 100);
@@ -578,8 +578,8 @@ class Termek {
         $x['caption'] = $this->getNev();
         $x['rovidleiras'] = $this->getRovidLeiras();
         $x['akcios'] = $this->getAkcios();
-        $x['bruttohuf'] = $this->getBruttoAr();
-        $x['eredetibruttohuf'] = $this->getBruttoAr($valtozat, true);
+        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\Store::getLoggedInUser());
+        $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
         $x['link'] = \mkw\Store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
         return $x;
     }
@@ -732,7 +732,7 @@ class Termek {
                 $result = str_replace('[termeknev]', $this->getNev(), $result);
                 $result = str_replace('[kategorianev]', $this->getTermekfa1Nev(), $result);
                 $result = str_replace('[global]', \mkw\Store::getParameter(\mkw\consts::Oldalcim), $result);
-                $result = str_replace('[bruttoar]', number_format($this->getBruttoAr(null, false), 0, ',', ''), $result);
+                $result = str_replace('[bruttoar]', number_format($this->getBruttoAr(null, \mkw\Store::getLoggedInUser()), 0, ',', ''), $result);
                 return $result;
             }
             else {
@@ -759,7 +759,7 @@ class Termek {
                 $result = str_replace('[termeknev]', $this->getNev(), $result);
                 $result = str_replace('[kategorianev]', $this->getTermekfa1Nev(), $result);
                 $result = str_replace('[global]', \mkw\Store::getParameter(\mkw\consts::Seodescription), $result);
-                $result = str_replace('[bruttoar]', number_format($this->getBruttoAr(null, false), 0, ',', ''), $result);
+                $result = str_replace('[bruttoar]', number_format($this->getBruttoAr(null, \mkw\Store::getLoggedInUser()), 0, ',', ''), $result);
                 return $result;
             }
             else {
@@ -1107,6 +1107,7 @@ class Termek {
     }
 
     public function getTermekAr($valtozat) {
+        // Ezt mintha senki nem használná
         $ret = array('netto' => $this->getNettoAr($valtozat), 'brutto' => $this->getBruttoAr($valtozat));
         return $ret;
     }
@@ -1396,26 +1397,77 @@ class Termek {
         $this->valtozatadattipus = $a;
     }
 
-    public function getNettoAr($valtozat = null) {
-        $netto = $this->getNetto();
-        if ($this->getAkcios()) {
-            $netto = $this->getAkciosnetto();
+    public function getNettoAr($valtozat = null, $partner = null, $valutanem = null) {
+        // Nincsenek ársávok
+        if (!\mkw\Store::getSetupValue('arsavok')) {
+            $netto = $this->getNetto();
+            if ($this->getAkcios()) {
+                $netto = $this->getAkciosnetto();
+            }
+            if (!is_null($valtozat)) {
+                return $netto + $valtozat->getNetto();
+            }
+            return $netto;
         }
-        if (!is_null($valtozat)) {
-            return $netto + $valtozat->getNetto();
+        // Vannak ársávok
+        else {
+            $arsavazon = false;
+            if ($partner) {
+                $arsavazon = $partner->getTermekarazonosito();
+                if (!$valutanem) {
+                    $valutanem = $partner->getValutanem();
+                }
+            }
+            $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, $arsavazon);
+            if ($arsav) {
+                return $arsav->getNetto();
+            }
+            return 0;
         }
-        return $netto;
     }
 
-    public function getBruttoAr($valtozat = null, $eredeti = false) {
-        $brutto = $this->getBrutto();
-        if (!$eredeti && $this->getAkcios()) {
-            $brutto = $this->getAkciosbrutto();
+    public function getBruttoAr($valtozat = null, $partner = null, $valutanem = null) {
+        // Nincsenek ársávok
+        if (!\mkw\Store::getSetupValue('arsavok')) {
+            $brutto = $this->getBrutto();
+            if ($this->getAkcios()) {
+                $brutto = $this->getAkciosbrutto();
+            }
+            if (!is_null($valtozat)) {
+                return $brutto + $valtozat->getBrutto();
+            }
+            return $brutto;
         }
-        if (!is_null($valtozat)) {
-            return $brutto + $valtozat->getBrutto();
+        // Vannak ársávok
+        else {
+            $arsavazon = false;
+            if ($partner) {
+                $arsavazon = $partner->getTermekarazonosito();
+                if (!$valutanem) {
+                    $valutanem = $partner->getValutanem();
+                }
+            }
+            $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, $arsavazon);
+            if ($arsav) {
+                return $arsav->getBrutto();
+            }
+            return 0;
         }
-        return $brutto;
+    }
+
+    public function getEredetiBruttoAr($valtozat) {
+        // Nincsenek ársávok
+        if (!\mkw\Store::getSetupValue('arsavok')) {
+            $brutto = $this->getBrutto();
+            if (!is_null($valtozat)) {
+                return $brutto + $valtozat->getBrutto();
+            }
+            return $brutto;
+        }
+        // Vannak ársávok
+        else {
+            return 0;
+        }
     }
 
     public function getNemkaphato() {

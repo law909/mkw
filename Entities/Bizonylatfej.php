@@ -439,6 +439,8 @@ class Bizonylatfej {
         $ret['megjegyzes'] = $this->getMegjegyzes();
         $ret['allapotnev'] = $this->getBizonylatstatusznev();
         $ret['fuvarlevelszam'] = $this->getFuvarlevelszam();
+        $ret['valutanemnev'] = $this->getValutanemnev();
+        $ret['arfolyam'] = $this->getArfolyam();
         $tetellist = array();
         foreach ($this->bizonylattetelek as $tetel) {
             $tetellist[] = $tetel->toLista();
@@ -893,6 +895,7 @@ class Bizonylatfej {
 //			$val=$this->valutanem;
             $this->valutanem = null;
             $this->valutanemnev = '';
+            $this->setArfolyam(1);
 //			$val->removeBizonylatfej($this);
         }
     }
@@ -993,6 +996,13 @@ class Bizonylatfej {
             else {
                 $this->removeFizmod();
             }
+            $v = $val->getValutanem();
+            if ($v) {
+                $this->setValutanem($v);
+            }
+            else {
+                $this->removeValutanem();
+            }
 //			$val->addBizonylatfej($this);
         }
     }
@@ -1026,6 +1036,7 @@ class Bizonylatfej {
             $this->szallutca = '';
             $this->removeUzletkoto();
             $this->removeFizmod();
+            $this->removeValutanem();
 //			$val->removeBizonylatfej($this);
         }
     }

@@ -1786,23 +1786,34 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getNettoAr($valtozat = NULL)
+    public function getNettoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoAr', array($valtozat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoAr', array($valtozat, $partner, $valutanem));
 
-        return parent::getNettoAr($valtozat);
+        return parent::getNettoAr($valtozat, $partner, $valutanem);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getBruttoAr($valtozat = NULL, $eredeti = false)
+    public function getBruttoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoAr', array($valtozat, $eredeti));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoAr', array($valtozat, $partner, $valutanem));
 
-        return parent::getBruttoAr($valtozat, $eredeti);
+        return parent::getBruttoAr($valtozat, $partner, $valutanem);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEredetiBruttoAr($valtozat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEredetiBruttoAr', array($valtozat));
+
+        return parent::getEredetiBruttoAr($valtozat);
     }
 
     /**

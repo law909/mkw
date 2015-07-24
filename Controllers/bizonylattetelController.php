@@ -52,7 +52,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
         $x['afanev'] = $t->getAfanev();
 		$term = $t->getTermek();
 		if ($term) {
-            $eb = $term->getBruttoAr($t->getTermekvaltozat());
+            $eb = $term->getBruttoAr($t->getTermekvaltozat(), $t->getBizonylatfej()->getPartner());
             $x['eladasibrutto'] = $eb;
             if ($x['bruttoegysar'] != 0) {
                 $x['haszonszazalek'] = $eb / $x['bruttoegysar'] * 100 - 100;
@@ -91,24 +91,50 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 	}
 
 	public function getar() {
-		$termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
-		$valtozat = null;
-		if ($this->params->getIntRequestParam('valtozat')) {
-			$valtozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('valtozat'));
-		}
-		if ($termek) {
-            $r = array(
-                'netto' => $termek->getNettoAr($valtozat),
-                'brutto' => $termek->getBruttoAr($valtozat)
-            );
-			echo json_encode($r);
-		}
-		else {
-			echo json_encode(array(
-                'netto' => 0,
-                'brutto' => 0
-            ));
-		}
+        // Nincsenek ársávok
+        if (!\mkw\Store::getSetupValue('arsavok')) {
+            $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
+            $valtozat = null;
+            if ($this->params->getIntRequestParam('valtozat')) {
+                $valtozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('valtozat'));
+            }
+            if ($termek) {
+                $r = array(
+                    'netto' => $termek->getNettoAr($valtozat),
+                    'brutto' => $termek->getBruttoAr($valtozat)
+                );
+                echo json_encode($r);
+            }
+            else {
+                echo json_encode(array(
+                    'netto' => 0,
+                    'brutto' => 0
+                ));
+            }
+        }
+        // Vannak ársávok
+        else {
+            $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
+            $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
+            $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+            $valtozat = null;
+            if ($this->params->getIntRequestParam('valtozat')) {
+                $valtozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('valtozat'));
+            }
+            if ($termek) {
+                $r = array(
+                    'netto' => $termek->getNettoAr($valtozat, $partner, $valutanem),
+                    'brutto' => $termek->getBruttoAr($valtozat, $partner, $valutanem)
+                );
+                echo json_encode($r);
+            }
+            else {
+                echo json_encode(array(
+                    'netto' => 0,
+                    'brutto' => 0
+                ));
+            }
+        }
 	}
 
 	public function calcar() {

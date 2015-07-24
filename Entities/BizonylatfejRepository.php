@@ -17,6 +17,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         ));
 	}
 
+    public function findWithJoins($id) {
+        parent::findWithJoins((string)$id);
+    }
+
 	public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
 		$a = $this->alias;
 		$q = $this->_em->createQuery('SELECT ' . $a

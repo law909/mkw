@@ -198,7 +198,7 @@ class KosarRepository extends \mkwhelpers\Repository {
                 $k->setSessionid($sessionid);
                 $k->setPartner($partner);
                 $k->setValutanem($valutanem);
-                $k->setBruttoegysar($termek->getBruttoAr($termekvaltozat));
+                $k->setBruttoegysar($termek->getBruttoAr($termekvaltozat, $partner));
                 if ($mennyiseg) {
                     $k->setMennyiseg($mennyiseg);
                 }

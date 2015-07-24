@@ -11,6 +11,7 @@ class consts {
     const Valutanem = 'valutanem';
     const Raktar = 'raktar';
     const Fizmod = 'fizmod';
+    const Arsav = 'arsav';
     const Esedekessegalap = 'esedekessegalap';
     const Autologoutmin = 'autologoutmin';
     const ImportNewKatId = 'importnewkatid';

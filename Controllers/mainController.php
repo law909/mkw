@@ -198,7 +198,7 @@ class mainController extends \mkwhelpers\Controller {
 		$termek = store::getEm()->getRepository('Entities\Termek')->find($termekid);
 		$valtozat = store::getEm()->getRepository('Entities\TermekValtozat')->find($valtozatid);
 		$ret = array();
-		$ret['price'] = number_format($termek->getBruttoAr($valtozat), 0, ',', ' ') . ' Ft';
+		$ret['price'] = number_format($termek->getBruttoAr($valtozat, \mkw\Store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
 		echo json_encode($ret);
 	}
 
@@ -222,7 +222,7 @@ class mainController extends \mkwhelpers\Controller {
 			$e = array($valtozatertek);
 		}
 		$termekvaltozat = store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(), $t, $e);
-		$ret['price'] = number_format($termek->getBruttoAr($termekvaltozat), 0, ',', ' ') . ' Ft';
+		$ret['price'] = number_format($termek->getBruttoAr($termekvaltozat, \mkw\Store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
 
 		$valtozatok = $termek->getValtozatok();
 		foreach ($valtozatok as $valtozat) {
