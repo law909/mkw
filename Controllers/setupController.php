@@ -29,6 +29,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::Tulajadoszam, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::Tulajeuadoszam);
         $view->setVar(\mkw\consts::Tulajeuadoszam, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Tulajeorinr);
+        $view->setVar(\mkw\consts::Tulajeorinr, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::EmailFrom);
         $view->setVar(\mkw\consts::EmailFrom, ($p ? $p->getErtek() : ''));
@@ -262,6 +264,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Tulajutca, $this->params->getStringRequestParam('tulajutca'));
         $this->setObj(\mkw\consts::Tulajadoszam, $this->params->getStringRequestParam('tulajadoszam'));
         $this->setObj(\mkw\consts::Tulajeuadoszam, $this->params->getStringRequestParam('tulajeuadoszam'));
+        $this->setObj(\mkw\consts::Tulajeorinr, $this->params->getStringRequestParam('tulajeorinr'));
 
         $this->setObj(\mkw\consts::EmailFrom, $this->params->getOriginalStringRequestParam('emailfrom'));
         $this->setObj(\mkw\consts::EmailReplyTo, $this->params->getOriginalStringRequestParam('emailreplyto'));

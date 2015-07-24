@@ -23,6 +23,7 @@ class consts {
     const Tulajutca = 'tulajutca';
     const Tulajadoszam = 'tulajadoszam';
     const Tulajeuadoszam = 'tulajeuadoszam';
+    const Tulajeorinr = 'tulajeorinr';
 
     const EmailFrom = 'emailfrom';
     const EmailReplyTo = 'emailreplyto';

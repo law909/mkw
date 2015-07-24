@@ -156,6 +156,9 @@
 			<td><label for="TulajeuadoszamEdit">{t('Közösségi adószám')}:</label></td>
 			<td><input id="TulajeuadoszamEdit" name="tulajeuadoszam" type="text" value="{$tulajeuadoszam}"></td>
 		</tr>
+		<tr><td><label for="TulajeorinrEdit">{t('EORI NR')}:</label></td>
+			<td><input id="TulajeorinrEdit" name="tulajeorinr" type="text" value="{$tulajeorinr}"></td>
+		</tr>
 		</tbody></table>
 		</div>
 		<div id="WebTab" class="mattkarb-page" data-visible="visible">

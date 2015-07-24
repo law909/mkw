@@ -119,6 +119,9 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=30,nullable=true) */
     private $tulajeuadoszam;
 
+    /** @ORM\Column(type="string",length=255,nullable=false) */
+    private $tulajeorinr;
+
     /** @ORM\Column(type="string",length=30,nullable=true) */
     private $erbizonylatszam;
 
@@ -408,6 +411,7 @@ class Bizonylatfej {
         $ret['tulajvaros'] = $this->getTulajvaros();
         $ret['tulajutca'] = $this->getTulajutca();
         $ret['tulajadoszam'] = $this->getTulajadoszam();
+        $ret['tulajeorinr'] = $this->getTulajeorinr();
         $ret['ertek'] = $this->getBrutto();
         $ret['nettohuf'] = $this->getNettohuf();
         $ret['afahuf'] = $this->getAfahuf();
@@ -460,6 +464,7 @@ class Bizonylatfej {
         $this->setTulajutca(store::getParameter(\mkw\consts::Tulajutca));
         $this->setTulajadoszam(store::getParameter(\mkw\consts::Tulajadoszam));
         $this->setTulajeuadoszam(store::getParameter(\mkw\consts::Tulajeuadoszam));
+        $this->setTulajeorinr(store::getParameter(\mkw\consts::Tulajeorinr));
     }
 
     public function calcEsedekesseg() {
@@ -675,6 +680,14 @@ class Bizonylatfej {
 
     public function setTulajeuadoszam($val) {
         $this->tulajeuadoszam = $val;
+    }
+
+    public function getTulajeorinr() {
+        return $this->tulajeorinr;
+    }
+
+    public function setTulajeorinr($val) {
+        $this->tulajeorinr = $val;
     }
 
     public function getKelt() {
