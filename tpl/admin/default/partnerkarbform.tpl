@@ -150,7 +150,7 @@
 			</tr>
 			</tbody></table>
 		</div>
-		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
+		<div id="LoginTab" class="mattkarb-page" data-visible="visible">
 			<table>
                 <tbody>
                 <tr>
@@ -165,6 +165,7 @@
                 </tr>
                 </tbody>
             </table>
+        </div>
 		<div id="BankTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>

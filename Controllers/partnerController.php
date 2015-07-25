@@ -124,6 +124,12 @@ class partnerController extends \mkwhelpers\MattableController {
         $obj->setIban($this->params->getStringRequestParam('iban'));
         $obj->setSwift($this->params->getStringRequestParam('swift'));
         $obj->setTermekarazonosito($this->params->getStringRequestParam('termekarazonosito'));
+
+        $j1 = $this->params->getStringRequestParam('jelszo1');
+        $j2 = $this->params->getStringRequestParam('jelszo2');
+        if ($j1 && $j2 && $j1 === $j2) {
+            $obj->setJelszo($j1);
+        }
         $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
         if ($fizmod) {
             $obj->setFizmod($fizmod);
