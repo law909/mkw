@@ -40,6 +40,12 @@ function callTheController($target, $params) {
 	return false;
 }
 
+if ($ini['developer']) {
+    if (in_array(\mkw\Store::getExtension($_SERVER['REQUEST_URI']), array('jpg', 'gif', 'png', 'jpeg')))  {
+        die();
+    }
+}
+
 $mainsess = store::getMainSession();
 
 if ($ini['mail.smtp'] == 1) {
@@ -82,6 +88,13 @@ catch (\Exception $e) {
     throw $e;
 }
 
+$router = Store::getRouter();
+if (file_exists('mainroute.php')) {
+	require_once 'mainroute.php';
+}
+
+$match = $router->match();
+
 $pc = new \Controllers\partnerController(Store::getGdl());
 if ($pc->checkloggedin()) {
 	$prevuri = $_SERVER['REQUEST_URI'];
@@ -95,22 +108,14 @@ if ($pc->checkloggedin()) {
 		$pc->setUtolsoKlikk();
 	}
 }
-
-$rw301c = new \Controllers\rewrite301Controller(array());
-$rw301c->rewrite();
-
-if ($ini['developer']) {
-    if (in_array(\mkw\Store::getExtension($_SERVER['REQUEST_URI']), array('jpg', 'gif', 'png', 'jpeg')))  {
-        die();
-    }
+elseif (Store::getConfigValue('main.mustlogin') && $match['name'] !== 'showlogin') {
+    header('Location: ' . $router->generate('showlogin'));
 }
 
-$router = Store::getRouter();
-if (file_exists('mainroute.php')) {
-	require_once 'mainroute.php';
+if (Store::getSetupValue('rewrite301')) {
+    $rw301c = new \Controllers\rewrite301Controller(array());
+    $rw301c->rewrite();
 }
-
-$match = $router->match();
 
 if (!$match) {
 	if ($ini['admin'] && file_exists('adminroute.php')) {
