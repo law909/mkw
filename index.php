@@ -88,55 +88,53 @@ catch (\Exception $e) {
     throw $e;
 }
 
-$router = Store::getRouter();
-if (file_exists('mainroute.php')) {
-	require_once 'mainroute.php';
-}
-
-$match = $router->match();
-
-$pc = new \Controllers\partnerController(Store::getGdl());
-if ($pc->checkloggedin()) {
-	$prevuri = $_SERVER['REQUEST_URI'];
-	if (!$prevuri) {
-		$prevuri = '/';
-	}
-	if ($pc->autoLogout()) {
-		header('Location: ' . $prevuri);
-	}
-	else {
-		$pc->setUtolsoKlikk();
-	}
-}
-elseif (Store::getConfigValue('main.mustlogin') && $match['name'] !== 'showlogin') {
-    header('Location: ' . $router->generate('showlogin'));
-}
-
 if (Store::getSetupValue('rewrite301')) {
     $rw301c = new \Controllers\rewrite301Controller(array());
     $rw301c->rewrite();
 }
 
-if (!$match) {
-	if ($ini['admin'] && file_exists('adminroute.php')) {
-		require_once 'adminroute.php';
-	}
-	$match = $router->match();
-    if ($match &&
-            (substr($match['name'], 0, 5) === 'admin') &&
-            (!in_array($match['name'], array('adminshowlogin', 'adminlogin', 'adminrlbexport')))) {
-        $linuser = Store::getAdminSession()->pk;
-        if (!$linuser) {
-            Header('Location: ' . $router->generate('adminshowlogin'));
+$router = Store::getRouter();
+if (file_exists('mainroute.php')) {
+	require_once 'mainroute.php';
+}
+if ($ini['admin'] && file_exists('adminroute.php')) {
+    require_once 'adminroute.php';
+}
+
+$match = $router->match();
+
+if ($match) {
+    if (substr($match['name'], 0, 5) === 'admin') {
+        if ((!in_array($match['name'], array('adminshowlogin', 'adminlogin', 'adminrlbexport')))) {
+            $linuser = Store::getAdminSession()->pk;
+            if (!$linuser) {
+                Header('Location: ' . $router->generate('adminshowlogin'));
+            }
         }
     }
-}
-else {
-	if (!$mainsess->referrer) {
-        if (array_key_exists('HTTP_REFERER', $_SERVER)) {
-            $mainsess->referrer = $_SERVER['HTTP_REFERER'];
+    else {
+        if (!$mainsess->referrer) {
+            if (array_key_exists('HTTP_REFERER', $_SERVER)) {
+                $mainsess->referrer = $_SERVER['HTTP_REFERER'];
+            }
         }
-	}
+        $pc = new \Controllers\partnerController(Store::getGdl());
+        if ($pc->checkloggedin()) {
+            $prevuri = $_SERVER['REQUEST_URI'];
+            if (!$prevuri) {
+                $prevuri = '/';
+            }
+            if ($pc->autoLogout()) {
+                header('Location: ' . $prevuri);
+            }
+            else {
+                $pc->setUtolsoKlikk();
+            }
+        }
+        elseif (Store::getConfigValue('main.mustlogin') && $match['name'] !== 'showlogin') {
+            header('Location: ' . $router->generate('showlogin'));
+        }
+    }
 }
 
 if (!callTheController($match['target'], $match)) {
