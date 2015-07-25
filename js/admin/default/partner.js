@@ -51,6 +51,7 @@ function varosAutocomplete(irszam,varos) {
 }
 
 $(document).ready(function(){
+	var dialogcenter = $('#dialogcenter');
 	var partner={
 			container:'#mattkarb',
 			viewUrl:'/admin/partner/getkarb',
@@ -61,6 +62,9 @@ $(document).ready(function(){
 				szuletesiidoedit.datepicker($.datepicker.regional['hu']);
 				szuletesiidoedit.datepicker('option','dateFormat','yy.mm.dd');
 				szuletesiidoedit.datepicker('setDate',szuletesiidoedit.attr('data-datum'));
+                $('#EmailEdit').on('change', function(e) {
+                    $('.js-email').text($(this).val());
+                });
 				$('#cimkekarbcontainer').mattaccord({
 					header:'',
 					page:'.js-cimkekarbpage',
@@ -98,13 +102,28 @@ $(document).ready(function(){
 				varosAutocomplete('#SzallIrszamEdit','#SzallVarosEdit');
 			},
 			beforeSerialize:function(form,opt) {
-				var cimkek=new Array();
+				var cimkek=new Array(),
+                    j1 = $('#Jelszo1Edit').val(),
+                    j2 = $('#Jelszo2Edit').val();
 				$('.js-cimkekarb').filter('.js-selectedcimke').each(function() {
 					cimkek.push($(this).attr('data-id'));
 				});
 				var x={};
 				x['cimkek[]']=cimkek;
 				opt['data']=x;
+                if ((j1 || j2) && j1 !== j2) {
+					dialogcenter.html('A két jelszó nem egyezik meg!').dialog({
+						resizable: false,
+						height: 140,
+						modal: true,
+						buttons: {
+							'Ok': function() {
+								$(this).dialog('close');
+							}
+						}
+					});
+                    return false;
+                }
 			},
 			onSubmit:function() {
 				$('#messagecenter')

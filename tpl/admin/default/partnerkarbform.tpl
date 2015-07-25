@@ -7,6 +7,7 @@
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
 			<li><a href="#ElerhetosegTab">{t('Elérhetőségek')}</a></li>
+			<li><a href="#LoginTab">{t('Bejelentkezés')}</a></li>
 			<li><a href="#BankTab">{t('Banki adatok')}</a></li>
 			<li><a href="#EgyebAzonositoTab">{t('Egyéb azonosító adatok')}</a></li>
 		</ul>
@@ -149,6 +150,21 @@
 			</tr>
 			</tbody></table>
 		</div>
+		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
+			<table>
+                <tbody>
+                <tr>
+                    <td><label>{t('Email')}:</label></td>
+                    <td><span class="js-email">{$partner.email}</span></td>
+                </tr>
+                <tr>
+                    <td><label for="Jelszo1Edit">{t('Jelszó 1')}:</label></td>
+                    <td><input id="Jelszo1Edit" name="jelszo1" type="password" size="20" maxlength="255" value="">
+                    <td><label for="Jelszo2Edit">{t('Jelszó 2')}:</label></td>
+                    <td><input id="Jelszo2Edit" name="jelszo2" type="password" size="20" maxlength="255" value="">
+                </tr>
+                </tbody>
+            </table>
 		<div id="BankTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
 			<tr>
