@@ -134,3 +134,8 @@ fieldset[disabled] .btn-red.active {
     color: #555;
     background-color: #e7e7e7;
 }
+
+.nav>li>a {
+    padding-left: 5px;
+    padding-right: 5px;
+}
