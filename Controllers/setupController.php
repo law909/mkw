@@ -188,6 +188,9 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::Esedekessegalap);
         $view->setVar(\mkw\consts::Esedekessegalap, ($p ? $p->getErtek() : '1'));
 
+        $p = $repo->find(\mkw\consts::Locale);
+        $view->setVar('localelist', \mkw\Store::getLocaleSelectList(($p ? $p->getErtek() : '')));
+
         $p = $repo->find(\mkw\consts::ImportNewKatId);
         $inkid = $p ? $p->getErtek() : 0;
         $importnewkat = store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
@@ -382,6 +385,8 @@ class setupController extends \mkwhelpers\Controller {
         }
 
         $this->setObj(\mkw\consts::Esedekessegalap, $this->params->getIntRequestParam('esedekessegalap', 1));
+        $this->setObj(\mkw\consts::Locale, $this->params->getStringRequestParam('locale'));
+        
         $inkid = $this->params->getIntRequestParam('importnewkatid');
         if ($inkid) {
             $importnewkat = store::getEm()->getRepository('Entities\TermekFa')->find($inkid);

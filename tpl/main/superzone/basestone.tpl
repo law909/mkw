@@ -10,6 +10,7 @@
 		<link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">
 		<link type="application/rss+xml" rel="alternate" title="{$feedtermektitle|default}" href="/feed/termek">
         <link href="/themes/main/superzone/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/themes/main/superzone/style.css" rel="stylesheet">
         {block "css"}{/block}
     </head>
 	<body {block "bodyclass"}{/block}>

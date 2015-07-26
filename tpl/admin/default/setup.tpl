@@ -127,6 +127,17 @@
 					<option value="2"{if ($esedekessegalap=='2')} selected="selected"{/if}>{t('teljesítés')}</option>
 				</select></td>
 			</tr>
+            {if ($setup.multilang)}
+			<tr>
+				<td><label for="LocaleEdit">{t('Publikus felület nyelve')}:</label></td>
+				<td><select id="LocaleEdit" name="locale">
+					<option value="">{t('válasszon')}</option>
+					{foreach $localelist as $_loc}
+					<option value="{$_loc.id}"{if ($_loc.selected)} selected="selected"{/if}>{$_loc.caption}</option>
+					{/foreach}
+				</select></td>
+			</tr>
+            {/if}
         </tbody></table>
         <table><tbody>
             <tr>

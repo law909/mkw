@@ -131,7 +131,7 @@ if ($match) {
                 $pc->setUtolsoKlikk();
             }
         }
-        elseif (Store::getConfigValue('main.mustlogin') && $match['name'] !== 'showlogin') {
+        elseif (Store::getConfigValue('main.mustlogin') && !in_array($match['name'], array('showlogin', 'dologin'))) {
             header('Location: ' . $router->generate('showlogin'));
         }
     }

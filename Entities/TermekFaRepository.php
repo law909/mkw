@@ -61,23 +61,45 @@ class TermekFaRepository extends \mkwhelpers\Repository {
     }
 
     public function getForMenu($menunum) {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('id', 'id');
-        $rsm->addScalarResult('nev', 'caption');
-        $rsm->addScalarResult('slug', 'slug');
-        $rsm->addScalarResult('leiras', 'leiras');
-        $rsm->addScalarResult('rovidleiras', 'rovidleiras');
-        $rsm->addScalarResult('kepurl', 'kepurl');
-        $rsm->addScalarResult('kepleiras', 'kepleiras');
-//		$rsm->addScalarResult('termekdarab', 'termekdarab');
-        $rsm->addScalarResult('sorrend', 'sorrend');
-        $q = $this->_em->createNativeQuery('SELECT id,nev,slug,leiras,rovidleiras,kepurl,kepleiras,'
-//			.'(SELECT COUNT(*) FROM termek t WHERE (t.inaktiv=0) AND (t.lathato=1) AND ((t.termekfa1karkod LIKE CONCAT(f.karkod,\'%\')) OR (t.termekfa2karkod LIKE CONCAT(f.karkod,\'%\')) OR (t.termekfa3karkod LIKE CONCAT(f.karkod,\'%\')))) AS termekdarab,'
-                . 'sorrend '
-                . 'FROM termekfa f '
-                . 'WHERE menu' . $menunum . 'lathato=1 '
-                . 'ORDER BY sorrend,nev', $rsm);
-        return $q->getScalarResult();
+        if (!\mkw\Store::getSetupValue('multilang')) {
+            $rsm = new ResultSetMapping();
+            $rsm->addScalarResult('id', 'id');
+            $rsm->addScalarResult('nev', 'caption');
+            $rsm->addScalarResult('slug', 'slug');
+            $rsm->addScalarResult('leiras', 'leiras');
+            $rsm->addScalarResult('rovidleiras', 'rovidleiras');
+            $rsm->addScalarResult('kepurl', 'kepurl');
+            $rsm->addScalarResult('kepleiras', 'kepleiras');
+    //		$rsm->addScalarResult('termekdarab', 'termekdarab');
+            $rsm->addScalarResult('sorrend', 'sorrend');
+            $q = $this->_em->createNativeQuery('SELECT id,nev,slug,leiras,rovidleiras,kepurl,kepleiras,'
+    //			.'(SELECT COUNT(*) FROM termek t WHERE (t.inaktiv=0) AND (t.lathato=1) AND ((t.termekfa1karkod LIKE CONCAT(f.karkod,\'%\')) OR (t.termekfa2karkod LIKE CONCAT(f.karkod,\'%\')) OR (t.termekfa3karkod LIKE CONCAT(f.karkod,\'%\')))) AS termekdarab,'
+                    . 'sorrend '
+                    . 'FROM termekfa f '
+                    . 'WHERE menu' . $menunum . 'lathato=1 '
+                    . 'ORDER BY sorrend,nev', $rsm);
+            return $q->getScalarResult();
+        }
+        else {
+            $q = $this->_em->createQuery('SELECT f FROM Entities\TermekFa f WHERE f.menu' . $menunum . 'lathato=1 ORDER BY f.sorrend');
+            $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
+            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
+            $res = $q->getResult();
+            $ret = array();
+            foreach($res as $r) {
+                $ret[] = array(
+                    'id' => $r->getId(),
+                    'caption' => $r->getNev(),
+                    'slug' => $r->getSlug(),
+                    'leiras' => $r->getLeiras(),
+                    'rovidleiras' => $r->getRovidleiras(),
+                    'kepurl' => $r->getKepurl(),
+                    'kepleiras' => $r->getKepleiras(),
+                    'sorrend' => $r->getSorrend()
+                );
+            }
+            return $ret;
+        }
     }
 
     public function getForParentCount($parentid, $menunum = 0) {

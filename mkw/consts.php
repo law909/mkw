@@ -16,6 +16,7 @@ class consts {
     const Autologoutmin = 'autologoutmin';
     const ImportNewKatId = 'importnewkatid';
     const Logo = 'logo';
+    const Locale = 'locale';
 
     const Tulajnev = 'tulajnev';
     const Tulajirszam = 'tulajirszam';
