@@ -261,7 +261,7 @@ class importController extends \mkwhelpers\Controller {
                     }
                     if ($termek) {
                         $termek->setNemkaphato(($data[$this->n('g')] * 1) == 0);
-                        //$termek->setAfa($afa[0]);
+                        $termek->setAfa($afa[0]);
                         $termek->setNetto($data[$this->n('d')] * 1 * $arszaz / 100);
                         $termek->setBrutto(round($termek->getBrutto(), -1));
                         store::getEm()->persist($termek);
