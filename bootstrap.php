@@ -87,7 +87,7 @@ $timestampableListener = new Gedmo\Timestampable\TimestampableListener;
 $timestampableListener->setAnnotationReader($cachedAnnotationReader);
 $evm->addEventSubscriber($timestampableListener);
 
-if ($setini['multilang']) {
+if (mkw\Store::isMultilang()) {
     $translatableListener=new Gedmo\Translatable\TranslatableListener();
     $translatableListener->setAnnotationReader($cachedAnnotationReader);
     $translatableListener->setDefaultLocale('hu_hu');

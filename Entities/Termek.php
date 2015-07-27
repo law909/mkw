@@ -1428,7 +1428,7 @@ class Termek {
 
     public function getNettoAr($valtozat = null, $partner = null, $valutanem = null) {
         // Nincsenek ársávok
-        if (!\mkw\Store::getSetupValue('arsavok')) {
+        if (!\mkw\Store::isArsavok()) {
             $netto = $this->getNetto();
             if ($this->getAkcios()) {
                 $netto = $this->getAkciosnetto();
@@ -1461,7 +1461,7 @@ class Termek {
 
     public function getBruttoAr($valtozat = null, $partner = null, $valutanem = null) {
         // Nincsenek ársávok
-        if (!\mkw\Store::getSetupValue('arsavok')) {
+        if (!\mkw\Store::isArsavok()) {
             $brutto = $this->getBrutto();
             if ($this->getAkcios()) {
                 $brutto = $this->getAkciosbrutto();
@@ -1494,7 +1494,7 @@ class Termek {
 
     public function getEredetiBruttoAr($valtozat) {
         // Nincsenek ársávok
-        if (!\mkw\Store::getSetupValue('arsavok')) {
+        if (!\mkw\Store::isArsavok()) {
             $brutto = $this->getBrutto();
             if (!is_null($valtozat)) {
                 return $brutto + $valtozat->getBrutto();

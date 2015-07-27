@@ -92,7 +92,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 
 	public function getar() {
         // Nincsenek ársávok
-        if (!\mkw\Store::getSetupValue('arsavok')) {
+        if (!\mkw\Store::isArsavok()) {
             $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
             $valtozat = null;
             if ($this->params->getIntRequestParam('valtozat')) {

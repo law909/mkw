@@ -43,7 +43,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$x['parentnev'] = $t->getParentNev();
         $x['inaktiv'] = $t->getInaktiv();
         $x['idegenkod'] = $t->getIdegenkod();
-        if (\mkw\Store::getSetupValue('multilang')) {
+        if (\mkw\Store::isMultilang()) {
             $translationsCtrl = new termekfatranslationController($this->params);
             foreach($t->getTranslations() as $tr) {
                 $translations[] = $translationsCtrl->loadVars($tr);
@@ -72,7 +72,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$obj->setKepleiras($this->params->getStringRequestParam('kepleiras'));
 		$obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
-        if (store::getSetupValue('multilang')) {
+        if (\mkw\Store::isMultilang()) {
             $translationids = $this->params->getArrayRequestParam('translationid');
             foreach ($translationids as $translationid) {
 				$oper = $this->params->getStringRequestParam('translationoper_' . $translationid);

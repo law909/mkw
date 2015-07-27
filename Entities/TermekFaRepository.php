@@ -61,7 +61,7 @@ class TermekFaRepository extends \mkwhelpers\Repository {
     }
 
     public function getForMenu($menunum) {
-        if (!\mkw\Store::getSetupValue('multilang')) {
+        if (!\mkw\Store::isMultilang()) {
             $rsm = new ResultSetMapping();
             $rsm->addScalarResult('id', 'id');
             $rsm->addScalarResult('nev', 'caption');

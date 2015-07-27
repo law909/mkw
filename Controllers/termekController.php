@@ -102,13 +102,13 @@ class termekController extends \mkwhelpers\MattableController {
 				//$valtozat[]=$valtozatCtrl->loadVars(null);
 				$x['valtozatok'] = $valtozat;
 			}
-            if (store::getSetupValue('arsavok')) {
+            if (\mkw\Store::isArsavok()) {
                 foreach ($t->getTermekArak() as $tar) {
                     $ar[] = $termekarCtrl->loadVars($tar, true);
                 }
                 $x['arak'] = $ar;
             }
-            if (\mkw\Store::getSetupValue('multilang')) {
+            if (\mkw\Store::isMultilang()) {
                 foreach($t->getTranslations() as $tr) {
                     $translations[] = $translationsCtrl->loadVars($tr);
                 }
@@ -258,7 +258,7 @@ class termekController extends \mkwhelpers\MattableController {
 				}
 			}
 		}
-        if (store::getSetupValue('arsavok')) {
+        if (\mkw\Store::isArsavok()) {
             $arids = $this->params->getArrayRequestParam('arid');
             foreach ($arids as $arid) {
 				$oper = $this->params->getStringRequestParam('aroper_' . $arid);
@@ -291,7 +291,7 @@ class termekController extends \mkwhelpers\MattableController {
 				}
             }
         }
-        if (store::getSetupValue('multilang')) {
+        if (\mkw\Store::isMultilang()) {
             $translationids = $this->params->getArrayRequestParam('translationid');
             foreach ($translationids as $translationid) {
 				$oper = $this->params->getStringRequestParam('translationoper_' . $translationid);

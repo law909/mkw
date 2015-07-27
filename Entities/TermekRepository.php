@@ -48,7 +48,7 @@ class TermekRepository extends \mkwhelpers\Repository {
         if ($elemcount > 0) {
             $q->setMaxResults($elemcount);
         }
-        if (\mkw\Store::getSetupValue('multilang')) {
+        if (\mkw\Store::isMultilang()) {
             $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
             $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
         }
@@ -70,7 +70,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . $this->getFilterString($filter)
                 . $this->getOrderString(array()));
         $q->setParameters($this->getQueryParameters($filter));
-        if (\mkw\Store::getSetupValue('multilang')) {
+        if (\mkw\Store::isMultilang()) {
             $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
             $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
         }
@@ -95,7 +95,7 @@ class TermekRepository extends \mkwhelpers\Repository {
         if ($elemcount > 0) {
             $q->setMaxResults($elemcount);
         }
-        if (\mkw\Store::getSetupValue('multilang')) {
+        if (\mkw\Store::isMultilang()) {
             $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
             $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
         }
@@ -133,7 +133,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . ' LEFT JOIN ' . $a . '.termekfa3 fa3'
                 . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
-        if (\mkw\Store::getSetupValue('multilang')) {
+        if (\mkw\Store::isMultilang()) {
             $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
             $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
         }
@@ -150,7 +150,7 @@ class TermekRepository extends \mkwhelpers\Repository {
 
                 $order = array_merge_recursive(array('.o1'=>'ASC'), $order);
                 $filter = $this->addAktivLathatoFilter($filter);
-                if (\mkw\Store::getSetupValue('arsavok')) {
+                if (\mkw\Store::isArsavok()) {
                     $sql = 'SELECT _xx.id,v.id AS valtozatid,'
                             . ' IF(_xx.nemkaphato,9,0) AS o1'
                             . ' FROM termek _xx'
@@ -195,7 +195,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . ' LEFT JOIN ' . $a . '.valtozatok v WITH v.lathato=true AND v.elerheto=true'
                 . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
-        if (\mkw\Store::getSetupValue('multilang')) {
+        if (\mkw\Store::isMultilang()) {
             $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
             $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
         }
@@ -212,7 +212,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . ' LEFT JOIN ' . $a . '.valtozatok v WITH v.lathato=true AND v.elerheto=true'
                 . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
-        if (\mkw\Store::getSetupValue('multilang')) {
+        if (\mkw\Store::isMultilang()) {
             $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
             $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
         }
@@ -245,7 +245,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . $this->getFilterString($filter)
                 . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
-        if (\mkw\Store::getSetupValue('multilang')) {
+        if (\mkw\Store::isMultilang()) {
             $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
             $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
         }
@@ -266,7 +266,7 @@ class TermekRepository extends \mkwhelpers\Repository {
         $q->setParameters($this->getQueryParameters($filter));
         $q->setFirstResult(0);
         $q->setMaxResults(\mkw\Store::getParameter(\mkw\consts::Feedtermekdb, 30));
-        if (\mkw\Store::getSetupValue('multilang')) {
+        if (\mkw\Store::isMultilang()) {
             $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
             $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
         }
@@ -338,7 +338,7 @@ class TermekRepository extends \mkwhelpers\Repository {
 
             $q->setParameters($this->getQueryParameters($kiemeltfilter));
             $q->setMaxResults($db);
-            if (\mkw\Store::getSetupValue('multilang')) {
+            if (\mkw\Store::isMultilang()) {
                 $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
                 $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
             }
@@ -480,7 +480,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . $this->getFilterString($filter)
                 . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
-        if (\mkw\Store::getSetupValue('multilang')) {
+        if (\mkw\Store::isMultilang()) {
             $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
             $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
         }
@@ -509,7 +509,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . $this->getFilterString($filter)
                 . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
-        if (\mkw\Store::getSetupValue('multilang')) {
+        if (\mkw\Store::isMultilang()) {
             $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
             $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
         }
