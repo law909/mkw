@@ -48,6 +48,11 @@
             </div>
 	<div class="matt-hseparator"></div>
             <div>
+                <label>Batch size:</label>
+                <input name="batchsize" value="20">
+            </div>
+	<div class="matt-hseparator"></div>
+            <div>
                 <label>Hosszú leírás módosítása létező terméknél is:</label>
                 <input name="editleiras" type="checkbox">
             </div>

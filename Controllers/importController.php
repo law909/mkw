@@ -103,6 +103,7 @@ class importController extends \mkwhelpers\Controller {
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
         $createuj = $this->params->getBoolRequestParam('createuj', false);
         $arszaz = $this->params->getNumRequestParam('arszaz', 100);
+        $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
         $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
 
@@ -151,9 +152,24 @@ class importController extends \mkwhelpers\Controller {
                 'quality'=>80,
                 'sizes'=>array('100'=>'100x100','150'=>'150x150','250'=>'250x250','1000'=>'1000x800')
             );
-            $afa = store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
             $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findByNev('-');
             $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+
+            $termekdb = 0;
+            fgetcsv($fh, 0, $sep, '"');
+            while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
+                $termekdb++;
+            }
+            while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
+                $termekdb++;
+                if ($data[$this->n('c')] * 1 > 0) {
+                    $katnev = $this->toutf(trim($data[$this->n('h')]));
+                    $parent = $this->createKategoria($katnev, $parentid);
+                }
+            }
+
+            rewind($fh);
+
             $termekdb = 0;
             fgetcsv($fh, 0, $sep, '"');
             while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
@@ -249,7 +265,7 @@ class importController extends \mkwhelpers\Controller {
                         $termek->setNetto($data[$this->n('d')] * 1 * $arszaz / 100);
                         $termek->setBrutto(round($termek->getBrutto(), -1));
                         store::getEm()->persist($termek);
-                        store::getEm()->flush();
+//                        store::getEm()->flush();
                     }
                 }
                 else {
@@ -259,10 +275,16 @@ class importController extends \mkwhelpers\Controller {
                         $termek->setNemkaphato(true);
                         $termek->setLathato(false);
                         store::getEm()->persist($termek);
-                        store::getEm()->flush();
+//                        store::getEm()->flush();
                     }
                 }
+                if (($termekdb % $batchsize) === 0) {
+                    store::getEm()->flush();
+                    store::getEm()->clear();
+                }
             }
+            store::getEm()->flush();
+            store::getEm()->clear();
         }
         fclose($fh);
     }
