@@ -1,14 +1,11 @@
 <?php
 use \Doctrine\Common\EventManager,
-	\mkw\store;
+    \mkw\store;
 
 require 'vendor/autoload.php';
 
-//require_once 'Doctrine/Common/ClassLoader.php';
-
 $ini = parse_ini_file('config.ini');
 $setini = parse_ini_file('setup.ini');
-
 
 $classLoader = new \Doctrine\Common\ClassLoader('Entities', __DIR__);
 $classLoader->register();
@@ -16,9 +13,6 @@ $classLoader->register();
 $classLoader = new \Doctrine\Common\ClassLoader('Proxies', __DIR__);
 $classLoader->register();
 
-//$classLoader=new \Doctrine\Common\ClassLoader('Doctrine');
-//$classLoader->register();
-//
 $classLoader=new \Doctrine\Common\ClassLoader('mkwhelpers');
 $classLoader->register();
 
@@ -27,6 +21,9 @@ $classLoader->register();
 
 $classLoader=new \Doctrine\Common\ClassLoader('Controllers');
 $classLoader->register();
+
+Store::setConfig($ini);
+Store::setSetup($setini);
 
 $config = new Doctrine\ORM\Configuration();
 
@@ -64,8 +61,6 @@ if ($ini['sqllog']) {
 	$config->setSQLLogger(new \mkwhelpers\FileSQLLogger('sql.log'));
 }
 
-$setupini=parse_ini_file('setup.ini');
-
 $connectionOptions = array(
     'driver'=>$ini['db.driver'],
     'user'=>$ini['db.username'],
@@ -87,20 +82,19 @@ $timestampableListener = new Gedmo\Timestampable\TimestampableListener;
 $timestampableListener->setAnnotationReader($cachedAnnotationReader);
 $evm->addEventSubscriber($timestampableListener);
 
-if (mkw\Store::isMultilang()) {
+
+if (Store::isMultilang()) {
     $translatableListener=new Gedmo\Translatable\TranslatableListener();
     $translatableListener->setAnnotationReader($cachedAnnotationReader);
     $translatableListener->setDefaultLocale('hu_hu');
     $translatableListener->setTranslatableLocale('hu_hu');
     $translatableListener->setTranslationFallback(true);
     $evm->addEventSubscriber($translatableListener);
-    store::setTranslationListener($translatableListener);
+    Store::setTranslationListener($translatableListener);
 }
 
 $em = \Doctrine\ORM\EntityManager::create($connectionOptions, $config, $evm);
 
 //Zend_Session::start();
 
-store::setEm($em);
-store::setConfig($ini);
-store::setSetup($setupini);
+Store::setEm($em);
