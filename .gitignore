@@ -57,3 +57,6 @@ js/tiny_mce/
 !/config.example.ini
 /ckfinder/config.php
 /node_modules/
+mkwsetup.ini
+setup.ini
+superzonesetup.ini
