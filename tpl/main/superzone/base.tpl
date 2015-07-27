@@ -2,24 +2,40 @@
 
 {block "bodyclass"}class="body"{/block}
 {block "stonebody"}
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Mugen Proshop</a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="themes/main/superzone/minilogo.jpg">
+            </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 {foreach $menu1 as $_menupont}
-                    <li><a href="#">{$_menupont.caption}</a></li>
+                    <li data-termekfa="1">
+                        <a href="#">{$_menupont.caption}</a>
+                        <div class="submenu">
+                            <ul>
+                                {foreach $_menupont.children as $termek}
+                                <li><a href="{$termek.link}">{$termek.cikkszam}</a></li>
+                                {/foreach}
+                            </ul>
+                        </div>
+                    </li>
                 {/foreach}
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/fiok">Account</a></li>
                 <li><a href="#">Cart</a></li>
             </ul>
         </div>
     </div>
 </nav>
-<div class="container">
-{block "body"}{/block}
+<div class="container content-back">
+    {block "body"}{/block}
 </div>
 {/block}

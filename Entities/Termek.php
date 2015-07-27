@@ -608,6 +608,35 @@ class Termek {
         return $x;
     }
 
+    public function toMenu() {
+        $x = array();
+        $x['id'] = $this->getId();
+        $x['kozepeskepurl'] = $this->getKepurlMedium();
+        $x['kiskepurl'] = $this->getKepurlSmall();
+        $x['minikepurl'] = $this->getKepurlMini();
+        $x['kepurl'] = $this->getKepurlLarge();
+        $x['slug'] = $this->getSlug();
+        $x['link'] = \mkw\Store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
+        $x['caption'] = $this->getNev();
+        $x['cikkszam'] = $this->getCikkszam();
+        $x['rovidleiras'] = $this->getRovidLeiras();
+        $x['bruttohuf'] = $this->getBruttoAr(null, \mkw\Store::getLoggedInUser());
+        $x['eredetibruttohuf'] = $this->getEredetiBruttoAr(null);
+        $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
+        if ($this->szallitasiido) {
+            $x['szallitasiido'] = $this->szallitasiido;
+        }
+        else {
+            if ($this->gyarto && $this->gyarto->getSzallitasiido()) {
+                $x['szallitasiido'] = $this->gyarto->getSzallitasiido();
+            }
+            else {
+                $x['szallitasiido'] = 0;
+            }
+        }
+        return $x;
+    }
+
     public function getId() {
         return $this->id;
     }

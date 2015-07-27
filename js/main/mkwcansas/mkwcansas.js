@@ -497,8 +497,8 @@ $(document).ready(function() {
             b = $('#navmain li .sub');
     $('#navmain li').on('click', function(e) {
         var $this = $(this),
-                gy = $this.children('a');
-        v = gy.hasClass('active');
+            gy = $this.children('a'),
+            v = gy.hasClass('active');
         e.preventDefault();
         if (gy.attr('data-cnt') > 0) {
             a.removeClass('active');

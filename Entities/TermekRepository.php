@@ -48,6 +48,10 @@ class TermekRepository extends \mkwhelpers\Repository {
         if ($elemcount > 0) {
             $q->setMaxResults($elemcount);
         }
+        if (\mkw\Store::getSetupValue('multilang')) {
+            $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
+            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
+        }
         return $q->getScalarResult();
     }
 
@@ -66,6 +70,10 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . $this->getFilterString($filter)
                 . $this->getOrderString(array()));
         $q->setParameters($this->getQueryParameters($filter));
+        if (\mkw\Store::getSetupValue('multilang')) {
+            $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
+            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
+        }
         return $q->getResult();
     }
 
@@ -86,6 +94,10 @@ class TermekRepository extends \mkwhelpers\Repository {
         }
         if ($elemcount > 0) {
             $q->setMaxResults($elemcount);
+        }
+        if (\mkw\Store::getSetupValue('multilang')) {
+            $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
+            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
         }
         return $q->getResult();
     }
@@ -121,31 +133,56 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . ' LEFT JOIN ' . $a . '.termekfa3 fa3'
                 . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
+        if (\mkw\Store::getSetupValue('multilang')) {
+            $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
+            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
+        }
         return $q->getSingleScalarResult();
     }
 
-    public function getTermekLista($filter, $order, $offset, $elemcount) {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('id', 'id');
-        $rsm->addScalarResult('valtozatid', 'valtozatid');
-        $rsm->addScalarResult('o1', 'o1');
+    public function getTermekLista($filter, $order, $offset = null, $elemcount = null) {
+        switch (\mkw\Store::getTheme()) {
+            case 'mkwcansas':
+                $rsm = new ResultSetMapping();
+                $rsm->addScalarResult('id', 'id');
+                $rsm->addScalarResult('valtozatid', 'valtozatid');
+                $rsm->addScalarResult('o1', 'o1');
 
-        $order = array_merge_recursive(array('.o1'=>'ASC'), $order);
-        $filter = $this->addAktivLathatoFilter($filter);
-        $sql = 'SELECT _xx.id,v.id AS valtozatid,'
-                . ' IF(_xx.nemkaphato,9,0)+IF((akciostart<=now() AND akciostop>=now()) OR (akciostart<=now() AND akciostop is null) OR (akciostart is null AND akciostop>=now()),-1,0) AS o1'
-                . ' FROM termek _xx'
-                . ' LEFT JOIN termekfa fa1 ON (_xx.termekfa1_id=fa1.id)'
-                . ' LEFT JOIN termekfa fa2 ON (_xx.termekfa2_id=fa2.id)'
-                . ' LEFT JOIN termekfa fa3 ON (_xx.termekfa3_id=fa3.id)'
-                . ' LEFT JOIN termekvaltozat v ON (_xx.id=v.termek_id) AND (v.lathato=1) AND (v.elerheto=1)'
-                . $this->getFilterString($filter)
-                . $this->getOrderString($order)
-                . $this->getLimitString($offset, $elemcount);
-        $q = $this->_em->createNativeQuery($sql, $rsm);
-        $params = $this->getQueryParameters($filter);
-        $q->setParameters($params);
-        return $q->getScalarResult();
+                $order = array_merge_recursive(array('.o1'=>'ASC'), $order);
+                $filter = $this->addAktivLathatoFilter($filter);
+                if (\mkw\Store::getSetupValue('arsavok')) {
+                    $sql = 'SELECT _xx.id,v.id AS valtozatid,'
+                            . ' IF(_xx.nemkaphato,9,0) AS o1'
+                            . ' FROM termek _xx'
+                            . ' LEFT JOIN termekfa fa1 ON (_xx.termekfa1_id=fa1.id)'
+                            . ' LEFT JOIN termekfa fa2 ON (_xx.termekfa2_id=fa2.id)'
+                            . ' LEFT JOIN termekfa fa3 ON (_xx.termekfa3_id=fa3.id)'
+                            . ' LEFT JOIN termekvaltozat v ON (_xx.id=v.termek_id) AND (v.lathato=1) AND (v.elerheto=1)'
+                            . $this->getFilterString($filter)
+                            . $this->getOrderString($order)
+                            . $this->getLimitString($offset, $elemcount);
+                }
+                else {
+                    $sql = 'SELECT _xx.id,v.id AS valtozatid,'
+                            . ' IF(_xx.nemkaphato,9,0)+IF((akciostart<=now() AND akciostop>=now()) OR (akciostart<=now() AND akciostop is null) OR (akciostart is null AND akciostop>=now()),-1,0) AS o1'
+                            . ' FROM termek _xx'
+                            . ' LEFT JOIN termekfa fa1 ON (_xx.termekfa1_id=fa1.id)'
+                            . ' LEFT JOIN termekfa fa2 ON (_xx.termekfa2_id=fa2.id)'
+                            . ' LEFT JOIN termekfa fa3 ON (_xx.termekfa3_id=fa3.id)'
+                            . ' LEFT JOIN termekvaltozat v ON (_xx.id=v.termek_id) AND (v.lathato=1) AND (v.elerheto=1)'
+                            . $this->getFilterString($filter)
+                            . $this->getOrderString($order)
+                            . $this->getLimitString($offset, $elemcount);
+                }
+                $q = $this->_em->createNativeQuery($sql, $rsm);
+                $params = $this->getQueryParameters($filter);
+                $q->setParameters($params);
+                return $q->getScalarResult();
+            case 'superzone':
+                return $this->getWithJoins($filter, $order);
+            default :
+                throw new Exception('ISMERETLEN THEME: ' . \mkw\Store::getTheme());
+        }
     }
 
     public function getTermekListaCount($filter) {
@@ -158,6 +195,10 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . ' LEFT JOIN ' . $a . '.valtozatok v WITH v.lathato=true AND v.elerheto=true'
                 . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
+        if (\mkw\Store::getSetupValue('multilang')) {
+            $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
+            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
+        }
         return $q->getSingleScalarResult();
     }
 
@@ -171,6 +212,10 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . ' LEFT JOIN ' . $a . '.valtozatok v WITH v.lathato=true AND v.elerheto=true'
                 . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
+        if (\mkw\Store::getSetupValue('multilang')) {
+            $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
+            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
+        }
         return $q->getSingleScalarResult();
     }
 
@@ -200,6 +245,10 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . $this->getFilterString($filter)
                 . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
+        if (\mkw\Store::getSetupValue('multilang')) {
+            $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
+            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
+        }
         return $q->getScalarResult();
     }
 
@@ -217,6 +266,10 @@ class TermekRepository extends \mkwhelpers\Repository {
         $q->setParameters($this->getQueryParameters($filter));
         $q->setFirstResult(0);
         $q->setMaxResults(\mkw\Store::getParameter(\mkw\consts::Feedtermekdb, 30));
+        if (\mkw\Store::getSetupValue('multilang')) {
+            $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
+            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
+        }
         return $q->getResult();
     }
 
@@ -285,6 +338,10 @@ class TermekRepository extends \mkwhelpers\Repository {
 
             $q->setParameters($this->getQueryParameters($kiemeltfilter));
             $q->setMaxResults($db);
+            if (\mkw\Store::getSetupValue('multilang')) {
+                $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
+                $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
+            }
             return $q->getScalarResult();
         }
         else {
@@ -423,6 +480,10 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . $this->getFilterString($filter)
                 . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
+        if (\mkw\Store::getSetupValue('multilang')) {
+            $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
+            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
+        }
         $res = $q->getScalarResult();
         $ret = array();
         foreach ($res as $sor) {
@@ -448,6 +509,10 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . $this->getFilterString($filter)
                 . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
+        if (\mkw\Store::getSetupValue('multilang')) {
+            $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
+            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
+        }
         $res = $q->getResult();
         return $res;
     }

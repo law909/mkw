@@ -21,11 +21,17 @@ class Store {
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
 
     public static function getJSVersion() {
-        return 17;
+        switch(self::getTheme()) {
+            case 'mkwcansas':
+                return 18;
+        }
     }
 
     public static function getBootstrapJSVersion() {
-        return 6;
+        switch(self::getTheme()) {
+            case 'mkwcansas':
+                return 6;
+        }
     }
 
     public static function getClientIp() {
@@ -610,5 +616,17 @@ class Store {
     public static function getLoggedInUser() {
         $pr = self::getEm()->getRepository('Entities\Partner');
         return $pr->getLoggedInUser();
+    }
+
+    public static function getTheme() {
+        return self::getConfigValue('main.theme');
+    }
+
+    public static function isMultilang() {
+        return self::getSetupValue('multilang');
+    }
+
+    public static function isArsavok() {
+        return self::getSetupValue('arsavok');
     }
 }
