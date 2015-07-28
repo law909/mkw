@@ -19,7 +19,7 @@
             <ul class="nav navbar-nav">
                 {foreach $menu1 as $_menupont}
                     <li data-termekfa="1">
-                        <a href="#">{$_menupont.caption}</a>
+                        <a href="#" class="js-menupont">{$_menupont.caption}</a>
                         <div class="submenu">
                             <ul>
                                 {foreach $_menupont.children as $_mpelem}
@@ -29,8 +29,8 @@
                         </div>
                     </li>
                 {/foreach}
-                <li><a href="/fiok">Account</a></li>
-                <li><a href="#">Cart</a></li>
+                <li><a href="{$showaccountlink}" class="js-menupont">Account</a></li>
+                <li><a href="#" class="js-menupont">Cart</a></li>
             </ul>
         </div>
     </div>

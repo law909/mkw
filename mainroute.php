@@ -51,13 +51,17 @@ $router->map('GET', '/varos', 'irszamController#varosTypeaheadList', 'varostypea
 
 $router->map('POST', '/termekertesito/save', 'termekertesitoController#save', 'termekertesitosave');
 
-if (\mkw\Store::getConfigValue('main.theme') === 'mkwcansas') {
+if (\mkw\Store::getTheme() === 'mkwcansas') {
     $router->map('GET', '/ProductDetails', 'termekController#redirectOldUrl', 'termekredirectoldurl');
     $router->map('GET', '/', 'termekfaController#redirectOldUrl', 'termekfaredirectoldurl');
     $router->map('GET', '/Static', 'statlapController#redirectOldUrl', 'statlapredirectoldurl');
     $router->map('GET', '/mindentkapni.rss', 'termekController#redirectOldRSSUrl', 'termekredirectoldrssurl');
     $router->map('GET', '/hirek.rss', 'hirController#redirectOldRSSUrl', 'hirredirectoldrssurl');
     $router->map('GET', '/MiddleTier/ReadImage', 'termekController#redirectRegikepUrl', 'termekredirectregikepurl');
+}
+
+if (\mkw\Store::getTheme() === 'superzone') {
+    $router->map('GET', '/termekm/[:slug]/[:szin]', 'mainController#termekm', 'showtermekm');
 }
 
 $router->map('GET', '/export/grando', 'exportController#GrandoExport', 'grandoexport');

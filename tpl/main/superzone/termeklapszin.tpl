@@ -9,10 +9,12 @@
     <div class="row">
         {foreach $termek.valtozatok as $_valt}
         <div class="col-md-4">
-            <a href="#">
-            <img src="{$_valt.kepurlmedium}">
-            <div>{$_valt.caption}</div>
-            </a>
+            <div class="szindoboz">
+                <a href="{$_valt.link}">
+                    <img src="{$_valt.kepurlmedium}" class="szinkep">
+                    <div class="szinszoveg">{$_valt.caption}</div>
+                </a>
+            </div>
         </div>
         {/foreach}
     </div>

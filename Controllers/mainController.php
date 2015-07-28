@@ -208,7 +208,7 @@ class mainController extends \mkwhelpers\Controller {
                     $t['cikkszam'] = $termek->getCikkszam();
                     $valtozatok = $termek->getValtozatok();
                     foreach ($valtozatok as $valt) {
-                        if ($valt->getElerheto()) {
+                        if ($valt->getElerheto() && $valt->getLathato()) {
                             if ($valt->getAdatTipus1Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) {
                                 $vtt[$valt->getErtek1()]['id'] = $valt->getErtek1();
                                 $vtt[$valt->getErtek1()]['caption'] = $valt->getErtek1();
@@ -216,6 +216,7 @@ class mainController extends \mkwhelpers\Controller {
                                 $vtt[$valt->getErtek1()]['kepurlsmall'] = $valt->getKepurlSmall();
                                 $vtt[$valt->getErtek1()]['kepurlmedium'] = $valt->getKepurlMedium();
                                 $vtt[$valt->getErtek1()]['kepurllarge'] = $valt->getKepurlLarge();
+                                $vtt[$valt->getErtek1()]['link'] = \mkw\Store::getRouter()->generate('showtermekm', false, array('slug' => $com, 'szin' => $valt->getErtek1()));
                             }
                             if ($valt->getAdatTipus2Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) {
                                 $vtt[$valt->getErtek2()]['id'] = $valt->getErtek2();
@@ -224,6 +225,7 @@ class mainController extends \mkwhelpers\Controller {
                                 $vtt[$valt->getErtek2()]['kepurlsmall'] = $valt->getKepurlSmall();
                                 $vtt[$valt->getErtek2()]['kepurlmedium'] = $valt->getKepurlMedium();
                                 $vtt[$valt->getErtek2()]['kepurllarge'] = $valt->getKepurlLarge();
+                                $vtt[$valt->getErtek2()]['link'] = \mkw\Store::getRouter()->generate('showtermekm', false, array('slug' => $com, 'szin' => $valt->getErtek2()));
                             }
                         }
                     }
@@ -237,6 +239,52 @@ class mainController extends \mkwhelpers\Controller {
                 break;
         }
 	}
+
+    // superzone színhez tartozó méretek
+    public function termekm() {
+        $com = $this->params->getStringParam('slug');
+        $szin = $this->params->getStringParam('szin');
+        $tc = new termekController($this->params);
+        $termek = $tc->getRepo()->findOneBySlug($com);
+        if ($termek && !$termek->getInaktiv() && $termek->getLathato() && !$termek->getFuggoben()) {
+            $this->view = $this->getTemplateFactory()->createMainView('termeklapmeret.tpl');
+            store::fillTemplate($this->view);
+            $this->view->setVar('pagetitle', $termek->getShowOldalcim());
+            $this->view->setVar('seodescription', $termek->getShowSeodescription());
+            $t = array();
+            $vtt = array();
+            $t['caption'] = $termek->getNev();
+            $t['cikkszam'] = $termek->getCikkszam();
+            $t['szin'] = $szin;
+            $t['brutto'] = $termek->getNettoAr(null, \mkw\Store::getLoggedInUser());
+            $valtozatok = $termek->getValtozatok();
+            foreach ($valtozatok as $valt) {
+                if ($valt->getElerheto() && $valt->getLathato()) {
+                    if (($valt->getAdatTipus1Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) && ($valt->getErtek1() == $szin)) {
+                        $t['kepurlmedium'] = $valt->getKepurlMedium();
+                        $vtt[] = array(
+                            'id' => $valt->getId(),
+                            'caption' => $valt->getErtek2(),
+                            'keszlet' => $valt->getKeszlet()
+                        );
+                    }
+                    if (($valt->getAdatTipus2Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) && ($valt->getErtek2() == $szin)) {
+                        $vtt[] = array(
+                            'id' => $valt->getId(),
+                            'caption' => $valt->getErtek1(),
+                            'keszlet' => $valt->getKeszlet()
+                        );
+                    }
+                }
+            }
+            $t['valtozatok'] = $vtt;
+            $this->view->setVar('termek', $t);
+            $this->view->printTemplateResult(true);
+        }
+        else {
+            store::redirectTo404($com, $this->params);
+        }
+    }
 
 	public function valtozatar() {
 		$termekid = $this->params->getIntRequestParam('t');

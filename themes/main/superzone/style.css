@@ -5,6 +5,7 @@
 .content-back {
     background: #eee;
     border-radius: 2px;
+    padding-bottom: 20px;
 }
 
 .signin {
@@ -193,6 +194,55 @@ fieldset[disabled] .btn-red.active {
 
 .submenu>ul>li>a {
     color: #e7e7e7;
+}
+
+.submenu>ul>li>a:hover {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.szindoboz {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 2px;
+}
+
+.szinkep {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.szinszoveg {
+    text-align: center;
+}
+
+.szindoboz>a {
+    color: #777;
+}
+
+.szindoboz>a:hover {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.valtozatnagykep {
+    text-align: center;
+}
+
+.valtozatsor {
+    margin-bottom: 5px;
+}
+
+.valtozatkozep {
+    height: 34px;
+    line-height: 34px;
+}
+
+.valtozatkozep>span, .valtozatkozep>img {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 @media (min-width: 480px) {
