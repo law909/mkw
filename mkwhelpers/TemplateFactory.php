@@ -61,10 +61,7 @@ class TemplateFactory {
 	}
 
 	public function createView($tplfilename) {
-		if (strtolower($this->templateenginename)=='dwoo') {
-			$view = new DwooView($this->getTemplateC(),$this->getTemplate(),$tplfilename,$this->getSmartyConfig(),$this->getSmartyCache());
-		}
-		elseif (strtolower($this->templateenginename)=='smarty') {
+		if (strtolower($this->templateenginename)=='smarty') {
             if (file_exists($this->getTemplate() . $tplfilename)) {
                 $view = new SmartyView($this->getTemplateC(),$this->getTemplate(),$tplfilename,$this->getSmartyConfig(),$this->getSmartyCache());
             }
@@ -76,13 +73,7 @@ class TemplateFactory {
 	}
 
 	public function createMainView($tplfilename) {
-//		$class=$this->templateenginename.'View';
-//		require($class.'.php');
-//		$view=new $class($this->getTemplateC(),$this->getMainTemplate().$tplfilename,$this->getMainSmartyConfig(),$this->getMainSmartyCache());
-		if (strtolower($this->templateenginename)=='dwoo') {
-			$view=new DwooView($this->getTemplateC(),$this->getMainTemplate(),$tplfilename,$this->getMainSmartyConfig(),$this->getMainSmartyCache());
-		}
-		elseif (strtolower($this->templateenginename)=='smarty') {
+		if (strtolower($this->templateenginename)=='smarty') {
 			$view=new SmartyView($this->getTemplateC(),$this->getMainTemplate(),$tplfilename,$this->getMainSmartyConfig(),$this->getMainSmartyCache());
 		}
 		return $view;

@@ -171,25 +171,71 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function termek() {
-		$com = $this->params->getStringParam('slug');
-		$tc = new termekController($this->params);
-		$termek = $tc->getRepo()->findOneBySlug($com);
-		if ($termek && !$termek->getInaktiv() && $termek->getLathato() && !$termek->getFuggoben()) {
-			$this->view = $this->getTemplateFactory()->createMainView('termeklap.tpl');
-			store::fillTemplate($this->view);
-			$this->view->setVar('pagetitle', $termek->getShowOldalcim());
-			$this->view->setVar('seodescription', $termek->getShowSeodescription());
-    		$this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(store::getParameter(\mkw\consts::Termeklapnepszerutermekdb, 5)));
-    		$this->view->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($termek));
-			$t = $tc->getTermekLap($termek);
-			foreach ($t as $k => $v) {
-				$this->view->setVar($k, $v);
-			}
-			$this->view->printTemplateResult(true);
-		}
-		else {
-			store::redirectTo404($com, $this->params);
-		}
+        switch (\mkw\Store::getTheme()) {
+            case 'mkwcansas':
+                $com = $this->params->getStringParam('slug');
+                $tc = new termekController($this->params);
+                $termek = $tc->getRepo()->findOneBySlug($com);
+                if ($termek && !$termek->getInaktiv() && $termek->getLathato() && !$termek->getFuggoben()) {
+                    $this->view = $this->getTemplateFactory()->createMainView('termeklap.tpl');
+                    store::fillTemplate($this->view);
+                    $this->view->setVar('pagetitle', $termek->getShowOldalcim());
+                    $this->view->setVar('seodescription', $termek->getShowSeodescription());
+                    $this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(store::getParameter(\mkw\consts::Termeklapnepszerutermekdb, 5)));
+                    $this->view->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($termek));
+                    $t = $tc->getTermekLap($termek);
+                    foreach ($t as $k => $v) {
+                        $this->view->setVar($k, $v);
+                    }
+                    $this->view->printTemplateResult(true);
+                }
+                else {
+                    store::redirectTo404($com, $this->params);
+                }
+                break;
+            case 'superzone':
+                $com = $this->params->getStringParam('slug');
+                $tc = new termekController($this->params);
+                $termek = $tc->getRepo()->findOneBySlug($com);
+                if ($termek && !$termek->getInaktiv() && $termek->getLathato() && !$termek->getFuggoben()) {
+                    $this->view = $this->getTemplateFactory()->createMainView('termeklapszin.tpl');
+                    store::fillTemplate($this->view);
+                    $this->view->setVar('pagetitle', $termek->getShowOldalcim());
+                    $this->view->setVar('seodescription', $termek->getShowSeodescription());
+                    $t = array();
+                    $vtt = array();
+                    $t['caption'] = $termek->getNev();
+                    $t['cikkszam'] = $termek->getCikkszam();
+                    $valtozatok = $termek->getValtozatok();
+                    foreach ($valtozatok as $valt) {
+                        if ($valt->getElerheto()) {
+                            if ($valt->getAdatTipus1Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) {
+                                $vtt[$valt->getErtek1()]['id'] = $valt->getErtek1();
+                                $vtt[$valt->getErtek1()]['caption'] = $valt->getErtek1();
+                                $vtt[$valt->getErtek1()]['kepurlmini'] = $valt->getKepurlMini();
+                                $vtt[$valt->getErtek1()]['kepurlsmall'] = $valt->getKepurlSmall();
+                                $vtt[$valt->getErtek1()]['kepurlmedium'] = $valt->getKepurlMedium();
+                                $vtt[$valt->getErtek1()]['kepurllarge'] = $valt->getKepurlLarge();
+                            }
+                            if ($valt->getAdatTipus2Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) {
+                                $vtt[$valt->getErtek2()]['id'] = $valt->getErtek2();
+                                $vtt[$valt->getErtek2()]['caption'] = $valt->getErtek2();
+                                $vtt[$valt->getErtek2()]['kepurlmini'] = $valt->getKepurlMini();
+                                $vtt[$valt->getErtek2()]['kepurlsmall'] = $valt->getKepurlSmall();
+                                $vtt[$valt->getErtek2()]['kepurlmedium'] = $valt->getKepurlMedium();
+                                $vtt[$valt->getErtek2()]['kepurllarge'] = $valt->getKepurlLarge();
+                            }
+                        }
+                    }
+                    $t['valtozatok'] = $vtt;
+                    $this->view->setVar('termek', $t);
+                    $this->view->printTemplateResult(true);
+                }
+                else {
+                    store::redirectTo404($com, $this->params);
+                }
+                break;
+        }
 	}
 
 	public function valtozatar() {

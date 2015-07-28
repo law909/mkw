@@ -138,6 +138,26 @@
 				</select></td>
 			</tr>
             {/if}
+            {if ($maintheme === 'superzone')}
+			<tr>
+				<td><label for="SzinEdit">{t('Szín')}:</label></td>
+				<td><select id="SzinEdit" name="valtozattipusszin">
+					<option value="">{t('válasszon')}</option>
+					{foreach $valtozattipusszinlist as $_v}
+					<option value="{$_v.id}"{if ($_v.selected)} selected="selected"{/if}>{$_v.caption}</option>
+					{/foreach}
+				</select></td>
+			</tr>
+			<tr>
+				<td><label for="MeretEdit">{t('Méret')}:</label></td>
+				<td><select id="MeretEdit" name="valtozattipusmeret">
+					<option value="">{t('válasszon')}</option>
+					{foreach $valtozattipusmeretlist as $_v}
+					<option value="{$_v.id}"{if ($_v.selected)} selected="selected"{/if}>{$_v.caption}</option>
+					{/foreach}
+				</select></td>
+			</tr>
+            {/if}
         </tbody></table>
         <table><tbody>
             <tr>

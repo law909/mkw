@@ -25,6 +25,7 @@ class generalDataLoader {
         $setup['grideditbutton'] = store::getParameter(consts::Grideditbutton, 'small');
         $setup['editstyle'] = store::getParameter(consts::Editstyle, 'dropdown');
         $view->setVar('setup', $setup);
+        $view->setVar('maintheme', Store::getTheme());
         $view->setVar('editstyles', array(
             'dropdown',
             'tab'));

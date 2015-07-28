@@ -179,6 +179,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                 $q->setParameters($params);
                 return $q->getScalarResult();
             case 'superzone':
+                $filter = $this->addAktivLathatoFilter($filter);
                 return $this->getWithJoins($filter, $order);
             default :
                 throw new Exception('ISMERETLEN THEME: ' . \mkw\Store::getTheme());

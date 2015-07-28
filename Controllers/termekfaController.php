@@ -228,15 +228,15 @@ class termekfaController extends \mkwhelpers\MattableController {
             case 'superzone':
                 $repo = $this->getRepo();
                 $f = $repo->getForMenu($menunum);
-                $t = array();
+                $x = array();
                 foreach ($f as $o) {
                     $o['kozepeskepurl'] = store::createMediumImageUrl($o['kepurl']);
                     $o['kiskepurl'] = store::createSmallImageUrl($o['kepurl']);
                     $o['kepurl'] = store::createBigImageUrl($o['kepurl']);
                     $o['children'] = $this->gettermeklistaforparent($o);
-                    $t[] = $o;
+                    $x[] = $o;
                 }
-        		return $t;
+        		return $x;
         }
 	}
 
@@ -539,8 +539,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 return $ret;
 
             case 'superzone':
-                $tc = new termekController($this->params);
-                $termekrepo = $tc->getRepo();
+                $termekrepo = $this->getEm()->getRepository('Entities\Termek');
                 $order = array();
                 $nativkategoriafilter = array();
                 if ($parent) {
@@ -562,8 +561,8 @@ class termekfaController extends \mkwhelpers\MattableController {
                 }
                 $termekek = $termekrepo->getTermekLista(array_merge_recursive($keresofilter, $kategoriafilter), array('_xx.cikkszam' => 'ASC'));
                 $t = array();
-                foreach ($termekek as $termek) {
-                    $tete = $termek->toMenu();
+                foreach ($termekek as $te) {
+                    $tete = $te->toMenu();
                     $tete['kiemelt'] = false;
                     $t[] = $tete;
                 }

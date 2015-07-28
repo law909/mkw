@@ -12,7 +12,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="/">
-                <img src="themes/main/superzone/minilogo.jpg">
+                <img src="/themes/main/superzone/minilogo.jpg">
             </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
@@ -22,8 +22,8 @@
                         <a href="#">{$_menupont.caption}</a>
                         <div class="submenu">
                             <ul>
-                                {foreach $_menupont.children as $termek}
-                                <li><a href="{$termek.link}">{$termek.cikkszam}</a></li>
+                                {foreach $_menupont.children as $_mpelem}
+                                <li><a href="{$_mpelem.link}">{$_mpelem.cikkszam}</a></li>
                                 {/foreach}
                             </ul>
                         </div>

@@ -207,6 +207,15 @@ class setupController extends \mkwhelpers\Controller {
             ));
         }
 
+        $p = $repo->find(\mkw\consts::ValtozatTipusMeret);
+        $meretcs = new termekvaltozatadattipusController($this->params);
+        $view->setVar('valtozattipusmeretlist', $meretcs->getSelectList(($p ? $p->getErtek() : 0)));
+
+        $p = $repo->find(\mkw\consts::ValtozatTipusSzin);
+        $szincs = new termekvaltozatadattipusController($this->params);
+        $view->setVar('valtozattipusszinlist', $szincs->getSelectList(($p ? $p->getErtek() : 0)));
+
+
         // feed
         $p = $repo->find(\mkw\consts::Feedhirdb);
         $view->setVar(\mkw\consts::Feedhirdb, ($p ? $p->getErtek() : 20));
@@ -357,13 +366,31 @@ class setupController extends \mkwhelpers\Controller {
         if ($valutanem) {
             $this->setObj(\mkw\consts::Valutanem, $valutanem->getId());
         }
+
         $this->setObj(\mkw\consts::Arsav, $this->params->getStringRequestParam('arsav'));
+
         $markacs = store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('markacs', 0));
         if ($markacs) {
             $this->setObj(\mkw\consts::MarkaCs, $markacs->getId());
         }
         else {
             $this->setObj(\mkw\consts::MarkaCs, '');
+        }
+
+        $sz = store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozattipusszin', 0));
+        if ($sz) {
+            $this->setObj(\mkw\consts::ValtozatTipusSzin, $sz->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::ValtozatTipusSzin, '');
+        }
+
+        $sz = store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozattipusmeret', 0));
+        if ($sz) {
+            $this->setObj(\mkw\consts::ValtozatTipusMeret, $sz->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::ValtozatTipusMeret, '');
         }
 
         $rolerep = store::getEm()->getRepository('Entities\Munkakor');
@@ -386,7 +413,7 @@ class setupController extends \mkwhelpers\Controller {
 
         $this->setObj(\mkw\consts::Esedekessegalap, $this->params->getIntRequestParam('esedekessegalap', 1));
         $this->setObj(\mkw\consts::Locale, $this->params->getStringRequestParam('locale'));
-        
+
         $inkid = $this->params->getIntRequestParam('importnewkatid');
         if ($inkid) {
             $importnewkat = store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
