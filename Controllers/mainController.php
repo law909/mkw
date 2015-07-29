@@ -216,7 +216,7 @@ class mainController extends \mkwhelpers\Controller {
                                 $vtt[$valt->getErtek1()]['kepurlsmall'] = $valt->getKepurlSmall();
                                 $vtt[$valt->getErtek1()]['kepurlmedium'] = $valt->getKepurlMedium();
                                 $vtt[$valt->getErtek1()]['kepurllarge'] = $valt->getKepurlLarge();
-                                $vtt[$valt->getErtek1()]['link'] = \mkw\Store::getRouter()->generate('showtermekm', false, array('slug' => $com, 'szin' => $valt->getErtek1()));
+                                $vtt[$valt->getErtek1()]['link'] = \mkw\Store::getRouter()->generate('showtermekm', false, array('slug' => $com), array('szin' => urlencode($valt->getErtek1())));
                             }
                             if ($valt->getAdatTipus2Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) {
                                 $vtt[$valt->getErtek2()]['id'] = $valt->getErtek2();
@@ -225,7 +225,7 @@ class mainController extends \mkwhelpers\Controller {
                                 $vtt[$valt->getErtek2()]['kepurlsmall'] = $valt->getKepurlSmall();
                                 $vtt[$valt->getErtek2()]['kepurlmedium'] = $valt->getKepurlMedium();
                                 $vtt[$valt->getErtek2()]['kepurllarge'] = $valt->getKepurlLarge();
-                                $vtt[$valt->getErtek2()]['link'] = \mkw\Store::getRouter()->generate('showtermekm', false, array('slug' => $com, 'szin' => $valt->getErtek2()));
+                                $vtt[$valt->getErtek2()]['link'] = \mkw\Store::getRouter()->generate('showtermekm', false, array('slug' => $com), array('szin' => urlencode($valt->getErtek2())));
                             }
                         }
                     }
@@ -243,7 +243,7 @@ class mainController extends \mkwhelpers\Controller {
     // superzone színhez tartozó méretek
     public function termekm() {
         $com = $this->params->getStringParam('slug');
-        $szin = $this->params->getStringParam('szin');
+        $szin = $this->params->getStringRequestParam('szin');
         $tc = new termekController($this->params);
         $termek = $tc->getRepo()->findOneBySlug($com);
         if ($termek && !$termek->getInaktiv() && $termek->getLathato() && !$termek->getFuggoben()) {

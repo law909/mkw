@@ -61,7 +61,7 @@ if (\mkw\Store::getTheme() === 'mkwcansas') {
 }
 
 if (\mkw\Store::getTheme() === 'superzone') {
-    $router->map('GET', '/termekm/[:slug]/[:szin]', 'mainController#termekm', 'showtermekm');
+    $router->map('GET', '/termekm/[:slug]', 'mainController#termekm', 'showtermekm');
 }
 
 $router->map('GET', '/export/grando', 'exportController#GrandoExport', 'grandoexport');
