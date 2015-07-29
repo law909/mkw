@@ -119,7 +119,7 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=30,nullable=true) */
     private $tulajeuadoszam;
 
-    /** @ORM\Column(type="string",length=255,nullable=false) */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $tulajeorinr;
 
     /** @ORM\Column(type="string",length=30,nullable=true) */
