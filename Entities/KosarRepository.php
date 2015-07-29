@@ -189,7 +189,9 @@ class KosarRepository extends \mkwhelpers\Repository {
             else {
                 $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
                 $termek = $this->getRepo('Entities\Termek')->find($termekid);
-                $termekvaltozat = $this->getRepo('Entities\TermekValtozat')->find($vid);
+                if ($vid) {
+                    $termekvaltozat = $this->getRepo('Entities\TermekValtozat')->find($vid);
+                }
                 $k = new \Entities\Kosar();
                 $k->setTermek($termek);
                 if ($vid) {
