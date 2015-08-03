@@ -158,6 +158,15 @@
 				</select></td>
 			</tr>
             {/if}
+			<tr>
+				<td><label for="FoxpostSzallmodEdit">{t('Foxpost száll.mód')}:</label></td>
+				<td><select id="FoxpostSzallmodEdit" name="foxpostszallmod">
+					<option value="">{t('válasszon')}</option>
+					{foreach $foxpostszallmodlist as $_foxpost}
+					<option value="{$_foxpost.id}"{if ($_foxpost.selected)} selected="selected"{/if}>{$_foxpost.caption}</option>
+					{/foreach}
+				</select></td>
+			</tr>
         </tbody></table>
         <table><tbody>
             <tr>

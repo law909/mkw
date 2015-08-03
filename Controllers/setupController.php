@@ -97,6 +97,9 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::SzallitasiKtgTermek);
         $fizmod = new termekController($this->params);
         $view->setVar('szallitasiktgtermeklist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::FoxpostSzallitasiMod);
+        $szallmod = new szallitasimodController($this->params);
+        $view->setVar('foxpostszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
 
         $p = $repo->find(\mkw\consts::Miniimagesize);
         $view->setVar(\mkw\consts::Miniimagesize, ($p ? $p->getErtek() : 80));
@@ -303,6 +306,13 @@ class setupController extends \mkwhelpers\Controller {
         $szkt = store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('szallitasiktgtermek', 0));
         if ($szkt) {
             $this->setObj(\mkw\consts::SzallitasiKtgTermek, $szkt->getId());
+        }
+        $szm = store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('foxpostszallmod', 0));
+        if ($szm) {
+            $this->setObj(\mkw\consts::FoxpostSzallitasiMod, $szm->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::FoxpostSzallitasiMod, '');
         }
 
         $this->setObj(\mkw\consts::Miniimagesize, $this->params->getIntRequestParam('miniimagesize'));

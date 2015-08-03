@@ -286,6 +286,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function toMenu()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toMenu', array());
+
+        return parent::toMenu();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {
@@ -1792,6 +1803,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoAr', array($valtozat, $partner, $valutanem));
 
         return parent::getNettoAr($valtozat, $partner, $valutanem);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getArValutanem($valtozat = NULL, $partner = NULL, $valutanem = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArValutanem', array($valtozat, $partner, $valutanem));
+
+        return parent::getArValutanem($valtozat, $partner, $valutanem);
     }
 
     /**

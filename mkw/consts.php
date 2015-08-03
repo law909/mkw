@@ -111,4 +111,6 @@ class consts {
 
     const ValtozatTipusSzin = 'valtozattipusszin';
     const ValtozatTipusMeret = 'valtozattipusmeret';
+
+    const FoxpostSzallitasiMod = 'foxpostszallitasimod';
 }

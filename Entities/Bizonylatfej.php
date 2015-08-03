@@ -339,6 +339,12 @@ class Bizonylatfej {
     private $partnerszamlatipus;
 
     /**
+     * @ORM\ManyToOne(targetEntity="FoxpostTerminal",inversedBy="bizonylatfejek")
+     * @ORM\JoinColumn(name="foxpostterminal_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $foxpostterminal;
+
+    /**
      * @ORM\PrePersist
      */
     public function generateTrxId() {
@@ -1543,4 +1549,21 @@ class Bizonylatfej {
     public function setPartnerSzamlatipus($val) {
         $this->partnerszamlatipus = $val;
     }
+
+    public function getFoxpostterminal() {
+        return $this->foxpostterminal;
+    }
+
+    public function setFoxpostterminal($val) {
+        if ($this->foxpostterminal !== $val) {
+            $this->foxpostterminal = $val;
+        }
+    }
+
+    public function removeFoxpostterminal() {
+        if ($this->foxpostterminal !== null) {
+            $this->foxpostterminal = null;
+        }
+    }
+
 }
