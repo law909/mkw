@@ -271,7 +271,10 @@ class termekController extends \mkwhelpers\MattableController {
 					$obj->addTermekAr($ar);
                     $ar->setAzonosito($this->params->getStringRequestParam('arazonosito_' . $arid));
                     $ar->setNetto($this->params->getNumRequestParam('arnetto_' . $arid));
-                    $ar->setBrutto($this->params->getNumRequestParam('arbrutto_' . $arid));
+                    $brutto = $this->params->getNumRequestParam('arbrutto_' . $arid);
+                    if ($brutto != 0) {
+                        $ar->setBrutto($brutto);
+                    }
                     if ($valutanem) {
                         $ar->setValutanem($valutanem);
                     }
@@ -282,7 +285,10 @@ class termekController extends \mkwhelpers\MattableController {
 					if ($ar) {
                         $ar->setAzonosito($this->params->getStringRequestParam('arazonosito_' . $arid));
                         $ar->setNetto($this->params->getNumRequestParam('arnetto_' . $arid));
-                        $ar->setBrutto($this->params->getNumRequestParam('arbrutto_' . $arid));
+                        $brutto = $this->params->getNumRequestParam('arbrutto_' . $arid);
+                        if ($brutto != 0) {
+                            $ar->setBrutto($brutto);
+                        }
                         if ($valutanem) {
                             $ar->setValutanem($valutanem);
                         }

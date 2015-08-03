@@ -1459,6 +1459,18 @@ class Termek {
         }
     }
 
+    public function getArValutanem($valtozat = null, $partner = null, $valutanem = null) {
+        if ($partner) {
+            if (!$valutanem) {
+                $valutanem = $partner->getValutanem();
+            }
+        }
+        if (!$valutanem) {
+            $valutanem = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+        }
+        return $valutanem;
+    }
+
     public function getBruttoAr($valtozat = null, $partner = null, $valutanem = null) {
         // Nincsenek ársávok
         if (!\mkw\Store::isArsavok()) {

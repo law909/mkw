@@ -8,18 +8,18 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4 valtozatnagykep">
+        <div class="col-md-5 valtozatnagykep">
             <img src="{$termek.kepurlmedium}">
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
             <form>
                 {foreach $termek.valtozatok as $_valt}
                 <div class="row valtozatsor">
-                    <div class="col-md-7 valtozatkozep">
+                    <div class="col-md-5 valtozatkozep">
                         <span>{$termek.szin} - {$_valt.caption}</span>
                     </div>
-                    <div class="col-md-1 valtozatkozep">
-                        <span>{$termek.brutto}</span>
+                    <div class="col-md-3 valtozatkozep">
+                        <span>{number_format($termek.ar,0,',','')} {$termek.valutanemnev}</span>
                     </div>
                     <div class="col-md-1 valtozatkozep">
                         <img src="{if ($_valt.keszlet <= 0)}/themes/main/superzone/nincs.gif{else}/themes/main/superzone/van.gif{/if}">
