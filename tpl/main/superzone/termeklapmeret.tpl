@@ -16,7 +16,7 @@
                 {foreach $termek.valtozatok as $_valt}
                 <div class="row valtozatsor">
                     <div class="col-md-7 valtozatkozep">
-                        <span>{$termek.cikkszam} {$termek.caption} {$termek.szin} - {$_valt.caption}</span>
+                        <span>{$termek.szin} - {$_valt.caption}</span>
                     </div>
                     <div class="col-md-1 valtozatkozep">
                         <span>{$termek.brutto}</span>
