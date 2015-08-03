@@ -256,8 +256,14 @@ class mainController extends \mkwhelpers\Controller {
             $t['caption'] = $termek->getNev();
             $t['cikkszam'] = $termek->getCikkszam();
             $t['szin'] = $szin;
-            $t['ar'] = $termek->getNettoAr(null, \mkw\Store::getLoggedInUser());
-            $valutanem = $termek->getArValutanem(null, \mkw\Store::getLoggedInUser());
+            $partner = \mkw\Store::getLoggedInUser();
+            if ($partner->getSzamlatipus()) {
+                $t['ar'] = $termek->getNettoAr(null, $partner);
+            }
+            else {
+                $t['ar'] = $termek->getBruttoAr(null, $partner);
+            }
+            $valutanem = $termek->getArValutanem(null, $partner);
             if ($valutanem) {
                 $t['valutanemnev'] = $valutanem->getNev();
             }
