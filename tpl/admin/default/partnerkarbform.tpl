@@ -2,7 +2,9 @@
 	<h3>{t('Partner')}</h3>
 	<h4>{$partner.nev}</h4>
 </div>
-<form id="mattkarb-form" method="post" action="/admin/partner/save">
+<form id="mattkarb-form" method="post" action="/admin/partner/save" autocomplete="off">
+    <input type="text" name="fakename" class="hidden">
+    <input type="password" name="fakepassword" class="hidden">
 	<div id="mattkarb-tabs">
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
@@ -145,7 +147,7 @@
 				<td colspan="3">
 					<input id="SzallIrszamEdit" name="szallirszam" type="text" size="6" maxlength="10" value="{$partner.szallirszam}" placeholder="{t('ir.szám')}">
 					<input id="SzallVarosEdit" name="szallvaros" type="text" size="20" maxlength="40" value="{$partner.szallvaros}" placeholder="{t('város')}">
-					<input id="SzallUtcaEdit" name="szallutca" type="text" size="40" maxlength="60" value="{$partner.szallutca}" placeholder="{t('utca, házszám')}">
+					<input id="SzallUtcaEdit" name="szallutca" type="text" size="40" maxlength="60" value="{$partner.szallutca}" placeholder="{t('utca, házszám')}" autocomplete="off">
 				</td>
 			</tr>
 			</tbody></table>
@@ -159,7 +161,7 @@
                 </tr>
                 <tr>
                     <td><label for="Jelszo1Edit">{t('Jelszó 1')}:</label></td>
-                    <td><input id="Jelszo1Edit" name="jelszo1" type="password" size="20" maxlength="255" value="">
+                    <td><input id="Jelszo1Edit" name="jelszo1" type="password" size="20" maxlength="255" value="" autocomplete="off">
                     <td><label for="Jelszo2Edit">{t('Jelszó 2')}:</label></td>
                     <td><input id="Jelszo2Edit" name="jelszo2" type="password" size="20" maxlength="255" value="">
                 </tr>

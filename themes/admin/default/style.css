@@ -110,3 +110,7 @@ img {
 .menupont {
     width: 100%;
 }
+
+.hidden {
+    display: none;
+}
