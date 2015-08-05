@@ -148,6 +148,12 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::GAFollow, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::FBAppId);
         $view->setVar(\mkw\consts::FBAppId, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::FoxpostApiURL);
+        $view->setVar(\mkw\consts::FoxpostApiURL, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::FoxpostUsername);
+        $view->setVar(\mkw\consts::FoxpostUsername, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::FoxpostPassword);
+        $view->setVar(\mkw\consts::FoxpostPassword, ($p ? $p->getErtek() : ''));
 
         // alapertelmezes
         $p = $repo->find(\mkw\consts::Fizmod);
@@ -349,6 +355,9 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Hirekseodescription, $this->params->getStringRequestParam('hirekseodescription'));
         $this->setObj(\mkw\consts::GAFollow, $this->params->getStringRequestParam('gafollow'));
         $this->setObj(\mkw\consts::FBAppId, $this->params->getStringRequestParam('fbappid'));
+        $this->setObj(\mkw\consts::FoxpostApiURL, $this->params->getStringRequestParam('foxpostapiurl'));
+        $this->setObj(\mkw\consts::FoxpostUsername, $this->params->getStringRequestParam('foxpostusername'));
+        $this->setObj(\mkw\consts::FoxpostPassword, $this->params->getStringRequestParam('foxpostpassword'));
         // alapertelmezes
         $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
         if ($fizmod) {

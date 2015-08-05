@@ -15,6 +15,8 @@
 	<h3>{t('Beállítások')}</h3>
 </div>
 <form id="mattkarb-form" action="/admin/setup/save" method="post">
+    <input type="text" name="fakeusername" class="hidden">
+    <input type="password" name="fakepassword" class="hidden">
 	<div id="mattkarb-tabs">
 		<ul>
 			<li><a href="#DefaTab">{t('Alapértelmezések')}</a></li>
@@ -330,16 +332,24 @@
 		</div>
 		<div id="IdTab" class="mattkarb-page" data-visible="visible">
 		<table><tbody>
-            <tr><td><label>{t('Google analytics kód')}:</label></td><td><input name="gafollow" type="text" value="{$gafollow}"</td></tr>
-            <tr><td><label>{t('Facebook app-id')}:</label></td><td><input name="fbappid" type="text" value="{$fbappid}"</td></tr>
-            <tr><td><label>{t('Árukereső TrustedShop webapi key')}:</label></td><td><input name="aktrustedshopapikey" type="text" value="{$aktrustedshopapikey}"</td></tr>
+            <tr><td><label>{t('Google analytics kód')}:</label></td><td><input name="gafollow" type="text" value="{$gafollow}"></td></tr>
+            <tr><td><label>{t('Facebook app-id')}:</label></td><td><input name="fbappid" type="text" value="{$fbappid}"></td></tr>
+            <tr><td><label>{t('Árukereső TrustedShop webapi key')}:</label></td><td><input name="aktrustedshopapikey" type="text" value="{$aktrustedshopapikey}"></td></tr>
+            <tr>
+                <td><label>{t('Foxpost API URL')}:</label></td>
+                <td><input name="foxpostapiurl" type="text" value="{$foxpostapiurl}"></td>
+                <td><label>{t('Username')}:</label></td>
+                <td><input name="foxpostusername" type="text" value="{$foxpostusername}" autocomplete="off"></td>
+                <td><label>{t('Password')}:</label></td>
+                <td><input name="foxpostpassword" type="password" value="{$foxpostpassword}" autocomplete="off"></td>
+            </tr>
         </tbody></table>
         </div>
 		<div id="EmailTab" class="mattkarb-page" data-visible="visible">
 		<table><tbody>
-            <tr><td><label>{t('Email feladója')}:</label></td><td><input name="emailfrom" type="text" value="{$emailfrom}"</td></tr>
-            <tr><td><label>{t('Válasz cím')}:</label></td><td><input name="emailreplyto" type="text" value="{$emailreplyto}"</td></tr>
-            <tr><td><label>{t('Bcc')}:</label></td><td><input name="emailbcc" type="text" value="{$emailbcc}"</td></tr>
+            <tr><td><label>{t('Email feladója')}:</label></td><td><input name="emailfrom" type="text" value="{$emailfrom}"></td></tr>
+            <tr><td><label>{t('Válasz cím')}:</label></td><td><input name="emailreplyto" type="text" value="{$emailreplyto}"></td></tr>
+            <tr><td><label>{t('Bcc')}:</label></td><td><input name="emailbcc" type="text" value="{$emailbcc}"></td></tr>
         </tbody></table>
         </div>
 		<div id="FeedTab" class="mattkarb-page" data-visible="visible">

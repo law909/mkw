@@ -62,6 +62,11 @@ class Bizonylatfej {
     private $masterpasstrxid;
 
     /**
+     * @ORM\Column(type="string", length=100,nullable=true)
+     */
+    private $foxpostbarcode;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime",nullable=true)
      */
@@ -125,7 +130,7 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=30,nullable=true) */
     private $erbizonylatszam;
 
-    /** @ORM\Column(type="string",length=50,nullable=true) */
+    /** @ORM\Column(type="string",length=100,nullable=true) */
     private $fuvarlevelszam;
 
     /** @ORM\Column(type="date",nullable=false) */
@@ -1565,5 +1570,14 @@ class Bizonylatfej {
             $this->foxpostterminal = null;
         }
     }
+
+    public function getFoxpostBarcode() {
+        return $this->foxpostbarcode;
+    }
+
+    public function setFoxpostBarcode($adat) {
+        $this->foxpostbarcode = $adat;
+    }
+
 
 }
