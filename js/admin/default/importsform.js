@@ -44,6 +44,17 @@ $(document).ready(function() {
                 });
             }).button();
 
+            $('.js-foxpostterminalimport').on('click', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('href'),
+                    success: function() {
+                        alert('Kész.');
+                    }
+                });
+            }).button();
+
             $('.js-termekfabutton').on('click', function(e) {
                 var edit = $(this);
                 e.preventDefault();

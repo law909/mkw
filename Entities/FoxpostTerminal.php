@@ -20,13 +20,13 @@ class FoxpostTerminal {
 	private $cim;
 
     /** @ORM\Column(type="string",length=35,nullable=true) */
-	private $group;
+	private $csoport;
 
     /** @ORM\Column(type="string",length=35,nullable=true) */
 	private $subgroup;
 
     /** @ORM\Column(type="string",length=75,nullable=true) */
-	private $open;
+	private $nyitva;
 
     /** @ORM\Column(type="string",length=254,nullable=true) */
 	private $findme;
@@ -48,6 +48,10 @@ class FoxpostTerminal {
         return $this->id;
     }
 
+    public function setId($val) {
+        $this->id = $val;
+    }
+
     public function getNev() {
         return $this->nev;
     }
@@ -64,12 +68,12 @@ class FoxpostTerminal {
         $this->cim = $adat;
     }
 
-    public function getGroup() {
-        return $this->group;
+    public function getCsoport() {
+        return $this->csoport;
     }
 
-    public function setGroup($adat) {
-        $this->group = $adat;
+    public function setCsoport($adat) {
+        $this->csoport = $adat;
     }
 
     public function getSubgroup() {
@@ -80,12 +84,12 @@ class FoxpostTerminal {
         $this->subgroup = $adat;
     }
 
-    public function getOpen() {
-        return $this->open;
+    public function getNyitva() {
+        return $this->nyitva;
     }
 
-    public function setOpen($adat) {
-        $this->open = $adat;
+    public function setNyitva($adat) {
+        $this->nyitva = $adat;
     }
 
     public function getFindme() {

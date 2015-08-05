@@ -88,6 +88,10 @@
             </div>
 	<div class="matt-hseparator"></div>
             <div>
+            <a href="/admin/import/foxpostterminal" class="js-foxpostterminalimport">Foxpost terminálok</a>
+            </div>
+	<div class="matt-hseparator"></div>
+            <div>
                 <div>
                     <label>Vatera beérkezett rendelések:</label>
                     <input name="vaterarendeles" type="file">

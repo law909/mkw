@@ -160,13 +160,19 @@ class setupController extends \mkwhelpers\Controller {
         $fizmod = new fizmodController($this->params);
         $view->setVar('fizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
-        $p = $repo->find(\mkw\consts::OTPayFizmod);
+        $p = $repo->find(\mkw\consts::UtanvetFizmod);
 //        $fizmod = new fizmodController($this->params);
-        $view->setVar('otpayfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+        $view->setVar('utanvetfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
-        $p = $repo->find(\mkw\consts::MasterPassFizmod);
-//        $fizmod = new fizmodController($this->params);
-        $view->setVar('masterpassfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+        if (\mkw\Store::isOTPay()) {
+            $p = $repo->find(\mkw\consts::OTPayFizmod);
+            $view->setVar('otpayfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+        }
+
+        if (\mkw\Store::isMasterPass()) {
+            $p = $repo->find(\mkw\consts::MasterPassFizmod);
+            $view->setVar('masterpassfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+        }
 
         $p = $repo->find(\mkw\consts::Raktar);
         $raktar = new raktarController($this->params);
@@ -363,19 +369,30 @@ class setupController extends \mkwhelpers\Controller {
         if ($fizmod) {
             $this->setObj(\mkw\consts::Fizmod, $fizmod->getId());
         }
-        $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('otpayfizmod', 0));
+        $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('utanvetfizmod', 0));
         if ($fizmod) {
-            $this->setObj(\mkw\consts::OTPayFizmod, $fizmod->getId());
+            $this->setObj(\mkw\consts::UtanvetFizmod, $fizmod->getId());
         }
         else {
-            $this->setObj(\mkw\consts::OTPayFizmod, '');
+            $this->setObj(\mkw\consts::UtanvetFizmod, '');
         }
-        $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('masterpassfizmod', 0));
-        if ($fizmod) {
-            $this->setObj(\mkw\consts::MasterPassFizmod, $fizmod->getId());
+        if (\mkw\Store::isOTPay()) {
+            $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('otpayfizmod', 0));
+            if ($fizmod) {
+                $this->setObj(\mkw\consts::OTPayFizmod, $fizmod->getId());
+            }
+            else {
+                $this->setObj(\mkw\consts::OTPayFizmod, '');
+            }
         }
-        else {
-            $this->setObj(\mkw\consts::MasterPassFizmod, '');
+        if (\mkw\Store::isMasterPass()) {
+            $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('masterpassfizmod', 0));
+            if ($fizmod) {
+                $this->setObj(\mkw\consts::MasterPassFizmod, $fizmod->getId());
+            }
+            else {
+                $this->setObj(\mkw\consts::MasterPassFizmod, '');
+            }
         }
         $raktar = store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar', 0));
         if ($raktar) {
