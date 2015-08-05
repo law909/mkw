@@ -7,6 +7,7 @@
         </div>
         <div class="col-md-8">
             <h3>Account</h3>
+            <div><a href="{$dologoutlink}">Logout</a></div>
         </div>
     </div>
 {/block}
