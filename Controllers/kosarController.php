@@ -287,14 +287,20 @@ class kosarController extends \mkwhelpers\MattableController {
                         $sum = $m['sum'];
                     }
                 }
+                $valutanem = 'Ft';
+                if (\mkw\Store::getTheme() !== 'mkwcansas') {
+                    if ($partner) {
+                        $valutanem = $partner->getValutanemnev();
+                    }
+                }
 
                 $sorok = $this->getRepo()->find($id);
                 $s = $sorok->toLista($partner);
                 echo json_encode(array(
-                    'tetelertek' => number_format($s['bruttohuf'], 0, ',', ' ') . ' Ft',
-                    'kosarertek' => number_format($sum, 0, ',', ' ') . ' Ft',
+                    'tetelertek' => number_format($s['bruttohuf'], 0, ',', ' ') . ' ' . $valutanem,
+                    'kosarertek' => number_format($sum, 0, ',', ' ') . ' ' . $valutanem,
                     'minikosar' => $v->getTemplateResult(),
-                    'minikosaringyenes' => $v2->getTemplateResult()
+                    'minikosaringyenes' => $v2->getTemplateResult(),
                 ));
             }
         }
