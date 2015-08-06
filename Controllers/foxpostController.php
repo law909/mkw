@@ -63,7 +63,7 @@ class foxpostController extends \mkwhelpers\MattableController {
             'refcode' => $fej->getId()
         );
         if ($fej->getFizmodId() == \mkw\Store::getParameter(\mkw\consts::UtanvetFizmod)) {
-            $fields['cod_amount'] = $fej->getBrutto();
+            $fields['cod_amount'] = (int)$fej->getBrutto();
             $fields['cod_currency'] = 'HUF';
         }
         $tosend = json_encode($fields);
@@ -73,9 +73,7 @@ class foxpostController extends \mkwhelpers\MattableController {
             'Content-Length: ' . strlen($tosend),
             'Content-Type:application/vnd.cleveron+json'
         ));
-        curl_setopt($ch, CURLINFO_HEADER_OUT, 1);
         $res = curl_exec($ch);
-        $out = curl_getinfo($ch);
         curl_close($ch);
         $res = json_decode($res, true);
         return $res;

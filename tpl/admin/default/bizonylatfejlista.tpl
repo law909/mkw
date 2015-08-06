@@ -102,6 +102,7 @@
 	<option value="{$_batch.id}">{$_batch.caption}</option>
 	{/foreach}
 	</select>
+    <a href="#" class="mattable-batchbtn">Futtat</a>
 </div>
 <table id="mattable-table">
 <thead>
@@ -117,14 +118,6 @@
 </thead>
 <tbody id="mattable-body"></tbody>
 </table>
-<div class="mattable-batch">
-	{t('Csoportos művelet')} <select class="mattable-batchselect">
-	<option value="">{t('válasszon')}</option>
-	{foreach $batchesselect as $_batch}
-	<option value="{$_batch.id}">{$_batch.caption}</option>
-	{/foreach}
-	</select>
-</div>
 <div class="mattable-pagerwrapper ui-corner-bottom">
 	<div class="mattable-order">
 	<label for="cos1">{t('Rendezés')}</label>

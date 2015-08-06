@@ -461,6 +461,11 @@
             table.addClass('mattable-table');
             $('th', table).addClass('ui-state-default mattable-thcolumn');
 
+            $('#maincheckbox').on('change', function(e) {
+                var ch = $(this).prop('checked');
+                $('.maincheckbox').prop('checked', ch);
+            });
+            $('.mattable-batchbtn').button();
             $(setup.tableRefresh).on('click', function(e) {
                 e.preventDefault();
                 reloadTbody();

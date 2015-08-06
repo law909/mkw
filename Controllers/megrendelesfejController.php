@@ -316,16 +316,21 @@ class megrendelesfejController extends bizonylatfejController {
     }
 
     public function sendToFoxPost() {
-
-        if (Store::isFoxpostSzallitasimod($szallitasimod)) {
-            $fpc = new \Controllers\foxpostController($this->params);
-            $fpres = $fpc->sendMegrendeles($megrendfej);
-            if ($fpres) {
-                $megrendfej->setFoxpostBarcode($fpres['barcode']);
-                $megrendfej->setFuvarlevelszam($fpres['barcode']);
-                $megrendfej->setTraceurl($fpres['trace']['href']);
-                $this->getEm()->persist($megrendfej);
-                $this->getEm()->flush();
+        $ids = $this->params->getArrayRequestParam('ids');
+        foreach($ids as $id) {
+            $megrendfej = $this->getRepo()->find($id);
+            if ($megrendfej && Store::isFoxpostSzallitasimod($megrendfej->getSzallitasimodId()) && !$megrendfej->getFoxpostBarcode()) {
+                $fpc = new \Controllers\foxpostController($this->params);
+                $fpres = $fpc->sendMegrendeles($megrendfej);
+                if ($fpres) {
+                    $megrendfej->setFoxpostBarcode($fpres['barcode']);
+                    $megrendfej->setFuvarlevelszam($fpres['barcode']);
+                    if (array_key_exists('trace', $fpres)) {
+                        $megrendfej->setTraceurl($fpres['trace']['href']);
+                    }
+                    $this->getEm()->persist($megrendfej);
+                    $this->getEm()->flush();
+                }
             }
         }
     }

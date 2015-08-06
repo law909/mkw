@@ -282,9 +282,61 @@ $(document).ready(function() {
 			},
 			karb: megrendeles
 		});
-		$('.js-maincheckbox').change(function() {
-			$('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
-		});
+//		$('.js-maincheckbox').change(function() {
+//			$('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
+//		});
+        $('.mattable-batchbtn').on('click', function(e) {
+            var cbs;
+            e.preventDefault();
+            switch ($('.mattable-batchselect').val()) {
+                case 'foxpostsend':
+                    cbs = $('.maincheckbox:checked');
+                    if (cbs.length) {
+                        dialogcenter.html('Biztos, hogy elküldi a megrendeléseket?').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'Igen': function() {
+                                    var tomb = [],
+                                            dia = $(this);
+                                    cbs.closest('tr').each(function(index, elem) {
+                                        tomb.push($(elem).data('egyedid'));
+                                    });
+                                    $.ajax({
+                                        url: '/admin/megrendelesfej/sendtofoxpost',
+                                        type: 'POST',
+                                        data: {
+                                            ids: tomb
+                                        },
+                                        success: function() {
+                                            dia.dialog('close');
+                                            $('.mattable-tablerefresh').click();
+                                        }
+                                    });
+                                },
+                                'Nem': function() {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        dialogcenter.html('Válasszon ki legalább egy megrendelést!').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'OK': function() {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                    break;
+            }
+
+        });
         $('#mattable-body').on('change', '.js-bizonylatstatuszedit', function(e) {
             e.preventDefault();
             function sendQ(id, s, ertesit) {
