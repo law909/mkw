@@ -53,7 +53,7 @@
 <tfoot>
 	<tr>
 		<th colspan="4"><div class="textalignright">Summary:</div></th>
-		<th><div id="kosarsum" class="textalignright">{number_format($osszesen,0,',',' ')} Ft</div></th>
+		<th><div id="kosarsum" class="textalignright">{number_format($osszesen,0,',',' ')} {$valutanem}</div></th>
 		<th></th>
 	</tr>
 </tfoot>
