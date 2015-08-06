@@ -36,7 +36,46 @@ $(document).ready(function() {
     $('.js-mennydecrement').on('click', function(e) {
         var input = $('input[name="' + $(this).data('name') + '"]');
         e.preventDefault();
-        input.val(input.val() * 1 - 1);
+        if (input.val() * 1 > 0) {
+            input.val(input.val() * 1 - 1);
+        }
     });
 
+    $('.js-kosarbabtn').on('click', function(e) {
+        var ids = [], vals = [], self = $(this);
+        e.preventDefault();
+        $('.js-mennyiseginput').each(function(index, elem) {
+            var el = $(elem);
+            if (el.val()) {
+                ids.push(el.data('id'));
+                vals.push(el.val());
+                el.val('');
+            }
+        });
+        var opt = {
+            url: self.attr('href'),
+            type: 'POST',
+            data: {
+                termek: self.data('termekid'),
+                ids: ids,
+                values: vals
+            },
+            beforeSend: function() {
+                superz.showMessage('Please wait');
+            }
+        };
+        $.ajax(opt)
+        .done(function(data) {
+            var d = JSON.parse(data);
+            $('#minikosar').html(d.minikosar);
+        })
+        .always(function() {
+            superz.closeMessage();
+        });
+
+    });
+
+    if (cart) {
+        cart.initUI();
+    }
 });

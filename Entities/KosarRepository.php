@@ -54,7 +54,9 @@ class KosarRepository extends \mkwhelpers\Repository {
             $filter['values'][] = $szktid;
         }
         $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT SUM(' . $a . '.mennyiseg),SUM(' . $a . '.bruttoegysar*' . $a . '.mennyiseg)'
+        $q = $this->_em->createQuery('SELECT SUM(' . $a . '.mennyiseg),'
+                . ' SUM(' . $a . '.bruttoegysar*' . $a . '.mennyiseg),'
+                . ' SUM(' . $a . '.nettoegysar*' . $a . '.mennyiseg)'
                 . ' FROM ' . $this->entityname . ' ' . $a
                 . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
@@ -89,7 +91,9 @@ class KosarRepository extends \mkwhelpers\Repository {
             $filter['values'][] = $szktid;
         }
         $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT SUM(' . $a . '.bruttoegysar*' . $a . '.mennyiseg), COUNT(' . $a . ')'
+        $q = $this->_em->createQuery('SELECT SUM(' . $a . '.bruttoegysar * ' . $a . '.mennyiseg),'
+                . ' SUM(' . $a . '.nettoegysar * ' . $a . '.mennyiseg),'
+                . ' COUNT(' . $a . ')'
                 . ' FROM ' . $this->entityname . ' ' . $a
                 . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
@@ -97,7 +101,8 @@ class KosarRepository extends \mkwhelpers\Repository {
         if (count($res)) {
             return array(
                 'sum' => $res[0][1],
-                'count' => $res[0][2]
+                'nettosum' => $res[0][2],
+                'count' => $res[0][3]
             );
         }
         return 0;
@@ -147,6 +152,7 @@ class KosarRepository extends \mkwhelpers\Repository {
         return null;
     }
 
+    // MKW, egyesével lehet a kosárba rakni; a kosárban lehet mennyiséget módosítani
     public function add($termekid, $vid = null, $bruttoegysar = null, $mennyiseg = null) {
         $sessionid = \Zend_Session::getId();
 
@@ -185,6 +191,68 @@ class KosarRepository extends \mkwhelpers\Repository {
                 else {
                     $k->novelMennyiseg();
                 }
+            }
+            else {
+                $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
+                $termek = $this->getRepo('Entities\Termek')->find($termekid);
+                if ($vid) {
+                    $termekvaltozat = $this->getRepo('Entities\TermekValtozat')->find($vid);
+                }
+                $k = new \Entities\Kosar();
+                $k->setTermek($termek);
+                if ($vid) {
+                    $k->setTermekvaltozat($termekvaltozat);
+                }
+                $k->setSessionid($sessionid);
+                $k->setPartner($partner);
+                $k->setValutanem($valutanem);
+                $k->setBruttoegysar($termek->getBruttoAr($termekvaltozat, $partner));
+                if ($mennyiseg) {
+                    $k->setMennyiseg($mennyiseg);
+                }
+                else {
+                    $k->setMennyiseg(1);
+                }
+            }
+        }
+        $this->_em->persist($k);
+        $this->_em->flush();
+    }
+
+    // Superzone, terméklistából is lehet mennyiséget megadni
+    public function addTo($termekid, $vid = null, $bruttoegysar = null, $mennyiseg = null) {
+        $sessionid = \Zend_Session::getId();
+
+        $partnerid = null;
+        $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
+        if ($partner) {
+            $partnerid = $partner->getId();
+        }
+
+        $valutanemid = \mkw\Store::getParameter(\mkw\consts::Valutanem);
+
+        $k = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanemid);
+        if ($termekid == \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek)) {
+            if ($k) {
+                $k->setMennyiseg(1);
+                $k->setBruttoegysar($bruttoegysar);
+            }
+            else {
+                $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
+                $termek = $this->getRepo('Entities\Termek')->find($termekid);
+                $k = new \Entities\Kosar();
+                $k->setTermek($termek);
+                $k->setSessionid($sessionid);
+                $k->setPartner($partner);
+                $k->setValutanem($valutanem);
+                $k->setBruttoegysar($bruttoegysar);
+                $k->setMennyiseg(1);
+                $k->setSorrend(100);
+            }
+        }
+        else {
+            if ($k) {
+                $k->novelMennyiseg($mennyiseg);
             }
             else {
                 $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);

@@ -69,15 +69,25 @@ class Kosar {
     /** @ORM\Column(type="integer",nullable=true) */
 	private $sorrend = 0;
 
-	public function toLista() {
+	public function toLista($partner = null) {
 		$ret = array();
 		$termek = $this->getTermek();
 		$ret = $ret + $termek->toKosar($this->getTermekvaltozat());
         $ret['noedit'] = $termek->getId() == \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
 		$ret['id'] = $this->getId();
-		$ret['bruttoegysarhuf'] = $this->getBruttoegysar() * 1;
+        if ($partner && $partner->getSzamlatipus()) {
+            $ret['bruttoegysarhuf'] = $this->getNettoegysar() * 1;
+            $ret['bruttoegysar'] = $this->getNettoegysar() * 1;
+            $ret['bruttohuf'] = $this->getNettoegysar() * $this->getMennyiseg() * 1;
+            $ret['brutto'] = $this->getNettoegysar() * $this->getMennyiseg() * 1;
+        }
+        else {
+            $ret['bruttoegysarhuf'] = $this->getBruttoegysar() * 1;
+            $ret['bruttoegysar'] = $this->getBruttoegysar() * 1;
+            $ret['bruttohuf'] = $this->getBruttoegysar() * $this->getMennyiseg() * 1;
+            $ret['brutto'] = $this->getBruttoegysar() * $this->getMennyiseg() * 1;
+        }
 		$ret['mennyiseg'] = $this->getMennyiseg() * 1;
-		$ret['bruttohuf'] = $this->getBruttoegysar() * $this->getMennyiseg() * 1;
 		$valt = $this->getTermekvaltozat();
 		$v = array();
 		if ($valt) {
@@ -195,8 +205,11 @@ class Kosar {
 		return $this->mennyiseg;
 	}
 
-	public function novelMennyiseg() {
-		$this->mennyiseg++;
+	public function novelMennyiseg($added = null) {
+        if (!$added) {
+            $added = 1;
+        }
+        $this->mennyiseg = $this->mennyiseg + $added;
 	}
 
 	public function setMennyiseg($val) {

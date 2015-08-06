@@ -113,25 +113,46 @@ class kosarController extends \mkwhelpers\MattableController {
         $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
         $megingyeneshez = 0;
         $hatar = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg3Tol, 0);
-        $osszeg = $m[0][2] * 1;
+        $partner = \mkw\Store::getLoggedInUser();
+        if ($partner && $partner->getSzamlatipus()) {
+            $osszeg = $m[0][3] * 1;
+        }
+        else {
+            $osszeg = $m[0][2] * 1;
+        }
+        $valutanem = 'Ft';
+        if ($partner) {
+            $valutanem = $partner->getValutanemnev();
+        }
         if ($hatar && $osszeg && $osszeg < $hatar) {
             $megingyeneshez = $hatar - $osszeg;
         }
-        return array('termekdb' => $m[0][1], 'osszeg' => $osszeg, 'megingyeneshez' => $megingyeneshez);
+        return array(
+            'termekdb' => $m[0][1],
+            'osszeg' => $osszeg,
+            'megingyeneshez' => $megingyeneshez,
+            'valutanem' => $valutanem
+        );
     }
 
     public function get() {
         $v = $this->getTemplateFactory()->createMainView('kosar.tpl');
         store::fillTemplate($v);
         $this->getRepo()->remove(\mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek));
+        $partner = \mkw\Store::getLoggedInUser();
+        $valutanem = 'Ft';
+        if ($partner) {
+            $valutanem = $partner->getValutanemnev();
+        }
         $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
         $s = array();
         $tids = array();
         foreach ($sorok as $sor) {
-            $s[] = $sor->toLista();
+            $s[] = $sor->toLista($partner);
             $tids[] = $sor->getTermekId();
         }
         $v->setVar('tetellista', $s);
+        $v->setVar('valutanem', $valutanem);
         $tc = new termekController($this->params);
         $v->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($tids));
         $v->printTemplateResult(false);
@@ -189,6 +210,34 @@ class kosarController extends \mkwhelpers\MattableController {
         }
     }
 
+    // Superzone
+    public function multiAdd() {
+        $termekid = $this->params->getIntRequestParam('termek');
+        if ($termekid) {
+            $termek = $this->getRepo('Entities\Termek')->find($termekid);
+            if ($termek) {
+                $vids = $this->params->getArrayRequestParam('ids');
+                $values = $this->params->getArrayRequestParam('values');
+
+                for($cikl = 0; $cikl < count($vids); $cikl++) {
+                    $vid = $vids[$cikl];
+                    $value = $values[$cikl];
+                    $termekvaltozat = $this->getRepo('Entities\TermekValtozat')->find($vid);
+                    if ($termekvaltozat) {
+                        $this->getRepo()->addTo($termekid, $vid, null, $value);
+                    }
+                }
+            }
+            $minidata = $this->getMiniData();
+            $v = $this->getTemplateFactory()->createMainView('minikosar.tpl');
+            $v->setVar('kosar', $minidata);
+
+            echo json_encode(array(
+                'minikosar' => $v->getTemplateResult()
+            ));
+        }
+    }
+
     public function del() {
         $id = $this->params->getIntRequestParam('id');
         if ($this->getRepo()->del($id)) {
@@ -220,6 +269,7 @@ class kosarController extends \mkwhelpers\MattableController {
                 echo 'ok';
             }
             else {
+                $partner = \mkw\Store::getLoggedInUser();
                 $minidata = $this->getMiniData();
                 $v = $this->getTemplateFactory()->createMainView('minikosar.tpl');
                 $v->setVar('kosar', $minidata);
@@ -230,11 +280,16 @@ class kosarController extends \mkwhelpers\MattableController {
                 $sum = 0;
                 $m = $this->getRepo()->calcSumBySessionId(\Zend_Session::getId());
                 if ($m) {
-                    $sum = $m['sum'];
+                    if ($partner && $partner->getSzamlatipus()) {
+                        $sum = $m['nettosum'];
+                    }
+                    else {
+                        $sum = $m['sum'];
+                    }
                 }
 
                 $sorok = $this->getRepo()->find($id);
-                $s = $sorok->toLista();
+                $s = $sorok->toLista($partner);
                 echo json_encode(array(
                     'tetelertek' => number_format($s['bruttohuf'], 0, ',', ' ') . ' Ft',
                     'kosarertek' => number_format($sum, 0, ',', ' ') . ' Ft',

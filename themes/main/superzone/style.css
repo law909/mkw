@@ -1,3 +1,19 @@
+table {
+    margin-bottom: 0;
+}
+
+.textalignright {
+    text-align: right;
+}
+
+.textaligncenter {
+    text-align: center;
+}
+
+.textalignjustify {
+    text-align: justify;
+}
+
 .body {
     background: url("background.jpg") no-repeat scroll center top rgba(0, 0, 0, 1) !important;
 }
@@ -16,10 +32,6 @@
 
 .centered {
     text-align: center;
-}
-
-.navbar-brand {
-    padding-top: 3px;
 }
 
 .form-signin {
@@ -137,9 +149,33 @@ fieldset[disabled] .btn-red.active {
     border-color: #666;
 }
 
+.navbar-brand {
+    padding-top: 3px;
+}
+
+.top-navbar {
+    margin-bottom: 0px;
+    border: none;
+}
+
+.top-navbar-nav {
+    float: right;
+}
+
+.top-navbar-nav>li {
+    display: inline-block;
+}
+
+.top-navbar .navbar-header {
+    width: 100%;
+}
+
 .navbar-default {
     background-color: #080808;
     border-color: #171717;
+    border-top: none;
+    border-left: none;
+    border-right: none;
 }
 
 .navbar-default .navbar-nav>.active>a,
@@ -245,6 +281,15 @@ fieldset[disabled] .btn-red.active {
     vertical-align: middle;
 }
 
+.desktopright {
+    float: right;
+}
+
+.megrendelemcontainer {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
 @media (min-width: 480px) {
 }
 
@@ -254,3 +299,8 @@ fieldset[disabled] .btn-red.active {
 @media (min-width: 979px) {
 }
 
+@media (max-width: 991px) {
+    .desktopright {
+        float: none;
+    }
+}

@@ -253,11 +253,12 @@ class mainController extends \mkwhelpers\Controller {
             $this->view->setVar('seodescription', $termek->getShowSeodescription());
             $t = array();
             $vtt = array();
+            $t['id'] = $termek->getId();
             $t['caption'] = $termek->getNev();
             $t['cikkszam'] = $termek->getCikkszam();
             $t['szin'] = $szin;
             $partner = \mkw\Store::getLoggedInUser();
-            if ($partner->getSzamlatipus()) {
+            if ($partner && $partner->getSzamlatipus()) {
                 $t['ar'] = $termek->getNettoAr(null, $partner);
             }
             else {
