@@ -17,6 +17,8 @@
         <script src="/js/main/superzone/bootstrap.min.js"></script>
         <script src="/js/main/superzone/jquery.debounce.min.js"></script>
 		<script src="/js/main/superzone/jquery.magnific-popup.min.js"></script>
+		<script src="/js/main/superzone/superz.js"></script>
+		<script src="/js/main/superzone/cart.js"></script>
         {block "script"}{/block}
 		<script src="/js/main/superzone/superzone.js"></script>
     </head>

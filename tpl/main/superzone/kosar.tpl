@@ -1,9 +1,5 @@
 {extends "base.tpl"}
 
-{block "script"}
-		<script src="/js/main/superzone/cart.js"></script>
-{/block}
-
 {block "body"}
 <div class="row">
     <div class="col-md-12 js-cart">
