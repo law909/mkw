@@ -15,15 +15,15 @@ class megrendelesfejController extends bizonylatfejController {
         $this->setListBodyRowTplName('bizonylatfejlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
         parent::__construct($params);
+        $this->getRepo()->addToBatches(array('foxpostsend' => 'Küldés Foxpostnak'));
     }
 
     public function setVars($view) {
         $bt = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
         $bt->setTemplateVars($view);
+        parent::setVars($view);
         $bsc = new bizonylatstatuszController($this->params);
         $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(\mkw\Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
-        $fmc = new fizmodController($this->params);
-        $view->setVar('fizmodlist', $fmc->getSelectList());
     }
 
     protected function loadVars($t, $forKarb = false) {
@@ -313,5 +313,20 @@ class megrendelesfejController extends bizonylatfejController {
             }
         }
         echo json_encode($error);
+    }
+
+    public function sendToFoxPost() {
+
+        if (Store::isFoxpostSzallitasimod($szallitasimod)) {
+            $fpc = new \Controllers\foxpostController($this->params);
+            $fpres = $fpc->sendMegrendeles($megrendfej);
+            if ($fpres) {
+                $megrendfej->setFoxpostBarcode($fpres['barcode']);
+                $megrendfej->setFuvarlevelszam($fpres['barcode']);
+                $megrendfej->setTraceurl($fpres['trace']['href']);
+                $this->getEm()->persist($megrendfej);
+                $this->getEm()->flush();
+            }
+        }
     }
 }

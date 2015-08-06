@@ -104,15 +104,7 @@ class checkoutController extends \mkwhelpers\MattableController {
         $view->setVar('ujdonsaghirlevel', $this->vv($p->getBoolRequestParam('ujdonsaghirlevel'), $user['ujdonsaghirlevelkell']));
 		Store::getMainSession()->loginerror = false;
         Store::getMainSession()->checkoutErrors = false;
-/*        $this->getRepo('Entities\Kosar')->createSzallitasiKtg($this->params->getIntRequestParam('szallitasimod'));
-		$sorok = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
-		$s = array();
-		foreach ($sorok as $sor) {
-			$s[] = $sor->toLista();
-		}
-		$view->setVar('tetellista', $s);
-*/		$view->printTemplateResult(false);
-//        Store::writelog(\Zend_Session::getId() . ' getCheckout() ok', 'checkoutlog.log');
+		$view->printTemplateResult(false);
 	}
 
 	public function getFizmodList() {
@@ -144,8 +136,6 @@ class checkoutController extends \mkwhelpers\MattableController {
 
 	public function save() {
 
-//        Store::writelog(\Zend_Session::getId() . ' save() start', 'checkoutlog.log');
-
         $errorlogtext = array();
         $errors = array();
 
@@ -175,6 +165,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$szallsave = $this->params->getBoolRequestParam('szallsave');
 		$akciohirlevel = $this->params->getBoolRequestParam('akciohirlevel');
 		$ujdonsaghirlevel = $this->params->getBoolRequestParam('ujdonsaghirlevel');
+        $foxpostterminalid = $this->params->getIntRequestParam('foxpostterminal');
 
 		$ok = ($vezeteknev && $keresztnev && $telefon &&
 				$szallirszam && $szallvaros && $szallutca &&
@@ -185,6 +176,10 @@ class checkoutController extends \mkwhelpers\MattableController {
 				$fizetesimod > 0 &&
 				$aszfready
 				);
+
+        if (Store::isFoxpostSzallitasimod($szallitasimod)) {
+            $ok = $ok && $foxpostterminalid;
+        }
 
         if (!$ok) {
             $errorlogtext[] = '1alapadat';
@@ -221,8 +216,6 @@ class checkoutController extends \mkwhelpers\MattableController {
         }
 
 		if ($ok) {
-
-//            Store::writelog(\Zend_Session::getId() . ' save() mentés kezdődik', 'checkoutlog.log');
 
 			switch ($regkell) {
 				case 1: // vendég
@@ -274,17 +267,6 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$megrendfej->setHatarido('');
 			$megrendfej->setArfolyam(1);
 			$megrendfej->setPartner($partner);
-            /*
-			$megrendfej->setPartnernev($szamlanev);
-			$megrendfej->setPartnerkeresztnev($keresztnev);
-			$megrendfej->setPartnervezeteknev($vezeteknev);
-			$megrendfej->setPartneradoszam($adoszam);
-			$megrendfej->setPartnerirszam($szamlairszam);
-			$megrendfej->setPartnervaros($szamlavaros);
-			$megrendfej->setPartnerutca($szamlautca);
-			$megrendfej->setPartnertelefon($telefon);
-			$megrendfej->setPartneremail($email);
-             */
 			$megrendfej->setFizmod($this->getEm()->getRepository('Entities\Fizmod')->find($fizetesimod));
 			$megrendfej->setSzallitasimod($this->getEm()->getRepository('Entities\Szallitasimod')->find($szallitasimod));
 			$valutanemid = store::getParameter(\mkw\consts::Valutanem);
@@ -293,24 +275,16 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$raktarid = store::getParameter(\mkw\consts::Raktar);
 			$megrendfej->setRaktar($this->getRepo('Entities\Raktar')->find($raktarid));
 			$megrendfej->setBankszamla($valutanem->getBankszamla());
-            /*
-			if ($szamlaeqszall) {
-				$megrendfej->setSzallnev($szamlanev);
-				$megrendfej->setSzallirszam($szamlairszam);
-				$megrendfej->setSzallvaros($szamlavaros);
-				$megrendfej->setSzallutca($szamlautca);
-			}
-			else {
-				$megrendfej->setSzallnev($szallnev);
-				$megrendfej->setSzallirszam($szallirszam);
-				$megrendfej->setSzallvaros($szallvaros);
-				$megrendfej->setSzallutca($szallutca);
-			}
-             */
 			$megrendfej->setWebshopmessage($webshopmessage);
 			$megrendfej->setCouriermessage($couriermessage);
             $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
             $megrendfej->setBizonylatstatusz($bizstatusz);
+            if (Store::isFoxpostSzallitasimod($szallitasimod)) {
+                $fpc = $this->getRepo('Entities\FoxpostTerminal')->find($foxpostterminalid);
+                if ($fpc) {
+                    $megrendfej->setFoxpostterminal($fpc);
+                }
+            }
 
 			$megrendfej->generateId();
 
@@ -336,8 +310,6 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$this->getEm()->persist($megrendfej);
 			$this->getEm()->flush();
 
-//            Store::writelog(\Zend_Session::getId() . ' save() mentés vége', 'checkoutlog.log');
-
 			Store::getMainSession()->lastmegrendeles = $megrendfej->getId();
             Store::getMainSession()->lastemail = $email;
             Store::getMainSession()->lasttermeknevek = $lasttermeknevek;
@@ -347,24 +319,19 @@ class checkoutController extends \mkwhelpers\MattableController {
 			$kc = new kosarController($this->params);
 			$kc->clear();
 
+            if ($bizstatusz) {
+                $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
+            }
             if ($fizetesimod == Store::getParameter(\mkw\consts::OTPayFizmod)) {
                 Header('Location: ' . Store::getRouter()->generate('showcheckoutfizetes'));
             }
             else {
-                if ($bizstatusz) {
-                    $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
-                }
-
-    //            Store::writelog(\Zend_Session::getId() . ' save() email kiküldve', 'checkoutlog.log');
-    //            Store::writelog(\Zend_Session::getId() . ' save() köszönjükre irányítom', 'checkoutlog.log');
-
                 Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
             }
 		}
 		else {
 			Store::getMainSession()->params = $this->params;
             Store::getMainSession()->checkoutErrors = $errors;
-//            Store::writelog(\Zend_Session::getId() . ' ERROR ' . implode(' ', $errorlogtext), 'checkoutlog.log');
             Header('Location: ' . Store::getRouter()->generate('showcheckout'));
 		}
 	}

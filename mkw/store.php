@@ -23,7 +23,7 @@ class Store {
     public static function getJSVersion() {
         switch(self::getTheme()) {
             case 'mkwcansas':
-                return 18;
+                return 19;
         }
     }
 
@@ -636,5 +636,13 @@ class Store {
 
     public static function isMasterPass() {
         return self::getSetupValue('masterpass');
+    }
+
+    public static function isFoxpostSzallitasimod($szm) {
+        $i = $szm;
+        if (is_a($szm, 'Entities\FoxpostTerminal')) {
+            $i = $szm->getId();
+        }
+        return $i == self::getParameter(consts::FoxpostSzallitasiMod);
     }
 }

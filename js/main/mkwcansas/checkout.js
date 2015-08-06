@@ -21,7 +21,8 @@ var checkout = (function($, guid) {
 			webshopmessageinput, couriermessageinput,
 			szamlaeqszall,
 			kosarhash,
-            egyediid = guid();
+            egyediid = guid(),
+            foxpost = false;
 
     function getSessid() {
         var x = document.cookie.match(/PHPSESSID=[^;]+/);
@@ -35,17 +36,6 @@ var checkout = (function($, guid) {
             return x.substring(10);
         }
         return egyediid;
-    }
-
-    function ajaxlog(str) {
-        $.ajax({
-            type: 'POST',
-            url: '/ajaxlogger.php',
-            data: {
-                req: 'write',
-                data: getSessid() + ' ## ' + str
-            }
-        });
     }
 
 	function loadFizmodList() {
@@ -62,6 +52,46 @@ var checkout = (function($, guid) {
 		});
         loadTetelList();
 	}
+
+    function loadFoxpostCsoportData(termis) {
+        if ($('input[name="szallitasimod"]:checked').hasClass('js-foxpostchk')) {
+            foxpost = true;
+            $.ajax({
+                url: '/checkout/getfoxpostcsoportlist',
+                success: function(data) {
+                    var d = JSON.parse(data);
+                    $('.js-foxpostterminalcontainer').html(d.html).show();
+                    if (termis) {
+                        loadFoxpostTerminalData();
+                    }
+                    else {
+                        refreshAttekintes();
+                    }
+                }
+            })
+        }
+        else {
+            foxpost = false;
+            $('.js-foxpostterminalcontainer').empty().hide();
+            refreshAttekintes();
+        }
+    }
+
+    function loadFoxpostTerminalData() {
+        var cs = $('select[name="foxpostcsoport"]').val();
+        $.ajax({
+            url: '/checkout/getfoxpostterminallist',
+            data: {
+                cs: cs
+            },
+            success: function(data) {
+                var d = JSON.parse(data);
+                $('select[name="foxpostterminal"]').remove();
+                $('.js-foxpostterminalcontainer').append(d.html);
+                refreshAttekintes();
+            }
+        })
+    }
 
     function loadKosarHash() {
         $.ajax({
@@ -111,6 +141,7 @@ var checkout = (function($, guid) {
             $('.js-chkszamlautca').text(szamlautcainput.val());
 		}
 		$('.js-chkszallitasimod').text($('input[name="szallitasimod"]:checked').data('caption'));
+        $('.js-chkfoxpostterminal').text($('select[name="foxpostterminal"] option:selected').text());
 		$('.js-chkfizmod').text($('input[name="fizetesimod"]:checked').data('caption'));
 		$('.js-chkwebshopmessage').text(webshopmessageinput.val());
 		$('.js-chkcouriermessage').text(couriermessageinput.val());
@@ -164,10 +195,15 @@ var checkout = (function($, guid) {
 			couriermessageinput = $('textarea[name="couriermessage"]');
 
 			loadFizmodList();
+            loadFoxpostCsoportData(true);
 
 			$checkout
+            .on('change', 'select[name="foxpostcsoport"]', function() {
+                loadFoxpostTerminalData();
+            })
 			.on('change', 'input[name="szallitasimod"]', function() {
 				loadFizmodList();
+                loadFoxpostCsoportData();
 			})
 			.on('change', 'input[name="regkell"]', function() {
 				checkoutpasswordcontainer.empty();
@@ -191,34 +227,6 @@ var checkout = (function($, guid) {
 
             $('input[name="regkell"]').change();
 
-/*			var $chklogin = $('.js-chklogin');
-			if ($chklogin.length) {
-				$('.js-chkszallitasiadatok').hide().addClass('js-chkclosed');
-			}
-			$('.js-chkszallmod, .js-chkattekintes').hide().addClass('js-chkclosed');
-			$('.js-chkdatagroupheader').on('click', function(e) {
-				e.preventDefault();
-				var regkell = $('input[name="regkell"]:checked');
-				if (!regkell.length && $chklogin.length) {
-					mkw.showDialog(mkwmsg.ChkRegLogin);
-				}
-				else {
-					var $this = $(this),
-							mycontainer = $($this.data('container'));
-					if (mycontainer.hasClass('js-chkclosed')) {
-						$('.js-chkdatacontainer').slideUp(100).addClass('js-chkclosed');
-						mycontainer.slideDown(100).removeClass('js-chkclosed');
-					}
-				}
-			});
-
-			$('.js-chkopenbtn').on('click', function(e) {
-				e.preventDefault();
-				var dg = $(this).data('datagroupheader'),
-						datagroupheader = $(dg);
-				datagroupheader.click();
-			});
-*/
 			szamlaeqszall.on('change', function(e) {
 				var obj = $('.js-chkszamlaadatok');
 				obj.toggleClass('notvisible');
@@ -245,8 +253,6 @@ var checkout = (function($, guid) {
                 var hibas = false, tofocus = false;
 
                 $('.chk-sendorderbtn').removeClass('cartbtn').addClass('okbtn').val('Feldolgozás alatt');
-
-                ajaxlog('submit start');
 
                 if (!vezeteknevinput.val()) {
                     vezeteknevinput.addClass('hibas');
@@ -408,7 +414,6 @@ var checkout = (function($, guid) {
                             tofocus.focus();
                         }
                     });
-                    ajaxlog('error: hibás adatok');
                     mkw.showDialog(mkwmsg.ChkHiba);
                     e.preventDefault();
                     return false;
@@ -416,49 +421,13 @@ var checkout = (function($, guid) {
                 else {
                     if (!$('input[name="aszfready"]').prop('checked')) {
                         $('.chk-sendorderbtn').removeClass('okbtn').addClass('cartbtn').val('Megrendelés elküldése');
-                        ajaxlog('error: nincs ÁSZF');
                         e.preventDefault();
                         mkw.showDialog(mkwmsg.ChkASZF);
                         return false;
                     }
                     else {
                         mkw.showMessage(mkwmsg.ChkSave);
-                        ajaxlog('ok');
                         return true;
-                        /*
-                        $.ajax({
-                            url: '/kosar/gethash',
-                            success: function(data) {
-                                var d = JSON.parse(data);
-                                if (kosarhash && kosarhash != d.value) {
-                                    ajaxlog('error: változott kosár');
-                                    e.preventDefault();
-                                    mkw.showDialog(mkwmsg.ChkKosarValtozott);
-                                    loadTetelList();
-                                    return false;
-                                }
-                                else {
-                                    if (d.cnt <= 0) {
-                                        ajaxlog('error: üres kosár');
-                                        e.preventDefault();
-                                        mkw.showDialog(mkwmsg.ChkKosarUres);
-                                        return false;
-                                    }
-                                    else {
-                                        ajaxlog('ok');
-                                        return true;
-                                    }
-                                }
-                            },
-                            error: function(xhr, stat, error) {
-                                ajaxlog('error: ' + error);
-                                e.preventDefault();
-                                return false;
-                            },
-                            complete: function(xhr, stat) {
-                            }
-                        });
-                        */
                     }
                 }
             });

@@ -186,12 +186,15 @@
 								<div class="span3 controls js-chkszallmodlist">
 									{foreach $szallitasimodlist as $szallitasimod}
 									<label class="radio">
-										<input type="radio" name="szallitasimod" class="js-chkrefresh" value="{$szallitasimod.id}"{if ($szallitasimod.selected)} checked{/if} data-caption="{$szallitasimod.caption}">
+										<input type="radio" name="szallitasimod" class="js-chkrefresh{if ($szallitasimod.foxpost)} js-foxpostchk{/if}" value="{$szallitasimod.id}"{if ($szallitasimod.selected)} checked{/if} data-caption="{$szallitasimod.caption}">
 										{$szallitasimod.caption}
 									</label>
 									{if ($szallitasimod.leiras)}
 									<div class="chk-courierdesc folyoszoveg">{$szallitasimod.leiras}</div>
 									{/if}
+                                    {if ($szallitasimod.foxpost)}
+                                    <div class="js-foxpostterminalcontainer chk-foxpostcontainer"></div>
+                                    {/if}
 									{/foreach}
 								</div>
 								<div class="span2"><label class="chk-controllabel bold">Fizetési mód:</label></div>
@@ -235,6 +238,7 @@
 							<div class="col30percent chk-colleftborder chk-colmargin">
 								<div class="chk-colheader">Szállítás és fizetés</div>
 								<div class="js-chkszallitasimod"></div>
+                                <div class="js-chkfoxpostterminal"></div>
 								<div class="chk-coldatabottom js-chkfizmod"></div>
 								<div class="chk-coldatabottom folyoszoveg js-chkwebshopmessage"></div>
 								<div class="folyoszoveg js-chkcouriermessage"></div>

@@ -15,7 +15,7 @@ class Repository extends EntityRepository {
         return $this->_em->getRepository($entityname);
     }
 
-    public function getAll($filter, $order, $offset = 0, $elemcount = 0) {
+    public function getAll($filter = array(), $order = array(), $offset = 0, $elemcount = 0) {
         $q = $this->_em->createQuery('SELECT ' . $this->alias . ' FROM ' . $this->entityname . ' ' . $this->alias
                 . $this->getFilterString($filter)
                 . $this->getOrderString($order));
@@ -29,7 +29,7 @@ class Repository extends EntityRepository {
         return $q->getResult();
     }
 
-    public function getAllSQL($filter, $order, $offset = 0, $elemcount = 0) {
+    public function getAllSQL($filter = array(), $order = array(), $offset = 0, $elemcount = 0) {
         $q = $this->_em->createQuery('SELECT ' . $this->alias . ' FROM ' . $this->entityname . ' ' . $this->alias
                 . $this->getFilterString($filter)
                 . $this->getOrderString($order));
@@ -249,7 +249,7 @@ class Repository extends EntityRepository {
     public function getBatchesForTpl() {
         $batchtpl = array();
         if ($this->batches) {
-            foreach ($batches as $bid => $bcaption) {
+            foreach ($this->batches as $bid => $bcaption) {
                 $batchtpl[] = array('id' => $bid, 'caption' => $bcaption);
             }
         }
@@ -289,8 +289,16 @@ class Repository extends EntityRepository {
         return $this->batches;
     }
 
-    public function setBatches($bathces) {
-        $this->bathces = $bathces;
+    public function setBatches($batches) {
+        $this->batches = $batches;
     }
 
+    public function addToBatches($batches) {
+        if (!is_array($this->batches)) {
+            $this->batches = $batches;
+        }
+        else {
+            $this->batches = array_merge_recursive($this->batches, $batches);
+        }
+    }
 }

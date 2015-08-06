@@ -16,6 +16,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		parent::__construct($params);
 	}
 
+    public function setVars($view) {
+        $fmc = new fizmodController($this->params);
+        $view->setVar('fizmodlist', $fmc->getSelectList());
+        $fmc = new szallitasimodController($this->params);
+        $view->setVar('szallitasimodlist', $fmc->getSelectList(false));
+    }
+
     protected function loadFilters($filter) {
         if (!is_null($this->params->getRequestParam('idfilter', NULL))) {
             $filter['fields'][] = 'id';
@@ -115,6 +122,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $bs = $this->getRepo('Entities\Fizmod')->findOneById($f);
             if ($bs) {
                 $filter['fields'][] = 'fizmod';
+                $filter['clauses'][] = '=';
+                $filter['values'][] = $bs;
+            }
+        }
+        $f = $this->params->getIntRequestParam('szallitasimodfilter');
+        if ($f) {
+            $bs = $this->getRepo('Entities\Szallitasimod')->findOneById($f);
+            if ($bs) {
+                $filter['fields'][] = 'szallitasimod';
                 $filter['clauses'][] = '=';
                 $filter['values'][] = $bs;
             }

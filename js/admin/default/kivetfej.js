@@ -264,6 +264,7 @@ $(document).ready(function() {
                     '#datumigfilter',
                     '#bizonylatstatuszfilter',
                     '#fizmodfilter',
+                    '#szallitasimodfilter',
                     '#fuvarlevelszamfilter',
                     '#erbizonylatszamfilter'
                 ]

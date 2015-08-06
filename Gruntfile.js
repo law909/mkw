@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
     grunt.initConfig({
         concat: {
@@ -44,5 +45,13 @@ module.exports = function(grunt) {
                 dest: 'themes/main/mkwcansas/mkw.css'
             }
         },
+
+        less: {
+            production: {
+                files: {
+                    'themes/main/mkwcansas/style.css': 'themes/main/mkwcansas/style.less'
+                }
+            }
+        }
     });
 }

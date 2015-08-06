@@ -38,6 +38,7 @@ class szallitasimodController extends \mkwhelpers\JQGridController {
     }
 
     public function getSelectList($selid, $mind = false) {
+        $foxpostid = \mkw\Store::getParameter(\mkw\consts::FoxpostSzallitasiMod);
         if ($mind) {
             $rec = $this->getRepo()->getAll(array(),array('sorrend'=>'ASC','nev'=>'ASC'));
         }
@@ -50,7 +51,8 @@ class szallitasimodController extends \mkwhelpers\JQGridController {
             $r = array(
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
-                'leiras' => $sor->getLeiras()
+                'leiras' => $sor->getLeiras(),
+                'foxpost' => ($sor->getId() == $foxpostid)
             );
             if ($selid) {
                 $r['selected'] = $sor->getId() == $selid;

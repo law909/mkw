@@ -20,8 +20,7 @@ class KivetfejController extends bizonylatfejController {
     public function setVars($view) {
         $bt = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
         $bt->setTemplateVars($view);
-        $fmc = new fizmodController($this->params);
-        $view->setVar('fizmodlist', $fmc->getSelectList());
+        parent::setVars($view);
         $a = date(\mkw\Store::$DateFormat, strtotime('-1 week'));
         $view->setVar('datumtolfilter', $a);
     }

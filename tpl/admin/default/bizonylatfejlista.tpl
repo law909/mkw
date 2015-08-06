@@ -63,6 +63,15 @@
             {/foreach}
         </select>
     </div>
+    <div>
+        <label for="szallitasimodfilter">Szállítási mód:</label>
+        <select id="szallitasimodfilter" name="szallitasimodfilter">
+            <option value="">Mindegy</option>
+            {foreach $szallitasimodlist as $_role}
+            <option value="{$_role.id}">{$_role.caption}</option>
+            {/foreach}
+        </select>
+    </div>
     {if ($showfuvarlevelszam)}
     <div>
         <label for="fuvarlevelszamfilter">Fuvarlevélszám:</label>

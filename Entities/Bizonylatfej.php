@@ -349,6 +349,9 @@ class Bizonylatfej {
      */
     private $foxpostterminal;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $traceurl;
+
     /**
      * @ORM\PrePersist
      */
@@ -456,6 +459,14 @@ class Bizonylatfej {
         $ret['fuvarlevelszam'] = $this->getFuvarlevelszam();
         $ret['valutanemnev'] = $this->getValutanemnev();
         $ret['arfolyam'] = $this->getArfolyam();
+        $ret['foxpost'] = false;
+        if ($this->foxpostterminal) {
+            $ret['foxpost'] = true;
+            $ret['foxpostterminal']['nev'] = $this->foxpostterminal->getNev();
+            $ret['foxpostterminal']['cim'] = $this->foxpostterminal->getCim();
+            $ret['foxpostterminal']['findme'] = $this->foxpostterminal->getFindme();
+            $ret['foxpostterminal']['nyitva'] = $this->foxpostterminal->getNyitva();
+        }
         $tetellist = array();
         foreach ($this->bizonylattetelek as $tetel) {
             $tetellist[] = $tetel->toLista();
@@ -1559,6 +1570,13 @@ class Bizonylatfej {
         return $this->foxpostterminal;
     }
 
+    public function getFoxpostterminalId() {
+        if ($this->foxpostterminal) {
+            return $this->foxpostterminal->getId();
+        }
+        return false;
+    }
+
     public function setFoxpostterminal($val) {
         if ($this->foxpostterminal !== $val) {
             $this->foxpostterminal = $val;
@@ -1579,5 +1597,12 @@ class Bizonylatfej {
         $this->foxpostbarcode = $adat;
     }
 
+    public function getTraceurl() {
+        return $this->traceurl;
+    }
+
+    public function setTraceurl($adat) {
+        $this->traceurl = $adat;
+    }
 
 }
