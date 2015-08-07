@@ -128,8 +128,12 @@ class checkoutController extends \mkwhelpers\MattableController {
         $kr = $this->getRepo('Entities\Kosar');
 		$sorok = $kr->getDataBySessionId(\Zend_Session::getId());
 		$s = array();
+        $partner = Store::getLoggedInUser();
+        if ($partner) {
+            $view->setVar('valutanem', $partner->getValutanemnev());
+        }
 		foreach ($sorok as $sor) {
-			$s[] = $sor->toLista();
+			$s[] = $sor->toLista($partner);
 		}
 		$view->setVar('tetellista', $s);
 		echo json_encode(array(
@@ -140,204 +144,326 @@ class checkoutController extends \mkwhelpers\MattableController {
 
 	public function save() {
 
-        $errorlogtext = array();
-        $errors = array();
+        switch (Store::getTheme()) {
+            case 'mkwcansas':
+                $errorlogtext = array();
+                $errors = array();
 
-		$regkell = $this->params->getIntRequestParam('regkell');
-		$vezeteknev = $this->params->getStringRequestParam('vezeteknev');
-		$keresztnev = $this->params->getStringRequestParam('keresztnev');
-		$telefon = $this->params->getStringRequestParam('telefon');
-		$jelszo1 = $this->params->getStringRequestParam('jelszo1');
-		$jelszo2 = $this->params->getStringRequestParam('jelszo2');
-		$email = $this->params->getStringRequestParam('kapcsemail');
-		$szamlanev = $this->params->getStringRequestParam('szamlanev');
-		$szamlairszam = $this->params->getStringRequestParam('szamlairszam');
-		$szamlavaros = $this->params->getStringRequestParam('szamlavaros');
-		$szamlautca = $this->params->getStringRequestParam('szamlautca');
-		$adoszam = $this->params->getStringRequestParam('adoszam');
-		$szamlaeqszall = $this->params->getBoolRequestParam('szamlaeqszall');
-		$szallnev = $this->params->getStringRequestParam('szallnev');
-		$szallirszam = $this->params->getStringRequestParam('szallirszam');
-		$szallvaros = $this->params->getStringRequestParam('szallvaros');
-		$szallutca = $this->params->getStringRequestParam('szallutca');
-		$szallitasimod = $this->params->getIntRequestParam('szallitasimod');
-		$fizetesimod = $this->params->getIntRequestParam('fizetesimod');
-		$webshopmessage = $this->params->getStringRequestParam('webshopmessage');
-		$couriermessage = $this->params->getStringRequestParam('couriermessage');
-		$aszfready = $this->params->getBoolRequestParam('aszfready');
-		$szamlasave = $this->params->getBoolRequestParam('szamlasave');
-		$szallsave = $this->params->getBoolRequestParam('szallsave');
-		$akciohirlevel = $this->params->getBoolRequestParam('akciohirlevel');
-		$ujdonsaghirlevel = $this->params->getBoolRequestParam('ujdonsaghirlevel');
-        $foxpostterminalid = $this->params->getIntRequestParam('foxpostterminal');
+                $regkell = $this->params->getIntRequestParam('regkell');
+                $vezeteknev = $this->params->getStringRequestParam('vezeteknev');
+                $keresztnev = $this->params->getStringRequestParam('keresztnev');
+                $telefon = $this->params->getStringRequestParam('telefon');
+                $jelszo1 = $this->params->getStringRequestParam('jelszo1');
+                $jelszo2 = $this->params->getStringRequestParam('jelszo2');
+                $email = $this->params->getStringRequestParam('kapcsemail');
+                $szamlanev = $this->params->getStringRequestParam('szamlanev');
+                $szamlairszam = $this->params->getStringRequestParam('szamlairszam');
+                $szamlavaros = $this->params->getStringRequestParam('szamlavaros');
+                $szamlautca = $this->params->getStringRequestParam('szamlautca');
+                $adoszam = $this->params->getStringRequestParam('adoszam');
+                $szamlaeqszall = $this->params->getBoolRequestParam('szamlaeqszall');
+                $szallnev = $this->params->getStringRequestParam('szallnev');
+                $szallirszam = $this->params->getStringRequestParam('szallirszam');
+                $szallvaros = $this->params->getStringRequestParam('szallvaros');
+                $szallutca = $this->params->getStringRequestParam('szallutca');
+                $szallitasimod = $this->params->getIntRequestParam('szallitasimod');
+                $fizetesimod = $this->params->getIntRequestParam('fizetesimod');
+                $webshopmessage = $this->params->getStringRequestParam('webshopmessage');
+                $couriermessage = $this->params->getStringRequestParam('couriermessage');
+                $aszfready = $this->params->getBoolRequestParam('aszfready');
+                $szamlasave = $this->params->getBoolRequestParam('szamlasave');
+                $szallsave = $this->params->getBoolRequestParam('szallsave');
+                $akciohirlevel = $this->params->getBoolRequestParam('akciohirlevel');
+                $ujdonsaghirlevel = $this->params->getBoolRequestParam('ujdonsaghirlevel');
+                $foxpostterminalid = $this->params->getIntRequestParam('foxpostterminal');
 
-		$ok = ($vezeteknev && $keresztnev && $telefon &&
-				$szallirszam && $szallvaros && $szallutca &&
-				(!$szamlaeqszall ? $szamlairszam : true) &&
-				(!$szamlaeqszall ? $szamlavaros : true) &&
-				(!$szamlaeqszall ? $szamlautca : true) &&
-				$szallitasimod > 0 &&
-				$fizetesimod > 0 &&
-				$aszfready
-				);
+                $ok = ($vezeteknev && $keresztnev && $telefon &&
+                        $szallirszam && $szallvaros && $szallutca &&
+                        (!$szamlaeqszall ? $szamlairszam : true) &&
+                        (!$szamlaeqszall ? $szamlavaros : true) &&
+                        (!$szamlaeqszall ? $szamlautca : true) &&
+                        $szallitasimod > 0 &&
+                        $fizetesimod > 0 &&
+                        $aszfready
+                        );
 
-        if (Store::isFoxpostSzallitasimod($szallitasimod)) {
-            $ok = $ok && $foxpostterminalid;
+                if (Store::isFoxpostSzallitasimod($szallitasimod)) {
+                    $ok = $ok && $foxpostterminalid;
+                }
+
+                if (!$ok) {
+                    $errorlogtext[] = '1alapadat';
+                    $errors[] = 'Nem adott meg egy kötelező adatot.';
+                }
+                switch ($regkell) {
+                    case 1: // vendég
+                        $ok = $ok && $email;
+                        if (!$email) {
+                            $errorlogtext[] = '2vendegemail';
+                            $errors[] = 'Nem adott meg emailcímet.';
+                        }
+                        break;
+                    case 2: // regisztráció
+                        $ok = $ok && $jelszo1 && $jelszo2 && ($jelszo1 === $jelszo2) && $email;
+                        if (!$jelszo1 || !$jelszo2 || ($jelszo1 !== $jelszo2)) {
+                            $errorlogtext[] = '3regjelszo';
+                            $errors[] = 'Nem adott meg jelszót, vagy a két jelszó nem egyezik.';
+                        }
+                        if (!$email) {
+                            $errorlogtext[] = '3regemail';
+                            $errors[] = 'Nem adott meg emailcímet.';
+                        }
+                        break;
+                    default: // be van jelentkezve elvileg
+                        break;
+                }
+
+                $kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
+                $ok = $ok && count($kosartetelek)>0;
+                if (!count($kosartetelek)) {
+                    $errorlogtext[] = '4ureskosar';
+                    $errors[] = 'Üres a kosara.';
+                }
+
+                if ($ok) {
+
+                    switch ($regkell) {
+                        case 1: // vendég
+                            $pc = new \Controllers\partnerController($this->params);
+                            $partner = $pc->saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo1, true);
+                            $szamlasave = true;
+                            $szallsave = true;
+                            break;
+                        case 2: // regisztráció
+                            $pc = new \Controllers\partnerController($this->params);
+                            $partner = $pc->saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo1);
+                            $pc->login($email, $jelszo1);
+                            break;
+                        default: // be van jelentkezve
+                            $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
+                            break;
+                    }
+                    $partner->setSzallnev($szallnev);
+                    $partner->setSzallirszam($szallirszam);
+                    $partner->setSzallvaros($szallvaros);
+                    $partner->setSzallutca($szallutca);
+                    if ($szamlaeqszall) {
+                        $partner->setNev($szallnev);
+                        $partner->setIrszam($szallirszam);
+                        $partner->setVaros($szallvaros);
+                        $partner->setUtca($szallutca);
+                    }
+                    else {
+                        $partner->setNev($szamlanev);
+                        $partner->setIrszam($szamlairszam);
+                        $partner->setVaros($szamlavaros);
+                        $partner->setUtca($szamlautca);
+                    }
+                    $partner->setTelefon($telefon);
+                    $partner->setAdoszam($adoszam);
+                    $partner->setAkcioshirlevelkell($akciohirlevel);
+                    $partner->setUjdonsaghirlevelkell($ujdonsaghirlevel);
+                    $this->getEm()->persist($partner);
+
+                    $biztipus = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
+                    $megrendfej = new \Entities\Bizonylatfej();
+                    $megrendfej->setPersistentData();
+                    $megrendfej->setIp($_SERVER['REMOTE_ADDR']);
+                    $megrendfej->setReferrer(\mkw\Store::getMainSession()->referrer);
+                    $megrendfej->setBizonylattipus($biztipus);
+                    $megrendfej->setKelt('');
+                    $megrendfej->setTeljesites('');
+                    $megrendfej->setEsedekesseg('');
+                    $megrendfej->setHatarido('');
+                    $megrendfej->setArfolyam(1);
+                    $megrendfej->setPartner($partner);
+                    $megrendfej->setFizmod($this->getEm()->getRepository('Entities\Fizmod')->find($fizetesimod));
+                    $megrendfej->setSzallitasimod($this->getEm()->getRepository('Entities\Szallitasimod')->find($szallitasimod));
+                    $valutanemid = store::getParameter(\mkw\consts::Valutanem);
+                    $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
+                    $megrendfej->setValutanem($valutanem);
+                    $raktarid = store::getParameter(\mkw\consts::Raktar);
+                    $megrendfej->setRaktar($this->getRepo('Entities\Raktar')->find($raktarid));
+                    $megrendfej->setBankszamla($valutanem->getBankszamla());
+                    $megrendfej->setWebshopmessage($webshopmessage);
+                    $megrendfej->setCouriermessage($couriermessage);
+                    $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+                    $megrendfej->setBizonylatstatusz($bizstatusz);
+                    if (Store::isFoxpostSzallitasimod($szallitasimod)) {
+                        $fpc = $this->getRepo('Entities\FoxpostTerminal')->find($foxpostterminalid);
+                        if ($fpc) {
+                            $megrendfej->setFoxpostterminal($fpc);
+                        }
+                    }
+
+                    $megrendfej->generateId();
+
+                    $lasttermeknevek = array();
+                    $lasttermekids = array();
+        //			$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
+                    foreach ($kosartetelek as $kt) {
+                        $t = new \Entities\Bizonylattetel();
+                        $t->setBizonylatfej($megrendfej);
+                        $t->setPersistentData();
+                        $t->setTermek($kt->getTermek());
+                        $t->setTermekvaltozat($kt->getTermekvaltozat());
+                        $t->setMennyiseg($kt->getMennyiseg());
+                        $t->setNettoegysar($kt->getNettoegysar());
+                        $t->setBruttoegysar($kt->getBruttoegysar());
+                        $t->setNettoegysarhuf($kt->getNettoegysar());
+                        $t->setBruttoegysarhuf($kt->getBruttoegysar());
+                        $t->calc();
+                        $lasttermeknevek[] = $t->getTermeknev();
+                        $lasttermekids[] = $t->getTermekId();
+                        $this->getEm()->persist($t);
+                    }
+                    $this->getEm()->persist($megrendfej);
+                    $this->getEm()->flush();
+
+                    Store::getMainSession()->lastmegrendeles = $megrendfej->getId();
+                    Store::getMainSession()->lastemail = $email;
+                    Store::getMainSession()->lasttermeknevek = $lasttermeknevek;
+                    Store::getMainSession()->lasttermekids = $lasttermekids;
+                    Store::getMainSession()->lastszallmod = $szallitasimod;
+                    Store::getMainSession()->lastfizmod = $fizetesimod;
+                    $kc = new kosarController($this->params);
+                    $kc->clear();
+
+                    if ($bizstatusz) {
+                        $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
+                    }
+                    if ($fizetesimod == Store::getParameter(\mkw\consts::OTPayFizmod)) {
+                        Header('Location: ' . Store::getRouter()->generate('showcheckoutfizetes'));
+                    }
+                    else {
+                        Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
+                    }
+                }
+                else {
+                    Store::getMainSession()->params = $this->params;
+                    Store::getMainSession()->checkoutErrors = $errors;
+                    Header('Location: ' . Store::getRouter()->generate('showcheckout'));
+                }
+                break;
+            case 'superzone':
+                $errorlogtext = array();
+                $errors = array();
+
+                $szamlanev = $this->params->getStringRequestParam('szamlanev');
+                $szamlairszam = $this->params->getStringRequestParam('szamlairszam');
+                $szamlavaros = $this->params->getStringRequestParam('szamlavaros');
+                $szamlautca = $this->params->getStringRequestParam('szamlautca');
+                $szallnev = $this->params->getStringRequestParam('szallnev');
+                $szallirszam = $this->params->getStringRequestParam('szallirszam');
+                $szallvaros = $this->params->getStringRequestParam('szallvaros');
+                $szallutca = $this->params->getStringRequestParam('szallutca');
+
+                $ok = ($szallnev && $szallirszam && $szallvaros && $szallutca &&
+                        $szamlanev && $szamlairszam && $szamlavaros && $szamlautca);
+
+                if (!$ok) {
+                    $errorlogtext[] = '1alapadat';
+                    $errors[] = 'Nem adott meg egy kötelező adatot.';
+                }
+
+                $kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
+                $ok = $ok && count($kosartetelek)>0;
+                if (!count($kosartetelek)) {
+                    $errorlogtext[] = '4ureskosar';
+                    $errors[] = 'Üres a kosara.';
+                }
+
+                if ($ok) {
+
+                    $partner = Store::getLoggedInUser();
+                    $nullasafa = $this->getRepo('Entities\Afa')->find(Store::getParameter(\mkw\consts::NullasAfa));
+                    $valutanem = $partner->getValutanem();
+                    $partner->setSzallnev($szallnev);
+                    $partner->setSzallirszam($szallirszam);
+                    $partner->setSzallvaros($szallvaros);
+                    $partner->setSzallutca($szallutca);
+                    $partner->setNev($szamlanev);
+                    $partner->setIrszam($szamlairszam);
+                    $partner->setVaros($szamlavaros);
+                    $partner->setUtca($szamlautca);
+                    $this->getEm()->persist($partner);
+
+                    $biztipus = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
+                    $megrendfej = new \Entities\Bizonylatfej();
+                    $megrendfej->setPersistentData();
+                    $megrendfej->setIp($_SERVER['REMOTE_ADDR']);
+                    $megrendfej->setReferrer(\mkw\Store::getMainSession()->referrer);
+                    $megrendfej->setBizonylattipus($biztipus);
+                    $megrendfej->setKelt('');
+                    $megrendfej->setTeljesites('');
+                    $megrendfej->setEsedekesseg('');
+                    $megrendfej->setHatarido('');
+                    $megrendfej->setArfolyam(1);
+                    $megrendfej->setPartner($partner);
+                    $megrendfej->setFizmod($partner->getFizmod());
+                    $megrendfej->setSzallitasimod($partner->getSzallitasimod());
+                    $megrendfej->setValutanem($valutanem);
+                    $raktarid = store::getParameter(\mkw\consts::Raktar);
+                    $megrendfej->setRaktar($this->getRepo('Entities\Raktar')->find($raktarid));
+                    if ($valutanem) {
+                        $megrendfej->setBankszamla($valutanem->getBankszamla());
+                    }
+                    $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+                    $megrendfej->setBizonylatstatusz($bizstatusz);
+
+                    $megrendfej->generateId();
+
+                    $lasttermeknevek = array();
+                    $lasttermekids = array();
+                    foreach ($kosartetelek as $kt) {
+                        $t = new \Entities\Bizonylattetel();
+                        $t->setBizonylatfej($megrendfej);
+                        $t->setPersistentData();
+                        $t->setTermek($kt->getTermek());
+                        $t->setTermekvaltozat($kt->getTermekvaltozat());
+                        $t->setMennyiseg($kt->getMennyiseg());
+                        if ($partner->getSzamlatipus()) {
+                            if ($nullasafa) {
+                                $t->setAfa($nullasafa);
+                            }
+                            $t->setNettoegysar($kt->getNettoegysar());
+                            $t->setNettoegysarhuf($kt->getNettoegysar());
+                        }
+                        else {
+                            $t->setNettoegysar($kt->getNettoegysar());
+                            $t->setBruttoegysar($kt->getBruttoegysar());
+                            $t->setNettoegysarhuf($kt->getNettoegysar());
+                            $t->setBruttoegysarhuf($kt->getBruttoegysar());
+                        }
+                        $t->calc();
+                        $lasttermeknevek[] = $t->getTermeknev();
+                        $lasttermekids[] = $t->getTermekId();
+                        $this->getEm()->persist($t);
+                    }
+                    $this->getEm()->persist($megrendfej);
+                    $this->getEm()->flush();
+
+                    Store::getMainSession()->lastmegrendeles = $megrendfej->getId();
+                    Store::getMainSession()->lastemail = $email;
+                    Store::getMainSession()->lasttermeknevek = $lasttermeknevek;
+                    Store::getMainSession()->lasttermekids = $lasttermekids;
+                    Store::getMainSession()->lastszallmod = $szallitasimod;
+                    Store::getMainSession()->lastfizmod = $fizetesimod;
+                    $kc = new kosarController($this->params);
+                    $kc->clear();
+
+                    if ($bizstatusz) {
+                        $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
+                    }
+                    Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
+                }
+                else {
+                    Store::getMainSession()->params = $this->params;
+                    Store::getMainSession()->checkoutErrors = $errors;
+                    Header('Location: ' . Store::getRouter()->generate('showcheckout'));
+                }
+
         }
-
-        if (!$ok) {
-            $errorlogtext[] = '1alapadat';
-            $errors[] = 'Nem adott meg egy kötelező adatot.';
-        }
-        switch ($regkell) {
-			case 1: // vendég
-				$ok = $ok && $email;
-                if (!$email) {
-                    $errorlogtext[] = '2vendegemail';
-                    $errors[] = 'Nem adott meg emailcímet.';
-                }
-				break;
-			case 2: // regisztráció
-				$ok = $ok && $jelszo1 && $jelszo2 && ($jelszo1 === $jelszo2) && $email;
-                if (!$jelszo1 || !$jelszo2 || ($jelszo1 !== $jelszo2)) {
-                    $errorlogtext[] = '3regjelszo';
-                    $errors[] = 'Nem adott meg jelszót, vagy a két jelszó nem egyezik.';
-                }
-                if (!$email) {
-                    $errorlogtext[] = '3regemail';
-                    $errors[] = 'Nem adott meg emailcímet.';
-                }
-				break;
-			default: // be van jelentkezve elvileg
-				break;
-		}
-
-		$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
-		$ok = $ok && count($kosartetelek)>0;
-        if (!count($kosartetelek)) {
-            $errorlogtext[] = '4ureskosar';
-            $errors[] = 'Üres a kosara.';
-        }
-
-		if ($ok) {
-
-			switch ($regkell) {
-				case 1: // vendég
-        			$pc = new \Controllers\partnerController($this->params);
-					$partner = $pc->saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo1, true);
-					$szamlasave = true;
-					$szallsave = true;
-					break;
-				case 2: // regisztráció
-        			$pc = new \Controllers\partnerController($this->params);
-					$partner = $pc->saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo1);
-					$pc->login($email, $jelszo1);
-					break;
-				default: // be van jelentkezve
-					$partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
-					break;
-			}
-            $partner->setSzallnev($szallnev);
-            $partner->setSzallirszam($szallirszam);
-            $partner->setSzallvaros($szallvaros);
-            $partner->setSzallutca($szallutca);
-            if ($szamlaeqszall) {
-                $partner->setNev($szallnev);
-                $partner->setIrszam($szallirszam);
-                $partner->setVaros($szallvaros);
-                $partner->setUtca($szallutca);
-            }
-            else {
-                $partner->setNev($szamlanev);
-                $partner->setIrszam($szamlairszam);
-                $partner->setVaros($szamlavaros);
-                $partner->setUtca($szamlautca);
-            }
-			$partner->setTelefon($telefon);
-			$partner->setAdoszam($adoszam);
-			$partner->setAkcioshirlevelkell($akciohirlevel);
-			$partner->setUjdonsaghirlevelkell($ujdonsaghirlevel);
-			$this->getEm()->persist($partner);
-
-			$biztipus = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
-			$megrendfej = new \Entities\Bizonylatfej();
-            $megrendfej->setPersistentData();
-            $megrendfej->setIp($_SERVER['REMOTE_ADDR']);
-            $megrendfej->setReferrer(\mkw\Store::getMainSession()->referrer);
-			$megrendfej->setBizonylattipus($biztipus);
-			$megrendfej->setKelt('');
-			$megrendfej->setTeljesites('');
-			$megrendfej->setEsedekesseg('');
-			$megrendfej->setHatarido('');
-			$megrendfej->setArfolyam(1);
-			$megrendfej->setPartner($partner);
-			$megrendfej->setFizmod($this->getEm()->getRepository('Entities\Fizmod')->find($fizetesimod));
-			$megrendfej->setSzallitasimod($this->getEm()->getRepository('Entities\Szallitasimod')->find($szallitasimod));
-			$valutanemid = store::getParameter(\mkw\consts::Valutanem);
-			$valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
-			$megrendfej->setValutanem($valutanem);
-			$raktarid = store::getParameter(\mkw\consts::Raktar);
-			$megrendfej->setRaktar($this->getRepo('Entities\Raktar')->find($raktarid));
-			$megrendfej->setBankszamla($valutanem->getBankszamla());
-			$megrendfej->setWebshopmessage($webshopmessage);
-			$megrendfej->setCouriermessage($couriermessage);
-            $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
-            $megrendfej->setBizonylatstatusz($bizstatusz);
-            if (Store::isFoxpostSzallitasimod($szallitasimod)) {
-                $fpc = $this->getRepo('Entities\FoxpostTerminal')->find($foxpostterminalid);
-                if ($fpc) {
-                    $megrendfej->setFoxpostterminal($fpc);
-                }
-            }
-
-			$megrendfej->generateId();
-
-            $lasttermeknevek = array();
-            $lasttermekids = array();
-//			$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
-			foreach ($kosartetelek as $kt) {
-				$t = new \Entities\Bizonylattetel();
-				$t->setBizonylatfej($megrendfej);
-				$t->setPersistentData();
-				$t->setTermek($kt->getTermek());
-                $t->setTermekvaltozat($kt->getTermekvaltozat());
-				$t->setMennyiseg($kt->getMennyiseg());
-				$t->setNettoegysar($kt->getNettoegysar());
-				$t->setBruttoegysar($kt->getBruttoegysar());
-				$t->setNettoegysarhuf($kt->getNettoegysar());
-				$t->setBruttoegysarhuf($kt->getBruttoegysar());
-				$t->calc();
-                $lasttermeknevek[] = $t->getTermeknev();
-                $lasttermekids[] = $t->getTermekId();
-				$this->getEm()->persist($t);
-			}
-			$this->getEm()->persist($megrendfej);
-			$this->getEm()->flush();
-
-			Store::getMainSession()->lastmegrendeles = $megrendfej->getId();
-            Store::getMainSession()->lastemail = $email;
-            Store::getMainSession()->lasttermeknevek = $lasttermeknevek;
-            Store::getMainSession()->lasttermekids = $lasttermekids;
-            Store::getMainSession()->lastszallmod = $szallitasimod;
-            Store::getMainSession()->lastfizmod = $fizetesimod;
-			$kc = new kosarController($this->params);
-			$kc->clear();
-
-            if ($bizstatusz) {
-                $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
-            }
-            if ($fizetesimod == Store::getParameter(\mkw\consts::OTPayFizmod)) {
-                Header('Location: ' . Store::getRouter()->generate('showcheckoutfizetes'));
-            }
-            else {
-                Header('Location: ' . Store::getRouter()->generate('checkoutkoszonjuk'));
-            }
-		}
-		else {
-			Store::getMainSession()->params = $this->params;
-            Store::getMainSession()->checkoutErrors = $errors;
-            Header('Location: ' . Store::getRouter()->generate('showcheckout'));
-		}
 	}
 
 	public function showCheckoutFizetes() {

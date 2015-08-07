@@ -94,12 +94,18 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::SzallitasiKtg3Ig, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::SzallitasiKtg3Ertek);
         $view->setVar(\mkw\consts::SzallitasiKtg3Ertek, ($p ? $p->getErtek() : ''));
+
         $p = $repo->find(\mkw\consts::SzallitasiKtgTermek);
         $fizmod = new termekController($this->params);
         $view->setVar('szallitasiktgtermeklist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::FoxpostSzallitasiMod);
         $szallmod = new szallitasimodController($this->params);
         $view->setVar('foxpostszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
+
+        $p = $repo->find(\mkw\consts::NullasAfa);
+        $fizmod = new afaController($this->params);
+        $view->setVar('nullasafalist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::Miniimagesize);
         $view->setVar(\mkw\consts::Miniimagesize, ($p ? $p->getErtek() : 80));
@@ -393,6 +399,10 @@ class setupController extends \mkwhelpers\Controller {
             else {
                 $this->setObj(\mkw\consts::MasterPassFizmod, '');
             }
+        }
+        $afa = store::getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('nullasafa', 0));
+        if ($afa) {
+            $this->setObj(\mkw\consts::NullasAfa, $afa->getId());
         }
         $raktar = store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar', 0));
         if ($raktar) {

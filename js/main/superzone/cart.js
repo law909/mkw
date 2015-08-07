@@ -20,6 +20,7 @@ var cart = (function($) {
                 //mkw.initTooltips();
                 $('#ertek_' + $('input[name="id"]', f).val()).text(d.tetelertek);
                 $('#kosarsum').text(d.kosarertek);
+                $('#mennyisegsum').text(d.mennyisegsum);
             },
             complete: function() {
                 //mkw.closeMessage();

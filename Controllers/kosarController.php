@@ -278,6 +278,7 @@ class kosarController extends \mkwhelpers\MattableController {
                 $v2->setVar('kosar', $minidata);
 
                 $sum = 0;
+                $mennyisegsum = 0;
                 $m = $this->getRepo()->calcSumBySessionId(\Zend_Session::getId());
                 if ($m) {
                     if ($partner && $partner->getSzamlatipus()) {
@@ -286,6 +287,7 @@ class kosarController extends \mkwhelpers\MattableController {
                     else {
                         $sum = $m['sum'];
                     }
+                    $mennyisegsum = $m['mennyisegsum'];
                 }
                 $valutanem = 'Ft';
                 if (\mkw\Store::getTheme() !== 'mkwcansas') {
@@ -299,6 +301,7 @@ class kosarController extends \mkwhelpers\MattableController {
                 echo json_encode(array(
                     'tetelertek' => number_format($s['bruttohuf'], 0, ',', ' ') . ' ' . $valutanem,
                     'kosarertek' => number_format($sum, 0, ',', ' ') . ' ' . $valutanem,
+                    'mennyisegsum' => number_format($mennyisegsum,0,',',' '),
                     'minikosar' => $v->getTemplateResult(),
                     'minikosaringyenes' => $v2->getTemplateResult(),
                 ));

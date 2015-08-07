@@ -17,13 +17,21 @@ var checkout = (function($) {
     function initUI() {
         var checkoutform = $('#CheckoutForm'),
 			szamlanevinput = $('input[name="szamlanev"]'),
+            szamlanevgr = szamlanevinput.closest('.form-group'),
 			szamlairszaminput = $('input[name="szamlairszam"]'),
+            szamlairszamgr = szamlairszaminput.closest('.form-group'),
 			szamlavarosinput = $('input[name="szamlavaros"]'),
+            szamlavarosgr = szamlavarosinput.closest('.form-group'),
 			szamlautcainput = $('input[name="szamlautca"]'),
+            szamlautcagr = szamlautcainput.closest('.form-group'),
 			szallnevinput = $('input[name="szallnev"]'),
+			szallnevgr = szallnevinput.closest('.form-group'),
 			szallirszaminput = $('input[name="szallirszam"]'),
+			szallirszamgr = szallirszaminput.closest('.form-group'),
 			szallvarosinput = $('input[name="szallvaros"]'),
-			szallutcainput = $('input[name="szallutca"]');
+			szallvarosgr = szallvarosinput.closest('.form-group'),
+			szallutcainput = $('input[name="szallutca"]'),
+			szallutcagr = szallutcainput.closest('.form-group');
 
         loadTetelList();
 
@@ -32,101 +40,103 @@ var checkout = (function($) {
             closeBtnInside: false
         });
 
+        $('.js-checkoutsendorder').on('click', function(e) {
+            e.preventDefault();
+            checkoutform.submit();
+        });
+
         checkoutform.on('submit', function(e) {
             var hibas = false, tofocus = false;
 
-            $('.chk-sendorderbtn').removeClass('cartbtn').addClass('okbtn').val('Feldolgozás alatt');
-
             if (!szallnevinput.val()) {
-                szallnevinput.addClass('hibas');
+                szallnevgr.addClass('has-error');
                 if (!hibas) {
                     tofocus = szallnevinput;
                 }
                 hibas = true;
             }
             else {
-                szallnevinput.removeClass('hibas');
+                szallnevgr.removeClass('has-error');
             }
 
             if (!szallirszaminput.val()) {
-                szallirszaminput.addClass('hibas');
+                szallirszamgr.addClass('has-error');
                 if (!hibas) {
                     tofocus = szallirszaminput;
                 }
                 hibas = true;
             }
             else {
-                szallirszaminput.removeClass('hibas');
+                szallirszamgr.removeClass('has-error');
             }
 
             if (!szallvarosinput.val()) {
-                szallvarosinput.addClass('hibas');
+                szallvarosgr.addClass('has-error');
                 if (!hibas) {
                     tofocus = szallvarosinput;
                 }
                 hibas = true;
             }
             else {
-                szallvarosinput.removeClass('hibas');
+                szallvarosgr.removeClass('has-error');
             }
 
             if (!szallutcainput.val()) {
-                szallutcainput.addClass('hibas');
+                szallutcagr.addClass('has-error');
                 if (!hibas) {
                     tofocus = szallutcainput;
                 }
                 hibas = true;
             }
             else {
-                szallutcainput.removeClass('hibas');
+                szallutcagr.removeClass('has-error');
             }
 
             if (!szamlanevinput.val()) {
-                szamlanevinput.addClass('hibas');
+                szamlanevgr.addClass('has-error');
                 if (!hibas) {
                     tofocus = szamlanevinput;
                 }
                 hibas = true;
             }
             else {
-                szamlanevinput.removeClass('hibas');
+                szamlanevgr.removeClass('has-error');
             }
 
             if (!szamlairszaminput.val()) {
-                szamlairszaminput.addClass('hibas');
+                szamlairszamgr.addClass('has-error');
                 if (!hibas) {
                     tofocus = szamlairszaminput;
                 }
                 hibas = true;
             }
             else {
-                szamlairszaminput.removeClass('hibas');
+                szamlairszamgr.removeClass('has-error');
             }
 
             if (!szamlavarosinput.val()) {
-                szamlavarosinput.addClass('hibas');
+                szamlavarosgr.addClass('has-error');
                 if (!hibas) {
                     tofocus = szamlavarosinput;
                 }
                 hibas = true;
             }
             else {
-                szamlavarosinput.removeClass('hibas');
+                szamlavarosgr.removeClass('has-error');
             }
 
             if (!szamlautcainput.val()) {
-                szamlautcainput.addClass('hibas');
+                szamlautcagr.addClass('has-error');
                 if (!hibas) {
                     tofocus = szamlautcainput;
                 }
                 hibas = true;
             }
             else {
-                szamlautcainput.removeClass('hibas');
+                szamlautcagr.removeClass('has-error');
             }
 
             if (hibas) {
-                $('.chk-sendorderbtn').removeClass('okbtn').addClass('cartbtn').val('Megrendelés elküldése');
                 $('#dialogcenter').on('hidden', function() {
                     $('#dialogcenter').off('hidden');
                     if (tofocus) {
@@ -138,16 +148,8 @@ var checkout = (function($) {
                 return false;
             }
             else {
-                if (!$('input[name="aszfready"]').prop('checked')) {
-                    $('.chk-sendorderbtn').removeClass('okbtn').addClass('cartbtn').val('Megrendelés elküldése');
-                    e.preventDefault();
-                    superz.showDialog(superzmsg.ChkASZF);
-                    return false;
-                }
-                else {
-                    superz.showMessage(superzmsg.ChkSave);
-                    return true;
-                }
+                superz.showMessage(superzmsg.ChkSave);
+                return true;
             }
         });
     }

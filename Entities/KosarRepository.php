@@ -93,6 +93,7 @@ class KosarRepository extends \mkwhelpers\Repository {
         $a = $this->alias;
         $q = $this->_em->createQuery('SELECT SUM(' . $a . '.bruttoegysar * ' . $a . '.mennyiseg),'
                 . ' SUM(' . $a . '.nettoegysar * ' . $a . '.mennyiseg),'
+                . ' SUM(' . $a . '.mennyiseg),'
                 . ' COUNT(' . $a . ')'
                 . ' FROM ' . $this->entityname . ' ' . $a
                 . $this->getFilterString($filter));
@@ -102,7 +103,8 @@ class KosarRepository extends \mkwhelpers\Repository {
             return array(
                 'sum' => $res[0][1],
                 'nettosum' => $res[0][2],
-                'count' => $res[0][3]
+                'mennyisegsum' => $res[0][3],
+                'count' => $res[0][4]
             );
         }
         return 0;

@@ -75,11 +75,11 @@ $(document).ready(function() {
 
     });
 
-    if (cart) {
+    if (typeof cart !== 'undefined') {
         cart.initUI();
     }
 
-    if (checkout) {
+    if (typeof checkout !== 'undefined') {
         checkout.initUI();
     }
 });

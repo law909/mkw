@@ -18,6 +18,7 @@ class consts {
     const ImportNewKatId = 'importnewkatid';
     const Logo = 'logo';
     const Locale = 'locale';
+    const NullasAfa = 'nullasafa';
 
     const Tulajnev = 'tulajnev';
     const Tulajirszam = 'tulajirszam';

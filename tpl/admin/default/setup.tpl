@@ -182,6 +182,15 @@
 					{/foreach}
 				</select></td>
 			</tr>
+			<tr>
+				<td><label for="NullasAfaEdit">{t('Nullás ÁFA')}:</label></td>
+				<td><select id="NullasAfaEdit" name="nullasafa">
+					<option value="">{t('válasszon')}</option>
+					{foreach $nullasafalist as $_loc}
+					<option value="{$_loc.id}"{if ($_loc.selected)} selected="selected"{/if}>{$_loc.caption}</option>
+					{/foreach}
+				</select></td>
+			</tr>
         </tbody></table>
         <table><tbody>
             <tr>

@@ -10,8 +10,10 @@
 </thead>
 <tbody>
 	{$osszesen=0}
+    {$dbosszesen=0}
 	{foreach $tetellista as $tetel}
 		{$osszesen=$osszesen+$tetel.bruttohuf}
+        {$dbosszesen=$dbosszesen+$tetel.mennyiseg}
 		<tr data-href="{$tetel.link}">
 			<td><div>
                     {if ($tetel.noedit)}
@@ -52,7 +54,8 @@
 </tbody>
 <tfoot>
 	<tr>
-		<th colspan="4"><div class="textalignright">Summary:</div></th>
+		<th colspan="3"><div class="textalignright">Summary:</div></th>
+		<th><div id="mennyisegsum" class="textalignright">{number_format($dbosszesen,0,',',' ')}</div></th>
 		<th><div id="kosarsum" class="textalignright">{number_format($osszesen,0,',',' ')} {$valutanem}</div></th>
 		<th></th>
 	</tr>

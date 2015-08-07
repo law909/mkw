@@ -38,6 +38,10 @@ table {
     margin-left: 20px;
 }
 
+.checkout-sendorder {
+    float: right;
+}
+
 .signin {
     background: url("background.jpg") no-repeat scroll center top rgba(0, 0, 0, 1) !important;
     padding-top: 40px;
