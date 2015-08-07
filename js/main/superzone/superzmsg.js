@@ -10,7 +10,7 @@ var superzmsg = {
 	ChkKosarValtozott: 'A kosár tartalma időközben megváltozott, kérem ellenőrizze.',
 	ChkKosarUres: 'Az Ön kosara üres.',
     ChkHiba: 'Please enter the missing data. These are marked in red.',
-    ChkSave: 'Megrendelésének mentése folyamatban. Kérem várjon.',
+    ChkSave: 'Sending your order. Please wait.',
 	FiokAdataitModositjuk: 'Adatait módosítjuk...',
 	DialogFejlec: 'Notice',
 	DialogOk: 'OK',
