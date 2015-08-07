@@ -45,6 +45,8 @@ class PartnerRepository extends \mkwhelpers\Repository {
 				. ' FROM ' . $this->entityname . ' ' . $a
 				. ' LEFT JOIN ' . $a . '.fizmod fm'
 				. ' LEFT JOIN ' . $a . '.uzletkoto uk '
+				. ' LEFT JOIN ' . $a . '.valutanem v '
+				. ' LEFT JOIN ' . $a . '.szallitasimod szm '
 				. $this->getFilterString($filter)
 				. $this->getOrderString($order));
 		$q->setParameters($this->getQueryParameters($filter));
@@ -62,6 +64,8 @@ class PartnerRepository extends \mkwhelpers\Repository {
 		$q = $this->_em->createQuery('SELECT COUNT(' . $a . ') FROM ' . $this->entityname . ' ' . $a
 				. ' LEFT JOIN ' . $a . '.fizmod fm'
 				. ' LEFT JOIN ' . $a . '.uzletkoto uk '
+				. ' LEFT JOIN ' . $a . '.valutanem v '
+				. ' LEFT JOIN ' . $a . '.szallitasimod szm '
 				. $this->getFilterString($filter));
 		$q->setParameters($this->getQueryParameters($filter));
 		return $q->getSingleScalarResult();

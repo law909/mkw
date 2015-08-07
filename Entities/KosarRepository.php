@@ -171,16 +171,18 @@ class KosarRepository extends \mkwhelpers\Repository {
                 $k->setBruttoegysar($bruttoegysar);
             }
             else {
-                $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
                 $termek = $this->getRepo('Entities\Termek')->find($termekid);
-                $k = new \Entities\Kosar();
-                $k->setTermek($termek);
-                $k->setSessionid($sessionid);
-                $k->setPartner($partner);
-                $k->setValutanem($valutanem);
-                $k->setBruttoegysar($bruttoegysar);
-                $k->setMennyiseg(1);
-                $k->setSorrend(100);
+                if ($termek) {
+                    $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
+                    $k = new \Entities\Kosar();
+                    $k->setTermek($termek);
+                    $k->setSessionid($sessionid);
+                    $k->setPartner($partner);
+                    $k->setValutanem($valutanem);
+                    $k->setBruttoegysar($bruttoegysar);
+                    $k->setMennyiseg(1);
+                    $k->setSorrend(100);
+                }
             }
         }
         else {
@@ -193,30 +195,34 @@ class KosarRepository extends \mkwhelpers\Repository {
                 }
             }
             else {
-                $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
                 $termek = $this->getRepo('Entities\Termek')->find($termekid);
-                if ($vid) {
-                    $termekvaltozat = $this->getRepo('Entities\TermekValtozat')->find($vid);
-                }
-                $k = new \Entities\Kosar();
-                $k->setTermek($termek);
-                if ($vid) {
-                    $k->setTermekvaltozat($termekvaltozat);
-                }
-                $k->setSessionid($sessionid);
-                $k->setPartner($partner);
-                $k->setValutanem($valutanem);
-                $k->setBruttoegysar($termek->getBruttoAr($termekvaltozat, $partner));
-                if ($mennyiseg) {
-                    $k->setMennyiseg($mennyiseg);
-                }
-                else {
-                    $k->setMennyiseg(1);
+                if ($termek) {
+                    $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
+                    if ($vid) {
+                        $termekvaltozat = $this->getRepo('Entities\TermekValtozat')->find($vid);
+                    }
+                    $k = new \Entities\Kosar();
+                    $k->setTermek($termek);
+                    if ($vid) {
+                        $k->setTermekvaltozat($termekvaltozat);
+                    }
+                    $k->setSessionid($sessionid);
+                    $k->setPartner($partner);
+                    $k->setValutanem($valutanem);
+                    $k->setBruttoegysar($termek->getBruttoAr($termekvaltozat, $partner));
+                    if ($mennyiseg) {
+                        $k->setMennyiseg($mennyiseg);
+                    }
+                    else {
+                        $k->setMennyiseg(1);
+                    }
                 }
             }
         }
-        $this->_em->persist($k);
-        $this->_em->flush();
+        if ($k) {
+            $this->_em->persist($k);
+            $this->_em->flush();
+        }
     }
 
     // Superzone, terméklistából is lehet mennyiséget megadni
@@ -238,16 +244,18 @@ class KosarRepository extends \mkwhelpers\Repository {
                 $k->setBruttoegysar($bruttoegysar);
             }
             else {
-                $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
                 $termek = $this->getRepo('Entities\Termek')->find($termekid);
-                $k = new \Entities\Kosar();
-                $k->setTermek($termek);
-                $k->setSessionid($sessionid);
-                $k->setPartner($partner);
-                $k->setValutanem($valutanem);
-                $k->setBruttoegysar($bruttoegysar);
-                $k->setMennyiseg(1);
-                $k->setSorrend(100);
+                if ($termek) {
+                    $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
+                    $k = new \Entities\Kosar();
+                    $k->setTermek($termek);
+                    $k->setSessionid($sessionid);
+                    $k->setPartner($partner);
+                    $k->setValutanem($valutanem);
+                    $k->setBruttoegysar($bruttoegysar);
+                    $k->setMennyiseg(1);
+                    $k->setSorrend(100);
+                }
             }
         }
         else {
@@ -255,30 +263,34 @@ class KosarRepository extends \mkwhelpers\Repository {
                 $k->novelMennyiseg($mennyiseg);
             }
             else {
-                $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
                 $termek = $this->getRepo('Entities\Termek')->find($termekid);
-                if ($vid) {
-                    $termekvaltozat = $this->getRepo('Entities\TermekValtozat')->find($vid);
-                }
-                $k = new \Entities\Kosar();
-                $k->setTermek($termek);
-                if ($vid) {
-                    $k->setTermekvaltozat($termekvaltozat);
-                }
-                $k->setSessionid($sessionid);
-                $k->setPartner($partner);
-                $k->setValutanem($valutanem);
-                $k->setBruttoegysar($termek->getBruttoAr($termekvaltozat, $partner));
-                if ($mennyiseg) {
-                    $k->setMennyiseg($mennyiseg);
-                }
-                else {
-                    $k->setMennyiseg(1);
+                if ($termek) {
+                    $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
+                    if ($vid) {
+                        $termekvaltozat = $this->getRepo('Entities\TermekValtozat')->find($vid);
+                    }
+                    $k = new \Entities\Kosar();
+                    $k->setTermek($termek);
+                    if ($vid) {
+                        $k->setTermekvaltozat($termekvaltozat);
+                    }
+                    $k->setSessionid($sessionid);
+                    $k->setPartner($partner);
+                    $k->setValutanem($valutanem);
+                    $k->setBruttoegysar($termek->getBruttoAr($termekvaltozat, $partner));
+                    if ($mennyiseg) {
+                        $k->setMennyiseg($mennyiseg);
+                    }
+                    else {
+                        $k->setMennyiseg(1);
+                    }
                 }
             }
         }
-        $this->_em->persist($k);
-        $this->_em->flush();
+        if ($k) {
+            $this->_em->persist($k);
+            $this->_em->flush();
+        }
     }
 
     public function remove($termekid, $vid = null) {
@@ -358,20 +370,22 @@ class KosarRepository extends \mkwhelpers\Repository {
             $szamol = $szm->getVanszallitasiktg();
         }
         $termek = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
-        if ($szamol) {
-            $e = $this->calcSumBySessionId(\Zend_Session::getId());
-            $ertek = $e['sum'];
-            $cnt = $e['count'];
-            if ($cnt != 0) {
-                $ktg = \mkw\Store::calcSzallitasiKoltseg($ertek);
-                $this->add($termek, null, $ktg);
+        if ($termek) {
+            if ($szamol) {
+                $e = $this->calcSumBySessionId(\Zend_Session::getId());
+                $ertek = $e['sum'];
+                $cnt = $e['count'];
+                if ($cnt != 0) {
+                    $ktg = \mkw\Store::calcSzallitasiKoltseg($ertek);
+                    $this->add($termek, null, $ktg);
+                }
+                else {
+                    $this->remove($termek);
+                }
             }
             else {
                 $this->remove($termek);
             }
-        }
-        else {
-            $this->remove($termek);
         }
     }
 

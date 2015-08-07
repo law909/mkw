@@ -229,6 +229,12 @@ class Partner {
     /** @ORM\Column(type="string",length=255,nullable=true) */
 	private $termekarazonosito;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Szallitasimod",inversedBy="partnerek")
+     * @ORM\JoinColumn(name="szallitasimod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $szallitasimod;
+
 	public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -887,5 +893,35 @@ class Partner {
 
     public function setTermekarazonosito($v) {
         $this->termekarazonosito = $v;
+    }
+
+    public function getSzallitasimod() {
+        return $this->szallitasimod;
+    }
+
+    public function getSzallitasimodNev() {
+        if ($this->szallitasimod) {
+            return $this->szallitasimod->getNev();
+        }
+        return '';
+    }
+
+    public function getSzallitasimodId() {
+        if ($this->szallitasimod) {
+            return $this->szallitasimod->getId();
+        }
+        return '';
+    }
+
+    public function setSzallitasimod($val) {
+        if ($this->szallitasimod !== $val) {
+            $this->szallitasimod = $val;
+        }
+    }
+
+    public function removeSzallitasimod() {
+        if ($this->szallitasimod !== null) {
+            $this->szallitasimod = null;
+        }
     }
 }

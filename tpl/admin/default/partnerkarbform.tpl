@@ -58,6 +58,15 @@
 					<option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
 					{/foreach}
 				</select></td>
+            </tr>
+            <tr>
+				<td><label for="SzallmodEdit">{t('Szállítási mód')}:</label></td>
+				<td><select id="SzallmodEdit" name="szallitasimod">
+					<option value="">{t('válasszon')}</option>
+					{foreach $szallitasimodlist as $_szm}
+					<option value="{$_szm.id}"{if ($_szm.selected)} selected="selected"{/if}>{$_szm.caption}</option>
+					{/foreach}
+				</select></td>
 				<td><label for="UzletkotoEdit">{t('Üzletkötő')}:</label></td>
 				<td><select id="UzletkotoEdit" name="uzletkoto">
 					<option value="">{t('válasszon')}</option>

@@ -22,6 +22,20 @@ table {
     background: #eee;
     border-radius: 2px;
     padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.checkout-content {
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+.checkout-header {
+    font-size: 32px;
+    line-height: 44px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 20px;
 }
 
 .signin {
@@ -288,6 +302,10 @@ fieldset[disabled] .btn-red.active {
 .megrendelemcontainer {
     margin-top: 15px;
     margin-bottom: 15px;
+}
+
+.kosar-qtytd {
+    width: 150px;
 }
 
 @media (min-width: 480px) {

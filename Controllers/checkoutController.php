@@ -26,13 +26,12 @@ class checkoutController extends \mkwhelpers\MattableController {
         Store::getMainSession()->params = false;
 
 		$view = Store::getTemplateFactory()->createMainView('checkout.tpl');
-		Store::fillTemplate($view);
+		Store::fillTemplate($view, false);
 
 		$szm = new szallitasimodController($this->params);
 		$szlist = $szm->getSelectList(null);
 
-        $pr = self::getEm()->getRepository('Entities\Partner');
-        $u = $pr->getLoggedInUser();
+        $u = Store::getLoggedInUser();
         if ($u) {
             $user['nev'] = $u->getNev();
             $user['email'] = $u->getEmail();
@@ -54,6 +53,9 @@ class checkoutController extends \mkwhelpers\MattableController {
                     !$u->getNev();
             $user['akcioshirlevelkell'] = $u->getAkcioshirlevelkell();
             $user['ujdonsaghirlevelkell'] = $u->getUjdonsaghirlevelkell();
+            $view->setVar('partnerszallitasimod', $u->getSzallitasimodNev());
+            $view->setVar('partnerszallitasimodid', $u->getSzallitasimodId());
+            $view->setVar('partnerfizetesimod', $u->getFizmodNev());
         }
         else {
             $user['nev'] = '';
@@ -72,6 +74,8 @@ class checkoutController extends \mkwhelpers\MattableController {
             $user['szalladategyezik'] = true;
             $user['akcioshirlevelkell'] = false;
             $user['ujdonsaghirlevelkell'] = false;
+            $view->setVar('partnerszallitasimod', '');
+            $view->setVar('partnerfizetesimod', '');
         }
 
 		$view->setVar('szallitasimodlist', $szlist);

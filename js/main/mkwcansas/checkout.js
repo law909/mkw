@@ -21,8 +21,7 @@ var checkout = (function($, guid) {
 			webshopmessageinput, couriermessageinput,
 			szamlaeqszall,
 			kosarhash,
-            egyediid = guid(),
-            foxpost = false;
+            egyediid = guid();
 
     function getSessid() {
         var x = document.cookie.match(/PHPSESSID=[^;]+/);
@@ -55,7 +54,6 @@ var checkout = (function($, guid) {
 
     function loadFoxpostCsoportData(termis) {
         if ($('input[name="szallitasimod"]:checked').hasClass('js-foxpostchk')) {
-            foxpost = true;
             $.ajax({
                 url: '/checkout/getfoxpostcsoportlist',
                 success: function(data) {
@@ -71,7 +69,6 @@ var checkout = (function($, guid) {
             })
         }
         else {
-            foxpost = false;
             $('.js-foxpostterminalcontainer').empty().hide();
             refreshAttekintes();
         }

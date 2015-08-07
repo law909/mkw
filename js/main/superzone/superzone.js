@@ -78,4 +78,8 @@ $(document).ready(function() {
     if (cart) {
         cart.initUI();
     }
+
+    if (checkout) {
+        checkout.initUI();
+    }
 });

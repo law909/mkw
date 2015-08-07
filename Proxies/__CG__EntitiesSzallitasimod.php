@@ -64,10 +64,10 @@ class Szallitasimod extends \Entities\Szallitasimod implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'id', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'nev', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'vanszallitasiktg', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'fizmodok', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'sorrend');
+            return array('__isInitialized__', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'id', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'nev', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'vanszallitasiktg', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'fizmodok', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'partnerek');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'id', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'nev', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'vanszallitasiktg', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'fizmodok', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'sorrend');
+        return array('__isInitialized__', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'id', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'nev', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'vanszallitasiktg', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'fizmodok', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'partnerek');
     }
 
     /**

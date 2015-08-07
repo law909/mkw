@@ -111,6 +111,10 @@ img {
     width: 100%;
 }
 
+.fullwidth {
+    width: 100%;
+}
+
 .hidden {
     display: none;
 }

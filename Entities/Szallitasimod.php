@@ -33,9 +33,12 @@ class Szallitasimod {
 	private $bizonylatfejek;
 	/** @ORM\Column(type="integer") */
 	private $sorrend=0;
+	/** @ORM\OneToMany(targetEntity="Partner", mappedBy="szallitasimod",cascade={"persist"}) */
+	private $partnerek;
 
 	public function __construct() {
 		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
+		$this->partnerek=new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function getId() {

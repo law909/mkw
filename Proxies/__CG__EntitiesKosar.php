@@ -176,12 +176,12 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function toLista()
+    public function toLista($partner = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', array($partner));
 
-        return parent::toLista();
+        return parent::toLista($partner);
     }
 
     /**
@@ -378,12 +378,12 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function novelMennyiseg()
+    public function novelMennyiseg($added = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'novelMennyiseg', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'novelMennyiseg', array($added));
 
-        return parent::novelMennyiseg();
+        return parent::novelMennyiseg($added);
     }
 
     /**

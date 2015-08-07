@@ -15,9 +15,9 @@
 		<tr data-href="{$tetel.link}">
 			<td><div>
                     {if ($tetel.noedit)}
-                    <img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}" class="szinkep">
+                    <img src="{$tetel.minikepurl}" alt="{$tetel.caption}" title="{$tetel.caption}" class="szinkep">
                     {else}
-                    <a href="{$tetel.link}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}" class="szinkep"></a>
+                    <a href="{$tetel.link}"><img src="{$tetel.minikepurl}" alt="{$tetel.caption}" title="{$tetel.caption}" class="szinkep"></a>
                     {/if}
                 </div></td>
 			<td>
@@ -32,13 +32,13 @@
 				<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}</div>
 			</td>
 			<td><div class="textalignright">{number_format($tetel.bruttoegysar,0,',',' ')} {$valutanem}</div></td>
-			<td>
+			<td class="kosar-qtytd">
 				<div class="textaligncenter">
 					<form class="kosarform" action="{$tetel.editlink}">
 						<div>{if ($tetel.noedit)}
                             {number_format($tetel.mennyiseg,0,'','')}
                             {else}
-                            <input id="mennyedit_{$tetel.id}" class="span1" type="number" min="1" step="any" name="mennyiseg" value="{number_format($tetel.mennyiseg,0,'','')}" data-org="{$tetel.mennyiseg}">
+                            <input id="mennyedit_{$tetel.id}" class="form-control" type="number" min="1" step="any" name="mennyiseg" value="{number_format($tetel.mennyiseg,0,'','')}" data-org="{$tetel.mennyiseg}">
                             {/if}
                         </div>
 						<input type="hidden" name="id" value="{$tetel.id}">

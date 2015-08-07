@@ -77,6 +77,8 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['valutanem'] = $t->getValutanem();
         $x['valutanemnev'] = $t->getValutanemnev();
         $x['termekarazonosito'] = $t->getTermekarazonosito();
+        $x['szallitasimod'] = $t->getSzallitasimod();
+        $x['szallitasimodnev'] = $t->getSzallitasimodNev();
         return $x;
     }
 
@@ -141,6 +143,10 @@ class partnerController extends \mkwhelpers\MattableController {
         $valutanem = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
         if ($valutanem) {
             $obj->setValutanem($valutanem);
+        }
+        $szallmod = store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod', 0));
+        if ($szallmod) {
+            $obj->setSzallitasimod($szallmod);
         }
         $obj->removeAllCimke();
         $cimkekpar = $this->params->getArrayRequestParam('cimkek');
@@ -267,6 +273,8 @@ class partnerController extends \mkwhelpers\MattableController {
         $view->setVar('valutanemlist', $valutanem->getSelectList(($partner ? $partner->getValutanemId() : 0)));
         $termekar = new termekarController($this->params);
         $view->setVar('termekarazonositolist', $termekar->getSelectList(($partner ? $partner->getTermekarazonosito() : '')));
+        $szallmod = new szallitasimodController($this->params);
+        $view->setVar('szallitasimodlist', $szallmod->getSelectList(($partner ? $partner->getSzallitasimodId() : 0)));
 
         $view->setVar('partner', $this->loadVars($partner));
         $view->printTemplateResult();
@@ -301,7 +309,9 @@ class partnerController extends \mkwhelpers\MattableController {
                 'szallutca' => $partner->getSzallutca(),
                 'adoszam' => $partner->getAdoszam(),
                 'telefon' => $partner->getTelefon(),
-                'email' => $partner->getEmail()
+                'email' => $partner->getEmail(),
+                'szallitasimod' => $partner->getSzallitasimodId(),
+                'valutanem' => $partner->getValutanemId()
             );
         }
         echo json_encode($ret);

@@ -1,14 +1,17 @@
 <tr id="mattable-row_{$_partner.id}"{if ($_partner.vendeg)} class="guestpartner"{/if}>
     <td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
     <td class="cell">
-        <a class="mattable-editlink" href="#" data-partnerid="{$_partner.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_partner.nev}</a>
-        <span class="jobbra"><a class="mattable-dellink" href="#" data-partnerid="{$_partner.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
-        <table>
+        <div>
+            <a class="mattable-editlink" href="#" data-partnerid="{$_partner.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_partner.nev}</a>
+            <span class="jobbra"><a class="mattable-dellink" href="#" data-partnerid="{$_partner.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
+        </div>
+        <table class="fullwidth">
             <tbody>
                 <tr><td colspan="2">{$_partner.vezeteknev} {$_partner.keresztnev}</td></tr>
                 <tr><td>{t('Üzletkötő')}:</td><td>{$_partner.uzletkotonev}</td></tr>
                 <tr><td>{t('Adószám')}:</td><td>{$_partner.adoszam}</td></tr>
                 <tr><td>{t('Fizetési mód')}:</td><td>{$_partner.fizmodnev}</td></tr>
+                <tr><td>{t('Szállítási mód')}:</td><td>{$_partner.szallitasimodnev}</td></tr>
                 {if ($setup.arsavok)}
                 <tr><td>{t('Valutanem')}:</td><td>{$_partner.valutanemnev}</td></tr>
                 <tr><td>{t('Ársáv')}:</td><td>{$_partner.termekarazonosito}</td></tr>

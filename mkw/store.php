@@ -281,7 +281,7 @@ class Store {
         return self::$templateFactory;
     }
 
-    public static function fillTemplate($v) {
+    public static function fillTemplate($v, $needmenu = true) {
         $tf = new \Controllers\termekfaController(null);
         $v->setVar('GAFollow', self::getParameter('GAFollow'));
         $v->setVar('seodescription', self::getParameter('seodescription'));
@@ -290,12 +290,14 @@ class Store {
         $v->setVar('dev', self::getConfigValue('developer', false));
         $v->setVar('jsversion', self::getJSVersion());
         $v->setVar('bootstrapjsversion', self::getBootstrapJSVersion());
-        $v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
+        if ($needmenu) {
+            $v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
+            $kc = new \Controllers\kosarController(null);
+            $v->setVar('kosar', $kc->getMiniData());
+        }
         $v->setVar('serverurl', self::getFullUrl());
         $v->setVar('logo', self::getParameter(consts::Logo));
         $v->setVar('globaltitle', self::getParameter('oldalcim'));
-        $kc = new \Controllers\kosarController(null);
-        $v->setVar('kosar', $kc->getMiniData());
         $pr = self::getEm()->getRepository('Entities\Partner');
         $user = array();
         $user['loggedin'] = $pr->checkloggedin();
