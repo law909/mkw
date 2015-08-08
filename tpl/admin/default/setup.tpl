@@ -185,7 +185,7 @@
 			</tr>
             <tr>
                 <td><label for="ValtozatRendezesEdit">{t('Értékek sorrendben')}:</label></td>
-                <td><input id="ValtozatRendezesEdit" name="valtozatsorrend" type="text" size="75" maxlength="255" value="{$valtozatsorrend}"></td>
+                <td><input id="ValtozatRendezesEdit" name="valtozatsorrend" type="text" size="75" value="{$valtozatsorrend}"></td>
             </tr>
             {/if}
 			<tr>
