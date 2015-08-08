@@ -1273,22 +1273,36 @@ class Termek {
                 return $this->valtozatok;
             case 'superzone':
                 $s = \mkw\Store::getParameter(\mkw\consts::ValtozatSorrend);
+                $rendezendo = \mkw\Store::getParameter(\mkw\consts::RendezendoValtozat);
                 $sorrend = explode(',', $s);
                 $a = $this->valtozatok->toArray();
-                uasort($a, function($e, $f) use ($sorrend) {
-                    $ve = array_search($e->getErtek1(), $sorrend);
-                    if ($ve === false) {
-                        $ve = array_search($e->getErtek2(), $sorrend);
-                        if ($ve === false) {
-                            $ve = 0;
-                        }
+                uasort($a, function($e, $f) use ($sorrend, $rendezendo) {
+                    if ($e->getAdatTipus1Id() == $rendezendo) {
+                        $ertek = $e->getErtek1();
                     }
-                    $vf = array_search($f->getErtek1(), $sorrend);
+                    elseif ($e->getAdatTipus2Id() == $rendezendo) {
+                        $ertek = $e->getErtek2();
+                    }
+                    else {
+                        $ertek = false;
+                    }
+                    $ve = array_search($ertek, $sorrend);
+                    if ($ve === false) {
+                        $ve = 0;
+                    }
+
+                    if ($f->getAdatTipus1Id() == $rendezendo) {
+                        $ertek = $f->getErtek1();
+                    }
+                    elseif ($f->getAdatTipus2Id() == $rendezendo) {
+                        $ertek = $f->getErtek2();
+                    }
+                    else {
+                        $ertek = false;
+                    }
+                    $vf = array_search($ertek, $sorrend);
                     if ($vf === false) {
-                        $vf = array_search($f->getErtek2(), $sorrend);
-                        if ($vf === false) {
-                            $vf = $ve;
-                        }
+                        $vf = 0;
                     }
 
                     if ($ve === $vf) {
