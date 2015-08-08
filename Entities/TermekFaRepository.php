@@ -82,8 +82,7 @@ class TermekFaRepository extends \mkwhelpers\Repository {
         }
         else {
             $q = $this->_em->createQuery('SELECT f FROM Entities\TermekFa f WHERE f.menu' . $menunum . 'lathato=1 ORDER BY f.sorrend');
-            $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
-            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, \mkw\Store::getParameter(\mkw\consts::Locale));
+            \mkw\Store::setTranslationHint($q);
             $res = $q->getResult();
             $ret = array();
             foreach($res as $r) {

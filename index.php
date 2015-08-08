@@ -105,6 +105,7 @@ $match = $router->match();
 
 if ($match) {
     if (substr($match['name'], 0, 5) === 'admin') {
+        Store::setAdminMode();
         if ((!in_array($match['name'], array('adminshowlogin', 'adminlogin', 'adminrlbexport')))) {
             $linuser = Store::getAdminSession()->pk;
             if (!$linuser) {
@@ -113,6 +114,7 @@ if ($match) {
         }
     }
     else {
+        Store::setMainMode();
         if (!$mainsess->referrer) {
             if (array_key_exists('HTTP_REFERER', $_SERVER)) {
                 $mainsess->referrer = $_SERVER['HTTP_REFERER'];

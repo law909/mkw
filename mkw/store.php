@@ -17,6 +17,8 @@ class Store {
     private static $sanitizer;
     private static $translationListener;
     private static $locales = array('HU' => 'hu_hu', 'EN' => 'en_us', 'DE' => 'de_de');
+    private static $adminmode = false;
+    private static $mainmode = false;
     public static $DateFormat = 'Y.m.d';
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
 
@@ -647,4 +649,30 @@ class Store {
         }
         return $i == self::getParameter(consts::FoxpostSzallitasiMod);
     }
+
+    public static function setAdminMode() {
+        self::$adminmode = true;
+        self::$mainmode = false;
+    }
+
+    public static function setMainMode() {
+        self::$adminmode = false;
+        self::$mainmode = true;
+    }
+
+    public static function isAdminMode() {
+        return self::$adminmode;
+    }
+
+    public static function isMainMode() {
+        return self::$mainmode;
+    }
+
+    public static function setTranslationHint($q) {
+        if (self::isMultilang() && self::isMainMode()) {
+            $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
+            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, self::getParameter(\mkw\consts::Locale));
+        }
+    }
+
 }
