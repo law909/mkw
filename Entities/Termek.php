@@ -1268,7 +1268,36 @@ class Termek {
     }
 
     public function getValtozatok() {
-        return $this->valtozatok;
+        switch (\mkw\Store::getTheme()) {
+            case 'mkwcansas':
+                return $this->valtozatok;
+            case 'superzone':
+                $s = \mkw\Store::getParameter(\mkw\consts::ValtozatSorrend);
+                $sorrend = explode(',', $s);
+                $a = $this->valtozatok->toArray();
+                uasort($a, function($e, $f) use ($sorrend) {
+                    $ve = array_search($e->getErtek1(), $sorrend);
+                    if ($ve === false) {
+                        $ve = array_search($e->getErtek2(), $sorrend);
+                        if ($ve === false) {
+                            $ve = 0;
+                        }
+                    }
+                    $vf = array_search($f->getErtek1(), $sorrend);
+                    if ($vf === false) {
+                        $vf = array_search($f->getErtek2(), $sorrend);
+                        if ($vf === false) {
+                            $vf = $ve;
+                        }
+                    }
+
+                    if ($ve === $vf) {
+                        return 0;
+                    }
+                    return ($ve < $vf) ? -1 : 1;
+                });
+                return new \Doctrine\Common\Collections\ArrayCollection($a);
+        }
     }
 
     public function addValtozat(TermekValtozat $valt) {

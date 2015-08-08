@@ -233,9 +233,15 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('valtozattipusmeretlist', $meretcs->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::ValtozatTipusSzin);
-        $szincs = new termekvaltozatadattipusController($this->params);
-        $view->setVar('valtozattipusszinlist', $szincs->getSelectList(($p ? $p->getErtek() : 0)));
+//        $szincs = new termekvaltozatadattipusController($this->params);
+        $view->setVar('valtozattipusszinlist', $meretcs->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::RendezendoValtozat);
+//        $meretcs = new termekvaltozatadattipusController($this->params);
+        $view->setVar('rendezendovaltozatlist', $meretcs->getSelectList(($p ? $p->getErtek() : 0)));
+
+        $p = $repo->find(\mkw\consts::ValtozatSorrend);
+        $view->setVar(\mkw\consts::ValtozatSorrend, ($p ? $p->getErtek() : ''));
 
         // feed
         $p = $repo->find(\mkw\consts::Feedhirdb);
@@ -438,6 +444,16 @@ class setupController extends \mkwhelpers\Controller {
         else {
             $this->setObj(\mkw\consts::ValtozatTipusMeret, '');
         }
+
+        $sz = store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('rendezendovaltozat', 0));
+        if ($sz) {
+            $this->setObj(\mkw\consts::RendezendoValtozat, $sz->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::RendezendoValtozat, '');
+        }
+
+        $this->setObj(\mkw\consts::ValtozatSorrend, $this->params->getStringRequestParam('valtozatsorrend'));
 
         $rolerep = store::getEm()->getRepository('Entities\Munkakor');
         $role = $rolerep->find($this->params->getIntRequestParam('adminrole', 0));

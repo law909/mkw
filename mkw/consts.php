@@ -118,4 +118,7 @@ class consts {
     const FoxpostApiURL = 'foxpostapiurl';
     const FoxpostUsername = 'foxpostusername';
     const FoxpostPassword = 'foxpostpassword';
+
+    const ValtozatSorrend = 'valtozatsorrend';
+    const RendezendoValtozat = 'rendezendovaltozat';
 }
