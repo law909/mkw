@@ -17,6 +17,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 	}
 
 	public function loadVars($t, $forKarb = false) {
+        $oper = $this->params->getStringRequestParam('oper');
 		$termek = new termekController($this->params);
 		$vtsz = new vtszController($this->params);
 		$afa = new afaController($this->params);
@@ -36,17 +37,28 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$x['termeknev'] = $t->getTermeknev();
 		$x['cikkszam'] = $t->getCikkszam();
 		$x['me'] = $t->getMe();
-		$x['mennyiseg'] = $t->getMennyiseg();
+        if ($oper === 'storno') {
+            $x['netto'] = $t->getNetto() * -1;
+            $x['afa'] = $t->getAfaertek() * -1;
+            $x['brutto'] = $t->getBrutto() * -1;
+            $x['nettohuf'] = $t->getNettohuf() * -1;
+            $x['afahuf'] = $t->getAfaertekhuf() * -1;
+            $x['bruttohuf'] = $t->getBruttohuf() * -1;
+            $x['mennyiseg'] = $t->getMennyiseg() * -1;
+        }
+        else {
+            $x['mennyiseg'] = $t->getMennyiseg();
+            $x['netto'] = $t->getNetto();
+            $x['afa'] = $t->getAfaertek();
+            $x['brutto'] = $t->getBrutto();
+            $x['nettohuf'] = $t->getNettohuf();
+            $x['afahuf'] = $t->getAfaertekhuf();
+            $x['bruttohuf'] = $t->getBruttohuf();
+        }
 		$x['nettoegysar'] = $t->getNettoegysar();
 		$x['bruttoegysar'] = $t->getBruttoegysar();
-		$x['netto'] = $t->getNetto();
-        $x['afa'] = $t->getAfaertek();
-		$x['brutto'] = $t->getBrutto();
 		$x['nettoegysarhuf'] = $t->getNettoegysarhuf();
 		$x['bruttoegysarhuf'] = $t->getBruttoegysarhuf();
-		$x['nettohuf'] = $t->getNettohuf();
-        $x['afahuf'] = $t->getAfaertekhuf();
-		$x['bruttohuf'] = $t->getBruttohuf();
 		$x['hataridostr'] = $t->getHataridoStr();
         $x['mainurl'] = store::getConfigValue('mainurl');
         $x['afanev'] = $t->getAfanev();

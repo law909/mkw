@@ -31,7 +31,7 @@
                 <a class="js-otpaystorno" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('OTPay storno')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></a>
                 {/if}
                 {if ($showstorno)}
-                <a class="js-stornobizonylat" href="#" data-egyedid="{$_egyed.id}" title="{t('Stornóz')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+                <a class="js-stornobizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="szamlafej" data-oper="storno" title="{t('Stornóz')}" target="_blank"><span class="ui-icon ui-icon-circle-minus"></span></a>
                 {else}
                 <a class="js-rontbizonylat" href="#" data-egyedid="{$_egyed.id}" title="{t('Ront')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
                 {/if}

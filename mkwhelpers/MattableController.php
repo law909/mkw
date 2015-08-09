@@ -11,6 +11,7 @@ class MattableController extends Controller {
     protected $editOperation = 'edit';
     protected $delOperation = 'del';
     protected $inheritOperation = 'inherit';
+    protected $stornoOperation = 'storno';
     private $entityName = '';
     private $repo;
     private $em;
@@ -108,6 +109,7 @@ class MattableController extends Controller {
                 case $this->addOperation:
                 case $this->addreopenOperation:
                 case $this->inheritOperation:
+                case $this->stornoOperation:
                     $cl = $this->entityName;
                     $obj = new $cl();
                     $this->em->persist($this->setFields($obj, $parancs));
@@ -146,6 +148,8 @@ class MattableController extends Controller {
                 case $this->editOperation:
                 case $this->inheritOperation:
                     echo json_encode($this->getListBodyRow($ret['obj'], $ret['operation']));
+                    break;
+                case $this->stornoOperation:
                     break;
                 case $this->delOperation:
                     echo $ret['id'];

@@ -63,6 +63,12 @@
             <option value="1"{if ($bizonylatrontottfilter === 1)} selected="selected"{/if}>nem rontott</option>
             <option value="2"{if ($bizonylatrontottfilter === 2)} selected="selected"{/if}>rontott</option>
         </select>
+        <label for="bizonylatstornofilter">Stornó:</label>
+        <select id="bizonylatstornofilter" name="bizonylatstornofilter">
+            <option value="0">Mindegy</option>
+            <option value="1"{if ($bizonylatstornofilter === 1)} selected="selected"{/if}>nem stornózott</option>
+            <option value="2"{if ($bizonylatstornofilter === 2)} selected="selected"{/if}>stornózott</option>
+        </select>
     </div>
 	<div class="matt-hseparator"></div>
     <div>

@@ -281,6 +281,10 @@ $(document).ready(function() {
                         var $this = $(this);
                         $this.attr('href', '/admin/szamlafej/print?id=' + $this.data('egyedid'));
                     });
+                    $('.js-stornobizonylat').each(function() {
+                        var $this = $(this);
+                        $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + $this.data('egyedid') + '&source=szamlafej&oper=' + $this.data('oper'));
+                    });
                 }
             },
             karb: szamla

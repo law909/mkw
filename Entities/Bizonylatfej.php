@@ -307,6 +307,9 @@ class Bizonylatfej {
     /** @ORM\Column(type="text",nullable=true) */
     private $couriermessage;
 
+    /** @ORM\Column(type="text",nullable=true) */
+    private $sysmegjegyzes;
+
     /** @ORM\Column(type="date",nullable=true) */
     private $hatarido;
 
@@ -639,6 +642,10 @@ class Bizonylatfej {
         $this->stornozott = $val;
         if ($this->stornozott) {
             $this->setStorno(false);
+        }
+        foreach ($this->bizonylattetelek as $bt) {
+            $bt->setStornozott($val);
+            \mkw\Store::getEm()->persist($bt);
         }
     }
 
@@ -1618,6 +1625,14 @@ class Bizonylatfej {
             $bt->setRontott($adat);
             \mkw\Store::getEm()->persist($bt);
         }
+    }
+
+    public function getSysmegjegyzes() {
+        return $this->sysmegjegyzes;
+    }
+
+    public function setSysmegjegyzes($adat) {
+        $this->sysmegjegyzes = $adat;
     }
 
 }
