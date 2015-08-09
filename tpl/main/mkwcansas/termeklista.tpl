@@ -201,7 +201,7 @@
                                         {/if}
                                         {if ($_termek.akcios)}
                                             <div class="akciosarszoveg textalignright">Eredeti ár: <span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} Ft</span></div>
-                                            <div class="akciosarszoveg textalignright">Megtakarítás: <span>{number_format(100 - ($_termek.bruttohuf / $_termek.eredetibruttohuf * 100),0,',',' ')} Ft</span></div>
+                                            <div class="akciosarszoveg textalignright">Megtakarítás: <span>{number_format(100 - ($_termek.bruttohuf / $_termek.eredetibruttohuf * 100),0,',',' ')} %</span></div>
                                         {/if}
                                         <div id="termekprice{$_termek.id}-{$_termek.valtozatid|default}" class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                                             {if ($_termek.nemkaphato)}
