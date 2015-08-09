@@ -57,6 +57,8 @@ class Bizonylattipus {
 	private $showfuvarlevelszam=false;
     /** @ORM\Column(type="boolean",nullable=false) */
 	private $showhaszonszazalek=false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+	private $showstorno=false;
 	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylattipus",cascade={"persist"}) */
 	private $bizonylatfejek;
     /** @ORM\Column(type="string",length=200,nullable=true) */
@@ -81,6 +83,7 @@ class Bizonylattipus {
         $view->setVar('showerbizonylatszam', $this->getShowerbizonylatszam());
         $view->setVar('showfuvarlevelszam', $this->getShowfuvarlevelszam());
         $view->setVar('showhaszonszazalek', $this->getShowhaszonszazalek());
+        $view->setVar('showstorno', $this->getShowstorno());
     }
 
 	public function getId() {
@@ -278,4 +281,13 @@ class Bizonylattipus {
     public function setShowhaszonszazalek($val) {
         $this->showhaszonszazalek = $val;
     }
+
+    public function getShowstorno() {
+        return $this->showstorno;
+    }
+
+    public function setShowstorno($adat) {
+        $this->showstorno = $adat;
+    }
+
 }

@@ -263,6 +263,7 @@ $(document).ready(function() {
                     '#datumtolfilter',
                     '#datumigfilter',
                     '#bizonylatstatuszfilter',
+                    '#bizonylatrontottfilter',
                     '#fizmodfilter',
                     '#szallitasimodfilter',
                     '#fuvarlevelszamfilter',
@@ -272,7 +273,7 @@ $(document).ready(function() {
             tablebody: {
                 url: '/admin/bevetfej/getlistbody',
                 onStyle: function() {
-                    $('.js-printbizonylat').button();
+                    $('.js-printbizonylat, .js-rontbizonylat').button();
                 },
                 onDoEditLink: function() {
                     $('.js-printbizonylat').each(function() {
@@ -282,6 +283,20 @@ $(document).ready(function() {
                 }
             },
             karb: szamla
+        });
+        $('#mattable-body')
+        .on('click', '.js-rontbizonylat', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url:'/admin/bevetfej/ront',
+                type: 'POST',
+                data: {
+                    id: $(this).data('egyedid')
+                },
+                success:function() {
+                    $('.mattable-tablerefresh').click();
+                }
+            });
         });
         $('.js-maincheckbox').change(function() {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));

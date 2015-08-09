@@ -101,6 +101,9 @@ class Bizonylatfej {
     private $stornozott = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
+    private $rontott = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
     private $penztmozgat;
 
     /** @ORM\Column(type="boolean",nullable=false) */
@@ -1603,6 +1606,18 @@ class Bizonylatfej {
 
     public function setTraceurl($adat) {
         $this->traceurl = $adat;
+    }
+
+    public function getRontott() {
+        return $this->rontott;
+    }
+
+    public function setRontott($adat) {
+        $this->rontott = $adat;
+        foreach ($this->bizonylattetelek as $bt) {
+            $bt->setRontott($adat);
+            \mkw\Store::getEm()->persist($bt);
+        }
     }
 
 }

@@ -118,3 +118,7 @@ img {
 .hidden {
     display: none;
 }
+
+.rontott, .rontott a {
+    color: #ddd !important;
+}

@@ -44,13 +44,16 @@ class Bizonylattetel {
     private $irany;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $arvaltoztat = 0;
+    private $arvaltoztat = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $storno = 0;
+    private $storno = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $stornozott = 0;
+    private $stornozott = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $rontott = false;
 
     /**
      * @ORM\ManyToOne(targetEntity="Termek",inversedBy="bizonylattetelek")
@@ -753,6 +756,14 @@ class Bizonylattetel {
 
     public function setIrany($val) {
         $this->irany = $val;
+    }
+
+    public function getRontott() {
+        return $this->rontott;
+    }
+
+    public function setRontott($adat) {
+        $this->rontott = $adat;
     }
 
 }

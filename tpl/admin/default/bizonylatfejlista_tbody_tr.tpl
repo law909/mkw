@@ -1,4 +1,4 @@
-<tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}">
+<tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}"{if (!$_egyed.nemrossz)} class="rontott"{/if}>
     <td class="cell"><input class="maincheckbox" type="checkbox"></td>
         {if ($showbizonylatstatuszeditor)}
         <td class="cell">
@@ -13,23 +13,29 @@
     <td class="cell">
         <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_egyed.id}</a>
             <a class="js-printbizonylat" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('Nyomtat')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
-            {if ($_egyed.bizonylattipusid=='megrendeles')}
-            <a class="js-printelolegbekero" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('Előleg bekérő')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
+            {if ($_egyed.nemrossz)}
+                {if ($_egyed.bizonylattipusid=='megrendeles')}
+                <a class="js-printelolegbekero" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('Előleg bekérő')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
+                {/if}
+                {if ($showszamlabutton)}
+                <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="szamlafej" data-oper="inherit" title="{t('Számla')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                {/if}
+                {if ($showkeziszamlabutton)}
+                <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="keziszamlafej" data-oper="inherit" title="{t('Kézi számla')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                {/if}
+                {if ($showkivetbutton)}
+                <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="kivetfej" data-oper="inherit" title="{t('Kivét')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                {/if}
+                {if ($_egyed.bizonylattipusid=='megrendeles' && $_egyed.otpayid)}
+                <a class="js-otpayrefund" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('OTPay refund')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></a>
+                <a class="js-otpaystorno" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('OTPay storno')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></a>
+                {/if}
+                {if ($showstorno)}
+                <a class="js-stornobizonylat" href="#" data-egyedid="{$_egyed.id}" title="{t('Stornóz')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+                {else}
+                <a class="js-rontbizonylat" href="#" data-egyedid="{$_egyed.id}" title="{t('Ront')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+                {/if}
             {/if}
-            {if ($showszamlabutton)}
-            <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="szamlafej" data-oper="inherit" title="{t('Számla')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
-            {/if}
-            {if ($showkeziszamlabutton)}
-            <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="keziszamlafej" data-oper="inherit" title="{t('Kézi számla')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
-            {/if}
-            {if ($showkivetbutton)}
-            <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="kivetfej" data-oper="inherit" title="{t('Kivét')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
-            {/if}
-            {if ($_egyed.bizonylattipusid=='megrendeles' && $_egyed.otpayid)}
-            <a class="js-otpayrefund" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('OTPay refund')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></a>
-            <a class="js-otpaystorno" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('OTPay storno')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></a>
-            {/if}
-            <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
         <table>
             <tbody>
                 <tr><td  colspan="2" class="mattable-important">

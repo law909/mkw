@@ -254,6 +254,7 @@ $(document).ready(function() {
                     '#datumtolfilter',
                     '#datumigfilter',
                     '#bizonylatstatuszfilter',
+                    '#bizonylatrontottfilter',
                     '#fizmodfilter',
                     '#szallitasimodfilter',
                     '#fuvarlevelszamfilter',
@@ -263,7 +264,7 @@ $(document).ready(function() {
 			tablebody: {
 				url: '/admin/megrendelesfej/getlistbody',
                 onStyle: function() {
-                    $('.js-printbizonylat, .js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno').button();
+                    $('.js-printbizonylat, .js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno, .js-rontbizonylat').button();
                 },
                 onDoEditLink: function() {
                     $('.js-inheritbizonylat').each(function() {
@@ -366,6 +367,19 @@ $(document).ready(function() {
                         sendQ(id, statusz, false);
                         $(this).dialog('close');
                     }
+                }
+            });
+        })
+        .on('click', '.js-rontbizonylat', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url:'/admin/bevetfej/ront',
+                type: 'POST',
+                data: {
+                    id: $(this).data('egyedid')
+                },
+                success:function() {
+                    $('.mattable-tablerefresh').click();
                 }
             });
         })

@@ -19,18 +19,21 @@
     <input id="vevonevfilter" name="vevonevfilter" type="text">
     <label for="vevoemailfilter">Vevő email:</label>
     <input id="vevoemailfilter" name="vevoemailfilter" type="text">
+	<div class="matt-hseparator"></div>
     <div>
         <label for="szallitasiirszamfilter">Szállítási cím:</label>
         <input id="szallitasiirszamfilter" name="szallitasiirszamfilter" type="text" size="8">
         <input id="szallitasivarosfilter" name="szallitasivarosfilter" type="text">
         <input id="szallitasiutcafilter" name="szallitasiutcafilter" type="text">
     </div>
+	<div class="matt-hseparator"></div>
     <div>
         <label for="szamlazasiirszamfilter">Számlázási cím:</label>
         <input id="szamlazasiirszamfilter" name="szamlazasiirszamfilter" type="text" size="8">
         <input id="szamlazasivarosfilter" name="szamlazasivarosfilter" type="text">
         <input id="szamlazasiutcafilter" name="szamlazasiutcafilter" type="text">
     </div>
+	<div class="matt-hseparator"></div>
     <div>
         <label for="datumtipusfilter">Dátum:</label>
         <select id="datumtipusfilter" name="datumtipusfilter">
@@ -43,8 +46,9 @@
         <input id="datumtolfilter" name="datumtolfilter" type="text" size="12" data-datum="{$datumtolfilter|default}">
         <input id="datumigfilter" name="datumigfilter" type="text" size="12">
     </div>
-    {if ($showbizonylatstatuszeditor)}
+	<div class="matt-hseparator"></div>
     <div>
+        {if ($showbizonylatstatuszeditor)}
         <label for="bizonylatstatuszfilter">Státusz:</label>
         <select id="bizonylatstatuszfilter" name="bizonylatstatuszfilter">
             <option value="">Mindegy</option>
@@ -52,8 +56,15 @@
             <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
             {/foreach}
         </select>
+        {/if}
+        <label for="bizonylatrontottfilter">Rontott:</label>
+        <select id="bizonylatrontottfilter" name="bizonylatrontottfilter">
+            <option value="0">Mindegy</option>
+            <option value="1"{if ($bizonylatrontottfilter === 1)} selected="selected"{/if}>nem rontott</option>
+            <option value="2"{if ($bizonylatrontottfilter === 2)} selected="selected"{/if}>rontott</option>
+        </select>
     </div>
-    {/if}
+	<div class="matt-hseparator"></div>
     <div>
         <label for="fizmodfilter">Fiz.mód:</label>
         <select id="fizmodfilter" name="fizmodfilter">
@@ -62,8 +73,6 @@
             <option value="{$_role.id}">{$_role.caption}</option>
             {/foreach}
         </select>
-    </div>
-    <div>
         <label for="szallitasimodfilter">Szállítási mód:</label>
         <select id="szallitasimodfilter" name="szallitasimodfilter">
             <option value="">Mindegy</option>
@@ -73,12 +82,14 @@
         </select>
     </div>
     {if ($showfuvarlevelszam)}
+	<div class="matt-hseparator"></div>
     <div>
         <label for="fuvarlevelszamfilter">Fuvarlevélszám:</label>
         <input id="fuvarlevelszamfilter" name="fuvarlevelszamfilter" type="text" size="20">
     </div>
     {/if}
     {if ($showerbizonylatszam)}
+	<div class="matt-hseparator"></div>
     <div>
         <label for="erbizonylatszamfilter">Er.biz.szám:</label>
         <input id="erbizonylatszamfilter" name="erbizonylatszamfilter" type="text" size="20">

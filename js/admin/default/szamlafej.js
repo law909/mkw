@@ -264,6 +264,7 @@ $(document).ready(function() {
                     '#datumtolfilter',
                     '#datumigfilter',
                     '#bizonylatstatuszfilter',
+                    '#bizonylatrontottfilter',
                     '#fizmodfilter',
                     '#szallitasimodfilter',
                     '#fuvarlevelszamfilter',
@@ -273,7 +274,7 @@ $(document).ready(function() {
             tablebody: {
                 url: '/admin/szamlafej/getlistbody',
                 onStyle: function() {
-                    $('.js-printbizonylat').button();
+                    $('.js-printbizonylat, .js-stornobizonylat').button();
                 },
                 onDoEditLink: function() {
                     $('.js-printbizonylat').each(function() {

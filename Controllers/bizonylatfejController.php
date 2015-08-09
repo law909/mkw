@@ -147,6 +147,20 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $filter['clauses'][] = 'LIKE';
             $filter['values'][] = '%' . $f . '%';
         }
+
+        $f = $this->params->getIntRequestParam('bizonylatrontottfilter');
+        switch ($f) {
+            case 1:
+                $filter['fields'][] = 'rontott';
+                $filter['clauses'][] = '=';
+                $filter['values'][] = false;
+                break;
+            case 2:
+                $filter['fields'][] = 'rontott';
+                $filter['clauses'][] = '=';
+                $filter['values'][] = true;
+                break;
+        }
         return $filter;
     }
 
@@ -160,6 +174,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		}
 		$x['id'] = $t->getId();
         $x['bizonylattipusid'] = $t->getBizonylattipusId();
+        $x['storno'] = $t->getStorno();
+        $x['stornozott'] = $t->getStornozott();
+        $x['rontott'] = $t->getRontott();
+        $x['nemrossz'] = !$t->getRontott() && !$t->getStorno() && !$t->getStornozott();
         $x['tulajnev'] = $t->getTulajnev();
         $x['tulajirszam'] = $t->getTulajirszam();
         $x['tulajvaros'] = $t->getTulajvaros();
@@ -407,6 +425,18 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $fm = $this->getRepo('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
         $partner = $this->getRepo('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
         echo json_encode(array('esedekesseg' => \mkw\Store::calcEsedekesseg($kelt, $fm, $partner)));
+    }
+
+    public function ront() {
+        $id = $this->params->getStringRequestParam('id');
+        if ($id) {
+            $bf = $this->getRepo()->find($id);
+            if ($bf) {
+                $bf->setRontott(true);
+                $this->getEm()->persist($bf);
+                $this->getEm()->flush();
+            }
+        }
     }
 
 }
