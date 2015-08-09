@@ -76,7 +76,7 @@
             <div><a class="menupont" href="/admin/export/view">{t('Termék exportok')}</a></div>
             <div><a class="menupont" href="/admin/import/view">{t('Importok')}</a></div>
             <div><a class="menupont" href="/admin/setup/view">{t('Beállítások')}</a></div>
-            <div><a class="menupont" href="/admin/regeneratekarkod">{t('Termék kat. rendezése')}</a></div>
+            <div><a class="menupont js-regeneratekarkod" href="#">{t('Termék kat. rendezése')}</a></div>
         </div>
 		<div>
 			<select id="ThemeSelect">

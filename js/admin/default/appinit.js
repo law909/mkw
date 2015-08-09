@@ -86,20 +86,10 @@ $(document).ready(
 				}
 			});
 		});
-		$('#GridEditButtonSelect').change(function(e) {
-			$.ajax({url:'/admin/setgrideditbutton',
-				data:{grideditbutton:this.options[this.selectedIndex].value},
-				success:function(data) {
-					window.location.reload();
-				}
-			});
-		});
-		$('#EditStyleSelect').change(function(e) {
-			$.ajax({url:'/admin/seteditstyle',
-				data:{editstyle:this.options[this.selectedIndex].value},
-				success:function(data) {
-					window.location.reload();
-				}
+		$('.js-regeneratekarkod').on('click', function(e) {
+            e.preventDefault();
+			$.ajax({
+                url:'/admin/regeneratekarkod'
 			});
 		});
 	}

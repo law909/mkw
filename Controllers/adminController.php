@@ -692,7 +692,7 @@ class adminController extends mkwhelpers\Controller {
     public function regeneratekarkod() {
         $farepo = store::getEm()->getRepository('Entities\TermekFa');
         $farepo->regenerateKarKod();
-        $this->view();
+        echo 'ok';
     }
 
     public function sanitize() {
