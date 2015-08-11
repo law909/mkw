@@ -120,7 +120,7 @@ if ($match) {
                 $mainsess->referrer = $_SERVER['HTTP_REFERER'];
             }
         }
-        $pc = new \Controllers\partnerController(Store::getGdl());
+        $pc = new \Controllers\partnerController(null);
         if ($pc->checkloggedin()) {
             $prevuri = $_SERVER['REQUEST_URI'];
             if (!$prevuri) {
