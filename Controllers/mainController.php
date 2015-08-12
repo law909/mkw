@@ -45,13 +45,15 @@ class mainController extends \mkwhelpers\Controller {
         $tcc = new termekcimkeController($this->params);
 		$this->view->setVar('pagetitle', store::getParameter(consts::Oldalcim));
 		$this->view->setVar('seodescription', store::getParameter(consts::Seodescription));
-		$this->view->setVar('hirek', $hc->gethirlist());
-		$this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
-		$this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5)));
-		$this->view->setVar('legujabbtermekek', $tc->getLegujabbLista());
-		$this->view->setVar('korhintalista', $khc->getLista());
-		$this->view->setVar('topkategorialista', $tfc->getformenu(store::getSetupValue('topkategoriamenunum', 3), 0));
-        $this->view->setVar('kiemeltmarkalista', $tcc->getKiemeltList());
+        if (\mkw\Store::getTheme() == 'mkwcansas') {
+            $this->view->setVar('hirek', $hc->gethirlist());
+            $this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
+            $this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5)));
+            $this->view->setVar('legujabbtermekek', $tc->getLegujabbLista());
+            $this->view->setVar('korhintalista', $khc->getLista());
+            $this->view->setVar('topkategorialista', $tfc->getformenu(store::getSetupValue('topkategoriamenunum', 3), 0));
+            $this->view->setVar('kiemeltmarkalista', $tcc->getKiemeltList());
+        }
 		$this->view->printTemplateResult(true);
 	}
 
