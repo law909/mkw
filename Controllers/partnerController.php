@@ -387,6 +387,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $kc->clear($user->getId()); // csak partner alapján
             $oldid = \Zend_Session::getId();
             \Zend_Session::regenerateId();
+            \mkw\Store::clearLoggedInUser();
             $user->setSessionid(\Zend_Session::getId());
             $user->setUtolsoklikk();
             $user->clearPasswordreminder();
@@ -401,8 +402,9 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     public function logout() {
-        $user = $this->getRepo()->getLoggedInUser();
+        $user = \mkw\Store::getLoggedInUser();
         if ($user) {
+            \mkw\Store::clearLoggedInUser();
             $user->setSessionid('');
             $this->getEm()->persist($user);
             $this->getEm()->flush();
@@ -413,7 +415,7 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     public function autologout() {
-        $user = $this->getRepo()->getLoggedInUser();
+        $user = \mkw\Store::getLoggedInUser();
         if ($user) {
             $ma = new \DateTime();
             $kul = $ma->diff($user->getUtolsoklikk());
@@ -431,7 +433,7 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     public function setUtolsoKlikk() {
-        $user = $this->getRepo()->getLoggedInUser();
+        $user = \mkw\Store::getLoggedInUser();
         if ($user) {
             $user->setUtolsoKlikk();
             $this->getEm()->persist($user);
@@ -566,6 +568,7 @@ class partnerController extends \mkwhelpers\MattableController {
                 header('Location: ' . $route);
             }
             else {
+                \mkw\Store::clearLoggedInUser();
                 if ($checkout) {
                     \mkw\Store::getMainSession()->loginerror = true;
                     header('Location: ' . store::getRouter()->generate('showcheckout'));

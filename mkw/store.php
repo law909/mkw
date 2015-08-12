@@ -19,6 +19,7 @@ class Store {
     private static $locales = array('HU' => 'hu_hu', 'EN' => 'en_us', 'DE' => 'de_de');
     private static $adminmode = false;
     private static $mainmode = false;
+    private static $loggedinuser;
     public static $DateFormat = 'Y.m.d';
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
 
@@ -618,8 +619,15 @@ class Store {
     }
 
     public static function getLoggedInUser() {
-        $pr = self::getEm()->getRepository('Entities\Partner');
-        return $pr->getLoggedInUser();
+        if (!self::$loggedinuser) {
+            $pr = self::getEm()->getRepository('Entities\Partner');
+            self::$loggedinuser = $pr->getLoggedInUser();
+        }
+        return self::$loggedinuser;
+    }
+
+    public static function clearLoggedInUser() {
+        self::$loggedinuser = null;
     }
 
     public static function getTheme() {
