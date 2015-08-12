@@ -1,5 +1,5 @@
 <div id="mattkarb-header">
-	<img class="mattedit-headerimage" src="{$mainurl}{$termek.kepurlsmall}"/>
+	{if ($termek.kepurlsmall)}<img class="mattedit-headerimage" src="{$mainurl}{$termek.kepurlsmall}"/>{/if}
 	<h3>{t('Termék')}</h3>
 	<h4><a href="{$mainurl}/termek/{$termek.slug}" target="_blank">{$termek.nev}</a></h4>
 </div>
