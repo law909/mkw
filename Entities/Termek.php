@@ -620,8 +620,6 @@ class Termek {
         $x['caption'] = $this->getNev();
         $x['cikkszam'] = $this->getCikkszam();
         $x['rovidleiras'] = $this->getRovidLeiras();
-        $x['bruttohuf'] = $this->getBruttoAr(null, \mkw\Store::getLoggedInUser());
-        $x['eredetibruttohuf'] = $this->getEredetiBruttoAr(null);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         if ($this->szallitasiido) {
             $x['szallitasiido'] = $this->szallitasiido;

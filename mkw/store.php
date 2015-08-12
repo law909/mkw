@@ -293,7 +293,9 @@ class Store {
         $v->setVar('jsversion', self::getJSVersion());
         $v->setVar('bootstrapjsversion', self::getBootstrapJSVersion());
         if ($needmenu) {
+            \mkw\Store::writelog('getformenu start', 'time.log');
             $v->setVar('menu1', $tf->getformenu(1, self::getSetupValue('almenunum')));
+            \mkw\Store::writelog('getformenu start', 'time.log');
             $kc = new \Controllers\kosarController(null);
             $v->setVar('kosar', $kc->getMiniData());
         }
