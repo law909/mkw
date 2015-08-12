@@ -14,6 +14,10 @@ table {
     text-align: justify;
 }
 
+.textalignnone {
+    text-align: initial;
+}
+
 .body {
     background: url("background.jpg") no-repeat scroll center top rgba(0, 0, 0, 1) !important;
 }

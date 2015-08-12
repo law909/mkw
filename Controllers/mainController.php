@@ -256,6 +256,7 @@ class mainController extends \mkwhelpers\Controller {
             $t['id'] = $termek->getId();
             $t['caption'] = $termek->getNev();
             $t['cikkszam'] = $termek->getCikkszam();
+            $t['leiras'] = $termek->getLeiras();
             $t['szin'] = $szin;
             $partner = \mkw\Store::getLoggedInUser();
             if ($partner && $partner->getSzamlatipus()) {

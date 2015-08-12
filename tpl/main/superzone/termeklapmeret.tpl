@@ -10,6 +10,7 @@
     <div class="row">
         <div class="col-md-5 valtozatnagykep">
             <img src="{$termek.kepurlmedium}">
+            <div class="textalignnone">{$termek.leiras}</div>
         </div>
         <div class="col-md-7">
             <form>
@@ -34,11 +35,9 @@
                 </div>
                 {/foreach}
             </form>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <a href="/kosar/multiadd" class="btn btn-large btn-primary desktopright js-kosarbabtn" data-termekid="{$termek.id}">Add to cart</a>
+            <div>
+                <a href="/kosar/multiadd" class="btn btn-large btn-primary desktopright js-kosarbabtn" data-termekid="{$termek.id}">Add to cart</a>
+            </div>
         </div>
     </div>
 {/block}
