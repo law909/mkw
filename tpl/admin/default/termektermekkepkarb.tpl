@@ -3,7 +3,7 @@
         <tr>
             <input type="hidden" name="kepid[]" value="{$kep.id}">
             <input type="hidden" name="kepoper_{$kep.id}" value="{$kep.oper}">
-            <td><a class="js-toflyout" href="{$mainurl}{$kep.url}" target="_blank"><img src="{$mainurl}{$kep.urlsmall}" alt="{$kep.url}" title="{$kep.url}"/></a></td>
+            <td>{if ($kep.url)}<a class="js-toflyout" href="{$mainurl}{$kep.url}" target="_blank"><img src="{$mainurl}{$kep.urlsmall}" alt="{$kep.url}" title="{$kep.url}"/></a>{/if}</td>
             <td>
                 <table>
                     <tbody>
