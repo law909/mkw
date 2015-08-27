@@ -272,6 +272,7 @@ $router->map('POST','/admin/import/vatera', 'importController#vateraImport', 'ad
 //$router->map('POST','/admin/import/szpartnerimport', 'importController#szInvarPartnerImport', 'adminszinvarpartnerimport');
 $router->map('POST','/admin/import/szimport', 'importController#szImport', 'adminszimport');
 $router->map('POST','/admin/import/foxpostterminal', 'foxpostController#downloadTerminalList', 'adminfoxpostterminalimport');
+$router->map('GET','/admin/import/szpartnerimport', 'importController#szSIIKerPartnerImport', 'adminszsiikerpartnerimport');
 
 
 $router->map('GET', '/admin/login/show', 'dolgozoController#showlogin', 'adminshowlogin');

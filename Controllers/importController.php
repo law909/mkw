@@ -1731,4 +1731,70 @@ class importController extends \mkwhelpers\Controller {
         }
 
     }
+
+    public function szSIIKerPartnerImport() {
+        $sep = ';';
+        $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+        $dbig = $this->params->getIntRequestParam('dbig', 0);
+//        move_uploaded_file($_FILES['toimport']['tmp_name'], 'siikerpartnerek.csv');
+        $fh = fopen('siikerpartnerek.csv', 'r');
+        if ($fh) {
+            $tipuskat = store::getEm()->getRepository('Entities\Partnercimkekat')->findOneBynev('Típus');
+            if (!$tipuskat) {
+                $tipuskat = new \Entities\Partnercimkekat();
+                $tipuskat->setLathato(true);
+                $tipuskat->setNev('Típus');
+                store::getEm()->persist($tipuskat);
+                store::getEm()->flush();
+            }
+            $termekdb = 0;
+            while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
+                $termekdb++;
+            }
+            while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
+                $termekdb++;
+                $me = new \Entities\Partner();
+                $me->setVendeg(false);
+                if ($data[$this->n('c')] != '') {
+                    $me->setNev($data[$this->n('c')]);
+                }
+                if ($data[$this->n('d')] != '') {
+                    $me->setIrszam($data[$this->n('d')]);
+                }
+                if ($data[$this->n('e')] != '') {
+                    $me->setVaros($data[$this->n('e')]);
+                }
+                if ($data[$this->n('f')] != '') {
+                    $me->setUtca($data[$this->n['f']]);
+                }
+                if ($data[$this->n('g')] != '') {
+                    $me->setAdoszam($data[$this->n['g']]);
+                }
+                if ($data[$this->n('h')] != '') {
+                    $me->setEuadoszam($data[$this->n['h']]);
+                }
+                if ($data[$this->n('i')] != '') {
+                    $me->setTelefon($data[$this->n['i']]);
+                }
+                if ($data[$this->n('j')] != '') {
+                    $me->setMobil($data[$this->n['j']]);
+                }
+                if ($data[$this->n('k')] != '') {
+                    $me->setEmail($data[$this->n['k']]);
+                }
+                if ($data[$this->n('l')] != '') {
+                    $me->setHonlap($data[$this->n['l']]);
+                }
+                $marka = $this->createPartnerCimke($tipuskat, 'Kiskereskedelmi vevők');
+                if ($marka) {
+                    $me->addCimke($marka);
+                }
+                store::getEm()->persist($me);
+                store::getEm()->flush();
+            }
+        }
+        fclose($fh);
+//        \unlink('siikerpartnerek.csv');
+    }
+
 }
