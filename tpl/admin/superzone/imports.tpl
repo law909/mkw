@@ -57,7 +57,7 @@
         <li>netto_huf_vonalkodos - nettó HUF ár "vonalkodos" ársávba</li>
         <li>brutto_huf_vonalkodos - bruttó HUF ár "vonalkodos" ársávba</li>
     </ul>
-    <p>A termék azonosítás "kod" vagy "vonalkod" oszlop alapján történik.<br>
+    <p>A termék azonosítás "kod", "vonalkod" vagy "cikkszam" oszlop alapján történik.<br>
         Ha egy oszlopnak nincs fejléce, a program nem foglalkozik a tartalmával.<br>
     Ha ugyanolyan valutanemben és ársávban nettó és bruttó ár is szerepel, a program a bruttót fogja betölteni.</p>
 		</div>

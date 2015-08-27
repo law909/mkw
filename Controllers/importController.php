@@ -1609,6 +1609,9 @@ class importController extends \mkwhelpers\Controller {
             elseif ($vonalkod) {
                 $termek = $termekrepo->findByVonalkod($vonalkod);
             }
+            elseif ($cikkszam) {
+                $termek = $termekrepo->findByCikkszam($cikkszam);
+            }
 
             if ($termek) {
                 if (is_array($termek)) {
