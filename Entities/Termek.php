@@ -53,7 +53,7 @@ class Termek {
     private $me = '';
 
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
-    private $kiszereles = '';
+    private $kiszereles = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="Vtsz")
