@@ -1733,7 +1733,7 @@ class importController extends \mkwhelpers\Controller {
     }
 
     public function szSIIKerPartnerImport() {
-        $sep = ';';
+        $sep = ',';
         $dbtol = $this->params->getIntRequestParam('dbtol', 0);
         $dbig = $this->params->getIntRequestParam('dbig', 0);
 //        move_uploaded_file($_FILES['toimport']['tmp_name'], 'siikerpartnerek.csv');
