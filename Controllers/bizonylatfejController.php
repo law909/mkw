@@ -343,54 +343,16 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 			if (($this->params->getIntRequestParam('teteltermek_' . $tetelid) > 0)) {
 				$oper = $this->params->getStringRequestParam('teteloper_' . $tetelid);
 				$termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('teteltermek_' . $tetelid));
-				$termekvaltozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('tetelvaltozat_' . $tetelid));
-                switch ($oper) {
-                    case $this->addOperation:
-                    case $this->inheritOperation:
-                    case $this->stornoOperation:
-                        $tetel = new Bizonylattetel();
-                        $obj->addBizonylattetel($tetel);
-                        $tetel->setPersistentData();
-                        $tetel->setArvaltoztat(0);
-                        if ($termek) {
-                            $tetel->setTermek($termek);
-                        }
-                        if ($termekvaltozat) {
-                            $tetel->setTermekvaltozat($termekvaltozat);
-                        }
-                        $tetel->setMozgat();
-
-                        $tetel->setVtsz($this->params->getIntRequestParam('tetelvtsz_' . $tetelid));
-                        $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
-
-                        $tetel->setME($this->params->getStringRequestParam('tetelme_' . $tetelid));
-                        $parenttetel = $this->getRepo('Entities\Bizonylattetel')->find($this->params->getStringRequestParam('tetelparentid_' . $tetelid));
-                        if ($parenttetel) {
-                            $tetel->setParbizonylattetel($parenttetel);
-                        }
-                        $tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_' . $tetelid));
-                        $tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_' . $tetelid));
-                        $tetel->setBruttoegysar($this->params->getFloatRequestParam('tetelbruttoegysar_' . $tetelid));
-                        $tetel->setNetto($this->params->getFloatRequestParam('tetelnetto_' . $tetelid));
-                        $tetel->setBrutto($this->params->getFloatRequestParam('tetelbrutto_' . $tetelid));
-                        $tetel->setAfaertek($tetel->getBrutto() - $tetel->getNetto());
-                        $tetel->setNettoegysarhuf($this->params->getFloatRequestParam('tetelnettoegysarhuf_' . $tetelid));
-                        $tetel->setBruttoegysarhuf($this->params->getFloatRequestParam('tetelbruttoegysarhuf_' . $tetelid));
-                        $tetel->setNettohuf($this->params->getFloatRequestParam('tetelnettohuf_' . $tetelid));
-                        $tetel->setBruttohuf($this->params->getFloatRequestParam('tetelbruttohuf_' . $tetelid));
-                        $tetel->setAfaertekhuf($tetel->getBruttohuf() - $tetel->getNettohuf());
-                        $tetel->setHatarido($this->params->getStringRequestParam('tetelhatarido_' . $tetelid));
-    					$tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
-                        if ($oper == $this->stornoOperation) {
-                            $tetel->setStorno(true);
-                        }
-                        $this->getEm()->persist($tetel);
-                        break;
-                    case $this->editOperation:
-                        $tetel = $this->getEm()->getRepository('Entities\Bizonylattetel')->find($tetelid);
-                        if ($tetel) {
+                if ($termek) {
+                    $termekvaltozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('tetelvaltozat_' . $tetelid));
+                    switch ($oper) {
+                        case $this->addOperation:
+                        case $this->inheritOperation:
+                        case $this->stornoOperation:
+                            $tetel = new Bizonylattetel();
+                            $obj->addBizonylattetel($tetel);
                             $tetel->setPersistentData();
-                            $tetel->setMozgat();
+                            $tetel->setArvaltoztat(0);
                             if ($termek) {
                                 $tetel->setTermek($termek);
                             }
@@ -403,6 +365,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                             $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
 
                             $tetel->setME($this->params->getStringRequestParam('tetelme_' . $tetelid));
+                            $parenttetel = $this->getRepo('Entities\Bizonylattetel')->find($this->params->getStringRequestParam('tetelparentid_' . $tetelid));
+                            if ($parenttetel) {
+                                $tetel->setParbizonylattetel($parenttetel);
+                            }
                             $tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_' . $tetelid));
                             $tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_' . $tetelid));
                             $tetel->setBruttoegysar($this->params->getFloatRequestParam('tetelbruttoegysar_' . $tetelid));
@@ -415,10 +381,49 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                             $tetel->setBruttohuf($this->params->getFloatRequestParam('tetelbruttohuf_' . $tetelid));
                             $tetel->setAfaertekhuf($tetel->getBruttohuf() - $tetel->getNettohuf());
                             $tetel->setHatarido($this->params->getStringRequestParam('tetelhatarido_' . $tetelid));
-    						$tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
+                            $tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
+                            if ($oper == $this->stornoOperation) {
+                                $tetel->setStorno(true);
+                            }
                             $this->getEm()->persist($tetel);
-                        }
-                        break;
+                            break;
+                        case $this->editOperation:
+                            $tetel = $this->getEm()->getRepository('Entities\Bizonylattetel')->find($tetelid);
+                            if ($tetel) {
+                                $tetel->setPersistentData();
+                                $tetel->setMozgat();
+                                if ($termek) {
+                                    $tetel->setTermek($termek);
+                                }
+                                if ($termekvaltozat) {
+                                    $tetel->setTermekvaltozat($termekvaltozat);
+                                }
+                                $tetel->setMozgat();
+
+                                $tetel->setVtsz($this->params->getIntRequestParam('tetelvtsz_' . $tetelid));
+                                $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
+
+                                $tetel->setME($this->params->getStringRequestParam('tetelme_' . $tetelid));
+                                $tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_' . $tetelid));
+                                $tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_' . $tetelid));
+                                $tetel->setBruttoegysar($this->params->getFloatRequestParam('tetelbruttoegysar_' . $tetelid));
+                                $tetel->setNetto($this->params->getFloatRequestParam('tetelnetto_' . $tetelid));
+                                $tetel->setBrutto($this->params->getFloatRequestParam('tetelbrutto_' . $tetelid));
+                                $tetel->setAfaertek($tetel->getBrutto() - $tetel->getNetto());
+                                $tetel->setNettoegysarhuf($this->params->getFloatRequestParam('tetelnettoegysarhuf_' . $tetelid));
+                                $tetel->setBruttoegysarhuf($this->params->getFloatRequestParam('tetelbruttoegysarhuf_' . $tetelid));
+                                $tetel->setNettohuf($this->params->getFloatRequestParam('tetelnettohuf_' . $tetelid));
+                                $tetel->setBruttohuf($this->params->getFloatRequestParam('tetelbruttohuf_' . $tetelid));
+                                $tetel->setAfaertekhuf($tetel->getBruttohuf() - $tetel->getNettohuf());
+                                $tetel->setHatarido($this->params->getStringRequestParam('tetelhatarido_' . $tetelid));
+                                $tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
+                                $this->getEm()->persist($tetel);
+                            }
+                            break;
+                    }
+                }
+                else {
+                    \mkw\Store::writelog(print_r($this->params->asArray(), true), 'nincstermek.log');
                 }
 			}
 		}

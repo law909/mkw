@@ -27,6 +27,10 @@ class ParameterHandler implements IParameterHandler {
         }
     }
 
+    public function asArray() {
+        return $this->params;
+    }
+
     public function getParam($key, $default = null, $sanitize = true) {
         if (array_key_exists('params', $this->params) && array_key_exists($key, $this->params['params'])) {
             $data = $this->trim($this->params['params'][$key]);
