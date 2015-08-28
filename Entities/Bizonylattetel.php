@@ -438,6 +438,9 @@ class Bizonylattetel {
     }
 
     public function setVtsz($val) {
+        if (!is_object($val)) {
+            $val = \mkw\Store::getEm()->getRepository('Entities\Vtsz')->find($val);
+        }
         if ($this->vtsz !== $val) {
             $this->vtsz = $val;
             $this->vtsznev = $val->getNev();
@@ -480,6 +483,9 @@ class Bizonylattetel {
     }
 
     public function setAfa($val) {
+        if (!is_object($val)) {
+            $val = \mkw\Store::getEm()->getRepository('Entities\Afa')->find($val);
+        }
         if ($this->afa !== $val) {
             $this->afa = $val;
             $this->afanev = $val->getNev();

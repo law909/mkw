@@ -359,8 +359,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                             $tetel->setTermekvaltozat($termekvaltozat);
                         }
                         $tetel->setMozgat();
+
                         $tetel->setVtsz($this->params->getIntRequestParam('tetelvtsz_' . $tetelid));
                         $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
+
                         $tetel->setME($this->params->getStringRequestParam('tetelme_' . $tetelid));
                         $parenttetel = $this->getRepo('Entities\Bizonylattetel')->find($this->params->getStringRequestParam('tetelparentid_' . $tetelid));
                         if ($parenttetel) {
@@ -396,8 +398,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                 $tetel->setTermekvaltozat($termekvaltozat);
                             }
                             $tetel->setMozgat();
+
                             $tetel->setVtsz($this->params->getIntRequestParam('tetelvtsz_' . $tetelid));
                             $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
+
                             $tetel->setME($this->params->getStringRequestParam('tetelme_' . $tetelid));
                             $tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_' . $tetelid));
                             $tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_' . $tetelid));
