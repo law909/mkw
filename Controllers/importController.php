@@ -1765,25 +1765,25 @@ class importController extends \mkwhelpers\Controller {
                     $me->setVaros($data[$this->n('e')]);
                 }
                 if ($data[$this->n('f')] != '') {
-                    $me->setUtca($data[$this->n['f']]);
+                    $me->setUtca($data[$this->n('f')]);
                 }
                 if ($data[$this->n('g')] != '') {
-                    $me->setAdoszam($data[$this->n['g']]);
+                    $me->setAdoszam($data[$this->n('g')]);
                 }
                 if ($data[$this->n('h')] != '') {
-                    $me->setEuadoszam($data[$this->n['h']]);
+                    $me->setEuadoszam($data[$this->n('h')]);
                 }
                 if ($data[$this->n('i')] != '') {
-                    $me->setTelefon($data[$this->n['i']]);
+                    $me->setTelefon($data[$this->n('i')]);
                 }
                 if ($data[$this->n('j')] != '') {
-                    $me->setMobil($data[$this->n['j']]);
+                    $me->setMobil($data[$this->n('j')]);
                 }
                 if ($data[$this->n('k')] != '') {
-                    $me->setEmail($data[$this->n['k']]);
+                    $me->setEmail($data[$this->n('k')]);
                 }
                 if ($data[$this->n('l')] != '') {
-                    $me->setHonlap($data[$this->n['l']]);
+                    $me->setHonlap($data[$this->n('l')]);
                 }
                 $marka = $this->createPartnerCimke($tipuskat, 'Kiskereskedelmi vevők');
                 if ($marka) {
