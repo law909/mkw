@@ -1277,31 +1277,39 @@ class Termek {
                 uasort($a, function($e, $f) use ($sorrend, $rendezendo) {
                     if ($e->getAdatTipus1Id() == $rendezendo) {
                         $ertek = $e->getErtek1();
+                        $eszin = $e->getErtek2();
                     }
                     elseif ($e->getAdatTipus2Id() == $rendezendo) {
                         $ertek = $e->getErtek2();
+                        $eszin = $e->getErtek1();
                     }
                     else {
                         $ertek = false;
+                        $eszin = false;
                     }
                     $ve = array_search($ertek, $sorrend);
                     if ($ve === false) {
                         $ve = 0;
                     }
+                    $ve = $eszin . str_pad((string)$ve, 6, '0', STR_PAD_LEFT);
 
                     if ($f->getAdatTipus1Id() == $rendezendo) {
                         $ertek = $f->getErtek1();
+                        $fszin = $f->getErtek2();
                     }
                     elseif ($f->getAdatTipus2Id() == $rendezendo) {
                         $ertek = $f->getErtek2();
+                        $fszin = $f->getErtek1();
                     }
                     else {
                         $ertek = false;
+                        $fszin = false;
                     }
                     $vf = array_search($ertek, $sorrend);
                     if ($vf === false) {
                         $vf = 0;
                     }
+                    $vf = $fszin . str_pad((string)$vf, 6, '0', STR_PAD_LEFT);
 
                     if ($ve === $vf) {
                         return 0;
