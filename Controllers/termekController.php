@@ -642,23 +642,47 @@ class termekController extends \mkwhelpers\MattableController {
 		if ($term) {
 			$r = store::getEm()->getRepository('\Entities\Termek');
 			$res = $r->getBizonylattetelLista($term);
-			foreach ($res as $r) {
-				$ret[] = array(
-					'value' => $r->getNev(),
-					'id' => $r->getId(),
-					'me' => $r->getMe(),
-					'cikkszam' => $r->getCikkszam(),
-					'vtsz' => $r->getVtszId(),
-					'afa' => $r->getAfaId(),
-					'kozepeskepurl' => $r->getKepUrlMedium(),
-					'kiskepurl' => $r->getKepUrlSmall(),
-					'kepurl' => $r->getKepUrlLarge(),
-					'slug' => $r->getSlug(),
-                    'link' => \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
-                    'mainurl' => store::getConfigValue('mainurl'),
-                    'nemlathato' => (!$r->getLathato()||$r->getInaktiv()||$r->getNemkaphato())
-				);
-			}
+            switch (\mkw\Store::getTheme()) {
+                case 'mkwcansas':
+                    foreach ($res as $r) {
+                        $ret[] = array(
+                            'value' => $r->getNev(),
+                            'id' => $r->getId(),
+                            'me' => $r->getMe(),
+                            'cikkszam' => $r->getCikkszam(),
+                            'vtsz' => $r->getVtszId(),
+                            'afa' => $r->getAfaId(),
+                            'kozepeskepurl' => $r->getKepUrlMedium(),
+                            'kiskepurl' => $r->getKepUrlSmall(),
+                            'kepurl' => $r->getKepUrlLarge(),
+                            'slug' => $r->getSlug(),
+                            'link' => \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
+                            'mainurl' => store::getConfigValue('mainurl'),
+                            'nemlathato' => (!$r->getLathato()||$r->getInaktiv()||$r->getNemkaphato())
+                        );
+                    }
+                    break;
+                case 'superzone':
+                    foreach ($res as $r) {
+                        $ret[] = array(
+                            'value' => $r->getNev(),
+                            'label' => $r->getCikkszam() . ' ' . $r->getNev(),
+                            'id' => $r->getId(),
+                            'me' => $r->getMe(),
+                            'cikkszam' => $r->getCikkszam(),
+                            'vtsz' => $r->getVtszId(),
+                            'afa' => $r->getAfaId(),
+                            'kozepeskepurl' => $r->getKepUrlMedium(),
+                            'kiskepurl' => $r->getKepUrlSmall(),
+                            'kepurl' => $r->getKepUrlLarge(),
+                            'slug' => $r->getSlug(),
+                            'link' => \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
+                            'mainurl' => store::getConfigValue('mainurl'),
+                            'nemlathato' => (!$r->getLathato()||$r->getInaktiv()||$r->getNemkaphato())
+                        );
+                    }
+                    break;
+            }
 		}
 		echo json_encode($ret);
 	}
