@@ -20,7 +20,7 @@ class TermekKepRepository extends \mkwhelpers\Repository {
             $filter['values'][] = $termek;
             return $this->getAll($filter, array());
         }
-        return null;
+        return array();
     }
 
     public function getByTermekForSitemapXml($termek) {

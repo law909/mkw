@@ -151,13 +151,18 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 
 	public function calcar() {
 		$afaent = $this->getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afa'));
+
 		$arfolyam = $this->params->getNumRequestParam('arfolyam', 1);
 		$nettoegysar = $this->params->getNumRequestParam('nettoegysar', 0);
 		$mennyiseg = $this->params->getNumRequestParam('mennyiseg', 0);
 
-		$bruttoegysar = $afaent->calcBrutto($nettoegysar);
+		if ($afaent) {
+            $bruttoegysar = $afaent->calcBrutto($nettoegysar);
+        }
 		$netto = $nettoegysar * $mennyiseg;
-		$brutto = $afaent->calcBrutto($netto);
+        if ($afaent) {
+            $brutto = $afaent->calcBrutto($netto);
+        }
 		$afa = $brutto - $netto;
 
 		$nettoegysarhuf = $nettoegysar * $arfolyam;
