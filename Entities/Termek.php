@@ -112,7 +112,7 @@ class Termek {
      * @Gedmo\Slug(fields={"nev"})
      * @ORM\Column(type="string",length=255,nullable=true)
      */
-    private $slug = '';
+    private $slug;
 
     /** @ORM\Column(type="boolean",nullable=false) */
     private $lathato = 1;
