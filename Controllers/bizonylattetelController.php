@@ -156,10 +156,13 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$nettoegysar = $this->params->getNumRequestParam('nettoegysar', 0);
 		$mennyiseg = $this->params->getNumRequestParam('mennyiseg', 0);
 
+        $bruttoegysar = 0;
 		if ($afaent) {
             $bruttoegysar = $afaent->calcBrutto($nettoegysar);
         }
 		$netto = $nettoegysar * $mennyiseg;
+
+        $brutto = 0;
         if ($afaent) {
             $brutto = $afaent->calcBrutto($netto);
         }
