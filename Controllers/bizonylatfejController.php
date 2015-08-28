@@ -380,7 +380,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                         $tetel->setBruttohuf($this->params->getFloatRequestParam('tetelbruttohuf_' . $tetelid));
                         $tetel->setAfaertekhuf($tetel->getBruttohuf() - $tetel->getNettohuf());
                         $tetel->setHatarido($this->params->getStringRequestParam('tetelhatarido_' . $tetelid));
-    //						$tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
+    					$tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
                         if ($oper == $this->stornoOperation) {
                             $tetel->setStorno(true);
                         }
@@ -415,7 +415,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                             $tetel->setBruttohuf($this->params->getFloatRequestParam('tetelbruttohuf_' . $tetelid));
                             $tetel->setAfaertekhuf($tetel->getBruttohuf() - $tetel->getNettohuf());
                             $tetel->setHatarido($this->params->getStringRequestParam('tetelhatarido_' . $tetelid));
-    //							$tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
+    						$tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
                             $this->getEm()->persist($tetel);
                         }
                         break;
