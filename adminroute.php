@@ -89,6 +89,14 @@ $router->map('POST', '/admin/szamlafej/save', 'szamlafejController#save', 'admin
 $router->map('GET', '/admin/szamlafej/print', 'szamlafejController#doPrint', 'adminszamlafejprint');
 $router->map('GET', '/admin/szamlafej/storno', 'szamlafejController#storno', 'adminszamlafejstorno');
 
+$router->map('GET', '/admin/egyebmozgasfej/viewlist', 'egyebmozgasfejController#viewlist', 'adminegyebmozgasfejviewlist');
+$router->map('GET', '/admin/egyebmozgasfej/getlistbody', 'egyebmozgasfejController#getlistbody', 'adminegyebmozgasfejgetlistbody');
+$router->map('GET', '/admin/egyebmozgasfej/getkarb', 'egyebmozgasfejController#getkarb', 'adminegyebmozgasfejgetkarb');
+$router->map('GET', '/admin/egyebmozgasfej/viewkarb', 'egyebmozgasfejController#viewkarb', 'adminegyebmozgasfejviewkarb');
+$router->map('POST', '/admin/egyebmozgasfej/save', 'egyebmozgasfejController#save', 'adminegyebmozgasfejsave');
+$router->map('GET', '/admin/egyebmozgasfej/print', 'egyebmozgasfejController#doPrint', 'adminegyebmozgasfejprint');
+$router->map('POST', '/admin/egyebmozgasfej/ront', 'egyebmozgasfejController#ront', 'adminegyebmozgasfejront');
+
 $router->map('GET', '/admin/keziszamlafej/viewlist', 'keziszamlafejController#viewlist', 'adminkeziszamlafejviewlist');
 $router->map('GET', '/admin/keziszamlafej/getlistbody', 'keziszamlafejController#getlistbody', 'adminkeziszamlafejgetlistbody');
 $router->map('GET', '/admin/keziszamlafej/getkarb', 'keziszamlafejController#getkarb', 'adminkeziszamlafejgetkarb');

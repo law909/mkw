@@ -12,6 +12,7 @@ $(document).ready(function() {
                         afa = $('select[name="tetelafa_' + sorid + '"]'),
                         selvaltozat = $('select[name="tetelvaltozat_' + sorid + '"]').val(),
                         valtozatplace = $('#ValtozatPlaceholder' + sorid);
+                bizonylathelper.setNoCalcArak(true);
                 valtozatplace.empty();
                 $this.siblings().val(ui.item.id);
                 $('input[name="tetelnev_' + sorid + '"]').val(ui.item.value);
@@ -29,11 +30,11 @@ $(document).ready(function() {
             }
         }
     },
-    keziszamla = {
+    egyebmozgas = {
         container: '#mattkarb',
-        viewUrl: '/admin/keziszamlafej/getkarb',
-        newWindowUrl: '/admin/keziszamlafej/viewkarb',
-        saveUrl: '/admin/keziszamlafej/save',
+        viewUrl: '/admin/egyebmozgasfej/getkarb',
+        newWindowUrl: '/admin/egyebmozgasfej/viewkarb',
+        saveUrl: '/admin/egyebmozgasfej/save',
         beforeShow: function() {
             var keltedit = $('#KeltEdit'),
                     teljesitesedit = $('#TeljesitesEdit'),
@@ -91,7 +92,7 @@ $(document).ready(function() {
                 $.ajax({
                     url: '/admin/bizonylattetel/getemptyrow',
                     data: {
-                        type: 'keziszamla'
+                        type: 'egyeb'
                     },
                     type: 'GET',
                     success: function(data) {
@@ -227,7 +228,7 @@ $(document).ready(function() {
             }
         },
         beforeSerialize: function() {
-            return bizonylathelper.checkBizonylatFej('keziszamla', dialogcenter);
+            return bizonylathelper.checkBizonylatFej('egyeb', dialogcenter);
         },
         onSubmit: function() {
             $('#messagecenter')
@@ -271,24 +272,24 @@ $(document).ready(function() {
                 ]
             },
             tablebody: {
-                url: '/admin/keziszamlafej/getlistbody',
+                url: '/admin/egyebmozgasfej/getlistbody',
                 onStyle: function() {
                     $('.js-printbizonylat, .js-rontbizonylat').button();
                 },
                 onDoEditLink: function() {
                     $('.js-printbizonylat').each(function() {
                         var $this = $(this);
-                        $this.attr('href', '/admin/keziszamlafej/print?id=' + $this.data('egyedid'));
+                        $this.attr('href', '/admin/egyebmozgasfej/print?id=' + $this.data('egyedid'));
                     });
                 }
             },
-            karb: keziszamla
+            karb: egyebmozgas
         });
         $('#mattable-body')
         .on('click', '.js-rontbizonylat', function(e) {
             e.preventDefault();
             $.ajax({
-                url:'/admin/keziszamlafej/ront',
+                url:'/admin/egyebmozgasfej/ront',
                 type: 'POST',
                 data: {
                     id: $(this).data('egyedid')
@@ -304,7 +305,7 @@ $(document).ready(function() {
     }
     else {
         if ($.fn.mattkarb) {
-            $('#mattkarb').mattkarb($.extend({}, keziszamla, {independent: true}));
+            $('#mattkarb').mattkarb($.extend({}, egyebmozgas, {independent: true}));
         }
     }
 });
