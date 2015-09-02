@@ -1126,12 +1126,34 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function clearLastmod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearLastmod', array());
+
+        return parent::clearLastmod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getCreated()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
 
         return parent::getCreated();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function clearCreated()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearCreated', array());
+
+        return parent::clearCreated();
     }
 
     /**

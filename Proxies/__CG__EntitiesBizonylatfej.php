@@ -257,6 +257,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function clearId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearId', array());
+
+        return parent::clearId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getTrxId()
     {
 
@@ -290,12 +301,12 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function generateId()
+    public function generateId($from = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'generateId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'generateId', array($from));
 
-        return parent::generateId();
+        return parent::generateId($from);
     }
 
     /**
@@ -1731,12 +1742,34 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function clearLastmod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearLastmod', array());
+
+        return parent::clearLastmod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getCreated()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
 
         return parent::getCreated();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function clearCreated()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearCreated', array());
+
+        return parent::clearCreated();
     }
 
     /**

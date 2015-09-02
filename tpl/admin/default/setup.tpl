@@ -229,6 +229,9 @@
 		<tr><td><label for="TulajeorinrEdit">{t('EORI NR')}:</label></td>
 			<td><input id="TulajeorinrEdit" name="tulajeorinr" type="text" value="{$tulajeorinr}"></td>
 		</tr>
+		<tr><td><label for="TulajcrcEdit">{t('CRC')}:</label></td>
+			<td><input id="TulajcrcEdit" name="tulajcrc" type="password" value=""></td>
+		</tr>
 		</tbody></table>
 		</div>
 		<div id="WebTab" class="mattkarb-page" data-visible="visible">

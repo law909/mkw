@@ -25,7 +25,6 @@ class Bizonylattetel {
     private $created;
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime",nullable=true)
      */
@@ -734,8 +733,16 @@ class Bizonylattetel {
         return $this->lastmod;
     }
 
+    public function clearLastmod() {
+        $this->lastmod = null;
+    }
+
     public function getCreated() {
         return $this->created;
+    }
+
+    public function clearCreated() {
+        $this->created = null;
     }
 
     public function getTermekvaltozat() {

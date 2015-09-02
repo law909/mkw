@@ -73,7 +73,6 @@ class Bizonylatfej {
     private $created;
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime",nullable=true)
      */
@@ -503,6 +502,10 @@ class Bizonylatfej {
         return $this->id;
     }
 
+    public function clearId() {
+        $this->id = null;
+    }
+
     public function getTrxId() {
         return $this->trxid;
     }
@@ -515,8 +518,9 @@ class Bizonylatfej {
         $this->otpayid = $val;
     }
 
-    public function generateId() {
+    public function generateId($from = null) {
         $bt = $this->getBizonylattipus();
+        $szam = 0;
         if ($bt && is_null($this->id)) {
             $azon = $bt->getAzonosito();
             if (is_null($azon)) {
@@ -524,29 +528,50 @@ class Bizonylatfej {
             }
             $kezdo = $bt->getKezdosorszam();
             $ev = $this->getKelt()->format('Y');
-            $q = store::getEm()->createQuery('SELECT COUNT(bf) FROM Entities\Bizonylatfej bf WHERE bf.bizonylattipus=:p');
-            $q->setParameters(array('p' => $bt));
-            if ($q->getSingleScalarResult() > 0) {
-                $kezdo = 1;
-            }
-            if (!$kezdo) {
-                $kezdo = 1;
-            }
-            $szam = $kezdo;
-            $q = store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
-            $q->setParameters(array(
-                'p1' => $bt,
-                'p2' => $ev
-            ));
-            $max = $q->getSingleScalarResult();
-            if ($max) {
-                $szam = explode('/', $max);
-                if (is_array($szam)) {
-                    $szam = $szam[1] + 1;
+            if (!$from) {
+                $q = store::getEm()->createQuery('SELECT COUNT(bf) FROM Entities\Bizonylatfej bf WHERE bf.bizonylattipus=:p');
+                $q->setParameters(array('p' => $bt));
+                if ($q->getSingleScalarResult() > 0) {
+                    $kezdo = 1;
+                }
+                if (!$kezdo) {
+                    $kezdo = 1;
+                }
+                $szam = $kezdo;
+                $q = store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
+                $q->setParameters(array(
+                    'p1' => $bt,
+                    'p2' => $ev
+                ));
+                $max = $q->getSingleScalarResult();
+                if ($max) {
+                    $szam = explode('/', $max);
+                    if (is_array($szam)) {
+                        $szam = $szam[1] + 1;
+                    }
                 }
             }
-            $this->id = $azon . $ev . '/' . sprintf('%06d', $szam);
+            else {
+                $szam = $from;
+                $q = store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
+                $q->setParameters(array(
+                    'p1' => $bt,
+                    'p2' => $ev
+                ));
+                $max = $q->getSingleScalarResult();
+                if ($max) {
+                    $szam = explode('/', $max);
+                    if (is_array($szam)) {
+                        $szam = $szam[1] + 1;
+                    }
+                }
+                if ($szam < $from) {
+                    $szam = $from;
+                }
+            }
+            $this->id = \mkw\Store::createBizonylatszam($azon, $ev, $szam);
         }
+        return $szam;
     }
 
     public function getBizonylattetelek() {
@@ -1320,10 +1345,18 @@ class Bizonylatfej {
         return $this->lastmod;
     }
 
+    public function clearLastmod() {
+        $this->lastmod = null;
+    }
+
     public function getCreated() {
         return $this->created;
     }
 
+    public function clearCreated() {
+        $this->created = null;
+    }
+    
     public function getSzallnev() {
         return $this->szallnev;
     }

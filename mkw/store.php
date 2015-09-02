@@ -683,4 +683,8 @@ class Store {
         }
     }
 
+    public static function createBizonylatszam($azon = '', $ev = 0, $szam = 0) {
+        return $azon . $ev . '/' . sprintf('%06d', $szam * 1);
+    }
+
 }

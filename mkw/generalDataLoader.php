@@ -22,16 +22,8 @@ class generalDataLoader {
         $view->setVar('bootstrapjsversion', store::getBootstrapJSVersion());
         $view->setVar('localelist', store::getLocaleList());
         $setup = store::getSetup();
-        $setup['grideditbutton'] = store::getParameter(consts::Grideditbutton, 'small');
-        $setup['editstyle'] = store::getParameter(consts::Editstyle, 'dropdown');
         $view->setVar('setup', $setup);
         $view->setVar('maintheme', Store::getTheme());
-        $view->setVar('editstyles', array(
-            'dropdown',
-            'tab'));
-        $view->setVar('grideditbuttons', array(
-            'big',
-            'small'));
         $view->setVar('uithemes', array(
             'black-tie',
             'blitzer',

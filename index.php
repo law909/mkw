@@ -133,7 +133,7 @@ if ($match) {
                 $pc->setUtolsoKlikk();
             }
         }
-        elseif (Store::getSetupValue('mustlogin') && !in_array($match['name'], array('showlogin', 'dologin'))) {
+        elseif (Store::getSetupValue('mustlogin') && !in_array($match['name'], array('showlogin', 'dologin', 'showfanta', 'dofanta'))) {
             header('Location: ' . $router->generate('showlogin'));
         }
     }

@@ -5,8 +5,8 @@ namespace mkw;
 class consts {
 
     const Uitheme = 'uitheme';
-    const Grideditbutton = 'grideditbutton';
-    const Editstyle = 'editstyle';
+
+    const Tulajcrc = 'tulajcrc';
 
     const Valutanem = 'valutanem';
     const Raktar = 'raktar';
