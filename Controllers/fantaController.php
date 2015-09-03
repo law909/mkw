@@ -42,11 +42,21 @@ class fantaController extends \mkwhelpers\MattableController {
                     'em' => 'Internal server error #597.'
                 );
 
+                $this->getEm()->transactional(function($em) use ($szamlak) {
+                    foreach($szamlak as $szamla) {
+                        $szamla->removeParbizonylatfej();
+                        $em->persist($szamla);
+                        foreach($szamla->getBizonylattetelek() as $biztetel) {
+                            $biztetel->removeParbizonylattetel();
+                            $em->persist($biztetel);
+                        }
+                    }
+                });
+
                 $this->getEm()->transactional(function($em) use ($szamlak, $ujbt) {
                     $sorszam = 0;
                     foreach($szamlak as $szamla) {
                         if ($szamla->getStorno()) {
-                            $szamla->removeParbizonylatfej();
                             $szamla->setMegjegyzes('');
                             $em->persist($szamla);
                         }
@@ -59,18 +69,21 @@ class fantaController extends \mkwhelpers\MattableController {
                         $sorszam++;
                         foreach($szamla->getBizonylattetelek() as $biztetel) {
                             if ($biztetel->getStorno()) {
-                                $biztetel->removeParbizonylattetel();
                                 $em->persist($biztetel);
                             }
                             $ujtetel = clone $biztetel;
                             $ujtetel->clearCreated();
                             $ujtetel->clearLastmod();
+                            foreach($biztetel->getTranslations() as $trans) {
+                                $ujtrans = clone $trans;
+                                $ujtetel->addTranslation($ujtrans);
+                                $em->persist($ujtrans);
+                            }
                             $uj->addBizonylattetel($ujtetel);
                             $em->persist($ujtetel);
                         }
                         $em->remove($szamla);
                         $em->persist($uj);
-//                        $em->flush();
                     }
                 });
 

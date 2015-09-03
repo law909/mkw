@@ -9,7 +9,8 @@ use mkw\store,
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylattetelRepository")
  *  @ORM\Table(name="bizonylattetel")
- * */
+ *  @Gedmo\TranslationEntity(class="Entities\BizonylattetelTranslation")
+ */
 class Bizonylattetel {
 
     /**
@@ -60,7 +61,10 @@ class Bizonylattetel {
      */
     private $termek;
 
-    /** @ORM\Column(type="string",length=255,nullable=false) */
+    /**
+     * @Gedmo\Translatable
+     * @ORM\Column(type="string",length=255,nullable=false)
+     */
     private $termeknev;
 
     /** @ORM\Column(type="string",length=20,nullable=true) */
@@ -198,8 +202,15 @@ class Bizonylattetel {
      */
     private $termekvaltozat;
 
+    /** @ORM\OneToMany(targetEntity="BizonylattetelTranslation", mappedBy="object", cascade={"persist", "remove"}) */
+    private $translations;
+
+    /** @Gedmo\Locale */
+    protected $locale;
+
     public function __construct() {
         $this->szulobizonylattetelek = new ArrayCollection();
+        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function toLista() {
@@ -341,6 +352,11 @@ class Bizonylattetel {
         if ($this->termek !== $val) {
             $this->termek = $val;
             $this->termeknev = $val->getNev();
+            $this->translations->clear();
+            foreach($val->getTranslations() as $trans) {
+                $uj = new BizonylattetelTranslation($trans->getLocale(), 'termeknev', $trans->getContent());
+                $this->addTranslation($uj);
+            }
             $this->cikkszam = $val->getCikkszam();
             $this->hosszusag = $val->getHosszusag();
             $this->ehparany = $val->getHparany();
@@ -787,4 +803,26 @@ class Bizonylattetel {
         $this->rontott = $adat;
     }
 
+    public function getTranslations() {
+        return $this->translations;
+    }
+
+    public function addTranslation(BizonylattetelTranslation $t) {
+        if (!$this->translations->contains($t)) {
+            $this->translations[] = $t;
+            $t->setObject($this);
+        }
+    }
+
+    public function removeTranslation(BizonylattetelTranslation $t) {
+        $this->translations->removeElement($t);
+    }
+
+    public function getLocale() {
+        return $this->locale;
+    }
+
+    public function setLocale($locale) {
+        $this->locale = $locale;
+    }
 }
