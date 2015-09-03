@@ -261,6 +261,12 @@ var bizonylathelper = function($) {
                             if (d.fizmod) {
                                 fizmodedit.val(d.fizmod);
                             }
+                            if (d.valutanem) {
+                                $('#ValutanemEdit').val(d.valutanem);
+                            }
+                            if (d.szallitasimod) {
+                                $('#SzallitasimodEdit').val(d.szallitasimod);
+                            }
                             $('input[name="partnernev"]').val(d.nev);
                             $('input[name="partnerirszam"]').val(d.irszam);
                             $('input[name="partnervaros"]').val(d.varos);
@@ -273,6 +279,7 @@ var bizonylathelper = function($) {
                             $('input[name="partnertelefon"]').val(d.telefon);
                             $('input[name="partneremail"]').val(d.email);
                             setDates();
+                            valutanemChange();
                         }
                     });
                 });
