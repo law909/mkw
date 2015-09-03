@@ -250,38 +250,40 @@ var bizonylathelper = function($) {
 
                 $('#PartnerEdit').change(function() {
                     var pe = $(this);
-                    $.ajax({
-                        url: '/admin/partner/getdata',
-                        type: 'GET',
-                        data: {
-                            partnerid: pe.val()
-                        },
-                        success: function(data) {
-                            var d = JSON.parse(data);
-                            if (d.fizmod) {
-                                fizmodedit.val(d.fizmod);
+                    if (pe.val() > 0) {
+                        $.ajax({
+                            url: '/admin/partner/getdata',
+                            type: 'GET',
+                            data: {
+                                partnerid: pe.val()
+                            },
+                            success: function(data) {
+                                var d = JSON.parse(data);
+                                if (d.fizmod) {
+                                    fizmodedit.val(d.fizmod);
+                                }
+                                if (d.valutanem) {
+                                    $('#ValutanemEdit').val(d.valutanem);
+                                }
+                                if (d.szallitasimod) {
+                                    $('#SzallitasimodEdit').val(d.szallitasimod);
+                                }
+                                $('input[name="partnernev"]').val(d.nev);
+                                $('input[name="partnerirszam"]').val(d.irszam);
+                                $('input[name="partnervaros"]').val(d.varos);
+                                $('input[name="partnerutca"]').val(d.utca);
+                                $('input[name="partneradoszam"]').val(d.adoszam);
+                                $('input[name="szallnev"]').val(d.szallnev);
+                                $('input[name="szallirszam"]').val(d.szallirszam);
+                                $('input[name="szallvaros"]').val(d.szallvaros);
+                                $('input[name="szallutca"]').val(d.szallutca);
+                                $('input[name="partnertelefon"]').val(d.telefon);
+                                $('input[name="partneremail"]').val(d.email);
+                                setDates();
+                                valutanemChange();
                             }
-                            if (d.valutanem) {
-                                $('#ValutanemEdit').val(d.valutanem);
-                            }
-                            if (d.szallitasimod) {
-                                $('#SzallitasimodEdit').val(d.szallitasimod);
-                            }
-                            $('input[name="partnernev"]').val(d.nev);
-                            $('input[name="partnerirszam"]').val(d.irszam);
-                            $('input[name="partnervaros"]').val(d.varos);
-                            $('input[name="partnerutca"]').val(d.utca);
-                            $('input[name="partneradoszam"]').val(d.adoszam);
-                            $('input[name="szallnev"]').val(d.szallnev);
-                            $('input[name="szallirszam"]').val(d.szallirszam);
-                            $('input[name="szallvaros"]').val(d.szallvaros);
-                            $('input[name="szallutca"]').val(d.szallutca);
-                            $('input[name="partnertelefon"]').val(d.telefon);
-                            $('input[name="partneremail"]').val(d.email);
-                            setDates();
-                            valutanemChange();
-                        }
-                    });
+                        });
+                    }
                 });
                 $('#ValutanemEdit').change(function() {
                     valutanemChange();

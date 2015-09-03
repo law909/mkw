@@ -25,6 +25,7 @@
 				<td class="mattable-important"><label for="PartnerEdit">{t('Partner')}:</label></td>
 				<td colspan="7"><select id="PartnerEdit" name="partner" class="mattable-important" required="required" autofocus>
 					<option value="">{t('válasszon')}</option>
+					<option value="-1">{t('Új felvitel')}</option>
 					{foreach $partnerlist as $_mk}
 					<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
 					{/foreach}
@@ -32,27 +33,35 @@
 				</td>
 			</tr>
             <tr>
-                <td></td>
+                <td><label>Név:</label></td>
                 <td>
                     <input name="partnernev" value="{$egyed.partnernev}">
                 </td>
-                <td><label>Vezeték és keresztnév:</td>
-                <td colspan="5">
-                    <input name="xpartnernev" value="{$egyed.partnervezeteknev} {$egyed.partnerkeresztnev}">
+                <td><label>Vezetéknév:</td>
+                <td>
+                    <input name="partnervezeteknev" value="{$egyed.partnervezeteknev}">
+                </td>
+                <td><label>Keresztnév:</td>
+                <td colspan="3">
+                    <input name="partnerkeresztnev" value="{$egyed.partnerkeresztnev}">
                 </td>
             </tr>
 			<tr>
-				<td></td>
+				<td>Számlázási cím:</td>
 				<td colspan="7">
-					<input name="partnerirszam" value="{$egyed.partnerirszam}">
-					<input name="partnervaros" value="{$egyed.partnervaros}">
-					<input name="partnerutca" value="{$egyed.partnerutca}">
+					<input name="partnerirszam" value="{$egyed.partnerirszam}" size="6" maxlength="10">
+					<input name="partnervaros" value="{$egyed.partnervaros}" size="20" maxlength="40">
+					<input name="partnerutca" value="{$egyed.partnerutca}" size="40" maxlength="60">
 				</td>
 			</tr>
 			<tr>
 				<td><label for="AdoszamEdit">{t('Adószám')}:</label></td>
-				<td colspan="7">
+				<td>
 					<input id="AdoszamEdit" name="partneradoszam" value="{$egyed.partneradoszam}">
+				</td>
+				<td><label for="EUAdoszamEdit">{t('EU adószám')}:</label></td>
+				<td colspan="5">
+					<input id="EUAdoszamEdit" name="partnereuadoszam" value="{$egyed.partnereuadoszam}">
 				</td>
 			</tr>
             {if ($showszallitasicim)}
@@ -65,9 +74,9 @@
 			<tr>
 				<td><label for="SzallirszamEdit">{t('Szállítási cím')}:</label></td>
 				<td colspan="7">
-					<input id="SzallirszamEdit" name="szallirszam" value="{$egyed.szallirszam}">
-					<input name="szallvaros" value="{$egyed.szallvaros}">
-					<input name="szallutca" value="{$egyed.szallutca}">
+					<input id="SzallirszamEdit" name="szallirszam" value="{$egyed.szallirszam}" size="6" maxlength="10">
+					<input name="szallvaros" value="{$egyed.szallvaros}" size="20" maxlength="40">
+					<input name="szallutca" value="{$egyed.szallutca}" size="40" maxlength="60">
 				</td>
 			</tr>
             {/if}

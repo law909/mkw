@@ -260,13 +260,51 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 	}
 
 	protected function setFields($obj, $parancs) {
+        $partnerkod = $this->params->getIntRequestParam('partner');
+
+        if ($partnerkod == -1) {
+            $partnerobj = new \Entities\Partner();
+            $partnerobj->setAdoszam($this->params->getStringRequestParam('partneradoszam'));
+            $partnerobj->setEuadoszam($this->params->getStringRequestParam('partnereuadoszam'));
+            $partnerobj->setEmail($this->params->getStringRequestParam('partneremail'));
+            $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
+            $partnerobj->setNev($this->params->getStringRequestParam('partnernev'));
+            $partnerobj->setVezeteknev($this->params->getStringRequestParam('partnervezeteknev'));
+            $partnerobj->setKeresztnev($this->params->getStringRequestParam('partnerkeresztnev'));
+            $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
+            $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
+            $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
+            $ck = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
+            if ($ck) {
+                $partnerobj->setFizmod($ck);
+            }
+            $partnerobj->setSzallnev($this->params->getStringRequestParam('szallnev'));
+            $partnerobj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
+            $partnerobj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
+            $partnerobj->setSzallutca($this->params->getStringRequestParam('szallutca'));
+            $ck = store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod'));
+            if ($ck) {
+                $partnerobj->setSzallitasimod($ck);
+            }
+            $ck = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+            if ($ck) {
+                $partnerobj->setValutanem($ck);
+            }
+
+            $this->getEm()->persist($partnerobj);
+        }
+
 		$obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
 
-		$obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
-		$ck = store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
-		if ($ck) {
-			$obj->setPartner($ck);
-		}
+        if ($partnerkod > 0) {
+            $ck = store::getEm()->getRepository('Entities\Partner')->find($partnerkod);
+            if ($ck) {
+                $obj->setPartner($ck);
+            }
+        }
+        else {
+            $obj->setPartner($partnerobj);
+        }
 		$ck = store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar'));
 		if ($ck) {
 			$obj->setRaktar($ck);
