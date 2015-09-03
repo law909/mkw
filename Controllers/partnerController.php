@@ -552,7 +552,13 @@ class partnerController extends \mkwhelpers\MattableController {
             $route = store::getRouter()->generate('showcheckout');
         }
         else {
-            $route = store::getRouter()->generate('showaccount');
+            if (\mkw\Store::mustLogin() && \mkw\Store::getMainSession()->redirafterlogin) {
+                $route = \mkw\Store::getMainSession()->redirafterlogin;
+                unset(\mkw\Store::getMainSession()->redirafterlogin);
+            }
+            else {
+                $route = store::getRouter()->generate('showaccount');
+            }
         }
         if ($this->checkloggedin()) {
 //			\Zend_Session::writeClose();

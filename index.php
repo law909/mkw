@@ -133,7 +133,8 @@ if ($match) {
                 $pc->setUtolsoKlikk();
             }
         }
-        elseif (Store::getSetupValue('mustlogin') && !in_array($match['name'], array('showlogin', 'dologin', 'showfanta', 'dofanta'))) {
+        elseif (Store::mustLogin() && !in_array($match['name'], array('showlogin', 'dologin', 'showfanta', 'dofanta'))) {
+            $mainsess->redirafterlogin = $_SERVER['REQUEST_URI'];
             header('Location: ' . $router->generate('showlogin'));
         }
     }

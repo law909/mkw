@@ -650,6 +650,10 @@ class Store {
         return self::getSetupValue('masterpass');
     }
 
+    public static function mustLogin() {
+        return self::getSetupValue('mustlogin');
+    }
+
     public static function isFoxpostSzallitasimod($szm) {
         $i = $szm;
         if (is_a($szm, 'Entities\FoxpostTerminal')) {
