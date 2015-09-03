@@ -37,6 +37,9 @@
                 <div><a class="menupont" href="/admin/egyebfej/viewlist">{t('Egyéb mozgások')}</a></div>
             {/if}
 			<div><a class="menupont" href="/admin/megrendelesfej/viewlist">{t('Megrendelések')}</a></div>
+            {if ($maintheme != 'mkw')}
+    			<div><a class="menupont" href="/admin/szallitofej/viewlist">{t('Szállítólevelek')}</a></div>
+            {/if}
 			<div><a class="menupont" href="/admin/szamlafej/viewlist">{t('Számlák')}</a></div>
 			<div><a class="menupont" href="/admin/keziszamlafej/viewlist">{t('Kézi számlák')}</a></div>
 			<div><a class="menupont" href="/admin/partner/viewlist">{t('Partnerek')}</a></div>

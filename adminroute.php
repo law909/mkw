@@ -81,6 +81,14 @@ $router->map('GET', '/admin/megrendelesfej/printelolegbekero', 'megrendelesfejCo
 $router->map('POST', '/admin/megrendelesfej/sendtofoxpost', 'megrendelesfejController#sendToFoxPost', 'adminmegrendelessendtofoxpost');
 $router->map('POST', '/admin/megrendelesfej/ront', 'megrendelesfejController#ront', 'adminmegrendelesfejront');
 
+$router->map('GET', '/admin/szallitofej/viewlist', 'szallitofejController#viewlist', 'adminszallitofejviewlist');
+$router->map('GET', '/admin/szallitofej/getlistbody', 'szallitofejController#getlistbody', 'adminszallitofejgetlistbody');
+$router->map('GET', '/admin/szallitofej/getkarb', 'szallitofejController#getkarb', 'adminszallitofejgetkarb');
+$router->map('GET', '/admin/szallitofej/viewkarb', 'szallitofejController#viewkarb', 'adminszallitofejviewkarb');
+$router->map('POST', '/admin/szallitofej/save', 'szallitofejController#save', 'adminszallitofejsave');
+$router->map('GET', '/admin/szallitofej/print', 'szallitofejController#doPrint', 'adminszallitofejprint');
+$router->map('POST', '/admin/szallitofej/ront', 'szallitofejController#ront', 'adminszallitofejront');
+
 $router->map('GET', '/admin/szamlafej/viewlist', 'szamlafejController#viewlist', 'adminszamlafejviewlist');
 $router->map('GET', '/admin/szamlafej/getlistbody', 'szamlafejController#getlistbody', 'adminszamlafejgetlistbody');
 $router->map('GET', '/admin/szamlafej/getkarb', 'szamlafejController#getkarb', 'adminszamlafejgetkarb');
