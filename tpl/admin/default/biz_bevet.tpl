@@ -9,7 +9,7 @@
     <div class="headbox pull-left">
         <div class="headboxborder border">
             <div class="headboxinner">
-                <p class="bold">Szállító:</p>
+                <p class="bold">Vevő:</p>
                 <p class="nev bold">{$egyed.tulajnev}</p>
                 <p>{$egyed.tulajirszam} {$egyed.tulajvaros}</p>
                 <p>{$egyed.tulajutca}</p>
@@ -21,7 +21,7 @@
     <div class="headbox pull-left">
         <div class="headboxborder border">
             <div class="headboxinner">
-                <p class="bold">Vevő:</p>
+                <p class="bold">Szállító:</p>
                 <p class="nev bold">{$egyed.szamlanev}</p>
                 <p>{$egyed.szamlairszam} {$egyed.szamlavaros}</p>
                 <p>{$egyed.szamlautca}</p>
