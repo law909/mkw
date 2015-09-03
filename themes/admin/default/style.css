@@ -122,3 +122,8 @@ img {
 .rontott, .rontott a {
     color: #ddd !important;
 }
+
+.keszletoszlop {
+    width: 40px;
+    text-align: right;
+}

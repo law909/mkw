@@ -48,13 +48,13 @@
         {$_termek.cimkek}
     </td>
     <td class="cell">
-        {foreach $_termek.valtozatkeszlet as $vk}
-            <table>
-                <tbody>
-                    <tr><td>{$vk.ertek1}</td><td>{$vk.ertek2}</td><td>{$vk.keszlet}</td></tr>
-                </tbody>
-            </table>
-        {/foreach}
+        <table>
+            <tbody>
+            {foreach $_termek.valtozatkeszlet as $vk}
+                <tr><td>{$vk.ertek1}</td><td>{$vk.ertek2}</td><td class="keszletoszlop">{$vk.keszlet}</td></tr>
+            {/foreach}
+            </tbody>
+        </table>
     </td>
     <td class="cell">
         <table>
