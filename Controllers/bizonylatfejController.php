@@ -335,6 +335,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $obj->setSysmegjegyzes($this->params->getStringRequestParam('parentid') . ' stornó bizonylata.');
                 $obj->setBizonylatnev('Storno számla');
                 $obj->setStorno(true);
+                $parentbiz = $this->getRepo()->find($this->params->getStringRequestParam('parentid'));
+                if ($parentbiz) {
+                    $obj->setParbizonylatfej($parentbiz);
+                }
                 break;
         }
 

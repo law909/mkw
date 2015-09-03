@@ -34,7 +34,7 @@
 			<div><a class="menupont" href="/admin/bevetfej/viewlist">{t('Bevételezések')}</a></div>
 			<div><a class="menupont" href="/admin/kivetfej/viewlist">{t('Kivétek')}</a></div>
             {if ($maintheme == 'superzone')}
-                <div><a class="menupont" href="/admin/egyebmozgasfej/viewlist">{t('Egyéb mozgások')}</a></div>
+                <div><a class="menupont" href="/admin/egyebfej/viewlist">{t('Egyéb mozgások')}</a></div>
             {/if}
 			<div><a class="menupont" href="/admin/megrendelesfej/viewlist">{t('Megrendelések')}</a></div>
 			<div><a class="menupont" href="/admin/szamlafej/viewlist">{t('Számlák')}</a></div>
