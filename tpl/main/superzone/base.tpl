@@ -7,7 +7,7 @@
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="/">
-                <img src="/themes/main/superzone/minilogo.jpg">
+                <img src="{$logo}">
             </a>
             <ul class="nav navbar-nav top-navbar-nav">
                 <li><a href="{$showaccountlink}" class="js-menupont">Account</a></li>
