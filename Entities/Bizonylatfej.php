@@ -66,6 +66,9 @@ class Bizonylatfej {
      */
     private $foxpostbarcode;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $fix = false;
+
     /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime",nullable=true)
@@ -1356,7 +1359,7 @@ class Bizonylatfej {
     public function clearCreated() {
         $this->created = null;
     }
-    
+
     public function getSzallnev() {
         return $this->szallnev;
     }
@@ -1666,6 +1669,14 @@ class Bizonylatfej {
 
     public function setSysmegjegyzes($adat) {
         $this->sysmegjegyzes = $adat;
+    }
+
+    public function getFix() {
+        return $this->fix;
+    }
+
+    public function setFix($adat) {
+        $this->fix = $adat;
     }
 
 }

@@ -21,6 +21,12 @@
                 <td><input id="BizonylatStatuszErtesitoEdit" type="checkbox" name="bizonylatstatuszertesito"></td>
 			</tr>
             {/if}
+            {if ($setup.fanta)}
+            <tr>
+				<td class="mattable-important"><label for="FixEdit">{t('Fix')}:</label></td>
+                <td><input id="FixEdit" type="checkbox" name="fix"{if ($egyed.fix)} checked{/if}></td>
+            </tr>
+            {/if}
 			<tr>
 				<td class="mattable-important"><label for="PartnerEdit">{t('Partner')}:</label></td>
 				<td colspan="7"><select id="PartnerEdit" name="partner" class="mattable-important" required="required" autofocus>

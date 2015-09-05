@@ -249,6 +249,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['otpayresulttext'] = $t->getOTPayResultText();
         $x['showotpay'] = ($t->getFizmodId() == Store::getParameter(\mkw\consts::OTPayFizmod));
         $x['trxid'] = $t->getTrxId();
+        $x['fix'] = $t->getFix();
 		if ($forKarb) {
 			foreach ($t->getBizonylattetelek() as $ttetel) {
 				$tetel[] = $tetelCtrl->loadVars($ttetel, true);
@@ -295,6 +296,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
 
 		$obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
+
+        $obj->setFix($this->params->getBoolRequestParam('fix'));
 
         if ($partnerkod > 0) {
             $ck = store::getEm()->getRepository('Entities\Partner')->find($partnerkod);
