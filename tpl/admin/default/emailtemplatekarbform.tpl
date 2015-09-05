@@ -18,7 +18,7 @@
 			</tr>
 			<tr>
 				<td><label for="LeirasEdit">{t('Szöveg')}:</label></td>
-				<td><textarea id="LeirasEdit" name="szoveg">{$egyed.szoveg}</textarea></td>
+				<td><textarea id="LeirasEdit" name="szoveg" class="emailtemplateleiras">{$egyed.szoveg}</textarea></td>
 			</tr>
 			</tbody></table>
 		</div>
