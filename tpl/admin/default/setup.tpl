@@ -378,9 +378,9 @@
         </div>
 		<div id="EmailTab" class="mattkarb-page" data-visible="visible">
 		<table><tbody>
-            <tr><td><label>{t('Email feladója')}:</label></td><td><input name="emailfrom" type="text" value="{$emailfrom}"></td></tr>
-            <tr><td><label>{t('Válasz cím')}:</label></td><td><input name="emailreplyto" type="text" value="{$emailreplyto}"></td></tr>
-            <tr><td><label>{t('Bcc')}:</label></td><td><input name="emailbcc" type="text" value="{$emailbcc}"></td></tr>
+            <tr><td><label>{t('Email feladója')}:</label></td><td><input name="emailfrom" type="text" value="{$emailfrom}" title="Az email és a név pontosvesszővel elválasztva" size="60"></td></tr>
+            <tr><td><label>{t('Válasz cím')}:</label></td><td><input name="emailreplyto" type="text" value="{$emailreplyto}" size="60"></td></tr>
+            <tr><td><label>{t('Bcc')}:</label></td><td><input name="emailbcc" type="text" value="{$emailbcc}" title="Vesszővel elválasztva" size="60"></td></tr>
         </tbody></table>
         </div>
 		<div id="FeedTab" class="mattkarb-page" data-visible="visible">

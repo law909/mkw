@@ -70,7 +70,11 @@ class mkwzendmailer {
         else {
             $this->mailer->addTo($this->to);
         }
-        $this->mailer->addBcc(Store::getParameter(consts::EmailBcc));
+        $bcc = Store::getParameter(consts::EmailBcc);
+        $bccdata = explode(',', $bcc);
+        foreach($bccdata as $_bcc) {
+            $this->mailer->addBcc($_bcc);
+        }
         if (!$this->replyto) {
             $this->mailer->setReplyTo(Store::getParameter(consts::EmailReplyTo));
         }
