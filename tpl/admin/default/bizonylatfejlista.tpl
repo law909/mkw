@@ -86,6 +86,13 @@
             <option value="{$_role.id}">{$_role.caption}</option>
             {/foreach}
         </select>
+        <label for="uzletkotofilter">Üzletkötő:</label>
+        <select id="uzletkotofilter" name="uzletkotofilter">
+            <option value="">Mindegy</option>
+            {foreach $uzletkotolist as $_role}
+            <option value="{$_role.id}">{$_role.caption}</option>
+            {/foreach}
+        </select>
     </div>
     {if ($showfuvarlevelszam)}
 	<div class="matt-hseparator"></div>

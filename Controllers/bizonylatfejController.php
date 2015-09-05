@@ -21,6 +21,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('fizmodlist', $fmc->getSelectList());
         $fmc = new szallitasimodController($this->params);
         $view->setVar('szallitasimodlist', $fmc->getSelectList(false));
+        $fmc = new uzletkotoController($this->params);
+        $view->setVar('uzletkotolist', $fmc->getSelectList());
     }
 
     protected function loadFilters($filter) {
@@ -131,6 +133,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $bs = $this->getRepo('Entities\Szallitasimod')->findOneById($f);
             if ($bs) {
                 $filter['fields'][] = 'szallitasimod';
+                $filter['clauses'][] = '=';
+                $filter['values'][] = $bs;
+            }
+        }
+        $f = $this->params->getIntRequestParam('uzletkotofilter');
+        if ($f) {
+            $bs = $this->getRepo('Entities\Uzletkoto')->findOneById($f);
+            if ($bs) {
+                $filter['fields'][] = 'uzletkoto';
                 $filter['clauses'][] = '=';
                 $filter['values'][] = $bs;
             }
@@ -250,6 +261,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['showotpay'] = ($t->getFizmodId() == Store::getParameter(\mkw\consts::OTPayFizmod));
         $x['trxid'] = $t->getTrxId();
         $x['fix'] = $t->getFix();
+        $x['uzletkoto'] = $t->getUzletkotoId();
+        $x['uzletkotonev'] = $t->getUzletkotonev();
+        $x['uzletkotoemail'] = $t->getUzletkotoemail();
 		if ($forKarb) {
 			foreach ($t->getBizonylattetelek() as $ttetel) {
 				$tetel[] = $tetelCtrl->loadVars($ttetel, true);

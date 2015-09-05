@@ -166,6 +166,12 @@ class SzamlafejController extends bizonylatfejController {
         }
         $view->setVar('valutanemlist', $valutanem->getSelectList($valutaid));
 
+        $uk = new uzletkotoController($this->params);
+        if ($record && $record->getUzletkotoId()) {
+            $ukid = $record->getUzletkotoId();
+        }
+        $view->setVar('uzletkotolist', $uk->getSelectList($ukid));
+
         $bankszla = new bankszamlaController($this->params);
         $view->setVar('bankszamlalist', $bankszla->getSelectList(($record ? $record->getBankszamlaId() : 0)));
 

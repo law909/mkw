@@ -285,6 +285,9 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=50,nullable=true) */
     private $uzletkotonev;
 
+	/** @ORM\Column(type="string",length=100,nullable=true) */
+	private $uzletkotoemail;
+
     /**
      * @ORM\ManyToOne(targetEntity="Raktar",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="raktar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -1264,6 +1267,10 @@ class Bizonylatfej {
         return $this->uzletkotonev;
     }
 
+    public function getUzletkotoemail() {
+        return $this->uzletkotoemail;
+    }
+    
     public function getUzletkotoId() {
         if ($this->uzletkoto) {
             return $this->uzletkoto->getId();
@@ -1275,6 +1282,7 @@ class Bizonylatfej {
         if ($this->uzletkoto !== $val) {
             $this->uzletkoto = $val;
             $this->uzletkotonev = $val->getNev();
+            $this->uzletkotoemail = $val->getEmail();
 //			$val->addBizonylatfejek($this);
         }
     }
@@ -1284,6 +1292,7 @@ class Bizonylatfej {
 //			$val=$this->uzletkoto;
             $this->uzletkoto = null;
             $this->uzletkotonev = '';
+            $this->uzletkotoemail = '';
 //			$val->removeBizonylatfejek($this);
         }
     }

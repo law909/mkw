@@ -300,6 +300,8 @@ class partnerController extends \mkwhelpers\MattableController {
                 'fizmod' => $partner->getFizmodId(),
                 'fizhatido' => $partner->getFizhatido(),
                 'nev' => $partner->getNev(),
+                'vezeteknev' => $partner->getVezeteknev(),
+                'keresztnev' => $partner->getKeresztnev(),
                 'irszam' => $partner->getIrszam(),
                 'varos' => $partner->getVaros(),
                 'utca' => $partner->getUtca(),
@@ -311,7 +313,8 @@ class partnerController extends \mkwhelpers\MattableController {
                 'telefon' => $partner->getTelefon(),
                 'email' => $partner->getEmail(),
                 'szallitasimod' => $partner->getSzallitasimodId(),
-                'valutanem' => $partner->getValutanemId()
+                'valutanem' => $partner->getValutanemId(),
+                'uzletkoto' => $partner->getUzletkotoId()
             );
         }
         echo json_encode($ret);

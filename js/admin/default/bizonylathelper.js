@@ -268,7 +268,12 @@ var bizonylathelper = function($) {
                                 if (d.szallitasimod) {
                                     $('#SzallitasimodEdit').val(d.szallitasimod);
                                 }
+                                if (d.uzletkoto) {
+                                    $('#UzletkotoEdit').val(d.uzletkoto);
+                                }
                                 $('input[name="partnernev"]').val(d.nev);
+                                $('input[name="partnervezeteknev"]').val(d.vezeteknev);
+                                $('input[name="partnerkeresztnev"]').val(d.keresztnev);
                                 $('input[name="partnerirszam"]').val(d.irszam);
                                 $('input[name="partnervaros"]').val(d.varos);
                                 $('input[name="partnerutca"]').val(d.utca);
@@ -488,7 +493,8 @@ var bizonylathelper = function($) {
                         '#fizmodfilter',
                         '#szallitasimodfilter',
                         '#fuvarlevelszamfilter',
-                        '#erbizonylatszamfilter'
+                        '#erbizonylatszamfilter',
+                        '#uzletkotofilter'
                     ]
                 },
                 tablebody: {
