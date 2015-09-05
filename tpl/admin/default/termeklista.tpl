@@ -33,9 +33,15 @@
 	<div class="matt-hseparator"></div>
     <div>
         <select id="lathatofilter" name="lathatofilter">
+            {if ($maintheme == 'mkwcansas')}
             <option value="1">Látható</option>
             <option value="0">Nem látható</option>
             <option value="9">Mindegy</option>
+            {else}
+            <option value="9">Mindegy</option>
+            <option value="1">Látható</option>
+            <option value="0">Nem látható</option>
+            {/if}
         </select>
         <select id="nemkaphatofilter" name="nemkaphatofilter">
             <option value="9">Mindegy</option>
