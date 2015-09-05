@@ -197,6 +197,10 @@
 					{/foreach}
 				</select></td>
 			</tr>
+            <tr>
+                <td><label for="BizonylatMennyisegEdit">{t('Bizonylattétel alap mennyisége')}:</label></td>
+                <td><input id="BizonylatMennyisegEdit" name="bizonylatmennyiseg" type="text" value="{$bizonylatmennyiseg}"></td>
+            </tr>
         </tbody></table>
         <table><tbody>
             <tr>

@@ -212,6 +212,9 @@ var bizonylathelper = function($) {
                     $('input[name="tetelnev_' + sorid + '"]').val(ui.item.value);
                     $('input[name="tetelcikkszam_' + sorid + '"]').val(ui.item.cikkszam);
                     $('input[name="tetelme_' + sorid + '"]').val(ui.item.me);
+                    if (!$('input[name="tetelmennyiseg_' + sorid + '"]').val() && ui.item.defaultmennyiseg) {
+                        $('input[name="tetelmennyiseg_' + sorid + '"]').val(ui.item.defaultmennyiseg);
+                    }
                     vtsz.val(ui.item.vtsz);
                     vtsz.change();
                     afa.val(ui.item.afa);

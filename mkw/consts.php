@@ -121,4 +121,6 @@ class consts {
 
     const ValtozatSorrend = 'valtozatsorrend';
     const RendezendoValtozat = 'rendezendovaltozat';
+
+    const BizonylatMennyiseg = 'bizonylatmennyiseg';
 }

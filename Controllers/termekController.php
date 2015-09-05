@@ -678,7 +678,8 @@ class termekController extends \mkwhelpers\MattableController {
                             'slug' => $r->getSlug(),
                             'link' => \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
                             'mainurl' => store::getConfigValue('mainurl'),
-                            'nemlathato' => (!$r->getLathato()||$r->getInaktiv()||$r->getNemkaphato())
+                            'nemlathato' => (!$r->getLathato()||$r->getInaktiv()||$r->getNemkaphato()),
+                            'defaultmennyiseg' => \mkw\Store::getParameter(\mkw\consts::BizonylatMennyiseg, 0)
                         );
                     }
                     break;
