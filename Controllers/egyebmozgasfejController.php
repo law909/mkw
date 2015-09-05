@@ -83,7 +83,7 @@ class EgyebmozgasfejController extends bizonylatfejController {
 
         $view->setVar('pagetitle', t('Egyéb mozgások'));
         $view->setVar('controllerscript', 'egyebmozgasfej.js');
-        $view->setVar('formaction', '/admin/egyebmozgasfej/save');
+        $view->setVar('formaction', '/admin/egyebfej/save');
         $view->setVar('oper', $oper);
         $this->setVars($view);
 
