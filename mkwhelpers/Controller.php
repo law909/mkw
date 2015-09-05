@@ -10,6 +10,10 @@ abstract class Controller {
 
 	private $templateFactory;
 	protected $generalDataLoader;
+    /**
+     *
+     * @var ParameterHandler
+     */
 	protected $params;
 
 	public function __construct($params) {

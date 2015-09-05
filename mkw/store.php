@@ -6,10 +6,22 @@ use Doctrine\ORM\EntityManager;
 
 class Store {
 
+    /**
+     *
+     * @var \Doctrine\ORM\EntityManager
+     */
     private static $em;
     private static $config;
     private static $setup;
+    /**
+     *
+     * @var \Zend_Session_Namespace
+     */
     private static $mainsession;
+    /**
+     *
+     * @var \Zend_Session_Namespace
+     */
     private static $adminsession;
     private static $templateFactory;
     private static $router;
@@ -221,7 +233,7 @@ class Store {
 
     /**
      *
-     * @return Zend_Session_Namespace
+     * @return \Zend_Session_Namespace
      */
     public static function getMainSession() {
         if (!isset(self::$mainsession)) {

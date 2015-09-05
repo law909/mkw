@@ -13,7 +13,15 @@ class MattableController extends Controller {
     protected $inheritOperation = 'inherit';
     protected $stornoOperation = 'storno';
     private $entityName = '';
+    /**
+     *
+     * @var \mkwhelpers\Repository
+     */
     private $repo;
+    /**
+     *
+     * @var \Doctrine\ORM\EntityManager
+     */
     private $em;
     private $pager;
     private $listBodyRowTplName;
