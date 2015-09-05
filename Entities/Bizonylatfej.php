@@ -415,7 +415,8 @@ class Bizonylatfej {
             $body->setVar('rendeles', $tpldata);
             $mailer = \mkw\Store::getMailer();
             if ($topartner) {
-                $mailer->setTo($bf->getPartneremail());
+                $mailer->addTo($bf->getPartneremail());
+                $mailer->addTo($bf->getUzletkotoemail());
             }
             $mailer->setSubject($subject->getTemplateResult());
             $mailer->setMessage($body->getTemplateResult());
@@ -1270,7 +1271,7 @@ class Bizonylatfej {
     public function getUzletkotoemail() {
         return $this->uzletkotoemail;
     }
-    
+
     public function getUzletkotoId() {
         if ($this->uzletkoto) {
             return $this->uzletkoto->getId();

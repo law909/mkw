@@ -19,14 +19,20 @@ class mkwzendmailer {
 
 
     private $mailer;
-    private $to;
+    private $to = array();
     private $subject;
     private $message;
     private $headers;
     private $replyto;
 
     public function setTo($to) {
-        $this->to = $to;
+        if ($to) {
+            $this->to[] = $to;
+        }
+    }
+
+    public function addTo($to) {
+        $this->setTo($to);
     }
 
     public function getTo() {
@@ -68,7 +74,9 @@ class mkwzendmailer {
             $this->mailer->addTo(Store::getParameter(consts::EmailBcc));
         }
         else {
-            $this->mailer->addTo($this->to);
+            foreach($this->to as $t) {
+                $this->mailer->addTo($t);
+            }
         }
         $bcc = Store::getParameter(consts::EmailBcc);
         $bccdata = explode(',', $bcc);
