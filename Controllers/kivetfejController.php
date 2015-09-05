@@ -112,41 +112,7 @@ class KivetfejController extends bizonylatfejController {
 
         $view->setVar('egyed', $egyed);
 
-        $partner = new partnerController($this->params);
-        $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
-
-        $raktar = new raktarController($this->params);
-        if (!$record || !$record->getRaktarId()) {
-            $raktarid = store::getParameter(\mkw\consts::Raktar, 0);
-        }
-        else {
-            $raktarid = $record->getRaktarId();
-        }
-        $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
-
-        $fizmod = new fizmodController($this->params);
-        if (!$record || !$record->getFizmodId()) {
-            $fmid = \mkw\Store::getParameter(\mkw\consts::Fizmod);
-        }
-        else {
-            $fmid = $record->getFizmodId();
-        }
-        $view->setVar('fizmodlist', $fizmod->getSelectList($fmid));
-
-        $szallitasimod = new szallitasimodController($this->params);
-        $view->setVar('szallitasimodlist', $szallitasimod->getSelectList(($record ? $record->getSzallitasimodId() : 0)));
-
-        $valutanem = new valutanemController($this->params);
-        if (!$record || !$record->getValutanemId()) {
-            $valutaid = store::getParameter(\mkw\consts::Valutanem, 0);
-        }
-        else {
-            $valutaid = $record->getValutanemId();
-        }
-        $view->setVar('valutanemlist', $valutanem->getSelectList($valutaid));
-
-        $bankszla = new bankszamlaController($this->params);
-        $view->setVar('bankszamlalist', $bankszla->getSelectList(($record ? $record->getBankszamlaId() : 0)));
+        $this->setVarsForKarb($view, $record);
 
         $view->setVar('esedekessegalap', store::getParameter(\mkw\consts::Esedekessegalap, 1));
         return $view->getTemplateResult();

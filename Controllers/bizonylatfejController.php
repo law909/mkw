@@ -334,6 +334,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		if ($ck) {
 			$obj->setSzallitasimod($ck);
 		}
+		$ck = store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto'));
+		if ($ck) {
+			$obj->setUzletkoto($ck);
+		}
+        else {
+            $obj->removeUzletkoto();
+        }
         $obj->setKelt($this->params->getStringRequestParam('kelt'));
         $obj->setTeljesites($this->params->getStringRequestParam('teljesites'));
         $obj->setEsedekesseg($this->params->getStringRequestParam('esedekesseg'));
@@ -553,6 +560,53 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $this->getEm()->flush();
             }
         }
+    }
+
+    protected function setVarsForKarb($view, $record) {
+        $partner = new partnerController($this->params);
+        $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
+
+        $raktar = new raktarController($this->params);
+        if (!$record || !$record->getRaktarId()) {
+            $raktarid = store::getParameter(\mkw\consts::Raktar, 0);
+        }
+        else {
+            $raktarid = $record->getRaktarId();
+        }
+        $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
+
+        $fizmod = new fizmodController($this->params);
+        if (!$record || !$record->getFizmodId()) {
+            $fmid = \mkw\Store::getParameter(\mkw\consts::Fizmod);
+        }
+        else {
+            $fmid = $record->getFizmodId();
+        }
+        $view->setVar('fizmodlist', $fizmod->getSelectList($fmid));
+
+        $szallitasimod = new szallitasimodController($this->params);
+        $view->setVar('szallitasimodlist', $szallitasimod->getSelectList(($record ? $record->getSzallitasimodId() : 0), true));
+
+        $valutanem = new valutanemController($this->params);
+        if (!$record || !$record->getValutanemId()) {
+            $valutaid = store::getParameter(\mkw\consts::Valutanem, 0);
+        }
+        else {
+            $valutaid = $record->getValutanemId();
+        }
+        $view->setVar('valutanemlist', $valutanem->getSelectList($valutaid));
+
+        $uk = new uzletkotoController($this->params);
+        if ($record && $record->getUzletkotoId()) {
+            $ukid = $record->getUzletkotoId();
+        }
+        $view->setVar('uzletkotolist', $uk->getSelectList($ukid));
+
+        $bankszla = new bankszamlaController($this->params);
+        $view->setVar('bankszamlalist', $bankszla->getSelectList(($record ? $record->getBankszamlaId() : 0)));
+
+        $view->setVar('esedekessegalap', store::getParameter(\mkw\consts::Esedekessegalap, 1));
+
     }
 
 }

@@ -124,7 +124,7 @@
 					</select>
 				</td>
 				<td class="mattable-important"><label for="UzletkotoEdit">{t('Üzletkötő')}:</label></td>
-				<td><select id="UzletkotoEdit" name="uzletkoto" class="mattable-important" required="required">
+				<td><select id="UzletkotoEdit" name="uzletkoto" class="mattable-important">
 					<option value="">{t('válasszon')}</option>
 					{foreach $uzletkotolist as $_mk}
 					<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
