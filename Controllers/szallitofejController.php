@@ -21,7 +21,14 @@ class SzallitofejController extends bizonylatfejController {
         $bt = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
         $bt->setTemplateVars($view);
         parent::setVars($view);
-        $a = date(\mkw\Store::$DateFormat, strtotime('-1 week'));
+        switch (\mkw\Store::getTheme()) {
+            case 'mkwcansas':
+                $a = date(\mkw\Store::$DateFormat, strtotime('-1 week'));
+                break;
+            case 'superzone':
+                $a = date(\mkw\Store::$DateFormat);
+                break;
+        }
         $view->setVar('datumtolfilter', $a);
     }
 
