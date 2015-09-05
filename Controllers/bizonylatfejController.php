@@ -7,22 +7,39 @@ use mkw\store;
 
 class bizonylatfejController extends \mkwhelpers\MattableController {
 
+    protected $biztipus;
+
 	public function __construct($params) {
 		$this->setEntityName('Entities\Bizonylatfej');
-//		$this->setKarbFormTplName('megrendelesfejkarbform.tpl');
-//		$this->setKarbTplName('megrendelesfejkarb.tpl');
-//		$this->setListBodyRowTplName('megrendelesfejlista_tbody_tr.tpl');
-		$this->setListBodyRowVarName('_egyed');
+        $this->setKarbFormTplName('bizonylatfejkarbform.tpl');
+        $this->setKarbTplName('bizonylatfejkarb.tpl');
+        $this->setListBodyRowTplName('bizonylatfejlista_tbody_tr.tpl');
+        $this->setListBodyRowVarName('_egyed');
 		parent::__construct($params);
 	}
 
     public function setVars($view) {
+        $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+        $bt->setTemplateVars($view);
+
         $fmc = new fizmodController($this->params);
         $view->setVar('fizmodlist', $fmc->getSelectList());
+
         $fmc = new szallitasimodController($this->params);
         $view->setVar('szallitasimodlist', $fmc->getSelectList(false));
+
         $fmc = new uzletkotoController($this->params);
-        $view->setVar('uzletkotolist', $fmc->getSelectList());
+        $view->setVar('uzletkotolist', $fmc->getSelectList(false));
+
+        switch (\mkw\Store::getTheme()) {
+            case 'mkwcansas':
+                $a = date(\mkw\Store::$DateFormat, strtotime('-1 week'));
+                break;
+            case 'superzone':
+                $a = date(\mkw\Store::$DateFormat);
+                break;
+        }
+        $view->setVar('datumtolfilter', $a);
     }
 
     protected function loadFilters($filter) {
@@ -309,7 +326,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $this->getEm()->persist($partnerobj);
         }
 
-		$obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
+        $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find($this->biztipus));
+
+        $obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
 
         $obj->setFix($this->params->getBoolRequestParam('fix'));
 
@@ -607,6 +626,56 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $view->setVar('esedekessegalap', store::getParameter(\mkw\consts::Esedekessegalap, 1));
 
+    }
+
+    public function getlistbody() {
+        $view = $this->createView('bizonylatfejlista_tbody.tpl');
+
+        $this->setVars($view);
+
+        $filter = array();
+        $filter = $this->loadFilters($filter);
+
+        $filter['fields'][] = 'bizonylattipus';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+
+        $this->initPager($this->getRepo()->getCount($filter));
+
+        $egyedek = $this->getRepo()->getWithJoins(
+                $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+
+        echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
+    }
+
+    public function doPrint() {
+        $o = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+        if ($o) {
+            $biztip = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+            if ($biztip && $biztip->getTplname()) {
+                $view = $this->createView($biztip->getTplname());
+                $this->setVars($view);
+                $view->setVar('egyed', $o->toLista());
+                $view->setVar('afaosszesito',$this->getRepo()->getAFAOsszesito($o));
+                echo $view->getTemplateResult();
+            }
+        }
+    }
+
+    public function getFiokList() {
+        $filter = array();
+        $filter['fields'][] = 'partner';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = $this->getRepo('Entities\Partner')->getLoggedInUser();
+        $filter['fields'][] = 'bizonylattipus';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+        $l = $this->getRepo()->getWithJoins($filter, array('kelt' => 'ASC'));
+        $ret = array();
+        foreach ($l as $it) {
+            $ret[] = $it->toLista();
+        }
+        return $ret;
     }
 
 }

@@ -6,22 +6,15 @@ use mkw\store;
 
 class megrendelesfejController extends bizonylatfejController {
 
-    const BIZTIPUS = 'megrendeles';
-
     public function __construct($params) {
-        $this->setEntityName('Entities\Bizonylatfej');
-        $this->setKarbFormTplName('bizonylatfejkarbform.tpl');
-        $this->setKarbTplName('bizonylatfejkarb.tpl');
-        $this->setListBodyRowTplName('bizonylatfejlista_tbody_tr.tpl');
-        $this->setListBodyRowVarName('_egyed');
+        $this->biztipus = 'megrendeles';
         parent::__construct($params);
         $this->getRepo()->addToBatches(array('foxpostsend' => 'Küldés Foxpostnak'));
     }
 
     public function setVars($view) {
-        $bt = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
-        $bt->setTemplateVars($view);
         parent::setVars($view);
+        $view->setVar('datumtolfilter', null);
         $bsc = new bizonylatstatuszController($this->params);
         $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(\mkw\Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
     }
@@ -35,27 +28,6 @@ class megrendelesfejController extends bizonylatfejController {
         $bsc = new bizonylatstatuszController($this->params);
         $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId());
         return $x;
-    }
-
-    public function getlistbody() {
-        $view = $this->createView('bizonylatfejlista_tbody.tpl');
-
-        $this->setVars($view);
-
-        $filter = array();
-
-        $filter = $this->loadFilters($filter);
-
-        $filter['fields'][] = 'bizonylattipus';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
-
-        $this->initPager($this->getRepo()->getCount($filter));
-
-        $egyedek = $this->getRepo()->getWithJoins(
-                $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
-
-        echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
     public function viewselect() {
@@ -93,29 +65,8 @@ class megrendelesfejController extends bizonylatfejController {
         $view->setVar('egyed', $this->loadVars($record, true));
 
         $this->setVarsForKarb($view, $record);
-        
+
         return $view->getTemplateResult();
-    }
-
-    public function getFiokList() {
-        $filter = array();
-        $filter['fields'][] = 'partner';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $this->getRepo('Entities\Partner')->getLoggedInUser();
-        $filter['fields'][] = 'bizonylattipus';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
-        $l = $this->getRepo()->getWithJoins($filter, array('kelt' => 'ASC'));
-        $ret = array();
-        foreach ($l as $it) {
-            $ret[] = $it->toLista();
-        }
-        return $ret;
-    }
-
-    protected function setFields($obj, $parancs) {
-        $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS));
-        return parent::setFields($obj, $parancs);
     }
 
     protected function afterSave($o) {
@@ -151,24 +102,10 @@ class megrendelesfejController extends bizonylatfejController {
         echo $szamlac->_getkarb('bizonylatfejkarb.tpl', $megrendszam, 'add');
     }
 
-    public function doPrint() {
-        $o = $this->getRepo()->find($this->params->getStringRequestParam('id'));
-        if ($o) {
-            $biztip = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
-            if ($biztip && $biztip->getTplname()) {
-                $view = $this->createView($biztip->getTplname());
-                $this->setVars($view);
-                $view->setVar('egyed', $o->toLista());
-                $view->setVar('afaosszesito',$this->getRepo()->getAFAOsszesito($o));
-                echo $view->getTemplateResult();
-            }
-        }
-    }
-
     public function doPrintelolegbekero() {
         $o = $this->getRepo()->find($this->params->getStringRequestParam('id'));
         if ($o) {
-            $biztip = $this->getRepo('Entities\Bizonylattipus')->find(self::BIZTIPUS);
+            $biztip = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
             if ($biztip) {
                 $view = $this->createView('biz_elolegbekero.tpl');
                 $this->setVars($view);
