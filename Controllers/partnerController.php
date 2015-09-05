@@ -140,6 +140,9 @@ class partnerController extends \mkwhelpers\MattableController {
         if ($uk) {
             $obj->setUzletkoto($uk);
         }
+        else {
+            $obj->removeUzletkoto();
+        }
         $valutanem = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
         if ($valutanem) {
             $obj->setValutanem($valutanem);
