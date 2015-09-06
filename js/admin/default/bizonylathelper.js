@@ -471,12 +471,14 @@ var bizonylathelper = function($) {
             var dialogcenter = $('#dialogcenter'),
             datumtolfilter = $('#datumtolfilter'),
             datumigfilter = $('#datumigfilter');
+
             datumtolfilter.datepicker($.datepicker.regional['hu']);
             datumtolfilter.datepicker('option', 'dateFormat', 'yy.mm.dd');
             datumtolfilter.datepicker('setDate', datumtolfilter.attr('data-datum'));
             datumigfilter.datepicker($.datepicker.regional['hu']);
             datumigfilter.datepicker('option', 'dateFormat', 'yy.mm.dd');
             $('#mattable-select').mattable({
+                quickAddVisible: true,
                 filter: {
                     fields: [
                         '#idfilter',

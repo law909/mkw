@@ -28,6 +28,10 @@ body {
 	clear: both;
 }
 
+.balra {
+    float: left;
+}
+
 .jobbra {
 	float: right;
 }

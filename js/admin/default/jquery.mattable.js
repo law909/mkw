@@ -18,6 +18,8 @@
             editVisible: true,
             delLink: '.mattable-dellink',
             delVisible: true,
+            quickAddLink: '.mattable-quickaddlink',
+            quickAddVisible: false,
             filter: {
                 selector: '#mattable-filterwrapper',
                 fields: undefined,
@@ -57,6 +59,7 @@
                 headerTitle: 'Frissít',
                 add: 'Új',
                 addTitle: 'Új',
+                quickAddTitle: 'Gyors új',
                 filterRefresh: 'Szűr',
                 filterRefreshTitle: 'Szűrő bekapcsolása',
                 filterClear: 'Töröl',
@@ -87,6 +90,7 @@
             pagecount: 'data-pagecount',
             recordid: 'data-' + setup.name + 'id',
             oper: 'data-oper',
+            quick: 'data-quick',
             pagevisible: 'data-visible',
             pagerefcontrol: 'data-refcontrol',
             theme: 'data-theme',
@@ -132,13 +136,16 @@
                 }
                 else {
                     pager.addClass('mattable-footerbar ui-widget-header ui-helper-clearfix');
+                    if (setup.quickAddVisible) {
+                        pager.prepend('<a class="mattable-quickaddlink mattable-left" href="#" data-oper="add" data-quick="1" title="' + setup.txt.quickAddTitle + '"><span class="ui-icon ui-icon-circle-triangle-e"></span></a>');
+                    }
                     if (setup.addVisible) {
-                        pager.prepend('<a class="mattable-addlink mattable-new" href="#" data-oper="add" title="' + setup.txt.addTitle + '"><span class="ui-icon ui-icon-circle-plus"></span></a>');
+                        pager.prepend('<a class="mattable-addlink mattable-left" href="#" data-oper="add" title="' + setup.txt.addTitle + '"><span class="ui-icon ui-icon-circle-plus"></span></a>');
                     }
                     pager.append(pagerhtml);
                 }
             }
-            $(setup.addLink).button();
+            $(setup.addLink + ',' + setup.quickAddLink).button();
             if (batch.length) {
                 batch.addClass('mattable-footerbar ui-widget-header ui-helper-clearfix');
             }
@@ -393,7 +400,8 @@
             $.ajax({url: setup.karb.viewUrl,
                 data: {
                     id: $(elem).attr(_dataattr.recordid),
-                    oper: $(elem).attr(_dataattr.oper)
+                    oper: $(elem).attr(_dataattr.oper),
+                    quick: $(elem).attr(_dataattr.quick)
                 },
                 success: function(data) {
                     selectContainer.hide();
@@ -507,6 +515,11 @@
                 });
             });
             $(setup.addLink).attr('href', setup.karb.newWindowUrl + '?id=0&oper=add')
+                    .on('click', function(e) {
+                        e.preventDefault();
+                        showKarb(this);
+                    });
+            $(setup.quickAddLink).attr('href', setup.karb.newWindowUrl + '?id=0&oper=add&quick=1')
                     .on('click', function(e) {
                         e.preventDefault();
                         showKarb(this);
