@@ -184,7 +184,7 @@
 				</tr>
 				<tr>
 					<td class="mattable-cell">
-						<select name="valtozatadattipus1" form="valtozatgeneratorform" required="required">
+						<select name="valtozatadattipus1" form="valtozatgeneratorform">
 						<option value="">{t('válasszon')}</option>
 						{foreach $valtozatadattipuslist as $at}
 						<option value="{$at.id}">{$at.caption}</option>
@@ -192,7 +192,7 @@
 						</select>
 					</td>
 					<td class="mattable-cell">
-						<input name="valtozatertek1" form="valtozatgeneratorform" type="text" required="required">
+						<input name="valtozatertek1" form="valtozatgeneratorform" type="text">
 					</td>
 					<td class="mattable-cell">
 						<label for="NettoEdit">{t('Nettó')}:</label>
