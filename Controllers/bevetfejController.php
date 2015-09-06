@@ -8,47 +8,12 @@ class BevetfejController extends bizonylatfejController {
 
     public function __construct($params) {
         $this->biztipus = 'bevet';
+        $this->setPageTitle('Bevételezés');
+        $this->setPluralPageTitle('Bevételezések');
         parent::__construct($params);
     }
 
-    public function viewselect() {
-        $view = $this->createView('bizonylatfejlista.tpl');
-
-        $view->setVar('pagetitle', t('Bevételezések'));
-        $view->setVar('controllerscript', 'bevetfej.js');
-        $this->setVars($view);
-        $view->printTemplateResult();
-    }
-
-    public function viewlist() {
-        $view = $this->createView('bizonylatfejlista.tpl');
-
-        $view->setVar('pagetitle', t('Bevételezések'));
-        $view->setVar('controllerscript', 'bevetfej.js');
-        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
-        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $this->setVars($view);
-        $view->printTemplateResult();
-    }
-
-    public function _getkarb($tplname, $id = null, $oper = null) {
-        if (!$id) {
-            $id = $this->params->getRequestParam('id', 0);
-        }
-        if (!$oper) {
-            $oper = $this->params->getRequestParam('oper', '');
-        }
-        $view = $this->createView($tplname);
-
-        $view->setVar('pagetitle', t('Bevételezés'));
-        $view->setVar('controllerscript', 'bevetfej.js');
-        $view->setVar('formaction', '/admin/bevetfej/save');
-        $view->setVar('oper', $oper);
-        $this->setVars($view);
-
-        $record = $this->getRepo()->findWithJoins($id);
-        $egyed = $this->loadVars($record, true);
-
+    public function onGetKarb($view, $record, $egyed, $oper, $id) {
         if ($oper == 'inherit') {
             $egyed['id'] = store::createUID();
             $egyed['parentid'] = $id;
@@ -67,20 +32,12 @@ class BevetfejController extends bizonylatfejController {
             }
             $egyed['tetelek'] = $ttk;
         }
-
-        $view->setVar('egyed', $egyed);
-
-        $this->setVarsForKarb($view, $record);
-
         $partner = new partnerController($this->params);
         $filter = array();
         $filter['fields'][] = 'szallito';
         $filter['clauses'][] = '=';
         $filter['values'][] = true;
         $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0), $filter));
-
-        $view->setVar('esedekessegalap', store::getParameter(\mkw\consts::Esedekessegalap, 1));
-        return $view->getTemplateResult();
     }
 
 }

@@ -8,48 +8,13 @@ class SzamlafejController extends bizonylatfejController {
 
     public function __construct($params) {
         $this->biztipus = 'szamla';
+        $this->setPageTitle('Számla');
+        $this->setPluralPageTitle('Számlák');
         parent::__construct($params);
     }
 
-    public function viewselect() {
-        $view = $this->createView('bizonylatfejlista.tpl');
-
-        $view->setVar('pagetitle', t('Számlák'));
-        $view->setVar('controllerscript', 'szamlafej.js');
-        $this->setVars($view);
-        $view->printTemplateResult();
-    }
-
-    public function viewlist() {
-        $view = $this->createView('bizonylatfejlista.tpl');
-
-        $view->setVar('pagetitle', t('Számlák'));
-        $view->setVar('controllerscript', 'szamlafej.js');
-        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
-        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $this->setVars($view);
-        $view->printTemplateResult();
-    }
-
-    public function _getkarb($tplname, $id = null, $oper = null) {
-        if (!$id) {
-            $id = $this->params->getRequestParam('id', 0);
-        }
-        if (!$oper) {
-            $oper = $this->params->getRequestParam('oper', '');
-        }
+    public function onGetKarb($view, $record, $egyed, $oper, $id) {
         $source = $this->params->getStringRequestParam('source', '');
-        $view = $this->createView($tplname);
-
-        $view->setVar('pagetitle', t('Számla'));
-        $view->setVar('controllerscript', 'szamlafej.js');
-        $view->setVar('formaction', '/admin/szamlafej/save');
-        $view->setVar('oper', $oper);
-        $this->setVars($view);
-
-        $record = $this->getRepo()->findWithJoins($id);
-        $egyed = $this->loadVars($record, true);
-
         switch ($oper) {
             case 'inherit':
                 $egyed['id'] = store::createUID();
@@ -97,13 +62,6 @@ class SzamlafejController extends bizonylatfejController {
                 $egyed['tetelek'] = $ttk;
                 break;
         }
-
-        $view->setVar('egyed', $egyed);
-
-        $this->setVarsForKarb($view, $record);
-
-        $view->setVar('esedekessegalap', store::getParameter(\mkw\consts::Esedekessegalap, 1));
-        return $view->getTemplateResult();
     }
 
 }

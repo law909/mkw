@@ -8,6 +8,8 @@ class megrendelesfejController extends bizonylatfejController {
 
     public function __construct($params) {
         $this->biztipus = 'megrendeles';
+        $this->setPageTitle('Megrendelés');
+        $this->setPluralPageTitle('Megrendelések');
         parent::__construct($params);
         $this->getRepo()->addToBatches(array('foxpostsend' => 'Küldés Foxpostnak'));
     }
@@ -28,45 +30,6 @@ class megrendelesfejController extends bizonylatfejController {
         $bsc = new bizonylatstatuszController($this->params);
         $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId());
         return $x;
-    }
-
-    public function viewselect() {
-        $view = $this->createView('bizonylatfejlista.tpl');
-
-        $view->setVar('pagetitle', t('Megrendelések'));
-        $view->setVar('controllerscript', 'megrendelesfej.js');
-        $this->setVars($view);
-        $view->printTemplateResult();
-    }
-
-    public function viewlist() {
-        $view = $this->createView('bizonylatfejlista.tpl');
-
-        $view->setVar('pagetitle', t('Megrendelések'));
-        $view->setVar('controllerscript', 'megrendelesfej.js');
-        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
-        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $this->setVars($view);
-        $view->printTemplateResult();
-    }
-
-    protected function _getkarb($tplname) {
-        $id = $this->params->getRequestParam('id', 0);
-        $oper = $this->params->getRequestParam('oper', '');
-        $view = $this->createView($tplname);
-
-        $view->setVar('pagetitle', t('Megrendelés'));
-        $view->setVar('controllerscript', 'megrendelesfej.js');
-        $view->setVar('formaction', '/admin/megrendelesfej/save');
-        $view->setVar('oper', $oper);
-        $this->setVars($view);
-
-        $record = $this->getRepo()->findWithJoins($id);
-        $view->setVar('egyed', $this->loadVars($record, true));
-
-        $this->setVarsForKarb($view, $record);
-
-        return $view->getTemplateResult();
     }
 
     protected function afterSave($o) {
@@ -99,7 +62,7 @@ class megrendelesfejController extends bizonylatfejController {
     public function getszamlakarb() {
         $megrendszam = $this->params->getStringRequestParams('id');
         $szamlac = new SzamlafejController($this->params);
-        echo $szamlac->_getkarb('bizonylatfejkarb.tpl', $megrendszam, 'add');
+        echo $szamlac->getkarb('bizonylatfejkarb.tpl', $megrendszam, 'add');
     }
 
     public function doPrintelolegbekero() {

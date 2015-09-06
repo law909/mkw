@@ -28,6 +28,8 @@ class MattableController extends Controller {
     private $listBodyRowVarName;
     private $karbFormTplName;
     private $karbTplName;
+    private $pagetitle;
+    private $pluralpagetitle;
 
     public function __construct($params) {
         parent::__construct($params);
@@ -36,6 +38,22 @@ class MattableController extends Controller {
         if ($this->entityName) {
             $this->repo = $this->em->getRepository($this->entityName);
         }
+    }
+
+    public function setPageTitle($val) {
+        $this->pagetitle = $val;
+    }
+
+    public function getPageTitle() {
+        return $this->pagetitle;
+    }
+
+    public function setPluralPageTitle($val) {
+        $this->pluralpagetitle = $val;
+    }
+
+    public function getPluralPageTitle() {
+        return $this->pluralpagetitle;
     }
 
     public function getEntityName() {

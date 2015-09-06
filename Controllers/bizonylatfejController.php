@@ -18,6 +18,26 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		parent::__construct($params);
 	}
 
+    public function viewselect() {
+        $view = $this->createView('bizonylatfejlista.tpl');
+
+        $view->setVar('pagetitle', $this->getPluralPageTitle());
+        $view->setVar('controllerscript', $this->biztipus . 'fej.js');
+        $this->setVars($view);
+        $view->printTemplateResult();
+    }
+
+    public function viewlist() {
+        $view = $this->createView('bizonylatfejlista.tpl');
+
+        $view->setVar('pagetitle', $this->getPluralPageTitle());
+        $view->setVar('controllerscript', $this->biztipus . 'fej.js');
+        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
+        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+        $this->setVars($view);
+        $view->printTemplateResult();
+    }
+
     public function setVars($view) {
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
         $bt->setTemplateVars($view);
@@ -581,53 +601,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
     }
 
-    protected function setVarsForKarb($view, $record) {
-        $partner = new partnerController($this->params);
-        $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
-
-        $raktar = new raktarController($this->params);
-        if (!$record || !$record->getRaktarId()) {
-            $raktarid = store::getParameter(\mkw\consts::Raktar, 0);
-        }
-        else {
-            $raktarid = $record->getRaktarId();
-        }
-        $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
-
-        $fizmod = new fizmodController($this->params);
-        if (!$record || !$record->getFizmodId()) {
-            $fmid = \mkw\Store::getParameter(\mkw\consts::Fizmod);
-        }
-        else {
-            $fmid = $record->getFizmodId();
-        }
-        $view->setVar('fizmodlist', $fizmod->getSelectList($fmid));
-
-        $szallitasimod = new szallitasimodController($this->params);
-        $view->setVar('szallitasimodlist', $szallitasimod->getSelectList(($record ? $record->getSzallitasimodId() : 0), true));
-
-        $valutanem = new valutanemController($this->params);
-        if (!$record || !$record->getValutanemId()) {
-            $valutaid = store::getParameter(\mkw\consts::Valutanem, 0);
-        }
-        else {
-            $valutaid = $record->getValutanemId();
-        }
-        $view->setVar('valutanemlist', $valutanem->getSelectList($valutaid));
-
-        $uk = new uzletkotoController($this->params);
-        if ($record && $record->getUzletkotoId()) {
-            $ukid = $record->getUzletkotoId();
-        }
-        $view->setVar('uzletkotolist', $uk->getSelectList($ukid));
-
-        $bankszla = new bankszamlaController($this->params);
-        $view->setVar('bankszamlalist', $bankszla->getSelectList(($record ? $record->getBankszamlaId() : 0)));
-
-        $view->setVar('esedekessegalap', store::getParameter(\mkw\consts::Esedekessegalap, 1));
-
-    }
-
     public function getlistbody() {
         $view = $this->createView('bizonylatfejlista_tbody.tpl');
 
@@ -676,6 +649,97 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $ret[] = $it->toLista();
         }
         return $ret;
+    }
+
+    public function viewkarb() {
+        $this->getkarb($this->getKarbTplName());
+    }
+
+    protected function setVarsForKarb($view, $record) {
+        $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+        $bt->setTemplateVars($view);
+
+        $partner = new partnerController($this->params);
+        $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
+
+        $raktar = new raktarController($this->params);
+        if (!$record || !$record->getRaktarId()) {
+            $raktarid = store::getParameter(\mkw\consts::Raktar, 0);
+        }
+        else {
+            $raktarid = $record->getRaktarId();
+        }
+        $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
+
+        $fizmod = new fizmodController($this->params);
+        if (!$record || !$record->getFizmodId()) {
+            $fmid = \mkw\Store::getParameter(\mkw\consts::Fizmod);
+        }
+        else {
+            $fmid = $record->getFizmodId();
+        }
+        $view->setVar('fizmodlist', $fizmod->getSelectList($fmid));
+
+        $szallitasimod = new szallitasimodController($this->params);
+        $view->setVar('szallitasimodlist', $szallitasimod->getSelectList(($record ? $record->getSzallitasimodId() : 0), true));
+
+        $valutanem = new valutanemController($this->params);
+        if (!$record || !$record->getValutanemId()) {
+            $valutaid = store::getParameter(\mkw\consts::Valutanem, 0);
+        }
+        else {
+            $valutaid = $record->getValutanemId();
+        }
+        $view->setVar('valutanemlist', $valutanem->getSelectList($valutaid));
+
+        $uk = new uzletkotoController($this->params);
+        if ($record && $record->getUzletkotoId()) {
+            $ukid = $record->getUzletkotoId();
+        }
+        $view->setVar('uzletkotolist', $uk->getSelectList($ukid));
+
+        $bankszla = new bankszamlaController($this->params);
+        $view->setVar('bankszamlalist', $bankszla->getSelectList(($record ? $record->getBankszamlaId() : 0)));
+
+        $view->setVar('esedekessegalap', store::getParameter(\mkw\consts::Esedekessegalap, 1));
+
+    }
+
+    public function getkarb($tplname = null, $id = null, $oper = null, $quick = null) {
+        if (!$tplname) {
+            $tplname = $this->getKarbFormTplName();
+        }
+        if (!$id) {
+            $id = $this->params->getRequestParam('id', 0);
+        }
+        if (!$oper) {
+            $oper = $this->params->getRequestParam('oper', '');
+        }
+        if (!$quick) {
+            $quick = $this->params->getBoolRequestParam('quick');
+        }
+        $view = $this->createView($tplname);
+
+        $view->setVar('pagetitle', $this->getPageTitle());
+        $view->setVar('controllerscript', $this->biztipus . 'fej.js');
+        $view->setVar('formaction', '/admin/' . $this->biztipus . 'fej/save');
+        $view->setVar('oper', $oper);
+        $view->setVar('quick', $quick);
+ //       $this->setVars($view);
+
+        $record = $this->getRepo()->findWithJoins($id);
+        $egyed = $this->loadVars($record, true);
+
+        $this->setVarsForKarb($view, $record);
+
+        if (method_exists($this, 'onGetKarb')) {
+            $this->onGetKarb($view, $record, $egyed, $oper, $id);
+        }
+
+        $view->setVar('egyed', $egyed);
+
+        $view->setVar('esedekessegalap', store::getParameter(\mkw\consts::Esedekessegalap, 1));
+        $view->printTemplateResult();
     }
 
 }
