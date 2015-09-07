@@ -96,7 +96,15 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
         $biztipus = $this->params->getStringRequestParam('type');
 		$view = $this->createView('bizonylattetelkarb.tpl');
 		$view->setVar('tetel', $this->loadVars(null, true));
-		// TODO emeld ki bizonylattipusba
+        $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipus);
+        $bt->setTemplateVars($view);
+		echo $view->getTemplateResult();
+	}
+
+	public function getquickemptyrow() {
+        $biztipus = $this->params->getStringRequestParam('type');
+		$view = $this->createView('bizonylattetelquickkarb.tpl');
+		$view->setVar('tetel', $this->loadVars(null, true));
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipus);
         $bt->setTemplateVars($view);
 		echo $view->getTemplateResult();
@@ -149,13 +157,8 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
         }
 	}
 
-	public function calcar() {
-		$afaent = $this->getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afa'));
-
-		$arfolyam = $this->params->getNumRequestParam('arfolyam', 1);
-		$nettoegysar = $this->params->getNumRequestParam('nettoegysar', 0);
-		$mennyiseg = $this->params->getNumRequestParam('mennyiseg', 0);
-
+    public function calcAr($afaid, $arfolyam, $nettoegysar, $mennyiseg) {
+		$afaent = $this->getEm()->getRepository('Entities\Afa')->find($afaid);
         $bruttoegysar = 0;
 		if ($afaent) {
             $bruttoegysar = $afaent->calcBrutto($nettoegysar);
@@ -173,20 +176,27 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$nettohuf = $netto * $arfolyam;
 		$bruttohuf = $brutto * $arfolyam;
 		$afahuf = $afa * $arfolyam;
-		echo json_encode(
-				array(
-					'nettoegysar' => $nettoegysar,
-					'bruttoegysar' => $bruttoegysar,
-					'netto' => $netto,
-					'brutto' => $brutto,
-					'afa' => $afa,
-					'nettoegysarhuf' => $nettoegysarhuf,
-					'bruttoegysarhuf' => $bruttoegysarhuf,
-					'nettohuf' => $nettohuf,
-					'bruttohuf' => $bruttohuf,
-					'afahuf' => $afahuf
-				)
+		return array(
+            'nettoegysar' => $nettoegysar,
+            'bruttoegysar' => $bruttoegysar,
+            'netto' => $netto,
+            'brutto' => $brutto,
+            'afa' => $afa,
+            'nettoegysarhuf' => $nettoegysarhuf,
+            'bruttoegysarhuf' => $bruttoegysarhuf,
+            'nettohuf' => $nettohuf,
+            'bruttohuf' => $bruttohuf,
+            'afahuf' => $afahuf
 		);
+    }
+
+	public function calcarforclient() {
+        echo json_encode($this->calcAr(
+            $this->params->getIntRequestParam('afa'),
+            $this->params->getNumRequestParam('arfolyam', 1),
+            $this->params->getNumRequestParam('nettoegysar', 0),
+            $this->params->getNumRequestParam('mennyiseg', 0)
+        ));
 	}
 
 	public function valtozathtmllist() {
@@ -200,6 +210,24 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		echo json_encode(array(
                 'html' => $view->getTemplateResult(),
                 'db' => count($tomb['valtozatlist'])
+        ));
+	}
+
+	public function quickvaltozathtmllist() {
+        $termekid = $this->params->getRequestParam('id', 0);
+		$tc = new termekController($this->params);
+		$view = $this->createView('bizonylattetelquickvaltozatkarb.tpl');
+        $valtozatlist = $tc->getValtozatList($termekid, 0);
+        $vlist = array();
+        foreach($valtozatlist as $v) {
+            $v['tetelid'] = \mkw\Store::createUID();
+            $v['termekid'] = $termekid;
+            $vlist[] = $v;
+        }
+		$view->setVar('valtozatlist', $vlist);
+		echo json_encode(array(
+                'tetelid' => $this->params->getRequestParam('tetelid', 0),
+                'html' => $view->getTemplateResult()
         ));
 	}
 

@@ -60,11 +60,13 @@ $router->map('GET', '/admin/setup/view', 'setupController#view', 'adminsetupview
 $router->map('POST', '/admin/setup/save', 'setupController#save', 'adminsetupsave');
 
 $router->map('GET', '/admin/bizonylattetel/getar', 'bizonylattetelController#getar', 'adminbizonylattetelgetar');
-$router->map('GET', '/admin/bizonylattetel/calcar', 'bizonylattetelController#calcar', 'adminbizonylattetelcalcar');
+$router->map('GET', '/admin/bizonylattetel/calcar', 'bizonylattetelController#calcarforclient', 'adminbizonylattetelcalcar');
 $router->map('GET', '/admin/bizonylattetel/getemptyrow', 'bizonylattetelController#getemptyrow', 'adminbizonylattetelgetemptyrow');
+$router->map('GET', '/admin/bizonylattetel/getquickemptyrow', 'bizonylattetelController#getquickemptyrow', 'adminbizonylattetelgetquickemptyrow');
 $router->map('POST', '/admin/bizonylattetel/save', 'bizonylattetelController#save', 'adminbizonylattetelsave');
 $router->map('GET', '/admin/bizonylattetel/gettermeklist', 'termekController#getBizonylattetelSelectList', 'adminbizonylattetelgettermeklist');
 $router->map('GET', '/admin/bizonylattetel/valtozatlist', 'bizonylattetelController#valtozathtmllist', 'adminvaltozatlist');
+$router->map('GET', '/admin/bizonylattetel/quickvaltozatlist', 'bizonylattetelController#quickvaltozathtmllist', 'adminquickvaltozatlist');
 
 $router->map('GET', '/admin/bizonylatfej/checkkelt', 'bizonylatfejController#checkKelt', 'adminbizonylatfejcheckkelt');
 $router->map('GET', '/admin/bizonylatfej/calcesedekesseg', 'bizonylatfejController#calcesedekesseg', 'adminbizonylatfejcalcesedekesseg');

@@ -236,10 +236,11 @@
 			{foreach $egyed.tetelek as $tetel}
 			{include 'bizonylattetelkarb.tpl'}
 			{/foreach}
-			<a class="js-tetelnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+			<a class="{if ($quick)}js-quicktetelnewbutton{else}js-tetelnewbutton{/if}" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 			</div>
 		</div>
 	</div>
+    <input name="quick" type="hidden" value="{$quick}">
 	<input name="oper" type="hidden" value="{$oper}">
 	<input name="id" type="hidden" value="{$egyed.id}">
     {if ($egyed.parentid|default)}

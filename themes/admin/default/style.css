@@ -66,6 +66,10 @@ img {
 	width: 40em;
 }
 
+.bizonylattetelvaltozattable {
+    border: 1px solid #ccc;
+}
+
 .valtozatkepedit {
 	list-style-type: none;
 	margin: 0;

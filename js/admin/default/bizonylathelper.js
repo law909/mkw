@@ -104,11 +104,10 @@ var bizonylathelper = function($) {
         $.ajax({
             async: false,
             url: '/admin/bizonylatfej/checkkelt',
-            async: false,
-                    data: {
-                        kelt: kelt,
-                        biztipus: biztipus
-                    },
+            data: {
+                kelt: kelt,
+                biztipus: biztipus
+            },
             success: function(data) {
                 var d = JSON.parse(data);
                 if (d.response == 'ok') {
@@ -229,6 +228,91 @@ var bizonylathelper = function($) {
         };
     }
 
+    function quicksetTermekAr(sorId) {
+        $.ajax({
+            async: false,
+            url: '/admin/bizonylattetel/getar',
+            data: {
+                valutanem: $('#ValutanemEdit').val(),
+                partner: $('#PartnerEdit').val(),
+                termek: $('input[name="qteteltermek_' + sorId + '"]').val(),
+                valtozat: $('select[name="qtetelvaltozat_' + sorId + '"]').val()
+            },
+            success: function(data) {
+                var c = $('input[name="qtetelnettoegysar_' + sorId + '"]'),
+                    adat = JSON.parse(data);
+                c.val(adat.netto);
+                c.change();
+            }
+        });
+    }
+
+    function quickcalcArak(sorId) {
+        if (!nocalcarak) {
+            $.ajax({
+                async: false,
+                url: '/admin/bizonylattetel/calcar',
+                data: {
+                    valutanem: $('#ValutanemEdit').val(),
+                    arfolyam: $('#ArfolyamEdit').val(),
+                    afa: $('input[name="qtetelafa_' + sorId + '"]').val(),
+                    nettoegysar: $('input[name="qtetelnettoegysar_' + sorId + '"]').val(),
+                    mennyiseg: 1
+                },
+                success: function(data) {
+                    var resp = JSON.parse(data);
+                    $('input[name="qtetelnettoegysar_' + sorId + '"]').val(resp.nettoegysar);
+                    $('input[name="qtetelbruttoegysar_' + sorId + '"]').val(resp.bruttoegysar);
+                    $('input[name="qtetelnetto_' + sorId + '"]').val(resp.netto);
+                    $('input[name="qtetelbrutto_' + sorId + '"]').val(resp.brutto);
+                    $('input[name="qtetelnettoegysarhuf_' + sorId + '"]').val(resp.nettoegysarhuf);
+                    $('input[name="qtetelbruttoegysarhuf_' + sorId + '"]').val(resp.bruttoegysarhuf);
+                    $('input[name="qtetelnettohuf_' + sorId + '"]').val(resp.nettohuf);
+                    $('input[name="qtetelbruttohuf_' + sorId + '"]').val(resp.bruttohuf);
+                }
+            });
+        }
+        nocalcarak = false;
+    }
+
+    function loadquickValtozatList(id, sorid) {
+        $.ajax({
+            async: false,
+            url: '/admin/bizonylattetel/quickvaltozatlist',
+            data: {
+                id: id,
+                tetelid: sorid
+            },
+            success: function(data) {
+                var d = JSON.parse(data);
+                $('#valtozattable_' + d.tetelid).html(d.html);
+            }
+        });
+    }
+
+    function quicktermekAutocompleteConfig() {
+        return {
+            minLength: 4,
+            autoFocus: true,
+            source: '/admin/bizonylattetel/gettermeklist',
+            select: function(event, ui) {
+                if (ui.item) {
+                    var $this = $(this),
+                            sorid = $this.attr('name').split('_')[1];
+                    $('input[name="qteteltermek_' + sorid + '"]').val(ui.item.id);
+                    $('input[name="qtetelafa_' + sorid + '"]').val(ui.item.afa).data('afakulcs', ui.item.afakulcs);
+                    $('input[name="qtetelme_' + sorid + '"]').val(ui.item.me);
+                    kepsor = $('.js-termekpicturerow_' + sorid);
+                    $('.js-toflyout', kepsor).attr('href', ui.item.mainurl + ui.item.kepurl);
+                    $('.js-toflyout img', kepsor).attr('src', ui.item.mainurl + ui.item.kiskepurl);
+                    $('.js-termeklink', kepsor).attr('href', ui.item.link).html(ui.item.link);
+                    loadquickValtozatList(ui.item.id, sorid);
+                    quicksetTermekAr(sorid);
+                }
+            }
+        };
+    }
+
     function valutanemChange(firstrun) {
         if (!firstrun || $('input[name="oper"]').val()==='add') {
             $('#BankszamlaEdit').val($('option:selected', $('#ValutanemEdit')).data('bankszamla'));
@@ -299,7 +383,26 @@ var bizonylathelper = function($) {
                 fizmodedit.on('change', function() {
                     setDates();
                 });
-                alttab.on('click', '.js-tetelnewbutton', function(e) {
+                alttab
+                .on('click', '.js-quicktetelnewbutton', function(e) {
+                    var $this = $(this);
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/admin/bizonylattetel/getquickemptyrow',
+                        data: {
+                            type: bizonylattipus
+                        },
+                        type: 'GET',
+                        success: function(data) {
+                            alttab.append(data);
+                            $('.js-quicktetelnewbutton,.js-teteldelbutton').button();
+                            $('.js-termekselect').autocomplete(quicktermekAutocompleteConfig())
+                                .autocomplete( "instance" )._renderItem = termekAutocompleteRenderer;
+                            $this.remove();
+                        }
+                    });
+                })
+                .on('click', '.js-tetelnewbutton', function(e) {
                     var $this = $(this);
                     e.preventDefault();
                     $.ajax({
@@ -391,6 +494,19 @@ var bizonylathelper = function($) {
                     n.val($(this).val() / (100 + afakulcs) * 100);
                     n.change();
                 })
+                .on('change', '.js-quicknettoegysarinput', function(e) {
+                    e.preventDefault();
+                    var sorid = $(this).attr('name').split('_')[1];
+                    quickcalcArak(sorid);
+                })
+                .on('change', '.js-quickbruttoegysarinput', function(e) {
+                    e.preventDefault();
+                    var sorid = $(this).attr('name').split('_')[1];
+                    var afakulcs = $('input[name="qtetelafa_' + sorid + '"]').data('afakulcs');
+                    var n = $('input[name="qtetelnettoegysar_' + sorid + '"]');
+                    n.val($(this).val() / (100 + afakulcs) * 100);
+                    n.change();
+                })
                 .on('change', '.js-nettoinput', function(e) {
                     e.preventDefault();
                     var sorid = $(this).attr('name').split('_')[1];
@@ -423,7 +539,7 @@ var bizonylathelper = function($) {
                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
                     .autocomplete( "instance" )._renderItem = termekAutocompleteRenderer;
 
-                $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat').button();
+                $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton').button();
 
                 $('.js-inheritbizonylat').each(function() {
                     var $this = $(this);
@@ -452,7 +568,22 @@ var bizonylathelper = function($) {
                     $('.js-toflyout').flyout();
                 }
             },
-            beforeSerialize: function() {
+            beforeSerialize: function(f, o, quick) {
+                if (quick) {
+                    $('.js-quickmennyiseginput').each(function() {
+                        if (!$(this).val()) {
+                            $(this).parents('tr').remove();
+                        }
+                    });
+                    $('input[name="tetelid[]"]').each(function() {
+                        var $this = $(this),
+                            termeksorid = $this.parents('tbody').data('id');
+                        $this.append('<input name="tetelnettoegysar_' + $this.val() + '" type="hidden" value="' +
+                            $('input[name="qtetelnettoegysar_' + termeksorid + '"]').val() + '">');
+                        $this.append('<input name="tetelbruttoegysar_' + $this.val() + '" type="hidden" value="' +
+                            $('input[name="qtetelbruttoegysar_' + termeksorid + '"]').val() + '">');
+                    });
+                }
                 return checkBizonylatFej(bizonylattipus);
             },
             onSubmit: function() {

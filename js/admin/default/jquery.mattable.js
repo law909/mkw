@@ -384,6 +384,9 @@
         };
 
         var showKarb = function(elem) {
+            var $elem = $(elem),
+                    isquick = $elem.attr(_dataattr.quick);
+
             scrollPosition = $(document).scrollTop();
             $.blockUI({
                 message: 'Kérem várjon...',
@@ -399,9 +402,9 @@
             });
             $.ajax({url: setup.karb.viewUrl,
                 data: {
-                    id: $(elem).attr(_dataattr.recordid),
-                    oper: $(elem).attr(_dataattr.oper),
-                    quick: $(elem).attr(_dataattr.quick)
+                    id: $elem.attr(_dataattr.recordid),
+                    oper: $elem.attr(_dataattr.oper),
+                    quick: isquick
                 },
                 success: function(data) {
                     selectContainer.hide();
@@ -410,6 +413,7 @@
                     var karbsetup = setup.karb;
                     karbsetup.name = setup.name;
                     karbsetup.independent = false;
+                    karbsetup.quick = isquick;
                     karbsetup.onSubmit = function(data) {
                         var resp = JSON.parse(data);
                         switch (resp.oper) {

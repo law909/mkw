@@ -54,7 +54,7 @@
                 beforeSerialize: function(form, opt) {
                     var ret = true;
                     if ($.isFunction(setup.beforeSerialize)) {
-                        ret = setup.beforeSerialize.call(this, form, opt);
+                        ret = setup.beforeSerialize.call(this, form, opt, setup.quick);
                     }
                     if (ret) {
                         $.blockUI({
