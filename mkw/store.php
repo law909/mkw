@@ -249,8 +249,8 @@ class Store {
     public static function destroyMainSession() {
         if (isset(self::$mainsession)) {
             \Zend_Session::namespaceUnset('');
-            \Zend_Session::destroy(true);
-            self::$mainsession = null;
+//            \Zend_Session::destroy(true);
+//            self::$mainsession = null;
         }
     }
 
@@ -272,8 +272,8 @@ class Store {
     public static function destroyAdminSession() {
         if (isset(self::$adminsession)) {
             \Zend_Session::namespaceUnset('a');
-            \Zend_Session::destroy(true);
-            self::$adminsession = null;
+//            \Zend_Session::destroy(true);
+//            self::$adminsession = null;
         }
     }
 
