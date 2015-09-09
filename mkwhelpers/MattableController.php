@@ -209,7 +209,7 @@ class MattableController extends Controller {
         return $ide;
     }
 
-    protected function loadDataToView($data, $datavarname = '', $view) {
+    protected function loadDataToView($data, $datavarname = '', $view = null) {
         $vl = array();
         foreach ($data as $t) {
             $vl[] = $this->loadVars($t);

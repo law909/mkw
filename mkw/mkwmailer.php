@@ -8,6 +8,10 @@ class mkwmailer {
     private $headers;
     private $replyto;
 
+    public function addTo($to) {
+        $this->setTo($to);
+    }
+    
     public function setTo($to) {
         $this->to = $to;
     }

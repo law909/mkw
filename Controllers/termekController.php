@@ -20,19 +20,21 @@ class termekController extends \mkwhelpers\MattableController {
 	}
 
 	protected function loadVars($t, $forKarb = false) {
-        $termekarCtrl = new termekarController($this->params);
-		$kepCtrl = new termekkepController($this->params);
-		$receptCtrl = new termekreceptController($this->params);
-		$valtozatCtrl = new termekvaltozatController($this->params);
-		$kapcsolodoCtrl = new termekkapcsolodoController($this->params);
-        $translationsCtrl = new termektranslationController($this->params);
-		$ar = array();
-		$kep = array();
-		$recept = array();
-		$valtozat = array();
-		$lvaltozat = array();
-		$kapcsolodo = array();
-        $translations = array();
+        if ($forKarb) {
+            $termekarCtrl = new termekarController($this->params);
+            $kepCtrl = new termekkepController($this->params);
+            $receptCtrl = new termekreceptController($this->params);
+            $valtozatCtrl = new termekvaltozatController($this->params);
+            $kapcsolodoCtrl = new termekkapcsolodoController($this->params);
+            $translationsCtrl = new termektranslationController($this->params);
+            $ar = array();
+            $kep = array();
+            $recept = array();
+            $valtozat = array();
+            $lvaltozat = array();
+            $kapcsolodo = array();
+            $translations = array();
+        }
 		$x = array();
 		if (!$t) {
 			$t = new \Entities\Termek();
@@ -587,10 +589,9 @@ class termekController extends \mkwhelpers\MattableController {
 			$filter['values'][] = $faszuro;
 		}
 
-		$this->initPager($this->getRepo()->getCount($filter));
-
-		$egyedek = $this->getRepo()->getWithJoins(
-				$filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+        $this->initPager($this->getRepo()->getCount($filter));
+        $egyedek = $this->getRepo()->getWithJoins(
+                $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
 
 		echo json_encode($this->loadDataToView($egyedek, 'termeklista', $view));
 	}
