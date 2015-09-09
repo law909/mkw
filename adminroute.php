@@ -140,6 +140,7 @@ $router->map('GET', '/admin/termek/getnetto', 'termekController#getnetto', 'admi
 $router->map('GET', '/admin/termek/getbrutto', 'termekController#getbrutto', 'admintermekgetbrutto');
 $router->map('POST', '/admin/termek/save', 'termekController#save', 'admintermeksave');
 $router->map('POST', '/admin/termek/setflag', 'termekController#setflag', 'admintermeksetflag');
+$router->map('GET', '/admin/termek/arexport', 'termekController#arexport', 'admintermekarexport');
 
 $router->map('GET', '/admin/termekkapcsolodo/getemptyrow', 'termekkapcsolodoController#getemptyrow', 'admintermekkapcsolodogetemptyrow');
 $router->map('POST', '/admin/termekkapcsolodo/save', 'termekkapcsolodoController#save', 'admintermekkapcsolodosave');

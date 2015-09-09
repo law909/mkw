@@ -29,6 +29,15 @@ class TermekArRepository extends \mkwhelpers\Repository {
         return $q->getScalarResult();
     }
 
+    public function getExistingArsavok() {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('azonosito', 'azonosito');
+        $rsm->addScalarResult('nev', 'valutanem');
+        $rsm->addScalarResult('valutanem_id', 'valutanemid');
+        $q = $this->_em->createNativeQuery('SELECT DISTINCT v.nev, azonosito, valutanem_id FROM termekar t LEFT OUTER JOIN valutanem v ON (t.valutanem_id=v.id) ORDER BY azonosito', $rsm);
+        return $q->getScalarResult();
+    }
+
     public function getArsav($termek, $valutanem = null, $azonosito = null) {
         if (!$azonosito) {
             $azonosito = \mkw\Store::getParameter(\mkw\consts::Arsav);

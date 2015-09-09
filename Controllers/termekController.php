@@ -948,4 +948,82 @@ class termekController extends \mkwhelpers\MattableController {
         $mc = new mainController($this->params);
         $mc->show404('HTTP/1.1 410 Gone');
     }
+
+    public function arexport() {
+
+        function x($o) {
+            if ($o <= 26) {
+                return chr(65 + $o);
+            }
+            return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
+        }
+
+        $ids = $this->params->getStringRequestParam('ids');
+        $ids = explode(',', $ids);
+
+        $arsavok = $this->getRepo('Entities\TermekAr')->getExistingArsavok();
+        $defavaluta = \mkw\Store::getParameter(\mkw\consts::Valutanem);
+
+        $excel = new \PHPExcel();
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'kod');
+        $oszlop = 3;
+        foreach($arsavok as $arsav) {
+            if ($arsav['valutanemid'] == $defavaluta) {
+                $nettobrutto = 'brutto';
+            }
+            else {
+                $nettobrutto = 'netto';
+            }
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue(x($oszlop) . '1', $nettobrutto . '_' . $arsav['valutanem'] . '_' . $arsav['azonosito']);
+            $oszlop++;
+        }
+
+        $filter = array();
+        $filter['fields'][] = 'id';
+        $filter['clauses'][] = 'IN';
+        $filter['values'][] = $ids;
+        $termekek = $this->getRepo()->getWithArak($filter, array());
+        $sor = 2;
+        foreach($termekek as $termek) {
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue(x(0) . $sor, $termek->getId())
+                ->setCellValue(x(1) . $sor, $termek->getCikkszam())
+                ->setCellValue(x(2) . $sor, $termek->getNev());
+            $arak = $termek->getTermekArak();
+            foreach($arak as $ar) {
+                $i = array_search(array('valutanemid' => $ar->getValutanemId(), 'valutanem' => $ar->getValutanemnev(), 'azonosito' => $ar->getAzonosito()),
+                    $arsavok);
+                if ($i !== false) {
+                    if ($arsavok[$i]['valutanemid'] == $defavaluta) {
+                        $nettobrutto = $ar->getBrutto();
+                    }
+                    else {
+                        $nettobrutto = $ar->getNetto();
+                    }
+                    $excel->setActiveSheetIndex(0)
+                        ->setCellValue(x(3 + $i) . $sor, $nettobrutto);
+                }
+            }
+            $sor++;
+        }
+
+        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+
+        $filepath = uniqid('termekarak') . '.xlsx';
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $fileSize);
+        header("Content-Disposition: attachment; filename=" . $filepath);
+
+        readfile($filepath);
+
+        \unlink($filepath);
+    }
 }

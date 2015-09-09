@@ -14,11 +14,7 @@ class TermekRepository extends \mkwhelpers\Repository {
             '2' => array('caption' => 'cikkszám szerint', 'order' => array('cikkszam' => 'ASC'))
         ));
         $this->setBatches(array(
-            '1' => 'címke hozzáadás',
-            '2' => 'címke törlés',
-            '3' => 'áthelyezés másik termékcsoportba',
-            '4' => 'másik VTSZ hozzárendelés',
-            '5' => 'másik ÁFA kulcs hozzárendelés'
+            'arexport' => 'Export árazáshoz'
         ));
     }
 
@@ -80,6 +76,30 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . ' LEFT JOIN ' . $a . '.termekfa1 fa1'
                 . ' LEFT JOIN ' . $a . '.termekfa2 fa2'
                 . ' LEFT JOIN ' . $a . '.termekfa3 fa3'
+                . $this->getFilterString($filter)
+                . $this->getOrderString($order));
+        $q->setParameters($this->getQueryParameters($filter));
+        if ($offset > 0) {
+            $q->setFirstResult($offset);
+        }
+        if ($elemcount > 0) {
+            $q->setMaxResults($elemcount);
+        }
+        \mkw\Store::setTranslationHint($q);
+        return $q->getResult();
+    }
+
+    public function getWithArak($filter, $order, $offset = 0, $elemcount = 0) {
+        $a = $this->alias;
+        $q = $this->_em->createQuery('SELECT ' . $a . ',vtsz,afa,fa1,fa2,fa3,ar,valutanem'
+                . ' FROM ' . $this->entityname . ' ' . $a
+                . ' LEFT JOIN ' . $a . '.vtsz vtsz'
+                . ' LEFT JOIN ' . $a . '.afa afa'
+                . ' LEFT JOIN ' . $a . '.termekfa1 fa1'
+                . ' LEFT JOIN ' . $a . '.termekfa2 fa2'
+                . ' LEFT JOIN ' . $a . '.termekfa3 fa3'
+                . ' LEFT JOIN ' . $a . '.termekarak ar'
+                . ' LEFT JOIN ar.valutanem valutanem'
                 . $this->getFilterString($filter)
                 . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));

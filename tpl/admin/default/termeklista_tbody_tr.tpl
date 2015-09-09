@@ -1,4 +1,4 @@
-<tr id="mattable-row_{$_termek.id}">
+<tr id="mattable-row_{$_termek.id}" data-egyedid="{$_termek.id}">
     <td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
     <td class="cell">
         <table>

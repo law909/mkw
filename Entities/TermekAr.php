@@ -99,6 +99,14 @@ class TermekAr {
         return $this->valutanem;
     }
 
+    public function getValutanemnev() {
+        $vn = $this->getValutanem();
+        if ($vn) {
+            return $vn->getNev();
+        }
+        return '';
+    }
+
     public function getValutanemId() {
         $vn = $this->getValutanem();
         if ($vn) {
