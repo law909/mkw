@@ -55,7 +55,7 @@
                 <tr class="tetelsor">
                     <td>{$tetel.cikkszam}</td>
                     <td>{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}</td>
-                    <td class="textalignright">{number_format($tetel.mennyiseg,0,'',' ')} {$tetel.me}</td>
+                    <td class="textalignright">{$tetel.mennyiseg} {$tetel.me}</td>
                 </tr>
             {/foreach}
         </tbody>

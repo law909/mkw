@@ -58,12 +58,12 @@
                 <tr class="tetelsor">
                     <td>{$tetel.cikkszam}</td>
                     <td>{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}</td>
-                    <td class="textalignright">{number_format($tetel.mennyiseg,0,'',' ')} {$tetel.me}</td>
-                    <td class="textalignright">{number_format($tetel.nettoegysar,0,'',' ')}</td>
-                    <td class="textalignright">{number_format($tetel.netto,0,'',' ')}</td>
+                    <td class="textalignright">{$tetel.mennyiseg} {$tetel.me}</td>
+                    <td class="textalignright">{$tetel.nettoegysar}</td>
+                    <td class="textalignright">{$tetel.netto}</td>
                     <td class="textalignright">{$tetel.afanev}</td>
-                    <td class="textalignright">{number_format($tetel.afa,0,'',' ')}</td>
-                    <td class="textalignright">{number_format($tetel.brutto,0,'',' ')}</td>
+                    <td class="textalignright">{$tetel.afa}</td>
+                    <td class="textalignright">{$tetel.brutto}</td>
                 </tr>
             {/foreach}
         </tbody>
@@ -80,9 +80,9 @@
             {foreach $afaosszesito as $a}
                 <tr>
                     <td>{$a.caption}</td>
-                    <td class="textalignright">{number_format($a.netto,0,'',' ')}</td>
-                    <td class="textalignright">{number_format($a.afa,0,'',' ')}</td>
-                    <td class="textalignright">{number_format($a.brutto,0,'',' ')}</td>
+                    <td class="textalignright">{$a.netto}</td>
+                    <td class="textalignright">{$a.afa}</td>
+                    <td class="textalignright">{$a.brutto}</td>
                 </tr>
             {/foreach}
         </tbody>
@@ -97,22 +97,22 @@
             <tbody>
                 <tr>
                     <td>Nettó:</td>
-                    <td class="textalignright">{number_format($egyed.netto,0,'',' ')} Ft</td>
+                    <td class="textalignright">{$egyed.netto} {$egyed.valutanemnev}</td>
                 </tr>
                 <tr>
                     <td>ÁFA:</td>
-                    <td class="textalignright">{number_format($egyed.afa,0,'',' ')} Ft</td>
+                    <td class="textalignright">{$egyed.afa} {$egyed.valutanemnev}</td>
                 </tr>
                 <tr>
                     <td>Bruttó:</td>
-                    <td class="textalignright">{number_format($egyed.brutto,0,'',' ')} Ft</td>
+                    <td class="textalignright">{$egyed.brutto} {$egyed.valutanemnev}</td>
                 </tr>
                 <tr>
                     <td class="bold">Fizetendő:</td>
-                    <td class="textalignright bold">{number_format($egyed.fizetendo,0,'',' ')} Ft</td>
+                    <td class="textalignright bold">{$egyed.fizetendo} {$egyed.valutanemnev}</td>
                 </tr>
                 <tr>
-                    <td colspan="2" class="fizetendokiirva">{$egyed.fizetendokiirva} forint</td>
+                    <td colspan="2" class="fizetendokiirva">{$egyed.fizetendokiirva} {$egyed.valutanemnev}</td>
                 </tr>
             </tbody>
         </table>
