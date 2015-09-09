@@ -41,6 +41,7 @@ class KivetfejController extends bizonylatfejController {
             }
             $egyed['tetelek'] = $ttk;
         }
+        return $egyed;
     }
 
 }

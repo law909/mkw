@@ -39,6 +39,7 @@ class SzallitofejController extends bizonylatfejController {
                 $egyed['tetelek'] = $ttk;
                 break;
         }
+        return $egyed;
     }
 
 }

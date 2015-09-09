@@ -783,7 +783,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $this->setVarsForKarb($view, $record);
 
         if (method_exists($this, 'onGetKarb')) {
-            $this->onGetKarb($view, $record, $egyed, $oper, $id);
+            $egyed = $this->onGetKarb($view, $record, $egyed, $oper, $id);
         }
 
         $view->setVar('egyed', $egyed);

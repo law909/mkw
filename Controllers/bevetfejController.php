@@ -38,6 +38,7 @@ class BevetfejController extends bizonylatfejController {
         $filter['clauses'][] = '=';
         $filter['values'][] = true;
         $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0), $filter));
+        return $egyed;
     }
 
 }
