@@ -344,6 +344,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             if ($ck) {
                 $partnerobj->setValutanem($ck);
             }
+            $partnerobj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
 
             $this->getEm()->persist($partnerobj);
         }
