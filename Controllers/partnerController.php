@@ -79,6 +79,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['termekarazonosito'] = $t->getTermekarazonosito();
         $x['szallitasimod'] = $t->getSzallitasimod();
         $x['szallitasimodnev'] = $t->getSzallitasimodNev();
+        $x['bizonylatnyelv'] = $t->getBizonylatnyelv();
         return $x;
     }
 
@@ -126,6 +127,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $obj->setIban($this->params->getStringRequestParam('iban'));
         $obj->setSwift($this->params->getStringRequestParam('swift'));
         $obj->setTermekarazonosito($this->params->getStringRequestParam('termekarazonosito'));
+        $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
 
         $j1 = $this->params->getStringRequestParam('jelszo1');
         $j2 = $this->params->getStringRequestParam('jelszo2');
@@ -279,6 +281,8 @@ class partnerController extends \mkwhelpers\MattableController {
         $szallmod = new szallitasimodController($this->params);
         $view->setVar('szallitasimodlist', $szallmod->getSelectList(($partner ? $partner->getSzallitasimodId() : 0)));
 
+        $view->setVar('bizonylatnyelvlist', \mkw\Store::getLocaleSelectList($partner ? $partner->getBizonylatnyelv() : ''));
+
         $view->setVar('partner', $this->loadVars($partner));
         $view->printTemplateResult();
     }
@@ -317,7 +321,8 @@ class partnerController extends \mkwhelpers\MattableController {
                 'email' => $partner->getEmail(),
                 'szallitasimod' => $partner->getSzallitasimodId(),
                 'valutanem' => $partner->getValutanemId(),
-                'uzletkoto' => $partner->getUzletkotoId()
+                'uzletkoto' => $partner->getUzletkotoId(),
+                'bizonylatnyelv' => $partner->getBizonylatnyelv()
             );
         }
         echo json_encode($ret);

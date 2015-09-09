@@ -17,6 +17,44 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         ));
 	}
 
+    public function getReportfileSelectList($sel, $biztip) {
+        $elo = 'biz_' . $biztip;
+        $files = dir(\mkw\Store::getAdminDefaultTemplatePath());
+        $list = array();
+        while (false !== ($entry = $files->read())) {
+            if (($entry != '.') && ($entry !='..')) {
+                $path_parts = pathinfo($entry);
+                $xx = substr($path_parts['basename'], 0, strlen($elo));
+                if ($path_parts['extension']
+                    && ($path_parts['extension'] == 'tpl')
+                    && ($xx == $elo)) {
+                    $list[$entry] = $entry;
+                }
+            }
+        }
+        $files = dir(\mkw\Store::getAdminTemplatePath());
+        while (false !== ($entry = $files->read())) {
+            if (($entry != '.') && ($entry !='..')) {
+                $path_parts = pathinfo($entry);
+                $xx = substr($path_parts['basename'], 0, strlen($elo));
+                if ($path_parts['extension']
+                    && ($path_parts['extension'] == 'tpl')
+                    && ($xx == $elo)) {
+                    $list[$entry] = $entry;
+                }
+            }
+        }
+        $ret = array();
+        foreach($list as $l) {
+            $ret[] = array(
+                'id' => $l,
+                'caption' => $l,
+                'selected' => ($l === $sel)
+            );
+        }
+        return $ret;
+    }
+
     public function findWithJoins($id) {
         return parent::findWithJoins((string)$id);
     }
@@ -165,4 +203,28 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $ret;
     }
 
+    public function findForPrint($id) {
+        if ($id) {
+            $b = $this->find($id);
+            if ($b) {
+                $locale = $b->getBizonylatnyelv();
+            }
+        }
+        $filter = array();
+        $filter['fields'][] = 'id';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = $id;
+		$a = $this->alias;
+		$q = $this->_em->createQuery('SELECT ' . $a . ',bt'
+			. ' FROM ' . $this->entityname . ' ' . $a
+            . ' LEFT JOIN ' . $a . '.bizonylattetelek bt'
+			. $this->getFilterString($filter));
+		$q->setParameters($this->getQueryParameters($filter));
+        \mkw\Store::setTranslationHint($q, $locale);
+		$res = $q->getResult();
+        if (count($res)) {
+            return $res[0];
+        }
+        return false;
+    }
 }

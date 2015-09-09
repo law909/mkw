@@ -358,6 +358,9 @@ var bizonylathelper = function($) {
                                 if (d.uzletkoto) {
                                     $('#UzletkotoEdit').val(d.uzletkoto);
                                 }
+                                if (d.bizonylatnyelv) {
+                                    $('#BizonylatnyelvEdit').val(d.bizonylatnyelv);
+                                }
                                 $('input[name="partnernev"]').val(d.nev);
                                 $('input[name="partnervezeteknev"]').val(d.vezeteknev);
                                 $('input[name="partnerkeresztnev"]').val(d.keresztnev);

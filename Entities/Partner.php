@@ -220,6 +220,9 @@ class Partner {
     /** @ORM\Column(type="integer",nullable=false) */
     private $szamlatipus = 0;
 
+    /** @ORM\Column(type="string",length=10,nullable=true) */
+    private $bizonylatnyelv;
+
     /**
      * @ORM\ManyToOne(targetEntity="Valutanem",inversedBy="partnerek")
      * @ORM\JoinColumn(name="valutanem_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -924,4 +927,13 @@ class Partner {
             $this->szallitasimod = null;
         }
     }
+
+    public function getBizonylatnyelv() {
+        return $this->bizonylatnyelv;
+    }
+
+    public function setBizonylatnyelv($adat) {
+        $this->bizonylatnyelv = $adat;
+    }
+
 }

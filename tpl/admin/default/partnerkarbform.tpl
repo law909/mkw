@@ -59,6 +59,17 @@
 					{/foreach}
 				</select></td>
             </tr>
+            {if ($setup.multilang)}
+			<tr>
+				<td><label for="BizonylatnyelvEdit">{t('Bizonylatok nyelve')}:</label></td>
+				<td><select id="BizonylatnyelvEdit" name="bizonylatnyelv">
+					<option value="">{t('válasszon')}</option>
+					{foreach $bizonylatnyelvlist as $_szt}
+					<option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+					{/foreach}
+				</select></td>
+            </tr>
+            {/if}
             <tr>
 				<td><label for="SzallmodEdit">{t('Szállítási mód')}:</label></td>
 				<td><select id="SzallmodEdit" name="szallitasimod">

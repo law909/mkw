@@ -692,10 +692,13 @@ class Store {
         return self::$mainmode;
     }
 
-    public static function setTranslationHint($q) {
-        if (self::isMultilang() && self::isMainMode()) {
+    public static function setTranslationHint($q, $locale = null) {
+        if (self::isMultilang()) {
+            if (!$locale) {
+                $locale = self::getParameter(\mkw\consts::Locale);
+            }
             $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
-            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, self::getParameter(\mkw\consts::Locale));
+            $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, $locale);
         }
     }
 
@@ -703,4 +706,11 @@ class Store {
         return $azon . $ev . '/' . sprintf('%06d', $szam * 1);
     }
 
+    public static function getAdminTemplatePath() {
+        return self::getConfigValue('path.template');
+    }
+
+    public static function getAdminDefaultTemplatePath() {
+        return self::getConfigValue('path.template.default');
+    }
 }

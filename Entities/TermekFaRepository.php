@@ -82,7 +82,9 @@ class TermekFaRepository extends \mkwhelpers\Repository {
         }
         else {
             $q = $this->_em->createQuery('SELECT f FROM Entities\TermekFa f WHERE f.menu' . $menunum . 'lathato=1 ORDER BY f.sorrend');
-            \mkw\Store::setTranslationHint($q);
+            if (\mkw\Store::isMainMode()) {
+                \mkw\Store::setTranslationHint($q);
+            }
             $res = $q->getResult();
             $ret = array();
             foreach($res as $r) {

@@ -9,7 +9,7 @@
     <div class="headbox pull-left">
         <div class="headboxborder border">
             <div class="headboxinner">
-                <p class="bold">Vevő:</p>
+                <p class="bold">Szállító:</p>
                 <p class="nev bold">{$egyed.tulajnev}</p>
                 <p>{$egyed.tulajirszam} {$egyed.tulajvaros}</p>
                 <p>{$egyed.tulajutca}</p>
@@ -21,7 +21,7 @@
     <div class="headbox pull-left">
         <div class="headboxborder border">
             <div class="headboxinner">
-                <p class="bold">Szállító:</p>
+                <p class="bold">Vevő:</p>
                 <p class="nev bold">{$egyed.szamlanev}</p>
                 <p>{$egyed.szamlairszam} {$egyed.szamlavaros}</p>
                 <p>{$egyed.szamlautca}</p>
@@ -32,8 +32,6 @@
     <div class="row pull-left row-inner">
         <p class="head2label pull-left">Fizetési mód: {$egyed.fizmodnev|default:"&nbsp;"}</p>
         <p class="head2label pull-left">Kelt: {$egyed.keltstr|default:"&nbsp;"}</p>
-        <p class="head2label pull-left">Teljesítés: {$egyed.teljesitesstr|default:"&nbsp;"}</p>
-        <p class="head2label pull-left">Esedékesség: {$egyed.esedekessegstr|default:"&nbsp;"}</p>
     </div>
     <div class="row pull-left">
         <div class="border">
@@ -56,9 +54,7 @@
             <th class="textalignright">Bruttó érték</th>
         </thead>
         <tbody>
-            {$mennyisegsum = 0}
             {foreach $egyed.tetellista as $tetel}
-                {$mennyisegsum = $mennyisegsum + $tetel.mennyiseg}
                 <tr class="tetelsor">
                     <td>{$tetel.cikkszam}</td>
                     <td>{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}</td>
@@ -99,10 +95,6 @@
         <div class="line"></div>
         <table class="osszesitotable pull-right">
             <tbody>
-                <tr>
-                    <td>Mennyiség:</td>
-                    <td class="textalignright">{number_format($mennyisegsum,0,'',' ')}</td>
-                </tr>
                 <tr>
                     <td>Nettó:</td>
                     <td class="textalignright">{number_format($egyed.netto,0,'',' ')} Ft</td>

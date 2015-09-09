@@ -168,20 +168,40 @@
 					</select>
 				</td>
 			</tr>
+            <tr>
+                {if ($setup.multilang)}
+                <td><label for="BizonylatnyelvEdit">{t('Adatok nyelve')}:</label></td>
+                <td><select id="BizonylatnyelvEdit" name="bizonylatnyelv">
+                    <option value="">{t('válasszon')}</option>
+                    {foreach $bizonylatnyelvlist as $_mk}
+                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                    {/foreach}
+                    </select>
+                </td>
+                {/if}
+                <td><label for="ReportfileEdit">{t('Nyomtatási forma')}:</label></td>
+                <td><select id="ReportfileEdit" name="reportfile">
+                    <option value="">{t('válasszon')}</option>
+                    {foreach $reportfilelist as $_mk}
+                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                    {/foreach}
+                    </select>
+                </td>
+            </tr>
             {if ($showerbizonylatszam)}
             <tr>
-                <td><label for="ErbizonylatszamEdit">Eredeti biz.szám:</label></td>
+                <td><label for="ErbizonylatszamEdit">{t('Eredeti biz.szám')}:</label></td>
                 <td><input id="ErbizonylatszamEdit" name="erbizonylatszam" type="text" value="{$egyed.erbizonylatszam}"></td>
             </tr>
             {/if}
             {if ($showfuvarlevelszam)}
             <tr>
-                <td><label for="FuvarlevelszamEdit">Fuvarlevélszám:</label></td>
+                <td><label for="FuvarlevelszamEdit">{t('Fuvarlevélszám')}:</label></td>
                 <td><input id="FuvarlevelszamEdit" name="fuvarlevelszam" type="text" value="{$egyed.fuvarlevelszam}"></td>
             </tr>
             {/if}
             <tr>
-                <td><label for="SzallitasiktgkellEdit">Szállítási költséget kell számolni:</label></td>
+                <td><label for="SzallitasiktgkellEdit">{t('Szállítási költséget kell számolni')}:</label></td>
                 <td><input id="SzallitasiktgkellEdit" name="szallitasiktgkell" type="checkbox"></td>
             </tr>
 			<tr>

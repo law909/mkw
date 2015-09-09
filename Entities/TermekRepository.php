@@ -44,7 +44,9 @@ class TermekRepository extends \mkwhelpers\Repository {
         if ($elemcount > 0) {
             $q->setMaxResults($elemcount);
         }
-        \mkw\Store::setTranslationHint($q);
+        if (\mkw\Store::isMainMode()) {
+            \mkw\Store::setTranslationHint($q);
+        }
         return $q->getScalarResult();
     }
 
@@ -63,7 +65,9 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . $this->getFilterString($filter)
                 . $this->getOrderString(array()));
         $q->setParameters($this->getQueryParameters($filter));
-        \mkw\Store::setTranslationHint($q);
+        if (\mkw\Store::isMainMode()) {
+            \mkw\Store::setTranslationHint($q);
+        }
         return $q->getResult();
     }
 
@@ -85,7 +89,9 @@ class TermekRepository extends \mkwhelpers\Repository {
         if ($elemcount > 0) {
             $q->setMaxResults($elemcount);
         }
-        \mkw\Store::setTranslationHint($q);
+        if (\mkw\Store::isMainMode()) {
+            \mkw\Store::setTranslationHint($q);
+        }
         return $q->getResult();
     }
 
@@ -109,7 +115,9 @@ class TermekRepository extends \mkwhelpers\Repository {
         if ($elemcount > 0) {
             $q->setMaxResults($elemcount);
         }
-        \mkw\Store::setTranslationHint($q);
+        if (\mkw\Store::isMainMode()) {
+            \mkw\Store::setTranslationHint($q);
+        }
         return $q->getResult();
     }
 
@@ -144,7 +152,9 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . ' LEFT JOIN ' . $a . '.termekfa3 fa3'
                 . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
-        \mkw\Store::setTranslationHint($q);
+        if (\mkw\Store::isMainMode()) {
+            \mkw\Store::setTranslationHint($q);
+        }
         return $q->getSingleScalarResult();
     }
 
@@ -204,7 +214,9 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . ' LEFT JOIN ' . $a . '.valtozatok v WITH v.lathato=true AND v.elerheto=true'
                 . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
-        \mkw\Store::setTranslationHint($q);
+        if (\mkw\Store::isMainMode()) {
+            \mkw\Store::setTranslationHint($q);
+        }
         return $q->getSingleScalarResult();
     }
 
@@ -218,7 +230,9 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . ' LEFT JOIN ' . $a . '.valtozatok v WITH v.lathato=true AND v.elerheto=true'
                 . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
-        \mkw\Store::setTranslationHint($q);
+        if (\mkw\Store::isMainMode()) {
+            \mkw\Store::setTranslationHint($q);
+        }
         return $q->getSingleScalarResult();
     }
 
@@ -248,7 +262,9 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . $this->getFilterString($filter)
                 . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
-        \mkw\Store::setTranslationHint($q);
+        if (\mkw\Store::isMainMode()) {
+            \mkw\Store::setTranslationHint($q);
+        }
         return $q->getScalarResult();
     }
 
@@ -266,7 +282,9 @@ class TermekRepository extends \mkwhelpers\Repository {
         $q->setParameters($this->getQueryParameters($filter));
         $q->setFirstResult(0);
         $q->setMaxResults(\mkw\Store::getParameter(\mkw\consts::Feedtermekdb, 30));
-        \mkw\Store::setTranslationHint($q);
+        if (\mkw\Store::isMainMode()) {
+            \mkw\Store::setTranslationHint($q);
+        }
         return $q->getResult();
     }
 
@@ -335,7 +353,9 @@ class TermekRepository extends \mkwhelpers\Repository {
 
             $q->setParameters($this->getQueryParameters($kiemeltfilter));
             $q->setMaxResults($db);
-            \mkw\Store::setTranslationHint($q);
+            if (\mkw\Store::isMainMode()) {
+                \mkw\Store::setTranslationHint($q);
+            }
             return $q->getScalarResult();
         }
         else {
@@ -474,7 +494,9 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . $this->getFilterString($filter)
                 . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
-        \mkw\Store::setTranslationHint($q);
+        if (\mkw\Store::isMainMode()) {
+            \mkw\Store::setTranslationHint($q);
+        }
         $res = $q->getScalarResult();
         $ret = array();
         foreach ($res as $sor) {
@@ -500,7 +522,9 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . $this->getFilterString($filter)
                 . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
-        \mkw\Store::setTranslationHint($q);
+        if (\mkw\Store::isMainMode()) {
+            \mkw\Store::setTranslationHint($q);
+        }
         $res = $q->getResult();
         return $res;
     }

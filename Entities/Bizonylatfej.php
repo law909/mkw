@@ -363,6 +363,12 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $traceurl;
 
+    /** @ORM\Column(type="string",length=10,nullable=true) */
+    private $bizonylatnyelv;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $reportfile;
+
     /**
      * @ORM\PrePersist
      */
@@ -626,6 +632,7 @@ class Bizonylatfej {
             $this->setIrany($val->getIrany());
             $this->setBizonylatnev($val->getNev());
             $this->setPenztmozgat($val->getPenztmozgat());
+            $this->setReportfile($val->getTplname());
 //			$val->addBizonylat($this);
         }
     }
@@ -635,6 +642,7 @@ class Bizonylatfej {
 //			$val=$this->bizonylattipus;
             $this->bizonylattipus = null;
             $this->bizonylatnev = '';
+            $this->setReportfile('');
 //			$val->removeBizonylat($this);
         }
     }
@@ -1058,6 +1066,7 @@ class Bizonylatfej {
             $this->szallutca = $val->getSzallutca();
 
             $this->partnerszamlatipus = $val->getSzamlatipus();
+            $this->bizonylatnyelv = $val->getBizonylatnyelv();
 
             $uk = $val->getUzletkoto();
             if ($uk) {
@@ -1111,6 +1120,7 @@ class Bizonylatfej {
             $this->szallirszam = '';
             $this->szallvaros = '';
             $this->szallutca = '';
+            $this->bizonylatnyelv = '';
             $this->removeUzletkoto();
             $this->removeFizmod();
             $this->removeValutanem();
@@ -1687,6 +1697,22 @@ class Bizonylatfej {
 
     public function setFix($adat) {
         $this->fix = $adat;
+    }
+
+    public function getBizonylatnyelv() {
+        return $this->bizonylatnyelv;
+    }
+
+    public function setBizonylatnyelv($adat) {
+        $this->bizonylatnyelv = $adat;
+    }
+
+    public function getReportfile() {
+        return $this->reportfile;
+    }
+
+    public function setReportfile($adat) {
+        $this->reportfile = $adat;
     }
 
 }

@@ -301,6 +301,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['uzletkoto'] = $t->getUzletkotoId();
         $x['uzletkotonev'] = $t->getUzletkotonev();
         $x['uzletkotoemail'] = $t->getUzletkotoemail();
+        $x['bizonylatnyelv'] = $t->getBizonylatnyelv();
+        $x['reportfile'] = $t->getReportfile();
 		if ($forKarb) {
 			foreach ($t->getBizonylattetelek() as $ttetel) {
 				$tetel[] = $tetelCtrl->loadVars($ttetel, true);
@@ -400,6 +402,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$obj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
 		$obj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
 		$obj->setSzallutca($this->params->getStringRequestParam('szallutca'));
+
+        $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
+        $obj->setReportfile($this->params->getStringRequestParam('reportfile'));
 
 		$ck = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
 		if ($ck) {
@@ -672,16 +677,22 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
     }
 
     public function doPrint() {
-        $o = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+        $o = $this->getRepo()->findForPrint($this->params->getStringRequestParam('id'));
         if ($o) {
-            $biztip = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
-            if ($biztip && $biztip->getTplname()) {
-                $view = $this->createView($biztip->getTplname());
-                $this->setVars($view);
-                $view->setVar('egyed', $o->toLista());
-                $view->setVar('afaosszesito',$this->getRepo()->getAFAOsszesito($o));
-                echo $view->getTemplateResult();
+            if ($o->getReportfile()) {
+                $tplname = $o->getReportfile();
             }
+            else {
+                $biztip = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+                if ($biztip && $biztip->getTplname()) {
+                    $tplname = $biztip->getTplname();
+                }
+            }
+            $view = $this->createView($tplname);
+            $this->setVars($view);
+            $view->setVar('egyed', $o->toLista());
+            $view->setVar('afaosszesito',$this->getRepo()->getAFAOsszesito($o));
+            echo $view->getTemplateResult();
         }
     }
 
@@ -752,6 +763,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('bankszamlalist', $bankszla->getSelectList(($record ? $record->getBankszamlaId() : 0)));
 
         $view->setVar('esedekessegalap', store::getParameter(\mkw\consts::Esedekessegalap, 1));
+        $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList(($record ? $record->getReportfile() : ''), ($record ? $record->getBizonylattipusId() : $this->biztipus)));
+        $view->setVar('bizonylatnyelvlist', store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
 
     }
 
