@@ -20,21 +20,19 @@ class termekController extends \mkwhelpers\MattableController {
 	}
 
 	protected function loadVars($t, $forKarb = false) {
-        if ($forKarb) {
-            $termekarCtrl = new termekarController($this->params);
-            $kepCtrl = new termekkepController($this->params);
-            $receptCtrl = new termekreceptController($this->params);
-            $valtozatCtrl = new termekvaltozatController($this->params);
-            $kapcsolodoCtrl = new termekkapcsolodoController($this->params);
-            $translationsCtrl = new termektranslationController($this->params);
-            $ar = array();
-            $kep = array();
-            $recept = array();
-            $valtozat = array();
-            $lvaltozat = array();
-            $kapcsolodo = array();
-            $translations = array();
-        }
+        $termekarCtrl = new termekarController($this->params);
+        $kepCtrl = new termekkepController($this->params);
+        $receptCtrl = new termekreceptController($this->params);
+        $valtozatCtrl = new termekvaltozatController($this->params);
+        $kapcsolodoCtrl = new termekkapcsolodoController($this->params);
+        $translationsCtrl = new termektranslationController($this->params);
+        $ar = array();
+        $kep = array();
+        $recept = array();
+        $valtozat = array();
+        $lvaltozat = array();
+        $kapcsolodo = array();
+        $translations = array();
 		$x = array();
 		if (!$t) {
 			$t = new \Entities\Termek();
