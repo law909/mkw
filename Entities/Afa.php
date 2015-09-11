@@ -51,10 +51,10 @@ class Afa {
     }
 
 	public function calcBrutto($netto) {
-		return $netto*(100+$this->ertek)/100;
+		return $netto * (100 + $this->ertek) / 100;
 	}
 
 	public function calcNetto($brutto) {
-		return $brutto/(100+$this->ertek)*100;
+		return $brutto / (100 + $this->ertek) * 100;
 	}
 }

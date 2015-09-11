@@ -33,21 +33,21 @@
                 </div>
 				<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}</div>
 			</td>
-			<td><div class="textalignright">{number_format($tetel.bruttoegysar,0,',',' ')} {$valutanem}</div></td>
+			<td><div class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$valutanem}</div></td>
 			<td class="kosar-qtytd">
 				<div class="textaligncenter">
 					<form class="kosarform" action="{$tetel.editlink}">
 						<div>{if ($tetel.noedit)}
-                            {number_format($tetel.mennyiseg,0,'','')}
+                            {number_format($tetel.mennyiseg, 0, ',', ' ')}
                             {else}
-                            <input id="mennyedit_{$tetel.id}" class="form-control" type="number" min="1" step="any" name="mennyiseg" value="{number_format($tetel.mennyiseg,0,'','')}" data-org="{$tetel.mennyiseg}">
+                            <input id="mennyedit_{$tetel.id}" class="form-control" type="number" min="1" step="any" name="mennyiseg" value="{$tetel.mennyiseg}" data-org="{$tetel.mennyiseg}">
                             {/if}
                         </div>
 						<input type="hidden" name="id" value="{$tetel.id}">
 					</form>
 				</div>
 			</td>
-			<td><div id="ertek_{$tetel.id}" class="textalignright">{number_format($tetel.brutto,0,',',' ')} {$valutanem}</div></td>
+			<td><div id="ertek_{$tetel.id}" class="textalignright">{number_format($tetel.brutto, 2, ',', ' ')} {$valutanem}</div></td>
 			<td class="textaligncenter">{if (!$tetel.noedit)}<a class="btn btn-default js-kosardelbtn" href="/kosar/del?id={$tetel.id}" rel="nofollow"><i class="icon-remove-sign"></i>Remove</a>{/if}</td>
 		</tr>
 	{/foreach}
@@ -55,8 +55,8 @@
 <tfoot>
 	<tr>
 		<th colspan="3"><div class="textalignright">Summary:</div></th>
-		<th><div id="mennyisegsum" class="textalignright">{number_format($dbosszesen,0,',',' ')}</div></th>
-		<th><div id="kosarsum" class="textalignright">{number_format($osszesen,0,',',' ')} {$valutanem}</div></th>
+		<th><div id="mennyisegsum" class="textalignright">{number_format($dbosszesen, 0, ',', ' ')}</div></th>
+		<th><div id="kosarsum" class="textalignright">{number_format($osszesen, 2, ',', ' ')} {$valutanem}</div></th>
 		<th></th>
 	</tr>
 </tfoot>

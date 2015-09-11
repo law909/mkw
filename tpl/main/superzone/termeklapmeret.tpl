@@ -20,7 +20,7 @@
                         <span>{$termek.szin} - {$_valt.caption}</span>
                     </div>
                     <div class="col-md-3 valtozatkozep">
-                        <span>{number_format($termek.ar,0,',','')} {$termek.valutanemnev}</span>
+                        <span>{number_format($termek.ar, 2, ',', ' ')} {$termek.valutanemnev}</span>
                     </div>
                     <div class="col-md-1 valtozatkozep">
                         <img src="{if ($_valt.keszlet <= 0)}/themes/main/superzone/nincs.jpg{else}/themes/main/superzone/van.jpg{/if}">

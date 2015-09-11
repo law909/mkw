@@ -713,4 +713,19 @@ class Store {
     public static function getAdminDefaultTemplatePath() {
         return self::getConfigValue('path.template.default');
     }
+
+    public static function kerekit($mit, $mire) {
+        if ($mire == 0) {
+            return $mit;
+        }
+        $bmit = abs($mit);
+        $sg = min(1, max(-1, $mit == 0 ? 0 : $mit * INF));
+        $s = $bmit / $mire;
+        $q = strstr($s, '.'); //Frac($s);
+        $s = $s - $q;
+        if (abs($q) >= 0.5) {
+            $s++;
+        }
+        return $s * $mire * $sg;
+    }
 }

@@ -177,6 +177,9 @@ class Bizonylatfej {
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $fizetendo;
 
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $kerkul;
+
     /**
      * @ORM\ManyToOne(targetEntity="Valutanem",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="valutanem_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -385,6 +388,23 @@ class Bizonylatfej {
      * @ORM\PreUpdate
      */
     public function doStuffOnPrePersist() {
+        $mincimlet = 0;
+        $kerekit = false;
+        $defamincimlet = 0;
+        $defakerekit = false;
+        if ($this->getValutanem()) {
+            $mincimlet = $this->getValutanem()->getMincimlet();
+            $kerekit = $this->getValutanem()->getKerekit();
+        }
+        $defavaluta = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+        if ($defavaluta) {
+            $defamincimlet = $defavaluta->getMincimlet();
+            $defakerekit = $defavaluta->getKerekit();
+        }
+        $fizmodtipus = 'B';
+        if ($this->getFizmod()) {
+            $fizmodtipus = $this->getFizmod()->getTipus();
+        }
         $this->netto = 0;
         $this->afa = 0;
         $this->brutto = 0;
@@ -393,14 +413,31 @@ class Bizonylatfej {
         $this->bruttohuf = 0;
         foreach ($this->bizonylattetelek as $bt) {
             $bt->setMozgat();
-            $this->netto += round($bt->getNetto());
-            $this->afa += round($bt->getAfaertek());
-            $this->brutto += round($bt->getBrutto());
-            $this->nettohuf += round($bt->getNettohuf());
-            $this->afahuf += round($bt->getAfaertekhuf());
-            $this->bruttohuf += round($bt->getBruttohuf());
+            $this->netto += $bt->getNetto();
+            $this->afa += $bt->getAfaertek();
+            //$this->brutto += $bt->getBrutto();
+            $this->nettohuf += $bt->getNettohuf();
+            $this->afahuf += $bt->getAfaertekhuf();
+            //$this->bruttohuf += $bt->getBruttohuf();
+        }
+        if ($kerekit) {
+            $this->brutto = \mkw\Store::kerekit($this->netto + $this->afa, 2);
+        }
+        else {
+            $this->brutto = $this->netto + $this->afa;
+        }
+        if ($mincimlet && ($fizmodtipus == 'P')) {
+            $valosbrutto = $this->brutto;
+            $this->brutto = \mkw\Store::kerekit($this->brutto, $mincimlet);
+            $this->kerkul = $this->brutto - $valosbrutto;
         }
         $this->fizetendo = $this->brutto;
+        if ($defakerekit) {
+            $this->bruttohuf = \mkw\Store::kerekit($this->nettohuf + $this->afahuf, 2);
+        }
+        else {
+            $this->bruttohuf = $this->nettohuf + $this->afahuf;
+        }
     }
 
     public function __construct() {
@@ -1713,6 +1750,14 @@ class Bizonylatfej {
 
     public function setReportfile($adat) {
         $this->reportfile = $adat;
+    }
+
+    public function getKerkul() {
+        return $this->kerkul;
+    }
+
+    public function setKerkul($adat) {
+        $this->kerkul = $adat;
     }
 
 }
