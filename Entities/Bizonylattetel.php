@@ -501,9 +501,6 @@ class Bizonylattetel {
         if (!is_object($val)) {
             $val = \mkw\Store::getEm()->getRepository('Entities\Afa')->find($val);
         }
-if (!$val) {
-    $val = \mkw\Store::getEm()->getRepository('Entities\Afa')->find(3);
-}
         if ($this->afa !== $val) {
             $this->afa = $val;
             $this->afanev = $val->getNev();

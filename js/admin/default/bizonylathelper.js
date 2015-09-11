@@ -599,7 +599,7 @@ var bizonylathelper = function($) {
                             $('input[name="qtetelnettoegysar_' + termeksorid + '"]').val() + '">');
                         $this.append('<input name="tetelbruttoegysar_' + $this.val() + '" type="hidden" value="' +
                             $('input[name="qtetelbruttoegysar_' + termeksorid + '"]').val() + '">');
-                        $this.append('<input name="tetelafa_' + $this.val() + '" type="hidden" value="' + partneredit.data('afa') + '">');
+                        $this.append('<input name="tetelafa_' + $this.val() + '" type="hidden" value="' + $('input[name="qtetelafa_' + termeksorid + '"]').val() + '">');
                     });
                 }
                 return checkBizonylatFej(bizonylattipus);

@@ -692,11 +692,8 @@ class Store {
         return self::$mainmode;
     }
 
-    public static function setTranslationHint($q, $locale = null) {
-        if (self::isMultilang()) {
-            if (!$locale) {
-                $locale = self::getParameter(\mkw\consts::Locale);
-            }
+    public static function setTranslationHint($q, $locale) {
+        if (self::isMultilang() && $locale) {
             $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');
             $q->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, $locale);
         }
