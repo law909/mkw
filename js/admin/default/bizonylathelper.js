@@ -198,31 +198,37 @@ var bizonylathelper = function($) {
             autoFocus: true,
             source: '/admin/bizonylattetel/gettermeklist',
             select: function(event, ui) {
-                if (ui.item) {
+                var termek = ui.item;
+                if (termek) {
                     var $this = $(this),
                             sorid = $this.attr('name').split('_')[1],
                             vtsz = $('select[name="tetelvtsz_' + sorid + '"]'),
                             afa = $('select[name="tetelafa_' + sorid + '"]'),
                             selvaltozat = $('select[name="tetelvaltozat_' + sorid + '"]').val(),
-                            valtozatplace = $('#ValtozatPlaceholder' + sorid);
+                            valtozatplace = $('#ValtozatPlaceholder' + sorid),
+                            partneredit = $('#PartnerEdit');
+                    if (partneredit.data('afa')) {
+                        termek.afa = partneredit.data('afa');
+                        termek.afakulcs = partneredit.data('afakulcs');
+                    }
                     setNoCalcArak(true);
                     valtozatplace.empty();
-                    $this.siblings().val(ui.item.id);
-                    $('input[name="tetelnev_' + sorid + '"]').val(ui.item.value);
-                    $('input[name="tetelcikkszam_' + sorid + '"]').val(ui.item.cikkszam);
-                    $('input[name="tetelme_' + sorid + '"]').val(ui.item.me);
-                    if (!$('input[name="tetelmennyiseg_' + sorid + '"]').val() && ui.item.defaultmennyiseg) {
-                        $('input[name="tetelmennyiseg_' + sorid + '"]').val(ui.item.defaultmennyiseg);
+                    $this.siblings().val(termek.id);
+                    $('input[name="tetelnev_' + sorid + '"]').val(termek.value);
+                    $('input[name="tetelcikkszam_' + sorid + '"]').val(termek.cikkszam);
+                    $('input[name="tetelme_' + sorid + '"]').val(termek.me);
+                    if (!$('input[name="tetelmennyiseg_' + sorid + '"]').val() && termek.defaultmennyiseg) {
+                        $('input[name="tetelmennyiseg_' + sorid + '"]').val(termek.defaultmennyiseg);
                     }
-                    vtsz.val(ui.item.vtsz);
+                    vtsz.val(termek.vtsz);
                     vtsz.change();
-                    afa.val(ui.item.afa);
+                    afa.val(termek.afa);
                     afa.change();
                     kepsor = $('.js-termekpicturerow_' + sorid);
-                    $('.js-toflyout', kepsor).attr('href', ui.item.mainurl + ui.item.kepurl);
-                    $('.js-toflyout img', kepsor).attr('src', ui.item.mainurl + ui.item.kiskepurl);
-                    $('.js-termeklink', kepsor).attr('href', ui.item.link).html(ui.item.link);
-                    loadValtozatList(ui.item.id, sorid, selvaltozat, valtozatplace);
+                    $('.js-toflyout', kepsor).attr('href', termek.mainurl + termek.kepurl);
+                    $('.js-toflyout img', kepsor).attr('src', termek.mainurl + termek.kiskepurl);
+                    $('.js-termeklink', kepsor).attr('href', termek.link).html(termek.link);
+                    loadValtozatList(termek.id, sorid, selvaltozat, valtozatplace);
                 }
             }
         };
@@ -296,17 +302,23 @@ var bizonylathelper = function($) {
             autoFocus: true,
             source: '/admin/bizonylattetel/gettermeklist',
             select: function(event, ui) {
-                if (ui.item) {
+                var termek = ui.item;
+                if (termek) {
                     var $this = $(this),
-                            sorid = $this.attr('name').split('_')[1];
-                    $('input[name="qteteltermek_' + sorid + '"]').val(ui.item.id);
-                    $('input[name="qtetelafa_' + sorid + '"]').val(ui.item.afa).data('afakulcs', ui.item.afakulcs);
-                    $('input[name="qtetelme_' + sorid + '"]').val(ui.item.me);
+                        sorid = $this.attr('name').split('_')[1],
+                        partneredit = $('#PartnerEdit');
+                    if (partneredit.data('afa')) {
+                        termek.afa = partneredit.data('afa');
+                        termek.afakulcs = partneredit.data('afakulcs');
+                    }
+                    $('input[name="qteteltermek_' + sorid + '"]').val(termek.id);
+                    $('input[name="qtetelafa_' + sorid + '"]').val(termek.afa).data('afakulcs', termek.afakulcs);
+                    $('input[name="qtetelme_' + sorid + '"]').val(termek.me);
                     kepsor = $('.js-termekpicturerow_' + sorid);
-                    $('.js-toflyout', kepsor).attr('href', ui.item.mainurl + ui.item.kepurl);
-                    $('.js-toflyout img', kepsor).attr('src', ui.item.mainurl + ui.item.kiskepurl);
-                    $('.js-termeklink', kepsor).attr('href', ui.item.link).html(ui.item.link);
-                    loadquickValtozatList(ui.item.id, sorid);
+                    $('.js-toflyout', kepsor).attr('href', termek.mainurl + termek.kepurl);
+                    $('.js-toflyout img', kepsor).attr('src', termek.mainurl + termek.kiskepurl);
+                    $('.js-termeklink', kepsor).attr('href', termek.link).html(termek.link);
+                    loadquickValtozatList(termek.id, sorid);
                     quicksetTermekAr(sorid);
                 }
             }
@@ -374,6 +386,7 @@ var bizonylathelper = function($) {
                                 $('input[name="szallutca"]').val(d.szallutca);
                                 $('input[name="partnertelefon"]').val(d.telefon);
                                 $('input[name="partneremail"]').val(d.email);
+                                $('#PartnerEdit').data('afa', d.afa).data('afakulcs', d.afakulcs);
                                 setDates();
                                 valutanemChange();
                             }
@@ -573,6 +586,7 @@ var bizonylathelper = function($) {
             },
             beforeSerialize: function(f, o, quick) {
                 if (quick) {
+                    var partneredit = $('#PartnerEdit');
                     $('.js-quickmennyiseginput').each(function() {
                         if (!$(this).val()) {
                             $(this).parents('tr').remove();
@@ -585,6 +599,7 @@ var bizonylathelper = function($) {
                             $('input[name="qtetelnettoegysar_' + termeksorid + '"]').val() + '">');
                         $this.append('<input name="tetelbruttoegysar_' + $this.val() + '" type="hidden" value="' +
                             $('input[name="qtetelbruttoegysar_' + termeksorid + '"]').val() + '">');
+                        $this.append('<input name="tetelafa_' + $this.val() + '" type="hidden" value="' + partneredit.data('afa') + '">');
                     });
                 }
                 return checkBizonylatFej(bizonylattipus);

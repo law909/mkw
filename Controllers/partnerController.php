@@ -80,6 +80,11 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['szallitasimod'] = $t->getSzallitasimod();
         $x['szallitasimodnev'] = $t->getSzallitasimodNev();
         $x['bizonylatnyelv'] = $t->getBizonylatnyelv();
+        if ($t->getSzamlatipus() > 0) {
+            $afa = $this->getRepo('Entities\Afa')->find(\mkw\Store::getParameter(\mkw\consts::NullasAfa));
+            $x['afa'] = $afa->getId();
+            $x['afakulcs'] = $afa->getErtek();
+        }
         return $x;
     }
 
@@ -302,6 +307,7 @@ class partnerController extends \mkwhelpers\MattableController {
 
     public function getPartnerData() {
         $partner = $this->getRepo()->find($this->params->getIntRequestParam('partnerid'));
+        $ret = array();
         if ($partner) {
             $ret = array(
                 'fizmod' => $partner->getFizmodId(),
@@ -324,6 +330,11 @@ class partnerController extends \mkwhelpers\MattableController {
                 'uzletkoto' => $partner->getUzletkotoId(),
                 'bizonylatnyelv' => $partner->getBizonylatnyelv()
             );
+            if ($partner->getSzamlatipus() > 0) {
+                $afa = $this->getRepo('Entities\Afa')->find(\mkw\Store::getParameter(\mkw\consts::NullasAfa));
+                $ret['afa'] = $afa->getId();
+                $ret['afakulcs'] = $afa->getErtek();
+            }
         }
         echo json_encode($ret);
     }

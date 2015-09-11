@@ -29,7 +29,7 @@
             {/if}
 			<tr>
 				<td class="mattable-important"><label for="PartnerEdit">{t('Partner')}:</label></td>
-				<td colspan="7"><select id="PartnerEdit" name="partner" class="mattable-important" required="required" autofocus>
+				<td colspan="7"><select id="PartnerEdit" name="partner" class="mattable-important" required="required" autofocus{if ($egyed.partnerafa)} data-afa="{$egyed.partnerafa}" data-afakulcs="{$egyed.partnerafakulcs}"{/if}>
 					<option value="">{t('válasszon')}</option>
 					<option value="-1">{t('Új felvitel')}</option>
 					{foreach $partnerlist as $_mk}

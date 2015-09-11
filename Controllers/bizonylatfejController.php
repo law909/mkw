@@ -304,6 +304,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['bizonylatnyelv'] = $t->getBizonylatnyelv();
         $x['reportfile'] = $t->getReportfile();
 		if ($forKarb) {
+            if ($t->getPartner() && ($t->getPartner()->getSzamlatipus() > 0)) {
+                $afa = $this->getRepo('Entities\Afa')->find(\mkw\Store::getParameter(\mkw\consts::NullasAfa));
+                $x['partnerafa'] = $afa->getId();
+                $x['partnerafakulcs'] = $afa->getErtek();
+            }
 			foreach ($t->getBizonylattetelek() as $ttetel) {
 				$tetel[] = $tetelCtrl->loadVars($ttetel, true);
 			}
@@ -501,6 +506,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                 }
                             }
                             else {
+                                $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
                                 $tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
                                 $tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_' . $tetelid));
                                 $tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_' . $tetelid));
@@ -557,6 +563,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                     $tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
                                 }
                                 else {
+                                    $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
                                     $tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
                                     $tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_' . $tetelid));
                                     $tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_' . $tetelid));
