@@ -5,7 +5,7 @@
             <tbody>
                 <tr><td>{if ($_termek.kepurl)}<a class="js-toflyout" href="{$mainurl}{$_termek.kepurl}" target="_blank"><img src="{$mainurl}{$_termek.kepurlsmall}"/></a>{/if}</td>
                     <td>
-                        <a class="mattable-editlink" href="#" data-termekid="{$_termek.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_termek.nev}</a>
+                        <a class="mattable-editlink" href="#" data-termekid="{$_termek.id}" data-oper="edit" title="{t('Szerkeszt')}">{if ($maintheme == 'superzone')}{$_termek.cikkszam}&nbsp;{/if}{$_termek.nev}</a>
                         <a class="mattable-dellink" href="#" data-termekid="{$_termek.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
                         <table>
                             <tbody>
