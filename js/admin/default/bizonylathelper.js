@@ -312,6 +312,7 @@ var bizonylathelper = function($) {
                         termek.afakulcs = partneredit.data('afakulcs');
                     }
                     $('input[name="qteteltermek_' + sorid + '"]').val(termek.id);
+                    $('input[name="qtetelcikkszam_' + sorid + '"]').val(termek.cikkszam);
                     $('input[name="qtetelafa_' + sorid + '"]').val(termek.afa).data('afakulcs', termek.afakulcs);
                     $('input[name="qtetelme_' + sorid + '"]').val(termek.me);
                     kepsor = $('.js-termekpicturerow_' + sorid);

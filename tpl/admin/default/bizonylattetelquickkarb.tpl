@@ -19,6 +19,10 @@
 	<td colspan="5">{t('Link')}:<a class="js-termeklink" href="{$tetel.link}" target="_blank">{$tetel.link}</a></td>
 </tr>
 <tr>
+    <td><label for="CikkszamEdit{$tetel.id}">{t('Cikkszám')}:</label></td>
+    <td><input id="CikkszamEdit{$tetel.id}" name="qtetelcikkszam_{$tetel.id}" type="text" size="30" maxlength="50" value="{$tetel.cikkszam}"></td>
+</tr>
+<tr>
     <td><label for="NettoegysarEdit{$tetel.id}">{t('Egységár')}:</label></td>
     <td><input id="NettoegysarEdit{$tetel.id}" name="qtetelnettoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysar}" class="js-quicknettoegysarinput"></td>
     <td><input name="qtetelbruttoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysar}" class="js-quickbruttoegysarinput"></td>
