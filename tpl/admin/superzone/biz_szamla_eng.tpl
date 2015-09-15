@@ -77,7 +77,7 @@
         {/if}
         {$kezdosorszam = ($oldal - 1) * $tetelperpage}
         {$vegsorszam = min($kezdosorszam + $tetelperpage - 1, count($egyed.tetellista) - 1)}
-        {if ($kezdosorszam < $vegsorszam)}
+        {if ($kezdosorszam <= $vegsorszam)}
         <table class="fullwidth pull-left">
             <thead>
                 <tr>
@@ -119,7 +119,7 @@
                         <td class="textalignright">{$tetel.brutto}</td>
                     </tr>
                     <tr class="tetelsor">
-                        <td></td>
+                        <td class="dashedline"></td>
                         <td colspan="8" class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach} ({$tetel.vtszszam})</td>
                     </tr>
                 {/for}
