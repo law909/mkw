@@ -273,11 +273,17 @@ class Bizonylatfej {
      */
     private $bankszamla;
 
+	/** @ORM\Column(type="string",length=50) */
+	private $tulajbanknev;
+
     /** @ORM\Column(type="string",length=255,nullable=true) */
-    private $bankszamlanev;
+    private $tulajbankszamlaszam;
 
     /** @ORM\Column(type="string",length=20,nullable=true) */
-    private $swift;
+    private $tulajswift;
+
+    /** @ORM\Column(type="string",length=20) */
+	private $tulajiban;
 
     /**
      * @ORM\ManyToOne(targetEntity="Uzletkoto",inversedBy="bizonylatfejek")
@@ -480,6 +486,7 @@ class Bizonylatfej {
         $ret['tulajvaros'] = $this->getTulajvaros();
         $ret['tulajutca'] = $this->getTulajutca();
         $ret['tulajadoszam'] = $this->getTulajadoszam();
+        $ret['tulajeuadoszam'] = $this->getTulajeuadoszam();
         $ret['tulajeorinr'] = $this->getTulajeorinr();
         $ret['ertek'] = $this->getBrutto();
         $ret['nettohuf'] = $this->getNettohuf();
@@ -492,7 +499,10 @@ class Bizonylatfej {
         $ret['fizetendokiirva'] = \mkw\Store::Num2Text($this->getFizetendo());
         $ret['fizmodnev'] = $this->getFizmodnev();
         $ret['szallitasimodnev'] = $this->getSzallitasimodnev();
-        $ret['bankszamlanev'] = $this->getBankszamlanev();
+        $ret['tulajbanknev'] = $this->getTulajbanknev();
+        $ret['tulajbankszamlaszam'] = $this->getTulajbankszamlaszam();
+        $ret['tulajiban'] = $this->getTulajiban();
+        $ret['tulajswift'] = $this->getTulajswift();
         $ret['partneremail'] = $this->getPartneremail();
         $ret['partnertelefon'] = $this->getPartnertelefon();
         $ret['partnerkeresztnev'] = $this->getPartnerkeresztnev();
@@ -1273,8 +1283,8 @@ class Bizonylatfej {
         return $this->bankszamla;
     }
 
-    public function getBankszamlanev() {
-        return $this->bankszamlanev;
+    public function getTulajbankszamlaszam() {
+        return $this->tulajbankszamlaszam;
     }
 
     public function getBankszamlaId() {
@@ -1287,8 +1297,10 @@ class Bizonylatfej {
     public function setBankszamla($val = null) {
         if ($this->bankszamla !== $val && $val) {
             $this->bankszamla = $val;
-            $this->bankszamlanev = $val->getSzamlaszam();
-            $this->swift = $val->getSwift();
+            $this->tulajbanknev = $val->getBanknev();
+            $this->tulajbankszamlaszam = $val->getSzamlaszam();
+            $this->tulajswift = $val->getSwift();
+            $this->tulajiban = $val->getIban();
 //			$val->addBizonylatfejek($this);
         }
     }
@@ -1297,14 +1309,20 @@ class Bizonylatfej {
         if ($this->bankszamla !== null) {
 //			$val=$this->bankszamla;
             $this->bankszamla = null;
-            $this->bankszamlanev = '';
-            $this->swift = '';
+            $this->tulajbanknev = '';
+            $this->tulajbankszamlaszam = '';
+            $this->tulajswift = '';
+            $this->tulajiban = '';
 //			$val->removeBizonylatfejek($this);
         }
     }
 
-    public function getSwift() {
-        return $this->swift;
+    public function getTulajswift() {
+        return $this->tulajswift;
+    }
+
+    public function getTulajbanknev() {
+        return $this->tulajbanknev;
     }
 
     public function getUzletkoto() {
@@ -1758,6 +1776,10 @@ class Bizonylatfej {
 
     public function setKerkul($adat) {
         $this->kerkul = $adat;
+    }
+
+    public function getTulajiban() {
+        return $this->tulajiban;
     }
 
 }

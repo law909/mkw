@@ -245,6 +245,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['tulajvaros'] = $t->getTulajvaros();
         $x['tulajutca'] = $t->getTulajutca();
         $x['tulajadoszam'] = $t->getTulajadoszam();
+        $x['tulajeuadoszam'] = $t->getTulajeuadoszam();
 		$x['bizonylatnev'] = $t->getBizonylatnev();
 		$x['erbizonylatszam'] = $t->getErbizonylatszam();
         $x['fuvarlevelszam'] = $t->getFuvarlevelszam();
@@ -272,7 +273,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$x['valutanemnev'] = $t->getValutanemNev();
 		$x['arfolyam'] = $t->getArfolyam();
 		$x['bankszamla'] = $t->getBankszamlaId();
-		$x['bankszamlanev'] = $t->getBankszamlaNev();
+        $x['tulajbanknev'] = $t->getTulajbanknev();
+		$x['tulajbankszamlaszam'] = $t->getTulajbankszamlaszam();
+        $x['tulajswift'] = $t->getTulajswift();
+        $x['tulajiban'] = $t->getTulajiban();
+        $x['tulajeorinr'] = $t->getTulajeorinr();
 		$x['netto'] = $t->getNetto();
 		$x['afa'] = $t->getAfa();
 		$x['brutto'] = $t->getBrutto();

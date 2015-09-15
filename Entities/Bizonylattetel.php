@@ -231,6 +231,8 @@ class Bizonylattetel {
         $ret['termeknev'] = $this->getTermeknev();
         $ret['me'] = $this->getME();
         $ret['afanev'] = $this->getAfanev();
+        $ret['vtszszam'] = $this->getVtszszam();
+        $ret['vtsznev'] = $this->getVtsznev();
         $valt = $this->getTermekvaltozat();
         $v = array();
         if ($valt) {

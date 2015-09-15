@@ -527,7 +527,9 @@ class Store {
         if (!$plus) {
             $t_txt = $szamok[14] . $t_txt;
         }
-        $t_txt = ucfirst($t_txt);
+        if (self::getTheme() == 'mkwcansas') {
+            $t_txt = ucfirst($t_txt);
+        }
         return $t_txt;
     }
 
