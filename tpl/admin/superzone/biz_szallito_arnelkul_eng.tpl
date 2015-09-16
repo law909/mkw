@@ -3,35 +3,36 @@
 {block "body"}
     {$summennyiseg = 0}
     {$tetelperpage = 18}
-    {$utolsooldalmaxtetel = 14}
+    {$utolsooldalmaxtetel = 13}
     {$maxoldalszam = floor(count($egyed.tetellista) / 17) + 1}
     {if (count($egyed.tetellista) % $tetelperpage > $utolsooldalmaxtetel)}
         {$maxoldalszam = $maxoldalszam + 1}
     {/if}
     {for $oldal = 1 to $maxoldalszam}
         <div class="fullwidth">
-            <div class="biznev pull-left">{$egyed.bizonylatnev}</div>
-            <div class="pull-right">{$oldal}/{$maxoldalszam} oldal</div>
+            <div class="biznev pull-left">Szállítólevél / Delivery bill</div>
+            <div class="pull-right">{$oldal}/{$maxoldalszam} oldal / page(s)</div>
         </div>
         <div class="topline topbottommargin clear"></div>
         <div class="halfwidth pull-left">
             <div class="headboxinner">
-                <p class="bottommargin">Szállító</p>
+                <p class="bottommargin">Szállító / Supplier</p>
                 <p class="nev bold">{$egyed.tulajnev}</p>
                 <p>{$egyed.tulajirszam} {$egyed.tulajvaros}, {$egyed.tulajutca}</p>
-                <p>Adószám: {$egyed.tulajadoszam}</p>
+                <p>EU adószám / EU tax number: {$egyed.tulajeuadoszam}</p>
                 <p>Bank: {$egyed.tulajbanknev}</p>
                 <p>Swift: {$egyed.tulajswift}</p>
                 <p>IBAN: {$egyed.tulajiban} {$egyed.tulajbankszamlaszam}</p>
+                <p>EORI NR: {$egyed.tulajeorinr}</p>
             </div>
         </div>
         <div class="halfwidth pull-left">
             <div class="headboxinner">
-                <p class="bottommargin">Vevő</p>
+                <p class="bottommargin">Vevő / Customer</p>
                 <p class="nev bold">{$egyed.szamlanev}</p>
                 <p>{$egyed.szamlairszam} {$egyed.szamlavaros}</p>
                 <p>{$egyed.szamlautca}</p>
-                <p>Adószám: {$egyed.euadoszam}</p>
+                <p>EU adószám / EU tax number: {$egyed.euadoszam}</p>
             </div>
         </div>
         <div class="topline topbottommargin clear"></div>
@@ -40,19 +41,16 @@
                 <tr>
                     <td class="textaligncenter bold">Kelt</td>
                     <td class="textaligncenter bold">Teljesítés</td>
-                    <td class="textaligncenter bold">Fiz.határidő</td>
-                    <td class="textaligncenter bold">Fizetési mód</td>
-                    <td class="textaligncenter bold">Pénznem</td>
-                    <td class="textaligncenter bold">Eredeti biz.szám</td>
-                    <td class="textaligncenter bold">Biz. száma</td>
+                    <td class="textaligncenter bold">Szállítólevél száma</td>
+                </tr>
+                <tr>
+                    <td class="textaligncenter bold">Issue</td>
+                    <td class="textaligncenter bold">Fulfillment</td>
+                    <td class="textaligncenter bold">Delivery bill #</td>
                 </tr>
                 <tr>
                     <td class="textaligncenter">{$egyed.keltstr|default:"&nbsp;"}</td>
                     <td class="textaligncenter">{$egyed.teljesitesstr|default:"&nbsp;"}</td>
-                    <td class="textaligncenter">{$egyed.esedekessegstr|default:"&nbsp;"}</td>
-                    <td class="textaligncenter">{$egyed.fizmodnev|default:"&nbsp;"}</td>
-                    <td class="textaligncenter">{$egyed.valutanemnev|default:"&nbsp;"}</td>
-                    <td class="textaligncenter">{$egyed.erbizonylatszam|default:"&nbsp;"}</td>
                     <td class="textaligncenter">{$egyed.id}</td>
                 </tr>
             </tbody>
@@ -78,11 +76,12 @@
                     <th class="bold">Termék</th>
                     <th class="textalignright bold">Mennyiség</th>
                     <th class="bold">ME</th>
-                    <th class="textalignright bold">Egységár</th>
-                    <th class="textalignright bold">Nettó érték</th>
-                    <th class="textalignright bold">ÁFA</th>
-                    <th class="textalignright bold">ÁFA érték</th>
-                    <th class="textalignright bold">Bruttó érték</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th class="bold">Product</th>
+                    <th class="textalignright bold">Quantity</th>
+                    <th class="bold">Unit</th>
                 </tr>
             </thead>
             <tbody>
@@ -94,11 +93,6 @@
                         <td></td>
                         <td class="textalignright">{$tetel.mennyiseg}</td>
                         <td>{$tetel.me}</td>
-                        <td class="textalignright">{$tetel.nettoegysar}</td>
-                        <td class="textalignright">{$tetel.netto}</td>
-                        <td class="textalignright">{$tetel.afanev}</td>
-                        <td class="textalignright">{$tetel.afa}</td>
-                        <td class="textalignright">{$tetel.brutto}</td>
                     </tr>
                     <tr class="tetelsor">
                         <td class="dashedline"></td>
@@ -112,49 +106,10 @@
             <div class="page-break"></div>
         {/if}
     {/for}
-    <div class="fullwidth pull-left topmargin osszesen">
-        <div class="halfwidth bold pull-left">Összesen</div>
-        <div class="halfwidth bold pull-left textalignright">{$egyed.brutto} {$egyed.valutanemnev}</div>
-    </div>
     <div class="halfwidth pull-left topmargin10">
-        <p>Összes mennyiség: {$summennyiseg}</p>
+        <p>Összes mennyiség / Total quantity: {$summennyiseg}</p>
     </div>
-    <table class="halfwidth pull-right topmargin10">
-        <tbody>
-            <tr>
-                <td></td>
-                <td class="textalignright bold">Nettó</td>
-                <td class="textalignright bold">ÁFA</td>
-                <td class="textalignright bold">Bruttó</td>
-            </tr>
-            {foreach $afaosszesito as $a}
-                <tr>
-                    <td>{$a.caption}</td>
-                    <td class="textalignright">{$a.netto}</td>
-                    <td class="textalignright">{$a.afa}</td>
-                    <td class="textalignright">{$a.brutto}</td>
-                </tr>
-            {/foreach}
-            <tr>
-                <td class="topline" colspan="5"></td>
-            </tr>
-            <tr class="bold">
-                <td>Összesen</td>
-                <td class="textalignright">{$egyed.netto}</td>
-                <td class="textalignright">{$egyed.afa}</td>
-                <td class="textalignright">{$egyed.brutto}</td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="clear toppadding10">
-        <div class="textalignright osszesen bold">
-            azaz {$egyed.fizetendokiirva} {$egyed.valutanemnev}
-        </div>
-        <div class="textalignright osszesen bold">
-            Fizetendő végösszeg: {$egyed.fizetendo} {$egyed.valutanemnev}
-        </div>
-    </div>
-    <div class="topmargin">
+    <div class="clear topmargin">
         <p class="keszult">Készült az MKW Webshop számlázó moduljával.</p>
     </div>
 {/block}

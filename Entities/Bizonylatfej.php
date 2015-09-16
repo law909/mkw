@@ -523,6 +523,7 @@ class Bizonylatfej {
         $ret = array();
         $ret['id'] = $this->getId();
         $ret['bizonylatnev'] = $this->getBizonylatnev();
+        $ret['raktarnev'] = $this->getRaktarnev();
         $ret['kelt'] = $this->getKeltStr();
         $ret['keltstr'] = $this->getKeltStr();
         $ret['teljesitesstr'] = $this->getTeljesitesStr();
@@ -574,6 +575,7 @@ class Bizonylatfej {
         $ret['megjegyzes'] = $this->getMegjegyzes();
         $ret['allapotnev'] = $this->getBizonylatstatusznev();
         $ret['fuvarlevelszam'] = $this->getFuvarlevelszam();
+        $ret['erbizonylatszam'] = $this->getErbizonylatszam();
         $ret['valutanemnev'] = $this->getValutanemnev();
         $ret['arfolyam'] = $this->getArfolyam();
         $ret['foxpost'] = false;

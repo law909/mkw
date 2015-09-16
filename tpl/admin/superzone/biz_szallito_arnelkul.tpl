@@ -1,71 +1,103 @@
 {extends "biz_base.tpl"}
 
 {block "body"}
-    <div class="teto">
-    <div>
-        <div class="biznev">{$egyed.bizonylatnev}</div>
-        <div class="bizszam textalignright">{$egyed.id}</div>
-    </div>
-    <div class="headbox pull-left">
-        <div class="headboxborder border">
+    {$summennyiseg = 0}
+    {$tetelperpage = 18}
+    {$utolsooldalmaxtetel = 14}
+    {$maxoldalszam = floor(count($egyed.tetellista) / 17) + 1}
+    {if (count($egyed.tetellista) % $tetelperpage > $utolsooldalmaxtetel)}
+        {$maxoldalszam = $maxoldalszam + 1}
+    {/if}
+    {for $oldal = 1 to $maxoldalszam}
+        <div class="fullwidth">
+            <div class="biznev pull-left">{$egyed.bizonylatnev}</div>
+            <div class="pull-right">{$oldal}/{$maxoldalszam} oldal</div>
+        </div>
+        <div class="topline topbottommargin clear"></div>
+        <div class="halfwidth pull-left">
             <div class="headboxinner">
-                <p class="bold">Szállító:</p>
+                <p class="bottommargin">Szállító</p>
                 <p class="nev bold">{$egyed.tulajnev}</p>
-                <p>{$egyed.tulajirszam} {$egyed.tulajvaros}</p>
-                <p>{$egyed.tulajutca}</p>
+                <p>{$egyed.tulajirszam} {$egyed.tulajvaros}, {$egyed.tulajutca}</p>
                 <p>Adószám: {$egyed.tulajadoszam}</p>
-                <p>Bankszámla: {$egyed.bankszamlanev}</p>
+                <p>Bank: {$egyed.tulajbanknev}</p>
+                <p>Swift: {$egyed.tulajswift}</p>
+                <p>IBAN: {$egyed.tulajiban} {$egyed.tulajbankszamlaszam}</p>
             </div>
         </div>
-    </div>
-    <div class="headbox pull-left">
-        <div class="headboxborder border">
+        <div class="halfwidth pull-left">
             <div class="headboxinner">
-                <p class="bold">Vevő:</p>
+                <p class="bottommargin">Vevő</p>
                 <p class="nev bold">{$egyed.szamlanev}</p>
                 <p>{$egyed.szamlairszam} {$egyed.szamlavaros}</p>
                 <p>{$egyed.szamlautca}</p>
-                <p>Adószám: {$egyed.adoszam}</p>
+                <p>Adószám: {$egyed.euadoszam}</p>
             </div>
         </div>
-    </div>
-    <div class="row pull-left row-inner">
-        <p class="head2label pull-left">Fizetési mód: {$egyed.fizmodnev|default:"&nbsp;"}</p>
-        <p class="head2label pull-left">Kelt: {$egyed.keltstr|default:"&nbsp;"}</p>
-        <p class="head2label pull-left">Teljesítés: {$egyed.teljesitesstr|default:"&nbsp;"}</p>
-        <p class="head2label pull-left">Esedékesség: {$egyed.esedekessegstr|default:"&nbsp;"}</p>
-    </div>
-    <div class="row pull-left">
-        <div class="border">
+        <div class="topline topbottommargin clear"></div>
+        <table class="fullwidth">
+            <tbody>
+                <tr>
+                    <td class="textaligncenter bold">Kelt</td>
+                    <td class="textaligncenter bold">Teljesítés</td>
+                    <td class="textaligncenter bold">Biz. száma</td>
+                </tr>
+                <tr>
+                    <td class="textaligncenter">{$egyed.keltstr|default:"&nbsp;"}</td>
+                    <td class="textaligncenter">{$egyed.teljesitesstr|default:"&nbsp;"}</td>
+                    <td class="textaligncenter">{$egyed.id}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="topline topbottommargin"></div>
+        {if ($egyed.megjegyzes)}
+        <div class="fullwidth pull-left">
             <div class="row-inner">
                 {if ($egyed.megjegyzes|default)}
-                Közlemény: {$egyed.megjegyzes}
+                    Közlemény: {$egyed.megjegyzes}
                 {/if}
             </div>
         </div>
-    </div>
-    <table class="teteltable pull-left">
-        <thead>
-            <th>Cikkszám</th>
-            <th>Termék neve</th>
-            <th class="textalignright">Mennyiség</th>
-        </thead>
-        <tbody>
-            {foreach $egyed.tetellista as $tetel}
-                <tr class="tetelsor">
-                    <td>{$tetel.cikkszam}</td>
-                    <td>{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}</td>
-                    <td class="textalignright">{$tetel.mennyiseg} {$tetel.me}</td>
+        <div class="topline topbottommargin clear"></div>
+        {/if}
+        {$kezdosorszam = ($oldal - 1) * $tetelperpage}
+        {$vegsorszam = min($kezdosorszam + $tetelperpage - 1, count($egyed.tetellista) - 1)}
+        {if ($kezdosorszam <= $vegsorszam)}
+        <table class="fullwidth pull-left">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="bold">Termék</th>
+                    <th class="textalignright bold">Mennyiség</th>
+                    <th class="bold">ME</th>
                 </tr>
-            {/foreach}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {for $teteldb = $kezdosorszam to $vegsorszam}
+                    {$tetel = $egyed.tetellista[$teteldb]}
+                    {$summennyiseg = $summennyiseg + $tetel.mennyiseg}
+                    <tr class="tetelsor">
+                        <td>{$teteldb + 1}</td>
+                        <td></td>
+                        <td class="textalignright">{$tetel.mennyiseg}</td>
+                        <td>{$tetel.me}</td>
+                    </tr>
+                    <tr class="tetelsor">
+                        <td class="dashedline"></td>
+                        <td colspan="8" class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach} ({$tetel.vtszszam})</td>
+                    </tr>
+                {/for}
+            </tbody>
+        </table>
+        {/if}
+        {if (($maxoldalszam > 1 && $oldal < $maxoldalszam)) }
+            <div class="page-break"></div>
+        {/if}
+    {/for}
+    <div class="halfwidth pull-left topmargin10">
+        <p>Összes mennyiség: {$summennyiseg}</p>
     </div>
-    <div class="lablec pull-left">
-        <div>
-            Átvevő:
-        </div>
-        <div class="line"></div>
+    <div class="clear topmargin">
+        <p class="keszult">Készült az MKW Webshop számlázó moduljával.</p>
     </div>
-    <div class="keszult textaligncenter">Készült az MKW Webshop számlázó moduljával.</div>
 {/block}
