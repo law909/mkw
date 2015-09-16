@@ -469,14 +469,16 @@ class Bizonylatfej {
             $kelt = new \DateTimeImmutable(\mkw\Store::convDate($this->getKeltStr()));
             if ($fizmod->getOsztotthaladek1() && ($fizmod->getOsztottszazalek1() * 1 > 0)) {
                 $this->setEsedekesseg1($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek1() . 'D')));
-                $this->setFizetendo1($this->fizetendo * $fizmod->getOsztottszazalek1() / 100);
-                $eddigi = $eddigi + ($this->fizetendo * $fizmod->getOsztottszazalek1() / 100);
+                $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek1() / 100, 2);
+                $this->setFizetendo1($fiz);
+                $eddigi = $eddigi + $fiz;
             }
             if ($fizmod->getOsztotthaladek2()) {
                 $this->setEsedekesseg2($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek2() . 'D')));
                 if ($fizmod->getOsztottszazalek2() * 1 > 0) {
-                    $this->setFizetendo2($this->fizetendo * $fizmod->getOsztottszazalek2() / 100);
-                    $eddigi = $eddigi + ($this->fizetendo * $fizmod->getOsztottszazalek2() / 100);
+                    $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek2() / 100, 2);
+                    $this->setFizetendo2($fiz);
+                    $eddigi = $eddigi + $fiz;
                 }
                 else {
                     $this->setFizetendo2($this->fizetendo - $eddigi);

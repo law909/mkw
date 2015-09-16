@@ -140,13 +140,13 @@
             <p>&nbsp;</p>
             <p>PAYMENT:</p>
             {if ($egyed.esedekesseg1str)}
-                <p>{$egyed.esedekesseg1str} {$egyed.fizetendo1} {$egyed.valutanemnev}</p>
+                <p>{$egyed.esedekesseg1str}&nbsp;&nbsp;&nbsp;{number_format($egyed.fizetendo1, 2,',','')} {$egyed.valutanemnev}</p>
             {/if}
             {if ($egyed.esedekesseg2str)}
-                <p>{$egyed.esedekesseg2str} {$egyed.fizetendo2} {$egyed.valutanemnev}</p>
+                <p>{$egyed.esedekesseg2str}&nbsp;&nbsp;&nbsp;{number_format($egyed.fizetendo2, 2,',','')} {$egyed.valutanemnev}</p>
             {/if}
             {if ($egyed.esedekesseg3str)}
-                <p>{$egyed.esedekesseg3str} {$egyed.fizetendo3} {$egyed.valutanemnev}</p>
+                <p>{$egyed.esedekesseg3str}&nbsp;&nbsp;&nbsp;{number_format($egyed.fizetendo3, 2,',','')} {$egyed.valutanemnev}</p>
             {/if}
         {/if}
     </div>
