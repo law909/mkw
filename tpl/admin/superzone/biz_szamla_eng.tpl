@@ -2,8 +2,8 @@
 
 {block "body"}
     {$summennyiseg = 0}
-    {$tetelperpage = 17}
-    {$utolsooldalmaxtetel = 12}
+    {$tetelperpage = 18}
+    {$utolsooldalmaxtetel = 13}
     {$maxoldalszam = floor(count($egyed.tetellista) / 17) + 1}
     {if (count($egyed.tetellista) % $tetelperpage > $utolsooldalmaxtetel)}
         {$maxoldalszam = $maxoldalszam + 1}
@@ -134,6 +134,22 @@
         <div class="halfwidth bold pull-left">Összesen / Total</div>
         <div class="halfwidth bold pull-left textalignright">{$egyed.brutto} {$egyed.valutanemnev}</div>
     </div>
+    <div class="halfwidth pull-left topmargin10">
+        <p>Összes mennyiség / Total quantity: {$summennyiseg}</p>
+        {if ($egyed.esedekesseg1str || $egyed.esedekesseg2str || $egyed.esedekesseg3str)}
+            <p>&nbsp;</p>
+            <p>PAYMENT:</p>
+            {if ($egyed.esedekesseg1str)}
+                <p>{$egyed.esedekesseg1str} {$egyed.fizetendo1} {$egyed.valutanemnev}</p>
+            {/if}
+            {if ($egyed.esedekesseg2str)}
+                <p>{$egyed.esedekesseg2str} {$egyed.fizetendo2} {$egyed.valutanemnev}</p>
+            {/if}
+            {if ($egyed.esedekesseg3str)}
+                <p>{$egyed.esedekesseg3str} {$egyed.fizetendo3} {$egyed.valutanemnev}</p>
+            {/if}
+        {/if}
+    </div>
     <table class="halfwidth pull-right topmargin10">
         <tbody>
             <tr>
@@ -177,12 +193,8 @@
     </div>
     <div class="topmargin">
         <p>EU közösségen belüli értékesítés / EU intra-community sale</p>
-        <p>Összmennyiség / Total quantity: {$summennyiseg}</p>
-        <p>PAYMENT</p>
-        <p>PAYMENT</p>
-        <p>PAYMENT</p>
-        <p>ÁFA körön kívül eső, az ÁFÁt a vevő fizeti.</p>
-        <p>Készült az MKW Webshop számlázó moduljával.</p>
-        <p>Készült az MKW Webshop számlázó moduljával.2</p>
+        <p>ÁFA körön kívül eső, az ÁFÁ-t a vevő fizeti.</p>
+        <p class="keszult">Jelen számla megfelel a 47/2007 (XII.29) PM rendeletben előírtaknak.</p>
+        <p class="keszult">Készült az MKW Webshop számlázó moduljával.</p>
     </div>
 {/block}

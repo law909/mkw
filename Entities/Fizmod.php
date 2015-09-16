@@ -27,6 +27,18 @@ class Fizmod {
 	private $leiras;
 	/** @ORM\Column(type="integer") */
 	private $sorrend=0;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $osztotthaladek1;
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $osztottszazalek1;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $osztotthaladek2;
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $osztottszazalek2;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $osztotthaladek3;
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $osztottszazalek3;
 
 	public function __construct() {
 		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
@@ -83,5 +95,53 @@ class Fizmod {
 	public function setSorrend($val) {
 		$this->sorrend=$val;
 	}
+
+    public function getOsztotthaladek1() {
+        return $this->osztotthaladek1;
+    }
+
+    public function setOsztotthaladek1($adat) {
+        $this->osztotthaladek1 = $adat;
+    }
+
+    public function getOsztottszazalek1() {
+        return $this->osztottszazalek1;
+    }
+
+    public function setOsztottszazalek1($adat) {
+        $this->osztottszazalek1 = $adat;
+    }
+
+    public function getOsztotthaladek2() {
+        return $this->osztotthaladek2;
+    }
+
+    public function setOsztotthaladek2($adat) {
+        $this->osztotthaladek2 = $adat;
+    }
+
+    public function getOsztottszazalek2() {
+        return $this->osztottszazalek2;
+    }
+
+    public function setOsztottszazalek2($adat) {
+        $this->osztottszazalek2 = $adat;
+    }
+
+    public function getOsztotthaladek3() {
+        return $this->osztotthaladek3;
+    }
+
+    public function setOsztotthaladek3($adat) {
+        $this->osztotthaladek3 = $adat;
+    }
+
+    public function getOsztottszazalek3() {
+        return $this->osztottszazalek3;
+    }
+
+    public function setOsztottszazalek3($adat) {
+        $this->osztottszazalek3 = $adat;
+    }
 
 }

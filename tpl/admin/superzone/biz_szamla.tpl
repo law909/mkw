@@ -114,6 +114,9 @@
         <div class="halfwidth bold pull-left">Összesen</div>
         <div class="halfwidth bold pull-left textalignright">{$egyed.brutto} {$egyed.valutanemnev}</div>
     </div>
+    <div class="halfwidth pull-left topmargin10">
+        <p>Összes mennyiség: {$summennyiseg}</p>
+    </div>
     <table class="halfwidth pull-right topmargin10">
         <tbody>
             <tr>
@@ -150,8 +153,7 @@
         </div>
     </div>
     <div class="topmargin">
-        <p>Összmennyiség: {$summennyiseg}</p>
-        <p>Készült az MKW Webshop számlázó moduljával.</p>
-        <p>Készült az MKW Webshop számlázó moduljával.2</p>
+        <p class="keszult">Jelen számla megfelel a 47/2007 (XII.29) PM rendeletben előírtaknak.</p>
+        <p class="keszult">Készült az MKW Webshop számlázó moduljával.</p>
     </div>
 {/block}

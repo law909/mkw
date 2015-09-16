@@ -668,6 +668,10 @@ class Store {
         return self::getSetupValue('mustlogin');
     }
 
+    public static function isOsztottFizmod() {
+        return self::getSetupValue('osztottfizmod');
+    }
+
     public static function isFoxpostSzallitasimod($szm) {
         $i = $szm;
         if (is_a($szm, 'Entities\FoxpostTerminal')) {

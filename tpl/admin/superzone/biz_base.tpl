@@ -29,8 +29,7 @@
             .nev { font-size: 11px;}
             .biznev { font-size: 17px; font-weight: bold;}
             .tetelsor { font-size: 12px;}
-            .fizetendokiirva { font-size: 8px;}
-            .keszult { font-size: 6px;}
+            .keszult { font-size: 9px;}
             .osszesen { font-size: 13px;}
 
             @media all {

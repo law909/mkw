@@ -10,7 +10,8 @@ class fizmodController extends \mkwhelpers\JQGridController {
 	}
 
 	protected function loadCells($sor) {
-		return array($sor->getId(),$sor->getNev(),$sor->getTipus(),$sor->getHaladek(),$sor->getWebes(),$sor->getLeiras(),$sor->getSorrend());
+		return array($sor->getId(),$sor->getNev(),$sor->getTipus(),$sor->getHaladek(),$sor->getWebes(),$sor->getLeiras(),$sor->getSorrend(),
+            $sor->getOsztotthaladek1(),$sor->getOsztottszazalek1(),$sor->getOsztotthaladek2(),$sor->getOsztottszazalek2(),$sor->getOsztotthaladek3(),$sor->getOsztottszazalek3());
 	}
 
 	protected function setFields($obj) {
@@ -20,6 +21,12 @@ class fizmodController extends \mkwhelpers\JQGridController {
 		$obj->setWebes($this->params->getBoolRequestParam('webes'));
 		$obj->setLeiras($this->params->getStringRequestParam('leiras'));
 		$obj->setSorrend($this->params->getIntRequestParam('sorrend'));
+        $obj->setOsztotthaladek1($this->params->getIntRequestParam('osztotthaladek1'));
+        $obj->setOsztottszazalek1($this->params->getNumRequestParam('osztottszazalek1'));
+        $obj->setOsztotthaladek2($this->params->getIntRequestParam('osztotthaladek2'));
+        $obj->setOsztottszazalek2($this->params->getNumRequestParam('osztottszazalek2'));
+        $obj->setOsztotthaladek3($this->params->getIntRequestParam('osztotthaladek3'));
+        $obj->setOsztottszazalek3($this->params->getNumRequestParam('osztottszazalek3'));
 		return $obj;
 	}
 

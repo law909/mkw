@@ -64,10 +64,10 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'trxid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpayid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpaymsisdn', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpaympid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpayresult', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpayresulttext', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'masterpasscorrelationid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'masterpassbanktrxid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'masterpasstrxid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'foxpostbarcode', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fix', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylatnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'nyomtatva', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'storno', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'penztmozgat', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizetve', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajvaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajadoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajeuadoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajeorinr', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fuvarlevelszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'teljesites', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'esedekesseg', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizmodnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallitasimodnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'netto', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'afa', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizetendo', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'kerkul', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'afahuf', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnermukengszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerjovengszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerostermszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnervalligszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerfvmszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnercjszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerstatszamjel', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerlirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerlvaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerlutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partneremail', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnertelefon', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajbanknev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajbankszamlaszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajswift', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajiban', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'uzletkotonev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'uzletkotoemail', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'raktar', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'raktarnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'belsomegjegyzes', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'webshopmessage', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'couriermessage', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'sysmegjegyzes', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'hatarido', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallvaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'ip', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'referrer', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylatstatusz', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'parbizonylatfej', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szulobizonylatfejek', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerszamlatipus', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'foxpostterminal', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'traceurl', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylatnyelv', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'reportfile');
+            return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'trxid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpayid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpaymsisdn', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpaympid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpayresult', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpayresulttext', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'masterpasscorrelationid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'masterpassbanktrxid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'masterpasstrxid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'foxpostbarcode', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fix', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylatnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'nyomtatva', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'storno', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'penztmozgat', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizetve', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajvaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajadoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajeuadoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajeorinr', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fuvarlevelszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'teljesites', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'esedekesseg', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'esedekesseg1', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizetendo1', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'esedekesseg2', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizetendo2', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'esedekesseg3', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizetendo3', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizmodnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallitasimodnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'netto', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'afa', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizetendo', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'kerkul', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'afahuf', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnermukengszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerjovengszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerostermszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnervalligszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerfvmszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnercjszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerstatszamjel', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerlirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerlvaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerlutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partneremail', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnertelefon', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajbanknev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajbankszamlaszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajswift', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajiban', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'uzletkotonev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'uzletkotoemail', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'raktar', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'raktarnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'belsomegjegyzes', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'webshopmessage', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'couriermessage', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'sysmegjegyzes', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'hatarido', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallvaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'ip', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'referrer', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylatstatusz', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'parbizonylatfej', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szulobizonylatfejek', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerszamlatipus', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'foxpostterminal', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'traceurl', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylatnyelv', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'reportfile');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'trxid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpayid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpaymsisdn', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpaympid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpayresult', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpayresulttext', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'masterpasscorrelationid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'masterpassbanktrxid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'masterpasstrxid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'foxpostbarcode', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fix', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylatnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'nyomtatva', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'storno', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'penztmozgat', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizetve', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajvaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajadoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajeuadoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajeorinr', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fuvarlevelszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'teljesites', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'esedekesseg', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizmodnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallitasimodnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'netto', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'afa', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizetendo', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'kerkul', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'afahuf', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnermukengszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerjovengszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerostermszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnervalligszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerfvmszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnercjszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerstatszamjel', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerlirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerlvaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerlutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partneremail', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnertelefon', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajbanknev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajbankszamlaszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajswift', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajiban', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'uzletkotonev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'uzletkotoemail', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'raktar', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'raktarnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'belsomegjegyzes', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'webshopmessage', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'couriermessage', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'sysmegjegyzes', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'hatarido', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallvaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'ip', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'referrer', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylatstatusz', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'parbizonylatfej', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szulobizonylatfejek', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerszamlatipus', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'foxpostterminal', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'traceurl', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylatnyelv', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'reportfile');
+        return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'trxid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpayid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpaymsisdn', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpaympid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpayresult', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'otpayresulttext', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'masterpasscorrelationid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'masterpassbanktrxid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'masterpasstrxid', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'foxpostbarcode', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fix', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylatnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'nyomtatva', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'storno', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'penztmozgat', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizetve', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajvaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajadoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajeuadoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajeorinr', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fuvarlevelszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'teljesites', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'esedekesseg', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'esedekesseg1', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizetendo1', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'esedekesseg2', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizetendo2', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'esedekesseg3', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizetendo3', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizmodnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallitasimodnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'netto', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'afa', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'fizetendo', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'kerkul', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'afahuf', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnermukengszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerjovengszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerostermszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnervalligszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerfvmszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnercjszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerstatszamjel', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerlirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerlvaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerlutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partneremail', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnertelefon', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajbanknev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajbankszamlaszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajswift', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'tulajiban', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'uzletkotonev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'uzletkotoemail', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'raktar', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'raktarnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'belsomegjegyzes', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'webshopmessage', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'couriermessage', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'sysmegjegyzes', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'hatarido', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallnev', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallirszam', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallvaros', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szallutca', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'ip', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'referrer', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylatstatusz', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'parbizonylatfej', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'szulobizonylatfejek', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'partnerszamlatipus', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'foxpostterminal', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'traceurl', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'bizonylatnyelv', '' . "\0" . 'Entities\\Bizonylatfej' . "\0" . 'reportfile');
     }
 
     /**
@@ -2606,6 +2606,171 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTulajiban', array());
 
         return parent::getTulajiban();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEsedekesseg1()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEsedekesseg1', array());
+
+        return parent::getEsedekesseg1();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEsedekesseg1Str()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEsedekesseg1Str', array());
+
+        return parent::getEsedekesseg1Str();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEsedekesseg1($adat = '')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEsedekesseg1', array($adat));
+
+        return parent::setEsedekesseg1($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizetendo1()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetendo1', array());
+
+        return parent::getFizetendo1();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizetendo1($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizetendo1', array($val));
+
+        return parent::setFizetendo1($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEsedekesseg2()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEsedekesseg2', array());
+
+        return parent::getEsedekesseg2();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEsedekesseg2Str()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEsedekesseg2Str', array());
+
+        return parent::getEsedekesseg2Str();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEsedekesseg2($adat = '')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEsedekesseg2', array($adat));
+
+        return parent::setEsedekesseg2($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizetendo2()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetendo2', array());
+
+        return parent::getFizetendo2();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizetendo2($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizetendo2', array($val));
+
+        return parent::setFizetendo2($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEsedekesseg3()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEsedekesseg3', array());
+
+        return parent::getEsedekesseg3();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEsedekesseg3Str()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEsedekesseg3Str', array());
+
+        return parent::getEsedekesseg3Str();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEsedekesseg3($adat = '')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEsedekesseg3', array($adat));
+
+        return parent::setEsedekesseg3($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizetendo3()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetendo3', array());
+
+        return parent::getFizetendo3();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizetendo3($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizetendo3', array($val));
+
+        return parent::setFizetendo3($val);
     }
 
 }

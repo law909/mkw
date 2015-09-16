@@ -252,6 +252,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$x['keltstr'] = $t->getKeltStr();
 		$x['teljesitesstr'] = $t->getTeljesitesStr();
 		$x['esedekessegstr'] = $t->getEsedekessegStr();
+        $x['esedekesseg1str'] = $t->getEsedekesseg1Str();
+        $x['fizetendo1'] = $t->getFizetendo1();
+        $x['esedekesseg2str'] = $t->getEsedekesseg2Str();
+        $x['fizetendo2'] = $t->getFizetendo2();
+        $x['esedekesseg3str'] = $t->getEsedekesseg3Str();
+        $x['fizetendo3'] = $t->getFizetendo3();
 		$x['hataridostr'] = $t->getHataridoStr();
 		$x['partner'] = $t->getPartnerId();
 		$x['partnernev'] = $t->getPartnernev();

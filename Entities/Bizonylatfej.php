@@ -147,6 +147,24 @@ class Bizonylatfej {
     /** @ORM\Column(type="date",nullable=true) */
     private $esedekesseg;
 
+    /** @ORM\Column(type="date",nullable=true) */
+    private $esedekesseg1;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $fizetendo1;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $esedekesseg2;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $fizetendo2;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $esedekesseg3;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $fizetendo3;
+
     /**
      * @ORM\ManyToOne(targetEntity="Fizmod",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="fizmod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -408,8 +426,9 @@ class Bizonylatfej {
             $defakerekit = $defavaluta->getKerekit();
         }
         $fizmodtipus = 'B';
-        if ($this->getFizmod()) {
-            $fizmodtipus = $this->getFizmod()->getTipus();
+        $fizmod = $this->getFizmod();
+        if ($fizmod) {
+            $fizmodtipus = $fizmod->getTipus();
         }
         $this->netto = 0;
         $this->afa = 0;
@@ -443,6 +462,31 @@ class Bizonylatfej {
         }
         else {
             $this->bruttohuf = $this->nettohuf + $this->afahuf;
+        }
+        // superzone osztott fizetendo
+        if (\mkw\Store::isOsztottFizmod()) {
+            $eddigi = 0;
+            $kelt = new \DateTimeImmutable(\mkw\Store::convDate($this->getKeltStr()));
+            if ($fizmod->getOsztotthaladek1() && ($fizmod->getOsztottszazalek1() * 1 > 0)) {
+                $this->setEsedekesseg1($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek1() . 'D')));
+                $this->setFizetendo1($this->fizetendo * $fizmod->getOsztottszazalek1() / 100);
+                $eddigi = $eddigi + ($this->fizetendo * $fizmod->getOsztottszazalek1() / 100);
+            }
+            if ($fizmod->getOsztotthaladek2()) {
+                $this->setEsedekesseg2($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek2() . 'D')));
+                if ($fizmod->getOsztottszazalek2() * 1 > 0) {
+                    $this->setFizetendo2($this->fizetendo * $fizmod->getOsztottszazalek2() / 100);
+                    $eddigi = $eddigi + ($this->fizetendo * $fizmod->getOsztottszazalek2() / 100);
+                }
+                else {
+                    $this->setFizetendo2($this->fizetendo - $eddigi);
+                    $eddigi = $this->fizetendo;
+                }
+            }
+            if ($fizmod->getOsztotthaladek3()) {
+                $this->setEsedekesseg3($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek3() . 'D')));
+                $this->setFizetendo3($this->fizetendo - $eddigi);
+            }
         }
     }
 
@@ -481,6 +525,12 @@ class Bizonylatfej {
         $ret['keltstr'] = $this->getKeltStr();
         $ret['teljesitesstr'] = $this->getTeljesitesStr();
         $ret['esedekessegstr'] = $this->getEsedekessegStr();
+        $ret['esedekesseg1str'] = $this->getEsedekesseg1Str();
+        $ret['fizetendo1'] = $this->getFizetendo1();
+        $ret['esedekesseg2str'] = $this->getEsedekesseg2Str();
+        $ret['fizetendo2'] = $this->getFizetendo2();
+        $ret['esedekesseg3str'] = $this->getEsedekesseg3Str();
+        $ret['fizetendo3'] = $this->getFizetendo3();
         $ret['tulajnev'] = $this->getTulajnev();
         $ret['tulajirszam'] = $this->getTulajirszam();
         $ret['tulajvaros'] = $this->getTulajvaros();
@@ -1780,6 +1830,99 @@ class Bizonylatfej {
 
     public function getTulajiban() {
         return $this->tulajiban;
+    }
+
+    public function getEsedekesseg1() {
+        return $this->esedekesseg1;
+    }
+
+    public function getEsedekesseg1Str() {
+        if ($this->getEsedekesseg1()) {
+            return $this->getEsedekesseg1()->format(store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setEsedekesseg1($adat = '') {
+        if (is_a($adat,'DateTime') || is_a($adat,'DateTimeImmutable')) {
+            $this->esedekesseg1 = $adat;
+        }
+        else {
+            if ($adat == '') {
+                $adat = date(store::$DateFormat);
+            }
+            $this->esedekesseg1 = new \DateTime(store::convDate($adat));
+        }
+    }
+
+    public function getFizetendo1() {
+        return $this->fizetendo1;
+    }
+
+    public function setFizetendo1($val) {
+        $this->fizetendo1 = $val;
+    }
+
+    public function getEsedekesseg2() {
+        return $this->esedekesseg2;
+    }
+
+    public function getEsedekesseg2Str() {
+        if ($this->getEsedekesseg2()) {
+            return $this->getEsedekesseg2()->format(store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setEsedekesseg2($adat = '') {
+        if (is_a($adat,'DateTime') || is_a($adat,'DateTimeImmutable')) {
+            $this->esedekesseg2 = $adat;
+        }
+        else {
+            if ($adat == '') {
+                $adat = date(store::$DateFormat);
+            }
+            $this->esedekesseg2 = new \DateTime(store::convDate($adat));
+        }
+    }
+
+    public function getFizetendo2() {
+        return $this->fizetendo2;
+    }
+
+    public function setFizetendo2($val) {
+        $this->fizetendo2 = $val;
+    }
+
+    public function getEsedekesseg3() {
+        return $this->esedekesseg3;
+    }
+
+    public function getEsedekesseg3Str() {
+        if ($this->getEsedekesseg3()) {
+            return $this->getEsedekesseg3()->format(store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setEsedekesseg3($adat = '') {
+        if (is_a($adat,'DateTime') || is_a($adat,'DateTimeImmutable')) {
+            $this->esedekesseg3 = $adat;
+        }
+        else {
+            if ($adat == '') {
+                $adat = date(store::$DateFormat);
+            }
+            $this->esedekesseg3 = new \DateTime(store::convDate($adat));
+        }
+    }
+
+    public function getFizetendo3() {
+        return $this->fizetendo3;
+    }
+
+    public function setFizetendo3($val) {
+        $this->fizetendo3 = $val;
     }
 
 }
