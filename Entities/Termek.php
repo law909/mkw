@@ -326,6 +326,19 @@ class Termek {
         return $k;
     }
 
+    public function getFoglaltMennyiseg($kivevebiz) {
+        if (is_a($kivevebiz, 'Bizonylatfej')) {
+            $kivevebiz = $kivevebiz->getId();
+        }
+        $k = 0;
+        foreach($this->bizonylattetelek as $bt) {
+            if ($bt->getFoglal() && !$bt->getRontott() && ($kivevebiz != $bt->getBizonylatfejId())) {
+                $k += ($bt->getMennyiseg() * $bt->getIrany());
+            }
+        }
+        return -1 * $k;
+    }
+
     public function toTermekLista($valtozat = null, $ujtermekid = null, $top10min = null) {
         $x = array();
         $x['ujtermek'] = $this->getUjTermek($ujtermekid);

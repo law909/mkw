@@ -345,6 +345,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function clearBizonylattetelek()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearBizonylattetelek', array());
+
+        return parent::clearBizonylattetelek();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getIrany()
     {
 
@@ -505,6 +516,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMozgat', array());
 
         return parent::getMozgat();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFoglal()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFoglal', array());
+
+        return parent::getFoglal();
     }
 
     /**
@@ -2771,6 +2793,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizetendo3', array($val));
 
         return parent::setFizetendo3($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function duplicate($entityB)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'duplicate', array($entityB));
+
+        return parent::duplicate($entityB);
     }
 
 }

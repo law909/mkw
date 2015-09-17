@@ -438,6 +438,7 @@ class Bizonylatfej {
         $this->bruttohuf = 0;
         foreach ($this->bizonylattetelek as $bt) {
             $bt->setMozgat();
+            $bt->setFoglal();
             $this->netto += $bt->getNetto();
             $this->afa += $bt->getAfaertek();
             //$this->brutto += $bt->getBrutto();
@@ -708,6 +709,10 @@ class Bizonylatfej {
         return false;
     }
 
+    public function clearBizonylattetelek() {
+        $this->bizonylattetelek->clear();
+    }
+
     public function getIrany() {
         return $this->irany;
     }
@@ -799,6 +804,14 @@ class Bizonylatfej {
         return false;
     }
 
+    public function getFoglal() {
+        $bt = $this->getBizonylattipus();
+        if ($bt) {
+            return $bt->getFoglal();
+        }
+        return false;
+    }
+
     public function getPenztmozgat() {
         return $this->penztmozgat;
     }
@@ -878,9 +891,14 @@ class Bizonylatfej {
     }
 
     public function setKelt($adat = '') {
-        if ($adat == '')
-            $adat = date(store::$DateFormat);
-        $this->kelt = new \DateTime(store::convDate($adat));
+        if (is_a($adat, 'DateTime')) {
+            $this->kelt = $adat;
+        }
+        else {
+            if ($adat == '')
+                $adat = date(store::$DateFormat);
+            $this->kelt = new \DateTime(store::convDate($adat));
+        }
     }
 
     public function getTeljesites() {
@@ -898,9 +916,14 @@ class Bizonylatfej {
     }
 
     public function setTeljesites($adat = '') {
-        if ($adat == '')
-            $adat = date(store::$DateFormat);
-        $this->teljesites = new \DateTime(store::convDate($adat));
+        if (is_a($adat, 'DateTime')) {
+            $this->teljesites = $adat;
+        }
+        else {
+            if ($adat == '')
+                $adat = date(store::$DateFormat);
+            $this->teljesites = new \DateTime(store::convDate($adat));
+        }
     }
 
     public function getEsedekesseg() {
@@ -918,9 +941,14 @@ class Bizonylatfej {
     }
 
     public function setEsedekesseg($adat = '') {
-        if ($adat == '')
-            $adat = date(store::$DateFormat);
-        $this->esedekesseg = new \DateTime(store::convDate($adat));
+        if (is_a($adat, 'DateTime')) {
+            $this->esedekesseg = $adat;
+        }
+        else {
+            if ($adat == '')
+                $adat = date(store::$DateFormat);
+            $this->esedekesseg = new \DateTime(store::convDate($adat));
+        }
     }
 
     public function getHatarido() {
@@ -938,9 +966,14 @@ class Bizonylatfej {
     }
 
     public function setHatarido($adat = '') {
-        if ($adat == '')
-            $adat = date(store::$DateFormat);
-        $this->hatarido = new \DateTime(store::convDate($adat));
+        if (is_a($adat, 'DateTime')) {
+            $this->hatarido = $adat;
+        }
+        else {
+            if ($adat == '')
+                $adat = date(store::$DateFormat);
+            $this->hatarido = new \DateTime(store::convDate($adat));
+        }
     }
 
     public function getFizmod() {
@@ -1852,10 +1885,9 @@ class Bizonylatfej {
             $this->esedekesseg1 = $adat;
         }
         else {
-            if ($adat == '') {
-                $adat = date(store::$DateFormat);
+            if ($adat != '') {
+                $this->esedekesseg1 = new \DateTime(store::convDate($adat));
             }
-            $this->esedekesseg1 = new \DateTime(store::convDate($adat));
         }
     }
 
@@ -1883,10 +1915,9 @@ class Bizonylatfej {
             $this->esedekesseg2 = $adat;
         }
         else {
-            if ($adat == '') {
-                $adat = date(store::$DateFormat);
+            if ($adat != '') {
+                $this->esedekesseg2 = new \DateTime(store::convDate($adat));
             }
-            $this->esedekesseg2 = new \DateTime(store::convDate($adat));
         }
     }
 
@@ -1914,10 +1945,9 @@ class Bizonylatfej {
             $this->esedekesseg3 = $adat;
         }
         else {
-            if ($adat == '') {
-                $adat = date(store::$DateFormat);
+            if ($adat != '') {
+                $this->esedekesseg3 = new \DateTime(store::convDate($adat));
             }
-            $this->esedekesseg3 = new \DateTime(store::convDate($adat));
         }
     }
 
@@ -1929,4 +1959,20 @@ class Bizonylatfej {
         $this->fizetendo3 = $val;
     }
 
+    public function duplicate($entityB){
+        $methods = get_class_methods($this);
+        foreach($methods as $v) {
+            if (strpos($v, 'set') > -1) {
+                $get = str_replace('set', 'get', $v);
+                if (in_array($get, $methods)) {
+                    $this->$v($entityB->$get());
+                }
+            }
+        }
+        /**
+        foreach($entityB->getBizonylattetelek() as $bt) {
+            $this->addBizonylattetel($bt);
+        }
+         */
+    }
 }

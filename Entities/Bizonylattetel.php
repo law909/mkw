@@ -40,6 +40,9 @@ class Bizonylattetel {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $mozgat;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $foglal;
+
     /** @ORM\Column(type="integer") */
     private $irany;
 
@@ -309,6 +312,21 @@ class Bizonylattetel {
         }
     }
 
+    public function getFoglal() {
+        return $this->foglal;
+    }
+
+    public function setFoglal() {
+        $bf = $this->bizonylatfej;
+        $t = $this->termek;
+        if ($bf && $t) {
+            $this->foglal = $bf->getFoglal() && $t->getMozgat();
+        }
+        else {
+            $this->foglal = false;
+        }
+    }
+
     public function getArvaltoztat() {
         return $this->arvaltoztat;
     }
@@ -378,6 +396,7 @@ class Bizonylattetel {
                 $this->setAfa($afa);
             }
             $this->setMozgat();
+            $this->setFoglal();
 //			$val->addBizonylattetelek($this);
         }
     }
@@ -397,8 +416,8 @@ class Bizonylattetel {
             $this->osszehajthato = false;
             $this->suly = 0;
             $this->szelesseg = 0;
-//			$this->
             $this->setMozgat();
+            $this->setFoglal();
 //			$val->removeBizonylattetelek($this);
         }
     }
@@ -742,9 +761,14 @@ class Bizonylattetel {
     }
 
     public function setHatarido($adat) {
-        if ($adat == '')
-            $adat = date(store::$DateFormat);
-        $this->hatarido = new \DateTime(store::convDate($adat));
+        if (is_a($adat, 'DateTime') || is_a($adat, 'DateTimeImmutable')) {
+            $this->hatarido = $adat;
+        }
+        else {
+            if ($adat == '')
+                $adat = date(store::$DateFormat);
+            $this->hatarido = new \DateTime(store::convDate($adat));
+        }
     }
 
     public function getLastmod() {
@@ -826,5 +850,18 @@ class Bizonylattetel {
 
     public function setLocale($locale) {
         $this->locale = $locale;
+    }
+
+    public function duplicate($entityB){
+        $kivetel = array('setBizonylatfej');
+        $methods = get_class_methods($this);
+        foreach($methods as $v) {
+            if ((strpos($v, 'set') > -1) && (!in_array($v, $kivetel))) {
+                $get = str_replace('set', 'get', $v);
+                if (in_array($get, $methods)) {
+                    $this->$v($entityB->$get());
+                }
+            }
+        }
     }
 }

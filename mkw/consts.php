@@ -103,6 +103,8 @@ class consts {
     const SzallitasiKtgTermek = 'szallitasiktgtermek';
 
     const BizonylatStatuszFuggoben = 'bizonylatstatuszfuggoben';
+    const BizonylatStatuszTeljesitheto = 'bizonylatstatuszteljesitheto';
+    const BizonylatStatuszBackorder = 'bizonylatstatuszbackorder';
 
     const RLBUtolsoSzamlaszam = 'rlbutolsoszamlaszam';
 

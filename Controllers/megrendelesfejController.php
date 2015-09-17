@@ -199,4 +199,96 @@ class megrendelesfejController extends bizonylatfejController {
             }
         }
     }
+
+    public function backOrder() {
+        $id = $this->params->getStringRequestParam('id');
+        $regibiz = $this->getRepo()->find($id);
+        if ($regibiz) {
+            $teljesitheto = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\Store::getParameter(\mkw\consts::BizonylatStatuszTeljesitheto));
+            $backorder = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\Store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
+            $this->getEm()->beginTransaction();
+            try {
+                $ujdb = 0;
+                $regidb = 0;
+                //$deepcopy = new \DeepCopy\DeepCopy();
+                //$deepcopy->addFilter(new \DeepCopy\Filter\Doctrine\DoctrineCollectionFilter(), new \DeepCopy\Matcher\PropertyTypeMatcher('Doctrine\Common\Collections\Collection'));
+                //$ujbiz = $deepcopy->copy($regibiz);
+                $ujbiz = new \Entities\Bizonylatfej();
+                $ujbiz->duplicate($regibiz);
+                $ujbiz->clearId();
+                $ujbiz->clearCreated();
+                $ujbiz->clearLastmod();
+                $ujbiz->generateId();
+                $ujbiz->setKelt();
+                $ujbiz->setBizonylatstatusz($backorder);
+                foreach($regibiz->getBizonylattetelek() as $regitetel) {
+                    $t = $regitetel->getTermek();
+                    if ($t && $t->getMozgat()) {
+                        $v = $regitetel->getTermekvaltozat();
+                        $keszlet = 0;
+                        if ($v) {
+                            $keszlet = $v->getKeszlet() - $v->getFoglaltMennyiseg($regibiz->getId());
+                        }
+                        else {
+                            $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg($regibiz->getId());
+                        }
+                    }
+                    if ($keszlet < 0) {
+                        $keszlet = 0;
+                    }
+                    if ($keszlet < $regitetel->getMennyiseg()) {
+                        $ujdb++;
+                        $ujtetel = new \Entities\Bizonylattetel();
+                        $ujtetel->duplicate($regitetel);
+                        $ujtetel->clearCreated();
+                        $ujtetel->clearLastmod();
+                        /**
+                        foreach($regitetel->getTranslations() as $trans) {
+                            $ujtrans = clone $trans;
+                            $ujtetel->addTranslation($ujtrans);
+                            $this->getEm()->persist($ujtrans);
+                        }
+                         */
+                        $ujtetel->setMennyiseg($regitetel->getMennyiseg() - $keszlet);
+                        $ujtetel->calc();
+                        $ujbiz->addBizonylattetel($ujtetel);
+                        $this->getEm()->persist($ujtetel);
+                        if ($keszlet <= 0) {
+                            $regibiz->removeBizonylattetel($regitetel);
+                            $this->getEm()->remove($regitetel);
+                        }
+                        else {
+                            $regidb++;
+                            $regitetel->setMennyiseg($keszlet);
+                            $regitetel->calc();
+                            $this->getEm()->persist($regitetel);
+                        }
+                    }
+                }
+                if ($regidb == 0 || $ujdb == 0) {
+                    $this->getEm()->flush();
+                    $this->getEm()->rollback();
+                    $regibiz->setBizonylatstatusz($teljesitheto);
+                    $this->getEm()->persist($regibiz);
+                    $this->getEm()->flush();
+                    echo json_encode(array('refresh' => 0));
+                }
+                else {
+                    $regibiz->setBizonylatstatusz($teljesitheto);
+                    $this->getEm()->persist($regibiz);
+                    $this->getEm()->persist($ujbiz);
+                    $this->getEm()->flush();
+                    $this->getEm()->commit();
+                    echo json_encode(array('refresh' => 1));
+                }
+            }
+            catch (\Exception $e) {
+                $this->getEm()->rollback();
+                throw $e;
+            }
+        }
+        else {
+            echo json_encode(array('refresh' => 0));
+        }
+    }
 }

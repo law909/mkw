@@ -489,6 +489,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                 $tetel->setTermekvaltozat($termekvaltozat);
                             }
                             $tetel->setMozgat();
+                            $tetel->setFoglal();
 
                             if (!$quick) {
                                 $tetel->setVtsz($this->params->getIntRequestParam('tetelvtsz_' . $tetelid));
@@ -545,7 +546,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                             $tetel = $this->getEm()->getRepository('Entities\Bizonylattetel')->find($tetelid);
                             if ($tetel) {
                                 $tetel->setPersistentData();
-                                $tetel->setMozgat();
                                 if ($termek) {
                                     $tetel->setTermek($termek);
                                 }
@@ -553,6 +553,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                     $tetel->setTermekvaltozat($termekvaltozat);
                                 }
                                 $tetel->setMozgat();
+                                $tetel->setFoglal();
 
                                 if (!$quick) {
                                     $tetel->setVtsz($this->params->getIntRequestParam('tetelvtsz_' . $tetelid));

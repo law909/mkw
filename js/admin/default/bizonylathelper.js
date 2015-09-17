@@ -556,7 +556,7 @@ var bizonylathelper = function($) {
                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
                     .autocomplete( "instance" )._renderItem = termekAutocompleteRenderer;
 
-                $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton').button();
+                $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder').button();
 
                 $('.js-inheritbizonylat').each(function() {
                     var $this = $(this);
@@ -655,7 +655,7 @@ var bizonylathelper = function($) {
                 tablebody: {
                     url: '/admin/' + bizonylattipus + 'fej/getlistbody',
                     onStyle: function() {
-                        $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat, .js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno').button();
+                        $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat, .js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno, .js-backorder').button();
                     },
                     onDoEditLink: function() {
                         $('.js-inheritbizonylat').each(function() {
@@ -807,6 +807,45 @@ var bizonylathelper = function($) {
                     },
                     success:function() {
                         $('.mattable-tablerefresh').click();
+                    }
+                });
+            })
+            .on('click', '.js-backorder', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/' + bizonylattipus + 'fej/backorder',
+                    type: 'POST',
+                    data: {
+                        id: $(this).data('egyedid')
+                    },
+                    success:function(data) {
+                        var d = JSON.parse(data);
+                        if (d.refresh) {
+                            dialogcenter.html('A backorder rendelés elkészült.').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'OK': function() {
+                                        $('.mattable-tablerefresh').click();
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            dialogcenter.html('A rendelés teljesíthető.').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'OK': function() {
+                                        $('.mattable-tablerefresh').click();
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
                     }
                 });
             });

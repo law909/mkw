@@ -26,6 +26,8 @@ class Bizonylattipus {
 	/** @ORM\Column(type="boolean",nullable=false) */
 	private $mozgat=true;
 	/** @ORM\Column(type="boolean",nullable=false) */
+	private $foglal=false;
+	/** @ORM\Column(type="boolean",nullable=false) */
 	private $penztmozgat=true;
 	/** @ORM\Column(type="boolean",nullable=false) */
 	private $editprinted=false;
@@ -59,6 +61,8 @@ class Bizonylattipus {
 	private $showhaszonszazalek=false;
     /** @ORM\Column(type="boolean",nullable=false) */
 	private $showstorno=false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+	private $showbackorder=false;
 	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylattipus",cascade={"persist"}) */
 	private $bizonylatfejek;
     /** @ORM\Column(type="string",length=200,nullable=true) */
@@ -84,6 +88,7 @@ class Bizonylattipus {
         $view->setVar('showfuvarlevelszam', $this->getShowfuvarlevelszam());
         $view->setVar('showhaszonszazalek', $this->getShowhaszonszazalek());
         $view->setVar('showstorno', $this->getShowstorno());
+        $view->setVar('showbackorder', $this->getShowbackorder());
     }
 
 	public function getId() {
@@ -288,6 +293,22 @@ class Bizonylattipus {
 
     public function setShowstorno($adat) {
         $this->showstorno = $adat;
+    }
+
+    public function getShowbackorder() {
+        return $this->showbackorder;
+    }
+
+    public function setShowbackorder($adat) {
+        $this->showbackorder = $adat;
+    }
+
+    public function getFoglal() {
+        return $this->foglal;
+    }
+
+    public function setFoglal($adat) {
+        $this->foglal = $adat;
     }
 
 }

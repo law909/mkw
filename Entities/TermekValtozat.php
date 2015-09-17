@@ -109,6 +109,19 @@ class TermekValtozat {
         return $k;
     }
 
+    public function getFoglaltMennyiseg($kivevebiz) {
+        if (is_a($kivevebiz, 'Bizonylatfej')) {
+            $kivevebiz = $kivevebiz->getId();
+        }
+        $k = 0;
+        foreach($this->bizonylattetelek as $bt) {
+            if ($bt->getFoglal() && ($kivevebiz != $bt->getBizonylatfejId())) {
+                $k += ($bt->getMennyiseg() * $bt->getIrany());
+            }
+        }
+        return -1 * $k;
+    }
+
 	public function getId() {
 		return $this->id;
 	}

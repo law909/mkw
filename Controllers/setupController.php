@@ -207,6 +207,10 @@ class setupController extends \mkwhelpers\Controller {
         $bsf = new bizonylatstatuszController($this->params);
         $p = $repo->find(\mkw\consts::BizonylatStatuszFuggoben);
         $view->setVar('bizonylatstatuszfuggobenlist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::BizonylatStatuszTeljesitheto);
+        $view->setVar('bizonylatstatuszteljesithetolist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::BizonylatStatuszBackorder);
+        $view->setVar('bizonylatstatuszbackorderlist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::Esedekessegalap);
         $view->setVar(\mkw\consts::Esedekessegalap, ($p ? $p->getErtek() : '1'));
@@ -478,6 +482,20 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::BizonylatStatuszFuggoben, '');
+        }
+        $bsf = store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatuszteljesitheto', 0));
+        if ($bsf) {
+            $this->setObj(\mkw\consts::BizonylatStatuszTeljesitheto, $bsf->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::BizonylatStatuszTeljesitheto, '');
+        }
+        $bsf = store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatuszbackorder', 0));
+        if ($bsf) {
+            $this->setObj(\mkw\consts::BizonylatStatuszBackorder, $bsf->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::BizonylatStatuszBackorder, '');
         }
 
         $this->setObj(\mkw\consts::Esedekessegalap, $this->params->getIntRequestParam('esedekessegalap', 1));

@@ -64,10 +64,10 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nyomtatni', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'azonosito', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'kezdosorszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'peldanyszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'penztmozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'editprinted', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showteljesites', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showesedekesseg', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhatarido', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showvalutanem', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbizonylatstatuszeditor', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitobutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkivetbutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkeziszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showuzenet', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitasicim', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showerbizonylatszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showfuvarlevelszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhaszonszazalek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showstorno', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'tplname');
+            return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nyomtatni', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'azonosito', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'kezdosorszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'peldanyszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'penztmozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'editprinted', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showteljesites', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showesedekesseg', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhatarido', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showvalutanem', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbizonylatstatuszeditor', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitobutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkivetbutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkeziszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showuzenet', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitasicim', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showerbizonylatszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showfuvarlevelszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhaszonszazalek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showstorno', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbackorder', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'tplname');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nyomtatni', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'azonosito', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'kezdosorszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'peldanyszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'penztmozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'editprinted', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showteljesites', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showesedekesseg', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhatarido', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showvalutanem', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbizonylatstatuszeditor', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitobutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkivetbutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkeziszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showuzenet', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitasicim', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showerbizonylatszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showfuvarlevelszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhaszonszazalek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showstorno', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'tplname');
+        return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nyomtatni', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'azonosito', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'kezdosorszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'peldanyszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'penztmozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'editprinted', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showteljesites', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showesedekesseg', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhatarido', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showvalutanem', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbizonylatstatuszeditor', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitobutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkivetbutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkeziszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showuzenet', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitasicim', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showerbizonylatszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showfuvarlevelszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhaszonszazalek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showstorno', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbackorder', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'tplname');
     }
 
     /**
@@ -747,6 +747,50 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowstorno', array($adat));
 
         return parent::setShowstorno($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getShowbackorder()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowbackorder', array());
+
+        return parent::getShowbackorder();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setShowbackorder($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowbackorder', array($adat));
+
+        return parent::setShowbackorder($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFoglal()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFoglal', array());
+
+        return parent::getFoglal();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFoglal($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFoglal', array($adat));
+
+        return parent::setFoglal($adat);
     }
 
 }

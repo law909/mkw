@@ -198,6 +198,17 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function getFoglaltMennyiseg($kivevebiz)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFoglaltMennyiseg', array($kivevebiz));
+
+        return parent::getFoglaltMennyiseg($kivevebiz);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {

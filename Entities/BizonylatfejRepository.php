@@ -166,6 +166,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 						$tetel->setTermek($termek);
 					}
 					$tetel->setMozgat();
+                    $tetel->setFoglal();
 					$tetel->setMennyiseg(1);
 					$tetel->setBruttoegysar($ktg);
 					$tetel->setBruttoegysarhuf($ktg);

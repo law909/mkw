@@ -1297,6 +1297,7 @@ class importController extends \mkwhelpers\Controller {
                         $tetel->setArvaltoztat(0);
                         $tetel->setTermek($termek[0]);
                         $tetel->setMozgat();
+                        $tetel->setFoglal();
                         $tetel->setMennyiseg($rtetel['mennyiseg']);
                         $tetel->setBruttoegysar($rtetel['egysar']);
                         $tetel->setBruttoegysarhuf($rtetel['egysar']);

@@ -231,6 +231,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getFoglaltMennyiseg($kivevebiz)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFoglaltMennyiseg', array($kivevebiz));
+
+        return parent::getFoglaltMennyiseg($kivevebiz);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function toTermekLista($valtozat = NULL, $ujtermekid = NULL, $top10min = NULL)
     {
 
