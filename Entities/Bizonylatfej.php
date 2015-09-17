@@ -369,6 +369,13 @@ class Bizonylatfej {
      */
     private $bizonylatstatusz;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $bizonylatstatusznev;
+
+    /** @ORM\Column(type="string",length=255, nullable=true) */
+    private $bizonylatstatuszcsoport;
+
+
     /**
      * @ORM\ManyToOne(targetEntity="Bizonylatfej",inversedBy="szulobizonylatfejek")
      * @ORM\JoinColumn(name="parbizonylatfej_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -1607,11 +1614,26 @@ class Bizonylatfej {
     }
 
     public function getBizonylatstatusznev() {
-        $fm = $this->getBizonylatstatusz();
-        if ($fm) {
-            return $fm->getNev();
+        if (!$this->bizonylatstatusznev) {
+            $bs = $this->getBizonylatstatusz();
+            if ($bs) {
+                return $bs->getNev();
+            }
+            return '';
         }
-        return '';
+        return $this->bizonylatstatusznev;
+    }
+
+    public function setBizonylatstatusznev($val) {
+        $this->bizonylatstatusznev = $val;
+    }
+
+    public function getBizonylatstatuszcsoport() {
+        return $this->bizonylatstatuszcsoport;
+    }
+
+    public function setBizonylatstatuszcsoport($val) {
+        $this->bizonylatstatuszcsoport = $val;
     }
 
     public function getBizonylatstatuszId() {
@@ -1629,6 +1651,7 @@ class Bizonylatfej {
         if ($this->bizonylatstatusz !== $val) {
             $this->bizonylatstatusz = $val;
             $this->bizonylatstatusznev = $val->getNev();
+            $this->bizonylatstatuszcsoport = $val->getCsoport();
 //			$val->addBizonylat($this);
         }
     }
@@ -1638,6 +1661,7 @@ class Bizonylatfej {
 //			$val=$this->bizonylatstatusz;
             $this->bizonylatstatusz = null;
             $this->bizonylatstatusznev = '';
+            $this->bizonylatstatuszcsoport = '';
 //			$val->removeBizonylat($this);
         }
     }
