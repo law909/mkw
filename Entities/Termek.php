@@ -327,16 +327,19 @@ class Termek {
     }
 
     public function getFoglaltMennyiseg($kivevebiz) {
-        if (is_a($kivevebiz, 'Bizonylatfej')) {
-            $kivevebiz = $kivevebiz->getId();
-        }
-        $k = 0;
-        foreach($this->bizonylattetelek as $bt) {
-            if ($bt->getFoglal() && !$bt->getRontott() && ($kivevebiz != $bt->getBizonylatfejId())) {
-                $k += ($bt->getMennyiseg() * $bt->getIrany());
+        if (\mkw\Store::isFoglalas()) {
+            if (is_a($kivevebiz, 'Bizonylatfej')) {
+                $kivevebiz = $kivevebiz->getId();
             }
+            $k = 0;
+            foreach($this->bizonylattetelek as $bt) {
+                if ($bt->getFoglal() && !$bt->getRontott() && ($kivevebiz != $bt->getBizonylatfejId())) {
+                    $k += ($bt->getMennyiseg() * $bt->getIrany());
+                }
+            }
+            return -1 * $k;
         }
-        return -1 * $k;
+        return 0;
     }
 
     public function toTermekLista($valtozat = null, $ujtermekid = null, $top10min = null) {

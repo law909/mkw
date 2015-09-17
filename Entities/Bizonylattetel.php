@@ -318,15 +318,17 @@ class Bizonylattetel {
 
     public function setFoglal() {
         $this->foglal = false;
-        $bf = $this->bizonylatfej;
-        $t = $this->termek;
-        if ($bf && $t) {
-            $bs = $bf->getBizonylatstatusz();
-            if ($bs) {
-                $this->foglal = $bf->getFoglal() && $t->getMozgat() && $bs->getFoglal();
-            }
-            else {
-                $this->foglal = $bf->getFoglal() && $t->getMozgat();
+        if (\mkw\Store::isFoglalas()) {
+            $bf = $this->bizonylatfej;
+            $t = $this->termek;
+            if ($bf && $t) {
+                $bs = $bf->getBizonylatstatusz();
+                if ($bs) {
+                    $this->foglal = $bf->getFoglal() && $t->getMozgat() && $bs->getFoglal();
+                }
+                else {
+                    $this->foglal = $bf->getFoglal() && $t->getMozgat();
+                }
             }
         }
     }

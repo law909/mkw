@@ -6,7 +6,9 @@
     <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_egyed.nev}</a>
     <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
 </td>
+{if ($setup.foglalas)}
 <td>{if ($_egyed.foglal)}foglal{else}nem foglal{/if}</td>
+{/if}
 <td class="cell">{$_egyed.csoport}</td>
 <td class="cell">{$_egyed.sorrend}</td>
 </tr>

@@ -672,6 +672,10 @@ class Store {
         return self::getSetupValue('osztottfizmod');
     }
 
+    public static function isFoglalas() {
+        return self::getSetupValue('foglalas');
+    }
+
     public static function isFoxpostSzallitasimod($szm) {
         $i = $szm;
         if (is_a($szm, 'Entities\FoxpostTerminal')) {

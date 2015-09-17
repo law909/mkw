@@ -37,7 +37,9 @@
 	<tr>
 	<th><input id="maincheckbox" type="checkbox"></th>
 	<th>{t('Név')}</th>
+    {if ($setup.foglalas)}
 	<th>{t('Foglal')}</th>
+    {/if}
 	<th>{t('Csoport')}</th>
 	<th>{t('Sorrend')}</th>
 	</tr>

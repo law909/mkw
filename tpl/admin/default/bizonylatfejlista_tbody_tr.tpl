@@ -18,7 +18,7 @@
                 <a class="js-printelolegbekero" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('Előleg bekérő')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
                 {/if}
                 {if ($showbackorder)}
-                <a class="js-backorder" href="#" data-egyedid="{$_egyed.id}" title="{t('Backorder')}">B</a>
+                <a class="js-backorder" href="#" data-egyedid="{$_egyed.id}" title="{t('Backorder')}"><span class="ui-icon ui-icon-transferthick-e-w"></span></a>
                 {/if}
                 {if ($showszamlabutton)}
                 <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="szamlafej" data-oper="inherit" title="{t('Számla')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>

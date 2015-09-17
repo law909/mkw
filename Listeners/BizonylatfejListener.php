@@ -20,7 +20,9 @@ class BizonylatfejListener {
             if ($entity instanceof \Entities\Bizonylatfej) {
                 foreach($entity->getBizonylattetelek() as $tetel) {
                     $tetel->setMozgat();
-                    $tetel->setFoglal();
+                    if (\mkw\Store::isFoglalas()) {
+                        $tetel->setFoglal();
+                    }
                     $md = $em->getClassMetadata('Entities\Bizonylattetel');
                     $uow->recomputeSingleEntityChangeSet($md, $tetel);
                 }
