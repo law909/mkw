@@ -109,14 +109,18 @@ class TermekValtozat {
         return $k;
     }
 
-    public function getFoglaltMennyiseg($kivevebiz) {
+    public function getFoglaltMennyiseg($kivevebiz = null) {
         if (\mkw\Store::isFoglalas()) {
             if (is_a($kivevebiz, 'Bizonylatfej')) {
                 $kivevebiz = $kivevebiz->getId();
             }
             $k = 0;
             foreach($this->bizonylattetelek as $bt) {
-                if ($bt->getFoglal() && ($kivevebiz != $bt->getBizonylatfejId())) {
+                $nemkivetel = true;
+                if ($kivevebiz) {
+                    $nemkivetel = $bt->getBizonylatfejId() != $kivevebiz;
+                }
+                if ($bt->getFoglal() && ($nemkivetel)) {
                     $k += ($bt->getMennyiseg() * $bt->getIrany());
                 }
             }

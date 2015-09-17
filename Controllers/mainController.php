@@ -282,14 +282,14 @@ class mainController extends \mkwhelpers\Controller {
                         $vtt[] = array(
                             'id' => $valt->getId(),
                             'caption' => $valt->getErtek2(),
-                            'keszlet' => $valt->getKeszlet()
+                            'keszlet' => $valt->getKeszlet() - $valt->getFoglaltMennyiseg()
                         );
                     }
                     if (($valt->getAdatTipus2Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) && ($valt->getErtek2() == $szin)) {
                         $vtt[] = array(
                             'id' => $valt->getId(),
                             'caption' => $valt->getErtek1(),
-                            'keszlet' => $valt->getKeszlet()
+                            'keszlet' => $valt->getKeszlet() - $valt->getFoglaltMennyiseg()
                         );
                     }
                 }
