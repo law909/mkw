@@ -13,6 +13,10 @@
 				<td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}"></td>
 			</tr>
 			<tr>
+				<td><label for="CsoportEdit">{t('Csoport')}:</label></td>
+				<td><input id="CsoportEdit" name="csoport" type="text" size="80" maxlength="255" value="{$egyed.csoport}"></td>
+			</tr>
+			<tr>
 				<td><label for="SorrendEdit">{t('Sorrend')}:</label></td>
 				<td><input id="SorrendEdit" name="sorrend" type="text" size="80" maxlength="255" value="{$egyed.sorrend}"></td>
 			</tr>

@@ -24,6 +24,11 @@ class Bizonylatstatusz {
     private $sorrend;
 
     /**
+     * @ORM\Column(type="string",length=255, nullable=true)
+     */
+    private $csoport;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Emailtemplate",inversedBy="bizonylatstatuszok")
      * @ORM\JoinColumn(name="emailtemplate_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
@@ -84,4 +89,13 @@ class Bizonylatstatusz {
     public function setSorrend($s) {
         $this->sorrend = $s;
     }
+
+    public function getCsoport() {
+        return $this->csoport;
+    }
+
+    public function setCsoport($adat) {
+        $this->csoport = $adat;
+    }
+
 }

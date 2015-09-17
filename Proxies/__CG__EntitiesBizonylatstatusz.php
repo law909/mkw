@@ -64,10 +64,10 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek');
+            return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek');
+        return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek');
     }
 
     /**
@@ -285,6 +285,28 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', array($s));
 
         return parent::setSorrend($s);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCsoport()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCsoport', array());
+
+        return parent::getCsoport();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setCsoport($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCsoport', array($adat));
+
+        return parent::setCsoport($adat);
     }
 
 }

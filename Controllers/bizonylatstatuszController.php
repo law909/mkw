@@ -24,6 +24,7 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
         $x['id'] = $t->getId();
         $x['nev'] = $t->getNev();
         $x['sorrend'] = $t->getSorrend();
+        $x['csoport'] = $t->getCsoport();
         $x['emailtemplatenev'] = $t->getEmailtemplateNev();
         return $x;
     }
@@ -31,6 +32,7 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
+        $obj->setCsoport($this->params->getStringRequestParam('csoport'));
         $ck = store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('emailtemplate'));
         if ($ck) {
             $obj->setEmailtemplate($ck);
@@ -91,12 +93,24 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
     }
 
    	public function getSelectList($selid = null) {
-		$rec=$this->getRepo()->getAll(array(),array('sorrend'=>'ASC', 'nev' => 'ASC'));
-		$res=array();
+		$rec = $this->getRepo()->getAll(array(),array('sorrend'=>'ASC', 'nev' => 'ASC'));
+		$res = array();
 		foreach($rec as $sor) {
-			$res[]=array('id'=>$sor->getId(),'caption'=>$sor->getNev(),'selected'=>($sor->getId()==$selid));
+			$res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
 		}
 		return $res;
 	}
+
+    public function getCsoportSelectList($sel = null) {
+		$rec = $this->getRepo()->getExistingCsoportok($sel);
+        $res = array();
+        foreach ($rec as $sor) {
+            $res[] = array(
+                'id' => $sor['csoport'],
+                'caption' => $sor['csoport'],
+                'selected' => ($sor['csoport'] == $sel));
+        }
+        return $res;
+    }
 
 }

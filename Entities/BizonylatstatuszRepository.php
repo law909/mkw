@@ -39,4 +39,11 @@ class BizonylatstatuszRepository extends \mkwhelpers\Repository {
         return $q->getSingleScalarResult();
     }
 
+    public function getExistingCsoportok() {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('csoport', 'csoport');
+        $q = $this->_em->createNativeQuery('SELECT DISTINCT csoport FROM bizonylatstatusz ORDER BY csoport', $rsm);
+        return $q->getScalarResult();
+    }
+
 }
