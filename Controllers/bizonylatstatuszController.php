@@ -25,6 +25,7 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
         $x['nev'] = $t->getNev();
         $x['sorrend'] = $t->getSorrend();
         $x['csoport'] = $t->getCsoport();
+        $x['foglal'] = $t->getFoglal();
         $x['emailtemplatenev'] = $t->getEmailtemplateNev();
         return $x;
     }
@@ -33,6 +34,7 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setCsoport($this->params->getStringRequestParam('csoport'));
+        $obj->setFoglal($this->params->getBoolRequestParam('foglal'));
         $ck = store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('emailtemplate'));
         if ($ck) {
             $obj->setEmailtemplate($ck);

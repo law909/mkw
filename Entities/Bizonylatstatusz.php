@@ -28,6 +28,9 @@ class Bizonylatstatusz {
      */
     private $csoport;
 
+    /** @ORM\Column(type="boolean") */
+    private $foglal;
+
     /**
      * @ORM\ManyToOne(targetEntity="Emailtemplate",inversedBy="bizonylatstatuszok")
      * @ORM\JoinColumn(name="emailtemplate_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -96,6 +99,14 @@ class Bizonylatstatusz {
 
     public function setCsoport($adat) {
         $this->csoport = $adat;
+    }
+
+    public function getFoglal() {
+        return $this->foglal;
+    }
+
+    public function setFoglal($adat) {
+        $this->foglal = $adat;
     }
 
 }

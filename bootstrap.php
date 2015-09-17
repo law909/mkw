@@ -13,6 +13,9 @@ $classLoader->register();
 $classLoader = new \Doctrine\Common\ClassLoader('Proxies', __DIR__);
 $classLoader->register();
 
+$classLoader = new \Doctrine\Common\ClassLoader('Listeners');
+$classLoader->register();
+
 $classLoader=new \Doctrine\Common\ClassLoader('mkwhelpers');
 $classLoader->register();
 
@@ -82,7 +85,6 @@ $timestampableListener = new Gedmo\Timestampable\TimestampableListener;
 $timestampableListener->setAnnotationReader($cachedAnnotationReader);
 $evm->addEventSubscriber($timestampableListener);
 
-
 if (Store::isMultilang()) {
     $translatableListener=new Gedmo\Translatable\TranslatableListener();
     $translatableListener->setAnnotationReader($cachedAnnotationReader);
@@ -92,6 +94,8 @@ if (Store::isMultilang()) {
     $evm->addEventSubscriber($translatableListener);
     Store::setTranslationListener($translatableListener);
 }
+
+$evm->addEventListener(array('onFlush'), new Listeners\BizonylatfejListener());
 
 $em = \Doctrine\ORM\EntityManager::create($connectionOptions, $config, $evm);
 

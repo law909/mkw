@@ -444,8 +444,6 @@ class Bizonylatfej {
         $this->afahuf = 0;
         $this->bruttohuf = 0;
         foreach ($this->bizonylattetelek as $bt) {
-            $bt->setMozgat();
-            $bt->setFoglal();
             $this->netto += $bt->getNetto();
             $this->afa += $bt->getAfaertek();
             //$this->brutto += $bt->getBrutto();
@@ -1645,14 +1643,15 @@ class Bizonylatfej {
     }
 
     public function setBizonylatstatusz($val) {
-        if (!($val instanceof \Entities\Bizonylatstatusz)) {
-            $val = \mkw\Store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($val);
-        }
-        if ($this->bizonylatstatusz !== $val) {
-            $this->bizonylatstatusz = $val;
-            $this->bizonylatstatusznev = $val->getNev();
-            $this->bizonylatstatuszcsoport = $val->getCsoport();
-//			$val->addBizonylat($this);
+        if ($val) {
+            if (!($val instanceof \Entities\Bizonylatstatusz)) {
+                $val = \mkw\Store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($val);
+            }
+            if ($this->bizonylatstatusz !== $val) {
+                $this->bizonylatstatusz = $val;
+                $this->bizonylatstatusznev = $val->getNev();
+                $this->bizonylatstatuszcsoport = $val->getCsoport();
+            }
         }
     }
 

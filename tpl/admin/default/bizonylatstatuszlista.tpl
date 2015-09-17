@@ -37,6 +37,7 @@
 	<tr>
 	<th><input id="maincheckbox" type="checkbox"></th>
 	<th>{t('Név')}</th>
+	<th>{t('Foglal')}</th>
 	<th>{t('Csoport')}</th>
 	<th>{t('Sorrend')}</th>
 	</tr>

@@ -2,6 +2,8 @@
 
 namespace Entities;
 
+use Doctrine\ORM\Query\ResultSetMapping;
+
 class BizonylatstatuszRepository extends \mkwhelpers\Repository {
 
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
