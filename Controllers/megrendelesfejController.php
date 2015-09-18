@@ -238,6 +238,9 @@ class megrendelesfejController extends bizonylatfejController {
                             $regidb++;
                         }
                     }
+                    else {
+                        $regidb++;
+                    }
                 }
                 if ($regidb == 0 || $ujdb == 0) {
                     $result = 0;
