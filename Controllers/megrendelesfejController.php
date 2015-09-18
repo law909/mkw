@@ -73,11 +73,16 @@ class megrendelesfejController extends bizonylatfejController {
     }
 
     public function doPrintelolegbekero() {
-        $o = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+        $o = $this->getRepo()->findForPrint($this->params->getStringRequestParam('id'));
         if ($o) {
             $biztip = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
             if ($biztip) {
-                $view = $this->createView('biz_elolegbekero.tpl');
+                if (\mkw\Store::getTheme() == 'superzone') {
+                    $view = $this->createView('biz_elolegbekero_eng.tpl');
+                }
+                else {
+                    $view = $this->createView('biz_elolegbekero.tpl');
+                }
                 $this->setVars($view);
                 $view->setVar('egyed', $o->toLista());
                 $view->setVar('afaosszesito',$this->getRepo()->getAFAOsszesito($o));
