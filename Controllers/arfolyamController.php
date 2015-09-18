@@ -64,12 +64,12 @@ class arfolyamController extends \mkwhelpers\JQGridController {
 	}
 
 	public function getarfolyam() {
-		$arf=$this->getRepo()->getActualArfolyam($this->params->getIntRequestParam('valutanem'),$this->params->getStringRequestParam('datum'));
-		if ($arf) {
+		$arf = $this->getRepo()->getActualArfolyam($this->params->getIntRequestParam('valutanem'),$this->params->getStringRequestParam('datum'));
+		if ($arf instanceof \Entities\Arfolyam) {
 			echo $arf->getArfolyam();
 		}
 		else {
-			echo '1';
+			echo $arf;
 		}
 	}
 }

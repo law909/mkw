@@ -107,6 +107,10 @@ img {
     white-space: nowrap;
 }
 
+.hufprice, input[readonly] {
+    color: #bbb;
+}
+
 .js-saveas, .js-saveandreopen {
     margin-left: 10px;
 }

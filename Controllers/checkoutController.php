@@ -377,6 +377,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 
                     $partner = Store::getLoggedInUser();
                     $nullasafa = $this->getRepo('Entities\Afa')->find(Store::getParameter(\mkw\consts::NullasAfa));
+                    $biztetelcontroller = new bizonylattetelController($this->params);
                     $valutanem = $partner->getValutanem();
                     $partner->setSzallnev($szallnev);
                     $partner->setSzallirszam($szallirszam);
@@ -398,11 +399,11 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $megrendfej->setTeljesites('');
                     $megrendfej->setEsedekesseg('');
                     $megrendfej->setHatarido('');
-                    $megrendfej->setArfolyam(1);
                     $megrendfej->setPartner($partner);
                     $megrendfej->setFizmod($partner->getFizmod());
                     $megrendfej->setSzallitasimod($partner->getSzallitasimod());
                     $megrendfej->setValutanem($valutanem);
+                    $megrendfej->setArfolyam($this->getEm()->getRepository('Entities\Arfolyam')->getActualArfolyam($valutanem, $megrendfej->getTeljesites()));
                     $raktarid = store::getParameter(\mkw\consts::Raktar);
                     $megrendfej->setRaktar($this->getRepo('Entities\Raktar')->find($raktarid));
                     if ($valutanem) {
@@ -427,14 +428,19 @@ class checkoutController extends \mkwhelpers\MattableController {
                                 $t->setAfa($nullasafa);
                             }
                             $t->setNettoegysar($kt->getNettoegysar());
-                            $t->setNettoegysarhuf($kt->getNettoegysar());
                         }
                         else {
                             $t->setNettoegysar($kt->getNettoegysar());
                             $t->setBruttoegysar($kt->getBruttoegysar());
-                            $t->setNettoegysarhuf($kt->getNettoegysar());
-                            $t->setBruttoegysarhuf($kt->getBruttoegysar());
                         }
+                        $arak = $biztetelcontroller->calcAr(
+                            $t->getAfaId(),
+                            $t->getArfolyam(),
+                            $t->getNettoegysar(),
+                            $t->getMennyiseg()
+                        );
+                        $t->setNettoegysarhuf($arak['nettoegysarhuf']);
+                        $t->setBruttoegysarhuf($arak['bruttoegysarhuf']);
                         $t->calc();
                         $lasttermeknevek[] = $t->getTermeknev();
                         $lasttermekids[] = $t->getTermekId();

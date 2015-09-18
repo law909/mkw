@@ -568,6 +568,7 @@ var bizonylathelper = function($) {
                 keltedit.datepicker('setDate', keltedit.attr('data-datum'));
                 keltedit.on('change', function(e) {
                     setDates();
+                    valutanemChange();
                 });
                 teljesitesedit.datepicker($.datepicker.regional['hu']);
                 teljesitesedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
@@ -579,7 +580,7 @@ var bizonylathelper = function($) {
                 hatidoedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
                 hatidoedit.datepicker('setDate', hatidoedit.attr('data-datum'));
 
-                valutanemChange(true);
+                //valutanemChange(true);
 
                 if (!$.browser.mobile) {
                     $('.js-toflyout').flyout();
