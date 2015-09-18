@@ -303,6 +303,13 @@ class Bizonylattetel {
 
     public function setMozgat() {
         $bf = $this->bizonylatfej;
+        $par = $this->getParbizonylattetel();
+        if ($par && !$this->getStorno() && !$this->getStornozott()) {
+            if ($par->getMozgat()) {
+                $this->mozgat = false;
+                return true;
+            }
+        }
         $t = $this->termek;
         if ($bf && $t) {
             $this->mozgat = $bf->getMozgat() && $t->getMozgat();
