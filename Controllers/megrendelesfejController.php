@@ -281,7 +281,6 @@ class megrendelesfejController extends bizonylatfejController {
                             $keszlet = 0;
                         }
                         if ($keszlet < $regitetel->getMennyiseg()) {
-                            $ujdb++;
                             $ujtetel = new \Entities\Bizonylattetel();
                             $ujtetel->duplicate($regitetel);
                             $ujtetel->clearCreated();
@@ -302,7 +301,6 @@ class megrendelesfejController extends bizonylatfejController {
                                 $this->getEm()->remove($regitetel);
                             }
                             else {
-                                $regidb++;
                                 $regitetel->setMennyiseg($keszlet);
                                 $regitetel->calc();
                                 $this->getEm()->persist($regitetel);
