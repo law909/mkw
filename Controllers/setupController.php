@@ -211,6 +211,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('bizonylatstatuszteljesithetolist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::BizonylatStatuszBackorder);
         $view->setVar('bizonylatstatuszbackorderlist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::MegrendelesFilterStatuszCsoport);
+        $view->setVar('megrendelesfilterstatuszcsoportlist', $bsf->getCsoportSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::Esedekessegalap);
         $view->setVar(\mkw\consts::Esedekessegalap, ($p ? $p->getErtek() : '1'));
@@ -497,6 +499,7 @@ class setupController extends \mkwhelpers\Controller {
         else {
             $this->setObj(\mkw\consts::BizonylatStatuszBackorder, '');
         }
+        $this->setObj(\mkw\consts::MegrendelesFilterStatuszCsoport, $this->params->getStringRequestParam('megrendelesfilterstatuszcsoport'));
 
         $this->setObj(\mkw\consts::Esedekessegalap, $this->params->getIntRequestParam('esedekessegalap', 1));
         $this->setObj(\mkw\consts::Locale, $this->params->getStringRequestParam('locale'));

@@ -18,7 +18,14 @@ class megrendelesfejController extends bizonylatfejController {
         parent::setVars($view);
         $view->setVar('datumtolfilter', null);
         $bsc = new bizonylatstatuszController($this->params);
-        $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(\mkw\Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
+        if (\mkw\Store::getTheme() == 'mkwcansas') {
+            $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(\mkw\Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
+            $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
+        }
+        else {
+            $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
+            $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList(\mkw\Store::getParameter(\mkw\consts::MegrendelesFilterStatuszCsoport)));
+        }
     }
 
     protected function loadVars($t, $forKarb = false) {

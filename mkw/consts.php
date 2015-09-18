@@ -105,6 +105,7 @@ class consts {
     const BizonylatStatuszFuggoben = 'bizonylatstatuszfuggoben';
     const BizonylatStatuszTeljesitheto = 'bizonylatstatuszteljesitheto';
     const BizonylatStatuszBackorder = 'bizonylatstatuszbackorder';
+    const MegrendelesFilterStatuszCsoport = 'megrendelesfilterstatuszcsoport';
 
     const RLBUtolsoSzamlaszam = 'rlbutolsoszamlaszam';
 

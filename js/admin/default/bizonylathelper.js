@@ -644,6 +644,7 @@ var bizonylathelper = function($) {
                         '#datumtolfilter',
                         '#datumigfilter',
                         '#bizonylatstatuszfilter',
+                        '#bizonylatstatuszcsoportfilter',
                         '#bizonylatrontottfilter',
                         '#fizmodfilter',
                         '#szallitasimodfilter',

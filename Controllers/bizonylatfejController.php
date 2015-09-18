@@ -156,6 +156,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $filter['values'][] = $bs;
             }
         }
+        $f = $this->params->getStringRequestParam('bizonylatstatuszcsoportfilter');
+        if ($f) {
+            $filter['fields'][] = 'bizonylatstatuszcsoport';
+            $filter['clauses'][] = '=';
+            $filter['values'][] = $f;
+        }
         $f = $this->params->getIntRequestParam('fizmodfilter');
         if ($f) {
             $bs = $this->getRepo('Entities\Fizmod')->findOneById($f);
