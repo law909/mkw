@@ -452,7 +452,7 @@ class Bizonylatfej {
             //$this->bruttohuf += $bt->getBruttohuf();
         }
         if ($kerekit) {
-            $this->brutto = \mkw\Store::kerekit($this->netto + $this->afa, 2);
+            $this->brutto = round($this->netto + $this->afa);
         }
         else {
             $this->brutto = $this->netto + $this->afa;
@@ -464,7 +464,7 @@ class Bizonylatfej {
         }
         $this->fizetendo = $this->brutto;
         if ($defakerekit) {
-            $this->bruttohuf = \mkw\Store::kerekit($this->nettohuf + $this->afahuf, 2);
+            $this->bruttohuf = round($this->nettohuf + $this->afahuf);
         }
         else {
             $this->bruttohuf = $this->nettohuf + $this->afahuf;
