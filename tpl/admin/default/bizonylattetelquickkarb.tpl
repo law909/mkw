@@ -27,8 +27,8 @@
     <td><input id="NettoegysarEdit{$tetel.id}" name="qtetelnettoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysar}" class="js-quicknettoegysarinput"></td>
     <td><input name="qtetelbruttoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysar}" class="js-quickbruttoegysarinput"></td>
     {if ($showvalutanem)}
-    <td><input name="qtetelnettoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysarhuf}"></td>
-    <td><input name="qtetelbruttoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysarhuf}"></td>
+    <td><input name="qtetelnettoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysarhuf}" readonly></td>
+    <td><input name="qtetelbruttoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysarhuf}" readonly></td>
     {/if}
 </tr>
 <tr>
