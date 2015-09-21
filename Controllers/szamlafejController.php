@@ -26,6 +26,10 @@ class SzamlafejController extends bizonylatfejController {
                 switch ($source) {
                     case 'megrendeles':
                         $egyed['megjegyzes'] = 'Rendelés: ' . $id;
+                        $arf = $this->getRepo('Entities\Arfolyam')->getActualArfolyam($egyed['valutanem'], new \DateTime(\mkw\Store::convDate($egyed['teljesitesstr'])));
+                        if ($arf) {
+                            $egyed['arfolyam'] = $arf->getArfolyam();
+                        }
                         break;
                     case 'szallito':
                         $egyed['megjegyzes'] = 'Szállítólevél: ' . $id;
@@ -37,6 +41,13 @@ class SzamlafejController extends bizonylatfejController {
                     $tetel['parentid'] = $tetel['id'];
                     $tetel['id'] = store::createUID($cikl);
                     $tetel['oper'] = 'inherit';
+                    if ($source == 'megrendeles') {
+                        $tetel['nettoegysarhuf'] = $tetel['nettoegysar'] * $egyed['arfolyam'];
+                        $tetel['bruttoegysarhuf'] = $tetel['bruttoegysar'] * $egyed['arfolyam'];
+                        $tetel['nettohuf'] = $tetel['netto'] * $egyed['arfolyam'];
+                        $tetel['bruttohuf'] = $tetel['brutto'] * $egyed['arfolyam'];
+                        $tetel['afahuf'] = $tetel['afa'] * $egyed['arfolyam'];
+                    }
                     $ttk[] = $tetel;
                     $cikl++;
                 }

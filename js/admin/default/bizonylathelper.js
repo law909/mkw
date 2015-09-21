@@ -20,6 +20,39 @@ var bizonylathelper = function($) {
         });
     }
 
+    function recalcHufPrices(arfolyam) {
+        $('.js-quicknettoegysarinput').each(function() {
+            var $this = $(this),
+                id = $this.attr('name').split('_')[1];
+            $('input[name="qtetelnettoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
+        });
+        $('.js-quickbruttoegysarinput').each(function() {
+            var $this = $(this),
+                id = $this.attr('name').split('_')[1];
+            $('input[name="qtetelbruttoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
+        });
+        $('.js-nettoegysarinput').each(function() {
+            var $this = $(this),
+                id = $this.attr('name').split('_')[1];
+            $('input[name="tetelnettoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
+        });
+        $('.js-bruttoegysarinput').each(function() {
+            var $this = $(this),
+                id = $this.attr('name').split('_')[1];
+            $('input[name="tetelbruttoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
+        });
+        $('.js-nettoinput').each(function() {
+            var $this = $(this),
+                id = $this.attr('name').split('_')[1];
+            $('input[name="tetelnettohuf_' + id + '"]').val($this.val() * arfolyam);
+        });
+        $('.js-bruttoinput').each(function() {
+            var $this = $(this),
+                id = $this.attr('name').split('_')[1];
+            $('input[name="tetelbruttohuf_' + id + '"]').val($this.val() * arfolyam);
+        });
+    }
+
     function getArfolyam() {
         var d = $('#TeljesitesEdit').datepicker('getDate');
         if (d.getDate === undefined) {
@@ -34,7 +67,9 @@ var bizonylathelper = function($) {
                     datum: d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + d.getDate()
                 },
                 success: function(data) {
+                    var arfolyam = data * 1;
                     $('#ArfolyamEdit').val(data);
+                    recalcHufPrices(arfolyam);
                 }
             });
         }
@@ -493,6 +528,10 @@ var bizonylathelper = function($) {
                     afa.val(valasztott.data('afa'));
                     afa.change();
                 })
+                .on('change', '#ArfolyamEdit', function(e) {
+                    e.preventDefault();
+                    recalcHufPrices($(this).val() * 1);
+                })
                 .on('change', '.js-afaselect', function(e) {
                     e.preventDefault();
                     var sorid = $(this).attr('name').split('_')[1];
@@ -573,6 +612,9 @@ var bizonylathelper = function($) {
                 teljesitesedit.datepicker($.datepicker.regional['hu']);
                 teljesitesedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
                 teljesitesedit.datepicker('setDate', teljesitesedit.attr('data-datum'));
+                teljesitesedit.on('change', function() {
+                    getArfolyam();
+                });
                 esedekessegedit.datepicker($.datepicker.regional['hu']);
                 esedekessegedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
                 esedekessegedit.datepicker('setDate', esedekessegedit.attr('data-datum'));
