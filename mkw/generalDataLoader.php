@@ -24,6 +24,7 @@ class generalDataLoader {
         $setup = store::getSetup();
         $view->setVar('setup', $setup);
         $view->setVar('maintheme', Store::getTheme());
+        $view->setVar('today', date(store::$DateFormat));
         $view->setVar('uithemes', array(
             'black-tie',
             'blitzer',

@@ -36,7 +36,8 @@ function messagecenterclickonerror(e){
 $(document).ready(
 	function(){
 
-		var msgcenter=$('#messagecenter').hide();
+		var msgcenter=$('#messagecenter').hide()
+            dialogcenter = $('#dialogcenter');
 
 		$('.menupont').button();
 		var menu=$('#menu');
@@ -92,5 +93,37 @@ $(document).ready(
                 url:'/admin/regeneratekarkod'
 			});
 		});
+
+        var $arfdatumedit = $('#ArfolyamDatumEdit');
+        if ($arfdatumedit) {
+            $arfdatumedit.datepicker($.datepicker.regional['hu']);
+            $arfdatumedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
+            $arfdatumedit.datepicker('setDate', $arfdatumedit.attr('data-datum'));
+            $('.js-arfolyamdownload').on('click', function(e) {
+                e.preventDefault();
+                arfdatum = $arfdatumedit.datepicker('getDate');
+                arfdatum = arfdatum.getFullYear() + '.' + (arfdatum.getMonth() + 1) + '.' + arfdatum.getDate();
+                $.ajax({
+                    url: '/admin/arfolyam/download',
+                    type: 'POST',
+                    data: {
+                        datum: arfdatum
+                    },
+                    success: function() {
+                        dialogcenter.html('Az árfolyamok letöltése sikerült.').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'OK': function() {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                })
+            });
+        }
+
 	}
 )

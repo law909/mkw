@@ -64,7 +64,7 @@ class arfolyamController extends \mkwhelpers\JQGridController {
 	}
 
 	public function getarfolyam() {
-		$arf = $this->getRepo()->getActualArfolyam($this->params->getIntRequestParam('valutanem'),$this->params->getStringRequestParam('datum'));
+		$arf = $this->getRepo()->getActualArfolyam($this->params->getIntRequestParam('valutanem'), $this->params->getStringRequestParam('datum'));
 		if ($arf instanceof \Entities\Arfolyam) {
 			echo $arf->getArfolyam();
 		}
@@ -72,4 +72,50 @@ class arfolyamController extends \mkwhelpers\JQGridController {
 			echo $arf;
 		}
 	}
+
+    public function downloadArfolyam() {
+        $datum = \mkw\Store::convDate($this->params->getDateRequestParam('datum'));
+        $datum = date(\mkw\Store::$DateFormat, strtotime($datum));
+        $rvaluta = \mkw\Store::getParameter(\mkw\consts::Valutanem);
+        $vr = \mkw\Store::getEm()->getRepository('Entities\Valutanem');
+        $filter = array();
+        $filter['fields'][] = 'id';
+        $filter['clauses'][] = '<>';
+        $filter['values'][] = $rvaluta;
+        $valutak = $vr->getAll($filter);
+        $valutanevek = array();
+        foreach($valutak as $v) {
+            $valutanevek[] = $v->getNev();
+        }
+        if ($valutanevek) {
+
+            $srv = new \SoapClient('http://www.mnb.hu/arfolyamok.asmx?WSDL');
+            $res = $srv->__soapCall('GetExchangeRates', array('parameters' => array(
+                'startDate' => $datum,
+                'endDate' => $datum,
+                'currencyNames' => implode(',', $valutanevek)
+            )));
+            if ($res) {
+                $rates = simplexml_load_string($res->GetExchangeRatesResult);
+                $rates = $rates->Day;
+                foreach($rates->Rate as $rate) {
+                    $valutanem = $vr->findOneBy(array('nev' => $rate['curr']));
+                    if ($valutanem) {
+                        $arf = $this->getRepo()->getArfolyam($valutanem, $datum);
+                        if (!$arf) {
+                            $arf = new \Entities\Arfolyam();
+                            $arf->setValutanem($valutanem);
+                            $arf->setDatum(new \DateTime(\mkw\Store::convDate($datum)));
+                            $arf->setArfolyam(str_replace(',', '.', $rate) * 1);
+                            \mkw\Store::getEm()->persist($arf);
+                            \mkw\Store::getEm()->flush();
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            echo 'nincs valuta';
+        }
+    }
 }

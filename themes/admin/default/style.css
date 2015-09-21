@@ -144,3 +144,7 @@ img {
     width: 480px;
     height: 400px;
 }
+
+.mainbox {
+    margin: 5px;
+}

@@ -38,4 +38,19 @@ class ArfolyamRepository extends \mkwhelpers\Repository {
         return 1;
     }
 
+    public function getArfolyam($valuta, $datum) {
+        $filter = array();
+        $filter['fields'][] = 'valutanem';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = $valuta;
+        $filter['fields'][] = 'datum';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = $datum;
+        $arf = $this->getAll($filter);
+        if ($arf) {
+            return $arf[0];
+        }
+        return false;
+    }
+
 }
