@@ -246,6 +246,39 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function getTeljesites()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTeljesites', array());
+
+        return parent::getTeljesites();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRaktar()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRaktar', array());
+
+        return parent::getRaktar();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRaktarId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRaktarId', array());
+
+        return parent::getRaktarId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setBizonylatfej($val)
     {
 
