@@ -471,6 +471,7 @@ class Bizonylatfej {
         // superzone osztott fizetendo
         if (\mkw\Store::isOsztottFizmod()) {
             $eddigi = 0;
+            $fizmod = $this->getFizmod();
             $kelt = new \DateTimeImmutable(\mkw\Store::convDate($this->getKeltStr()));
             if ($fizmod->getOsztotthaladek1() && ($fizmod->getOsztottszazalek1() * 1 > 0)) {
                 $this->setEsedekesseg1($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek1() . 'D')));

@@ -13,39 +13,50 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks
 */
 class TermekValtozat {
+
+    private $keszletinfo;
+
 	/**
 	 * @ORM\Id @ORM\Column(type="integer")
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/**
+
+    /**
 	 * @Gedmo\Timestampable(on="create")
 	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $created;
-	/**
+
+    /**
 	 * @Gedmo\Timestampable(on="create")
 	 * @Gedmo\Timestampable(on="update")
 	 * @ORM\Column(type="datetime",nullable=true)
 	 */
 	private $lastmod;
-	/**
+
+    /**
 	 * @ORM\ManyToOne(targetEntity="Termek",inversedBy="valtozatok")
 	 * @ORM\JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
 	 */
 	private $termek;
-	/** @ORM\Column(type="boolean") */
+
+    /** @ORM\Column(type="boolean") */
 	private $lathato=true;
-	/** @ORM\Column(type="boolean") */
+
+    /** @ORM\Column(type="boolean") */
 	private $elerheto=true;
-	/** @ORM\Column(type="boolean") */
+
+    /** @ORM\Column(type="boolean") */
 	private $termekfokep=false;
-	/**
+
+    /**
 	 * @ORM\ManyToOne(targetEntity="TermekValtozatAdatTipus",inversedBy="valtozatok1")
 	 * @ORM\JoinColumn(name="adattipus1_id",referencedColumnName="id",onDelete="restrict")
 	 */
 	private $adattipus1;
-	/**
+
+    /**
 	 * @ORM\Column(type="string",length=255,nullable=true)
 	 */
 	private $ertek1;
@@ -99,17 +110,36 @@ class TermekValtozat {
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
-    public function getKeszlet($datum = null, $raktarid = null) {
+    protected function calcKeszletInfo($datum = null, $raktarid = null) {
         if (!$datum) {
             $datum = new \DateTime();
         }
         $k = 0;
+        $db = 0;
         foreach($this->bizonylattetelek as $bt) {
             if ($bt->getMozgat() && ($bt->getTeljesites() <= $datum) && (!$raktarid || ($raktarid && $raktarid == $bt->getRaktarId()))) {
                 $k += ($bt->getMennyiseg() * $bt->getIrany());
+                $db++;
             }
         }
-        return $k;
+        $this->keszletinfo = array('keszlet' => $k, 'mozgasdb' => $db);
+        return $this->keszletinfo;
+    }
+
+    public function getMozgasDb($datum = null, $raktarid = null) {
+        if (!$this->keszletinfo) {
+            $this->calcKeszletInfo($datum, $raktarid);
+        }
+        return $this->keszletinfo['mozgasdb'];
+    }
+
+    public function getKeszlet($datum = null, $raktarid = null) {
+        if (!$this->keszletinfo) {
+            $this->calcKeszletInfo($datum, $raktarid);
+        }
+        $r = $this->keszletinfo['keszlet'];
+        unset($this->keszletinfo);
+        return $r;
     }
 
     public function getFoglaltMennyiseg($kivevebiz = null) {

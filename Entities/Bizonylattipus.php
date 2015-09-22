@@ -50,6 +50,8 @@ class Bizonylattipus {
 	/** @ORM\Column(type="boolean",nullable=false) */
 	private $showkeziszamlabutton=false;
     /** @ORM\Column(type="boolean",nullable=false) */
+	private $showbevetbutton=false;
+    /** @ORM\Column(type="boolean",nullable=false) */
 	private $showuzenet=false;
     /** @ORM\Column(type="boolean",nullable=false) */
 	private $showszallitasicim=false;
@@ -82,6 +84,7 @@ class Bizonylattipus {
         $view->setVar('showkeziszamlabutton', $this->getShowkeziszamlabutton());
         $view->setVar('showszallitobutton', $this->getShowszallitobutton());
         $view->setVar('showkivetbutton', $this->getShowkivetbutton());
+        $view->setVar('showbevetbutton', $this->getShowbevetbutton());
         $view->setVar('showuzenet', $this->getShowuzenet());
         $view->setVar('showszallitasicim', $this->getShowszallitasicim());
         $view->setVar('showerbizonylatszam', $this->getShowerbizonylatszam());
@@ -237,6 +240,14 @@ class Bizonylattipus {
 
     public function setShowkivetbutton($val) {
         $this->showkivetbutton = $val;
+    }
+
+    public function getShowbevetbutton() {
+        return $this->showbevetbutton;
+    }
+
+    public function setShowbevetbutton($val) {
+        $this->showbevetbutton = $val;
     }
 
     public function getShowszallitobutton() {

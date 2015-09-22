@@ -138,8 +138,8 @@ class termekController extends \mkwhelpers\MattableController {
         $x['keszlet'] = $t->getKeszlet();
         if (store::getSetupValue('termekvaltozat')) {
             foreach ($t->getValtozatok() as $tvaltozat) {
-                $k = $tvaltozat->getKeszlet();
-                if ($k) {
+                $mozgasdb = $tvaltozat->getMozgasDb();
+                if ($mozgasdb) {
                     $lvaltozat[] = $valtozatCtrl->loadVars($tvaltozat, $t);
                 }
             }

@@ -329,7 +329,7 @@ class Bizonylattetel {
         $bf = $this->bizonylatfej;
         $par = $this->getParbizonylattetel();
         if ($par && !$this->getStorno() && !$this->getStornozott()) {
-            if ($par->getMozgat()) {
+            if (($par->getIrany() == $this->getIrany()) && $par->getMozgat()) {
                 $this->mozgat = false;
                 return true;
             }
