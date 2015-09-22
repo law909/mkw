@@ -143,6 +143,7 @@ $router->map('GET', '/admin/termek/getbrutto', 'termekController#getbrutto', 'ad
 $router->map('POST', '/admin/termek/save', 'termekController#save', 'admintermeksave');
 $router->map('POST', '/admin/termek/setflag', 'termekController#setflag', 'admintermeksetflag');
 $router->map('GET', '/admin/termek/arexport', 'termekController#arexport', 'admintermekarexport');
+$router->map('GET', '/admin/termek/getkeszletbyraktar', 'termekController#getKeszletByRaktar', 'admingetkeszletbyraktar');
 
 $router->map('GET', '/admin/termekkapcsolodo/getemptyrow', 'termekkapcsolodoController#getemptyrow', 'admintermekkapcsolodogetemptyrow');
 $router->map('POST', '/admin/termekkapcsolodo/save', 'termekkapcsolodoController#save', 'admintermekkapcsolodosave');
@@ -163,6 +164,7 @@ $router->map('GET', '/admin/termekvaltozat/getemptyrow', 'termekvaltozatControll
 $router->map('POST', '/admin/termekvaltozat/generate', 'termekvaltozatController#generate', 'admintermekvaltozatgenerate');
 $router->map('POST', '/admin/termekvaltozat/save', 'termekvaltozatController#save', 'admintermekvaltozatsave');
 $router->map('POST', '/admin/termekvaltozat/delall', 'termekvaltozatController#delall', 'admintermekvaltozatdelall');
+$router->map('GET', '/admin/termekvaltozat/getkeszletbyraktar', 'termekvaltozatController#getKeszletByRaktar', 'admingetvaltozatkeszletbyraktar');
 
 $router->map('GET', '/admin/emailtemplate/viewlist', 'emailtemplateController#viewlist', 'adminemailtemplateviewlist');
 $router->map('GET', '/admin/emailtemplate/getlistbody', 'emailtemplateController#getlistbody', 'adminemailtemplategetlistbody');

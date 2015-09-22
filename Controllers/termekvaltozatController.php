@@ -178,4 +178,21 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
         echo $result;
     }
 
+    public function getKeszletByRaktar() {
+        $valtozatid = $this->params->getIntRequestParam('valtozatid');
+        $valtozat = $this->getRepo()->find($valtozatid);
+        $raktarak = $this->getRepo('Entities\Raktar')->getAll();
+        if ($valtozat) {
+            $klist = array();
+            foreach($raktarak as $raktar) {
+                $klist[] = array(
+                    'raktarnev' => $raktar->getNev(),
+                    'keszlet' => $valtozat->getKeszlet(null, $raktar->getId())
+                );
+            }
+    		$view = $this->createView('termekkeszletreszletezo.tpl');
+            $view->setVar('lista', $klist);
+            $view->printTemplateResult();
+        }
+    }
 }

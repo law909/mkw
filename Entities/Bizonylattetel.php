@@ -289,6 +289,23 @@ class Bizonylattetel {
         return 0;
     }
 
+    public function getRaktar() {
+        if ($this->bizonylatfej) {
+            return $this->bizonylatfej->getRaktar();
+        }
+        return 0;
+    }
+
+    public function getRaktarId() {
+        if ($this->bizonylatfej) {
+            $raktar = $this->bizonylatfej->getRaktar();
+            if ($raktar) {
+                return $raktar->getId();
+            }
+        }
+        return 0;
+    }
+
     public function setBizonylatfej($val) {
         if ($this->bizonylatfej !== $val) {
             $this->bizonylatfej = $val;

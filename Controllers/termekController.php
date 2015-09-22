@@ -948,6 +948,24 @@ class termekController extends \mkwhelpers\MattableController {
         $mc->show404('HTTP/1.1 410 Gone');
     }
 
+    public function getKeszletByRaktar() {
+        $termekid = $this->params->getIntRequestParam('termekid');
+        $termek = $this->getRepo()->find($termekid);
+        $raktarak = $this->getRepo('Entities\Raktar')->getAll();
+        if ($termek) {
+            $klist = array();
+            foreach($raktarak as $raktar) {
+                $klist[] = array(
+                    'raktarnev' => $raktar->getNev(),
+                    'keszlet' => $termek->getKeszlet(null, $raktar->getId())
+                );
+            }
+    		$view = $this->createView('termekkeszletreszletezo.tpl');
+            $view->setVar('lista', $klist);
+            $view->printTemplateResult();
+        }
+    }
+
     public function arexport() {
 
         function x($o) {

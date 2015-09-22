@@ -51,7 +51,11 @@
         <table>
             <tbody>
             {foreach $_termek.valtozatkeszlet as $vk}
-                <tr><td>{$vk.ertek1}</td><td>{$vk.ertek2}</td><td class="keszletoszlop">{$vk.keszlet}</td></tr>
+                <tr>
+                    <td><a href="#" data-id="{$vk.id}" class="js-valtozatkeszletreszletezobutton">{$vk.ertek1}</a></td>
+                    <td><a href="#" data-id="{$vk.id}" class="js-valtozatkeszletreszletezobutton">{$vk.ertek2}</a></td>
+                    <td class="keszletoszlop"><a href="#" data-id="{$vk.id}" class="js-valtozatkeszletreszletezobutton">{$vk.keszlet}</a></td>
+                </tr>
             {/foreach}
             </tbody>
         </table>
@@ -68,7 +72,7 @@
                 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="nemkaphato" class="js-flagcheckbox{if ($_termek.nemkaphato)} ui-state-hover{/if}">{t('Nem kapható')}</a></td></tr>
                 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="fuggoben" class="js-flagcheckbox{if ($_termek.fuggoben)} ui-state-hover{/if}">{t('Függőben')}</a></td></tr>
                 <tr><td>{t('Hűségpont arány')}: {$_termek.hparany}</td></tr>
-                <tr><td>{t('Készlet')}: {$_termek.keszlet}</td></tr>
+                <tr><td><a href="#" data-id="{$_termek.id}" class="js-keszletreszletezobutton">{t('Készlet')}: {$_termek.keszlet}</a></td></tr>
             </tbody>
         </table>
     </td>

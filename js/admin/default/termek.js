@@ -859,7 +859,48 @@ $(document).ready(function() {
             else {
                 doit();
             }
+        })
+        .on('click', '.js-keszletreszletezobutton', function(e) {
+            var $this = $(this);
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/termek/getkeszletbyraktar',
+                data: {
+                    termekid: $this.data('id')
+                },
+                success: function(data) {
+                    dialogcenter.html(data).dialog({
+                        modal: true,
+                        buttons: {
+                            'OK': function() {
+                                dialogcenter.dialog('close');
+                            }
+                        }
+                    });
+                }
+            });
+        })
+        .on('click', '.js-valtozatkeszletreszletezobutton', function(e) {
+            var $this = $(this);
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/termekvaltozat/getkeszletbyraktar',
+                data: {
+                    valtozatid: $this.data('id')
+                },
+                success: function(data) {
+                    dialogcenter.html(data).dialog({
+                        modal: true,
+                        buttons: {
+                            'OK': function() {
+                                dialogcenter.dialog('close');
+                            }
+                        }
+                    });
+                }
+            });
         });
+
         $('#cimkefiltercontainer').mattaccord({
             header: '#cimkefiltercontainerhead',
             page: '.accordpage',
