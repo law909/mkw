@@ -99,10 +99,13 @@ class TermekValtozat {
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
-    public function getKeszlet() {
+    public function getKeszlet($datum = null) {
+        if (!$datum) {
+            $datum = new \DateTime();
+        }
         $k = 0;
         foreach($this->bizonylattetelek as $bt) {
-            if ($bt->getMozgat()) {
+            if ($bt->getMozgat() && ($bt->getTeljesites() <= $datum)) {
                 $k += ($bt->getMennyiseg() * $bt->getIrany());
             }
         }

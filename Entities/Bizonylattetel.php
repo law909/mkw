@@ -282,6 +282,13 @@ class Bizonylattetel {
         return '';
     }
 
+    public function getTeljesites() {
+        if ($this->bizonylatfej) {
+            return $this->bizonylatfej->getTeljesites();
+        }
+        return 0;
+    }
+
     public function setBizonylatfej($val) {
         if ($this->bizonylatfej !== $val) {
             $this->bizonylatfej = $val;
