@@ -258,6 +258,30 @@
 			{/foreach}
 			<a class="{if ($quick)}js-quicktetelnewbutton{else}js-tetelnewbutton{/if}" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 			</div>
+            <table class="js-bizonylatosszesito ui-widget-content bizonylatosszesito">
+                <thead>
+                    <tr>
+                        <th class="mattable-cell mattable-rborder"></th>
+                        <th class="mattable-cell mattable-rborder">Nettó</th>
+                        <th class="mattable-cell mattable-rborder">Bruttó</th>
+                        {if ($showvalutanem)}
+                        <th class="mattable-cell mattable-rborder">Nettó HUF</th>
+                        <th class="mattable-cell">Bruttó HUF</th>
+                        {/if}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="mattable-cell mattable-rborder mattable-tborder">Összesen</th>
+                        <td class="js-nettosum mattable-cell mattable-rborder mattable-tborder textalignright"></td>
+                        <td class="js-bruttosum mattable-cell mattable-rborder mattable-tborder textalignright"></td>
+                        {if ($showvalutanem)}
+                        <td class="js-nettohufsum mattable-cell mattable-rborder mattable-tborder textalignright"></td>
+                        <td class="js-bruttohufsum mattable-cell mattable-tborder textalignright"></td>
+                        {/if}
+                    </tr>
+                </tbody>
+            </table>
 		</div>
 	</div>
     <input name="quick" type="hidden" value="{$quick}">

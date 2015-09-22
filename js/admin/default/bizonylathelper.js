@@ -20,6 +20,37 @@ var bizonylathelper = function($) {
         });
     }
 
+    function calcOsszesen() {
+        var netto = 0, brutto = 0, nettohuf = 0, bruttohuf = 0;
+        $('input[name^="tetelnetto_"]').each(function() {
+            netto = netto + $(this).val() * 1;
+        });
+        $('input[name^="tetelbrutto_"]').each(function() {
+            brutto = brutto + $(this).val() * 1;
+        });
+        $('input[name^="tetelnettohuf_"]').each(function() {
+            nettohuf = nettohuf + $(this).val() * 1;
+        });
+        $('input[name^="tetelbruttohuf_"]').each(function() {
+            bruttohuf = bruttohuf + $(this).val() * 1;
+        });
+
+        // quick
+        $('.js-quickmennyiseginput').each(function() {
+            var $this = $(this),
+                id = $this.data('termektetelid');
+            netto = netto + $('input[name="qtetelnettoegysar_' + id + '"]').val() * $this.val() * 1;
+            brutto = brutto + $('input[name="qtetelbruttoegysar_' + id + '"]').val() * $this.val() * 1;
+            nettohuf = nettohuf + $('input[name="qtetelnettoegysarhuf_' + id + '"]').val() * $this.val() * 1;
+            bruttohuf = bruttohuf + $('input[name="qtetelbruttoegysarhuf_' + id + '"]').val() * $this.val() * 1;
+        });
+
+        $('.js-nettosum').text(accounting.formatNumber(accounting.toFixed(netto, 2), 2, ' '));
+        $('.js-bruttosum').text(accounting.formatNumber(accounting.toFixed(brutto, 2), 2, ' '));
+        $('.js-nettohufsum').text(accounting.formatNumber(accounting.toFixed(nettohuf, 2), 2, ' '));
+        $('.js-bruttohufsum').text(accounting.formatNumber(accounting.toFixed(bruttohuf, 2), 2, ' '));
+    }
+
     function recalcHufPrices(arfolyam) {
         $('.js-quicknettoegysarinput').each(function() {
             var $this = $(this),
@@ -51,6 +82,7 @@ var bizonylathelper = function($) {
                 id = $this.attr('name').split('_')[1];
             $('input[name="tetelbruttohuf_' + id + '"]').val($this.val() * arfolyam);
         });
+        calcOsszesen();
     }
 
     function getArfolyam() {
@@ -128,6 +160,7 @@ var bizonylathelper = function($) {
                     $('input[name="tetelbruttohuf_' + sorId + '"]').val(resp.bruttohuf);
 
                     hasz.text(n.toFixed(2));
+                    calcOsszesen();
                 }
             });
         }
@@ -310,6 +343,7 @@ var bizonylathelper = function($) {
                     $('input[name="qtetelbruttoegysarhuf_' + sorId + '"]').val(resp.bruttoegysarhuf);
                     $('input[name="qtetelnettohuf_' + sorId + '"]').val(resp.nettohuf);
                     $('input[name="qtetelbruttohuf_' + sorId + '"]').val(resp.bruttohuf);
+                    calcOsszesen();
                 }
             });
         }
@@ -446,7 +480,7 @@ var bizonylathelper = function($) {
                         },
                         type: 'GET',
                         success: function(data) {
-                            alttab.append(data);
+                            $('.js-bizonylatosszesito').before(data);
                             $('.js-quicktetelnewbutton,.js-teteldelbutton').button();
                             $('.js-termekselect').autocomplete(quicktermekAutocompleteConfig())
                                 .autocomplete( "instance" )._renderItem = termekAutocompleteRenderer;
@@ -464,7 +498,7 @@ var bizonylathelper = function($) {
                         },
                         type: 'GET',
                         success: function(data) {
-                            alttab.append(data);
+                            $('.js-bizonylatosszesito').before(data);
                             $('.js-tetelnewbutton,.js-teteldelbutton').button();
                             $('.js-termekselect').autocomplete(termekAutocompleteConfig())
                                 .autocomplete( "instance" )._renderItem = termekAutocompleteRenderer;
@@ -484,6 +518,7 @@ var bizonylathelper = function($) {
                             buttons: {
                                 'Igen': function() {
                                     $('#teteltable_' + removeid).remove();
+                                    calcOsszesen();
                                     $(this).dialog('close');
                                 },
                                 'Nem': function() {
@@ -508,6 +543,7 @@ var bizonylathelper = function($) {
                                         },
                                         success: function(data) {
                                             $('#teteltable_' + data).remove();
+                                            calcOsszesen();
                                         }
                                     });
                                     $(this).dialog('close');
@@ -590,6 +626,9 @@ var bizonylathelper = function($) {
                 })
                 .on('change', '.js-bizonylatstatuszedit', function(e) {
                     $('input[name="bizonylatstatuszertesito"]').prop('checked', true);
+                })
+                .on('change', '.js-quickmennyiseginput', function(e) {
+                    calcOsszesen();
                 });
 
                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
@@ -623,6 +662,8 @@ var bizonylathelper = function($) {
                 hatidoedit.datepicker('setDate', hatidoedit.attr('data-datum'));
 
                 //valutanemChange(true);
+
+                calcOsszesen();
 
                 if (!$.browser.mobile) {
                     $('.js-toflyout').flyout();

@@ -215,6 +215,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 
 	public function quickvaltozathtmllist() {
         $termekid = $this->params->getRequestParam('id', 0);
+        $termektetelid = $this->params->getRequestParam('tetelid', 0);
 		$tc = new termekController($this->params);
 		$view = $this->createView('bizonylattetelquickvaltozatkarb.tpl');
         $valtozatlist = $tc->getValtozatList($termekid, 0);
@@ -222,11 +223,12 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
         foreach($valtozatlist as $v) {
             $v['tetelid'] = \mkw\Store::createUID();
             $v['termekid'] = $termekid;
+            $v['termektetelid'] = $termektetelid;
             $vlist[] = $v;
         }
 		$view->setVar('valtozatlist', $vlist);
 		echo json_encode(array(
-                'tetelid' => $this->params->getRequestParam('tetelid', 0),
+                'tetelid' => $termektetelid,
                 'html' => $view->getTemplateResult()
         ));
 	}
