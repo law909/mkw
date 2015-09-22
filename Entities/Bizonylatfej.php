@@ -414,11 +414,7 @@ class Bizonylatfej {
         $this->setMasterPassCorrelationID(\mkw\Store::createGUID());
     }
 
-    /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function doStuffOnPrePersist() {
+    public function calcOsszesen() {
         $mincimlet = 0;
         $kerekit = false;
         $defamincimlet = 0;
@@ -469,6 +465,9 @@ class Bizonylatfej {
         else {
             $this->bruttohuf = $this->nettohuf + $this->afahuf;
         }
+    }
+
+    public function calcOsztottFizetendo() {
         // superzone osztott fizetendo
         if (\mkw\Store::isOsztottFizmod()) {
             $eddigi = 0;
@@ -496,6 +495,15 @@ class Bizonylatfej {
                 $this->setFizetendo3($this->fizetendo - $eddigi);
             }
         }
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function doStuffOnPrePersist() {
+        $this->calcOsszesen();
+        $this->calcOsztottFizetendo();
     }
 
     public function __construct() {

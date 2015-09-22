@@ -187,6 +187,28 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function calcOsszesen()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcOsszesen', array());
+
+        return parent::calcOsszesen();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function calcOsztottFizetendo()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcOsztottFizetendo', array());
+
+        return parent::calcOsztottFizetendo();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function doStuffOnPrePersist()
     {
 

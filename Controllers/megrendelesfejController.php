@@ -209,6 +209,7 @@ class megrendelesfejController extends bizonylatfejController {
                         $regibiz->setBizonylatstatusz($backorder);
                         $result = 1;
                     }
+                    $regibiz->doStuffOnPrePersist();
                     $this->getEm()->persist($regibiz);
                     $this->getEm()->flush();
                     $this->getEm()->commit();
@@ -266,6 +267,7 @@ class megrendelesfejController extends bizonylatfejController {
                         }
                     }
                     $regibiz->setBizonylatstatusz($teljesitheto);
+                    $regibiz->doStuffOnPrePersist();
                     $this->getEm()->persist($regibiz);
                     $this->getEm()->persist($ujbiz);
                     $this->getEm()->flush();
