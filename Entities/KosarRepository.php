@@ -371,15 +371,26 @@ class KosarRepository extends \mkwhelpers\Repository {
             $szm = $this->getRepo('Entities\Szallitasimod')->find($szallmod);
             $szamol = $szm->getVanszallitasiktg();
         }
-        $termek = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
-        if ($termek) {
+        $termekid = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
+        if ($termekid) {
             if ($szamol) {
                 $e = $this->calcSumBySessionId(\Zend_Session::getId());
                 $ertek = $e['sum'];
                 $cnt = $e['count'];
                 if ($cnt != 0) {
-                    $ktg = \mkw\Store::calcSzallitasiKoltseg($ertek);
-                    $this->add($termek, null, $ktg);
+                    switch (\mkw\Store::getTheme()) {
+                        case 'mkwcansas':
+                                $ktg = \mkw\Store::calcSzallitasiKoltseg($ertek);
+                                $this->add($termekid, null, $ktg);
+                            break;
+                        case 'superzone':
+                                $termek = $this->getRepo('Entities\Termek')->find($termekid);
+                                if ($termek) {
+                                    $ktg = $termek->getBruttoAr(null, \mkw\Store::getLoggedInUser());
+                                    $this->add($termekid, null, $ktg);
+                                }
+                            break;
+                    }
                 }
                 else {
                     $this->remove($termek);

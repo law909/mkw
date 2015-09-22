@@ -51,12 +51,27 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $fmc = new uzletkotoController($this->params);
         $view->setVar('uzletkotolist', $fmc->getSelectList(false));
 
+        $bsc = new bizonylatstatuszController($this->params);
         switch (\mkw\Store::getTheme()) {
             case 'mkwcansas':
                 $a = date(\mkw\Store::$DateFormat, strtotime('-1 week'));
+                if ($this->biztipus == 'megrendeles') {
+                    $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(\mkw\Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
+                }
+                else {
+                    $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
+                }
+                $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
                 break;
             case 'superzone':
                 $a = date(\mkw\Store::$DateFormat);
+                $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
+                if ($this->biztipus == 'megrendeles') {
+                    $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList(\mkw\Store::getParameter(\mkw\consts::MegrendelesFilterStatuszCsoport)));
+                }
+                else {
+                    $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
+                }
                 break;
         }
         $view->setVar('datumtolfilter', $a);
@@ -320,6 +335,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['uzletkotoemail'] = $t->getUzletkotoemail();
         $x['bizonylatnyelv'] = $t->getBizonylatnyelv();
         $x['reportfile'] = $t->getReportfile();
+        $bsc = new bizonylatstatuszController($this->params);
+        $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId());
 		if ($forKarb) {
             if ($t->getPartner() && ($t->getPartner()->getSzamlatipus() > 0)) {
                 $afa = $this->getRepo('Entities\Afa')->find(\mkw\Store::getParameter(\mkw\consts::NullasAfa));
@@ -638,6 +655,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $this->getEm()->flush();
             }
         }
+        if ($this->params->getBoolRequestParam('bizonylatstatuszertesito')) {
+            $statusz = $o->getBizonylatstatusz();
+            if ($statusz) {
+                $emailtpl = $statusz->getEmailtemplate();
+                $o->sendStatuszEmail($emailtpl);
+            }
+        }
     }
 
     public function checkKelt() {
@@ -829,6 +853,22 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $view->setVar('esedekessegalap', store::getParameter(\mkw\consts::Esedekessegalap, 1));
         $view->printTemplateResult();
+    }
+
+    public function setStatusz() {
+        $bf = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+        if ($bf) {
+            $statusz = $this->getRepo('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('statusz'));
+            if ($statusz) {
+                $bf->setBizonylatstatusz($statusz);
+                $this->getEm()->persist($bf);
+                $this->getEm()->flush();
+                if ($this->params->getBoolRequestParam('bizonylatstatuszertesito')) {
+                    $emailtpl = $statusz->getEmailtemplate();
+                    $bf->sendStatuszEmail($emailtpl);
+                }
+            }
+        }
     }
 
 }

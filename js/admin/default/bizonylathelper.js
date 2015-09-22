@@ -779,7 +779,7 @@ var bizonylathelper = function($) {
                 e.preventDefault();
                 function sendQ(id, s, ertesit) {
                     $.ajax({
-                        url: '/admin/' + bizonylattipus + 'fej/setstatusz',
+                        url: '/admin/bizonylatfej/setstatusz',
                         type: 'POST',
                         data: {
                             id: id,

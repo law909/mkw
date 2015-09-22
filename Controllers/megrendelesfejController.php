@@ -17,53 +17,6 @@ class megrendelesfejController extends bizonylatfejController {
     public function setVars($view) {
         parent::setVars($view);
         $view->setVar('datumtolfilter', null);
-        $bsc = new bizonylatstatuszController($this->params);
-        if (\mkw\Store::getTheme() == 'mkwcansas') {
-            $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(\mkw\Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
-            $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
-        }
-        else {
-            $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
-            $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList(\mkw\Store::getParameter(\mkw\consts::MegrendelesFilterStatuszCsoport)));
-        }
-    }
-
-    protected function loadVars($t, $forKarb = false) {
-		if (!$t) {
-			$t = new \Entities\Bizonylatfej();
-			$this->getEm()->detach($t);
-		}
-        $x = parent::loadVars($t, $forKarb);
-        $bsc = new bizonylatstatuszController($this->params);
-        $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId());
-        return $x;
-    }
-
-    protected function afterSave($o) {
-        parent::afterSave($o);
-        if ($this->params->getBoolRequestParam('bizonylatstatuszertesito')) {
-            $statusz = $o->getBizonylatstatusz();
-            if ($statusz) {
-                $emailtpl = $statusz->getEmailtemplate();
-                $o->sendStatuszEmail($emailtpl);
-            }
-        }
-    }
-
-    public function setStatusz() {
-        $bf = $this->getRepo()->find($this->params->getStringRequestParam('id'));
-        if ($bf) {
-            $statusz = $this->getRepo('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('statusz'));
-            if ($statusz) {
-                $bf->setBizonylatstatusz($statusz);
-                $this->getEm()->persist($bf);
-                $this->getEm()->flush();
-                if ($this->params->getBoolRequestParam('bizonylatstatuszertesito')) {
-                    $emailtpl = $statusz->getEmailtemplate();
-                    $bf->sendStatuszEmail($emailtpl);
-                }
-            }
-        }
     }
 
     public function getszamlakarb() {

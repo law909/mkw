@@ -403,7 +403,8 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $megrendfej->setFizmod($partner->getFizmod());
                     $megrendfej->setSzallitasimod($partner->getSzallitasimod());
                     $megrendfej->setValutanem($valutanem);
-                    $megrendfej->setArfolyam($this->getEm()->getRepository('Entities\Arfolyam')->getActualArfolyam($valutanem, $megrendfej->getTeljesites()));
+                    $arf = $this->getEm()->getRepository('Entities\Arfolyam')->getActualArfolyam($valutanem, $megrendfej->getTeljesites());
+                    $megrendfej->setArfolyam($arf->getArfolyam());
                     $raktarid = store::getParameter(\mkw\consts::Raktar);
                     $megrendfej->setRaktar($this->getRepo('Entities\Raktar')->find($raktarid));
                     if ($valutanem) {
