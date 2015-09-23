@@ -375,7 +375,8 @@ class KosarRepository extends \mkwhelpers\Repository {
             $szamol = $szm->getVanszallitasiktg();
         }
         $termekid = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
-        if ($termekid) {
+        $termek = $this->getRepo('Entities\Termek')->find($termekid);
+        if ($termekid && $termek) {
             if ($szamol) {
                 $e = $this->calcSumBySessionId(\Zend_Session::getId());
                 $ertek = $e['sum'];
@@ -387,11 +388,8 @@ class KosarRepository extends \mkwhelpers\Repository {
                                 $this->add($termekid, null, $ktg);
                             break;
                         case 'superzone':
-                                $termek = $this->getRepo('Entities\Termek')->find($termekid);
-                                if ($termek) {
-                                    $ktg = $termek->getBruttoAr(null, \mkw\Store::getLoggedInUser());
-                                    $this->add($termekid, null, $ktg);
-                                }
+                                $ktg = $termek->getBruttoAr(null, \mkw\Store::getLoggedInUser());
+                                $this->add($termekid, null, $ktg);
                             break;
                     }
                 }
