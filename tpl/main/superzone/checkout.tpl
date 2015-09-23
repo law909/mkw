@@ -44,6 +44,12 @@
 
                     <h3>Delivery address</h3>
                     <div class="form-group col-md-12">
+                        <label for="SzalleqszamlaEdit" class="col-md-2 control-label">Same as the billing address</label>
+                        <div class="col-md-10">
+                            <input id="SzalleqszamlaEdit" type="checkbox" class="form-checkbox" name="szalleqszamla"{if ($szalleqszamla|default)} checked{/if}">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
                         <label for="SzallitasiNevEdit" class="col-md-2 control-label">Name</label>
                         <div class="col-md-10">
                             <input id="SzallitasiNevEdit" type="text" class="form-control" name="szallnev" value="{$szallnev|default}">
@@ -65,6 +71,14 @@
                         <label for="SzallitasiIrszamEdit" class="col-md-2 control-label">Postal code</label>
                         <div class="col-md-2">
                             <input id="SzallitasiIrszamEdit" type="text" class="form-control" name="szallirszam" value="{$szallirszam|default}">
+                        </div>
+                    </div>
+
+                    <h3>Comments</h3>
+                    <div class="form-group col-md-12">
+                        <label for="MegjegyzesEdit" class="col-md-2 control-label">Comment for the shop</label>
+                        <div class="col-md-10">
+                            <textarea id="MegjegyzesEdit" class="form-control" name="webshopmessage" type="text" rows="2">{$webshopmessage}</textarea>
                         </div>
                     </div>
 

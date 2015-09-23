@@ -31,7 +31,8 @@ var checkout = (function($) {
 			szallvarosinput = $('input[name="szallvaros"]'),
 			szallvarosgr = szallvarosinput.closest('.form-group'),
 			szallutcainput = $('input[name="szallutca"]'),
-			szallutcagr = szallutcainput.closest('.form-group');
+			szallutcagr = szallutcainput.closest('.form-group'),
+            szalleqszamla = $('input[name="szalleqszamla"]').prop('checked');
 
         loadTetelList();
 
@@ -48,7 +49,7 @@ var checkout = (function($) {
         checkoutform.on('submit', function(e) {
             var hibas = false, tofocus = false;
 
-            if (!szallnevinput.val()) {
+            if (!szalleqszamla && !szallnevinput.val()) {
                 szallnevgr.addClass('has-error');
                 if (!hibas) {
                     tofocus = szallnevinput;
@@ -59,7 +60,7 @@ var checkout = (function($) {
                 szallnevgr.removeClass('has-error');
             }
 
-            if (!szallirszaminput.val()) {
+            if (!szalleqszamla && !szallirszaminput.val()) {
                 szallirszamgr.addClass('has-error');
                 if (!hibas) {
                     tofocus = szallirszaminput;
@@ -70,7 +71,7 @@ var checkout = (function($) {
                 szallirszamgr.removeClass('has-error');
             }
 
-            if (!szallvarosinput.val()) {
+            if (!szalleqszamla && !szallvarosinput.val()) {
                 szallvarosgr.addClass('has-error');
                 if (!hibas) {
                     tofocus = szallvarosinput;
@@ -81,7 +82,7 @@ var checkout = (function($) {
                 szallvarosgr.removeClass('has-error');
             }
 
-            if (!szallutcainput.val()) {
+            if (!szalleqszamla && !szallutcainput.val()) {
                 szallutcagr.addClass('has-error');
                 if (!hibas) {
                     tofocus = szallutcainput;

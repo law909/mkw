@@ -357,6 +357,15 @@ class checkoutController extends \mkwhelpers\MattableController {
                 $szallirszam = $this->params->getStringRequestParam('szallirszam');
                 $szallvaros = $this->params->getStringRequestParam('szallvaros');
                 $szallutca = $this->params->getStringRequestParam('szallutca');
+                $szalleqszamla = $this->params->getBoolRequestParam('szalleqszamla');
+                $webshopmessage = $this->params->getStringRequestParam('webshopmessage');
+
+                if ($szalleqszamla) {
+                    $szallnev = $szamlanev;
+                    $szallirszam = $szamlairszam;
+                    $szallvaros = $szamlavaros;
+                    $szallutca = $szamlautca;
+                }
 
                 $ok = ($szallnev && $szallirszam && $szallvaros && $szallutca &&
                         $szamlanev && $szamlairszam && $szamlavaros && $szamlautca);
@@ -403,6 +412,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $megrendfej->setFizmod($partner->getFizmod());
                     $megrendfej->setSzallitasimod($partner->getSzallitasimod());
                     $megrendfej->setValutanem($valutanem);
+                    $megrendfej->setWebshopmessage($webshopmessage);
                     $arf = $this->getEm()->getRepository('Entities\Arfolyam')->getActualArfolyam($valutanem, $megrendfej->getTeljesites());
                     $megrendfej->setArfolyam($arf->getArfolyam());
                     $raktarid = store::getParameter(\mkw\consts::Raktar);
