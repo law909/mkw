@@ -15,14 +15,52 @@ abstract class Controller {
      * @var ParameterHandler
      */
 	protected $params;
+    /**
+     *
+     * @var \mkwhelpers\Repository
+     */
+	private $repo;
+    /**
+     *
+     * @var \Doctrine\ORM\EntityManager
+     */
+	private $em;
+    private $entityName = '';
 
 	public function __construct($params) {
 		$this->setTemplateFactory(\mkw\Store::getTemplateFactory());
-		$this->generalDataLoader=\mkw\Store::getGdl();
-		$this->params=$params;
+		$this->generalDataLoader = \mkw\Store::getGdl();
+		$this->params = $params;
+        $this->em = \mkw\Store::getEm();
+        if ($this->entityName) {
+            $this->repo = $this->em->getRepository($this->entityName);
+        }
 	}
 
-	protected function setTemplateFactory($path) {
+    public function getEntityName() {
+        return $this->entityName;
+    }
+
+    public function setEntityName($ename) {
+        $this->entityName = $ename;
+    }
+
+    /**
+     *
+     * @return EntityManager
+     */
+	public function getEm() {
+		return $this->em;
+	}
+
+	public function getRepo($entityname = null) {
+        if (!$entityname) {
+            return $this->repo;
+        }
+        return $this->em->getRepository($entityname);
+	}
+
+    protected function setTemplateFactory($path) {
 		$this->templateFactory=$path;
 	}
 

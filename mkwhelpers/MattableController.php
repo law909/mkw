@@ -12,17 +12,6 @@ class MattableController extends Controller {
     protected $delOperation = 'del';
     protected $inheritOperation = 'inherit';
     protected $stornoOperation = 'storno';
-    private $entityName = '';
-    /**
-     *
-     * @var \mkwhelpers\Repository
-     */
-    private $repo;
-    /**
-     *
-     * @var \Doctrine\ORM\EntityManager
-     */
-    private $em;
     private $pager;
     private $listBodyRowTplName;
     private $listBodyRowVarName;
@@ -34,10 +23,6 @@ class MattableController extends Controller {
     public function __construct($params) {
         parent::__construct($params);
         $this->setTemplateFactory(\mkw\Store::getTemplateFactory());
-        $this->em = \mkw\Store::getEm();
-        if ($this->entityName) {
-            $this->repo = $this->em->getRepository($this->entityName);
-        }
     }
 
     public function setPageTitle($val) {
@@ -54,29 +39,6 @@ class MattableController extends Controller {
 
     public function getPluralPageTitle() {
         return $this->pluralpagetitle;
-    }
-
-    public function getEntityName() {
-        return $this->entityName;
-    }
-
-    public function setEntityName($ename) {
-        $this->entityName = $ename;
-    }
-
-    /**
-     *
-     * @return EntityManager
-     */
-    public function getEm() {
-        return $this->em;
-    }
-
-    public function getRepo($entityname = null) {
-        if (!$entityname) {
-            return $this->repo;
-        }
-        return $this->em->getRepository($entityname);
     }
 
     protected function getPager() {
@@ -138,22 +100,22 @@ class MattableController extends Controller {
                 case $this->stornoOperation:
                     $cl = $this->entityName;
                     $obj = new $cl();
-                    $this->em->persist($this->setFields($obj, $parancs));
-                    $this->em->flush();
+                    $this->getEm()->persist($this->setFields($obj, $parancs));
+                    $this->getEm()->flush();
                     $this->afterSave($obj);
                     break;
                 case $this->editOperation:
-                    $obj = $this->repo->find($id);
-                    $this->em->persist($this->setFields($obj, $parancs));
-                    $this->em->flush();
+                    $obj = $this->getRepo()->find($id);
+                    $this->getEm()->persist($this->setFields($obj, $parancs));
+                    $this->getEm()->flush();
                     $this->afterSave($obj);
                     break;
                 case $this->delOperation:
-                    $obj = $this->repo->find($id);
+                    $obj = $this->getRepo()->find($id);
                     if ($obj) {
                         $this->beforeRemove($obj);
-                        $this->em->remove($obj);
-                        $this->em->flush();
+                        $this->getEm()->remove($obj);
+                        $this->getEm()->flush();
                         $this->afterSave($obj);
                     }
                     break;
@@ -189,7 +151,7 @@ class MattableController extends Controller {
 
     protected function getOrderArray() {
         //TODO SQLINJECTION
-        return $this->repo->getOrder($this->params->getRequestParam('order', 1));
+        return $this->getRepo()->getOrder($this->params->getRequestParam('order', 1));
     }
 
     protected function initPager($elemcount, $elemperpage = null, $pageno = null) {
