@@ -523,14 +523,20 @@ class Bizonylatfej {
             $subject->setVar('rendeles', $tpldata);
             $body = \mkw\Store::getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
             $body->setVar('rendeles', $tpldata);
-            $mailer = \mkw\Store::getMailer();
-            if ($topartner) {
-                $mailer->addTo($bf->getPartneremail());
-                $mailer->addTo($bf->getUzletkotoemail());
+            if (\mkw\Store::getConfigValue('developer')) {
+                \mkw\Store::writelog($subject->getTemplateResult(), 'bizstatuszemail.html');
+                \mkw\Store::writelog($body->getTemplateResult(), 'bizstatuszemail.html');
             }
-            $mailer->setSubject($subject->getTemplateResult());
-            $mailer->setMessage($body->getTemplateResult());
-            $mailer->send();
+            else {
+                $mailer = \mkw\Store::getMailer();
+                if ($topartner) {
+                    $mailer->addTo($bf->getPartneremail());
+                    $mailer->addTo($bf->getUzletkotoemail());
+                }
+                $mailer->setSubject($subject->getTemplateResult());
+                $mailer->setMessage($body->getTemplateResult());
+                $mailer->send();
+            }
         }
     }
 

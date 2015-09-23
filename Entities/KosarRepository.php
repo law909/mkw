@@ -29,6 +29,9 @@ class KosarRepository extends \mkwhelpers\Repository {
         if ($elemcount > 0) {
             $q->setMaxResults($elemcount);
         }
+        if (\mkw\Store::isMainMode()) {
+            \mkw\Store::setTranslationHint($q, \mkw\Store::getParameter(\mkw\consts::Locale));
+        }
         return $q->getResult();
     }
 
