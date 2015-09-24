@@ -318,3 +318,5 @@ $router->map('GET', '/admin/fifo/keszletertek', 'fifoController#getKeszletertek'
 
 $router->map('POST', '/admin/otpay/refund', 'megrendelesfejController#otpayrefund', 'adminotpayrefund');
 $router->map('POST', '/admin/otpay/storno', 'megrendelesfejController#otpaystorno', 'adminotpaystorno');
+
+$router->map('GET', '/admin/lista/boltbannincsmasholvan', 'listaController#boltbannincsmasholvan', 'adminlistaboltbannincsmasholvan');

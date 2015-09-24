@@ -63,7 +63,7 @@ class Repository extends EntityRepository {
         return $q->getSingleScalarResult();
     }
 
-    protected function getFilterString($filter) {
+    public function getFilterString($filter) {
         if (is_array($filter) && array_key_exists('fields', $filter) && array_key_exists('values', $filter)) {
             $fno = 1;
             $filterarr = array();
@@ -167,7 +167,7 @@ class Repository extends EntityRepository {
         }
     }
 
-    protected function getQueryParameters($filter) {
+    public function getQueryParameters($filter) {
         $paramarr = array();
         if (is_array($filter) && array_key_exists('values', $filter)) {
             $values = $filter['values'];
@@ -203,7 +203,7 @@ class Repository extends EntityRepository {
         return $paramarr;
     }
 
-    protected function getOrderString($order) {
+    public function getOrderString($order) {
         // TODO SQLINJECTION
         $orderarr = array();
         $orderstring = '';
@@ -229,7 +229,7 @@ class Repository extends EntityRepository {
         return $orderstring;
     }
 
-    protected function getLimitString($offset, $limit) {
+    public function getLimitString($offset, $limit) {
         if ($offset && $limit) {
             return ' LIMIT ' . $offset . ', ' . $limit;
         }

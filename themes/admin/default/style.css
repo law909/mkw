@@ -150,6 +150,11 @@ img {
 }
 
 .mainbox {
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+.mainboxinner {
     margin: 5px;
 }
 

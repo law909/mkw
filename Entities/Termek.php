@@ -657,6 +657,22 @@ class Termek {
         return $x;
     }
 
+    public function toRiport($valtozat) {
+        $x = array();
+        $x['id'] = $this->getId();
+        $x['nev'] = $this->getNev();
+        $x['cikkszam'] = $this->getCikkszam();
+        if ($valtozat) {
+            $x['valtozatid'] = $valtozat->getId();
+            $x['valtozatnev'] = $valtozat->getNev();
+        }
+        else {
+            $x['valtozatid'] = 0;
+            $x['valtozatnev'] = '';
+        }
+        return $x;
+    }
+
     public function getId() {
         return $this->id;
     }
