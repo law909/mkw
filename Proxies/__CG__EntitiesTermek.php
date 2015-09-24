@@ -308,6 +308,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function toRiport($valtozat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toRiport', array($valtozat));
+
+        return parent::toRiport($valtozat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {

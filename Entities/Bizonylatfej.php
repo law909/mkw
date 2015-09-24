@@ -11,6 +11,7 @@ use mkw\store;
  * */
 class Bizonylatfej {
 
+    private $duplication;
     /**
      * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)
      */
@@ -291,7 +292,7 @@ class Bizonylatfej {
      */
     private $bankszamla;
 
-	/** @ORM\Column(type="string",length=50) */
+	/** @ORM\Column(type="string",length=50,nullable=true) */
 	private $tulajbanknev;
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
@@ -300,7 +301,7 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $tulajswift;
 
-    /** @ORM\Column(type="string",length=20) */
+    /** @ORM\Column(type="string",length=20,nullable=true) */
 	private $tulajiban;
 
     /**
@@ -755,10 +756,12 @@ class Bizonylatfej {
     public function setBizonylattipus($val) {
         if ($this->bizonylattipus !== $val) {
             $this->bizonylattipus = $val;
-            $this->setIrany($val->getIrany());
-            $this->setBizonylatnev($val->getNev());
-            $this->setPenztmozgat($val->getPenztmozgat());
-            $this->setReportfile($val->getTplname());
+            if (!$this->duplication) {
+                $this->setIrany($val->getIrany());
+                $this->setBizonylatnev($val->getNev());
+                $this->setPenztmozgat($val->getPenztmozgat());
+                $this->setReportfile($val->getTplname());
+            }
 //			$val->addBizonylat($this);
         }
     }
@@ -767,8 +770,10 @@ class Bizonylatfej {
         if ($this->bizonylattipus !== null) {
 //			$val=$this->bizonylattipus;
             $this->bizonylattipus = null;
-            $this->bizonylatnev = '';
-            $this->setReportfile('');
+            if (!$this->duplication) {
+                $this->bizonylatnev = '';
+                $this->setReportfile('');
+            }
 //			$val->removeBizonylat($this);
         }
     }
@@ -795,7 +800,7 @@ class Bizonylatfej {
 
     public function setStorno($val) {
         $this->storno = $val;
-        if ($this->storno) {
+        if ($this->storno && !$this->duplication) {
             $this->setStornozott(false);
         }
     }
@@ -806,12 +811,14 @@ class Bizonylatfej {
 
     public function setStornozott($val) {
         $this->stornozott = $val;
-        if ($this->stornozott) {
+        if ($this->stornozott && !$this->duplication) {
             $this->setStorno(false);
         }
-        foreach ($this->bizonylattetelek as $bt) {
-            $bt->setStornozott($val);
-            \mkw\Store::getEm()->persist($bt);
+        if (!$this->duplication) {
+            foreach ($this->bizonylattetelek as $bt) {
+                $bt->setStornozott($val);
+                \mkw\Store::getEm()->persist($bt);
+            }
         }
     }
 
@@ -1125,17 +1132,14 @@ class Bizonylatfej {
         if ($this->valutanem !== $val) {
             $this->valutanem = $val;
             $this->valutanemnev = $val->getNev();
-//			$val->addBizonylatfej($this);
         }
     }
 
     public function removeValutanem() {
         if ($this->valutanem !== null) {
-//			$val=$this->valutanem;
             $this->valutanem = null;
             $this->valutanemnev = '';
             $this->setArfolyam(1);
-//			$val->removeBizonylatfej($this);
         }
     }
 
@@ -1193,92 +1197,93 @@ class Bizonylatfej {
     public function setPartner($val) {
         if ($this->partner !== $val) {
             $this->partner = $val;
-            $this->partnernev = $val->getNev();
-            $this->partnervezeteknev = $val->getVezeteknev();
-            $this->partnerkeresztnev = $val->getKeresztnev();
-            $this->partneradoszam = $val->getAdoszam();
-            $this->partnercjszam = $val->getCjszam();
-            $this->partnereuadoszam = $val->getEuadoszam();
-            $this->partnerfvmszam = $val->getFvmszam();
-            $this->partnerirszam = $val->getIrszam();
-            $this->partnerjovengszam = $val->getJovengszam();
-            $this->partnerlirszam = $val->getLirszam();
-            $this->partnerlutca = $val->getLutca();
-            $this->partnerlvaros = $val->getLvaros();
-            $this->partnertelefon = $val->getTelefon();
-            $this->partneremail = $val->getEmail();
-            $this->partnermukengszam = $val->getMukengszam();
-            $this->partnerostermszam = $val->getOstermszam();
-            $this->partnerstatszamjel = $val->getStatszamjel();
-            $this->partnerutca = $val->getUtca();
-            $this->partnervalligszam = $val->getValligszam();
-            $this->partnervaros = $val->getVaros();
+            if (!$this->duplication) {
+                $this->setPartnernev($val->getNev());
+                $this->setPartnervezeteknev($val->getVezeteknev());
+                $this->setPartnerkeresztnev($val->getKeresztnev());
+                $this->setPartneradoszam($val->getAdoszam());
+                $this->setPartnercjszam($val->getCjszam());
+                $this->setPartnereuadoszam($val->getEuadoszam());
+                $this->setPartnerfvmszam($val->getFvmszam());
+                $this->setPartnerirszam($val->getIrszam());
+                $this->setPartnerjovengszam($val->getJovengszam());
+                $this->setPartnerlirszam($val->getLirszam());
+                $this->setPartnerlutca($val->getLutca());
+                $this->setPartnerlvaros($val->getLvaros());
+                $this->setPartnertelefon($val->getTelefon());
+                $this->setPartneremail($val->getEmail());
+                $this->setPartnermukengszam($val->getMukengszam());
+                $this->setPartnerostermszam($val->getOstermszam());
+                $this->setPartnerstatszamjel($val->getStatszamjel());
+                $this->setPartnerutca($val->getUtca());
+                $this->setPartnervalligszam($val->getValligszam());
+                $this->setPartnervaros($val->getVaros());
 
-            $this->szallnev = $val->getSzallnev();
-            $this->szallirszam = $val->getSzallirszam();
-            $this->szallvaros = $val->getSzallvaros();
-            $this->szallutca = $val->getSzallutca();
+                $this->setSzallnev($val->getSzallnev());
+                $this->setSzallirszam($val->getSzallirszam());
+                $this->setSzallvaros($val->getSzallvaros());
+                $this->setSzallutca($val->getSzallutca());
 
-            $this->partnerszamlatipus = $val->getSzamlatipus();
-            $this->bizonylatnyelv = $val->getBizonylatnyelv();
+                $this->setPartnerszamlatipus($val->getSzamlatipus());
+                $this->setBizonylatnyelv($val->getBizonylatnyelv());
 
-            $uk = $val->getUzletkoto();
-            if ($uk) {
-                $this->setUzletkoto($uk);
+                $uk = $val->getUzletkoto();
+                if ($uk) {
+                    $this->setUzletkoto($uk);
+                }
+                else {
+                    $this->removeUzletkoto();
+                }
+                $fm = $val->getFizmod();
+                if ($fm) {
+                    $this->setFizmod($fm);
+                }
+                else {
+                    $this->removeFizmod();
+                }
+                $v = $val->getValutanem();
+                if ($v) {
+                    $this->setValutanem($v);
+                }
+                else {
+                    $this->removeValutanem();
+                }
             }
-            else {
-                $this->removeUzletkoto();
-            }
-            $fm = $val->getFizmod();
-            if ($fm) {
-                $this->setFizmod($fm);
-            }
-            else {
-                $this->removeFizmod();
-            }
-            $v = $val->getValutanem();
-            if ($v) {
-                $this->setValutanem($v);
-            }
-            else {
-                $this->removeValutanem();
-            }
-//			$val->addBizonylatfej($this);
         }
     }
 
     public function removePartner() {
         if ($this->partner !== null) {
-//			$val=$this->partner;
             $this->partner = null;
-            $this->partnernev = '';
-            $this->partnervezeteknev = '';
-            $this->partnerkeresztnev = '';
-            $this->partneradoszam = '';
-            $this->partnercjszam = '';
-            $this->partnereuadoszam = '';
-            $this->partnerfvmszam = '';
-            $this->partnerirszam = '';
-            $this->partnerjovengszam = '';
-            $this->partnerlirszam = '';
-            $this->partnerlutca = '';
-            $this->partnerlvaros = '';
-            $this->partnermukengszam = '';
-            $this->partnerostermszam = '';
-            $this->partnerstatszamjel = '';
-            $this->partnerutca = '';
-            $this->partnervalligszam = '';
-            $this->partnervaros = '';
-            $this->partnerszamlatipus = 0;
-            $this->szallnev = '';
-            $this->szallirszam = '';
-            $this->szallvaros = '';
-            $this->szallutca = '';
-            $this->bizonylatnyelv = '';
-            $this->removeUzletkoto();
-            $this->removeFizmod();
-            $this->removeValutanem();
-//			$val->removeBizonylatfej($this);
+            if (!$this->duplication) {
+                $this->partnernev = '';
+                $this->partnervezeteknev = '';
+                $this->partnerkeresztnev = '';
+                $this->partneradoszam = '';
+                $this->partnercjszam = '';
+                $this->partnereuadoszam = '';
+                $this->partnerfvmszam = '';
+                $this->partnerirszam = '';
+                $this->partnerjovengszam = '';
+                $this->partnerlirszam = '';
+                $this->partnerlutca = '';
+                $this->partnerlvaros = '';
+                $this->partnermukengszam = '';
+                $this->partnerostermszam = '';
+                $this->partnerstatszamjel = '';
+                $this->partnerutca = '';
+                $this->partnervalligszam = '';
+                $this->partnervaros = '';
+                $this->partnerszamlatipus = 0;
+                $this->szallnev = '';
+                $this->szallirszam = '';
+                $this->szallvaros = '';
+                $this->szallutca = '';
+                $this->bizonylatnyelv = '';
+                $this->removeUzletkoto();
+                $this->removeFizmod();
+                $this->removeValutanem();
+            }
         }
     }
 
@@ -1318,6 +1323,10 @@ class Bizonylatfej {
         return $this->partnercjszam;
     }
 
+    public function setPartnercjszam($val) {
+        $this->partnercjszam = $val;
+    }
+
     public function getPartnereuadoszam() {
         return $this->partnereuadoszam;
     }
@@ -1328,6 +1337,10 @@ class Bizonylatfej {
 
     public function getPartnerfvmszam() {
         return $this->partnerfvmszam;
+    }
+
+    public function setPartnerfvmszam($val) {
+        $this->partnerfvmszam = $val;
     }
 
     public function getPartnerirszam() {
@@ -1342,28 +1355,56 @@ class Bizonylatfej {
         return $this->partnerjovengszam;
     }
 
+    public function setPartnerjovengszam($val) {
+        $this->partnerjovengszam = $val;
+    }
+
     public function getPartnerlirszam() {
         return $this->partnerlirszam;
+    }
+
+    public function setPartnerlirszam($val) {
+        $this->partnerlirszam = $val;
     }
 
     public function getPartnerlutca() {
         return $this->partnerlutca;
     }
 
+    public function setPartnerlutca($val) {
+        $this->partnerlutca = $val;
+    }
+
     public function getPartnerlvaros() {
         return $this->partnerlvaros;
+    }
+
+    public function setPartnerlvaros($val) {
+        $this->partnerlvaros = $val;
     }
 
     public function getPartnermukengszam() {
         return $this->partnermukengszam;
     }
 
+    public function setPartnermukengszam($val) {
+        $this->partnermukengszam = $val;
+    }
+
     public function getPartnerostermszam() {
         return $this->partnerostermszam;
     }
 
+    public function setPartnerostermszam($val) {
+        $this->partnerostermszam = $val;
+    }
+
     public function getPartnerstatszamjel() {
         return $this->partnerstatszamjel;
+    }
+
+    public function setPartnerstatszamjel($val) {
+        $this->partnerstatszamjel = $val;
     }
 
     public function getPartnerutca() {
@@ -1376,6 +1417,10 @@ class Bizonylatfej {
 
     public function getPartnervalligszam() {
         return $this->partnervalligszam;
+    }
+
+    public function setPartnervalligszam($val) {
+        $this->partnervalligszam = $val;
     }
 
     public function getPartnervaros() {
@@ -1456,17 +1501,14 @@ class Bizonylatfej {
             $this->uzletkoto = $val;
             $this->uzletkotonev = $val->getNev();
             $this->uzletkotoemail = $val->getEmail();
-//			$val->addBizonylatfejek($this);
         }
     }
 
     public function removeUzletkoto() {
         if ($this->uzletkoto !== null) {
-//			$val=$this->uzletkoto;
             $this->uzletkoto = null;
             $this->uzletkotonev = '';
             $this->uzletkotoemail = '';
-//			$val->removeBizonylatfejek($this);
         }
     }
 
@@ -1489,16 +1531,13 @@ class Bizonylatfej {
         if ($this->raktar !== $val) {
             $this->raktar = $val;
             $this->raktarnev = $val->getNev();
-//			$val->addBizonylatfejek($this);
         }
     }
 
     public function removeRaktar() {
         if ($this->raktar !== null) {
-//			$val=$this->raktar;
             $this->raktar = null;
             $this->raktarnev = '';
-//			$val->removeBizonylatfejek($this);
         }
     }
 
@@ -1664,19 +1703,21 @@ class Bizonylatfej {
             }
             if ($this->bizonylatstatusz !== $val) {
                 $this->bizonylatstatusz = $val;
-                $this->bizonylatstatusznev = $val->getNev();
-                $this->bizonylatstatuszcsoport = $val->getCsoport();
+                if (!$this->duplication) {
+                    $this->bizonylatstatusznev = $val->getNev();
+                    $this->bizonylatstatuszcsoport = $val->getCsoport();
+                }
             }
         }
     }
 
     public function removeBizonylatstatusz() {
         if ($this->bizonylatstatusz !== null) {
-//			$val=$this->bizonylatstatusz;
             $this->bizonylatstatusz = null;
-            $this->bizonylatstatusznev = '';
-            $this->bizonylatstatuszcsoport = '';
-//			$val->removeBizonylat($this);
+            if (!$this->duplication) {
+                $this->bizonylatstatusznev = '';
+                $this->bizonylatstatuszcsoport = '';
+            }
         }
     }
 
@@ -1857,9 +1898,11 @@ class Bizonylatfej {
 
     public function setRontott($adat) {
         $this->rontott = $adat;
-        foreach ($this->bizonylattetelek as $bt) {
-            $bt->setRontott($adat);
-            \mkw\Store::getEm()->persist($bt);
+        if (!$this->duplication) {
+            foreach ($this->bizonylattetelek as $bt) {
+                $bt->setRontott($adat);
+                \mkw\Store::getEm()->persist($bt);
+            }
         }
     }
 
@@ -1998,6 +2041,7 @@ class Bizonylatfej {
     }
 
     public function duplicate($entityB){
+        $this->duplication = true;
         $methods = get_class_methods($this);
         foreach($methods as $v) {
             if (strpos($v, 'set') > -1) {
@@ -2007,6 +2051,7 @@ class Bizonylatfej {
                 }
             }
         }
+        $this->duplication = false;
         /**
         foreach($entityB->getBizonylattetelek() as $bt) {
             $this->addBizonylattetel($bt);

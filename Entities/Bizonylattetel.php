@@ -13,6 +13,7 @@ use mkw\store,
  */
 class Bizonylattetel {
 
+    private $duplication;
     /**
      * @ORM\Id @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -394,6 +395,62 @@ class Bizonylattetel {
         }
     }
 
+    public function getHosszusag() {
+        return $this->hosszusag;
+    }
+
+    public function setHosszusag($adat) {
+        $this->hosszusag = $adat;
+    }
+
+    public function getEhparany() {
+        return $this->ehparany;
+    }
+
+    public function setEhparany($adat) {
+        $this->ehparany = $adat;
+    }
+
+    public function getKiszereles() {
+        return $this->kiszereles;
+    }
+
+    public function setKiszereles($adat) {
+        $this->kiszereles = $adat;
+    }
+
+    public function getMagassag() {
+        return $this->magassag;
+    }
+
+    public function setMagassag($adat) {
+        $this->magassag = $adat;
+    }
+
+    public function getOsszehajthato() {
+        return $this->osszehajthato;
+    }
+
+    public function setOsszehajthato($adat) {
+        $this->osszehajthato = $adat;
+    }
+
+    public function getSuly() {
+        return $this->suly;
+    }
+
+    public function setSuly($adat) {
+        $this->suly = $adat;
+    }
+
+    public function getSzelesseg() {
+        return $this->szelesseg;
+    }
+
+    public function setSzelesseg($adat) {
+        $this->szelesseg = $adat;
+    }
+
     public function getTermek() {
         return $this->termek;
     }
@@ -408,54 +465,55 @@ class Bizonylattetel {
     public function setTermek($val) {
         if ($this->termek !== $val) {
             $this->termek = $val;
-            $this->termeknev = $val->getNev();
-            $this->translations->clear();
-            foreach($val->getTranslations() as $trans) {
-                $uj = new BizonylattetelTranslation($trans->getLocale(), 'termeknev', $trans->getContent());
-                $this->addTranslation($uj);
+            if (!$this->duplication) {
+                $this->setTermeknev($val->getNev());
+                $this->translations->clear();
+                foreach($val->getTranslations() as $trans) {
+                    $uj = new BizonylattetelTranslation($trans->getLocale(), 'termeknev', $trans->getContent());
+                    $this->addTranslation($uj);
+                }
+                $this->setCikkszam($val->getCikkszam());
+                $this->setHosszusag($val->getHosszusag());
+                $this->setEhparany($val->getHparany());
+                $this->setIdegencikkszam($val->getIdegencikkszam());
+                $this->setKiszereles($val->getKiszereles());
+                $this->setMagassag($val->getMagassag());
+                $this->setME($val->getMe());
+                $this->setOsszehajthato($val->getOsszehajthato());
+                $this->setSuly($val->getSuly());
+                $this->setSzelesseg($val->getSzelesseg());
+                $vtsz = $val->getVtsz();
+                if ($vtsz) {
+                    $this->setVtsz($vtsz);
+                }
+                $afa = $val->getAfa();
+                if ($afa) {
+                    $this->setAfa($afa);
+                }
+                $this->setMozgat();
+                $this->setFoglal();
             }
-            $this->cikkszam = $val->getCikkszam();
-            $this->hosszusag = $val->getHosszusag();
-            $this->ehparany = $val->getHparany();
-            $this->idegencikkszam = $val->getIdegencikkszam();
-            $this->kiszereles = $val->getKiszereles();
-            $this->magassag = $val->getMagassag();
-            $this->me = $val->getMe();
-            $this->osszehajthato = $val->getOsszehajthato();
-            $this->suly = $val->getSuly();
-            $this->szelesseg = $val->getSzelesseg();
-            $vtsz = $val->getVtsz();
-            if ($vtsz) {
-                $this->setVtsz($vtsz);
-            }
-            $afa = $val->getAfa();
-            if ($afa) {
-                $this->setAfa($afa);
-            }
-            $this->setMozgat();
-            $this->setFoglal();
-//			$val->addBizonylattetelek($this);
         }
     }
 
     public function removeTermek() {
         if ($this->termek !== null) {
-//			$val=$this->termek;
             $this->termek = null;
-            $this->termeknev = '';
-            $this->cikkszam = '';
-            $this->hosszusag = 0;
-            $this->ehparany = 0;
-            $this->idegencikkszam = '';
-            $this->kiszereles = 0;
-            $this->magassag = 0;
-            $this->me = '';
-            $this->osszehajthato = false;
-            $this->suly = 0;
-            $this->szelesseg = 0;
-            $this->setMozgat();
-            $this->setFoglal();
-//			$val->removeBizonylattetelek($this);
+            if (!$this->duplication) {
+                $this->termeknev = '';
+                $this->cikkszam = '';
+                $this->hosszusag = 0;
+                $this->ehparany = 0;
+                $this->idegencikkszam = '';
+                $this->kiszereles = 0;
+                $this->magassag = 0;
+                $this->me = '';
+                $this->osszehajthato = false;
+                $this->suly = 0;
+                $this->szelesseg = 0;
+                $this->setMozgat();
+                $this->setFoglal();
+            }
         }
     }
 
@@ -518,21 +576,20 @@ class Bizonylattetel {
             $this->vtsz = $val;
             $this->vtsznev = $val->getNev();
             $this->vtszszam = $val->getSzam();
-            $afa = $val->getAfa();
-            if ($afa) {
-                $this->setAfa($afa);
+            if (!$this->duplication) {
+                $afa = $val->getAfa();
+                if ($afa) {
+                    $this->setAfa($afa);
+                }
             }
-//			$val->addBizonylattetelek($this);
         }
     }
 
     public function removeVtsz() {
         if ($this->vtsz !== null) {
-//			$val=$this->vtsz;
             $this->vtsz = null;
             $this->vtsznev = '';
             $this->vtszszam = '';
-//			$val->removeBizonylattetelek($this);
         }
     }
 
@@ -563,17 +620,14 @@ class Bizonylattetel {
             $this->afa = $val;
             $this->afanev = $val->getNev();
             $this->afakulcs = $val->getErtek();
-//			$val->addBizonylattetelek($this);
         }
     }
 
     public function removeAfa() {
         if ($this->afa !== null) {
-//			$val=$this->afa;
             $this->afa = null;
             $this->afanev = '';
             $this->afakulcs = 0;
-//			$val->removeBizonylattetelek($this);
         }
     }
 
@@ -599,7 +653,7 @@ class Bizonylattetel {
 
     public function setNettoegysar($val) {
         $this->nettoegysar = $val;
-        if ($this->getAfa()) {
+        if ($this->getAfa() && !$this->duplication) {
             $this->bruttoegysar = $this->getAfa()->calcBrutto($val);
         }
     }
@@ -610,7 +664,7 @@ class Bizonylattetel {
 
     public function setBruttoegysar($val) {
         $this->bruttoegysar = $val;
-        if ($this->getAfa()) {
+        if ($this->getAfa() && !$this->duplication) {
             $this->nettoegysar = $this->getAfa()->calcNetto($val);
         }
     }
@@ -621,7 +675,7 @@ class Bizonylattetel {
 
     public function setNettoegysarhuf($val) {
         $this->nettoegysarhuf = $val;
-        if ($this->getAfa()) {
+        if ($this->getAfa() && !$this->duplication) {
             $this->bruttoegysarhuf = $this->getAfa()->calcBrutto($val);
         }
     }
@@ -632,7 +686,7 @@ class Bizonylattetel {
 
     public function setBruttoegysarhuf($val) {
         $this->bruttoegysarhuf = $val;
-        if ($this->getAfa()) {
+        if ($this->getAfa() && !$this->duplication) {
             $this->nettoegysarhuf = $this->getAfa()->calcNetto($val);
         }
     }
@@ -696,16 +750,13 @@ class Bizonylattetel {
         if ($this->valutanem !== $val) {
             $this->valutanem = $val;
             $this->valutanemnev = $val->getNev();
-//			$val->addBizonylattetel($this);
         }
     }
 
     public function removeValutanem() {
         if ($this->valutanem !== null) {
-//			$val=$this->valutanem;
             $this->valutanem = null;
             $this->valutanemnev = '';
-//			$val->removeBizonylattetel($this);
         }
     }
 
@@ -890,6 +941,7 @@ class Bizonylattetel {
     }
 
     public function duplicate($entityB){
+        $this->duplication = true;
         $kivetel = array('setBizonylatfej');
         $methods = get_class_methods($this);
         foreach($methods as $v) {
@@ -900,5 +952,6 @@ class Bizonylattetel {
                 }
             }
         }
+        $this->duplication = false;
     }
 }

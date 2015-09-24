@@ -64,10 +64,10 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arvaltoztat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'storno', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termeknev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'me', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ehparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'magassag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'suly', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsznev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtszszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afa', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afanev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afakulcs', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'gymennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'netto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertekhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'parbizonylattetel', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szulobizonylattetelek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hatarido', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'translations', 'locale');
+            return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'duplication', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arvaltoztat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'storno', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termeknev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'me', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ehparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'magassag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'suly', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsznev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtszszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afa', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afanev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afakulcs', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'gymennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'netto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertekhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'parbizonylattetel', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szulobizonylattetelek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hatarido', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'translations', 'locale');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arvaltoztat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'storno', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termeknev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'me', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ehparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'magassag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'suly', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsznev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtszszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afa', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afanev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afakulcs', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'gymennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'netto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertekhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'parbizonylattetel', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szulobizonylattetelek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hatarido', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'translations', 'locale');
+        return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'duplication', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arvaltoztat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'storno', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termeknev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'me', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ehparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'magassag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'suly', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsznev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtszszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afa', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afanev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afakulcs', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'gymennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'netto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertekhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'parbizonylattetel', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szulobizonylattetelek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hatarido', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'translations', 'locale');
     }
 
     /**
@@ -406,6 +406,160 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStornozott', array($val));
 
         return parent::setStornozott($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHosszusag()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHosszusag', array());
+
+        return parent::getHosszusag();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setHosszusag($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHosszusag', array($adat));
+
+        return parent::setHosszusag($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEhparany()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEhparany', array());
+
+        return parent::getEhparany();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEhparany($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEhparany', array($adat));
+
+        return parent::setEhparany($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKiszereles()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKiszereles', array());
+
+        return parent::getKiszereles();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setKiszereles($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKiszereles', array($adat));
+
+        return parent::setKiszereles($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMagassag()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMagassag', array());
+
+        return parent::getMagassag();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMagassag($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMagassag', array($adat));
+
+        return parent::setMagassag($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOsszehajthato()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsszehajthato', array());
+
+        return parent::getOsszehajthato();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOsszehajthato($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsszehajthato', array($adat));
+
+        return parent::setOsszehajthato($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSuly()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSuly', array());
+
+        return parent::getSuly();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSuly($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSuly', array($adat));
+
+        return parent::setSuly($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzelesseg()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzelesseg', array());
+
+        return parent::getSzelesseg();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzelesseg($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzelesseg', array($adat));
+
+        return parent::setSzelesseg($adat);
     }
 
     /**
