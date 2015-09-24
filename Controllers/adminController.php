@@ -83,4 +83,16 @@ class adminController extends mkwhelpers\Controller {
         echo 'ok';
     }
 
+    public function fillBiztetelValtozat() {
+        $repo = $this->getRepo('Entities\Bizonylattetel');
+        $mind = $repo->getAll();
+        foreach($mind as $bt) {
+            if ($bt->getTermekvaltozat()) {
+                $bt->setTermekvaltozat($bt->getTermekvaltozat());
+                $this->getEm()->persist($bt);
+                $this->getEm()->flush();
+            }
+        }
+        echo 'kesz';
+    }
 }

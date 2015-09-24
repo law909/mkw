@@ -320,3 +320,4 @@ $router->map('POST', '/admin/otpay/refund', 'megrendelesfejController#otpayrefun
 $router->map('POST', '/admin/otpay/storno', 'megrendelesfejController#otpaystorno', 'adminotpaystorno');
 
 $router->map('GET', '/admin/lista/boltbannincsmasholvan', 'listaController#boltbannincsmasholvan', 'adminlistaboltbannincsmasholvan');
+$router->map('GET', '/admin/fillbiztetelvaltozat', 'adminController#fillBiztetelValtozat', 'adminfillbiztetelvaltozat');

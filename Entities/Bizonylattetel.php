@@ -971,14 +971,12 @@ class Bizonylattetel {
     }
 
     public function setTermekvaltozat($val) {
-        if ($this->termekvaltozat !== $val) {
-            $this->termekvaltozat = $val;
-            if (!$this->duplication) {
-                $this->setValtozatertek1($val->getErtek1());
-                $this->setValtozatertek2($val->getErtek2());
-                $this->setValtozatadattipus1($val->getAdattipus1());
-                $this->setValtozatadattipus2($val->getAdattipus2());
-            }
+        $this->termekvaltozat = $val;
+        if (!$this->duplication) {
+            $this->setValtozatertek1($val->getErtek1());
+            $this->setValtozatertek2($val->getErtek2());
+            $this->setValtozatadattipus1($val->getAdattipus1());
+            $this->setValtozatadattipus2($val->getAdattipus2());
         }
     }
 
