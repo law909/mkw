@@ -33,6 +33,7 @@ class Store {
     private static $mainmode = false;
     private static $loggedinuser;
     public static $DateFormat = 'Y.m.d';
+    public static $SQLDateFormat = 'Y-m-d';
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
 
     public static function getJSVersion() {

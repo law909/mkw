@@ -587,6 +587,7 @@ class TermekRepository extends \mkwhelpers\Repository {
             . $groupby
             . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
-        return $q->getScalarResult();
+        $res = $q->getScalarResult();
+        return $res;
     }
 }
