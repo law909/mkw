@@ -639,9 +639,9 @@ $(document).ready(function() {
                     },
                     ui: {select_limit: 1}
                 })
-                        .bind('loaded.jstree', function(event, data) {
-                            dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
-                        });
+                .bind('loaded.jstree', function(event, data) {
+                    dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
+                });
                 dialogcenter.dialog({
                     resizable: true,
                     height: 340,
@@ -666,7 +666,7 @@ $(document).ready(function() {
                     }
                 });
             })
-                    .button();
+            .button();
             if (!$.browser.mobile) {
                 CKFinder.setupCKEditor(null, '/ckfinder/');
                 $('#LeirasEdit').ckeditor();

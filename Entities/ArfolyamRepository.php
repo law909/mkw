@@ -35,7 +35,9 @@ class ArfolyamRepository extends \mkwhelpers\Repository {
         if ($arf) {
             return $arf[0];
         }
-        return 1;
+        $arf = new \Entities\Arfolyam();
+        $arf->setArfolyam(1);
+        return $arf;
     }
 
     public function getArfolyam($valuta, $datum) {
