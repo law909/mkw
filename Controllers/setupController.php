@@ -172,6 +172,10 @@ class setupController extends \mkwhelpers\Controller {
 //        $fizmod = new fizmodController($this->params);
         $view->setVar('utanvetfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::Szallitasimod);
+        $szallmod = new szallitasimodController($this->params);
+        $view->setVar('szallitasimodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0)));
+
         if (\mkw\Store::isOTPay()) {
             $p = $repo->find(\mkw\consts::OTPayFizmod);
             $view->setVar('otpayfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
@@ -399,6 +403,10 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::UtanvetFizmod, '');
+        }
+        $szallmod = store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod', 0));
+        if ($szallmod) {
+            $this->setObj(\mkw\consts::Szallitasimod, $szallmod->getId());
         }
         if (\mkw\Store::isOTPay()) {
             $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('otpayfizmod', 0));

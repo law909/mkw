@@ -12,6 +12,7 @@ class consts {
     const Raktar = 'raktar';
     const Fizmod = 'fizmod';
     const UtanvetFizmod = 'utanvetfizmod';
+    const Szallitasimod = 'szallitasimod';
     const Arsav = 'arsav';
     const Esedekessegalap = 'esedekessegalap';
     const Autologoutmin = 'autologoutmin';

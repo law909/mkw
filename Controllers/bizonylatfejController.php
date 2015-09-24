@@ -46,7 +46,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('fizmodlist', $fmc->getSelectList());
 
         $fmc = new szallitasimodController($this->params);
-        $view->setVar('szallitasimodlist', $fmc->getSelectList(false));
+        $view->setVar('szallitasimodlist', $fmc->getSelectList());
 
         $fmc = new uzletkotoController($this->params);
         $view->setVar('uzletkotolist', $fmc->getSelectList(false));
@@ -792,7 +792,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('fizmodlist', $fizmod->getSelectList($fmid));
 
         $szallitasimod = new szallitasimodController($this->params);
-        $view->setVar('szallitasimodlist', $szallitasimod->getSelectList(($record ? $record->getSzallitasimodId() : 0), true));
+        if (!$record || !$record->getSzallitasimodId()) {
+            $fmid = \mkw\Store::getParameter(\mkw\consts::Szallitasimod);
+        }
+        else {
+            $fmid = $record->getSzallitasimodId();
+        }
+        $view->setVar('szallitasimodlist', $szallitasimod->getSelectList($fmid, true));
 
         $valutanem = new valutanemController($this->params);
         if (!$record || !$record->getValutanemId()) {
@@ -803,14 +809,21 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
         $view->setVar('valutanemlist', $valutanem->getSelectList($valutaid));
 
+        $bankszla = new bankszamlaController($this->params);
+        $bankszlaid = false;
+        if (!$record || !$record->getBankszamlaId()) {
+            $valutanem = $this->getRepo('Entities\Valutanem')->find($valutaid);
+            if ($valutanem && $valutanem->getBankszamlaId()) {
+                $bankszlaid = $valutanem->getBankszamlaId();
+            }
+        }
+        $view->setVar('bankszamlalist', $bankszla->getSelectList($bankszlaid));
+
         $uk = new uzletkotoController($this->params);
         if ($record && $record->getUzletkotoId()) {
             $ukid = $record->getUzletkotoId();
         }
         $view->setVar('uzletkotolist', $uk->getSelectList($ukid));
-
-        $bankszla = new bankszamlaController($this->params);
-        $view->setVar('bankszamlalist', $bankszla->getSelectList(($record ? $record->getBankszamlaId() : 0)));
 
         $view->setVar('esedekessegalap', store::getParameter(\mkw\consts::Esedekessegalap, 1));
         $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList(($record ? $record->getReportfile() : ''), ($record ? $record->getBizonylattipusId() : $this->biztipus)));

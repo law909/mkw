@@ -37,7 +37,7 @@ class szallitasimodController extends \mkwhelpers\JQGridController {
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid, $mind = false) {
+    public function getSelectList($selid = null, $mind = false) {
         $foxpostid = \mkw\Store::getParameter(\mkw\consts::FoxpostSzallitasiMod);
         if ($mind) {
             $rec = $this->getRepo()->getAll(array(),array('sorrend'=>'ASC','nev'=>'ASC'));
@@ -46,7 +46,8 @@ class szallitasimodController extends \mkwhelpers\JQGridController {
             $rec = $this->getRepo()->getAllWebes();
         }
         $res = array();
-        $vanvalasztott = false;
+        // mkwnál ki kell választani az elsőt
+        $vanvalasztott = \mkw\Store::getTheme() !== 'mkwcansas';
         foreach ($rec as $sor) {
             $r = array(
                 'id' => $sor->getId(),
