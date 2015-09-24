@@ -572,4 +572,21 @@ class TermekRepository extends \mkwhelpers\Repository {
         }
         return $ret;
     }
+
+    public function calcKeszlet($filter, $plusfields = '', $groupby = '', $order = array()) {
+        if ($plusfields) {
+            $plusfields = ' ,' . $plusfields . ' ';
+        }
+        $a = $this->alias;
+        $q = $this->_em->createQuery('SELECT SUM(bt.mennyiseg) AS mennyiseg, SUM(bt.nettohuf) AS nettohuf, SUM(bt.bruttohuf) AS bruttohuf '
+            . $plusfields
+            . 'FROM Entities\Bizonylattetel bt '
+            . 'LEFT JOIN bt.bizonylatfej bf '
+            . 'LEFT JOIN bt.termek t'
+            . $this->getFilterString($filter)
+            . $groupby
+            . $this->getOrderString($order));
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getScalarResult();
+    }
 }

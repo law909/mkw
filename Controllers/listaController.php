@@ -74,4 +74,44 @@ class listaController extends \mkwhelpers\Controller {
         $view->setVar('lista', $res);
         $view->printTemplateResult();
     }
+
+    public function napiJelentes() {
+        $datum = new \DateTime();
+        $btrepo = $this->getRepo('Entities\BizonylatTipus');
+        $btegyebmozgas = $btrepo->find('egyeb');
+        $btszamla = $btrepo->find('szamla');
+        $termekrepo = $this->getRepo('Entities\Termek');
+        $farepo = $this->getRepo('Entities\TermekFa');
+        $focsoportok = $farepo->getForParent(1);
+        $ret = array();
+        foreach($focsoportok as $csoport) {
+            $filter = array();
+            $filter['fields'][] = 'bt.mozgat';
+            $filter['clauses'][] = '=';
+            $filter['values'][] = 1;
+
+            $filter['fields'][] = 'bf.teljesites';
+            $filter['clauses'][] = '=';
+            $filter['values'][] = $datum;
+
+            $filter['fields'][] = array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod');
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = $csoport['karkod'] . '%';
+
+            $filter['fields'][] = 'bf.bizonylattipus';
+            $filter['clauses'][] = 'IN';
+            $filter['values'][] = array($btszamla, $btegyebmozgas);
+
+            $k = $termekrepo->calcKeszlet($filter);
+            $k = $k[0];
+            if ($k['mennyiseg'] || $k['nettohuf'] || $k['bruttohuf']) {
+                $elem = $csoport;
+                $elem['mennyiseg'] = $k['mennyiseg'];
+                $elem['netto'] = $k['nettohuf'];
+                $elem['brutto'] = $k['bruttohuf'];
+                $ret[] = $elem;
+            }
+        }
+        return $ret;
+    }
 }

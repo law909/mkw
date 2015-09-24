@@ -30,6 +30,9 @@ class adminController extends mkwhelpers\Controller {
         $raktarid = store::getParameter(\mkw\consts::Raktar, 0);
         $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
 
+        $lista = new listaController($this->params);
+        $view->setVar('napijelenteslista', $lista->napiJelentes());
+
         $view->printTemplateResult();
     }
 

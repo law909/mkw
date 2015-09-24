@@ -125,12 +125,13 @@ class TermekFaRepository extends \mkwhelpers\Repository {
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('nev', 'caption');
         $rsm->addScalarResult('slug', 'slug');
+        $rsm->addScalarResult('karkod', 'karkod');
         $rsm->addScalarResult('leiras', 'leiras');
         $rsm->addScalarResult('kepurl', 'kepurl');
         $rsm->addScalarResult('kepleiras', 'kepleiras');
 //		$rsm->addScalarResult('termekdarab', 'termekdarab');
         $rsm->addScalarResult('sorrend', 'sorrend');
-        $q = $this->_em->createNativeQuery('SELECT id,nev,slug,leiras,kepurl,kepleiras,'
+        $q = $this->_em->createNativeQuery('SELECT id,nev,slug,karkod,leiras,kepurl,kepleiras,'
 //			.'(SELECT COUNT(*) FROM termek t WHERE (t.inaktiv=0) AND (t.lathato=1) AND ((t.termekfa1karkod LIKE CONCAT(f.karkod,\'%\')) OR (t.termekfa2karkod LIKE CONCAT(f.karkod,\'%\')) OR (t.termekfa3karkod LIKE CONCAT(f.karkod,\'%\')))) AS termekdarab,'
                 . 'sorrend '
                 . 'FROM termekfa f '

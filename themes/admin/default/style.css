@@ -161,3 +161,16 @@ img {
 .bizonylatosszesito {
     margin-top: 5px;
 }
+
+.headercell {
+    padding: 5px;
+}
+
+.datacell {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+tfoot tr td {
+    font-weight: bold;
+}
