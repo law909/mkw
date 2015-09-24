@@ -206,6 +206,30 @@ class Bizonylattetel {
      */
     private $termekvaltozat;
 
+    /**
+	 * @ORM\ManyToOne(targetEntity="TermekValtozatAdatTipus")
+	 * @ORM\JoinColumn(name="valtozatadattipus1_id",referencedColumnName="id",onDelete="restrict")
+	 */
+    private $valtozatadattipus1;
+
+    /**
+	 * @ORM\ManyToOne(targetEntity="TermekValtozatAdatTipus")
+	 * @ORM\JoinColumn(name="valtozatadattipus2_id",referencedColumnName="id",onDelete="restrict")
+	 */
+    private $valtozatadattipus2;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $valtozatadattipus1nev;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $valtozatadattipus2nev;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $valtozatertek1;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $valtozatertek2;
+
     /** @ORM\OneToMany(targetEntity="BizonylattetelTranslation", mappedBy="object", cascade={"persist", "remove"}) */
     private $translations;
 
@@ -875,6 +899,66 @@ class Bizonylattetel {
         $this->created = null;
     }
 
+    public function getValtozatertek1() {
+        return $this->valtozatertek1;
+    }
+
+    public function setValtozatertek1($val) {
+        $this->valtozatertek1 = $val;
+    }
+
+    public function getValtozatertek2() {
+        return $this->valtozatertek2;
+    }
+
+    public function setValtozatertek2($val) {
+        $this->valtozatertek2 = $val;
+    }
+
+    public function getValtozatadattipus1() {
+        return $this->valtozatadattipus1;
+    }
+
+    public function setValtozatadattipus1($adat) {
+        $this->valtozatadattipus1 = $adat;
+        if ($adat) {
+            $this->valtozatadattipus1nev = $adat->getNev();
+        }
+        else {
+            $this->valtozatadattipus1nev = '';
+        }
+    }
+
+    public function getValtozatadattipus2() {
+        return $this->valtozatadattipus2;
+    }
+
+    public function setValtozatadattipus2($adat) {
+        $this->valtozatadattipus2 = $adat;
+        if ($adat) {
+            $this->valtozatadattipus2nev = $adat->getNev();
+        }
+        else {
+            $this->valtozatadattipus2nev = '';
+        }
+    }
+
+    public function getValtozatadattipus1nev() {
+        return $this->valtozatadattipus1nev;
+    }
+
+    public function setValtozatadattipus1nev($adat) {
+        $this->valtozatadattipus1nev = $adat;
+    }
+
+    public function getValtozatadattipus2nev() {
+        return $this->valtozatadattipus2nev;
+    }
+
+    public function setValtozatadattipus2nev($adat) {
+        $this->valtozatadattipus2nev = $adat;
+    }
+
     public function getTermekvaltozat() {
         return $this->termekvaltozat;
     }
@@ -889,15 +973,24 @@ class Bizonylattetel {
     public function setTermekvaltozat($val) {
         if ($this->termekvaltozat !== $val) {
             $this->termekvaltozat = $val;
-//			$val->addBizonylattetelek($this);
+            if (!$this->duplication) {
+                $this->setValtozatertek1($val->getErtek1());
+                $this->setValtozatertek2($val->getErtek2());
+                $this->setValtozatadattipus1($val->getAdattipus1());
+                $this->setValtozatadattipus2($val->getAdattipus2());
+            }
         }
     }
 
     public function removeTermekvaltozat() {
         if ($this->termekvaltozat !== null) {
-//			$val=$this->termek;
             $this->termekvaltozat = null;
-//			$val->removeBizonylattetelek($this);
+            if (!$this->duplication) {
+                $this->setValtozatertek1('');
+                $this->setValtozatertek2('');
+                $this->setValtozatadattipus1(null);
+                $this->setValtozatadattipus2(null);
+            }
         }
     }
 
