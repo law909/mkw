@@ -10,7 +10,7 @@ class BankszamlaRepository extends \mkwhelpers\Repository {
 	}
 
 	public function getAll($filter = array(), $order = array(), $offset = 0, $elemcount = 0) {
-		return $this->_em->createQuery('SELECT ' . $this->alias . ',v FROM ' . $this->entityname . ' ' . $this->alias
+		return $this->_em->createQuery('SELECT ' . $this->alias . ',v FROM ' . $this->getEntityname() . ' ' . $this->alias
 								. ' LEFT JOIN ' . $this->alias . '.valutanem v'
 								. $this->getFilterString($filter)
 								. $this->getOrderString($order))

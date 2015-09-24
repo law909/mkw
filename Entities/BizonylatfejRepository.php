@@ -62,7 +62,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 	public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
 		$a = $this->alias;
 		$q = $this->_em->createQuery('SELECT ' . $a
-				. ' FROM ' . $this->entityname . ' ' . $a
+				. ' FROM ' . $this->getEntityname() . ' ' . $a
 				. $this->getFilterString($filter)
 				. $this->getOrderString($order));
 		$q->setParameters($this->getQueryParameters($filter));
@@ -77,7 +77,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 
 	public function getCount($filter) {
 		$a = $this->alias;
-		$q = $this->_em->createQuery('SELECT COUNT(' . $a . ') FROM ' . $this->entityname . ' ' . $a
+		$q = $this->_em->createQuery('SELECT COUNT(' . $a . ') FROM ' . $this->getEntityname() . ' ' . $a
 				. $this->getFilterString($filter));
 		$q->setParameters($this->getQueryParameters($filter));
 		return $q->getSingleScalarResult();
@@ -272,7 +272,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $filter['values'][] = $id;
 		$a = $this->alias;
 		$q = $this->_em->createQuery('SELECT ' . $a . ',bt'
-			. ' FROM ' . $this->entityname . ' ' . $a
+			. ' FROM ' . $this->getEntityname() . ' ' . $a
             . ' LEFT JOIN ' . $a . '.bizonylattetelek bt'
 			. $this->getFilterString($filter));
 		$q->setParameters($this->getQueryParameters($filter));

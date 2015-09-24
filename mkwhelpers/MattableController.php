@@ -98,7 +98,7 @@ class MattableController extends Controller {
                 case $this->addreopenOperation:
                 case $this->inheritOperation:
                 case $this->stornoOperation:
-                    $cl = $this->entityName;
+                    $cl = $this->getEntityName();
                     $obj = new $cl();
                     $this->getEm()->persist($this->setFields($obj, $parancs));
                     $this->getEm()->flush();

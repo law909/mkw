@@ -7,7 +7,7 @@ use mkw\store;
 class sitemapController extends \mkwhelpers\Controller {
 
     public function __construct($params) {
-        $this->entityName = 'Entities\Parameterek';
+        $this->setEntityName('Entities\Parameterek');
         parent::__construct($params);
     }
 

@@ -36,7 +36,7 @@ class JQGridController extends Controller {
         $id = $this->params->getRequestParam($this->idName, 0);
         switch ($parancs) {
             case $this->addOperation:
-                $cl = $this->entityName;
+                $cl = $this->getEntityName();
                 $obj = new $cl();
                 $this->getEm()->persist($this->setFields($obj));
                 $this->getEm()->flush();

@@ -25,7 +25,7 @@ abstract class Controller {
      * @var \Doctrine\ORM\EntityManager
      */
 	private $em;
-    private $entityName = '';
+    private $entityName;
 
 	public function __construct($params) {
 		$this->setTemplateFactory(\mkw\Store::getTemplateFactory());

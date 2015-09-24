@@ -7,12 +7,12 @@ use mkw\store;
 class setupController extends \mkwhelpers\Controller {
 
     public function __construct($params) {
-        $this->entityName = 'Entities\Parameterek';
+        $this->setEntityName('Entities\Parameterek');
         parent::__construct($params);
     }
 
     public function view() {
-        $repo = store::getEm()->getRepository($this->entityName);
+        $repo = store::getEm()->getRepository($this->getEntityName());
         $view = $this->createView('setup.tpl');
         $view->setVar('pagetitle', t('Beállítások'));
 
@@ -293,7 +293,7 @@ class setupController extends \mkwhelpers\Controller {
     }
 
     private function setObj($par, $value) {
-        $en = $this->entityName;
+        $en = $this->getEntityName();
         $p = store::getEm()->getRepository($en)->find($par);
         if ($p) {
             $p->setErtek($value);
