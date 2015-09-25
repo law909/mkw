@@ -387,6 +387,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             }
             $partnerobj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
 
+            $kiskercimkeid = \mkw\Store::getParameter(\mkw\consts::KiskerCimke);
+            if ($kiskercimkeid) {
+                $kiskercimke = $this->getRepo('Entities\Partnercimketorzs')->find($kiskercimkeid);
+                $partnerobj->addCimke($kiskercimke);
+            }
             $this->getEm()->persist($partnerobj);
         }
 
