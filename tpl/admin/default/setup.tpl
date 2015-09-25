@@ -118,6 +118,15 @@
 				</select></td>
 			</tr>
 			<tr>
+				<td><label for="KiskerCimkeEdit">{t('Kisker címke')}:</label></td>
+				<td><select id="KiskerCimkeEdit" name="kiskercimke">
+					<option value="">{t('válasszon')}</option>
+					{foreach $kiskercimkelist as $_kiskercimke}
+					<option value="{$_kiskercimke.id}"{if ($_kiskercimke.selected)} selected="selected"{/if}>{$_kiskercimke.caption}</option>
+					{/foreach}
+				</select></td>
+			</tr>
+			<tr>
 				<td><label for="AdminroleEdit">{t('Admin szerepkör')}:</label></td>
 				<td><select id="AdminroleEdit" name="adminrole">
 					<option value="">{t('válasszon')}</option>

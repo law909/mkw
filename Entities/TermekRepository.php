@@ -590,4 +590,26 @@ class TermekRepository extends \mkwhelpers\Repository {
         $res = $q->getScalarResult();
         return $res;
     }
+
+    public function calcNapijelentes($filter) {
+        $a = $this->alias;
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('mennyiseg', 'mennyiseg');
+        $rsm->addScalarResult('nettohuf', 'nettohuf');
+        $rsm->addScalarResult('bruttohuf', 'bruttohuf');
+
+        $q = $this->_em->createNativeQuery('SELECT SUM(bt.mennyiseg) AS mennyiseg, SUM(bt.nettohuf) AS nettohuf, SUM(bt.bruttohuf) AS bruttohuf '
+            . 'FROM bizonylattetel bt '
+            . 'LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id) '
+            . 'LEFT JOIN termek t ON (bt.termek_id=t.id) '
+            . 'LEFT JOIN partner p ON (bf.partner_id=p.id) '
+            . 'LEFT JOIN partner_cimkek pc ON (pc.partner_id=p.id) '
+            . $this->getFilterString($filter), $rsm);
+        $q->setParameters($this->getQueryParameters($filter));
+
+        $res = $q->getScalarResult();
+        return $res;
+    }
+
 }

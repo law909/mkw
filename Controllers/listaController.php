@@ -86,6 +86,7 @@ class listaController extends \mkwhelpers\Controller {
         $termekrepo = $this->getRepo('Entities\Termek');
         $farepo = $this->getRepo('Entities\TermekFa');
         $focsoportok = $farepo->getForParent(1);
+        $kiskercimke = \mkw\Store::getParameter(\mkw\consts::KiskerCimke);
         $ret = array();
         foreach($focsoportok as $csoport) {
             $filter = array();
@@ -101,11 +102,17 @@ class listaController extends \mkwhelpers\Controller {
             $filter['clauses'][] = 'LIKE';
             $filter['values'][] = $csoport['karkod'] . '%';
 
-            $filter['fields'][] = 'bf.bizonylattipus';
+            $filter['fields'][] = 'bf.bizonylattipus_id';
             $filter['clauses'][] = 'IN';
-            $filter['values'][] = array($btszamla, $btegyebmozgas);
+            $filter['values'][] = array($btszamla->getId(), $btegyebmozgas->getId());
 
-            $k = $termekrepo->calcKeszlet($filter);
+            if ($kiskercimke) {
+                $filter['fields'][] = 'pc.cimketorzs_id';
+                $filter['clauses'][] = '=';
+                $filter['values'][] = $kiskercimke;
+            }
+
+            $k = $termekrepo->calcNapijelentes($filter);
             $k = $k[0];
             if ($k['mennyiseg'] || $k['nettohuf'] || $k['bruttohuf']) {
                 $elem = $csoport;

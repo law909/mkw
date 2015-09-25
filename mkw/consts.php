@@ -20,6 +20,7 @@ class consts {
     const Logo = 'logo';
     const Locale = 'locale';
     const NullasAfa = 'nullasafa';
+    const KiskerCimke = 'kiskercimke';
 
     const Tulajnev = 'tulajnev';
     const Tulajirszam = 'tulajirszam';
