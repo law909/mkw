@@ -592,8 +592,8 @@ class Bizonylatfej {
         $ret['szallvaros'] = $this->getSzallvaros();
         $ret['szallutca'] = $this->getSzallutca();
         $ret['adoszam'] = $this->getPartneradoszam();
-        $ret['patneradoszam'] = $this->getPartneradoszam();
-        $ret['patnereuadoszam'] = $this->getPartnereuadoszam();
+        $ret['partneradoszam'] = $this->getPartneradoszam();
+        $ret['partnereuadoszam'] = $this->getPartnereuadoszam();
         $ret['webshopmessage'] = $this->getWebshopmessage();
         $ret['couriermessage'] = $this->getCouriermessage();
         $ret['megjegyzes'] = $this->getMegjegyzes();

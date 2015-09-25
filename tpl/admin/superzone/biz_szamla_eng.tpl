@@ -35,7 +35,7 @@
                 {if ($egyed.partneradoszam)}
                 <p>Adószám / Tax number: {$egyed.partneradoszam}</p>
                 {/if}
-                {if ($egyed.partereuadoszam)}
+                {if ($egyed.partnereuadoszam)}
                 <p>EU adószám / EU tax number: {$egyed.partnereuadoszam}</p>
                 {/if}
             </div>
