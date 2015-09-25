@@ -36,40 +36,12 @@
                 <div class="mainboxinner ui-corner-top">Napi jelentés</div>
             </div>
             <div class="mainboxinner">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="headercell">Csoport</th>
-                            <th class="headercell">Mennyiség</th>
-                            <th class="headercell">Nettó HUF</th>
-                            <th class="headercell">Bruttó HUF</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {$summenny = 0}
-                        {$sumnetto = 0}
-                        {$sumbrutto = 0}
-                        {foreach $napijelenteslista as $elem}
-                            {$summenny = $summenny + $elem.mennyiseg}
-                            {$sumnetto = $sumnetto + $elem.netto}
-                            {$sumbrutto = $sumbrutto + $elem.brutto}
-                            <tr>
-                                <td class="datacell">{$elem.caption}</td>
-                                <td class="textalignright datacell">{number_format($elem.mennyiseg, 0, ',', ' ')}</td>
-                                <td class="textalignright datacell">{number_format($elem.netto, 2, ',', ' ')}</td>
-                                <td class="textalignright datacell">{number_format($elem.brutto, 2, ',', ' ')}</td>
-                            </tr>
-                        {/foreach}
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td class="headercell">Összesen</td>
-                            <td class="textalignright headercell">{number_format($summenny, 0, ',', ' ')}</td>
-                            <td class="textalignright headercell">{number_format($sumnetto, 2, ',', ' ')}</td>
-                            <td class="textalignright headercell">{number_format($sumbrutto, 2, ',', ' ')}</td>
-                        </tr>
-                    </tfoot>
-                </table>
+                <div class="mainboxinner">
+                    <label for="NapijelentesDatumEdit">Dátum:</label>
+                    <input id="NapijelentesDatumEdit" name="datum" type="text" data-datum="{$today}">
+                    <button class="js-napijelentes ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Frissít</span></button>
+                </div>
+                {include "napijelentesbody.tpl"}
             </div>
         </div>
     </div>

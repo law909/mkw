@@ -31,9 +31,24 @@ class adminController extends mkwhelpers\Controller {
         $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
 
         $lista = new listaController($this->params);
-        $view->setVar('napijelenteslista', $lista->napiJelentes());
+        $napijelentesdatum = date(\mkw\Store::$DateFormat);
+        $view->setVar('napijelentesdatum', $napijelentesdatum);
+        $view->setVar('napijelenteslista', $lista->napiJelentes($napijelentesdatum));
 
         $view->printTemplateResult();
+    }
+
+    public function printNapijelentes() {
+        $lista = new listaController($this->params);
+        $datumstr = $this->params->getStringRequestParam('datum');
+        $datum = \mkw\Store::convDate($datumstr);
+        $datumstr = date(\mkw\Store::$DateFormat, strtotime($datum));
+        $view = $this->createView('napijelentesbody.tpl');
+        $view->setVar('napijelentesdatum', $datumstr);
+        $view->setVar('napijelenteslista', $lista->napiJelentes($datum));
+
+        $view->printTemplateResult();
+
     }
 
     public function regeneratekarkod() {

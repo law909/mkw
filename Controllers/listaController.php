@@ -75,9 +75,12 @@ class listaController extends \mkwhelpers\Controller {
         $view->printTemplateResult();
     }
 
-    public function napiJelentes() {
-        $datum = date(\mkw\Store::$SQLDateFormat);
-        $btrepo = $this->getRepo('Entities\BizonylatTipus');
+    public function napiJelentes($datum = null) {
+        if (!$datum) {
+            $datum = date(\mkw\Store::$SQLDateFormat);
+        }
+        $datum = \mkw\Store::convDate($datum);
+        $btrepo = $this->getRepo('Entities\Bizonylattipus');
         $btegyebmozgas = $btrepo->find('egyeb');
         $btszamla = $btrepo->find('szamla');
         $termekrepo = $this->getRepo('Entities\Termek');

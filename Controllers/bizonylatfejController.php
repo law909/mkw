@@ -134,8 +134,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $filter['values'][] = '%' . $f . '%';
         }
         $tip = $this->params->getStringRequestParam('datumtipusfilter');
-        $tol = $this->params->getDateRequestParam('datumtolfilter');
-        $ig = $this->params->getDateRequestParam('datumigfilter');
+        $tol = $this->params->getStringRequestParam('datumtolfilter');
+        $ig = $this->params->getStringRequestParam('datumigfilter');
         if ($tip && ($tol||$ig)) {
             switch ($tip) {
                 case 1:
@@ -669,7 +669,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
     public function checkKelt() {
         $ret = array('response' => 'error');
-        $keltstr = \mkw\Store::convDate($this->params->getDateRequestParam('kelt'));
+        $keltstr = \mkw\Store::convDate($this->params->getStringRequestParam('kelt'));
         $kelt = strtotime($keltstr);
         $biztipid = $this->params->getStringRequestParam('biztipus');
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipid);
@@ -691,7 +691,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
     }
 
     public function calcEsedekesseg() {
-        $kelt = $this->params->getDateRequestParam('kelt');
+        $kelt = $this->params->getStringRequestParam('kelt');
         $fm = $this->getRepo('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
         $partner = $this->getRepo('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
         echo json_encode(array('esedekesseg' => \mkw\Store::calcEsedekesseg($kelt, $fm, $partner)));

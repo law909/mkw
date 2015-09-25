@@ -34,7 +34,7 @@ class jelenletiivController extends \mkwhelpers\MattableController {
 	}
 
 	public function setFields($obj) {
-		$obj->setDatum($this->params->getDateRequestParam('datum'));
+		$obj->setDatum($this->params->getStringRequestParam('datum'));
 		$obj->setMunkaido($this->params->getIntRequestParam('munkaido'));
 		$ck=store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('dolgozo',0));
 		if ($ck) {

@@ -125,5 +125,27 @@ $(document).ready(
             });
         }
 
+        var $napijelentesdatumedit = $('#NapijelentesDatumEdit');
+        if ($napijelentesdatumedit) {
+            $napijelentesdatumedit.datepicker($.datepicker.regional['hu']);
+            $napijelentesdatumedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
+            $napijelentesdatumedit.datepicker('setDate', $napijelentesdatumedit.attr('data-datum'));
+            $('.js-napijelentes').on('click', function(e) {
+                e.preventDefault();
+                datum = $napijelentesdatumedit.datepicker('getDate');
+                datum = datum.getFullYear() + '.' + (datum.getMonth() + 1) + '.' + datum.getDate();
+                $.ajax({
+                    url: '/admin/napijelentes',
+                    type: 'POST',
+                    data: {
+                        datum: datum
+                    },
+                    success: function(data) {
+                        $('.js-napijelentesbody').replaceWith(data);
+                    }
+                })
+            });
+        }
+
 	}
 )

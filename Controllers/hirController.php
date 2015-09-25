@@ -47,9 +47,9 @@ class hirController extends \mkwhelpers\MattableController {
         $obj->setLead($this->params->getOriginalStringRequestParam('lead'));
         $obj->setSzoveg($this->params->getOriginalStringRequestParam('szoveg'));
         $obj->setLathato($this->params->getBoolRequestParam('lathato'));
-        $obj->setDatum($this->params->getDateRequestParam('datum'));
-        $obj->setElsodatum($this->params->getDateRequestParam('elsodatum'));
-        $obj->setUtolsodatum($this->params->getDateRequestParam('utolsodatum'));
+        $obj->setDatum($this->params->getStringRequestParam('datum'));
+        $obj->setElsodatum($this->params->getStringRequestParam('elsodatum'));
+        $obj->setUtolsodatum($this->params->getStringRequestParam('utolsodatum'));
         $obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
         return $obj;
     }

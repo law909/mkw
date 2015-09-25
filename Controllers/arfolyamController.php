@@ -74,7 +74,7 @@ class arfolyamController extends \mkwhelpers\JQGridController {
 	}
 
     public function downloadArfolyam() {
-        $datum = \mkw\Store::convDate($this->params->getDateRequestParam('datum'));
+        $datum = \mkw\Store::convDate($this->params->getStringRequestParam('datum'));
         $datum = date(\mkw\Store::$DateFormat, strtotime($datum));
         $rvaluta = \mkw\Store::getParameter(\mkw\consts::Valutanem);
         $vr = \mkw\Store::getEm()->getRepository('Entities\Valutanem');

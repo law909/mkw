@@ -40,7 +40,7 @@ class teendoController extends \mkwhelpers\MattableController {
 		}
 		$obj->setBejegyzes($this->params->getStringRequestParam('bejegyzes'));
 		$obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
-		$obj->setEsedekes($this->params->getDateRequestParam('esedekes'));
+		$obj->setEsedekes($this->params->getStringRequestParam('esedekes'));
 		$obj->setElvegezve($this->params->getBoolRequestParam('elvegezve'));
 		return $obj;
 	}
