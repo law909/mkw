@@ -592,6 +592,8 @@ class Bizonylatfej {
         $ret['szallvaros'] = $this->getSzallvaros();
         $ret['szallutca'] = $this->getSzallutca();
         $ret['adoszam'] = $this->getPartneradoszam();
+        $ret['patneradoszam'] = $this->getPartneradoszam();
+        $ret['patnereuadoszam'] = $this->getPartnereuadoszam();
         $ret['webshopmessage'] = $this->getWebshopmessage();
         $ret['couriermessage'] = $this->getCouriermessage();
         $ret['megjegyzes'] = $this->getMegjegyzes();
@@ -600,6 +602,7 @@ class Bizonylatfej {
         $ret['erbizonylatszam'] = $this->getErbizonylatszam();
         $ret['valutanemnev'] = $this->getValutanemnev();
         $ret['arfolyam'] = $this->getArfolyam();
+        $ret['partnerszamlatipus'] = $this->getPartnerSzamlatipus();
         $ret['foxpost'] = false;
         if ($this->foxpostterminal) {
             $ret['foxpost'] = true;

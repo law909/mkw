@@ -290,6 +290,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$x['partnertelefon'] = $t->getPartnertelefon();
 		$x['partneremail'] = $t->getPartneremail();
 		$x['partneradoszam'] = $t->getPartneradoszam();
+        $x['partnerszamlatipus'] = $t->getPartnerSzamlatipus();
 		$x['raktar'] = $t->getRaktarId();
 		$x['raktarnev'] = $t->getRaktarnev();
 		$x['fizmod'] = $t->getFizmodId();

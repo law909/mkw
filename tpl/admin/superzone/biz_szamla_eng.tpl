@@ -32,7 +32,12 @@
                 <p class="nev bold">{$egyed.szamlanev}</p>
                 <p>{$egyed.szamlairszam} {$egyed.szamlavaros}</p>
                 <p>{$egyed.szamlautca}</p>
-                <p>EU adószám / EU tax number: {$egyed.euadoszam}</p>
+                {if ($egyed.partneradoszam)}
+                <p>Adószám / Tax number: {$egyed.partneradoszam}</p>
+                {/if}
+                {if ($egyed.partereuadoszam)}
+                <p>EU adószám / EU tax number: {$egyed.partnereuadoszam}</p>
+                {/if}
             </div>
         </div>
         <div class="topline topbottommargin clear"></div>
@@ -192,7 +197,9 @@
         </div>
     </div>
     <div class="topmargin">
+        {if ($egyed.partnerszamlatipus == 1)}
         <p>EU közösségen belüli értékesítés / EU intra-community sale</p>
+        {/if}
         <p>ÁFA körön kívül eső, az ÁFÁ-t a vevő fizeti.</p>
         <p class="keszult">Jelen számla megfelel a 47/2007 (XII.29) PM rendeletben előírtaknak.</p>
         <p class="keszult">Készült az MKW Webshop számlázó moduljával.</p>

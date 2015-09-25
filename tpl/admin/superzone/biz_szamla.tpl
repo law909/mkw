@@ -31,7 +31,10 @@
                 <p class="nev bold">{$egyed.szamlanev}</p>
                 <p>{$egyed.szamlairszam} {$egyed.szamlavaros}</p>
                 <p>{$egyed.szamlautca}</p>
-                <p>Adószám: {$egyed.euadoszam}</p>
+                <p>Adószám: {$egyed.partneradoszam}</p>
+                {if ($egyed.partnereuadoszam)}
+                <p>EU Adószám: {$egyed.patnereuadoszam}</p>
+                {/if}
             </div>
         </div>
         <div class="topline topbottommargin clear"></div>
