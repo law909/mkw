@@ -1,5 +1,9 @@
 {extends "base.tpl"}
 
+{block "inhead"}
+    <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
+{/block}
+
 {block "kozep"}
     <div>
         <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
@@ -18,14 +22,21 @@
             </div>
             <div class="mainboxinner">
                 <form action="/admin/lista/boltbannincsmasholvan" target="_blank">
-                <label for="RaktarEdit">Raktár, amelyikben nincs:</label>
-                    <select id="RaktarEdit" name="raktar">
-                        <option value="">{t('válasszon')}</option>
-                        {foreach $raktarlist as $_mk}
-                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-                        {/foreach}
-                    </select>
-                    <input type="submit" class="ui-widget ui-button ui-state-default ui-corner-all" value="OK">
+                    <div>
+                        <label for="RaktarEdit">Raktár, amelyikben nincs:</label>
+                        <select id="RaktarEdit" name="raktar">
+                            <option value="">{t('válasszon')}</option>
+                            {foreach $raktarlist as $_mk}
+                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                        <input type="submit" class="ui-widget ui-button ui-state-default ui-corner-all" value="OK">
+                    </div>
+                    <div>
+                        <label>Termékcsoport:</label>
+                        <span class="js-boltbannincstermekfabutton" data-text="{t('válasszon')}">{t('válasszon')}</span>
+                        <input class="js-boltbannincstermekfainput" name="termekfa" type="hidden">
+                    </div>
                 </form>
             </div>
         </div>

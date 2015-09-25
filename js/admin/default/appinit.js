@@ -147,5 +147,49 @@ $(document).ready(
             });
         }
 
+        $('.js-boltbannincstermekfabutton').on('click', function(e) {
+            var edit = $(this),
+                input = $('.js-boltbannincstermekfainput');
+            e.preventDefault();
+            dialogcenter.jstree({
+                core: {animation: 100},
+                plugins: ['themeroller', 'json_data', 'ui'],
+                themeroller: {item: ''},
+                json_data: {
+                    ajax: {url: '/admin/termekfa/jsonlist'}
+                },
+                ui: {select_limit: 1}
+            })
+            .bind('loaded.jstree', function(event, data) {
+                dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
+            });
+            dialogcenter.dialog({
+                resizable: true,
+                height: 340,
+                modal: true,
+                buttons: {
+                    'Töröl': function() {
+                        edit.attr('data-value', 0);
+                        $('span', edit).text(edit.attr('data-text'));
+                        input.val(0);
+                        $(this).dialog('close');
+                    },
+                    'OK': function() {
+                        dialogcenter.jstree('get_selected').each(function() {
+                            var treenode = $(this).children('a'),
+                                id = treenode.attr('id').split('_')[1];
+                            edit.attr('data-value', id);
+                            input.val(id);
+                            $('span', edit).text(treenode.text());
+                        });
+                        $(this).dialog('close');
+                    },
+                    'Bezár': function() {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        })
+        .button();
 	}
 )

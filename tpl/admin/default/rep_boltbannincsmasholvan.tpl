@@ -3,6 +3,7 @@
 {block "body"}
 <h4>{$raktarnev}-ban nincs, más raktárakban van</h4>
 <h5>{$datum}</h5>
+<h5>{$termekcsoport}</h5>
 <table>
     <thead>
         <tr>

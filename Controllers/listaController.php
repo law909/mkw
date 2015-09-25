@@ -14,6 +14,9 @@ class listaController extends \mkwhelpers\Controller {
         $raktarid = $this->params->getIntRequestParam('raktar');
         $boltraktar = $raktarrepo->find($raktarid);
 
+        $termekfaid = $this->params->getIntRequestParam('termekfa');
+        $termekfa = $this->getRepo('Entities\TermekFa')->find($termekfaid);
+
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('raktar_id', 'raktar_id');
         $rsm->addScalarResult('termek_id', 'termek_id');
@@ -30,9 +33,15 @@ class listaController extends \mkwhelpers\Controller {
         $filter['fields'][] = 'bf.teljesites';
         $filter['clauses'][] = '<=';
         $filter['values'][] = date(\mkw\Store::$DateFormat);
+        if ($termekfa) {
+            $filter['fields'][] = array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod');
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = $termekfa->getKarkod() . '%';
+        }
 
         $sql = 'SELECT bf.raktar_id, bt.termek_id, bt.termekvaltozat_id, SUM(bt.mennyiseg*bt.irany) AS keszlet FROM bizonylattetel bt '
             . 'LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id) '
+            . 'LEFT OUTER JOIN termek t ON (bt.termek_id=t.id) '
             . $rep->getFilterString($filter)
             . 'GROUP BY bf.raktar_id, bt.termek_id, bt.termekvaltozat_id '
             . 'HAVING keszlet>0';
@@ -59,18 +68,21 @@ class listaController extends \mkwhelpers\Controller {
             }
         }
 
-        foreach($res as $key => $row) {
-            $cikkszam[$key] = $row['cikkszam'];
-            $nev[$key] = $row['nev'];
-            $id[$key] = $row['id'];
-            $valtozatnev[$key] = $row['valtozatnev'];
-            $valtozatid[$key] = $row['valtozatid'];
+        if ($res) {
+            foreach($res as $key => $row) {
+                $cikkszam[$key] = $row['cikkszam'];
+                $nev[$key] = $row['nev'];
+                $id[$key] = $row['id'];
+                $valtozatnev[$key] = $row['valtozatnev'];
+                $valtozatid[$key] = $row['valtozatid'];
+            }
+            array_multisort($cikkszam, SORT_ASC, $nev, SORT_ASC, $id, SORT_ASC, $valtozatnev, SORT_ASC, $valtozatid, SORT_ASC, $res);
         }
-        array_multisort($cikkszam, SORT_ASC, $nev, SORT_ASC, $id, SORT_ASC, $valtozatnev, SORT_ASC, $valtozatid, SORT_ASC, $res);
 
         $view = $this->createView('rep_boltbannincsmasholvan.tpl');
         $view->setVar('raktarnev', $boltraktar->getNev());
         $view->setVar('datum', date(\mkw\Store::convDate(\mkw\Store::$DateFormat)));
+        $view->setVar('termekcsoport', $termekfa->getNev());
         $view->setVar('lista', $res);
         $view->printTemplateResult();
     }
