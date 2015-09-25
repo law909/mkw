@@ -14,6 +14,8 @@ class consts {
     const UtanvetFizmod = 'utanvetfizmod';
     const Szallitasimod = 'szallitasimod';
     const Arsav = 'arsav';
+    const ShowTermekArsav = 'showtermekarsav';
+    const ShowTermekArsavValutanem = 'showtermekarsavvalutanem';
     const Esedekessegalap = 'esedekessegalap';
     const Autologoutmin = 'autologoutmin';
     const ImportNewKatId = 'importnewkatid';

@@ -29,6 +29,7 @@
                                 <tr>
                                     <td>{t('ME')}:</td><td colspan="3">{$_termek.me}</td>
                                 </tr>
+                                {if (!$setup.arsavok)}
                                 <tr>
                                     <td>{t('Nettó ár')}:</td><td>{number_format($_termek.netto,4,'.',' ')}</td>
                                     <td>{t('Bruttó ár')}:</td><td>{number_format($_termek.brutto,4,'.',' ')}</td>
@@ -37,6 +38,14 @@
                                     <td>{t('Akciós n.ár')}:</td><td>{number_format($_termek.akciosnetto,4,'.',' ')}</td>
                                     <td>{t('Akciós b.ár')}:</td><td>{number_format($_termek.akciosbrutto,4,'.',' ')}</td>
                                 </tr>
+                                {else}
+                                <tr>
+                                    <td>{t('Nettó ár')}:</td><td>{number_format($_termek.netto,2,'.',' ')}</td>
+                                </tr>
+                                <tr>
+                                    <td>{t('Bruttó ár')}:</td><td>{number_format($_termek.brutto,2,'.',' ')}</td>
+                                </tr>
+                                {/if}
                             </tbody>
                         </table>
                     </td>

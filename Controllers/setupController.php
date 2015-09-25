@@ -193,10 +193,14 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::Valutanem);
         $valutanem = new valutanemController($this->params);
         $view->setVar('valutanemlist', $valutanem->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::ShowTermekArsavValutanem);
+        $view->setVar('showtermekarsavvalutanemlist', $valutanem->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::Arsav);
         $arsav = new termekarController($this->params);
-        $view->setVar('arsavlist', $arsav->getSelectList(($p ? $p->getErtek() : 0)));
+        $view->setVar('arsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::ShowTermekArsav);
+        $view->setVar('showtermekarsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::MarkaCs);
         $markacs = new termekcimkekatController($this->params);
@@ -443,7 +447,13 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::Valutanem, $valutanem->getId());
         }
 
+        $valutanem = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('showtermekarsavvalutanem', 0));
+        if ($valutanem) {
+            $this->setObj(\mkw\consts::ShowTermekArsavValutanem, $valutanem->getId());
+        }
+
         $this->setObj(\mkw\consts::Arsav, $this->params->getStringRequestParam('arsav'));
+        $this->setObj(\mkw\consts::ShowTermekArsav, $this->params->getStringRequestParam('showtermekarsav'));
 
         $markacs = store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('markacs', 0));
         if ($markacs) {

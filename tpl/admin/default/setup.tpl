@@ -107,6 +107,24 @@
 					{/foreach}
 				</select></td>
 			</tr>
+			<tr>
+				<td><label for="ShowTermekArsavEdit">{t('Terméklista ársáv')}:</label></td>
+				<td>
+                    <select id="ShowTermekArsavEdit" name="showtermekarsav">
+                        <option value="">{t('válasszon')}</option>
+                        {foreach $showtermekarsavlist as $_arsav}
+                        <option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
+                        {/foreach}
+                    </select>
+                    <label for="ShowTermekArsavValutanemEdit">{t('Valutanem')}:</label>
+                    <select id="ShowTermekArsavValutanemEdit" name="showtermekarsavvalutanem">
+                        <option value="">{t('válasszon')}</option>
+                        {foreach $showtermekarsavvalutanemlist as $_valutanem}
+                        <option value="{$_valutanem.id}"{if ($_valutanem.selected)} selected="selected"{/if}>{$_valutanem.caption}</option>
+                        {/foreach}
+                    </select>
+                </td>
+			</tr>
             {/if}
 			<tr>
 				<td><label for="MarkaCsEdit">{t('Márka csoport')}:</label></td>

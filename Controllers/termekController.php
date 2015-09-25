@@ -9,8 +9,9 @@ use mkw\store;
 class termekController extends \mkwhelpers\MattableController {
 
     private $kaphatolett = false;
+    private $vanshowarsav = false;
 
-	public function __construct($params) {
+    public function __construct($params) {
 		$this->setEntityName('Entities\Termek');
 		$this->setKarbFormTplName('termekkarbform.tpl');
 		$this->setKarbTplName('termekkarb.tpl');
@@ -60,14 +61,45 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['mozgat'] = $t->getMozgat();
 		$x['hparany'] = $t->getHparany();
 		$x['cimkek'] = $t->getCimkeNevek();
-		$x['netto'] = $t->getNetto();
-		$x['brutto'] = $t->getBrutto();
-		$x['akciosnetto'] = $t->getAkciosnetto();
-		$x['akciosbrutto'] = $t->getAkciosbrutto();
-		$x['akciostart'] = $t->getAkciostart();
-		$x['akciostartstr'] = $t->getAkciostartStr();
-		$x['akciostop'] = $t->getAkciostop();
-		$x['akciostopstr'] = $t->getAkciostopStr();
+        if (!\mkw\Store::isArsavok()) {
+            $x['netto'] = $t->getNetto();
+            $x['brutto'] = $t->getBrutto();
+            $x['akciosnetto'] = $t->getAkciosnetto();
+            $x['akciosbrutto'] = $t->getAkciosbrutto();
+            $x['akciostart'] = $t->getAkciostart();
+            $x['akciostartstr'] = $t->getAkciostartStr();
+            $x['akciostop'] = $t->getAkciostop();
+            $x['akciostopstr'] = $t->getAkciostopStr();
+        }
+        else {
+            $x['netto'] = 0;
+            $x['brutto'] = 0;
+            if ($this->vanshowarsav) {
+                $arsav = $t->getTermekArak();
+                if (count($arsav)) {
+                    $arsav = $arsav[0];
+                    $x['netto'] = $arsav->getNetto();
+                    $x['brutto'] = $arsav->getBrutto();
+                }
+            }
+/*            $x['netto'] = 0;
+            $x['brutto'] = 0;
+            if (!$this->showarsav) {
+                $this->showarsav = \mkw\Store::getParameter(\mkw\consts::ShowTermekArsav);
+            }
+            if (!$this->showarsavvalutanem) {
+                $this->showarsavvalutanem = \mkw\Store::getParameter(\mkw\consts::ShowTermekArsavValutanem);
+            }
+            if ($this->showarsav && $this->showarsavvalutanem) {
+                $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($t, $this->showarsavvalutanem, $this->showarsav);
+                if ($arsav) {
+                    $x['netto'] = $arsav->getNetto();
+                    $x['brutto'] = $arsav->getBrutto();
+                }
+            }
+ *
+ */
+        }
 		$x['termekexportbanszerepel'] = $t->getTermekexportbanszerepel();
 		$x['nemkaphato'] = $t->getNemkaphato();
         $x['fuggoben'] = $t->getFuggoben();
@@ -587,11 +619,30 @@ class termekController extends \mkwhelpers\MattableController {
 			$filter['values'][] = $faszuro;
 		}
 
-        $this->initPager($this->getRepo()->getCount($filter));
-        $egyedek = $this->getRepo()->getWithJoins(
-                $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+        $this->vanshowarsav = false;
 
-		echo json_encode($this->loadDataToView($egyedek, 'termeklista', $view));
+        if (!\mkw\Store::isArsavok()) {
+            $this->initPager($this->getRepo()->getCount($filter));
+            $egyedek = $this->getRepo()->getWithJoins(
+                    $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+        }
+        else {
+            $showarsav = \mkw\Store::getParameter(\mkw\consts::ShowTermekArsav);
+            $showarsavvalutanem = \mkw\Store::getParameter(\mkw\consts::ShowTermekArsavValutanem);
+            if ($showarsav && $showarsavvalutanem) {
+                $this->vanshowarsav = true;
+                $this->initPager($this->getRepo()->getCount($filter));
+                $egyedek = $this->getRepo()->getWithAr($showarsav, $showarsavvalutanem,
+                        $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            }
+            else {
+                $this->initPager($this->getRepo()->getCount($filter));
+                $egyedek = $this->getRepo()->getWithJoins(
+                        $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            }
+        }
+
+        echo json_encode($this->loadDataToView($egyedek, 'termeklista', $view));
 	}
 
 	public function getselectlist($selid) {

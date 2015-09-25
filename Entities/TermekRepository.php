@@ -95,6 +95,35 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
+    public function getWithAr($arsavid, $valutanemid, $filter, $order, $offset = 0, $elemcount = 0) {
+        $a = $this->alias;
+        $q = $this->_em->createQuery('SELECT ' . $a . ',vtsz,afa,fa1,fa2,fa3,ar,valutanem'
+                . ' FROM ' . $this->entityname . ' ' . $a
+                . ' LEFT JOIN ' . $a . '.vtsz vtsz'
+                . ' LEFT JOIN ' . $a . '.afa afa'
+                . ' LEFT JOIN ' . $a . '.termekfa1 fa1'
+                . ' LEFT JOIN ' . $a . '.termekfa2 fa2'
+                . ' LEFT JOIN ' . $a . '.termekfa3 fa3'
+                . ' LEFT JOIN ' . $a . '.termekarak ar WITH (ar.azonosito = :X1A) AND (ar.valutanem = :X1V)'
+                . ' LEFT JOIN ar.valutanem valutanem'
+                . $this->getFilterString($filter)
+                . $this->getOrderString($order));
+        $paramarr = $this->getQueryParameters($filter);
+        $paramarr['X1A'] = $arsavid;
+        $paramarr['X1V'] = $valutanemid;
+        $q->setParameters($paramarr);
+        if ($offset > 0) {
+            $q->setFirstResult($offset);
+        }
+        if ($elemcount > 0) {
+            $q->setMaxResults($elemcount);
+        }
+        if (\mkw\Store::isMainMode()) {
+            \mkw\Store::setTranslationHint($q, \mkw\Store::getParameter(\mkw\consts::Locale));
+        }
+        return $q->getResult();
+    }
+
     public function getWithArak($filter, $order, $offset = 0, $elemcount = 0) {
         $a = $this->alias;
         $q = $this->_em->createQuery('SELECT ' . $a . ',vtsz,afa,fa1,fa2,fa3,ar,valutanem'
