@@ -290,6 +290,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 		$x['partnertelefon'] = $t->getPartnertelefon();
 		$x['partneremail'] = $t->getPartneremail();
 		$x['partneradoszam'] = $t->getPartneradoszam();
+		$x['partnereuadoszam'] = $t->getPartnereuadoszam();
         $x['partnerszamlatipus'] = $t->getPartnerSzamlatipus();
 		$x['raktar'] = $t->getRaktarId();
 		$x['raktarnev'] = $t->getRaktarnev();
@@ -433,6 +434,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
 		$obj->setPartnernev($this->params->getStringRequestParam('partnernev'));
 		$obj->setPartneradoszam($this->params->getStringRequestParam('partneradoszam'));
+		$obj->setPartnereuadoszam($this->params->getStringRequestParam('partnereuadoszam'));
 		$obj->setPartnerirszam($this->params->getStringRequestParam('partnerirszam'));
 		$obj->setPartnervaros($this->params->getStringRequestParam('partnervaros'));
 		$obj->setPartnerutca($this->params->getStringRequestParam('partnerutca'));
