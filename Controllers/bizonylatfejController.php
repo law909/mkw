@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 use mkw\store;
 
@@ -9,14 +10,14 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
     protected $biztipus;
 
-	public function __construct($params) {
-		$this->setEntityName('Entities\Bizonylatfej');
+    public function __construct($params) {
+        $this->setEntityName('Entities\Bizonylatfej');
         $this->setKarbFormTplName('bizonylatfejkarbform.tpl');
         $this->setKarbTplName('bizonylatfejkarb.tpl');
         $this->setListBodyRowTplName('bizonylatfejlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
-		parent::__construct($params);
-	}
+        parent::__construct($params);
+    }
 
     public function viewselect() {
         $view = $this->createView('bizonylatfejlista.tpl');
@@ -66,12 +67,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             case 'superzone':
                 $a = date(\mkw\Store::$DateFormat);
                 $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
-                if ($this->biztipus == 'megrendeles') {
-                    $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList(\mkw\Store::getParameter(\mkw\consts::MegrendelesFilterStatuszCsoport)));
-                }
-                else {
-                    $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
-                }
+                $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
+                $view->setVar('bizonylatrontottfilter', 1);
                 break;
         }
         $view->setVar('datumtolfilter', $a);
@@ -136,7 +133,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $tip = $this->params->getStringRequestParam('datumtipusfilter');
         $tol = $this->params->getStringRequestParam('datumtolfilter');
         $ig = $this->params->getStringRequestParam('datumigfilter');
-        if ($tip && ($tol||$ig)) {
+        if ($tip && ($tol || $ig)) {
             switch ($tip) {
                 case 1:
                     $mezo = 'kelt';
@@ -247,15 +244,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         return $filter;
     }
 
-	protected function loadVars($t, $forKarb = false) {
-		$tetelCtrl = new bizonylattetelController($this->params);
-		$tetel = array();
-		$x = array();
-		if (!$t) {
-			$t = new \Entities\Bizonylatfej();
-			$this->getEm()->detach($t);
-		}
-		$x['id'] = $t->getId();
+    protected function loadVars($t, $forKarb = false) {
+        $tetelCtrl = new bizonylattetelController($this->params);
+        $tetel = array();
+        $x = array();
+        if (!$t) {
+            $t = new \Entities\Bizonylatfej();
+            $this->getEm()->detach($t);
+        }
+        $x['id'] = $t->getId();
         $x['bizonylattipusid'] = $t->getBizonylattipusId();
         $x['storno'] = $t->getStorno();
         $x['stornozott'] = $t->getStornozott();
@@ -267,62 +264,62 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['tulajutca'] = $t->getTulajutca();
         $x['tulajadoszam'] = $t->getTulajadoszam();
         $x['tulajeuadoszam'] = $t->getTulajeuadoszam();
-		$x['bizonylatnev'] = $t->getBizonylatnev();
-		$x['erbizonylatszam'] = $t->getErbizonylatszam();
+        $x['bizonylatnev'] = $t->getBizonylatnev();
+        $x['erbizonylatszam'] = $t->getErbizonylatszam();
         $x['fuvarlevelszam'] = $t->getFuvarlevelszam();
-		$x['keltstr'] = $t->getKeltStr();
-		$x['teljesitesstr'] = $t->getTeljesitesStr();
-		$x['esedekessegstr'] = $t->getEsedekessegStr();
+        $x['keltstr'] = $t->getKeltStr();
+        $x['teljesitesstr'] = $t->getTeljesitesStr();
+        $x['esedekessegstr'] = $t->getEsedekessegStr();
         $x['esedekesseg1str'] = $t->getEsedekesseg1Str();
         $x['fizetendo1'] = $t->getFizetendo1();
         $x['esedekesseg2str'] = $t->getEsedekesseg2Str();
         $x['fizetendo2'] = $t->getFizetendo2();
         $x['esedekesseg3str'] = $t->getEsedekesseg3Str();
         $x['fizetendo3'] = $t->getFizetendo3();
-		$x['hataridostr'] = $t->getHataridoStr();
-		$x['partner'] = $t->getPartnerId();
-		$x['partnernev'] = $t->getPartnernev();
+        $x['hataridostr'] = $t->getHataridoStr();
+        $x['partner'] = $t->getPartnerId();
+        $x['partnernev'] = $t->getPartnernev();
         $x['partnervezeteknev'] = $t->getPartnervezeteknev();
         $x['partnerkeresztnev'] = $t->getPartnerkeresztnev();
-		$x['partnerirszam'] = $t->getPartnerirszam();
-		$x['partnervaros'] = $t->getPartnervaros();
-		$x['partnerutca'] = $t->getPartnerutca();
-		$x['partnertelefon'] = $t->getPartnertelefon();
-		$x['partneremail'] = $t->getPartneremail();
-		$x['partneradoszam'] = $t->getPartneradoszam();
-		$x['partnereuadoszam'] = $t->getPartnereuadoszam();
+        $x['partnerirszam'] = $t->getPartnerirszam();
+        $x['partnervaros'] = $t->getPartnervaros();
+        $x['partnerutca'] = $t->getPartnerutca();
+        $x['partnertelefon'] = $t->getPartnertelefon();
+        $x['partneremail'] = $t->getPartneremail();
+        $x['partneradoszam'] = $t->getPartneradoszam();
+        $x['partnereuadoszam'] = $t->getPartnereuadoszam();
         $x['partnerszamlatipus'] = $t->getPartnerSzamlatipus();
-		$x['raktar'] = $t->getRaktarId();
-		$x['raktarnev'] = $t->getRaktarnev();
-		$x['fizmod'] = $t->getFizmodId();
-		$x['fizmodnev'] = $t->getFizmodnev();
-		$x['szallitasimod'] = $t->getSzallitasimodId();
-		$x['szallitasimodnev'] = $t->getSzallitasimodnev();
-		$x['valutanem'] = $t->getValutanemId();
-		$x['valutanemnev'] = $t->getValutanemNev();
-		$x['arfolyam'] = $t->getArfolyam();
-		$x['bankszamla'] = $t->getBankszamlaId();
+        $x['raktar'] = $t->getRaktarId();
+        $x['raktarnev'] = $t->getRaktarnev();
+        $x['fizmod'] = $t->getFizmodId();
+        $x['fizmodnev'] = $t->getFizmodnev();
+        $x['szallitasimod'] = $t->getSzallitasimodId();
+        $x['szallitasimodnev'] = $t->getSzallitasimodnev();
+        $x['valutanem'] = $t->getValutanemId();
+        $x['valutanemnev'] = $t->getValutanemNev();
+        $x['arfolyam'] = $t->getArfolyam();
+        $x['bankszamla'] = $t->getBankszamlaId();
         $x['tulajbanknev'] = $t->getTulajbanknev();
-		$x['tulajbankszamlaszam'] = $t->getTulajbankszamlaszam();
+        $x['tulajbankszamlaszam'] = $t->getTulajbankszamlaszam();
         $x['tulajswift'] = $t->getTulajswift();
         $x['tulajiban'] = $t->getTulajiban();
         $x['tulajeorinr'] = $t->getTulajeorinr();
-		$x['netto'] = $t->getNetto();
-		$x['afa'] = $t->getAfa();
-		$x['brutto'] = $t->getBrutto();
-		$x['nettohuf'] = $t->getNettohuf();
-		$x['afahuf'] = $t->getAfahuf();
-		$x['bruttohuf'] = $t->getBruttohuf();
-		$x['megjegyzes'] = $t->getMegjegyzes();
-		$x['belsomegjegyzes'] = $t->getBelsomegjegyzes();
-		$x['szallnev'] = $t->getSzallnev();
-		$x['szallirszam'] = $t->getSzallirszam();
-		$x['szallvaros'] = $t->getSzallvaros();
-		$x['szallutca'] = $t->getSzallutca();
-		$x['webshopmessage'] = $t->getWebshopmessage();
-		$x['couriermessage'] = $t->getCouriermessage();
-		$x['ip'] = $t->getIp();
-		$x['referrer'] = $t->getReferrer();
+        $x['netto'] = $t->getNetto();
+        $x['afa'] = $t->getAfa();
+        $x['brutto'] = $t->getBrutto();
+        $x['nettohuf'] = $t->getNettohuf();
+        $x['afahuf'] = $t->getAfahuf();
+        $x['bruttohuf'] = $t->getBruttohuf();
+        $x['megjegyzes'] = $t->getMegjegyzes();
+        $x['belsomegjegyzes'] = $t->getBelsomegjegyzes();
+        $x['szallnev'] = $t->getSzallnev();
+        $x['szallirszam'] = $t->getSzallirszam();
+        $x['szallvaros'] = $t->getSzallvaros();
+        $x['szallutca'] = $t->getSzallutca();
+        $x['webshopmessage'] = $t->getWebshopmessage();
+        $x['couriermessage'] = $t->getCouriermessage();
+        $x['ip'] = $t->getIp();
+        $x['referrer'] = $t->getReferrer();
         $x['fizetve'] = $t->getFizetve();
         $x['otpayid'] = $t->getOTPayId();
         $x['otpaymsisdn'] = $t->getOTPayMSISDN();
@@ -339,22 +336,22 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['reportfile'] = $t->getReportfile();
         $bsc = new bizonylatstatuszController($this->params);
         $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId());
-		if ($forKarb) {
+        if ($forKarb) {
             if ($t->getPartner() && ($t->getPartner()->getSzamlatipus() > 0)) {
                 $afa = $this->getRepo('Entities\Afa')->find(\mkw\Store::getParameter(\mkw\consts::NullasAfa));
                 $x['partnerafa'] = $afa->getId();
                 $x['partnerafakulcs'] = $afa->getErtek();
             }
-			foreach ($t->getBizonylattetelek() as $ttetel) {
-				$tetel[] = $tetelCtrl->loadVars($ttetel, true);
-			}
+            foreach ($t->getBizonylattetelek() as $ttetel) {
+                $tetel[] = $tetelCtrl->loadVars($ttetel, true);
+            }
 //				$tetel[]=$tetelCtrl->loadVars(null,true);
-			$x['tetelek'] = $tetel;
-		}
-		return $x;
-	}
+            $x['tetelek'] = $tetel;
+        }
+        return $x;
+    }
 
-	protected function setFields($obj, $parancs) {
+    protected function setFields(\Entities\Bizonylatfej $obj, $parancs) {
         $partnerkod = $this->params->getIntRequestParam('partner');
 
         if ($partnerkod == -1) {
@@ -410,73 +407,73 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         else {
             $obj->setPartner($partnerobj);
         }
-		$ck = store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar'));
-		if ($ck) {
-			$obj->setRaktar($ck);
-		}
-		$ck = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
-		if ($ck) {
-			$obj->setFizmod($ck);
-		}
-		$ck = store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod'));
-		if ($ck) {
-			$obj->setSzallitasimod($ck);
-		}
-		$ck = store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto'));
-		if ($ck) {
-			$obj->setUzletkoto($ck);
-		}
+        $ck = store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar'));
+        if ($ck) {
+            $obj->setRaktar($ck);
+        }
+        $ck = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
+        if ($ck) {
+            $obj->setFizmod($ck);
+        }
+        $ck = store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod'));
+        if ($ck) {
+            $obj->setSzallitasimod($ck);
+        }
+        $ck = store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto'));
+        if ($ck) {
+            $obj->setUzletkoto($ck);
+        }
         else {
             $obj->removeUzletkoto();
         }
         $obj->setKelt($this->params->getStringRequestParam('kelt'));
         $obj->setTeljesites($this->params->getStringRequestParam('teljesites'));
         $obj->setEsedekesseg($this->params->getStringRequestParam('esedekesseg'));
-		$obj->setHatarido($this->params->getStringRequestParam('hatarido'));
+        $obj->setHatarido($this->params->getStringRequestParam('hatarido'));
 
         $obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
         $obj->setFuvarlevelszam($this->params->getStringRequestParam('fuvarlevelszam'));
 
-		$obj->setPartnernev($this->params->getStringRequestParam('partnernev'));
-		$obj->setPartneradoszam($this->params->getStringRequestParam('partneradoszam'));
-		$obj->setPartnereuadoszam($this->params->getStringRequestParam('partnereuadoszam'));
-		$obj->setPartnerirszam($this->params->getStringRequestParam('partnerirszam'));
-		$obj->setPartnervaros($this->params->getStringRequestParam('partnervaros'));
-		$obj->setPartnerutca($this->params->getStringRequestParam('partnerutca'));
-		$obj->setPartnertelefon($this->params->getStringRequestParam('partnertelefon'));
-		$obj->setPartneremail($this->params->getStringRequestParam('partneremail'));
+        $obj->setPartnernev($this->params->getStringRequestParam('partnernev'));
+        $obj->setPartneradoszam($this->params->getStringRequestParam('partneradoszam'));
+        $obj->setPartnereuadoszam($this->params->getStringRequestParam('partnereuadoszam'));
+        $obj->setPartnerirszam($this->params->getStringRequestParam('partnerirszam'));
+        $obj->setPartnervaros($this->params->getStringRequestParam('partnervaros'));
+        $obj->setPartnerutca($this->params->getStringRequestParam('partnerutca'));
+        $obj->setPartnertelefon($this->params->getStringRequestParam('partnertelefon'));
+        $obj->setPartneremail($this->params->getStringRequestParam('partneremail'));
 
-		$obj->setSzallnev($this->params->getStringRequestParam('szallnev'));
-		$obj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
-		$obj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
-		$obj->setSzallutca($this->params->getStringRequestParam('szallutca'));
+        $obj->setSzallnev($this->params->getStringRequestParam('szallnev'));
+        $obj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
+        $obj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
+        $obj->setSzallutca($this->params->getStringRequestParam('szallutca'));
 
         $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
         $obj->setReportfile($this->params->getStringRequestParam('reportfile'));
 
-		$ck = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
-		if ($ck) {
-			$obj->setValutanem($ck);
-		}
+        $ck = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+        if ($ck) {
+            $obj->setValutanem($ck);
+        }
 
-		$obj->setArfolyam($this->params->getNumRequestParam('arfolyam'));
+        $obj->setArfolyam($this->params->getNumRequestParam('arfolyam'));
 
-		$ck = store::getEm()->getRepository('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
-		if ($ck) {
-			$obj->setBankszamla($ck);
-		}
+        $ck = store::getEm()->getRepository('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
+        if ($ck) {
+            $obj->setBankszamla($ck);
+        }
 
-		$ck = store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatusz'));
-		if ($ck) {
-			$obj->setBizonylatstatusz($ck);
-		}
+        $ck = store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatusz'));
+        if ($ck) {
+            $obj->setBizonylatstatusz($ck);
+        }
 
-		$obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
-		$obj->setBelsomegjegyzes($this->params->getStringRequestParam('belsomegjegyzes'));
-		$obj->setWebshopmessage($this->params->getStringRequestParam('webshopmessage'));
-		$obj->setCouriermessage($this->params->getStringRequestParam('couriermessage'));
+        $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
+        $obj->setBelsomegjegyzes($this->params->getStringRequestParam('belsomegjegyzes'));
+        $obj->setWebshopmessage($this->params->getStringRequestParam('webshopmessage'));
+        $obj->setCouriermessage($this->params->getStringRequestParam('couriermessage'));
 
-		$obj->generateId(); // az üres kelt miatt került a végére
+        $obj->generateId(); // az üres kelt miatt került a végére
 
         switch ($parancs) {
             case $this->inheritOperation:
@@ -497,12 +494,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
 
         $quick = $this->params->getBoolRequestParam('quick');
-		$tetelids = $this->params->getArrayRequestParam('tetelid');
+        $tetelids = $this->params->getArrayRequestParam('tetelid');
         $biztetelcontroller = new bizonylattetelController($this->params);
-		foreach ($tetelids as $tetelid) {
-			if (($this->params->getIntRequestParam('teteltermek_' . $tetelid) > 0)) {
-				$oper = $this->params->getStringRequestParam('teteloper_' . $tetelid);
-				$termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('teteltermek_' . $tetelid));
+        foreach ($tetelids as $tetelid) {
+            if (($this->params->getIntRequestParam('teteltermek_' . $tetelid) > 0)) {
+                $oper = $this->params->getStringRequestParam('teteloper_' . $tetelid);
+                $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('teteltermek_' . $tetelid));
                 if ($termek) {
                     $termekvaltozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('tetelvaltozat_' . $tetelid));
                     switch ($oper) {
@@ -638,10 +635,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 else {
                     \mkw\Store::writelog(print_r($this->params->asArray(), true), 'nincstermek.log');
                 }
-			}
-		}
-		return $obj;
-	}
+            }
+        }
+        return $obj;
+    }
 
     protected function afterSave($o) {
         $oper = $this->params->getStringRequestParam('oper');
@@ -731,7 +728,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(
-                $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
@@ -751,7 +748,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $view = $this->createView($tplname);
             $this->setVars($view);
             $view->setVar('egyed', $o->toLista());
-            $view->setVar('afaosszesito',$this->getRepo()->getAFAOsszesito($o));
+            $view->setVar('afaosszesito', $this->getRepo()->getAFAOsszesito($o));
             echo $view->getTemplateResult();
         }
     }
@@ -861,7 +858,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('formaction', '/admin/' . $this->biztipus . 'fej/save');
         $view->setVar('oper', $oper);
         $view->setVar('quick', $quick);
- //       $this->setVars($view);
+        //       $this->setVars($view);
 
         $record = $this->getRepo()->findWithJoins($id);
         $egyed = $this->loadVars($record, true);
