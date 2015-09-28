@@ -11,7 +11,7 @@
     {for $oldal = 1 to $maxoldalszam}
         <div class="fullwidth">
             <div class="biznev pull-left">Számla</div>
-            <div class="pull-right">{$oldal}/{$maxoldalszam} oldal</div>
+            <div class="pull-right">Eredeti példány. {$oldal}/{$maxoldalszam} oldal</div>
         </div>
         <div class="topline topbottommargin clear"></div>
         <div class="halfwidth pull-left">
