@@ -47,7 +47,7 @@ abstract class Controller {
 
     /**
      *
-     * @return EntityManager
+     * @return \Doctrine\ORM\EntityManager
      */
 	public function getEm() {
 		return $this->em;

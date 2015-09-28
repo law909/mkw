@@ -93,8 +93,6 @@ class listaController extends \mkwhelpers\Controller {
         }
         $datum = \mkw\Store::convDate($datum);
         $btrepo = $this->getRepo('Entities\Bizonylattipus');
-        $btegyebmozgas = $btrepo->find('egyeb');
-        $btszamla = $btrepo->find('szamla');
         $termekrepo = $this->getRepo('Entities\Termek');
         $farepo = $this->getRepo('Entities\TermekFa');
         $focsoportok = $farepo->getForParent(1);
@@ -116,7 +114,7 @@ class listaController extends \mkwhelpers\Controller {
 
             $filter['fields'][] = 'bf.bizonylattipus_id';
             $filter['clauses'][] = 'IN';
-            $filter['values'][] = array($btszamla->getId(), $btegyebmozgas->getId());
+            $filter['values'][] = array('szamla', 'egyeb', 'keziszamla');
 
             if ($kiskercimke) {
                 $filter['fields'][] = 'pc.cimketorzs_id';
