@@ -15,7 +15,10 @@ class listaController extends \mkwhelpers\Controller {
         $boltraktar = $raktarrepo->find($raktarid);
 
         $termekfaid = $this->params->getIntRequestParam('termekfa');
-        $termekfa = $this->getRepo('Entities\TermekFa')->find($termekfaid);
+        $termekfa = false;
+        if ($termekfaid) {
+            $termekfa = $this->getRepo('Entities\TermekFa')->find($termekfaid);
+        }
 
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('raktar_id', 'raktar_id');
@@ -52,7 +55,7 @@ class listaController extends \mkwhelpers\Controller {
 
         $keszletres = $q->getScalarResult();
         $res = array();
-        foreach($keszletres as $kesz) {
+        foreach ($keszletres as $kesz) {
             $valtozat = $rep->find($kesz['termekvaltozat_id']);
             if ($valtozat) {
                 $boltikeszlet = $valtozat->getKeszlet(null, $raktarid);
@@ -69,7 +72,7 @@ class listaController extends \mkwhelpers\Controller {
         }
 
         if ($res) {
-            foreach($res as $key => $row) {
+            foreach ($res as $key => $row) {
                 $cikkszam[$key] = $row['cikkszam'];
                 $nev[$key] = $row['nev'];
                 $id[$key] = $row['id'];
@@ -82,7 +85,9 @@ class listaController extends \mkwhelpers\Controller {
         $view = $this->createView('rep_boltbannincsmasholvan.tpl');
         $view->setVar('raktarnev', $boltraktar->getNev());
         $view->setVar('datum', date(\mkw\Store::convDate(\mkw\Store::$DateFormat)));
-        $view->setVar('termekcsoport', $termekfa->getNev());
+        if ($termekfa) {
+            $view->setVar('termekcsoport', $termekfa->getNev());
+        }
         $view->setVar('lista', $res);
         $view->printTemplateResult();
     }
