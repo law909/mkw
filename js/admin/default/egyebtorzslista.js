@@ -1024,6 +1024,51 @@ $().ready(
             $(_rw301.pager + '_center').hide();
             $(_rw301.pager + '_right').hide();
 
+            // Termekcsoport grid
+            var _termekcsoport = {
+                grid: '#termekcsoportgrid',
+                pager: '#termekcsoportgridpager'
+            };
+            var termekcsoportgrid = $(_termekcsoport.grid).jqGrid({
+                url: '/admin/termekcsoport/jsonlist',
+                editurl: '/admin/termekcsoport/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _termekcsoport.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Termékcsoportok'});
+            $(_termekcsoport.grid).jqGrid('navGrid', _termekcsoport.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_termekcsoport.grid).jqGrid('navButtonAdd', _termekcsoport.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    termekcsoportgrid[0].toggleToolbar();
+                }
+            });
+            $(_termekcsoport.grid).jqGrid('navButtonAdd', _termekcsoport.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    termekcsoportgrid[0].clearToolbar();
+                }
+            });
+            $(_termekcsoport.grid).jqGrid('filterToolbar');
+            $(_termekcsoport.pager + '_center').hide();
+            $(_termekcsoport.pager + '_right').hide();
+
             // Altalanos
             $('.ui-search-toolbar').hide();
             $('.ui-jqgrid-titlebar').on('click', function(e) {
