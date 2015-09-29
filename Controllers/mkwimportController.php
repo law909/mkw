@@ -2,18 +2,20 @@
 
 namespace Controllers;
 
+use mkw\Store;
+
 class mkwimportController extends \mkwhelpers\Controller {
     private function createMindentkapniGyarto($tomb) {
         if (!$tomb['nev']) {
             return null;
         }
-        $gy = store::getEm()->getRepository('Entities\Partner')->findByNev($tomb['nev']);
+        $gy = Store::getEm()->getRepository('Entities\Partner')->findByNev($tomb['nev']);
         $gyarto = false;
         if ($gy) {
             $gyarto = $gy[0];
         }
         if (!$gyarto) {
-            $gyarto = new Entities\Partner();
+            $gyarto = new \Entities\Partner();
             $gyarto->setAdoszam($tomb['adoszam']);
             $gyarto->setHonlap($tomb['honlap']);
             $gyarto->setIrszam($tomb['irszam']);

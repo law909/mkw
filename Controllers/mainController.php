@@ -51,7 +51,7 @@ class mainController extends \mkwhelpers\Controller {
             $this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5)));
             $this->view->setVar('legujabbtermekek', $tc->getLegujabbLista());
             $this->view->setVar('korhintalista', $khc->getLista());
-            $this->view->setVar('topkategorialista', $tfc->getformenu(store::getSetupValue('topkategoriamenunum', 3), 0));
+            $this->view->setVar('topkategorialista', $tfc->getformenu(store::getSetupValue('topkategoriamenunum'), 0));
             $this->view->setVar('kiemeltmarkalista', $tcc->getKiemeltList());
         }
 		$this->view->printTemplateResult(true);

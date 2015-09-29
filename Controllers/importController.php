@@ -87,7 +87,7 @@ class importController extends \mkwhelpers\Controller {
             $cimke1 = new \Entities\Partnercimketorzs();
             $cimke1->setKategoria($ckat);
             $cimke1->setNev($nev);
-            $cimke1->getMenu1lathato(false);
+            $cimke1->setMenu1lathato(false);
             store::getEm()->persist($cimke1);
         }
         return $cimke1;
@@ -1567,10 +1567,10 @@ class importController extends \mkwhelpers\Controller {
             $kod = false;
             $vonalkod = false;
             $cikkszam = false;
-            $nev = false;
+            $nev = array();
             $vtsz = false;
-            $netto = false;
-            $brutto = false;
+            $netto = array();
+            $brutto = array();
 
             for($col = 0; $col < $maxcolindex; ++$col) {
                 $cell = $sheet->getCellByColumnAndRow($col, $row);

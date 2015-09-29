@@ -2,7 +2,6 @@
 
 namespace Controllers;
 
-use mkw\ArCalculator;
 use mkwhelpers,
     mkw\store;
 use Entities;
@@ -74,14 +73,6 @@ class adminController extends mkwhelpers\Controller {
 
     public function getSmallUrl() {
         echo \mkw\Store::createSmallImageUrl($this->params->getStringRequestParam('url'));
-    }
-
-    protected function arcalctest() {
-        $t = store::getEm()->getRepository('Entities\Termek')->find(7);
-        $v = store::getEm()->getRepository('Entities\Valutanem')->find(1);
-        $p = store::getEm()->getRepository('Entities\Partner')->find(1);
-        $ac = new ArCalculator($v, $p, $t);
-        echo $ac->getPartnerAr();
     }
 
     public function setVonalkodFromValtozat() {

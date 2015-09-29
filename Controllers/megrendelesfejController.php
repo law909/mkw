@@ -22,7 +22,7 @@ class megrendelesfejController extends bizonylatfejController {
     public function getszamlakarb() {
         $megrendszam = $this->params->getStringRequestParams('id');
         $szamlac = new SzamlafejController($this->params);
-        echo $szamlac->getkarb('bizonylatfejkarb.tpl', $megrendszam, 'add');
+        $szamlac->getkarb('bizonylatfejkarb.tpl', $megrendszam, 'add');
     }
 
     public function doPrintelolegbekero() {
@@ -97,7 +97,7 @@ class megrendelesfejController extends bizonylatfejController {
                      *
                      */
 
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $exception = $e;
                     $error = $exception->getMessage();
                 }
@@ -137,7 +137,7 @@ class megrendelesfejController extends bizonylatfejController {
                  *
                  */
 
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $error = $e->getMessage();
                 echo json_encode($error);
             }

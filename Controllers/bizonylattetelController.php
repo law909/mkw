@@ -2,7 +2,6 @@
 
 namespace Controllers;
 
-use mkw\ArCalculator;
 use mkw\store;
 
 class bizonylattetelController extends \mkwhelpers\MattableController {

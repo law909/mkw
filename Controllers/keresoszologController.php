@@ -16,16 +16,16 @@ class keresoszologController extends \mkwhelpers\MattableController {
 	protected function loadVars($t) {
 		$x=array();
 		if (!$t) {
-			$t=new \Entities\Keresoszolog();
+			$t=new \Entities\Keresoszolog('');
 			$this->getEm()->detach($t);
 		}
 		$x['id']=$t->getId();
-		$x['nev']=$t->getNev();
+		$x['nev']=$t->getSzo();
 		return $x;
 	}
 
 	protected function setFields($obj) {
-		$obj->setNev($this->params->getStringRequestParam('nev'));
+		$obj->setSzo($this->params->getStringRequestParam('nev'));
 		return $obj;
 	}
 

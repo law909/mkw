@@ -192,8 +192,8 @@ class termekfaController extends \mkwhelpers\MattableController {
 		}
 	}
 
-	public function getformenu($menunum, $almenunum = 0) {
-        switch (\mkw\Store::getConfigValue('main.theme')) {
+    public function getformenu($menunum, $almenunum = 0) {
+        switch (\mkw\Store::getTheme()) {
             case 'mkwcansas':
                 $repo = $this->getRepo();
                 $f = $repo->getForMenu($menunum);
@@ -238,6 +238,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 }
         		return $x;
         }
+        return false;
 	}
 
 	public function getNavigator($parent, $elsourlkell = true) {

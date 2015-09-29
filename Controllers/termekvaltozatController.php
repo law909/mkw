@@ -99,7 +99,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
         $termekfokep = $this->params->getBoolRequestParam('valtozattermekfokep', false);
         $kepid = $this->params->getIntRequestParam('valtozatkepid');
 
-        if (($adattipus1 && $ertek1) || ($adattipus2 && ertek2)) {
+        if (($adattipus1 && $ertek1) || ($adattipus2 && $ertek2)) {
             $ertekek1 = explode(';', $ertek1);
             $ertekek2 = explode(';', $ertek2);
             $cikkszamok = explode(';', $cikkszam);
