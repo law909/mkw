@@ -10,7 +10,7 @@
                         <table>
                             <tbody>
                                 <tr>
-                                    <td colspan="3">{$_termek.termekfa1nev} | {$_termek.termekfa2nev} | {$_termek.termekfa3nev}</td>
+                                    <td colspan="3">{$_termek.termekfa1nev} | {$_termek.termekfa2nev} | {$_termek.termekfa3nev}{if ($_termek.termekcsoportnev)} ({$_termek.termekcsoportnev}){/if}</td>
                                 </tr>
                                 <tr>
                                     <td>{t('Link')}:</td>

@@ -21,6 +21,9 @@ class Termekcsoport {
      * @ORM\Column(type="string")
      */
     private $nev;
+    /** @ORM\OneToMany(targetEntity="Termek", mappedBy="termekcsoport",cascade={"persist"}) */
+    private $termekek;
+
 
     /**
      * @return mixed

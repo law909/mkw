@@ -266,6 +266,12 @@ class Termek {
     /** @ORM\OneToMany(targetEntity="TermekTranslation", mappedBy="object", cascade={"persist", "remove"}) */
     private $translations;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Termekcsoport")
+     * @ORM\JoinColumn(name="termekcsoport_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $termekcsoport;
+
     /** @Gedmo\Locale */
     protected $locale;
 
@@ -1699,4 +1705,33 @@ class Termek {
     public function setLocale($locale) {
         $this->locale = $locale;
     }
+
+    /**
+     * @return \Entities\Termekcsoport
+     */
+    public function getTermekcsoport() {
+        return $this->termekcsoport;
+    }
+
+    public function getTermekcsoportNev() {
+        if ($this->termekcsoport) {
+            return $this->termekcsoport->getNev();
+        }
+        return '';
+    }
+
+    public function getTermekcsoportId() {
+        if ($this->termekcsoport) {
+            return $this->termekcsoport->getId();
+        }
+        return 0;
+    }
+
+    /**
+     * @param \Entities\Termekcsoport $termekcsoport
+     */
+    public function setTermekcsoport($termekcsoport) {
+        $this->termekcsoport = $termekcsoport;
+    }
+
 }

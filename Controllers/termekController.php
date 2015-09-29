@@ -168,6 +168,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['megvasarlasdb'] = $t->getMegvasarlasdb();
         $x['gyartonev'] = $t->getGyartoNev();
         $x['keszlet'] = $t->getKeszlet();
+		$x['termekcsoportnev'] = $t->getTermekcsoportNev();
         if (store::getSetupValue('termekvaltozat')) {
             foreach ($t->getValtozatok() as $tvaltozat) {
                 $mozgasdb = $tvaltozat->getMozgasDb();
@@ -180,6 +181,10 @@ class termekController extends \mkwhelpers\MattableController {
 		return $x;
 	}
 
+    /**
+     * @param \Entities\Termek $obj
+     * @return mixed
+     */
 	protected function setFields($obj) {
         $oldnemkaphato = $obj->getNemkaphato();
 		$afa = store::getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afa'));
@@ -203,6 +208,13 @@ class termekController extends \mkwhelpers\MattableController {
 		}
         else {
             $obj->setGyarto(null);
+        }
+        $csoport = $this->getRepo('Entities\Termekcsoport')->find($this->params->getIntRequestParam('termekcsoport'));
+        if ($csoport) {
+            $obj->setTermekcsoport($csoport);
+        }
+        else {
+            $obj->setTermekcsoport(null);
         }
 		$obj->setNev($this->params->getStringRequestParam('nev'));
 		$obj->setMe($this->params->getStringRequestParam('me'));
@@ -782,6 +794,9 @@ class termekController extends \mkwhelpers\MattableController {
 
         $gyarto = new partnerController($this->params);
         $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(($termek ? $termek->getGyartoId() : 0)));
+
+        $csoport = new termekcsoportController($this->params);
+        $view->setVar('termekcsoportlist', $csoport->getSelectList(($termek ? $termek->getTermekcsoportId() : 0)));
 
         $view->printTemplateResult();
 	}

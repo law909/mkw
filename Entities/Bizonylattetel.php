@@ -242,6 +242,16 @@ class Bizonylattetel {
     /** @ORM\OneToMany(targetEntity="BizonylattetelTranslation", mappedBy="object", cascade={"persist", "remove"}) */
     private $translations;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Termekcsoport")
+     * @ORM\JoinColumn(name="termekcsoport_id",referencedColumnName="id",onDelete="restrict")
+     * @var \Entities\Termekcsoport
+     */
+    private $termekcsoport;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $termekcsoportnev;
+
     /** @Gedmo\Locale */
     protected $locale;
 
@@ -527,13 +537,26 @@ class Bizonylattetel {
                 $this->setOsszehajthato($val->getOsszehajthato());
                 $this->setSuly($val->getSuly());
                 $this->setSzelesseg($val->getSzelesseg());
+                $csoport = $val->getTermekcsoport();
+                if ($csoport) {
+                    $this->setTermekcsoport($csoport);
+                }
+                else {
+                    $this->setTermekcsoport(null);
+                }
                 $vtsz = $val->getVtsz();
                 if ($vtsz) {
                     $this->setVtsz($vtsz);
                 }
+                else {
+                    $this->setVtsz(null);
+                }
                 $afa = $val->getAfa();
                 if ($afa) {
                     $this->setAfa($afa);
+                }
+                else {
+                    $this->setAfa(null);
                 }
                 $this->setMozgat();
                 $this->setFoglal();
@@ -1070,6 +1093,23 @@ class Bizonylattetel {
 
     public function removeTranslation(BizonylattetelTranslation $t) {
         $this->translations->removeElement($t);
+    }
+
+    public function getTermekcsoport() {
+        return $this->termekcsoport;
+    }
+
+    /**
+     * @param \Entities\Termekcsoport $adat
+     */
+    public function setTermekcsoport($adat) {
+        $this->termekcsoport = $adat;
+        if ($adat) {
+            $this->termekcsoportnev = $adat->getNev();
+        }
+        else {
+            $this->termekcsoportnev = '';
+        }
     }
 
     public function getLocale() {
