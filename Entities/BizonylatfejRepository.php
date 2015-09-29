@@ -83,6 +83,12 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 		return $q->getSingleScalarResult();
 	}
 
+    /**
+     * @param $bizszam
+     * @param $termekid
+     * @param null $valtozatid
+     * @return null
+     */
     public function getTetelsor($bizszam, $termekid, $valtozatid = null) {
         $filter = array();
         if ($bizszam) {
@@ -125,6 +131,11 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         }
     }
 
+    /**
+     * @param \Entities\Bizonylatfej $bizfej
+     * @param \Entities\Szallitasimod|null $szallmod
+     * @param null $bruttoegysar
+     */
     public function createSzallitasiKtg($bizfej, $szallmod = null, $bruttoegysar = null) {
         $szamol = true;
         if ($szallmod) {
@@ -239,6 +250,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         }
     }
 
+    /**
+     * @param \Entities\Bizonylatfej $o
+     * @return array
+     */
     public function getAFAOsszesito($o) {
         $ret = array();
         foreach($o->getBizonylattetelek() as $tetel) {
@@ -260,6 +275,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
     }
 
     public function findForPrint($id) {
+        $locale = false;
         if ($id) {
             $b = $this->find($id);
             if ($b) {

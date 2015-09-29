@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylatfejRepository")
- *  @ORM\Table(name="bizonylatfej")
- *  @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="bizonylatfej")
+ * @ORM\HasLifecycleCallbacks
  * */
 class Bizonylatfej {
 
@@ -18,9 +18,9 @@ class Bizonylatfej {
     private $id;
 
     /**
-	 * @ORM\Column(type="integer")
-	 */
-	private $trxid;
+     * @ORM\Column(type="integer")
+     */
+    private $trxid;
 
     /**
      * @ORM\Column(type="bigint", options={"unsigned"=true},nullable=true)
@@ -85,6 +85,7 @@ class Bizonylatfej {
     /**
      * @ORM\ManyToOne(targetEntity="Bizonylattipus", inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="bizonylattipus_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Bizonylattipus
      */
     private $bizonylattipus;
 
@@ -169,6 +170,7 @@ class Bizonylatfej {
     /**
      * @ORM\ManyToOne(targetEntity="Fizmod",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="fizmod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Fizmod
      */
     private $fizmod;
 
@@ -178,6 +180,7 @@ class Bizonylatfej {
     /**
      * @ORM\ManyToOne(targetEntity="Szallitasimod",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="szallitasimod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Szallitasimod
      */
     private $szallitasimod;
 
@@ -202,6 +205,7 @@ class Bizonylatfej {
     /**
      * @ORM\ManyToOne(targetEntity="Valutanem",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="valutanem_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Valutanem
      */
     private $valutanem;
 
@@ -223,6 +227,7 @@ class Bizonylatfej {
     /**
      * @ORM\ManyToOne(targetEntity="Partner",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Partner
      */
     private $partner;
 
@@ -289,11 +294,12 @@ class Bizonylatfej {
     /**
      * @ORM\ManyToOne(targetEntity="Bankszamla",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="bankszamla_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Bankszamla
      */
     private $bankszamla;
 
-	/** @ORM\Column(type="string",length=50,nullable=true) */
-	private $tulajbanknev;
+    /** @ORM\Column(type="string",length=50,nullable=true) */
+    private $tulajbanknev;
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $tulajbankszamlaszam;
@@ -302,19 +308,20 @@ class Bizonylatfej {
     private $tulajswift;
 
     /** @ORM\Column(type="string",length=20,nullable=true) */
-	private $tulajiban;
+    private $tulajiban;
 
     /**
      * @ORM\ManyToOne(targetEntity="Uzletkoto",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="uzletkoto_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Uzletkoto
      */
     private $uzletkoto;
 
     /** @ORM\Column(type="string",length=50,nullable=true) */
     private $uzletkotonev;
 
-	/** @ORM\Column(type="string",length=100,nullable=true) */
-	private $uzletkotoemail;
+    /** @ORM\Column(type="string",length=100,nullable=true) */
+    private $uzletkotoemail;
 
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $uzletkotojutalek;
@@ -322,6 +329,7 @@ class Bizonylatfej {
     /**
      * @ORM\ManyToOne(targetEntity="Raktar",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="raktar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Raktar
      */
     private $raktar;
 
@@ -370,6 +378,7 @@ class Bizonylatfej {
     /**
      * @ORM\ManyToOne(targetEntity="Bizonylatstatusz",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="bizonylatstatusz_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Bizonylatstatusz
      */
     private $bizonylatstatusz;
 
@@ -383,6 +392,7 @@ class Bizonylatfej {
     /**
      * @ORM\ManyToOne(targetEntity="Bizonylatfej",inversedBy="szulobizonylatfejek")
      * @ORM\JoinColumn(name="parbizonylatfej_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Bizonylatfej
      */
     private $parbizonylatfej;
 
@@ -395,6 +405,7 @@ class Bizonylatfej {
     /**
      * @ORM\ManyToOne(targetEntity="FoxpostTerminal",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="foxpostterminal_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\FoxpostTerminal
      */
     private $foxpostterminal;
 
@@ -421,7 +432,6 @@ class Bizonylatfej {
     public function calcOsszesen() {
         $mincimlet = 0;
         $kerekit = false;
-        $defamincimlet = 0;
         $defakerekit = false;
         if ($this->getValutanem()) {
             $mincimlet = $this->getValutanem()->getMincimlet();
@@ -429,7 +439,6 @@ class Bizonylatfej {
         }
         $defavaluta = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\Store::getParameter(\mkw\consts::Valutanem));
         if ($defavaluta) {
-            $defamincimlet = $defavaluta->getMincimlet();
             $defakerekit = $defavaluta->getKerekit();
         }
         $fizmodtipus = 'B';
@@ -517,6 +526,11 @@ class Bizonylatfej {
         $this->setPersistentData();
     }
 
+    /**
+     * @param \Entities\Emailtemplate $emailtpl
+     * @param \Entities\Bizonylatfej|null $bf
+     * @param bool|true $topartner
+     */
     public function sendStatuszEmail($emailtpl, $bf = null, $topartner = true) {
         if (!$bf) {
             $bf = $this;
@@ -751,6 +765,9 @@ class Bizonylatfej {
         $this->irany = $val;
     }
 
+    /**
+     * @return \Entities\Bizonylattipus
+     */
     public function getBizonylattipus() {
         return $this->bizonylattipus;
     }
@@ -762,6 +779,9 @@ class Bizonylatfej {
         return '';
     }
 
+    /**
+     * @param \Entities\Bizonylattipus $val
+     */
     public function setBizonylattipus($val) {
         if ($this->bizonylattipus !== $val) {
             $this->bizonylattipus = $val;
@@ -931,8 +951,9 @@ class Bizonylatfej {
             $this->kelt = $adat;
         }
         else {
-            if ($adat == '')
+            if ($adat == '') {
                 $adat = date(store::$DateFormat);
+            }
             $this->kelt = new \DateTime(store::convDate($adat));
         }
     }
@@ -956,8 +977,9 @@ class Bizonylatfej {
             $this->teljesites = $adat;
         }
         else {
-            if ($adat == '')
+            if ($adat == '') {
                 $adat = date(store::$DateFormat);
+            }
             $this->teljesites = new \DateTime(store::convDate($adat));
         }
     }
@@ -981,8 +1003,9 @@ class Bizonylatfej {
             $this->esedekesseg = $adat;
         }
         else {
-            if ($adat == '')
+            if ($adat == '') {
                 $adat = date(store::$DateFormat);
+            }
             $this->esedekesseg = new \DateTime(store::convDate($adat));
         }
     }
@@ -1006,12 +1029,16 @@ class Bizonylatfej {
             $this->hatarido = $adat;
         }
         else {
-            if ($adat == '')
+            if ($adat == '') {
                 $adat = date(store::$DateFormat);
+            }
             $this->hatarido = new \DateTime(store::convDate($adat));
         }
     }
 
+    /**
+     * @return \Entities\Fizmod
+     */
     public function getFizmod() {
         if (!$this->id && !$this->fizmod) {
             $this->setFizmod(\mkw\Store::getParameter(\mkw\consts::Fizmod));
@@ -1031,6 +1058,9 @@ class Bizonylatfej {
         return '';
     }
 
+    /**
+     * @param \Entities\Fizmod $val
+     */
     public function setFizmod($val) {
         if (!($val instanceof \Entities\Fizmod)) {
             $val = \mkw\Store::getEm()->getRepository('Entities\Fizmod')->find($val);
@@ -1051,6 +1081,9 @@ class Bizonylatfej {
         }
     }
 
+    /**
+     * @return \Entities\Szallitasimod
+     */
     public function getSzallitasimod() {
         return $this->szallitasimod;
     }
@@ -1066,6 +1099,9 @@ class Bizonylatfej {
         return '';
     }
 
+    /**
+     * @param \Entities\Szallitasimod $val
+     */
     public function setSzallitasimod($val) {
         if ($this->szallitasimod !== $val) {
             $this->szallitasimod = $val;
@@ -1115,6 +1151,9 @@ class Bizonylatfej {
         $this->fizetendo = $val;
     }
 
+    /**
+     * @return \Entities\Valutanem
+     */
     public function getValutanem() {
         if (!$this->id && !$this->valutanem) {
             $this->setValutanem(\mkw\Store::getParameter(\mkw\consts::Valutanem));
@@ -1134,6 +1173,9 @@ class Bizonylatfej {
         return '';
     }
 
+    /**
+     * @param \Entities\Valutanem $val
+     */
     public function setValutanem($val) {
         if (!($val instanceof \Entities\Valutanem)) {
             $val = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find($val);
@@ -1192,6 +1234,9 @@ class Bizonylatfej {
         $this->arfolyam = $val;
     }
 
+    /**
+     * @return \Entities\Partner
+     */
     public function getPartner() {
         return $this->partner;
     }
@@ -1203,6 +1248,9 @@ class Bizonylatfej {
         return '';
     }
 
+    /**
+     * @param \Entities\Partner $val
+     */
     public function setPartner($val) {
         if ($this->partner !== $val) {
             $this->partner = $val;
@@ -1440,6 +1488,9 @@ class Bizonylatfej {
         $this->partnervaros = $val;
     }
 
+    /**
+     * @return \Entities\Bankszamla
+     */
     public function getBankszamla() {
         return $this->bankszamla;
     }
@@ -1455,6 +1506,9 @@ class Bizonylatfej {
         return '';
     }
 
+    /**
+     * @param \Entities\Bankszamla|null $val
+     */
     public function setBankszamla($val = null) {
         if ($this->bankszamla !== $val && $val) {
             $this->bankszamla = $val;
@@ -1486,6 +1540,9 @@ class Bizonylatfej {
         return $this->tulajbanknev;
     }
 
+    /**
+     * @return \Entities\Uzletkoto
+     */
     public function getUzletkoto() {
         return $this->uzletkoto;
     }
@@ -1506,7 +1563,7 @@ class Bizonylatfej {
     }
 
     /**
-     * @param $val \Entities\Uzletkoto
+     * @param \Entities\Uzletkoto $val
      */
     public function setUzletkoto($val) {
         if ($this->uzletkoto !== $val) {
@@ -1526,6 +1583,9 @@ class Bizonylatfej {
         }
     }
 
+    /**
+     * @return \Entities\Raktar
+     */
     public function getRaktar() {
         return $this->raktar;
     }
@@ -1541,6 +1601,9 @@ class Bizonylatfej {
         return '';
     }
 
+    /**
+     * @param \Entities\Raktar $val
+     */
     public function setRaktar($val) {
         if ($this->raktar !== $val) {
             $this->raktar = $val;
@@ -1675,6 +1738,9 @@ class Bizonylatfej {
         $this->referrer = $val;
     }
 
+    /**
+     * @return \Entities\Bizonylatstatusz
+     */
     public function getBizonylatstatusz() {
         return $this->bizonylatstatusz;
     }
@@ -1710,6 +1776,9 @@ class Bizonylatfej {
         return '';
     }
 
+    /**
+     * @param \Entities\Bizonylatstatusz $val
+     */
     public function setBizonylatstatusz($val) {
         if ($val) {
             if (!($val instanceof \Entities\Bizonylatstatusz)) {
@@ -1743,6 +1812,9 @@ class Bizonylatfej {
         $this->fuvarlevelszam = $adat;
     }
 
+    /**
+     * @return \Entities\Bizonylatfej
+     */
     public function getParbizonylatfej() {
         return $this->parbizonylatfej;
     }
@@ -1754,6 +1826,9 @@ class Bizonylatfej {
         return '';
     }
 
+    /**
+     * @param \Entities\Bizonylatfej $val
+     */
     public function setParbizonylatfej($val) {
         if ($this->parbizonylatfej !== $val) {
             $this->parbizonylatfej = $val;
@@ -1773,6 +1848,9 @@ class Bizonylatfej {
         return $this->szulobizonylatfejek;
     }
 
+    /**
+     * @param \Entities\Bizonylatfej $val
+     */
     public function addSzulobizonylatfej($val) {
         if (!$this->szulobizonylatfejek->contains($val)) {
             $this->szulobizonylatfejek->add($val);
@@ -1780,6 +1858,10 @@ class Bizonylatfej {
         }
     }
 
+    /**
+     * @param \Entities\Bizonylatfej $val
+     * @return bool
+     */
     public function removeSzulobizonylatfej($val) {
         if ($this->szulobizonylatfejek->removeElement($val)) {
             $val->removeParbizonylatfej();
@@ -1792,7 +1874,7 @@ class Bizonylatfej {
         $a = array($this->partnerirszam, $this->partnervaros);
         $cim = implode(' ', $a);
         $a = array($cim, $this->partnerutca);
-        return  implode(', ', $a);
+        return implode(', ', $a);
     }
 
     public function getOTPayMSISDN() {
@@ -1976,7 +2058,7 @@ class Bizonylatfej {
     }
 
     public function setEsedekesseg1($adat = '') {
-        if (is_a($adat,'DateTime') || is_a($adat,'DateTimeImmutable')) {
+        if (is_a($adat, 'DateTime') || is_a($adat, 'DateTimeImmutable')) {
             $this->esedekesseg1 = $adat;
         }
         else {
@@ -2006,7 +2088,7 @@ class Bizonylatfej {
     }
 
     public function setEsedekesseg2($adat = '') {
-        if (is_a($adat,'DateTime') || is_a($adat,'DateTimeImmutable')) {
+        if (is_a($adat, 'DateTime') || is_a($adat, 'DateTimeImmutable')) {
             $this->esedekesseg2 = $adat;
         }
         else {
@@ -2036,7 +2118,7 @@ class Bizonylatfej {
     }
 
     public function setEsedekesseg3($adat = '') {
-        if (is_a($adat,'DateTime') || is_a($adat,'DateTimeImmutable')) {
+        if (is_a($adat, 'DateTime') || is_a($adat, 'DateTimeImmutable')) {
             $this->esedekesseg3 = $adat;
         }
         else {
@@ -2054,10 +2136,10 @@ class Bizonylatfej {
         $this->fizetendo3 = $val;
     }
 
-    public function duplicateFrom($entityB){
+    public function duplicateFrom($entityB) {
         $this->duplication = true;
         $methods = get_class_methods($this);
-        foreach($methods as $v) {
+        foreach ($methods as $v) {
             if (strpos($v, 'set') > -1) {
                 $get = str_replace('set', 'get', $v);
                 if (in_array($get, $methods)) {
@@ -2067,15 +2149,12 @@ class Bizonylatfej {
         }
         $this->duplication = false;
         /**
-        foreach($entityB->getBizonylattetelek() as $bt) {
-            $this->addBizonylattetel($bt);
-        }
+         * foreach($entityB->getBizonylattetelek() as $bt) {
+         * $this->addBizonylattetel($bt);
+         * }
          */
     }
 
-    /**
-     * @return mixed
-     */
     public function getUzletkotojutalek() {
         return $this->uzletkotojutalek;
     }

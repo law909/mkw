@@ -8,8 +8,8 @@ use mkw\store,
     Doctrine\Common\Collections\ArrayCollection;
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylattetelRepository")
- *  @ORM\Table(name="bizonylattetel")
- *  @Gedmo\TranslationEntity(class="Entities\BizonylattetelTranslation")
+ * @ORM\Table(name="bizonylattetel")
+ * @Gedmo\TranslationEntity(class="Entities\BizonylattetelTranslation")
  */
 class Bizonylattetel {
 
@@ -35,6 +35,7 @@ class Bizonylattetel {
     /**
      * @ORM\ManyToOne(targetEntity="Bizonylatfej",inversedBy="bizonylattetelek")
      * @ORM\JoinColumn(name="bizonylatfej_id", referencedColumnName="id",nullable=true,onDelete="cascade")
+     * @var \Entities\Bizonylatfej
      */
     private $bizonylatfej;
 
@@ -62,6 +63,7 @@ class Bizonylattetel {
     /**
      * @ORM\ManyToOne(targetEntity="Termek",inversedBy="bizonylattetelek")
      * @ORM\JoinColumn(name="termek_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Termek
      */
     private $termek;
 
@@ -107,6 +109,7 @@ class Bizonylattetel {
     /**
      * @ORM\ManyToOne(targetEntity="Vtsz",inversedBy="bizonylattetelek")
      * @ORM\JoinColumn(name="vtsz_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Vtsz
      */
     private $vtsz;
 
@@ -119,6 +122,7 @@ class Bizonylattetel {
     /**
      * @ORM\ManyToOne(targetEntity="Afa",inversedBy="bizonylattetelek")
      * @ORM\JoinColumn(name="afa_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Afa
      */
     private $afa;
 
@@ -170,6 +174,7 @@ class Bizonylattetel {
     /**
      * @ORM\ManyToOne(targetEntity="Valutanem",inversedBy="bizonylattetelek")
      * @ORM\JoinColumn(name="valutanem_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Valutanem
      */
     private $valutanem;
 
@@ -191,6 +196,7 @@ class Bizonylattetel {
     /**
      * @ORM\ManyToOne(targetEntity="Bizonylattetel",inversedBy="szulobizonylattetelek")
      * @ORM\JoinColumn(name="parbizonylattetel_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Bizonylattetel
      */
     private $parbizonylattetel;
 
@@ -203,19 +209,22 @@ class Bizonylattetel {
     /**
      * @ORM\ManyToOne(targetEntity="TermekValtozat",inversedBy="bizonylattetelek")
      * @ORM\JoinColumn(name="termekvaltozat_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\TermekValtozat
      */
     private $termekvaltozat;
 
     /**
-	 * @ORM\ManyToOne(targetEntity="TermekValtozatAdatTipus")
-	 * @ORM\JoinColumn(name="valtozatadattipus1_id",referencedColumnName="id",onDelete="restrict")
-	 */
+     * @ORM\ManyToOne(targetEntity="TermekValtozatAdatTipus")
+     * @ORM\JoinColumn(name="valtozatadattipus1_id",referencedColumnName="id",onDelete="restrict")
+     * @var \Entities\TermekValtozatAdatTipus
+     */
     private $valtozatadattipus1;
 
     /**
-	 * @ORM\ManyToOne(targetEntity="TermekValtozatAdatTipus")
-	 * @ORM\JoinColumn(name="valtozatadattipus2_id",referencedColumnName="id",onDelete="restrict")
-	 */
+     * @ORM\ManyToOne(targetEntity="TermekValtozatAdatTipus")
+     * @ORM\JoinColumn(name="valtozatadattipus2_id",referencedColumnName="id",onDelete="restrict")
+     * @var \Entities\TermekValtozatAdatTipus
+     */
     private $valtozatadattipus2;
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
@@ -296,6 +305,9 @@ class Bizonylattetel {
         return $this->id;
     }
 
+    /**
+     * @return Bizonylatfej
+     */
     public function getBizonylatfej() {
         return $this->bizonylatfej;
     }
@@ -314,6 +326,9 @@ class Bizonylattetel {
         return 0;
     }
 
+    /**
+     * @return Raktar|int
+     */
     public function getRaktar() {
         if ($this->bizonylatfej) {
             return $this->bizonylatfej->getRaktar();
@@ -331,6 +346,9 @@ class Bizonylattetel {
         return 0;
     }
 
+    /**
+     * @param \Entities\Bizonylatfej $val
+     */
     public function setBizonylatfej($val) {
         if ($this->bizonylatfej !== $val) {
             $this->bizonylatfej = $val;
@@ -486,13 +504,16 @@ class Bizonylattetel {
         return '';
     }
 
+    /**
+     * @param \Entities\Termek $val
+     */
     public function setTermek($val) {
         if ($this->termek !== $val) {
             $this->termek = $val;
             if (!$this->duplication) {
                 $this->setTermeknev($val->getNev());
                 $this->translations->clear();
-                foreach($val->getTranslations() as $trans) {
+                foreach ($val->getTranslations() as $trans) {
                     $uj = new BizonylattetelTranslation($trans->getLocale(), 'termeknev', $trans->getContent());
                     $this->addTranslation($uj);
                 }
@@ -592,6 +613,9 @@ class Bizonylattetel {
         return '';
     }
 
+    /**
+     * @param \Entities\Vtsz $val
+     */
     public function setVtsz($val) {
         if (!is_object($val)) {
             $val = \mkw\Store::getEm()->getRepository('Entities\Vtsz')->find($val);
@@ -636,6 +660,9 @@ class Bizonylattetel {
         return '';
     }
 
+    /**
+     * @param \Entities\Afa $val
+     */
     public function setAfa($val) {
         if (!is_object($val)) {
             $val = \mkw\Store::getEm()->getRepository('Entities\Afa')->find($val);
@@ -677,7 +704,7 @@ class Bizonylattetel {
 
     public function setNettoegysar($val) {
         $this->nettoegysar = $val;
-        if ($this->getAfa() && !$this->duplication) {
+        if (!$this->duplication && $this->getAfa()) {
             $this->bruttoegysar = $this->getAfa()->calcBrutto($val);
         }
     }
@@ -688,7 +715,7 @@ class Bizonylattetel {
 
     public function setBruttoegysar($val) {
         $this->bruttoegysar = $val;
-        if ($this->getAfa() && !$this->duplication) {
+        if (!$this->duplication && $this->getAfa()) {
             $this->nettoegysar = $this->getAfa()->calcNetto($val);
         }
     }
@@ -699,7 +726,7 @@ class Bizonylattetel {
 
     public function setNettoegysarhuf($val) {
         $this->nettoegysarhuf = $val;
-        if ($this->getAfa() && !$this->duplication) {
+        if (!$this->duplication && $this->getAfa()) {
             $this->bruttoegysarhuf = $this->getAfa()->calcBrutto($val);
         }
     }
@@ -710,7 +737,7 @@ class Bizonylattetel {
 
     public function setBruttoegysarhuf($val) {
         $this->bruttoegysarhuf = $val;
-        if ($this->getAfa() && !$this->duplication) {
+        if (!$this->duplication && $this->getAfa()) {
             $this->nettoegysarhuf = $this->getAfa()->calcNetto($val);
         }
     }
@@ -770,6 +797,9 @@ class Bizonylattetel {
         return '';
     }
 
+    /**
+     * @param \Entities\Valutanem $val
+     */
     public function setValutanem($val) {
         if ($this->valutanem !== $val) {
             $this->valutanem = $val;
@@ -827,6 +857,9 @@ class Bizonylattetel {
         return '';
     }
 
+    /**
+     * @param \Entities\Bizonylattetel $val
+     */
     public function setParbizonylattetel($val) {
         if ($this->parbizonylattetel !== $val) {
             $this->parbizonylattetel = $val;
@@ -846,6 +879,9 @@ class Bizonylattetel {
         return $this->szulobizonylattetelek;
     }
 
+    /**
+     * @param \Entities\Bizonylattetel $val
+     */
     public function addSzulobizonylattetel($val) {
         if (!$this->szulobizonylattetelek->contains($val)) {
             $this->szulobizonylattetelek->add($val);
@@ -853,6 +889,9 @@ class Bizonylattetel {
         }
     }
 
+    /**
+     * @param \Entities\Bizonylattetel $val
+     */
     public function removeSzulobizonylattetel($val) {
         if ($this->szulobizonylattetelek->removeElement($val)) {
             $val->removeParbizonylattetel();
@@ -877,8 +916,9 @@ class Bizonylattetel {
             $this->hatarido = $adat;
         }
         else {
-            if ($adat == '')
+            if ($adat == '') {
                 $adat = date(store::$DateFormat);
+            }
             $this->hatarido = new \DateTime(store::convDate($adat));
         }
     }
@@ -919,6 +959,9 @@ class Bizonylattetel {
         return $this->valtozatadattipus1;
     }
 
+    /**
+     * @param \Entities\TermekValtozatAdatTipus $adat
+     */
     public function setValtozatadattipus1($adat) {
         $this->valtozatadattipus1 = $adat;
         if ($adat) {
@@ -933,6 +976,9 @@ class Bizonylattetel {
         return $this->valtozatadattipus2;
     }
 
+    /**
+     * @param \Entities\TermekValtozatAdatTipus $adat
+     */
     public function setValtozatadattipus2($adat) {
         $this->valtozatadattipus2 = $adat;
         if ($adat) {
@@ -970,6 +1016,9 @@ class Bizonylattetel {
         return '';
     }
 
+    /**
+     * @param \Entities\TermekValtozat $val
+     */
     public function setTermekvaltozat($val) {
         $this->termekvaltozat = $val;
         if (!$this->duplication) {
@@ -1031,11 +1080,11 @@ class Bizonylattetel {
         $this->locale = $locale;
     }
 
-    public function duplicateFrom($entityB){
+    public function duplicateFrom($entityB) {
         $this->duplication = true;
         $kivetel = array('setBizonylatfej');
         $methods = get_class_methods($this);
-        foreach($methods as $v) {
+        foreach ($methods as $v) {
             if ((strpos($v, 'set') > -1) && (!in_array($v, $kivetel))) {
                 $get = str_replace('set', 'get', $v);
                 if (in_array($get, $methods)) {
