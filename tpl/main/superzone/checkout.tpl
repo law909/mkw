@@ -10,7 +10,7 @@
     <div class="container content-back checkout-content">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <a href="/"><img src="/themes/main/superzone/minilogo.jpg"></a><span class="checkout-header">Checkout</span>
+                <a href="/"><img src="{$logo}"></a><span class="checkout-header">Checkout</span>
             </div>
         </div>
         <div class="row">
