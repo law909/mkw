@@ -316,6 +316,9 @@ class Bizonylatfej {
 	/** @ORM\Column(type="string",length=100,nullable=true) */
 	private $uzletkotoemail;
 
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $uzletkotojutalek;
+
     /**
      * @ORM\ManyToOne(targetEntity="Raktar",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="raktar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -603,6 +606,9 @@ class Bizonylatfej {
         $ret['valutanemnev'] = $this->getValutanemnev();
         $ret['arfolyam'] = $this->getArfolyam();
         $ret['partnerszamlatipus'] = $this->getPartnerSzamlatipus();
+        $ret['uzletkotonev'] = $this->getUzletkotonev();
+        $ret['uzletkotoemail'] = $this->getUzletkotoemail();
+        $ret['uzletkotojutalek'] = $this->getUzletkotojutalek();
         $ret['foxpost'] = false;
         if ($this->foxpostterminal) {
             $ret['foxpost'] = true;
@@ -1499,11 +1505,15 @@ class Bizonylatfej {
         return '';
     }
 
+    /**
+     * @param $val \Entities\Uzletkoto
+     */
     public function setUzletkoto($val) {
         if ($this->uzletkoto !== $val) {
             $this->uzletkoto = $val;
             $this->uzletkotonev = $val->getNev();
             $this->uzletkotoemail = $val->getEmail();
+            $this->uzletkotojutalek = $val->getJutalek();
         }
     }
 
@@ -1512,6 +1522,7 @@ class Bizonylatfej {
             $this->uzletkoto = null;
             $this->uzletkotonev = '';
             $this->uzletkotoemail = '';
+            $this->uzletkotojutalek = 0;
         }
     }
 
@@ -2061,4 +2072,12 @@ class Bizonylatfej {
         }
          */
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUzletkotojutalek() {
+        return $this->uzletkotojutalek;
+    }
+
 }

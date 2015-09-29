@@ -33,6 +33,7 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         $x['email'] = $t->getEmail();
         $x['honlap'] = $t->getHonlap();
         $x['megjegyzes'] = $t->getMegjegyzes();
+        $x['jutalek'] = $t->getJutalek();
         return $x;
     }
 
@@ -40,7 +41,7 @@ class uzletkotoController extends \mkwhelpers\MattableController {
      *  EntityController->save() hívja, ezért kell protected-nek lennie
      */
 
-    protected function setFields($obj) {
+    protected function setFields(\Entities\Uzletkoto $obj) {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setIrszam($this->params->getStringRequestParam('irszam'));
         $obj->setVaros($this->params->getStringRequestParam('varos'));
@@ -51,6 +52,7 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         $obj->setEmail($this->params->getStringRequestParam('email'));
         $obj->setHonlap($this->params->getStringRequestParam('honlap'));
         $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
+        $obj->setJutalek($this->params->getNumRequestParam('jutalek'));
         return $obj;
     }
 

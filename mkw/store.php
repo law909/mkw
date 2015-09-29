@@ -677,6 +677,10 @@ class Store {
         return self::getSetupValue('foglalas');
     }
 
+    public static function isUKElszamolas() {
+        return self::getSetupValue('ukelszamolas');
+    }
+
     public static function isFoxpostSzallitasimod($szm) {
         $i = $szm;
         if (is_a($szm, 'Entities\FoxpostTerminal')) {

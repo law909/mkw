@@ -35,6 +35,8 @@ class Uzletkoto {
 	private $pw;
 	/** @ORM\Column(type="text",nullable=true) */
 	private $megjegyzes;
+	/** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+	private $jutalek;
 	/** @ORM\OneToMany(targetEntity="Partner", mappedBy="uzletkoto") */
 	private $partnerek;
 	/**
@@ -208,5 +210,19 @@ class Uzletkoto {
 	{
 	    $this->megjegyzes = $megjegyzes;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getJutalek() {
+        return $this->jutalek;
+    }
+
+    /**
+     * @param mixed $jutalek
+     */
+    public function setJutalek($jutalek) {
+        $this->jutalek = $jutalek;
+    }
+
 }
-?>
