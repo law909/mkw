@@ -217,7 +217,7 @@ class megrendelesfejController extends bizonylatfejController {
                 }
                 else {
                     $ujbiz = new \Entities\Bizonylatfej();
-                    $ujbiz->duplicate($regibiz);
+                    $ujbiz->duplicateFrom($regibiz);
                     $ujbiz->clearId();
                     $ujbiz->clearCreated();
                     $ujbiz->clearLastmod();
@@ -241,16 +241,14 @@ class megrendelesfejController extends bizonylatfejController {
                         }
                         if ($keszlet < $regitetel->getMennyiseg()) {
                             $ujtetel = new \Entities\Bizonylattetel();
-                            $ujtetel->duplicate($regitetel);
+                            $ujtetel->duplicateFrom($regitetel);
                             $ujtetel->clearCreated();
                             $ujtetel->clearLastmod();
-                            /**
                             foreach($regitetel->getTranslations() as $trans) {
                                 $ujtrans = clone $trans;
                                 $ujtetel->addTranslation($ujtrans);
                                 $this->getEm()->persist($ujtrans);
                             }
-                             */
                             $ujtetel->setMennyiseg($regitetel->getMennyiseg() - $keszlet);
                             $ujtetel->calc();
                             $ujbiz->addBizonylattetel($ujtetel);

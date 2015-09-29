@@ -1643,12 +1643,12 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function duplicate($entityB)
+    public function duplicateFrom($entityB)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'duplicate', array($entityB));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'duplicateFrom', array($entityB));
 
-        return parent::duplicate($entityB);
+        return parent::duplicateFrom($entityB);
     }
 
 }

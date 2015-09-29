@@ -1031,7 +1031,7 @@ class Bizonylattetel {
         $this->locale = $locale;
     }
 
-    public function duplicate($entityB){
+    public function duplicateFrom($entityB){
         $this->duplication = true;
         $kivetel = array('setBizonylatfej');
         $methods = get_class_methods($this);

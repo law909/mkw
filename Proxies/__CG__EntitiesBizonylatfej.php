@@ -2963,12 +2963,12 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function duplicate($entityB)
+    public function duplicateFrom($entityB)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'duplicate', array($entityB));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'duplicateFrom', array($entityB));
 
-        return parent::duplicate($entityB);
+        return parent::duplicateFrom($entityB);
     }
 
     /**

@@ -73,7 +73,7 @@ class fantaController extends \mkwhelpers\MattableController {
                             }
                             //$uj = clone $szamla;
                             $uj = new \Entities\Bizonylatfej();
-                            $uj->duplicate($szamla);
+                            $uj->duplicateFrom($szamla);
                             $uj->clearId();
                             $uj->clearCreated();
                             $uj->clearLastmod();
@@ -86,7 +86,7 @@ class fantaController extends \mkwhelpers\MattableController {
                                 }
                                 //$ujtetel = clone $biztetel;
                                 $ujtetel = new \Entities\Bizonylattetel();
-                                $ujtetel->duplicate($biztetel);
+                                $ujtetel->duplicateFrom($biztetel);
                                 $ujtetel->clearCreated();
                                 $ujtetel->clearLastmod();
 

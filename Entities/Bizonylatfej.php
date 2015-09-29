@@ -2054,7 +2054,7 @@ class Bizonylatfej {
         $this->fizetendo3 = $val;
     }
 
-    public function duplicate($entityB){
+    public function duplicateFrom($entityB){
         $this->duplication = true;
         $methods = get_class_methods($this);
         foreach($methods as $v) {
