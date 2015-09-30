@@ -10,8 +10,8 @@
                 <img src="{$logo}">
             </a>
             <ul class="nav navbar-nav top-navbar-nav">
-                <li><div class="headerbtnbefoglalo"><a href="{$showaccountlink}" class="js-menupont btn btn-primary">Account</a></div></li>
-                <li><div class="headerbtnbefoglalo"><a id="minikosar" href="{$kosargetlink}" class="js-menupont btn btn-success">{include "minikosar.tpl"}</a></div></li>
+                <li><div class="headerbtnbefoglalo"><a href="{$showaccountlink}" class="js-menupont js-headerbtn btn btn-primary">Account</a></div></li>
+                <li><div class="headerbtnbefoglalo"><a id="minikosar" href="{$kosargetlink}" class="js-menupont js-headerbtn btn btn-success">{include "minikosar.tpl"}</a></div></li>
             </ul>
         </div>
     </div>

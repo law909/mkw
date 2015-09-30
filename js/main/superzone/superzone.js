@@ -28,6 +28,11 @@ $(document).ready(function() {
         }
     });
 
+    $('.js-headerbtn').on('click', function(e) {
+        e.preventDefault();
+        document.location = $(this).attr('href');
+    });
+
     $('.js-mennyincrement').on('click', function(e) {
         var input = $('input[name="' + $(this).data('name') + '"]');
         e.preventDefault();
