@@ -22,6 +22,8 @@ class KivetfejController extends bizonylatfejController {
             $egyed['keltstr'] = $kelt;
             $egyed['teljesitesstr'] = $kelt;
             $egyed['esedekessegstr'] = \mkw\Store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
+            $egyed['reportfile'] = '';
+            $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->biztipus));
             switch ($source) {
                 case 'megrendeles':
                     $egyed['megjegyzes'] = 'Rendelés: ' . $id;

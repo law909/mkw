@@ -774,7 +774,31 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $this->getkarb($this->getKarbTplName());
     }
 
-    protected function setVarsForKarb($view, $record) {
+    public function getkarb($tplname = null, $id = null, $oper = null, $quick = null) {
+        if (!$tplname) {
+            $tplname = $this->getKarbFormTplName();
+        }
+        if (!$id) {
+            $id = $this->params->getRequestParam('id', 0);
+        }
+        if (!$oper) {
+            $oper = $this->params->getRequestParam('oper', '');
+        }
+        if (!$quick) {
+            $quick = $this->params->getBoolRequestParam('quick');
+        }
+        $view = $this->createView($tplname);
+
+        $view->setVar('pagetitle', $this->getPageTitle());
+        $view->setVar('controllerscript', $this->biztipus . 'fej.js');
+        $view->setVar('formaction', '/admin/' . $this->biztipus . 'fej/save');
+        $view->setVar('oper', $oper);
+        $view->setVar('quick', $quick);
+        //       $this->setVars($view);
+
+        $record = $this->getRepo()->findWithJoins($id);
+        $egyed = $this->loadVars($record, true);
+
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
         $bt->setTemplateVars($view);
 
@@ -836,35 +860,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('esedekessegalap', store::getParameter(\mkw\consts::Esedekessegalap, 1));
         $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList(($record ? $record->getReportfile() : ''), ($record ? $record->getBizonylattipusId() : $this->biztipus)));
         $view->setVar('bizonylatnyelvlist', store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
-
-    }
-
-    public function getkarb($tplname = null, $id = null, $oper = null, $quick = null) {
-        if (!$tplname) {
-            $tplname = $this->getKarbFormTplName();
-        }
-        if (!$id) {
-            $id = $this->params->getRequestParam('id', 0);
-        }
-        if (!$oper) {
-            $oper = $this->params->getRequestParam('oper', '');
-        }
-        if (!$quick) {
-            $quick = $this->params->getBoolRequestParam('quick');
-        }
-        $view = $this->createView($tplname);
-
-        $view->setVar('pagetitle', $this->getPageTitle());
-        $view->setVar('controllerscript', $this->biztipus . 'fej.js');
-        $view->setVar('formaction', '/admin/' . $this->biztipus . 'fej/save');
-        $view->setVar('oper', $oper);
-        $view->setVar('quick', $quick);
-        //       $this->setVars($view);
-
-        $record = $this->getRepo()->findWithJoins($id);
-        $egyed = $this->loadVars($record, true);
-
-        $this->setVarsForKarb($view, $record);
 
         if (method_exists($this, 'onGetKarb')) {
             $egyed = $this->onGetKarb($view, $record, $egyed, $oper, $id);
