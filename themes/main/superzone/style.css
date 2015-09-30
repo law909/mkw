@@ -100,6 +100,10 @@ table {
     border-top-right-radius: 0;
 }
 
+.headerbtnbefoglalo {
+    padding-top: 10px;
+}
+
 .btn-red {
     color: #eee;
     background-color: #fe0000;
@@ -186,6 +190,7 @@ fieldset[disabled] .btn-red.active {
 
 .top-navbar-nav>li {
     display: inline-block;
+    margin-left: 4px;
 }
 
 .top-navbar .navbar-header {
