@@ -80,6 +80,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['szallitasimod'] = $t->getSzallitasimod();
         $x['szallitasimodnev'] = $t->getSzallitasimodNev();
         $x['bizonylatnyelv'] = $t->getBizonylatnyelv();
+        $x['ezuzletkoto'] = $t->getEzuzletkoto();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\Store::getParameter(\mkw\consts::NullasAfa));
             $x['afa'] = $afa->getId();
@@ -88,6 +89,10 @@ class partnerController extends \mkwhelpers\MattableController {
         return $x;
     }
 
+    /**
+     * @param \Entities\Partner $obj
+     * @return \Entities\Partner
+     */
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setVezeteknev($this->params->getStringRequestParam('vezeteknev'));
@@ -133,6 +138,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $obj->setSwift($this->params->getStringRequestParam('swift'));
         $obj->setTermekarazonosito($this->params->getStringRequestParam('termekarazonosito'));
         $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
+        $obj->setEzuzletkoto($this->params->getBoolRequestParam('ezuzletkoto'));
 
         $j1 = $this->params->getStringRequestParam('jelszo1');
         $j2 = $this->params->getStringRequestParam('jelszo2');

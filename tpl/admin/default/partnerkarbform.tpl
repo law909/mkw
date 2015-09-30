@@ -28,6 +28,8 @@
 			<tr>
 				<td><label for="SzallitoEdit">{t('Beszállító')}:</label></td>
 				<td><input id="SzallitoEdit" name="szallito" type="checkbox"{if ($partner.szallito==1)} checked="checked"{/if}></td>
+				<td><label for="EzuzletkotoEdit">{t('Üzletkötő')}:</label></td>
+				<td><input id="EzuzletkotoEdit" name="ezuzletkoto" type="checkbox"{if ($partner.ezuzletkoto==1)} checked="checked"{/if}></td>
 			</tr>
 			<tr>
 				<td><label for="IrszamEdit">{t('Cím')}:</label></td>

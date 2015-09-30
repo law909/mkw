@@ -238,6 +238,11 @@ class Partner {
      */
     private $szallitasimod;
 
+	/**
+	 * @ORM\Column(type="boolean")
+     */
+    private $ezuzletkoto = false;
+
 	public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -849,6 +854,9 @@ class Partner {
         $this->szamlatipus = $val;
     }
 
+    /**
+     * @return \Entities\Valutanem
+     */
     public function getValutanem() {
         if (!$this->id && !$this->valutanem) {
             $this->setValutanem(\mkw\Store::getParameter(\mkw\consts::Valutanem));
@@ -872,6 +880,9 @@ class Partner {
         return '';
     }
 
+    /**
+     * @param \Entities\Valutanem $val
+     */
     public function setValutanem($val) {
         if (!($val instanceof \Entities\Valutanem)) {
             $val = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find($val);
@@ -935,5 +946,20 @@ class Partner {
     public function setBizonylatnyelv($adat) {
         $this->bizonylatnyelv = $adat;
     }
+
+	/**
+	 * @return mixed
+	 */
+	public function getEzuzletkoto() {
+		return $this->ezuzletkoto;
+	}
+
+	/**
+	 * @param mixed $ezuzletkoto
+	 */
+	public function setEzuzletkoto($ezuzletkoto) {
+		$this->ezuzletkoto = $ezuzletkoto;
+	}
+
 
 }
