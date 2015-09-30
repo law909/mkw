@@ -15,6 +15,13 @@ class Repository extends EntityRepository {
         return $this->_em->getRepository($entityname);
     }
 
+    public function find($id, $lockMode = null, $lockVersion = null) {
+        if (isset($id)) {
+            return parent::find($id, $lockMode, $lockVersion);
+        }
+        return null;
+    }
+
     public function getAll($filter = array(), $order = array(), $offset = 0, $elemcount = 0) {
         $q = $this->_em->createQuery('SELECT ' . $this->alias . ' FROM ' . $this->entityname . ' ' . $this->alias
                 . $this->getFilterString($filter)
