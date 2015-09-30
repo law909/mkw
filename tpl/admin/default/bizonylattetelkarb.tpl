@@ -9,7 +9,11 @@
             <tr>
                 <td class="mattable-important"><label for="TermekSelect{$tetel.id}">{t('Termék')}:</label></td>
                 <td colspan="5">
+                    {if ($tetel.oper === 'add')}
                     <input id="TermekSelect{$tetel.id}" type="text" name="teteltermeknev_{$tetel.id}" class="js-termekselect termekselect mattable-important" value="{$tetel.termeknev}" required="required">
+                    {else}
+                    {$tetel.termeknev}
+                    {/if}
                     <input class="js-termekid" name="teteltermek_{$tetel.id}" type="hidden" value="{$tetel.termek}">
                 </td>
             </tr>
