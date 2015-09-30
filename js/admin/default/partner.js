@@ -58,10 +58,13 @@ $(document).ready(function(){
 			newWindowUrl:'/admin/partner/viewkarb',
 			saveUrl:'/admin/partner/save',
 			beforeShow:function() {
-				var szuletesiidoedit=$('#SzuletesiidoEdit');
-				szuletesiidoedit.datepicker($.datepicker.regional['hu']);
-				szuletesiidoedit.datepicker('option','dateFormat','yy.mm.dd');
-				szuletesiidoedit.datepicker('setDate',szuletesiidoedit.attr('data-datum'));
+				var szuletesiidoedit=$('#SzuletesiidoEdit'),
+                    termekcsoportkedvezmenytab = $('#KedvezmenyTab');
+
+                szuletesiidoedit.datepicker($.datepicker.regional['hu']);
+                szuletesiidoedit.datepicker('option','dateFormat','yy.mm.dd');
+                szuletesiidoedit.datepicker('setDate',szuletesiidoedit.attr('data-datum'));
+
                 $('#EmailEdit').on('change', function(e) {
                     $('.js-email').text($(this).val());
                 });
@@ -94,6 +97,55 @@ $(document).ready(function(){
 						});
 					}
 				});
+				termekcsoportkedvezmenytab.on('click', '.js-termekcsoportkedvezmenynewbutton', function(e) {
+					var $this = $(this);
+					e.preventDefault();
+					$.ajax({
+						url: '/admin/partnertermekcsoportkedvezmeny/getemptyrow',
+						type: 'GET',
+						success: function(data) {
+							var tbody = $('#KedvezmenyTab');
+							tbody.append(data);
+							$('.js-termekcsoportkedvezmenynewbutton,.js-termekcsoportkedvezmenydelbutton').button();
+							$this.remove();
+						}
+					});
+				})
+					.on('click', '.js-termekcsoportkedvezmenydelbutton', function(e) {
+						e.preventDefault();
+						var argomb = $(this),
+							arid = argomb.attr('data-id');
+						if (argomb.attr('data-source') === 'client') {
+							$('#kedvezmenytable_' + arid).remove();
+						}
+						else {
+							dialogcenter.html('Biztos, hogy törli a kedvezményt?').dialog({
+								resizable: false,
+								height: 140,
+								modal: true,
+								buttons: {
+									'Igen': function() {
+										$.ajax({
+											url: '/admin/partnertermekcsoportkedvezmeny/save',
+											type: 'POST',
+											data: {
+												id: arid,
+												oper: 'del'
+											},
+											success: function(data) {
+												$('#kedvezmenytable_' + data).remove();
+											}
+										});
+										$(this).dialog('close');
+									},
+									'Nem': function() {
+										$(this).dialog('close');
+									}
+								}
+							});
+						}
+					});
+				$('.js-termekcsoportkedvezmenynewbutton,.js-termekcsoportkedvezmenydelbutton').button();
 				irszamAutocomplete('#IrszamEdit','#VarosEdit');
 				varosAutocomplete('#IrszamEdit','#VarosEdit');
 				irszamAutocomplete('#SzamlaIrszamEdit','#SzamlaVarosEdit');

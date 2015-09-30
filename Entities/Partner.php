@@ -238,6 +238,9 @@ class Partner {
      */
     private $szallitasimod;
 
+	/** @ORM\OneToMany(targetEntity="PartnerTermekcsoportKedvezmeny", mappedBy="partner", cascade={"persist", "remove"}) */
+	private $termekcsoportkedvezmenyek;
+
 	/**
 	 * @ORM\Column(type="boolean")
      */
@@ -248,6 +251,7 @@ class Partner {
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->termekertesitok = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->termekcsoportkedvezmenyek = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function getCim() {
@@ -961,5 +965,11 @@ class Partner {
 		$this->ezuzletkoto = $ezuzletkoto;
 	}
 
+    /**
+     * @return \Entities\PartnerTermekcsoportKedvezmeny
+     */
+    public function getTermekcsoportkedvezmenyek() {
+        return $this->termekcsoportkedvezmenyek;
+    }
 
 }

@@ -9,6 +9,7 @@
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
 			<li><a href="#ElerhetosegTab">{t('Elérhetőségek')}</a></li>
+			<li><a href="#KedvezmenyTab">{t('Kedvezmények')}</a></li>
 			<li><a href="#LoginTab">{t('Bejelentkezés')}</a></li>
 			<li><a href="#BankTab">{t('Banki adatok')}</a></li>
 			<li><a href="#EgyebAzonositoTab">{t('Egyéb azonosító adatok')}</a></li>
@@ -173,6 +174,14 @@
 				</td>
 			</tr>
 			</tbody></table>
+		</div>
+		<div id="KedvezmenyTab" class="mattkarb-page" data-visible="visible">
+			{foreach $partner.termekcsoportkedvezmenyek as $kd}
+				{include 'partnertermekcsoportkedvezmenykarb.tpl'}
+			{/foreach}
+			<a class="js-termekcsoportkedvezmenynewbutton" href="#" title="{t('Új')}">
+				<span class="ui-icon ui-icon-circle-plus"></span>
+			</a>
 		</div>
 		<div id="LoginTab" class="mattkarb-page" data-visible="visible">
 			<table>

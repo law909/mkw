@@ -17,12 +17,17 @@ class Termekcsoport {
      * @ORM\Column(type="integer")
      */
     private $id;
+
     /**
      * @ORM\Column(type="string")
      */
     private $nev;
+
     /** @ORM\OneToMany(targetEntity="Termek", mappedBy="termekcsoport",cascade={"persist"}) */
     private $termekek;
+
+    /** @ORM\OneToMany(targetEntity="PartnerTermekcsoportKedvezmeny", mappedBy="termekcsoport",cascade={"persist"}) */
+    private $kedvezmenyek;
 
 
     /**

@@ -171,8 +171,9 @@
                 {foreach $termek.arak as $ar}
                     {include 'termektermekarkarb.tpl'}
                 {/foreach}
-                <a class="js-arnewbutton" href="#" title="{t('Új')}"><span
-                        class="ui-icon ui-icon-circle-plus"></span></a>
+                <a class="js-arnewbutton" href="#" title="{t('Új')}">
+                    <span class="ui-icon ui-icon-circle-plus"></span>
+                </a>
             </div>
         {/if}
         {if ($setup.multilang)}
@@ -180,8 +181,9 @@
                 {foreach $termek.translations as $translation}
                     {include 'termektermektranslationkarb.tpl'}
                 {/foreach}
-                <a class="js-translationnewbutton" href="#" title="{t('Új')}"><span
-                        class="ui-icon ui-icon-circle-plus"></span></a>
+                <a class="js-translationnewbutton" href="#" title="{t('Új')}">
+                    <span class="ui-icon ui-icon-circle-plus"></span>
+                </a>
             </div>
         {/if}
         <div id="CimkeTab" class="mattkarb-page" data-visible="visible">

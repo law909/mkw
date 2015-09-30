@@ -154,6 +154,9 @@ $router->map('POST', '/admin/termekkapcsolodo/save', 'termekkapcsolodoController
 $router->map('GET', '/admin/termekar/getemptyrow', 'termekarController#getemptyrow', 'admintermekargetemptyrow');
 $router->map('POST', '/admin/termekar/save', 'termekarController#save', 'admintermekarsave');
 
+$router->map('GET', '/admin/partnertermekcsoportkedvezmeny/getemptyrow', 'partnertermekcsoportkedvezmenyController#getemptyrow', 'adminpartnertermekcsoportkedvezmenygetemptyrow');
+$router->map('POST', '/admin/partnertermekcsoportkedvezmeny/save', 'partnertermekcsoportkedvezmenyController#save', 'adminpartnertermekcsoportkedvezmenysave');
+
 $router->map('GET', '/admin/termektranslation/getemptyrow', 'termektranslationController#getemptyrow', 'admintermektranslationgetemptyrow');
 $router->map('POST', '/admin/termektranslation/save', 'termektranslationController#save', 'admintermektranslationsave');
 

@@ -16,6 +16,7 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     protected function loadVars($t) {
+        $kedvCtrl = new \Controllers\partnertermekcsoportkedvezmenyController($this->params);
         $x = array();
         if (!$t) {
             $t = new \Entities\Partner();
@@ -86,6 +87,12 @@ class partnerController extends \mkwhelpers\MattableController {
             $x['afa'] = $afa->getId();
             $x['afakulcs'] = $afa->getErtek();
         }
+        $kedv = array();
+        foreach ($t->getTermekcsoportkedvezmenyek() as $tar) {
+            $kedv[] = $kedvCtrl->loadVars($tar, true);
+        }
+        $x['termekcsoportkedvezmenyek'] = $kedv;
+
         return $x;
     }
 
@@ -164,6 +171,31 @@ class partnerController extends \mkwhelpers\MattableController {
         if ($szallmod) {
             $obj->setSzallitasimod($szallmod);
         }
+
+        $kdids = $this->params->getArrayRequestParam('kedvezmenyid');
+        foreach ($kdids as $kdid) {
+            $oper = $this->params->getStringRequestParam('kedvezmenyoper_' . $kdid);
+            $termekcsoport = $this->getEm()->getRepository('Entities\Termekcsoport')->find($this->params->getIntRequestParam('kedvezmenytermekcsoport_' . $kdid));
+            if ($termekcsoport) {
+                if ($oper === 'add') {
+                    $kedv = new \Entities\PartnerTermekcsoportKedvezmeny();
+                    $kedv->setPartner($obj);
+                    $kedv->setTermekcsoport($termekcsoport);
+                    $kedv->setKedvezmeny($this->params->getNumRequestParam('kedvezmeny_' . $kdid));
+                    $this->getEm()->persist($kedv);
+                }
+                elseif ($oper === 'edit') {
+                    $kedv = $this->getEm()->getRepository('Entities\PartnerTermekcsoportKedvezmeny')->find($kdid);
+                    if ($kedv) {
+                        $kedv->setPartner($obj);
+                        $kedv->setTermekcsoport($termekcsoport);
+                        $kedv->setKedvezmeny($this->params->getNumRequestParam('kedvezmeny_' . $kdid));
+                        $this->getEm()->persist($kedv);
+                    }
+                }
+            }
+        }
+
         $obj->removeAllCimke();
         $cimkekpar = $this->params->getArrayRequestParam('cimkek');
         foreach ($cimkekpar as $cimkekod) {
