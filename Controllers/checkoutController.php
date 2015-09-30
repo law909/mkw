@@ -388,15 +388,6 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $nullasafa = $this->getRepo('Entities\Afa')->find(Store::getParameter(\mkw\consts::NullasAfa));
                     $biztetelcontroller = new bizonylattetelController($this->params);
                     $valutanem = $partner->getValutanem();
-                    $partner->setSzallnev($szallnev);
-                    $partner->setSzallirszam($szallirszam);
-                    $partner->setSzallvaros($szallvaros);
-                    $partner->setSzallutca($szallutca);
-                    $partner->setNev($szamlanev);
-                    $partner->setIrszam($szamlairszam);
-                    $partner->setVaros($szamlavaros);
-                    $partner->setUtca($szamlautca);
-                    $this->getEm()->persist($partner);
 
                     $biztipus = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
                     $megrendfej = new \Entities\Bizonylatfej();
