@@ -280,7 +280,6 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
                 if (($termekdb % $batchsize) === 0) {
-                    \mkw\Store::writelog('flush');
                     \mkw\Store::getEm()->flush();
                     \mkw\Store::getEm()->clear();
                     $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');

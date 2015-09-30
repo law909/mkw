@@ -762,6 +762,8 @@ class termekController extends \mkwhelpers\MattableController {
 		$view->setVar('cimkekat', $tcc->getWithCimkek(null));
         $gyarto = new partnerController($this->params);
         $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(0));
+		$tcs = new termekcsoportController($this->params);
+		$view->setVar('termekcsoportlist', $tcs->getSelectList());
 		$view->printTemplateResult();
 	}
 
@@ -1108,5 +1110,37 @@ class termekController extends \mkwhelpers\MattableController {
         readfile($filepath);
 
         \unlink($filepath);
+    }
+
+	public function setTermekcsoport() {
+		$ids = $this->params->getArrayRequestParam('ids');
+		//$ids = explode(',', $ids);
+        if ($ids) {
+            $tcsid = $this->params->getIntRequestParam('tcs');
+            $tcs = $this->getRepo('Entities\Termekcsoport')->find($tcsid);
+
+            $filter = array();
+            $filter['fields'][] = 'id';
+            $filter['clauses'][] = 'IN';
+            $filter['values'][] = $ids;
+            $termekek = $this->getRepo()->getAll($filter, array());
+            $termekdb = 0;
+            $batchsize = 20;
+            foreach ($termekek as $termek) {
+                $termekdb++;
+                if ($tcs) {
+                    $termek->setTermekcsoport($tcs);
+                }
+                else {
+                    $termek->setTermekcsoport(null);
+                }
+                $this->getEm()->persist($termek);
+                if (($termekdb % $batchsize) === 0) {
+                    $this->getEm()->flush();
+                }
+            }
+            $this->getEm()->flush();
+            $this->getEm()->clear();
+        }
     }
 }

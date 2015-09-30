@@ -753,17 +753,16 @@ $(document).ready(function() {
         });
 
         $('.mattable-batchbtn').on('click', function(e) {
-            var cbs;
+            var cbs,
+                tomb = [];
             e.preventDefault();
-            switch ($('.mattable-batchselect').val()) {
-                case 'arexport':
-                    cbs = $('.js-egyedcheckbox:checked');
-                    if (cbs.length) {
-                        var tomb = [],
-                                dia = $(this);
-                        cbs.closest('tr').each(function(index, elem) {
-                            tomb.push($(elem).data('egyedid'));
-                        });
+            cbs = $('.js-egyedcheckbox:checked');
+            if (cbs.length) {
+                cbs.closest('tr').each(function(index, elem) {
+                    tomb.push($(elem).data('egyedid'));
+                });
+                switch ($('.mattable-batchselect').val()) {
+                    case 'arexport':
                         href = '/admin/termek/arexport?ids=' + tomb.join(',');
                         dialogcenter.html('<a href="' + href + '" target="_blank">Letöltés</a>').dialog({
                             resizable: false,
@@ -775,22 +774,52 @@ $(document).ready(function() {
                                 }
                             }
                         });
-                    }
-                    else {
-                        dialogcenter.html('Válasszon ki legalább egy terméket!').dialog({
+                        break;
+                    case 'tcsset':
+                        dialogcenter.html($('#tcsset').show()).dialog({
                             resizable: false,
                             height: 140,
                             modal: true,
                             buttons: {
                                 'OK': function() {
+                                    var dia = $(this);
+                                    href = '/admin/termek/tcsset?ids=' + tomb.join(',');
+                                    $.ajax({
+                                        url: '/admin/termek/tcsset',
+                                        type: 'POST',
+                                        data: {
+                                            ids: tomb,
+                                            tcs: $('.js-tcsset').val()
+                                        },
+                                        success: function() {
+                                            dia.dialog('close');
+                                            $('#tcsset').hide();
+                                            $('.mattable-tablerefresh').click();
+                                        }
+                                    });
+                                },
+                                'Mégsem': function() {
                                     $(this).dialog('close');
+                                    $('#tcsset').hide();
                                 }
                             }
-                        });
-                    }
-                    break;
-            }
 
+                        });
+                        break;
+                }
+            }
+            else {
+                dialogcenter.html('Válasszon ki legalább egy terméket!').dialog({
+                    resizable: false,
+                    height: 140,
+                    modal: true,
+                    buttons: {
+                        'OK': function() {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            }
         });
 
         $('.js-maincheckbox').change(function() {

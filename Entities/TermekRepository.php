@@ -14,7 +14,8 @@ class TermekRepository extends \mkwhelpers\Repository {
             '2' => array('caption' => 'cikkszám szerint', 'order' => array('cikkszam' => 'ASC'))
         ));
         $this->setBatches(array(
-            'arexport' => 'Export árazáshoz'
+            'arexport' => 'Export árazáshoz',
+            'tcsset' => 'Termékcsoport módosítás'
         ));
     }
 

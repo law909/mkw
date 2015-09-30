@@ -40,7 +40,7 @@ class termekcsoportController extends \mkwhelpers\JQGridController {
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid) {
+    public function getSelectList($selid = null) {
         $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
         $res = array();
         foreach ($rec as $sor) {
