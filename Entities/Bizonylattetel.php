@@ -519,47 +519,52 @@ class Bizonylattetel {
      */
     public function setTermek($val) {
         if ($this->termek !== $val) {
-            $this->termek = $val;
-            if (!$this->duplication) {
-                $this->setTermeknev($val->getNev());
-                $this->translations->clear();
-                foreach ($val->getTranslations() as $trans) {
-                    $uj = new BizonylattetelTranslation($trans->getLocale(), 'termeknev', $trans->getContent());
-                    $this->addTranslation($uj);
+            if (!$val) {
+                $this->removeTermek();
+            }
+            else {
+                $this->termek = $val;
+                if (!$this->duplication) {
+                    $this->setTermeknev($val->getNev());
+                    $this->translations->clear();
+                    foreach ($val->getTranslations() as $trans) {
+                        $uj = new BizonylattetelTranslation($trans->getLocale(), 'termeknev', $trans->getContent());
+                        $this->addTranslation($uj);
+                    }
+                    $this->setCikkszam($val->getCikkszam());
+                    $this->setHosszusag($val->getHosszusag());
+                    $this->setEhparany($val->getHparany());
+                    $this->setIdegencikkszam($val->getIdegencikkszam());
+                    $this->setKiszereles($val->getKiszereles());
+                    $this->setMagassag($val->getMagassag());
+                    $this->setME($val->getMe());
+                    $this->setOsszehajthato($val->getOsszehajthato());
+                    $this->setSuly($val->getSuly());
+                    $this->setSzelesseg($val->getSzelesseg());
+                    $csoport = $val->getTermekcsoport();
+                    if ($csoport) {
+                        $this->setTermekcsoport($csoport);
+                    }
+                    else {
+                        $this->setTermekcsoport(null);
+                    }
+                    $vtsz = $val->getVtsz();
+                    if ($vtsz) {
+                        $this->setVtsz($vtsz);
+                    }
+                    else {
+                        $this->setVtsz(null);
+                    }
+                    $afa = $val->getAfa();
+                    if ($afa) {
+                        $this->setAfa($afa);
+                    }
+                    else {
+                        $this->setAfa(null);
+                    }
+                    $this->setMozgat();
+                    $this->setFoglal();
                 }
-                $this->setCikkszam($val->getCikkszam());
-                $this->setHosszusag($val->getHosszusag());
-                $this->setEhparany($val->getHparany());
-                $this->setIdegencikkszam($val->getIdegencikkszam());
-                $this->setKiszereles($val->getKiszereles());
-                $this->setMagassag($val->getMagassag());
-                $this->setME($val->getMe());
-                $this->setOsszehajthato($val->getOsszehajthato());
-                $this->setSuly($val->getSuly());
-                $this->setSzelesseg($val->getSzelesseg());
-                $csoport = $val->getTermekcsoport();
-                if ($csoport) {
-                    $this->setTermekcsoport($csoport);
-                }
-                else {
-                    $this->setTermekcsoport(null);
-                }
-                $vtsz = $val->getVtsz();
-                if ($vtsz) {
-                    $this->setVtsz($vtsz);
-                }
-                else {
-                    $this->setVtsz(null);
-                }
-                $afa = $val->getAfa();
-                if ($afa) {
-                    $this->setAfa($afa);
-                }
-                else {
-                    $this->setAfa(null);
-                }
-                $this->setMozgat();
-                $this->setFoglal();
             }
         }
     }
@@ -643,14 +648,19 @@ class Bizonylattetel {
         if (!is_object($val)) {
             $val = \mkw\Store::getEm()->getRepository('Entities\Vtsz')->find($val);
         }
-        if ($this->vtsz !== $val) {
-            $this->vtsz = $val;
-            $this->vtsznev = $val->getNev();
-            $this->vtszszam = $val->getSzam();
-            if (!$this->duplication) {
-                $afa = $val->getAfa();
-                if ($afa) {
-                    $this->setAfa($afa);
+        if (!$val) {
+            $this->removeVtsz();
+        }
+        else {
+            if ($this->vtsz !== $val) {
+                $this->vtsz = $val;
+                $this->vtsznev = $val->getNev();
+                $this->vtszszam = $val->getSzam();
+                if (!$this->duplication) {
+                    $afa = $val->getAfa();
+                    if ($afa) {
+                        $this->setAfa($afa);
+                    }
                 }
             }
         }
@@ -690,18 +700,23 @@ class Bizonylattetel {
         if (!is_object($val)) {
             $val = \mkw\Store::getEm()->getRepository('Entities\Afa')->find($val);
         }
-        if ($this->afa !== $val) {
-            $this->afa = $val;
-            $this->afanev = $val->getNev();
-            $this->afakulcs = $val->getErtek();
+        if (!$val) {
+            $this->removeAfa();
+        }
+        else {
+            if ($this->afa !== $val) {
+                $this->afa = $val;
+                $this->setAfanev($val->getNev());
+                $this->setAfakulcs($val->getErtek());
+            }
         }
     }
 
     public function removeAfa() {
         if ($this->afa !== null) {
             $this->afa = null;
-            $this->afanev = '';
-            $this->afakulcs = 0;
+            $this->setAfanev('');
+            $this->setAfakulcs(0);
         }
     }
 
@@ -825,8 +840,13 @@ class Bizonylattetel {
      */
     public function setValutanem($val) {
         if ($this->valutanem !== $val) {
-            $this->valutanem = $val;
-            $this->valutanemnev = $val->getNev();
+            if (!$val) {
+                $this->removeValutanem();
+            }
+            else {
+                $this->valutanem = $val;
+                $this->valutanemnev = $val->getNev();
+            }
         }
     }
 
@@ -1043,12 +1063,17 @@ class Bizonylattetel {
      * @param \Entities\TermekValtozat $val
      */
     public function setTermekvaltozat($val) {
-        $this->termekvaltozat = $val;
-        if (!$this->duplication) {
-            $this->setValtozatertek1($val->getErtek1());
-            $this->setValtozatertek2($val->getErtek2());
-            $this->setValtozatadattipus1($val->getAdattipus1());
-            $this->setValtozatadattipus2($val->getAdattipus2());
+        if (!$val) {
+            $this->removeTermekvaltozat();
+        }
+        else {
+            $this->termekvaltozat = $val;
+            if (!$this->duplication) {
+                $this->setValtozatertek1($val->getErtek1());
+                $this->setValtozatertek2($val->getErtek2());
+                $this->setValtozatadattipus1($val->getAdattipus1());
+                $this->setValtozatadattipus2($val->getAdattipus2());
+            }
         }
     }
 
@@ -1134,4 +1159,96 @@ class Bizonylattetel {
         }
         $this->duplication = false;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getHparany() {
+        return $this->hparany;
+    }
+
+    /**
+     * @param mixed $hparany
+     */
+    public function setHparany($hparany) {
+        $this->hparany = $hparany;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTermekcsoportnev() {
+        return $this->termekcsoportnev;
+    }
+
+    /**
+     * @param mixed $termekcsoportnev
+     */
+    public function setTermekcsoportnev($termekcsoportnev) {
+        $this->termekcsoportnev = $termekcsoportnev;
+    }
+
+    /**
+     * @param mixed $afakulcs
+     */
+    public function setAfakulcs($afakulcs) {
+        $this->afakulcs = $afakulcs;
+    }
+
+    /**
+     * @param mixed $afanev
+     */
+    public function setAfanev($afanev) {
+        $this->afanev = $afanev;
+    }
+
+    /**
+     * @param mixed $ebruttoegysar
+     */
+    public function setEbruttoegysar($ebruttoegysar) {
+        $this->ebruttoegysar = $ebruttoegysar;
+    }
+
+    /**
+     * @param mixed $ebruttoegysarhuf
+     */
+    public function setEbruttoegysarhuf($ebruttoegysarhuf) {
+        $this->ebruttoegysarhuf = $ebruttoegysarhuf;
+    }
+
+    /**
+     * @param mixed $enettoegysar
+     */
+    public function setEnettoegysar($enettoegysar) {
+        $this->enettoegysar = $enettoegysar;
+    }
+
+    /**
+     * @param mixed $enettoegysarhuf
+     */
+    public function setEnettoegysarhuf($enettoegysarhuf) {
+        $this->enettoegysarhuf = $enettoegysarhuf;
+    }
+
+    /**
+     * @param mixed $valutanemnev
+     */
+    public function setValutanemnev($valutanemnev) {
+        $this->valutanemnev = $valutanemnev;
+    }
+
+    /**
+     * @param mixed $vtsznev
+     */
+    public function setVtsznev($vtsznev) {
+        $this->vtsznev = $vtsznev;
+    }
+
+    /**
+     * @param mixed $vtszszam
+     */
+    public function setVtszszam($vtszszam) {
+        $this->vtszszam = $vtszszam;
+    }
+
 }
