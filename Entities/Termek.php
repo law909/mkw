@@ -1519,8 +1519,47 @@ class Termek {
         $this->valtozatadattipus = $a;
     }
 
+    /**
+     * @param \Entities\Partner $partner
+     */
+    public function getTermekcsoportKedvezmeny($partner = null) {
+        $kedvezmeny = 0;
+        if ($partner) {
+            $tcs = $this->getTermekcsoport();
+            if ($tcs) {
+                $kdv = \mkw\Store::getEm()->getRepository('Entities\PartnerTermekcsoportKedvezmeny')->getByPartnerTermekcsoport($partner, $tcs);
+                if ($kdv) {
+                    $kedvezmeny = $kdv->getKedvezmeny();
+                }
+            }
+        }
+        return $kedvezmeny * 1;
+    }
+
+    /**
+     * @param \Entities\TermekValtozat $valtozat
+     * @param \Entities\Partner $partner
+     * @param \Entities\Valutanem $valutanem
+     * @return float
+     */
     public function getNettoAr($valtozat = null, $partner = null, $valutanem = null) {
-        // Nincsenek ársávok
+        $netto = $this->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem);
+
+        $kdv = $this->getTermekcsoportKedvezmeny($partner);
+        if ($kdv) {
+            $netto = $netto * (100 - $kdv) / 100;
+        }
+
+        return $netto;
+    }
+
+    /**
+     * @param \Entities\TermekValtozat $valtozat
+     * @param \Entities\Partner $partner
+     * @param \Entities\Valutanem $valutanem
+     * @return float
+     */
+    public function getKedvezmenynelkuliNettoAr($valtozat = null, $partner = null, $valutanem = null) {
         if (!\mkw\Store::isArsavok()) {
             $netto = $this->getNetto();
             if ($this->getAkcios()) {
@@ -1531,7 +1570,6 @@ class Termek {
             }
             return $netto;
         }
-        // Vannak ársávok
         else {
             $arsavazon = false;
             if ($partner) {
@@ -1540,31 +1578,34 @@ class Termek {
                     $valutanem = $partner->getValutanem();
                 }
             }
+            $netto = 0;
             $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, $arsavazon);
             if (!$arsav) {
                 $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, \mkw\Store::getParameter(\mkw\consts::Arsav));
                 if ($arsav) {
-                    return $arsav->getNetto();
+                    $netto = $arsav->getNetto();
                 }
-                return 0;
             }
-            return $arsav->getNetto();
-        }
-    }
+            else {
+                $netto = $arsav->getNetto();
+            }
 
-    public function getArValutanem($valtozat = null, $partner = null, $valutanem = null) {
-        if ($partner) {
-            if (!$valutanem) {
-                $valutanem = $partner->getValutanem();
-            }
+            return $netto * 1;
         }
-        if (!$valutanem) {
-            $valutanem = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\Store::getParameter(\mkw\consts::Valutanem));
-        }
-        return $valutanem;
     }
 
     public function getBruttoAr($valtozat = null, $partner = null, $valutanem = null) {
+        $brutto = $this->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem);
+
+        $kdv = $this->getTermekcsoportKedvezmeny($partner);
+        if ($kdv) {
+            $brutto = $brutto * (100 - $kdv) / 100;
+        }
+
+        return $brutto;
+    }
+
+    public function getKedvezmenynelkuliBruttoAr($valtozat = null, $partner = null, $valutanem = null) {
         // Nincsenek ársávok
         if (!\mkw\Store::isArsavok()) {
             $brutto = $this->getBrutto();
@@ -1585,15 +1626,19 @@ class Termek {
                     $valutanem = $partner->getValutanem();
                 }
             }
+            $brutto = 0;
             $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, $arsavazon);
             if (!$arsav) {
                 $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, \mkw\Store::getParameter(\mkw\consts::Arsav));
                 if ($arsav) {
-                    return $arsav->getBrutto();
+                    $brutto = $arsav->getBrutto();
                 }
-                return 0;
             }
-            return $arsav->getBrutto();
+            else {
+                $brutto = $arsav->getBrutto();
+            }
+
+            return $brutto * 1;
         }
     }
 
@@ -1610,6 +1655,18 @@ class Termek {
         else {
             return 0;
         }
+    }
+
+    public function getArValutanem($valtozat = null, $partner = null, $valutanem = null) {
+        if ($partner) {
+            if (!$valutanem) {
+                $valutanem = $partner->getValutanem();
+            }
+        }
+        if (!$valutanem) {
+            $valutanem = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+        }
+        return $valutanem;
     }
 
     public function getNemkaphato() {

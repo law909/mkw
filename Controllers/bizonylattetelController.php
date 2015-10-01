@@ -58,6 +58,14 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$x['bruttoegysar'] = $t->getBruttoegysar();
 		$x['nettoegysarhuf'] = $t->getNettoegysarhuf();
 		$x['bruttoegysarhuf'] = $t->getBruttoegysarhuf();
+
+        $x['enettoegysar'] = $t->getEnettoegysar();
+        $x['ebruttoegysar'] = $t->getEbruttoegysar();
+        $x['enettoegysarhuf'] = $t->getEnettoegysarhuf();
+        $x['ebruttoegysarhuf'] = $t->getEbruttoegysarhuf();
+
+        $x['kedvezmeny'] = $t->getKedvezmeny();
+
 		$x['hataridostr'] = $t->getHataridoStr();
         $x['mainurl'] = store::getConfigValue('mainurl');
         $x['afanev'] = $t->getAfanev();
@@ -113,6 +121,8 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
         // Nincsenek ársávok
         if (!\mkw\Store::isArsavok()) {
             $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
+            $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
+            $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
             $valtozat = null;
             if ($this->params->getIntRequestParam('valtozat')) {
                 $valtozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('valtozat'));
@@ -120,19 +130,26 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
             if ($termek) {
                 $r = array(
                     'netto' => $termek->getNettoAr($valtozat),
-                    'brutto' => $termek->getBruttoAr($valtozat)
+                    'brutto' => $termek->getBruttoAr($valtozat),
+                    'kedvezmeny' => $termek->getTermekcsoportKedvezmeny($partner),
+                    'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem),
+                    'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem)
                 );
                 echo json_encode($r);
             }
             else {
                 echo json_encode(array(
                     'netto' => 0,
-                    'brutto' => 0
+                    'brutto' => 0,
+                    'kedvezmeny' => 0,
+                    'enetto' => 0,
+                    'ebrutto' => 0
                 ));
             }
         }
         // Vannak ársávok
         else {
+            /** @var \Entities\Termek $termek */
             $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
             $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
             $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
@@ -143,24 +160,32 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
             if ($termek) {
                 $r = array(
                     'netto' => $termek->getNettoAr($valtozat, $partner, $valutanem),
-                    'brutto' => $termek->getBruttoAr($valtozat, $partner, $valutanem)
+                    'brutto' => $termek->getBruttoAr($valtozat, $partner, $valutanem),
+                    'kedvezmeny' => $termek->getTermekcsoportKedvezmeny($partner),
+                    'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem),
+                    'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem)
                 );
                 echo json_encode($r);
             }
             else {
                 echo json_encode(array(
                     'netto' => 0,
-                    'brutto' => 0
+                    'brutto' => 0,
+                    'kedvezmeny' => 0,
+                    'enetto' => 0,
+                    'ebrutto' => 0
                 ));
             }
         }
 	}
 
-    public function calcAr($afaid, $arfolyam, $nettoegysar, $mennyiseg) {
+    public function calcAr($afaid, $arfolyam, $nettoegysar, $enettoegysar, $mennyiseg) {
 		$afaent = $this->getEm()->getRepository('Entities\Afa')->find($afaid);
         $bruttoegysar = 0;
+        $ebruttoegysar = 0;
 		if ($afaent) {
             $bruttoegysar = $afaent->calcBrutto($nettoegysar);
+            $ebruttoegysar = $afaent->calcBrutto($enettoegysar);
         }
 		$netto = $nettoegysar * $mennyiseg;
 
@@ -172,17 +197,23 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 
 		$nettoegysarhuf = $nettoegysar * $arfolyam;
 		$bruttoegysarhuf = $bruttoegysar * $arfolyam;
+        $enettoegysarhuf = $enettoegysar * $arfolyam;
+        $ebruttoegysarhuf = $ebruttoegysar * $arfolyam;
 		$nettohuf = $netto * $arfolyam;
 		$bruttohuf = $brutto * $arfolyam;
 		$afahuf = $afa * $arfolyam;
 		return array(
             'nettoegysar' => $nettoegysar,
             'bruttoegysar' => $bruttoegysar,
+            'enettoegysar' => $enettoegysar,
+            'ebruttoegysar' => $ebruttoegysar,
             'netto' => $netto,
             'brutto' => $brutto,
             'afa' => $afa,
             'nettoegysarhuf' => $nettoegysarhuf,
             'bruttoegysarhuf' => $bruttoegysarhuf,
+            'enettoegysarhuf' => $enettoegysarhuf,
+            'ebruttoegysarhuf' => $ebruttoegysarhuf,
             'nettohuf' => $nettohuf,
             'bruttohuf' => $bruttohuf,
             'afahuf' => $afahuf
@@ -194,6 +225,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
             $this->params->getIntRequestParam('afa'),
             $this->params->getNumRequestParam('arfolyam', 1),
             $this->params->getNumRequestParam('nettoegysar', 0),
+            $this->params->getNumRequestParam('enettoegysar', 0),
             $this->params->getNumRequestParam('mennyiseg', 0)
         ));
 	}

@@ -151,6 +151,9 @@ class Bizonylattetel {
     private $bruttoegysarhuf;
 
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $kedvezmeny;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $enettoegysar;
 
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
@@ -267,14 +270,19 @@ class Bizonylattetel {
         $ret['mennyiseg'] = $this->getMennyiseg();
         $ret['nettoegysarhuf'] = $this->getNettoegysarhuf();
         $ret['bruttoegysarhuf'] = $this->getBruttoegysarhuf();
+        $ret['enettoegysarhuf'] = $this->getEnettoegysarhuf();
+        $ret['ebruttoegysarhuf'] = $this->getEbruttoegysarhuf();
         $ret['nettohuf'] = $this->getNettohuf();
         $ret['afahuf'] = $this->getAfaertekhuf();
         $ret['bruttohuf'] = $this->getBruttohuf();
         $ret['nettoegysar'] = $this->getNettoegysar();
         $ret['bruttoegysar'] = $this->getBruttoegysar();
+        $ret['enettoegysar'] = $this->getEnettoegysar();
+        $ret['ebruttoegysar'] = $this->getEbruttoegysar();
         $ret['netto'] = $this->getNetto();
         $ret['afa'] = $this->getAfaertek();
         $ret['brutto'] = $this->getBrutto();
+        $ret['kedvezmeny'] = $this->getKedvezmeny();
         $ret['termeknev'] = $this->getTermeknev();
         $ret['me'] = $this->getME();
         $ret['afanev'] = $this->getAfanev();
@@ -694,7 +702,7 @@ class Bizonylattetel {
     }
 
     /**
-     * @param \Entities\Afa $val
+     * @param \Entities\Afa|int $val
      */
     public function setAfa($val) {
         if (!is_object($val)) {
@@ -1250,5 +1258,20 @@ class Bizonylattetel {
     public function setVtszszam($vtszszam) {
         $this->vtszszam = $vtszszam;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getKedvezmeny() {
+        return $this->kedvezmeny;
+    }
+
+    /**
+     * @param mixed $kedvezmeny
+     */
+    public function setKedvezmeny($kedvezmeny) {
+        $this->kedvezmeny = $kedvezmeny;
+    }
+
 
 }

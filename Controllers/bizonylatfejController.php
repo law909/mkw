@@ -529,14 +529,19 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                 if ($parenttetel) {
                                     $tetel->setParbizonylattetel($parenttetel);
                                 }
+                                $tetel->setKedvezmeny($this->params->getFloatRequestParam('tetelkedvezmeny_' . $tetelid));
                                 $tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_' . $tetelid));
                                 $tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_' . $tetelid));
                                 $tetel->setBruttoegysar($this->params->getFloatRequestParam('tetelbruttoegysar_' . $tetelid));
+                                $tetel->setEnettoegysar($this->params->getFloatRequestParam('tetelenettoegysar_' . $tetelid));
+                                $tetel->setEbruttoegysar($this->params->getFloatRequestParam('tetelebruttoegysar_' . $tetelid));
                                 $tetel->setNetto($this->params->getFloatRequestParam('tetelnetto_' . $tetelid));
                                 $tetel->setBrutto($this->params->getFloatRequestParam('tetelbrutto_' . $tetelid));
                                 $tetel->setAfaertek($tetel->getBrutto() - $tetel->getNetto());
                                 $tetel->setNettoegysarhuf($this->params->getFloatRequestParam('tetelnettoegysarhuf_' . $tetelid));
                                 $tetel->setBruttoegysarhuf($this->params->getFloatRequestParam('tetelbruttoegysarhuf_' . $tetelid));
+                                $tetel->setEnettoegysarhuf($this->params->getFloatRequestParam('tetelenettoegysarhuf_' . $tetelid));
+                                $tetel->setEbruttoegysarhuf($this->params->getFloatRequestParam('tetelebruttoegysarhuf_' . $tetelid));
                                 $tetel->setNettohuf($this->params->getFloatRequestParam('tetelnettohuf_' . $tetelid));
                                 $tetel->setBruttohuf($this->params->getFloatRequestParam('tetelbruttohuf_' . $tetelid));
                                 $tetel->setAfaertekhuf($tetel->getBruttohuf() - $tetel->getNettohuf());
@@ -548,22 +553,24 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                 }
                             }
                             else {
+                                $tetel->setKedvezmeny($this->params->getFloatRequestParam('tetelkedvezmeny_' . $tetelid));
                                 $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
                                 $tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
                                 $tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_' . $tetelid));
                                 $tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_' . $tetelid));
                                 $tetel->setBruttoegysar($this->params->getFloatRequestParam('tetelbruttoegysar_' . $tetelid));
+                                $tetel->setEnettoegysar($this->params->getFloatRequestParam('tetelenettoegysar_' . $tetelid));
+                                $tetel->setEbruttoegysar($this->params->getFloatRequestParam('tetelebruttoegysar_' . $tetelid));
                                 $arak = $biztetelcontroller->calcAr(
-                                    $tetel->getAfaId(),
-                                    $tetel->getArfolyam(),
-                                    $tetel->getNettoegysar(),
-                                    $tetel->getMennyiseg()
+                                    $tetel->getAfaId(), $tetel->getArfolyam(), $tetel->getNettoegysar(), $tetel->getEnettoegysar() , $tetel->getMennyiseg()
                                 );
                                 $tetel->setNetto($arak['netto']);
                                 $tetel->setBrutto($arak['brutto']);
                                 $tetel->setAfaertek($arak['afa']);
                                 $tetel->setNettoegysarhuf($arak['nettoegysarhuf']);
                                 $tetel->setBruttoegysarhuf($arak['bruttoegysarhuf']);
+                                $tetel->setEnettoegysarhuf($arak['enettoegysarhuf']);
+                                $tetel->setEbruttoegysarhuf($arak['ebruttoegysarhuf']);
                                 $tetel->setNettohuf($arak['nettohuf']);
                                 $tetel->setBruttohuf($arak['bruttohuf']);
                                 $tetel->setAfaertekhuf($arak['afahuf']);
@@ -586,6 +593,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                 $tetel->setFoglal();
 
                                 if (!$quick) {
+                                    $tetel->setKedvezmeny($this->params->getFloatRequestParam('tetelkedvezmeny_' . $tetelid));
                                     $tetel->setCikkszam($this->params->getStringRequestParam('tetelcikkszam_' . $tetelid));
                                     $tetel->setVtsz($this->params->getIntRequestParam('tetelvtsz_' . $tetelid));
                                     $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
@@ -593,11 +601,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                     $tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_' . $tetelid));
                                     $tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_' . $tetelid));
                                     $tetel->setBruttoegysar($this->params->getFloatRequestParam('tetelbruttoegysar_' . $tetelid));
+                                    $tetel->setEnettoegysar($this->params->getFloatRequestParam('tetelenettoegysar_' . $tetelid));
+                                    $tetel->setEbruttoegysar($this->params->getFloatRequestParam('tetelebruttoegysar_' . $tetelid));
                                     $tetel->setNetto($this->params->getFloatRequestParam('tetelnetto_' . $tetelid));
                                     $tetel->setBrutto($this->params->getFloatRequestParam('tetelbrutto_' . $tetelid));
                                     $tetel->setAfaertek($tetel->getBrutto() - $tetel->getNetto());
                                     $tetel->setNettoegysarhuf($this->params->getFloatRequestParam('tetelnettoegysarhuf_' . $tetelid));
                                     $tetel->setBruttoegysarhuf($this->params->getFloatRequestParam('tetelbruttoegysarhuf_' . $tetelid));
+                                    $tetel->setEnettoegysarhuf($this->params->getFloatRequestParam('tetelenettoegysarhuf_' . $tetelid));
+                                    $tetel->setEbruttoegysarhuf($this->params->getFloatRequestParam('tetelebruttoegysarhuf_' . $tetelid));
                                     $tetel->setNettohuf($this->params->getFloatRequestParam('tetelnettohuf_' . $tetelid));
                                     $tetel->setBruttohuf($this->params->getFloatRequestParam('tetelbruttohuf_' . $tetelid));
                                     $tetel->setAfaertekhuf($tetel->getBruttohuf() - $tetel->getNettohuf());
@@ -606,22 +618,24 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                     $tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
                                 }
                                 else {
+                                    $tetel->setKedvezmeny($this->params->getFloatRequestParam('tetelkedvezmeny_' . $tetelid));
                                     $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
                                     $tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
                                     $tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_' . $tetelid));
                                     $tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_' . $tetelid));
                                     $tetel->setBruttoegysar($this->params->getFloatRequestParam('tetelbruttoegysar_' . $tetelid));
+                                    $tetel->setEnettoegysar($this->params->getFloatRequestParam('tetelenettoegysar_' . $tetelid));
+                                    $tetel->setEbruttoegysar($this->params->getFloatRequestParam('tetelebruttoegysar_' . $tetelid));
                                     $arak = $biztetelcontroller->calcAr(
-                                        $tetel->getAfaId(),
-                                        $tetel->getArfolyam(),
-                                        $tetel->getNettoegysar(),
-                                        $tetel->getMennyiseg()
+                                        $tetel->getAfaId(), $tetel->getArfolyam(), $tetel->getNettoegysar(), $tetel->getEnettoegysar(), $tetel->getMennyiseg()
                                     );
                                     $tetel->setNetto($arak['netto']);
                                     $tetel->setBrutto($arak['brutto']);
                                     $tetel->setAfaertek($arak['afa']);
                                     $tetel->setNettoegysarhuf($arak['nettoegysarhuf']);
                                     $tetel->setBruttoegysarhuf($arak['bruttoegysarhuf']);
+                                    $tetel->setEnettoegysarhuf($arak['enettoegysarhuf']);
+                                    $tetel->setEbruttoegysarhuf($arak['ebruttoegysarhuf']);
                                     $tetel->setNettohuf($arak['nettohuf']);
                                     $tetel->setBruttohuf($arak['bruttohuf']);
                                     $tetel->setAfaertekhuf($arak['afahuf']);

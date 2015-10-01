@@ -436,10 +436,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                             $t->setBruttoegysar($kt->getBruttoegysar());
                         }
                         $arak = $biztetelcontroller->calcAr(
-                            $t->getAfaId(),
-                            $t->getArfolyam(),
-                            $t->getNettoegysar(),
-                            $t->getMennyiseg()
+                            $t->getAfaId(), $t->getArfolyam(), $t->getNettoegysar(), $t->getEnettoegysar(), $t->getMennyiseg()
                         );
                         $t->setNettoegysarhuf($arak['nettoegysarhuf']);
                         $t->setBruttoegysarhuf($arak['bruttoegysarhuf']);

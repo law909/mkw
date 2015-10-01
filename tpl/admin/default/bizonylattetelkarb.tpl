@@ -70,6 +70,19 @@
                 {/if}
             </tr>
             <tr>
+                <td><label>{t('Er.egységár')}:</label></td>
+                <td><input name="tetelenettoegysar_{$tetel.id}" type="text" value="{$tetel.enettoegysar}" readonly class="js-enettoegysarinput"></td>
+                <td><input name="tetelebruttoegysar_{$tetel.id}" type="text" value="{$tetel.ebruttoegysar}" readonly class="js-ebruttoegysarinput"></td>
+                {if ($showvalutanem)}
+                    <td><input name="tetelenettoegysarhuf_{$tetel.id}" type="text" value="{$tetel.enettoegysarhuf}" readonly></td>
+                    <td><input name="tetelebruttoegysarhuf_{$tetel.id}" type="text" value="{$tetel.ebruttoegysarhuf}" readonly></td>
+                {/if}
+            </tr>
+            <tr>
+                <td><label for="KedvezmenyEdit">{t('Kedvezmény %')}:</label></td>
+                <td><input id="KedvezmenyEdit" name="tetelkedvezmeny_{$tetel.id}" type="text" value="{$tetel.kedvezmeny}" class="js-kedvezmeny"></td>
+            </tr>
+            <tr>
                 <td><label for="NettoegysarEdit{$tetel.id}">{t('Egységár')}:</label></td>
                 <td><input id="NettoegysarEdit{$tetel.id}" name="tetelnettoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysar}" class="js-nettoegysarinput" required="required"></td>
                 <td><input name="tetelbruttoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysar}" class="js-bruttoegysarinput" required="required"></td>

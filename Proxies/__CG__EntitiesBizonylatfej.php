@@ -2974,6 +2974,160 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function setMasterpassbanktrxid($masterpassbanktrxid)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMasterpassbanktrxid', array($masterpassbanktrxid));
+
+        return parent::setMasterpassbanktrxid($masterpassbanktrxid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMasterpasstrxid($masterpasstrxid)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMasterpasstrxid', array($masterpasstrxid));
+
+        return parent::setMasterpasstrxid($masterpasstrxid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setRaktarnev($raktarnev)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRaktarnev', array($raktarnev));
+
+        return parent::setRaktarnev($raktarnev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzallitasimodnev($szallitasimodnev)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallitasimodnev', array($szallitasimodnev));
+
+        return parent::setSzallitasimodnev($szallitasimodnev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTrxid($trxid)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTrxid', array($trxid));
+
+        return parent::setTrxid($trxid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTulajbanknev($tulajbanknev)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTulajbanknev', array($tulajbanknev));
+
+        return parent::setTulajbanknev($tulajbanknev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTulajbankszamlaszam($tulajbankszamlaszam)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTulajbankszamlaszam', array($tulajbankszamlaszam));
+
+        return parent::setTulajbankszamlaszam($tulajbankszamlaszam);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTulajiban($tulajiban)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTulajiban', array($tulajiban));
+
+        return parent::setTulajiban($tulajiban);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTulajswift($tulajswift)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTulajswift', array($tulajswift));
+
+        return parent::setTulajswift($tulajswift);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setUzletkotoemail($uzletkotoemail)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUzletkotoemail', array($uzletkotoemail));
+
+        return parent::setUzletkotoemail($uzletkotoemail);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setUzletkotojutalek($uzletkotojutalek)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUzletkotojutalek', array($uzletkotojutalek));
+
+        return parent::setUzletkotojutalek($uzletkotojutalek);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setUzletkotonev($uzletkotonev)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUzletkotonev', array($uzletkotonev));
+
+        return parent::setUzletkotonev($uzletkotonev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setValutanemnev($valutanemnev)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanemnev', array($valutanemnev));
+
+        return parent::setValutanemnev($valutanemnev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizmodnev($fizmodnev)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizmodnev', array($fizmodnev));
+
+        return parent::setFizmodnev($fizmodnev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getUzletkotojutalek()
     {
 

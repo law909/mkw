@@ -9,4 +9,18 @@ class PartnerTermekcsoportKedvezmenyRepository extends \mkwhelpers\Repository {
         $this->setEntityname('Entities\PartnerTermekcsoportKedvezmeny');
     }
 
+    public function getByPartnerTermekcsoport($partner, $tcs) {
+        $filter = array();
+        $filter['fields'][] = 'partner';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = $partner;
+        $filter['fields'][] = 'termekcsoport';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = $tcs;
+        $kdv = $this->getAll($filter);
+        if ($kdv) {
+            $kdv = $kdv[0];
+        }
+        return $kdv;
+    }
 }

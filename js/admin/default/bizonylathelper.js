@@ -62,6 +62,16 @@ var bizonylathelper = function($) {
                 id = $this.attr('name').split('_')[1];
             $('input[name="qtetelbruttoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
         });
+        $('.js-quickenettoegysarinput').each(function() {
+            var $this = $(this),
+                id = $this.attr('name').split('_')[1];
+            $('input[name="qtetelenettoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
+        });
+        $('.js-quickebruttoegysarinput').each(function() {
+            var $this = $(this),
+                id = $this.attr('name').split('_')[1];
+            $('input[name="qtetelebruttoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
+        });
         $('.js-nettoegysarinput').each(function() {
             var $this = $(this),
                 id = $this.attr('name').split('_')[1];
@@ -71,6 +81,16 @@ var bizonylathelper = function($) {
             var $this = $(this),
                 id = $this.attr('name').split('_')[1];
             $('input[name="tetelbruttoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
+        });
+        $('.js-enettoegysarinput').each(function() {
+            var $this = $(this),
+                id = $this.attr('name').split('_')[1];
+            $('input[name="tetelenettoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
+        });
+        $('.js-ebruttoegysarinput').each(function() {
+            var $this = $(this),
+                id = $this.attr('name').split('_')[1];
+            $('input[name="tetelebruttoegysarhuf_' + id + '"]').val($this.val() * arfolyam);
         });
         $('.js-nettoinput').each(function() {
             var $this = $(this),
@@ -127,6 +147,9 @@ var bizonylathelper = function($) {
                     eb.data('ertek', adat.brutto);
                     hasz.text('0%');
                 }
+                $('input[name="tetelenettoegysar_' + sorId + '"]').val(adat.enetto);
+                $('input[name="tetelebruttoegysar_' + sorId + '"]').val(adat.ebrutto);
+                $('input[name="tetelkedvezmeny_' + sorId + '"]').val(adat.kedvezmeny);
                 c.val(adat.netto);
                 c.change();
             }
@@ -143,6 +166,7 @@ var bizonylathelper = function($) {
                     arfolyam: $('#ArfolyamEdit').val(),
                     afa: $('select[name="tetelafa_' + sorId + '"]').val(),
                     nettoegysar: $('input[name="tetelnettoegysar_' + sorId + '"]').val(),
+                    enettoegysar: $('input[name="tetelenettoegysar_' + sorId + '"]').val(),
                     mennyiseg: $('input[name="tetelmennyiseg_' + sorId + '"]').val()
                 },
                 success: function(data) {
@@ -150,12 +174,22 @@ var bizonylathelper = function($) {
                         eb = $('#eladasibruttoar_' + sorId),
                         hasz = $('#haszonszazalek_' + sorId),
                         n = eb.data('ertek') / resp.bruttoegysar * 100 - 100;
+
                     $('input[name="tetelnettoegysar_' + sorId + '"]').val(resp.nettoegysar);
                     $('input[name="tetelbruttoegysar_' + sorId + '"]').val(resp.bruttoegysar);
+
+                    $('input[name="tetelenettoegysar_' + sorId + '"]').val(resp.enettoegysar);
+                    $('input[name="tetelebruttoegysar_' + sorId + '"]').val(resp.ebruttoegysar);
+
                     $('input[name="tetelnetto_' + sorId + '"]').val(resp.netto);
                     $('input[name="tetelbrutto_' + sorId + '"]').val(resp.brutto);
+
                     $('input[name="tetelnettoegysarhuf_' + sorId + '"]').val(resp.nettoegysarhuf);
                     $('input[name="tetelbruttoegysarhuf_' + sorId + '"]').val(resp.bruttoegysarhuf);
+
+                    $('input[name="tetelenettoegysarhuf_' + sorId + '"]').val(resp.enettoegysarhuf);
+                    $('input[name="tetelebruttoegysarhuf_' + sorId + '"]').val(resp.ebruttoegysarhuf);
+
                     $('input[name="tetelnettohuf_' + sorId + '"]').val(resp.nettohuf);
                     $('input[name="tetelbruttohuf_' + sorId + '"]').val(resp.bruttohuf);
 
@@ -165,6 +199,12 @@ var bizonylathelper = function($) {
             });
         }
         nocalcarak = false;
+    }
+
+    function calcKedvezmeny(sorId) {
+        var kedv = $('input[name="tetelkedvezmeny_' + sorId + '"]').val() * 1;
+        $('input[name="tetelnettoegysar_' + sorId + '"]').val($('input[name="tetelenettoegysar_' + sorId + '"]').val() * (100 - kedv) / 100);
+        calcArak(sorId);
     }
 
     function checkKelt(kelt, biztipus) {
@@ -315,6 +355,9 @@ var bizonylathelper = function($) {
             success: function(data) {
                 var c = $('input[name="qtetelnettoegysar_' + sorId + '"]'),
                     adat = JSON.parse(data);
+                $('input[name="qtetelenettoegysar_' + sorId + '"]').val(adat.enetto);
+                $('input[name="qtetelebruttoegysar_' + sorId + '"]').val(adat.ebrutto);
+                $('input[name="qtetelkedvezmeny_' + sorId + '"]').val(adat.kedvezmeny);
                 c.val(adat.netto);
                 c.change();
             }
@@ -331,16 +374,26 @@ var bizonylathelper = function($) {
                     arfolyam: $('#ArfolyamEdit').val(),
                     afa: $('input[name="qtetelafa_' + sorId + '"]').val(),
                     nettoegysar: $('input[name="qtetelnettoegysar_' + sorId + '"]').val(),
+                    enettoegysar: $('input[name="qtetelenettoegysar_' + sorId + '"]').val(),
                     mennyiseg: 1
                 },
                 success: function(data) {
                     var resp = JSON.parse(data);
                     $('input[name="qtetelnettoegysar_' + sorId + '"]').val(resp.nettoegysar);
                     $('input[name="qtetelbruttoegysar_' + sorId + '"]').val(resp.bruttoegysar);
+
+                    $('input[name="qtetelenettoegysar_' + sorId + '"]').val(resp.enettoegysar);
+                    $('input[name="qtetelebruttoegysar_' + sorId + '"]').val(resp.ebruttoegysar);
+
                     $('input[name="qtetelnetto_' + sorId + '"]').val(resp.netto);
                     $('input[name="qtetelbrutto_' + sorId + '"]').val(resp.brutto);
+
                     $('input[name="qtetelnettoegysarhuf_' + sorId + '"]').val(resp.nettoegysarhuf);
                     $('input[name="qtetelbruttoegysarhuf_' + sorId + '"]').val(resp.bruttoegysarhuf);
+
+                    $('input[name="qtetelenettoegysarhuf_' + sorId + '"]').val(resp.enettoegysarhuf);
+                    $('input[name="qtetelebruttoegysarhuf_' + sorId + '"]').val(resp.ebruttoegysarhuf);
+
                     $('input[name="qtetelnettohuf_' + sorId + '"]').val(resp.nettohuf);
                     $('input[name="qtetelbruttohuf_' + sorId + '"]').val(resp.bruttohuf);
                     calcOsszesen();
@@ -348,6 +401,12 @@ var bizonylathelper = function($) {
             });
         }
         nocalcarak = false;
+    }
+
+    function quickcalcKedvezmeny(sorId) {
+        var kedv = $('input[name="qtetelkedvezmeny_' + sorId + '"]').val() * 1;
+        $('input[name="qtetelnettoegysar_' + sorId + '"]').val($('input[name="qtetelenettoegysar_' + sorId + '"]').val() * (100 - kedv) / 100);
+        quickcalcArak(sorId);
     }
 
     function loadquickValtozatList(id, sorid) {
@@ -629,6 +688,12 @@ var bizonylathelper = function($) {
                 })
                 .on('change', '.js-quickmennyiseginput', function(e) {
                     calcOsszesen();
+                })
+                .on('change', '.js-kedvezmeny', function(e) {
+                    calcKedvezmeny($(this).attr('name').split('_')[1]);
+                })
+                .on('change', '.js-quickkedvezmeny', function(e) {
+                    quickcalcKedvezmeny($(this).attr('name').split('_')[1]);
                 });
 
                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
@@ -679,12 +744,22 @@ var bizonylathelper = function($) {
                     });
                     $('input[name="tetelid[]"]').each(function() {
                         var $this = $(this),
+                            parent = $this.parent(),
                             termeksorid = $this.parents('tbody').data('id');
-                        $this.append('<input name="tetelnettoegysar_' + $this.val() + '" type="hidden" value="' +
+                        parent.append('<input name="tetelnettoegysar_' + $this.val() + '" type="hidden" value="' +
                             $('input[name="qtetelnettoegysar_' + termeksorid + '"]').val() + '">');
-                        $this.append('<input name="tetelbruttoegysar_' + $this.val() + '" type="hidden" value="' +
+                        parent.append('<input name="tetelbruttoegysar_' + $this.val() + '" type="hidden" value="' +
                             $('input[name="qtetelbruttoegysar_' + termeksorid + '"]').val() + '">');
-                        $this.append('<input name="tetelafa_' + $this.val() + '" type="hidden" value="' + $('input[name="qtetelafa_' + termeksorid + '"]').val() + '">');
+
+                        parent.append('<input name="tetelafa_' + $this.val() + '" type="hidden" value="' + $('input[name="qtetelafa_' + termeksorid + '"]').val() + '">');
+
+                        parent.append('<input name="tetelenettoegysar_' + $this.val() + '" type="hidden" value="' +
+                            $('input[name="qtetelenettoegysar_' + termeksorid + '"]').val() + '">');
+                        parent.append('<input name="tetelebruttoegysar_' + $this.val() + '" type="hidden" value="' +
+                            $('input[name="qtetelebruttoegysar_' + termeksorid + '"]').val() + '">');
+
+                        parent.append('<input name="tetelkedvezmeny_' + $this.val() + '" type="hidden" value="' +
+                            $('input[name="qtetelkedvezmeny_' + termeksorid + '"]').val() + '">');
                     });
                 }
                 return checkBizonylatFej(bizonylattipus);

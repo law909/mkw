@@ -20,7 +20,29 @@
 </tr>
 <tr>
     <td><label for="CikkszamEdit{$tetel.id}">{t('Cikkszám')}:</label></td>
-    <td><input id="CikkszamEdit{$tetel.id}" name="qtetelcikkszam_{$tetel.id}" type="text" size="30" maxlength="50" value="{$tetel.cikkszam}"></td>
+    <td><input id="CikkszamEdit{$tetel.id}" name="qtetelcikkszam_{$tetel.id}" type="text" maxlength="50" value="{$tetel.cikkszam}"></td>
+</tr>
+<tr>
+    <td></td>
+    <td>{t('Nettó')}</td>
+    <td>{t('Bruttó')}</td>
+    {if ($showvalutanem)}
+        <td class="hufprice">{t('Nettó HUF')}</td>
+        <td class="hufprice">{t('Bruttó HUF')}</td>
+    {/if}
+</tr>
+<tr>
+    <td><label for="ENettoegysarEdit{$tetel.id}">{t('Er.egységár')}:</label></td>
+    <td><input id="ENettoegysarEdit{$tetel.id}" name="qtetelenettoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.enettoegysar}" class="js-quickenettoegysarinput" readonly></td>
+    <td><input name="qtetelebruttoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.ebruttoegysar}" class="js-quickebruttoegysarinput" readonly></td>
+    {if ($showvalutanem)}
+        <td><input name="qtetelenettoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.enettoegysarhuf}" readonly></td>
+        <td><input name="qtetelebruttoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.ebruttoegysarhuf}" readonly></td>
+    {/if}
+</tr>
+<tr>
+    <td><label for="KedvezmenyEdit">{t('Kedvezmény %')}:</label></td>
+    <td><input id="KedvezmenyEdit" name="qtetelkedvezmeny_{$tetel.id}" type="text" value="{$tetel.kedvezmeny}" class="js-quickkedvezmeny"></td>
 </tr>
 <tr>
     <td><label for="NettoegysarEdit{$tetel.id}">{t('Egységár')}:</label></td>

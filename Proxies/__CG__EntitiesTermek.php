@@ -1819,6 +1819,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getTermekcsoportKedvezmeny($partner = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoportKedvezmeny', array($partner));
+
+        return parent::getTermekcsoportKedvezmeny($partner);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getNettoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL)
     {
 
@@ -1830,12 +1841,12 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getArValutanem($valtozat = NULL, $partner = NULL, $valutanem = NULL)
+    public function getKedvezmenynelkuliNettoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArValutanem', array($valtozat, $partner, $valutanem));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmenynelkuliNettoAr', array($valtozat, $partner, $valutanem));
 
-        return parent::getArValutanem($valtozat, $partner, $valutanem);
+        return parent::getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem);
     }
 
     /**
@@ -1852,12 +1863,34 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getKedvezmenynelkuliBruttoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmenynelkuliBruttoAr', array($valtozat, $partner, $valutanem));
+
+        return parent::getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getEredetiBruttoAr($valtozat)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEredetiBruttoAr', array($valtozat));
 
         return parent::getEredetiBruttoAr($valtozat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getArValutanem($valtozat = NULL, $partner = NULL, $valutanem = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArValutanem', array($valtozat, $partner, $valutanem));
+
+        return parent::getArValutanem($valtozat, $partner, $valutanem);
     }
 
     /**
