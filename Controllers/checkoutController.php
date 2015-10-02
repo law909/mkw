@@ -434,7 +434,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                             }
                             $t->setNettoegysar($kt->getNettoegysar());
                             $t->setEnettoegysar($kt->getEnettoegysar());
-                            $t->setEbruttoegysar($kt->getEbruttoegysar());
+                            $t->setEbruttoegysar($kt->getEnettoegysar());
                         }
                         else {
                             $t->setNettoegysar($kt->getNettoegysar());
