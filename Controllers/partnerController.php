@@ -452,8 +452,19 @@ class partnerController extends \mkwhelpers\MattableController {
             $user->setUtolsoklikk();
             $user->clearPasswordreminder();
             $this->getEm()->persist($user);
-            $this->getEm()->flush();
             store::getMainSession()->pk = $user->getId();
+            if (store::isB2B()) {
+                if ($user->getEzuzletkoto()) {
+                    $uk = $this->getRepo('Entities\Uzletkoto')->find($user->getUzletkotoId());
+                    if ($uk) {
+                        $uk->setSessionid(\Zend_Session::getId());
+                        $this->getEm()->persist($uk);
+                        store::getMainSession()->uk = $user->getUzletkotoId();
+                        store::getMainSession()->ukpartner = $user->getId();
+                    }
+                }
+            }
+            $this->getEm()->flush();
             $kc->replaceSessionIdAndAddPartner($oldid, $user);
             $kc->addSessionIdByPartner($user);
             return true;
@@ -464,12 +475,15 @@ class partnerController extends \mkwhelpers\MattableController {
     public function logout() {
         $user = \mkw\Store::getLoggedInUser();
         if ($user) {
-            \mkw\Store::clearLoggedInUser();
+            store::clearLoggedInUser();
             $user->setSessionid('');
             $this->getEm()->persist($user);
             $this->getEm()->flush();
             $kc = new kosarController($this->params);
             $kc->removeSessionId(\Zend_Session::getId());
+            store::getMainSession()->pk = null;
+            store::getMainSession()->uk = null;
+            store::getMainSession()->ukpartner = null;
             store::destroyMainSession();
         }
     }
@@ -847,5 +861,30 @@ class partnerController extends \mkwhelpers\MattableController {
             }
         }
         header('Location: ' . $route);
+    }
+
+    public function changePartner() {
+        $ujpartnerid = $this->params->getIntRequestParam('partner');
+        $user = $this->getRepo()->find($ujpartnerid);
+        $regiuser = \mkw\Store::getLoggedInUser();
+        if ($user) {
+
+            // pseudo logout old user
+            store::clearLoggedInUser();
+            $regiuser->setSessionid('');
+            $this->getEm()->persist($regiuser);
+            $this->getEm()->flush();
+            $kc = new kosarController($this->params);
+            $kc->removeSessionId(\Zend_Session::getId());
+            store::getMainSession()->pk = null;
+
+            // pseudo login new user
+            $user->setSessionid(\Zend_Session::getId());
+            $user->setUtolsoklikk();
+            $user->clearPasswordreminder();
+            $this->getEm()->persist($user);
+            $this->getEm()->flush();
+            store::getMainSession()->pk = $user->getId();
+        }
     }
 }

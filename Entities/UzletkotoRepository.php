@@ -39,4 +39,31 @@ class UzletkotoRepository extends \mkwhelpers\Repository {
 		$q->setParameters($this->getQueryParameters($filter));
 		return $q->getSingleScalarResult();
 	}
+
+	public function findByIdSessionid($id, $sessionid) {
+		$filter = array();
+		$filter['fields'][] = 'id';
+		$filter['clauses'][] = '=';
+		$filter['values'][] = $id;
+		$filter['fields'][] = 'sessionid';
+		$filter['clauses'][] = '=';
+		$filter['values'][] = $sessionid;
+		return $this->getAll($filter, array());
+	}
+
+    public function checkloggedin() {
+        if (isset(\mkw\Store::getMainSession()->uk)) {
+            $users = $this->findByIdSessionid(\mkw\Store::getMainSession()->uk, \Zend_Session::getId());
+            return count($users) == 1;
+        }
+        return false;
+    }
+
+    public function getLoggedInUK() {
+        if ($this->checkloggedin()) {
+            return $this->find(\mkw\Store::getMainSession()->uk);
+        }
+        return null;
+    }
+
 }

@@ -27,12 +27,10 @@
                                placeholder="{t('utca, házszám')}">
                     </td>
                 </tr>
-                {if ($setup.ukelszamolas)}
                 <tr>
                     <td><label for="JutalekEdit">{t('Jutalék %')}:</label></td>
                     <td><input id="JutalekEdit" name="jutalek" type="number" step="any" value="{$uzletkoto.jutalek}"></td>
                 </tr>
-                {/if}
                 </tbody>
             </table>
         </div>

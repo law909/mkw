@@ -32,6 +32,8 @@ class Store {
     private static $adminmode = false;
     private static $mainmode = false;
     private static $loggedinuser;
+    private static $loggedinuk;
+    private static $loggedinukpartner;
     public static $DateFormat = 'Y.m.d';
     public static $SQLDateFormat = 'Y-m-d';
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
@@ -297,6 +299,10 @@ class Store {
         return self::$templateFactory;
     }
 
+    /**
+     * @param $v
+     * @param bool|true $needmenu
+     */
     public static function fillTemplate($v, $needmenu = true) {
         $tf = new \Controllers\termekfaController(null);
         $v->setVar('GAFollow', self::getParameter('GAFollow'));
@@ -342,6 +348,27 @@ class Store {
             $user['szalladategyezik'] = true;
         }
         $v->setVar('user', $user);
+        if (self::isB2B()) {
+            /** @var \Entities\UzletkotoRepository $ukr */
+            $ukr = self::getEm()->getRepository('Entities\Uzletkoto');
+            $uk = array();
+            $uk['loggedin'] = $ukr->checkloggedin();
+            if ($uk['loggedin']) {
+                /** @var \Entities\Uzletkoto $uko */
+                $uko = $ukr->getLoggedInUK();
+                $uk['nev'] = $uko->getNev();
+                $uk['email'] = $uko->getEmail();
+                $uk['jutalek'] = $uko->getJutalek();
+                $ukpfilter = array(
+                    'fields' => array('uzletkoto'),
+                    'clauses' => array('='),
+                    'values' => array($uko)
+                );
+                $ukpartnerei = $pr->getAllForSelectList($ukpfilter, array('nev' => 'ASC'));
+                $v->setVar('ukpartnerlist', $ukpartnerei);
+            }
+            $v->setVar('uzletkoto', $uk);
+        }
         $rut = self::getRouter();
         $v->setVar('showloginlink', $rut->generate('showlogin'));
         $v->setVar('showregisztraciolink', $rut->generate('showregistration'));
@@ -641,6 +668,14 @@ class Store {
         return self::$loggedinuser;
     }
 
+    public static function getLoggedInUK() {
+        if (!self::$loggedinuk) {
+            $ur = self::getEm()->getRepository('Entities\Uzletkoto');
+            self::$loggedinuk = $ur->getLoggedInUK();
+        }
+        return self::$loggedinuk;
+    }
+
     public static function clearLoggedInUser() {
         self::$loggedinuser = null;
     }
@@ -677,8 +712,8 @@ class Store {
         return self::getSetupValue('foglalas');
     }
 
-    public static function isUKElszamolas() {
-        return self::getSetupValue('ukelszamolas');
+    public static function isB2B() {
+        return self::getSetupValue('b2b');
     }
 
     public static function isFoxpostSzallitasimod($szm) {

@@ -54,6 +54,41 @@ $(document).ready(function() {
         $this.val(kedv);
         $('.js-ar' + $this.data('id')).text(accounting.formatNumber(superz.round(ujar, -2), 2, ' '));
     });
+    $('.js-changepartner').on('click', function(e) {
+
+        function doChange(pkod) {
+            $.ajax({
+                url: '/changepartner',
+                type: 'POST',
+                data: {
+                    partner: pkod
+                },
+                beforeSend: function() {
+                    superz.showMessage('Please wait');
+                }
+            })
+            .done(function(data) {
+                window.location.reload(true);
+            })
+            .fail(function() {
+                superz.closeMessage();
+            });
+        }
+
+        var partnerkod = $('.js-uzletkotopartnerselect').val();
+        if ($('#minikosar>span').data('empty') == 1) {
+            doChange(partnerkod);
+        }
+        else {
+            superz.showQuestion('We will remove all items from your cart. Are you sure you change customer?',
+                {
+                    onYes: function() {
+                        doChange(partnerkod);
+                    }
+
+            });
+        }
+    });
 
     $('.js-kosarbabtn').on('click', function(e) {
         var ids = [], vals = [], kedvezmenyek = [], self = $(this);

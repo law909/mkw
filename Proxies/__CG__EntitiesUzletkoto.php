@@ -64,10 +64,10 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'id', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'nev', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'irszam', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'varos', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'utca', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'telefon', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'mobil', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fax', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'email', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'honlap', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'pw', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'jutalek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'felhasznalo', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'bizonylatfejek');
+            return array('__isInitialized__', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'id', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'nev', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'irszam', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'varos', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'utca', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'telefon', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'mobil', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fax', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'email', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'honlap', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'pw', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'jutalek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'felhasznalo', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'sessionid');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'id', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'nev', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'irszam', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'varos', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'utca', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'telefon', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'mobil', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fax', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'email', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'honlap', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'pw', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'jutalek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'felhasznalo', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'bizonylatfejek');
+        return array('__isInitialized__', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'id', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'nev', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'irszam', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'varos', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'utca', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'telefon', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'mobil', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fax', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'email', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'honlap', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'pw', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'jutalek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'felhasznalo', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'sessionid');
     }
 
     /**
@@ -516,6 +516,28 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJutalek', array($jutalek));
 
         return parent::setJutalek($jutalek);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSessionid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSessionid', array());
+
+        return parent::getSessionid();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSessionid($sessionid)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSessionid', array($sessionid));
+
+        return parent::setSessionid($sessionid);
     }
 
 }

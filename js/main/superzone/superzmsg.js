@@ -13,7 +13,10 @@ var superzmsg = {
     ChkSave: 'Sending your order. Please wait.',
 	FiokAdataitModositjuk: 'Adatait módosítjuk...',
 	DialogFejlec: 'Notice',
+    QuestionFejlec: 'Warning',
 	DialogOk: 'OK',
+	DialogYes: 'Yes',
+	DialogNo: 'No',
     PassChange: ['A jelszómódosítás sikerült.', 'A két jelszó nem egyezik.', 'Hibás jelszót adott meg.','Nem adott meg új jelszót.'],
     PassReminderCreated: 'Emailcímére elküldtünk egy jelszóemlékeztető linket.',
     PassReminderRequiredEmail: 'Adja meg azt az emailcímet, amellyel regisztrált.'

@@ -2,6 +2,10 @@ table {
     margin-bottom: 0;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .textalignright {
     text-align: right;
 }
@@ -27,6 +31,15 @@ table {
     border-radius: 2px;
     padding-bottom: 20px;
     margin-bottom: 20px;
+}
+
+.content-back-uk {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.content-back label {
+    font-weight: normal;
 }
 
 .checkout-content {

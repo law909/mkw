@@ -13,6 +13,7 @@ $router->map('POST', '/checkemail', 'partnerController#checkemail', 'partnerchec
 $router->map('POST', '/getpassreminder', 'partnerController#createPassReminder', 'createpassreminder');
 $router->map('GET', '/passreminder/[:id]', 'partnerController#showPassReminder', 'showpassreminder');
 $router->map('POST', '/passreminder/ment', 'partnerController#savePassReminder', 'savepassreminder');
+$router->map('POST', '/changepartner', 'partnerController#changePartner', 'changepartner');
 
 $router->map('GET', '/statlap/[:lap]', 'statlapController#show', 'showstatlap');
 $router->map('GET', '/statlap/p/[:lap]', 'statlapController#showPopup', 'showstatlappopup');

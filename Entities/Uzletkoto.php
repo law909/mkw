@@ -46,6 +46,8 @@ class Uzletkoto {
 	private $felhasznalo;
 	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="uzletkoto",cascade={"persist"}) */
 	private $bizonylatfejek;
+	/** @ORM\Column(type="string",length=255,nullable=true) */
+	private $sessionid = '';
 
 	public function __construct() {
 		$this->partnerek=new ArrayCollection();
@@ -224,5 +226,19 @@ class Uzletkoto {
     public function setJutalek($jutalek) {
         $this->jutalek = $jutalek;
     }
+
+	/**
+	 * @return mixed
+	 */
+	public function getSessionid() {
+		return $this->sessionid;
+	}
+
+	/**
+	 * @param mixed $sessionid
+	 */
+	public function setSessionid($sessionid) {
+		$this->sessionid = $sessionid;
+	}
 
 }
