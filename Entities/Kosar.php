@@ -66,6 +66,15 @@ class Kosar {
 	/** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
 	private $bruttoegysar;
 
+	/** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+	private $enettoegysar;
+
+	/** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+	private $ebruttoegysar;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $kedvezmeny;
+
     /** @ORM\Column(type="integer",nullable=true) */
 	private $sorrend = 0;
 
@@ -78,15 +87,20 @@ class Kosar {
         if ($partner && $partner->getSzamlatipus()) {
             $ret['bruttoegysarhuf'] = $this->getNettoegysar() * 1;
             $ret['bruttoegysar'] = $this->getNettoegysar() * 1;
+			$ret['ebruttoegysarhuf'] = $this->getEnettoegysar() * 1;
+			$ret['ebruttoegysar'] = $this->getEnettoegysar() * 1;
             $ret['bruttohuf'] = $this->getNettoegysar() * $this->getMennyiseg() * 1;
             $ret['brutto'] = $this->getNettoegysar() * $this->getMennyiseg() * 1;
         }
         else {
             $ret['bruttoegysarhuf'] = $this->getBruttoegysar() * 1;
             $ret['bruttoegysar'] = $this->getBruttoegysar() * 1;
+			$ret['ebruttoegysarhuf'] = $this->getEbruttoegysar() * 1;
+			$ret['ebruttoegysar'] = $this->getEbruttoegysar() * 1;
             $ret['bruttohuf'] = $this->getBruttoegysar() * $this->getMennyiseg() * 1;
             $ret['brutto'] = $this->getBruttoegysar() * $this->getMennyiseg() * 1;
         }
+        $ret['kedvezmeny'] = $this->getKedvezmeny();
 		$ret['mennyiseg'] = $this->getMennyiseg() * 1;
 		$valt = $this->getTermekvaltozat();
 		$v = array();
@@ -137,15 +151,12 @@ class Kosar {
 	public function setPartner($val) {
 		if ($this->partner !== $val) {
 			$this->partner = $val;
-//			$val->addBizonylatfej($this);
 		}
 	}
 
 	public function removePartner() {
 		if ($this->partner !== null) {
-//			$val=$this->partner;
 			$this->partner = null;
-//			$val->removeBizonylatfej($this);
 		}
 	}
 
@@ -163,15 +174,12 @@ class Kosar {
 	public function setTermek(Termek $val) {
 		if ($this->termek !== $val) {
 			$this->termek = $val;
-//			$val->addBizonylattetelek($this);
 		}
 	}
 
 	public function removeTermek() {
 		if ($this->termek !== null) {
-//			$val=$this->termek;
 			$this->termek = null;
-//			$val->removeBizonylattetelek($this);
 		}
 	}
 
@@ -271,4 +279,47 @@ class Kosar {
     public function setSorrend($s) {
         $this->sorrend = $s;
     }
+
+	/**
+	 * @return mixed
+	 */
+	public function getEbruttoegysar() {
+		return $this->ebruttoegysar;
+	}
+
+	/**
+	 * @param mixed $ebruttoegysar
+	 */
+	public function setEbruttoegysar($ebruttoegysar) {
+		$this->ebruttoegysar = $ebruttoegysar;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEnettoegysar() {
+		return $this->enettoegysar;
+	}
+
+	/**
+	 * @param mixed $enettoegysar
+	 */
+	public function setEnettoegysar($enettoegysar) {
+		$this->enettoegysar = $enettoegysar;
+	}
+
+    /**
+     * @return mixed
+     */
+    public function getKedvezmeny() {
+        return $this->kedvezmeny;
+    }
+
+    /**
+     * @param mixed $kedvezmeny
+     */
+    public function setKedvezmeny($kedvezmeny) {
+        $this->kedvezmeny = $kedvezmeny;
+    }
+
 }

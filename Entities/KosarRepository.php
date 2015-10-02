@@ -200,6 +200,7 @@ class KosarRepository extends \mkwhelpers\Repository {
                 }
             }
             else {
+                /** @var \Entities\Termek $termek */
                 $termek = $this->getRepo('Entities\Termek')->find($termekid);
                 if ($termek) {
                     $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
@@ -215,6 +216,8 @@ class KosarRepository extends \mkwhelpers\Repository {
                     $k->setPartner($partner);
                     $k->setValutanem($valutanem);
                     $k->setBruttoegysar($termek->getBruttoAr($termekvaltozat, $partner));
+                    $k->setEbruttoegysar($termek->getKedvezmenynelkuliBruttoAr($termekvaltozat, $partner));
+                    $k->setKedvezmeny($termek->getTermekcsoportKedvezmeny($partner));
                     if ($mennyiseg) {
                         $k->setMennyiseg($mennyiseg);
                     }
@@ -231,7 +234,7 @@ class KosarRepository extends \mkwhelpers\Repository {
     }
 
     // Superzone, terméklistából is lehet mennyiséget megadni
-    public function addTo($termekid, $vid = null, $bruttoegysar = null, $mennyiseg = null) {
+    public function addTo($termekid, $vid = null, $bruttoegysar = null, $mennyiseg = null, $kedvezmeny = null) {
         $sessionid = \Zend_Session::getId();
 
         $partnerid = null;
@@ -268,6 +271,7 @@ class KosarRepository extends \mkwhelpers\Repository {
                 $k->novelMennyiseg($mennyiseg);
             }
             else {
+                /** @var \Entities\Termek $termek */
                 $termek = $this->getRepo('Entities\Termek')->find($termekid);
                 if ($termek) {
                     $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
@@ -282,7 +286,14 @@ class KosarRepository extends \mkwhelpers\Repository {
                     $k->setSessionid($sessionid);
                     $k->setPartner($partner);
                     $k->setValutanem($valutanem);
-                    $k->setBruttoegysar($termek->getBruttoAr($termekvaltozat, $partner));
+                    $eredetibrutto = $termek->getKedvezmenynelkuliBruttoAr($termekvaltozat, $partner);
+                    $k->setEbruttoegysar($eredetibrutto);
+                    $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
+                    if (!$kedvezmeny) {
+                        $kedvezmeny = $termek->getTermekcsoportKedvezmeny($partner);
+                    }
+                    $k->setKedvezmeny($kedvezmeny);
+                    $k->setBruttoegysar($eredetibrutto * (100 - $kedvezmeny) / 100);
                     if ($mennyiseg) {
                         $k->setMennyiseg($mennyiseg);
                     }
@@ -329,12 +340,19 @@ class KosarRepository extends \mkwhelpers\Repository {
         return false;
     }
 
-    public function edit($id, $mennyiseg) {
+    public function edit($id, $mennyiseg, $kedvezmeny = false) {
         $sessionid = \Zend_Session::getId();
+        /** @var \Entities\Kosar $sor */
         $sor = $this->find($id);
         if ($sor && $sor->getSessionid() == $sessionid) {
             $termekid = $sor->getTermekId();
-            $sor->setMennyiseg($mennyiseg);
+            if ($kedvezmeny !== false) {
+                $sor->setKedvezmeny($kedvezmeny);
+                $sor->setBruttoegysar($sor->getEbruttoegysar() * (100 - $kedvezmeny) / 100);
+            }
+            if ($mennyiseg !== false) {
+                $sor->setMennyiseg($mennyiseg);
+            }
             $this->_em->persist($sor);
             $this->_em->flush();
             return true;

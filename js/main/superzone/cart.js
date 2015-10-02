@@ -1,7 +1,7 @@
-var cart = (function($) {
+var cart = (function ($) {
 
-	function submitMennyEdit(f) {
-		var db = $('input[name="mennyiseg"]', f).val(),
+    function submitMennyEdit(f) {
+        var db = $('input[name="mennyiseg"]', f).val(),
             menny = Math.round(db);
         $.ajax({
             url: f.attr('action'),
@@ -10,10 +10,10 @@ var cart = (function($) {
                 id: $('input[name="id"]', f).val(),
                 mennyiseg: menny
             },
-            beforeSend: function() {
+            beforeSend: function () {
                 //mkw.showMessage(mkwmsg.KosarMennyisegModositas);
             },
-            success: function(data) {
+            success: function (data) {
                 var d = JSON.parse(data);
                 $('#minikosar').html(d.minikosar);
                 //$('table').html(d.tetellist);
@@ -22,43 +22,84 @@ var cart = (function($) {
                 $('#kosarsum').text(d.kosarertek);
                 $('#mennyisegsum').text(d.mennyisegsum);
             },
-            complete: function() {
+            complete: function () {
                 //mkw.closeMessage();
             }
         });
-	}
+    }
 
-	function initUI() {
-		var $cart = $('.js-cart');
+    function submitKedvEdit(f) {
+        var kedv = $('input[name="kedvezmeny"]', f).val(),
+            kedv = Math.round(kedv);
+        $.ajax({
+            url: f.attr('action'),
+            type: 'POST',
+            data: {
+                id: $('input[name="id"]', f).val(),
+                kedvezmeny: kedv
+            },
+            beforeSend: function () {
+                //mkw.showMessage(mkwmsg.KosarMennyisegModositas);
+            },
+            success: function (data) {
+                var d = JSON.parse(data);
+                $('#minikosar').html(d.minikosar);
+                //$('table').html(d.tetellist);
+                //mkw.initTooltips();
+                $('#egysegar_' + $('input[name="id"]', f).val()).text(d.tetelegysegar);
+                $('#ertek_' + $('input[name="id"]', f).val()).text(d.tetelertek);
+                $('#kosarsum').text(d.kosarertek);
+                $('#mennyisegsum').text(d.mennyisegsum);
+            },
+            complete: function () {
+                //mkw.closeMessage();
+            }
+        });
+    }
 
-		if ($cart.length > 0) {
-			$cart
-			.on('input', 'input[name="mennyiseg"]', $.debounce(300, function() {
-				var $this = $(this);
-				if ((Math.round($this.val()) != 0)) {
-					submitMennyEdit($(this).parents('form.kosarform'));
-				}
-			}))
-            .on('blur', 'input[name="mennyiseg"]', function() {
-				var $this = $(this);
-                if (Math.round($this.val()) == 0) {
-                    $this.val($this.data('org'));
-                    submitMennyEdit($this.parents('form.kosarform'));
-                    superz.showDialog('Please use the Remove button to remove an item from your order.');
-                }
-                else {
-					submitMennyEdit($(this).parents('form.kosarform'));
-                }
-            })
-			.on('submit', '.kosarform', function() {
-				submitMennyEdit($(this));
-				return false;
-			});
-		}
-	}
+    function initUI() {
+        var $cart = $('.js-cart');
 
-	return {
-		initUI: initUI
-	};
+        if ($cart.length > 0) {
+            $cart
+                .on('input', 'input[name="mennyiseg"]', $.debounce(300, function () {
+                    var $this = $(this);
+                    if ((Math.round($this.val()) != 0)) {
+                        submitMennyEdit($(this).parents('form.kosarform'));
+                    }
+                }))
+                .on('blur', 'input[name="mennyiseg"]', function() {
+                    var $this = $(this);
+                    if (Math.round($this.val()) == 0) {
+                        $this.val($this.data('org'));
+                        submitMennyEdit($this.parents('form.kosarform'));
+                        superz.showDialog('Please use the Remove button to remove an item from your order.');
+                    }
+                    else {
+                        submitMennyEdit($(this).parents('form.kosarform'));
+                    }
+                })
+                .on('submit', '.kosarform', function() {
+                    submitMennyEdit($(this));
+                    return false;
+                })
+                .on('input', 'input[name="kedvezmeny"]', $.debounce(300, function () {
+                    var $this = $(this);
+                    submitKedvEdit($(this).parents('form.kosarformk'));
+                }))
+                .on('blur', 'input[name="kedvezmeny"]', function() {
+                    var $this = $(this);
+                    submitKedvEdit($(this).parents('form.kosarformk'));
+                })
+                .on('submit', '.kosarformk', function() {
+                    submitKedvEdit($(this));
+                    return false;
+                });
+        }
+    }
+
+    return {
+        initUI: initUI
+    };
 
 })(jQuery);

@@ -312,6 +312,9 @@ class checkoutController extends \mkwhelpers\MattableController {
                         $t->setBruttoegysar($kt->getBruttoegysar());
                         $t->setNettoegysarhuf($kt->getNettoegysar());
                         $t->setBruttoegysarhuf($kt->getBruttoegysar());
+                        $t->setEnettoegysarhuf($kt->getEnettoegysar());
+                        $t->setEbruttoegysarhuf($kt->getEbruttoegysar());
+                        $t->setKedvezmeny($kt->getKedvezmeny());
                         $t->calc();
                         $lasttermeknevek[] = $t->getTermeknev();
                         $lasttermekids[] = $t->getTermekId();
@@ -430,11 +433,16 @@ class checkoutController extends \mkwhelpers\MattableController {
                                 $t->setAfa($nullasafa);
                             }
                             $t->setNettoegysar($kt->getNettoegysar());
+                            $t->setEnettoegysar($kt->getEnettoegysar());
+                            $t->setEbruttoegysar($kt->getEbruttoegysar());
                         }
                         else {
                             $t->setNettoegysar($kt->getNettoegysar());
                             $t->setBruttoegysar($kt->getBruttoegysar());
+                            $t->setEnettoegysar($kt->getEnettoegysar());
+                            $t->setEbruttoegysar($kt->getEbruttoegysar());
                         }
+                        $t->setKedvezmeny($kt->getKedvezmeny());
                         $arak = $biztetelcontroller->calcAr(
                             $t->getAfaId(), $t->getArfolyam(), $t->getNettoegysar(), $t->getEnettoegysar(), $t->getMennyiseg()
                         );

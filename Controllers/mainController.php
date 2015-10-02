@@ -247,6 +247,7 @@ class mainController extends \mkwhelpers\Controller {
         $com = $this->params->getStringParam('slug');
         $szin = $this->params->getStringRequestParam('szin');
         $tc = new termekController($this->params);
+        /** @var \Entities\Termek $termek */
         $termek = $tc->getRepo()->findOneBySlug($com);
         if ($termek && !$termek->getInaktiv() && $termek->getLathato() && !$termek->getFuggoben()) {
             $this->view = $this->getTemplateFactory()->createMainView('termeklapmeret.tpl');
@@ -261,12 +262,6 @@ class mainController extends \mkwhelpers\Controller {
             $t['leiras'] = $termek->getLeiras();
             $t['szin'] = $szin;
             $partner = \mkw\Store::getLoggedInUser();
-            if ($partner && $partner->getSzamlatipus()) {
-                $t['ar'] = $termek->getNettoAr(null, $partner);
-            }
-            else {
-                $t['ar'] = $termek->getBruttoAr(null, $partner);
-            }
             $valutanem = $termek->getArValutanem(null, $partner);
             if ($valutanem) {
                 $t['valutanemnev'] = $valutanem->getNev();
@@ -274,6 +269,15 @@ class mainController extends \mkwhelpers\Controller {
             else {
                 $t['valutanemnev'] = 'X';
             }
+            if ($partner && $partner->getSzamlatipus()) {
+                $t['ar'] = $termek->getNettoAr(null, $partner);
+                $t['eredetiar'] = $termek->getKedvezmenynelkuliNettoAr(null, $partner, $valutanem);
+            }
+            else {
+                $t['ar'] = $termek->getBruttoAr(null, $partner);
+                $t['eredetiar'] = $termek->getKedvezmenynelkuliBruttoAr(null, $partner, $valutanem);
+            }
+            $t['kedvezmeny'] = $termek->getTermekcsoportKedvezmeny($partner);
             $valtozatok = $termek->getValtozatok();
             foreach ($valtozatok as $valt) {
                 if ($valt->getElerheto() && $valt->getLathato()) {

@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+    accounting.settings.number.decimal = ',';
+
     $(document).on('click', function(event) {
         var et = $(event.target);
         if ((!et.hasClass('js-menupont')) && (!et.closest('.submenu').length)) {
@@ -45,16 +47,27 @@ $(document).ready(function() {
             input.val(input.val() * 1 - 1);
         }
     });
+    $('.js-kedvezmenyinput').on('change', function(e) {
+        var $this = $(this),
+            kedv = accounting.unformat($this.val()),
+            ujar = $this.data('eredetiar') * (100 - kedv) / 100;
+        $this.val(kedv);
+        $('.js-ar' + $this.data('id')).text(accounting.formatNumber(superz.round(ujar, -2), 2, ' '));
+    });
 
     $('.js-kosarbabtn').on('click', function(e) {
-        var ids = [], vals = [], self = $(this);
+        var ids = [], vals = [], kedvezmenyek = [], self = $(this);
         e.preventDefault();
         $('.js-mennyiseginput').each(function(index, elem) {
-            var el = $(elem);
+            var el = $(elem),
+                kedvinput = $('input[name="kedvezmeny_' + el.data('id') + '"]');
             if (el.val()) {
                 ids.push(el.data('id'));
                 vals.push(el.val());
+                kedvezmenyek.push(kedvinput.val());
                 el.val('');
+                kedvinput.val(kedvinput.data('eredetikedvezmeny'));
+                kedvinput.change();
             }
         });
         var opt = {
@@ -63,7 +76,8 @@ $(document).ready(function() {
             data: {
                 termek: self.data('termekid'),
                 ids: ids,
-                values: vals
+                values: vals,
+                kedv: kedvezmenyek
             },
             beforeSend: function() {
                 superz.showMessage('Please wait');

@@ -218,13 +218,15 @@ class kosarController extends \mkwhelpers\MattableController {
             if ($termek) {
                 $vids = $this->params->getArrayRequestParam('ids');
                 $values = $this->params->getArrayRequestParam('values');
+                $kedvezmenyek = $this->params->getArrayRequestParam('kedv');
 
                 for($cikl = 0; $cikl < count($vids); $cikl++) {
                     $vid = $vids[$cikl];
                     $value = $values[$cikl];
+                    $kedv = $kedvezmenyek[$cikl];
                     $termekvaltozat = $this->getRepo('Entities\TermekValtozat')->find($vid);
                     if ($termekvaltozat) {
-                        $this->getRepo()->addTo($termekid, $vid, null, $value);
+                        $this->getRepo()->addTo($termekid, $vid, null, $value, $kedv);
                     }
                 }
             }
@@ -260,8 +262,9 @@ class kosarController extends \mkwhelpers\MattableController {
 
     public function edit() {
         $id = $this->params->getIntRequestParam('id');
-        $menny = $this->params->getNumRequestParam('mennyiseg');
-        if ($this->getRepo()->edit($id, $menny)) {
+        $menny = $this->params->getNumRequestParam('mennyiseg', false);
+        $kedvezmeny = $this->params->getNumRequestParam('kedvezmeny', false);
+        if ($this->getRepo()->edit($id, $menny, $kedvezmeny)) {
             if ($this->params->getIntRequestParam('jax', 0) > 0) {
 //				$v=$this->getTemplateFactory()->createMainView('minikosar.tpl');
 //				$v->setVar('kosar',$this->getMiniData());
@@ -289,19 +292,31 @@ class kosarController extends \mkwhelpers\MattableController {
                     }
                     $mennyisegsum = $m['mennyisegsum'];
                 }
-                $valutanem = 'Ft';
+                $valutanemnev = 'Ft';
                 if (\mkw\Store::getTheme() !== 'mkwcansas') {
                     if ($partner) {
-                        $valutanem = $partner->getValutanemnev();
+                        $valutanemnev = $partner->getValutanemnev();
+                        $valutanem = $partner->getValutanem();
+                    }
+                }
+                $ker = 0;
+                if (!$valutanem) {
+                    $valutanem = $this->getRepo('Entities\Valutanem')->find(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+                }
+                if ($valutanem) {
+                    $ker = 2;
+                    if ($valutanem->getKerekit()) {
+                        $ker = 0;
                     }
                 }
 
                 $sorok = $this->getRepo()->find($id);
                 $s = $sorok->toLista($partner);
                 echo json_encode(array(
-                    'tetelertek' => number_format($s['bruttohuf'], 0, ',', ' ') . ' ' . $valutanem,
-                    'kosarertek' => number_format($sum, 0, ',', ' ') . ' ' . $valutanem,
-                    'mennyisegsum' => number_format($mennyisegsum,0,',',' '),
+                    'tetelegysegar' => number_format($s['bruttoegysarhuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                    'tetelertek' => number_format($s['bruttohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                    'kosarertek' => number_format($sum, $ker, ',', ' ') . ' ' . $valutanemnev,
+                    'mennyisegsum' => number_format($mennyisegsum, 0, ',', ' '),
                     'minikosar' => $v->getTemplateResult(),
                     'minikosaringyenes' => $v2->getTemplateResult(),
                 ));

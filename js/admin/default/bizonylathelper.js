@@ -45,10 +45,10 @@ var bizonylathelper = function($) {
             bruttohuf = bruttohuf + $('input[name="qtetelbruttoegysarhuf_' + id + '"]').val() * $this.val() * 1;
         });
 
-        $('.js-nettosum').text(accounting.formatNumber(accounting.toFixed(netto, 2), 2, ' '));
-        $('.js-bruttosum').text(accounting.formatNumber(accounting.toFixed(brutto, 2), 2, ' '));
-        $('.js-nettohufsum').text(accounting.formatNumber(accounting.toFixed(nettohuf, 2), 2, ' '));
-        $('.js-bruttohufsum').text(accounting.formatNumber(accounting.toFixed(bruttohuf, 2), 2, ' '));
+        $('.js-nettosum').text(accounting.formatNumber(tools.round(netto, -2), 2, ' '));
+        $('.js-bruttosum').text(accounting.formatNumber(tools.round(brutto, -2), 2, ' '));
+        $('.js-nettohufsum').text(accounting.formatNumber(tools.round(nettohuf, -2), 2, ' '));
+        $('.js-bruttohufsum').text(accounting.formatNumber(tools.round(bruttohuf, -2), 2, ' '));
     }
 
     function recalcHufPrices(arfolyam) {
@@ -193,7 +193,7 @@ var bizonylathelper = function($) {
                     $('input[name="tetelnettohuf_' + sorId + '"]').val(resp.nettohuf);
                     $('input[name="tetelbruttohuf_' + sorId + '"]').val(resp.bruttohuf);
 
-                    hasz.text(n.toFixed(2));
+                    hasz.text(tools.round(n, -2));
                     calcOsszesen();
                 }
             });

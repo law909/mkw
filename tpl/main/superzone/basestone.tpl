@@ -14,6 +14,7 @@
         <link href="/themes/main/superzone/style.css" rel="stylesheet">
         {block "css"}{/block}
         <script src="/js/main/superzone/jquery-1.11.3.min.js"></script>
+        <script src="/js/main/superzone/accounting.min.js"></script>
         <script src="/js/main/superzone/bootstrap.min.js"></script>
         <script src="/js/main/superzone/jquery.debounce.min.js"></script>
 		<script src="/js/main/superzone/jquery.magnific-popup.min.js"></script>

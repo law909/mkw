@@ -2,6 +2,8 @@
 	<tr>
 		<th></th>
 		<th>Item</th>
+		<th><div class="textalignright">Retail price</div></th>
+		<th><div class="textaligncenter">Discount %</div></th>
 		<th><div class="textalignright">Unit price</div></th>
 		<th><div class="textaligncenter">Qty<i class="icon-question-sign cartheader-tooltipbtn hidden-phone js-tooltipbtn" title="A mennyiség módosításához adja meg a kívánt mennyiséget, majd nyomja meg az Enter-t"></i></div></th>
 		<th><div class="textalignright">Price</div></th>
@@ -33,7 +35,21 @@
                 </div>
 				<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}</div>
 			</td>
-			<td><div class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$valutanem}</div></td>
+			<td><div class="textalignright">{number_format($tetel.ebruttoegysar, 2, ',', ' ')} {$valutanem}</div></td>
+            <td class="kosar-discounttd">
+                <div class="textaligncenter">
+                    <form class="kosarformk" action="{$tetel.editlink}">
+                        <div>{if ($tetel.noedit)}
+                                {number_format($tetel.kedvezmeny, 0, ',', ' ')} %
+                            {else}
+                                <input id="kedvezmenyedit_{$tetel.id}" class="form-control" type="number" min="1" step="any" name="kedvezmeny" value="{$tetel.kedvezmeny * 1}" data-org="{$tetel.kedvezmeny}">
+                            {/if}
+                        </div>
+                        <input type="hidden" name="id" value="{$tetel.id}">
+                    </form>
+                </div>
+            </td>
+			<td><div id="egysegar_{$tetel.id}" class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$valutanem}</div></td>
 			<td class="kosar-qtytd">
 				<div class="textaligncenter">
 					<form class="kosarform" action="{$tetel.editlink}">
@@ -54,7 +70,7 @@
 </tbody>
 <tfoot>
 	<tr>
-		<th colspan="3"><div class="textalignright">Summary:</div></th>
+		<th colspan="5"><div class="textalignright">Summary:</div></th>
 		<th><div id="mennyisegsum" class="textalignright">{number_format($dbosszesen, 0, ',', ' ')}</div></th>
 		<th><div id="kosarsum" class="textalignright">{number_format($osszesen, 2, ',', ' ')} {$valutanem}</div></th>
 		<th></th>

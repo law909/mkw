@@ -31,6 +31,14 @@ class ParameterHandler implements IParameterHandler {
         return $this->params;
     }
 
+    public function existsParam($key) {
+        return array_key_exists('params', $this->params) && array_key_exists($key, $this->params['params']);
+    }
+
+    public function existsRequestParam($key) {
+        return array_key_exists('requestparams', $this->params) && array_key_exists($key, $this->params['requestparams']);
+    }
+
     public function getParam($key, $default = null, $sanitize = true) {
         if (array_key_exists('params', $this->params) && array_key_exists($key, $this->params['params'])) {
             $data = $this->trim($this->params['params'][$key]);
@@ -58,67 +66,115 @@ class ParameterHandler implements IParameterHandler {
     }
 
     public function getBoolParam($key, $default = false) {
-        return $this->typeconverter->toBool($this->getParam($key, $default));
+        if ($this->existsParam($key)) {
+            return $this->typeconverter->toBool($this->getParam($key, $default));
+        }
+        return $default;
     }
 
     public function getNumParam($key, $default = 0) {
-        return $this->typeconverter->toNum($this->getParam($key, $default));
+        if ($this->existsParam($key)) {
+            return $this->typeconverter->toNum($this->getParam($key, $default));
+        }
+        return $default;
     }
 
     public function getIntParam($key, $default = 0) {
-        return $this->typeconverter->toInt($this->getParam($key, $default));
+        if ($this->existsParam($key)) {
+            return $this->typeconverter->toInt($this->getParam($key, $default));
+        }
+        return $default;
     }
 
     public function getFloatParam($key, $default = 0.0) {
-        return $this->typeconverter->toFloat($this->getParam($key, $default));
+        if ($this->existsParam($key)) {
+            return $this->typeconverter->toFloat($this->getParam($key, $default));
+        }
+        return $default;
     }
 
     public function getStringParam($key, $default = '') {
-        return $this->typeconverter->toString($this->getParam($key, $default));
+        if ($this->existsParam($key)) {
+            return $this->typeconverter->toString($this->getParam($key, $default));
+        }
+        return $default;
     }
 
     public function getOriginalStringParam($key, $default = '') {
-        return $this->typeconverter->toString($this->getParam($key, $default, false));
+        if ($this->existsParam($key)) {
+            return $this->typeconverter->toString($this->getParam($key, $default, false));
+        }
+        return $default;
     }
 
     public function getDateParam($key, $default = '') {
-        return $this->typeconverter->toDate($this->getParam($key, $default));
+        if ($this->existsParam($key)) {
+            return $this->typeconverter->toDate($this->getParam($key, $default));
+        }
+        return $default;
     }
 
     public function getArrayParam($key, $default = array()) {
-        return $this->typeconverter->toArray($this->getParam($key, $default));
+        if ($this->existsParam($key)) {
+            return $this->typeconverter->toArray($this->getParam($key, $default));
+        }
+        return $default;
     }
 
     public function getBoolRequestParam($key, $default = false) {
-        return $this->typeconverter->toBool($this->getRequestParam($key, $default));
+        if ($this->existsRequestParam($key)) {
+            return $this->typeconverter->toBool($this->getRequestParam($key, $default));
+        }
+        return $default;
     }
 
     public function getNumRequestParam($key, $default = 0) {
-        return $this->typeconverter->toNum($this->getRequestParam($key, $default));
+        if ($this->existsRequestParam($key)) {
+            return $this->typeconverter->toNum($this->getRequestParam($key, $default));
+        }
+        return $default;
     }
 
     public function getIntRequestParam($key, $default = 0) {
+        if ($this->existsRequestParam($key)) {
         return $this->typeconverter->toInt($this->getRequestParam($key, $default));
+            }
+        return $default;
     }
 
     public function getFloatRequestParam($key, $default = 0.0) {
-        return $this->typeconverter->toFloat($this->getRequestParam($key, $default));
+        if ($this->existsRequestParam($key)) {
+            return $this->typeconverter->toFloat($this->getRequestParam($key, $default));
+        }
+        return $default;
     }
 
     public function getStringRequestParam($key, $default = '') {
-        return $this->typeconverter->toString($this->getRequestParam($key, $default));
+        if ($this->existsRequestParam($key)) {
+            return $this->typeconverter->toString($this->getRequestParam($key, $default));
+        }
+        return $default;
     }
 
     public function getOriginalStringRequestParam($key, $default = '') {
-        return $this->typeconverter->toString($this->getRequestParam($key, $default, false));
+        if ($this->existsRequestParam($key)) {
+            return $this->typeconverter->toString($this->getRequestParam($key, $default, false));
+        }
+        return $default;
     }
 
     public function getDateRequestParam($key, $default = '') {
-        return $this->typeconverter->toDate($this->getRequestParam($key, $default));
+        if ($this->existsRequestParam($key)) {
+            return $this->typeconverter->toDate($this->getRequestParam($key, $default));
+        }
+        return $default;
     }
 
     public function getArrayRequestParam($key, $default = array()) {
-        return $this->typeconverter->toArray($this->getRequestParam($key, $default));
+        if ($this->existsRequestParam($key)) {
+            return $this->typeconverter->toArray($this->getRequestParam($key, $default));
+        }
+        return $default;
     }
 
 }

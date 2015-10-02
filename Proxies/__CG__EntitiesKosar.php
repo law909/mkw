@@ -64,10 +64,10 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Kosar' . "\0" . 'id', '' . "\0" . 'Entities\\Kosar' . "\0" . 'created', '' . "\0" . 'Entities\\Kosar' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Kosar' . "\0" . 'partner', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termek', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Kosar' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Kosar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Kosar' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sorrend');
+            return array('__isInitialized__', '' . "\0" . 'Entities\\Kosar' . "\0" . 'id', '' . "\0" . 'Entities\\Kosar' . "\0" . 'created', '' . "\0" . 'Entities\\Kosar' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Kosar' . "\0" . 'partner', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termek', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Kosar' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Kosar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Kosar' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'kedvezmeny', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sorrend');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Kosar' . "\0" . 'id', '' . "\0" . 'Entities\\Kosar' . "\0" . 'created', '' . "\0" . 'Entities\\Kosar' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Kosar' . "\0" . 'partner', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termek', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Kosar' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Kosar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Kosar' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sorrend');
+        return array('__isInitialized__', '' . "\0" . 'Entities\\Kosar' . "\0" . 'id', '' . "\0" . 'Entities\\Kosar' . "\0" . 'created', '' . "\0" . 'Entities\\Kosar' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Kosar' . "\0" . 'partner', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termek', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Kosar' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Kosar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Kosar' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'kedvezmeny', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sorrend');
     }
 
     /**
@@ -527,6 +527,72 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', array($s));
 
         return parent::setSorrend($s);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEbruttoegysar()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEbruttoegysar', array());
+
+        return parent::getEbruttoegysar();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEbruttoegysar($ebruttoegysar)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEbruttoegysar', array($ebruttoegysar));
+
+        return parent::setEbruttoegysar($ebruttoegysar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEnettoegysar()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEnettoegysar', array());
+
+        return parent::getEnettoegysar();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEnettoegysar($enettoegysar)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEnettoegysar', array($enettoegysar));
+
+        return parent::setEnettoegysar($enettoegysar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKedvezmeny()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmeny', array());
+
+        return parent::getKedvezmeny();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setKedvezmeny($kedvezmeny)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKedvezmeny', array($kedvezmeny));
+
+        return parent::setKedvezmeny($kedvezmeny);
     }
 
 }

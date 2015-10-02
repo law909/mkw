@@ -294,18 +294,37 @@ fieldset[disabled] .btn-red.active {
     text-align: center;
 }
 
-.valtozatsor {
-    margin-bottom: 5px;
+.valtozatform {
+    margin-bottom: 10px;
+}
+
+.valtozatform input[type="number"] {
+    width: 47px;
+}
+
+.valtozattable {
+    width: 100%;
 }
 
 .valtozatkozep {
-    height: 34px;
-    line-height: 34px;
+    height: 38px;
+}
+
+.valtozatmenny {
+    width: 120px;
+}
+
+.valtozatkeszlet {
+    width: 50px;
 }
 
 .valtozatkozep>span, .valtozatkozep>img {
     display: inline-block;
     vertical-align: middle;
+}
+
+.valtozatcontainer {
+    font-size: 12px;
 }
 
 .desktopright {
@@ -318,7 +337,11 @@ fieldset[disabled] .btn-red.active {
 }
 
 .kosar-qtytd {
-    width: 150px;
+    width: 100px;
+}
+
+.kosar-discounttd {
+    width: 100px;
 }
 
 #messagecenter {

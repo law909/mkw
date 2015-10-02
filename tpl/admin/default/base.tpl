@@ -10,6 +10,7 @@
 		<script type="text/javascript" src="/js/admin/default/jquery.blockUI.js"></script>
 		<script type="text/javascript" src="/js/admin/default/dmb.js"></script>
         <script type="text/javascript" src="/js/admin/default/accounting.min.js"></script>
+		<script type="text/javascript" src="/js/admin/default/tools.js"></script>
 		<script type="text/javascript" src="/ckfinder/ckfinder.js"></script>
 		{block "inhead"}
 		{/block}
