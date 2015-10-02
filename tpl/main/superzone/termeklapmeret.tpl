@@ -36,8 +36,8 @@
                         <td class="valtozatmenny">
                             <div class="desktopright">
                                 <input name="mennyiseg_{$_valt.id}" type="number" data-id="{$_valt.id}" class="js-mennyiseginput">
-                                <button class="btn btn-mini js-mennyincrement" data-name="mennyiseg_{$_valt.id}">+</button>
-                                <button class="btn btn-mini js-mennydecrement" data-name="mennyiseg_{$_valt.id}">-</button>
+                                <button type="button" class="btn x btn-mini js-mennyincrement" data-name="mennyiseg_{$_valt.id}">+</button>
+                                <button type="button" class="btn x btn-mini js-mennydecrement" data-name="mennyiseg_{$_valt.id}">-</button>
                             </div>
                         </td>
                     </tr>
