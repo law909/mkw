@@ -10,7 +10,9 @@
             <li class="active"><a href="#adataim" data-toggle="pill">Contact details</a></li>
             <li><a href="#szamlaadatok" data-toggle="pill">Billing address</a></li>
             <li><a href="#szallitasiadatok" data-toggle="pill">Delivery address</a></li>
+            {if ($uzletkoto.loggedin)}
             <li><a href="#discounts" data-toggle="pill">My discounts</a></li>
+            {/if}
             <li><a href="#megrend" data-toggle="pill">My orders</a></li>
             <li><a href="#jelszo" data-toggle="pill">Change password</a></li>
         </ul>
@@ -111,6 +113,7 @@
                     <button type="submit" class="btn okbtn">Save</button>
                 </form>
             </div>
+            {if ($uzletkoto.loggedin)}
             <div class="tab-pane" id="discounts">
                 <form id="FiokDiscounts" class="form-horizontal" action="/fiok/ment/discounts" method="post">
                     {foreach $discountlist as $discount}
@@ -124,6 +127,7 @@
                     <button type="submit" class="btn okbtn">Save</button>
                 </form>
             </div>
+            {/if}
             <div class="tab-pane" id="megrend">
                 {if (count($megrendeleslist)>0)}
                     <table class="acc-megrendeles">
