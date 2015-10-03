@@ -64,6 +64,7 @@
                 {/foreach}
             </select>
             <button type="button" class="js-changepartner btn btn-primary">Select</button>
+            <a class="pull-right" href="{$dologoutlink}">Logout</a>
         </div>
     </div>
     {/if}

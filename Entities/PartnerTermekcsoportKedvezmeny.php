@@ -25,7 +25,6 @@ class PartnerTermekcsoportKedvezmeny {
     private $created;
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime",nullable=true)
      */
@@ -46,6 +45,14 @@ class PartnerTermekcsoportKedvezmeny {
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $kedvezmeny = 0;
 
+    public function toLista() {
+        $r = array();
+        $r['id'] = $this->getId();
+        $r['termekcsoportnev'] = $this->getTermekcsoportNev();
+        $r['partnernev'] = $this->getPartnerNev();
+        $r['kedvezmeny'] = $this->getKedvezmeny() * 1;
+        return $r;
+    }
     /**
      * @return mixed
      */
@@ -88,6 +95,19 @@ class PartnerTermekcsoportKedvezmeny {
         return $this->partner;
     }
 
+    public function getPartnerId() {
+        if ($this->getPartner()) {
+            return $this->getPartner()->getId();
+        }
+        return 0;
+    }
+
+    public function getPartnerNev() {
+        if ($this->getPartner()) {
+            return $this->getPartner()->getNev();
+        }
+        return '';
+    }
     /**
      * @param \Entities\Partner $partner
      */

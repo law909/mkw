@@ -136,4 +136,8 @@ $(document).ready(function() {
     if (typeof checkout !== 'undefined') {
         checkout.initUI();
     }
+
+    if (typeof fiok !== 'undefined') {
+        fiok.initUI();
+    }
 });

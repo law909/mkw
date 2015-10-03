@@ -43,4 +43,20 @@ class partnertermekcsoportkedvezmenyController extends \mkwhelpers\MattableContr
         echo $view->getTemplateResult();
     }
 
+    public function getFiokList() {
+        $l = $this->getRepo()->getForFiok($this->getRepo('Entities\Partner')->getLoggedInUser());
+        $ret = array();
+        $db = 0;
+        foreach ($l as $it) {
+            $db++;
+            $ret[] = array(
+                'id' => ($it['id'] ? $it['id'] : 'new' . $db),
+                'tcsid' => $it['tcsid'],
+                'nev' => $it['nev'],
+                'kedvezmeny' => ($it['kedvezmeny'] ? $it['kedvezmeny'] * 1 : '')
+            );
+        }
+        return $ret;
+    }
+
 }

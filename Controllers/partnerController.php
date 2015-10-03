@@ -682,13 +682,21 @@ class partnerController extends \mkwhelpers\MattableController {
         if ($user) {
             $view = $this->getFiokTpl();
             store::fillTemplate($view);
+
             $view->setVar('pagetitle', t('Fiók') . ' - ' . \mkw\Store::getParameter(\mkw\consts::Oldalcim));
             $view->setVar('user', $this->loadVars($user)); // fillTemplate-ben megtortenik
+
             $tec = new termekertesitoController($this->params);
             $view->setVar('ertesitok', $tec->getAllByPartner($user));
+
             $megrc = new megrendelesfejController($this->params);
             $megrlist = $megrc->getFiokList();
             $view->setVar('megrendeleslist', $megrlist);
+
+            $ptcsk = new partnertermekcsoportkedvezmenyController($this->params);
+            $ptcsklist = $ptcsk->getFiokList();
+            $view->setVar('discountlist', $ptcsklist);
+
             $view->printTemplateResult(true);
         }
         else {
@@ -756,6 +764,9 @@ class partnerController extends \mkwhelpers\MattableController {
                     $user->setSzallutca($this->params->getStringRequestParam('szallutca'));
                     $this->getEm()->persist($user);
                     $this->getEm()->flush();
+                    if (!$jax) {
+                        Header('Location: ' . store::getRouter()->generate('showaccount'));
+                    }
                     break;
                 case 'jelszo':
                     $regijelszo = $this->params->getStringRequestParam('regijelszo');
@@ -780,6 +791,40 @@ class partnerController extends \mkwhelpers\MattableController {
                     }
                     else {
                         echo json_encode($msg);
+                    }
+                    break;
+                case 'discounts':
+                    $partner = \mkw\Store::getLoggedInUser();
+                    $reqparams = $this->params->asArray();
+                    $reqparams = $reqparams['requestparams'];
+                    foreach($reqparams as $idx => $req) {
+
+                        $n = explode('_', $idx);
+                        if ($n[0] === 'kedvezmeny' && $req !== '') {
+
+                            if (substr($n[1], 0, 3) === 'new') {
+                                $tcs = $this->getRepo('Entities\Termekcsoport')->find($n[2]);
+                                if ($tcs) {
+                                    $kedv = new \Entities\PartnerTermekcsoportKedvezmeny();
+                                    $kedv->setPartner($partner);
+                                    $kedv->setTermekcsoport($tcs);
+                                    $kedv->setKedvezmeny($req * 1);
+                                    $this->getEm()->persist($kedv);
+                                    $this->getEm()->flush();
+                                }
+                            }
+                            else {
+                                $kedv = $this->getRepo('Entities\PartnerTermekcsoportKedvezmeny')->find($n[1]);
+                                if ($kedv && $kedv->getPartnerId() === $partner->getId()) {
+                                    $kedv->setKedvezmeny($req * 1);
+                                    $this->getEm()->persist($kedv);
+                                    $this->getEm()->flush();
+                                }
+                            }
+                        }
+                    }
+                    if (!$jax) {
+                        Header('Location: ' . store::getRouter()->generate('showaccount'));
                     }
                     break;
             }

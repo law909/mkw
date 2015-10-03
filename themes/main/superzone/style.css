@@ -394,6 +394,58 @@ fieldset[disabled] .btn-red.active {
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
+.fioknav {
+    padding: 10px;
+}
+
+.fioknav .okbtn {
+    margin-top: 15px;
+}
+
+.acc-megrendeles {
+    width: 100%;
+}
+
+.acc-copyszamlaadat a {
+    cursor: pointer;
+}
+thead.acc-megrendeles {
+    background-color: #6e6e6e;
+    color: #f7f7f7;
+    font-weight: bold;
+}
+thead.acc-megrendeles td {
+    padding: 5px 10px;
+}
+tbody.acc-megrendeles td {
+    padding: 5px 10px;
+}
+.acc-megrendelestablerow {
+    background: #e8e8e8;
+    cursor: pointer;
+}
+.acc-megrendelesbordertop {
+    border-top: solid;
+}
+.acc-megrendelesborderbottom {
+    border-bottom: solid;
+}
+.acc-megrendelescaption {
+    font-weight: bold;
+}
+.acc-megrendelestetellist {
+    border: solid 1px;
+    border-color: #ddd;
+    width: 100%;
+    margin-top: 5px;
+}
+thead.acc-megrendelestetellist {
+    font-weight: bold;
+}
+thead.acc-megrendelestetellist td {
+    padding: 5px 10px;
+}
+
 @media (min-width: 480px) {
 }
 
