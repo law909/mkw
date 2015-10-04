@@ -745,7 +745,9 @@ class Partner {
 	}
 
 	public function checkJelszo($adat) {
-		return $this->jelszo === sha1(strtoupper(md5($adat)) . \mkw\Store::getSalt());
+        $so = \mkw\Store::getSalt();
+		$v = sha1(strtoupper(md5($adat)) . $so);
+		return $this->jelszo === $v;
 	}
 
 	public function getUtolsoklikk() {

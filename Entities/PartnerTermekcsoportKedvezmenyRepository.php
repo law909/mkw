@@ -53,17 +53,24 @@ class PartnerTermekcsoportKedvezmenyRepository extends \mkwhelpers\Repository {
         return $kdv;
     }
 
-    public function getForFiok($partner) {
+    public function getForFiok($partner = null) {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('nev', 'nev');
         $rsm->addScalarResult('kedvezmeny', 'kedvezmeny');
         $rsm->addScalarResult('tcsid', 'tcsid');
-        $q = $this->_em->createNativeQuery('SELECT kdv.id, tcs.nev, kdv.kedvezmeny, tcs.id AS tcsid'
-            . ' FROM termekcsoport tcs'
-            . ' LEFT JOIN partnertermekcsoportkedvezmeny kdv ON (tcs.id = kdv.termekcsoport_id) AND (kdv.partner_id=:p)'
-            . ' ORDER BY tcs.nev', $rsm);
-        $q->setParameter(':p', $partner->getId());
+        if ($partner) {
+            $q = $this->_em->createNativeQuery('SELECT kdv.id, tcs.nev, kdv.kedvezmeny, tcs.id AS tcsid'
+                . ' FROM termekcsoport tcs'
+                . ' LEFT JOIN partnertermekcsoportkedvezmeny kdv ON (tcs.id = kdv.termekcsoport_id) AND (kdv.partner_id=:p)'
+                . ' ORDER BY tcs.nev', $rsm);
+            $q->setParameter(':p', $partner->getId());
+        }
+        else {
+            $q = $this->_em->createNativeQuery('SELECT null AS id, tcs.nev, null AS kedvezmeny, tcs.id AS tcsid'
+                . ' FROM termekcsoport tcs'
+                . ' ORDER BY tcs.nev', $rsm);
+        }
         return $q->getScalarResult();
     }
 

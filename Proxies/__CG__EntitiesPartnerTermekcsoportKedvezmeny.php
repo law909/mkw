@@ -176,6 +176,17 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
     /**
      * {@inheritDoc}
      */
+    public function toLista()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', array());
+
+        return parent::toLista();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getCreated()
     {
 
@@ -241,6 +252,28 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartner', array());
 
         return parent::getPartner();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartnerId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', array());
+
+        return parent::getPartnerId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartnerNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerNev', array());
+
+        return parent::getPartnerNev();
     }
 
     /**

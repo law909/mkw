@@ -14,7 +14,9 @@
             <li><a href="#discounts" data-toggle="pill">My discounts</a></li>
             {/if}
             <li><a href="#megrend" data-toggle="pill">My orders</a></li>
+            {if ($myownaccount)}
             <li><a href="#jelszo" data-toggle="pill">Change password</a></li>
+            {/if}
         </ul>
         <div class="fioknav tab-content col-md-9">
             <div class="tab-pane active" id="adataim">
@@ -120,7 +122,10 @@
                         <div>
                             <label class="control-label" for="KedvEdit_{$discount.id}">{$discount.nev}:</label>
                             <div class="controls">
-                                <input id="KedvEdit_{$discount.id}" name="kedvezmeny_{$discount.id}_{$discount.tcsid}" type="number" class="form-control" value="{$discount.kedvezmeny}">
+                                <input id="KedvEdit_{$discount.id}" name="kedvezmeny_{$discount.id}" type="number" class="form-control" value="{$discount.kedvezmeny}">
+                                <input type="hidden" name="kedvezmenyid[]" value="{$discount.id}">
+                                <input type="hidden" name="kedvezmenyoper_{$discount.id}" value="{$discount.oper}">
+                                <input type="hidden" name="kedvezmenytermekcsoport_{$discount.id}" value="{$discount.tcsid}">
                             </div>
                         </div>
                     {/foreach}
@@ -217,6 +222,7 @@
                     You don't have any orders yet.
                 {/if}
             </div>
+            {if ($myownaccount)}
             <div class="tab-pane" id="jelszo">
                 <form id="JelszoChangeForm" class="form-horizontal" action="/fiok/ment/jelszo" method="post">
                     <fieldset>
@@ -224,6 +230,7 @@
                             <label class="control-label" for="RegijelszoEdit">{t('Old password')}:</label>
                             <div class="controls">
                                 <input id="RegijelszoEdit" name="regijelszo" type="password" class="form-control">
+                                <input name="checkregijelszo" type="hidden"  value="1" class="form-control">
                             </div>
                         </div>
                         <div>
@@ -242,6 +249,7 @@
                     </fieldset>
                 </form>
             </div>
+            {/if}
         </div>
     </div>
 {/block}

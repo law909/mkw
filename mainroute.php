@@ -1,24 +1,43 @@
 <?php
 
+if (\mkw\Store::getTheme() === 'mkwcansas') {
+    $router->map('GET', '/ProductDetails', 'termekController#redirectOldUrl', 'termekredirectoldurl');
+    $router->map('GET', '/', 'termekfaController#redirectOldUrl', 'termekfaredirectoldurl');
+    $router->map('GET', '/Static', 'statlapController#redirectOldUrl', 'statlapredirectoldurl');
+    $router->map('GET', '/mindentkapni.rss', 'termekController#redirectOldRSSUrl', 'termekredirectoldrssurl');
+    $router->map('GET', '/hirek.rss', 'hirController#redirectOldRSSUrl', 'hirredirectoldrssurl');
+    $router->map('GET', '/MiddleTier/ReadImage', 'termekController#redirectRegikepUrl', 'termekredirectregikepurl');
+}
+
+if (\mkw\Store::getTheme() === 'superzone') {
+    $router->map('GET', '/termekm/[:slug]', 'mainController#termekm', 'showtermekm');
+    $router->map('GET', '/fanta', 'fantaController#show', 'showfanta');
+    $router->map('POST', '/fanta/do', 'fantaController#doit', 'dofanta');
+}
+
+if (\mkw\Store::isB2B()) {
+    $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo|discounts:subject]', 'b2bpartnerController#saveAccount', 'saveaccount');
+    $router->map('GET', '/regisztracio', 'b2bpartnerController#showRegistrationForm', 'showregistration');
+    $router->map('POST', '/regisztracio/ment', 'b2bpartnerController#saveRegistration', 'saveregistration');
+    $router->map('POST', '/changepartner', 'b2bpartnerController#changePartner', 'changepartner');
+}
+else {
+    $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');
+    $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
+    $router->map('POST', '/regisztracio/ment', 'partnerController#saveRegistration', 'saveregistration');
+}
+
 $router->map('GET', '', 'mainController#view', 'home');
 $router->map('GET', '/404', 'mainController#show404', 'show404');
 $router->map('GET', '/login', 'partnerController#showLoginForm', 'showlogin');
 $router->map('POST', '/login/ment', 'partnerController#doLogin', 'dologin');
 $router->map('GET', '/logout', 'partnerController#doLogout', 'dologout');
-$router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
-$router->map('POST', '/regisztracio/ment', 'partnerController#saveRegistration', 'saveregistration');
 $router->map('GET', '/fiok', 'partnerController#showAccount', 'showaccount');
-if (!\mkw\Store::isB2B()) {
-    $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');
-}
-else {
-    $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo|discounts:subject]', 'partnerController#saveAccount', 'saveaccount');
-}
+
 $router->map('POST', '/checkemail', 'partnerController#checkemail', 'partnercheckemail');
 $router->map('POST', '/getpassreminder', 'partnerController#createPassReminder', 'createpassreminder');
 $router->map('GET', '/passreminder/[:id]', 'partnerController#showPassReminder', 'showpassreminder');
 $router->map('POST', '/passreminder/ment', 'partnerController#savePassReminder', 'savepassreminder');
-$router->map('POST', '/changepartner', 'partnerController#changePartner', 'changepartner');
 
 $router->map('GET', '/statlap/[:lap]', 'statlapController#show', 'showstatlap');
 $router->map('GET', '/statlap/p/[:lap]', 'statlapController#showPopup', 'showstatlappopup');
@@ -59,21 +78,6 @@ $router->map('GET', '/irszam', 'irszamController#typeaheadList', 'irszamtypeahea
 $router->map('GET', '/varos', 'irszamController#varosTypeaheadList', 'varostypeahead');
 
 $router->map('POST', '/termekertesito/save', 'termekertesitoController#save', 'termekertesitosave');
-
-if (\mkw\Store::getTheme() === 'mkwcansas') {
-    $router->map('GET', '/ProductDetails', 'termekController#redirectOldUrl', 'termekredirectoldurl');
-    $router->map('GET', '/', 'termekfaController#redirectOldUrl', 'termekfaredirectoldurl');
-    $router->map('GET', '/Static', 'statlapController#redirectOldUrl', 'statlapredirectoldurl');
-    $router->map('GET', '/mindentkapni.rss', 'termekController#redirectOldRSSUrl', 'termekredirectoldrssurl');
-    $router->map('GET', '/hirek.rss', 'hirController#redirectOldRSSUrl', 'hirredirectoldrssurl');
-    $router->map('GET', '/MiddleTier/ReadImage', 'termekController#redirectRegikepUrl', 'termekredirectregikepurl');
-}
-
-if (\mkw\Store::getTheme() === 'superzone') {
-    $router->map('GET', '/termekm/[:slug]', 'mainController#termekm', 'showtermekm');
-    $router->map('GET', '/fanta', 'fantaController#show', 'showfanta');
-    $router->map('POST', '/fanta/do', 'fantaController#doit', 'dofanta');
-}
 
 $router->map('GET', '/export/grando', 'exportController#GrandoExport', 'grandoexport');
 $router->map('GET', '/export/shophunter', 'exportController#ShopHunterExport', 'shophunterexport');

@@ -241,6 +241,7 @@
 									<label class="control-label" for="RegijelszoEdit">{t('Régi jelszó')}:</label>
 									<div class="controls">
 										<input id="RegijelszoEdit" name="regijelszo" type="password" class="input-xlarge" placeholder="{t('régi jelszó')}">
+										<input name="checkregijelszo" type="hidden" value="1">
 									</div>
 								</div>
                                 <div class="control-group">

@@ -140,4 +140,8 @@ $(document).ready(function() {
     if (typeof fiok !== 'undefined') {
         fiok.initUI();
     }
+
+    if (typeof regisztracio !== 'undefined') {
+        regisztracio.initUI();
+    }
 });

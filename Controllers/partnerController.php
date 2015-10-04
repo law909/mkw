@@ -100,109 +100,145 @@ class partnerController extends \mkwhelpers\MattableController {
      * @param \Entities\Partner $obj
      * @return \Entities\Partner
      */
-    protected function setFields($obj) {
-        $obj->setNev($this->params->getStringRequestParam('nev'));
-        $obj->setVezeteknev($this->params->getStringRequestParam('vezeteknev'));
-        $obj->setKeresztnev($this->params->getStringRequestParam('keresztnev'));
-        $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
-        $obj->setIdegenkod($this->params->getStringRequestParam('idegenkod'));
-        $obj->setAdoszam($this->params->getStringRequestParam('adoszam'));
-        $obj->setEuadoszam($this->params->getStringRequestParam('euadoszam'));
-        $obj->setMukengszam($this->params->getStringRequestParam('mukengszam'));
-        $obj->setJovengszam($this->params->getStringRequestParam('jovengszam'));
-        $obj->setOstermszam($this->params->getStringRequestParam('ostermszam'));
-        $obj->setValligszam($this->params->getStringRequestParam('valligszam'));
-        $obj->setFvmszam($this->params->getStringRequestParam('fvmszam'));
-        $obj->setCjszam($this->params->getStringRequestParam('cjszam'));
-        $obj->setIrszam($this->params->getStringRequestParam('irszam'));
-        $obj->setVaros($this->params->getStringRequestParam('varos'));
-        $obj->setUtca($this->params->getStringRequestParam('utca'));
-        $obj->setLirszam($this->params->getStringRequestParam('lirszam'));
-        $obj->setLvaros($this->params->getStringRequestParam('lvaros'));
-        $obj->setLutca($this->params->getStringRequestParam('lutca'));
-        $obj->setTelefon($this->params->getStringRequestParam('telefon'));
-        $obj->setMobil($this->params->getStringRequestParam('mobil'));
-        $obj->setFax($this->params->getStringRequestParam('fax'));
-        $obj->setEmail($this->params->getStringRequestParam('email'));
-        $obj->setHonlap($this->params->getStringRequestParam('honlap'));
-        $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
-        $obj->setSyncid($this->params->getStringRequestParam('syncid'));
-        $obj->setFizhatido($this->params->getIntRequestParam('fizhatido'));
-        $obj->setSzallnev($this->params->getStringRequestParam('szallnev'));
-        $obj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
-        $obj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
-        $obj->setSzallutca($this->params->getStringRequestParam('szallutca'));
-        $obj->setNem($this->params->getIntRequestParam('nem'));
-        $obj->setSzuletesiido($this->params->getStringRequestParam('szuletesiido'));
-        $obj->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));
-        $obj->setUjdonsaghirlevelkell($this->params->getBoolRequestParam('ujdonsaghirlevelkell'));
-        $obj->setSzallito($this->params->getBoolRequestParam('szallito'));
-        $obj->setSzallitasiido($this->params->getIntRequestParam('szallitasiido'));
-        $obj->setSzamlatipus($this->params->getIntRequestParam('szamlatipus'));
-        $obj->setBanknev($this->params->getStringRequestParam('banknev'));
-        $obj->setBankcim($this->params->getStringRequestParam('bankcim'));
-        $obj->setIban($this->params->getStringRequestParam('iban'));
-        $obj->setSwift($this->params->getStringRequestParam('swift'));
-        $obj->setTermekarazonosito($this->params->getStringRequestParam('termekarazonosito'));
-        $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
-        $obj->setEzuzletkoto($this->params->getBoolRequestParam('ezuzletkoto'));
+    protected function setFields($obj, $parancs, $subject = 'minden') {
 
-        $j1 = $this->params->getStringRequestParam('jelszo1');
-        $j2 = $this->params->getStringRequestParam('jelszo2');
-        if ($j1 && $j2 && $j1 === $j2) {
-            $obj->setJelszo($j1);
-        }
-        $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
-        if ($fizmod) {
-            $obj->setFizmod($fizmod);
-        }
-        $uk = store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto', 0));
-        if ($uk) {
-            $obj->setUzletkoto($uk);
-        }
-        else {
-            $obj->removeUzletkoto();
-        }
-        $valutanem = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
-        if ($valutanem) {
-            $obj->setValutanem($valutanem);
-        }
-        $szallmod = store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod', 0));
-        if ($szallmod) {
-            $obj->setSzallitasimod($szallmod);
-        }
+        if ($subject === 'minden') {
+            $j1 = $this->params->getStringRequestParam('jelszo1');
+            $j2 = $this->params->getStringRequestParam('jelszo2');
+            if ($j1 && $j2 && $j1 === $j2) {
+                $obj->setJelszo($j1);
+            }
+            $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
+            $obj->setIdegenkod($this->params->getStringRequestParam('idegenkod'));
+            $obj->setEuadoszam($this->params->getStringRequestParam('euadoszam'));
+            $obj->setMukengszam($this->params->getStringRequestParam('mukengszam'));
+            $obj->setJovengszam($this->params->getStringRequestParam('jovengszam'));
+            $obj->setOstermszam($this->params->getStringRequestParam('ostermszam'));
+            $obj->setValligszam($this->params->getStringRequestParam('valligszam'));
+            $obj->setFvmszam($this->params->getStringRequestParam('fvmszam'));
+            $obj->setCjszam($this->params->getStringRequestParam('cjszam'));
+            $obj->setLirszam($this->params->getStringRequestParam('lirszam'));
+            $obj->setLvaros($this->params->getStringRequestParam('lvaros'));
+            $obj->setLutca($this->params->getStringRequestParam('lutca'));
+            $obj->setMobil($this->params->getStringRequestParam('mobil'));
+            $obj->setFax($this->params->getStringRequestParam('fax'));
+            $obj->setHonlap($this->params->getStringRequestParam('honlap'));
+            $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
+            $obj->setSyncid($this->params->getStringRequestParam('syncid'));
+            $obj->setFizhatido($this->params->getIntRequestParam('fizhatido'));
+            $obj->setNem($this->params->getIntRequestParam('nem'));
+            $obj->setSzuletesiido($this->params->getStringRequestParam('szuletesiido'));
+            $obj->setSzallito($this->params->getBoolRequestParam('szallito'));
+            $obj->setSzallitasiido($this->params->getIntRequestParam('szallitasiido'));
+            $obj->setSzamlatipus($this->params->getIntRequestParam('szamlatipus'));
+            $obj->setBanknev($this->params->getStringRequestParam('banknev'));
+            $obj->setBankcim($this->params->getStringRequestParam('bankcim'));
+            $obj->setIban($this->params->getStringRequestParam('iban'));
+            $obj->setSwift($this->params->getStringRequestParam('swift'));
+            $obj->setTermekarazonosito($this->params->getStringRequestParam('termekarazonosito'));
+            $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
+            $obj->setEzuzletkoto($this->params->getBoolRequestParam('ezuzletkoto'));
 
-        $kdids = $this->params->getArrayRequestParam('kedvezmenyid');
-        foreach ($kdids as $kdid) {
-            $oper = $this->params->getStringRequestParam('kedvezmenyoper_' . $kdid);
-            $termekcsoport = $this->getEm()->getRepository('Entities\Termekcsoport')->find($this->params->getIntRequestParam('kedvezmenytermekcsoport_' . $kdid));
-            if ($termekcsoport) {
-                if ($oper === 'add') {
-                    $kedv = new \Entities\PartnerTermekcsoportKedvezmeny();
-                    $kedv->setPartner($obj);
-                    $kedv->setTermekcsoport($termekcsoport);
-                    $kedv->setKedvezmeny($this->params->getNumRequestParam('kedvezmeny_' . $kdid));
-                    $this->getEm()->persist($kedv);
+            $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
+            if ($fizmod) {
+                $obj->setFizmod($fizmod);
+            }
+            $uk = store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto', 0));
+            if ($uk) {
+                $obj->setUzletkoto($uk);
+            }
+            else {
+                $obj->removeUzletkoto();
+            }
+            $valutanem = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
+            if ($valutanem) {
+                $obj->setValutanem($valutanem);
+            }
+            $szallmod = store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod', 0));
+            if ($szallmod) {
+                $obj->setSzallitasimod($szallmod);
+            }
+
+            $obj->removeAllCimke();
+            $cimkekpar = $this->params->getArrayRequestParam('cimkek');
+            foreach ($cimkekpar as $cimkekod) {
+                $cimke = $this->getEm()->getRepository('Entities\Partnercimketorzs')->find($cimkekod);
+                if ($cimke) {
+                    $obj->addCimke($cimke);
                 }
-                elseif ($oper === 'edit') {
-                    $kedv = $this->getEm()->getRepository('Entities\PartnerTermekcsoportKedvezmeny')->find($kdid);
-                    if ($kedv) {
+            }
+        }
+
+        if ($subject === 'adataim' || $subject === 'minden') {
+            $obj->setVezeteknev($this->params->getStringRequestParam('vezeteknev'));
+            $obj->setKeresztnev($this->params->getStringRequestParam('keresztnev'));
+            if (\mkw\Store::getTheme() === 'mkwcansas' && $subject !== 'minden') {
+                $obj->setNev($this->params->getStringRequestParam('vezeteknev') . ' ' . $this->params->getStringRequestParam('keresztnev'));
+            }
+            $obj->setEmail($this->params->getStringRequestParam('email'));
+            $obj->setTelefon($this->params->getStringRequestParam('telefon'));
+            $obj->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));
+            $obj->setUjdonsaghirlevelkell($this->params->getBoolRequestParam('ujdonsaghirlevelkell'));
+
+        }
+
+        if ($subject === 'szamlaadatok' || $subject === 'minden') {
+            $obj->setNev($this->params->getStringRequestParam('nev'));
+            $obj->setAdoszam($this->params->getStringRequestParam('adoszam'));
+            $obj->setIrszam($this->params->getStringRequestParam('irszam'));
+            $obj->setVaros($this->params->getStringRequestParam('varos'));
+            $obj->setUtca($this->params->getStringRequestParam('utca'));
+        }
+
+        if ($subject === 'szallitasiadatok' || $subject === 'minden') {
+            $obj->setSzallnev($this->params->getStringRequestParam('szallnev'));
+            $obj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
+            $obj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
+            $obj->setSzallutca($this->params->getStringRequestParam('szallutca'));
+        }
+
+        if ($subject === 'jelszo') {
+            $obj->setJelszo($this->params->getStringRequestParam('jelszo1'));
+        }
+
+        if ($subject === 'discounts' || $subject === 'minden') {
+            $kdids = $this->params->getArrayRequestParam('kedvezmenyid');
+            foreach ($kdids as $kdid) {
+                $oper = $this->params->getStringRequestParam('kedvezmenyoper_' . $kdid);
+                $termekcsoport = $this->getEm()->getRepository('Entities\Termekcsoport')->find($this->params->getIntRequestParam('kedvezmenytermekcsoport_' . $kdid));
+                if ($termekcsoport) {
+                    if ($oper === 'add') {
+                        $kedv = new \Entities\PartnerTermekcsoportKedvezmeny();
                         $kedv->setPartner($obj);
                         $kedv->setTermekcsoport($termekcsoport);
                         $kedv->setKedvezmeny($this->params->getNumRequestParam('kedvezmeny_' . $kdid));
                         $this->getEm()->persist($kedv);
                     }
+                    elseif ($oper === 'edit') {
+                        $kedv = $this->getEm()->getRepository('Entities\PartnerTermekcsoportKedvezmeny')->find($kdid);
+                        if ($kedv) {
+                            $kedv->setPartner($obj);
+                            $kedv->setTermekcsoport($termekcsoport);
+                            $kedv->setKedvezmeny($this->params->getNumRequestParam('kedvezmeny_' . $kdid));
+                            $this->getEm()->persist($kedv);
+                        }
+                    }
                 }
             }
         }
 
-        $obj->removeAllCimke();
-        $cimkekpar = $this->params->getArrayRequestParam('cimkek');
-        foreach ($cimkekpar as $cimkekod) {
-            $cimke = $this->getEm()->getRepository('Entities\Partnercimketorzs')->find($cimkekod);
-            if ($cimke) {
-                $obj->addCimke($cimke);
+        if ($subject === 'registration') {
+            $obj->setVezeteknev($this->params->getStringRequestParam('vezeteknev'));
+            $obj->setKeresztnev($this->params->getStringRequestParam('keresztnev'));
+            if (\mkw\Store::getTheme() === 'mkwcansas') {
+                $obj->setNev($this->params->getStringRequestParam('vezeteknev') . ' ' . $this->params->getStringRequestParam('keresztnev'));
             }
+            $obj->setEmail($this->params->getStringRequestParam('email'));
+            $obj->setJelszo($this->params->getStringRequestParam('jelszo1'));
+            $obj->setVendeg(false);
+            $obj->setSessionid(\Zend_Session::getId());
+            $obj->setIp($_SERVER['REMOTE_ADDR']);
+            $obj->setReferrer(Store::getMainSession()->referrer);
         }
         return $obj;
     }
@@ -519,54 +555,34 @@ class partnerController extends \mkwhelpers\MattableController {
         return $this->getRepo()->checkloggedin();
     }
 
-/*    public function getLoggedInUser() {
-        return $this->getRepo()->getLoggedInUser();
-    }
-*/
-    public function saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo, $vendeg = false) {
-        $ps = $this->getRepo()->findVendegByEmail($email);
-        if (count($ps) > 0) {
-            $t = $ps[0];
-        }
-        else {
-            $t = new \Entities\Partner();
-        }
-        $t->setVezeteknev($vezeteknev);
-        $t->setKeresztnev($keresztnev);
-        $t->setNev($vezeteknev . ' ' . $keresztnev);
-        $t->setEmail($email);
-        $t->setJelszo($jelszo);
-        $t->setVendeg($vendeg);
-        $t->setSessionid(\Zend_Session::getId());
-        $t->setIp($_SERVER['REMOTE_ADDR']);
-        $t->setReferrer(Store::getMainSession()->referrer);
-        $this->getEm()->persist($t);
-        $this->getEm()->flush();
-        return $t;
-    }
-
     public function saveRegistration() {
         $hibas = false;
         $hibak = array();
+
         $vezeteknev = $this->params->getStringRequestParam('vezeteknev');
         $keresztnev = $this->params->getStringRequestParam('keresztnev');
         $email = $this->params->getStringRequestParam('email');
         $jelszo1 = $this->params->getStringRequestParam('jelszo1');
-        $jelszo2 = $this->params->getStringRequestParam('jelszo2');
-        if (!\Zend_Validate::is($email, 'EmailAddress')) {
-            $hibas = true;
-            $hibak['email'] = t('Rossz az email');
-        }
-        if ($jelszo1 !== $jelszo2) {
-            $hibas = true;
-            $hibak['jelszo'] = t('Rossz a jelszó');
-        }
-        if ($vezeteknev == '' || $keresztnev == '') {
-            $hibas = true;
-            $hibak['nev'] = t('Üres a név');
-        }
+
+        $r = $this->checkPartnerData('adataim');
+        $hibas = $hibas || $r['hibas'];
+        $hibak = array_merge($hibak, $r['hibak']);
+
+        $r = $this->checkPartnerData('jelszo');
+        $hibas = $hibas || $r['hibas'];
+        $hibak = array_merge($hibak, $r['hibak']);
+
         if (!$hibas) {
-            $this->saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo1);
+            $ps = $this->getRepo()->findVendegByEmail($email);
+            if (count($ps) > 0) {
+                $t = $ps[0];
+            }
+            else {
+                $t = new \Entities\Partner();
+            }
+            $t = $this->setFields($t, 'add', 'registration');
+            $this->getEm()->persist($t);
+            $this->getEm()->flush();
             $this->login($email, $jelszo1);
             $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->findOneByNev('regisztracio');
             if ($emailtpl) {
@@ -704,129 +720,85 @@ class partnerController extends \mkwhelpers\MattableController {
         }
     }
 
+    /**
+     * @param $subject
+     * @param \Entities\Partner|null $user
+     * @return array
+     */
+    public function checkPartnerData($subject) {
+        $ret = array();
+        $hibas = false;
+        $hibak = array();
+        switch ($subject) {
+            case 'adataim':
+                $vezeteknev = $this->params->getStringRequestParam('vezeteknev');
+                $keresztnev = $this->params->getStringRequestParam('keresztnev');
+                $email = $this->params->getStringRequestParam('email');
+                if (!\Zend_Validate::is($email, 'EmailAddress')) {
+                    $hibas = true;
+                    $hibak['email'] = t('Rossz az email');
+                }
+                if ($vezeteknev == '' || $keresztnev == '') {
+                    $hibas = true;
+                    $hibak['nev'] = t('Üres a név');
+                }
+                break;
+            case 'szamlaadatok':
+            case 'szallitasiadatok':
+                break;
+            case 'jelszo':
+                $checkregijelszo = $this->params->getBoolRequestParam('checkregijelszo', false);
+                if ($checkregijelszo) {
+                    $regijelszo = $this->params->getStringRequestParam('regijelszo');
+                    $user = \mkw\Store::getLoggedInUser();
+                    if ($user) {
+                        $hibas = !$user->checkJelszo($regijelszo);
+                    }
+                }
+                if (!$hibas) {
+                    $j1 = $this->params->getStringRequestParam('jelszo1');
+                    $j2 = $this->params->getStringRequestParam('jelszo2');
+                    if ($j1 !== $j2) {
+                        $hibas = true;
+                        $hibak['jelszo1'] = t('A két jelszó nem egyezik');
+                    }
+                }
+                else {
+                    $hibak['regijelszo'] = t('Rossz régi jelszót adott meg');
+                }
+                break;
+            case 'b2bregistration':
+                break;
+        }
+        $ret = array(
+            'hibas' => $hibas,
+            'hibak' => $hibak
+        );
+        return $ret;
+    }
+
     public function saveAccount() {
         $user = $this->getRepo()->getLoggedInUser();
         $jax = $this->params->getIntRequestParam('jax', 0);
+        $subject = $this->params->getStringParam('subject');
+
         if ($user) {
-            switch ($this->params->getStringParam('subject')) {
-                case 'adataim':
-                    $vezeteknev = $this->params->getStringRequestParam('vezeteknev');
-                    $keresztnev = $this->params->getStringRequestParam('keresztnev');
-                    $email = $this->params->getStringRequestParam('email');
-                    $telefon = $this->params->getStringRequestParam('telefon');
-                    $akcioshirlevelkell = $this->params->getBoolRequestParam('akcioshirlevelkell');
-                    $ujdonsaghirlevelkell = $this->params->getBoolRequestParam('ujdonsaghirlevelkell');
-                    $hibas = false;
-                    if (!\Zend_Validate::is($email, 'EmailAddress')) {
-                        $hibas = true;
-                        $hibak['email'] = t('Rossz az email');
-                    }
-                    if ($vezeteknev == '' || $keresztnev == '') {
-                        $hibas = true;
-                        $hibak['nev'] = t('Üres a név');
-                    }
-                    if (!$hibas) {
-                        $user->setVezeteknev($vezeteknev);
-                        $user->setKeresztnev($keresztnev);
-                        $user->setNev($vezeteknev . ' ' . $keresztnev);
-                        $user->setEmail($email);
-                        $user->setTelefon($telefon);
-                        $user->setAkcioshirlevelkell($akcioshirlevelkell);
-                        $user->setUjdonsaghirlevelkell($ujdonsaghirlevelkell);
-                        $this->getEm()->persist($user);
-                        $this->getEm()->flush();
-                        if (!$jax) {
-                            Header('Location: ' . store::getRouter()->generate('showaccount'));
-                        }
-                    }
-                    else {
-                        if ($jax) {
-                            echo json_encode($hibak);
-                        }
-                    }
-                    break;
-                case 'szamlaadatok':
-                    $user->setNev($this->params->getStringRequestParam('nev'));
-                    $user->setAdoszam($this->params->getStringRequestParam('adoszam'));
-                    $user->setIrszam($this->params->getStringRequestParam('irszam'));
-                    $user->setVaros($this->params->getStringRequestParam('varos'));
-                    $user->setUtca($this->params->getStringRequestParam('utca'));
-                    $this->getEm()->persist($user);
-                    $this->getEm()->flush();
-                    if (!$jax) {
-                        Header('Location: ' . store::getRouter()->generate('showaccount'));
-                    }
-                    break;
-                case 'szallitasiadatok':
-                    $user->setSzallnev($this->params->getStringRequestParam('szallnev'));
-                    $user->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
-                    $user->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
-                    $user->setSzallutca($this->params->getStringRequestParam('szallutca'));
-                    $this->getEm()->persist($user);
-                    $this->getEm()->flush();
-                    if (!$jax) {
-                        Header('Location: ' . store::getRouter()->generate('showaccount'));
-                    }
-                    break;
-                case 'jelszo':
-                    $regijelszo = $this->params->getStringRequestParam('regijelszo');
-                    $msg = 0;
-                    if ($user->checkJelszo($regijelszo)) {
-                        $j1 = $this->params->getStringRequestParam('jelszo1');
-                        $j2 = $this->params->getStringRequestParam('jelszo2');
-                        if ($j1 === $j2) {
-                            $user->setJelszo($j1);
-                            $this->getEm()->persist($user);
-                            $this->getEm()->flush();
-                        }
-                        else {
-                            $msg = 1;
-                        }
-                    }
-                    else {
-                        $msg = 2;
-                    }
-                    if (!$jax) {
-                        Header('Location: ' . store::getRouter()->generate('showaccount'));
-                    }
-                    else {
-                        echo json_encode($msg);
-                    }
-                    break;
-                case 'discounts':
-                    $partner = \mkw\Store::getLoggedInUser();
-                    $reqparams = $this->params->asArray();
-                    $reqparams = $reqparams['requestparams'];
-                    foreach($reqparams as $idx => $req) {
-
-                        $n = explode('_', $idx);
-                        if ($n[0] === 'kedvezmeny' && $req !== '') {
-
-                            if (substr($n[1], 0, 3) === 'new') {
-                                $tcs = $this->getRepo('Entities\Termekcsoport')->find($n[2]);
-                                if ($tcs) {
-                                    $kedv = new \Entities\PartnerTermekcsoportKedvezmeny();
-                                    $kedv->setPartner($partner);
-                                    $kedv->setTermekcsoport($tcs);
-                                    $kedv->setKedvezmeny($req * 1);
-                                    $this->getEm()->persist($kedv);
-                                    $this->getEm()->flush();
-                                }
-                            }
-                            else {
-                                $kedv = $this->getRepo('Entities\PartnerTermekcsoportKedvezmeny')->find($n[1]);
-                                if ($kedv && $kedv->getPartnerId() === $partner->getId()) {
-                                    $kedv->setKedvezmeny($req * 1);
-                                    $this->getEm()->persist($kedv);
-                                    $this->getEm()->flush();
-                                }
-                            }
-                        }
-                    }
-                    if (!$jax) {
-                        Header('Location: ' . store::getRouter()->generate('showaccount'));
-                    }
-                    break;
+            $hiba = $this->checkPartnerData($subject);
+            if (!$hiba['hibas']) {
+                $user = $this->setFields($user, 'edit', $subject);
+                $this->getEm()->persist($user);
+                $this->getEm()->flush();
+                if (!$jax) {
+                    Header('Location: ' . store::getRouter()->generate('showaccount'));
+                }
+            }
+            else {
+                if ($jax) {
+                    echo json_encode($hiba['hibak']);
+                }
+                else {
+                    echo $hiba['hibak'];
+                }
             }
         }
         else {
@@ -864,7 +836,6 @@ class partnerController extends \mkwhelpers\MattableController {
                     $mailer->send();
                 }
             }
-
         }
     }
 
@@ -906,30 +877,5 @@ class partnerController extends \mkwhelpers\MattableController {
             }
         }
         header('Location: ' . $route);
-    }
-
-    public function changePartner() {
-        $ujpartnerid = $this->params->getIntRequestParam('partner');
-        $user = $this->getRepo()->find($ujpartnerid);
-        $regiuser = \mkw\Store::getLoggedInUser();
-        if ($user) {
-
-            // pseudo logout old user
-            store::clearLoggedInUser();
-            $regiuser->setSessionid('');
-            $this->getEm()->persist($regiuser);
-            $this->getEm()->flush();
-            $kc = new kosarController($this->params);
-            $kc->removeSessionId(\Zend_Session::getId());
-            store::getMainSession()->pk = null;
-
-            // pseudo login new user
-            $user->setSessionid(\Zend_Session::getId());
-            $user->setUtolsoklikk();
-            $user->clearPasswordreminder();
-            $this->getEm()->persist($user);
-            $this->getEm()->flush();
-            store::getMainSession()->pk = $user->getId();
-        }
     }
 }

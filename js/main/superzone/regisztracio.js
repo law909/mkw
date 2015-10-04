@@ -1,9 +1,10 @@
-var fiok = (function($) {
+var regisztracio = (function($) {
 
     function initUI() {
-        var $fiokadataimform = $('#FiokAdataim');
+        var $regform = $('#RegisztracioForm');
 
-        if ($fiokadataimform.length > 0) {
+        if ($regform.length > 0) {
+
 
             $('.js-copyszamlaadat').on('click', function() {
                 $('input[name="szallnev"]').val($('input[name="nev"]').val());
@@ -13,10 +14,6 @@ var fiok = (function($) {
                 return false;
             });
 
-            $('.js-accmegrendelesopen').on('click', function() {
-                $(this).next('tr').toggleClass('notvisible');
-                return false;
-            });
         }
     }
 

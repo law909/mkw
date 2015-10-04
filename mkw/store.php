@@ -368,6 +368,10 @@ class Store {
                 $v->setVar('ukpartnerlist', $ukpartnerei);
             }
             $v->setVar('uzletkoto', $uk);
+            $v->setVar('myownaccount', \mkw\Store::getMainSession()->pk === \mkw\Store::getMainSession()->ukpartner);
+        }
+        else {
+            $v->setVar('myownaccount', true);
         }
         $rut = self::getRouter();
         $v->setVar('showloginlink', $rut->generate('showlogin'));

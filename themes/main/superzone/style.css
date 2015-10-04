@@ -398,7 +398,7 @@ fieldset[disabled] .btn-red.active {
     padding: 10px;
 }
 
-.fioknav .okbtn {
+.fioknav .okbtn, #RegisztracioForm .okbtn {
     margin-top: 15px;
 }
 
