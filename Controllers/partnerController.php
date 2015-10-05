@@ -131,10 +131,6 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setSzallito($this->params->getBoolRequestParam('szallito'));
             $obj->setSzallitasiido($this->params->getIntRequestParam('szallitasiido'));
             $obj->setSzamlatipus($this->params->getIntRequestParam('szamlatipus'));
-            $obj->setBanknev($this->params->getStringRequestParam('banknev'));
-            $obj->setBankcim($this->params->getStringRequestParam('bankcim'));
-            $obj->setIban($this->params->getStringRequestParam('iban'));
-            $obj->setSwift($this->params->getStringRequestParam('swift'));
             $obj->setTermekarazonosito($this->params->getStringRequestParam('termekarazonosito'));
             $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
             $obj->setEzuzletkoto($this->params->getBoolRequestParam('ezuzletkoto'));
@@ -180,6 +176,13 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));
             $obj->setUjdonsaghirlevelkell($this->params->getBoolRequestParam('ujdonsaghirlevelkell'));
 
+        }
+
+        if ($subject === 'bankiadatok' || $subject === 'minden') {
+            $obj->setBanknev($this->params->getStringRequestParam('banknev'));
+            $obj->setBankcim($this->params->getStringRequestParam('bankcim'));
+            $obj->setIban($this->params->getStringRequestParam('iban'));
+            $obj->setSwift($this->params->getStringRequestParam('swift'));
         }
 
         if ($subject === 'szamlaadatok' || $subject === 'minden') {

@@ -7,6 +7,9 @@
         <ul>
             <li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
             <li><a href="#ElerhetosegTab">{t('Elérhetőségek')}</a></li>
+            {if ($setup.b2b)}
+                <li><a href="#PartnerdefaultTab">{t('Partner alapadatok')}</a></li>
+            {/if}
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <table>
@@ -65,6 +68,74 @@
                 </tbody>
             </table>
         </div>
+        {if ($setup.b2b)}
+        <div id="PartnerdefaultTab" class="mattkarb-page" data-visible="visible">
+            <table>
+                <tbody>
+                    <tr>
+                        <td><label for="SzamlatipusEdit">{t('Számla típus')}:</label></td>
+                        <td><select id="SzamlatipusEdit" name="partnerszamlatipus">
+                                <option value="">{t('válasszon')}</option>
+                                {foreach $partnerszamlatipuslist as $_szt}
+                                    <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+                                {/foreach}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="FizmodEdit">{t('Fizetési mód')}:</label></td>
+                        <td><select id="FizmodEdit" name="partnerfizmod">
+                                <option value="">{t('válasszon')}</option>
+                                {foreach $partnerfizmodlist as $_fizmod}
+                                    <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
+                                {/foreach}
+                            </select>
+                        </td>
+                    </tr>
+                    {if ($setup.multilang)}
+                        <tr>
+                            <td><label for="BizonylatnyelvEdit">{t('Bizonylatok nyelve')}:</label></td>
+                            <td><select id="BizonylatnyelvEdit" name="partnerbizonylatnyelv">
+                                    <option value="">{t('válasszon')}</option>
+                                    {foreach $partnerbizonylatnyelvlist as $_szt}
+                                        <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+                                    {/foreach}
+                                </select></td>
+                        </tr>
+                    {/if}
+                    <tr>
+                        <td><label for="SzallmodEdit">{t('Szállítási mód')}:</label></td>
+                        <td><select id="SzallmodEdit" name="partnerszallitasimod">
+                                <option value="">{t('válasszon')}</option>
+                                {foreach $partnerszallitasimodlist as $_szm}
+                                    <option value="{$_szm.id}"{if ($_szm.selected)} selected="selected"{/if}>{$_szm.caption}</option>
+                                {/foreach}
+                            </select></td>
+                    </tr>
+                    {if ($setup.arsavok)}
+                        <tr>
+                            <td><label for="ValutanemEdit">{t('Valutanem')}:</label></td>
+                            <td><select id="ValutanemEdit" name="partnervalutanem">
+                                    <option value="">{t('válasszon')}</option>
+                                    {foreach $partnervalutanemlist as $_vt}
+                                        <option value="{$_vt.id}"{if ($_vt.selected)} selected="selected"{/if}>{$_vt.caption}</option>
+                                    {/foreach}
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td><label for="TermekarEdit">{t('Ársáv')}:</label></td>
+                            <td><select id="TermekarEdit" name="partnertermekarazonosito">
+                                    <option value="">{t('válasszon')}</option>
+                                    {foreach $partnertermekarazonositolist as $_ta}
+                                        <option value="{$_ta.id}"{if ($_ta.selected)} selected="selected"{/if}>{$_ta.caption}</option>
+                                    {/foreach}
+                                </select></td>
+                        </tr>
+                    {/if}
+                </tbody>
+            </table>
+        </div>
+        {/if}
     </div>
     <input name="oper" type="hidden" value="{$oper}">
     <input name="id" type="hidden" value="{$uzletkoto.id}">

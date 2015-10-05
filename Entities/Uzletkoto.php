@@ -48,6 +48,27 @@ class Uzletkoto {
 	private $bizonylatfejek;
 	/** @ORM\Column(type="string",length=255,nullable=true) */
 	private $sessionid = '';
+	/**
+	 * @ORM\ManyToOne(targetEntity="Valutanem")
+	 * @ORM\JoinColumn(name="partnervalutanem_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+	 */
+	private $partnervalutanem;
+	/**
+	 * @ORM\ManyToOne(targetEntity="Fizmod")
+	 * @ORM\JoinColumn(name="partnerfizmod_id",referencedColumnName="id",nullable=true,onDelete="set null")
+	 */
+	private $partnerfizmod;
+	/** @ORM\Column(type="string",length=255,nullable=true) */
+	private $partnertermekarazonosito;
+	/** @ORM\Column(type="string",length=10,nullable=true) */
+	private $partnerbizonylatnyelv;
+	/**
+	 * @ORM\ManyToOne(targetEntity="Szallitasimod")
+	 * @ORM\JoinColumn(name="partnerszallitasimod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+	 */
+	private $partnerszallitasimod;
+    /** @ORM\Column(type="integer",nullable=false) */
+    private $partnerszamlatipus = 0;
 
 	public function __construct() {
 		$this->partnerek=new ArrayCollection();
@@ -239,6 +260,130 @@ class Uzletkoto {
 	 */
 	public function setSessionid($sessionid) {
 		$this->sessionid = $sessionid;
+	}
+
+	public function getPartnerszamlatipus() {
+		return $this->partnerszamlatipus;
+	}
+
+	public function setPartnerszamlatipus($val) {
+		$this->partnerszamlatipus = $val;
+	}
+
+	/**
+	 * @return \Entities\Valutanem
+	 */
+	public function getPartnervalutanem() {
+		if (!$this->id && !$this->partnervalutanem) {
+			$this->setPartnervalutanem(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+		}
+		return $this->partnervalutanem;
+	}
+
+	public function getPartnervalutanemnev() {
+		$vn = $this->getPartnervalutanem();
+		if ($vn) {
+			return $vn->getNev();
+		}
+		return '';
+	}
+
+	public function getPartnervalutanemId() {
+		$vn = $this->getPartnervalutanem();
+		if ($vn) {
+			return $vn->getId();
+		}
+		return '';
+	}
+
+	/**
+	 * @param \Entities\Valutanem $val
+	 */
+	public function setPartnervalutanem($val) {
+		if (!($val instanceof \Entities\Valutanem)) {
+			$val = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find($val);
+		}
+		if ($this->partnervalutanem !== $val) {
+			$this->partnervalutanem = $val;
+		}
+	}
+
+	public function removePartnervalutanem() {
+		if ($this->partnervalutanem !== null) {
+			$this->partnervalutanem = null;
+		}
+	}
+
+	public function getPartnertermekarazonosito() {
+		return $this->partnertermekarazonosito;
+	}
+
+	public function setPartnertermekarazonosito($v) {
+		$this->partnertermekarazonosito = $v;
+	}
+
+	public function getPartnerszallitasimod() {
+		return $this->partnerszallitasimod;
+	}
+
+	public function getPartnerszallitasimodNev() {
+		if ($this->partnerszallitasimod) {
+			return $this->partnerszallitasimod->getNev();
+		}
+		return '';
+	}
+
+	public function getPartnerszallitasimodId() {
+		if ($this->partnerszallitasimod) {
+			return $this->partnerszallitasimod->getId();
+		}
+		return '';
+	}
+
+	public function setPartnerszallitasimod($val) {
+		if ($this->partnerszallitasimod !== $val) {
+			$this->partnerszallitasimod = $val;
+		}
+	}
+
+	public function removePartnerszallitasimod() {
+		if ($this->partnerszallitasimod !== null) {
+			$this->partnerszallitasimod = null;
+		}
+	}
+
+	public function getPartnerbizonylatnyelv() {
+		return $this->partnerbizonylatnyelv;
+	}
+
+	public function setPartnerbizonylatnyelv($adat) {
+		$this->partnerbizonylatnyelv = $adat;
+	}
+
+	/**
+	 *
+	 * @ORM\return Fizmod
+	 */
+	public function getPartnerfizmod() {
+		return $this->partnerfizmod;
+	}
+
+	public function getPartnerfizmodNev() {
+		if ($this->partnerfizmod) {
+			return $this->partnerfizmod->getNev();
+		}
+		return '';
+	}
+
+	public function getPartnerfizmodId() {
+		if ($this->partnerfizmod) {
+			return $this->partnerfizmod->getId();
+		}
+		return '';
+	}
+
+	public function setPartnerfizmod(Fizmod $fizmod) {
+		$this->partnerfizmod = $fizmod;
 	}
 
 }

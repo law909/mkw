@@ -21,17 +21,25 @@ class b2bpartnerController extends partnerController {
         $hibak = array_merge($hibak, $r['hibak']);
 
         if (!$hibas) {
+            /** @var \Entities\Uzletkoto $uk */
             $uk = \mkw\Store::getLoggedInUK();
             if ($uk) {
                 $partner = new \Entities\Partner();
                 // emailt az uzletkotonek kell kuldeni es egy kozponti cimre
                 $partner = $this->setFields($partner, 'add', 'adataim');
+                $partner = $this->setFields($partner, 'add', 'bankiadatok');
                 $partner = $this->setFields($partner, 'add', 'szamlaadatok');
                 $partner = $this->setFields($partner, 'add', 'szallitasiadatok');
                 $partner = $this->setFields($partner, 'add', 'discounts');
                 $partner = $this->setFields($partner, 'add', 'jelszo');
                 $partner = $this->setFields($partner, 'add', 'registration');
                 $partner->setUzletkoto($uk);
+                $partner->setBizonylatnyelv($uk->getPartnerbizonylatnyelv());
+                $partner->setValutanem($uk->getPartnervalutanem());
+                $partner->setFizmod($uk->getPartnerfizmod());
+                $partner->setSzallitasimod($uk->getPartnerszallitasimod());
+                $partner->setSzamlatipus($uk->getPartnerszamlatipus());
+                $partner->setTermekarazonosito($uk->getPartnertermekarazonosito());
                 $this->getEm()->persist($partner);
                 $this->getEm()->flush();
 

@@ -901,7 +901,6 @@ class Partner {
         if ($this->valutanem !== null) {
 //			$val=$this->valutanem;
             $this->valutanem = null;
-            $this->valutanemnev = '';
 //			$val->removeBizonylatfej($this);
         }
     }

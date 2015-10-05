@@ -34,6 +34,14 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         $x['honlap'] = $t->getHonlap();
         $x['megjegyzes'] = $t->getMegjegyzes();
         $x['jutalek'] = $t->getJutalek();
+        $x['szamlatipus'] = $t->getPartnerszamlatipus();
+        $x['valutanem'] = $t->getPartnervalutanem();
+        $x['valutanemnev'] = $t->getPartnervalutanemnev();
+        $x['termekarazonosito'] = $t->getPartnertermekarazonosito();
+        $x['szallitasimod'] = $t->getPartnerszallitasimod();
+        $x['szallitasimodnev'] = $t->getPartnerszallitasimodNev();
+        $x['bizonylatnyelv'] = $t->getPartnerbizonylatnyelv();
+        $x['fizmodnev'] = $t->getPartnerfizmodNev();
         return $x;
     }
 
@@ -53,6 +61,21 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         $obj->setHonlap($this->params->getStringRequestParam('honlap'));
         $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
         $obj->setJutalek($this->params->getNumRequestParam('jutalek'));
+        $obj->setPartnerszamlatipus($this->params->getIntRequestParam('partnerszamlatipus'));
+        $obj->setPartnertermekarazonosito($this->params->getStringRequestParam('partnertermekarazonosito'));
+        $obj->setPartnerbizonylatnyelv($this->params->getStringRequestParam('partnerbizonylatnyelv'));
+        $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('partnerfizmod', 0));
+        if ($fizmod) {
+            $obj->setPartnerfizmod($fizmod);
+        }
+        $valutanem = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('partnervalutanem', 0));
+        if ($valutanem) {
+            $obj->setPartnervalutanem($valutanem);
+        }
+        $szallmod = store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('partnerszallitasimod', 0));
+        if ($szallmod) {
+            $obj->setPartnerszallitasimod($szallmod);
+        }
         return $obj;
     }
 
@@ -98,8 +121,21 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         $view->setVar('pagetitle', t('Üzletkötő'));
         $view->setVar('oper', $oper);
 
+        $partnerrepo = $this->getRepo('\Entities\Partner');
+        /** @var \Entities\Uzletkoto $partner */
         $partner = $this->getRepo()->findWithJoins($id);
         // loadVars utan nem abc sorrendben adja vissza
+
+        $fizmod = new fizmodController($this->params);
+        $view->setVar('partnerfizmodlist', $fizmod->getSelectList(($partner ? $partner->getPartnerfizmodId() : 0)));
+        $valutanem = new valutanemController($this->params);
+        $view->setVar('partnervalutanemlist', $valutanem->getSelectList(($partner ? $partner->getPartnervalutanemId() : 0)));
+        $termekar = new termekarController($this->params);
+        $view->setVar('partnertermekarazonositolist', $termekar->getSelectList(($partner ? $partner->getPartnertermekarazonosito() : '')));
+        $szallmod = new szallitasimodController($this->params);
+        $view->setVar('partnerszallitasimodlist', $szallmod->getSelectList(($partner ? $partner->getPartnerszallitasimodId() : 0)));
+        $view->setVar('partnerszamlatipuslist', $partnerrepo->getSzamlatipusList(($partner ? $partner->getPartnerszamlatipus() : 0)));
+        $view->setVar('partnerbizonylatnyelvlist', \mkw\Store::getLocaleSelectList($partner ? $partner->getPartnerbizonylatnyelv() : ''));
 
         $view->setVar('uzletkoto', $this->loadVars($partner));
         $view->printTemplateResult();
