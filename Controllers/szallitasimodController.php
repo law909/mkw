@@ -4,15 +4,31 @@ namespace Controllers;
 
 use mkw\store;
 
-class szallitasimodController extends \mkwhelpers\JQGridController {
+class szallitasimodController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
         $this->setEntityName('Entities\Szallitasimod');
+        $this->setKarbFormTplName('szallitasimodkarbform.tpl');
+        $this->setKarbTplName('szallitasimodkarb.tpl');
+        $this->setListBodyRowTplName('szallitasimodlista_tbody_tr.tpl');
+        $this->setListBodyRowVarName('_egyed');
         parent::__construct($params);
     }
 
-    protected function loadCells($obj) {
-        return array($obj->getNev(), $obj->getWebes(), $obj->getLeiras(), $obj->getFizmodok(), $obj->getSorrend(), $obj->getVanszallitasiktg());
+    protected function loadVars($t) {
+        $x=array();
+        if (!$t) {
+            $t = new \Entities\Szallitasimod();
+            $this->getEm()->detach($t);
+        }
+        $x['id'] = $t->getId();
+        $x['nev'] = $t->getNev();
+        $x['webes'] = $t->getWebes();
+        $x['leiras'] = $t->getLeiras();
+        $x['fizmodok'] = $t->getFizmodok();
+        $x['sorrend'] = $t->getSorrend();
+        $x['vanszallitasiktg'] = $t->getVanszallitasiktg();
+        return $x;
     }
 
     protected function setFields($obj) {
@@ -25,16 +41,49 @@ class szallitasimodController extends \mkwhelpers\JQGridController {
         return $obj;
     }
 
-    public function jsonlist() {
+    public function getlistbody() {
+        $view = $this->createView('szallitasimodlista_tbody.tpl');
+
         $filter = array();
-        if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getRequestParam('nev', NULL))) {
-                $filter['fields'][] = 'nev';
-                $filter['values'][] = $this->params->getStringRequestParam('nev');
-            }
+        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
+            $filter['fields'][] = 'nev';
+            $filter['values'][] = $this->params->getStringRequestParam('nevfilter');
         }
-        $rec = $this->getRepo()->getAll($filter, $this->getOrderArray());
-        echo json_encode($this->loadDataToView($rec));
+
+        $this->initPager(
+            $this->getRepo()->getCount($filter),
+            $this->params->getIntRequestParam('elemperpage', 30),
+            $this->params->getIntRequestParam('pageno', 1));
+
+        $egyedek = $this->getRepo()->getAll(
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage());
+
+        echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
+    }
+
+    public function viewlist() {
+        $view = $this->createView('szallitasimodlista.tpl');
+
+        $view->setVar('pagetitle', t('Szállítási módok'));
+        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
+        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+        $view->printTemplateResult();
+    }
+
+    protected function _getkarb($tplname) {
+        $id = $this->params->getRequestParam('id', 0);
+        $oper = $this->params->getRequestParam('oper', '');
+        $view = $this->createView($tplname);
+
+        $view->setVar('pagetitle', t('Szállítási mód'));
+        $view->setVar('formaction', \mkw\Store::getRouter()->generate('adminszallitasimodsave'));
+        $view->setVar('oper', $oper);
+        $record = $this->getRepo()->find($id);
+        $view->setVar('egyed', $this->loadVars($record));
+        return $view->getTemplateResult();
     }
 
     public function getSelectList($selid = null, $mind = false) {

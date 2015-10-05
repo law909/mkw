@@ -78,14 +78,16 @@
 		</div>
 		<div class="menu-titlebar" data-caption="{t('Egyebek')}" data-refcontrol="#EgyebTab"></div>
 		<div id="EgyebTab">
+			<div><a class="menupont" href="/admin/szallitasimod/viewlist">{t('Szállítási módok')}</a></div>
+			<div><a class="menupont" href="/admin/fizetesimod/viewlist">{t('Fizetési módok')}</a></div>
             <div><a class="menupont" href="/admin/bizonylatstatusz/viewlist">{t('Bizonylat státuszok')}</a></div>
             <div><a class="menupont" href="/admin/dolgozo/viewlist">{t('Felhasználók')}</a></div>
             <div><a class="menupont" href="/admin/egyebtorzs/view">{t('Egyéb adatok')}</a></div>
             <div><a class="menupont" href="/admin/export/view">{t('Termék exportok')}</a></div>
             <div><a class="menupont" href="/admin/import/view">{t('Importok')}</a></div>
-            <div><a class="menupont" href="/admin/setup/view">{t('Beállítások')}</a></div>
             <div><a class="menupont js-regeneratekarkod" href="#">{t('Termék kat. rendezése')}</a></div>
         </div>
+		<div><a class="menupont" href="/admin/setup/view">{t('Beállítások')}</a></div>
 		<div>
 			<select id="ThemeSelect">
 				{foreach $uithemes as $_uitheme}

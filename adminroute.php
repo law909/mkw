@@ -19,9 +19,6 @@ $router->map('POST', '/admin/felhasznalo/save', 'felhasznaloController#save', 'a
 $router->map('GET', '/admin/fizmod/jsonlist', 'fizmodController#jsonlist', 'adminfizmodjsonlist');
 $router->map('GET', '/admin/fizmod/htmllist', 'fizmodController#htmllist', 'adminfizmodhtmllist');
 $router->map('POST', '/admin/fizmod/save', 'fizmodController#save', 'adminfizmodsave');
-$router->map('GET', '/admin/szallitasimod/jsonlist', 'szallitasimodController#jsonlist', 'adminszallitasimodjsonlist');
-$router->map('GET', '/admin/szallitasimod/htmllist', 'szallitasimodController#htmllist', 'adminszallitasimodhtmllist');
-$router->map('POST', '/admin/szallitasimod/save', 'szallitasimodController#save', 'adminszallitasimodsave');
 $router->map('GET', '/admin/jelenlettipus/jsonlist', 'jelenlettipusController#jsonlist', 'adminjelenlettipusjsonlist');
 $router->map('POST', '/admin/jelenlettipus/save', 'jelenlettipusController#save', 'adminjelenlettipussave');
 $router->map('GET', '/admin/kapcsolatfelveteltema/jsonlist', 'kapcsolatfelveteltemaController#jsonlist', 'adminkapcsolatfelveteltemajsonlist');
@@ -172,6 +169,13 @@ $router->map('POST', '/admin/termekvaltozat/generate', 'termekvaltozatController
 $router->map('POST', '/admin/termekvaltozat/save', 'termekvaltozatController#save', 'admintermekvaltozatsave');
 $router->map('POST', '/admin/termekvaltozat/delall', 'termekvaltozatController#delall', 'admintermekvaltozatdelall');
 $router->map('GET', '/admin/termekvaltozat/getkeszletbyraktar', 'termekvaltozatController#getKeszletByRaktar', 'admingetvaltozatkeszletbyraktar');
+
+$router->map('GET', '/admin/szallitasimod/viewlist', 'szallitasimodController#viewlist', 'adminszallitasimodviewlist');
+$router->map('GET', '/admin/szallitasimod/getlistbody', 'szallitasimodController#getlistbody', 'adminszallitasimodgetlistbody');
+$router->map('GET', '/admin/szallitasimod/getkarb', 'szallitasimodController#getkarb', 'adminszallitasimodgetkarb');
+$router->map('GET', '/admin/szallitasimod/viewkarb', 'szallitasimodController#viewkarb', 'adminszallitasimodviewkarb');
+$router->map('POST', '/admin/szallitasimod/save', 'szallitasimodController#save', 'adminszallitasimodsave');
+$router->map('GET', '/admin/szallitasimod/htmllist', 'szallitasimodController#htmllist', 'adminszallitasimodhtmllist');
 
 $router->map('GET', '/admin/emailtemplate/viewlist', 'emailtemplateController#viewlist', 'adminemailtemplateviewlist');
 $router->map('GET', '/admin/emailtemplate/getlistbody', 'emailtemplateController#getlistbody', 'adminemailtemplategetlistbody');

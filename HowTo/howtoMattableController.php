@@ -71,7 +71,6 @@ class ?howto?Controller extends \mkwhelpers\MattableController {
         $view = $this->createView('?howto?lista.tpl');
 
         $view->setVar('pagetitle', t('?howto?'));
-        $view->setVar('controllerscript', '?howto?lista.js');
         $view->printTemplateResult();
     }
 
@@ -79,7 +78,6 @@ class ?howto?Controller extends \mkwhelpers\MattableController {
         $view = $this->createView('?howto?lista.tpl');
 
         $view->setVar('pagetitle', t('?howto?'));
-        $view->setVar('controllerscript', '?howto?lista.js');
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         $view->printTemplateResult();
@@ -91,8 +89,6 @@ class ?howto?Controller extends \mkwhelpers\MattableController {
         $view = $this->createView($tplname);
 
         $view->setVar('pagetitle', t('?howto?'));
-        $view->setVar('controllerscript', '?howto?karb.js');
-        $view->setVar('formaction', '/admin/?howto?/save');
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->findWithJoins($id);
         $view->setVar('egyed', $this->loadVars($record));
