@@ -27,7 +27,12 @@ class mkwzendmailer {
 
     public function setTo($to) {
         if ($to) {
-            $this->to[] = $to;
+            if (is_string($to)) {
+                $to = explode($to, ',');
+            }
+            if (is_array($to)) {
+                $this->to = array_merge($this->to, $to);
+            }
         }
     }
 
@@ -63,26 +68,36 @@ class mkwzendmailer {
         return $this->replyto;
     }
 
+    protected function getBccArray() {
+        $bcc = Store::getParameter(consts::EmailBcc);
+        return explode(',', $bcc);
+    }
+
     public function send() {
         $this->mailer = new \Zend_Mail('UTF-8');
         $this->mailer->setBodyHtml($this->message);
         $this->mailer->setSubject($this->subject);
+
         $from = Store::getParameter(consts::EmailFrom);
         $fromdata = explode(';', $from);
         $this->mailer->setFrom($fromdata[0], $fromdata[1]);
+
         if (!$this->to) {
-            $this->mailer->addTo(Store::getParameter(consts::EmailBcc));
+            $bcc = $this->getBccArray();
+            foreach($bcc as $cim) {
+                $this->mailer->addTo($cim);
+            }
         }
         else {
             foreach($this->to as $t) {
                 $this->mailer->addTo($t);
             }
         }
-        $bcc = Store::getParameter(consts::EmailBcc);
-        $bccdata = explode(',', $bcc);
-        foreach($bccdata as $_bcc) {
+        $bcc = $this->getBccArray();
+        foreach($bcc as $_bcc) {
             $this->mailer->addBcc($_bcc);
         }
+
         if (!$this->replyto) {
             $this->mailer->setReplyTo(Store::getParameter(consts::EmailReplyTo));
         }
