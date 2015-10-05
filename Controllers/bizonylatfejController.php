@@ -857,12 +857,16 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $bankszla = new bankszamlaController($this->params);
         $bankszlaid = false;
-        if (!$record || !$record->getBankszamlaId()) {
+        if ($record && $record->getBankszamlaId()) {
+            $bankszlaid = $record->getBankszamlaId();
+        }
+        else {
             $valutanem = $this->getRepo('Entities\Valutanem')->find($valutaid);
             if ($valutanem && $valutanem->getBankszamlaId()) {
                 $bankszlaid = $valutanem->getBankszamlaId();
             }
         }
+
         $view->setVar('bankszamlalist', $bankszla->getSelectList($bankszlaid));
 
         $uk = new uzletkotoController($this->params);
