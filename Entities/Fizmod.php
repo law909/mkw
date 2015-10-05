@@ -21,6 +21,8 @@ class Fizmod {
 	private $haladek=0;
 	/** @ORM\Column(type="boolean") */
 	private $webes=true;
+	/** @ORM\Column(type="boolean") */
+	private $rugalmas = true;
 	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="fizmod",cascade={"persist"}) */
 	private $bizonylatfejek;
 	/** @ORM\Column(type="text",nullable=true) */
@@ -143,5 +145,19 @@ class Fizmod {
     public function setOsztottszazalek3($adat) {
         $this->osztottszazalek3 = $adat;
     }
+
+	/**
+	 * @return mixed
+	 */
+	public function getRugalmas() {
+		return $this->rugalmas;
+	}
+
+	/**
+	 * @param mixed $rugalmas
+	 */
+	public function setRugalmas($rugalmas) {
+		$this->rugalmas = $rugalmas;
+	}
 
 }

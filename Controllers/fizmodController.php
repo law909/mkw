@@ -4,16 +4,38 @@ namespace Controllers;
 
 use mkw\store;
 
-class fizmodController extends \mkwhelpers\JQGridController {
+class fizmodController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
         $this->setEntityName('Entities\Fizmod');
+        $this->setKarbFormTplName('fizetesimodkarbform.tpl');
+        $this->setKarbTplName('fizetesimodkarb.tpl');
+        $this->setListBodyRowTplName('fizetesimodlista_tbody_tr.tpl');
+        $this->setListBodyRowVarName('_egyed');
         parent::__construct($params);
     }
 
-    protected function loadCells($sor) {
-        return array($sor->getId(), $sor->getNev(), $sor->getTipus(), $sor->getHaladek(), $sor->getWebes(), $sor->getLeiras(), $sor->getSorrend(),
-            $sor->getOsztotthaladek1(), $sor->getOsztottszazalek1(), $sor->getOsztotthaladek2(), $sor->getOsztottszazalek2(), $sor->getOsztotthaladek3(), $sor->getOsztottszazalek3());
+    protected function loadVars($t) {
+        $x=array();
+        if (!$t) {
+            $t = new \Entities\Fizmod();
+            $this->getEm()->detach($t);
+        }
+        $x['id'] = $t->getId();
+        $x['nev'] = $t->getNev();
+        $x['tipus'] = $t->getTipus();
+        $x['haladek'] = $t->getHaladek();
+        $x['webes'] = $t->getWebes();
+        $x['leiras'] = $t->getLeiras();
+        $x['sorrend'] = $t->getSorrend();
+        $x['osztotthaladek1'] = $t->getOsztotthaladek1();
+        $x['osztottszazalek1'] = $t->getOsztottszazalek1();
+        $x['osztotthaladek2'] = $t->getOsztotthaladek2();
+        $x['osztottszazalek2'] = $t->getOsztottszazalek2();
+        $x['osztotthaladek3'] = $t->getOsztotthaladek3();
+        $x['osztottszazalek3'] = $t->getOsztottszazalek3();
+        $x['rugalmas'] = $t->getRugalmas();
+        return $x;
     }
 
     protected function setFields($obj) {
@@ -29,31 +51,53 @@ class fizmodController extends \mkwhelpers\JQGridController {
         $obj->setOsztottszazalek2($this->params->getNumRequestParam('osztottszazalek2'));
         $obj->setOsztotthaladek3($this->params->getIntRequestParam('osztotthaladek3'));
         $obj->setOsztottszazalek3($this->params->getNumRequestParam('osztottszazalek3'));
+        $obj->setRugalmas($this->params->getBoolRequestParam('rugalmas'));
         return $obj;
     }
 
-    public function jsonlist() {
+    public function getlistbody() {
+        $view = $this->createView('fizetesimodlista_tbody.tpl');
+
         $filter = array();
-        if ($this->params->getBoolRequestParam('_search', false)) {
-            if (!is_null($this->params->getRequestParam('tipus', NULL))) {
-                $filter['fields'][] = 'tipus';
-                $filter['values'][] = $this->params->getStringRequestParam('tipus');
-            }
-            if (!is_null($this->params->getRequestParam('nev', NULL))) {
-                $filter['fields'][] = 'nev';
-                $filter['values'][] = $this->params->getStringRequestParam('nev');
-            }
-            if (!is_null($this->params->getRequestParam('haladek', NULL))) {
-                $filter['fields'][] = 'haladek';
-                $filter['values'][] = $this->params->getIntRequestParam('haladek');
-            }
-            if (!is_null($this->params->getRequestParam('webes', NULL))) {
-                $filter['fields'][] = 'webes';
-                $filter['values'][] = $this->params->getBoolRequestParam('webes');
-            }
+        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
+            $filter['fields'][] = 'nev';
+            $filter['values'][] = $this->params->getStringRequestParam('nevfilter');
         }
-        $rec = $this->getRepo()->getAll($filter, $this->getOrderArray());
-        echo json_encode($this->loadDataToView($rec));
+
+        $this->initPager(
+            $this->getRepo()->getCount($filter),
+            $this->params->getIntRequestParam('elemperpage', 30),
+            $this->params->getIntRequestParam('pageno', 1));
+
+        $egyedek = $this->getRepo()->getAll(
+            $filter,
+            $this->getOrderArray(),
+            $this->getPager()->getOffset(),
+            $this->getPager()->getElemPerPage());
+
+        echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
+    }
+
+    public function viewlist() {
+        $view = $this->createView('fizetesimodlista.tpl');
+
+        $view->setVar('pagetitle', t('Fizetési módok'));
+        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
+        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+        $view->printTemplateResult();
+    }
+
+    protected function _getkarb($tplname) {
+        $id = $this->params->getRequestParam('id', 0);
+        $oper = $this->params->getRequestParam('oper', '');
+        $view = $this->createView($tplname);
+
+        $view->setVar('pagetitle', t('Fizetési mód'));
+        $view->setVar('formaction', \mkw\Store::getRouter()->generate('adminfizetesimodsave'));
+        $view->setVar('oper', $oper);
+        $record = $this->getRepo()->find($id);
+        $view->setVar('egyed', $this->loadVars($record));
+        return $view->getTemplateResult();
     }
 
     public function getSelectList($selid = null, $szallmod = null, $exc = null) {

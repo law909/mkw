@@ -16,9 +16,6 @@ $router->map('GET', '/admin/bankszamla/htmllist', 'bankszamlaController#htmllist
 $router->map('POST', '/admin/bankszamla/save', 'bankszamlaController#save', 'adminbankszamlasave');
 $router->map('GET', '/admin/felhasznalo/jsonlist', 'felhasznaloController#jsonlist', 'adminfelhasznalojsonlist');
 $router->map('POST', '/admin/felhasznalo/save', 'felhasznaloController#save', 'adminfelhasznalosave');
-$router->map('GET', '/admin/fizmod/jsonlist', 'fizmodController#jsonlist', 'adminfizmodjsonlist');
-$router->map('GET', '/admin/fizmod/htmllist', 'fizmodController#htmllist', 'adminfizmodhtmllist');
-$router->map('POST', '/admin/fizmod/save', 'fizmodController#save', 'adminfizmodsave');
 $router->map('GET', '/admin/jelenlettipus/jsonlist', 'jelenlettipusController#jsonlist', 'adminjelenlettipusjsonlist');
 $router->map('POST', '/admin/jelenlettipus/save', 'jelenlettipusController#save', 'adminjelenlettipussave');
 $router->map('GET', '/admin/kapcsolatfelveteltema/jsonlist', 'kapcsolatfelveteltemaController#jsonlist', 'adminkapcsolatfelveteltemajsonlist');
@@ -176,6 +173,13 @@ $router->map('GET', '/admin/szallitasimod/getkarb', 'szallitasimodController#get
 $router->map('GET', '/admin/szallitasimod/viewkarb', 'szallitasimodController#viewkarb', 'adminszallitasimodviewkarb');
 $router->map('POST', '/admin/szallitasimod/save', 'szallitasimodController#save', 'adminszallitasimodsave');
 $router->map('GET', '/admin/szallitasimod/htmllist', 'szallitasimodController#htmllist', 'adminszallitasimodhtmllist');
+
+$router->map('GET', '/admin/fizetesimod/viewlist', 'fizmodController#viewlist', 'adminfizetesimodviewlist');
+$router->map('GET', '/admin/fizetesimod/getlistbody', 'fizmodController#getlistbody', 'adminfizetesimodgetlistbody');
+$router->map('GET', '/admin/fizetesimod/getkarb', 'fizmodController#getkarb', 'adminfizetesimodgetkarb');
+$router->map('GET', '/admin/fizetesimod/viewkarb', 'fizmodController#viewkarb', 'adminfizetesimodviewkarb');
+$router->map('POST', '/admin/fizetesimod/save', 'fizmodController#save', 'adminfizetesimodsave');
+$router->map('GET', '/admin/fizetesimod/htmllist', 'fizmodController#htmllist', 'adminfizetesimodhtmllist');
 
 $router->map('GET', '/admin/emailtemplate/viewlist', 'emailtemplateController#viewlist', 'adminemailtemplateviewlist');
 $router->map('GET', '/admin/emailtemplate/getlistbody', 'emailtemplateController#getlistbody', 'adminemailtemplategetlistbody');

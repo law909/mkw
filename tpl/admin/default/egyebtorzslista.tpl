@@ -21,10 +21,6 @@
             <div id="vtszgridpager"></div>
         </div>
         <div class="egyebadat-grid">
-            <table id="fizmodgrid"></table>
-            <div id="fizmodgridpager"></div>
-        </div>
-        <div class="egyebadat-grid">
             <table id="valutanemgrid"></table>
             <div id="valutanemgridpager"></div>
         </div>
