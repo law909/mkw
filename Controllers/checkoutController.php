@@ -402,7 +402,18 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $megrendfej->setTeljesites('');
                     $megrendfej->setEsedekesseg('');
                     $megrendfej->setHatarido('');
+
                     $megrendfej->setPartner($partner);
+
+                    $megrendfej->setPartnernev($szamlanev);
+                    $megrendfej->setPartnerirszam($szamlairszam);
+                    $megrendfej->setPartnervaros($szamlavaros);
+                    $megrendfej->setPartnerutca($szamlautca);
+                    $megrendfej->setSzallnev($szallnev);
+                    $megrendfej->setSzallirszam($szallirszam);
+                    $megrendfej->setSzallvaros($szallvaros);
+                    $megrendfej->setSzallutca($szallutca);
+
                     $megrendfej->setFizmod($partner->getFizmod());
                     $megrendfej->setSzallitasimod($partner->getSzallitasimod());
                     $megrendfej->setValutanem($valutanem);

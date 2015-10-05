@@ -31,8 +31,7 @@ var checkout = (function($) {
 			szallvarosinput = $('input[name="szallvaros"]'),
 			szallvarosgr = szallvarosinput.closest('.form-group'),
 			szallutcainput = $('input[name="szallutca"]'),
-			szallutcagr = szallutcainput.closest('.form-group'),
-            szalleqszamla = $('input[name="szalleqszamla"]').prop('checked');
+			szallutcagr = szallutcainput.closest('.form-group');
 
         loadTetelList();
 
@@ -47,7 +46,8 @@ var checkout = (function($) {
         });
 
         checkoutform.on('submit', function(e) {
-            var hibas = false, tofocus = false;
+            var hibas = false, tofocus = false,
+                szalleqszamla = $('input[name="szalleqszamla"]').prop('checked');
 
             if (!szalleqszamla && !szallnevinput.val()) {
                 szallnevgr.addClass('has-error');
