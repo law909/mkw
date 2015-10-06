@@ -5,6 +5,7 @@
 	<div id="mattkarb-tabs">
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
+            <li><a href="#HatarTab">{t('Összeghatárok')}</a></li>
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table>
@@ -15,7 +16,7 @@
                     </tr>
                     <tr>
                         <td><label for="LeirasEdit">{t('Leírás')}:</label></td>
-                        <td><textarea id="LeirasEdit" name="leiras" type="text">{$egyed.leiras}</textarea></td>
+                        <td><textarea id="LeirasEdit" name="leiras">{$egyed.leiras}</textarea></td>
                     </tr>
                     <tr>
                         <td><label for="FizmodEdit">{t('Fizetési módok')}:</label></td>
@@ -36,6 +37,14 @@
 			    </tbody>
 			</table>
 		</div>
+        <div id="HatarTab" class="mattkarb-page" data-visible="visible">
+            {foreach $egyed.hatarok as $hatar}
+                {include 'szallitasimodhatarkarb.tpl'}
+            {/foreach}
+            <a class="js-hatarnewbutton" href="#" title="{t('Új')}">
+                <span class="ui-icon ui-icon-circle-plus"></span>
+            </a>
+        </div>
 	</div>
 	<input name="oper" type="hidden" value="{$oper}">
 	<input name="id" type="hidden" value="{$egyed.id}">

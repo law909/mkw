@@ -35,10 +35,13 @@ class Szallitasimod {
 	private $sorrend=0;
 	/** @ORM\OneToMany(targetEntity="Partner", mappedBy="szallitasimod",cascade={"persist"}) */
 	private $partnerek;
+	/** @ORM\OneToMany(targetEntity="SzallitasimodHatar", mappedBy="szallitasimod",cascade={"persist"}) */
+	private $hatarok;
 
 	public function __construct() {
-		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
-		$this->partnerek=new \Doctrine\Common\Collections\ArrayCollection();
+		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->partnerek = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->hatarok = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function getId() {
@@ -92,4 +95,8 @@ class Szallitasimod {
     public function setVanszallitasiktg($adat) {
         $this->vanszallitasiktg = $adat;
     }
+
+	public function getHatarok() {
+		return $this->getHatarok();
+	}
 }

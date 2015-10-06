@@ -15,7 +15,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t) {
+    protected function loadVars($t, $forKarb = false) {
         $x=array();
         if (!$t) {
             $t = new \Entities\Szallitasimod();
@@ -28,6 +28,15 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         $x['fizmodok'] = $t->getFizmodok();
         $x['sorrend'] = $t->getSorrend();
         $x['vanszallitasiktg'] = $t->getVanszallitasiktg();
+        if ($forKarb) {
+            $fhc = new szallitasimodhatarController($this->params);
+            $h = $this->getRepo('Entities\SzallitasimodHatar')->getBySzallitasimod($t);
+            $hatararr = array();
+            foreach ($h as $hat) {
+                $hatararr[] = $fhc->loadVars($hat, $forKarb);
+            }
+            $x['hatarok'] = $hatararr;
+        }
         return $x;
     }
 
@@ -38,6 +47,35 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         $obj->setFizmodok($this->params->getStringRequestParam('fizmodok'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setVanszallitasiktg($this->params->getBoolRequestParam('vanszallitasiktg'));
+        $hatarids = $this->params->getArrayRequestParam('hatarid');
+        foreach ($hatarids as $hatarid) {
+            $oper = $this->params->getStringRequestParam('hataroper_' . $hatarid);
+            $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('hatarvalutanem_' . $hatarid));
+            if (!$valutanem) {
+                $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find(store::getParameter(\mkw\consts::Valutanem));
+            }
+            if ($oper == 'add') {
+                $hatar = new \Entities\SzallitasimodHatar();
+                $hatar->setSzallitasimod($obj);
+                $hatar->setHatarertek($this->params->getNumRequestParam('hatarertek_' . $hatarid));
+                $hatar->setOsszeg($this->params->getNumRequestParam('osszeg_' . $hatarid));
+                if ($valutanem) {
+                    $hatar->setValutanem($valutanem);
+                }
+                $this->getEm()->persist($hatar);
+            }
+            elseif ($oper == 'edit') {
+                $hatar = $this->getEm()->getRepository('Entities\SzallitasimodHatar')->find($hatarid);
+                if ($hatar) {
+                    $hatar->setHatarertek($this->params->getNumRequestParam('hatarertek_' . $hatarid));
+                    $hatar->setOsszeg($this->params->getNumRequestParam('osszeg_' . $hatarid));
+                    if ($valutanem) {
+                        $hatar->setValutanem($valutanem);
+                    }
+                    $this->getEm()->persist($hatar);
+                }
+            }
+        }
         return $obj;
     }
 
@@ -82,7 +120,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         $view->setVar('formaction', \mkw\Store::getRouter()->generate('adminszallitasimodsave'));
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->find($id);
-        $view->setVar('egyed', $this->loadVars($record));
+        $view->setVar('egyed', $this->loadVars($record, true));
         return $view->getTemplateResult();
     }
 

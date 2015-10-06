@@ -198,6 +198,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function calcRugalmasFizmod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcRugalmasFizmod', array());
+
+        return parent::calcRugalmasFizmod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function calcOsztottFizetendo()
     {
 
