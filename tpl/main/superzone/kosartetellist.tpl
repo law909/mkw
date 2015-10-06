@@ -14,7 +14,7 @@
 	{$osszesen=0}
     {$dbosszesen=0}
 	{foreach $tetellista as $tetel}
-		{$osszesen=$osszesen+$tetel.bruttohuf}
+		{$osszesen=$osszesen+$tetel.brutto}
         {$dbosszesen=$dbosszesen+$tetel.mennyiseg}
 		<tr data-href="{$tetel.link}">
 			<td><div>

@@ -11,20 +11,20 @@
 {$osszesen=0}
 {$dbosszesen=0}
 {foreach $tetellista as $tetel}
-    {$osszesen=$osszesen+$tetel.bruttohuf}
+    {$osszesen=$osszesen+$tetel.brutto}
     {$dbosszesen=$dbosszesen+$tetel.mennyiseg}
     <tr class="clickable" data-href="{$tetel.link}">
         <td><div class="textaligncenter"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></div></td>
         <td><div>{$tetel.caption}</div>
             <div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}</div>
             {$tetel.cikkszam}</td>
-        <td><div class="textalignright">{number_format($tetel.bruttoegysarhuf, 2, ',', ' ')} {$valutanem}</div></td>
+        <td><div class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$valutanem}</div></td>
         <td>
             <div>
                 <div class="textalignright">{number_format($tetel.mennyiseg, 0, ',', ' ')}</div>
             </div>
         </td>
-        <td><div class="textalignright">{number_format($tetel.bruttohuf, 2, ',', ' ')} {$valutanem}</div></td>
+        <td><div class="textalignright">{number_format($tetel.brutto, 2, ',', ' ')} {$valutanem}</div></td>
     </tr>
 {/foreach}
 </tbody>
