@@ -11,7 +11,7 @@
                     {/foreach}
                 </select>
             </td>
-            <td><label for="HatarertekEdit{$hatar.id}">{t('Határérték')}:</label></td>
+            <td><label for="HatarertekEdit{$hatar.id}">{t('Alsó határ')}:</label></td>
             <td><input id="HatarertekEdit{$hatar.id}" type="text" name="hatarertek_{$hatar.id}" value="{$hatar.hatarertek}"></td>
             <td>
                 <a class="js-hatardelbutton" href="#" data-id="{$hatar.id}"{if ($hatar.oper=='add')} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>

@@ -27,4 +27,18 @@ class FizmodHatarRepository extends \mkwhelpers\Repository {
         return $this->getAll($filter, array());
     }
 
+    public function getByValutanemHatar($valutanem, $hatar) {
+        $filter = array();
+        $filter['fields'][] = 'valutanem';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = $valutanem;
+        $filter['fields'][] = 'hatarertek';
+        $filter['clauses'][] = '<=';
+        $filter['values'][] =  $hatar;
+        $t = $this->getAll($filter, array('hatarertek' => 'DESC'));
+        if ($t) {
+            return $t[0];
+        }
+        return false;
+    }
 }

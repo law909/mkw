@@ -480,6 +480,15 @@ class Bizonylatfej {
         }
     }
 
+    public function calcRugalmasFizmod() {
+        $regifizmod = $this->getFizmod();
+        if ($regifizmod->getRugalmas()) {
+            $fh = \mkw\Store::getEm()->getRepository('Entities\FizmodHatar')->getByValutanemHatar($this->getValutanem(), $this->getFizetendo());
+            if ($fh) {
+                $this->setFizmod($fh->getFizmod());
+            }
+        }
+    }
     public function calcOsztottFizetendo() {
         // superzone osztott fizetendo
         if (\mkw\Store::isOsztottFizmod()) {
@@ -517,6 +526,7 @@ class Bizonylatfej {
      */
     public function doStuffOnPrePersist() {
         $this->calcOsszesen();
+        $this->calcRugalmasFizmod();
         $this->calcOsztottFizetendo();
     }
 
