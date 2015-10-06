@@ -36,6 +36,10 @@
             <table id="irszamgrid"></table>
             <div id="irszamgridpager"></div>
         </div>
+        <div class="egyebadat-grid">
+            <table id="termekcsoportgrid"></table>
+            <div id="termekcsoportgridpager"></div>
+        </div>
     </div>
     <div class="egyebadat-wrapper">
         <div class="egyebadat-grid">
@@ -65,10 +69,6 @@
         <div class="egyebadat-grid">
             <table id="kapcsolatfelveteltemagrid"></table>
             <div id="kapcsolatfelveteltemagridpager"></div>
-        </div>
-        <div class="egyebadat-grid">
-            <table id="termekcsoportgrid"></table>
-            <div id="termekcsoportgridpager"></div>
         </div>
     </div>
     <div class="egyebadat-longwrapper">

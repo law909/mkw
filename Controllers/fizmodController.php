@@ -15,7 +15,7 @@ class fizmodController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t) {
+    protected function loadVars($t, $forKarb = false) {
         $x=array();
         if (!$t) {
             $t = new \Entities\Fizmod();
@@ -35,6 +35,16 @@ class fizmodController extends \mkwhelpers\MattableController {
         $x['osztotthaladek3'] = $t->getOsztotthaladek3();
         $x['osztottszazalek3'] = $t->getOsztottszazalek3();
         $x['rugalmas'] = $t->getRugalmas();
+
+        if ($forKarb) {
+            $fhc = new fizmodhatarController($this->params);
+            $h = $this->getRepo('Entities\FizmodHatar')->getByFizmod($t);
+            $hatararr = array();
+            foreach ($h as $hat) {
+                $hatararr[] = $fhc->loadVars($hat, $forKarb);
+            }
+            $x['hatarok'] = $hatararr;
+        }
         return $x;
     }
 
@@ -52,6 +62,33 @@ class fizmodController extends \mkwhelpers\MattableController {
         $obj->setOsztotthaladek3($this->params->getIntRequestParam('osztotthaladek3'));
         $obj->setOsztottszazalek3($this->params->getNumRequestParam('osztottszazalek3'));
         $obj->setRugalmas($this->params->getBoolRequestParam('rugalmas'));
+        $hatarids = $this->params->getArrayRequestParam('hatarid');
+        foreach ($hatarids as $hatarid) {
+            $oper = $this->params->getStringRequestParam('hataroper_' . $hatarid);
+            $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('hatarvalutanem_' . $hatarid));
+            if (!$valutanem) {
+                $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find(store::getParameter(\mkw\consts::Valutanem));
+            }
+            if ($oper == 'add') {
+                $hatar = new \Entities\FizmodHatar();
+                $hatar->setFizmod($obj);
+                $hatar->setHatarertek($this->params->getNumRequestParam('hatarertek_' . $hatarid));
+                if ($valutanem) {
+                    $hatar->setValutanem($valutanem);
+                }
+                $this->getEm()->persist($hatar);
+            }
+            elseif ($oper == 'edit') {
+                $hatar = $this->getEm()->getRepository('Entities\FizmodHatar')->find($hatarid);
+                if ($hatar) {
+                    $hatar->setHatarertek($this->params->getNumRequestParam('hatarertek_' . $hatarid));
+                    if ($valutanem) {
+                        $hatar->setValutanem($valutanem);
+                    }
+                    $this->getEm()->persist($hatar);
+                }
+            }
+        }
         return $obj;
     }
 
@@ -96,7 +133,7 @@ class fizmodController extends \mkwhelpers\MattableController {
         $view->setVar('formaction', \mkw\Store::getRouter()->generate('adminfizetesimodsave'));
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->find($id);
-        $view->setVar('egyed', $this->loadVars($record));
+        $view->setVar('egyed', $this->loadVars($record, true));
         return $view->getTemplateResult();
     }
 

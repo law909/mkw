@@ -180,6 +180,8 @@ $router->map('GET', '/admin/fizetesimod/getkarb', 'fizmodController#getkarb', 'a
 $router->map('GET', '/admin/fizetesimod/viewkarb', 'fizmodController#viewkarb', 'adminfizetesimodviewkarb');
 $router->map('POST', '/admin/fizetesimod/save', 'fizmodController#save', 'adminfizetesimodsave');
 $router->map('GET', '/admin/fizetesimod/htmllist', 'fizmodController#htmllist', 'adminfizetesimodhtmllist');
+$router->map('GET', '/admin/fizmodhatar/getemptyrow', 'fizmodhatarController#getemptyrow', 'adminfizmodhatargetemptyrow');
+$router->map('POST', '/admin/fizmodhatar/save', 'fizmodhatarController#save', 'adminfizmodhatarsave');
 
 $router->map('GET', '/admin/emailtemplate/viewlist', 'emailtemplateController#viewlist', 'adminemailtemplateviewlist');
 $router->map('GET', '/admin/emailtemplate/getlistbody', 'emailtemplateController#getlistbody', 'adminemailtemplategetlistbody');
