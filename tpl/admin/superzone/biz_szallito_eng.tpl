@@ -110,13 +110,13 @@
                     <tr class="tetelsor">
                         <td>{$teteldb + 1}</td>
                         <td></td>
-                        <td class="textalignright">{$tetel.mennyiseg}</td>
+                        <td class="textalignright">{bizformat($tetel.mennyiseg)}</td>
                         <td>{$tetel.me}</td>
-                        <td class="textalignright">{$tetel.nettoegysar}</td>
-                        <td class="textalignright">{$tetel.netto}</td>
+                        <td class="textalignright">{bizformat($tetel.nettoegysar)}</td>
+                        <td class="textalignright">{bizformat($tetel.netto)}</td>
                         <td class="textalignright">{$tetel.afanev}</td>
-                        <td class="textalignright">{$tetel.afa}</td>
-                        <td class="textalignright">{$tetel.brutto}</td>
+                        <td class="textalignright">{bizformat($tetel.afa)}</td>
+                        <td class="textalignright">{bizformat($tetel.brutto)}</td>
                     </tr>
                     <tr class="tetelsor">
                         <td class="dashedline"></td>
@@ -132,21 +132,21 @@
     {/for}
     <div class="fullwidth pull-left topmargin osszesen">
         <div class="halfwidth bold pull-left">Összesen / Total</div>
-        <div class="halfwidth bold pull-left textalignright">{$egyed.brutto} {$egyed.valutanemnev}</div>
+        <div class="halfwidth bold pull-left textalignright">{bizformat($egyed.brutto)} {$egyed.valutanemnev}</div>
     </div>
     <div class="halfwidth pull-left topmargin10">
-        <p>Összes mennyiség / Total quantity: {$summennyiseg}</p>
+        <p>Összes mennyiség / Total quantity: {bizformat($summennyiseg)}</p>
         {if ($egyed.esedekesseg1str || $egyed.esedekesseg2str || $egyed.esedekesseg3str)}
             <p>&nbsp;</p>
             <p>PAYMENT:</p>
             {if ($egyed.esedekesseg1str)}
-                <p>{$egyed.esedekesseg1str}&nbsp;&nbsp;&nbsp;{number_format($egyed.fizetendo1, 2,',','')} {$egyed.valutanemnev}</p>
+                <p>{$egyed.esedekesseg1str}&nbsp;&nbsp;&nbsp;{bizformat($egyed.fizetendo1)} {$egyed.valutanemnev}</p>
             {/if}
             {if ($egyed.esedekesseg2str)}
-                <p>{$egyed.esedekesseg2str}&nbsp;&nbsp;&nbsp;{number_format($egyed.fizetendo2, 2,',','')} {$egyed.valutanemnev}</p>
+                <p>{$egyed.esedekesseg2str}&nbsp;&nbsp;&nbsp;{bizformat($egyed.fizetendo2)} {$egyed.valutanemnev}</p>
             {/if}
             {if ($egyed.esedekesseg3str)}
-                <p>{$egyed.esedekesseg3str}&nbsp;&nbsp;&nbsp;{number_format($egyed.fizetendo3, 2,',','')} {$egyed.valutanemnev}</p>
+                <p>{$egyed.esedekesseg3str}&nbsp;&nbsp;&nbsp;{bizformat($egyed.fizetendo3)} {$egyed.valutanemnev}</p>
             {/if}
         {/if}
     </div>
@@ -167,9 +167,9 @@
             {foreach $afaosszesito as $a}
                 <tr>
                     <td>{$a.caption}</td>
-                    <td class="textalignright">{$a.netto}</td>
-                    <td class="textalignright">{$a.afa}</td>
-                    <td class="textalignright">{$a.brutto}</td>
+                    <td class="textalignright">{bizformat($a.netto)}</td>
+                    <td class="textalignright">{bizformat($a.afa)}</td>
+                    <td class="textalignright">{bizformat($a.brutto)}</td>
                 </tr>
             {/foreach}
             <tr>
@@ -177,9 +177,9 @@
             </tr>
             <tr class="bold">
                 <td>Összesen / Total</td>
-                <td class="textalignright">{$egyed.netto}</td>
-                <td class="textalignright">{$egyed.afa}</td>
-                <td class="textalignright">{$egyed.brutto}</td>
+                <td class="textalignright">{bizformat($egyed.netto)}</td>
+                <td class="textalignright">{bizformat($egyed.afa)}</td>
+                <td class="textalignright">{bizformat($egyed.brutto)}</td>
             </tr>
         </tbody>
     </table>
@@ -188,7 +188,7 @@
             azaz {$egyed.fizetendokiirva} {$egyed.valutanemnev}
         </div>
         <div class="textalignright osszesen bold">
-            Fizetendő végösszeg / Total value to pay: {$egyed.fizetendo} {$egyed.valutanemnev}
+            Fizetendő végösszeg / Total value to pay: {bizformat($egyed.fizetendo)} {$egyed.valutanemnev}
         </div>
     </div>
     <div class="topmargin">

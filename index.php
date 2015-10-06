@@ -18,6 +18,10 @@ function t($msgid) {
 	return $__translate->_($msgid);
 }
 
+function bizformat($mit) {
+    return number_format($mit, 2, ',', ' ');
+}
+
 // TODO find an appropriate place
 function callTheController($target, $params) {
 	$methodname = '';

@@ -79,7 +79,7 @@
                     <tr class="tetelsor">
                         <td>{$teteldb + 1}</td>
                         <td></td>
-                        <td class="textalignright">{$tetel.mennyiseg}</td>
+                        <td class="textalignright">{bizformat($tetel.mennyiseg)}</td>
                         <td>{$tetel.me}</td>
                     </tr>
                     <tr class="tetelsor">
@@ -95,7 +95,7 @@
         {/if}
     {/for}
     <div class="halfwidth pull-left topmargin10">
-        <p>Összes mennyiség: {$summennyiseg}</p>
+        <p>Összes mennyiség: {bizformat($summennyiseg)}</p>
     </div>
     <div class="clear topmargin">
         <p class="keszult">Készült az MKW Webshop számlázó moduljával.</p>
