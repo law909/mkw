@@ -138,13 +138,16 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
      */
     public function createSzallitasiKtg($bizfej, $szallmod = null, $bruttoegysar = null) {
         $szamol = true;
+
         if ($szallmod) {
             $szm = $this->getRepo('Entities\Szallitasimod')->find($szallmod);
             $szamol = $szm->getVanszallitasiktg();
         }
         $termekid = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
         $termek = $this->getRepo('Entities\Termek')->find($termekid);
+
         if ($szamol) {
+
             $ertek = 0;
             $cnt = 0;
             foreach($bizfej->getBizonylattetelek() as $btetel) {
@@ -154,92 +157,57 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 }
             }
             if ($cnt != 0) {
-                switch (\mkw\Store::getTheme()) {
-                    case 'mkwcansas':
-                        if (!$bruttoegysar) {
-                            $ktg = \mkw\Store::calcSzallitasiKoltseg($ertek);
-                        }
-                        else {
-                            $ktg = $bruttoegysar;
-                        }
-                        $k = $this->getTetelsor($bizfej->getId(), $termekid);
-                        if ($k) {
-                            $k->setMennyiseg(1);
-                            $k->setBruttoegysar($ktg);
-                            $k->setBruttoegysarhuf($ktg);
-                            $k->calc();
-                            $this->_em->persist($k);
-                        }
-                        else {
-                            $tetel = new \Entities\Bizonylattetel();
-                            $bizfej->addBizonylattetel($tetel);
-                            $tetel->setPersistentData();
-                            $tetel->setArvaltoztat(0);
-                            if ($termek) {
-                                $tetel->setTermek($termek);
-                            }
-                            $tetel->setMozgat();
-                            $tetel->setFoglal();
-                            $tetel->setMennyiseg(1);
-                            $tetel->setBruttoegysar($ktg);
-                            $tetel->setBruttoegysarhuf($ktg);
-                            $tetel->calc();
-                            $this->_em->persist($tetel);
-                        }
-                        $this->_em->flush();
-                        break;
-                    case 'superzone':
-                        if ($bizfej->getPartner() && ($bizfej->getPartner()->getSzamlatipus() > 0)) {
-                            $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\Store::getParameter(\mkw\consts::NullasAfa));
-                        }
-                        if (!$bruttoegysar) {
-                            if ($nullasafa) {
-                                $ktg = $termek->getNettoAr(null, $bizfej->getPartner(), $bizfej->getValutanem());
-                            }
-                            else {
-                                $ktg = $termek->getBruttoAr(null, $bizfej->getPartner(), $bizfej->getValutanem());
-                            }
-                        }
-                        else {
-                            $ktg = $bruttoegysar;
-                        }
-                        $k = $this->getTetelsor($bizfej->getId(), $termekid);
-                        if ($k) {
-                            $k->setMennyiseg(1);
-                            $k->setBruttoegysar($ktg);
-                            $k->setBruttoegysarhuf($ktg);
-                            if ($nullasafa) {
-                                $k->setAfa($nullasafa);
-                            }
-                            $k->calc();
-                            $this->_em->persist($k);
-                        }
-                        else {
-                            $tetel = new \Entities\Bizonylattetel();
-                            $bizfej->addBizonylattetel($tetel);
-                            $tetel->setPersistentData();
-                            $tetel->setArvaltoztat(0);
-                            if ($termek) {
-                                $tetel->setTermek($termek);
-                            }
-                            $tetel->setMozgat();
-                            $tetel->setFoglal();
-                            $tetel->setMennyiseg(1);
-                            if ($nullasafa) {
-                                $tetel->setAfa($nullasafa);
-                                $tetel->setNettoegysar($ktg);
-                                $tetel->setNettoegysarhuf($ktg);
-                            }
-                            else {
-                                $tetel->setBruttoegysar($ktg);
-                                $tetel->setBruttoegysarhuf($ktg);
-                            }
-                            $tetel->calc();
-                            $this->_em->persist($tetel);
-                        }
-                        $this->_em->flush();
-                        break;
+                if ($bizfej->getPartner() && ($bizfej->getPartner()->getSzamlatipus() > 0)) {
+                    $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\Store::getParameter(\mkw\consts::NullasAfa));
                 }
+
+                if (!$bruttoegysar) {
+                    $ktg = $this->getRepo('Entities\SzallitasimodHatar')->getBySzallitasimodValutanemHatar($szallmod, $bizfej->getValutanem(), $ertek);
+                    $ktg = $ktg ? $ktg->getOsszeg() : 0;
+                }
+                else {
+                    $ktg = $bruttoegysar;
+                }
+
+                $k = $this->getTetelsor($bizfej->getId(), $termekid);
+                if ($k) {
+                    $k->setMennyiseg(1);
+                    if ($nullasafa) {
+                        $k->setAfa($nullasafa);
+                    }
+                    else {
+                        $k->setAfa($termek->getAfa());
+                    }
+                    $k->setBruttoegysar($ktg);
+                    $k->setBruttoegysarhuf($ktg);
+                    $k->calc();
+                    $this->_em->persist($k);
+                }
+                else {
+                    $tetel = new \Entities\Bizonylattetel();
+                    $bizfej->addBizonylattetel($tetel);
+                    $tetel->setPersistentData();
+                    $tetel->setArvaltoztat(0);
+                    if ($termek) {
+                        $tetel->setTermek($termek);
+                    }
+                    $tetel->setMozgat();
+                    $tetel->setFoglal();
+                    $tetel->setMennyiseg(1);
+                    if ($nullasafa) {
+                        $tetel->setAfa($nullasafa);
+                        $tetel->setNettoegysar($ktg);
+                        $tetel->setNettoegysarhuf($ktg);
+                    }
+                    else {
+                        $tetel->setAfa($termek->getAfa());
+                        $tetel->setBruttoegysar($ktg);
+                        $tetel->setBruttoegysarhuf($ktg);
+                    }
+                    $tetel->calc();
+                    $this->_em->persist($tetel);
+                }
+                $this->_em->flush();
             }
             else {
                 $this->remove($bizfej->getId(), $termek);

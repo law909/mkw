@@ -664,6 +664,9 @@ class Store {
         return $ret;
     }
 
+    /**
+     * @return \Entities\Partner
+     */
     public static function getLoggedInUser() {
         if (!self::$loggedinuser) {
             $pr = self::getEm()->getRepository('Entities\Partner');
@@ -672,6 +675,9 @@ class Store {
         return self::$loggedinuser;
     }
 
+    /**
+     * @return \Entities\Uzletkoto
+     */
     public static function getLoggedInUK() {
         if (!self::$loggedinuk) {
             $ur = self::getEm()->getRepository('Entities\Uzletkoto');

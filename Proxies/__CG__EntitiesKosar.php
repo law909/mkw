@@ -64,10 +64,10 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Kosar' . "\0" . 'id', '' . "\0" . 'Entities\\Kosar' . "\0" . 'created', '' . "\0" . 'Entities\\Kosar' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Kosar' . "\0" . 'partner', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termek', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Kosar' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Kosar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Kosar' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'kedvezmeny', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sorrend');
+            return array('__isInitialized__', '' . "\0" . 'Entities\\Kosar' . "\0" . 'id', '' . "\0" . 'Entities\\Kosar' . "\0" . 'created', '' . "\0" . 'Entities\\Kosar' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Kosar' . "\0" . 'partner', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termek', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Kosar' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Kosar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Kosar' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'kedvezmeny', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Kosar' . "\0" . 'afa');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Kosar' . "\0" . 'id', '' . "\0" . 'Entities\\Kosar' . "\0" . 'created', '' . "\0" . 'Entities\\Kosar' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Kosar' . "\0" . 'partner', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termek', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Kosar' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Kosar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Kosar' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'kedvezmeny', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sorrend');
+        return array('__isInitialized__', '' . "\0" . 'Entities\\Kosar' . "\0" . 'id', '' . "\0" . 'Entities\\Kosar' . "\0" . 'created', '' . "\0" . 'Entities\\Kosar' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Kosar' . "\0" . 'partner', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termek', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Kosar' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Kosar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Kosar' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'kedvezmeny', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Kosar' . "\0" . 'afa');
     }
 
     /**
@@ -593,6 +593,72 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKedvezmeny', array($kedvezmeny));
 
         return parent::setKedvezmeny($kedvezmeny);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAfa()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', array());
+
+        return parent::getAfa();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAfanev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfanev', array());
+
+        return parent::getAfanev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAfakulcs()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfakulcs', array());
+
+        return parent::getAfakulcs();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAfaId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaId', array());
+
+        return parent::getAfaId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAfa($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', array($val));
+
+        return parent::setAfa($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeAfa()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAfa', array());
+
+        return parent::removeAfa();
     }
 
 }

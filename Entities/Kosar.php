@@ -77,6 +77,13 @@ class Kosar {
     /** @ORM\Column(type="integer",nullable=true) */
 	private $sorrend = 0;
 
+	/**
+	 * @ORM\ManyToOne(targetEntity="Afa")
+	 * @ORM\JoinColumn(name="afa_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+	 * @var \Entities\Afa
+	 */
+	private $afa;
+
 	public function toLista($partner = null) {
 		$ret = array();
 		$termek = $this->getTermek();
@@ -173,12 +180,14 @@ class Kosar {
 	public function setTermek(Termek $val) {
 		if ($this->termek !== $val) {
 			$this->termek = $val;
+            $this->setAfa($this->termek->getAfa());
 		}
 	}
 
 	public function removeTermek() {
 		if ($this->termek !== null) {
 			$this->termek = null;
+            $this->removeAfa();
 		}
 	}
 
@@ -244,7 +253,10 @@ class Kosar {
 
 	public function setNettoegysar($netto) {
 		$this->nettoegysar = $netto;
-		$this->bruttoegysar = $this->termek->getAfa()->calcBrutto($netto);
+        $afa = $this->getAfa();
+        if ($afa) {
+            $this->bruttoegysar = $afa->calcBrutto($netto);
+        }
 	}
 
 	public function getBruttoegysar() {
@@ -253,7 +265,10 @@ class Kosar {
 
 	public function setBruttoegysar($brutto) {
 		$this->bruttoegysar = $brutto;
-		$this->nettoegysar = $this->termek->getAfa()->calcNetto($brutto);
+        $afa = $this->getAfa();
+        if ($afa) {
+            $this->nettoegysar = $afa->calcNetto($brutto);
+        }
 	}
 
 	public function getValutanem() {
@@ -320,5 +335,53 @@ class Kosar {
     public function setKedvezmeny($kedvezmeny) {
         $this->kedvezmeny = $kedvezmeny;
     }
+
+	public function getAfa() {
+		return $this->afa;
+	}
+
+	public function getAfanev() {
+		if ($this->afa) {
+			return $this->afa->getNev();
+		}
+		return '';
+	}
+
+	public function getAfakulcs() {
+		if ($this->afa) {
+			return $this->afa->getErtek();
+		}
+		return 0;
+	}
+
+	public function getAfaId() {
+		if ($this->afa) {
+			return $this->afa->getId();
+		}
+		return 0;
+	}
+
+	/**
+	 * @param \Entities\Afa|int $val
+	 */
+	public function setAfa($val) {
+		if (!is_object($val)) {
+			$val = \mkw\Store::getEm()->getRepository('Entities\Afa')->find($val);
+		}
+		if (!$val) {
+			$this->removeAfa();
+		}
+		else {
+			if ($this->afa !== $val) {
+				$this->afa = $val;
+			}
+		}
+	}
+
+	public function removeAfa() {
+		if ($this->afa !== null) {
+			$this->afa = null;
+		}
+	}
 
 }
