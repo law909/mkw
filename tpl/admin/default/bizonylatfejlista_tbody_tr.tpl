@@ -11,8 +11,12 @@
         </td>
         {/if}
     <td class="cell">
+        {if ($_egyed.editprinted || (!$_egyed.editprinted && !$_egyed.nyomtatva))}
         <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_egyed.id}</a>
-            <a class="js-printbizonylat" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('Nyomtat')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
+        {else}
+            {$_egyed.id}
+        {/if}
+            <a class="js-printbizonylat" href="#" data-egyedid="{$_egyed.id}" data-oper="print" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}" title="{t('Nyomtat')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
             {if ($_egyed.nemrossz)}
                 {if ($_egyed.bizonylattipusid=='megrendeles')}
                 <a class="js-printelolegbekero" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('Előleg bekérő')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>

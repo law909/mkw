@@ -571,7 +571,9 @@ class Bizonylatfej {
     public function toLista() {
         $ret = array();
         $ret['id'] = $this->getId();
+        $ret['editprinted'] = $this->getBizonylattipus() ? $this->getBizonylattipus()->getEditprinted() : false;
         $ret['bizonylatnev'] = $this->getBizonylatnev();
+        $ret['nyomtatva'] = $this->getNyomtatva();
         $ret['raktarnev'] = $this->getRaktarnev();
         $ret['kelt'] = $this->getKeltStr();
         $ret['keltstr'] = $this->getKeltStr();

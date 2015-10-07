@@ -253,6 +253,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $this->getEm()->detach($t);
         }
         $x['id'] = $t->getId();
+        $x['editprinted'] = $t->getBizonylattipus() ? $t->getBizonylattipus()->getEditprinted() : false;
+        $x['nyomtatva'] = $t->getNyomtatva();
         $x['bizonylattipusid'] = $t->getBizonylattipusId();
         $x['storno'] = $t->getStorno();
         $x['stornozott'] = $t->getStornozott();
@@ -902,6 +904,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                     $bf->sendStatuszEmail($emailtpl);
                 }
             }
+        }
+    }
+
+    public function setNyomtatva() {
+        $bf = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+        if ($bf) {
+            $bf->setNyomtatva($this->params->getBoolRequestParam('printed'));
+            $this->getEm()->persist($bf);
+            $this->getEm()->flush();
         }
     }
 

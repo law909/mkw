@@ -123,6 +123,6 @@
             </tbody>
         </table>
     </div>
-    <div class="textaligncenter">A számla 2 eredeti példányban készült, melyből ez az első.</div>
+    <div class="textaligncenter">{if ($egyed.nyomtatva)}Másolat{else}Eredeti példány{/if}.</div>
     <div class="keszult textaligncenter">Készült az MKW Webshop számlázó moduljával.</div>
 {/block}

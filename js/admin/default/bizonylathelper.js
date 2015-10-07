@@ -1008,7 +1008,38 @@ var bizonylathelper = function($) {
                         }
                     }
                 });
-            });
+            })
+            .on('click', '.js-printbizonylat', function(e) {
+                    var $this = $(this);
+                    e.preventDefault();
+                    window.open($this.attr('href'));
+                    if ($this.data('kellkerdezni') == 1) {
+                        dialogcenter.html('Sikerült a nyomtatás?').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'Igen': function () {
+                                    $.ajax({
+                                        url: '/admin/bizonylatfej/setnyomtatva',
+                                        type: 'POST',
+                                        data: {
+                                            id: $this.data('egyedid'),
+                                            printed: true
+                                        },
+                                        success: function() {
+                                            $('.mattable-tablerefresh').click();
+                                        }
+                                    });
+                                    $(this).dialog('close');
+                                },
+                                'Nem': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                });
             $('.js-maincheckbox').change(function() {
                 $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
             });
