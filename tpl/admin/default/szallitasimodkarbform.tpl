@@ -28,7 +28,7 @@
                     </tr>
                     <tr>
                         <td><label for="WebesEdit">{t('Webes')}:</label></td>
-                        <td><input id="WebesEdit" name="webes" type="checkbox"{if ($egyed.nev)} checked="checked"{/if}></td>
+                        <td><input id="WebesEdit" name="webes" type="checkbox"{if ($egyed.webes)} checked="checked"{/if}></td>
                     </tr>
                     <tr>
                         <td><label for="VanSzallktgEdit">{t('Van száll.költség')}:</label></td>

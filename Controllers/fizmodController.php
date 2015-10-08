@@ -16,8 +16,10 @@ class fizmodController extends \mkwhelpers\MattableController {
     }
 
     protected function loadVars($t, $forKarb = false) {
-        $x=array();
+        $letezik = true;
+        $x = array();
         if (!$t) {
+            $letezik = false;
             $t = new \Entities\Fizmod();
             $this->getEm()->detach($t);
         }
@@ -37,13 +39,15 @@ class fizmodController extends \mkwhelpers\MattableController {
         $x['rugalmas'] = $t->getRugalmas();
 
         if ($forKarb) {
-            $fhc = new fizmodhatarController($this->params);
-            $h = $this->getRepo('Entities\FizmodHatar')->getByFizmod($t);
-            $hatararr = array();
-            foreach ($h as $hat) {
-                $hatararr[] = $fhc->loadVars($hat, $forKarb);
+            if ($letezik) {
+                $fhc = new fizmodhatarController($this->params);
+                $h = $this->getRepo('Entities\FizmodHatar')->getByFizmod($t);
+                $hatararr = array();
+                foreach ($h as $hat) {
+                    $hatararr[] = $fhc->loadVars($hat, $forKarb);
+                }
+                $x['hatarok'] = $hatararr;
             }
-            $x['hatarok'] = $hatararr;
         }
         return $x;
     }

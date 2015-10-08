@@ -230,13 +230,13 @@ class checkoutController extends \mkwhelpers\MattableController {
                     switch ($regkell) {
                         case 1: // vendég
                             $pc = new \Controllers\partnerController($this->params);
-                            $partner = $pc->saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo1, true);
+                            $partner = $pc->saveRegistrationData(true);
                             $szamlasave = true;
                             $szallsave = true;
                             break;
                         case 2: // regisztráció
                             $pc = new \Controllers\partnerController($this->params);
-                            $partner = $pc->saveRegistrationData($vezeteknev, $keresztnev, $email, $jelszo1);
+                            $partner = $pc->saveRegistrationData(false);
                             $pc->login($email, $jelszo1);
                             break;
                         default: // be van jelentkezve

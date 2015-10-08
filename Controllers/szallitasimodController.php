@@ -16,8 +16,10 @@ class szallitasimodController extends \mkwhelpers\MattableController {
     }
 
     protected function loadVars($t, $forKarb = false) {
-        $x=array();
+        $letezik = true;
+        $x = array();
         if (!$t) {
+            $letezik = false;
             $t = new \Entities\Szallitasimod();
             $this->getEm()->detach($t);
         }
@@ -28,18 +30,25 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         $x['fizmodok'] = $t->getFizmodok();
         $x['sorrend'] = $t->getSorrend();
         $x['vanszallitasiktg'] = $t->getVanszallitasiktg();
+
         if ($forKarb) {
-            $fhc = new szallitasimodhatarController($this->params);
-            $h = $this->getRepo('Entities\SzallitasimodHatar')->getBySzallitasimod($t);
-            $hatararr = array();
-            foreach ($h as $hat) {
-                $hatararr[] = $fhc->loadVars($hat, $forKarb);
+            if ($letezik) {
+                $fhc = new szallitasimodhatarController($this->params);
+                $h = $this->getRepo('Entities\SzallitasimodHatar')->getBySzallitasimod($t);
+                $hatararr = array();
+                foreach ($h as $hat) {
+                    $hatararr[] = $fhc->loadVars($hat, $forKarb);
+                }
+                $x['hatarok'] = $hatararr;
             }
-            $x['hatarok'] = $hatararr;
         }
         return $x;
     }
 
+    /**
+     * @param \Entities\Szallitasimod $obj
+     * @return mixed
+     */
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setWebes($this->params->getBoolRequestParam('webes'));
@@ -54,7 +63,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
             if (!$valutanem) {
                 $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find(store::getParameter(\mkw\consts::Valutanem));
             }
-            if ($oper == 'add') {
+            if ($oper === 'add') {
                 $hatar = new \Entities\SzallitasimodHatar();
                 $hatar->setSzallitasimod($obj);
                 $hatar->setHatarertek($this->params->getNumRequestParam('hatarertek_' . $hatarid));
@@ -64,7 +73,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
                 }
                 $this->getEm()->persist($hatar);
             }
-            elseif ($oper == 'edit') {
+            elseif ($oper === 'edit') {
                 $hatar = $this->getEm()->getRepository('Entities\SzallitasimodHatar')->find($hatarid);
                 if ($hatar) {
                     $hatar->setHatarertek($this->params->getNumRequestParam('hatarertek_' . $hatarid));

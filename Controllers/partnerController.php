@@ -246,6 +246,21 @@ class partnerController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
+    public function saveRegistrationData($vendeg = false) {
+        $ps = $this->getRepo()->findVendegByEmail($this->params->getStringRequestParam('email'));
+        if (count($ps) > 0) {
+            $t = $ps[0];
+        }
+        else {
+            $t = new \Entities\Partner();
+        }
+        $this->setFields($t, null, 'registration');
+        $t->setVendeg($vendeg);
+        $this->getEm()->persist($t);
+        $this->getEm()->flush();
+        return $t;
+    }
+
     public function getlistbody() {
         $view = $this->createView('partnerlista_tbody.tpl');
 

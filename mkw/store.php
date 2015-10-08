@@ -785,4 +785,14 @@ class Store {
         }
         return $s * $mire * $sg;
     }
+
+    public static function getPartnerValutanem($partner) {
+        if ($partner) {
+            $valutanem = $partner->getValutanem();
+        }
+        if (!$valutanem) {
+            $valutanem = self::getEm()->getRepository('Entities\Valutanem')->find(self::getParameter(\mkw\consts::Valutanem));
+        }
+        return $valutanem;
+    }
 }
