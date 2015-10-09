@@ -26,10 +26,12 @@ class mkwzendmailer {
     private $replyto;
 
     public function setTo($to) {
+        \mkw\Store::writelog('setTo 1= ' . print_r($to, true), 'mail.log');
         if ($to) {
             if (is_string($to)) {
                 $to = explode($to, ',');
             }
+            \mkw\Store::writelog('setTo 2= ' . print_r($to, true), 'mail.log');
             if (is_array($to)) {
                 $this->to = array_merge($this->to, $to);
             }
@@ -82,7 +84,7 @@ class mkwzendmailer {
         $fromdata = explode(';', $from);
         $this->mailer->setFrom($fromdata[0], $fromdata[1]);
 
-        \mkw\Store::writelog('$this->to = ' . $this->to, 'mail.log');
+        \mkw\Store::writelog('$this->to = ' . print_r($this->to, true), 'mail.log');
         if (!$this->to) {
             $bcc = $this->getBccArray();
             foreach($bcc as $cim) {
