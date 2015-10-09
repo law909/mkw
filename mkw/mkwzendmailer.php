@@ -82,19 +82,23 @@ class mkwzendmailer {
         $fromdata = explode(';', $from);
         $this->mailer->setFrom($fromdata[0], $fromdata[1]);
 
+        \mkw\Store::writelog('$this->to = ' . $this->to, 'mail.log');
         if (!$this->to) {
             $bcc = $this->getBccArray();
             foreach($bcc as $cim) {
+                \mkw\Store::writelog('bcc cim = ' . $cim, 'mail.log');
                 $this->mailer->addTo($cim);
             }
         }
         else {
             foreach($this->to as $t) {
+                \mkw\Store::writelog('$t = ' . $t, 'mail.log');
                 $this->mailer->addTo($t);
             }
         }
         $bcc = $this->getBccArray();
         foreach($bcc as $_bcc) {
+            \mkw\Store::writelog('bcc = ' . $_bcc, 'mail.log');
             $this->mailer->addBcc($_bcc);
         }
 
