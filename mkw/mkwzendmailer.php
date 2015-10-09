@@ -29,7 +29,7 @@ class mkwzendmailer {
         \mkw\Store::writelog('setTo 1= ' . print_r($to, true), 'mail.log');
         if ($to) {
             if (is_string($to)) {
-                $to = explode($to, ',');
+                $to = explode(',', $to);
             }
             \mkw\Store::writelog('setTo 2= ' . print_r($to, true), 'mail.log');
             if (is_array($to)) {
