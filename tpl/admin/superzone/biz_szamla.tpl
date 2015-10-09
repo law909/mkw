@@ -152,7 +152,7 @@
             azaz {$egyed.fizetendokiirva} {$egyed.valutanemnev}
         </div>
         <div class="textalignright osszesen bold">
-            Fizetendő végösszeg: {$egyed.fizetendo} {$egyed.valutanemnev}
+            Fizetendő végösszeg: {bizformat($egyed.fizetendo)} {$egyed.valutanemnev}
         </div>
     </div>
     <div class="topmargin">
