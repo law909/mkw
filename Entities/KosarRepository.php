@@ -445,7 +445,7 @@ class KosarRepository extends \mkwhelpers\Repository {
                 if ($cnt != 0) {
                     $partner = \mkw\Store::getLoggedInUser();
                     $ktg = $this->getRepo('Entities\SzallitasimodHatar')->getBySzallitasimodValutanemHatar($szallmod,
-                        \mkw\Store::getPartnerValutanem($partner->getValutanem()), $ertek);
+                        \mkw\Store::getPartnerValutanem($partner), $ertek);
                     $this->add($termekid, null, $ktg ? $ktg->getOsszeg() : 0);
                 }
                 else {
