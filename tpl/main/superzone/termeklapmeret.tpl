@@ -15,6 +15,15 @@
         <div class="col-md-8">
             <form class="valtozatform">
                 <table class="valtozattable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="textalignright">Org. unit price</th>
+                            <th class="textalignright">Discount</th>
+                            <th class="textalignright">Unit price</th>
+                            <th class="textalignright">Stock</th>
+                        </tr>
+                    </thead>
                     <tbody>
                     {foreach $termek.valtozatok as $_valt}
                     <tr class="valtozatkozep">
@@ -29,6 +38,9 @@
                         </td>
                         <td class="textalignright">
                             <span class="js-ar{$_valt.id}">{number_format($termek.ar, 2, ',', ' ')}</span><span> {$termek.valutanemnev}</span>
+                        </td>
+                        <td class="textalignright">
+                            {if ($_valt.keszlet <= 0)}0{else}{$_valt.keszlet}{/if} pcs
                         </td>
                         <td class="valtozatkeszlet textaligncenter">
                             <img src="{if ($_valt.keszlet <= 0)}/themes/main/superzone/nincs.jpg{else}/themes/main/superzone/van.jpg{/if}">
