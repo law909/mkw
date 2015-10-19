@@ -418,6 +418,17 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $reportfile;
 
+    /** @ORM\OneToMany(targetEntity="Folyoszamla", mappedBy="bizonylatfej",cascade={"persist"}) */
+    private $folyoszamlak;
+
+    /**
+     * @ORM\PostPersist
+     * @ORM\PostUpdate
+     */
+    public function generateFolyoszamla() {
+        \mkw\Store::getEm()->getRepository('Entities\Bizonylatfej')->createFolyoszamla($this);
+    }
+
     /**
      * @ORM\PrePersist
      */
@@ -533,6 +544,7 @@ class Bizonylatfej {
     public function __construct() {
         $this->szulobizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->folyoszamlak = new \Doctrine\Common\Collections\ArrayCollection();
         $this->setPersistentData();
     }
 
@@ -767,6 +779,29 @@ class Bizonylatfej {
 
     public function clearBizonylattetelek() {
         $this->bizonylattetelek->clear();
+    }
+
+    public function getFolyoszamlak() {
+        return $this->folyoszamlak;
+    }
+
+    public function addFolyoszamla(Folyoszamla $val) {
+        if (!$this->folyoszamlak->contains($val)) {
+            $this->folyoszamlak->add($val);
+            $val->setBizonylatfej($this);
+        }
+    }
+
+    public function removeFolyoszamla(Folyoszamla $val) {
+        if ($this->folyoszamlak->removeElement($val)) {
+            $val->removeBizonylatfej();
+            return true;
+        }
+        return false;
+    }
+
+    public function clearFolyoszamlak() {
+        $this->folyoszamlak->clear();
     }
 
     public function getIrany() {

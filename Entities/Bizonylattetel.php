@@ -323,20 +323,6 @@ class Bizonylattetel {
         return $this->id;
     }
 
-    /**
-     * @return Bizonylatfej
-     */
-    public function getBizonylatfej() {
-        return $this->bizonylatfej;
-    }
-
-    public function getBizonylatfejId() {
-        if ($this->bizonylatfej) {
-            return $this->bizonylatfej->getId();
-        }
-        return '';
-    }
-
     public function getTeljesites() {
         if ($this->bizonylatfej) {
             return $this->bizonylatfej->getTeljesites();
@@ -362,6 +348,20 @@ class Bizonylattetel {
             }
         }
         return 0;
+    }
+
+    /**
+     * @return Bizonylatfej
+     */
+    public function getBizonylatfej() {
+        return $this->bizonylatfej;
+    }
+
+    public function getBizonylatfejId() {
+        if ($this->bizonylatfej) {
+            return $this->bizonylatfej->getId();
+        }
+        return '';
     }
 
     /**

@@ -224,28 +224,6 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function getBizonylatfej()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylatfej', array());
-
-        return parent::getBizonylatfej();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBizonylatfejId()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylatfejId', array());
-
-        return parent::getBizonylatfejId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getTeljesites()
     {
 
@@ -274,6 +252,28 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRaktarId', array());
 
         return parent::getRaktarId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBizonylatfej()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylatfej', array());
+
+        return parent::getBizonylatfej();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBizonylatfejId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylatfejId', array());
+
+        return parent::getBizonylatfejId();
     }
 
     /**

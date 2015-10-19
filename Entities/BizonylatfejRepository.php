@@ -219,6 +219,40 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
     }
 
     /**
+     * @param \Entities\Bizonylatfej $bizonylat
+     */
+    public function createFolyoszamla($bizonylat) {
+        if ($bizonylat->getPenztmozgat()) {
+            foreach($bizonylat->getFolyoszamlak() as $fsz) {
+                $this->_em->remove($fsz);
+            }
+            $bizonylat->clearFolyoszamlak();
+
+            $fszla = new \Entities\Folyoszamla();
+            $fszla->setDatum($bizonylat->getKelt());
+            $fszla->setFizmod($bizonylat->getFizmod());
+            $fszla->setPartner($bizonylat->getPartner());
+            $fszla->setBizonylattipus($bizonylat->getBizonylattipus());
+            $fszla->setRontott($bizonylat->getRontott());
+            $fszla->setStorno($bizonylat->getStorno());
+            $fszla->setStornozott($bizonylat->getStornozott());
+            $fszla->setHivatkozottbizonylat($bizonylat->getId());
+            $fszla->setUzletkoto($bizonylat->getUzletkoto());
+            $fszla->setValutanem($bizonylat->getValutanem());
+            $fszla->setIrany($bizonylat->getIrany() * -1);
+            $fszla->setNetto($bizonylat->getNetto());
+            $fszla->setAfa($bizonylat->getAfa());
+            $fszla->setBrutto($bizonylat->getBrutto());
+            $fszla->setNettohuf($bizonylat->getNettohuf());
+            $fszla->setAfahuf($bizonylat->getAfahuf());
+            $fszla->setBruttohuf($bizonylat->getBruttohuf());
+            $fszla->setBizonylatfej($bizonylat);
+
+            $this->_em->persist($fszla);
+            $this->_em->flush();
+        }
+    }
+    /**
      * @param \Entities\Bizonylatfej $o
      * @return array
      */
