@@ -7,7 +7,7 @@ use mkw\store;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekKepRepository")
- * @ORM\Table(name="termekkep")
+ * @ORM\Table(name="termekkep",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class TermekKep {
 	/**

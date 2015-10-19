@@ -7,7 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekErtesitoRepository")
- * @ORM\Table(name="termekertesito",indexes={
+ * @ORM\Table(name="termekertesito",
+ * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
+ * indexes={
  * 		@ORM\index(name="termekertesitoemail_idx",columns={"email","termek_id"}),
  * 		@ORM\index(name="termekertesitotermek_idx",columns={"termek_id","email"}),
  * 		@ORM\index(name="termekertesitopartner_idx",columns={"partner_id","termek_id"})

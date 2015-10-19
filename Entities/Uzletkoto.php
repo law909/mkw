@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** @ORM\Entity(repositoryClass="Entities\UzletkotoRepository")
- *  @ORM\Table(name="uzletkoto")
+ *  @ORM\Table(name="uzletkoto",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  **/
 class Uzletkoto {
 	/**

@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\Rewrite301Repository")
- * @ORM\Table(name="rewrite301")
+ * @ORM\Table(name="rewrite301",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class Rewrite301 {
 	/**

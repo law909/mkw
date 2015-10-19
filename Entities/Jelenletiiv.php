@@ -6,7 +6,7 @@ use mkw\store;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\JelenletiivRepository")
- * @ORM\Table(name="jelenletiiv")
+ * @ORM\Table(name="jelenletiiv",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class Jelenletiiv {
 	/**

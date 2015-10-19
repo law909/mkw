@@ -4,7 +4,7 @@ namespace Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity @ORM\Table(name="kampany")
+ * @ORM\Entity @ORM\Table(name="kampany",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class Kampany {
 	/**

@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\BizonylatseqRepository")
- * @ORM\Table(name="bizonylatseq")
+ * @ORM\Table(name="bizonylatseq",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class Bizonylatseq {
 	/**

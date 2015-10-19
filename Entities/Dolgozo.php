@@ -7,7 +7,7 @@ use mkw\store,
     Doctrine\Common\Collections\ArrayCollection;
 
 /** @ORM\Entity(repositoryClass="Entities\DolgozoRepository")
- *  @ORM\Table(name="dolgozo")
+ *  @ORM\Table(name="dolgozo",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  * */
 class Dolgozo {
 

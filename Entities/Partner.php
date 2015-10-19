@@ -6,7 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
 
 /** @ORM\Entity(repositoryClass="Entities\PartnerRepository")
- *  @ORM\Table(name="partner",indexes={
+ *  @ORM\Table(name="partner",
+ * 	options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
+ * indexes={
  *      @ORM\Index(name="partneremail_idx",columns={"email"})
  * })
  * */

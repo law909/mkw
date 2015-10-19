@@ -5,7 +5,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekValtozatAdatTipusRepository")
- * @ORM\Table(name="termekvaltozatadattipus",indexes={
+ * @ORM\Table(name="termekvaltozatadattipus",
+ * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
+ * indexes={
  *      @ORM\index(name="termekvaltozatadattipusnev_idx",columns={"nev"})
  * })
 */

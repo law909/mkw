@@ -8,7 +8,7 @@ use mkw\store,
     Doctrine\Common\Collections\ArrayCollection;
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylattetelRepository")
- * @ORM\Table(name="bizonylattetel")
+ * @ORM\Table(name="bizonylattetel",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  * @Gedmo\TranslationEntity(class="Entities\BizonylattetelTranslation")
  */
 class Bizonylattetel {

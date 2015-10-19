@@ -6,7 +6,9 @@ use mkw\store;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="cimketorzs",indexes={
+ * @ORM\Table(name="cimketorzs",
+ * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
+ * indexes={
  *		@ORM\index(name="cimketorzsslug_idx",columns={"slug"})
  * })
  * @ORM\InheritanceType("SINGLE_TABLE")

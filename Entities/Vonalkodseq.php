@@ -5,7 +5,7 @@ namespace Entities;
 use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="Entities\VonalkodseqRepository")
- * @ORM\Table(name="vonalkodseq")
+ * @ORM\Table(name="vonalkodseq",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class Vonalkodseq {
 	/**

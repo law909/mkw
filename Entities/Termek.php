@@ -7,7 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekRepository")
- * @ORM\Table(name="termek",indexes={
+ * @ORM\Table(name="termek",
+ * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
+ * indexes={
  * 		@ORM\index(name="termekfakarkod_idx",columns={"termekfa1karkod","termekfa2karkod","termekfa3karkod"}),
  * 		@ORM\index(name="termekfacounter_idx",columns={"inaktiv","lathato"}),
  * 		@ORM\index(name="termekslug_idx",columns={"slug"}),

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @Doctrine\ORM\Mapping\Entity(repositoryClass="PartnerTermekcsoportKedvezmenyRepository")
- * @Doctrine\ORM\Mapping\Table(name="partnertermekcsoportkedvezmeny")
+ * @Doctrine\ORM\Mapping\Table(name="partnertermekcsoportkedvezmeny",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class PartnerTermekcsoportKedvezmeny {
 

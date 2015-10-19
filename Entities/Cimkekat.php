@@ -5,7 +5,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="cimkekat",indexes={
+ * @ORM\Table(name="cimkekat",
+ * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
+ * indexes={
  *	@ORM\Index(name="cimkekatslug_idx",columns={"slug"})
  * })
  * @ORM\InheritanceType("SINGLE_TABLE")

@@ -6,7 +6,7 @@ use mkw\store;
 
 /**
  * @ORM\Entity @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="feladat")
+ * @ORM\Table(name="feladat",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="osztaly", type="string", length=30)
  * @ORM\DiscriminatorMap({"teendo"="Teendo", "esemeny"="Esemeny"})

@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @Doctrine\ORM\Mapping\Entity(repositoryClass="FizmodHatarRepository")
- * @Doctrine\ORM\Mapping\Table(name="fizmod_hatar")
+ * @Doctrine\ORM\Mapping\Table(name="fizmod_hatar",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class FizmodHatar {
 

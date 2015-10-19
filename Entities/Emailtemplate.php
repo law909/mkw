@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\EmailtemplateRepository")
- * @ORM\Table(name="emailtemplate")
+ * @ORM\Table(name="emailtemplate",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class Emailtemplate {
 

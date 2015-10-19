@@ -8,7 +8,9 @@ use mkw\store;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekFaRepository")
- * @ORM\Table(name="termekfa",indexes={
+ * @ORM\Table(name="termekfa",
+ * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
+ * indexes={
  *      @ORM\index(name="termekfaslug_idx",columns={"slug"}),
  *      @ORM\index(name="termekfanevparent_idx",columns={"nev","parent_id"}),
  *      @ORM\index(name="termekfaidegenkod_idx",columns={"idegenkod"})

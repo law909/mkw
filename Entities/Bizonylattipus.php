@@ -4,7 +4,7 @@ namespace Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylattipusRepository")
- *  @ORM\Table(name="bizonylattipus")
+ *  @ORM\Table(name="bizonylattipus",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  **/
 class Bizonylattipus {
 	/**

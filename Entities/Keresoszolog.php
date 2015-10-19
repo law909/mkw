@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\KeresoszologRepository") @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="keresoszolog")
+ * @ORM\Table(name="keresoszolog",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class Keresoszolog {
 	/**

@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\KorhintaRepository")
- * @ORM\Table(name="korhinta")
+ * @ORM\Table(name="korhinta",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class Korhinta {
 

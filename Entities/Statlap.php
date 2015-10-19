@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\StatlapRepository")
- * @ORM\Table(name="statlap")
+ * @ORM\Table(name="statlap",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class Statlap {
 

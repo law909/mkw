@@ -6,7 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\ArfolyamRepository")
- * @ORM\Table(name="arfolyam",uniqueConstraints={@ORM\UniqueConstraint(name="arfolyam_egyedi",columns={"datum","valutanem_id"})})
+ * @ORM\Table(name="arfolyam",
+ * 	options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
+ * 	uniqueConstraints={@ORM\UniqueConstraint(name="arfolyam_egyedi",columns={"datum","valutanem_id"})})
  */
 class Arfolyam {
 	/**

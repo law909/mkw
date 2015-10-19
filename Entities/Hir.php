@@ -7,7 +7,9 @@ use mkw\store;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\HirRepository")
- * @ORM\Table(name="hir",indexes={
+ * @ORM\Table(name="hir",
+ * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
+ * indexes={
  *		@ORM\index(name="hirslug_idx",columns={"slug"})
  * })
  */

@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\KapcsolatfelveteltemaRepository")
- * @ORM\Table(name="kapcsolatfelveteltema")
+ * @ORM\Table(name="kapcsolatfelveteltema",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class Kapcsolatfelveteltema {
 	/**

@@ -5,7 +5,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\VtszRepository")
- * @ORM\Table(name="vtsz",indexes={
+ * @ORM\Table(name="vtsz",
+ * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
+ * indexes={
  *      @ORM\index(name="vtszszam_idx",columns={"szam"})
  * })
  */

@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylatfejRepository")
- * @ORM\Table(name="bizonylatfej")
+ * @ORM\Table(name="bizonylatfej",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  * @ORM\HasLifecycleCallbacks
  * */
 class Bizonylatfej {
