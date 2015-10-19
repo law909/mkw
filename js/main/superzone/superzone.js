@@ -99,10 +99,15 @@ $(document).ready(function() {
             if (el.val()) {
                 ids.push(el.data('id'));
                 vals.push(el.val());
-                kedvezmenyek.push(kedvinput.val());
                 el.val('');
-                kedvinput.val(kedvinput.data('eredetikedvezmeny'));
-                kedvinput.change();
+                if (kedvinput.val()) {
+                    kedvezmenyek.push(kedvinput.val());
+                    kedvinput.val(kedvinput.data('eredetikedvezmeny'));
+                    kedvinput.change();
+                }
+                else {
+                    kedvezmenyek.push(0);
+                }
             }
         });
         var opt = {

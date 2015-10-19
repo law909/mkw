@@ -34,7 +34,11 @@
                             <span>{number_format($termek.eredetiar, 2, ',', ' ')} {$termek.valutanemnev}</span>
                         </td>
                         <td class="textalignright">
+                            {if ($uzletkoto.loggedin)}
                             <input name="kedvezmeny_{$_valt.id}" type="number" data-id="{$_valt.id}" data-eredetiar="{$termek.eredetiar}" data-eredetikedvezmeny="{$termek.kedvezmeny}" value="{$termek.kedvezmeny}" class="js-kedvezmenyinput"> %
+                            {else}
+                            <span>{$termek.kedvezmeny} %</span>
+                            {/if}
                         </td>
                         <td class="textalignright">
                             <span class="js-ar{$_valt.id}">{number_format($termek.ar, 2, ',', ' ')}</span><span> {$termek.valutanemnev}</span>

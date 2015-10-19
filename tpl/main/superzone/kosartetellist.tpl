@@ -38,6 +38,7 @@
 			<td><div class="textalignright">{number_format($tetel.ebruttoegysar, 2, ',', ' ')} {$valutanem}</div></td>
             <td class="kosar-discounttd">
                 <div class="textaligncenter">
+                    {if ($uzletkoto.loggedin)}
                     <form class="kosarformk" action="{$tetel.editlink}">
                         <div>{if ($tetel.noedit)}
                                 {number_format($tetel.kedvezmeny, 0, ',', ' ')} %
@@ -47,6 +48,9 @@
                         </div>
                         <input type="hidden" name="id" value="{$tetel.id}">
                     </form>
+                    {else}
+                        {$tetel.kedvezmeny * 1} %
+                    {/if}
                 </div>
             </td>
 			<td><div id="egysegar_{$tetel.id}" class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$valutanem}</div></td>
