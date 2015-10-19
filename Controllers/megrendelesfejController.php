@@ -265,7 +265,12 @@ class megrendelesfejController extends bizonylatfejController {
                         }
                     }
                     $regibiz->setBizonylatstatusz($teljesitheto);
+                    $this->getEm()->persist($regibiz);
+                    $this->getEm()->persist($ujbiz);
+                    $this->getRepo()->createSzallitasiKtg($regibiz, $regibiz->getSzallitasimod());
+                    $this->getRepo()->createSzallitasiKtg($ujbiz, $ujbiz->getSzallitasimod());
                     $regibiz->doStuffOnPrePersist();
+                    $ujbiz->doStuffOnPrePersist();
                     $this->getEm()->persist($regibiz);
                     $this->getEm()->persist($ujbiz);
                     $this->getEm()->flush();
