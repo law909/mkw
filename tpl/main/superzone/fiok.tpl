@@ -14,9 +14,7 @@
             <li><a href="#discounts" data-toggle="pill">My discounts</a></li>
             {/if}
             <li><a href="#megrend" data-toggle="pill">My orders</a></li>
-            {if ($myownaccount)}
             <li><a href="#jelszo" data-toggle="pill">Change password</a></li>
-            {/if}
         </ul>
         <div class="fioknav tab-content col-md-9">
             <div class="tab-pane active" id="adataim">
@@ -222,7 +220,6 @@
                     You don't have any orders yet.
                 {/if}
             </div>
-            {if ($myownaccount)}
             <div class="tab-pane" id="jelszo">
                 <form id="JelszoChangeForm" class="form-horizontal" action="/fiok/ment/jelszo" method="post">
                     <fieldset>
@@ -249,7 +246,6 @@
                     </fieldset>
                 </form>
             </div>
-            {/if}
         </div>
     </div>
 {/block}
