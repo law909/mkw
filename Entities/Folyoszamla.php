@@ -33,8 +33,19 @@ class Folyoszamla {
      */
     private $bizonylatfej;
 
-    private $bpbizonylatfej;
-    private $bpbizonylattetel;
+    /**
+     * @ORM\ManyToOne(targetEntity="Bankbizonylatfej",inversedBy="folyoszamlak")
+     * @ORM\JoinColumn(name="bankbizonylatfej_id", referencedColumnName="id",nullable=true,onDelete="cascade")
+     * @var \Entities\Bankbizonylatfej
+     */
+    private $bankbizonylatfej;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Bankbizonylattetel",inversedBy="folyoszamlak")
+     * @ORM\JoinColumn(name="bankbizonylattetel_id", referencedColumnName="id",nullable=true,onDelete="cascade")
+     * @var \Entities\Bankbizonylattetel
+     */
+    private $bankbizonylattetel;
 
     /**
      * @ORM\ManyToOne(targetEntity="Bizonylattipus")
@@ -178,6 +189,66 @@ class Folyoszamla {
         if ($this->bizonylatfej !== null) {
             $val = $this->bizonylatfej;
             $this->bizonylatfej = null;
+        }
+    }
+
+    /**
+     * @return Bankbizonylatfej
+     */
+    public function getBankbizonylatfej() {
+        return $this->bankbizonylatfej;
+    }
+
+    public function getBankbizonylatfejId() {
+        if ($this->bankbizonylatfej) {
+            return $this->bankbizonylatfej->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Bankbizonylatfej $val
+     */
+    public function setBankbizonylatfej($val) {
+        if ($this->bankbizonylatfej !== $val) {
+            $this->bankbizonylatfej = $val;
+        }
+    }
+
+    public function removeBankbizonylatfej() {
+        if ($this->bankbizonylatfej !== null) {
+            $val = $this->bankbizonylatfej;
+            $this->bankbizonylatfej = null;
+        }
+    }
+
+    /**
+     * @return Bankbizonylattetel
+     */
+    public function getBankbizonylattetel() {
+        return $this->bankbizonylattetel;
+    }
+
+    public function getBankbizonylattetelId() {
+        if ($this->bankbizonylattetel) {
+            return $this->bankbizonylattetel->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Bankbizonylattetel $val
+     */
+    public function setBankbizonylattetel($val) {
+        if ($this->bankbizonylattetel !== $val) {
+            $this->bankbizonylattetel = $val;
+        }
+    }
+
+    public function removeBankbizonylattetel() {
+        if ($this->bankbizonylattetel !== null) {
+            $val = $this->bankbizonylattetel;
+            $this->bankbizonylattetel = null;
         }
     }
 

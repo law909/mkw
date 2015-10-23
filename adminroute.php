@@ -47,6 +47,23 @@ $router->map('GET', '/admin/termekcsoport/jsonlist', 'termekcsoportController#js
 $router->map('GET', '/admin/termekcsoport/htmllist', 'termekcsoportController#htmllist', 'admintermekcsoporthtmllist');
 $router->map('POST', '/admin/termekcsoport/save', 'termekcsoportController#save', 'admintermekcsoportsave');
 
+if (\mkw\Store::isBankpenztar()) {
+    $router->map('GET', '/admin/jogcim/jsonlist', 'jogcimController#jsonlist', 'adminjogcimjsonlist');
+    $router->map('GET', '/admin/jogcim/htmllist', 'jogcimController#htmllist', 'adminjogcimhtmllist');
+    $router->map('POST', '/admin/jogcim/save', 'jogcimController#save', 'adminjogcimsave');
+
+    $router->map('GET', '/admin/bankbizonylatfej/viewlist', 'bankbizonylatfejController#viewlist', 'adminbankbizonylatfejviewlist');
+    $router->map('GET', '/admin/bankbizonylatfej/getlistbody', 'bankbizonylatfejController#getlistbody', 'adminbankbizonylatfejgetlistbody');
+    $router->map('GET', '/admin/bankbizonylatfej/getkarb', 'bankbizonylatfejController#getkarb', 'adminbankbizonylatfejgetkarb');
+    $router->map('GET', '/admin/bankbizonylatfej/viewkarb', 'bankbizonylatfejController#viewkarb', 'adminbankbizonylatfejviewkarb');
+    $router->map('POST', '/admin/bankbizonylatfej/save', 'bankbizonylatfejController#save', 'adminbankbizonylatfejsave');
+    $router->map('GET', '/admin/bankbizonylatfej/print', 'bankbizonylatfejController#doPrint', 'adminbankbizonylatfejprint');
+    $router->map('POST', '/admin/bankbizonylatfej/ront', 'bankbizonylatfejController#ront', 'adminbankbizonylatfejront');
+
+    $router->map('GET', '/admin/bankbizonylattetel/getemptyrow', 'bankbizonylattetelController#getemptyrow', 'adminbankbizonylattetelgetemptyrow');
+    $router->map('POST', '/admin/bankbizonylattetel/save', 'bankbizonylattetelController#save', 'adminbankbizonylattetelsave');
+}
+
 $router->map('GET', '/admin/getsmallurl', 'adminController#getSmallUrl', 'admingetsmallurl');
 $router->map('GET', '/admin/regeneratekarkod', 'adminController#regeneratekarkod', 'adminregeneratekarkod');
 $router->map('GET', '/admin/setuitheme', 'adminController#setUITheme', 'adminsetuitheme');

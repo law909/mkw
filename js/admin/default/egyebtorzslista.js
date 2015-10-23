@@ -889,6 +889,53 @@ $().ready(
             $(_termekcsoport.pager + '_center').hide();
             $(_termekcsoport.pager + '_right').hide();
 
+            // Jogcim grid
+            var _jogcim = {
+                grid: '#jogcimgrid',
+                pager: '#jogcimgridpager'
+            };
+            var jogcimgrid = $(_jogcim.grid).jqGrid({
+                url: '/admin/jogcim/jsonlist',
+                editurl: '/admin/jogcim/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 50},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}}
+                ],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _jogcim.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Jogcímek'});
+            $(_jogcim.grid).jqGrid('navGrid', _jogcim.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_jogcim.grid).jqGrid('navButtonAdd', _jogcim.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    jogcimgrid[0].toggleToolbar();
+                }
+            });
+            $(_jogcim.grid).jqGrid('navButtonAdd', _jogcim.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    jogcimgrid[0].clearToolbar();
+                }
+            });
+            $(_jogcim.grid).jqGrid('filterToolbar');
+            $(_jogcim.pager + '_center').hide();
+            $(_jogcim.pager + '_right').hide();
+
+
             // Altalanos
             $('.ui-search-toolbar').hide();
             $('.ui-jqgrid-titlebar').on('click', function(e) {

@@ -50,6 +50,12 @@
 			<div><a class="menupont" href="/admin/termekcimke/viewlist">{t('Termékcímkék')}</a></div>
 			<div><a class="menupont" href="/admin/partnercimke/viewlist">{t('Partnercímkék')}</a></div>
 		</div>
+		{if ($setup.bankpenztar)}
+            <div class="menu-titlebar" data-caption="{t('Bank, pénztár')}" data-refcontrol="#BankTab"></div>
+            <div id="BankTab">
+                <div><a class="menupont" href="/admin/bankbizonylatfej/viewlist">{t('Bank')}</a></div>
+            </div>
+		{/if}
 		<div class="menu-titlebar" data-caption="{t('Webáruház')}" data-refcontrol="#WebTab"></div>
 		<div id="WebTab">
 			<div><a class="menupont" href="/admin/kosar/viewlist">{t('Kosár')}</a></div>

@@ -40,6 +40,12 @@
             <table id="termekcsoportgrid"></table>
             <div id="termekcsoportgridpager"></div>
         </div>
+        {if ($setup.bankpenztar)}
+            <div class="egyebadat-grid">
+                <table id="jogcimgrid"></table>
+                <div id="jogcimgridpager"></div>
+            </div>
+        {/if}
     </div>
     <div class="egyebadat-wrapper">
         <div class="egyebadat-grid">

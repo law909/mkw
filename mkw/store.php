@@ -726,6 +726,10 @@ class Store {
         return self::getSetupValue('b2b');
     }
 
+    public static function isBankpenztar() {
+        return self::getSetupValue('bankpenztar');
+    }
+
     public static function isFoxpostSzallitasimod($szm) {
         $i = $szm;
         if (is_a($szm, 'Entities\FoxpostTerminal')) {
