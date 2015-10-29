@@ -14,8 +14,6 @@
 <div id="mattable-filterwrapper">
 	<label for="idfilter">{t('Sorszám')}:</label>
 	<input id="idfilter" name="idfilter" type="text" size="20" maxlength="20">
-    <label for="vevonevfilter">Vevőnév:</label>
-    <input id="vevonevfilter" name="vevonevfilter" type="text">
 	<div class="matt-hseparator"></div>
     <div>
         <label for="datumtipusfilter">Dátum:</label>

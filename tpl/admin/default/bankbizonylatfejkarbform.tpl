@@ -43,7 +43,7 @@
 			</tbody></table>
 			<div>
 			{foreach $egyed.tetelek as $tetel}
-			{include 'bizonylattetelkarb.tpl'}
+			{include 'bankbizonylattetelkarb.tpl'}
 			{/foreach}
 			<a class="{if ($quick)}js-quicktetelnewbutton{else}js-tetelnewbutton{/if}" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 			</div>
@@ -68,6 +68,7 @@
     <input name="quick" type="hidden" value="{$quick}">
 	<input name="oper" type="hidden" value="{$oper}">
 	<input name="id" type="hidden" value="{$egyed.id}">
+	<input name="type" type="hidden" value="b">
     {if ($egyed.parentid|default)}
     <input name="parentid" type="hidden" value="{$egyed.parentid}">
     {/if}

@@ -52,29 +52,31 @@ class BankbizonylatfejRepository extends \mkwhelpers\Repository {
      */
     public function createFolyoszamla($bizonylat) {
 
-        // TODO: vegig kell setalni a teteleken, es nekik letrehozni folyoszamla sorokat
-
         foreach($bizonylat->getFolyoszamlak() as $fsz) {
             $this->_em->remove($fsz);
         }
         $bizonylat->clearFolyoszamlak();
 
-        $fszla = new \Entities\Folyoszamla();
-        $fszla->setDatum($bizonylat->getKelt());
-        $fszla->setPartner($bizonylat->getPartner());
-        $fszla->setBizonylattipus($bizonylat->getBizonylattipus());
-        $fszla->setRontott($bizonylat->getRontott());
-        $fszla->setStorno(false);
-        $fszla->setStornozott(false);
-        $fszla->setHivatkozottbizonylat($bizonylat->getId());
-        $fszla->setValutanem($bizonylat->getValutanem());
-        $fszla->setIrany($bizonylat->getIrany() * -1);
-        $fszla->setNetto($bizonylat->getNetto());
-        $fszla->setAfa($bizonylat->getAfa());
-        $fszla->setBrutto($bizonylat->getBrutto());
-        $fszla->setBizonylatfej($bizonylat);
+        /** @var \Entities\Bankbizonylattetel $tetel */
+        foreach($bizonylat->getBizonylattetelek() as $tetel) {
+            $fszla = new \Entities\Folyoszamla();
+            $fszla->setDatum($tetel->getDatum());
+            $fszla->setPartner($tetel->getPartner());
+            $fszla->setBizonylattipus($tetel->getBizonylatfej()->getBizonylattipus());
+            $fszla->setRontott($tetel->getRontott());
+            $fszla->setStorno(false);
+            $fszla->setStornozott(false);
+            $fszla->setHivatkozottbizonylat($tetel->getHivatkozottbizonylat());
+            $fszla->setValutanem($tetel->getValutanem());
+            $fszla->setIrany($tetel->getIrany() * -1);
+            $fszla->setNetto($tetel->getNetto());
+            $fszla->setAfa($tetel->getAfa());
+            $fszla->setBrutto($tetel->getBrutto());
+            $fszla->setBankbizonylatfej($tetel->getBizonylatfej());
+            $fszla->setBankbizonylattetel($tetel);
 
-        $this->_em->persist($fszla);
+            $this->_em->persist($fszla);
+        }
         $this->_em->flush();
     }
 }

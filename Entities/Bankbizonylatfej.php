@@ -120,16 +120,20 @@ class Bankbizonylatfej {
     /** @ORM\Column(type="string",length=60,nullable=true) */
     private $partnerutca;
 
-    /** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="bizonylatfej",cascade={"persist"}) */
+    /** @ORM\OneToMany(targetEntity="Bankbizonylattetel", mappedBy="bizonylatfej",cascade={"persist"}) */
     private $bizonylattetelek;
 
-    /** @ORM\OneToMany(targetEntity="Folyoszamla", mappedBy="bizonylatfej",cascade={"persist"}) */
+    /** @ORM\OneToMany(targetEntity="Folyoszamla", mappedBy="bankbizonylatfej",cascade={"persist"}) */
     private $folyoszamlak;
 
     public function getId() {
         return $this->id;
     }
 
+    /**
+     * @ORM\PostPersist
+     * @ORM\PostUpdate
+     */
     public function generateFolyoszamla() {
         \mkw\Store::getEm()->getRepository('Entities\Bankbizonylatfej')->createFolyoszamla($this);
     }
@@ -146,26 +150,18 @@ class Bankbizonylatfej {
         if ($defavaluta) {
             $defakerekit = $defavaluta->getKerekit();
         }
-        $fizmodtipus = 'B';
-        $fizmod = $this->getFizmod();
-        if ($fizmod) {
-            $fizmodtipus = $fizmod->getTipus();
-        }
         $this->netto = 0;
         $this->afa = 0;
         $this->brutto = 0;
         foreach ($this->bizonylattetelek as $bt) {
             $this->netto += $bt->getNetto();
-            $this->afa += $bt->getAfaertek();
-            //$this->brutto += $bt->getBrutto();
+            $this->afa += $bt->getAfa();
+            $this->brutto += $bt->getBrutto();
         }
         if ($kerekit) {
-            $this->brutto = round($this->netto + $this->afa);
+            $this->brutto = round($this->brutto);
         }
-        else {
-            $this->brutto = $this->netto + $this->afa;
-        }
-        if ($mincimlet && ($fizmodtipus == 'P')) {
+        if ($mincimlet && ($this->getBizonylattipusId() === 'bank')) {
             $valosbrutto = $this->brutto;
             $this->brutto = \mkw\Store::kerekit($this->brutto, $mincimlet);
             $this->kerkul = $this->brutto - $valosbrutto;

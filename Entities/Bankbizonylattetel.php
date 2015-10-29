@@ -31,7 +31,7 @@ class Bankbizonylattetel {
     private $lastmod;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bankbizonylatfej",inversedBy="bankbizonylattetelek")
+     * @ORM\ManyToOne(targetEntity="Bankbizonylatfej",inversedBy="bizonylattetelek")
      * @ORM\JoinColumn(name="bankizonylatfej_id", referencedColumnName="id",nullable=true,onDelete="cascade")
      * @var \Entities\Bankbizonylatfej
      */
@@ -42,6 +42,9 @@ class Bankbizonylattetel {
 
     /** @ORM\Column(type="date",nullable=false) */
     private $datum;
+
+    /** @ORM\Column(type="date",nullable=false) */
+    private $hivatkozottdatum;
 
     /** @ORM\Column(type="boolean",nullable=false) */
     private $rontott = false;
@@ -78,7 +81,7 @@ class Bankbizonylattetel {
     private $jogcimnev;
 
     /**
-     * @ORM\Column(type="string",length=30)
+     * @ORM\Column(type="string",length=30,nullable=true)
      */
     private $hivatkozottbizonylat;
 
@@ -125,7 +128,7 @@ class Bankbizonylattetel {
     }
 
     /**
-     * @return Bizonylatfej
+     * @return \Entities\Bankbizonylatfej
      */
     public function getBizonylatfej() {
         return $this->bizonylatfej;
@@ -144,6 +147,7 @@ class Bankbizonylattetel {
     public function setBizonylatfej($val) {
         if ($this->bizonylatfej !== $val) {
             $this->bizonylatfej = $val;
+            $this->setIrany($val->getIrany());
             $val->addBizonylattetel($this);
         }
     }
@@ -489,6 +493,16 @@ class Bankbizonylattetel {
     }
 
     /**
+     * @return mixed
+     */
+    public function getJogcimId() {
+        if ($this->jogcim) {
+            return $this->jogcim->getId();
+        }
+        return 0;
+    }
+
+    /**
      * @param mixed $jogcimnev
      */
     public function setJogcimnev($jogcimnev) {
@@ -512,6 +526,32 @@ class Bankbizonylattetel {
         }
         else {
             $this->setJogcimnev($jogcim->getNev());
+        }
+    }
+
+    public function getHivatkozottdatum() {
+        if (!$this->id && !$this->hivatkozottdatum) {
+            $this->hivatkozottdatum = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+        }
+        return $this->hivatkozottdatum;
+    }
+
+    public function getHivatkozottdatumStr() {
+        if ($this->getHivatkozottdatum()) {
+            return $this->getHivatkozottdatum()->format(\mkw\Store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setHivatkozottdatum($adat = '') {
+        if (is_a($adat, 'DateTime')) {
+            $this->hivatkozottdatum = $adat;
+        }
+        else {
+            if ($adat == '') {
+                $adat = date(\mkw\Store::$DateFormat);
+            }
+            $this->hivatkozottdatum = new \DateTime(\mkw\Store::convDate($adat));
         }
     }
 

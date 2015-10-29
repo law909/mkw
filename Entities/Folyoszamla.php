@@ -22,7 +22,12 @@ class Folyoszamla {
     private $datum;
 
     /**
-     * @ORM\Column(type="string",length=30)
+     * @ORM\Column(type="date",nullable=true)
+     */
+    private $hivatkozottdatum;
+
+    /**
+     * @ORM\Column(type="string",length=30,nullable=true)
      */
     private $hivatkozottbizonylat;
 
@@ -562,6 +567,32 @@ class Folyoszamla {
     public function removeValutanem() {
         if ($this->valutanem !== null) {
             $this->valutanem = null;
+        }
+    }
+
+    public function getHivatkozottdatum() {
+        if (!$this->id && !$this->hivatkozottdatum) {
+            $this->hivatkozottdatum = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+        }
+        return $this->hivatkozottdatum;
+    }
+
+    public function getHivatkozottdatumStr() {
+        if ($this->getHivatkozottdatum()) {
+            return $this->getHivatkozottdatum()->format(\mkw\Store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setHivatkozottdatum($adat = '') {
+        if (is_a($adat, 'DateTime')) {
+            $this->hivatkozottdatum = $adat;
+        }
+        else {
+            if ($adat == '') {
+                $adat = date(\mkw\Store::$DateFormat);
+            }
+            $this->hivatkozottdatum = new \DateTime(\mkw\Store::convDate($adat));
         }
     }
 

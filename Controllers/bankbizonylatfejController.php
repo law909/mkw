@@ -15,7 +15,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t) {
+    protected function loadVars($t, $forKarb = false) {
         $x = array();
         if (!$t) {
             $t = new \Entities\Bankbizonylatfej();
@@ -44,6 +44,17 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
         $x['partnerirszam'] = $t->getPartnerirszam();
         $x['partnervaros'] = $t->getPartnervaros();
         $x['partnerutca'] = $t->getPartnerutca();
+
+        $x['nemrossz'] = !$t->getRontott();
+
+        if ($forKarb) {
+            $tetelCtrl = new bankbizonylattetelController($this->params);
+            foreach ($t->getBizonylattetelek() as $ttetel) {
+                $tetel[] = $tetelCtrl->loadVars($ttetel, true);
+            }
+            $x['tetelek'] = $tetel;
+
+        }
         return $x;
     }
 
@@ -52,13 +63,15 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
      * @return \Entities\Bankbizonylatfej
      */
     protected function setFields($obj) {
+        $type = $this->params->getStringRequestParam('type');
+
         $obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
         $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
         $obj->setKelt($this->params->getStringRequestParam('kelt'));
 
-        $ck = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
-        if ($ck) {
-            $obj->setValutanem($ck);
+        $valutanem = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+        if ($valutanem) {
+            $obj->setValutanem($valutanem);
         }
 
         $ck = store::getEm()->getRepository('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
@@ -66,60 +79,123 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
             $obj->setBankszamla($ck);
         }
 
+        switch ($type) {
+            case 'b':
+                $bt = $this->getRepo('Entities\Bizonylattipus')->find('bank');
+                $obj->setBizonylattipus($bt);
+                break;
+            case 'p':
+                break;
+        }
         $obj->generateId(); // az üres kelt miatt került a végére
 
-        $tetelids = $this->params->getArrayRequestParam('tetelid');
-        $biztetelcontroller = new bizonylattetelController($this->params);
-        foreach ($tetelids as $tetelid) {
-            if (($this->params->getIntRequestParam('teteljogcim_' . $tetelid) > 0)) {
-                $oper = $this->params->getStringRequestParam('teteloper_' . $tetelid);
-                $jogcim = $this->getEm()->getRepository('Entities\Jogcim')->find($this->params->getIntRequestParam('teteljogcim_' . $tetelid));
-                if ($jogcim) {
-                    switch ($oper) {
-                        case $this->addOperation:
-                        case $this->inheritOperation:
-                            $tetel = new Bankbizonylattetel();
-                            $obj->addBizonylattetel($tetel);
+        switch ($type) {
+            case 'b':
+                $tetelids = $this->params->getArrayRequestParam('tetelid');
+                foreach ($tetelids as $tetelid) {
+                    if (($this->params->getIntRequestParam('teteljogcim_' . $tetelid) > 0)) {
+                        $oper = $this->params->getStringRequestParam('teteloper_' . $tetelid);
+                        $jogcim = $this->getEm()->getRepository('Entities\Jogcim')->find($this->params->getIntRequestParam('teteljogcim_' . $tetelid));
+                        $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('tetelpartner_' . $tetelid));
+                        if ($jogcim && $partner) {
+                            switch ($oper) {
+                                case $this->addOperation:
+                                case $this->inheritOperation:
+                                    $tetel = new Bankbizonylattetel();
+                                    $obj->addBizonylattetel($tetel);
 
-                            $tetel->setJogcim($jogcim);
+                                    $tetel->setJogcim($jogcim);
+                                    $tetel->setValutanem($valutanem);
+                                    $tetel->setPartner($partner);
+                                    $tetel->setDatum($this->params->getStringRequestParam('teteldatum_' . $tetelid));
+                                    $tetel->setHivatkozottbizonylat($this->params->getStringRequestParam('tetelhivatkozottbizonylat_' . $tetelid));
+                                    $tetel->setHivatkozottdatum($this->params->getStringRequestParam('tetelhivatkozottdatum_' . $tetelid));
 
-                            $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
-                            $tetel->setNetto($this->params->getFloatRequestParam('tetelnetto_' . $tetelid));
-                            $tetel->setBrutto($this->params->getFloatRequestParam('tetelbrutto_' . $tetelid));
+                                    $tetel->setBrutto($this->params->getFloatRequestParam('tetelosszeg_' . $tetelid));
 
-                            $this->getEm()->persist($tetel);
-                            break;
-                        case $this->editOperation:
-                            /** @var \Entities\Bankbizonylattetel $tetel */
-                            $tetel = $this->getEm()->getRepository('Entities\Bankbizonylattetel')->find($tetelid);
-                            if ($tetel) {
-                                $tetel->setJogcim($jogcim);
+                                    $this->getEm()->persist($tetel);
+                                    break;
+                                case $this->editOperation:
+                                    /** @var \Entities\Bankbizonylattetel $tetel */
+                                    $tetel = $this->getEm()->getRepository('Entities\Bankbizonylattetel')->find($tetelid);
+                                    if ($tetel) {
+                                        $tetel->setJogcim($jogcim);
+                                        $tetel->setValutanem($valutanem);
+                                        $tetel->setPartner($partner);
+                                        $tetel->setDatum($this->params->getStringRequestParam('teteldatum_' . $tetelid));
+                                        $tetel->setHivatkozottbizonylat($this->params->getStringRequestParam('tetelhivatkozottbizonylat_' . $tetelid));
+                                        $tetel->setHivatkozottdatum($this->params->getStringRequestParam('tetelhivatkozottdatum_' . $tetelid));
 
-                                $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
-                                $tetel->setNetto($this->params->getFloatRequestParam('tetelnetto_' . $tetelid));
-                                $tetel->setBrutto($this->params->getFloatRequestParam('tetelbrutto_' . $tetelid));
+                                        $tetel->setBrutto($this->params->getFloatRequestParam('tetelosszeg_' . $tetelid));
 
-                                $this->getEm()->persist($tetel);
+                                        $this->getEm()->persist($tetel);
+                                    }
+                                    break;
                             }
-                            break;
+                        }
+                        else {
+                            \mkw\Store::writelog(print_r($this->params->asArray(), true), 'nincsjogcim.log');
+                        }
                     }
                 }
-                else {
-                    \mkw\Store::writelog(print_r($this->params->asArray(), true), 'nincsjogcim.log');
-                }
-            }
+                break;
         }
 
         return $obj;
     }
 
+    protected function setVars($view) {
+        $bt = $this->getRepo('Entities\Bizonylattipus')->find('bank');
+        if ($bt) {
+            $bt->setTemplateVars($view);
+        }
+    }
+
     public function getlistbody() {
         $view = $this->createView('bankbizonylatfejlista_tbody.tpl');
 
+        $this->setVars($view);
+
         $filter = array();
-        if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
-            $filter['fields'][] = 'nev';
-            $filter['values'][] = $this->params->getStringRequestParam('nevfilter');
+
+        if (!is_null($this->params->getRequestParam('idfilter', NULL))) {
+            $filter['fields'][] = 'id';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $this->params->getStringRequestParam('idfilter');
+        }
+
+        $tol = $this->params->getStringRequestParam('datumtolfilter');
+        $ig = $this->params->getStringRequestParam('datumigfilter');
+        if ($tol || $ig) {
+            if ($tol) {
+                $filter['fields'][] = 'kelt';
+                $filter['clauses'][] = '>=';
+                $filter['values'][] = $tol;
+            }
+            if ($ig) {
+                $filter['fields'][] = 'kelt';
+                $filter['clauses'][] = '<=';
+                $filter['values'][] = $ig;
+            }
+        }
+        $f = $this->params->getStringRequestParam('erbizonylatszamfilter');
+        if ($f) {
+            $filter['fields'][] = 'erbizonylatszam';
+            $filter['clauses'][] = 'LIKE';
+            $filter['values'][] = '%' . $f . '%';
+        }
+        $f = $this->params->getIntRequestParam('bizonylatrontottfilter');
+        switch ($f) {
+            case 1:
+                $filter['fields'][] = 'rontott';
+                $filter['clauses'][] = '=';
+                $filter['values'][] = false;
+                break;
+            case 2:
+                $filter['fields'][] = 'rontott';
+                $filter['clauses'][] = '=';
+                $filter['values'][] = true;
+                break;
         }
 
         $this->initPager(
@@ -139,12 +215,16 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
     public function viewselect() {
         $view = $this->createView('bankbizonylatfejlista.tpl');
 
+        $this->setVars($view);
+
         $view->setVar('pagetitle', t('Bankbizonylat'));
         $view->printTemplateResult();
     }
 
     public function viewlist() {
         $view = $this->createView('bankbizonylatfejlista.tpl');
+
+        $this->setVars($view);
 
         $view->setVar('pagetitle', t('Bankbizonylat'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
@@ -159,8 +239,9 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
 
         $view->setVar('pagetitle', t('Bankbizonylat'));
         $view->setVar('oper', $oper);
+        $view->setVar('formaction', '/admin/bankbizonylatfej/save');
         $record = $this->getRepo()->findWithJoins($id);
-        $view->setVar('egyed', $this->loadVars($record));
+        $view->setVar('egyed', $this->loadVars($record, true));
 
         $bt = $this->getRepo('Entities\Bizonylattipus')->find('bank');
         $bt->setTemplateVars($view);

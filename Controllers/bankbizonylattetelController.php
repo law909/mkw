@@ -17,9 +17,9 @@ class bankbizonylattetelController extends \mkwhelpers\MattableController {
 
 	public function loadVars($t, $forKarb = false) {
         $oper = $this->params->getStringRequestParam('oper');
-		$termek = new termekController($this->params);
-		$vtsz = new vtszController($this->params);
-		$afa = new afaController($this->params);
+        $partner = new partnerController($this->params);
+		$jogcim = new jogcimController($this->params);
+        $valutanem = new valutanemController($this->params);
 		$x = array();
 		if (!$t) {
 			$t = new \Entities\Bankbizonylattetel();
@@ -31,11 +31,25 @@ class bankbizonylattetelController extends \mkwhelpers\MattableController {
 			$x['id'] = $t->getId();
 			$x['oper'] = 'edit';
 		}
+        $x['datumstr'] = $t->getDatumStr();
         $x['netto'] = $t->getNetto();
         $x['afa'] = $t->getAfa();
         $x['brutto'] = $t->getBrutto();
+        $x['partner'] = $t->getPartnerId();
+        $x['partnernev'] = $t->getPartnernev();
+        $x['jogcim'] = $t->getJogcimId();
+        $x['jogcimnev'] = $t->getJogcimnev();
+        $x['hivatkozottdatumstr'] = $t->getHivatkozottdatumStr();
+        $x['hivatkozottbizonylat'] = $t->getHivatkozottbizonylat();
+        $x['valutanem'] = $t->getValutanemId();
+        $x['valutanemnev'] = $t->getValutanemnev();
 
-        $x['mainurl'] = store::getConfigValue('mainurl');
+        if ($forKarb) {
+            $x['partnerlist'] = $partner->getSelectList($t->getPartnerId());
+            $x['jogcimlist'] = $jogcim->getSelectList($t->getJogcimId());
+            $x['valutanemlist'] = $valutanem->getSelectList($t->getValutanemId());
+        }
+
 		return $x;
 	}
 
@@ -46,10 +60,18 @@ class bankbizonylattetelController extends \mkwhelpers\MattableController {
 	public function getemptyrow() {
         $biztipus = $this->params->getStringRequestParam('type');
 		$view = $this->createView('bankbizonylattetelkarb.tpl');
-		$view->setVar('tetel', $this->loadVars(null, true));
+
+        $tetel = $this->loadVars(null, true);
+		$view->setVar('tetel', $tetel);
+
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipus);
         $bt->setTemplateVars($view);
-		echo $view->getTemplateResult();
+
+        $res = array(
+            'html' => $view->getTemplateResult(),
+            'id' => $tetel['id']
+        );
+		echo json_encode($res);
 	}
 
 }

@@ -6,6 +6,10 @@ $(document).ready(function () {
         }
     }
 
+    function calcOsszesen() {
+
+    }
+
     var bankbizonylat = {
         container: '#mattkarb',
         viewUrl: '/admin/bankbizonylatfej/getkarb',
@@ -15,12 +19,19 @@ $(document).ready(function () {
             var keltedit = $('#KeltEdit');
             keltedit.datepicker($.datepicker.regional['hu']);
             keltedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-            keltedit.datepicker('setDate', keltedit.attr('data-kelt'));
+            keltedit.datepicker('setDate', keltedit.attr('data-datum'));
 
-            $('.js-tetelnewbutton,.js-teteldelbutton').button();
+            $('.js-tetelnewbutton,.js-teteldelbutton,.js-hivatkozottbizonylatbutton').button();
 
             $('#ValutanemEdit').change(function(e) {
                 valutanemChange(false);
+            });
+
+            $('input[name^="teteldatum_"]').each(function() {
+                var o = $(this);
+                o.datepicker($.datepicker.regional['hu']);
+                o.datepicker('option', 'dateFormat', 'yy.mm.dd');
+                o.datepicker('setDate', o.attr('data-datum'));
             });
 
             $('#AltalanosTab')
@@ -34,8 +45,15 @@ $(document).ready(function () {
                         },
                         type: 'GET',
                         success: function(data) {
-                            $('.js-bizonylatosszesito').before(data);
-                            $('.js-tetelnewbutton,.js-teteldelbutton').button();
+                            var dedit, d = JSON.parse(data);
+
+                            $('.js-bizonylatosszesito').before(d.html);
+                            dedit = $('#DatumEdit' + d.id);
+                            dedit.datepicker($.datepicker.regional['hu']);
+                            dedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
+                            dedit.datepicker('setDate', dedit.attr('data-datum'));
+
+                            $('.js-tetelnewbutton,.js-teteldelbutton,.js-hivatkozottbizonylatbutton').button();
                             $this.remove();
                         }
                     });
@@ -88,6 +106,10 @@ $(document).ready(function () {
                             }
                         });
                     }
+                })
+                .on('click', '.js-hivatkozottbizonylatbutton', function(e) {
+                    e.preventDefault();
+
                 });
         },
         beforeHide: function () {
@@ -106,10 +128,19 @@ $(document).ready(function () {
         $('#mattable-select').mattable({
             name: 'egyed',
             filter: {
-                fields: ['#bejegyzesfilter', '#dtfilter', '#difilter']
+                fields: [
+                    '#idfilter',
+                    '#datumtolfilter',
+                    '#datumigfilter',
+                    '#bizonylatrontottfilter',
+                    '#erbizonylatszamfilter'
+                ]
             },
             tablebody: {
-                url: '/admin/bankbizonylatfej/getlistbody'
+                url: '/admin/bankbizonylatfej/getlistbody',
+                onStyle: function() {
+                    $('.js-rontbizonylat').button();
+                }
             },
             karb: bankbizonylat
         });
@@ -117,6 +148,20 @@ $(document).ready(function () {
         $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
+        $('#mattable-body').on('click', '.js-rontbizonylat', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url:'/admin/bankbizonylatfej/ront',
+                type: 'POST',
+                data: {
+                    id: $(this).data('egyedid')
+                },
+                success:function() {
+                    $('.mattable-tablerefresh').click();
+                }
+            });
+        });
+
         var dfilter = $('#dtfilter');
         dfilter.datepicker($.datepicker.regional['hu']);
         dfilter.datepicker('option', 'dateFormat', 'yy.mm.dd');
