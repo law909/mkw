@@ -548,6 +548,13 @@ class Bizonylatfej {
         $this->setPersistentData();
     }
 
+    public function getEgyenleg() {
+        if ($this->getStorno() || $this->getStornozott() || $this->getRontott() || !$this->getPenztmozgat()) {
+            return 0;
+        }
+        return \mkw\Store::getEm()->getRepository('Entities\Folyoszamla')->getSumByHivatkozottBizonylat($this->getId());
+    }
+
     /**
      * @param \Entities\Emailtemplate $emailtpl
      * @param \Entities\Bizonylatfej|null $bf

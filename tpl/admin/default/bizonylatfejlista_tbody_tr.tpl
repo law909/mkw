@@ -138,12 +138,27 @@
                         <td class="mattable-rightaligned pricenowrap hufprice">{number_format($_egyed.bruttohuf, 2, '.', ' ')}</td>
                     {/if}
                 </tr>
-                <tr>
-                    {if ($showvalutanem)}
+                {if ($showvalutanem)}
+                    <tr>
                         <td class="hufprice">{t('Árfolyam')}:</td>
                         <td class="mattable-rightaligned pricenowrap hufprice">{number_format($_egyed.arfolyam, 2, '.', ' ')}</td>
+                    </tr>
+                {/if}
+                {if ($setup.bankpenztar)}
+                    {if ($_egyed.penzugyistatusz == 'lejartkiegyenlitetlen')}
+                        {$cls = 'lejartkiegyenlitetlen'}
+                    {elseif ($_egyed.penzugyistatusz == 'kiegyenlitetlen')}
+                        {$cls = 'kiegyenlitetlen'}
+                    {elseif ($_egyed.penzugyistatusz == 'kiegyenlitett')}
+                        {$cls = 'kiegyenlitett'}
+                    {elseif ($_egyed.penzugyistatusz == 'tulfizetett')}
+                        {$cls = 'tulfizetett'}
                     {/if}
-                </tr>
+                    <tr>
+                        <td class="{$cls}">{t('Egyenleg')}:</td>
+                        <td class="mattable-rightaligned pricenowrap {$cls}">{number_format($_egyed.egyenleg, 2, '.', ' ')}</td>
+                    </tr>
+                {/if}
             </tbody>
         </table>
     </td>

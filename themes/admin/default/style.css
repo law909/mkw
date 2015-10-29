@@ -174,3 +174,22 @@ img {
 tfoot tr td {
     font-weight: bold;
 }
+
+.lejartkiegyenlitetlen {
+    color: red;
+}
+
+.kiegyenlitetlen {
+    color: green;
+}
+
+.kiegyenlitett {
+}
+
+.tulfizetett {
+    color: #0000CC;
+}
+
+.kiegyenlitetlenselect {
+    width: 100%;
+}

@@ -351,6 +351,27 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 //				$tetel[]=$tetelCtrl->loadVars(null,true);
             $x['tetelek'] = $tetel;
         }
+        else {
+            $x['egyenleg'] = $t->getEgyenleg();
+            if ($x['egyenleg'] != 0) {
+                if ($x['egyenleg'] > 0) {
+                    $ma = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+                    if (($t->getEsedekesseg() < $ma) || ($t->getEsedekesseg1() < $ma) ||
+                        ($t->getEsedekesseg2() < $ma) || ($t->getEsedekesseg3() < $ma)) {
+                        $x['penzugyistatusz'] = 'lejartkiegyenlitetlen';
+                    }
+                    else {
+                        $x['penzugyistatusz'] = 'kiegyenlitetlen';
+                    }
+                }
+                else {
+                    $x['penzugyistatusz'] = 'tulfizetett';
+                }
+            }
+            else {
+                $x['penzugyistatusz'] = 'kiegyenlitett';
+            }
+        }
         return $x;
     }
 

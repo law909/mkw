@@ -31,6 +31,7 @@ class bankbizonylattetelController extends \mkwhelpers\MattableController {
 			$x['id'] = $t->getId();
 			$x['oper'] = 'edit';
 		}
+        $x['irany'] = $t->getIrany();
         $x['datumstr'] = $t->getDatumStr();
         $x['netto'] = $t->getNetto();
         $x['afa'] = $t->getAfa();

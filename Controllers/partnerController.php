@@ -896,4 +896,29 @@ class partnerController extends \mkwhelpers\MattableController {
         }
         header('Location: ' . $route);
     }
+
+    public function getKiegyenlitetlenBiz() {
+        $partnerid = $this->params->getIntRequestParam('partner');
+        $bizs = $this->getRepo('Entities\Folyoszamla')->getSumByPartner($partnerid);
+        $adat = array();
+        foreach($bizs as $biz) {
+            if ($biz['hivatkozottdatum']) {
+                $datum = $biz['hivatkozottdatum']->format(\mkw\Store::$DateFormat);
+            }
+            else {
+                $datum = '';
+            }
+            $adat[] = array(
+                'bizszam' => $biz['hivatkozottbizonylat'],
+                'datum' => $datum,
+                'egyenleg' => $biz['egyenleg']
+            );
+        }
+        $view = $this->createView('kiegyenlitetlenselect.tpl');
+        $view->setVar('bizonylatok', $adat);
+        $ret = array(
+            'html' => $view->getTemplateResult()
+        );
+        echo json_encode($ret);
+    }
 }

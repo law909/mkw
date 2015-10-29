@@ -242,6 +242,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getEgyenleg()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEgyenleg', array());
+
+        return parent::getEgyenleg();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function sendStatuszEmail($emailtpl, $bf = NULL, $topartner = true)
     {
 

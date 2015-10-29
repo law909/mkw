@@ -109,8 +109,43 @@ $(document).ready(function () {
                 })
                 .on('click', '.js-hivatkozottbizonylatbutton', function(e) {
                     e.preventDefault();
+                    var $this = $(this),
+                        tid = $this.data('id');
 
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/partner/getkiegyenlitetlenbiz',
+                        data: {
+                            partner: $('select[name="tetelpartner_' + tid + '"]').val()
+                        },
+                        success: function(d) {
+                            var data = JSON.parse(d);
+                            dialogcenter.html(data.html);
+                            dialogcenter.dialog({
+                                resizable: true,
+                                height: 340,
+                                modal: true,
+                                buttons: {
+                                    'OK': function() {
+                                        var sor = $('tr.js-selected', dialogcenter);
+                                        $('input[name="tetelhivatkozottbizonylat_' + tid + '"]').val(sor.data('bizszam'));
+                                        $('input[name="tetelhivatkozottdatum_' + tid + '"]').val(sor.data('datum'));
+                                        $('input[name="tetelosszeg_' + tid + '"]').val(sor.data('egyenleg'));
+                                        $(this).dialog('close');
+                                    },
+                                    'Bezár': function() {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                    });
                 });
+            dialogcenter.on('click', 'tr', function(e) {
+                e.preventDefault();
+                $('tr', dialogcenter).removeClass('ui-state-highlight js-selected');
+                $(this).addClass('ui-state-highlight js-selected');
+            })
         },
         beforeHide: function () {
         },

@@ -95,6 +95,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
                 foreach ($tetelids as $tetelid) {
                     if (($this->params->getIntRequestParam('teteljogcim_' . $tetelid) > 0)) {
                         $oper = $this->params->getStringRequestParam('teteloper_' . $tetelid);
+                        $irany = $this->params->getIntRequestParam('tetelirany_' . $tetelid);
                         $jogcim = $this->getEm()->getRepository('Entities\Jogcim')->find($this->params->getIntRequestParam('teteljogcim_' . $tetelid));
                         $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('tetelpartner_' . $tetelid));
                         if ($jogcim && $partner) {
@@ -105,6 +106,13 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
                                     $obj->addBizonylattetel($tetel);
 
                                     $tetel->setJogcim($jogcim);
+                                    if ($irany < 0) {
+                                        $tetel->setIrany(-1);
+                                    }
+                                    else {
+                                        $tetel->setIrany(1);
+                                    }
+
                                     $tetel->setValutanem($valutanem);
                                     $tetel->setPartner($partner);
                                     $tetel->setDatum($this->params->getStringRequestParam('teteldatum_' . $tetelid));
@@ -120,6 +128,12 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
                                     $tetel = $this->getEm()->getRepository('Entities\Bankbizonylattetel')->find($tetelid);
                                     if ($tetel) {
                                         $tetel->setJogcim($jogcim);
+                                        if ($irany < 0) {
+                                            $tetel->setIrany(-1);
+                                        }
+                                        else {
+                                            $tetel->setIrany(1);
+                                        }
                                         $tetel->setValutanem($valutanem);
                                         $tetel->setPartner($partner);
                                         $tetel->setDatum($this->params->getStringRequestParam('teteldatum_' . $tetelid));

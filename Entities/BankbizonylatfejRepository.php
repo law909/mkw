@@ -67,6 +67,7 @@ class BankbizonylatfejRepository extends \mkwhelpers\Repository {
             $fszla->setStorno(false);
             $fszla->setStornozott(false);
             $fszla->setHivatkozottbizonylat($tetel->getHivatkozottbizonylat());
+            $fszla->setHivatkozottdatum($tetel->getHivatkozottdatum());
             $fszla->setValutanem($tetel->getValutanem());
             $fszla->setIrany($tetel->getIrany() * -1);
             $fszla->setNetto($tetel->getNetto());

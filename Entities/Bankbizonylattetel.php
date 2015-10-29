@@ -147,7 +147,6 @@ class Bankbizonylattetel {
     public function setBizonylatfej($val) {
         if ($this->bizonylatfej !== $val) {
             $this->bizonylatfej = $val;
-            $this->setIrany($val->getIrany());
             $val->addBizonylattetel($this);
         }
     }

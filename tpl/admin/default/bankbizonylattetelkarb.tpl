@@ -22,6 +22,13 @@
                 </td>
             </tr>
             <tr>
+                <td><label>{t('Irány')}:</label></td>
+                <td>
+                    <input id="IranyEdit{$tetel.id}" type="radio" name="tetelirany_{$tetel.id}" value="1"{if ($tetel.irany >= 0)} checked="checked"{/if}>Be
+                    <input id="IranyEdit{$tetel.id}" type="radio" name="tetelirany_{$tetel.id}" value="-1"{if ($tetel.irany < 0)} checked="checked"{/if}>Ki
+                </td>
+            </tr>
+            <tr>
                 <td class="mattable-important"><label for="JogcimEdit{$tetel.id}">{t('Jogcím')}:</label></td>
                 <td>
                     <select id="JogcimEdit{$tetel.id}" name="teteljogcim_{$tetel.id}" class="mattable-important" required="required">
@@ -34,15 +41,18 @@
             </tr>
             <tr>
                 <td class="mattable-important"><label for="HivatkozottBizonylatEdit{$tetel.id}">{t('Hivatkozott bizonylat')}:</label></td>
-                <td><input id="HivatkozottBizonylatEdit{$tetel.id}" name="tetelhivatkozottbizonylat_{$tetel.id}" value="{$tetel.hivatkozottbizonylat}"><a class="js-hivatkozottbizonylatbutton">{t('Keresés')}</a></td>
+                <td>
+                    <input id="HivatkozottBizonylatEdit{$tetel.id}" name="tetelhivatkozottbizonylat_{$tetel.id}" value="{$tetel.hivatkozottbizonylat}">
+                    <a class="js-hivatkozottbizonylatbutton" data-id="{$tetel.id}">{t('Keresés')}</a>
+                </td>
             </tr>
             <tr>
                 <td><label for="EsedekessegEdit{$tetel.id}">{t('Esedékesség')}:</label></td>
-                <td><input id="EsedekessegEdit{$tetel.id}" name="tetelhivatkozottdatum_{$tetel.id}" readonly></td>
+                <td><input id="EsedekessegEdit{$tetel.id}" name="tetelhivatkozottdatum_{$tetel.id}" value="{$tetel.hivatkozottdatumstr}" readonly></td>
             </tr>
             <tr>
                 <td><label for="OsszegEdit{$tetel.id}">{t('Összeg')}:</label></td>
-                <td><input id="OsszegEdit{$tetel.id}" name="tetelosszeg_{$tetel.id}" type="number" required="required" value="{$tetel.brutto}"></td>
+                <td><input id="OsszegEdit{$tetel.id}" name="tetelosszeg_{$tetel.id}" type="number" required="required" step="any" value="{$tetel.brutto}"></td>
             </tr>
         </tbody>
     </table>
