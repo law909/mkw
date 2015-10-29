@@ -220,6 +220,45 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 
     /**
      * @param \Entities\Bizonylatfej $bizonylat
+     * @param $szam
+     */
+    private function createFSzla($bizonylat, $szam) {
+        $fszla = new \Entities\Folyoszamla();
+        $fszla->setDatum($bizonylat->getKelt());
+        $fszla->setFizmod($bizonylat->getFizmod());
+        $fszla->setPartner($bizonylat->getPartner());
+        $fszla->setBizonylattipus($bizonylat->getBizonylattipus());
+        $fszla->setRontott($bizonylat->getRontott());
+        $fszla->setStorno($bizonylat->getStorno());
+        $fszla->setStornozott($bizonylat->getStornozott());
+        $fszla->setHivatkozottbizonylat($bizonylat->getId());
+        $fszla->setUzletkoto($bizonylat->getUzletkoto());
+        $fszla->setValutanem($bizonylat->getValutanem());
+        $fszla->setIrany($bizonylat->getIrany() * -1);
+        switch ($szam) {
+            case 0:
+                $fszla->setBrutto($bizonylat->getFizetendo());
+                $fszla->setHivatkozottdatum($bizonylat->getEsedekessegStr());
+                break;
+            case 1:
+                $fszla->setBrutto($bizonylat->getFizetendo1());
+                $fszla->setHivatkozottdatum($bizonylat->getEsedekesseg1Str());
+                break;
+            case 2:
+                $fszla->setBrutto($bizonylat->getFizetendo2());
+                $fszla->setHivatkozottdatum($bizonylat->getEsedekesseg2Str());
+                break;
+            case 3:
+                $fszla->setBrutto($bizonylat->getFizetendo3());
+                $fszla->setHivatkozottdatum($bizonylat->getEsedekesseg3Str());
+                break;
+        }
+        $fszla->setBizonylatfej($bizonylat);
+        $this->_em->persist($fszla);
+    }
+
+    /**
+     * @param \Entities\Bizonylatfej $bizonylat
      */
     public function createFolyoszamla($bizonylat) {
         if ($bizonylat->getPenztmozgat()) {
@@ -228,27 +267,27 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             }
             $bizonylat->clearFolyoszamlak();
 
-            $fszla = new \Entities\Folyoszamla();
-            $fszla->setDatum($bizonylat->getKelt());
-            $fszla->setFizmod($bizonylat->getFizmod());
-            $fszla->setPartner($bizonylat->getPartner());
-            $fszla->setBizonylattipus($bizonylat->getBizonylattipus());
-            $fszla->setRontott($bizonylat->getRontott());
-            $fszla->setStorno($bizonylat->getStorno());
-            $fszla->setStornozott($bizonylat->getStornozott());
-            $fszla->setHivatkozottbizonylat($bizonylat->getId());
-            $fszla->setUzletkoto($bizonylat->getUzletkoto());
-            $fszla->setValutanem($bizonylat->getValutanem());
-            $fszla->setIrany($bizonylat->getIrany() * -1);
-            $fszla->setNetto($bizonylat->getNetto());
-            $fszla->setAfa($bizonylat->getAfa());
-            $fszla->setBrutto($bizonylat->getBrutto());
-            $fszla->setNettohuf($bizonylat->getNettohuf());
-            $fszla->setAfahuf($bizonylat->getAfahuf());
-            $fszla->setBruttohuf($bizonylat->getBruttohuf());
-            $fszla->setBizonylatfej($bizonylat);
-
-            $this->_em->persist($fszla);
+            if (\mkw\Store::isOsztottFizmod()) {
+                $volt = false;
+                if ($bizonylat->getFizetendo1() !== 0) {
+                    $this->createFSzla($bizonylat, 1);
+                    $volt = true;
+                }
+                if ($bizonylat->getFizetendo2() !== 0) {
+                    $this->createFSzla($bizonylat, 2);
+                    $volt = true;
+                }
+                if ($bizonylat->getFizetendo3() !== 0) {
+                    $this->createFSzla($bizonylat, 3);
+                    $volt = true;
+                }
+                if (!$volt) {
+                    $this->createFSzla($bizonylat, 0);
+                }
+            }
+            else {
+                $this->createFSzla($bizonylat, 0);
+            }
             $this->_em->flush();
         }
     }
