@@ -269,15 +269,15 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 
             if (\mkw\Store::isOsztottFizmod()) {
                 $volt = false;
-                if ($bizonylat->getFizetendo1() !== 0) {
+                if ($bizonylat->getFizetendo1()) {
                     $this->createFSzla($bizonylat, 1);
                     $volt = true;
                 }
-                if ($bizonylat->getFizetendo2() !== 0) {
+                if ($bizonylat->getFizetendo2()) {
                     $this->createFSzla($bizonylat, 2);
                     $volt = true;
                 }
-                if ($bizonylat->getFizetendo3() !== 0) {
+                if ($bizonylat->getFizetendo3()) {
                     $this->createFSzla($bizonylat, 3);
                     $volt = true;
                 }

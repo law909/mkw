@@ -359,3 +359,4 @@ $router->map('POST', '/admin/otpay/storno', 'megrendelesfejController#otpaystorn
 $router->map('GET', '/admin/lista/boltbannincsmasholvan', 'listaController#boltbannincsmasholvan', 'adminlistaboltbannincsmasholvan');
 //$router->map('GET', '/admin/fillbiztetelvaltozat', 'adminController#fillBiztetelValtozat', 'adminfillbiztetelvaltozat');
 $router->map('POST', '/admin/napijelentes', 'adminController#printNapijelentes', 'adminnapijelentes');
+$router->map('GET', '/admin/genfszla', 'adminController#generateFolyoszamla', 'admingeneratefolyoszamla');

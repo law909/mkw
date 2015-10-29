@@ -101,4 +101,24 @@ class adminController extends mkwhelpers\Controller {
         }
         echo 'kesz';
     }
+
+    public function generateFolyoszamla() {
+        $repo = $this->getRepo('Entities\Bizonylatfej');
+        $filter = array();
+        $filter['fields'][] = 'penztmozgat';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = true;
+        $bfs = $repo->getAll($filter);
+        foreach($bfs as $bf) {
+            $repo->createFolyoszamla($bf);
+        }
+
+        $bbrepo = $this->getRepo('Entities\Bankbizonylatfej');
+        $bfs = $bbrepo->getAll();
+        foreach($bfs as $bf) {
+            $bbrepo->createFolyoszamla($bf);
+        }
+
+        echo 'kesz';
+    }
 }
