@@ -56,6 +56,7 @@ class fantaController extends \mkwhelpers\MattableController {
                     $this->getEm()->transactional(function($em) use ($szamlak) {
                         foreach($szamlak as $szamla) {
                             $szamla->removeParbizonylatfej();
+                            $szamla->setPenztmozgat(false);
                             $em->persist($szamla);
                             foreach($szamla->getBizonylattetelek() as $biztetel) {
                                 $biztetel->removeParbizonylattetel();
