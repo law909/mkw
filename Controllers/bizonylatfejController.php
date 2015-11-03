@@ -899,7 +899,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('uzletkotolist', $uk->getSelectList($ukid));
 
         $view->setVar('esedekessegalap', store::getParameter(\mkw\consts::Esedekessegalap, 1));
-        $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList(($record ? $record->getReportfile() : ''), ($record ? $record->getBizonylattipusId() : $this->biztipus)));
+        $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList(($record ? $record->getReportfile() : ''),
+            ($record ? $record->getBizonylattipusId() : $this->biztipus)));
         $view->setVar('bizonylatnyelvlist', store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
 
         if (method_exists($this, 'onGetKarb')) {
