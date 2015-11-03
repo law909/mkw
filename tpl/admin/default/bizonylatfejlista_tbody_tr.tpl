@@ -145,13 +145,13 @@
                     </tr>
                 {/if}
                 {if ($setup.bankpenztar)}
-                    {if ($_egyed.penzugyistatusz == 'lejartkiegyenlitetlen')}
+                    {if ($_egyed.penzugyistatusz == -2)}
                         {$cls = 'lejartkiegyenlitetlen'}
-                    {elseif ($_egyed.penzugyistatusz == 'kiegyenlitetlen')}
+                    {elseif ($_egyed.penzugyistatusz == -1)}
                         {$cls = 'kiegyenlitetlen'}
-                    {elseif ($_egyed.penzugyistatusz == 'kiegyenlitett')}
+                    {elseif ($_egyed.penzugyistatusz == 0)}
                         {$cls = 'kiegyenlitett'}
-                    {elseif ($_egyed.penzugyistatusz == 'tulfizetett')}
+                    {elseif ($_egyed.penzugyistatusz == 1)}
                         {$cls = 'tulfizetett'}
                     {/if}
                     <tr>
@@ -162,4 +162,27 @@
             </tbody>
         </table>
     </td>
+    {if ($setup.osztottfizmod)}
+    <td class="cell">
+        <table>
+            <tbody>
+                {foreach $_egyed.osztottegyenlegek as $oe}
+                    {if ($oe.penzugyistatusz == -2)}
+                        {$cls = 'lejartkiegyenlitetlen'}
+                    {elseif ($oe.penzugyistatusz == -1)}
+                        {$cls = 'kiegyenlitetlen'}
+                    {elseif ($oe.penzugyistatusz == 0)}
+                        {$cls = 'kiegyenlitett'}
+                    {elseif ($oe.penzugyistatusz == 1)}
+                        {$cls = 'tulfizetett'}
+                    {/if}
+                    <tr>
+                        <td class="{$cls}">{$oe.esedekesseg}:</td>
+                        <td class="mattable-rightaligned pricenowrap {$cls}">{number_format($oe.egyenleg, 2, '.', ' ')}</td>
+                    </tr>
+                {/foreach}
+            </tbody>
+        </table>
+    </td>
+    {/if}
 </tr>

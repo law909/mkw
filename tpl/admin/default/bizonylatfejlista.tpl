@@ -138,13 +138,16 @@
 <table id="mattable-table">
 <thead>
 	<tr>
-	<th><input id="maincheckbox" type="checkbox"></th>
-    {if ($showbizonylatstatuszeditor)}
-    <th></th>
-    {/if}
-	<th></th>
-	<th></th>
-	<th></th>
+        <th><input id="maincheckbox" type="checkbox"></th>
+        {if ($showbizonylatstatuszeditor)}
+        <th></th>
+        {/if}
+        <th></th>
+        <th></th>
+        <th></th>
+        {if ($setup.osztottfizmod)}
+        <th></th>
+        {/if}
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>

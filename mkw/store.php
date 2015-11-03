@@ -799,4 +799,22 @@ class Store {
         }
         return $valutanem;
     }
+
+    public static function getPenzugyiStatusz($esedekesseg, $egyenleg) {
+        $ma = new \DateTime(self::convDate(date(self::$DateFormat)));
+        if ($egyenleg != 0) {
+            if ($egyenleg > 0) {
+                if ($esedekesseg < $ma) {
+                    return -2;
+                }
+                else {
+                    return -1;
+                }
+            }
+            else {
+                return 1;
+            }
+        }
+        return 0;
+    }
 }

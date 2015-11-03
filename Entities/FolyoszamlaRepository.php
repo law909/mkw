@@ -22,6 +22,20 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
         return $q->getSingleScalarResult();
     }
 
+    public function getSumByHivatkozottBizonylatDatum($bizszam) {
+        $a = $this->alias;
+        $filter = array();
+        $filter['fields'][] = 'hivatkozottbizonylat';
+        $filter['clauses'][] = '=';
+        $filter['values'][] = $bizszam;
+        $q = $this->_em->createQuery('SELECT _xx.hivatkozottdatum,SUM(' . $a . '.brutto * ' . $a . '.irany) AS egyenleg FROM ' . $this->getEntityname() . ' ' . $a
+            . $this->getFilterString($filter)
+            . ' GROUP BY _xx.hivatkozottdatum'
+            . ' ORDER BY _xx.hivatkozottdatum');
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
+    }
+
     public function getSumByPartner($partnerid) {
         $a = $this->alias;
         $filter = array();

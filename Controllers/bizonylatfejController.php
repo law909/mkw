@@ -353,23 +353,23 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
         else {
             $x['egyenleg'] = $t->getEgyenleg();
-            if ($x['egyenleg'] != 0) {
-                if ($x['egyenleg'] > 0) {
-                    $ma = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
-                    if (($t->getEsedekesseg() < $ma) || ($t->getEsedekesseg1() < $ma) ||
-                        ($t->getEsedekesseg2() < $ma) || ($t->getEsedekesseg3() < $ma)) {
-                        $x['penzugyistatusz'] = 'lejartkiegyenlitetlen';
+            if (\mkw\Store::isOsztottFizmod()) {
+                $ma = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+                $egyenlegek = array();
+                $egyenleglist = $t->getOsztottEgyenleg();
+                if ($egyenleglist) {
+                    foreach ($egyenleglist as $e) {
+                        $d = array();
+                        $d['esedekesseg'] = $e['hivatkozottdatum']->format(\mkw\Store::$DateFormat);
+                        $d['egyenleg'] = $e['egyenleg'];
+                        $d['penzugyistatusz'] = \mkw\Store::getPenzugyiStatusz($e['hivatkozottdatum'], $d['egyenleg']);
+                        $egyenlegek[] = $d;
                     }
-                    else {
-                        $x['penzugyistatusz'] = 'kiegyenlitetlen';
-                    }
-                }
-                else {
-                    $x['penzugyistatusz'] = 'tulfizetett';
+                    $x['osztottegyenlegek'] = $egyenlegek;
                 }
             }
             else {
-                $x['penzugyistatusz'] = 'kiegyenlitett';
+                $x['penzugyistatusz'] = \mkw\Store::getPenzugyiStatusz($t->getEsedekesseg(), $x['egyenleg']);
             }
         }
         return $x;
