@@ -33,10 +33,10 @@
                 <p>{$egyed.szamlairszam} {$egyed.szamlavaros}</p>
                 <p>{$egyed.szamlautca}</p>
                 {if ($egyed.partneradoszam)}
-                <p>Adószám / Tax number: {$egyed.partneradoszam}</p>
+                    <p>Adószám / Tax number: {$egyed.partneradoszam}</p>
                 {/if}
                 {if ($egyed.partnereuadoszam)}
-                <p>EU adószám / EU tax number: {$egyed.partnereuadoszam}</p>
+                    <p>EU adószám / EU tax number: {$egyed.partnereuadoszam}</p>
                 {/if}
             </div>
         </div>

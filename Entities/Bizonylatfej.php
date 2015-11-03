@@ -640,6 +640,7 @@ class Bizonylatfej {
         $ret['szallvaros'] = $this->getSzallvaros();
         $ret['szallutca'] = $this->getSzallutca();
         $ret['adoszam'] = $this->getPartneradoszam();
+        $ret['euadoszam'] = $this->getPartnereuadoszam();
         $ret['partneradoszam'] = $this->getPartneradoszam();
         $ret['partnereuadoszam'] = $this->getPartnereuadoszam();
         $ret['webshopmessage'] = $this->getWebshopmessage();

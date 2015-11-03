@@ -6,29 +6,7 @@
         <div class="biznev">{$egyed.bizonylatnev}</div>
         <div class="bizszam textalignright">{$egyed.id}</div>
     </div>
-    <div class="headbox pull-left">
-        <div class="headboxborder border">
-            <div class="headboxinner">
-                <p class="bold">Szállító:</p>
-                <p class="nev bold">{$egyed.tulajnev}</p>
-                <p>{$egyed.tulajirszam} {$egyed.tulajvaros}</p>
-                <p>{$egyed.tulajutca}</p>
-                <p>Adószám: {$egyed.tulajadoszam}</p>
-                <p>Bankszámla: {$egyed.bankszamlanev}</p>
-            </div>
-        </div>
-    </div>
-    <div class="headbox pull-left">
-        <div class="headboxborder border">
-            <div class="headboxinner">
-                <p class="bold">Vevő:</p>
-                <p class="nev bold">{$egyed.szamlanev}</p>
-                <p>{$egyed.szamlairszam} {$egyed.szamlavaros}</p>
-                <p>{$egyed.szamlautca}</p>
-                <p>Adószám: {$egyed.adoszam}</p>
-            </div>
-        </div>
-    </div>
+    {include "biz_headboxki.tpl"}
     <div class="row pull-left row-inner">
         <p class="head2label pull-left">Fizetési mód: {$egyed.fizmodnev|default:"&nbsp;"}</p>
         <p class="head2label pull-left">Kelt: {$egyed.keltstr|default:"&nbsp;"}</p>
