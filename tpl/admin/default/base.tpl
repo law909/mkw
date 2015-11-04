@@ -68,6 +68,10 @@
 		</div>
 		<div class="menu-titlebar" data-caption="{t('Kimutatások')}" data-refcontrol="#ReportTab"></div>
 		<div id="ReportTab">
+            {if ($setup.bankpenztar)}
+                <div><a class="menupont" href="/admin/penzbelista/view">{t('Beérkezett pénz')}</a></div>
+                <div><a class="menupont" href="/admin/kintlevoseglista/view">{t('Kintlevőség')}</a></div>
+            {/if}
 			<div><a class="menupont" href="/admin/fifo/view">{t('Készletérték')}</a></div>
 		</div>
 		<div class="menu-titlebar" data-caption="{t('HR')}" data-refcontrol="#HRTab"></div>

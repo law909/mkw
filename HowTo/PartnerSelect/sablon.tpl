@@ -1,0 +1,1 @@
+{include "comp_partnerselect.tpl"}

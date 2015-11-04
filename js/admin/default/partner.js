@@ -154,7 +154,7 @@ $(document).ready(function(){
 				varosAutocomplete('#SzallIrszamEdit','#SzallVarosEdit');
 			},
 			beforeSerialize:function(form,opt) {
-				var cimkek=new Array(),
+				var cimkek = new Array(),
                     j1 = $('#Jelszo1Edit').val(),
                     j2 = $('#Jelszo2Edit').val();
 				$('.js-cimkekarb').filter('.js-selectedcimke').each(function() {

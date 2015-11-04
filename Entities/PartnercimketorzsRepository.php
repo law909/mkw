@@ -43,7 +43,7 @@ class PartnercimketorzsRepository extends \mkwhelpers\Repository {
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }
-    
+
 	public function getAllNative() {
 		$rsm = new ResultSetMapping();
 		$rsm->addScalarResult('partner_id', 'partner_id');
@@ -109,5 +109,25 @@ class PartnercimketorzsRepository extends \mkwhelpers\Repository {
 		}
 		return false;
 	}
+
+    public function getCimkeNevek($cimkefilter) {
+        $cimkenevek = array();
+        if ($cimkefilter) {
+            if (is_array($cimkefilter)) {
+                $cimkekodok = implode(',', $cimkefilter);
+            }
+            else {
+                $cimkekodok = $cimkefilter;
+            }
+            if ($cimkekodok) {
+                $q = \mkw\Store::getEm()->createQuery('SELECT pc.nev FROM Entities\Partnercimketorzs pc WHERE pc.id IN (' . $cimkekodok . ')');
+                $res = $q->getScalarResult();
+                foreach ($res as $sor) {
+                    $cimkenevek[] = $sor['nev'];
+                }
+            }
+        }
+        return $cimkenevek;
+    }
 
 }

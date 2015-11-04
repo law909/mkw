@@ -62,6 +62,12 @@ if (\mkw\Store::isBankpenztar()) {
 
     $router->map('GET', '/admin/bankbizonylattetel/getemptyrow', 'bankbizonylattetelController#getemptyrow', 'adminbankbizonylattetelgetemptyrow');
     $router->map('POST', '/admin/bankbizonylattetel/save', 'bankbizonylattetelController#save', 'adminbankbizonylattetelsave');
+
+    $router->map('GET', '/admin/kintlevoseglista/view', 'kintlevoseglistaController#view', 'adminkintlevoseglistaview');
+    $router->map('GET', '/admin/kintlevoseglista/get', 'kintlevoseglistaController#createLista', 'adminkintlevoseglistaget');
+
+    $router->map('GET', '/admin/penzbelista/view', 'penzbelistaController#view', 'adminpenzbelistaview');
+    $router->map('GET', '/admin/penzbelista/get', 'penzbelistaController#createLista', 'adminpenzbelistaget');
 }
 
 $router->map('GET', '/admin/getsmallurl', 'adminController#getSmallUrl', 'admingetsmallurl');

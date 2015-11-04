@@ -87,6 +87,26 @@ class PartnerRepository extends \mkwhelpers\Repository {
         return $q->getScalarResult();
     }
 
+    public function getByCimkek($cimkefilter) {
+        $partnerkodok = array();
+        if ($cimkefilter) {
+            if (is_array($cimkefilter)) {
+                $cimkekodok = implode(',', $cimkefilter);
+            }
+            else {
+                $cimkekodok = $cimkefilter;
+            }
+            if ($cimkekodok) {
+                $q = \mkw\Store::getEm()->createQuery('SELECT p.id FROM Entities\Partnercimketorzs pc JOIN pc.partnerek p WHERE pc.id IN (' . $cimkekodok . ')');
+                $res = $q->getScalarResult();
+                foreach ($res as $sor) {
+                    $partnerkodok[] = $sor['id'];
+                }
+            }
+        }
+        return $partnerkodok;
+    }
+
 	public function countByEmail($email) {
 		$filter = array();
 		$filter['fields'][] = 'email';
