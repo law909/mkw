@@ -59,10 +59,19 @@ class BankbizonylatfejRepository extends \mkwhelpers\Repository {
 
         /** @var \Entities\Bankbizonylattetel $tetel */
         foreach($bizonylat->getBizonylattetelek() as $tetel) {
+            $bbf = $tetel->getBizonylatfej();
+            if ($tetel->getHivatkozottbizonylat()) {
+                /** @var \Entities\Bizonylatfej $bf */
+                $bf = \mkw\Store::getEm()->getRepository('Entities\Bizonylatfej')->find($tetel->getHivatkozottbizonylat());
+            }
             $fszla = new \Entities\Folyoszamla();
             $fszla->setDatum($tetel->getDatum());
             $fszla->setPartner($tetel->getPartner());
-            $fszla->setBizonylattipus($tetel->getBizonylatfej()->getBizonylattipus());
+            if ($bf) {
+                $fszla->setUzletkoto($bf->getUzletkoto());
+                $fszla->setFizmod($bf->getFizmod());
+            }
+            $fszla->setBizonylattipus($bbf->getBizonylattipus());
             $fszla->setRontott($tetel->getRontott());
             $fszla->setStorno(false);
             $fszla->setStornozott(false);

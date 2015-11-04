@@ -261,7 +261,12 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
      * @param \Entities\Bizonylatfej $bizonylat
      */
     public function createFolyoszamla($bizonylat) {
-        if ($bizonylat->getPenztmozgat()) {
+        $fm = $bizonylat->getFizmod();
+        $fmt = '';
+        if ($fm) {
+            $fmt = $fm->getTipus();
+        }
+        if ($bizonylat->getPenztmozgat() && ($fmt !== 'P')) {
             foreach($bizonylat->getFolyoszamlak() as $fsz) {
                 $this->_em->remove($fsz);
             }
