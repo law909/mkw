@@ -17,18 +17,18 @@
             {$sumbrutto = $sumbrutto + $elem.brutto}
             <tr>
                 <td class="datacell">{$elem.caption}</td>
-                <td class="textalignright datacell">{number_format($elem.mennyiseg, 0, ',', ' ')}</td>
-                <td class="textalignright datacell">{number_format($elem.netto, 2, ',', ' ')}</td>
-                <td class="textalignright datacell">{number_format($elem.brutto, 2, ',', ' ')}</td>
+                <td class="textalignright datacell">{bizformat($elem.mennyiseg, 0)}</td>
+                <td class="textalignright datacell">{bizformat($elem.netto)}</td>
+                <td class="textalignright datacell">{bizformat($elem.brutto)}</td>
             </tr>
         {/foreach}
     </tbody>
     <tfoot>
         <tr>
             <td class="headercell">Összesen</td>
-            <td class="textalignright headercell">{number_format($summenny, 0, ',', ' ')}</td>
-            <td class="textalignright headercell">{number_format($sumnetto, 2, ',', ' ')}</td>
-            <td class="textalignright headercell">{number_format($sumbrutto, 2, ',', ' ')}</td>
+            <td class="textalignright headercell">{bizformat($summenny, 0)}</td>
+            <td class="textalignright headercell">{bizformat($sumnetto)}</td>
+            <td class="textalignright headercell">{bizformat($sumbrutto)}</td>
         </tr>
     </tfoot>
 </table>

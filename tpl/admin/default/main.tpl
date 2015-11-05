@@ -55,5 +55,26 @@
                 {include "napijelentesbody.tpl"}
             </div>
         </div>
+        {if ($setup.bankpenztar)}
+        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+            <div class="ui-widget-header ui-corner-top">
+                <div class="mainboxinner ui-corner-top">Lejárt kintlevőségek</div>
+            </div>
+            <div class="mainboxinner">
+                <div class="mainboxinner">
+                    <table>
+                        <tbody>
+                            {foreach $lejartkintlevoseg as $lk}
+                            <tr>
+                                <td>{$lk.nev}</td>
+                                <td class="textalignright">{bizformat($lk.egyenleg)}</td>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {/if}
     </div>
 {/block}

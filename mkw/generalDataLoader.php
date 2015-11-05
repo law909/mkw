@@ -25,6 +25,9 @@ class generalDataLoader {
         $view->setVar('setup', $setup);
         $view->setVar('maintheme', Store::getTheme());
         $view->setVar('today', date(store::$DateFormat));
+        if (\mkw\Store::isBankpenztar()) {
+            $view->setVar('lejartkintlevoseg', \mkw\Store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem());
+        }
         $view->setVar('uithemes', array(
             'black-tie',
             'blitzer',

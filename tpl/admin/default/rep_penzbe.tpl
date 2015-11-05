@@ -17,7 +17,7 @@
             <tr>
                 <td class="cell">{$elem.datum}</td>
                 <td class="cell">{$elem.partnernev}</td>
-                <td class="cell textalignright">{$elem.osszeg} {$elem.valutanem}</td>
+                <td class="cell textalignright">{bizformat($elem.osszeg)} {$elem.valutanem}</td>
             </tr>
         {/foreach}
         </tbody>
@@ -33,7 +33,7 @@
         {foreach $valutanemosszesito as $elem}
             <tr>
                 <td class="cell">{$elem.nev}</td>
-                <td class="cell textalignright">{$elem.osszeg}</td>
+                <td class="cell textalignright">{bizformat($elem.osszeg)}</td>
             </tr>
         {/foreach}
         </tbody>

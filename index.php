@@ -18,8 +18,11 @@ function t($msgid) {
 	return $__translate->_($msgid);
 }
 
-function bizformat($mit) {
-    return number_format($mit, 2, ',', ' ');
+function bizformat($mit, $mire = false) {
+    if ($mire === false) {
+        $mire = 2;
+    }
+    return number_format($mit, $mire, ',', ' ');
 }
 
 // TODO find an appropriate place

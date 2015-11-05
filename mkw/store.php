@@ -300,6 +300,7 @@ class Store {
     }
 
     /**
+     * Main sablonokhoz kell
      * @param $v
      * @param bool|true $needmenu
      */
