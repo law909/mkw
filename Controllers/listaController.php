@@ -113,6 +113,10 @@ class listaController extends \mkwhelpers\Controller {
             $filter['clauses'][] = '=';
             $filter['values'][] = $datum;
 
+            $filter['fields'][] = 'bf.rontott';
+            $filter['clauses'][] = '=';
+            $filter['values'][] = false;
+
             $filter['fields'][] = array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod');
             $filter['clauses'][] = 'LIKE';
             $filter['values'][] = $csoport['karkod'] . '%';
