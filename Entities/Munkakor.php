@@ -17,6 +17,10 @@ class Munkakor {
 	 * @ORM\Column(type="string",length=255)
 	 */
 	private $nev;
+    /**
+     * @ORM\Column(type="integer",nullable=false)
+     */
+    private $jog;
 	/** @ORM\OneToMany(targetEntity="Dolgozo", mappedBy="munkakor") */
 	private $dolgozok;
 
@@ -54,4 +58,19 @@ class Munkakor {
 		}
 		return false;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getJog() {
+        return $this->jog;
+    }
+
+    /**
+     * @param mixed $jog
+     */
+    public function setJog($jog) {
+        $this->jog = $jog;
+    }
+
 }

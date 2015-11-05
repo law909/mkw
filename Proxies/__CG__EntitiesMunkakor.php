@@ -64,10 +64,10 @@ class Munkakor extends \Entities\Munkakor implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'id', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'nev', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'dolgozok');
+            return array('__isInitialized__', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'id', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'nev', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'jog', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'dolgozok');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'id', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'nev', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'dolgozok');
+        return array('__isInitialized__', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'id', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'nev', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'jog', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'dolgozok');
     }
 
     /**
@@ -241,6 +241,28 @@ class Munkakor extends \Entities\Munkakor implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeDolgozo', array($dolgozo));
 
         return parent::removeDolgozo($dolgozo);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getJog()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJog', array());
+
+        return parent::getJog();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setJog($jog)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJog', array($jog));
+
+        return parent::setJog($jog);
     }
 
 }

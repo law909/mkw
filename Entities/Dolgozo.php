@@ -198,6 +198,13 @@ class Dolgozo {
         }
     }
 
+    public function getJog() {
+        if ($this->munkakor) {
+            return $this->munkakor->getJog();
+        }
+        return 0;
+    }
+
     public function getJelenletek() {
         return $this->jelenletek;
     }

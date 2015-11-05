@@ -18,6 +18,10 @@ function t($msgid) {
 	return $__translate->_($msgid);
 }
 
+function haveJog($jog) {
+    return \mkw\Store::haveJog($jog);
+}
+
 function bizformat($mit, $mire = false) {
     if ($mire === false) {
         $mire = 2;

@@ -827,4 +827,8 @@ class Store {
     public static function getRouteName() {
         return self::$routename;
     }
+
+    public static function haveJog($jog) {
+        return self::getAdminSession()->loggedinuser['jog'] >= $jog;
+    }
 }

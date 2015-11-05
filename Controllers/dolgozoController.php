@@ -157,6 +157,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
                 \mkw\Store::getAdminSession()->loggedinuser = array(
                     'name' => $d->getNev(),
                     'id' => $d->getId(),
+                    'jog' => ($sysadmin ? 999 : $d->getJog()),
                     'admin' => ($sysadmin ? true : $d->getMunkakorId() == \mkw\Store::getParameter(\mkw\consts::AdminRole, 1))
                 );
                 Header('Location: ' . Store::getRouter()->generate('adminview'));

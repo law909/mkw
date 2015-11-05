@@ -488,6 +488,17 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getJog()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJog', array());
+
+        return parent::getJog();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getJelenletek()
     {
 
