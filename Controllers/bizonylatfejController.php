@@ -65,13 +65,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
                 break;
             case 'superzone':
-                $a = date(\mkw\Store::$DateFormat);
+                $a = false;
                 $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
                 $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
                 $view->setVar('bizonylatrontottfilter', 1);
                 break;
         }
-        $view->setVar('datumtolfilter', $a);
+        if ($a) {
+            $view->setVar('datumtolfilter', $a);
+        }
     }
 
     protected function loadFilters($filter) {
