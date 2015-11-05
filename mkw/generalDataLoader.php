@@ -24,9 +24,19 @@ class generalDataLoader {
         $setup = store::getSetup();
         $view->setVar('setup', $setup);
         $view->setVar('maintheme', Store::getTheme());
-        $view->setVar('today', date(store::$DateFormat));
-        if (\mkw\Store::isBankpenztar()) {
+        $view->setVar('today', date(Store::$DateFormat));
+        if (\mkw\Store::isBankpenztar() &&
+            ((Store::getRouteName() === 'adminview') || (Store::getRouteName() === 'adminview2'))) {
             $view->setVar('lejartkintlevoseg', \mkw\Store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem());
+            $view->setVar('kintlevoseg', \mkw\Store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem());
+            if (Store::getTheme() === 'superzone') {
+                $spc = Store::getParameter(\mkw\consts::SpanyolCimke);
+                $partnerkodok = \mkw\Store::getEm()->getRepository('Entities\Partner')->getByCimkek(array($spc));
+                $view->setVar('spanyollejartkintlevoseg',
+                    \mkw\Store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem($partnerkodok));
+                $view->setVar('spanyolkintlevoseg',
+                    \mkw\Store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem($partnerkodok));
+            }
         }
         $view->setVar('uithemes', array(
             'black-tie',

@@ -23,6 +23,7 @@ class consts {
     const Locale = 'locale';
     const NullasAfa = 'nullasafa';
     const KiskerCimke = 'kiskercimke';
+    const SpanyolCimke = 'spanyolcimke';
 
     const Tulajnev = 'tulajnev';
     const Tulajirszam = 'tulajirszam';

@@ -34,6 +34,7 @@ class Store {
     private static $loggedinuser;
     private static $loggedinuk;
     private static $loggedinukpartner;
+    private static $routename;
     public static $DateFormat = 'Y.m.d';
     public static $SQLDateFormat = 'Y-m-d';
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
@@ -817,5 +818,13 @@ class Store {
             }
         }
         return 0;
+    }
+
+    public static function setRouteName($name) {
+        self::$routename = $name;
+    }
+
+    public static function getRouteName() {
+        return self::$routename;
     }
 }

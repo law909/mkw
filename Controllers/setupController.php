@@ -209,6 +209,8 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::KiskerCimke);
         $partnercimkec = new partnercimkeController($this->params);
         $view->setVar('kiskercimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::SpanyolCimke);
+        $view->setVar('spanyolcimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
 
         $mkcs = new munkakorController($this->params);
         $p = $repo->find(\mkw\consts::AdminRole);
@@ -469,6 +471,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::KiskerCimke, '');
+        }
+
+        $spanyolcimke = store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('spanyolcimke', 0));
+        if ($spanyolcimke) {
+            $this->setObj(\mkw\consts::SpanyolCimke, $spanyolcimke->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::SpanyolCimke, '');
         }
 
         $sz = store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozattipusszin', 0));

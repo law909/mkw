@@ -111,6 +111,7 @@ if ($ini['admin'] && file_exists('adminroute.php')) {
 $match = $router->match();
 
 if ($match) {
+    Store::setRouteName($match['name']);
     if (substr($match['name'], 0, 5) === 'admin') {
         Store::setAdminMode();
         if ((!in_array($match['name'], array('adminshowlogin', 'adminlogin', 'adminrlbexport')))) {

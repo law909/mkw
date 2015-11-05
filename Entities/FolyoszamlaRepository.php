@@ -61,16 +61,38 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getLejartKintlevosegByValutanem() {
+    public function getLejartKintlevosegByValutanem($partnerkodok = null) {
+        $pluszsql = '';
+        if ($partnerkodok) {
+            $pluszsql = ' WHERE (partner_id IN (' . implode(',', $partnerkodok) . '))';
+        }
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('nev', 'nev');
         $rsm->addScalarResult('egyenleg', 'egyenleg');
         $sql = 'SELECT v.nev,SUM(egyenleg) AS egyenleg FROM ('
             . ' SELECT valutanem_id,hivatkozottbizonylat,hivatkozottdatum,sum(brutto*irany) AS egyenleg'
             . ' FROM folyoszamla'
+            . $pluszsql
             . ' GROUP BY valutanem_id,hivatkozottbizonylat,hivatkozottdatum) AS egyen'
             . ' LEFT JOIN valutanem v ON (egyen.valutanem_id=v.id)'
             . ' WHERE egyen.hivatkozottdatum<now()'
+            . ' GROUP BY v.nev';
+        $q = $this->_em->createNativeQuery($sql, $rsm);
+        return $q->getScalarResult();
+    }
+
+    public function getKintlevosegByValutanem($partnerkodok = null) {
+        $pluszsql = '';
+        if ($partnerkodok) {
+            $pluszsql = ' WHERE (f.partner_id IN (' . implode(',', $partnerkodok) . '))';
+        }
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('nev', 'nev');
+        $rsm->addScalarResult('egyenleg', 'egyenleg');
+        $sql = 'SELECT v.nev,SUM(f.brutto * f.irany) AS egyenleg '
+            . ' FROM folyoszamla f'
+            . ' LEFT JOIN valutanem v ON (f.valutanem_id=v.id)'
+            . $pluszsql
             . ' GROUP BY v.nev';
         $q = $this->_em->createNativeQuery($sql, $rsm);
         return $q->getScalarResult();

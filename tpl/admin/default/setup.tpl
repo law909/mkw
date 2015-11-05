@@ -144,6 +144,17 @@
 					{/foreach}
 				</select></td>
 			</tr>
+            {if ($maintheme === 'superzone')}
+            <tr>
+                <td><label for="SpanyolCimkeEdit">{t('Spanyol címke')}:</label></td>
+                <td><select id="SpanyolCimkeEdit" name="spanyolcimke">
+                        <option value="">{t('válasszon')}</option>
+                        {foreach $spanyolcimkelist as $_spanyolcimke}
+                            <option value="{$_spanyolcimke.id}"{if ($_spanyolcimke.selected)} selected="selected"{/if}>{$_spanyolcimke.caption}</option>
+                        {/foreach}
+                    </select></td>
+            </tr>
+            {/if}
 			<tr>
 				<td><label for="AdminroleEdit">{t('Admin szerepkör')}:</label></td>
 				<td><select id="AdminroleEdit" name="adminrole">

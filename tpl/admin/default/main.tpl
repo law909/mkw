@@ -58,11 +58,17 @@
         {if ($setup.bankpenztar)}
         <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
             <div class="ui-widget-header ui-corner-top">
-                <div class="mainboxinner ui-corner-top">Lejárt kintlevőségek</div>
+                <div class="mainboxinner ui-corner-top">Kintlevőségek</div>
             </div>
             <div class="mainboxinner">
                 <div class="mainboxinner">
                     <table>
+                        <thead>
+                            <tr>
+                                <th>Lejárt kintlevőség</th>
+                                <th></th>
+                            </tr>
+                        </thead>
                         <tbody>
                             {foreach $lejartkintlevoseg as $lk}
                             <tr>
@@ -72,9 +78,68 @@
                             {/foreach}
                         </tbody>
                     </table>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Össz. kintlevőség</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach $kintlevoseg as $lk}
+                            <tr>
+                                <td>{$lk.nev}</td>
+                                <td class="textalignright">{bizformat($lk.egyenleg)}</td>
+                            </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+        {/if}
+        {if ($setup.bankpenztar && ($maintheme === 'superzone'))}
+            <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+                <div class="ui-widget-header ui-corner-top">
+                    <div class="mainboxinner ui-corner-top">Spanyol kintlevőségek</div>
+                </div>
+                <div class="mainboxinner">
+                    <div class="mainboxinner">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Lejárt kintlevőség</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $spanyollejartkintlevoseg as $lk}
+                                <tr>
+                                    <td>{$lk.nev}</td>
+                                    <td class="textalignright">{bizformat($lk.egyenleg)}</td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Össz. kintlevőség</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $spanyolkintlevoseg as $lk}
+                                <tr>
+                                    <td>{$lk.nev}</td>
+                                    <td class="textalignright">{bizformat($lk.egyenleg)}</td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         {/if}
     </div>
 {/block}
