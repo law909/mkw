@@ -68,7 +68,14 @@ class adminController extends mkwhelpers\Controller {
     }
 
     public function setUITheme() {
-        store::setParameter('uitheme', $this->params->getStringRequestParam('uitheme', 'sunny'));
+        $dolgozo = $this->getRepo('Entities\Dolgozo')->find(\mkw\Store::getAdminSession()->loggedinuser['id']);
+        if ($dolgozo) {
+            $theme = $this->params->getStringRequestParam('uitheme', 'sunny');
+            $dolgozo->setUitheme($theme);
+            $this->getEm()->persist($dolgozo);
+            $this->getEm()->flush();
+            \mkw\Store::getAdminSession()->loggedinuser['uitheme'] = $theme;
+        }
     }
 
     public function getSmallUrl() {

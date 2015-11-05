@@ -64,10 +64,10 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek');
+            return array('__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek');
+        return array('__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme');
     }
 
     /**
@@ -582,6 +582,28 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'checkJelszo', array($adat));
 
         return parent::checkJelszo($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUitheme()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUitheme', array());
+
+        return parent::getUitheme();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setUitheme($uitheme)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUitheme', array($uitheme));
+
+        return parent::setUitheme($uitheme);
     }
 
 }

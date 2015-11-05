@@ -13,7 +13,11 @@ class generalDataLoader {
             $view->setVar('mobilebrowser', false);
         }
         $view->setVar('theme', store::getConfigValue('theme'));
-        $view->setVar('uitheme', store::getParameter(consts::Uitheme, 'sunny'));
+        $uitheme = \mkw\Store::getAdminSession()->loggedinuser['uitheme'];
+        if (!$uitheme) {
+            $uitheme = 'sunny';
+        }
+        $view->setVar('uitheme', $uitheme);
         $view->setVar('mainurl', store::getConfigValue('mainurl'));
         $view->setVar('userloggedin', Store::getAdminSession()->pk);
         $view->setVar('loggedinuser', Store::getAdminSession()->loggedinuser);

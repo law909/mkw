@@ -58,6 +58,10 @@ class Dolgozo {
 
     /** @ORM\OneToMany(targetEntity="Jelenletiiv", mappedBy="dolgozo") */
     private $jelenletek;
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $uitheme;
 
     public function __construct() {
         $this->jelenletek = new ArrayCollection();
@@ -242,6 +246,20 @@ class Dolgozo {
 
     public function checkJelszo($adat) {
         return $this->jelszo === sha1(strtoupper(md5($adat)) . \mkw\Store::getAdminSalt());
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUitheme() {
+        return $this->uitheme;
+    }
+
+    /**
+     * @param mixed $uitheme
+     */
+    public function setUitheme($uitheme) {
+        $this->uitheme = $uitheme;
     }
 
 }
