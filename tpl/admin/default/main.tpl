@@ -16,6 +16,7 @@
                 <button class="js-arfolyamdownload ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Letölt</span></button>
             </div>
         </div>
+        {if (haveJog(20))}
         <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Egy raktárban nincs, de a többiben van</div>
@@ -40,6 +41,7 @@
                 </form>
             </div>
         </div>
+        {/if}
     </div>
     <div>
         <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">

@@ -33,29 +33,36 @@
 		<div><a class="menupont" href="/admin/logout">{t('Kijelentkezés')}</a></div>
 		<div class="menu-titlebar" data-caption="{t('Kereskedelem')}" data-refcontrol="#KereskedelemTab"></div>
 		<div id="KereskedelemTab">
+            {if (haveJog(20))}
 			<div><a class="menupont" href="/admin/bevetfej/viewlist">{t('Bevételezések')}</a></div>
+            {/if}
 			<div><a class="menupont" href="/admin/kivetfej/viewlist">{t('Kivétek')}</a></div>
-            {if ($maintheme == 'superzone')}
+            {if (($maintheme == 'superzone') && haveJog(20))}
                 <div><a class="menupont" href="/admin/egyebfej/viewlist">{t('Egyéb mozgások')}</a></div>
             {/if}
+            {if (haveJog(20))}
 			<div><a class="menupont" href="/admin/megrendelesfej/viewlist">{t('Megrendelések')}</a></div>
-            {if ($maintheme != 'mkwcansas')}
+            {/if}
+            {if (($maintheme != 'mkwcansas') && haveJog(20))}
     			<div><a class="menupont" href="/admin/szallitofej/viewlist">{t('Szállítólevelek')}</a></div>
             {/if}
 			<div><a class="menupont" href="/admin/szamlafej/viewlist">{t('Számlák')}</a></div>
 			<div><a class="menupont" href="/admin/keziszamlafej/viewlist">{t('Kézi számlák')}</a></div>
 			<div><a class="menupont" href="/admin/partner/viewlist">{t('Partnerek')}</a></div>
 			<div><a class="menupont" href="/admin/termek/viewlist">{t('Termékek')}</a></div>
+            {if (haveJog(20))}
 			<div><a class="menupont" href="/admin/termekfa/viewlist">{t('Termék kategóriák')}</a></div>
 			<div><a class="menupont" href="/admin/termekcimke/viewlist">{t('Termékcímkék')}</a></div>
 			<div><a class="menupont" href="/admin/partnercimke/viewlist">{t('Partnercímkék')}</a></div>
+            {/if}
 		</div>
-		{if ($setup.bankpenztar)}
+		{if (($setup.bankpenztar) && haveJog(20))}
             <div class="menu-titlebar" data-caption="{t('Bank, pénztár')}" data-refcontrol="#BankTab"></div>
             <div id="BankTab">
                 <div><a class="menupont" href="/admin/bankbizonylatfej/viewlist">{t('Bank')}</a></div>
             </div>
 		{/if}
+        {if (haveJog(20))}
 		<div class="menu-titlebar" data-caption="{t('Webáruház')}" data-refcontrol="#WebTab"></div>
 		<div id="WebTab">
 			<div><a class="menupont" href="/admin/kosar/viewlist">{t('Kosár')}</a></div>
@@ -98,6 +105,7 @@
             <div><a class="menupont js-regeneratekarkod" href="#">{t('Termék kat. rendezése')}</a></div>
         </div>
 		<div><a class="menupont" href="/admin/setup/view">{t('Beállítások')}</a></div>
+        {/if}
 		<div>
 			<select id="ThemeSelect">
 				{foreach $uithemes as $_uitheme}
