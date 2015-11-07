@@ -14,11 +14,6 @@ class TermekFaRepository extends \mkwhelpers\Repository {
         $this->setOrders(array(
             '1' => array('caption' => 'név szerint növekvő', 'order' => array('_xx.nev' => 'ASC'))
         ));
-        /* MINTA
-          $this->setBatches(array(
-          '1'=>'áthelyezés másik címkecsoportba'
-          ));
-         */
     }
 
     public function regenerateKarKod() {
@@ -31,10 +26,9 @@ class TermekFaRepository extends \mkwhelpers\Repository {
     }
 
     private function _regenerateKarKod($szuloid, $szulokarkod) {
-//		$rsm=new ResultSetMapping();
         foreach ($this->fatomb as $key => $val) {
             if ($val['parent_id'] == $szuloid) {
-                $q = $this->_em->createQuery('UPDATE ' . $this->entityname . ' x SET x.karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.id=' . $val['id']);
+                $q = $this->_em->createQuery('UPDATE Entities\TermekFa x SET x.karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.id=' . $val['id']);
                 $q->Execute();
                 $q = $this->_em->createQuery('UPDATE Entities\Termek x SET x.termekfa1karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.termekfa1=' . $val['id']);
                 $q->Execute();

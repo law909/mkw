@@ -2,6 +2,8 @@
 
 namespace Entities;
 
+use mkwhelpers\FilterDescriptor;
+
 class FoxpostTerminalRepository extends \mkwhelpers\Repository {
 
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
@@ -10,19 +12,16 @@ class FoxpostTerminalRepository extends \mkwhelpers\Repository {
     }
 
     public function getCsoportok() {
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT DISTINCT ' . $a . '.csoport'
-                . ' FROM ' . $this->entityname . ' ' . $a
-                . ' ORDER BY ' . $a . '.csoport');
+        $q = $this->_em->createQuery('SELECT DISTINCT _xx.csoport'
+                . ' FROM Entities\FoxpostTerminal _xx'
+                . ' ORDER BY _xx.csoport');
         return $q->getScalarResult();
     }
 
     public function getByCsoport($csoport = null) {
         if ($csoport) {
-            $filter = array();
-            $filter['fields'][] = 'csoport';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $csoport;
+            $filter = new FilterDescriptor();
+            $filter->addFilter('csoport', '=', $csoport);
         }
         $rec = $this->getRepo('Entities\FoxpostTerminal')->getAll($filter);
         return $rec;

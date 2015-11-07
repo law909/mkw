@@ -2,6 +2,8 @@
 
 namespace Entities;
 
+use mkwhelpers\FilterDescriptor;
+
 class FizmodRepository extends \mkwhelpers\Repository {
 
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
@@ -17,19 +19,13 @@ class FizmodRepository extends \mkwhelpers\Repository {
         if (!is_null($szmid)) {
             $szm = $this->_em->getRepository('Entities\Szallitasimod')->find($szmid);
         }
-        $filter = array();
-        $filter['fields'][] = 'webes';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = true;
+        $filter = new FilterDescriptor();
+        $filter->addFilter('webes', '=', true);
         if ($szm) {
-            $filter['fields'][] = 'id';
-            $filter['clauses'][] = 'IN';
-            $filter['values'][] = explode(',', $szm->getFizmodok());
+            $filter->addFilter('id', 'IN', explode(',', $szm->getFizmodok()));
         }
         if ($exc) {
-            $filter['fields'][] = 'id';
-            $filter['clauses'][] = 'NOT IN';
-            $filter['values'][] = $exc;
+            $filter->addFilter('id', 'NOT IN', $exc);
         }
         return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
     }

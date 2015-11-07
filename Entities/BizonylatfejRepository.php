@@ -4,48 +4,50 @@ namespace Entities;
 
 class BizonylatfejRepository extends \mkwhelpers\Repository {
 
-	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
-		parent::__construct($em, $class);
-		$this->setEntityname('Entities\Bizonylatfej');
-		$this->setOrders(array(
-			'1' => array('caption' => 'biz.szám szerint csökkenő', 'order' => array('_xx.id' => 'DESC')),
-			'2' => array('caption' => 'biz.szám szerint növekvő', 'order' => array('_xx.id' => 'ASC')),
-            '3' => array('caption' => 'kelt szerint csökkenő', 'order' => array('_xx.kelt' => 'DESC','_xx.id' => 'DESC')),
-            '4' => array('caption' => 'kelt szerint növekvő', 'order' => array('_xx.kelt' => 'DESC','_xx.id' => 'DESC')),
-			'5' => array('caption' => 'er.biz.szám szerint csökkenő', 'order' => array('_xx.erbizonylatszam' => 'DESC')),
-			'6' => array('caption' => 'er.biz.szám szerint növekvő', 'order' => array('_xx.erbizonylatszam' => 'ASC'))
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+        parent::__construct($em, $class);
+        $this->setEntityname('Entities\Bizonylatfej');
+        $this->setOrders(array(
+            '1' => array('caption' => 'biz.szám szerint csökkenő', 'order' => array('_xx.id' => 'DESC')),
+            '2' => array('caption' => 'biz.szám szerint növekvő', 'order' => array('_xx.id' => 'ASC')),
+            '3' => array('caption' => 'kelt szerint csökkenő', 'order' => array('_xx.kelt' => 'DESC', '_xx.id' => 'DESC')),
+            '4' => array('caption' => 'kelt szerint növekvő', 'order' => array('_xx.kelt' => 'DESC', '_xx.id' => 'DESC')),
+            '5' => array('caption' => 'er.biz.szám szerint csökkenő', 'order' => array('_xx.erbizonylatszam' => 'DESC')),
+            '6' => array('caption' => 'er.biz.szám szerint növekvő', 'order' => array('_xx.erbizonylatszam' => 'ASC'))
         ));
-	}
+    }
 
     public function getReportfileSelectList($sel, $biztip) {
         $elo = 'biz_' . $biztip;
         $files = dir(\mkw\Store::getAdminDefaultTemplatePath());
         $list = array();
         while (false !== ($entry = $files->read())) {
-            if (($entry != '.') && ($entry !='..')) {
+            if (($entry != '.') && ($entry != '..')) {
                 $path_parts = pathinfo($entry);
                 $xx = substr($path_parts['basename'], 0, strlen($elo));
                 if ($path_parts['extension']
                     && ($path_parts['extension'] == 'tpl')
-                    && ($xx == $elo)) {
+                    && ($xx == $elo)
+                ) {
                     $list[$entry] = $entry;
                 }
             }
         }
         $files = dir(\mkw\Store::getAdminTemplatePath());
         while (false !== ($entry = $files->read())) {
-            if (($entry != '.') && ($entry !='..')) {
+            if (($entry != '.') && ($entry != '..')) {
                 $path_parts = pathinfo($entry);
                 $xx = substr($path_parts['basename'], 0, strlen($elo));
                 if ($path_parts['extension']
                     && ($path_parts['extension'] == 'tpl')
-                    && ($xx == $elo)) {
+                    && ($xx == $elo)
+                ) {
                     $list[$entry] = $entry;
                 }
             }
         }
         $ret = array();
-        foreach($list as $l) {
+        foreach ($list as $l) {
             $ret[] = array(
                 'id' => $l,
                 'caption' => $l,
@@ -59,29 +61,28 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return parent::findWithJoins((string)$id);
     }
 
-	public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-		$a = $this->alias;
-		$q = $this->_em->createQuery('SELECT ' . $a
-				. ' FROM ' . $this->getEntityname() . ' ' . $a
-				. $this->getFilterString($filter)
-				. $this->getOrderString($order));
-		$q->setParameters($this->getQueryParameters($filter));
-		if ($offset > 0) {
-			$q->setFirstResult($offset);
-		}
-		if ($elemcount > 0) {
-			$q->setMaxResults($elemcount);
-		}
-		return $q->getResult();
-	}
+    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
+        $q = $this->_em->createQuery('SELECT _xx'
+            . ' FROM Entities\Bizonylatfej _xx'
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order));
+        $q->setParameters($this->getQueryParameters($filter));
+        if ($offset > 0) {
+            $q->setFirstResult($offset);
+        }
+        if ($elemcount > 0) {
+            $q->setMaxResults($elemcount);
+        }
+        return $q->getResult();
+    }
 
-	public function getCount($filter) {
-		$a = $this->alias;
-		$q = $this->_em->createQuery('SELECT COUNT(' . $a . ') FROM ' . $this->getEntityname() . ' ' . $a
-				. $this->getFilterString($filter));
-		$q->setParameters($this->getQueryParameters($filter));
-		return $q->getSingleScalarResult();
-	}
+    public function getCount($filter) {
+        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+            . ' FROM Entities\Bizonylatfej _xx'
+            . $this->getFilterString($filter));
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getSingleScalarResult();
+    }
 
     /**
      * @param $bizszam
@@ -90,31 +91,22 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
      * @return null
      */
     public function getTetelsor($bizszam, $termekid, $valtozatid = null) {
-        $filter = array();
+        $filter = new \mkwhelpers\FilterDescriptor();
         if ($bizszam) {
-            $filter['fields'][] = 'bizonylatfej';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $bizszam;
+            $filter->addFilter('bizonylatfej', '=', $bizszam);
         }
         if ($termekid) {
-            $filter['fields'][] = 'termek';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $termekid;
+            $filter->addFilter('termek', '=', $termekid);
         }
         if ($valtozatid) {
-            $filter['fields'][] = 'termekvaltozat';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $valtozatid;
+            $filter->addFilter('termekvaltozat', '=', $valtozatid);
         }
         if (count($filter) == 0) {
-            $filter['fields'][] = 'id';
-            $filter['clauses'][] = '<';
-            $filter['values'][] = '0';
+            $filter->addFilter('id', '<', '0');
         }
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT ' . $a
-                . ' FROM Entities\Bizonylattetel ' . $a
-                . $this->getFilterString($filter));
+        $q = $this->_em->createQuery('SELECT _xx'
+            . ' FROM Entities\Bizonylattetel _xx'
+            . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
         $r = $q->getResult();
         if (count($r) > 0) {
@@ -150,7 +142,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 
             $ertek = 0;
             $cnt = 0;
-            foreach($bizfej->getBizonylattetelek() as $btetel) {
+            foreach ($bizfej->getBizonylattetelek() as $btetel) {
                 if ($btetel->getTermekId() != $termekid) {
                     $cnt++;
                     $ertek = $ertek + $btetel->getBrutto();
@@ -267,7 +259,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $fmt = $fm->getTipus();
         }
         if ($bizonylat->getPenztmozgat() && ($fmt !== 'P')) {
-            foreach($bizonylat->getFolyoszamlak() as $fsz) {
+            foreach ($bizonylat->getFolyoszamlak() as $fsz) {
                 $this->_em->remove($fsz);
             }
             $bizonylat->clearFolyoszamlak();
@@ -296,13 +288,14 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $this->_em->flush();
         }
     }
+
     /**
      * @param \Entities\Bizonylatfej $o
      * @return array
      */
     public function getAFAOsszesito($o) {
         $ret = array();
-        foreach($o->getBizonylattetelek() as $tetel) {
+        foreach ($o->getBizonylattetelek() as $tetel) {
             $a = $tetel->getAfa();
             if (!array_key_exists($tetel->getAfaId(), $ret)) {
                 $ret[$tetel->getAfaId()] = array(
@@ -328,18 +321,20 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 $locale = $b->getBizonylatnyelv();
             }
         }
-        $filter = array();
-        $filter['fields'][] = 'id';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $id;
-		$a = $this->alias;
-		$q = $this->_em->createQuery('SELECT ' . $a . ',bt'
-			. ' FROM ' . $this->getEntityname() . ' ' . $a
-            . ' LEFT JOIN ' . $a . '.bizonylattetelek bt'
-			. $this->getFilterString($filter));
-		$q->setParameters($this->getQueryParameters($filter));
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('id', '=', $id);
+
+        $q = $this->_em->createQuery('SELECT _xx, bt'
+            . ' FROM Entities\Bizonylatfej _xx'
+            . ' LEFT JOIN _xx.bizonylattetelek bt'
+            . $this->getFilterString($filter));
+
+        $q->setParameters($this->getQueryParameters($filter));
+
         \mkw\Store::setTranslationHint($q, $locale);
-		$res = $q->getResult();
+
+        $res = $q->getResult();
         if (count($res)) {
             return $res[0];
         }

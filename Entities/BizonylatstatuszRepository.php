@@ -16,12 +16,11 @@ class BizonylatstatuszRepository extends \mkwhelpers\Repository {
     }
 
     public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT ' . $a . ',et'
-                . ' FROM ' . $this->entityname . ' ' . $a
-                . ' LEFT JOIN ' . $a . '.emailtemplate et'
-                . $this->getFilterString($filter)
-                . $this->getOrderString($order));
+        $q = $this->_em->createQuery('SELECT _xx,et'
+            . ' FROM Entities\Bizonylatstatusz _xx'
+            . ' LEFT JOIN _xx.emailtemplate et'
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -33,10 +32,10 @@ class BizonylatstatuszRepository extends \mkwhelpers\Repository {
     }
 
     public function getCount($filter) {
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT COUNT(' . $a . ') FROM ' . $this->entityname . ' ' . $a
-                . ' LEFT JOIN ' . $a . '.emailtemplate et'
-                . $this->getFilterString($filter));
+        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+            . ' FROM Entities\Bizonylatstatusz _xx'
+            . ' LEFT JOIN _xx.emailtemplate et'
+            . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }

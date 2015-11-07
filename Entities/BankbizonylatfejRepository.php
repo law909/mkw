@@ -24,9 +24,8 @@ class BankbizonylatfejRepository extends \mkwhelpers\Repository {
     }
 
     public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT ' . $a
-            . ' FROM ' . $this->getEntityname() . ' ' . $a
+        $q = $this->_em->createQuery('SELECT _xx'
+            . ' FROM Entities\Bankbizonylatfej _xx'
             . $this->getFilterString($filter)
             . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
@@ -40,8 +39,8 @@ class BankbizonylatfejRepository extends \mkwhelpers\Repository {
     }
 
     public function getCount($filter) {
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT COUNT(' . $a . ') FROM ' . $this->getEntityname() . ' ' . $a
+        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+            . ' FROM Entities\Bankbizonylatfej _xx'
             . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();

@@ -10,11 +10,11 @@ class TermekcimkekatRepository extends \mkwhelpers\Repository {
     }
 
     public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT ' . $a . ',c FROM ' . $this->entityname . ' ' . $a
-                . ' LEFT JOIN ' . $a . '.cimkek c '
-                . $this->getFilterString($filter)
-                . $this->getOrderString($order));
+        $q = $this->_em->createQuery('SELECT _xx,c'
+            . ' FROM Entities\Termekcimkekat _xx'
+            . ' LEFT JOIN _xx.cimkek c '
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -26,11 +26,11 @@ class TermekcimkekatRepository extends \mkwhelpers\Repository {
     }
 
     public function getScalarWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT ' . $a . '.id,' . $a . '.nev,' . $a . '.slug,' . $a . '.sorrend,c.id AS cid,c.nev AS cnev,c.sorrend AS csorrend FROM ' . $this->entityname . ' ' . $this->alias
-                . ' LEFT JOIN ' . $this->alias . '.cimkek c '
-                . $this->getFilterString($filter)
-                . $this->getOrderString($order));
+        $q = $this->_em->createQuery('SELECT _xx.id,_xx.nev,_xx.slug,_xx.sorrend,c.id AS cid,c.nev AS cnev,c.sorrend AS csorrend'
+            . ' FROM Entities\Termekcimkekat _xx'
+            . ' LEFT JOIN _xx.cimkek c '
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -48,18 +48,17 @@ class TermekcimkekatRepository extends \mkwhelpers\Repository {
     }
 
     public function getCount($filter) {
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT COUNT(' . $this->alias . '.id) FROM ' . $this->entityname . ' ' . $this->alias
-                . ' LEFT JOIN ' . $this->alias . '.cimkek c '
-                . $this->getFilterString($filter));
+        $q = $this->_em->createQuery('SELECT COUNT(_xx.id)'
+            . ' FROM Entities\Termekcimkekat _xx'
+            . ' LEFT JOIN _xx.cimkek c '
+            . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }
 
     public function getForTermekSzuro($termekid, $selectedids) {
-        $a = $this->alias;
         if (count($termekid) > 0) {
-            $filter = '(' . $a . '.termekszurobenlathato=1) AND (t.id IN (' . implode(',', $termekid) . '))';
+            $filter = '(_xx.termekszurobenlathato=1) AND (t.id IN (' . implode(',', $termekid) . '))';
             if (count($selectedids) > 0) {
                 $filter = $filter . ' OR (c.id IN (' . implode(',', $selectedids) . '))';
             }
@@ -68,11 +67,12 @@ class TermekcimkekatRepository extends \mkwhelpers\Repository {
             $filter = 'true=false';
         }
         $order = array('_xx.sorrend' => 'asc', '_xx.nev' => 'asc', 'c.sorrend' => 'asc', 'c.nev' => 'asc');
-        $q = $this->_em->createQuery('SELECT ' . $a . ',c,t FROM ' . $this->entityname . ' ' . $a
-                . ' LEFT JOIN ' . $a . '.cimkek c '
-                . ' INNER JOIN c.termekek t '
-                . $this->getFilterString($filter)
-                . $this->getOrderString($order));
+        $q = $this->_em->createQuery('SELECT _xx,c,t'
+            . ' FROM Entities\Termekcimkekat _xx'
+            . ' LEFT JOIN _xx.cimkek c '
+            . ' INNER JOIN c.termekek t '
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getResult();
     }

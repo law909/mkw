@@ -1,6 +1,8 @@
 <?php
 namespace Entities;
 
+use mkwhelpers\FilterDescriptor;
+
 class FizmodHatarRepository extends \mkwhelpers\Repository {
 
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
@@ -12,29 +14,25 @@ class FizmodHatarRepository extends \mkwhelpers\Repository {
     }
 
     public function getByValutanem($valutanem) {
-        $filter = array();
-        $filter['fields'][] = 'valutanem';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $valutanem;
+        $filter = new FilterDescriptor();
+        $filter->addFilter('valutanem', '=', $valutanem);
+
         return $this->getAll($filter, array());
     }
 
     public function getByFizmod($fizmod) {
-        $filter = array();
-        $filter['fields'][] = 'fizmod';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $fizmod;
+        $filter = new FilterDescriptor();
+        $filter->addFilter('fizmod', '=', $fizmod);
+
         return $this->getAll($filter, array());
     }
 
     public function getByValutanemHatar($valutanem, $hatar) {
-        $filter = array();
-        $filter['fields'][] = 'valutanem';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $valutanem;
-        $filter['fields'][] = 'hatarertek';
-        $filter['clauses'][] = '<=';
-        $filter['values'][] =  $hatar;
+        $filter = new FilterDescriptor();
+        $filter
+            ->addFilter('valutanem', '=', $valutanem)
+            ->addFilter('hatarertek', '<=', $hatar);
+
         $t = $this->getAll($filter, array('hatarertek' => 'DESC'));
         if ($t) {
             return $t[0];

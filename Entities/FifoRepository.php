@@ -9,27 +9,26 @@ class FifoRepository extends \mkwhelpers\Repository {
     private $ki;
     private $ujki = array();
 
-	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
-		parent::__construct($em,$class);
-		$this->setEntityname('Entities\Fifo');
-		$this->setOrders(array(
-			'1'=>array('caption'=>'név szerint','order'=>array('_xx.nev'=>'ASC'))
-		));
-	}
+    public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
+        parent::__construct($em, $class);
+        $this->setEntityname('Entities\Fifo');
+        $this->setOrders(array(
+            '1' => array('caption' => 'név szerint', 'order' => array('_xx.nev' => 'ASC'))
+        ));
+    }
 
     public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT ' . $a . ',kibf,kibt,bebf,bebt,r,t,tv'
-                . ' FROM ' . $this->entityname . ' ' . $a
-                . ' LEFT JOIN ' . $a . '.kibizonylatfej kibf'
-                . ' LEFT JOIN ' . $a . '.kibizonylattetel kibt'
-                . ' LEFT JOIN ' . $a . '.bebizonylatfej bebf'
-                . ' LEFT JOIN ' . $a . '.bebizonylattetel bebt'
-                . ' LEFT JOIN ' . $a . '.raktar r'
-                . ' LEFT JOIN ' . $a . '.termek t'
-                . ' LEFT JOIN ' . $a . '.termekvaltozat tv'
-                . $this->getFilterString($filter)
-                . $this->getOrderString($order));
+        $q = $this->_em->createQuery('SELECT _xx,kibf,kibt,bebf,bebt,r,t,tv'
+            . ' FROM Entities\Fifo _xx'
+            . ' LEFT JOIN _xx.kibizonylatfej kibf'
+            . ' LEFT JOIN _xx.kibizonylattetel kibt'
+            . ' LEFT JOIN _xx.bebizonylatfej bebf'
+            . ' LEFT JOIN _xx.bebizonylattetel bebt'
+            . ' LEFT JOIN _xx.raktar r'
+            . ' LEFT JOIN _xx.termek t'
+            . ' LEFT JOIN _xx.termekvaltozat tv'
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -84,14 +83,14 @@ class FifoRepository extends \mkwhelpers\Repository {
             'SELECT bf.id,bt.id AS btid,bf.irany,bf.teljesites,bf.raktar_id,termek_id,termekvaltozat_id,mennyiseg ' .
             'FROM bizonylatfej bf, bizonylattetel bt ' .
             'WHERE (bf.id=bt.bizonylatfej_id) AND (bt.mozgat=1) AND ' .
-                '(((bf.irany>0) AND (bt.mennyiseg>0)) OR ((bf.irany<0) AND (bt.mennyiseg<0))) ' .
-                $stornosql . $sql1 . $sql2 .
+            '(((bf.irany>0) AND (bt.mennyiseg>0)) OR ((bf.irany<0) AND (bt.mennyiseg<0))) ' .
+            $stornosql . $sql1 . $sql2 .
             ' ORDER BY raktar_id,termek_id,termekvaltozat_id,teljesites'
-                , $rsm);
+            , $rsm);
         $this->be = $q->getScalarResult();
         $cikl = 0;
         $db = count($this->be) - 1;
-        while($cikl <= $db) {
+        while ($cikl <= $db) {
             $this->be[$cikl]['mennyiseg'] = $this->be[$cikl]['mennyiseg'] * $this->be[$cikl]['irany'];
             $this->be[$cikl]['maradek'] = $this->be[$cikl]['mennyiseg'];
             $cikl++;
@@ -101,14 +100,14 @@ class FifoRepository extends \mkwhelpers\Repository {
             'SELECT bf.id,bt.id AS btid,bf.irany,bf.teljesites,bf.raktar_id,termek_id,termekvaltozat_id,mennyiseg ' .
             'FROM bizonylatfej bf, bizonylattetel bt ' .
             'WHERE (bf.id=bt.bizonylatfej_id) AND (bt.mozgat=1) AND ' .
-                '(((bf.irany<0) AND (bt.mennyiseg>0)) OR ((bf.irany>0) AND (bt.mennyiseg<0))) ' .
-                $stornosql . $sql1 . $sql2 .
+            '(((bf.irany<0) AND (bt.mennyiseg>0)) OR ((bf.irany>0) AND (bt.mennyiseg<0))) ' .
+            $stornosql . $sql1 . $sql2 .
             ' ORDER BY raktar_id,termek_id,termekvaltozat_id,teljesites'
-                , $rsm);
+            , $rsm);
         $this->ki = $q->getScalarResult();
         $cikl = 0;
         $db = count($this->ki) - 1;
-        while($cikl <= $db) {
+        while ($cikl <= $db) {
             $this->ki[$cikl]['mennyiseg'] = $this->ki[$cikl]['mennyiseg'] * $this->ki[$cikl]['irany'];
             $this->ki[$cikl]['teljesmennyiseg'] = $this->ki[$cikl]['mennyiseg'];
             $cikl++;
@@ -125,7 +124,8 @@ class FifoRepository extends \mkwhelpers\Repository {
             if (($this->be[$cikl]['termekid'] == $this->ki[$i]['termekid']) &&
                 ($this->be[$cikl]['valtozatid'] == $this->ki[$i]['valtozatid']) &&
                 ($this->be[$cikl]['raktarid'] == $this->ki[$i]['raktarid']) &&
-                ($this->be[$cikl]['maradek'] != 0)) {
+                ($this->be[$cikl]['maradek'] != 0)
+            ) {
                 $kilep = true;
             }
             else {
@@ -146,7 +146,8 @@ class FifoRepository extends \mkwhelpers\Repository {
         while (($cikl <= $bedb)) {
             if (($this->be[$cikl]['termekid'] == $this->ki[$i]['termekid']) &&
                 ($this->be[$cikl]['valtozatid'] == $this->ki[$i]['valtozatid']) &&
-                ($this->be[$cikl]['raktarid'] == $this->ki[$i]['raktarid'])) {
+                ($this->be[$cikl]['raktarid'] == $this->ki[$i]['raktarid'])
+            ) {
                 if ($this->be[$cikl]['teljesites'] < $maxdate) {
                     $maxdate = $this->be[$cikl]['teljesites'];
                     $maxkod = $cikl;
@@ -182,7 +183,7 @@ class FifoRepository extends \mkwhelpers\Repository {
             $raktarid = $this->ki[$c]['raktarid'];
             $termekid = $this->ki[$c]['termekid'];
             $valtozatid = $this->ki[$c]['valtozatid'];
-            while (($c <= $kidb)&&($raktarid == $this->ki[$c]['raktarid'])&&($termekid == $this->ki[$c]['termekid'])&&($valtozatid == $this->ki[$c]['valtozatid'])) {
+            while (($c <= $kidb) && ($raktarid == $this->ki[$c]['raktarid']) && ($termekid == $this->ki[$c]['termekid']) && ($valtozatid == $this->ki[$c]['valtozatid'])) {
                 $megkiad = -1 * $this->ki[$c]['mennyiseg'];
                 while ($megkiad != 0) {
                     if ($megkiad > 0) {
@@ -232,8 +233,8 @@ class FifoRepository extends \mkwhelpers\Repository {
         $this->clearData();
         $data = $this->getData();
         $q = $this->_em->getConnection()->prepare('INSERT INTO fifo (raktar_id, termek_id, termekvaltozat_id, kibizonylatfej_id, kibizonylattetel_id, bebizonylatfej_id, bebizonylattetel_id, mennyiseg) ' .
-                'VALUES (:rid, :tid, :tvid, :id, :tetelid, :beid, :betetelid, :mennyiseg)');
-        foreach($data as $d) {
+            'VALUES (:rid, :tid, :tvid, :id, :tetelid, :beid, :betetelid, :mennyiseg)');
+        foreach ($data as $d) {
             $params = array(
                 'rid' => $d['raktarid'],
                 'tid' => $d['termekid'],
@@ -248,8 +249,8 @@ class FifoRepository extends \mkwhelpers\Repository {
         }
 
         $q = $this->_em->getConnection()->prepare('INSERT INTO keszlet (raktar_id, termek_id, termekvaltozat_id, bebizonylatfej_id, bebizonylattetel_id, mennyiseg) ' .
-                'VALUES (:rid, :tid, :tvid, :beid, :betetelid, :mennyiseg)');
-        foreach($this->be as $d) {
+            'VALUES (:rid, :tid, :tvid, :beid, :betetelid, :mennyiseg)');
+        foreach ($this->be as $d) {
             if ($d['maradek'] != 0) {
                 $params = array(
                     'rid' => $d['raktarid'],
@@ -283,7 +284,7 @@ class FifoRepository extends \mkwhelpers\Repository {
     }
 
     public function getData() {
-        foreach($this->ujki as $u) {
+        foreach ($this->ujki as $u) {
             $this->ki[] = $u;
         }
         return $this->ki;

@@ -3,6 +3,7 @@
 namespace Entities;
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use mkwhelpers\FilterDescriptor;
 
 class TermekArRepository extends \mkwhelpers\Repository {
 
@@ -15,10 +16,8 @@ class TermekArRepository extends \mkwhelpers\Repository {
     }
 
     public function getByTermek($termek) {
-        $filter = array();
-        $filter['fields'][] = 'termek';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $termek;
+        $filter = new FilterDescriptor();
+        $filter->addFilter('termek', '=', $termek);
         return $this->getAll($filter, array('created' => 'ASC'));
     }
 
@@ -45,16 +44,12 @@ class TermekArRepository extends \mkwhelpers\Repository {
         if (!$valutanem) {
             $valutanem = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\Store::getParameter(\mkw\consts::Valutanem));
         }
-        $filter = array();
-        $filter['fields'][] = 'termek';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $termek;
-        $filter['fields'][] = 'valutanem';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $valutanem;
-        $filter['fields'][] = 'azonosito';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $azonosito;
+        $filter = new FilterDescriptor();
+        $filter
+            ->addFilter('termek', '=', $termek)
+            ->addFilter('valutanem', '=', $valutanem)
+            ->addFilter('azonosito', '=', $azonosito);
+
         $sav = $this->getAll($filter, array());
         if (is_array($sav)) {
             return $sav[0];
@@ -62,29 +57,4 @@ class TermekArRepository extends \mkwhelpers\Repository {
         return $sav;
     }
 
-    /* Ha van JOIN, ezek akkor kellenek
-      public function getWithJoins($filter,$order,$offset=0,$elemcount=0) {
-      $a=$this->alias;
-      $q=$this->_em->createQuery('SELECT '.$a
-      .' FROM '.$this->entityname.' '.$a
-      .$this->getFilterString($filter)
-      .$this->getOrderString($order));
-      $q->setParameters($this->getQueryParameters($filter));
-      if ($offset>0) {
-      $q->setFirstResult($offset);
-      }
-      if ($elemcount>0) {
-      $q->setMaxResults($elemcount);
-      }
-      return $q->getResult();
-      }
-
-      public function getCount($filter) {
-      $a=$this->alias;
-      $q=$this->_em->createQuery('SELECT COUNT('.$a.') FROM '.$this->entityname.' '.$a
-      .$this->getFilterString($filter));
-      $q->setParameters($this->getQueryParameters($filter));
-      return $q->getSingleScalarResult();
-      }
-     */
 }

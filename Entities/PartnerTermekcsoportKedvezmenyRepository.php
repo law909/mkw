@@ -3,6 +3,7 @@
 namespace Entities;
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use mkwhelpers\FilterDescriptor;
 
 class PartnerTermekcsoportKedvezmenyRepository extends \mkwhelpers\Repository {
 
@@ -12,11 +13,10 @@ class PartnerTermekcsoportKedvezmenyRepository extends \mkwhelpers\Repository {
     }
 
     public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT ' . $a . ',partner, tcs'
-            . ' FROM ' . $this->entityname . ' ' . $a
-            . ' LEFT JOIN ' . $a . '.partner partner'
-            . ' LEFT JOIN ' . $a . '.termekcsoport tcs'
+        $q = $this->_em->createQuery('SELECT _xx,partner, tcs'
+            . ' FROM Entities\PartnerTermekcsoportKedvezmeny _xx'
+            . ' LEFT JOIN _xx.partner partner'
+            . ' LEFT JOIN _xx.termekcsoport tcs'
             . $this->getFilterString($filter)
             . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
@@ -30,13 +30,11 @@ class PartnerTermekcsoportKedvezmenyRepository extends \mkwhelpers\Repository {
     }
 
     public function getByPartnerTermekcsoport($partner, $tcs) {
-        $filter = array();
-        $filter['fields'][] = 'partner';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $partner;
-        $filter['fields'][] = 'termekcsoport';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $tcs;
+        $filter = new FilterDescriptor();
+        $filter
+            ->addFilter('partner', '=', $partner)
+            ->addFilter('termekcsoport', '=', $tcs);
+
         $kdv = $this->getWithJoins($filter, array());
         if ($kdv) {
             $kdv = $kdv[0];
@@ -45,10 +43,9 @@ class PartnerTermekcsoportKedvezmenyRepository extends \mkwhelpers\Repository {
     }
 
     public function getByPartner($partner) {
-        $filter = array();
-        $filter['fields'][] = 'partner';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $partner;
+        $filter = new FilterDescriptor();
+        $filter->addFilter('partner', '=', $partner);
+
         $kdv = $this->getWithJoins($filter, array());
         return $kdv;
     }

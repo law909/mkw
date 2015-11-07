@@ -3,6 +3,7 @@
 namespace Entities;
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use mkwhelpers\FilterDescriptor;
 
 class FolyoszamlaRepository extends \mkwhelpers\Repository {
 
@@ -12,24 +13,22 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
     }
 
     public function getSumByHivatkozottBizonylat($bizszam) {
-        $a = $this->alias;
-        $filter = array();
-        $filter['fields'][] = 'hivatkozottbizonylat';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $bizszam;
-        $q = $this->_em->createQuery('SELECT SUM(' . $a . '.brutto * ' . $a . '.irany) FROM ' . $this->getEntityname() . ' ' . $a
+        $filter = new FilterDescriptor();
+        $filter->addFilter('hivatkozottbizonylat', '=', $bizszam);
+
+        $q = $this->_em->createQuery('SELECT SUM(_xx.brutto * _xx.irany)'
+            . ' FROM Entities\Folyoszamla _xx'
             . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }
 
     public function getSumByHivatkozottBizonylatDatum($bizszam) {
-        $a = $this->alias;
-        $filter = array();
-        $filter['fields'][] = 'hivatkozottbizonylat';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $bizszam;
-        $q = $this->_em->createQuery('SELECT _xx.hivatkozottdatum,SUM(' . $a . '.brutto * ' . $a . '.irany) AS egyenleg FROM ' . $this->getEntityname() . ' ' . $a
+        $filter = new FilterDescriptor();
+        $filter->addFilter('hivatkozottbizonylat', '=', $bizszam);
+
+        $q = $this->_em->createQuery('SELECT _xx.hivatkozottdatum,SUM(_xx.brutto * _xx.irany) AS egyenleg'
+            . ' FROM Entities\Folyoszamla _xx'
             . $this->getFilterString($filter)
             . ' GROUP BY _xx.hivatkozottdatum'
             . ' ORDER BY _xx.hivatkozottdatum');
@@ -38,21 +37,15 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
     }
 
     public function getSumByPartner($partnerid) {
-        $a = $this->alias;
-        $filter = array();
-        $filter['fields'][] = 'partner';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $partnerid;
-        $filter['fields'][] = 'storno';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = false;
-        $filter['fields'][] = 'stornozott';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = false;
-        $filter['fields'][] = 'rontott';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = false;
-        $q = $this->_em->createQuery('SELECT _xx.hivatkozottbizonylat,_xx.hivatkozottdatum,SUM(' . $a . '.brutto * ' . $a . '.irany) AS egyenleg FROM ' . $this->getEntityname() . ' ' . $a
+        $filter = new FilterDescriptor();
+        $filter
+            ->addFilter('partner', '=', $partnerid)
+            ->addFilter('storno', '=', false)
+            ->addFilter('stornozott', '=', false)
+            ->addFilter('rontott', '=', false);
+
+        $q = $this->_em->createQuery('SELECT _xx.hivatkozottbizonylat,_xx.hivatkozottdatum,SUM(_xx.brutto * _xx.irany) AS egyenleg'
+            . ' FROM Entities\Folyoszamla _xx'
             . $this->getFilterString($filter)
             . ' GROUP BY _xx.hivatkozottbizonylat,_xx.hivatkozottdatum'
             . ' HAVING egyenleg<>0'

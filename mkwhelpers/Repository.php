@@ -71,6 +71,9 @@ class Repository extends EntityRepository {
     }
 
     public function getFilterString($filter) {
+        if ($filter instanceof FilterDescriptor) {
+            $filter = $filter->getFilter();
+        }
         if (is_array($filter) && array_key_exists('fields', $filter) && array_key_exists('values', $filter)) {
             $fno = 1;
             $filterarr = array();
@@ -175,6 +178,9 @@ class Repository extends EntityRepository {
     }
 
     public function getQueryParameters($filter) {
+        if ($filter instanceof FilterDescriptor) {
+            $filter = $filter->getFilter();
+        }
         $paramarr = array();
         if (is_array($filter) && array_key_exists('values', $filter)) {
             $values = $filter['values'];

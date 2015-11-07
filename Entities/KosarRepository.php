@@ -2,6 +2,8 @@
 
 namespace Entities;
 
+use mkwhelpers\FilterDescriptor;
+
 class KosarRepository extends \mkwhelpers\Repository {
 
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
@@ -15,13 +17,12 @@ class KosarRepository extends \mkwhelpers\Repository {
     }
 
     public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT ' . $a . ',p,t '
-                . ' FROM ' . $this->entityname . ' ' . $a
-                . ' LEFT OUTER JOIN ' . $a . '.partner p'
-                . ' LEFT JOIN ' . $a . '.termek t'
-                . $this->getFilterString($filter)
-                . $this->getOrderString($order));
+        $q = $this->_em->createQuery('SELECT _xx,p,t '
+            . ' FROM Entities\Kosar _xx'
+            . ' LEFT OUTER JOIN _xx.partner p'
+            . ' LEFT JOIN _xx.termek t'
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
         if ($offset > 0) {
             $q->setFirstResult($offset);
@@ -36,70 +37,62 @@ class KosarRepository extends \mkwhelpers\Repository {
     }
 
     public function getCount($filter) {
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT COUNT(' . $a . ') FROM ' . $this->entityname . ' ' . $a
-                . ' LEFT OUTER JOIN ' . $a . '.partner p'
-                . ' LEFT JOIN ' . $a . '.termek t'
-                . $this->getFilterString($filter));
+        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+            . ' FROM Entities\Kosar _xx'
+            . ' LEFT OUTER JOIN _xx.partner p'
+            . ' LEFT JOIN _xx.termek t'
+            . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }
 
     public function getMiniDataBySessionId($sessionid) {
         $szktid = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
-        $filter = array();
-        $filter['fields'][] = 'sessionid';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $sessionid;
+
+        $filter = new FilterDescriptor();
+        $filter->addFilter('sessionid', '=', $sessionid);
         if ($szktid) {
-            $filter['fields'][] = 'termek';
-            $filter['clauses'][] = '<>';
-            $filter['values'][] = $szktid;
+            $filter->addFilter('termek', '<>', $szktid);
         }
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT SUM(' . $a . '.mennyiseg),'
-                . ' SUM(' . $a . '.bruttoegysar*' . $a . '.mennyiseg),'
-                . ' SUM(' . $a . '.nettoegysar*' . $a . '.mennyiseg)'
-                . ' FROM ' . $this->entityname . ' ' . $a
-                . $this->getFilterString($filter));
+
+        $q = $this->_em->createQuery('SELECT SUM(_xx.mennyiseg),'
+            . ' SUM(_xx.bruttoegysar * _xx.mennyiseg),'
+            . ' SUM(_xx.nettoegysar * _xx.mennyiseg)'
+            . ' FROM Entities\Kosar _xx'
+            . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getScalarResult();
     }
 
     public function getDataBySessionId($sessionid) {
-        $filter = array();
-        $filter['fields'][] = 'sessionid';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $sessionid;
-        return $this->getWithJoins($filter, array($this->alias . '.sorrend' => 'ASC'));
+        $filter = new FilterDescriptor();
+        $filter->addFilter('sessionid', '=', $sessionid);
+
+        return $this->getWithJoins($filter, array('_xx.sorrend' => 'ASC'));
     }
 
     public function getDataByPartner($partner) {
-        $filter = array();
-        $filter['fields'][] = 'partner';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $partner;
-        return $this->getWithJoins($filter, array($this->alias . '.sorrend' => 'ASC'));
+        $filter = new FilterDescriptor();
+        $filter->addFilter('partner', '=', $partner);
+
+        return $this->getWithJoins($filter, array('_xx.sorrend' => 'ASC'));
     }
 
     public function calcSumBySessionId($sessionid) {
         $szktid = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
-        $filter = array();
-        $filter['fields'][] = 'sessionid';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $sessionid;
+
+        $filter = new FilterDescriptor();
+        $filter->addFilter('sessionid', '=', $sessionid);
         if ($szktid) {
-            $filter['fields'][] = 'termek';
-            $filter['clauses'][] = '<>';
-            $filter['values'][] = $szktid;
+            $filter->addFilter('termek', '<>', $szktid);
         }
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT SUM(' . $a . '.bruttoegysar * ' . $a . '.mennyiseg),'
-                . ' SUM(' . $a . '.nettoegysar * ' . $a . '.mennyiseg),'
-                . ' SUM(' . $a . '.mennyiseg),'
-                . ' COUNT(' . $a . ')'
-                . ' FROM ' . $this->entityname . ' ' . $a
-                . $this->getFilterString($filter));
+
+        $q = $this->_em->createQuery('SELECT SUM(_xx.bruttoegysar * _xx.mennyiseg),'
+            . ' SUM(_xx.nettoegysar * _xx.mennyiseg),'
+            . ' SUM(_xx.mennyiseg),'
+            . ' COUNT(_xx)'
+            . ' FROM Entities\Kosar _xx'
+            . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
         $res = $q->getScalarResult();
         if (count($res)) {
@@ -114,41 +107,29 @@ class KosarRepository extends \mkwhelpers\Repository {
     }
 
     public function getTetelsor($sessionid, $partnerid, $termekid, $valtozatid = null, $valutanem = null) {
-        $filter = array();
+        $filter = new FilterDescriptor();
         if ($sessionid) {
-            $filter['fields'][] = 'sessionid';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $sessionid;
+            $filter->addFilter('sessionid', '=', $sessionid);
         }
         if ($partnerid) {
-            $filter['fields'][] = 'partner';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $partnerid;
+            $filter->addFilter('partner', '=', $partnerid);
         }
         if ($termekid) {
-            $filter['fields'][] = 'termek';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $termekid;
+            $filter->addFilter('termek', '=', $termekid);
         }
         if ($valtozatid) {
-            $filter['fields'][] = 'termekvaltozat';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $valtozatid;
+            $filter->addFilter('termekvaltozat', '=', $valtozatid);
         }
-        if ($sessionid) {
-            $filter['fields'][] = 'valutanem';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $valutanem;
+        if ($valutanem) {
+            $filter->addFilter('valutanem', '=', $valutanem);
         }
         if (count($filter) == 0) {
-            $filter['fields'][] = 'id';
-            $filter['clauses'][] = '<';
-            $filter['values'][] = '0';
+            $filter->addFilter('id', '<', 0);
         }
-        $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT ' . $a
-                . ' FROM ' . $this->entityname . ' ' . $a
-                . $this->getFilterString($filter));
+
+        $q = $this->_em->createQuery('SELECT _xx'
+            . ' FROM Entities\Kosar _xx'
+            . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
         $r = $q->getResult();
         if (count($r) > 0) {
@@ -459,14 +440,14 @@ class KosarRepository extends \mkwhelpers\Repository {
     }
 
     public function getHash() {
-		$sorok = $this->getDataBySessionId(\Zend_Session::getId());
-		$s = array();
-		foreach ($sorok as $sor) {
-			$s[] = $sor->toLista();
-		}
-		return array(
-			'value' => md5(json_encode($s)),
-			'cnt' => count($sorok)
-		);
+        $sorok = $this->getDataBySessionId(\Zend_Session::getId());
+        $s = array();
+        foreach ($sorok as $sor) {
+            $s[] = $sor->toLista();
+        }
+        return array(
+            'value' => md5(json_encode($s)),
+            'cnt' => count($sorok)
+        );
     }
 }
