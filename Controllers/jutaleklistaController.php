@@ -3,10 +3,10 @@
 namespace Controllers;
 
 
-class penzbelistaController extends \mkwhelpers\MattableController {
+class jutaleklistaController extends \mkwhelpers\MattableController {
 
     public function view() {
-        $view = $this->createView('penzbelista.tpl');
+        $view = $this->createView('jutaleklista.tpl');
 
         $view->setVar('toldatum', date(\mkw\Store::$DateFormat));
         $view->setVar('igdatum', date(\mkw\Store::$DateFormat));
@@ -76,7 +76,7 @@ class penzbelistaController extends \mkwhelpers\MattableController {
 
         $valsum = $btrepo->calcSumByValutanem($filter);
 
-        $report = $this->createView('rep_penzbe.tpl');
+        $report = $this->createView('rep_jutalek.tpl');
         $report->setVar('lista', $lista);
         $report->setVar('valutanemosszesito', $valsum);
         $report->setVar('tolstr', $tolstr);

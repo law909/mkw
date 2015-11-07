@@ -11,11 +11,19 @@ class BankbizonylattetelRepository extends \mkwhelpers\Repository {
         $this->setEntityname('Entities\Bankbizonylattetel');
     }
 
+    public function getAllWithHivatkozottbizonylat($filter = array(), $order = array()) {
+        $q = $this->_em->createQuery('SELECT _xx,'
+            . ' FROM Entities\Bankbizonylattetel _xx'
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
+    }
+
     public function calcSumByValutanem($filter = array(), $order = array()) {
         $a = $this->alias;
-        return $this->_em->createQuery('SELECT v.nev, SUM(' . $a . '.brutto) AS osszeg'
-            . ' FROM ' . $this->getEntityname() . ' ' . $this->alias
-            . ' LEFT JOIN ' . $this->alias . '.valutanem v'
+        return $this->_em->createQuery('SELECT v.nev, SUM(_xx.brutto) AS osszeg'
+            . ' FROM Entities\Bankbizonylattetel _xx'
+            . ' LEFT JOIN _xx.valutanem v'
             . $this->getFilterString($filter)
             . ' GROUP BY v.nev'
             . $this->getOrderString($order))
