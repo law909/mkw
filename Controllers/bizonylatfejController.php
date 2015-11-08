@@ -76,61 +76,47 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
     }
 
+    /**
+     * @param \mkwhelpers\FilterDescriptor $filter
+     * @return mixed
+     */
     protected function loadFilters($filter) {
         if (!is_null($this->params->getRequestParam('idfilter', NULL))) {
-            $filter['fields'][] = 'id';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $this->params->getStringRequestParam('idfilter');
+            $filter->addFilter('id', 'LIKE', '%' . $this->params->getStringRequestParam('idfilter'));
         }
 
         $f = $this->params->getStringRequestParam('vevonevfilter');
         if ($f) {
-            $filter['fields'][] = 'partnernev';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('partnernev', 'LIKE', '%' . $f . '%');
         }
 
         $f = $this->params->getStringRequestParam('vevoemailfilter');
         if ($f) {
-            $filter['fields'][] = 'partneremail';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('partneremail', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getStringRequestParam('szallitasiirszamfilter');
         if ($f) {
-            $filter['fields'][] = 'szallirszam';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('szallirszam', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getStringRequestParam('szallitasivarosfilter');
         if ($f) {
-            $filter['fields'][] = 'szallvaros';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('szallvaros', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getStringRequestParam('szallitasiutcafilter');
         if ($f) {
-            $filter['fields'][] = 'szallutca';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('szallutca', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getStringRequestParam('szamlazasiirszamfilter');
         if ($f) {
-            $filter['fields'][] = 'partnerirszam';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('partnerirszam', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getStringRequestParam('szamlazasivarosfilter');
         if ($f) {
-            $filter['fields'][] = 'partnervaros';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('partnervaros', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getStringRequestParam('szamlazasiutcafilter');
         if ($f) {
-            $filter['fields'][] = 'partnerutca';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('partnerutcav', 'LIKE', '%' . $f . '%');
         }
         $tip = $this->params->getStringRequestParam('datumtipusfilter');
         $tol = $this->params->getStringRequestParam('datumtolfilter');
@@ -151,96 +137,70 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                     break;
             }
             if ($tol) {
-                $filter['fields'][] = $mezo;
-                $filter['clauses'][] = '>=';
-                $filter['values'][] = $tol;
+                $filter->addFilter($mezo, '>=', $tol);
             }
             if ($ig) {
-                $filter['fields'][] = $mezo;
-                $filter['clauses'][] = '<=';
-                $filter['values'][] = $ig;
+                $filter->addFilter($mezo, '<=', $ig);
             }
         }
         $f = $this->params->getIntRequestParam('bizonylatstatuszfilter');
         if ($f) {
             $bs = $this->getRepo('Entities\Bizonylatstatusz')->findOneById($f);
             if ($bs) {
-                $filter['fields'][] = 'bizonylatstatusz';
-                $filter['clauses'][] = '=';
-                $filter['values'][] = $bs;
+                $filter->addFilter('bizonylatstatusz', '=', $bs);
             }
         }
         $f = $this->params->getStringRequestParam('bizonylatstatuszcsoportfilter');
         if ($f) {
-            $filter['fields'][] = 'bizonylatstatuszcsoport';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $f;
+            $filter->addFilter('bizonylatstatuszcsoport', '=', $f);
         }
         $f = $this->params->getIntRequestParam('fizmodfilter');
         if ($f) {
             $bs = $this->getRepo('Entities\Fizmod')->findOneById($f);
             if ($bs) {
-                $filter['fields'][] = 'fizmod';
-                $filter['clauses'][] = '=';
-                $filter['values'][] = $bs;
+                $filter->addFilter('fizmod', '=', $bs);
             }
         }
         $f = $this->params->getIntRequestParam('szallitasimodfilter');
         if ($f) {
             $bs = $this->getRepo('Entities\Szallitasimod')->findOneById($f);
             if ($bs) {
-                $filter['fields'][] = 'szallitasimod';
-                $filter['clauses'][] = '=';
-                $filter['values'][] = $bs;
+                $filter->addFilter('szallitasimod', '=', $bs);
             }
         }
         $f = $this->params->getIntRequestParam('uzletkotofilter');
         if ($f) {
             $bs = $this->getRepo('Entities\Uzletkoto')->findOneById($f);
             if ($bs) {
-                $filter['fields'][] = 'uzletkoto';
-                $filter['clauses'][] = '=';
-                $filter['values'][] = $bs;
+                $filter->addFilter('uzletkoto', '=', $bs);
             }
         }
         $f = $this->params->getStringRequestParam('fuvarlevelszamfilter');
         if ($f) {
-            $filter['fields'][] = 'fuvarlevelszam';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('fuvarlevelszam', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getStringRequestParam('erbizonylatszamfilter');
         if ($f) {
-            $filter['fields'][] = 'erbizonylatszam';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('erbizonylatszam', 'LIKE', '%' . $f . '%');
         }
 
         $f = $this->params->getIntRequestParam('bizonylatrontottfilter');
         switch ($f) {
             case 1:
-                $filter['fields'][] = 'rontott';
-                $filter['clauses'][] = '=';
-                $filter['values'][] = false;
+                $filter->addFilter('rontott', '=', false);
                 break;
             case 2:
-                $filter['fields'][] = 'rontott';
-                $filter['clauses'][] = '=';
-                $filter['values'][] = true;
+                $filter->addFilter('rontott', '=', true);
                 break;
         }
 
         $f = $this->params->getIntRequestParam('bizonylatstornofilter');
         switch ($f) {
             case 1:
-                $filter['fields'][] = array('storno', 'stornozott');
-                $filter['clauses'][] = '=';
-                $filter['values'][] = false;
+                $filter->addFilter(array('storno', 'stornozott'), '=', false);
                 break;
             case 2:
-                $filter['fields'][] = array('storno', 'stornozott');
-                $filter['clauses'][] = '=';
-                $filter['values'][] = true;
+                $filter->addFilter(array('storno', 'stornozott'), '=', true);
                 break;
         }
         return $filter;
@@ -587,7 +547,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                 $tetel->setEnettoegysar($this->params->getFloatRequestParam('tetelenettoegysar_' . $tetelid));
                                 $tetel->setEbruttoegysar($this->params->getFloatRequestParam('tetelebruttoegysar_' . $tetelid));
                                 $arak = $biztetelcontroller->calcAr(
-                                    $tetel->getAfaId(), $tetel->getArfolyam(), $tetel->getNettoegysar(), $tetel->getEnettoegysar() , $tetel->getMennyiseg()
+                                    $tetel->getAfaId(), $tetel->getArfolyam(), $tetel->getNettoegysar(), $tetel->getEnettoegysar(), $tetel->getMennyiseg()
                                 );
                                 $tetel->setNetto($arak['netto']);
                                 $tetel->setBrutto($arak['brutto']);

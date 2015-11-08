@@ -170,45 +170,33 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
 
         $this->setVars($view);
 
-        $filter = array();
+        $filter = new \mkwhelpers\FilterDescriptor();
 
         if (!is_null($this->params->getRequestParam('idfilter', NULL))) {
-            $filter['fields'][] = 'id';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $this->params->getStringRequestParam('idfilter');
+            $filter->addFilter('id', 'LIKE', '%' . $this->params->getStringRequestParam('idfilter'));
         }
 
         $tol = $this->params->getStringRequestParam('datumtolfilter');
         $ig = $this->params->getStringRequestParam('datumigfilter');
         if ($tol || $ig) {
             if ($tol) {
-                $filter['fields'][] = 'kelt';
-                $filter['clauses'][] = '>=';
-                $filter['values'][] = $tol;
+                $filter->addFilter('kelt', '>=', $tol);
             }
             if ($ig) {
-                $filter['fields'][] = 'kelt';
-                $filter['clauses'][] = '<=';
-                $filter['values'][] = $ig;
+                $filter->addFilter('kelt', '<=', $ig);
             }
         }
         $f = $this->params->getStringRequestParam('erbizonylatszamfilter');
         if ($f) {
-            $filter['fields'][] = 'erbizonylatszam';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('erbizonylatszam', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getIntRequestParam('bizonylatrontottfilter');
         switch ($f) {
             case 1:
-                $filter['fields'][] = 'rontott';
-                $filter['clauses'][] = '=';
-                $filter['values'][] = false;
+                $filter->addFilter('rontott', '=', false);
                 break;
             case 2:
-                $filter['fields'][] = 'rontott';
-                $filter['clauses'][] = '=';
-                $filter['values'][] = true;
+                $filter->addFilter('rontott', '=', true);
                 break;
         }
 

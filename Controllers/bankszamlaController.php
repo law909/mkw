@@ -28,39 +28,32 @@ class bankszamlaController extends \mkwhelpers\JQGridController {
         try {
             $valutanem->getId();
             $obj->setValutanem($valutanem);
-        }
-        catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
 
         }
         return $obj;
     }
 
     public function jsonlist() {
-        $filter = array();
+        $filter = new \mkwhelpers\FilterDescriptor();
         if ($this->params->getBoolRequestParam('_search', false)) {
             if (!is_null($this->params->getRequestParam('banknev', NULL))) {
-                $filter['fields'][] = 'banknev';
-                $filter['values'][] = $this->params->getStringRequestParam('banknev');
+                $filter->addFilter('banknev', 'LIKE', '%' . $this->params->getStringRequestParam('banknev') . '%');
             }
             if (!is_null($this->getParam('bankcim', NULL))) {
-                $filter['fields'][] = 'bankcim';
-                $filter['values'][] = $this->params->getStringRequestParam('bankcim');
+                $filter->addFilter('bankcim', 'LIKE', '%' . $this->params->getStringRequestParam('bankcim') . '%');
             }
             if (!is_null($this->getParam('szamlaszam', NULL))) {
-                $filter['fields'][] = 'szamlaszam';
-                $filter['values'][] = $this->params->getStringRequestParam('szamlaszam');
+                $filter->addFilter('szamlaszam', 'LIKE', '%' . $this->params->getStringRequestParam('szamlaszam') . '%');
             }
             if (!is_null($this->getParam('swift', NULL))) {
-                $filter['fields'][] = 'swift';
-                $filter['values'][] = $this->params->getStringRequestParam('swift');
+                $filter->addFilter('swift', 'LIKE', '%' . $this->params->getStringRequestParam('swift') . '%');
             }
             if (!is_null($this->getParam('iban', NULL))) {
-                $filter['fields'][] = 'iban';
-                $filter['values'][] = $this->params->getStringRequestParam('iban');
+                $filter->addFilter('iban', 'LIKE', '%' . $this->params->getStringRequestParam('iban') . '%');
             }
             if (!is_null($this->getParam('valutanem', NULL))) {
-                $filter['fields'][] = 'v.nev';
-                $filter['values'][] = $this->params->getStringRequestParam('valutanem');
+                $filter->addFilter('v.nev', 'LIKE', '%' . $this->params->getStringRequestParam('valutanem') . '%');
             }
         }
         $rec = $this->getRepo()->getAll($filter, $this->getOrderArray());
@@ -80,9 +73,9 @@ class bankszamlaController extends \mkwhelpers\JQGridController {
         $rec = $this->getRepo()->getAll(array(), array('szamlaszam' => 'ASC'));
         $ret = '<select>';
         foreach ($rec as $sor) {
-            $ret.='<option value="' . $sor->getId() . '">' . $sor->getSzamlaszam() . '</option>';
+            $ret .= '<option value="' . $sor->getId() . '">' . $sor->getSzamlaszam() . '</option>';
         }
-        $ret.='</select>';
+        $ret .= '</select>';
         echo $ret;
     }
 

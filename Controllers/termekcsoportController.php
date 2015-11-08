@@ -29,11 +29,10 @@ class termekcsoportController extends \mkwhelpers\JQGridController {
     }
 
     public function jsonlist() {
-        $filter = array();
+        $filter = new \mkwhelpers\FilterDescriptor();
         if ($this->params->getBoolRequestParam('_search', false)) {
             if (!is_null($this->params->getRequestParam('nev', NULL))) {
-                $filter['fields'][] = 'nev';
-                $filter['values'][] = $this->params->getStringRequestParam('nev');
+                $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
             }
         }
         $rec = $this->getRepo()->getAll($filter, $this->getOrderArray());

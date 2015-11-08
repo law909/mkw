@@ -51,10 +51,8 @@ class Repository extends EntityRepository {
     }
 
     public function findWithJoins($id) {
-        $filter = array();
-        $filter['fields'][] = 'id';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $id;
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('id', '=', $id);
         $res = $this->getWithJoins($filter, array());
         if (count($res)) {
             return $res[0];

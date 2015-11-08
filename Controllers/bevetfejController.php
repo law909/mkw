@@ -23,7 +23,7 @@ class BevetfejController extends bizonylatfejController {
             $egyed['esedekessegstr'] = \mkw\Store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
             $ttk = array();
             $cikl = 1;
-            foreach($egyed['tetelek'] as $tetel) {
+            foreach ($egyed['tetelek'] as $tetel) {
                 $tetel['parentid'] = $tetel['id'];
                 $tetel['id'] = store::createUID($cikl);
                 $tetel['oper'] = 'inherit';
@@ -33,10 +33,8 @@ class BevetfejController extends bizonylatfejController {
             $egyed['tetelek'] = $ttk;
         }
         $partner = new partnerController($this->params);
-        $filter = array();
-        $filter['fields'][] = 'szallito';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = true;
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('szallito', '=', true);
         $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0), $filter));
         return $egyed;
     }

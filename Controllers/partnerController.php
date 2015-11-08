@@ -264,60 +264,42 @@ class partnerController extends \mkwhelpers\MattableController {
     public function getlistbody() {
         $view = $this->createView('partnerlista_tbody.tpl');
 
-        $filter = array();
+        $filter = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
             $fv = $this->params->getStringRequestParam('nevfilter');
-            $filter['fields'][] = array('nev','keresztnev','vezeteknev','szallnev');
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $fv . '%';
+            $filter->addFilter(array('nev','keresztnev','vezeteknev','szallnev'), 'LIKE', '%' . $fv . '%');
         }
         $f = $this->params->getStringRequestParam('emailfilter');
         if ($f) {
-            $filter['fields'][] = 'email';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('email', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getStringRequestParam('szallitasiirszamfilter');
         if ($f) {
-            $filter['fields'][] = 'szallirszam';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('szallirszam', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getStringRequestParam('szallitasivarosfilter');
         if ($f) {
-            $filter['fields'][] = 'szallvaros';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('szallvaros', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getStringRequestParam('szallitasiutcafilter');
         if ($f) {
-            $filter['fields'][] = 'szallutca';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('szallutca', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getStringRequestParam('szamlazasiirszamfilter');
         if ($f) {
-            $filter['fields'][] = 'irszam';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('irszam', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getStringRequestParam('szamlazasivarosfilter');
         if ($f) {
-            $filter['fields'][] = 'varos';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('varos', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getStringRequestParam('szamlazasiutcafilter');
         if ($f) {
-            $filter['fields'][] = 'utca';
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = '%' . $f . '%';
+            $filter->addFilter('utca', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getNumRequestParam('beszallitofilter',9);
         if ($f != 9) {
-            $filter['fields'][] = 'szallito';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $f;
+            $filter->addFilter('szallito', '=', $f);
         }
         if (!is_null($this->params->getRequestParam('cimkefilter', NULL))) {
             $fv = $this->params->getArrayRequestParam('cimkefilter');
@@ -329,8 +311,7 @@ class partnerController extends \mkwhelpers\MattableController {
                 foreach ($res as $sor) {
                     $cimkefilter[] = $sor['id'];
                 }
-                $filter['fields'][] = 'id';
-                $filter['values'][] = $cimkefilter;
+                $filter->addFilter('id', 'IN', $cimkefilter);
             }
         }
 
@@ -432,10 +413,8 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     public function getSzallitoSelectList($selid) {
-        $filter = array();
-        $filter['fields'][] = 'szallito';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = true;
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('szallito', '=', true);
         $rec = $this->getRepo()->getAll($filter, array('nev' => 'ASC'));
         $res = array();
         foreach ($rec as $sor) {

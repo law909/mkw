@@ -544,57 +544,39 @@ class termekController extends \mkwhelpers\MattableController {
 	public function getlistbody() {
 		$view = $this->createView('termeklista_tbody.tpl');
 
-		$filter = array();
+		$filter = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('gyartofilter', null))) {
-            $filter['fields'][] = 'gyarto';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $this->params->getIntRequestParam('gyartofilter');
+            $filter->addFilter('gyarto' , '=', $this->params->getIntRequestParam('gyartofilter'));
         }
 		if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
-			$filter['fields'][] = array('nev', 'rovidleiras', 'cikkszam', 'vonalkod');
-			$filter['clauses'][] = '';
-			$filter['values'][] = $this->params->getStringRequestParam('nevfilter');
+            $filter->addFilter(array('nev', 'rovidleiras', 'cikkszam', 'vonalkod'), 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
 		}
         if (!is_null($this->params->getRequestParam('kepurlfilter', null))) {
-            $filter['fields'][] = array('kepurl');
-            $filter['clauses'][] = '';
-            $filter['values'][] = $this->params->getStringRequestParam('kepurlfilter');
+            $filter->addFilter(array('kepurl'), 'LIKE', '%' . $this->params->getStringRequestParam('kepurlfilter') . '%');
         }
         $f = $this->params->getNumRequestParam('lathatofilter',9);
         if ($f != 9) {
-            $filter['fields'][] = 'lathato';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $f;
+            $filter->addFilter('lathato', '=', $f);
         }
         $f = $this->params->getNumRequestParam('nemkaphatofilter',9);
         if ($f != 9) {
-            $filter['fields'][] = 'nemkaphato';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $f;
+            $filter->addFilter('nemkaphato', '=', $f);
         }
         $f = $this->params->getNumRequestParam('fuggobenfilter',9);
         if ($f != 9) {
-            $filter['fields'][] = 'fuggoben';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $f;
+            $filter->addFilter('fuggoben', '=', $f);
         }
         $f = $this->params->getNumRequestParam('inaktivfilter',9);
         if ($f != 9) {
-            $filter['fields'][] = 'inaktiv';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $f;
+            $filter->addFilter('inaktiv', '=', $f);
         }
         $f = $this->params->getNumRequestParam('ajanlottfilter',9);
         if ($f != 9) {
-            $filter['fields'][] = 'ajanlott';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $f;
+            $filter->addFilter('ajanlott', '=', $f);
         }
         $f = $this->params->getNumRequestParam('kiemeltfilter',9);
         if ($f != 9) {
-            $filter['fields'][] = 'kiemelt';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $f;
+            $filter->addFilter('kiemelt', '=', $f);
         }
 
 		$fv = $this->params->getArrayRequestParam('cimkefilter');
@@ -605,30 +587,23 @@ class termekController extends \mkwhelpers\MattableController {
 				$cimkefilter[] = $sor['id'];
 			}
 			if ($cimkefilter) {
-				$filter['fields'][] = 'id';
-				$filter['clauses'][] = '';
-				$filter['values'][] = $cimkefilter;
+                $filter->addFilter('id', 'IN', $cimkefilter);
 			}
 			else {
-				$filter['fields'][] = 'id';
-				$filter['clauses'][] = '=';
-				$filter['values'][] = 'false';
+                $filter->addFilter('id', '=', false);
 			}
 		}
 
 		$fv = $this->params->getArrayRequestParam('fafilter');
 		if (!empty($fv)) {
-			$ff = array();
-			$ff['fields'][] = 'id';
-			$ff['values'][] = $fv;
+			$ff = new \mkwhelpers\FilterDescriptor();
+            $ff->addFilter('id', 'IN', $fv);
 			$res = store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, array());
 			$faszuro = array();
 			foreach ($res as $sor) {
 				$faszuro[] = $sor->getKarkod() . '%';
 			}
-			$filter['fields'][] = array('_xx.termekfa1karkod', '_xx.termekfa2karkod', '_xx.termekfa3karkod');
-			$filter['clauses'][] = 'LIKE';
-			$filter['values'][] = $faszuro;
+            $filter->addFilter(array('_xx.termekfa1karkod', '_xx.termekfa2karkod', '_xx.termekfa3karkod'), 'LIKE', $faszuro);
 		}
 
         $this->vanshowarsav = false;
@@ -1065,10 +1040,8 @@ class termekController extends \mkwhelpers\MattableController {
             $oszlop++;
         }
 
-        $filter = array();
-        $filter['fields'][] = 'id';
-        $filter['clauses'][] = 'IN';
-        $filter['values'][] = $ids;
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('id', 'IN', $ids);
         $termekek = $this->getRepo()->getWithArak($filter, array());
         $sor = 2;
         foreach($termekek as $termek) {
@@ -1119,10 +1092,8 @@ class termekController extends \mkwhelpers\MattableController {
             $tcsid = $this->params->getIntRequestParam('tcs');
             $tcs = $this->getRepo('Entities\Termekcsoport')->find($tcsid);
 
-            $filter = array();
-            $filter['fields'][] = 'id';
-            $filter['clauses'][] = 'IN';
-            $filter['values'][] = $ids;
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('id', 'IN', $ids);
             $termekek = $this->getRepo()->getAll($filter, array());
             $termekdb = 0;
             $batchsize = 20;

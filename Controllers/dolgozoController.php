@@ -71,16 +71,15 @@ class dolgozoController extends \mkwhelpers\MattableController {
     public function getlistbody() {
         $view = $this->createView('dolgozolista_tbody.tpl');
 
-        $filterarr = array();
+        $filterarr = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
-            $filterarr['fields'][] = 'nev';
-            $filterarr['values'][] = $this->params->getStringRequestParam('nevfilter');
+            $filterarr->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
         $this->initPager($this->getRepo()->getCount($filterarr));
 
         $egyedek = $this->getRepo()->getWithJoins(
-                $filterarr, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filterarr, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }

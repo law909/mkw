@@ -45,17 +45,16 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
     public function getlistbody() {
         $view = $this->createView('bizonylatstatuszlista_tbody.tpl');
 
-        $filter = array();
+        $filter = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
-            $filter['fields'][] = 'nev';
-            $filter['values'][] = $this->params->getStringRequestParam('nevfilter');
+            $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
         $this->initPager(
-                $this->getRepo()->getCount($filter), $this->params->getIntRequestParam('elemperpage', 30), $this->params->getIntRequestParam('pageno', 1));
+            $this->getRepo()->getCount($filter), $this->params->getIntRequestParam('elemperpage', 30), $this->params->getIntRequestParam('pageno', 1));
 
         $egyedek = $this->getRepo()->getWithJoins(
-                $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
@@ -94,17 +93,17 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-   	public function getSelectList($selid = null) {
-		$rec = $this->getRepo()->getAll(array(),array('sorrend'=>'ASC', 'nev' => 'ASC'));
-		$res = array();
-		foreach($rec as $sor) {
-			$res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
-		}
-		return $res;
-	}
+    public function getSelectList($selid = null) {
+        $rec = $this->getRepo()->getAll(array(), array('sorrend' => 'ASC', 'nev' => 'ASC'));
+        $res = array();
+        foreach ($rec as $sor) {
+            $res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
+        }
+        return $res;
+    }
 
     public function getCsoportSelectList($sel = null) {
-		$rec = $this->getRepo()->getExistingCsoportok($sel);
+        $rec = $this->getRepo()->getExistingCsoportok($sel);
         $res = array();
         foreach ($rec as $sor) {
             $res[] = array(

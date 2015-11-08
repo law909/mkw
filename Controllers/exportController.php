@@ -1,5 +1,6 @@
 <?php
 namespace Controllers;
+
 use mkw\store;
 
 class exportController extends \mkwhelpers\Controller {
@@ -32,7 +33,7 @@ class exportController extends \mkwhelpers\Controller {
 
         $tr = \mkw\Store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
-        foreach($res as $t) {
+        foreach ($res as $t) {
             $cimke = $t->getCimkeByCategory(\mkw\Store::getParameter(\mkw\consts::MarkaCs));
             $leiras = $t->getLeiras();
             $leiras = str_replace("\n", '', $leiras);
@@ -50,7 +51,7 @@ class exportController extends \mkwhelpers\Controller {
                 '"' . ($cimke ? $cimke->getNev() : '') . '"',
                 '"' . \mkw\Store::getFullUrl($t->getKepurlLarge(), \mkw\Store::getConfigValue('mainurl')) . '"',
                 '"' . $t->getTermekfa1Nev() . '"',
-                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')). '"',
+                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')) . '"',
                 '"-1"',
                 '"' . $leiras . '"'
             );
@@ -80,7 +81,7 @@ class exportController extends \mkwhelpers\Controller {
 
         $tr = \mkw\Store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
-        foreach($res as $t) {
+        foreach ($res as $t) {
             $cimke = $t->getCimkeByCategory(\mkw\Store::getParameter(\mkw\consts::MarkaCs));
             $leiras = $t->getLeiras();
             $leiras = str_replace("\n", '', $leiras);
@@ -98,7 +99,7 @@ class exportController extends \mkwhelpers\Controller {
                 '"' . ($cimke ? $cimke->getNev() : '') . '"',
                 '"' . \mkw\Store::getFullUrl($t->getKepurlLarge(), \mkw\Store::getConfigValue('mainurl')) . '"',
                 '"' . ($t->getTermekfa1() ? $t->getTermekfa1()->getTeljesNev() : '') . '"',
-                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')). '"',
+                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')) . '"',
                 '"-1"',
                 '"' . $leiras . '"'
             );
@@ -124,7 +125,7 @@ class exportController extends \mkwhelpers\Controller {
 
         $tr = \mkw\Store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
-        foreach($res as $t) {
+        foreach ($res as $t) {
             $cimke = $t->getCimkeByCategory(\mkw\Store::getParameter(\mkw\consts::MarkaCs));
             $leiras = $t->getLeiras();
             $leiras = str_replace("\n", '', $leiras);
@@ -138,7 +139,7 @@ class exportController extends \mkwhelpers\Controller {
                 '"' . number_format($t->getBruttoAr(), 0, ',', '') . '"', //number_format($tetel.bruttoegysarhuf,0,',',' ')
                 '"' . $t->getTermekfa1Nev() . '"',
                 '"' . \mkw\Store::getFullUrl($t->getKepurlLarge(), \mkw\Store::getConfigValue('mainurl')) . '"',
-                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')). '"'
+                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')) . '"'
             );
             echo implode(';', $sor) . "\n";
         }
@@ -166,7 +167,7 @@ class exportController extends \mkwhelpers\Controller {
 
         $tr = \mkw\Store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
-        foreach($res as $t) {
+        foreach ($res as $t) {
             $cimke = $t->getCimkeByCategory(\mkw\Store::getParameter(\mkw\consts::MarkaCs));
             $leiras = $t->getLeiras();
             $leiras = str_replace("\n", '', $leiras);
@@ -179,7 +180,7 @@ class exportController extends \mkwhelpers\Controller {
                 '"' . $t->getNev() . '"',
                 '"' . $t->getTermekfa1Nev() . '"',
                 '"' . number_format($t->getBruttoAr(), 0, ',', '') . '"', //number_format($tetel.bruttoegysarhuf,0,',',' ')
-                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')). '"',
+                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')) . '"',
                 '"' . \mkw\Store::getFullUrl($t->getKepurlLarge(), \mkw\Store::getConfigValue('mainurl')) . '"',
                 '"' . $leiras . '"'
             );
@@ -207,7 +208,7 @@ class exportController extends \mkwhelpers\Controller {
 
         $tr = \mkw\Store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
-        foreach($res as $t) {
+        foreach ($res as $t) {
             $cimke = $t->getCimkeByCategory(\mkw\Store::getParameter(\mkw\consts::MarkaCs));
             $leiras = $t->getLeiras();
             $leiras = str_replace("\n", '', $leiras);
@@ -248,7 +249,7 @@ class exportController extends \mkwhelpers\Controller {
 
         $tr = \mkw\Store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
-        foreach($res as $t) {
+        foreach ($res as $t) {
 
             if ($t->getSzallitasiido()) {
                 $szallitasiido = $t->getSzallitasiido();
@@ -275,7 +276,7 @@ class exportController extends \mkwhelpers\Controller {
                 '"' . $leiras . '"',
                 '"' . number_format($t->getBruttoAr(), 0, ',', '') . '"', //number_format($tetel.bruttoegysarhuf,0,',',' ')
                 '"' . \mkw\Store::getFullUrl($t->getKepurlLarge(), \mkw\Store::getConfigValue('mainurl')) . '"',
-                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')). '"',
+                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')) . '"',
                 '"' . ($szallitasiido ? 'max. ' . $szallitasiido . ' munkanap' : '') . '"',
                 '"0"'
             );
@@ -303,7 +304,7 @@ class exportController extends \mkwhelpers\Controller {
         echo implode("\t", $sor) . "\n";
         $tr = \mkw\Store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
-        foreach($res as $t) {
+        foreach ($res as $t) {
             $cimke = $t->getCimkeByCategory(\mkw\Store::getParameter(\mkw\consts::MarkaCs));
 
             $leiras = $t->getLeiras();
@@ -329,7 +330,7 @@ class exportController extends \mkwhelpers\Controller {
                 '"' . ($cimke ? $cimke->getNev() : '') . '"',
                 '"' . $t->getNev() . '"',
                 '"' . ($t->getTermekfa1() ? $t->getTermekfa1()->getTeljesNev(' > ') : '') . '"',
-                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')). '"',
+                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')) . '"',
                 '"' . number_format($t->getBruttoAr(), 0, ',', '') . '"', //number_format($tetel.bruttoegysarhuf,0,',',' ')
                 '"' . \mkw\Store::getFullUrl($t->getKepurlLarge(), \mkw\Store::getConfigValue('mainurl')) . '"',
                 '"' . $leiras . '"',
@@ -358,7 +359,7 @@ class exportController extends \mkwhelpers\Controller {
         echo implode(";", $sor) . "\n";
         $tr = \mkw\Store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
-        foreach($res as $t) {
+        foreach ($res as $t) {
             $cimke = $t->getCimkeByCategory(\mkw\Store::getParameter(\mkw\consts::MarkaCs));
 
             $leiras = $t->getLeiras();
@@ -384,7 +385,7 @@ class exportController extends \mkwhelpers\Controller {
                 '"' . ($cimke ? $cimke->getNev() : '') . '"',
                 '"' . $t->getNev() . '"',
                 '"' . ($t->getTermekfa1() ? $t->getTermekfa1()->getTeljesNev(' > ') : '') . '"',
-                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')). '"',
+                '"' . \mkw\Store::getFullUrl('/termek/' . $t->getSlug(), \mkw\Store::getConfigValue('mainurl')) . '"',
                 '"' . number_format($t->getBruttoAr(), 0, ',', '') . '"', //number_format($tetel.bruttoegysarhuf,0,',',' ')
                 '"' . \mkw\Store::getFullUrl($t->getKepurlLarge(), \mkw\Store::getConfigValue('mainurl')) . '"',
                 '"' . $leiras . '"'
@@ -405,20 +406,16 @@ class exportController extends \mkwhelpers\Controller {
         $bizrepo = \mkw\Store::getEm()->getRepository('Entities\Bizonylatfej');
         $bt = \mkw\Store::getEm()->getRepository('Entities\Bizonylattipus')->find('szamla');
 
-        $filter = array();
-        $filter['fields'][] = 'bizonylattipus';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $bt;
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('bizonylattipus', '=', $bt);
 
         $mar = \mkw\Store::getParameter(\mkw\consts::RLBUtolsoSzamlaszam);
         if ($mar) {
-            $filter['fields'][] = 'id';
-            $filter['clauses'][] = '>';
-            $filter['values'][] = $mar;
+            $filter->addFilter('id', '>', $mar);
         }
 
         $r = $bizrepo->getAll($filter, array('id' => 'ASC'));
-        foreach($r as $bizonylat) {
+        foreach ($r as $bizonylat) {
             $mar = $bizonylat->getId();
             $fm = $bizonylat->getFizmod();
             $aossz = $bizrepo->getAFAOsszesito($bizonylat);
@@ -437,7 +434,7 @@ class exportController extends \mkwhelpers\Controller {
             );
 
             $i = 1;
-            foreach($aossz as $ao) {
+            foreach ($aossz as $ao) {
                 $sor[] = $ao['rlbkod'];
                 $sor[] = $ao['netto'];
                 $sor[] = $ao['afa'];
@@ -446,7 +443,7 @@ class exportController extends \mkwhelpers\Controller {
                     break;
                 }
             }
-            for($i; $i<=4; $i++) {
+            for ($i; $i <= 4; $i++) {
                 $sor[] = 0;
                 $sor[] = 0;
                 $sor[] = 0;

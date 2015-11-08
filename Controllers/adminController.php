@@ -83,11 +83,10 @@ class adminController extends mkwhelpers\Controller {
     }
 
     public function setVonalkodFromValtozat() {
-        $filter['fields'][] = 'vonalkod';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = '';
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('vonalkod', '=', '');
         $termekek = store::getEm()->getRepository('Entities\Termek')->getAll($filter, array());
-        foreach($termekek as $termek) {
+        foreach ($termekek as $termek) {
             $valtozatok = $termek->getValtozatok();
             $termek->setVonalkod($valtozatok[0]->getVonalkod());
             store::getEm()->persist($termek);
@@ -99,7 +98,7 @@ class adminController extends mkwhelpers\Controller {
     public function fillBiztetelValtozat() {
         $repo = $this->getRepo('Entities\Bizonylattetel');
         $mind = $repo->getAll();
-        foreach($mind as $bt) {
+        foreach ($mind as $bt) {
             if ($bt->getTermekvaltozat()) {
                 $bt->setTermekvaltozat($bt->getTermekvaltozat());
                 $this->getEm()->persist($bt);
@@ -111,18 +110,16 @@ class adminController extends mkwhelpers\Controller {
 
     public function generateFolyoszamla() {
         $repo = $this->getRepo('Entities\Bizonylatfej');
-        $filter = array();
-        $filter['fields'][] = 'penztmozgat';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = true;
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('penztmozgat', '=', true);
         $bfs = $repo->getAll($filter);
-        foreach($bfs as $bf) {
+        foreach ($bfs as $bf) {
             $repo->createFolyoszamla($bf);
         }
 
         $bbrepo = $this->getRepo('Entities\Bankbizonylatfej');
         $bfs = $bbrepo->getAll();
-        foreach($bfs as $bf) {
+        foreach ($bfs as $bf) {
             $bbrepo->createFolyoszamla($bf);
         }
 

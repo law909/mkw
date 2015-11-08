@@ -49,25 +49,19 @@ class teendoController extends \mkwhelpers\MattableController {
     public function getlistbody() {
         $view = $this->createView('teendolista_tbody.tpl');
 
-        $filterarr = array();
+        $filterarr = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('bejegyzesfilter', NULL))) {
-            $filterarr['fields'][] = array('_xx.bejegyzes', '_xx.leiras', 'a.nev');
-            $filterarr['values'][] = $this->params->getStringRequestParam('bejegyzesfilter');
-            $filterarr['clauses'][] = '';
+            $filterarr->addFilter(array('_xx.bejegyzes', '_xx.leiras', 'a.nev'), 'LIKE', '%' . $this->params->getStringRequestParam('bejegyzesfilter') . '%');
         }
 
         $fv = $this->params->getStringRequestParam('dtfilter');
         if ($fv !== '') {
-            $filterarr['fields'][] = '_xx.esedekes';
-            $filterarr['clauses'][] = '>=';
-            $filterarr['values'][] = store::convDate($fv);
+            $filterarr->addFilter('_xx.esedekes', '>=', store::convDate($fv));
         }
 
         $fv = $this->params->getStringRequestParam('difilter');
         if ($fv !== '') {
-            $filterarr['fields'][] = '_xx.esedekes';
-            $filterarr['clauses'][] = '<=';
-            $filterarr['values'][] = store::convDate($fv);
+            $filterarr->addFilter('_xx.esedekes', '<=', store::convDate($fv));
         }
 
         $this->initPager($this->getRepo()->getCount($filterarr));

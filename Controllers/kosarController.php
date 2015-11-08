@@ -65,17 +65,15 @@ class kosarController extends \mkwhelpers\MattableController {
     public function getlistbody() {
         $view = $this->createView('kosarlista_tbody.tpl');
 
-        $filter = array();
+        $filter = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
-            $filter['fields'][] = array('_xx.sessionid', 'p.nev', 't.nev');
-            $filter['clauses'][] = '';
-            $filter['values'][] = $this->params->getStringRequestParam('nevfilter');
+            $filter->addFilter(array('_xx.sessionid', 'p.nev', 't.nev'), 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(
-                $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
@@ -220,7 +218,7 @@ class kosarController extends \mkwhelpers\MattableController {
                 $values = $this->params->getArrayRequestParam('values');
                 $kedvezmenyek = $this->params->getArrayRequestParam('kedv');
 
-                for($cikl = 0; $cikl < count($vids); $cikl++) {
+                for ($cikl = 0; $cikl < count($vids); $cikl++) {
                     $vid = $vids[$cikl];
                     $value = $values[$cikl];
                     $kedv = $kedvezmenyek[$cikl];
@@ -325,10 +323,8 @@ class kosarController extends \mkwhelpers\MattableController {
     }
 
     public function replaceSessionIdAndAddPartner($oldid, $partner) {
-        $filter = array();
-        $filter['fields'][] = 'sessionid';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $oldid;
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('sessionid', '=', $oldid);
         $sorok = $this->getRepo()->getAll($filter, array());
         foreach ($sorok as $sor) {
             $sor->setSessionid(\Zend_Session::getId());
@@ -339,10 +335,8 @@ class kosarController extends \mkwhelpers\MattableController {
     }
 
     public function addSessionIdByPartner($partner) {
-        $filter = array();
-        $filter['fields'][] = 'partner';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $partner;
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('partner', '=', $partner);
         $sorok = $this->getRepo()->getAll($filter, array());
         foreach ($sorok as $sor) {
             $sor->setSessionid(\Zend_Session::getId());
@@ -352,10 +346,8 @@ class kosarController extends \mkwhelpers\MattableController {
     }
 
     public function removeSessionId($id) {
-        $filter = array();
-        $filter['fields'][] = 'sessionid';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $id;
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('sessionid', '=', $id);
         $sorok = $this->getRepo()->getAll($filter, array());
         foreach ($sorok as $sor) {
             $sor->setSessionid(null);

@@ -57,16 +57,15 @@ class hirController extends \mkwhelpers\MattableController {
     public function getlistbody() {
         $view = $this->createView('hirlista_tbody.tpl');
 
-        $filter = array();
+        $filter = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
-            $filter['fields'][] = 'cim';
-            $filter['values'][] = $this->params->getStringRequestParam('nevfilter');
+            $filter->addFilter('cim', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getAll(
-                $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
+            $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
 
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }

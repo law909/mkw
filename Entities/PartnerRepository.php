@@ -108,57 +108,42 @@ class PartnerRepository extends \mkwhelpers\Repository {
     }
 
 	public function countByEmail($email) {
-		$filter = array();
-		$filter['fields'][] = 'email';
-		$filter['clauses'][] = '=';
-		$filter['values'][] = $email;
-		$filter['fields'][] = 'vendeg';
-		$filter['clauses'][] = '=';
-		$filter['values'][] = false;
+		$filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('email', '=', $email)
+            ->addFilter('vendeg', '=', false);
 		return $this->getCount($filter);
 	}
 
 	public function findByUserPass($user, $pass) {
-		$filter = array();
-		$filter['fields'][] = 'email';
-		$filter['clauses'][] = '=';
-		$filter['values'][] = $user;
-		$filter['fields'][] = 'jelszo';
-		$filter['clauses'][] = '=';
-		$filter['values'][] = sha1(strtoupper(md5($pass)) . store::getSalt());
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('email', '=', $user)
+            ->addFilter('jelszo', '=', sha1(strtoupper(md5($pass)) . store::getSalt()));
 		return $this->getAll($filter, array());
 	}
 
 	public function findVendegByEmail($email) {
-		$filter = array();
-		$filter['fields'][] = 'email';
-		$filter['clauses'][] = '=';
-		$filter['values'][] = $email;
-		$filter['fields'][] = 'vendeg';
-		$filter['clauses'][] = '=';
-		$filter['values'][] = true;
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('email', '=', $email)
+            ->addFilter('vendeg', '=', true);
 		return $this->getAll($filter, array());
 	}
 
 	public function findByIdSessionid($id, $sessionid) {
-		$filter = array();
-		$filter['fields'][] = 'id';
-		$filter['clauses'][] = '=';
-		$filter['values'][] = $id;
-		$filter['fields'][] = 'sessionid';
-		$filter['clauses'][] = '=';
-		$filter['values'][] = $sessionid;
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('id', '=', $id)
+            ->addFilter('sessionid', '=', $sessionid);
 		return $this->getAll($filter, array());
 	}
 
     public function findNemVendegByEmail($email) {
-		$filter = array();
-		$filter['fields'][] = 'email';
-		$filter['clauses'][] = '=';
-		$filter['values'][] = $email;
-		$filter['fields'][] = 'vendeg';
-		$filter['clauses'][] = '=';
-		$filter['values'][] = false;
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('email', '=', $email)
+            ->addFilter('vendeg', '=', false);
 		return $this->getAll($filter, array());
     }
 

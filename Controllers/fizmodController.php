@@ -99,10 +99,9 @@ class fizmodController extends \mkwhelpers\MattableController {
     public function getlistbody() {
         $view = $this->createView('fizetesimodlista_tbody.tpl');
 
-        $filter = array();
+        $filter = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
-            $filter['fields'][] = 'nev';
-            $filter['values'][] = $this->params->getStringRequestParam('nevfilter');
+            $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
         $this->initPager(
@@ -175,9 +174,9 @@ class fizmodController extends \mkwhelpers\MattableController {
         $rec = $this->getRepo()->getAll(array(), array('nev' => 'asc'));
         $ret = '<select>';
         foreach ($rec as $sor) {
-            $ret.='<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
+            $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
         }
-        $ret.='</select>';
+        $ret .= '</select>';
         echo $ret;
     }
 

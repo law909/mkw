@@ -23,15 +23,13 @@ class afaController extends \mkwhelpers\JQGridController {
     }
 
     public function jsonlist() {
-        $filter = array();
+        $filter = new \mkwhelpers\FilterDescriptor();
         if ($this->params->getBoolRequestParam('_search', false)) {
             if (!is_null($this->params->getRequestParam('ertek', NULL))) {
-                $filter['fields'][] = 'ertek';
-                $filter['values'][] = $this->params->getIntRequestParam('ertek');
+                $filter->addFilter('ertek', '=', $this->params->getIntRequestParam('ertek'));
             }
             if (!is_null($this->params->getParam('nev', NULL))) {
-                $filter['fields'][] = 'nev';
-                $filter['values'][] = $this->params->getStringRequestParam('nev');
+                $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nev') . '%');
             }
         }
         $rec = $this->getRepo()->getAll($filter, $this->getOrderArray());
@@ -56,9 +54,9 @@ class afaController extends \mkwhelpers\JQGridController {
         $rec = $this->getRepo()->getAll(array(), array('nev' => 'asc'));
         $ret = '<select>';
         foreach ($rec as $sor) {
-            $ret.='<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
+            $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
         }
-        $ret.='</select>';
+        $ret .= '</select>';
         echo $ret;
     }
 

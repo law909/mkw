@@ -7,8 +7,8 @@ use mkw\store;
 class fantaController extends \mkwhelpers\MattableController {
 
     public function show() {
-		$this->view = $this->getTemplateFactory()->createMainView('fanta.tpl');
-		$this->view->printTemplateResult(true);
+        $this->view = $this->getTemplateFactory()->createMainView('fanta.tpl');
+        $this->view->printTemplateResult(true);
     }
 
     public function doit() {
@@ -26,24 +26,15 @@ class fantaController extends \mkwhelpers\MattableController {
             if ($bt && $ujbt) {
                 $szamlaszam = \mkw\Store::createBizonylatszam($bt->getAzonosito(), $ev, $bizszam);
 
-                $filter = array();
-                $filter['fields'][] = 'bizonylattipus';
-                $filter['clauses'][] = '=';
-                $filter['values'][] = $bt;
+                $filter = new \mkwhelpers\FilterDescriptor();
+                $filter
+                    ->addFilter('bizonylattipus', '=', $bt)
+                    ->addFilter('id', '>=', $szamlaszam);
 
-                $filter['fields'][] = 'id';
-                $filter['clauses'][] = '>=';
-                $filter['values'][] = $szamlaszam;
+                $fixfilter = new \mkwhelpers\FilterDescriptor();
+                $fixfilter->addFilter('fix', '=', true);
 
-                $fixdb = $this->getRepo('Entities\Bizonylatfej')->getCount(
-                        array_merge_recursive($filter,
-                                array(
-                                    'fields' => array('fix'),
-                                    'clauses' => array('='),
-                                    'values' => array(true)
-                                )
-                        )
-                );
+                $fixdb = $this->getRepo('Entities\Bizonylatfej')->getCount($filter->merge($fixfilter));
 
                 if ($fixdb == 0) {
                     $szamlak = $this->getRepo('Entities\Bizonylatfej')->getAll($filter, array());
@@ -53,21 +44,21 @@ class fantaController extends \mkwhelpers\MattableController {
                         'em' => 'Internal server error #597.'
                     );
 
-                    $this->getEm()->transactional(function($em) use ($szamlak) {
-                        foreach($szamlak as $szamla) {
+                    $this->getEm()->transactional(function ($em) use ($szamlak) {
+                        foreach ($szamlak as $szamla) {
                             $szamla->removeParbizonylatfej();
                             $szamla->setPenztmozgat(false);
                             $em->persist($szamla);
-                            foreach($szamla->getBizonylattetelek() as $biztetel) {
+                            foreach ($szamla->getBizonylattetelek() as $biztetel) {
                                 $biztetel->removeParbizonylattetel();
                                 $em->persist($biztetel);
                             }
                         }
                     });
 
-                    $this->getEm()->transactional(function($em) use ($szamlak, $ujbt) {
+                    $this->getEm()->transactional(function ($em) use ($szamlak, $ujbt) {
                         $sorszam = 0;
-                        foreach($szamlak as $szamla) {
+                        foreach ($szamlak as $szamla) {
                             if ($szamla->getStorno()) {
                                 $szamla->setMegjegyzes('');
                                 $em->persist($szamla);
@@ -81,7 +72,7 @@ class fantaController extends \mkwhelpers\MattableController {
                             $uj->setBizonylattipus($ujbt);
                             $sorszam = $uj->generateId($sorszam);
                             $sorszam++;
-                            foreach($szamla->getBizonylattetelek() as $biztetel) {
+                            foreach ($szamla->getBizonylattetelek() as $biztetel) {
                                 if ($biztetel->getStorno()) {
                                     //$em->persist($biztetel);
                                 }
@@ -91,7 +82,7 @@ class fantaController extends \mkwhelpers\MattableController {
                                 $ujtetel->clearCreated();
                                 $ujtetel->clearLastmod();
 
-                                foreach($biztetel->getTranslations() as $trans) {
+                                foreach ($biztetel->getTranslations() as $trans) {
                                     $ujtrans = clone $trans;
                                     $ujtetel->addTranslation($ujtrans);
                                     $em->persist($ujtrans);

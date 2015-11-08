@@ -26,20 +26,13 @@ class listaController extends \mkwhelpers\Controller {
         $rsm->addScalarResult('termekvaltozat_id', 'termekvaltozat_id');
         $rsm->addScalarResult('keszlet', 'keszlet');
 
-        $filter = array();
-        $filter['fields'][] = 'bt.mozgat';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = '1';
-        $filter['fields'][] = 'bf.raktar_id';
-        $filter['clauses'][] = '<>';
-        $filter['values'][] = $raktarid;
-        $filter['fields'][] = 'bf.teljesites';
-        $filter['clauses'][] = '<=';
-        $filter['values'][] = date(\mkw\Store::$DateFormat);
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('bt.mozgat', '=', 1)
+            ->addFilter('bf.raktar_id', '<>', $raktarid)
+            ->addFilter('bf.teljesites', '<=', date(\mkw\Store::$DateFormat));
         if ($termekfa) {
-            $filter['fields'][] = array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod');
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = $termekfa->getKarkod() . '%';
+            $filter->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $termekfa->getKarkod() . '%');
         }
 
         $sql = 'SELECT bf.raktar_id, bt.termek_id, bt.termekvaltozat_id, SUM(bt.mennyiseg*bt.irany) AS keszlet FROM bizonylattetel bt '
@@ -104,31 +97,16 @@ class listaController extends \mkwhelpers\Controller {
         $kiskercimke = \mkw\Store::getParameter(\mkw\consts::KiskerCimke);
         $ret = array();
         foreach($focsoportok as $csoport) {
-            $filter = array();
-            $filter['fields'][] = 'bt.mozgat';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = 1;
-
-            $filter['fields'][] = 'bf.teljesites';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $datum;
-
-            $filter['fields'][] = 'bf.rontott';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = false;
-
-            $filter['fields'][] = array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod');
-            $filter['clauses'][] = 'LIKE';
-            $filter['values'][] = $csoport['karkod'] . '%';
-
-            $filter['fields'][] = 'bf.bizonylattipus_id';
-            $filter['clauses'][] = 'IN';
-            $filter['values'][] = array('szamla', 'egyeb', 'keziszamla');
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter
+                ->addFilter('bt.mozgat', '=', 1)
+                ->addFilter('bf.teljesites', '=', $datum)
+                ->addFilter('bf.rontott', '=', false)
+                ->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $csoport['karkod'] . '%')
+                ->addFilter('bf.bizonylattipus_id', 'IN', array('szamla', 'egyeb', 'keziszamla'));
 
             if ($kiskercimke) {
-                $filter['fields'][] = 'pc.cimketorzs_id';
-                $filter['clauses'][] = '=';
-                $filter['values'][] = $kiskercimke;
+                $filter->addFilter('pc.cimketorzs_id', '=', $kiskercimke);
             }
 
             $k = $termekrepo->calcNapijelentes($filter);

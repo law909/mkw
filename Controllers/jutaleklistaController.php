@@ -29,28 +29,20 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
 
         $datummezo = 'datum';
 
-        $filter = array();
-        $filter['fields'][] = $datummezo;
-        $filter['clauses'][] = '>=';
-        $filter['values'][] = $tolstr;
-        $filter['fields'][] = $datummezo;
-        $filter['clauses'][] = '<=';
-        $filter['values'][] = $igstr;
-        $filter['fields'][] = 'irany';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = 1;
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter($datummezo, '>=', $tolstr)
+            ->addFilter($datummezo, '<=', $igstr)
+            ->addFilter('irany', '=', 1);
 
         $selpartner = $this->params->getIntRequestParam('partner');
         if ($selpartner) {
-            $filter['fields'][] = 'partner';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $selpartner;
+            $filter->addFilter('partner', '=', $selpartner);
         }
         else {
             $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($this->params->getArrayRequestParam('cimkefilter'));
             if ($partnerkodok) {
-                $filter['fields'][] = 'partner';
-                $filter['values'][] = $partnerkodok;
+                $filter->addFilter('partner', 'IN', $partnerkodok);
             }
             $cimkenevek = $this->getRepo('Entities\Partnercimketorzs')->getCimkeNevek($this->params->getArrayRequestParam('cimkefilter'));
         }

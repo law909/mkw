@@ -58,15 +58,13 @@ class partnercimkeController extends \mkwhelpers\MattableController {
         $view = $this->createView('cimkelista_tbody.tpl');
         $view->setVar('kellkep', false);
 
-        $filter = array();
+        $filter = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
-            $filter['fields'][] = 'nev';
-            $filter['values'][] = $this->params->getStringRequestParam('nevfilter');
+            $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
         $fv = $this->params->getIntRequestParam('ckfilter');
         if ($fv > 0) {
-            $filter['fields'][] = 'ck.id';
-            $filter['values'][] = $fv;
+            $filter->addFilter('ck.id', '=', $fv);
         }
 
         $this->initPager($this->getRepo()->getCount($filter));
