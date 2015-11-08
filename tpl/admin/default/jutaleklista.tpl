@@ -26,13 +26,12 @@
                 <form id="jutalek" action="" target="_blank">
                     {include "comp_idoszak.tpl" comptype="datum"}
                     <div class="matt-hseparator"></div>
-                    {include "comp_partnerselect.tpl"}
-                    <div class="matt-hseparator"></div>
                     {include "comp_partnercimkefilter.tpl"}
                     <div class="matt-hseparator"></div>
 
                     <div>
                         <a href="/admin/jutaleklista/get" class="js-okbutton">OK</a>
+                        <a href="/admin/jutaleklista/export" class="js-exportbutton">Export</a>
                     </div>
                 </form>
             </div>

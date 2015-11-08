@@ -678,14 +678,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $biztipid = $this->params->getStringRequestParam('biztipus');
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipid);
         if ($bt) {
-            $filter = array();
-            $filter['fields'][] = 'bizonylattipus';
-            $filter['clauses'][] = '=';
-            $filter['values'][] = $bt;
-            $filter['fields'][] = 'kelt';
-            $filter['clauses'][] = '>';
-            $filter['values'][] = $keltstr;
-            $filter['sql'][] = '(YEAR(_xx.kelt)=' . date('Y', $kelt) . ')';
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter
+                ->addFilter('bizonylattipus', '=', $bt)
+                ->addFilter('kelt', '>', $keltstr)
+                ->addSql('(YEAR(_xx.kelt)=' . date('Y', $kelt) . ')');
             $db = $this->getRepo()->getCount($filter);
             if ($db == 0) {
                 $ret = array('response' => 'ok');
@@ -718,12 +715,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $this->setVars($view);
 
-        $filter = array();
-        $filter = $this->loadFilters($filter);
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $this->loadFilters($filter);
 
-        $filter['fields'][] = 'bizonylattipus';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+        $filter->addFilter('bizonylattipus', '=', $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus));
 
         $this->initPager($this->getRepo()->getCount($filter));
 
@@ -754,13 +749,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
     }
 
     public function getFiokList() {
-        $filter = array();
-        $filter['fields'][] = 'partner';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $this->getRepo('Entities\Partner')->getLoggedInUser();
-        $filter['fields'][] = 'bizonylattipus';
-        $filter['clauses'][] = '=';
-        $filter['values'][] = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('partner', '=', $this->getRepo('Entities\Partner')->getLoggedInUser())
+            ->addFilter('bizonylattipus', '=', $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus));
         $l = $this->getRepo()->getWithJoins($filter, array('kelt' => 'ASC'));
         $ret = array();
         foreach ($l as $it) {

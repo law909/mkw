@@ -51,6 +51,28 @@ $(document).ready(function() {
                 $ff.submit();
             }).button();
 
+            $('.js-exportbutton').on('click', function(e) {
+                var $ff, $c, cimkek = [];
+                e.preventDefault();
+                $ff = $('#jutalek');
+                $c = $('input[name="cimkefilter"]');
+                if ($c.length == 0) {
+                    $ff.append('<input type="hidden" name="cimkefilter">');
+                    $c = $('input[name="cimkefilter"]');
+                }
+                $('.js-cimkefilter').filter('.ui-state-hover').each(function() {
+                    cimkek.push($(this).attr('data-id'));
+                });
+                if (cimkek.length>0) {
+                    $c.val(cimkek);
+                }
+                else {
+                    $c.val('');
+                }
+                $ff.attr('action', $(this).attr('href'));
+                $ff.submit();
+            }).button();
+
         },
         onSubmit: function() {
             $('#messagecenter')

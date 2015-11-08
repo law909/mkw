@@ -32,7 +32,7 @@ class Bankbizonylattetel {
 
     /**
      * @ORM\ManyToOne(targetEntity="Bankbizonylatfej",inversedBy="bizonylattetelek")
-     * @ORM\JoinColumn(name="bankizonylatfej_id", referencedColumnName="id",nullable=true,onDelete="cascade")
+     * @ORM\JoinColumn(name="bankbizonylatfej_id", referencedColumnName="id",nullable=true,onDelete="cascade")
      * @var \Entities\Bankbizonylatfej
      */
     private $bizonylatfej;
