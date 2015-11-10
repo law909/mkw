@@ -6,6 +6,10 @@
     text-align: right;
 }
 
+.nowrap {
+    white-space: nowrap;
+}
+
 h4, h5 {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -15,7 +19,8 @@ h4, h5 {
 
 body {
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-    margin: 20px;
+    margin: 0 auto;
+    width: 21cm;
     color: #669;
 }
 
@@ -32,6 +37,15 @@ table th {
     font-weight: normal;
     color: #039;
     border-bottom: 2px solid #6678b1;
+    padding: 10px 8px;
+}
+
+table tfoot {
+    font-size: 14px;
+    font-weight: normal;
+    color: #039;
+    border-bottom: 2px solid #6678b1;
+    border-top: 2px solid #6678b1;
     padding: 10px 8px;
 }
 
@@ -62,6 +76,12 @@ table td {
     table th {
         color: #000;
         border-bottom-color: #000;
+    }
+
+    table tfoot {
+        color: #000;
+        border-bottom-color: #000;
+        border-top-color: #000;
     }
 
     table tr {

@@ -153,6 +153,10 @@ class Store {
         self::$setup = $setup;
     }
 
+    public static function getIntParameter($par, $default = null) {
+        return self::getParameter($par, $default) * 1;
+    }
+
     public static function getParameter($par, $default = null) {
         $p = self::getEm()->getRepository('Entities\Parameterek')->find($par);
         if ($p) {

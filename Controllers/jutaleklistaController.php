@@ -42,6 +42,46 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
         return $filter;
     }
 
+    public function addNegativSzallktg($mihez) {
+        /** @var \Entities\BizonylatfejRepository $bfrepo */
+        $bfrepo = $this->getRepo('Entities\Bizonylatfej');
+        /** @var \Entities\BankbizonylattetelRepository $bbtrepo */
+        $bbtrepo = $this->getRepo('Entities\Bankbizonylattetel');
+        $ret = array();
+        foreach ($mihez as $sor) {
+            $sor['jutalekosszeg'] = \mkw\Store::kerekit($sor['brutto'] * $sor['uzletkotojutalek'] / 100, 0.01);
+            $sor['type'] = 'Item';
+            $ret[] = $sor;
+            $bf = $bfrepo->find($sor['hivatkozottbizonylat']);
+            if ($bf && $bfrepo->haveSzallitasiKtg($bf)
+                && ($bbtrepo->isFirstByHivatkozottBizonylat(
+                    $sor['id'],
+                    $sor['hivatkozottbizonylat'],
+                    $sor['datum']))) {
+                $bt = $bfrepo->getSzallitasiKtgTetel($bf);
+                if ($bt) {
+                    $ret[] = array(
+                        'id' => 0,
+                        'bankbizonylatfej_id' => $sor['bankbizonylatfej_id'],
+                        'valutanem_id' => $sor['valutanem_id'],
+                        'valutanemnev' => $sor['valutanemnev'],
+                        'datum' => $sor['datum'],
+                        'hivatkozottdatum' => $sor['hivatkozottdatum'],
+                        'hivatkozottbizonylat' => $sor['hivatkozottbizonylat'],
+                        'uzletkoto_id' => $sor['uzletkoto_id'],
+                        'uzletkotonev' => $sor['uzletkotonev'],
+                        'uzletkotojutalek' => $sor['uzletkotojutalek'],
+                        'partnernev' => $sor['partnernev'],
+                        'brutto' => $bt->getBrutto() * -1,
+                        'jutalekosszeg' => \mkw\Store::kerekit($bt->getBrutto() * $sor['uzletkotojutalek'] / 100 * -1, 0.01),
+                        'type' => 'Transport cost'
+                    );
+                }
+            }
+        }
+        return $ret;
+    }
+
     public function createLista() {
         $filter = $this->createFilter();
 
@@ -54,7 +94,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
             array('datum' => 'ASC'));
 
         $report = $this->createView('rep_jutalek.tpl');
-        $report->setVar('lista', $mind);
+        $report->setVar('lista', $this->addNegativSzallktg($mind));
         $report->setVar('tolstr', $this->tolstr);
         $report->setVar('igstr', $this->igstr);
         $report->setVar('cimkenevek', $cimkenevek);
@@ -77,9 +117,10 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
             ->setCellValue('C1', 'Invoice nr.')
             ->setCellValue('D1', 'Customer')
             ->setCellValue('E1', 'Agent')
-            ->setCellValue('F1', 'Income')
-            ->setCellValue('G1', 'Comission %')
-            ->setCellValue('H1', 'Comission value');
+            ->setCellValue('F1', 'Type')
+            ->setCellValue('G1', 'Income')
+            ->setCellValue('H1', 'Comission %')
+            ->setCellValue('I1', 'Comission value');
 
         $filter = $this->createFilter();
 
@@ -87,6 +128,8 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
         $btrepo = $this->getRepo('Entities\Bankbizonylattetel');
 
         $mind = $btrepo->getAllHivatkozottJoin($filter);
+
+        $mind = $this->addNegativSzallktg($mind);
 
         $sor = 2;
         foreach ($mind as $item) {
@@ -96,9 +139,10 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
                 ->setCellValue('C' . $sor, $item['hivatkozottbizonylat'])
                 ->setCellValue('D' . $sor, $item['partnernev'])
                 ->setCellValue('E' . $sor, $item['uzletkotonev'])
-                ->setCellValue('F' . $sor, bizformat($item['brutto']))
-                ->setCellValue('G' . $sor, $item['uzletkotojutalek'])
-                ->setCellValue('H' . $sor, bizformat($item['brutto'] * $item['uzletkotojutalek'] / 100));
+                ->setCellValue('F' . $sor, $item['type'])
+                ->setCellValue('G' . $sor, $item['brutto'])
+                ->setCellValue('H' . $sor, $item['uzletkotojutalek'])
+                ->setCellValue('I' . $sor, $item['jutalekosszeg']);
             $sor++;
         }
 
@@ -110,10 +154,10 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
         $fileSize = filesize($filepath);
 
         // Output headers.
-        header("Cache-Control: private");
-        header("Content-Type: application/stream");
-        header("Content-Length: " . $fileSize);
-        header("Content-Disposition: attachment; filename=" . $filepath);
+        header('Cache-Control: private');
+        header('Content-Type: application/stream');
+        header('Content-Length: ' . $fileSize);
+        header('Content-Disposition: attachment; filename=' . $filepath);
 
         readfile($filepath);
 

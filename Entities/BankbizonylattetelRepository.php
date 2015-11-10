@@ -12,6 +12,22 @@ class BankbizonylattetelRepository extends \mkwhelpers\Repository {
         $this->setEntityname('Entities\Bankbizonylattetel');
     }
 
+    public function isFirstByHivatkozottBizonylat($id, $bizszam, $datum) {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('id', '<>', $id)
+            ->addFilter('hivatkozottbizonylat', '=', $bizszam)
+            ->addFilter('datum', '<', $datum)
+            ->addFilter('irany', '>=', 1)
+            ->addFilter('rontott', '=', 0);
+
+        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+            . ' FROM Entities\Bankbizonylattetel _xx'
+            . $this->getFilterString($filter));
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getSingleScalarResult() * 1 === 0;
+    }
+
     public function getAllHivatkozottJoin($filter = array(), $order = array()) {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');

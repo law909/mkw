@@ -340,4 +340,35 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         }
         return false;
     }
+
+    public function haveSzallitasiKtg($bf) {
+        $bizfej = $bf;
+        if (is_string($bf)) {
+            $bizfej = $this->find($bf);
+        }
+        $termekid = \mkw\Store::getIntParameter(\mkw\consts::SzallitasiKtgTermek);
+        $cnt = 0;
+        foreach ($bizfej->getBizonylattetelek() as $btetel) {
+            if ($btetel->getTermekId() === $termekid) {
+                $cnt++;
+            }
+        }
+        return $cnt > 0;
+    }
+
+    public function getSzallitasiKtgTetel($bf) {
+        $bizfej = $bf;
+        if (is_string($bf)) {
+            $bizfej = $this->find($bf);
+        }
+        $termekid = \mkw\Store::getIntParameter(\mkw\consts::SzallitasiKtgTermek);
+        $ret = null;
+        foreach ($bizfej->getBizonylattetelek() as $btetel) {
+            if ($btetel->getTermekId() === $termekid) {
+                $ret = $btetel;
+                break;
+            }
+        }
+        return $ret;
+    }
 }
