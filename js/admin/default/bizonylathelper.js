@@ -836,6 +836,11 @@ var bizonylathelper = function($) {
                         });
                     }
                 },
+                onGetTBody: function(data) {
+                    if (data.sumhtml) {
+                        $('.js-sumcol').html(data.sumhtml);
+                    }
+                },
                 karb: getMattKarbConfig(bizonylattipus)
             });
             $('.mattable-batchbtn').on('click', function(e) {

@@ -725,7 +725,16 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $egyedek = $this->getRepo()->getWithJoins(
             $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
 
-        echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
+        $ki = $this->loadDataToView($egyedek, 'egyedlista', $view);
+
+        $sumview = $this->createView('bizonylatfejsum.tpl');
+        $this->setVars($sumview);
+        $sum = $this->getRepo()->calcSumWithJoins($filter);
+        $sumview->setVar('sum', $sum);
+
+        $ki['sumhtml'] = $sumview->getTemplateResult();
+
+        echo json_encode($ki);
     }
 
     public function doPrint() {

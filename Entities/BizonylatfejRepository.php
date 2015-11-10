@@ -76,6 +76,23 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
+    public function calcSumWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
+        $q = $this->_em->createQuery('SELECT SUM(_xx.brutto) AS brutto, SUM(_xx.netto) AS netto, SUM(_xx.afa) AS afa,'
+            . ' SUM(_xx.bruttohuf) AS bruttohuf, SUM(_xx.nettohuf) AS nettohuf, SUM(_xx.afahuf) AS afahuf'
+            . ' FROM Entities\Bizonylatfej _xx'
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order));
+        $q->setParameters($this->getQueryParameters($filter));
+        if ($offset > 0) {
+            $q->setFirstResult($offset);
+        }
+        if ($elemcount > 0) {
+            $q->setMaxResults($elemcount);
+        }
+        $res = $q->getScalarResult();
+        return $res[0];
+    }
+
     public function getCount($filter) {
         $q = $this->_em->createQuery('SELECT COUNT(_xx)'
             . ' FROM Entities\Bizonylatfej _xx'

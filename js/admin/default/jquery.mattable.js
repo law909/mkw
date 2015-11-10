@@ -334,7 +334,7 @@
                     styleTbody();
                     doEditLink(tbody);
                     if ($.isFunction(setup.onGetTBody)) {
-                        setup.onGetTBody.call(this);
+                        setup.onGetTBody.call(this, resp);
                     }
                     $('.' + _pagerIds.pageno).val(resp.pageno);
                     $('.' + _pagerIds.pagecount).text(resp.pagecount).attr(_dataattr.pagecount, resp.pagecount);

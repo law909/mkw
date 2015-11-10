@@ -144,7 +144,7 @@
         {/if}
         <th></th>
         <th></th>
-        <th></th>
+        <th class="js-sumcol"></th>
         {if ($setup.osztottfizmod)}
         <th></th>
         {/if}
