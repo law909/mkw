@@ -806,6 +806,7 @@ var bizonylathelper = function($) {
                         '#bizonylatstatuszcsoportfilter',
                         '#bizonylatrontottfilter',
                         '#fizmodfilter',
+                        '#valutanemfilter',
                         '#szallitasimodfilter',
                         '#fuvarlevelszamfilter',
                         '#erbizonylatszamfilter',

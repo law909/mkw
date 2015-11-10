@@ -101,6 +101,16 @@
             {/foreach}
         </select>
     </div>
+    <div class="matt-hseparator"></div>
+    <div>
+        <label for="valutanemfilter">Valutanem:</label>
+        <select id="valutanemfilter" name="valutanemfilter">
+            <option value="">Mindegy</option>
+            {foreach $valutanemlist as $_role}
+                <option value="{$_role.id}">{$_role.caption}</option>
+            {/foreach}
+        </select>
+    </div>
     {if ($showfuvarlevelszam)}
 	<div class="matt-hseparator"></div>
     <div>
