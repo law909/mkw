@@ -1,5 +1,6 @@
 <?php
 namespace Controllers;
+
 use mkw\store, mkw\thumbnail;
 
 class importController extends \mkwhelpers\Controller {
@@ -149,8 +150,8 @@ class importController extends \mkwhelpers\Controller {
         $fh = fopen('kreativpuzzlestock.txt', 'r');
         if ($fh) {
             $settings = array(
-                'quality'=>80,
-                'sizes'=>array('100'=>'100x100','150'=>'150x150','250'=>'250x250','1000'=>'1000x800')
+                'quality' => 80,
+                'sizes' => array('100' => '100x100', '150' => '150x150', '250' => '250x250', '1000' => '1000x800')
             );
             $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
             $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
@@ -177,7 +178,6 @@ class importController extends \mkwhelpers\Controller {
             }
             while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                 $termekdb++;
-                \mkw\Store::writelog('kreativ ' . $termekdb);
                 if ($data[$this->n('c')] * 1 > 0) {
                     $termek = store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('KP' . $data[$this->n('a')]);
                     if (!$termek) {
@@ -231,10 +231,10 @@ class importController extends \mkwhelpers\Controller {
                                     \curl_exec($ch);
                                     fclose($ih);
 
-                                    foreach ($settings['sizes'] as $k=>$size) {
-                                            $newFilePath = $nameWithoutExt."_".$k.".".$extension;
-                                            $matches=explode('x',$size);
-                                            \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0]*1, $matches[1]*1, $settings['quality'], true) ;
+                                    foreach ($settings['sizes'] as $k => $size) {
+                                        $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                        $matches = explode('x', $size);
+                                        \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $settings['quality'], true);
                                     }
                                     if (((count($imagelist[$data[$this->n('a')]]) > 1) && ($imgcnt == 1)) || (count($imagelist[$data[$this->n('a')]]) == 1)) {
                                         $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
@@ -334,7 +334,7 @@ class importController extends \mkwhelpers\Controller {
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
         $createuj = $this->params->getBoolRequestParam('createuj', false);
         $arszaz = $this->params->getNumRequestParam('arszaz', 100);
-        $deltondownload = $this->params->getBoolRequestParam('deltondownload',false);
+        $deltondownload = $this->params->getBoolRequestParam('deltondownload', false);
         $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
         $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
@@ -359,20 +359,19 @@ class importController extends \mkwhelpers\Controller {
         $fh = fopen('delton.txt', 'r');
         if ($fh) {
             $settings = array(
-                'quality'=>80,
-                'sizes'=>array('100'=>'100x100','150'=>'150x150','250'=>'250x250','1000'=>'1000x800')
+                'quality' => 80,
+                'sizes' => array('100' => '100x100', '150' => '150x150', '250' => '250x250', '1000' => '1000x800')
             );
             $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
             $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
             $termekdb = 0;
-//            $this->fgetdeltoncsv($fh);
+            // $this->fgetdeltoncsv($fh);
             while (($termekdb < $dbtol) && ($data = $this->fgetdeltoncsv($fh))) {
                 $termekdb++;
             }
             while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = $this->fgetdeltoncsv($fh))) {
                 $termekdb++;
-                \mkw\Store::writelog('delton createkat ' . $data[1] . ' ' . $termekdb);
                 if ($data[1]) {
                     if ($data[6]) {
                         $katnev = $this->toutf(trim($data[6]));
@@ -390,13 +389,12 @@ class importController extends \mkwhelpers\Controller {
             rewind($fh);
             $termekdb = 0;
 
-//            $this->fgetdeltoncsv($fh);
+            // $this->fgetdeltoncsv($fh);
             while (($termekdb < $dbtol) && ($data = $this->fgetdeltoncsv($fh))) {
                 $termekdb++;
             }
             while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = $this->fgetdeltoncsv($fh))) {
                 $termekdb++;
-                \mkw\Store::writelog('delton ' . $termekdb);
                 if ($data[1]) {
                     $termek = store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('DT' . $data[1]);
                     if (!$termek) {
@@ -454,10 +452,10 @@ class importController extends \mkwhelpers\Controller {
                             \curl_exec($ch);
                             fclose($ih);
 
-                            foreach ($settings['sizes'] as $k=>$size) {
-                                    $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
-                                    $matches = explode('x',$size);
-                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0]*1, $matches[1]*1, $settings['quality'], true) ;
+                            foreach ($settings['sizes'] as $k => $size) {
+                                $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                $matches = explode('x', $size);
+                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $settings['quality'], true);
                             }
                             $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
                             $termek->setKepleiras($termeknev);
@@ -472,10 +470,10 @@ class importController extends \mkwhelpers\Controller {
                             //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
                         }
                     }
-                    //$termek->setNemkaphato(($data[6] * 1) == 0);
+                    // $termek->setNemkaphato(($data[6] * 1) == 0);
                     if ($termek) {
-                        //$termek->setAfa($afa[0]);
-                        if (substr($data[11],-6) == 'rkezik') {
+                        // $termek->setAfa($afa[0]);
+                        if (substr($data[11], -6) == 'rkezik') {
                             $termek->setNemkaphato(true);
                         }
                         else {
@@ -491,11 +489,10 @@ class importController extends \mkwhelpers\Controller {
                         }
                         $termek->setBrutto(round($termek->getBrutto(), -1));
                         store::getEm()->persist($termek);
-//                        store::getEm()->flush();
+                        // store::getEm()->flush();
                     }
                 }
                 if (($termekdb % $batchsize) === 0) {
-                    \mkw\Store::writelog('flush');
                     \mkw\Store::getEm()->flush();
                     \mkw\Store::getEm()->clear();
                     $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
@@ -504,6 +501,27 @@ class importController extends \mkwhelpers\Controller {
             }
             \mkw\Store::getEm()->flush();
             \mkw\Store::getEm()->clear();
+
+            if ($gyarto) {
+                rewind($fh);
+                $idegenkodok = array();
+                while ($data = $this->fgetdeltoncsv($fh)) {
+                    $idegenkodok[] = 'DT' . $data[1];
+                }
+                $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
+                foreach ($termekek as $t) {
+                    if (!in_array($t['idegenkod'], $idegenkodok)) {
+                        /** @var \Entities\Termek $termek */
+                        $termek = $this->getRepo('Entities\Termek')->find($t['id']);
+                        if ($termek) {
+                            $termek->setFuggoben(true);
+                            $termek->setInaktiv(true);
+                            \mkw\Store::getEm()->persist($termek);
+                            \mkw\Store::getEm()->flush();
+                        }
+                    }
+                }
+            }
         }
         fclose($fh);
     }
@@ -537,11 +555,11 @@ class importController extends \mkwhelpers\Controller {
         \curl_exec($ch);
         fclose($fh);
 
-        $xml = simplexml_load_file(temppath."nomad.xml");
+        $xml = simplexml_load_file(temppath . "nomad.xml");
         if ($xml) {
             $settings = array(
-                'quality'=>80,
-                'sizes'=>array('100'=>'100x100','150'=>'150x150','250'=>'250x250','1000'=>'1000x800')
+                'quality' => 80,
+                'sizes' => array('100' => '100x100', '150' => '150x150', '250' => '250x250', '1000' => '1000x800')
             );
             $afa = store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
             $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
@@ -575,7 +593,6 @@ class importController extends \mkwhelpers\Controller {
             while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
                 $data = $products[$termekdb];
                 $termekdb++;
-                \mkw\Store::writelog('nomad ' . $termekdb);
                 if ($data->sku) {
                     $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data->catalog_first, 'idegencikkszam' => $data->sku));
                     if (!$termek) {
@@ -631,10 +648,10 @@ class importController extends \mkwhelpers\Controller {
                             \curl_exec($ch);
                             fclose($ih);
 
-                            foreach ($settings['sizes'] as $k=>$size) {
-                                    $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
-                                    $matches = explode('x',$size);
-                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0]*1, $matches[1]*1, $settings['quality'], true) ;
+                            foreach ($settings['sizes'] as $k => $size) {
+                                $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                $matches = explode('x', $size);
+                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $settings['quality'], true);
                             }
                             $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
                             $termek->setKepleiras($termeknev);
@@ -690,9 +707,8 @@ class importController extends \mkwhelpers\Controller {
             }
             while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                 $termekdb++;
-                \mkw\Store::writelog('reintex ' . $termekdb);
                 if ($data[$this->n('a')]) {
-                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data[$this->n('a')],'gyarto' => $gyartoid));
+                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data[$this->n('a')], 'gyarto' => $gyartoid));
                     if (!$termek) {
 
                         if ($createuj) {
@@ -723,13 +739,12 @@ class importController extends \mkwhelpers\Controller {
                     }
                     if ($termek) {
                         //$termek->setAfa($afa[0]);
-                        $termek->setBrutto(round($data[$this->n('i')] * 1 * $arszaz / 100,-1));
+                        $termek->setBrutto(round($data[$this->n('i')] * 1 * $arszaz / 100, -1));
                         store::getEm()->persist($termek);
 //                        store::getEm()->flush();
                     }
                 }
                 if (($termekdb % $batchsize) === 0) {
-                    \mkw\Store::writelog('flush');
                     \mkw\Store::getEm()->flush();
                     \mkw\Store::getEm()->clear();
                     $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
@@ -770,9 +785,8 @@ class importController extends \mkwhelpers\Controller {
             }
             while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                 $termekdb++;
-                \mkw\Store::writelog('tutisport ' . $termekdb);
                 if ($data[$this->n('a')]) {
-                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data[$this->n('a')],'gyarto' => $gyartoid));
+                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data[$this->n('a')], 'gyarto' => $gyartoid));
                     if (!$termek) {
                         $csz = str_replace(' ', '', $data[$this->n('a')]);
                         $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $csz, 'gyarto' => $gyartoid));
@@ -826,7 +840,6 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
                 if (($termekdb % $batchsize) === 0) {
-                    \mkw\Store::writelog('flush');
                     \mkw\Store::getEm()->flush();
                     \mkw\Store::getEm()->clear();
                     $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
@@ -874,8 +887,8 @@ class importController extends \mkwhelpers\Controller {
         $fh = fopen('makszutov.txt', 'r');
         if ($fh) {
             $settings = array(
-                'quality'=>80,
-                'sizes'=>array('100'=>'100x100','150'=>'150x150','250'=>'250x250','1000'=>'1000x800')
+                'quality' => 80,
+                'sizes' => array('100' => '100x100', '150' => '150x150', '250' => '250x250', '1000' => '1000x800')
             );
             $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
             $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
@@ -900,12 +913,11 @@ class importController extends \mkwhelpers\Controller {
             while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                 $idegencikkszam = (string)$data[$this->n('a')];
                 $termekdb++;
-                \mkw\Store::writelog('makszutov ' . $termekdb);
                 $termek = false;
                 $valtozat = false;
                 $valtozatok = store::getEm()->getRepository('Entities\TermekValtozat')->findBy(array('idegencikkszam' => $idegencikkszam));
                 if ($valtozatok) {
-                    foreach($valtozatok as $v) {
+                    foreach ($valtozatok as $v) {
                         $termek = $v->getTermek();
                         if ($termek && $termek->getGyartoId() == $gyartoid) {
                             $valtozat = $v;
@@ -934,7 +946,7 @@ class importController extends \mkwhelpers\Controller {
                     $kisleiras = '';
                 }
 
-                $kaphato = (substr($data[$this->n('h')],0,5) !== 'Nincs') && (strpos($data[$this->n('h')],'rk.:') === false);
+                $kaphato = (substr($data[$this->n('h')], 0, 5) !== 'Nincs') && (strpos($data[$this->n('h')], 'rk.:') === false);
 
                 if (!$termek) {
 
@@ -982,10 +994,10 @@ class importController extends \mkwhelpers\Controller {
                             \curl_exec($ch);
                             fclose($ih);
 
-                            foreach ($settings['sizes'] as $k=>$size) {
-                                    $newFilePath = $nameWithoutExt."_".$k.".".$extension;
-                                    $matches = explode('x',$size);
-                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0]*1, $matches[1]*1, $settings['quality'], true) ;
+                            foreach ($settings['sizes'] as $k => $size) {
+                                $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                $matches = explode('x', $size);
+                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $settings['quality'], true);
                             }
                             if (((count($imagelist) > 1) && ($imgcnt == 1)) || (count($imagelist) == 1)) {
                                 $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
@@ -1039,7 +1051,6 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
                 if (($termekdb % $batchsize) === 0) {
-                    \mkw\Store::writelog('flush');
                     \mkw\Store::getEm()->flush();
                     \mkw\Store::getEm()->clear();
                     $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
@@ -1236,7 +1247,7 @@ class importController extends \mkwhelpers\Controller {
 
             unset($termekek);
 
-            uasort($rendelesek, function($a, $b) {
+            uasort($rendelesek, function ($a, $b) {
                 if ($a['datum'] == $b['datum']) {
                     return 0;
                 }
@@ -1246,11 +1257,11 @@ class importController extends \mkwhelpers\Controller {
             //echo '<pre>';print_r($rendelesek);echo '</pre>';
             //die();
 
-            foreach($rendelesek as $rk => $r) {
+            foreach ($rendelesek as $rk => $r) {
                 $fej = new \Entities\Bizonylatfej();
                 $fej->setBizonylattipus(store::getEm()->getRepository('Entities\Bizonylattipus')->find('megrendeles'));
                 $fej->setPersistentData();
-        		$fej->setErbizonylatszam($rk);
+                $fej->setErbizonylatszam($rk);
                 $partner = $this->createVateraPartner($r);
                 $fej->setPartner($partner);
                 $szallmod = $this->createVateraSzallitasimod($r['szallmod']);
@@ -1287,7 +1298,7 @@ class importController extends \mkwhelpers\Controller {
                 $fej->generateId(); // az üres kelt miatt került a végére
 
                 $hibascikkszam = array();
-                foreach($r['termek'] as $rtetel) {
+                foreach ($r['termek'] as $rtetel) {
                     $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $rtetel['tcikkszam']));
                     if ($termek) {
                         $tetel = new \Entities\Bizonylattetel();
@@ -1319,13 +1330,13 @@ class importController extends \mkwhelpers\Controller {
                     store::getEm()->persist($fej);
                     store::getEm()->flush();
                 }
-/**                $statusz = $fej->getBizonylatstatusz();
-                if ($statusz) {
-                    $emailtpl = $statusz->getEmailtemplate();
-                    $fej->sendStatuszEmail($emailtpl, null, false);
-                }
- *
- */
+                /**                $statusz = $fej->getBizonylatstatusz();
+                 * if ($statusz) {
+                 * $emailtpl = $statusz->getEmailtemplate();
+                 * $fej->sendStatuszEmail($emailtpl, null, false);
+                 * }
+                 *
+                 */
             }
 
         }
@@ -1551,17 +1562,17 @@ class importController extends \mkwhelpers\Controller {
         $termekarrepo = store::getEm()->getRepository('Entities\TermekAr');
         $valutanemek = array();
         $vnemek = store::getEm()->getRepository('Entities\Valutanem')->getAll(array(), array());
-        foreach($vnemek as $vn) {
+        foreach ($vnemek as $vn) {
             $valutanemek[$vn->getNev()] = $vn;
         }
 
         $fej = array();
-        for($col = 0; $col < $maxcolindex; ++$col) {
+        for ($col = 0; $col < $maxcolindex; ++$col) {
             $cell = $sheet->getCellByColumnAndRow($col, 1);
             $fej[$col] = $cell->getValue();
         }
 
-        for($row = $dbtol; $row <= $dbig; ++$row) {
+        for ($row = $dbtol; $row <= $dbig; ++$row) {
             $ujtermek = false;
             $kod = false;
             $vonalkod = false;
@@ -1571,7 +1582,7 @@ class importController extends \mkwhelpers\Controller {
             $netto = array();
             $brutto = array();
 
-            for($col = 0; $col < $maxcolindex; ++$col) {
+            for ($col = 0; $col < $maxcolindex; ++$col) {
                 $cell = $sheet->getCellByColumnAndRow($col, $row);
                 if ($fej[$col] == 'kod') {
                     $kod = $cell->getValue();
@@ -1640,10 +1651,10 @@ class importController extends \mkwhelpers\Controller {
                     $termek->setVtsz($vtsz);
                 }
                 if ($brutto) {
-                    foreach($brutto as $evalu => $bruttox) {
+                    foreach ($brutto as $evalu => $bruttox) {
                         $valutanem = $valutanemek[$evalu];
                         if ($valutanem) {
-                            foreach($bruttox as $ename => $ertek) {
+                            foreach ($bruttox as $ename => $ertek) {
                                 if (is_array($netto)) {
                                     unset($netto[$evalu][$ename]);
                                 }
@@ -1666,10 +1677,10 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
                 if ($netto) {
-                    foreach($netto as $evalu => $nettox) {
+                    foreach ($netto as $evalu => $nettox) {
                         $valutanem = $valutanemek[$evalu];
                         if ($valutanem) {
-                            foreach($nettox as $ename => $ertek) {
+                            foreach ($nettox as $ename => $ertek) {
                                 if (!$ujtermek) {
                                     $ar = $termekarrepo->findBy(array('termek' => $termek->getId(), 'valutanem' => $valutanem->getId(), 'azonosito' => $ename));
                                     if ($ar) {
@@ -1690,7 +1701,7 @@ class importController extends \mkwhelpers\Controller {
                 }
 
                 if ($nev) {
-                    foreach($nev as $loc => $text) {
+                    foreach ($nev as $loc => $text) {
                         if ($loc !== store::getTranslationListener()->getDefaultLocale()) {
                             if (!$ujtermek) {
                                 $translation = store::getEm()->getRepository('Entities\TermekTranslation')->findBy(
