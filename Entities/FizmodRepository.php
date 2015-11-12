@@ -30,4 +30,17 @@ class FizmodRepository extends \mkwhelpers\Repository {
         return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
     }
 
+    public function getAllBySzallitasimod($szmid, $exc = array()) {
+        if (!is_null($szmid)) {
+            $szm = $this->_em->getRepository('Entities\Szallitasimod')->find($szmid);
+        }
+        $filter = new FilterDescriptor();
+        if ($szm) {
+            $filter->addFilter('id', 'IN', explode(',', $szm->getFizmodok()));
+        }
+        if ($exc) {
+            $filter->addFilter('id', 'NOT IN', $exc);
+        }
+        return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
+    }
 }

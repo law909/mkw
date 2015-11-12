@@ -141,7 +141,12 @@ class fizmodController extends \mkwhelpers\MattableController {
     }
 
     public function getSelectList($selid = null, $szallmod = null, $exc = null) {
-        $rec = $this->getRepo()->getAllWebesBySzallitasimod($szallmod, $exc);
+        if (\mkw\Store::isAdminMode()) {
+            $rec = $this->getRepo()->getAllBySzallitasimod($szallmod, $exc);
+        }
+        else {
+            $rec = $this->getRepo()->getAllWebesBySzallitasimod($szallmod, $exc);
+        }
         $res = array();
         // mkwnál ki kell választani az elsőt
         $vanvalasztott = \mkw\Store::getTheme() !== 'mkwcansas';
