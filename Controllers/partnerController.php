@@ -236,7 +236,12 @@ class partnerController extends \mkwhelpers\MattableController {
             if (\mkw\Store::getTheme() === 'mkwcansas') {
                 $obj->setNev($this->params->getStringRequestParam('vezeteknev') . ' ' . $this->params->getStringRequestParam('keresztnev'));
             }
-            $obj->setEmail($this->params->getStringRequestParam('email'));
+            if ($this->params->existsRequestParam('email')) {
+                $obj->setEmail($this->params->getStringRequestParam('email'));
+            }
+            else {
+                $obj->setEmail($this->params->getStringRequestParam('kapcsemail'));
+            }
             $obj->setJelszo($this->params->getStringRequestParam('jelszo1'));
             $obj->setVendeg(false);
             $obj->setSessionid(\Zend_Session::getId());
