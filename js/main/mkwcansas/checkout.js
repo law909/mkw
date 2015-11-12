@@ -317,6 +317,18 @@ var checkout = (function($, guid) {
                     }
                 }
 
+                if (!szallnevinput.val()) {
+                    szallnevinput.addClass('hibas');
+                    if (!hibas) {
+                        openDataContainer(szallnevinput);
+                        tofocus = szallnevinput;
+                    }
+                    hibas = true;
+                }
+                else {
+                    szallnevinput.removeClass('hibas');
+                }
+
                 if (!szallirszaminput.val()) {
                     szallirszaminput.addClass('hibas');
                     if (!hibas) {

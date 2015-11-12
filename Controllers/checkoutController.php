@@ -178,7 +178,8 @@ class checkoutController extends \mkwhelpers\MattableController {
                 $foxpostterminalid = $this->params->getIntRequestParam('foxpostterminal');
 
                 $ok = ($vezeteknev && $keresztnev && $telefon &&
-                        $szallirszam && $szallvaros && $szallutca &&
+                        $szallirszam && $szallvaros && $szallutca && $szallnev &&
+                        (!$szamlaeqszall ? $szamlanev : true) &&
                         (!$szamlaeqszall ? $szamlairszam : true) &&
                         (!$szamlaeqszall ? $szamlavaros : true) &&
                         (!$szamlaeqszall ? $szamlautca : true) &&
