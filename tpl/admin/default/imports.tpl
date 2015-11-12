@@ -25,7 +25,7 @@
 		{/if}
 		<div id="DefaTab" class="mattkarb-page" data-visible="visible">
             <div>
-                <span id="TermekKategoria1" class="js-termekfabutton" data-text="{t('válasszon')}" data-name="termekfa1" data-value="">Ebbe a kategóriába kerüljenek a termékek</span>
+                <span id="TermekKategoria1" class="js-termekfabutton" data-name="termekfa1" data-value="{$termekfa.id}">{$termekfa.caption}</span>
             </div>
 	<div class="matt-hseparator"></div>
             <div>

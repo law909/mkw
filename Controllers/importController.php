@@ -19,6 +19,19 @@ class importController extends \mkwhelpers\Controller {
         $view->setVar('pagetitle', t('Importok'));
         $view->setVar('path', \mkw\Store::getConfigValue('path.termekkep'));
 
+        $termekfa = $this->getRepo('Entities\TermekFa')->find(\mkw\Store::getParameter(\mkw\consts::ImportNewKatId));
+        if ($termekfa) {
+            $view->setVar('termekfa', array(
+                'id' => $termekfa->getId(),
+                'caption' => $termekfa->getNev()
+            ));
+        }
+        else {
+            $view->setVar('termekfa', array(
+                'id' => null,
+                'caption' => t('Ebbe a kategóriába kerüljenek a termékek')
+            ));
+        }
         $gyarto = new partnerController($this->params);
         $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(0));
 
