@@ -19,7 +19,7 @@ class importController extends \mkwhelpers\Controller {
         $view->setVar('pagetitle', t('Importok'));
         $view->setVar('path', \mkw\Store::getConfigValue('path.termekkep'));
 
-        $termekfa = $this->getRepo('Entities\TermekFa')->find(\mkw\Store::getParameter(\mkw\consts::ImportNewKatId));
+        $termekfa = store::getEm()->getRepository('Entities\TermekFa')->find(\mkw\Store::getParameter(\mkw\consts::ImportNewKatId));
         if ($termekfa) {
             $view->setVar('termekfa', array(
                 'id' => $termekfa->getId(),
