@@ -521,11 +521,13 @@ class importController extends \mkwhelpers\Controller {
                 while ($data = $this->fgetdeltoncsv($fh)) {
                     $idegenkodok[] = 'DT' . $data[1];
                 }
-                $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
+                /** @var \Entities\TermekRepository $termekrepo */
+                $termekrepo = \mkw\Store::getEm()->getRepository('Entities\Termek');
+                $termekek = $termekrepo->getForImport($gyarto);
                 foreach ($termekek as $t) {
                     if (!in_array($t['idegenkod'], $idegenkodok)) {
                         /** @var \Entities\Termek $termek */
-                        $termek = $this->getRepo('Entities\Termek')->find($t['id']);
+                        $termek = $termekrepo->find($t['id']);
                         if ($termek) {
                             $termek->setFuggoben(true);
                             $termek->setInaktiv(true);
