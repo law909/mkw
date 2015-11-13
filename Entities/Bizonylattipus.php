@@ -4,75 +4,77 @@ namespace Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylattipusRepository")
- *  @ORM\Table(name="bizonylattipus",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
+ * @ORM\Table(name="bizonylattipus",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  **/
 class Bizonylattipus {
-	/**
-	 * @ORM\Id @ORM\Column(type="string",length=30)
-	 */
-	private $id;
-	/** @ORM\Column(type="string",length=100) */
-	private $nev;
-	/** @ORM\Column(type="integer") */
-	private $irany=-1;
-	/** @ORM\Column(type="boolean",nullable=false) */
-	private $nyomtatni=true;
-	/** @ORM\Column(type="string",length=10,nullable=true) */
-	private $azonosito;
-	/** @ORM\Column(type="integer") */
-	private $kezdosorszam=0;
-	/** @ORM\Column(type="integer") */
-	private $peldanyszam=1;
-	/** @ORM\Column(type="boolean",nullable=false) */
-	private $mozgat=true;
-	/** @ORM\Column(type="boolean",nullable=false) */
-	private $foglal=false;
-	/** @ORM\Column(type="boolean",nullable=false) */
-	private $penztmozgat=true;
-	/** @ORM\Column(type="boolean",nullable=false) */
-	private $editprinted=false;
-	/** @ORM\Column(type="boolean",nullable=false) */
-	private $showteljesites=false;
-	/** @ORM\Column(type="boolean",nullable=false) */
-	private $showesedekesseg=false;
-	/** @ORM\Column(type="boolean",nullable=false) */
-	private $showhatarido=false;
-	/** @ORM\Column(type="boolean",nullable=false) */
-	private $showvalutanem=false;
-	/** @ORM\Column(type="boolean",nullable=false) */
-	private $showbizonylatstatuszeditor=false;
-	/** @ORM\Column(type="boolean",nullable=false) */
-	private $showszamlabutton=false;
-	/** @ORM\Column(type="boolean",nullable=false) */
-	private $showszallitobutton=false;
+    /**
+     * @ORM\Id @ORM\Column(type="string",length=30)
+     */
+    private $id;
+    /** @ORM\Column(type="string",length=100) */
+    private $nev;
+    /** @ORM\Column(type="integer") */
+    private $irany = -1;
     /** @ORM\Column(type="boolean",nullable=false) */
-	private $showkivetbutton=false;
-	/** @ORM\Column(type="boolean",nullable=false) */
-	private $showkeziszamlabutton=false;
+    private $nyomtatni = true;
+    /** @ORM\Column(type="string",length=10,nullable=true) */
+    private $azonosito;
+    /** @ORM\Column(type="integer") */
+    private $kezdosorszam = 0;
+    /** @ORM\Column(type="integer") */
+    private $peldanyszam = 1;
     /** @ORM\Column(type="boolean",nullable=false) */
-	private $showbevetbutton=false;
+    private $mozgat = true;
     /** @ORM\Column(type="boolean",nullable=false) */
-	private $showuzenet=false;
+    private $foglal = false;
     /** @ORM\Column(type="boolean",nullable=false) */
-	private $showszallitasicim=false;
+    private $penztmozgat = true;
     /** @ORM\Column(type="boolean",nullable=false) */
-	private $showerbizonylatszam=false;
+    private $editprinted = false;
     /** @ORM\Column(type="boolean",nullable=false) */
-	private $showfuvarlevelszam=false;
+    private $showteljesites = false;
     /** @ORM\Column(type="boolean",nullable=false) */
-	private $showhaszonszazalek=false;
+    private $showesedekesseg = false;
     /** @ORM\Column(type="boolean",nullable=false) */
-	private $showstorno=false;
+    private $showhatarido = false;
     /** @ORM\Column(type="boolean",nullable=false) */
-	private $showbackorder=false;
-	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylattipus",cascade={"persist"}) */
-	private $bizonylatfejek;
+    private $showvalutanem = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showbizonylatstatuszeditor = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showszamlabutton = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showszallitobutton = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showkivetbutton = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showkeziszamlabutton = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showbevetbutton = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showuzenet = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showszallitasicim = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showerbizonylatszam = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showfuvarlevelszam = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showhaszonszazalek = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showstorno = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showbackorder = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showmesebutton = false;
+    /** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylattipus",cascade={"persist"}) */
+    private $bizonylatfejek;
     /** @ORM\Column(type="string",length=200,nullable=true) */
     private $tplname;
 
-	public function __construct() {
-		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
-	}
+    public function __construct() {
+        $this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     public function setTemplateVars($view) {
         $view->setVar('showteljesites', $this->getShowteljesites());
@@ -92,115 +94,116 @@ class Bizonylattipus {
         $view->setVar('showhaszonszazalek', $this->getShowhaszonszazalek());
         $view->setVar('showstorno', $this->getShowstorno());
         $view->setVar('showbackorder', $this->getShowbackorder());
+        $view->setVar('showmesebutton', $this->getShowmesebutton());
     }
 
-	public function getId() {
-		return $this->id;
-	}
+    public function getId() {
+        return $this->id;
+    }
 
-	public function getNev() {
-		return $this->nev;
-	}
+    public function getNev() {
+        return $this->nev;
+    }
 
-	public function setNev($val) {
-		$this->nev=$val;
-	}
+    public function setNev($val) {
+        $this->nev = $val;
+    }
 
-	public function getIrany() {
-		return $this->irany;
-	}
+    public function getIrany() {
+        return $this->irany;
+    }
 
-	public function setIrany($val) {
-		$this->irany=$val;
-	}
+    public function setIrany($val) {
+        $this->irany = $val;
+    }
 
-	public function getNyomtatni() {
-		return $this->nyomtatni;
-	}
+    public function getNyomtatni() {
+        return $this->nyomtatni;
+    }
 
-	public function setNyomtatni($val) {
-		$this->nyomtatni=$val;
-	}
+    public function setNyomtatni($val) {
+        $this->nyomtatni = $val;
+    }
 
-	public function getAzonosito() {
-		return $this->azonosito;
-	}
+    public function getAzonosito() {
+        return $this->azonosito;
+    }
 
-	public function setAzonosito($val) {
-		$this->azonosito=$val;
-	}
+    public function setAzonosito($val) {
+        $this->azonosito = $val;
+    }
 
-	public function getKezdosorszam() {
-		return $this->kezdosorszam;
-	}
+    public function getKezdosorszam() {
+        return $this->kezdosorszam;
+    }
 
-	public function setKezdosorszam($val) {
-		$this->kezdosorszam=$val;
-	}
+    public function setKezdosorszam($val) {
+        $this->kezdosorszam = $val;
+    }
 
-	public function getPeldanyszam() {
-		return $this->peldanyszam;
-	}
+    public function getPeldanyszam() {
+        return $this->peldanyszam;
+    }
 
-	public function setPeldanyszam($val) {
-		$this->peldanyszam=$val;
-	}
+    public function setPeldanyszam($val) {
+        $this->peldanyszam = $val;
+    }
 
-	public function getMozgat() {
-		return $this->mozgat;
-	}
+    public function getMozgat() {
+        return $this->mozgat;
+    }
 
-	public function setMozgat($val) {
-		$this->mozgat=$val;
-	}
+    public function setMozgat($val) {
+        $this->mozgat = $val;
+    }
 
-	public function getPenztmozgat() {
-		return $this->penztmozgat;
-	}
+    public function getPenztmozgat() {
+        return $this->penztmozgat;
+    }
 
-	public function setPenztmozgat($val) {
-		$this->penztmozgat=$val;
-	}
+    public function setPenztmozgat($val) {
+        $this->penztmozgat = $val;
+    }
 
-	public function getEditprinted() {
-		return $this->editprinted;
-	}
+    public function getEditprinted() {
+        return $this->editprinted;
+    }
 
-	public function setEditprinted($val) {
-		$this->editprinted=$val;
-	}
+    public function setEditprinted($val) {
+        $this->editprinted = $val;
+    }
 
-	public function getShowteljesites() {
-		return $this->showteljesites;
-	}
+    public function getShowteljesites() {
+        return $this->showteljesites;
+    }
 
-	public function setShowteljesites($show) {
-		$this->showteljesites=$show;
-	}
+    public function setShowteljesites($show) {
+        $this->showteljesites = $show;
+    }
 
-	public function getShowesedekesseg() {
-		return $this->showesedekesseg;
-	}
+    public function getShowesedekesseg() {
+        return $this->showesedekesseg;
+    }
 
-	public function setShowesedekesseg($show) {
-		$this->showesedekesseg=$show;
-	}
+    public function setShowesedekesseg($show) {
+        $this->showesedekesseg = $show;
+    }
 
-	public function getShowhatarido() {
-		return $this->showhatarido;
-	}
+    public function getShowhatarido() {
+        return $this->showhatarido;
+    }
 
-	public function setShowhatarido($show) {
-		$this->showhatarido=$show;
-	}
+    public function setShowhatarido($show) {
+        $this->showhatarido = $show;
+    }
 
-	public function getShowvalutanem() {
-		return $this->showvalutanem;
-	}
+    public function getShowvalutanem() {
+        return $this->showvalutanem;
+    }
 
-	public function setShowvalutanem($show) {
-		$this->showvalutanem=$show;
-	}
+    public function setShowvalutanem($show) {
+        $this->showvalutanem = $show;
+    }
 
     public function getTplname() {
         return $this->tplname;
@@ -320,6 +323,20 @@ class Bizonylattipus {
 
     public function setFoglal($adat) {
         $this->foglal = $adat;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShowmesebutton() {
+        return $this->showmesebutton;
+    }
+
+    /**
+     * @param mixed $showmesebutton
+     */
+    public function setShowmesebutton($showmesebutton) {
+        $this->showmesebutton = $showmesebutton;
     }
 
 }

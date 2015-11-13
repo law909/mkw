@@ -258,6 +258,11 @@ class Bizonylattetel {
     /** @Gedmo\Locale */
     protected $locale;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    protected $mese = false;
+
     public function __construct() {
         $this->szulobizonylattetelek = new ArrayCollection();
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
@@ -388,19 +393,24 @@ class Bizonylattetel {
 
     public function setMozgat() {
         $bf = $this->bizonylatfej;
-        $par = $this->getParbizonylattetel();
-        if ($par && !$this->getStorno() && !$this->getStornozott()) {
-            if (($par->getIrany() == $this->getIrany()) && $par->getMozgat()) {
-                $this->mozgat = false;
-                return true;
-            }
-        }
-        $t = $this->termek;
-        if ($bf && $t) {
-            $this->mozgat = $bf->getMozgat() && $t->getMozgat();
+        if ($bf->getMese()) {
+            $this->mozgat = false;
         }
         else {
-            $this->mozgat = false;
+            $par = $this->getParbizonylattetel();
+            if ($par && !$this->getStorno() && !$this->getStornozott()) {
+                if (($par->getIrany() == $this->getIrany()) && $par->getMozgat()) {
+                    $this->mozgat = false;
+                    return true;
+                }
+            }
+            $t = $this->termek;
+            if ($bf && $t) {
+                $this->mozgat = $bf->getMozgat() && $t->getMozgat();
+            }
+            else {
+                $this->mozgat = false;
+            }
         }
     }
 
@@ -1273,5 +1283,18 @@ class Bizonylattetel {
         $this->kedvezmeny = $kedvezmeny;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getMese() {
+        return $this->mese;
+    }
+
+    /**
+     * @param mixed $mese
+     */
+    public function setMese($mese) {
+        $this->mese = $mese;
+    }
 
 }

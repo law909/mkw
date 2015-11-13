@@ -70,6 +70,9 @@ class Bizonylatfej {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $fix = false;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $mese = false;
+
     /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime",nullable=true)
@@ -2372,6 +2375,20 @@ class Bizonylatfej {
 
     public function getUzletkotojutalek() {
         return $this->uzletkotojutalek;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMese() {
+        return $this->mese;
+    }
+
+    /**
+     * @param mixed $mese
+     */
+    public function setMese($mese) {
+        $this->mese = $mese;
     }
 
 }

@@ -76,7 +76,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function calcSumWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
+    public function calcSumWithJoins($filter, $order = array(), $offset = 0, $elemcount = 0) {
         $q = $this->_em->createQuery('SELECT SUM(_xx.brutto) AS brutto, SUM(_xx.netto) AS netto, SUM(_xx.afa) AS afa,'
             . ' SUM(_xx.bruttohuf) AS bruttohuf, SUM(_xx.nettohuf) AS nettohuf, SUM(_xx.afahuf) AS afahuf'
             . ' FROM Entities\Bizonylatfej _xx'
@@ -270,39 +270,48 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
      * @param \Entities\Bizonylatfej $bizonylat
      */
     public function createFolyoszamla($bizonylat) {
-        $fm = $bizonylat->getFizmod();
-        $fmt = '';
-        if ($fm) {
-            $fmt = $fm->getTipus();
-        }
-        if ($bizonylat->getPenztmozgat() && ($fmt !== 'P')) {
+        if (!$bizonylat->getPenztmozgat()) {
             foreach ($bizonylat->getFolyoszamlak() as $fsz) {
                 $this->_em->remove($fsz);
             }
             $bizonylat->clearFolyoszamlak();
+            $this->_em->flush();
+        }
+        else {
+            $fm = $bizonylat->getFizmod();
+            $fmt = '';
+            if ($fm) {
+                $fmt = $fm->getTipus();
+            }
+            if ($fmt !== 'P') {
+                foreach ($bizonylat->getFolyoszamlak() as $fsz) {
+                    $this->_em->remove($fsz);
+                }
+                $bizonylat->clearFolyoszamlak();
 
-            if (\mkw\Store::isOsztottFizmod()) {
-                $volt = false;
-                if ($bizonylat->getFizetendo1()) {
-                    $this->createFSzla($bizonylat, 1);
-                    $volt = true;
+                if (\mkw\Store::isOsztottFizmod()) {
+                    $volt = false;
+                    if ($bizonylat->getFizetendo1()) {
+                        $this->createFSzla($bizonylat, 1);
+                        $volt = true;
+                    }
+                    if ($bizonylat->getFizetendo2()) {
+                        $this->createFSzla($bizonylat, 2);
+                        $volt = true;
+                    }
+                    if ($bizonylat->getFizetendo3()) {
+                        $this->createFSzla($bizonylat, 3);
+                        $volt = true;
+                    }
+                    if (!$volt) {
+                        $this->createFSzla($bizonylat, 0);
+                    }
                 }
-                if ($bizonylat->getFizetendo2()) {
-                    $this->createFSzla($bizonylat, 2);
-                    $volt = true;
-                }
-                if ($bizonylat->getFizetendo3()) {
-                    $this->createFSzla($bizonylat, 3);
-                    $volt = true;
-                }
-                if (!$volt) {
+                else {
                     $this->createFSzla($bizonylat, 0);
                 }
+                $this->_em->flush();
             }
-            else {
-                $this->createFSzla($bizonylat, 0);
-            }
-            $this->_em->flush();
         }
     }
 

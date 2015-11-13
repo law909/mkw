@@ -816,7 +816,7 @@ var bizonylathelper = function($) {
                 tablebody: {
                     url: '/admin/' + bizonylattipus + 'fej/getlistbody',
                     onStyle: function() {
-                        $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat, .js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno, .js-backorder').button();
+                        $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat, .js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno, .js-backorder, .js-mese').button();
                     },
                     onDoEditLink: function() {
                         $('.js-inheritbizonylat').each(function() {
@@ -1012,6 +1012,17 @@ var bizonylathelper = function($) {
                                 }
                             });
                         }
+                    }
+                });
+            })
+            .on('click', '.js-mese', function(e) {
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: $this.data('href'),
+                    type: 'GET',
+                    success: function() {
+                        $('.mattable-tablerefresh').click();
                     }
                 });
             })

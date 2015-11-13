@@ -78,6 +78,7 @@ class fantaController extends \mkwhelpers\MattableController {
                                 }
                                 //$ujtetel = clone $biztetel;
                                 $ujtetel = new \Entities\Bizonylattetel();
+                                $uj->addBizonylattetel($ujtetel);
                                 $ujtetel->duplicateFrom($biztetel);
                                 $ujtetel->clearCreated();
                                 $ujtetel->clearLastmod();
@@ -88,7 +89,6 @@ class fantaController extends \mkwhelpers\MattableController {
                                     $em->persist($ujtrans);
                                 }
 
-                                $uj->addBizonylattetel($ujtetel);
                                 $em->persist($ujtetel);
                             }
                             $em->remove($szamla);
@@ -118,44 +118,52 @@ class fantaController extends \mkwhelpers\MattableController {
         echo json_encode($ret);
     }
 
-    public function mese($bizszam) {
-        $szamla = $this->getRepo('Entities\Bizonylatfej')->find($bizszam);
-        if (!$szamla->getStorno() && !$szamla->getStornozott()) {
-            $ujbt = $this->getRepo('Entities\Bizonylattipus')->find('egyeb');
+    public function mese() {
+        if (havejog(99)) {
+            $bizszam = $this->params->getStringRequestParam('b');
+            /** @var \Entities\Bizonylatfej $szamla */
+            $szamla = $this->getRepo('Entities\Bizonylatfej')->find($bizszam);
+            if ($szamla && !$szamla->getStorno() && !$szamla->getStornozott() && !$szamla->getFix()) {
+                $ujbt = $this->getRepo('Entities\Bizonylattipus')->find('egyeb');
 
-            $this->getEm()->transactional(function ($em) use ($szamla, $ujbt) {
-                $sorszam = 0;
-                //$uj = clone $szamla;
-                $uj = new \Entities\Bizonylatfej();
-                $uj->duplicateFrom($szamla);
-                $uj->clearId();
-                $uj->clearCreated();
-                $uj->clearLastmod();
-                $uj->setBizonylattipus($ujbt);
-                $sorszam = $uj->generateId($sorszam);
-                $sorszam++;
-                foreach ($szamla->getBizonylattetelek() as $biztetel) {
-                    if ($biztetel->getStorno()) {
-                        //$em->persist($biztetel);
+                $this->getEm()->transactional(function ($em) use ($szamla, $ujbt) {
+                    $uj = new \Entities\Bizonylatfej();
+                    $uj->duplicateFrom($szamla);
+                    $uj->clearId();
+                    $uj->clearCreated();
+                    $uj->clearLastmod();
+                    $uj->setNyomtatva(false);
+                    $uj->setFix(false);
+                    $uj->setBizonylattipus($ujbt);
+                    $uj->generateId();
+                    foreach ($szamla->getBizonylattetelek() as $biztetel) {
+                        $ujtetel = new \Entities\Bizonylattetel();
+                        $uj->addBizonylattetel($ujtetel);
+                        $ujtetel->duplicateFrom($biztetel);
+                        $ujtetel->clearCreated();
+                        $ujtetel->clearLastmod();
+
+                        foreach ($biztetel->getTranslations() as $trans) {
+                            $ujtrans = clone $trans;
+                            $ujtetel->addTranslation($ujtrans);
+                            $em->persist($ujtrans);
+                        }
+
+                        $em->persist($ujtetel);
                     }
-                    //$ujtetel = clone $biztetel;
-                    $ujtetel = new \Entities\Bizonylattetel();
-                    $ujtetel->duplicateFrom($biztetel);
-                    $ujtetel->clearCreated();
-                    $ujtetel->clearLastmod();
-
-                    foreach ($biztetel->getTranslations() as $trans) {
-                        $ujtrans = clone $trans;
-                        $ujtetel->addTranslation($ujtrans);
-                        $em->persist($ujtrans);
+                    $em->persist($uj);
+                    $szamla->setNyomtatva(false);
+                    $szamla->setMese(true);
+                    $szamla->setPenztmozgat(false);
+                    /** @var \Entities\Bizonylattetel $bt */
+                    foreach ($szamla->getBizonylattetelek() as $bt) {
+                        $bt->setMozgat();
+                        $bt->setMese(true);
+                        $em->persist($bt);
                     }
-
-                    $uj->addBizonylattetel($ujtetel);
-                    $em->persist($ujtetel);
-                }
-                $em->remove($szamla);
-                $em->persist($uj);
-            });
+                    $em->persist($szamla);
+                });
+            }
         }
     }
 }

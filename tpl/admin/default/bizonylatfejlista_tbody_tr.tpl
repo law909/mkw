@@ -36,6 +36,9 @@
                 {if ($showbevetbutton)}
                 <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="bevetfej" data-oper="inherit" title="{t('Bevét')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
                 {/if}
+                {if ($showmesebutton && havejog(99))}
+                    <a class="js-mese" href="#" title="{t('Mese')}" data-href="/admin/mese?b={$_egyed.id}"><span class="ui-icon ui-icon-alert"></span></a>
+                {/if}
                 {if ($_egyed.bizonylattipusid=='megrendeles' && $_egyed.otpayid)}
                 <a class="js-otpayrefund" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('OTPay refund')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></a>
                 <a class="js-otpaystorno" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('OTPay storno')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></a>

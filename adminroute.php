@@ -371,3 +371,9 @@ $router->map('GET', '/admin/lista/boltbannincsmasholvan', 'listaController#boltb
 //$router->map('GET', '/admin/fillbiztetelvaltozat', 'adminController#fillBiztetelValtozat', 'adminfillbiztetelvaltozat');
 $router->map('POST', '/admin/napijelentes', 'adminController#printNapijelentes', 'adminnapijelentes');
 $router->map('GET', '/admin/genfszla', 'adminController#generateFolyoszamla', 'admingeneratefolyoszamla');
+
+if (\mkw\Store::getTheme() == 'superzone') {
+    if (haveJog(99)) {
+        $router->map('GET', '/admin/mese', 'fantaController#mese', 'adminmese');
+    }
+}
