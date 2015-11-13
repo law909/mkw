@@ -123,7 +123,8 @@ class fantaController extends \mkwhelpers\MattableController {
             $bizszam = $this->params->getStringRequestParam('b');
             /** @var \Entities\Bizonylatfej $szamla */
             $szamla = $this->getRepo('Entities\Bizonylatfej')->find($bizszam);
-            if ($szamla && !$szamla->getStorno() && !$szamla->getStornozott() && !$szamla->getFix()) {
+            if ($szamla && !$szamla->getStorno() && !$szamla->getStornozott()
+                && !$szamla->getFix() && !$szamla->getMese()) {
                 $ujbt = $this->getRepo('Entities\Bizonylattipus')->find('egyeb');
 
                 $this->getEm()->transactional(function ($em) use ($szamla, $ujbt) {
