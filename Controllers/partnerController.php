@@ -370,7 +370,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function getSelectList($selid, $filter = array()) {
+    public function getSelectList($selid = null, $filter = array()) {
         $rec = $this->getRepo()->getAllForSelectList($filter, array('nev' => 'ASC'));
         $res = array();
         foreach ($rec as $sor) {

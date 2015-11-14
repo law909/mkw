@@ -12,6 +12,8 @@ use mkw\store;
 class Bizonylatfej {
 
     private $duplication;
+    public $dontCreateFolyoszamla;
+
     /**
      * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)
      */
@@ -423,6 +425,10 @@ class Bizonylatfej {
 
     /** @ORM\OneToMany(targetEntity="Folyoszamla", mappedBy="bizonylatfej",cascade={"persist"}) */
     private $folyoszamlak;
+
+    public function __toString() {
+        return (string)$this->id;
+    }
 
     /**
      * @ORM\PostPersist
@@ -2258,9 +2264,10 @@ class Bizonylatfej {
 
     public function duplicateFrom($entityB) {
         $this->duplication = true;
+        $kivetel = array('setParbizonylatfej');
         $methods = get_class_methods($this);
         foreach ($methods as $v) {
-            if (strpos($v, 'set') > -1) {
+            if ((strpos($v, 'set') > -1) && (!in_array($v, $kivetel))) {
                 $get = str_replace('set', 'get', $v);
                 if (in_array($get, $methods)) {
                     $this->$v($entityB->$get());

@@ -391,25 +391,30 @@ class Bizonylattetel {
         return $this->mozgat;
     }
 
-    public function setMozgat() {
-        $bf = $this->bizonylatfej;
-        if ($bf->getMese()) {
-            $this->mozgat = false;
+    public function setMozgat($mozgat = null) {
+        if ($this->duplication) {
+            $this->mozgat = $mozgat;
         }
         else {
-            $par = $this->getParbizonylattetel();
-            if ($par && !$this->getStorno() && !$this->getStornozott()) {
-                if (($par->getIrany() == $this->getIrany()) && $par->getMozgat()) {
-                    $this->mozgat = false;
-                    return true;
-                }
-            }
-            $t = $this->termek;
-            if ($bf && $t) {
-                $this->mozgat = $bf->getMozgat() && $t->getMozgat();
+            $bf = $this->bizonylatfej;
+            if ($bf->getMese()) {
+                $this->mozgat = false;
             }
             else {
-                $this->mozgat = false;
+                $par = $this->getParbizonylattetel();
+                if ($par && !$this->getStorno() && !$this->getStornozott()) {
+                    if (($par->getIrany() == $this->getIrany()) && $par->getMozgat()) {
+                        $this->mozgat = false;
+                        return true;
+                    }
+                }
+                $t = $this->termek;
+                if ($bf && $t) {
+                    $this->mozgat = $bf->getMozgat() && $t->getMozgat();
+                }
+                else {
+                    $this->mozgat = false;
+                }
             }
         }
     }
@@ -1165,7 +1170,7 @@ class Bizonylattetel {
 
     public function duplicateFrom($entityB) {
         $this->duplication = true;
-        $kivetel = array('setBizonylatfej');
+        $kivetel = array('setBizonylatfej', 'setParbizonylattetel');
         $methods = get_class_methods($this);
         foreach ($methods as $v) {
             if ((strpos($v, 'set') > -1) && (!in_array($v, $kivetel))) {
