@@ -749,6 +749,7 @@ class partnerController extends \mkwhelpers\MattableController {
             case 'szallitasiadatok':
                 break;
             case 'jelszo':
+                $hibak['hibas'] = false;
                 $checkregijelszo = $this->params->getBoolRequestParam('checkregijelszo', false);
                 if ($checkregijelszo) {
                     $regijelszo = $this->params->getStringRequestParam('regijelszo');
@@ -763,10 +764,12 @@ class partnerController extends \mkwhelpers\MattableController {
                     if ($j1 !== $j2) {
                         $hibas = true;
                         $hibak['jelszo1'] = t('A két jelszó nem egyezik');
+                        $hibak['hibas'] = true;
                     }
                 }
                 else {
                     $hibak['regijelszo'] = t('Rossz régi jelszót adott meg');
+                    $hibak['hibas'] = true;
                 }
                 break;
             case 'b2bregistration':

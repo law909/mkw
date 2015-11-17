@@ -1085,8 +1085,7 @@ var fiok = (function($) {
 					type: 'POST',
 					url: '/checkemail',
 					data: {email: $this.val()}
-				})
-						.done(function(data) {
+				}).done(function(data) {
 					var d = JSON.parse(data);
 					$this.data('hiba', d);
 					mkwcheck.regEmailCheck();
@@ -1131,6 +1130,21 @@ var fiok = (function($) {
 			mkw.varosTypeahead('input[name="szallirszam"]', 'input[name="szallvaros"]');
 			mkw.overrideFormSubmit($fiokszallitasiadatok, mkwmsg.FiokAdataitModositjuk);
 		}
+
+        var $jelszochangeform = $('#JelszoChangeForm');
+        if ($jelszochangeform.length > 0) {
+            mkw.overrideFormSubmit($jelszochangeform, mkwmsg.FiokAdataitModositjuk, function(data) {
+                var d = JSON.parse(data);
+                if (d.hibas) {
+                    if (d.regijelszo) {
+                        mkw.showDialog(d.regijelszo);
+                    }
+                    if (d.jelszo1) {
+                        mkw.showDialog(d.jelszo1);
+                    }
+                }
+            });
+        }
 	}
 
 	return {
