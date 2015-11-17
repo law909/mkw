@@ -73,14 +73,6 @@ $(document).ready(function() {
                 $ff.submit();
             }).button();
 
-        },
-        onSubmit: function() {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click',messagecenterclick)
-                .slideToggle('slow');
         }
     });
 });

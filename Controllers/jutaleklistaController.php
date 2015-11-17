@@ -20,7 +20,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    protected function  createFilter() {
+    protected function createFilter() {
         $this->tolstr = $this->params->getStringRequestParam('tol');
         $this->tolstr = date(\mkw\Store::$DateFormat, strtotime(\mkw\Store::convDate($this->tolstr)));
 

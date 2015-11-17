@@ -372,6 +372,10 @@ $router->map('GET', '/admin/lista/boltbannincsmasholvan', 'listaController#boltb
 $router->map('POST', '/admin/napijelentes', 'adminController#printNapijelentes', 'adminnapijelentes');
 $router->map('GET', '/admin/genfszla', 'adminController#generateFolyoszamla', 'admingeneratefolyoszamla');
 
+$router->map('GET', '/admin/keszletlista/view', 'keszletlistaController#view', 'adminkeszletlistaview');
+$router->map('GET', '/admin/keszletlista/get', 'keszletlistaController#createLista', 'adminkeszletlistaget');
+$router->map('GET', '/admin/keszletlista/export', 'keszletlistaController#exportLista', 'adminkeszletlistaexport');
+
 if (\mkw\Store::getTheme() == 'superzone') {
     if (haveJog(99)) {
         $router->map('GET', '/admin/mese', 'fantaController#mese', 'adminmese');
