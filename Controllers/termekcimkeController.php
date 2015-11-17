@@ -71,7 +71,7 @@ class termekcimkeController extends \mkwhelpers\MattableController {
 
         $filter = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
-            $filter->addFilter('new', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
+            $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
         $fv = $this->params->getIntRequestParam('ckfilter');
         if ($fv > 0) {
