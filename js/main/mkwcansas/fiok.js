@@ -81,20 +81,6 @@ var fiok = (function($) {
 			mkw.overrideFormSubmit($fiokszallitasiadatok, mkwmsg.FiokAdataitModositjuk);
 		}
 
-        var $jelszochangeform = $('#JelszoChangeForm');
-        if ($jelszochangeform.length > 0) {
-            mkw.overrideFormSubmit($jelszochangeform, mkwmsg.FiokAdataitModositjuk, function(data) {
-                var d = JSON.parse(data);
-                if (d.hibas) {
-                    if (d.regijelszo) {
-                        mkw.showDialog(d.regijelszo);
-                    }
-                    if (d.jelszo1) {
-                        mkw.showDialog(d.jelszo1);
-                    }
-                }
-            });
-        }
 	}
 
 	return {

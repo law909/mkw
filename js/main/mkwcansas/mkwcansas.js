@@ -479,15 +479,15 @@ $(document).ready(function() {
                return true;
            },
            success: function(data) {
-               var d = data * 1;
-               if (!d) {
-                   mkw.showMessage(mkwmsg.PassChange[d]);
+               var d = JSON.parse(data);
+               if (!d.hibas) {
+                   mkw.showMessage(mkwmsg.PassChange[d.hibas]);
                    window.setTimeout(function() {
                        mkw.closeMessage();
                    }, 2500);
                }
                else {
-                   mkw.showDialog(mkwmsg.PassChange[d]);
+                   mkw.showDialog(mkwmsg.PassChange[d.hibas]);
                }
            }
         });

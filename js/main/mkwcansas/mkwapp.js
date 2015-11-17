@@ -1131,20 +1131,6 @@ var fiok = (function($) {
 			mkw.overrideFormSubmit($fiokszallitasiadatok, mkwmsg.FiokAdataitModositjuk);
 		}
 
-        var $jelszochangeform = $('#JelszoChangeForm');
-        if ($jelszochangeform.length > 0) {
-            mkw.overrideFormSubmit($jelszochangeform, mkwmsg.FiokAdataitModositjuk, function(data) {
-                var d = JSON.parse(data);
-                if (d.hibas) {
-                    if (d.regijelszo) {
-                        mkw.showDialog(d.regijelszo);
-                    }
-                    if (d.jelszo1) {
-                        mkw.showDialog(d.jelszo1);
-                    }
-                }
-            });
-        }
 	}
 
 	return {
@@ -1632,15 +1618,15 @@ $(document).ready(function() {
                return true;
            },
            success: function(data) {
-               var d = data * 1;
-               if (!d) {
-                   mkw.showMessage(mkwmsg.PassChange[d]);
+               var d = JSON.parse(data);
+               if (!d.hibas) {
+                   mkw.showMessage(mkwmsg.PassChange[d.hibas]);
                    window.setTimeout(function() {
                        mkw.closeMessage();
                    }, 2500);
                }
                else {
-                   mkw.showDialog(mkwmsg.PassChange[d]);
+                   mkw.showDialog(mkwmsg.PassChange[d.hibas]);
                }
            }
         });
