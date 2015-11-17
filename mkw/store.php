@@ -736,6 +736,10 @@ class Store {
         return self::getSetupValue('bankpenztar');
     }
 
+    public static function isMultiValuta() {
+        return self::getSetupValue('multivaluta');
+    }
+
     public static function isFoxpostSzallitasimod($szm) {
         $i = $szm;
         if (is_a($szm, 'Entities\FoxpostTerminal')) {

@@ -132,7 +132,7 @@
 									<td>{$megr.id}</td>
 									<td>{$megr.kelt}</td>
 									<td>{$megr.allapotnev|default:"ismeretlen"}</td>
-									<td class="textalignright">{number_format($megr.bruttohuf,0,'',' ')} Ft</td>
+									<td class="textalignright">{number_format($megr.brutto,0,'',' ')} Ft</td>
 									<td></td>
                                     <td><a href="#" class=""><img src="/themes/main/mkwcansas/img/i_down.png"></a></td>
 								</tr>
@@ -175,18 +175,18 @@
 													<td><div><a href="{$tetel.link}">{$tetel.caption}</a></div>
 														<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</div>
 														{$tetel.cikkszam}</td>
-													<td><div class="textalignright">{number_format($tetel.bruttoegysarhuf,0,',',' ')} Ft</div></td>
+													<td><div class="textalignright">{number_format($tetel.bruttoegysar,0,',',' ')} Ft</div></td>
 													<td>
 														<div class="textaligncenter">
 															<div>{number_format($tetel.mennyiseg,0,',','')}</div>
 														</div>
 													</td>
-													<td><div class="textalignright">{number_format($tetel.bruttohuf,0,',',' ')} Ft</div></td>
+													<td><div class="textalignright">{number_format($tetel.brutto,0,',',' ')} Ft</div></td>
 												</tr>
 											{/foreach}
 											</tbody>
 										</table>
-                                        <div class="textalignright bold"><b>Összesen: {number_format($megr.bruttohuf,0,',',' ')} Ft</b></div>
+                                        <div class="textalignright bold"><b>Összesen: {number_format($megr.brutto,0,',',' ')} Ft</b></div>
                                         {if ($megr.megjegyzes|default)}
                                         <div class="acc-megrendelescaption">Webáruház megjegyzése:</div>
                                         <div>{$megr.megjegyzes}</div>

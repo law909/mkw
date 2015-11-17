@@ -38,8 +38,6 @@ class Bizonylattipus {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showhatarido = false;
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $showvalutanem = false;
-    /** @ORM\Column(type="boolean",nullable=false) */
     private $showbizonylatstatuszeditor = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showszamlabutton = false;
@@ -80,7 +78,7 @@ class Bizonylattipus {
         $view->setVar('showteljesites', $this->getShowteljesites());
         $view->setVar('showesedekesseg', $this->getShowesedekesseg());
         $view->setVar('showhatarido', $this->getShowhatarido());
-        $view->setVar('showvalutanem', $this->getShowvalutanem());
+        $view->setVar('showvalutanem', \mkw\Store::isMultiValuta());
         $view->setVar('showbizonylatstatuszeditor', $this->getShowbizonylatstatuszeditor());
         $view->setVar('showszamlabutton', $this->getShowszamlabutton());
         $view->setVar('showkeziszamlabutton', $this->getShowkeziszamlabutton());
@@ -198,11 +196,7 @@ class Bizonylattipus {
     }
 
     public function getShowvalutanem() {
-        return $this->showvalutanem;
-    }
-
-    public function setShowvalutanem($show) {
-        $this->showvalutanem = $show;
+        return \mkw\Store::isMultiValuta();
     }
 
     public function getTplname() {
