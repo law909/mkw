@@ -801,6 +801,9 @@ class partnerController extends \mkwhelpers\MattableController {
                 if (!$jax) {
                     Header('Location: ' . store::getRouter()->generate('showaccount'));
                 }
+                else {
+                    echo json_encode($hiba['hibak']);
+                }
             }
             else {
                 if ($jax) {
