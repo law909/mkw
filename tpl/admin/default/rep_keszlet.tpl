@@ -4,6 +4,7 @@
     <h4 xmlns="http://www.w3.org/1999/html">Készlet</h4>
     <h5>{$datumstr}</h5>
     <h5>{$raktar}</h5>
+    <h5>{$nevfilter}</h5>
     <table>
         <thead>
         <tr>
@@ -14,6 +15,7 @@
         </tr>
         </thead>
         <tbody>
+        {$sum = 0}
         {foreach $lista as $elem}
             <tr>
                 <td class="cell">{$elem.cikkszam}</td>
@@ -21,7 +23,16 @@
                 <td class="cell">{$elem.ertek1} {$elem.ertek2}</td>
                 <td class="cell textalignright nowrap">{$elem.keszlet}</td>
             </tr>
+            {$sum = $sum + $elem.keszlet}
         {/foreach}
         </tbody>
+        <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>Összesen:</td>
+            <td class="textalignright">{$sum}</td>
+        </tr>
+        </tfoot>
     </table>
 {/block}

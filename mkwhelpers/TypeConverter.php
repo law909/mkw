@@ -35,6 +35,9 @@ class TypeConverter {
     }
 
     public function toArray($value) {
+        if (is_string($value)) {
+            return explode(',', $value);
+        }
         return (array) $value;
     }
 

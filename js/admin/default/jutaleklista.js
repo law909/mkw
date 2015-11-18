@@ -5,19 +5,8 @@ $(document).ready(function() {
         independent: true,
         beforeShow: function() {
 
-            var $toledit = $('#TolEdit');
-            if ($toledit) {
-                $toledit.datepicker($.datepicker.regional['hu']);
-                $toledit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-                $toledit.datepicker('setDate', $toledit.attr('data-datum'));
-            }
-
-            var $igedit = $('#IgEdit');
-            if ($igedit) {
-                $igedit.datepicker($.datepicker.regional['hu']);
-                $igedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-                $igedit.datepicker('setDate', $igedit.attr('data-datum'));
-            }
+            mkwcomp.datumEdit.init('#TolEdit');
+            mkwcomp.datumEdit.init('#IgEdit');
 
             $('#cimkefiltercontainer').mattaccord({
                 header: '',

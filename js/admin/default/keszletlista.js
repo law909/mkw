@@ -5,17 +5,23 @@ $(document).ready(function() {
         independent: true,
         beforeShow: function() {
 
-            var $datumedit = $('#DatumEdit');
-            if ($datumedit) {
-                $datumedit.datepicker($.datepicker.regional['hu']);
-                $datumedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-                $datumedit.datepicker('setDate', $datumedit.attr('data-datum'));
-            }
+            mkwcomp.datumEdit.init('#DatumEdit');
+            mkwcomp.termekfaFilter.init('#termekfa');
 
             $('.js-okbutton').on('click', function(e) {
-                var $ff;
+                var $ff, fafi, inp;
                 e.preventDefault();
                 $ff = $('#keszlet');
+
+                inp = $('input[name="fafilter"]');
+                fafi = mkwcomp.termekfaFilter.getFilter('#termekfa');
+                if (fafi.length > 0) {
+                    inp.val(fafi);
+                }
+                else {
+                    inp.val('');
+                }
+
                 $ff.attr('action', $(this).attr('href'));
                 $ff.submit();
             }).button();

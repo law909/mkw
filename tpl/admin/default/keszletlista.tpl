@@ -42,6 +42,14 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
+                        <label for="NevEdit">{t('Termék')}:</label>
+                        <input id="NevEdit" type="text" name="nevfilter">
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    {include "comp_termekfa.tpl"}
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <input type="hidden" name="fafilter">
                         <a href="/admin/keszletlista/get" class="js-okbutton">OK</a>
                         <a href="/admin/keszletlista/export" class="js-exportbutton">Export</a>
                     </div>

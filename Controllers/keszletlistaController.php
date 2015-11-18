@@ -3,11 +3,13 @@
 namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use mkwhelpers\FilterDescriptor;
 
 class keszletlistaController extends \mkwhelpers\MattableController {
 
     private $datumstr;
     private $raktarnev;
+    private $nevfilter;
 
     public function view() {
         $view = $this->createView('keszletlista.tpl');
@@ -33,7 +35,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         $this->datumstr = $this->params->getStringRequestParam('datum');
         $this->datumstr = date(\mkw\Store::$DateFormat, strtotime(\mkw\Store::convDate($this->datumstr)));
 
-        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter = new FilterDescriptor();
         $filter
             ->addFilter('bf.rontott', '=', false)
             ->addFilter('bt.mozgat', '=', true)
@@ -41,6 +43,29 @@ class keszletlistaController extends \mkwhelpers\MattableController {
 
         if ($raktar) {
             $filter->addFilter('bf.raktar_id', '=', $raktar);
+        }
+
+        return $filter;
+    }
+
+    protected function createTermekFilter() {
+        $filter = new FilterDescriptor();
+        $fv = $this->params->getArrayRequestParam('fafilter');
+        if (!empty($fv)) {
+            $ff = new FilterDescriptor();
+            $ff->addFilter('id', 'IN', $fv);
+            $res = \mkw\Store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, array());
+            $faszuro = array();
+            foreach ($res as $sor) {
+                $faszuro[] = $sor->getKarkod() . '%';
+            }
+            if ($faszuro) {
+                $filter->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $faszuro);
+            }
+        }
+        $this->nevfilter = $this->params->getRequestParam('nevfilter', NULL);
+        if (!is_null($this->nevfilter)) {
+            $filter->addFilter(array('t.nev', 't.rovidleiras', 't.cikkszam', 't.vonalkod'), 'LIKE', '%' . $this->nevfilter . '%');
         }
 
         return $filter;
@@ -75,17 +100,20 @@ class keszletlistaController extends \mkwhelpers\MattableController {
                 break;
         }
 
+        $termekfilter = $this->createTermekFilter();
+
         $q = $this->getEm()->createNativeQuery('SELECT _xx.termek_id, _xx.id, t.nev AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
             . ' (SELECT SUM(bt.mennyiseg * bt.irany)'
             . ' FROM bizonylattetel bt'
             . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-            . $filter->getFilterString() . ' AND (_xx.id=bt.termekvaltozat_id) ) AS keszlet'
+            . $filter->getFilterString('_xx', 'p') . ' AND (_xx.id=bt.termekvaltozat_id) ) AS keszlet'
             . ' FROM termekvaltozat _xx'
             . ' LEFT JOIN termek t ON (_xx.termek_id=t.id)'
+            . $termekfilter->getFilterString('_xx', 'r')
             . $keszlettipus
             . ' ORDER BY t.cikkszam, t.nev, _xx.ertek1, _xx.ertek2', $rsm);
 
-        $q->setParameters($filter->getQueryParameters());
+        $q->setParameters(array_merge_recursive($filter->getQueryParameters('p'), $termekfilter->getQueryParameters('r')));
         return $q->getScalarResult();
     }
 
@@ -95,6 +123,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         $report->setVar('lista', $this->getData());
         $report->setVar('datumstr', $this->datumstr);
         $report->setVar('raktar', $this->raktarnev);
+        $report->setVar('nevfilter', $this->nevfilter);
         $report->printTemplateResult();
 
     }

@@ -1,0 +1,81 @@
+var mkwcomp = (function($) {
+
+    function termekfaFilter() {
+
+        function clearChecks(sel) {
+            $(sel).jstree('uncheck_all');
+        }
+
+        function getFilter(sel) {
+            var fak = [];
+            $(sel).jstree('get_checked').each(function() {
+                var x = $('a', this).attr('id');
+                if (x) {
+                    fak.push(x.split('_')[1]);
+                }
+            });
+            return fak;
+        }
+
+        function init(sel) {
+            $(sel).jstree({
+                    core: {animation: 100},
+                    plugins: ['themeroller', 'json_data', 'contextmenu', 'ui', 'checkbox'],
+                    themeroller: {item: ''},
+                    json_data: {
+                        ajax: {url: '/admin/termekfa/jsonlist'}
+                    },
+                    ui: {select_limit: 1},
+                    contextmenu: {
+                        select_node: true,
+                        items: {
+                            create: false, rename: false, remove: false, ccp: false
+                        }
+                    }
+                })
+                .bind('change_state.jstree', function(e, data) {
+                    $termekfa = $(this);
+                    $('li', $termekfa).each(function(i) {
+                        $this = $(this);
+                        if ($this.hasClass('jstree-unchecked')) {
+                            $('ins.jstree-checkbox', $this).removeClass('ui-icon ui-icon-circle-check ui-icon-check');
+                        }
+                        else if ($this.hasClass('jstree-checked')) {
+                            $('ins.jstree-checkbox', $this).removeClass('ui-icon ui-icon-circle-check ui-icon-check').addClass('ui-icon ui-icon-circle-check');
+                        }
+                        else if ($this.hasClass('jstree-undetermined')) {
+                            $('ins.jstree-checkbox', $this).removeClass('ui-icon ui-icon-circle-check ui-icon-check').addClass('ui-icon ui-icon-check');
+                        }
+                    });
+                });
+        }
+
+        return {
+            init: init,
+            clearChecks: clearChecks,
+            getFilter: getFilter
+        }
+    }
+
+    function datumEdit() {
+
+        function init(sel) {
+            var $datumedit = $(sel);
+            if ($datumedit) {
+                $datumedit.datepicker($.datepicker.regional['hu']);
+                $datumedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
+                $datumedit.datepicker('setDate', $datumedit.attr('data-datum'));
+            }
+        }
+
+        return {
+            init: init
+        }
+    }
+
+    return {
+        termekfaFilter: termekfaFilter(),
+        datumEdit: datumEdit()
+    }
+
+})(jQuery);

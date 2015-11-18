@@ -51,7 +51,7 @@ class FilterDescriptor implements \Countable {
         return count($this->filter);
     }
 
-    public function getFilterString($palias = '_xx') {
+    public function getFilterString($palias = '_xx', $parampre = 'p') {
         $filter = $this->getFilter();
         if (array_key_exists('fields', $filter) && array_key_exists('values', $filter)) {
             $fno = 1;
@@ -94,7 +94,7 @@ class FilterDescriptor implements \Countable {
                                 $vcnt = 1;
                                 $ize = array();
                                 foreach ($value as $va) { // az IN minden ertekenek csinalunk egy-egy parametert
-                                    $innerfilter[] = '(' . $alias . $v . ' ' . $felt . ' :p' . $fno . 'v' . $vcnt . ')';
+                                    $innerfilter[] = '(' . $alias . $v . ' ' . $felt . ' :' . $parampre . $fno . 'v' . $vcnt . ')';
                                     $vcnt++;
                                 }
                             }
@@ -102,14 +102,14 @@ class FilterDescriptor implements \Countable {
                                 $vcnt = 1;
                                 $ize = array();
                                 foreach ($value as $va) { // az IN minden ertekenek csinalunk egy-egy parametert
-                                    $ize[] = ':p' . $fno . 'v' . $vcnt;
+                                    $ize[] = ':' . $parampre . $fno . 'v' . $vcnt;
                                     $vcnt++;
                                 }
                                 $innerfilter[] = '(' . $alias . $v . ' ' . $felt . ' (' . implode(',', $ize) . '))';
                             }
                         }
                         else {
-                            $innerfilter[] = '(' . $alias . $v . ' ' . $felt . ' :p' . $fno . ')';
+                            $innerfilter[] = '(' . $alias . $v . ' ' . $felt . ' :' . $parampre . $fno . ')';
                         }
                     }
                     $filterarr[] = '(' . implode(' OR ', $innerfilter) . ')';
@@ -125,13 +125,13 @@ class FilterDescriptor implements \Countable {
                         $vcnt = 1;
                         $ize = array();
                         foreach ($value as $v) {
-                            $ize[] = ':p' . $fno . 'v' . $vcnt;
+                            $ize[] = ':' . $parampre . $fno . 'v' . $vcnt;
                             $vcnt++;
                         }
                         $filterarr[] = '(' . $alias . $field . ' ' . $felt . ' (' . implode(',', $ize) . '))';
                     }
                     else { // egy ertek van
-                        $filterarr[] = '(' . $alias . $field . ' ' . $felt . ' :p' . $fno . ')';
+                        $filterarr[] = '(' . $alias . $field . ' ' . $felt . ' :' . $parampre . $fno . ')';
                     }
                 }
                 $fno++;
@@ -156,7 +156,7 @@ class FilterDescriptor implements \Countable {
         }
     }
 
-    public function getQueryParameters() {
+    public function getQueryParameters($parampre = 'p') {
         $filter = $this->getFilter();
         $paramarr = array();
         if (array_key_exists('values', $filter)) {
@@ -165,27 +165,27 @@ class FilterDescriptor implements \Countable {
             foreach ($values as $value) {
                 if (is_string($value)) {
                     if (array_key_exists('clauses', $filter) && $filter['clauses'][$fno - 1]) {
-                        $paramarr['p' . $fno] = $value;
+                        $paramarr[$parampre . $fno] = $value;
                     }
                     else {
-                        $paramarr['p' . $fno] = '%' . $value . '%';
+                        $paramarr[$parampre . $fno] = '%' . $value . '%';
                     }
                 }
                 elseif (is_numeric($value)) {
-                    $paramarr['p' . $fno] = $value;
+                    $paramarr[$parampre . $fno] = $value;
                 }
                 elseif (is_bool($value)) {
-                    $paramarr['p' . $fno] = (int) $value;
+                    $paramarr[$parampre . $fno] = (int) $value;
                 }
                 elseif (is_array($value)) {
                     $vno = 1;
                     foreach ($value as $v) {
-                        $paramarr['p' . $fno . 'v' . $vno] = $v;
+                        $paramarr[$parampre . $fno . 'v' . $vno] = $v;
                         $vno++;
                     }
                 }
                 elseif (is_object($value)) {
-                    $paramarr['p' . $fno] = $value;
+                    $paramarr[$parampre . $fno] = $value;
                 }
                 $fno++;
             }
