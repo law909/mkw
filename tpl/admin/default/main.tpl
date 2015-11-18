@@ -1,11 +1,11 @@
-{extends "base.tpl"}
+{extends "../base.tpl"}
 
 {block "inhead"}
     <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
 {/block}
 
 {block "kozep"}
-    <div>
+    <div>FUUUUUUUUUCK
         <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Árfolyamok</div>

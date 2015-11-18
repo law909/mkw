@@ -1,4 +1,4 @@
-{extends "base.tpl"}
+{extends "../base.tpl"}
 
 {block "inhead"}
     <link rel="stylesheet" type="text/css" media="screen" href="/themes/admin/{$theme}/ui.jqgrid.css"/>

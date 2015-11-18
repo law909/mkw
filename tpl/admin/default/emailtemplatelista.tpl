@@ -1,4 +1,4 @@
-{extends "base.tpl"}
+{extends "../base.tpl"}
 
 {block "inhead"}
 {include "ckeditor.tpl"}

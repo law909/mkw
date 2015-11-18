@@ -1,4 +1,4 @@
-{extends "base.tpl"}
+{extends "../base.tpl"}
 
 {block "inhead"}
 <script type="text/javascript" src="/js/admin/default/jquery.form.js"></script>
