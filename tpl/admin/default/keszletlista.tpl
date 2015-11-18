@@ -32,6 +32,16 @@
                     {include "comp_raktarselect.tpl"}
                     <div class="matt-hseparator"></div>
                     <div>
+                        <label for="KeszletEdit">{t('Készlet')}:</label>
+                        <select id="KeszletEdit" name="keszlet">
+                            <option value="1">minden</option>
+                            <option value="2">ami van</option>
+                            <option value="3">ami nincs</option>
+                            <option value="4">ami negatív</option>
+                        </select>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
                         <a href="/admin/keszletlista/get" class="js-okbutton">OK</a>
                         <a href="/admin/keszletlista/export" class="js-exportbutton">Export</a>
                     </div>

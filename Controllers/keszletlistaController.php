@@ -36,7 +36,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
             ->addFilter('bf.rontott', '=', false)
-            ->addFilter('_xx.mozgat', '=', true)
+            ->addFilter('bt.mozgat', '=', true)
             ->addFilter('bf.teljesites', '<=', $this->datumstr);
 
         if ($raktar) {
@@ -58,16 +58,32 @@ class keszletlistaController extends \mkwhelpers\MattableController {
 
         $filter = $this->createFilter();
 
-        $q = $this->getEm()->createNativeQuery('SELECT _xx.termek_id, _xx.termekvaltozat_id, t.nev AS termeknev, tv.ertek1, tv.ertek2, t.cikkszam,'
-            . ' SUM(_xx.mennyiseg * _xx.irany) AS keszlet'
-            . ' FROM bizonylattetel _xx'
-            . ' LEFT JOIN bizonylatfej bf ON (_xx.bizonylatfej_id=bf.id)'
+        $keszlettipus = '';
+
+        switch ($this->params->getIntRequestParam('keszlet')) {
+            case 1:
+                $keszlettipus = '';
+                break;
+            case 2:
+                $keszlettipus = ' HAVING keszlet>0';
+                break;
+            case 3:
+                $keszlettipus = ' HAVING keszlet<=0';
+                break;
+            case 4:
+                $keszlettipus = ' HAVING keszlet<0';
+                break;
+        }
+
+        $q = $this->getEm()->createNativeQuery('SELECT _xx.termek_id, _xx.id, t.nev AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
+            . ' (SELECT SUM(bt.mennyiseg * bt.irany)'
+            . ' FROM bizonylattetel bt'
+            . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . $filter->getFilterString() . ' AND (_xx.id=bt.termekvaltozat_id) ) AS keszlet'
+            . ' FROM termekvaltozat _xx'
             . ' LEFT JOIN termek t ON (_xx.termek_id=t.id)'
-            . ' LEFT JOIN termekvaltozat tv ON (_xx.termekvaltozat_id=tv.id)'
-            . $filter->getFilterString()
-            . ' GROUP BY _xx.termek_id, _xx.termekvaltozat_id'
-            . ' HAVING SUM(_xx.mennyiseg * _xx.irany)<>0'
-            . ' ORDER BY t.cikkszam, t.nev, tv.ertek1, tv.ertek2', $rsm);
+            . $keszlettipus
+            . ' ORDER BY t.cikkszam, t.nev, _xx.ertek1, _xx.ertek2', $rsm);
 
         $q->setParameters($filter->getQueryParameters());
         return $q->getScalarResult();
