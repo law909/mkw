@@ -2,7 +2,7 @@
 	<h3>{t('Teendő')}</h3>
 </div>
 <form id="mattkarb-form" method="post" action="{$formaction}">
-	<div id="mattkarb-tabs"{/if}>
+	<div id="mattkarb-tabs">
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
 		</ul>
