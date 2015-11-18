@@ -66,6 +66,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
             . ' LEFT JOIN termekvaltozat tv ON (_xx.termekvaltozat_id=tv.id)'
             . $filter->getFilterString()
             . ' GROUP BY _xx.termek_id, _xx.termekvaltozat_id'
+            . ' HAVING SUM(_xx.mennyiseg * _xx.irany)<>0'
             . ' ORDER BY t.cikkszam, t.nev, tv.ertek1, tv.ertek2', $rsm);
 
         $q->setParameters($filter->getQueryParameters());
