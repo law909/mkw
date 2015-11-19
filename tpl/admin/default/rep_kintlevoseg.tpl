@@ -23,6 +23,8 @@
         <tbody>
         {$bsum = 0}
         {$tsum = 0}
+        {$nemlejartsum = 0}
+        {$lejartsum = 0}
         {$cnt = count($lista)}
         {$cikl = 0}
         {while ($cikl < $cnt)}
@@ -55,8 +57,10 @@
                 {$ptsum = $ptsum + $elem.tartozas}
                 {if ($elem.lejart)}
                     {$plejartsum = $plejartsum + $elem.tartozas}
+                    {$lejartsum = $lejartsum + $elem.tartozas}
                 {else}
                     {$pnemlejartsum = $pnemlejartsum + $elem.tartozas}
+                    {$nemlejartsum = $nemlejartsum + $elem.tartozas}
                 {/if}
                 {$cikl = $cikl + 1}
             {/while}
@@ -81,12 +85,20 @@
         {/while}
         </tbody>
         <tfoot>
+        {if ($reszletessum)}
+            <tr>
+                <td colspan="6">Összesen nem lejárt:</td>
+                <td class="textalignright">{bizformat($nemlejartsum)}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="6">Összesen lejárt:</td>
+                <td class="textalignright">{bizformat($lejartsum)}</td>
+                <td></td>
+            </tr>
+        {/if}
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Összesen:</td>
+            <td colspan="5">Összesen:</td>
             <td class="textalignright">{bizformat($bsum)}</td>
             <td class="textalignright">{bizformat($tsum)}</td>
             <td></td>
