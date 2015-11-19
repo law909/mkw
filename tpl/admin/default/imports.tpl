@@ -104,10 +104,6 @@
             </div>
 		</div>
 	</div>
-	<div class="admin-form-footer">
-		<input id="mattkarb-okbutton" type="submit" value="{t('OK')}">
-		<a id="mattkarb-cancelbutton" href="#">{t('Mégsem')}</a>
-	</div>
 </form>
 </div>
 {/block}

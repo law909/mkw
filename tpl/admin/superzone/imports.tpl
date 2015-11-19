@@ -62,10 +62,6 @@
     Ha ugyanolyan valutanemben és ársávban nettó és bruttó ár is szerepel, a program a bruttót fogja betölteni.</p>
 		</div>
 	</div>
-	<div class="admin-form-footer">
-		<input id="mattkarb-okbutton" type="submit" value="{t('OK')}">
-		<a id="mattkarb-cancelbutton" href="#">{t('Mégsem')}</a>
-	</div>
 </form>
 </div>
 {/block}
