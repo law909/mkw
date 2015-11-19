@@ -10,6 +10,18 @@
     white-space: nowrap;
 }
 
+.italic {
+    font-style: italic;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.lejart {
+    color: red;
+}
+
 h4, h5 {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -56,6 +68,10 @@ table td {
 }
 
 @media print {
+    .lejart {
+        color: #000;
+    }
+
     h4,
     h5,
     table td {

@@ -5,19 +5,9 @@ $(document).ready(function() {
         independent: true,
         beforeShow: function() {
 
-            var $toledit = $('#TolEdit');
-            if ($toledit) {
-                $toledit.datepicker($.datepicker.regional['hu']);
-                $toledit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-                $toledit.datepicker('setDate', $toledit.attr('data-datum'));
-            }
-
-            var $igedit = $('#IgEdit');
-            if ($igedit) {
-                $igedit.datepicker($.datepicker.regional['hu']);
-                $igedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-                $igedit.datepicker('setDate', $igedit.attr('data-datum'));
-            }
+            mkwcomp.datumEdit.init('#TolEdit');
+            mkwcomp.datumEdit.init('#IgEdit');
+            mkwcomp.datumEdit.init('#BefEdit');
 
             $('#cimkefiltercontainer').mattaccord({
                 header: '',
@@ -29,7 +19,7 @@ $(document).ready(function() {
                 $(this).toggleClass('ui-state-hover');
             });
 
-            $('.js-okbutton').on('click', function(e) {
+            $('.js-okbutton, .js-exportbutton').on('click', function(e) {
                 var $ff, $c, cimkek = [];
                 e.preventDefault();
                 $ff = $('#kintlevoseg');
@@ -51,14 +41,6 @@ $(document).ready(function() {
                 $ff.submit();
             }).button();
 
-        },
-        onSubmit: function() {
-            $('#messagecenter')
-                .html('A mentés sikerült.')
-                .hide()
-                .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                .one('click',messagecenterclick)
-                .slideToggle('slow');
         }
     });
 });
