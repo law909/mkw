@@ -66,7 +66,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
                 $this->datumnev = 'Teljesítés';
                 break;
             case 'esedekesseg':
-                $this->datummezo = 'bf.esedekesseg';
+                $this->datummezo = 'f.hivatkozottdatum';
                 $this->datumnev = 'Esedékesség';
                 break;
             default:
@@ -146,6 +146,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         $rsm->addScalarResult('teljesites', 'teljesites');
         $rsm->addScalarResult('esedekesseg', 'esedekesseg');
         $rsm->addScalarResult('datum', 'datum');
+        $rsm->addScalarResult('hivatkozottdatum', 'hivatkozottdatum');
         $rsm->addScalarResult('brutto', 'brutto');
         $rsm->addScalarResult('tartozas', 'tartozas');
         $rsm->addScalarResult('valutanemnev', 'valutanemnev');
@@ -156,23 +157,24 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
 
         $q = $this->getEm()->createNativeQuery(
             '(SELECT f.bizonylatfej_id, bf.partner_id, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
-            . ' p.varos, p.utca, bf.kelt, bf.teljesites, bf.esedekesseg, f.datum, SUM(f.brutto * f.irany) AS brutto,'
+            . ' p.varos, p.utca, bf.kelt, bf.teljesites, bf.esedekesseg, f.datum, f.hivatkozottdatum, SUM(f.brutto * f.irany) AS brutto,'
             . ' IFNULL('
             . '  (SELECT SUM(fa.brutto * fa.irany)'
             . '   FROM folyoszamla fa '
             . $beffilter->getFilterString('', 'bef')
-            . '   AND (fa.hivatkozottbizonylat = f.bizonylatfej_id) AND (bizonylatfej_id IS NULL) AND (fa.rontott = 0)),0)'
+            . '   AND (fa.hivatkozottbizonylat = f.bizonylatfej_id) AND (fa.hivatkozottdatum = f.hivatkozottdatum) AND (bizonylatfej_id IS NULL)'
+            . '   AND (fa.rontott = 0)),0)'
             . ' + SUM(f.brutto * f.irany) AS tartozas, bf.valutanemnev'
             . ' FROM folyoszamla f'
             . ' LEFT OUTER JOIN bizonylatfej bf ON (f.hivatkozottbizonylat = bf.id)'
             . ' LEFT OUTER JOIN partner p ON (f.partner_id = p.id)'
             . $filter->getFilterString('', 'par')
             . ' AND (f.hivatkozottbizonylat = f.bizonylatfej_id)'
-            . ' GROUP BY f.partner_id , hivatkozottbizonylat, bf.kelt, bf.teljesites, bf.esedekesseg'
+            . ' GROUP BY f.partner_id , hivatkozottbizonylat, f.hivatkozottdatum, bf.kelt, bf.teljesites'
             . ' HAVING (tartozas <> 0))'
             . ' UNION'
             . ' (SELECT f.bankbizonylatfej_id AS bizonylat, f.partner_id, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
-            . ' p.varos, p.utca, f.datum AS kelt, f.datum AS teljesites, f.datum AS esedekesseg, f.datum, 0 AS brutto,'
+            . ' p.varos, p.utca, f.datum AS kelt, f.datum AS teljesites, f.datum AS esedekesseg, f.datum, f.hivatkozottdatum, 0 AS brutto,'
             . ' SUM(f.brutto * f.irany) AS tartozas, v.nev AS valutanemnev '
             . ' FROM folyoszamla f'
             . ' LEFT OUTER JOIN partner p ON (f.partner_id = p.id)'
@@ -197,8 +199,8 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         $ma = new \DateTime(date(\mkw\Store::$SQLDateFormat));
         $mastr = date(\mkw\Store::$SQLDateFormat);
         foreach($d as $sor) {
-            $sor['lejart'] = $sor['esedekesseg'] <= $mastr;
-            $es = new \DateTime($sor['esedekesseg']);
+            $sor['lejart'] = $sor['hivatkozottdatum'] <= $mastr;
+            $es = new \DateTime($sor['hivatkozottdatum']);
             $diff = $ma->diff($es);
             if ($sor['lejart']) {
                 $sor['lejartnap'] = $diff->days;

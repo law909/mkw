@@ -43,7 +43,7 @@
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.bizonylatfej_id}</td>
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.kelt}</td>
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.teljesites}</td>
-                    <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.esedekesseg}</td>
+                    <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.hivatkozottdatum}</td>
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.lejartnap} nap</td>
                     <td class="cell textalignright nowrap{if ($elem.lejart)} lejart{/if}">{bizformat($elem.brutto)}</td>
                     <td class="cell textalignright nowrap{if ($elem.lejart)} lejart{/if}">{bizformat($elem.tartozas)}</td>
