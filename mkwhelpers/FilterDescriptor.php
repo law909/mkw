@@ -20,7 +20,9 @@ class FilterDescriptor implements \Countable {
     }
 
     public function addArray($array) {
-        $this->filter = array_merge_recursive($this->filter, $array);
+        if (is_array($array)) {
+            $this->filter = array_merge_recursive($this->filter, $array);
+        }
         return $this;
     }
 
