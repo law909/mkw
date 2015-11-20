@@ -373,7 +373,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 }
 
                 // termek max ar kategoriaval es cimkevel szurve
-                $maxar = $termekrepo->getTermekListaMaxAr($keresofilter->merge($kategoriafilter));
+                $maxar = $termekrepo->getTermekListaMaxAr($keresofilter->merge($kategoriafilter)->merge($termekidfilter));
 
                 if ($maxarfilter == 0 || \mkw\Store::getMainSession()->autoepp) {
                     $maxarfilter = $maxar;
@@ -462,6 +462,13 @@ class termekfaController extends \mkwhelpers\MattableController {
                         $tete['kiemelt'] = false;
                         $t[] = $tete;
                     }
+                    if (($caller === 'marka')||($caller === 'szuro')) {
+                        $osszeslapozatlantermekid = array();
+                        $termekek = $termekrepo->getTermekLista($keresofilter->merge($nativkategoriafilter)->merge($termekidfilter)->merge($arfilter), $order);
+                        foreach ($termekek as $termek) {
+                            $osszeslapozatlantermekid[] = $termek['id'];
+                        }
+                    }
                     // termek id-k csak kategoriaval es arral szurve
                     // a szuroben szereplo cimkek megallapitasahoz
                     $termekids = $termekrepo->getTermekIds($keresofilter->merge($kategoriafilter)->merge($arfilter), $order);
@@ -500,12 +507,12 @@ class termekfaController extends \mkwhelpers\MattableController {
                         case 'szuro':
                             $ret['url'] = '/szuro';
                             $ret['navigator'] = array(array('caption' => t('Szűrő')));
-                            $ret['szurok'] = $tck->getForTermekSzuro($osszestermekid, $szurotomb);
+                            $ret['szurok'] = $tck->getForTermekSzuro($osszeslapozatlantermekid, $szurotomb);
                             break;
                         case 'marka':
                             $ret['url'] = '/marka/' . $marka->getSlug();
                             $ret['navigator'] = array(array('caption' => $marka->getNev()));
-                            $ret['szurok'] = $tck->getForTermekSzuro($osszestermekid, $szurotomb);
+                            $ret['szurok'] = $tck->getForTermekSzuro($osszeslapozatlantermekid, $szurotomb);
                     }
                     $ret['keresett'] = $keresoszo;
                     $ret['vt'] = ($this->params->getIntRequestParam('vt') > 0 ? $this->params->getIntRequestParam('vt') : 1);
