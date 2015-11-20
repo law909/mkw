@@ -182,7 +182,10 @@
                                         {foreach $termek.cimkelapon as $_cimke}
                                             <tr>
                                                 <td>{$_cimke.kategorianev}</td>
-                                                <td>{if ($_cimke.kiskepurl!='')}<img src="{$_cimke.kiskepurl}" alt="{$_cimke.caption}" title="{$_cimke.caption}"> {/if}{if (!$_cimke.dontshowcaption || $_cimke.kiskepurl=='')}{$_cimke.caption}{/if}
+                                                <td>{if ($_cimke.ismarka)}<a href="{$_cimke.termeklisturl}">{/if}
+                                                    {if ($_cimke.kiskepurl!='')}<img src="{$_cimke.kiskepurl}" alt="{$_cimke.caption}" title="{$_cimke.caption}"> {/if}
+                                                    {if (!$_cimke.dontshowcaption || $_cimke.kiskepurl=='')}{$_cimke.caption}{/if}
+                                                    {if ($_cimke.ismarka)}</a>{/if}
                                                     {if ($_cimke.leiras)}<i class="icon-question-sign tooltipbtn hidden-phone js-tooltipbtn" title="{$_cimke.leiras}"></i>{/if}
                                                 </td>
                                             </tr>
