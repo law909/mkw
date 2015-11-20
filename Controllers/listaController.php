@@ -122,4 +122,31 @@ class listaController extends \mkwhelpers\Controller {
         }
         return $ret;
     }
+
+    public function nemkaphatoertesito() {
+        $sorrend = $this->params->getIntRequestParam('sorrend');
+        switch ($sorrend) {
+            case 1:
+                $order = array('t.nev' => 'ASC');
+                break;
+            case 2:
+                $order = array('t.cikkszam' => 'ASC');
+                break;
+            case 3:
+                $order = array('created' => 'ASC');
+                break;
+        }
+        $rep = $this->getRepo('Entities\TermekErtesito');
+        $termekek = $rep->getNemkaphatoTermekek($order);
+        $lista = array();
+        foreach ($termekek as $termek) {
+            $termek['karburl'] = \mkw\Store::getRouter()->generate('admintermekviewkarb', false, array(),
+                array('oper' => 'edit', 'id' => $termek['id']));
+            $lista[] = $termek;
+        }
+
+        $view = $this->createView('rep_nemkaphatoertesito.tpl');
+        $view->setVar('lista', $lista);
+        $view->printTemplateResult();
+    }
 }

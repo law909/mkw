@@ -23,7 +23,7 @@ function messagecenterclick(e){
 			$(this).removeClass('matt-messagecenter ui-widget ui-state-highlight');
 			$('#termekkarb').hide();
 		});
-};
+}
 
 function messagecenterclickonerror(e){
 	e.preventDefault();
@@ -31,12 +31,12 @@ function messagecenterclickonerror(e){
 		.slideToggle('slow',function(){
 			$(this).removeClass('matt-messagecenter ui-widget ui-state-error');
 		});
-};
+}
 
 $(document).ready(
 	function(){
 
-		var msgcenter=$('#messagecenter').hide()
+		var msgcenter = $('#messagecenter').hide(),
             dialogcenter = $('#dialogcenter');
 
 		$('.menupont').button();
@@ -192,4 +192,4 @@ $(document).ready(
         })
         .button();
 	}
-)
+);

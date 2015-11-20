@@ -68,6 +68,12 @@ table td {
 }
 
 @media print {
+
+    a {
+        color: #000;
+        text-decoration: none;
+    }
+
     .lejart {
         color: #000;
     }

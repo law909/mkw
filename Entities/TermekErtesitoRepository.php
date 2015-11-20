@@ -27,4 +27,18 @@ class TermekErtesitoRepository extends \mkwhelpers\Repository {
         return $this->getAll($filter, array('created' => 'ASC'));
     }
 
+    public function getNemkaphatoTermekek($order = array()) {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('t.nemkaphato', '=', true);
+        $filter->addSql('_xx.sent IS NULL');
+        $q = $this->_em->createQuery('SELECT DISTINCT t.id,t.cikkszam,t.nev,MIN(_xx.created) AS created'
+            . ' FROM Entities\TermekErtesito _xx'
+            . ' JOIN _xx.termek t'
+            . $filter->getFilterString()
+            . ' GROUP BY t.id,t.cikkszam,t.nev'
+            . $this->getOrderString($order));
+        $q->setParameters($filter->getQueryParameters());
+        return $q->getScalarResult();
+    }
+
 }
