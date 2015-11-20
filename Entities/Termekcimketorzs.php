@@ -50,6 +50,7 @@ class Termekcimketorzs extends Cimketorzs {
         $x['kiemelt'] = $this->getKiemelt();
         $x['termekfilter'] = $this->getTermekFilter();
         $x['termeklisturl'] = \mkw\Store::getRouter()->generate('showmarka', true, array('slug' => $x['slug']));
+        $x['leiras'] = $this->getLeiras();
         return $x;
     }
 

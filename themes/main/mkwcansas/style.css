@@ -1025,6 +1025,9 @@ h5.termeklista {
   margin-right: auto;
   display: block;
 }
+.tooltipbtn {
+  cursor: pointer;
+}
 select[name="foxpostcsoport"],
 select[name="foxpostterminal"] {
   width: 100%;
