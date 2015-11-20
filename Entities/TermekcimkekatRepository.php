@@ -2,6 +2,8 @@
 
 namespace Entities;
 
+use mkwhelpers\FilterDescriptor;
+
 class TermekcimkekatRepository extends \mkwhelpers\Repository {
 
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
@@ -57,15 +59,17 @@ class TermekcimkekatRepository extends \mkwhelpers\Repository {
     }
 
     public function getForTermekSzuro($termekid, $selectedids) {
+        $filter = new FilterDescriptor();
         if (count($termekid) > 0) {
-            $filter = '(_xx.termekszurobenlathato=1) AND (t.id IN (' . implode(',', $termekid) . '))';
+            $filterstr = '(_xx.termekszurobenlathato=1) AND (t.id IN (' . implode(',', $termekid) . '))';
             if (count($selectedids) > 0) {
-                $filter = $filter . ' OR (c.id IN (' . implode(',', $selectedids) . '))';
+                $filterstr = $filterstr . ' OR (c.id IN (' . implode(',', $selectedids) . '))';
             }
         }
         else {
-            $filter = 'true=false';
+            $filterstr = 'true=false';
         }
+        $filter->addSql($filterstr);
         $order = array('_xx.sorrend' => 'asc', '_xx.nev' => 'asc', 'c.sorrend' => 'asc', 'c.nev' => 'asc');
         $q = $this->_em->createQuery('SELECT _xx,c,t'
             . ' FROM Entities\Termekcimkekat _xx'

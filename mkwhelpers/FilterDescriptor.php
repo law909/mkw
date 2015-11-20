@@ -150,8 +150,17 @@ class FilterDescriptor implements \Countable {
             }
             return $filterstring;
         }
-        elseif (is_string($filter) && ($filter <> '')) {
-            return ' WHERE ' . $filter;
+        elseif (array_key_exists('sql', $filter)) {
+            $filterarr = array();
+            $sql = $filter['sql'];
+            foreach ($sql as $cnt => $s) {
+                $filterarr[] = '(' . $s . ')';
+            }
+            $filterstring = implode(' AND ', $filterarr);
+            if ($filterstring != '') {
+                $filterstring = ' WHERE ' . $filterstring;
+            }
+            return $filterstring;
         }
         else {
             return '';

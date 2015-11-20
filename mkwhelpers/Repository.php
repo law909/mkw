@@ -73,7 +73,12 @@ class Repository extends EntityRepository {
             return $filter->getFilterString($this->alias);
         }
         $f = new FilterDescriptor();
-        $f->addArray($filter);
+        if (is_array($filter)) {
+            $f->addArray($filter);
+        }
+        if (is_string($filter)) {
+            $f->addSql($filter);
+        }
         return $f->getFilterString($this->alias);
     }
 
@@ -82,7 +87,12 @@ class Repository extends EntityRepository {
             return $filter->getQueryParameters();
         }
         $f = new FilterDescriptor();
-        $f->addArray($filter);
+        if (is_array($filter)) {
+            $f->addArray($filter);
+        }
+        if (is_string($filter)) {
+            $f->addSql($filter);
+        }
         return $f->getQueryParameters();
     }
 
