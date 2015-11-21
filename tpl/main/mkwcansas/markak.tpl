@@ -3,13 +3,11 @@
 {block "kozep"}
 <div class="container whitebg">
     <div class="row">
-        <div class="span12">
-            {foreach $markalista as $_marka}
-                <div>
+        {foreach $markalista as $_marka}
+            <div class="span2">
                 <a href="{$_marka.termeklisturl}">{if ($_marka.kiskepurl)}<img src="{$_marka.kiskepurl}">{else}{$_marka.caption}{/if}</a>
-                </div>
-            {/foreach}
-        </div>
+            </div>
+        {/foreach}
     </div>
 </div>
 {/block}
