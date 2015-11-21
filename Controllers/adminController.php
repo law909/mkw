@@ -30,10 +30,16 @@ class adminController extends mkwhelpers\Controller {
         $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
 
         $lista = new listaController($this->params);
-        $napijelentesdatum = date(\mkw\Store::$DateFormat);
-        $view->setVar('napijelentesdatum', $napijelentesdatum);
-        $view->setVar('napijelenteslista', $lista->napiJelentes($napijelentesdatum));
-
+        switch (\mkw\Store::getTheme()) {
+            case 'superzone':
+                $napijelentesdatum = date(\mkw\Store::$DateFormat);
+                $view->setVar('napijelentesdatum', $napijelentesdatum);
+                $view->setVar('napijelenteslista', $lista->napiJelentes($napijelentesdatum));
+                break;
+            case 'mkwcansas':
+                $view->setVar('tjlista', $lista->teljesitmenyJelentes());
+                break;
+        }
         $view->printTemplateResult();
     }
 
@@ -47,7 +53,14 @@ class adminController extends mkwhelpers\Controller {
         $view->setVar('napijelenteslista', $lista->napiJelentes($datum));
 
         $view->printTemplateResult();
+    }
 
+    public function printTeljesitmenyJelentes() {
+        $lista = new listaController($this->params);
+
+        $view = $this->createView('teljesitmenyjelentesbody.tpl');
+        $view->setVar('tjlista', $lista->teljesitmenyJelentes());
+        $view->printTemplateResult();
     }
 
     public function regeneratekarkod() {

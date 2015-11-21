@@ -7,6 +7,10 @@ class FilterDescriptor implements \Countable {
 
     private $filter = array();
 
+    public function clear() {
+        $this->filter = array();
+    }
+
     public function addFilter($field, $clause, $value) {
         $this->filter['fields'][] = $field;
         $this->filter['clauses'][] = $clause;

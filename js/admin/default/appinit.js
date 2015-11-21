@@ -147,6 +147,17 @@ $(document).ready(
             });
         }
 
+        $('.js-teljesitmenyjelentes').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/teljesitmenyjelentes',
+                type: 'POST',
+                success: function(data) {
+                    $('.js-teljesitmenyjelentesbody').replaceWith(data);
+                }
+            })
+        });
+
         $('.js-boltbannincstermekfabutton').on('click', function(e) {
             var edit = $(this),
                 input = $('.js-boltbannincstermekfainput');

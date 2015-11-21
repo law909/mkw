@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use mkwhelpers\FilterDescriptor;
 
 class listaController extends \mkwhelpers\Controller {
 
@@ -120,6 +121,116 @@ class listaController extends \mkwhelpers\Controller {
                 $ret[] = $elem;
             }
         }
+        return $ret;
+    }
+
+    public function teljesitmenyJelentes() {
+        $ma = new \DateTime();
+        $eveleje = new \DateTime(date('Y') . '-01-01');
+        $calcma = new \DateTime();
+        $elozoma = $calcma->sub(new \DateInterval('P1Y'));
+        $nap = $ma->diff($eveleje);
+        $nap = $nap->days;
+        $elozoeveleje = new \DateTime(date('Y') * 1 - 1 . '-01-01');
+        /** @var \Entities\BizonylatfejRepository $bfrepo */
+        $bfrepo = $this->getRepo('Entities\Bizonylatfej');
+        $ret = array();
+
+        $filter = new FilterDescriptor();
+        $filter
+            ->addFilter('kelt', '>=', $elozoeveleje)
+            ->addFilter('kelt', '<=', $elozoma)
+            ->addFilter('bizonylattipus', '=', 'megrendeles');
+        $ret['elozomegrendelesdb'] = $bfrepo->getCount($filter);
+        $ret['elozomegrendelespernapdb'] = $ret['elozomegrendelesdb'] / $nap;
+
+        $filter->clear();
+        $filter
+            ->addFilter('kelt', '>=', $eveleje)
+            ->addFilter('kelt', '<=', $ma)
+            ->addFilter('bizonylattipus', '=', 'megrendeles');
+        $ret['megrendelesdb'] = $bfrepo->getCount($filter);
+        $ret['megrendelespernapdb'] = $ret['megrendelesdb'] / $nap;
+
+        $ret['megrendelesvaltdb'] = $ret['megrendelesdb'] / $ret['elozomegrendelesdb'] * 100;
+
+        $filter = new FilterDescriptor();
+        $filter
+            ->addFilter('kelt', '>=', $elozoeveleje)
+            ->addFilter('kelt', '<=', $elozoma)
+            ->addFilter('bizonylattipus', '=', 'szamla');
+        $ret['elozoszamladb'] = $bfrepo->getCount($filter);
+        $ret['elozoszamlapernapdb'] = $ret['elozoszamladb'] / $nap;
+
+        $filter->clear();
+        $filter
+            ->addFilter('kelt', '>=', $eveleje)
+            ->addFilter('kelt', '<=', $ma)
+            ->addFilter('bizonylattipus', '=', 'szamla');
+        $ret['szamladb'] = $bfrepo->getCount($filter);
+        $ret['szamlapernapdb'] = $ret['szamladb'] / $nap;
+
+        $ret['szamlavaltdb'] = $ret['szamladb'] / $ret['elozoszamladb'] * 100;
+
+        $ret['elozoteljratadb'] = $ret['elozoszamladb'] / $ret['elozomegrendelesdb'] * 100;
+        $ret['teljratadb'] = $ret['szamladb'] / $ret['megrendelesdb'] * 100;
+
+        $filter->clear();
+        $filter
+            ->addFilter('kelt', '>=', $eveleje)
+            ->addFilter('kelt', '<=', $ma)
+            ->addFilter('bizonylattipus', '=', 'megrendeles');
+        $sum = $bfrepo->calcSumWithJoins($filter);
+        $ret['megrendeleshuf'] = $sum['netto'];
+        $ret['megrendelespernaphuf'] = $ret['megrendeleshuf'] / $nap;
+
+        $filter->clear();
+        $filter
+            ->addFilter('kelt', '>=', $elozoeveleje)
+            ->addFilter('kelt', '<=', $elozoma)
+            ->addFilter('bizonylattipus', '=', 'megrendeles');
+        $sum = $bfrepo->calcSumWithJoins($filter);
+        $ret['elozomegrendeleshuf'] = $sum['netto'];
+        $ret['elozomegrendelespernaphuf'] = $ret['elozomegrendeleshuf'] / $nap;
+
+        $ret['megrendelesvalthuf'] = $ret['megrendeleshuf'] / $ret['elozomegrendeleshuf'] * 100;
+
+        $filter->clear();
+        $filter
+            ->addFilter('kelt', '>=', $eveleje)
+            ->addFilter('kelt', '<=', $ma)
+            ->addFilter('bizonylattipus', '=', 'szamla');
+        $sum = $bfrepo->calcSumWithJoins($filter);
+        $ret['szamlahuf'] = $sum['netto'];
+        $ret['szamlapernaphuf'] = $ret['szamlahuf'] / $nap;
+
+        $filter->clear();
+        $filter
+            ->addFilter('kelt', '>=', $elozoeveleje)
+            ->addFilter('kelt', '<=', $elozoma)
+            ->addFilter('bizonylattipus', '=', 'szamla');
+        $sum = $bfrepo->calcSumWithJoins($filter);
+        $ret['elozoszamlahuf'] = $sum['netto'];
+        $ret['elozoszamlapernaphuf'] = $ret['elozoszamlahuf'] / $nap;
+
+        $ret['szamlavalthuf'] = $ret['szamlahuf'] / $ret['elozoszamlahuf'] * 100;
+
+        $ret['elozoteljratahuf'] = $ret['elozoszamlahuf'] / $ret['elozomegrendeleshuf'] * 100;
+        $ret['teljratahuf'] = $ret['szamlahuf'] / $ret['megrendeleshuf'] * 100;
+
+        $ret['elozomegrendelesatlaghuf'] = $ret['elozomegrendeleshuf'] / $ret['elozomegrendelesdb'];
+        $ret['elozoszamlaatlaghuf'] = $ret['elozoszamlahuf'] / $ret['elozoszamladb'];
+
+        $ret['megrendelesatlaghuf'] = $ret['megrendeleshuf'] / $ret['megrendelesdb'];
+        $ret['szamlaatlaghuf'] = $ret['szamlahuf'] / $ret['szamladb'];
+
+        $ret['elozoteljrataatlaghuf'] = $ret['elozoszamlaatlaghuf'] / $ret['elozomegrendelesatlaghuf'] * 100;
+        $ret['teljrataatlaghuf'] = $ret['szamlaatlaghuf'] / $ret['megrendelesatlaghuf'] * 100;
+
+        $ret['megrendelesatlagvalthuf'] = $ret['megrendelesatlaghuf'] / $ret['elozomegrendelesatlaghuf'] * 100;
+        $ret['szamlaatlagvalthuf'] = $ret['szamlaatlaghuf'] / $ret['elozoszamlaatlaghuf'] * 100;
+
+
         return $ret;
     }
 
