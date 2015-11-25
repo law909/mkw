@@ -60,7 +60,13 @@ var mkwcomp = (function($) {
     function datumEdit() {
 
         function init(sel) {
-            var $datumedit = $(sel);
+            var $datumedit;
+            if (typeof sel === 'string') {
+                $datumedit = $(sel);
+            }
+            else {
+                $datumedit = sel;
+            }
             if ($datumedit) {
                 $datumedit.datepicker($.datepicker.regional['hu']);
                 $datumedit.datepicker('option', 'dateFormat', 'yy.mm.dd');

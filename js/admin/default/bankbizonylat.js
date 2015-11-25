@@ -26,10 +26,7 @@ $(document).ready(function () {
             });
 
             $('input[name^="teteldatum_"]').each(function() {
-                var o = $(this);
-                o.datepicker($.datepicker.regional['hu']);
-                o.datepicker('option', 'dateFormat', 'yy.mm.dd');
-                o.datepicker('setDate', o.attr('data-datum'));
+                mkwcomp.datumEdit.init($(this));
             });
 
             $('#AltalanosTab')
@@ -43,13 +40,10 @@ $(document).ready(function () {
                         },
                         type: 'GET',
                         success: function(data) {
-                            var dedit, d = JSON.parse(data);
+                            var d = JSON.parse(data);
 
                             $('.js-bizonylatosszesito').before(d.html);
-                            dedit = $('#DatumEdit' + d.id);
-                            dedit.datepicker($.datepicker.regional['hu']);
-                            dedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-                            dedit.datepicker('setDate', dedit.attr('data-datum'));
+                            mkwcomp.datumEdit.init('#DatumEdit' + d.id);
 
                             $('.js-tetelnewbutton,.js-teteldelbutton,.js-hivatkozottbizonylatbutton').button();
                             $this.remove();
@@ -195,12 +189,8 @@ $(document).ready(function () {
             });
         });
 
-        var dfilter = $('#dtfilter');
-        dfilter.datepicker($.datepicker.regional['hu']);
-        dfilter.datepicker('option', 'dateFormat', 'yy.mm.dd');
-        dfilter = $('#difilter');
-        dfilter.datepicker($.datepicker.regional['hu']);
-        dfilter.datepicker('option', 'dateFormat', 'yy.mm.dd');
+        mkwcomp.datumEdit.init('#dtfilter');
+        mkwcomp.datumEdit.init('#difilter');
     }
     else {
         if ($.fn.mattkarb) {
