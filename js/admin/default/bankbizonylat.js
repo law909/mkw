@@ -189,8 +189,8 @@ $(document).ready(function () {
             });
         });
 
-        mkwcomp.datumEdit.init('#dtfilter');
-        mkwcomp.datumEdit.init('#difilter');
+        mkwcomp.datumEdit.init('#datumtolfilter');
+        mkwcomp.datumEdit.init('#datumigfilter');
     }
     else {
         if ($.fn.mattkarb) {
