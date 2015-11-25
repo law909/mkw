@@ -16,11 +16,8 @@ $(document).ready(function () {
         newWindowUrl: '/admin/bankbizonylatfej/viewkarb',
         saveUrl: '/admin/bankbizonylatfej/save',
         beforeShow: function () {
-            var keltedit = $('#KeltEdit'),
-                dialogcenter = $('#dialogcenter');
-            keltedit.datepicker($.datepicker.regional['hu']);
-            keltedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-            keltedit.datepicker('setDate', keltedit.attr('data-datum'));
+            var dialogcenter = $('#dialogcenter');
+            mkwcomp.datumEdit.init('#KeltEdit');
 
             $('.js-tetelnewbutton,.js-teteldelbutton,.js-hivatkozottbizonylatbutton').button();
 
