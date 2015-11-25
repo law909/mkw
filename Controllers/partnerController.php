@@ -384,10 +384,18 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     public function getPartnerData() {
-        $partner = $this->getRepo()->find($this->params->getIntRequestParam('partnerid'));
+        $pid = $this->params->getIntRequestParam('partnerid');
+        $email = $this->params->getStringRequestParam('email');
+        if ($pid) {
+            $partner = $this->getRepo()->find($pid);
+        }
+        elseif ($email) {
+            $partner = $this->getRepo()->findOneBy(array('email' => $email));
+        }
         $ret = array();
         if ($partner) {
             $ret = array(
+                'id' => $partner->getId(),
                 'fizmod' => $partner->getFizmodId(),
                 'fizhatido' => $partner->getFizhatido(),
                 'nev' => $partner->getNev(),

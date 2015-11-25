@@ -351,7 +351,16 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $partnerkod = $this->params->getIntRequestParam('partner');
 
         if ($partnerkod == -1) {
-            $partnerobj = new \Entities\Partner();
+            $partneremail = $this->params->getStringRequestParam('partneremail');
+            if ($partneremail) {
+                $partnerobj = $this->getRepo('Entities\Partner')->findOneBy(array('email' => $partneremail));
+                if (!$partnerobj) {
+                    $partnerobj = new \Entities\Partner();
+                }
+            }
+            else {
+                $partnerobj = new \Entities\Partner();
+            }
             $partnerobj->setAdoszam($this->params->getStringRequestParam('partneradoszam'));
             $partnerobj->setEuadoszam($this->params->getStringRequestParam('partnereuadoszam'));
             $partnerobj->setEmail($this->params->getStringRequestParam('partneremail'));

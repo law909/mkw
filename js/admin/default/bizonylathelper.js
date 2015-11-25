@@ -461,6 +461,40 @@ var bizonylathelper = function($) {
         getArfolyam();
     }
 
+    function setPartnerData(d) {
+        if (d.fizmod) {
+            $('#FizmodEdit').val(d.fizmod);
+        }
+        if (d.valutanem) {
+            $('#ValutanemEdit').val(d.valutanem);
+        }
+        if (d.szallitasimod) {
+            $('#SzallitasimodEdit').val(d.szallitasimod);
+        }
+        if (d.uzletkoto) {
+            $('#UzletkotoEdit').val(d.uzletkoto);
+        }
+        if (d.bizonylatnyelv) {
+            $('#BizonylatnyelvEdit').val(d.bizonylatnyelv);
+        }
+        $('input[name="partnernev"]').val(d.nev);
+        $('input[name="partnervezeteknev"]').val(d.vezeteknev);
+        $('input[name="partnerkeresztnev"]').val(d.keresztnev);
+        $('input[name="partnerirszam"]').val(d.irszam);
+        $('input[name="partnervaros"]').val(d.varos);
+        $('input[name="partnerutca"]').val(d.utca);
+        $('input[name="partneradoszam"]').val(d.adoszam);
+        $('input[name="szallnev"]').val(d.szallnev);
+        $('input[name="szallirszam"]').val(d.szallirszam);
+        $('input[name="szallvaros"]').val(d.szallvaros);
+        $('input[name="szallutca"]').val(d.szallutca);
+        $('input[name="partnertelefon"]').val(d.telefon);
+        $('input[name="partneremail"]').val(d.email);
+        $('#PartnerEdit').data('afa', d.afa).data('afakulcs', d.afakulcs);
+        setDates();
+        valutanemChange();
+    }
+
     function getMattKarbConfig(bizonylattipus) {
         return {
             container: '#mattkarb',
@@ -476,6 +510,25 @@ var bizonylathelper = function($) {
                         alttab = $('#AltalanosTab'),
                         dialogcenter = $('#dialogcenter');
 
+                $('#EmailEdit').change(function() {
+                    var pedit = $('#PartnerEdit'),
+                        ee = $(this);
+                    if (pedit.val() == -1) {
+                        $.ajax({
+                            url: '/admin/partner/getdata',
+                            type: 'GET',
+                            data: {
+                                email: ee.val()
+                            },
+                            success: function(data) {
+                                var d = JSON.parse(data);
+                                setPartnerData(d);
+                                pedit.val(d.id);
+                            }
+                        });
+                    }
+                });
+
                 $('#PartnerEdit').change(function() {
                     var pe = $(this);
                     if (pe.val() > 0) {
@@ -487,37 +540,7 @@ var bizonylathelper = function($) {
                             },
                             success: function(data) {
                                 var d = JSON.parse(data);
-                                if (d.fizmod) {
-                                    fizmodedit.val(d.fizmod);
-                                }
-                                if (d.valutanem) {
-                                    $('#ValutanemEdit').val(d.valutanem);
-                                }
-                                if (d.szallitasimod) {
-                                    $('#SzallitasimodEdit').val(d.szallitasimod);
-                                }
-                                if (d.uzletkoto) {
-                                    $('#UzletkotoEdit').val(d.uzletkoto);
-                                }
-                                if (d.bizonylatnyelv) {
-                                    $('#BizonylatnyelvEdit').val(d.bizonylatnyelv);
-                                }
-                                $('input[name="partnernev"]').val(d.nev);
-                                $('input[name="partnervezeteknev"]').val(d.vezeteknev);
-                                $('input[name="partnerkeresztnev"]').val(d.keresztnev);
-                                $('input[name="partnerirszam"]').val(d.irszam);
-                                $('input[name="partnervaros"]').val(d.varos);
-                                $('input[name="partnerutca"]').val(d.utca);
-                                $('input[name="partneradoszam"]').val(d.adoszam);
-                                $('input[name="szallnev"]').val(d.szallnev);
-                                $('input[name="szallirszam"]').val(d.szallirszam);
-                                $('input[name="szallvaros"]').val(d.szallvaros);
-                                $('input[name="szallutca"]').val(d.szallutca);
-                                $('input[name="partnertelefon"]').val(d.telefon);
-                                $('input[name="partneremail"]').val(d.email);
-                                $('#PartnerEdit').data('afa', d.afa).data('afakulcs', d.afakulcs);
-                                setDates();
-                                valutanemChange();
+                                setPartnerData(d);
                             }
                         });
                     }
