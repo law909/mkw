@@ -284,6 +284,10 @@
                 <td><label for="BizonylatMennyisegEdit">{t('Bizonylattétel alap mennyisége')}:</label></td>
                 <td><input id="BizonylatMennyisegEdit" name="bizonylatmennyiseg" type="text" value="{$bizonylatmennyiseg}"></td>
             </tr>
+            <tr>
+                <td><label for="TeljesitmenyKezdoEvEdit">{t('Teljesítmény jelentés kezdő éve')}:</label></td>
+                <td><input id="TeljesitmenyKezdoEvEdit" name="teljesitmenykezdoev" type="text" value="{$teljesitmenykezdoev}"></td>
+            </tr>
         </tbody></table>
         <table><tbody>
             <tr>

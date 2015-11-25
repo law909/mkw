@@ -2,6 +2,8 @@
 
 namespace Entities;
 
+use Doctrine\ORM\Query\ResultSetMapping;
+
 class BizonylatfejRepository extends \mkwhelpers\Repository {
 
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
@@ -91,6 +93,21 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         }
         $res = $q->getScalarResult();
         return $res[0];
+    }
+
+    public function calcTeljesitmeny($filter) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('ev', 'ev');
+        $rsm->addScalarResult('netto', 'netto');
+        $rsm->addScalarResult('db', 'db');
+        $q = $this->_em->createNativeQuery('SELECT YEAR(kelt) AS ev, SUM(netto) AS netto, COUNT(*) AS db'
+            . ' FROM bizonylatfej _xx'
+            . $this->getFilterString($filter)
+            . ' GROUP BY ev'
+            . ' ORDER BY ev', $rsm);
+        $q->setParameters($this->getQueryParameters($filter));
+        $res = $q->getScalarResult();
+        return $res;
     }
 
     public function getCount($filter) {

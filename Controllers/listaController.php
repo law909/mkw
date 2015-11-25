@@ -125,113 +125,89 @@ class listaController extends \mkwhelpers\Controller {
     }
 
     public function teljesitmenyJelentes() {
-        $ma = new \DateTime();
-        $eveleje = new \DateTime(date('Y') . '-01-01');
-        $calcma = new \DateTime();
-        $elozoma = $calcma->sub(new \DateInterval('P1Y'));
-        $nap = $ma->diff($eveleje);
-        $nap = $nap->days;
-        $elozoeveleje = new \DateTime(date('Y') * 1 - 1 . '-01-01');
+
+        function per($a, $b) {
+            $a = $a * 1;
+            $b = $b * 1;
+            if ($b) {
+                return $a / $b;
+            }
+            return 0;
+        }
+
         /** @var \Entities\BizonylatfejRepository $bfrepo */
         $bfrepo = $this->getRepo('Entities\Bizonylatfej');
-        $ret = array();
+        $evma = date('Y') * 1;
+        $homa = date('m');
+        $napma = date('d');
+        $evek = array();
+        for ($ev = \mkw\Store::getParameter(\mkw\consts::TeljesitmenyKezdoEv, 2014); $ev <= $evma; $ev++) {
+            $evek[] = array(
+                'eleje' => (string)$ev . '-01-01',
+                'vege' => (string)$ev . '-' . $homa . '-' . $napma
+            );
+        }
+        $ma = new \DateTime();
+        $nap = $ma->diff(new \DateTime($evma . '-01-01'));
+        $nap = $nap->days;
+
+        $sqls = array();
+        foreach ($evek as $ev) {
+            $sqls[] = '((_xx.kelt>="' . $ev['eleje'] . '") AND (_xx.kelt<="' . $ev['vege'] . '"))';
+        }
 
         $filter = new FilterDescriptor();
-        $filter
-            ->addFilter('kelt', '>=', $elozoeveleje)
-            ->addFilter('kelt', '<=', $elozoma)
-            ->addFilter('bizonylattipus', '=', 'megrendeles');
-        $ret['elozomegrendelesdb'] = $bfrepo->getCount($filter);
-        $ret['elozomegrendelespernapdb'] = $ret['elozomegrendelesdb'] / $nap;
-
+        $filter->addFilter('bizonylattipus_id', '=', 'megrendeles');
+        $filter->addSql(implode(' OR ', $sqls));
+        $sorok = $bfrepo->calcTeljesitmeny($filter);
+        $adat = array();
+        foreach ($sorok as $sor) {
+            $ev = $sor['ev'] * 1;
+            $a = array();
+            $a['ev'] = $ev;
+            $a['megrendelesdb'] = $sor['db'] * 1;
+            $a['megrendelesdbpernap'] = per($sor['db'], $nap);
+            $a['megrendelesnetto'] = $sor['netto'] * 1;
+            $a['megrendelesnettopernap'] = per($sor['netto'], $nap);
+            $a['megrendelesnettoperdb'] = per($sor['netto'], $sor['db']);
+            if (array_key_exists($ev - 1, $adat)) {
+                $a['megrendelesdbvalt'] = per($a['megrendelesdb'], $adat[$ev - 1]['megrendelesdb']) * 100;
+                $a['megrendelesnettovalt'] = per($a['megrendelesnetto'], $adat[$ev - 1]['megrendelesnetto']) * 100;
+                $a['megrendelesnettoperdbvalt'] = per($a['megrendelesnettoperdb'], $adat[$ev - 1]['megrendelesnettoperdb']) * 100;
+            }
+            else {
+                $a['megrendelesdbvalt'] = 0;
+                $a['megrendelesnettovalt'] = 0;
+                $a['megrendelesnettoperdbvalt'] = 0;
+            }
+            $adat[$ev] = $a;
+        }
         $filter->clear();
-        $filter
-            ->addFilter('kelt', '>=', $eveleje)
-            ->addFilter('kelt', '<=', $ma)
-            ->addFilter('bizonylattipus', '=', 'megrendeles');
-        $ret['megrendelesdb'] = $bfrepo->getCount($filter);
-        $ret['megrendelespernapdb'] = $ret['megrendelesdb'] / $nap;
-
-        $ret['megrendelesvaltdb'] = $ret['megrendelesdb'] / $ret['elozomegrendelesdb'] * 100;
-
-        $filter = new FilterDescriptor();
-        $filter
-            ->addFilter('kelt', '>=', $elozoeveleje)
-            ->addFilter('kelt', '<=', $elozoma)
-            ->addFilter('bizonylattipus', '=', 'szamla');
-        $ret['elozoszamladb'] = $bfrepo->getCount($filter);
-        $ret['elozoszamlapernapdb'] = $ret['elozoszamladb'] / $nap;
-
-        $filter->clear();
-        $filter
-            ->addFilter('kelt', '>=', $eveleje)
-            ->addFilter('kelt', '<=', $ma)
-            ->addFilter('bizonylattipus', '=', 'szamla');
-        $ret['szamladb'] = $bfrepo->getCount($filter);
-        $ret['szamlapernapdb'] = $ret['szamladb'] / $nap;
-
-        $ret['szamlavaltdb'] = $ret['szamladb'] / $ret['elozoszamladb'] * 100;
-
-        $ret['elozoteljratadb'] = $ret['elozoszamladb'] / $ret['elozomegrendelesdb'] * 100;
-        $ret['teljratadb'] = $ret['szamladb'] / $ret['megrendelesdb'] * 100;
-
-        $filter->clear();
-        $filter
-            ->addFilter('kelt', '>=', $eveleje)
-            ->addFilter('kelt', '<=', $ma)
-            ->addFilter('bizonylattipus', '=', 'megrendeles');
-        $sum = $bfrepo->calcSumWithJoins($filter);
-        $ret['megrendeleshuf'] = $sum['netto'];
-        $ret['megrendelespernaphuf'] = $ret['megrendeleshuf'] / $nap;
-
-        $filter->clear();
-        $filter
-            ->addFilter('kelt', '>=', $elozoeveleje)
-            ->addFilter('kelt', '<=', $elozoma)
-            ->addFilter('bizonylattipus', '=', 'megrendeles');
-        $sum = $bfrepo->calcSumWithJoins($filter);
-        $ret['elozomegrendeleshuf'] = $sum['netto'];
-        $ret['elozomegrendelespernaphuf'] = $ret['elozomegrendeleshuf'] / $nap;
-
-        $ret['megrendelesvalthuf'] = $ret['megrendeleshuf'] / $ret['elozomegrendeleshuf'] * 100;
-
-        $filter->clear();
-        $filter
-            ->addFilter('kelt', '>=', $eveleje)
-            ->addFilter('kelt', '<=', $ma)
-            ->addFilter('bizonylattipus', '=', 'szamla');
-        $sum = $bfrepo->calcSumWithJoins($filter);
-        $ret['szamlahuf'] = $sum['netto'];
-        $ret['szamlapernaphuf'] = $ret['szamlahuf'] / $nap;
-
-        $filter->clear();
-        $filter
-            ->addFilter('kelt', '>=', $elozoeveleje)
-            ->addFilter('kelt', '<=', $elozoma)
-            ->addFilter('bizonylattipus', '=', 'szamla');
-        $sum = $bfrepo->calcSumWithJoins($filter);
-        $ret['elozoszamlahuf'] = $sum['netto'];
-        $ret['elozoszamlapernaphuf'] = $ret['elozoszamlahuf'] / $nap;
-
-        $ret['szamlavalthuf'] = $ret['szamlahuf'] / $ret['elozoszamlahuf'] * 100;
-
-        $ret['elozoteljratahuf'] = $ret['elozoszamlahuf'] / $ret['elozomegrendeleshuf'] * 100;
-        $ret['teljratahuf'] = $ret['szamlahuf'] / $ret['megrendeleshuf'] * 100;
-
-        $ret['elozomegrendelesatlaghuf'] = $ret['elozomegrendeleshuf'] / $ret['elozomegrendelesdb'];
-        $ret['elozoszamlaatlaghuf'] = $ret['elozoszamlahuf'] / $ret['elozoszamladb'];
-
-        $ret['megrendelesatlaghuf'] = $ret['megrendeleshuf'] / $ret['megrendelesdb'];
-        $ret['szamlaatlaghuf'] = $ret['szamlahuf'] / $ret['szamladb'];
-
-        $ret['elozoteljrataatlaghuf'] = $ret['elozoszamlaatlaghuf'] / $ret['elozomegrendelesatlaghuf'] * 100;
-        $ret['teljrataatlaghuf'] = $ret['szamlaatlaghuf'] / $ret['megrendelesatlaghuf'] * 100;
-
-        $ret['megrendelesatlagvalthuf'] = $ret['megrendelesatlaghuf'] / $ret['elozomegrendelesatlaghuf'] * 100;
-        $ret['szamlaatlagvalthuf'] = $ret['szamlaatlaghuf'] / $ret['elozoszamlaatlaghuf'] * 100;
-
-
-        return $ret;
+        $filter->addFilter('bizonylattipus_id', '=', 'szamla');
+        $filter->addSql(implode(' OR ', $sqls));
+        $sorok = $bfrepo->calcTeljesitmeny($filter);
+        foreach ($sorok as $sor) {
+            $ev = $sor['ev'] * 1;
+            $adat[$ev]['szamladb'] = $sor['db'] * 1;
+            $adat[$ev]['teljratadb'] = per($adat[$ev]['szamladb'], $adat[$ev]['megrendelesdb']) * 100;
+            $adat[$ev]['szamladbpernap'] = per($sor['db'], $nap);
+            $adat[$ev]['szamlanetto'] = $sor['netto'] * 1;
+            $adat[$ev]['teljratanetto'] = per($adat[$ev]['szamlanetto'], $adat[$ev]['megrendelesnetto']) * 100;
+            $adat[$ev]['szamlanettopernap'] = per($sor['netto'], $nap);
+            $adat[$ev]['szamlanettoperdb'] = per($sor['netto'], $sor['db']);
+            $adat[$ev]['teljratanettoperdb'] = per($adat[$ev]['szamlanettoperdb'], $adat[$ev]['megrendelesnettoperdb']) * 100;
+            if (array_key_exists($ev - 1, $adat)) {
+                $adat[$ev]['szamladbvalt'] = per($adat[$ev]['szamladb'], $adat[$ev - 1]['szamladb']) * 100;
+                $adat[$ev]['szamlanettovalt'] = per($adat[$ev]['szamlanetto'], $adat[$ev - 1]['szamlanetto']) * 100;
+                $adat[$ev]['szamlanettoperdbvalt'] = per($adat[$ev]['szamlanettoperdb'], $adat[$ev - 1]['szamlanettoperdb']) * 100;
+            }
+            else {
+                $adat[$ev]['szamladbvalt'] = 0;
+                $adat[$ev]['szamlanettovalt'] = 0;
+                $adat[$ev]['szamlanettoperdbvalt'] = 0;
+            }
+        }
+        return $adat;
     }
 
     public function nemkaphatoertesito() {

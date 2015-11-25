@@ -24,6 +24,7 @@ class consts {
     const NullasAfa = 'nullasafa';
     const KiskerCimke = 'kiskercimke';
     const SpanyolCimke = 'spanyolcimke';
+    const TeljesitmenyKezdoEv = 'teljesitmenykezdoev';
 
     const Tulajnev = 'tulajnev';
     const Tulajirszam = 'tulajirszam';

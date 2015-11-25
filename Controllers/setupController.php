@@ -266,6 +266,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::ValtozatSorrend, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::BizonylatMennyiseg);
         $view->setVar(\mkw\consts::BizonylatMennyiseg, ($p ? $p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::TeljesitmenyKezdoEv);
+        $view->setVar(\mkw\consts::TeljesitmenyKezdoEv, ($p ? $p->getErtek() : 0));
 
 
         // feed
@@ -507,6 +509,7 @@ class setupController extends \mkwhelpers\Controller {
 
         $this->setObj(\mkw\consts::ValtozatSorrend, $this->params->getStringRequestParam('valtozatsorrend'));
         $this->setObj(\mkw\consts::BizonylatMennyiseg, $this->params->getStringRequestParam(\mkw\consts::BizonylatMennyiseg));
+        $this->setObj(\mkw\consts::TeljesitmenyKezdoEv, $this->params->getStringRequestParam(\mkw\consts::TeljesitmenyKezdoEv));
 
         $rolerep = store::getEm()->getRepository('Entities\Munkakor');
         $role = $rolerep->find($this->params->getIntRequestParam('adminrole', 0));
