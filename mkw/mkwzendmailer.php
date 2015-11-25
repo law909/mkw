@@ -85,17 +85,23 @@ class mkwzendmailer {
         if (!$this->to) {
             $bcc = $this->getBccArray();
             foreach($bcc as $cim) {
-                $this->mailer->addTo($cim);
+                if ($cim) {
+                    $this->mailer->addTo($cim);
+                }
             }
         }
         else {
             foreach($this->to as $t) {
-                $this->mailer->addTo($t);
+                if ($t) {
+                    $this->mailer->addTo($t);
+                }
             }
         }
         $bcc = $this->getBccArray();
         foreach($bcc as $_bcc) {
-            $this->mailer->addBcc($_bcc);
+            if ($_bcc) {
+                $this->mailer->addBcc($_bcc);
+            }
         }
 
         if (!$this->replyto) {
@@ -104,6 +110,8 @@ class mkwzendmailer {
         else {
             $this->mailer->setReplyTo($this->replyto);
         }
-        $this->mailer->send();
+        if ($this->mailer->getRecipients()) {
+            $this->mailer->send();
+        }
     }
 }
