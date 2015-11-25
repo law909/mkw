@@ -1028,6 +1028,17 @@ h5.termeklista {
 .tooltipbtn {
   cursor: pointer;
 }
+.markacontainer {
+  height: 150px;
+}
+.markahelper {
+  height: 100%;
+  vertical-align: middle;
+  display: inline-block;
+}
+.markaimg {
+  vertical-align: middle;
+}
 select[name="foxpostcsoport"],
 select[name="foxpostterminal"] {
   width: 100%;
