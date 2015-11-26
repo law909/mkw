@@ -1,4 +1,4 @@
-{extends "rep_base.tpl"}
+{extends "../rep_base.tpl"}
 
 {block "body"}
     <h4 xmlns="http://www.w3.org/1999/html">Jutalék elszámolás</h4>

@@ -1,9 +1,9 @@
 {extends "../rep_base.tpl"}
 
 {block "body"}
-    <h4 xmlns="http://www.w3.org/1999/html">Kintlevőség</h4>
+    <h4 xmlns="http://www.w3.org/1999/html">Kintlevőség/Assets</h4>
     <h5>{$datumnev} {$tolstr} - {$igstr}</h5>
-    <h5>Befizetések {$befdatumstr}-ig</h5>
+    <h5>Befizetések/payments before {$befdatumstr}-ig</h5>
     <h5>{$partnernev}</h5>
     <h5>{$cimkenevek}</h5>
     <h5>{$uknev}</h5>
@@ -17,6 +17,16 @@
             <th>Lejárat</th>
             <th class="textalignright">Fizetendő</th>
             <th class="textalignright">Tartozás</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>Invoice no.</th>
+            <th>Issue</th>
+            <th>Fulfillment</th>
+            <th>Payment due</th>
+            <th>Expiry</th>
+            <th class="textalignright">Total</th>
+            <th class="textalignright">Debit</th>
             <th></th>
         </tr>
         </thead>
@@ -46,7 +56,7 @@
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.kelt}</td>
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.teljesites}</td>
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.hivatkozottdatum}</td>
-                    <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.lejartnap} nap</td>
+                    <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.lejartnap} nap/day</td>
                     <td class="cell textalignright nowrap{if ($elem.lejart)} lejart{/if}">{bizformat($elem.brutto)}</td>
                     <td class="cell textalignright nowrap{if ($elem.lejart)} lejart{/if}">{bizformat($elem.tartozas)}</td>
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.valutanemnev}</td>
@@ -66,18 +76,18 @@
             {/while}
             {if ($reszletessum)}
                 <tr class="italic bold">
-                    <td colspan="6" class="cell">{$partner.nev} összesen nem lejárt</td>
+                    <td colspan="6" class="cell">{$partner.nev} összesen nem lejárt/total not expired</td>
                     <td class="cell textalignright">{bizformat($pnemlejartsum)}</td>
                     <td class="cell"></td>
                 </tr>
                 <tr class="italic bold">
-                    <td colspan="6" class="cell">{$partner.nev} összesen lejárt</td>
+                    <td colspan="6" class="cell">{$partner.nev} összesen lejárt/total expired</td>
                     <td class="cell textalignright">{bizformat($plejartsum)}</td>
                     <td class="cell"></td>
                 </tr>
             {/if}
             <tr class="italic bold">
-                <td colspan="5" class="cell">{$partner.nev} összesen</td>
+                <td colspan="5" class="cell">{$partner.nev} összesen/total</td>
                 <td class="cell textalignright">{bizformat($pbsum)}</td>
                 <td class="cell textalignright">{bizformat($ptsum)}</td>
                 <td class="cell"></td>
@@ -87,18 +97,18 @@
         <tfoot>
         {if ($reszletessum)}
             <tr>
-                <td colspan="6">Összesen nem lejárt:</td>
+                <td colspan="6">Összesen nem lejárt/Total not expired:</td>
                 <td class="textalignright">{bizformat($nemlejartsum)}</td>
                 <td></td>
             </tr>
             <tr>
-                <td colspan="6">Összesen lejárt:</td>
+                <td colspan="6">Összesen lejárt/Total expired:</td>
                 <td class="textalignright">{bizformat($lejartsum)}</td>
                 <td></td>
             </tr>
         {/if}
         <tr>
-            <td colspan="5">Összesen:</td>
+            <td colspan="5">Összesen/Total:</td>
             <td class="textalignright">{bizformat($bsum)}</td>
             <td class="textalignright">{bizformat($tsum)}</td>
             <td></td>

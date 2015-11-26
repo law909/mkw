@@ -1,4 +1,4 @@
-{extends "rep_base.tpl"}
+{extends "../rep_base.tpl"}
 
 {block "body"}
 <h4>{$raktarnev}-ban nincs, más raktárakban van</h4>
