@@ -331,7 +331,9 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Tulajadoszam, $this->params->getStringRequestParam('tulajadoszam'));
         $this->setObj(\mkw\consts::Tulajeuadoszam, $this->params->getStringRequestParam('tulajeuadoszam'));
         $this->setObj(\mkw\consts::Tulajeorinr, $this->params->getStringRequestParam('tulajeorinr'));
-        $this->setObj(\mkw\consts::Tulajcrc, md5($this->params->getStringRequestParam('tulajcrc') . \mkw\Store::getAdminSalt()));
+        if ($this->params->getStringRequestParam('tulajcrc')) {
+            $this->setObj(\mkw\consts::Tulajcrc, md5($this->params->getStringRequestParam('tulajcrc') . \mkw\Store::getAdminSalt()));
+        }
 
         $this->setObj(\mkw\consts::EmailFrom, $this->params->getOriginalStringRequestParam('emailfrom'));
         $this->setObj(\mkw\consts::EmailReplyTo, $this->params->getOriginalStringRequestParam('emailreplyto'));
