@@ -104,9 +104,11 @@ class b2bpartnerController extends partnerController {
 
             // pseudo logout old user
             \mkw\Store::clearLoggedInUser();
-            $regiuser->setSessionid('');
-            $this->getEm()->persist($regiuser);
-            $this->getEm()->flush();
+            if ($regiuser) {
+                $regiuser->setSessionid('');
+                $this->getEm()->persist($regiuser);
+                $this->getEm()->flush();
+            }
             $kc = new kosarController($this->params);
             $kc->removeSessionId(\Zend_Session::getId());
             \mkw\Store::getMainSession()->pk = null;
