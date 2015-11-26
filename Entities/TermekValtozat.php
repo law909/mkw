@@ -118,7 +118,7 @@ class TermekValtozat {
         $k = 0;
         $db = 0;
         foreach($this->bizonylattetelek as $bt) {
-            if ($bt->getMozgat() && ($bt->getTeljesites() <= $datum) && (!$raktarid || ($raktarid && $raktarid == $bt->getRaktarId()))) {
+            if ($bt->getMozgat() && (!$bt->getRontott()) && ($bt->getTeljesites() <= $datum) && (!$raktarid || ($raktarid && $raktarid == $bt->getRaktarId()))) {
                 $k += ($bt->getMennyiseg() * $bt->getIrany());
                 $db++;
             }

@@ -329,8 +329,9 @@ class Termek {
             $datum = new \DateTime();
         }
         $k = 0;
+        /** @var \Entities\Bizonylattetel $bt */
         foreach($this->bizonylattetelek as $bt) {
-            if ($bt->getMozgat() && ($bt->getTeljesites() <= $datum) && (!$raktarid || ($raktarid && $raktarid == $bt->getRaktarId()))) {
+            if ($bt->getMozgat() && (!$bt->getRontott()) && ($bt->getTeljesites() <= $datum) && (!$raktarid || ($raktarid && $raktarid == $bt->getRaktarId()))) {
                 $k += ($bt->getMennyiseg() * $bt->getIrany());
             }
         }
