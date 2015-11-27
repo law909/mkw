@@ -25,6 +25,11 @@ class mkwzendmailer {
     private $headers;
     private $replyto;
 
+    protected function clear() {
+        $this->to = array();
+        unset($this->subject, $this->message, $this->headers, $this->replyto);
+    }
+
     public function setTo($to) {
         if ($to) {
             if (is_string($to)) {
@@ -110,8 +115,13 @@ class mkwzendmailer {
         else {
             $this->mailer->setReplyTo($this->replyto);
         }
-        if ($this->mailer->getRecipients()) {
-            $this->mailer->send();
+        try {
+            if ($this->mailer->getRecipients()) {
+                $this->mailer->send();
+            }
+        }
+        finally {
+            $this->clear();
         }
     }
 }
