@@ -252,14 +252,18 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     public function saveRegistrationData($vendeg = false) {
-        $ps = $this->getRepo()->findVendegByEmail($this->params->getStringRequestParam('email'));
+        $email = $this->params->getStringRequestParam('email');
+        if (!$email) {
+            $email = $this->params->getStringRequestParam('kapcsemail');
+        }
+        $ps = $this->getRepo()->findVendegByEmail($email);
         if (count($ps) > 0) {
             $t = $ps[0];
         }
         else {
             $t = new \Entities\Partner();
         }
-        $this->setFields($t, null, 'registration');
+        $t = $this->setFields($t, null, 'registration');
         $t->setVendeg($vendeg);
         $this->getEm()->persist($t);
         $this->getEm()->flush();
@@ -473,19 +477,20 @@ class partnerController extends \mkwhelpers\MattableController {
         return $view;
     }
 
-    public function login($user, $pass = null) {
+    public function login($puser, $pass = null) {
         $ok = false;
-        if ($user instanceof \Entities\Partner) {
+        if ($puser instanceof \Entities\Partner) {
+            $user = $puser;
             $ok = true;
         }
         else {
-            $users = $this->getRepo()->findByUserPass($user, $pass);
+            $users = $this->getRepo()->findByUserPass($puser, $pass);
             if (count($users) > 0) {
                 $user = $users[0];
                 $ok = true;
             }
         }
-        if ($ok) {
+        if ($ok && $user) {
             if ($user->getVendeg()) {
                 return false;
             }
