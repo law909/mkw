@@ -142,7 +142,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         }
         $res = array();
         // mkwnál ki kell választani az elsőt
-        $vanvalasztott = \mkw\Store::getTheme() !== 'mkwcansas';
+        $vanvalasztott = true; // \mkw\Store::getTheme() !== 'mkwcansas';
         foreach ($rec as $sor) {
             $r = array(
                 'id' => $sor->getId(),
