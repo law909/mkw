@@ -426,6 +426,11 @@ class Bizonylatfej {
     /** @ORM\OneToMany(targetEntity="Folyoszamla", mappedBy="bizonylatfej",cascade={"persist"}) */
     private $folyoszamlak;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $regmode;
+
     public function __toString() {
         return (string)$this->id;
     }
@@ -2396,6 +2401,20 @@ class Bizonylatfej {
      */
     public function setMese($mese) {
         $this->mese = $mese;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRegmode() {
+        return $this->regmode;
+    }
+
+    /**
+     * @param mixed $regmode
+     */
+    public function setRegmode($regmode) {
+        $this->regmode = $regmode;
     }
 
 }

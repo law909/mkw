@@ -269,6 +269,20 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $biztipus = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
                     $megrendfej = new \Entities\Bizonylatfej();
                     $megrendfej->setPersistentData();
+                    switch ($regkell) {
+                        case 1:
+                            $megrendfej->setRegmode(1);
+                            $regmodenev = 'vendég';
+                            break;
+                        case 2:
+                            $megrendfej->setRegmode(2);
+                            $regmodenev = 'regisztrált';
+                            break;
+                        default:
+                            $megrendfej->setRegmode(3);
+                            $regmodenev = 'bejelentkezett';
+                            break;
+                    }
                     $megrendfej->setIp($_SERVER['REMOTE_ADDR']);
                     $megrendfej->setReferrer(\mkw\Store::getMainSession()->referrer);
                     $megrendfej->setBizonylattipus($biztipus);
@@ -323,6 +337,8 @@ class checkoutController extends \mkwhelpers\MattableController {
                     }
                     $this->getEm()->persist($megrendfej);
                     $this->getEm()->flush();
+
+                    \mkw\Store::writelog($megrendfej->getId() . ' : ' . $regmodenev . ' : ' . $partner->getNev() . ' : ' . $email . ' : ' . $partner->getId(), 'checkout.log');
 
                     Store::getMainSession()->lastmegrendeles = $megrendfej->getId();
                     Store::getMainSession()->lastemail = $email;

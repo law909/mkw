@@ -309,6 +309,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['uzletkotojutalek'] = $t->getUzletkotojutalek();
         $x['bizonylatnyelv'] = $t->getBizonylatnyelv();
         $x['reportfile'] = $t->getReportfile();
+        $x['regmode'] = $t->getRegmode();
         $bsc = new bizonylatstatuszController($this->params);
         $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId());
         if ($forKarb) {

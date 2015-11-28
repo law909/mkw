@@ -67,6 +67,12 @@
                         IP: {$_egyed.ip} Ref.: {$_egyed.referrer}
                     </td>
                 </tr>
+                {if (($_egyed.bizonylattipusid=='megrendeles') && ($_egyed.regmode > 0))}
+                    <tr><td colspan="5">
+                            Reg.mód: {if ($_egyed.regmode == 1)}vendég{elseif ($_egyed.regmode == 2)}regisztrált{elseif ($_egyed.regmode == 3)}bejelentkezett{/if}
+                        </td>
+                    </tr>
+                {/if}
                 {if ($_egyed.belsomegjegyzes)}
                     <tr><td colspan="5" class="guestpartner">
                             {$_egyed.belsomegjegyzes}
