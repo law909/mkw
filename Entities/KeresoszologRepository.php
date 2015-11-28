@@ -11,4 +11,18 @@ class KeresoszologRepository extends \mkwhelpers\Repository {
         ));
     }
 
+    /**
+     * @param \mkwhelpers\FilterDescriptor $filter
+     */
+    public function getWithCount($filter) {
+        $q = $this->_em->createQuery('SELECT _xx.szo, COUNT(_xx) AS db'
+            . ' FROM Entities\Keresoszolog _xx '
+            . $filter->getFilterString()
+            . ' GROUP BY _xx.szo'
+            . ' ORDER BY db DESC'
+        );
+        $q->setParameters($filter->getQueryParameters());
+        return $q->getScalarResult();
+    }
+
 }

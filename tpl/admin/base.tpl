@@ -73,6 +73,7 @@
                     <div><a class="menupont" href="/admin/emailtemplate/viewlist">{t('Email sablonok')}</a></div>
                     <div><a class="menupont" href="/admin/template/viewlist">{t('Sablonszerkesztő')}</a></div>
                     <div><a class="menupont" href="/admin/sitemap/view">{t('Sitemap')}</a></div>
+                    <div><a class="menupont" href="/admin/keresoszolista/view">{t('Keresések')}</a></div>
                 </div>
                 <div class="menu-titlebar" data-caption="{t('Kimutatások')}" data-refcontrol="#ReportTab"></div>
                 <div id="ReportTab">
