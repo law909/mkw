@@ -522,8 +522,10 @@ var bizonylathelper = function($) {
                             },
                             success: function(data) {
                                 var d = JSON.parse(data);
-                                setPartnerData(d);
-                                pedit.val(d.id);
+                                if (d.id) {
+                                    setPartnerData(d);
+                                    pedit.val(d.id);
+                                }
                             }
                         });
                     }
