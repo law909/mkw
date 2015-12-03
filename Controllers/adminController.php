@@ -34,7 +34,6 @@ class adminController extends mkwhelpers\Controller {
             case 'superzone':
                 $napijelentesdatum = date(\mkw\Store::$DateFormat);
                 $igdatum = date(\mkw\Store::$DateFormat);
-                $view->setVar('napijelentesdatum', $napijelentesdatum);
                 $view->setVar('napijelenteslista', $lista->napiJelentes($napijelentesdatum, $igdatum));
                 break;
             case 'mkwcansas':
@@ -48,10 +47,10 @@ class adminController extends mkwhelpers\Controller {
         $lista = new listaController($this->params);
         $datumstr = $this->params->getStringRequestParam('datum');
         $datum = \mkw\Store::convDate($datumstr);
-        $datumstr = date(\mkw\Store::$DateFormat, strtotime($datum));
+        $igdatumstr = $this->params->getStringRequestParam('datumig');
+        $igdatum = \mkw\Store::convDate($igdatumstr);
         $view = $this->createView('napijelentesbody.tpl');
-        $view->setVar('napijelentesdatum', $datumstr);
-        $view->setVar('napijelenteslista', $lista->napiJelentes($datum));
+        $view->setVar('napijelenteslista', $lista->napiJelentes($datum, $igdatum));
 
         $view->printTemplateResult();
     }
