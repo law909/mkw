@@ -33,8 +33,9 @@ class adminController extends mkwhelpers\Controller {
         switch (\mkw\Store::getTheme()) {
             case 'superzone':
                 $napijelentesdatum = date(\mkw\Store::$DateFormat);
+                $igdatum = date(\mkw\Store::$DateFormat);
                 $view->setVar('napijelentesdatum', $napijelentesdatum);
-                $view->setVar('napijelenteslista', $lista->napiJelentes($napijelentesdatum));
+                $view->setVar('napijelenteslista', $lista->napiJelentes($napijelentesdatum, $igdatum));
                 break;
             case 'mkwcansas':
                 $view->setVar('tjlista', $lista->teljesitmenyJelentes());

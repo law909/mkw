@@ -86,11 +86,15 @@ class listaController extends \mkwhelpers\Controller {
         $view->printTemplateResult();
     }
 
-    public function napiJelentes($datum = null) {
+    public function napiJelentes($datum = null, $ig = null) {
         if (!$datum) {
             $datum = date(\mkw\Store::$SQLDateFormat);
         }
         $datum = \mkw\Store::convDate($datum);
+        if (!$ig) {
+            $ig = date(\mkw\Store::$SQLDateFormat);
+        }
+        $ig = \mkw\Store::convDate($ig);
         $btrepo = $this->getRepo('Entities\Bizonylattipus');
         $termekrepo = $this->getRepo('Entities\Termek');
         $farepo = $this->getRepo('Entities\TermekFa');
@@ -101,7 +105,8 @@ class listaController extends \mkwhelpers\Controller {
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter
                 ->addFilter('bt.mozgat', '=', 1)
-                ->addFilter('bf.teljesites', '=', $datum)
+                ->addFilter('bf.teljesites', '>=', $datum)
+                ->addFilter('bf.teljesites', '<=', $ig)
                 ->addFilter('bf.rontott', '=', false)
                 ->addFilter('f.tipus', '=', 'P')
                 ->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $csoport['karkod'] . '%')

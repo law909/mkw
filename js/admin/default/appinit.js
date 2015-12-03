@@ -101,7 +101,7 @@ $(document).ready(
             $arfdatumedit.datepicker('setDate', $arfdatumedit.attr('data-datum'));
             $('.js-arfolyamdownload').on('click', function(e) {
                 e.preventDefault();
-                arfdatum = $arfdatumedit.datepicker('getDate');
+                var arfdatum = $arfdatumedit.datepicker('getDate');
                 arfdatum = arfdatum.getFullYear() + '.' + (arfdatum.getMonth() + 1) + '.' + arfdatum.getDate();
                 $.ajax({
                     url: '/admin/arfolyam/download',
@@ -132,13 +132,16 @@ $(document).ready(
             $napijelentesdatumedit.datepicker('setDate', $napijelentesdatumedit.attr('data-datum'));
             $('.js-napijelentes').on('click', function(e) {
                 e.preventDefault();
-                datum = $napijelentesdatumedit.datepicker('getDate');
+                var datum = $napijelentesdatumedit.datepicker('getDate'),
+                    datumig = $('input[name="datumig"]').datepicker('getDate');
                 datum = datum.getFullYear() + '.' + (datum.getMonth() + 1) + '.' + datum.getDate();
+                datumig = datumig.getFullYear() + '.' + (datumig.getMonth() + 1) + '.' + datumig.getDate();
                 $.ajax({
                     url: '/admin/napijelentes',
                     type: 'POST',
                     data: {
-                        datum: datum
+                        datum: datum,
+                        datumig: datumig
                     },
                     success: function(data) {
                         $('.js-napijelentesbody').replaceWith(data);

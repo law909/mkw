@@ -51,7 +51,7 @@
             <div class="mainboxinner">
                 <div class="mainboxinner">
                     <label for="NapijelentesDatumEdit">Dátum:</label>
-                    <input id="NapijelentesDatumEdit" name="datum" type="text" data-datum="{$today}">
+                    <input id="NapijelentesDatumEdit" name="datumtol" type="text" data-datum="{$today}"> - <input id="NapijelentesDatumigEdit" name="datumig" type="text" data-datum="{$today}">
                     <button class="js-napijelentes ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Frissít</span></button>
                 </div>
                 {include "napijelentesbody.tpl"}
