@@ -96,9 +96,7 @@ $(document).ready(
 
         var $arfdatumedit = $('#ArfolyamDatumEdit');
         if ($arfdatumedit) {
-            $arfdatumedit.datepicker($.datepicker.regional['hu']);
-            $arfdatumedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-            $arfdatumedit.datepicker('setDate', $arfdatumedit.attr('data-datum'));
+            mkwcomp.datumEdit.init($arfdatumedit);
             $('.js-arfolyamdownload').on('click', function(e) {
                 e.preventDefault();
                 var arfdatum = $arfdatumedit.datepicker('getDate');
@@ -125,15 +123,15 @@ $(document).ready(
             });
         }
 
-        var $napijelentesdatumedit = $('#NapijelentesDatumEdit');
-        if ($napijelentesdatumedit) {
-            $napijelentesdatumedit.datepicker($.datepicker.regional['hu']);
-            $napijelentesdatumedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-            $napijelentesdatumedit.datepicker('setDate', $napijelentesdatumedit.attr('data-datum'));
+        var $napijelentesdatumedit = $('#NapijelentesDatumEdit'),
+            $napijelentesdatumigedit = $('#NapijelentesDatumigEdit');
+        if ($napijelentesdatumedit && $napijelentesdatumigedit) {
+            mkwcomp.datumEdit.init($napijelentesdatumedit);
+            mkwcomp.datumEdit.init($napijelentesdatumigedit);
             $('.js-napijelentes').on('click', function(e) {
                 e.preventDefault();
                 var datum = $napijelentesdatumedit.datepicker('getDate'),
-                    datumig = $('input[name="datumig"]').datepicker('getDate');
+                    datumig = $napijelentesdatumigedit.datepicker('getDate');
                 datum = datum.getFullYear() + '.' + (datum.getMonth() + 1) + '.' + datum.getDate();
                 datumig = datumig.getFullYear() + '.' + (datumig.getMonth() + 1) + '.' + datumig.getDate();
                 $.ajax({

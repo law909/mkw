@@ -1,7 +1,7 @@
 <table class="js-napijelentesbody">
     <thead>
         <tr>
-            <th class="headercell">{$napijelentesdatum}</th>
+            <th class="headercell"></th>
             <th class="headercell">Mennyiség</th>
             <th class="headercell">Nettó HUF</th>
             <th class="headercell">Bruttó HUF</th>
