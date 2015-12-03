@@ -200,7 +200,7 @@ var checkout = (function($, guid) {
             })
 			.on('change', 'input[name="szallitasimod"]', function() {
 				loadFizmodList();
-                loadFoxpostCsoportData();
+                loadFoxpostCsoportData(true);
 			})
 			.on('change', 'input[name="regkell"]', function() {
 				checkoutpasswordcontainer.empty();
