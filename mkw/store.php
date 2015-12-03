@@ -42,7 +42,7 @@ class Store {
     public static function getJSVersion() {
         switch(self::getTheme()) {
             case 'mkwcansas':
-                return 22;
+                return 23;
         }
     }
 
