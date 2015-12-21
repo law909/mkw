@@ -301,6 +301,28 @@ class importController extends \mkwhelpers\Controller {
             }
             \mkw\Store::getEm()->flush();
             \mkw\Store::getEm()->clear();
+
+            if ($gyarto) {
+                rewind($fh);
+                fgetcsv($fh, 0, $sep, '"');
+                $idegenkodok = array();
+                while ($data = fgetcsv($fh, 0, $sep, '"')) {
+                    $idegenkodok[] = 'KP' . $data[0];
+                }
+                $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
+                foreach ($termekek as $t) {
+                    if (!in_array($t['idegenkod'], $idegenkodok)) {
+                        /** @var \Entities\Termek $termek */
+                        $termek = $this->getRepo('Entities\Termek')->find($t['id']);
+                        if ($termek) {
+                            $termek->setFuggoben(true);
+                            $termek->setInaktiv(true);
+                            \mkw\Store::getEm()->persist($termek);
+                            \mkw\Store::getEm()->flush();
+                        }
+                    }
+                }
+            }
         }
         fclose($fh);
     }
@@ -1072,6 +1094,28 @@ class importController extends \mkwhelpers\Controller {
             }
             \mkw\Store::getEm()->flush();
             \mkw\Store::getEm()->clear();
+
+            if ($gyarto) {
+                rewind($fh);
+                fgetcsv($fh, 0, $sep, '"');
+                $idegenkodok = array();
+                while ($data = fgetcsv($fh, 0, $sep, '"')) {
+                    $idegenkodok[] = (string)$data[0];
+                }
+                $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
+                foreach ($termekek as $t) {
+                    if (!in_array($t['idegencikkszam'], $idegenkodok)) {
+                        /** @var \Entities\Termek $termek */
+                        $termek = $this->getRepo('Entities\Termek')->find($t['id']);
+                        if ($termek) {
+                            $termek->setFuggoben(true);
+                            $termek->setInaktiv(true);
+                            \mkw\Store::getEm()->persist($termek);
+                            \mkw\Store::getEm()->flush();
+                        }
+                    }
+                }
+            }
         }
         fclose($fh);
         \unlink('makszutov.txt');
