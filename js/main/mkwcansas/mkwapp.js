@@ -10,6 +10,7 @@ var mkwmsg = {
 	ChkKosarValtozott: 'A kosár tartalma időközben megváltozott, kérem ellenőrizze.',
 	ChkKosarUres: 'Az Ön kosara üres.',
     ChkHiba: 'Kérjük, adja meg a hiányzó adatokat. Ezeket pirossal megjelöltük.',
+    ChkSzallmodHiba: 'Kérjük adja meg a kívánt szállítási módot.',
     ChkSave: 'Megrendelésének mentése folyamatban. Kérem várjon.',
 	FiokAdataitModositjuk: 'Adatait módosítjuk...',
 	DialogFejlec: 'Értesítés',
@@ -783,10 +784,17 @@ var checkout = (function($, guid) {
 			});
 
             checkoutform.on('submit', function(e) {
-                var hibas = false, tofocus = false;
+                var hibas = false, tofocus = false, hibauzenet;
+
+                hibauzenet = mkwmsg.ChkHiba;
 
                 $('.chk-sendorderbtn').removeClass('cartbtn').addClass('okbtn').val('Feldolgozás alatt');
 
+                if (!$('input[name="szallitasimod"]:checked').val()) {
+                    tofocus = $('input[name="szallitasimod"]');
+                    hibas = true;
+                    hibauzenet = mkwmsg.ChkSzallmodHiba;
+                }
                 if (!vezeteknevinput.val()) {
                     vezeteknevinput.addClass('hibas');
                     if (!hibas) {
@@ -959,7 +967,7 @@ var checkout = (function($, guid) {
                             tofocus.focus();
                         }
                     });
-                    mkw.showDialog(mkwmsg.ChkHiba);
+                    mkw.showDialog(hibauzenet);
                     e.preventDefault();
                     return false;
                 }

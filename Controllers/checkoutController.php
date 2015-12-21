@@ -194,7 +194,50 @@ class checkoutController extends \mkwhelpers\MattableController {
 
                 if (!$ok) {
                     $errorlogtext[] = '1alapadat';
-                    $errors[] = 'Nem adott meg egy kötelező adatot.';
+                    if (!$vezeteknev) {
+                        $errors[] = 'Nem adta meg a vezetéknevét.';
+                    }
+                    if (!$keresztnev) {
+                        $errors[] = 'Nem adta meg a keresztnevét.';
+                    }
+                    if (!$telefon) {
+                        $errors[] = 'Nem adta meg a telefonszámát.';
+                    }
+                    if (!$szallirszam) {
+                        $errors[] = 'Nem adta meg a szállítási ir.számot.';
+                    }
+                    if (!$szallvaros) {
+                        $errors[] = 'Nem adta meg a szállítási várost.';
+                    }
+                    if (!$szallutca) {
+                        $errors[] = 'Nem adta meg a szállítási utcát.';
+                    }
+                    if (!$szallnev) {
+                        $errors[] = 'Nem adta meg a szállítási nevet.';
+                    }
+                    if (!$szamlaeqszall) {
+                        if (!$szamlanev) {
+                            $errors[] = 'Nem adta meg a számlázási nevet.';
+                        }
+                        if (!$szamlairszam) {
+                            $errors[] = 'Nem adta meg a számlázási ir.számot.';
+                        }
+                        if (!$szamlavaros) {
+                            $errors[] = 'Nem adta meg a számlázási várost.';
+                        }
+                        if (!$szamlautca) {
+                            $errors[] = 'Nem adta meg a számlázási utcát.';
+                        }
+                    }
+                    if (!$szallitasimod) {
+                        $errors[] = 'Nem adta meg a szállítási módot.';
+                    }
+                    if (!$fizetesimod) {
+                        $errors[] = 'Nem adta meg a fizetési módot.';
+                    }
+                    if (!$aszfready) {
+                        $errors[] = 'Nem fogadta el az ált.szerződési feltételeket.';
+                    }
                 }
                 switch ($regkell) {
                     case 1: // vendég

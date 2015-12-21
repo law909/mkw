@@ -10,6 +10,7 @@ var mkwmsg = {
 	ChkKosarValtozott: 'A kosár tartalma időközben megváltozott, kérem ellenőrizze.',
 	ChkKosarUres: 'Az Ön kosara üres.',
     ChkHiba: 'Kérjük, adja meg a hiányzó adatokat. Ezeket pirossal megjelöltük.',
+    ChkSzallmodHiba: 'Kérjük adja meg a kívánt szállítási módot.',
     ChkSave: 'Megrendelésének mentése folyamatban. Kérem várjon.',
 	FiokAdataitModositjuk: 'Adatait módosítjuk...',
 	DialogFejlec: 'Értesítés',
