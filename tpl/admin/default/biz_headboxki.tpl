@@ -6,7 +6,7 @@
             <p>{$egyed.tulajirszam} {$egyed.tulajvaros}</p>
             <p>{$egyed.tulajutca}</p>
             <p>Adószám: {$egyed.tulajadoszam}</p>
-            <p>Bankszámla: {$egyed.bankszamlanev}</p>
+            <p>Bankszámla: {$egyed.tulajbankszamlaszam}</p>
         </div>
     </div>
 </div>
