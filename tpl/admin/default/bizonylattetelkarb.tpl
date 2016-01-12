@@ -7,6 +7,16 @@
     <table>
         <tbody>
             <tr>
+                <td><label for="ElolegtipusSelect{$tetel.id}">{t('Előleg típus')}:</label></td>
+                <td>
+                    <select id="ElolegtipusSelect{$tetel.id}" name="tetelelolegtipus_{$tetel.id}">
+                        <option value="0"{if ($tetel.elolegtipus == '')} selected="selected"{/if}>{t('nincs')}</option>
+                        <option value="1"{if ($tetel.elolegtipus == 'eloleg')} selected="selected"{/if}>{t('előleg')}</option>
+                        <option value="2"{if ($tetel.elolegtipus == 'veg')} selected="selected"{/if}>{t('végszámla')}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <td class="mattable-important"><label for="TermekSelect{$tetel.id}">{t('Termék')}:</label></td>
                 <td colspan="5">
                     {if ($tetel.oper === 'add')}

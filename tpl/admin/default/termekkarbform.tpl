@@ -34,6 +34,8 @@
                    {if ($termek.inaktiv)}checked="checked"{/if}>{t('Inaktív')}
             <input id="MozgatCheck" name="mozgat" type="checkbox"
                    {if ($termek.mozgat)}checked="checked"{/if}>{t('Készletet mozgat')}
+            <input id="KozvetitettCheck" name="kozvetitett" type="checkbox"
+                   {if ($termek.kozvetitett)}checked="checked"{/if}>{t('Közvetített szolgáltatás')}
             <table>
                 <tbody>
                 <tr>

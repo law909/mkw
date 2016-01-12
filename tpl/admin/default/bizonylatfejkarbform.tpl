@@ -290,6 +290,9 @@
     {if ($egyed.parentid|default)}
     <input name="parentid" type="hidden" value="{$egyed.parentid}">
     {/if}
+    {if ($egyed.stornotip|default)}
+    <input name="stornotip" type="hidden" value="{$egyed.stornotip}">
+    {/if}
 	<div class="mattkarb-footer">
         {if ($egyed.nemrossz)}
 		<input id="mattkarb-okbutton" type="submit" value="{t('OK')}">

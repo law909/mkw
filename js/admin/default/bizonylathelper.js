@@ -841,7 +841,7 @@ var bizonylathelper = function($) {
                 tablebody: {
                     url: '/admin/' + bizonylattipus + 'fej/getlistbody',
                     onStyle: function() {
-                        $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat, .js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno, .js-backorder, .js-mese').button();
+                        $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, .js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno, .js-backorder, .js-mese').button();
                     },
                     onDoEditLink: function() {
                         $('.js-inheritbizonylat').each(function() {
@@ -852,9 +852,13 @@ var bizonylathelper = function($) {
                             var $this = $(this);
                             $this.attr('href', '/admin/' + bizonylattipus + 'fej/print?id=' + $this.data('egyedid'));
                         });
-                        $('.js-stornobizonylat').each(function() {
+                        $('.js-stornobizonylat1').each(function() {
                             var $this = $(this);
-                            $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + $this.data('egyedid') + '&source=' + bizonylattipus + '&oper=' + $this.data('oper'));
+                            $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + $this.data('egyedid') + '&source=' + bizonylattipus + '&oper=' + $this.data('oper') + '&stornotip=1');
+                        });
+                        $('.js-stornobizonylat2').each(function() {
+                            var $this = $(this);
+                            $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + $this.data('egyedid') + '&source=' + bizonylattipus + '&oper=' + $this.data('oper') + '&stornotip=2');
                         });
                         $('.js-printelolegbekero').each(function() {
                             var $this = $(this);

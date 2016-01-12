@@ -277,6 +277,9 @@ class Termek {
     /** @Gedmo\Locale */
     protected $locale;
 
+    /** @ORM\Column(type="boolean") */
+    private $kozvetitett = 0;
+
     /**
      * @ORM\PrePersist
      */
@@ -1794,4 +1797,11 @@ class Termek {
         $this->termekcsoport = $termekcsoport;
     }
 
+    public function getKozvetitett() {
+        return $this->kozvetitett;
+    }
+
+    public function setKozvetitett($kozvetitett) {
+        $this->kozvetitett = $kozvetitett;
+    }
 }

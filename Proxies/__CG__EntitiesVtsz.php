@@ -64,10 +64,10 @@ class Vtsz extends \Entities\Vtsz implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'id', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'szam', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'nev', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'afa', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'kozvetitett', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'bizonylattetelek');
+            return array('__isInitialized__', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'id', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'szam', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'nev', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'afa', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'bizonylattetelek');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'id', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'szam', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'nev', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'afa', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'kozvetitett', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'bizonylattetelek');
+        return array('__isInitialized__', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'id', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'szam', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'nev', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'afa', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'bizonylattetelek');
     }
 
     /**
@@ -263,28 +263,6 @@ class Vtsz extends \Entities\Vtsz implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', array($afa));
 
         return parent::setAfa($afa);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getKozvetitett()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKozvetitett', array());
-
-        return parent::getKozvetitett();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setKozvetitett($kozvetitett)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKozvetitett', array($kozvetitett));
-
-        return parent::setKozvetitett($kozvetitett);
     }
 
 }

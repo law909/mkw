@@ -59,6 +59,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['kiemelt'] = $t->getKiemelt();
 		$x['inaktiv'] = $t->getInaktiv();
 		$x['mozgat'] = $t->getMozgat();
+        $x['kozvetitett'] = $t->getKozvetitett();
 		$x['hparany'] = $t->getHparany();
 		$x['cimkek'] = $t->getCimkeNevek();
         if (!\mkw\Store::isArsavok()) {
@@ -245,6 +246,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$obj->setNemkaphato($this->params->getBoolRequestParam('nemkaphato'));
         $obj->setFuggoben($this->params->getBoolRequestParam('fuggoben'));
         $obj->setSzallitasiido($this->params->getIntRequestParam('szallitasiido'));
+        $obj->setKozvetitett($this->params->getBoolRequestParam('kozvetitett'));
 		$farepo = store::getEm()->getRepository('Entities\TermekFa');
 		$fa = $farepo->find($this->params->getIntRequestParam('termekfa1'));
 		if ($fa) {

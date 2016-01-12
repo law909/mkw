@@ -430,6 +430,10 @@ class Bizonylatfej {
      * @ORM\Column(type="integer",nullable=true)
      */
     private $regmode;
+    /**
+     * @ORM\Column(type="integer",nullable=true)
+     */
+    private $stornotipus;
 
     public function __toString() {
         return (string)$this->id;
@@ -676,6 +680,7 @@ class Bizonylatfej {
         $ret['uzletkotonev'] = $this->getUzletkotonev();
         $ret['uzletkotoemail'] = $this->getUzletkotoemail();
         $ret['uzletkotojutalek'] = $this->getUzletkotojutalek();
+        $ret['stornotipus'] = $this->getStornotipus();
         $ret['foxpost'] = false;
         if ($this->foxpostterminal) {
             $ret['foxpost'] = true;
@@ -2415,6 +2420,20 @@ class Bizonylatfej {
      */
     public function setRegmode($regmode) {
         $this->regmode = $regmode;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStornotipus() {
+        return $this->stornotipus;
+    }
+
+    /**
+     * @param mixed $stornotipus
+     */
+    public function setStornotipus($stornotipus) {
+        $this->stornotipus = $stornotipus;
     }
 
 }

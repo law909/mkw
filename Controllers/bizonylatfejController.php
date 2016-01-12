@@ -490,8 +490,20 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 break;
             case $this->stornoOperation:
                 $obj->setSysmegjegyzes($this->params->getStringRequestParam('parentid') . ' stornó bizonylata.');
-                $obj->setBizonylatnev('Storno számla');
                 $obj->setStorno(true);
+                $obj->setStornotipus($this->params->getIntRequestParam('stornotip'));
+                switch ($obj->getStornotipus()) {
+                    case 0:
+                        $obj->setBizonylatnev('Storno számla');
+                        break;
+                    case 1:
+                        $obj->setBizonylatnev('Számlával egy tekintet alá eső okirat');
+                        break;
+                    case 2:
+                        $obj->setBizonylatnev('Érvénytelenítő számla');
+                        break;
+                }
+
                 $parentbiz = $this->getRepo()->find($this->params->getStringRequestParam('parentid'));
                 if ($parentbiz) {
                     $obj->setParbizonylatfej($parentbiz);
@@ -524,6 +536,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                             }
                             $tetel->setMozgat();
                             $tetel->setFoglal();
+                            $tetel->setElolegtipus($this->params->getIntRequestParam('tetelelolegtipus_' . $tetelid));
 
                             if (!$quick) {
                                 $tetel->setCikkszam($this->params->getStringRequestParam('tetelcikkszam_' . $tetelid));
@@ -608,6 +621,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                 }
                                 $tetel->setMozgat();
                                 $tetel->setFoglal();
+                                $tetel->setElolegtipus($this->params->getIntRequestParam('tetelelolegtipus_' . $tetelid));
 
                                 if (!$quick) {
                                     $tetel->setKedvezmeny($this->params->getFloatRequestParam('tetelkedvezmeny_' . $tetelid));
@@ -819,7 +833,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $this->getkarb($this->getKarbTplName());
     }
 
-    public function getkarb($tplname = null, $id = null, $oper = null, $quick = null) {
+    public function getkarb($tplname = null, $id = null, $oper = null, $quick = null, $stornotip = null) {
         if (!$tplname) {
             $tplname = $this->getKarbFormTplName();
         }
@@ -831,6 +845,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
         if (!$quick) {
             $quick = $this->params->getBoolRequestParam('quick');
+        }
+        if (!$stornotip) {
+            $stornotip = $this->params->getIntRequestParam('stornotip');
         }
         $view = $this->createView($tplname);
 
@@ -912,7 +929,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('bizonylatnyelvlist', store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
 
         if (method_exists($this, 'onGetKarb')) {
-            $egyed = $this->onGetKarb($view, $record, $egyed, $oper, $id);
+            $egyed = $this->onGetKarb($view, $record, $egyed, $oper, $id, $stornotip);
         }
 
         $view->setVar('egyed', $egyed);

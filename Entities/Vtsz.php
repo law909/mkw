@@ -28,8 +28,6 @@ class Vtsz {
 	 * @ORM\JoinColumn(name="afa_id", referencedColumnName="id",nullable=true,onDelete="restrict")
 	 */
 	private $afa;
-	/** @ORM\Column(type="boolean") */
-	private $kozvetitett=0;
 	/** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="vtsz",cascade={"persist"}) */
 	private $bizonylattetelek;
 
@@ -66,15 +64,5 @@ class Vtsz {
 
 	public function setAfa($afa) {
 		$this->afa = $afa;
-	}
-
-	public function getKozvetitett() {
-	    return $this->kozvetitett;
-	}
-
-	public function setKozvetitett($kozvetitett) {
-		if (is_bool($kozvetitett)) {
-			$this->kozvetitett = $kozvetitett;
-		}
 	}
 }

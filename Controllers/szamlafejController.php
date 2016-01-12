@@ -13,7 +13,7 @@ class SzamlafejController extends bizonylatfejController {
         parent::__construct($params);
     }
 
-    public function onGetKarb($view, $record, $egyed, $oper, $id) {
+    public function onGetKarb($view, $record, $egyed, $oper, $id, $stornotip) {
         $source = $this->params->getStringRequestParam('source', '');
         switch ($oper) {
             case 'inherit':
@@ -58,6 +58,7 @@ class SzamlafejController extends bizonylatfejController {
             case 'storno':
                 $egyed['id'] = store::createUID();
                 $egyed['parentid'] = $id;
+                $egyed['stornotip'] = $stornotip;
                 $kelt = date(\mkw\Store::$DateFormat);
                 $egyed['keltstr'] = $kelt;
 //                $egyed['teljesitesstr'] = $kelt;

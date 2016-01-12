@@ -16,8 +16,7 @@ class vtszController extends \mkwhelpers\JQGridController {
         return array(
             $sor->getSzam(),
             $sor->getNev(),
-            (isset($afa) ? $afa->getNev() : ''),
-            $sor->getKozvetitett());
+            (isset($afa) ? $afa->getNev() : ''));
     }
 
     protected function setFields($obj) {
@@ -25,7 +24,6 @@ class vtszController extends \mkwhelpers\JQGridController {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $afa = store::getEm()->getReference('Entities\Afa', $this->params->getIntRequestParam('afa', $obj->getAfa()));
         $obj->setAfa($afa);
-        $obj->setKozvetitett($this->params->getBoolRequestParam('kozvetitett'));
         return $obj;
     }
 

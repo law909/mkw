@@ -45,6 +45,9 @@ class Bizonylattetel {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $foglal;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $kozvetitett;
+
     /** @ORM\Column(type="integer") */
     private $irany;
 
@@ -259,9 +262,14 @@ class Bizonylattetel {
     protected $locale;
 
     /**
-     * @ORM\Column(type="boolean", nullable=false)
+     * @ORM\Column(type="boolean",nullable=false)
      */
     protected $mese = false;
+
+    /**
+     * @ORM\Column(type="string",length=6,nullable=true)
+     */
+    protected $elolegtipus;
 
     public function __construct() {
         $this->szulobizonylattetelek = new ArrayCollection();
@@ -564,6 +572,7 @@ class Bizonylattetel {
                     $this->setOsszehajthato($val->getOsszehajthato());
                     $this->setSuly($val->getSuly());
                     $this->setSzelesseg($val->getSzelesseg());
+                    $this->setKozvetitett($val->getKozvetitett());
                     $csoport = $val->getTermekcsoport();
                     if ($csoport) {
                         $this->setTermekcsoport($csoport);
@@ -607,6 +616,7 @@ class Bizonylattetel {
                 $this->osszehajthato = false;
                 $this->suly = 0;
                 $this->szelesseg = 0;
+                $this->setKozvetitett(false);
                 $this->setMozgat();
                 $this->setFoglal();
             }
@@ -1300,6 +1310,41 @@ class Bizonylattetel {
      */
     public function setMese($mese) {
         $this->mese = $mese;
+    }
+
+    public function getKozvetitett() {
+        return $this->kozvetitett;
+    }
+
+    public function setKozvetitett($kozvetitett) {
+        $this->kozvetitett = $kozvetitett;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getElolegtipus() {
+        return $this->elolegtipus;
+    }
+
+    /**
+     * @param mixed $elolegtipus
+     */
+    public function setElolegtipus($elolegtipus) {
+        switch($elolegtipus) {
+            case '':
+            case 0:
+                $this->elolegtipus = '';
+                break;
+            case 'eloleg':
+            case 1:
+                $this->elolegtipus = 'eloleg';
+                break;
+            case 'veg':
+            case 2:
+                $this->elolegtipus = 'veg';
+                break;
+        }
     }
 
 }

@@ -69,6 +69,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$x['hataridostr'] = $t->getHataridoStr();
         $x['mainurl'] = store::getConfigValue('mainurl');
         $x['afanev'] = $t->getAfanev();
+        $x['elolegtipus'] = $t->getElolegtipus();
 		$term = $t->getTermek();
 		if ($term) {
             $eb = $term->getBruttoAr($t->getTermekvaltozat(), $t->getBizonylatfej()->getPartner());
