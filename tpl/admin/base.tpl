@@ -115,7 +115,9 @@
                     <div><a class="menupont" href="/admin/bizonylatstatusz/viewlist">{t('Bizonylat státuszok')}</a></div>
                     <div><a class="menupont" href="/admin/dolgozo/viewlist">{t('Felhasználók')}</a></div>
                     <div><a class="menupont" href="/admin/egyebtorzs/view">{t('Egyéb adatok')}</a></div>
+                    {if (!$setup.kisszamlazo)}
                     <div><a class="menupont" href="/admin/export/view">{t('Termék exportok')}</a></div>
+                    {/if}
                     <div><a class="menupont" href="/admin/import/view">{t('Importok')}</a></div>
                     <div><a class="menupont js-regeneratekarkod" href="#">{t('Termék kat. rendezése')}</a></div>
                 </div>
