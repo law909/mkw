@@ -77,6 +77,7 @@
                 </div>
                 <div class="menu-titlebar" data-caption="{t('Kimutatások')}" data-refcontrol="#ReportTab"></div>
                 <div id="ReportTab">
+                    <div><a class="menupont" href="/admin/navadatexport/view">{t('NAV adatexport')}</a></div>
                     {if ($setup.bankpenztar)}
                         <div><a class="menupont" href="/admin/jutaleklista/view">{t('Jutalék elszámolás')}</a></div>
                         <div><a class="menupont" href="/admin/penzbelista/view">{t('Beérkezett pénz')}</a></div>
