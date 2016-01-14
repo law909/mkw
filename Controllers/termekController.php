@@ -725,6 +725,27 @@ class termekController extends \mkwhelpers\MattableController {
                         );
                     }
                     break;
+                default:
+                    foreach ($res as $r) {
+                        $ret[] = array(
+                            'value' => $r->getNev(),
+                            'id' => $r->getId(),
+                            'me' => $r->getMe(),
+                            'cikkszam' => $r->getCikkszam(),
+                            'vtsz' => $r->getVtszId(),
+                            'afa' => $r->getAfaId(),
+                            'afakulcs' => $r->getAfa()->getErtek(),
+                            'kozepeskepurl' => $r->getKepUrlMedium(),
+                            'kiskepurl' => $r->getKepUrlSmall(),
+                            'kepurl' => $r->getKepUrlLarge(),
+                            'slug' => $r->getSlug(),
+                            'link' => \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
+                            'mainurl' => store::getConfigValue('mainurl'),
+                            'nemlathato' => (!$r->getLathato() || $r->getInaktiv() || $r->getNemkaphato()),
+                            'defaultmennyiseg' => \mkw\Store::getParameter(\mkw\consts::BizonylatMennyiseg, 0)
+                        );
+                    }
+                    break;
             }
 		}
 		echo json_encode($ret);
