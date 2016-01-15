@@ -206,6 +206,10 @@ class Store {
         return 'false';
     }
 
+    public static function toXMLNum($n) {
+        return number_format($n, 2, '.', '');
+    }
+
     public static function createUID($prefix = '') {
         return uniqid($prefix);//str_replace('.', '', microtime(true));
     }

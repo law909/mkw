@@ -58,7 +58,7 @@ class navadatexportController extends \mkwhelpers\MattableController {
 
         $filter = $this->createFilter();
 
-        /** @var \Entities\BankbizonylattetelRepository $btrepo */
+        /** @var \Entities\BizonylatfejRepository $bfrepo */
         $bfrepo = $this->getRepo('Entities\Bizonylatfej');
 
         $fej = $bfrepo->getAll($filter, array('id' => 'ASC'));
@@ -127,13 +127,77 @@ class navadatexportController extends \mkwhelpers\MattableController {
             if ($f->getPartnereuadoszam()) {
                 echo '<kozadoszam>' . substr($f->getPartnereuadoszam(), 0, 20) . '</kozadoszam>';
             }
-            echo '<nev>' . $f->getPartnernev() . '</nev>' .
-                '<cim><iranyitoszam>' . substr($f->getPartnerirszam(), 0, 10) . '</iranyitoszam>' .
+            if ($f->getPartnernev()) {
+                echo '<nev>' . substr($f->getPartnernev(), 0, 100) . '</nev>';
+            }
+            else {
+                echo '<nev>' . substr($f->getPartnervezeteknev() . ' ' . $f->getPartnerkeresztnev(), 0, 100) . '</nev>';
+            }
+            echo '<cim><iranyitoszam>' . substr($f->getPartnerirszam(), 0, 10) . '</iranyitoszam>' .
                 '<telepules>' . substr($f->getPartnervaros(), 0, 100) . '</telepules>' .
                 '<kozterulet_neve>' . substr($f->getPartnerutca(), 0, 100) . '</kozterulet_neve>' .
             '</cim>';
             echo '</vevo>';
+
+            $bts = $f->getBizonylattetelek();
+            /** @var \Entities\Bizonylattetel $bt */
+            foreach($bts as $bt) {
+                echo '<termek_szolgaltatas_tetelek><termeknev>' . substr($bt->getTermeknev(), 0, 100) . '</termeknev>';
+                switch ($bt->getElolegtipus()) {
+                    case 'eloleg':
+                        echo '<eloleg>1</eloleg>';
+                        break;
+                    case 'veg':
+                        echo '<eloleg>2</eloleg>';
+                        break;
+                }
+                if ($bt->getVtszszam()) {
+                    echo '<besorszam>' . substr($bt->getVtszszam(), 0, 100) . '</besorszam>';
+                }
+                echo '<menny>' . \mkw\Store::toXMLNum($bt->getMennyiseg()) . '</menny>';
+                if ($bt->getME()) {
+                    echo '<mertekegys>' . substr($bt->getME(), 0, 100) . '</mertekegys>';
+                }
+                else {
+                    echo '<mertekegys>ismeretlen</mertekegys>';
+                }
+                echo '<kozv_szolgaltatas>' . \mkw\Store::toBoolStr($bt->getKozvetitett()) . '</kozv_szolgaltatas>' .
+                    '<nettoar>' . \mkw\Store::toXMLNum($bt->getNetto()) . '</nettoar>' .
+                    '<nettoegysar>' . \mkw\Store::toXMLNum($bt->getNettoegysar()) . '</nettoegysar>' .
+                    '<adokulcs>' . $bt->getAfakulcs() . '</adokulcs>' .
+                    '<adoertek>' . \mkw\Store::toXMLNum($bt->getAfaertek()) . '</adoertek>' .
+                    '<bruttoar>' . \mkw\Store::toXMLNum($bt->getBrutto()) . '</bruttoar>';
+                echo '</termek_szolgaltatas_tetelek>';
+            }
+
+            if ($f->getValutanemnev()) {
+                echo '<nem_kotelezo><penznem>' . substr($f->getValutanemnev(), 0, 100) . '</penznem></nem_kotelezo>';
+            }
+
+            echo '<osszesites>';
+            $ao = $bfrepo->getAFAOsszesito($f);
+            foreach ($ao as $a) {
+                echo '<afarovat>' .
+                    '<nettoar>' . \mkw\Store::toXMLNum($a['netto']) . '</nettoar>' .
+                    '<adokulcs>' . $a['afakulcs'] . '</adokulcs>' .
+                    '<adoertek>' . \mkw\Store::toXMLNum($a['afa']) . '</adoertek>' .
+                    '<bruttoar>' . \mkw\Store::toXMLNum($a['brutto']) . '</bruttoar>' .
+                    '</afarovat>';
+            }
+
+            echo '<vegosszeg>' .
+                '<nettoarossz>' . \mkw\Store::toXMLNum($f->getNetto()) . '</nettoarossz>' .
+                '<afaertekossz>' . \mkw\Store::toXMLNum($f->getAfa()) . '</afaertekossz>' .
+                '<bruttoarossz>' . \mkw\Store::toXMLNum($f->getBrutto()) . '</bruttoarossz>' .
+                '</vegosszeg>';
+            echo '</osszesites>';
+            echo "</szamla>\n";
+
+            $f->setFix(true);
+            $this->getEm()->persist($f);
+            $this->getEm()->flush();
         }
+        echo '</szamlak>';
 
     }
 
