@@ -663,14 +663,16 @@ class termekController extends \mkwhelpers\MattableController {
 		$termek = $this->getRepo()->findWithJoins($termekid);
 		if ($termek) {
 			$valtozatok = $termek->getValtozatok();
-			foreach ($valtozatok as $valt) {
-				$ret[] = array(
-					'id' => $valt->getId(),
-					'caption' => $valt->getNev(),
-					'selected' => $sel == $valt->getId(),
-                    'elerheto' => $valt->getElerheto()
-				);
-			}
+            if ($valtozatok) {
+                foreach ($valtozatok as $valt) {
+                    $ret[] = array(
+                        'id' => $valt->getId(),
+                        'caption' => $valt->getNev(),
+                        'selected' => $sel == $valt->getId(),
+                        'elerheto' => $valt->getElerheto()
+                    );
+                }
+            }
 		}
 		return $ret;
 	}
