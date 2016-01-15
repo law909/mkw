@@ -57,8 +57,8 @@
                 </tr>
                 <tr>
                     <td><label for="EmailEdit">{t('Email')}:</label></td>
-                    <td><input id="EmailEdit" name="email" type="email" size="40" maxlength="100"
-                               value="{$uzletkoto.email}"></td>
+                    <td><input id="EmailEdit" name="email" type="text" size="40" maxlength="100"
+                               value="{$uzletkoto.email}" title={t("Több címet is megadhat vesszővel elválasztva.")}></td>
                 </tr>
                 <tr>
                     <td><label for="HonlapEdit">{t('Honlap')}:</label></td>

@@ -613,7 +613,8 @@ class Bizonylatfej {
                 $mailer = \mkw\Store::getMailer();
                 if ($topartner) {
                     $mailer->addTo($bf->getPartneremail());
-                    $mailer->addTo($bf->getUzletkotoemail());
+                    $m = explode(',', $bf->getUzletkotoemail());
+                    $mailer->addTo($m);
                 }
                 $mailer->setSubject($subject->getTemplateResult());
                 $mailer->setMessage($body->getTemplateResult());
