@@ -187,6 +187,25 @@ class Store {
         return str_replace('.', '-', $DateString);
     }
 
+    public static function toDate($adat) {
+        return new \DateTime(store::convDate($adat));
+    }
+
+    public static function DateToExcel($datum) {
+        $dat = $datum;
+        if (is_string($datum)) {
+            $dat = self::toDate($datum);
+        }
+        return $dat->format('Y-m-d');
+    }
+
+    public static function toBoolStr($i) {
+        if ($i) {
+            return 'true';
+        }
+        return 'false';
+    }
+
     public static function createUID($prefix = '') {
         return uniqid($prefix);//str_replace('.', '', microtime(true));
     }

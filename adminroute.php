@@ -87,7 +87,7 @@ $router->map('POST', '/admin/setup/save', 'setupController#save', 'adminsetupsav
 
 $router->map('GET', '/admin/navadatexport/view', 'navadatexportController#view', 'adminnavadatexportview');
 $router->map('GET', '/admin/navadatexport/get', 'navadatexportController#createLista', 'adminnavadatexportget');
-$router->map('GET', '/admin/navadatexport/export', 'navadatexportController#exportLista', 'adminnavadatexportexport');
+$router->map('GET', '/admin/navadatexport/check', 'navadatexportController#check', 'adminnavadatexportcheck');
 
 $router->map('GET', '/admin/bizonylattetel/getar', 'bizonylattetelController#getar', 'adminbizonylattetelgetar');
 $router->map('GET', '/admin/bizonylattetel/calcar', 'bizonylattetelController#calcarforclient', 'adminbizonylattetelcalcar');

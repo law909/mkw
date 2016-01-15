@@ -51,6 +51,13 @@ function callTheController($target, $params) {
 	return false;
 }
 
+function exc_handler($e) {
+    if (is_a($e, '\Doctrine\ORM\Query\QueryException')) {
+        error_log($e->getMessage());
+    }
+}
+//set_exception_handler('exc_handler');
+
 if ($ini['developer']) {
     if (in_array(\mkw\Store::getExtension($_SERVER['REQUEST_URI']), array('jpg', 'gif', 'png', 'jpeg')))  {
         die();
@@ -152,7 +159,13 @@ if ($match) {
     }
 }
 
-if (!callTheController($match['target'], $match)) {
-    header('HTTP/1.1 404 Not found');
-	callTheController('mainController#show404', array());
+try {
+    if (!callTheController($match['target'], $match)) {
+        header('HTTP/1.1 404 Not found');
+        callTheController('mainController#show404', array());
+    }
+}
+catch (\Doctrine\ORM\Query\QueryException $e) {
+    error_log($e->getMessage());
+    throw $e;
 }

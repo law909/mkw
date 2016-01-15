@@ -414,4 +414,22 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         }
         return $ret;
     }
+
+    public function getSzamlaKelt($bizszam) {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('bizonylattipus', '=', 'szamla');
+        $filter->addFilter('id', '=', $bizszam);
+
+        $q = $this->_em->createQuery('SELECT YEAR(_xx.kelt) AS ev'
+            . ' FROM Entities\Bizonylatfej _xx'
+            . $this->getFilterString($filter));
+
+        $q->setParameters($this->getQueryParameters($filter));
+
+        $res = $q->getScalarResult();
+        if (count($res)) {
+            return $res[0];
+        }
+        return false;
+    }
 }

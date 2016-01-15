@@ -320,6 +320,18 @@
 		<tr><td><label for="TulajeorinrEdit">{t('EORI NR')}:</label></td>
 			<td><input id="TulajeorinrEdit" name="tulajeorinr" type="text" value="{$tulajeorinr}"></td>
 		</tr>
+        <tr>
+            <td><label for="TulajkisadozoEdit">{t('Kisadózó')}:</label></td>
+            <td><input id="TulajkisadozoEdit" name="tulajkisadozo" type="checkbox"{if ($tulajkisadozo)} checked="checked"{/if}></td>
+            <td><label for="TulajegyenivallalkozoEdit">{t('Egyéni vállalkozó')}:</label></td>
+            <td><input id="TulajegyenivallalkozoEdit" name="tulajegyenivallalkozo" type="checkbox"{if ($tulajegyenivallalkozo)} checked="checked"{/if}></td>
+        </tr>
+        <tr>
+            <td><label for="TulajevnevEdit">{t('Egyéni váll.neve')}:</label></td>
+            <td><input id="TulajevnevEdit" type="text" name="tulajevnev" value="{$tulajevnev}"></td>
+            <td><label for="TulajevnyilvszamEdit">{t('Egyéni váll.nyilv.száma')}:</label></td>
+            <td><input id="TulajevnyilvszamEdit" type="text" name="tulajevnyilvszam" value="{$tulajevnyilvszam}"></td>
+        </tr>
 		<tr><td><label for="TulajcrcEdit">{t('CRC')}:</label></td>
 			<td><input id="TulajcrcEdit" name="tulajcrc" type="password" value=""></td>
 		</tr>

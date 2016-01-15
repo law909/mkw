@@ -39,6 +39,10 @@ class adminController extends mkwhelpers\Controller {
             case 'mkwcansas':
                 $view->setVar('tjlista', $lista->teljesitmenyJelentes());
                 break;
+            case 'kisszamlazo':
+                break;
+            default:
+                break;
         }
         $view->printTemplateResult();
     }

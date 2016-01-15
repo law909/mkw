@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use mkw\consts;
 use mkw\store;
 
 class setupController extends \mkwhelpers\Controller {
@@ -31,6 +32,15 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::Tulajeuadoszam, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::Tulajeorinr);
         $view->setVar(\mkw\consts::Tulajeorinr, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Tulajkisadozo);
+        $view->setVar(\mkw\consts::Tulajkisadozo, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Tulajegyenivallalkozo);
+        $view->setVar(\mkw\consts::Tulajegyenivallalkozo, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Tulajevnyilvszam);
+        $view->setVar(\mkw\consts::Tulajevnyilvszam, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Tulajevnev);
+        $view->setVar(\mkw\consts::Tulajevnev, ($p ? $p->getErtek() : ''));
+
 //        $p = $repo->find(\mkw\consts::Tulajcrc);
 //        $view->setVar(\mkw\consts::Tulajcrc, ($p ? $p->getErtek() : ''));
 
@@ -331,6 +341,11 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Tulajadoszam, $this->params->getStringRequestParam('tulajadoszam'));
         $this->setObj(\mkw\consts::Tulajeuadoszam, $this->params->getStringRequestParam('tulajeuadoszam'));
         $this->setObj(\mkw\consts::Tulajeorinr, $this->params->getStringRequestParam('tulajeorinr'));
+        $this->setObj(\mkw\consts::Tulajkisadozo, $this->params->getBoolRequestParam(\mkw\consts::Tulajkisadozo));
+        $this->setObj(\mkw\consts::Tulajegyenivallalkozo, $this->params->getBoolRequestParam(\mkw\consts::Tulajegyenivallalkozo));
+        $this->setObj(\mkw\consts::Tulajevnev, $this->params->getStringRequestParam(\mkw\consts::Tulajevnev));
+        $this->setObj(\mkw\consts::Tulajevnyilvszam, $this->params->getStringRequestParam(\mkw\consts::Tulajevnyilvszam));
+
         if ($this->params->getStringRequestParam('tulajcrc')) {
             $this->setObj(\mkw\consts::Tulajcrc, md5($this->params->getStringRequestParam('tulajcrc') . \mkw\Store::getAdminSalt()));
         }

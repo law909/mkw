@@ -3,6 +3,7 @@ namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use mkw\consts;
 use mkw\store;
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylatfejRepository")
@@ -426,14 +427,23 @@ class Bizonylatfej {
     /** @ORM\OneToMany(targetEntity="Folyoszamla", mappedBy="bizonylatfej",cascade={"persist"}) */
     private $folyoszamlak;
 
-    /**
-     * @ORM\Column(type="integer",nullable=true)
-     */
+    /** @ORM\Column(type="integer",nullable=true) */
     private $regmode;
-    /**
-     * @ORM\Column(type="integer",nullable=true)
-     */
+
+    /** @ORM\Column(type="integer",nullable=true) */
     private $stornotipus;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $tulajkisadozo = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $tulajegyenivallalkozo = false;
+
+    /** @ORM\Column(type="string",length=100,nullable=true) */
+    private $tulajevnev;
+
+    /** @ORM\Column(type="string",length=100,nullable=true) */
+    private $tulajevnyilvszam;
 
     public function __toString() {
         return (string)$this->id;
@@ -709,6 +719,10 @@ class Bizonylatfej {
         $this->setTulajadoszam(store::getParameter(\mkw\consts::Tulajadoszam));
         $this->setTulajeuadoszam(store::getParameter(\mkw\consts::Tulajeuadoszam));
         $this->setTulajeorinr(store::getParameter(\mkw\consts::Tulajeorinr));
+        $this->setTulajkisadozo(store::getParameter(consts::Tulajkisadozo, false));
+        $this->setTulajegyenivallalkozo(store::getParameter(consts::Tulajegyenivallalkozo, false));
+        $this->setTulajevnev(store::getParameter(consts::Tulajevnev));
+        $this->setTulajevnyilvszam(store::getParameter(consts::Tulajevnyilvszam));
     }
 
     public function calcEsedekesseg() {
@@ -2434,6 +2448,62 @@ class Bizonylatfej {
      */
     public function setStornotipus($stornotipus) {
         $this->stornotipus = $stornotipus;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTulajegyenivallalkozo() {
+        return $this->tulajegyenivallalkozo;
+    }
+
+    /**
+     * @param mixed $tulajegyenivallalkozo
+     */
+    public function setTulajegyenivallalkozo($tulajegyenivallalkozo) {
+        $this->tulajegyenivallalkozo = $tulajegyenivallalkozo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTulajevnev() {
+        return $this->tulajevnev;
+    }
+
+    /**
+     * @param mixed $tulajevnev
+     */
+    public function setTulajevnev($tulajevnev) {
+        $this->tulajevnev = $tulajevnev;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTulajevnyilvszam() {
+        return $this->tulajevnyilvszam;
+    }
+
+    /**
+     * @param mixed $tulajevnyilvszam
+     */
+    public function setTulajevnyilvszam($tulajevnyilvszam) {
+        $this->tulajevnyilvszam = $tulajevnyilvszam;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTulajkisadozo() {
+        return $this->tulajkisadozo;
+    }
+
+    /**
+     * @param mixed $tulajkisadozo
+     */
+    public function setTulajkisadozo($tulajkisadozo) {
+        $this->tulajkisadozo = $tulajkisadozo;
     }
 
 }

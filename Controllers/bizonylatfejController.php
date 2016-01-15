@@ -73,6 +73,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
                 $view->setVar('bizonylatrontottfilter', 1);
                 break;
+            case 'kisszamlazo':
+                $a = false;
+                break;
         }
         if ($a) {
             $view->setVar('datumtolfilter', $a);

@@ -33,6 +33,10 @@ class consts {
     const Tulajadoszam = 'tulajadoszam';
     const Tulajeuadoszam = 'tulajeuadoszam';
     const Tulajeorinr = 'tulajeorinr';
+    const Tulajkisadozo = 'tulajkisadozo';
+    const Tulajegyenivallalkozo = 'tulajegyenivallalkozo';
+    const Tulajevnev = 'tulajevnev';
+    const Tulajevnyilvszam = 'tulajevnyilvszam';
 
     const EmailFrom = 'emailfrom';
     const EmailReplyTo = 'emailreplyto';

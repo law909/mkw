@@ -3,10 +3,15 @@
 namespace Controllers;
 
 
+use mkw\consts;
+use mkw\Store;
+
 class navadatexportController extends \mkwhelpers\MattableController {
 
     private $tolstr;
     private $igstr;
+    private $szlaszamtol;
+    private $szlaszamig;
 
     public function view() {
         $view = $this->createView('navadatexport.tpl');
@@ -24,29 +29,172 @@ class navadatexportController extends \mkwhelpers\MattableController {
         $this->igstr = $this->params->getStringRequestParam('ig');
         $this->igstr = date(\mkw\Store::$DateFormat, strtotime(\mkw\Store::convDate($this->igstr)));
 
-        $datummezo = 'datum';
+        $this->szlaszamtol = $this->params->getStringRequestParam('szlasztol');
+        $this->szlaszamig = $this->params->getStringRequestParam('szlaszig');
+
+        $datummezo = 'kelt';
 
         $filter = new \mkwhelpers\FilterDescriptor();
-        $filter
-            ->addFilter($datummezo, '>=', $this->tolstr)
-            ->addFilter($datummezo, '<=', $this->igstr)
-            ->addFilter('irany', '=', 1);
+        if ($this->szlaszamtol && $this->szlaszamig) {
+            $filter
+                ->addFilter('id', '>=', $this->szlaszamtol)
+                ->addFilter('id', '<=', $this->szlaszamig);
+        }
+        else {
+            $filter
+                ->addFilter($datummezo, '>=', $this->tolstr)
+                ->addFilter($datummezo, '<=', $this->igstr);
+        }
+        $filter->addFilter('bizonylattipus', '=', 'szamla');
 
         return $filter;
     }
 
     public function createLista() {
+        header("Content-type: text/xml");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        header("Content-Disposition: attachment; filename=navexport.xml");
+
         $filter = $this->createFilter();
 
         /** @var \Entities\BankbizonylattetelRepository $btrepo */
-        $btrepo = $this->getRepo('Entities\Bankbizonylattetel');
+        $bfrepo = $this->getRepo('Entities\Bizonylatfej');
 
-        $mind = $btrepo->getAllHivatkozottJoin($filter,
-            array('datum' => 'ASC'));
+        $fej = $bfrepo->getAll($filter, array('id' => 'ASC'));
 
-        /**
- *
- */
+        echo '<?xml version="1.0" encoding="UTF-8"?>' .
+        '<szamlak xmlns="http://schemas.nav.gov.hu/2013/szamla">' .
+        '<export_datuma>' . \mkw\Store::DateToExcel(date(\mkw\Store::$DateFormat)) . '</export_datuma>' .
+        '<export_szla_db>' . str_pad(count($fej), 1, '0',STR_PAD_LEFT) . '</export_szla_db>' .
+        '<kezdo_ido>' . \mkw\Store::DateToExcel($fej[0]->getKelt()) . '</kezdo_ido>' .
+        '<zaro_ido>' . \mkw\Store::DateToExcel($fej[count($fej)-1]->getKelt()) . '</zaro_ido>' .
+        '<kezdo_szla_szam>' . $fej[0]->getId() . '</kezdo_szla_szam>' .
+        '<zaro_szla_szam>' . $fej[count($fej)-1]->getId() . '</zaro_szla_szam>';
+
+        /** @var \Entities\Bizonylatfej $f */
+        foreach($fej as $f) {
+            echo '<szamla><fejlec>';
+            echo '<szlasorszam>' . substr($f->getId(), 0, 100) . '</szlasorszam>';
+            echo '<szlatipus>';
+            switch ($f->getStornotipus()) {
+                case 0:
+                    echo '1';
+                    break;
+                case 1:
+                    echo '6';
+                    break;
+                case 2:
+                    echo '4';
+                    break;
+                default:
+                    echo '1';
+                    break;
+            }
+            echo '</szlatipus>';
+            echo '<szladatum>' . \mkw\Store::DateToExcel($f->getKelt()) . '</szladatum>';
+            echo '<teljdatum>' . \mkw\Store::DateToExcel($f->getTeljesites()) . '</teljdatum>';
+            echo '</fejlec>';
+
+            echo '<szamlakibocsato>';
+            if ($f->getTulajadoszam()) {
+                echo '<adoszam>' . substr($f->getTulajadoszam(), 0, 20) . '</adoszam>';
+            }
+            if ($f->getTulajeuadoszam()) {
+                echo '<kozadoszam>' . substr($f->getTulajeuadoszam(), 0, 20) . '</kozadoszam>';
+            }
+            echo '<kisadozo>' . \mkw\Store::toBoolStr($f->getTulajkisadozo()) . '</kisadozo>';
+            echo '<nev>' . substr($f->getTulajnev(), 0, 100) . '</nev>';
+            echo '<cim><iranyitoszam>' . substr($f->getTulajirszam(), 0, 10) . '</iranyitoszam>' .
+                '<telepules>' . substr($f->getTulajvaros(), 0, 100) . '</telepules>' .
+                '<kozterulet_neve>' . substr($f->getTulajutca(), 0, 100) . '</kozterulet_neve></cim>';
+
+            echo '<egyeni_vallalkozo>' . \mkw\Store::toBoolStr($f->getTulajegyenivallalkozo()) . '</egyeni_vallalkozo>';
+            if ($f->getTulajegyenivallalkozo()) {
+                if ($f->getTulajevnyilvszam()) {
+                    echo '<ev_nyilv_tart_szam>' . substr($f->getTulajevnyilvszam(), 0, 100) . '</ev_nyilv_tart_szam>';
+                }
+                if ($f->getTulajevnev()) {
+                    echo '<ev_neve>' . substr($f->getTulajevnev(), 0, 100) . '</ev_neve>';
+                }
+            }
+            echo '</szamlakibocsato>';
+
+            echo '<vevo>';
+            if ($f->getPartneradoszam()) {
+                echo '<adoszam>' . substr($f->getPartneradoszam(), 0, 20) . '</adoszam>';
+            }
+            if ($f->getPartnereuadoszam()) {
+                echo '<kozadoszam>' . substr($f->getPartnereuadoszam(), 0, 20) . '</kozadoszam>';
+            }
+            echo '<nev>' . $f->getPartnernev() . '</nev>' .
+                '<cim><iranyitoszam>' . substr($f->getPartnerirszam(), 0, 10) . '</iranyitoszam>' .
+                '<telepules>' . substr($f->getPartnervaros(), 0, 100) . '</telepules>' .
+                '<kozterulet_neve>' . substr($f->getPartnerutca(), 0, 100) . '</kozterulet_neve>' .
+            '</cim>';
+            echo '</vevo>';
+        }
+
+    }
+
+    public function check() {
+        $tol = $this->params->getStringRequestParam('tol');
+        $ig = $this->params->getStringRequestParam('ig');
+        $szlasztol = $this->params->getStringRequestParam('szlasztol');
+        $szlaszig = $this->params->getStringRequestParam('szlaszig');
+
+        if ((($szlasztol != '') && ($szlaszig == '')) || (($szlasztol == '') && ($szlaszig != ''))) {
+            echo json_encode(array(
+                'result' => 'error',
+                'msg' => t('Adja meg a számlaszám intervallum mindkét végét.')
+            ));
+            return;
+        }
+
+        /** @var \Entities\BizonylatfejRepository $rep */
+        $rep = $this->getRepo('Entities\Bizonylatfej');
+
+        if ($szlasztol != '') {
+            $r = $rep->getSzamlaKelt($szlasztol);
+            if ($r) {
+                echo json_encode(array(
+                    'result' => 'error',
+                    'msg' => t('Az adatszolgáltatás csak 2016.01.01-től működik.')
+                ));
+                return;
+            }
+        }
+        if ($szlaszig != '') {
+            $r = $rep->getSzamlaKelt($szlaszig);
+            if ($r) {
+                echo json_encode(array(
+                    'result' => 'error',
+                    'msg' => t('Az adatszolgáltatás csak 2016.01.01-től működik.')
+                ));
+                return;
+            }
+        }
+
+        $told = \mkw\Store::toDate($tol);
+        $igd = \mkw\Store::toDate($ig);
+
+        if (($told->format('Y') < 2016) || ($igd->format('Y') < 2016)) {
+            echo json_encode(array(
+                'result' => 'error',
+                'msg' => t('Az adatszolgáltatás csak 2016.01.01-től működik.')
+            ));
+            return;
+        }
+
+        echo json_encode(array(
+            'result' => 'ok',
+            'href' => \mkw\Store::getRouter()->generate('adminnavadatexportget', false, array(), array(
+                'tol' => $tol,
+                'ig' => $ig,
+                'szlasztol' => $szlasztol,
+                'szlaszig' => $szlaszig
+            ))
+        ));
     }
 
 }
