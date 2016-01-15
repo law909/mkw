@@ -542,6 +542,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                             $tetel->setElolegtipus($this->params->getIntRequestParam('tetelelolegtipus_' . $tetelid));
 
                             if (!$quick) {
+                                $tetel->setTermeknev($this->params->getStringRequestParam('tetelnev_' . $tetelid));
                                 $tetel->setCikkszam($this->params->getStringRequestParam('tetelcikkszam_' . $tetelid));
                                 $tetel->setVtsz($this->params->getIntRequestParam('tetelvtsz_' . $tetelid));
                                 $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
@@ -628,6 +629,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
                                 if (!$quick) {
                                     $tetel->setKedvezmeny($this->params->getFloatRequestParam('tetelkedvezmeny_' . $tetelid));
+                                    $tetel->setTermeknev($this->params->getStringRequestParam('tetelnev_' . $tetelid));
                                     $tetel->setCikkszam($this->params->getStringRequestParam('tetelcikkszam_' . $tetelid));
                                     $tetel->setVtsz($this->params->getIntRequestParam('tetelvtsz_' . $tetelid));
                                     $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));

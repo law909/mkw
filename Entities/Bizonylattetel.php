@@ -675,7 +675,7 @@ class Bizonylattetel {
     }
 
     /**
-     * @param \Entities\Vtsz $val
+     * @param \Entities\Vtsz | int $val
      */
     public function setVtsz($val) {
         if (!is_object($val)) {
