@@ -1367,6 +1367,8 @@ class Termek {
                     return ($ve < $vf) ? -1 : 1;
                 });
                 return new \Doctrine\Common\Collections\ArrayCollection($a);
+            case 'kisszamlazo':
+                return null;
             default :
                 throw new \Exception('ISMERETLEN THEME: ' . \mkw\Store::getTheme());
         }
