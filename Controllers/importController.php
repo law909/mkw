@@ -913,7 +913,7 @@ class importController extends \mkwhelpers\Controller {
         $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-        $ch = \curl_init('http://www.makszutov.hu/partner-arlista?format=csv');
+        $ch = \curl_init('http://www.tavcso-mikroszkop.hu/partner-arlista?format=csv');
         $fh = fopen('makszutov.txt', 'w');
         \curl_setopt($ch, CURLOPT_FILE, $fh);
         \curl_exec($ch);
