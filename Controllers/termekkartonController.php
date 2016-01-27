@@ -32,7 +32,7 @@ class termekkartonController extends \mkwhelpers\Controller {
         $termekid = $this->params->getIntRequestParam('termekid');
         $valtozatid = $this->params->getIntRequestParam('valtozatid');
         $mozgat = $this->params->getIntRequestParam('mozgat');
-        $raktarid = $this->params->getIntRequestParam('raktar');
+        $raktarid = $this->params->getIntRequestParam('raktarid');
         $datumtipus = $this->params->getStringRequestParam('datumtipus');
         switch ($datumtipus) {
             case 'kelt':
