@@ -168,7 +168,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('valutanemlist', $vc->getSelectList());
 
         $bc = new bankszamlaController($this->params);
-        $view->setVar('bankszamlalist', $vc->getSelectList());
+        $view->setVar('bankszamlalist', $bc->getSelectList());
     }
 
     public function getlistbody() {
