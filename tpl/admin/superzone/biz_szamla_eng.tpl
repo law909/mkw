@@ -78,6 +78,7 @@
                     {/if}
                 </div>
             </div>
+            <div class="topline topbottommargin clear"></div>
         {/if}
         {if ($egyed.megjegyzes)}
         <div class="fullwidth pull-left">
