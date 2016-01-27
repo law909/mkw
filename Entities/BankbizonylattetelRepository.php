@@ -67,11 +67,22 @@ class BankbizonylattetelRepository extends \mkwhelpers\Repository {
         $a = $this->alias;
         return $this->_em->createQuery('SELECT v.nev, SUM(_xx.brutto) AS osszeg'
             . ' FROM Entities\Bankbizonylattetel _xx'
+            . ' LEFT JOIN _xx.bizonylatfej bf'
             . ' LEFT JOIN _xx.valutanem v'
             . $this->getFilterString($filter)
             . ' GROUP BY v.nev'
             . $this->getOrderString($order))
             ->setParameters($this->getQueryParameters($filter))
             ->getResult();
+    }
+
+    public function getAllWithFej($filter = array(), $order = array()) {
+        $q = $this->_em->createQuery('SELECT _xx '
+            . ' FROM Entities\Bankbizonylattetel _xx'
+            . ' LEFT JOIN _xx.bizonylatfej bf'
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order));
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
     }
 }

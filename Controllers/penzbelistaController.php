@@ -25,6 +25,10 @@ class penzbelistaController extends \mkwhelpers\MattableController {
 
     public function createLista() {
         $bankszamlaid = $this->params->getIntRequestParam('bankszamla');
+        $bsz = $this->getRepo('Entities\Bankszamla')->find($bankszamlaid);
+        if ($bsz) {
+            $bankszamlaszam = $bsz->getSzamlaszam();
+        }
 
         $tolstr = $this->params->getStringRequestParam('tol');
         $tolstr = date(\mkw\Store::$DateFormat, strtotime(\mkw\Store::convDate($tolstr)));
@@ -52,25 +56,26 @@ class penzbelistaController extends \mkwhelpers\MattableController {
             $cimkenevek = $this->getRepo('Entities\Partnercimketorzs')->getCimkeNevek($this->params->getArrayRequestParam('cimkefilter'));
         }
 
+        if ($bankszamlaid) {
+            $filter->addFilter('bf.bankszamla', '=', $bankszamlaid);
+        }
         /** @var \Entities\BankbizonylattetelRepository $btrepo */
         $btrepo = $this->getRepo('Entities\Bankbizonylattetel');
 
-        $mind = $btrepo->getAll($filter,
+        $mind = $btrepo->getAllWithFej($filter,
             array('datum' => 'ASC', 'partnernev' => 'ASC'));
 
         $lista = array();
         /** @var \Entities\Bankbizonylattetel $item */
         foreach ($mind as $item) {
-            if (($bankszamlaid && ($item->getBizonylatfej()->getBankszamlaId() == $bankszamlaid)) || (!$bankszamlaid)) {
-                $lista[] = array(
-                    'datum' => $item->getDatumStr(),
-                    'hivatkozottbizonylat' => $item->getHivatkozottbizonylat(),
-                    'partnerid' => $item->getPartnerId(),
-                    'partnernev' => $item->getPartnerNev(),
-                    'osszeg' => $item->getBrutto(),
-                    'valutanem' => $item->getValutanemnev()
-                );
-            }
+            $lista[] = array(
+                'datum' => $item->getDatumStr(),
+                'hivatkozottbizonylat' => $item->getHivatkozottbizonylat(),
+                'partnerid' => $item->getPartnerId(),
+                'partnernev' => $item->getPartnerNev(),
+                'osszeg' => $item->getBrutto(),
+                'valutanem' => $item->getValutanemnev()
+            );
         }
 
         $valsum = $btrepo->calcSumByValutanem($filter);
@@ -81,6 +86,7 @@ class penzbelistaController extends \mkwhelpers\MattableController {
         $report->setVar('tolstr', $tolstr);
         $report->setVar('igstr', $igstr);
         $report->setVar('cimkenevek', $cimkenevek);
+        $report->setVar('bankszamlaszam', $bankszamlaszam);
         $report->printTemplateResult();
     }
 }
