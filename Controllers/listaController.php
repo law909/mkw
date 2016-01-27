@@ -104,7 +104,6 @@ class listaController extends \mkwhelpers\Controller {
         foreach($focsoportok as $csoport) {
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter
-                ->addFilter('bt.mozgat', '=', 1)
                 ->addFilter('bf.teljesites', '>=', $datum)
                 ->addFilter('bf.teljesites', '<=', $ig)
                 ->addFilter('bf.rontott', '=', false)
