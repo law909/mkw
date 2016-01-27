@@ -281,6 +281,8 @@ class Bizonylattetel {
         $termek = $this->getTermek();
         $ret = $ret + $termek->toKosar($this->getTermekvaltozat());
         $ret['mennyiseg'] = $this->getMennyiseg();
+        $ret['irany'] = $this->getIrany();
+        $ret['mozgat'] = $this->getMozgat();
         $ret['nettoegysarhuf'] = $this->getNettoegysarhuf();
         $ret['bruttoegysarhuf'] = $this->getBruttoegysarhuf();
         $ret['enettoegysarhuf'] = $this->getEnettoegysarhuf();
@@ -304,6 +306,7 @@ class Bizonylattetel {
         $valt = $this->getTermekvaltozat();
         $v = array();
         if ($valt) {
+            $ret['valtozatnev'] = $valt->getNev();
             if ($valt->getAdatTipus1()) {
                 $v[] = array('nev' => $valt->getAdatTipus1Nev(), 'ertek' => $valt->getErtek1());
             }

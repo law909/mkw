@@ -736,7 +736,16 @@ $(document).ready(function () {
                 }
             },
             tablebody: {
-                url: '/admin/termek/getlistbody'
+                url: '/admin/termek/getlistbody',
+                onStyle: function() {
+                    $('.js-karton').button();
+                },
+                onDoEditLink: function() {
+                    $('.js-karton').each(function () {
+                        var $this = $(this);
+                        $this.attr('href', '/admin/termekkarton/view?id=' + $this.data('termekid'));
+                    });
+                }
             },
             karb: termek
         });

@@ -692,6 +692,8 @@ class Bizonylatfej {
         $ret['uzletkotoemail'] = $this->getUzletkotoemail();
         $ret['uzletkotojutalek'] = $this->getUzletkotojutalek();
         $ret['stornotipus'] = $this->getStornotipus();
+        $ret['storno'] = $this->getStorno();
+        $ret['stornozott'] = $this->getStornozott();
         $ret['foxpost'] = false;
         if ($this->foxpostterminal) {
             $ret['foxpost'] = true;

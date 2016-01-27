@@ -591,4 +591,15 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getScalarResult();
     }
 
+    public function getKarton($filter, $order) {
+        $q = $this->_em->createQuery('SELECT bt,bf '
+            . 'FROM Entities\Bizonylattetel bt '
+            . 'LEFT JOIN bt.bizonylatfej bf '
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order)
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
+    }
+
 }
