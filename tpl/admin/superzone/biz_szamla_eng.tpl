@@ -70,11 +70,20 @@
             </tbody>
         </table>
         <div class="topline topbottommargin"></div>
+        {if ($egyed.fuvarlevelszam)}
+            <div class="fullwidth pull-left">
+                <div class="row-inner">
+                    {if ($egyed.fuvarlevelszam|default)}
+                        Fuvarlevél száma / Delivery note number: {$egyed.fuvarlevelszam}
+                    {/if}
+                </div>
+            </div>
+        {/if}
         {if ($egyed.megjegyzes)}
         <div class="fullwidth pull-left">
             <div class="row-inner">
                 {if ($egyed.megjegyzes|default)}
-                    Közlemény: {$egyed.megjegyzes}
+                    Közlemény / Notes: {$egyed.megjegyzes}
                 {/if}
             </div>
         </div>

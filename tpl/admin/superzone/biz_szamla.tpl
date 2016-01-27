@@ -37,6 +37,15 @@
             </tbody>
         </table>
         <div class="topline topbottommargin"></div>
+        {if ($egyed.fuvarlevelszam)}
+            <div class="fullwidth pull-left">
+                <div class="row-inner">
+                    {if ($egyed.fuvarlevelszam|default)}
+                        Fuvarlevél száma: {$egyed.fuvarlevelszam}
+                    {/if}
+                </div>
+            </div>
+        {/if}
         {if ($egyed.megjegyzes)}
         <div class="fullwidth pull-left">
             <div class="row-inner">
