@@ -17,10 +17,15 @@ class penzbelistaController extends \mkwhelpers\MattableController {
         $partner = new partnerController($this->params);
         $view->setVar('partnerlist', $partner->getSelectList());
 
+        $bsz = new bankszamlaController($this->params);
+        $view->setVar('bankszamlalist', $bsz->getSelectList());
+
         $view->printTemplateResult();
     }
 
     public function createLista() {
+        $bankszamlaid = $this->params->getIntRequestParam('bankszamla');
+
         $tolstr = $this->params->getStringRequestParam('tol');
         $tolstr = date(\mkw\Store::$DateFormat, strtotime(\mkw\Store::convDate($tolstr)));
 
@@ -56,14 +61,16 @@ class penzbelistaController extends \mkwhelpers\MattableController {
         $lista = array();
         /** @var \Entities\Bankbizonylattetel $item */
         foreach ($mind as $item) {
-            $lista[] = array(
-                'datum' => $item->getDatumStr(),
-                'hivatkozottbizonylat' => $item->getHivatkozottbizonylat(),
-                'partnerid' => $item->getPartnerId(),
-                'partnernev' => $item->getPartnerNev(),
-                'osszeg' => $item->getBrutto(),
-                'valutanem' => $item->getValutanemnev()
-            );
+            if (($bankszamlaid && ($item->getBizonylatfej()->getBankszamlaId() == $bankszamlaid)) || (!$bankszamlaid)) {
+                $lista[] = array(
+                    'datum' => $item->getDatumStr(),
+                    'hivatkozottbizonylat' => $item->getHivatkozottbizonylat(),
+                    'partnerid' => $item->getPartnerId(),
+                    'partnernev' => $item->getPartnerNev(),
+                    'osszeg' => $item->getBrutto(),
+                    'valutanem' => $item->getValutanemnev()
+                );
+            }
         }
 
         $valsum = $btrepo->calcSumByValutanem($filter);

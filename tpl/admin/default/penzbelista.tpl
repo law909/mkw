@@ -26,6 +26,8 @@
                 <form id="penzbe" action="" target="_blank">
                     {include "comp_idoszak.tpl" comptype="datum"}
                     <div class="matt-hseparator"></div>
+                    {include "comp_bankszamlaselect.tpl"}
+                    <div class="matt-hseparator"></div>
                     {include "comp_partnerselect.tpl"}
                     <div class="matt-hseparator"></div>
                     {include "comp_partnercimkefilter.tpl"}
