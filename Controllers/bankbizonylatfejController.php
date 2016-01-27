@@ -163,6 +163,12 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
         if ($bt) {
             $bt->setTemplateVars($view);
         }
+
+        $vc = new valutanemController($this->params);
+        $view->setVar('valutanemlist', $vc->getSelectList());
+
+        $bc = new bankszamlaController($this->params);
+        $view->setVar('bankszamlalist', $vc->getSelectList());
     }
 
     public function getlistbody() {
@@ -174,6 +180,16 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
 
         if (!is_null($this->params->getRequestParam('idfilter', NULL))) {
             $filter->addFilter('id', 'LIKE', '%' . $this->params->getStringRequestParam('idfilter'));
+        }
+
+        $v = $this->getRepo('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanemfilter'));
+        if ($v) {
+            $filter->addFilter('valutanem', '=', $v);
+        }
+
+        $b = $this->getRepo('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamlafilter'));
+        if ($b) {
+            $filter->addFilter('bankszamla', '=', $b);
         }
 
         $tol = $this->params->getStringRequestParam('datumtolfilter');

@@ -36,6 +36,26 @@
         <input id="erbizonylatszamfilter" name="erbizonylatszamfilter" type="text" size="20">
     </div>
     {/if}
+    <div class="matt-hseparator"></div>
+    <div>
+        <label for="valutanemfilter">Valutanem:</label>
+        <select id="valutanemfilter" name="valutanemfilter">
+            <option value="0">válasszon</option>
+            {foreach $valutanemlist as $valutanem}
+                <option value="{$valutanem.id}"{if ($valutanem.selected)} selected="selected"{/if}>{$valutanem.caption}</option>
+            {/foreach}
+        </select>
+    </div>
+    <div class="matt-hseparator"></div>
+    <div>
+        <label for="bankszamlafilter">Bankszámla:</label>
+        <select id="bankszamlafilter" name="bankszamlafilter">
+            <option value="0">válasszon</option>
+            {foreach $bankszamlalist as $bankszamla}
+                <option value="{$bankszamla.id}"{if ($bankszamla.selected)} selected="selected"{/if}>{$bankszamla.caption}</option>
+            {/foreach}
+        </select>
+    </div>
 </div>
 <div class="mattable-pagerwrapper">
 	<div class="mattable-order">

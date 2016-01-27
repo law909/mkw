@@ -160,7 +160,9 @@ $(document).ready(function () {
                     '#datumtolfilter',
                     '#datumigfilter',
                     '#bizonylatrontottfilter',
-                    '#erbizonylatszamfilter'
+                    '#erbizonylatszamfilter',
+                    '#valutanemfilter',
+                    '#bankszamlafilter'
                 ]
             },
             tablebody: {
