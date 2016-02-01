@@ -24,12 +24,12 @@ class bankszamlaController extends \mkwhelpers\JQGridController {
         $obj->setSzamlaszam($this->params->getStringRequestParam('szamlaszam'));
         $obj->setSwift($this->params->getStringRequestParam('swift'));
         $obj->setIban($this->params->getStringRequestParam('iban'));
-        $valutanem = store::getEm()->getReference('Entities\Valutanem', $this->params->getIntRequestParam('valutanem', 0));
-        try {
-            $valutanem->getId();
+        $valutanem = $this->getRepo('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
+        if ($valutanem) {
             $obj->setValutanem($valutanem);
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
-
+        }
+        else {
+            $obj->setValutanem(null);
         }
         return $obj;
     }

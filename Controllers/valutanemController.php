@@ -22,11 +22,12 @@ class valutanemController extends \mkwhelpers\JQGridController {
         $obj->setKerekit($this->params->getBoolRequestParam('kerekit'));
         $obj->setHivatalos($this->params->getBoolRequestParam('hivatalos'));
         $obj->setMincimlet($this->params->getIntRequestParam('mincimlet'));
-        $bankszla = store::getEm()->getReference('Entities\Bankszamla', $this->params->getIntRequestParam('bankszamla'));
-        try {
-            $bankszla->getId();
+        $bankszla = $this->getRepo('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
+        if ($bankszla) {
             $obj->setBankszamla($bankszla);
-        } catch (\Doctrine\ORM\EntityNotFoundException $e) {
+        }
+        else {
+            $obj->setBankszamla(null);
         }
         return $obj;
     }
