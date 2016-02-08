@@ -23,6 +23,9 @@
 			<li><a href="#TulajTab">{t('Tulajdonos adatai')}</a></li>
 			<li><a href="#WebTab">{t('Web beállítások')}</a></li>
 			<li><a href="#SzallitasiKtgTab">{t('Szállítási költség')}</a></li>
+            {if ($maintheme == 'mkwcansas')}
+            <li><a href="#ImportPartnerTab">{t('Import partnerek')}</a></li>
+            {/if}
 			<li><a href="#IdTab">{t('Azonosítók, kódok')}</a></li>
 			<li><a href="#EmailTab">{t('Email')}</a></li>
 			<li><a href="#FeedTab">{t('Feed beállítások')}</a></li>
@@ -464,6 +467,79 @@
 			</tr>
 		</tbody></table>
 		</div>
+        {if ($maintheme == 'mkwcansas')}
+        <div id="ImportPartnerTab" class="mattkarb-page" data-visible="visible">
+            <div>
+                <label for="KreativEdit">Kreatív puzzle:</label>
+                <select id="KreativEdit" name="gyartokreativ">
+                    <option value="">{t('válasszon')}</option>
+                    {foreach $gyartokreativlist as $_gyarto}
+                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="DeltonEdit">Delton:</label>
+                <select id="DeltonEdit" name="gyartodelton">
+                    <option value="">{t('válasszon')}</option>
+                    {foreach $gyartodeltonlist as $_gyarto}
+                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="ReintexEdit">Reintex:</label>
+                <select id="ReintexEdit" name="gyartoreintex">
+                    <option value="">{t('válasszon')}</option>
+                    {foreach $gyartoreintexlist as $_gyarto}
+                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="TutisportEdit">Tutisport:</label>
+                <select id="TutisportEdit" name="gyartotutisport">
+                    <option value="">{t('válasszon')}</option>
+                    {foreach $gyartotutisportlist as $_gyarto}
+                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="MaxutovEdit">Makszutov:</label>
+                <select id="MaxutovEdit" name="gyartomaxutov">
+                    <option value="">{t('válasszon')}</option>
+                    {foreach $gyartomaxutovlist as $_gyarto}
+                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="SilkoEdit">Silko&Co:</label>
+                <select id="SilkoEdit" name="gyartosilko">
+                    <option value="">{t('válasszon')}</option>
+                    {foreach $gyartosilkolist as $_gyarto}
+                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="BtechEdit">BTech:</label>
+                <select id="BtechEdit" name="gyartobtech">
+                    <option value="">{t('válasszon')}</option>
+                    {foreach $gyartobtechlist as $_gyarto}
+                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        {/if}
 		<div id="IdTab" class="mattkarb-page" data-visible="visible">
 		<table><tbody>
             <tr><td><label>{t('Google analytics kód')}:</label></td><td><input name="gafollow" type="text" value="{$gafollow}"></td></tr>

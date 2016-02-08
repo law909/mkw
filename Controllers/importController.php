@@ -32,8 +32,6 @@ class importController extends \mkwhelpers\Controller {
                 'caption' => t('Ebbe a kategóriába kerüljenek a termékek')
             ));
         }
-        $gyarto = new partnerController($this->params);
-        $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(0));
 
         $view->printTemplateResult(false);
     }
@@ -111,7 +109,7 @@ class importController extends \mkwhelpers\Controller {
         $sep = ';';
 
         $parentid = $this->params->getIntRequestParam('katid', 0);
-        $gyartoid = $this->params->getIntRequestParam('gyarto', 0);
+        $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoKreativ);
         $dbtol = $this->params->getIntRequestParam('dbtol', 0);
         $dbig = $this->params->getIntRequestParam('dbig', 0);
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
@@ -363,7 +361,7 @@ class importController extends \mkwhelpers\Controller {
     public function deltonImport() {
 
         $parentid = $this->params->getIntRequestParam('katid', 0);
-        $gyartoid = $this->params->getIntRequestParam('gyarto', 0);
+        $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoDelton);
         $dbtol = $this->params->getIntRequestParam('dbtol', 0);
         $dbig = $this->params->getIntRequestParam('dbig', 0);
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
@@ -721,7 +719,7 @@ class importController extends \mkwhelpers\Controller {
         $sep = ';';
 
         $parentid = $this->params->getIntRequestParam('katid', 0);
-        $gyartoid = $this->params->getIntRequestParam('gyarto', 0);
+        $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoReintex);
         $dbtol = $this->params->getIntRequestParam('dbtol', 0);
         $dbig = $this->params->getIntRequestParam('dbig', 0);
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
@@ -798,7 +796,7 @@ class importController extends \mkwhelpers\Controller {
         $sep = ';';
 
         $parentid = $this->params->getIntRequestParam('katid', 0);
-        $gyartoid = $this->params->getIntRequestParam('gyarto', 0);
+        $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoTutisport);
         $dbtol = $this->params->getIntRequestParam('dbtol', 0);
         $dbig = $this->params->getIntRequestParam('dbig', 0);
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
@@ -894,7 +892,7 @@ class importController extends \mkwhelpers\Controller {
         $sep = ';';
 
         $parentid = $this->params->getIntRequestParam('katid', 0);
-        $gyartoid = $this->params->getIntRequestParam('gyarto', 0);
+        $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoMaxutov);
         $dbtol = $this->params->getIntRequestParam('dbtol', 0);
         $dbig = $this->params->getIntRequestParam('dbig', 0);
         $editleiras = $this->params->getBoolRequestParam('editleiras', false);
@@ -1119,10 +1117,6 @@ class importController extends \mkwhelpers\Controller {
         }
         fclose($fh);
         \unlink('makszutov.txt');
-    }
-
-    public function legavenueImport() {
-
     }
 
     public function createVateraPartner($pa) {

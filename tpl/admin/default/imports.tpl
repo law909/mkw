@@ -33,16 +33,6 @@
             </div>
 	<div class="matt-hseparator"></div>
             <div>
-                <label for="GyartoEdit">Gyártó:</label>
-                <select id="GyartoEdit" name="gyarto">
-					<option value="">{t('válasszon')}</option>
-					{foreach $gyartolist as $_gyarto}
-						<option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-					{/foreach}
-				</select>
-            </div>
-	<div class="matt-hseparator"></div>
-            <div>
                 <label>Termékek tól-ig:</label>
                 <input name="dbtol"> - <input name="dbig">
             </div>
@@ -80,9 +70,7 @@
             <div>
             <a href="/admin/import/kreativ" class="js-kreativimport">Kreativ puzzle</a>
             <a href="/admin/import/delton" class="js-deltonimport">Delton</a>
-            <a href="/admin/import/nomad" class="js-nomadimport">Nomád</a>
             <a href="/admin/import/reintex" class="js-reinteximport">Reintex</a>
-            <a href="/admin/import/legavenue" class="js-legavenueimport">Legavenue</a>
             <a href="/admin/import/tutisport" class="js-tutisportimport">Tutisport</a>
             <a href="/admin/import/makszutov" class="js-makszutovimport">Makszutov</a>
             </div>

@@ -136,4 +136,12 @@ class consts {
     const RendezendoValtozat = 'rendezendovaltozat';
 
     const BizonylatMennyiseg = 'bizonylatmennyiseg';
+
+    const GyartoKreativ = 'gyartokreativ';
+    const GyartoDelton = 'gyartodelton';
+    const GyartoReintex = 'gyartoreintex';
+    const GyartoTutisport = 'gyartotutisport';
+    const GyartoMaxutov = 'gyartomaxutov';
+    const GyartoSilko = 'gyartosilko';
+    const GyartoBtech = 'gyartobtech';
 }

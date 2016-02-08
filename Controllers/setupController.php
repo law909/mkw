@@ -315,6 +315,23 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::AKTrustedShopApiKey);
         $view->setVar(\mkw\consts::AKTrustedShopApiKey, ($p ? $p->getErtek() : ''));
 
+        $gyarto = new partnerController($this->params);
+        $p = $repo->find(consts::GyartoBtech);
+        $view->setVar('gyartobtechlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(consts::GyartoDelton);
+        $view->setVar('gyartodeltonlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(consts::GyartoKreativ);
+        $view->setVar('gyartokreativlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(consts::GyartoMaxutov);
+        $view->setVar('gyartomaxutovlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(consts::GyartoReintex);
+        $view->setVar('gyartoreintexlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(consts::GyartoSilko);
+        $view->setVar('gyartosilkolist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(consts::GyartoTutisport);
+        $view->setVar('gyartotutisportlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+
+
         $view->printTemplateResult();
     }
 
@@ -590,7 +607,68 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Fooldalchangefreq, $this->params->getStringRequestParam('fooldalchangefreq', 'daily'));
 
         $this->setObj(\mkw\consts::AKTrustedShopApiKey, $this->params->getStringRequestParam('aktrustedshopapikey', ''));
+
+        $gyarto = store::getEm()->getRepository('Entities\Partner');
+
+        $x = $this->params->getIntRequestParam('gyartobtech', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoBtech, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GyartoBtech, '');
+        }
+        $x = $this->params->getIntRequestParam('gyartodelton', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoDelton, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GyartoDelton, '');
+        }
+        $x = $this->params->getIntRequestParam('gyartokreativ', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoKreativ, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GyartoKreativ, '');
+        }
+        $x = $this->params->getIntRequestParam('gyartomaxutov', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoMaxutov, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GyartoMaxutov, '');
+        }
+        $x = $this->params->getIntRequestParam('gyartoreintex', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoReintex, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GyartoReintex, '');
+        }
+        $x = $this->params->getIntRequestParam('gyartotutisport', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoTutisport, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GyartoTutisport, '');
+        }
+        $x = $this->params->getIntRequestParam('gyartosilko', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoSilko, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GyartoSilko, '');
+        }
+
         store::getEm()->flush();
+
     }
 
 }
