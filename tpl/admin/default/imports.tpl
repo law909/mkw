@@ -29,10 +29,6 @@
             </div>
 	<div class="matt-hseparator"></div>
             <div>
-                <label>Képek mappája:</label><input name="path" value="{$path}">
-            </div>
-	<div class="matt-hseparator"></div>
-            <div>
                 <label>Termékek tól-ig:</label>
                 <input name="dbtol"> - <input name="dbig">
             </div>
@@ -73,6 +69,7 @@
             <a href="/admin/import/reintex" class="js-reinteximport">Reintex</a>
             <a href="/admin/import/tutisport" class="js-tutisportimport">Tutisport</a>
             <a href="/admin/import/makszutov" class="js-makszutovimport">Makszutov</a>
+            <a href="/admin/import/silko" class="js-silkoimport">Silko&Co</a>
             </div>
 	<div class="matt-hseparator"></div>
             <div>

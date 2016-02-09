@@ -1118,6 +1118,146 @@ class importController extends \mkwhelpers\Controller {
         \unlink('makszutov.txt');
     }
 
+    public function silkoImport() {
+        $parentid = $this->params->getIntRequestParam('katid', 0);
+        $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoSilko);
+        $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+        $dbig = $this->params->getIntRequestParam('dbig', 0);
+        $editleiras = $this->params->getBoolRequestParam('editleiras', false);
+        $createuj = $this->params->getBoolRequestParam('createuj', false);
+        $arszaz = $this->params->getNumRequestParam('arszaz', 100);
+        $batchsize = $this->params->getNumRequestParam('batchsize', 20);
+
+        $parent = store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+        if ($dbtol < 2) {
+            $dbtol = 2;
+        }
+
+        $filenev = $_FILES['toimport']['name'];
+        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        //pathinfo
+
+        $filetype = \PHPExcel_IOFactory::identify($filenev);
+        $reader = \PHPExcel_IOFactory::createReader($filetype);
+        $reader->setReadDataOnly(true);
+        $excel = $reader->load($filenev);
+        $sheet = $excel->getActiveSheet();
+        $maxrow = $sheet->getHighestRow() * 1;
+        if (!$dbig) {
+            $dbig = $maxrow;
+        }
+        $maxcol = $sheet->getHighestColumn();
+        $maxcolindex = \PHPExcel_Cell::columnIndexFromString($maxcol);
+
+        $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+        $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+
+        for ($row = $dbtol; $row <= $dbig; ++$row) {
+            $katnev = $sheet->getCell('F' . $row)->getValue();
+            $kats = explode('|', $katnev);
+            if ($kats[0]) {
+                $parent = $this->createKategoria($kats[0], $parentid);
+            }
+            if ($kats[1]) {
+                if ($parent) {
+                    $this->createKategoria($kats[1], $parent->getId());
+                }
+                else {
+                    $this->createKategoria($kats[1], $parentid);
+                }
+            }
+        }
+
+        $termekdb = 0;
+        for ($row = $dbtol; $row <= $dbig; ++$row) {
+            $termekdb++;
+
+            $cikkszam = $sheet->getCell('A' . $row)->getValue();
+            $kaphato = $sheet->getCell('C' . $row)->getValue();
+            $katnev = $sheet->getCell('F' . $row)->getValue();
+
+            $le = $sheet->getCell('G' . $row)->getValue() . ' ' . $sheet->getCell('H' . $row)->getValue();
+            $puri = new \mkwhelpers\HtmlPurifierSanitizer(array(
+                'HTML.Allowed' => 'p,ul,li,b,strong,br'
+            ));
+            $leiras = $puri->sanitize($le);
+
+            $puri2 = store::getSanitizer();
+            $kisleiras = $puri2->sanitize($le);
+
+
+            $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $cikkszam, 'gyarto' => $gyartoid));
+
+            if (!$termek) {
+                if ($createuj && $kaphato) {
+
+                    $parent = null;
+                    $kats = explode('|', $katnev);
+                    if ($kats[0]) {
+                        $parent = $this->createKategoria($kats[0], $parentid);
+                    }
+                    if ($kats[1]) {
+                        if ($parent) {
+                            $parent = $this->createKategoria($kats[1], $parent->getId());
+                        }
+                        else {
+                            $parent = $this->createKategoria($kats[1], $parentid);
+                        }
+                    }
+                    //$parent = $this->createKategoria($katnev, $parentid);
+                    $termeknev = $sheet->getCell('B' . $row)->getValue();
+
+                    $termek = new \Entities\Termek();
+                    $termek->setFuggoben(true);
+                    $termek->setMe($sheet->getCell('J' . $row)->getValue());
+                    $termek->setNev($termeknev);
+                    $termek->setLeiras($leiras);
+                    $termek->setRovidleiras(mb_substr($kisleiras, 0, 100, 'UTF8') . '...');
+                    $termek->setCikkszam($cikkszam);
+                    $termek->setIdegencikkszam($cikkszam);
+                    $termek->setTermekfa1($parent);
+                    $termek->setVtsz($vtsz[0]);
+                    $termek->setHparany(3);
+                    if ($gyarto) {
+                        $termek->setGyarto($gyarto);
+                    }
+                    $termek->setNemkaphato(false);
+                    $termek->setBrutto(round($sheet->getCell('E' . $row)->getValue() * 1 * $arszaz / 100, -1));
+                    store::getEm()->persist($termek);
+                }
+            }
+            else {
+                if (is_array($termek)) {
+                    $termek = $termek[0];
+                }
+                if ($editleiras) {
+                    $termek->setLeiras($leiras);
+                }
+                if (!$kaphato) {
+                    $termek->setNemkaphato(true);
+                }
+                else {
+                    $termek->setNemkaphato(false);
+                }
+                $termek->setBrutto(round($sheet->getCell('E' . $row)->getValue() * 1 * $arszaz / 100, -1));
+                store::getEm()->persist($termek);
+            }
+
+            if (($termekdb % $batchsize) === 0) {
+                \mkw\Store::getEm()->flush();
+                \mkw\Store::getEm()->clear();
+                $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+            }
+        }
+        \mkw\Store::getEm()->flush();
+        \mkw\Store::getEm()->clear();
+
+        $excel->disconnectWorksheets();
+        \unlink($filenev);
+
+    }
+
     public function createVateraPartner($pa) {
         $me = store::getEm()->getRepository('Entities\Partner')->findBy(array('email' => $pa['temail']));
 

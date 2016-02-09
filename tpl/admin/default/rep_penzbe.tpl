@@ -17,6 +17,7 @@
         {foreach $lista as $elem}
             <tr>
                 <td class="cell">{$elem.datum}</td>
+                <td class="cell">{$elem.hivatkozottbizonylat}</td>
                 <td class="cell">{$elem.partnernev}</td>
                 <td class="cell textalignright">{bizformat($elem.osszeg)} {$elem.valutanem}</td>
             </tr>

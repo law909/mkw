@@ -8,7 +8,7 @@ $(document).ready(function() {
 		saveUrl:'/admin/save',
 		beforeShow:function() {
 
-            $('.js-kreativimport,.js-deltonimport,.js-reinteximport,.js-tutisportimport,.js-makszutovimport').on('click', function(e) {
+            $('.js-kreativimport,.js-deltonimport,.js-reinteximport,.js-tutisportimport,.js-makszutovimport,.js-silkoimport').on('click', function(e) {
                 e.preventDefault();
                 if (!$('#TermekKategoria1').attr('data-value')) {
                     alert('Válasszon kategóriát.');
