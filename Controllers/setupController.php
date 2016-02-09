@@ -331,6 +331,20 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(consts::GyartoTutisport);
         $view->setVar('gyartotutisportlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
 
+        $p = $repo->find(\mkw\consts::PathBtech);
+        $view->setVar(\mkw\consts::PathBtech, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::PathTutisport);
+        $view->setVar(\mkw\consts::PathTutisport, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::PathSilko);
+        $view->setVar(\mkw\consts::PathSilko, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::PathDelton);
+        $view->setVar(\mkw\consts::PathDelton, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::PathKreativ);
+        $view->setVar(\mkw\consts::PathKreativ, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::PathMaxutov);
+        $view->setVar(\mkw\consts::PathMaxutov, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::PathReintex);
+        $view->setVar(\mkw\consts::PathReintex, ($p ? $p->getErtek() : ''));
 
         $view->printTemplateResult();
     }
@@ -666,6 +680,16 @@ class setupController extends \mkwhelpers\Controller {
         else {
             $this->setObj(\mkw\consts::GyartoSilko, '');
         }
+
+        $this->setObj(\mkw\consts::PathBtech, $this->params->getStringRequestParam('pathbtech', ''));
+        $this->setObj(\mkw\consts::PathDelton, $this->params->getStringRequestParam('pathdelton', ''));
+        $this->setObj(\mkw\consts::PathKreativ, $this->params->getStringRequestParam('pathkreativ', ''));
+        $this->setObj(\mkw\consts::PathMaxutov, $this->params->getStringRequestParam('pathmaxutov', ''));
+        $this->setObj(\mkw\consts::PathReintex, $this->params->getStringRequestParam('pathreintex', ''));
+        $this->setObj(\mkw\consts::PathSilko, $this->params->getStringRequestParam('pathsilko', ''));
+        $this->setObj(\mkw\consts::PathTutisport, $this->params->getStringRequestParam('pathtutisport', ''));
+
+
 
         store::getEm()->flush();
 

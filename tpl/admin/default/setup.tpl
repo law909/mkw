@@ -477,6 +477,8 @@
                         <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
                     {/foreach}
                 </select>
+                <label for="PathKreativEdit">Képek mappája:</label>
+                <input id="PathKreativEdit" name="pathkreativ" value="{$pathkreativ}">
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -487,6 +489,8 @@
                         <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
                     {/foreach}
                 </select>
+                <label for="PathDeltonEdit">Képek mappája:</label>
+                <input id="PathDeltonEdit" name="pathdelton" value="{$pathdelton}">
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -497,6 +501,8 @@
                         <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
                     {/foreach}
                 </select>
+                <label for="PathReintexEdit">Képek mappája:</label>
+                <input id="PathReintexEdit" name="pathreintex" value="{$pathreintex}">
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -507,6 +513,8 @@
                         <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
                     {/foreach}
                 </select>
+                <label for="PathTutisportEdit">Képek mappája:</label>
+                <input id="PathTutisportEdit" name="pathtutisport" value="{$pathtutisport}">
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -517,6 +525,8 @@
                         <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
                     {/foreach}
                 </select>
+                <label for="PathMaxutovEdit">Képek mappája:</label>
+                <input id="PathMaxutovEdit" name="pathmaxutov" value="{$pathmaxutov}">
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -527,6 +537,8 @@
                         <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
                     {/foreach}
                 </select>
+                <label for="PathSilkoEdit">Képek mappája:</label>
+                <input id="PathSilkoEdit" name="pathsilko" value="{$pathsilko}">
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -537,6 +549,8 @@
                         <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
                     {/foreach}
                 </select>
+                <label for="PathBtechEdit">Képek mappája:</label>
+                <input id="PathBtechEdit" name="pathbtech" value="{$pathbtech}">
             </div>
         </div>
         {/if}

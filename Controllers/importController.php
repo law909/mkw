@@ -17,7 +17,6 @@ class importController extends \mkwhelpers\Controller {
         $view = $this->createView('imports.tpl');
 
         $view->setVar('pagetitle', t('Importok'));
-        $view->setVar('path', \mkw\Store::getConfigValue('path.termekkep'));
 
         $termekfa = store::getEm()->getRepository('Entities\TermekFa')->find(\mkw\Store::getParameter(\mkw\consts::ImportNewKatId));
         if ($termekfa) {
@@ -117,9 +116,9 @@ class importController extends \mkwhelpers\Controller {
         $arszaz = $this->params->getNumRequestParam('arszaz', 100);
         $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-        $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
+        $urleleje = \mkw\Store::changeDirSeparator(\mkw\Store::getParameter(\mkw\consts::PathKreativ, \mkw\Store::getConfigValue('path.termekkep')));
 
-        $path = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
+        $path = \mkw\Store::changeDirSeparator(\mkw\Store::getParameter(\mkw\consts::PathKreativ, \mkw\Store::getConfigValue('path.termekkep')));
         $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
         if ($mainpath) {
             $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
@@ -370,9 +369,9 @@ class importController extends \mkwhelpers\Controller {
         $deltondownload = $this->params->getBoolRequestParam('deltondownload', false);
         $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-        $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
+        $urleleje = \mkw\Store::changeDirSeparator(\mkw\Store::getParameter(\mkw\consts::PathDelton, \mkw\Store::getConfigValue('path.termekkep')));
 
-        $path = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
+        $path = \mkw\Store::changeDirSeparator(\mkw\Store::getParameter(\mkw\consts::PathDelton, \mkw\Store::getConfigValue('path.termekkep')));
         $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
         if ($mainpath) {
             $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
@@ -570,9 +569,9 @@ class importController extends \mkwhelpers\Controller {
         $arszaz = $this->params->getNumRequestParam('arszaz', 100);
         $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-        $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
+        //$urleleje = \mkw\Store::changeDirSeparator();
 
-        $path = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
+        //$path = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
         $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
         if ($mainpath) {
             $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
@@ -900,9 +899,9 @@ class importController extends \mkwhelpers\Controller {
         $arszaz = $this->params->getNumRequestParam('arszaz', 100);
         $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-        $urleleje = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
+        $urleleje = \mkw\Store::changeDirSeparator(\mkw\Store::getParameter(\mkw\consts::PathMaxutov, \mkw\Store::getConfigValue('path.termekkep')));
 
-        $path = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
+        $path = \mkw\Store::changeDirSeparator(\mkw\Store::getParameter(\mkw\consts::PathMaxutov, \mkw\Store::getConfigValue('path.termekkep')));
         $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
         if ($mainpath) {
             $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;

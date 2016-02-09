@@ -144,4 +144,13 @@ class consts {
     const GyartoMaxutov = 'gyartomaxutov';
     const GyartoSilko = 'gyartosilko';
     const GyartoBtech = 'gyartobtech';
+
+    const PathKreativ = 'pathkreativ';
+    const PathDelton = 'pathdelton';
+    const PathReintex = 'pathreintex';
+    const PathTutisport = 'pathtutisport';
+    const PathMaxutov = 'pathmaxutov';
+    const PathSilko = 'pathsilko';
+    const PathBtech = 'pathbtech';
+
 }
