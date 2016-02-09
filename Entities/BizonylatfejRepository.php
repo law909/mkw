@@ -96,6 +96,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
     }
 
     public function calcTeljesitmeny($filter) {
+        $filter->addFilter('rontott', '=', false);
+        $filter->addFilter('storno', '=', false);
+        $filter->addFilter('stornozott', '=', false);
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('ev', 'ev');
         $rsm->addScalarResult('netto', 'netto');
