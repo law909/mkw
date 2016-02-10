@@ -235,7 +235,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$tc = new termekController($this->params);
 		$tomb = array(
 			'id' => $this->params->getRequestParam('tetelid', 0),
-			'valtozatlist' => $tc->getValtozatList($this->params->getRequestParam('id', 0), $this->params->getRequestParam('sel', 0))
+			'valtozatlist' => $tc->getValtozatList($this->params->getRequestParam('id', 0), $this->params->getRequestParam('sel', 0), $this->params->getIntRequestParam('raktar', 0))
 		);
 		$view = $this->createView('bizonylatteteltermekvaltozatselect.tpl');
 		$view->setVar('tetel', $tomb);

@@ -263,13 +263,15 @@ var bizonylathelper = function($) {
     }
 
     function loadValtozatList(id, sorid, selvaltozat, valtozatplace) {
+        var raktarid = $('select[name="raktar"] option:selected').val();
         $.ajax({
             async: false,
             url: '/admin/bizonylattetel/valtozatlist',
             data: {
                 id: id,
                 tetelid: sorid,
-                sel: selvaltozat
+                sel: selvaltozat,
+                raktar: raktarid
             },
             success: function(data) {
                 var d = JSON.parse(data);
