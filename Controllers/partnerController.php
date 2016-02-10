@@ -247,6 +247,16 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setSessionid(\Zend_Session::getId());
             $obj->setIp($_SERVER['REMOTE_ADDR']);
             $obj->setReferrer(Store::getMainSession()->referrer);
+            $obj->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));
+            $obj->setUjdonsaghirlevelkell($this->params->getBoolRequestParam('ujdonsaghirlevelkell'));
+            $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
+            if ($fizmod) {
+                $obj->setFizmod($fizmod);
+            }
+            $szallmod = store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod', 0));
+            if ($szallmod) {
+                $obj->setSzallitasimod($szallmod);
+            }
         }
         return $obj;
     }
