@@ -36,7 +36,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'banknev', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'swift', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'iban', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bizonylatfejek');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'banknev', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'swift', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'iban', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bizonylatfejek'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'banknev', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'swift', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'iban', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bizonylatfejek');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'banknev', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'swift', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'iban', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bizonylatfejek'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
     public function getBanknev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBanknev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBanknev', []);
 
         return parent::getBanknev();
     }
@@ -205,7 +205,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
     public function setBanknev($banknev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBanknev', array($banknev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBanknev', [$banknev]);
 
         return parent::setBanknev($banknev);
     }
@@ -216,7 +216,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
     public function getBankcim()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankcim', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankcim', []);
 
         return parent::getBankcim();
     }
@@ -227,7 +227,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
     public function setBankcim($bankcim)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankcim', array($bankcim));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankcim', [$bankcim]);
 
         return parent::setBankcim($bankcim);
     }
@@ -238,7 +238,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
     public function getSzamlaszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzamlaszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzamlaszam', []);
 
         return parent::getSzamlaszam();
     }
@@ -249,7 +249,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
     public function setSzamlaszam($szamlaszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzamlaszam', array($szamlaszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzamlaszam', [$szamlaszam]);
 
         return parent::setSzamlaszam($szamlaszam);
     }
@@ -260,7 +260,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
     public function getSwift()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSwift', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSwift', []);
 
         return parent::getSwift();
     }
@@ -271,7 +271,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
     public function setSwift($swift)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSwift', array($swift));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSwift', [$swift]);
 
         return parent::setSwift($swift);
     }
@@ -282,7 +282,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
     public function getIban()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIban', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIban', []);
 
         return parent::getIban();
     }
@@ -293,7 +293,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
     public function setIban($iban)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIban', array($iban));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIban', [$iban]);
 
         return parent::setIban($iban);
     }
@@ -304,7 +304,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
     public function getValutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', []);
 
         return parent::getValutanem();
     }
@@ -315,7 +315,7 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
     public function setValutanem($valutanem)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', array($valutanem));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', [$valutanem]);
 
         return parent::setValutanem($valutanem);
     }

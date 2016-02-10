@@ -36,7 +36,7 @@ class Munkakor extends \Entities\Munkakor implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Munkakor extends \Entities\Munkakor implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'id', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'nev', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'jog', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'dolgozok');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'id', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'nev', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'jog', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'dolgozok'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'id', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'nev', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'jog', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'dolgozok');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'id', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'nev', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'jog', '' . "\0" . 'Entities\\Munkakor' . "\0" . 'dolgozok'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Munkakor extends \Entities\Munkakor implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Munkakor extends \Entities\Munkakor implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Munkakor extends \Entities\Munkakor implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Munkakor extends \Entities\Munkakor implements \Doctrine\ORM\Proxy\Proxy
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -205,7 +205,7 @@ class Munkakor extends \Entities\Munkakor implements \Doctrine\ORM\Proxy\Proxy
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -216,7 +216,7 @@ class Munkakor extends \Entities\Munkakor implements \Doctrine\ORM\Proxy\Proxy
     public function getDolgozok()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDolgozok', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDolgozok', []);
 
         return parent::getDolgozok();
     }
@@ -227,7 +227,7 @@ class Munkakor extends \Entities\Munkakor implements \Doctrine\ORM\Proxy\Proxy
     public function addDolgozo(\Entities\Dolgozo $dolgozo)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addDolgozo', array($dolgozo));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addDolgozo', [$dolgozo]);
 
         return parent::addDolgozo($dolgozo);
     }
@@ -238,7 +238,7 @@ class Munkakor extends \Entities\Munkakor implements \Doctrine\ORM\Proxy\Proxy
     public function removeDolgozo(\Entities\Dolgozo $dolgozo)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeDolgozo', array($dolgozo));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeDolgozo', [$dolgozo]);
 
         return parent::removeDolgozo($dolgozo);
     }
@@ -249,7 +249,7 @@ class Munkakor extends \Entities\Munkakor implements \Doctrine\ORM\Proxy\Proxy
     public function getJog()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJog', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJog', []);
 
         return parent::getJog();
     }
@@ -260,7 +260,7 @@ class Munkakor extends \Entities\Munkakor implements \Doctrine\ORM\Proxy\Proxy
     public function setJog($jog)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJog', array($jog));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJog', [$jog]);
 
         return parent::setJog($jog);
     }

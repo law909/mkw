@@ -36,7 +36,7 @@ class Rewrite301 extends \Entities\Rewrite301 implements \Doctrine\ORM\Proxy\Pro
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Rewrite301 extends \Entities\Rewrite301 implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Rewrite301' . "\0" . 'id', '' . "\0" . 'Entities\\Rewrite301' . "\0" . 'fromurl', '' . "\0" . 'Entities\\Rewrite301' . "\0" . 'tourl');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Rewrite301' . "\0" . 'id', '' . "\0" . 'Entities\\Rewrite301' . "\0" . 'fromurl', '' . "\0" . 'Entities\\Rewrite301' . "\0" . 'tourl'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Rewrite301' . "\0" . 'id', '' . "\0" . 'Entities\\Rewrite301' . "\0" . 'fromurl', '' . "\0" . 'Entities\\Rewrite301' . "\0" . 'tourl');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Rewrite301' . "\0" . 'id', '' . "\0" . 'Entities\\Rewrite301' . "\0" . 'fromurl', '' . "\0" . 'Entities\\Rewrite301' . "\0" . 'tourl'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Rewrite301 extends \Entities\Rewrite301 implements \Doctrine\ORM\Proxy\Pro
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Rewrite301 extends \Entities\Rewrite301 implements \Doctrine\ORM\Proxy\Pro
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Rewrite301 extends \Entities\Rewrite301 implements \Doctrine\ORM\Proxy\Pro
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Rewrite301 extends \Entities\Rewrite301 implements \Doctrine\ORM\Proxy\Pro
     public function getFromurl()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFromurl', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFromurl', []);
 
         return parent::getFromurl();
     }
@@ -205,7 +205,7 @@ class Rewrite301 extends \Entities\Rewrite301 implements \Doctrine\ORM\Proxy\Pro
     public function setFromurl($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFromurl', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFromurl', [$nev]);
 
         return parent::setFromurl($nev);
     }
@@ -216,7 +216,7 @@ class Rewrite301 extends \Entities\Rewrite301 implements \Doctrine\ORM\Proxy\Pro
     public function getTourl()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTourl', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTourl', []);
 
         return parent::getTourl();
     }
@@ -227,7 +227,7 @@ class Rewrite301 extends \Entities\Rewrite301 implements \Doctrine\ORM\Proxy\Pro
     public function setTourl($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTourl', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTourl', [$nev]);
 
         return parent::setTourl($nev);
     }

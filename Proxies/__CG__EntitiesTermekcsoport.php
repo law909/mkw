@@ -36,7 +36,7 @@ class Termekcsoport extends \Entities\Termekcsoport implements \Doctrine\ORM\Pro
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Termekcsoport extends \Entities\Termekcsoport implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'id', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'kedvezmenyek');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'id', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'kedvezmenyek'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'id', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'kedvezmenyek');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'id', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'kedvezmenyek'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Termekcsoport extends \Entities\Termekcsoport implements \Doctrine\ORM\Pro
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Termekcsoport extends \Entities\Termekcsoport implements \Doctrine\ORM\Pro
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Termekcsoport extends \Entities\Termekcsoport implements \Doctrine\ORM\Pro
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Termekcsoport extends \Entities\Termekcsoport implements \Doctrine\ORM\Pro
     public function setId($id)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setId', array($id));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setId', [$id]);
 
         return parent::setId($id);
     }
@@ -205,7 +205,7 @@ class Termekcsoport extends \Entities\Termekcsoport implements \Doctrine\ORM\Pro
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -216,7 +216,7 @@ class Termekcsoport extends \Entities\Termekcsoport implements \Doctrine\ORM\Pro
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }

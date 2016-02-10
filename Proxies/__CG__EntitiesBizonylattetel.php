@@ -36,7 +36,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'duplication', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kozvetitett', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arvaltoztat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'storno', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termeknev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'me', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ehparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'magassag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'suly', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsznev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtszszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afa', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afanev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afakulcs', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'gymennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kedvezmeny', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'netto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertekhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'parbizonylattetel', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szulobizonylattetelek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hatarido', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus1', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus2', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus1nev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus2nev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatertek1', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatertek2', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'translations', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekcsoport', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekcsoportnev', 'locale', 'mese', 'elolegtipus');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'duplication', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kozvetitett', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arvaltoztat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'storno', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termeknev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'me', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ehparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'magassag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'suly', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsznev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtszszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afa', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afanev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afakulcs', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'gymennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kedvezmeny', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'netto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertekhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'parbizonylattetel', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szulobizonylattetelek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hatarido', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus1', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus2', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus1nev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus2nev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatertek1', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatertek2', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'translations', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekcsoport', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekcsoportnev', 'locale', 'mese', 'elolegtipus'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'duplication', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kozvetitett', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arvaltoztat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'storno', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termeknev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'me', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ehparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'magassag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'suly', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsznev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtszszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afa', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afanev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afakulcs', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'gymennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kedvezmeny', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'netto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertekhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'parbizonylattetel', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szulobizonylattetelek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hatarido', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus1', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus2', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus1nev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus2nev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatertek1', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatertek2', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'translations', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekcsoport', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekcsoportnev', 'locale', 'mese', 'elolegtipus');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'duplication', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kozvetitett', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arvaltoztat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'storno', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termeknev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'me', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ehparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hparany', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'magassag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'suly', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtsznev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'vtszszam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afa', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afanev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afakulcs', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'gymennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'kedvezmeny', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'enettoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'ebruttoegysarhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'netto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'afaertekhuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'parbizonylattetel', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'szulobizonylattetelek', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'hatarido', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus1', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus2', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus1nev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatadattipus2nev', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatertek1', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'valtozatertek2', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'translations', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekcsoport', '' . "\0" . 'Entities\\Bizonylattetel' . "\0" . 'termekcsoportnev', 'locale', 'mese', 'elolegtipus'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function toLista()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', []);
 
         return parent::toLista();
     }
@@ -190,7 +190,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setPersistentData()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPersistentData', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPersistentData', []);
 
         return parent::setPersistentData();
     }
@@ -201,7 +201,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function calc()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calc', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calc', []);
 
         return parent::calc();
     }
@@ -216,7 +216,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -227,7 +227,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getTeljesites()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTeljesites', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTeljesites', []);
 
         return parent::getTeljesites();
     }
@@ -238,7 +238,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getRaktar()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRaktar', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRaktar', []);
 
         return parent::getRaktar();
     }
@@ -249,7 +249,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getRaktarId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRaktarId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRaktarId', []);
 
         return parent::getRaktarId();
     }
@@ -260,7 +260,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getBizonylatfej()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylatfej', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylatfej', []);
 
         return parent::getBizonylatfej();
     }
@@ -271,7 +271,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getBizonylatfejId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylatfejId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylatfejId', []);
 
         return parent::getBizonylatfejId();
     }
@@ -282,7 +282,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setBizonylatfej($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBizonylatfej', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBizonylatfej', [$val]);
 
         return parent::setBizonylatfej($val);
     }
@@ -293,7 +293,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function removeBizonylatfej()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBizonylatfej', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBizonylatfej', []);
 
         return parent::removeBizonylatfej();
     }
@@ -304,7 +304,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getMozgat()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMozgat', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMozgat', []);
 
         return parent::getMozgat();
     }
@@ -315,7 +315,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setMozgat($mozgat = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMozgat', array($mozgat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMozgat', [$mozgat]);
 
         return parent::setMozgat($mozgat);
     }
@@ -326,7 +326,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getFoglal()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFoglal', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFoglal', []);
 
         return parent::getFoglal();
     }
@@ -337,7 +337,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setFoglal()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFoglal', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFoglal', []);
 
         return parent::setFoglal();
     }
@@ -348,7 +348,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getArvaltoztat()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArvaltoztat', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArvaltoztat', []);
 
         return parent::getArvaltoztat();
     }
@@ -359,7 +359,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setArvaltoztat($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setArvaltoztat', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setArvaltoztat', [$val]);
 
         return parent::setArvaltoztat($val);
     }
@@ -370,7 +370,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getStorno()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStorno', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStorno', []);
 
         return parent::getStorno();
     }
@@ -381,7 +381,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setStorno($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStorno', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStorno', [$val]);
 
         return parent::setStorno($val);
     }
@@ -392,7 +392,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getStornozott()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStornozott', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStornozott', []);
 
         return parent::getStornozott();
     }
@@ -403,7 +403,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setStornozott($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStornozott', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStornozott', [$val]);
 
         return parent::setStornozott($val);
     }
@@ -414,7 +414,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getHosszusag()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHosszusag', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHosszusag', []);
 
         return parent::getHosszusag();
     }
@@ -425,7 +425,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setHosszusag($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHosszusag', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHosszusag', [$adat]);
 
         return parent::setHosszusag($adat);
     }
@@ -436,7 +436,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getEhparany()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEhparany', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEhparany', []);
 
         return parent::getEhparany();
     }
@@ -447,7 +447,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setEhparany($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEhparany', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEhparany', [$adat]);
 
         return parent::setEhparany($adat);
     }
@@ -458,7 +458,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getKiszereles()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKiszereles', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKiszereles', []);
 
         return parent::getKiszereles();
     }
@@ -469,7 +469,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setKiszereles($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKiszereles', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKiszereles', [$adat]);
 
         return parent::setKiszereles($adat);
     }
@@ -480,7 +480,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getMagassag()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMagassag', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMagassag', []);
 
         return parent::getMagassag();
     }
@@ -491,7 +491,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setMagassag($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMagassag', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMagassag', [$adat]);
 
         return parent::setMagassag($adat);
     }
@@ -502,7 +502,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getOsszehajthato()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsszehajthato', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsszehajthato', []);
 
         return parent::getOsszehajthato();
     }
@@ -513,7 +513,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setOsszehajthato($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsszehajthato', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsszehajthato', [$adat]);
 
         return parent::setOsszehajthato($adat);
     }
@@ -524,7 +524,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getSuly()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSuly', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSuly', []);
 
         return parent::getSuly();
     }
@@ -535,7 +535,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setSuly($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSuly', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSuly', [$adat]);
 
         return parent::setSuly($adat);
     }
@@ -546,7 +546,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getSzelesseg()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzelesseg', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzelesseg', []);
 
         return parent::getSzelesseg();
     }
@@ -557,7 +557,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setSzelesseg($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzelesseg', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzelesseg', [$adat]);
 
         return parent::setSzelesseg($adat);
     }
@@ -568,7 +568,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getTermek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', []);
 
         return parent::getTermek();
     }
@@ -579,7 +579,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getTermekId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekId', []);
 
         return parent::getTermekId();
     }
@@ -590,7 +590,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setTermek($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermek', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermek', [$val]);
 
         return parent::setTermek($val);
     }
@@ -601,7 +601,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function removeTermek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', []);
 
         return parent::removeTermek();
     }
@@ -612,7 +612,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getTermeknev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermeknev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermeknev', []);
 
         return parent::getTermeknev();
     }
@@ -623,7 +623,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setTermeknev($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermeknev', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermeknev', [$val]);
 
         return parent::setTermeknev($val);
     }
@@ -634,7 +634,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getCikkszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCikkszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCikkszam', []);
 
         return parent::getCikkszam();
     }
@@ -645,7 +645,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setCikkszam($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCikkszam', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCikkszam', [$val]);
 
         return parent::setCikkszam($val);
     }
@@ -656,7 +656,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getIdegencikkszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdegencikkszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdegencikkszam', []);
 
         return parent::getIdegencikkszam();
     }
@@ -667,7 +667,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setIdegencikkszam($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdegencikkszam', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdegencikkszam', [$val]);
 
         return parent::setIdegencikkszam($val);
     }
@@ -678,7 +678,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getME()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getME', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getME', []);
 
         return parent::getME();
     }
@@ -689,7 +689,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setME($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setME', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setME', [$val]);
 
         return parent::setME($val);
     }
@@ -700,7 +700,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getVtsz()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVtsz', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVtsz', []);
 
         return parent::getVtsz();
     }
@@ -711,7 +711,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getVtszszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVtszszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVtszszam', []);
 
         return parent::getVtszszam();
     }
@@ -722,7 +722,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getVtsznev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVtsznev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVtsznev', []);
 
         return parent::getVtsznev();
     }
@@ -733,7 +733,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getVtszId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVtszId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVtszId', []);
 
         return parent::getVtszId();
     }
@@ -744,7 +744,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setVtsz($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVtsz', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVtsz', [$val]);
 
         return parent::setVtsz($val);
     }
@@ -755,7 +755,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function removeVtsz()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeVtsz', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeVtsz', []);
 
         return parent::removeVtsz();
     }
@@ -766,7 +766,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getAfa()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', []);
 
         return parent::getAfa();
     }
@@ -777,7 +777,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getAfanev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfanev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfanev', []);
 
         return parent::getAfanev();
     }
@@ -788,7 +788,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getAfakulcs()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfakulcs', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfakulcs', []);
 
         return parent::getAfakulcs();
     }
@@ -799,7 +799,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getAfaId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaId', []);
 
         return parent::getAfaId();
     }
@@ -810,7 +810,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setAfa($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', [$val]);
 
         return parent::setAfa($val);
     }
@@ -821,7 +821,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function removeAfa()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAfa', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAfa', []);
 
         return parent::removeAfa();
     }
@@ -832,7 +832,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getGymennyiseg()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGymennyiseg', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGymennyiseg', []);
 
         return parent::getGymennyiseg();
     }
@@ -843,7 +843,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setGymennyiseg($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setGymennyiseg', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setGymennyiseg', [$val]);
 
         return parent::setGymennyiseg($val);
     }
@@ -854,7 +854,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getMennyiseg()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMennyiseg', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMennyiseg', []);
 
         return parent::getMennyiseg();
     }
@@ -865,7 +865,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setMennyiseg($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMennyiseg', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMennyiseg', [$val]);
 
         return parent::setMennyiseg($val);
     }
@@ -876,7 +876,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getNettoegysar()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoegysar', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoegysar', []);
 
         return parent::getNettoegysar();
     }
@@ -887,7 +887,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setNettoegysar($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNettoegysar', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNettoegysar', [$val]);
 
         return parent::setNettoegysar($val);
     }
@@ -898,7 +898,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getBruttoegysar()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoegysar', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoegysar', []);
 
         return parent::getBruttoegysar();
     }
@@ -909,7 +909,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setBruttoegysar($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBruttoegysar', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBruttoegysar', [$val]);
 
         return parent::setBruttoegysar($val);
     }
@@ -920,7 +920,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getNettoegysarhuf()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoegysarhuf', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoegysarhuf', []);
 
         return parent::getNettoegysarhuf();
     }
@@ -931,7 +931,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setNettoegysarhuf($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNettoegysarhuf', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNettoegysarhuf', [$val]);
 
         return parent::setNettoegysarhuf($val);
     }
@@ -942,7 +942,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getBruttoegysarhuf()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoegysarhuf', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoegysarhuf', []);
 
         return parent::getBruttoegysarhuf();
     }
@@ -953,7 +953,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setBruttoegysarhuf($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBruttoegysarhuf', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBruttoegysarhuf', [$val]);
 
         return parent::setBruttoegysarhuf($val);
     }
@@ -964,7 +964,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getEnettoegysar()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEnettoegysar', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEnettoegysar', []);
 
         return parent::getEnettoegysar();
     }
@@ -975,7 +975,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getEbruttoegysar()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEbruttoegysar', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEbruttoegysar', []);
 
         return parent::getEbruttoegysar();
     }
@@ -986,7 +986,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getEnettoegysarhuf()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEnettoegysarhuf', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEnettoegysarhuf', []);
 
         return parent::getEnettoegysarhuf();
     }
@@ -997,7 +997,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getEbruttoegysarhuf()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEbruttoegysarhuf', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEbruttoegysarhuf', []);
 
         return parent::getEbruttoegysarhuf();
     }
@@ -1008,7 +1008,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getNetto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNetto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNetto', []);
 
         return parent::getNetto();
     }
@@ -1019,7 +1019,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setNetto($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNetto', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNetto', [$val]);
 
         return parent::setNetto($val);
     }
@@ -1030,7 +1030,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getAfaertek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaertek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaertek', []);
 
         return parent::getAfaertek();
     }
@@ -1041,7 +1041,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setAfaertek($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfaertek', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfaertek', [$val]);
 
         return parent::setAfaertek($val);
     }
@@ -1052,7 +1052,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getBrutto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBrutto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBrutto', []);
 
         return parent::getBrutto();
     }
@@ -1063,7 +1063,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setBrutto($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBrutto', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBrutto', [$val]);
 
         return parent::setBrutto($val);
     }
@@ -1074,7 +1074,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getValutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', []);
 
         return parent::getValutanem();
     }
@@ -1085,7 +1085,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getValutanemnev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemnev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemnev', []);
 
         return parent::getValutanemnev();
     }
@@ -1096,7 +1096,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getValutanemId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', []);
 
         return parent::getValutanemId();
     }
@@ -1107,7 +1107,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setValutanem($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', [$val]);
 
         return parent::setValutanem($val);
     }
@@ -1118,7 +1118,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function removeValutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValutanem', []);
 
         return parent::removeValutanem();
     }
@@ -1129,7 +1129,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getNettohuf()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettohuf', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettohuf', []);
 
         return parent::getNettohuf();
     }
@@ -1140,7 +1140,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setNettohuf($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNettohuf', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNettohuf', [$val]);
 
         return parent::setNettohuf($val);
     }
@@ -1151,7 +1151,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getAfaertekhuf()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaertekhuf', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaertekhuf', []);
 
         return parent::getAfaertekhuf();
     }
@@ -1162,7 +1162,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setAfaertekhuf($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfaertekhuf', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfaertekhuf', [$val]);
 
         return parent::setAfaertekhuf($val);
     }
@@ -1173,7 +1173,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getBruttohuf()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttohuf', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttohuf', []);
 
         return parent::getBruttohuf();
     }
@@ -1184,7 +1184,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setBruttohuf($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBruttohuf', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBruttohuf', [$val]);
 
         return parent::setBruttohuf($val);
     }
@@ -1195,7 +1195,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getArfolyam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArfolyam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArfolyam', []);
 
         return parent::getArfolyam();
     }
@@ -1206,7 +1206,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setArfolyam($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setArfolyam', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setArfolyam', [$val]);
 
         return parent::setArfolyam($val);
     }
@@ -1217,7 +1217,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getParbizonylattetel()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getParbizonylattetel', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getParbizonylattetel', []);
 
         return parent::getParbizonylattetel();
     }
@@ -1228,7 +1228,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getParbizonylattetelId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getParbizonylattetelId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getParbizonylattetelId', []);
 
         return parent::getParbizonylattetelId();
     }
@@ -1239,7 +1239,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setParbizonylattetel($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setParbizonylattetel', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setParbizonylattetel', [$val]);
 
         return parent::setParbizonylattetel($val);
     }
@@ -1250,7 +1250,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function removeParbizonylattetel()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeParbizonylattetel', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeParbizonylattetel', []);
 
         return parent::removeParbizonylattetel();
     }
@@ -1261,7 +1261,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getSzulobizonylattetelek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzulobizonylattetelek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzulobizonylattetelek', []);
 
         return parent::getSzulobizonylattetelek();
     }
@@ -1272,7 +1272,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function addSzulobizonylattetel($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addSzulobizonylattetel', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addSzulobizonylattetel', [$val]);
 
         return parent::addSzulobizonylattetel($val);
     }
@@ -1283,7 +1283,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function removeSzulobizonylattetel($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeSzulobizonylattetel', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeSzulobizonylattetel', [$val]);
 
         return parent::removeSzulobizonylattetel($val);
     }
@@ -1294,7 +1294,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getHatarido()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatarido', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatarido', []);
 
         return parent::getHatarido();
     }
@@ -1305,7 +1305,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getHataridoStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHataridoStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHataridoStr', []);
 
         return parent::getHataridoStr();
     }
@@ -1316,7 +1316,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setHatarido($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHatarido', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHatarido', [$adat]);
 
         return parent::setHatarido($adat);
     }
@@ -1327,7 +1327,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getLastmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', []);
 
         return parent::getLastmod();
     }
@@ -1338,7 +1338,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function clearLastmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearLastmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearLastmod', []);
 
         return parent::clearLastmod();
     }
@@ -1349,7 +1349,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getCreated()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
     }
@@ -1360,7 +1360,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function clearCreated()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearCreated', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearCreated', []);
 
         return parent::clearCreated();
     }
@@ -1371,7 +1371,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getValtozatertek1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatertek1', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatertek1', []);
 
         return parent::getValtozatertek1();
     }
@@ -1382,7 +1382,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setValtozatertek1($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValtozatertek1', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValtozatertek1', [$val]);
 
         return parent::setValtozatertek1($val);
     }
@@ -1393,7 +1393,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getValtozatertek2()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatertek2', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatertek2', []);
 
         return parent::getValtozatertek2();
     }
@@ -1404,7 +1404,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setValtozatertek2($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValtozatertek2', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValtozatertek2', [$val]);
 
         return parent::setValtozatertek2($val);
     }
@@ -1415,7 +1415,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getValtozatadattipus1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatadattipus1', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatadattipus1', []);
 
         return parent::getValtozatadattipus1();
     }
@@ -1426,7 +1426,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setValtozatadattipus1($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValtozatadattipus1', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValtozatadattipus1', [$adat]);
 
         return parent::setValtozatadattipus1($adat);
     }
@@ -1437,7 +1437,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getValtozatadattipus2()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatadattipus2', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatadattipus2', []);
 
         return parent::getValtozatadattipus2();
     }
@@ -1448,7 +1448,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setValtozatadattipus2($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValtozatadattipus2', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValtozatadattipus2', [$adat]);
 
         return parent::setValtozatadattipus2($adat);
     }
@@ -1459,7 +1459,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getValtozatadattipus1nev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatadattipus1nev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatadattipus1nev', []);
 
         return parent::getValtozatadattipus1nev();
     }
@@ -1470,7 +1470,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setValtozatadattipus1nev($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValtozatadattipus1nev', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValtozatadattipus1nev', [$adat]);
 
         return parent::setValtozatadattipus1nev($adat);
     }
@@ -1481,7 +1481,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getValtozatadattipus2nev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatadattipus2nev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatadattipus2nev', []);
 
         return parent::getValtozatadattipus2nev();
     }
@@ -1492,7 +1492,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setValtozatadattipus2nev($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValtozatadattipus2nev', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValtozatadattipus2nev', [$adat]);
 
         return parent::setValtozatadattipus2nev($adat);
     }
@@ -1503,7 +1503,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getTermekvaltozat()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekvaltozat', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekvaltozat', []);
 
         return parent::getTermekvaltozat();
     }
@@ -1514,7 +1514,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getTermekvaltozatId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekvaltozatId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekvaltozatId', []);
 
         return parent::getTermekvaltozatId();
     }
@@ -1525,7 +1525,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setTermekvaltozat($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekvaltozat', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekvaltozat', [$val]);
 
         return parent::setTermekvaltozat($val);
     }
@@ -1536,7 +1536,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function removeTermekvaltozat()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermekvaltozat', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermekvaltozat', []);
 
         return parent::removeTermekvaltozat();
     }
@@ -1547,7 +1547,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getIrany()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIrany', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIrany', []);
 
         return parent::getIrany();
     }
@@ -1558,7 +1558,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setIrany($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIrany', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIrany', [$val]);
 
         return parent::setIrany($val);
     }
@@ -1569,7 +1569,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getRontott()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRontott', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRontott', []);
 
         return parent::getRontott();
     }
@@ -1580,7 +1580,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setRontott($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRontott', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRontott', [$adat]);
 
         return parent::setRontott($adat);
     }
@@ -1591,7 +1591,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getTranslations()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslations', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslations', []);
 
         return parent::getTranslations();
     }
@@ -1602,7 +1602,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function addTranslation(\Entities\BizonylattetelTranslation $t)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTranslation', array($t));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTranslation', [$t]);
 
         return parent::addTranslation($t);
     }
@@ -1613,7 +1613,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function removeTranslation(\Entities\BizonylattetelTranslation $t)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTranslation', array($t));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTranslation', [$t]);
 
         return parent::removeTranslation($t);
     }
@@ -1624,7 +1624,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getTermekcsoport()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoport', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoport', []);
 
         return parent::getTermekcsoport();
     }
@@ -1635,7 +1635,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setTermekcsoport($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekcsoport', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekcsoport', [$adat]);
 
         return parent::setTermekcsoport($adat);
     }
@@ -1646,7 +1646,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getLocale()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocale', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocale', []);
 
         return parent::getLocale();
     }
@@ -1657,7 +1657,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setLocale($locale)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLocale', array($locale));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLocale', [$locale]);
 
         return parent::setLocale($locale);
     }
@@ -1668,7 +1668,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function duplicateFrom($entityB)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'duplicateFrom', array($entityB));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'duplicateFrom', [$entityB]);
 
         return parent::duplicateFrom($entityB);
     }
@@ -1679,7 +1679,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getHparany()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHparany', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHparany', []);
 
         return parent::getHparany();
     }
@@ -1690,7 +1690,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setHparany($hparany)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHparany', array($hparany));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHparany', [$hparany]);
 
         return parent::setHparany($hparany);
     }
@@ -1701,7 +1701,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getTermekcsoportnev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoportnev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoportnev', []);
 
         return parent::getTermekcsoportnev();
     }
@@ -1712,7 +1712,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setTermekcsoportnev($termekcsoportnev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekcsoportnev', array($termekcsoportnev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekcsoportnev', [$termekcsoportnev]);
 
         return parent::setTermekcsoportnev($termekcsoportnev);
     }
@@ -1723,7 +1723,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setAfakulcs($afakulcs)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfakulcs', array($afakulcs));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfakulcs', [$afakulcs]);
 
         return parent::setAfakulcs($afakulcs);
     }
@@ -1734,7 +1734,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setAfanev($afanev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfanev', array($afanev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfanev', [$afanev]);
 
         return parent::setAfanev($afanev);
     }
@@ -1745,7 +1745,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setEbruttoegysar($ebruttoegysar)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEbruttoegysar', array($ebruttoegysar));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEbruttoegysar', [$ebruttoegysar]);
 
         return parent::setEbruttoegysar($ebruttoegysar);
     }
@@ -1756,7 +1756,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setEbruttoegysarhuf($ebruttoegysarhuf)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEbruttoegysarhuf', array($ebruttoegysarhuf));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEbruttoegysarhuf', [$ebruttoegysarhuf]);
 
         return parent::setEbruttoegysarhuf($ebruttoegysarhuf);
     }
@@ -1767,7 +1767,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setEnettoegysar($enettoegysar)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEnettoegysar', array($enettoegysar));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEnettoegysar', [$enettoegysar]);
 
         return parent::setEnettoegysar($enettoegysar);
     }
@@ -1778,7 +1778,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setEnettoegysarhuf($enettoegysarhuf)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEnettoegysarhuf', array($enettoegysarhuf));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEnettoegysarhuf', [$enettoegysarhuf]);
 
         return parent::setEnettoegysarhuf($enettoegysarhuf);
     }
@@ -1789,7 +1789,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setValutanemnev($valutanemnev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanemnev', array($valutanemnev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanemnev', [$valutanemnev]);
 
         return parent::setValutanemnev($valutanemnev);
     }
@@ -1800,7 +1800,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setVtsznev($vtsznev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVtsznev', array($vtsznev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVtsznev', [$vtsznev]);
 
         return parent::setVtsznev($vtsznev);
     }
@@ -1811,7 +1811,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setVtszszam($vtszszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVtszszam', array($vtszszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVtszszam', [$vtszszam]);
 
         return parent::setVtszszam($vtszszam);
     }
@@ -1822,7 +1822,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getKedvezmeny()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmeny', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmeny', []);
 
         return parent::getKedvezmeny();
     }
@@ -1833,7 +1833,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setKedvezmeny($kedvezmeny)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKedvezmeny', array($kedvezmeny));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKedvezmeny', [$kedvezmeny]);
 
         return parent::setKedvezmeny($kedvezmeny);
     }
@@ -1844,7 +1844,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getMese()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMese', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMese', []);
 
         return parent::getMese();
     }
@@ -1855,7 +1855,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setMese($mese)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMese', array($mese));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMese', [$mese]);
 
         return parent::setMese($mese);
     }
@@ -1866,7 +1866,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getKozvetitett()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKozvetitett', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKozvetitett', []);
 
         return parent::getKozvetitett();
     }
@@ -1877,7 +1877,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setKozvetitett($kozvetitett)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKozvetitett', array($kozvetitett));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKozvetitett', [$kozvetitett]);
 
         return parent::setKozvetitett($kozvetitett);
     }
@@ -1888,7 +1888,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function getElolegtipus()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElolegtipus', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElolegtipus', []);
 
         return parent::getElolegtipus();
     }
@@ -1899,7 +1899,7 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     public function setElolegtipus($elolegtipus)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElolegtipus', array($elolegtipus));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElolegtipus', [$elolegtipus]);
 
         return parent::setElolegtipus($elolegtipus);
     }

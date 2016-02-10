@@ -36,7 +36,7 @@ class Keszlet extends \Entities\Keszlet implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Keszlet extends \Entities\Keszlet implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'id', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'raktar', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'termek', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'bebizonylatfej', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'bebizonylattetel', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'mennyiseg');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'id', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'raktar', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'termek', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'bebizonylatfej', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'bebizonylattetel', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'mennyiseg'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'id', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'raktar', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'termek', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'bebizonylatfej', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'bebizonylattetel', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'mennyiseg');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'id', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'raktar', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'termek', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'bebizonylatfej', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'bebizonylattetel', '' . "\0" . 'Entities\\Keszlet' . "\0" . 'mennyiseg'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Keszlet extends \Entities\Keszlet implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Keszlet extends \Entities\Keszlet implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Keszlet extends \Entities\Keszlet implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Keszlet extends \Entities\Keszlet implements \Doctrine\ORM\Proxy\Proxy
     public function getRaktar()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRaktar', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRaktar', []);
 
         return parent::getRaktar();
     }
@@ -205,7 +205,7 @@ class Keszlet extends \Entities\Keszlet implements \Doctrine\ORM\Proxy\Proxy
     public function getTermek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', []);
 
         return parent::getTermek();
     }
@@ -216,7 +216,7 @@ class Keszlet extends \Entities\Keszlet implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekvaltozat()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekvaltozat', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekvaltozat', []);
 
         return parent::getTermekvaltozat();
     }
@@ -227,7 +227,7 @@ class Keszlet extends \Entities\Keszlet implements \Doctrine\ORM\Proxy\Proxy
     public function getBebizonylatfej()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBebizonylatfej', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBebizonylatfej', []);
 
         return parent::getBebizonylatfej();
     }
@@ -238,7 +238,7 @@ class Keszlet extends \Entities\Keszlet implements \Doctrine\ORM\Proxy\Proxy
     public function getBebizonylattetel()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBebizonylattetel', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBebizonylattetel', []);
 
         return parent::getBebizonylattetel();
     }
@@ -249,7 +249,7 @@ class Keszlet extends \Entities\Keszlet implements \Doctrine\ORM\Proxy\Proxy
     public function getMennyiseg()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMennyiseg', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMennyiseg', []);
 
         return parent::getMennyiseg();
     }

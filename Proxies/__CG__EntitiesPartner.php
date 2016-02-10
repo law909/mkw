@@ -36,7 +36,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Partner' . "\0" . 'id', '' . "\0" . 'Entities\\Partner' . "\0" . 'created', '' . "\0" . 'Entities\\Partner' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Partner' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Partner' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Partner' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Partner' . "\0" . 'nev', '' . "\0" . 'Entities\\Partner' . "\0" . 'vezeteknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'keresztnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'adoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'euadoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'mukengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'jovengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'ostermszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'valligszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'fvmszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'cjszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'statszamjel', '' . "\0" . 'Entities\\Partner' . "\0" . 'irszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'varos', '' . "\0" . 'Entities\\Partner' . "\0" . 'utca', '' . "\0" . 'Entities\\Partner' . "\0" . 'lirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'lvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'lutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'telefon', '' . "\0" . 'Entities\\Partner' . "\0" . 'mobil', '' . "\0" . 'Entities\\Partner' . "\0" . 'fax', '' . "\0" . 'Entities\\Partner' . "\0" . 'email', '' . "\0" . 'Entities\\Partner' . "\0" . 'honlap', '' . "\0" . 'Entities\\Partner' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Partner' . "\0" . 'syncid', '' . "\0" . 'Entities\\Partner' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Partner' . "\0" . 'teendok', '' . "\0" . 'Entities\\Partner' . "\0" . 'esemenyek', '' . "\0" . 'Entities\\Partner' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Partner' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizhatido', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'nem', '' . "\0" . 'Entities\\Partner' . "\0" . 'szuletesiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'akcioshirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'ujdonsaghirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'utolsoklikk', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Partner' . "\0" . 'vendeg', '' . "\0" . 'Entities\\Partner' . "\0" . 'ip', '' . "\0" . 'Entities\\Partner' . "\0" . 'referrer', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallito', '' . "\0" . 'Entities\\Partner' . "\0" . 'passwordreminder', '' . "\0" . 'Entities\\Partner' . "\0" . 'oldloginname', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'banknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Partner' . "\0" . 'iban', '' . "\0" . 'Entities\\Partner' . "\0" . 'swift', '' . "\0" . 'Entities\\Partner' . "\0" . 'szamlatipus', '' . "\0" . 'Entities\\Partner' . "\0" . 'bizonylatnyelv', '' . "\0" . 'Entities\\Partner' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekarazonosito', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekcsoportkedvezmenyek', '' . "\0" . 'Entities\\Partner' . "\0" . 'ezuzletkoto');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Partner' . "\0" . 'id', '' . "\0" . 'Entities\\Partner' . "\0" . 'created', '' . "\0" . 'Entities\\Partner' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Partner' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Partner' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Partner' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Partner' . "\0" . 'nev', '' . "\0" . 'Entities\\Partner' . "\0" . 'vezeteknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'keresztnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'adoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'euadoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'mukengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'jovengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'ostermszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'valligszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'fvmszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'cjszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'statszamjel', '' . "\0" . 'Entities\\Partner' . "\0" . 'irszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'varos', '' . "\0" . 'Entities\\Partner' . "\0" . 'utca', '' . "\0" . 'Entities\\Partner' . "\0" . 'lirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'lvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'lutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'telefon', '' . "\0" . 'Entities\\Partner' . "\0" . 'mobil', '' . "\0" . 'Entities\\Partner' . "\0" . 'fax', '' . "\0" . 'Entities\\Partner' . "\0" . 'email', '' . "\0" . 'Entities\\Partner' . "\0" . 'honlap', '' . "\0" . 'Entities\\Partner' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Partner' . "\0" . 'syncid', '' . "\0" . 'Entities\\Partner' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Partner' . "\0" . 'teendok', '' . "\0" . 'Entities\\Partner' . "\0" . 'esemenyek', '' . "\0" . 'Entities\\Partner' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Partner' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizhatido', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'nem', '' . "\0" . 'Entities\\Partner' . "\0" . 'szuletesiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'akcioshirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'ujdonsaghirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'utolsoklikk', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Partner' . "\0" . 'vendeg', '' . "\0" . 'Entities\\Partner' . "\0" . 'ip', '' . "\0" . 'Entities\\Partner' . "\0" . 'referrer', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallito', '' . "\0" . 'Entities\\Partner' . "\0" . 'passwordreminder', '' . "\0" . 'Entities\\Partner' . "\0" . 'oldloginname', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'banknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Partner' . "\0" . 'iban', '' . "\0" . 'Entities\\Partner' . "\0" . 'swift', '' . "\0" . 'Entities\\Partner' . "\0" . 'szamlatipus', '' . "\0" . 'Entities\\Partner' . "\0" . 'bizonylatnyelv', '' . "\0" . 'Entities\\Partner' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekarazonosito', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekcsoportkedvezmenyek', '' . "\0" . 'Entities\\Partner' . "\0" . 'ezuzletkoto'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Partner' . "\0" . 'id', '' . "\0" . 'Entities\\Partner' . "\0" . 'created', '' . "\0" . 'Entities\\Partner' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Partner' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Partner' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Partner' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Partner' . "\0" . 'nev', '' . "\0" . 'Entities\\Partner' . "\0" . 'vezeteknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'keresztnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'adoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'euadoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'mukengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'jovengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'ostermszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'valligszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'fvmszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'cjszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'statszamjel', '' . "\0" . 'Entities\\Partner' . "\0" . 'irszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'varos', '' . "\0" . 'Entities\\Partner' . "\0" . 'utca', '' . "\0" . 'Entities\\Partner' . "\0" . 'lirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'lvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'lutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'telefon', '' . "\0" . 'Entities\\Partner' . "\0" . 'mobil', '' . "\0" . 'Entities\\Partner' . "\0" . 'fax', '' . "\0" . 'Entities\\Partner' . "\0" . 'email', '' . "\0" . 'Entities\\Partner' . "\0" . 'honlap', '' . "\0" . 'Entities\\Partner' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Partner' . "\0" . 'syncid', '' . "\0" . 'Entities\\Partner' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Partner' . "\0" . 'teendok', '' . "\0" . 'Entities\\Partner' . "\0" . 'esemenyek', '' . "\0" . 'Entities\\Partner' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Partner' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizhatido', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'nem', '' . "\0" . 'Entities\\Partner' . "\0" . 'szuletesiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'akcioshirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'ujdonsaghirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'utolsoklikk', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Partner' . "\0" . 'vendeg', '' . "\0" . 'Entities\\Partner' . "\0" . 'ip', '' . "\0" . 'Entities\\Partner' . "\0" . 'referrer', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallito', '' . "\0" . 'Entities\\Partner' . "\0" . 'passwordreminder', '' . "\0" . 'Entities\\Partner' . "\0" . 'oldloginname', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'banknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Partner' . "\0" . 'iban', '' . "\0" . 'Entities\\Partner' . "\0" . 'swift', '' . "\0" . 'Entities\\Partner' . "\0" . 'szamlatipus', '' . "\0" . 'Entities\\Partner' . "\0" . 'bizonylatnyelv', '' . "\0" . 'Entities\\Partner' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekarazonosito', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekcsoportkedvezmenyek', '' . "\0" . 'Entities\\Partner' . "\0" . 'ezuzletkoto');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Partner' . "\0" . 'id', '' . "\0" . 'Entities\\Partner' . "\0" . 'created', '' . "\0" . 'Entities\\Partner' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Partner' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Partner' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Partner' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Partner' . "\0" . 'nev', '' . "\0" . 'Entities\\Partner' . "\0" . 'vezeteknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'keresztnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'adoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'euadoszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'mukengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'jovengszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'ostermszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'valligszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'fvmszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'cjszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'statszamjel', '' . "\0" . 'Entities\\Partner' . "\0" . 'irszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'varos', '' . "\0" . 'Entities\\Partner' . "\0" . 'utca', '' . "\0" . 'Entities\\Partner' . "\0" . 'lirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'lvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'lutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'telefon', '' . "\0" . 'Entities\\Partner' . "\0" . 'mobil', '' . "\0" . 'Entities\\Partner' . "\0" . 'fax', '' . "\0" . 'Entities\\Partner' . "\0" . 'email', '' . "\0" . 'Entities\\Partner' . "\0" . 'honlap', '' . "\0" . 'Entities\\Partner' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Partner' . "\0" . 'syncid', '' . "\0" . 'Entities\\Partner' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Partner' . "\0" . 'teendok', '' . "\0" . 'Entities\\Partner' . "\0" . 'esemenyek', '' . "\0" . 'Entities\\Partner' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Partner' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Partner' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Partner' . "\0" . 'fizhatido', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallnev', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallirszam', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallvaros', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallutca', '' . "\0" . 'Entities\\Partner' . "\0" . 'nem', '' . "\0" . 'Entities\\Partner' . "\0" . 'szuletesiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'akcioshirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'ujdonsaghirlevelkell', '' . "\0" . 'Entities\\Partner' . "\0" . 'utolsoklikk', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Partner' . "\0" . 'vendeg', '' . "\0" . 'Entities\\Partner' . "\0" . 'ip', '' . "\0" . 'Entities\\Partner' . "\0" . 'referrer', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallito', '' . "\0" . 'Entities\\Partner' . "\0" . 'passwordreminder', '' . "\0" . 'Entities\\Partner' . "\0" . 'oldloginname', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Partner' . "\0" . 'banknev', '' . "\0" . 'Entities\\Partner' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Partner' . "\0" . 'iban', '' . "\0" . 'Entities\\Partner' . "\0" . 'swift', '' . "\0" . 'Entities\\Partner' . "\0" . 'szamlatipus', '' . "\0" . 'Entities\\Partner' . "\0" . 'bizonylatnyelv', '' . "\0" . 'Entities\\Partner' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekarazonosito', '' . "\0" . 'Entities\\Partner' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Partner' . "\0" . 'termekcsoportkedvezmenyek', '' . "\0" . 'Entities\\Partner' . "\0" . 'ezuzletkoto'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getCim()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCim', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCim', []);
 
         return parent::getCim();
     }
@@ -190,7 +190,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getLCim()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLCim', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLCim', []);
 
         return parent::getLCim();
     }
@@ -205,7 +205,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -216,7 +216,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getInaktiv()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getInaktiv', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getInaktiv', []);
 
         return parent::getInaktiv();
     }
@@ -227,7 +227,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setInaktiv($inaktiv)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setInaktiv', array($inaktiv));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setInaktiv', [$inaktiv]);
 
         return parent::setInaktiv($inaktiv);
     }
@@ -238,7 +238,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -249,7 +249,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -260,7 +260,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getVezeteknev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVezeteknev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVezeteknev', []);
 
         return parent::getVezeteknev();
     }
@@ -271,7 +271,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setVezeteknev($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVezeteknev', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVezeteknev', [$adat]);
 
         return parent::setVezeteknev($adat);
     }
@@ -282,7 +282,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getKeresztnev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKeresztnev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKeresztnev', []);
 
         return parent::getKeresztnev();
     }
@@ -293,7 +293,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setKeresztnev($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKeresztnev', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKeresztnev', [$adat]);
 
         return parent::setKeresztnev($adat);
     }
@@ -304,7 +304,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getAdoszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAdoszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAdoszam', []);
 
         return parent::getAdoszam();
     }
@@ -315,7 +315,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setAdoszam($adoszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAdoszam', array($adoszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAdoszam', [$adoszam]);
 
         return parent::setAdoszam($adoszam);
     }
@@ -326,7 +326,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getEuadoszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEuadoszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEuadoszam', []);
 
         return parent::getEuadoszam();
     }
@@ -337,7 +337,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setEuadoszam($euadoszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEuadoszam', array($euadoszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEuadoszam', [$euadoszam]);
 
         return parent::setEuadoszam($euadoszam);
     }
@@ -348,7 +348,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getMukengszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMukengszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMukengszam', []);
 
         return parent::getMukengszam();
     }
@@ -359,7 +359,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setMukengszam($mukengszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMukengszam', array($mukengszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMukengszam', [$mukengszam]);
 
         return parent::setMukengszam($mukengszam);
     }
@@ -370,7 +370,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getJovengszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJovengszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJovengszam', []);
 
         return parent::getJovengszam();
     }
@@ -381,7 +381,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setJovengszam($jovengszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJovengszam', array($jovengszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJovengszam', [$jovengszam]);
 
         return parent::setJovengszam($jovengszam);
     }
@@ -392,7 +392,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getOstermszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOstermszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOstermszam', []);
 
         return parent::getOstermszam();
     }
@@ -403,7 +403,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setOstermszam($ostermszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOstermszam', array($ostermszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOstermszam', [$ostermszam]);
 
         return parent::setOstermszam($ostermszam);
     }
@@ -414,7 +414,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getValligszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValligszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValligszam', []);
 
         return parent::getValligszam();
     }
@@ -425,7 +425,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setValligszam($valligszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValligszam', array($valligszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValligszam', [$valligszam]);
 
         return parent::setValligszam($valligszam);
     }
@@ -436,7 +436,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getFvmszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFvmszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFvmszam', []);
 
         return parent::getFvmszam();
     }
@@ -447,7 +447,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setFvmszam($fvmszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFvmszam', array($fvmszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFvmszam', [$fvmszam]);
 
         return parent::setFvmszam($fvmszam);
     }
@@ -458,7 +458,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getCjszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCjszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCjszam', []);
 
         return parent::getCjszam();
     }
@@ -469,7 +469,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setCjszam($cjszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCjszam', array($cjszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCjszam', [$cjszam]);
 
         return parent::setCjszam($cjszam);
     }
@@ -480,7 +480,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getIrszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIrszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIrszam', []);
 
         return parent::getIrszam();
     }
@@ -491,7 +491,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setIrszam($irszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIrszam', array($irszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIrszam', [$irszam]);
 
         return parent::setIrszam($irszam);
     }
@@ -502,7 +502,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getVaros()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVaros', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVaros', []);
 
         return parent::getVaros();
     }
@@ -513,7 +513,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setVaros($varos)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVaros', array($varos));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVaros', [$varos]);
 
         return parent::setVaros($varos);
     }
@@ -524,7 +524,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getUtca()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUtca', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUtca', []);
 
         return parent::getUtca();
     }
@@ -535,7 +535,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setUtca($utca)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUtca', array($utca));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUtca', [$utca]);
 
         return parent::setUtca($utca);
     }
@@ -546,7 +546,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getLirszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLirszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLirszam', []);
 
         return parent::getLirszam();
     }
@@ -557,7 +557,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setLirszam($lirszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLirszam', array($lirszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLirszam', [$lirszam]);
 
         return parent::setLirszam($lirszam);
     }
@@ -568,7 +568,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getLvaros()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLvaros', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLvaros', []);
 
         return parent::getLvaros();
     }
@@ -579,7 +579,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setLvaros($lvaros)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLvaros', array($lvaros));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLvaros', [$lvaros]);
 
         return parent::setLvaros($lvaros);
     }
@@ -590,7 +590,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getLutca()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLutca', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLutca', []);
 
         return parent::getLutca();
     }
@@ -601,7 +601,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setLutca($lutca)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLutca', array($lutca));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLutca', [$lutca]);
 
         return parent::setLutca($lutca);
     }
@@ -612,7 +612,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getTelefon()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTelefon', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTelefon', []);
 
         return parent::getTelefon();
     }
@@ -623,7 +623,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setTelefon($telefon)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTelefon', array($telefon));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTelefon', [$telefon]);
 
         return parent::setTelefon($telefon);
     }
@@ -634,7 +634,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getMobil()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMobil', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMobil', []);
 
         return parent::getMobil();
     }
@@ -645,7 +645,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setMobil($mobil)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMobil', array($mobil));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMobil', [$mobil]);
 
         return parent::setMobil($mobil);
     }
@@ -656,7 +656,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getFax()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFax', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFax', []);
 
         return parent::getFax();
     }
@@ -667,7 +667,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setFax($fax)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFax', array($fax));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFax', [$fax]);
 
         return parent::setFax($fax);
     }
@@ -678,7 +678,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getEmail()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', []);
 
         return parent::getEmail();
     }
@@ -689,7 +689,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setEmail($email)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', array($email));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', [$email]);
 
         return parent::setEmail($email);
     }
@@ -700,7 +700,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getHonlap()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHonlap', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHonlap', []);
 
         return parent::getHonlap();
     }
@@ -711,7 +711,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setHonlap($honlap)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHonlap', array($honlap));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHonlap', [$honlap]);
 
         return parent::setHonlap($honlap);
     }
@@ -722,7 +722,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getMegjegyzes()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMegjegyzes', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMegjegyzes', []);
 
         return parent::getMegjegyzes();
     }
@@ -733,7 +733,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setMegjegyzes($megjegyzes)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMegjegyzes', array($megjegyzes));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMegjegyzes', [$megjegyzes]);
 
         return parent::setMegjegyzes($megjegyzes);
     }
@@ -744,7 +744,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getSyncid()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSyncid', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSyncid', []);
 
         return parent::getSyncid();
     }
@@ -755,7 +755,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setSyncid($syncid)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSyncid', array($syncid));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSyncid', [$syncid]);
 
         return parent::setSyncid($syncid);
     }
@@ -766,7 +766,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getUzletkoto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkoto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkoto', []);
 
         return parent::getUzletkoto();
     }
@@ -777,7 +777,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getUzletkotoNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkotoNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkotoNev', []);
 
         return parent::getUzletkotoNev();
     }
@@ -788,7 +788,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getUzletkotoId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkotoId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkotoId', []);
 
         return parent::getUzletkotoId();
     }
@@ -799,7 +799,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setUzletkoto(\Entities\Uzletkoto $uzletkoto)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUzletkoto', array($uzletkoto));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUzletkoto', [$uzletkoto]);
 
         return parent::setUzletkoto($uzletkoto);
     }
@@ -810,7 +810,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function removeUzletkoto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeUzletkoto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeUzletkoto', []);
 
         return parent::removeUzletkoto();
     }
@@ -821,7 +821,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function addEsemeny($esemeny)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addEsemeny', array($esemeny));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addEsemeny', [$esemeny]);
 
         return parent::addEsemeny($esemeny);
     }
@@ -832,7 +832,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getEsemenyek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEsemenyek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEsemenyek', []);
 
         return parent::getEsemenyek();
     }
@@ -843,7 +843,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function removeEsemeny($esemeny)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeEsemeny', array($esemeny));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeEsemeny', [$esemeny]);
 
         return parent::removeEsemeny($esemeny);
     }
@@ -854,7 +854,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function addTeendo($teendo)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTeendo', array($teendo));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTeendo', [$teendo]);
 
         return parent::addTeendo($teendo);
     }
@@ -865,7 +865,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getTeendok()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTeendok', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTeendok', []);
 
         return parent::getTeendok();
     }
@@ -876,7 +876,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function removeTeendo($teendo)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTeendo', array($teendo));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTeendo', [$teendo]);
 
         return parent::removeTeendo($teendo);
     }
@@ -887,7 +887,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getCimkek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCimkek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCimkek', []);
 
         return parent::getCimkek();
     }
@@ -898,7 +898,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getCimkeNevek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCimkeNevek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCimkeNevek', []);
 
         return parent::getCimkeNevek();
     }
@@ -909,7 +909,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function addCimke(\Entities\Cimketorzs $cimke)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addCimke', array($cimke));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addCimke', [$cimke]);
 
         return parent::addCimke($cimke);
     }
@@ -920,7 +920,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function removeCimke(\Entities\Cimketorzs $cimke)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeCimke', array($cimke));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeCimke', [$cimke]);
 
         return parent::removeCimke($cimke);
     }
@@ -931,7 +931,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function removeAllCimke()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAllCimke', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAllCimke', []);
 
         return parent::removeAllCimke();
     }
@@ -942,7 +942,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getFizmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmod', []);
 
         return parent::getFizmod();
     }
@@ -953,7 +953,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getFizmodNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodNev', []);
 
         return parent::getFizmodNev();
     }
@@ -964,7 +964,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getFizmodId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodId', []);
 
         return parent::getFizmodId();
     }
@@ -975,7 +975,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setFizmod(\Entities\Fizmod $fizmod)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizmod', array($fizmod));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizmod', [$fizmod]);
 
         return parent::setFizmod($fizmod);
     }
@@ -986,7 +986,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getIdegenkod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdegenkod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdegenkod', []);
 
         return parent::getIdegenkod();
     }
@@ -997,7 +997,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setIdegenkod($idegenkod)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdegenkod', array($idegenkod));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdegenkod', [$idegenkod]);
 
         return parent::setIdegenkod($idegenkod);
     }
@@ -1008,7 +1008,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getStatszamjel()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStatszamjel', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStatszamjel', []);
 
         return parent::getStatszamjel();
     }
@@ -1019,7 +1019,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setStatszamjel($statszamjel)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStatszamjel', array($statszamjel));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStatszamjel', [$statszamjel]);
 
         return parent::setStatszamjel($statszamjel);
     }
@@ -1030,7 +1030,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getFizhatido()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizhatido', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizhatido', []);
 
         return parent::getFizhatido();
     }
@@ -1041,7 +1041,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setFizhatido($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizhatido', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizhatido', [$val]);
 
         return parent::setFizhatido($val);
     }
@@ -1052,7 +1052,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getLastmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', []);
 
         return parent::getLastmod();
     }
@@ -1063,7 +1063,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getCreated()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
     }
@@ -1074,7 +1074,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getSzallnev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallnev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallnev', []);
 
         return parent::getSzallnev();
     }
@@ -1085,7 +1085,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setSzallnev($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallnev', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallnev', [$adat]);
 
         return parent::setSzallnev($adat);
     }
@@ -1096,7 +1096,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getSzallirszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallirszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallirszam', []);
 
         return parent::getSzallirszam();
     }
@@ -1107,7 +1107,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setSzallirszam($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallirszam', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallirszam', [$adat]);
 
         return parent::setSzallirszam($adat);
     }
@@ -1118,7 +1118,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getSzallvaros()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallvaros', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallvaros', []);
 
         return parent::getSzallvaros();
     }
@@ -1129,7 +1129,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setSzallvaros($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallvaros', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallvaros', [$adat]);
 
         return parent::setSzallvaros($adat);
     }
@@ -1140,7 +1140,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getSzallutca()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallutca', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallutca', []);
 
         return parent::getSzallutca();
     }
@@ -1151,7 +1151,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setSzallutca($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallutca', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallutca', [$adat]);
 
         return parent::setSzallutca($adat);
     }
@@ -1162,7 +1162,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getNem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNem', []);
 
         return parent::getNem();
     }
@@ -1173,7 +1173,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setNem($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNem', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNem', [$adat]);
 
         return parent::setNem($adat);
     }
@@ -1184,7 +1184,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getSzuletesiido()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzuletesiido', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzuletesiido', []);
 
         return parent::getSzuletesiido();
     }
@@ -1195,7 +1195,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getSzuletesiidoStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzuletesiidoStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzuletesiidoStr', []);
 
         return parent::getSzuletesiidoStr();
     }
@@ -1206,7 +1206,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setSzuletesiido($adat = '')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzuletesiido', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzuletesiido', [$adat]);
 
         return parent::setSzuletesiido($adat);
     }
@@ -1217,7 +1217,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getAkcioshirlevelkell()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkcioshirlevelkell', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkcioshirlevelkell', []);
 
         return parent::getAkcioshirlevelkell();
     }
@@ -1228,7 +1228,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setAkcioshirlevelkell($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAkcioshirlevelkell', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAkcioshirlevelkell', [$adat]);
 
         return parent::setAkcioshirlevelkell($adat);
     }
@@ -1239,7 +1239,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getUjdonsaghirlevelkell()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUjdonsaghirlevelkell', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUjdonsaghirlevelkell', []);
 
         return parent::getUjdonsaghirlevelkell();
     }
@@ -1250,7 +1250,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setUjdonsaghirlevelkell($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUjdonsaghirlevelkell', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUjdonsaghirlevelkell', [$adat]);
 
         return parent::setUjdonsaghirlevelkell($adat);
     }
@@ -1261,7 +1261,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getSessionid()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSessionid', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSessionid', []);
 
         return parent::getSessionid();
     }
@@ -1272,7 +1272,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setSessionid($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSessionid', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSessionid', [$adat]);
 
         return parent::setSessionid($adat);
     }
@@ -1283,7 +1283,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getJelszo()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJelszo', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJelszo', []);
 
         return parent::getJelszo();
     }
@@ -1294,7 +1294,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setMkwJelszo($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMkwJelszo', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMkwJelszo', [$adat]);
 
         return parent::setMkwJelszo($adat);
     }
@@ -1305,7 +1305,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setJelszo($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJelszo', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJelszo', [$adat]);
 
         return parent::setJelszo($adat);
     }
@@ -1316,7 +1316,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function checkJelszo($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'checkJelszo', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'checkJelszo', [$adat]);
 
         return parent::checkJelszo($adat);
     }
@@ -1327,7 +1327,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getUtolsoklikk()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUtolsoklikk', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUtolsoklikk', []);
 
         return parent::getUtolsoklikk();
     }
@@ -1338,7 +1338,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setUtolsoklikk()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUtolsoklikk', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUtolsoklikk', []);
 
         return parent::setUtolsoklikk();
     }
@@ -1349,7 +1349,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getVendeg()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVendeg', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVendeg', []);
 
         return parent::getVendeg();
     }
@@ -1360,7 +1360,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setVendeg($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVendeg', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVendeg', [$val]);
 
         return parent::setVendeg($val);
     }
@@ -1371,7 +1371,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getIp()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIp', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIp', []);
 
         return parent::getIp();
     }
@@ -1382,7 +1382,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setIp($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIp', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIp', [$val]);
 
         return parent::setIp($val);
     }
@@ -1393,7 +1393,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getReferrer()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getReferrer', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getReferrer', []);
 
         return parent::getReferrer();
     }
@@ -1404,7 +1404,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setReferrer($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setReferrer', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setReferrer', [$val]);
 
         return parent::setReferrer($val);
     }
@@ -1415,7 +1415,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getSzallito()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallito', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallito', []);
 
         return parent::getSzallito();
     }
@@ -1426,7 +1426,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setSzallito($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallito', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallito', [$val]);
 
         return parent::setSzallito($val);
     }
@@ -1437,7 +1437,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getPasswordreminder()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPasswordreminder', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPasswordreminder', []);
 
         return parent::getPasswordreminder();
     }
@@ -1448,7 +1448,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setPasswordreminder()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPasswordreminder', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPasswordreminder', []);
 
         return parent::setPasswordreminder();
     }
@@ -1459,7 +1459,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function clearPasswordreminder()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearPasswordreminder', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearPasswordreminder', []);
 
         return parent::clearPasswordreminder();
     }
@@ -1470,7 +1470,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getOldloginname()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOldloginname', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOldloginname', []);
 
         return parent::getOldloginname();
     }
@@ -1481,7 +1481,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setOldloginname($name)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldloginname', array($name));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldloginname', [$name]);
 
         return parent::setOldloginname($name);
     }
@@ -1492,7 +1492,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getSzallitasiido()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasiido', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasiido', []);
 
         return parent::getSzallitasiido();
     }
@@ -1503,7 +1503,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setSzallitasiido($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallitasiido', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallitasiido', [$adat]);
 
         return parent::setSzallitasiido($adat);
     }
@@ -1514,7 +1514,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getBanknev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBanknev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBanknev', []);
 
         return parent::getBanknev();
     }
@@ -1525,7 +1525,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setBanknev($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBanknev', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBanknev', [$val]);
 
         return parent::setBanknev($val);
     }
@@ -1536,7 +1536,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getBankcim()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankcim', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankcim', []);
 
         return parent::getBankcim();
     }
@@ -1547,7 +1547,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setBankcim($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankcim', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankcim', [$val]);
 
         return parent::setBankcim($val);
     }
@@ -1558,7 +1558,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getIban()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIban', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIban', []);
 
         return parent::getIban();
     }
@@ -1569,7 +1569,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setIban($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIban', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIban', [$val]);
 
         return parent::setIban($val);
     }
@@ -1580,7 +1580,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getSwift()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSwift', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSwift', []);
 
         return parent::getSwift();
     }
@@ -1591,7 +1591,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setSwift($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSwift', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSwift', [$val]);
 
         return parent::setSwift($val);
     }
@@ -1602,7 +1602,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getSzamlatipus()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzamlatipus', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzamlatipus', []);
 
         return parent::getSzamlatipus();
     }
@@ -1613,7 +1613,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setSzamlatipus($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzamlatipus', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzamlatipus', [$val]);
 
         return parent::setSzamlatipus($val);
     }
@@ -1624,7 +1624,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getValutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', []);
 
         return parent::getValutanem();
     }
@@ -1635,7 +1635,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getValutanemnev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemnev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemnev', []);
 
         return parent::getValutanemnev();
     }
@@ -1646,7 +1646,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getValutanemId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', []);
 
         return parent::getValutanemId();
     }
@@ -1657,7 +1657,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setValutanem($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', [$val]);
 
         return parent::setValutanem($val);
     }
@@ -1668,7 +1668,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function removeValutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValutanem', []);
 
         return parent::removeValutanem();
     }
@@ -1679,7 +1679,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekarazonosito()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekarazonosito', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekarazonosito', []);
 
         return parent::getTermekarazonosito();
     }
@@ -1690,7 +1690,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setTermekarazonosito($v)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekarazonosito', array($v));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekarazonosito', [$v]);
 
         return parent::setTermekarazonosito($v);
     }
@@ -1701,7 +1701,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getSzallitasimod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasimod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasimod', []);
 
         return parent::getSzallitasimod();
     }
@@ -1712,7 +1712,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getSzallitasimodNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasimodNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasimodNev', []);
 
         return parent::getSzallitasimodNev();
     }
@@ -1723,7 +1723,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getSzallitasimodId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasimodId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasimodId', []);
 
         return parent::getSzallitasimodId();
     }
@@ -1734,7 +1734,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setSzallitasimod($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallitasimod', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallitasimod', [$val]);
 
         return parent::setSzallitasimod($val);
     }
@@ -1745,7 +1745,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function removeSzallitasimod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeSzallitasimod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeSzallitasimod', []);
 
         return parent::removeSzallitasimod();
     }
@@ -1756,7 +1756,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getBizonylatnyelv()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylatnyelv', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylatnyelv', []);
 
         return parent::getBizonylatnyelv();
     }
@@ -1767,7 +1767,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setBizonylatnyelv($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBizonylatnyelv', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBizonylatnyelv', [$adat]);
 
         return parent::setBizonylatnyelv($adat);
     }
@@ -1778,7 +1778,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getEzuzletkoto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEzuzletkoto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEzuzletkoto', []);
 
         return parent::getEzuzletkoto();
     }
@@ -1789,7 +1789,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function setEzuzletkoto($ezuzletkoto)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEzuzletkoto', array($ezuzletkoto));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEzuzletkoto', [$ezuzletkoto]);
 
         return parent::setEzuzletkoto($ezuzletkoto);
     }
@@ -1800,7 +1800,7 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekcsoportkedvezmenyek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoportkedvezmenyek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoportkedvezmenyek', []);
 
         return parent::getTermekcsoportkedvezmenyek();
     }

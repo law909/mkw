@@ -36,7 +36,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Kosar' . "\0" . 'id', '' . "\0" . 'Entities\\Kosar' . "\0" . 'created', '' . "\0" . 'Entities\\Kosar' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Kosar' . "\0" . 'partner', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termek', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Kosar' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Kosar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Kosar' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'kedvezmeny', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Kosar' . "\0" . 'afa');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Kosar' . "\0" . 'id', '' . "\0" . 'Entities\\Kosar' . "\0" . 'created', '' . "\0" . 'Entities\\Kosar' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Kosar' . "\0" . 'partner', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termek', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Kosar' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Kosar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Kosar' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'kedvezmeny', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Kosar' . "\0" . 'afa'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Kosar' . "\0" . 'id', '' . "\0" . 'Entities\\Kosar' . "\0" . 'created', '' . "\0" . 'Entities\\Kosar' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Kosar' . "\0" . 'partner', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termek', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Kosar' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Kosar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Kosar' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'kedvezmeny', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Kosar' . "\0" . 'afa');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Kosar' . "\0" . 'id', '' . "\0" . 'Entities\\Kosar' . "\0" . 'created', '' . "\0" . 'Entities\\Kosar' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Kosar' . "\0" . 'partner', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termek', '' . "\0" . 'Entities\\Kosar' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Kosar' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\Kosar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Kosar' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'bruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'enettoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'ebruttoegysar', '' . "\0" . 'Entities\\Kosar' . "\0" . 'kedvezmeny', '' . "\0" . 'Entities\\Kosar' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Kosar' . "\0" . 'afa'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function toLista($partner = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', array($partner));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', [$partner]);
 
         return parent::toLista($partner);
     }
@@ -194,7 +194,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -205,7 +205,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getSessionid()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSessionid', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSessionid', []);
 
         return parent::getSessionid();
     }
@@ -216,7 +216,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function setSessionid($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSessionid', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSessionid', [$adat]);
 
         return parent::setSessionid($adat);
     }
@@ -227,7 +227,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getPartner()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartner', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartner', []);
 
         return parent::getPartner();
     }
@@ -238,7 +238,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnerId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', []);
 
         return parent::getPartnerId();
     }
@@ -249,7 +249,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnerNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerNev', []);
 
         return parent::getPartnerNev();
     }
@@ -260,7 +260,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function setPartner($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartner', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartner', [$val]);
 
         return parent::setPartner($val);
     }
@@ -271,7 +271,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function removePartner()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', []);
 
         return parent::removePartner();
     }
@@ -282,7 +282,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getTermek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', []);
 
         return parent::getTermek();
     }
@@ -293,7 +293,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekId', []);
 
         return parent::getTermekId();
     }
@@ -304,7 +304,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function setTermek(\Entities\Termek $val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermek', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermek', [$val]);
 
         return parent::setTermek($val);
     }
@@ -315,7 +315,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function removeTermek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', []);
 
         return parent::removeTermek();
     }
@@ -326,7 +326,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekvaltozat()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekvaltozat', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekvaltozat', []);
 
         return parent::getTermekvaltozat();
     }
@@ -337,7 +337,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekvaltozatId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekvaltozatId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekvaltozatId', []);
 
         return parent::getTermekvaltozatId();
     }
@@ -348,7 +348,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function setTermekvaltozat(\Entities\TermekValtozat $val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekvaltozat', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekvaltozat', [$val]);
 
         return parent::setTermekvaltozat($val);
     }
@@ -359,7 +359,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function removeTermekvaltozat()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermekvaltozat', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermekvaltozat', []);
 
         return parent::removeTermekvaltozat();
     }
@@ -370,7 +370,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getMennyiseg()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMennyiseg', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMennyiseg', []);
 
         return parent::getMennyiseg();
     }
@@ -381,7 +381,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function novelMennyiseg($added = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'novelMennyiseg', array($added));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'novelMennyiseg', [$added]);
 
         return parent::novelMennyiseg($added);
     }
@@ -392,7 +392,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function setMennyiseg($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMennyiseg', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMennyiseg', [$val]);
 
         return parent::setMennyiseg($val);
     }
@@ -403,7 +403,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getLastmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', []);
 
         return parent::getLastmod();
     }
@@ -414,7 +414,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getCreated()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
     }
@@ -425,7 +425,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getCreatedStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedStr', []);
 
         return parent::getCreatedStr();
     }
@@ -436,7 +436,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getNettoegysar()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoegysar', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoegysar', []);
 
         return parent::getNettoegysar();
     }
@@ -447,7 +447,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function setNettoegysar($netto)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNettoegysar', array($netto));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNettoegysar', [$netto]);
 
         return parent::setNettoegysar($netto);
     }
@@ -458,7 +458,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getBruttoegysar()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoegysar', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoegysar', []);
 
         return parent::getBruttoegysar();
     }
@@ -469,7 +469,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function setBruttoegysar($brutto)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBruttoegysar', array($brutto));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBruttoegysar', [$brutto]);
 
         return parent::setBruttoegysar($brutto);
     }
@@ -480,7 +480,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getValutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', []);
 
         return parent::getValutanem();
     }
@@ -491,7 +491,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function setValutanem($valutanem)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', array($valutanem));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', [$valutanem]);
 
         return parent::setValutanem($valutanem);
     }
@@ -502,7 +502,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getValutanemNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemNev', []);
 
         return parent::getValutanemNev();
     }
@@ -513,7 +513,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getSorrend()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSorrend', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSorrend', []);
 
         return parent::getSorrend();
     }
@@ -524,7 +524,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function setSorrend($s)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', array($s));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', [$s]);
 
         return parent::setSorrend($s);
     }
@@ -535,7 +535,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getEbruttoegysar()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEbruttoegysar', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEbruttoegysar', []);
 
         return parent::getEbruttoegysar();
     }
@@ -546,7 +546,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function setEbruttoegysar($ebruttoegysar)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEbruttoegysar', array($ebruttoegysar));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEbruttoegysar', [$ebruttoegysar]);
 
         return parent::setEbruttoegysar($ebruttoegysar);
     }
@@ -557,7 +557,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getEnettoegysar()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEnettoegysar', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEnettoegysar', []);
 
         return parent::getEnettoegysar();
     }
@@ -568,7 +568,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function setEnettoegysar($enettoegysar)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEnettoegysar', array($enettoegysar));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEnettoegysar', [$enettoegysar]);
 
         return parent::setEnettoegysar($enettoegysar);
     }
@@ -579,7 +579,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getKedvezmeny()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmeny', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmeny', []);
 
         return parent::getKedvezmeny();
     }
@@ -590,7 +590,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function setKedvezmeny($kedvezmeny)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKedvezmeny', array($kedvezmeny));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKedvezmeny', [$kedvezmeny]);
 
         return parent::setKedvezmeny($kedvezmeny);
     }
@@ -601,7 +601,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getAfa()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', []);
 
         return parent::getAfa();
     }
@@ -612,7 +612,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getAfanev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfanev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfanev', []);
 
         return parent::getAfanev();
     }
@@ -623,7 +623,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getAfakulcs()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfakulcs', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfakulcs', []);
 
         return parent::getAfakulcs();
     }
@@ -634,7 +634,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function getAfaId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaId', []);
 
         return parent::getAfaId();
     }
@@ -645,7 +645,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function setAfa($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', [$val]);
 
         return parent::setAfa($val);
     }
@@ -656,7 +656,7 @@ class Kosar extends \Entities\Kosar implements \Doctrine\ORM\Proxy\Proxy
     public function removeAfa()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAfa', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAfa', []);
 
         return parent::removeAfa();
     }

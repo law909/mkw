@@ -36,7 +36,7 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'felhasznalonev', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'nev', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'uzletkoto');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'felhasznalonev', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'nev', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'uzletkoto'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'felhasznalonev', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'nev', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'uzletkoto');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'felhasznalonev', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'nev', '' . "\0" . 'Entities\\Felhasznalo' . "\0" . 'uzletkoto'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
     public function getId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFelhasznalonev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFelhasznalonev', []);
 
         return parent::getFelhasznalonev();
     }
@@ -205,7 +205,7 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
     public function setFelhasznalonev($felhasznalonev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFelhasznalonev', array($felhasznalonev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFelhasznalonev', [$felhasznalonev]);
 
         return parent::setFelhasznalonev($felhasznalonev);
     }
@@ -216,7 +216,7 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
     public function getJelszo()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJelszo', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJelszo', []);
 
         return parent::getJelszo();
     }
@@ -227,7 +227,7 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
     public function setJelszo($jelszo)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJelszo', array($jelszo));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJelszo', [$jelszo]);
 
         return parent::setJelszo($jelszo);
     }
@@ -238,7 +238,7 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -249,7 +249,7 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -260,7 +260,7 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
     public function getUzletkoto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkoto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkoto', []);
 
         return parent::getUzletkoto();
     }
@@ -271,7 +271,7 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
     public function getUzletkotoId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkotoId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkotoId', []);
 
         return parent::getUzletkotoId();
     }
@@ -282,7 +282,7 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
     public function getUzletkotoNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkotoNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkotoNev', []);
 
         return parent::getUzletkotoNev();
     }
@@ -293,7 +293,7 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
     public function setUzletkoto(\Entities\Uzletkoto $uzletkoto)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUzletkoto', array($uzletkoto));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUzletkoto', [$uzletkoto]);
 
         return parent::setUzletkoto($uzletkoto);
     }
@@ -304,7 +304,7 @@ class Felhasznalo extends \Entities\Felhasznalo implements \Doctrine\ORM\Proxy\P
     public function removeUzletkoto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeUzletkoto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeUzletkoto', []);
 
         return parent::removeUzletkoto();
     }

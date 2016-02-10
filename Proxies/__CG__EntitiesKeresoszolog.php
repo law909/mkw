@@ -36,7 +36,7 @@ class Keresoszolog extends \Entities\Keresoszolog implements \Doctrine\ORM\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Keresoszolog extends \Entities\Keresoszolog implements \Doctrine\ORM\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Keresoszolog' . "\0" . 'id', '' . "\0" . 'Entities\\Keresoszolog' . "\0" . 'szo', '' . "\0" . 'Entities\\Keresoszolog' . "\0" . 'datum');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Keresoszolog' . "\0" . 'id', '' . "\0" . 'Entities\\Keresoszolog' . "\0" . 'szo', '' . "\0" . 'Entities\\Keresoszolog' . "\0" . 'datum'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Keresoszolog' . "\0" . 'id', '' . "\0" . 'Entities\\Keresoszolog' . "\0" . 'szo', '' . "\0" . 'Entities\\Keresoszolog' . "\0" . 'datum');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Keresoszolog' . "\0" . 'id', '' . "\0" . 'Entities\\Keresoszolog' . "\0" . 'szo', '' . "\0" . 'Entities\\Keresoszolog' . "\0" . 'datum'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Keresoszolog extends \Entities\Keresoszolog implements \Doctrine\ORM\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Keresoszolog extends \Entities\Keresoszolog implements \Doctrine\ORM\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Keresoszolog extends \Entities\Keresoszolog implements \Doctrine\ORM\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Keresoszolog extends \Entities\Keresoszolog implements \Doctrine\ORM\Proxy
     public function getSzo()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzo', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzo', []);
 
         return parent::getSzo();
     }
@@ -205,7 +205,7 @@ class Keresoszolog extends \Entities\Keresoszolog implements \Doctrine\ORM\Proxy
     public function setSzo($szo)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzo', array($szo));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzo', [$szo]);
 
         return parent::setSzo($szo);
     }
@@ -216,7 +216,7 @@ class Keresoszolog extends \Entities\Keresoszolog implements \Doctrine\ORM\Proxy
     public function getDatum()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatum', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatum', []);
 
         return parent::getDatum();
     }
@@ -227,7 +227,7 @@ class Keresoszolog extends \Entities\Keresoszolog implements \Doctrine\ORM\Proxy
     public function setDatumOnPreInsert()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDatumOnPreInsert', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDatumOnPreInsert', []);
 
         return parent::setDatumOnPreInsert();
     }

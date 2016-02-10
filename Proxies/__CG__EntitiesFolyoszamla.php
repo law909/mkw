@@ -36,7 +36,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'datum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'irany', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'partner', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'netto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afa', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'brutto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afahuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'storno', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'rontott');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'datum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'irany', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'partner', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'netto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afa', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'brutto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afahuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'storno', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'rontott'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'datum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'irany', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'partner', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'netto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afa', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'brutto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afahuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'storno', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'rontott');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'datum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'irany', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'partner', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'netto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afa', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'brutto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afahuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'storno', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'rontott'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getDatum()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatum', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatum', []);
 
         return parent::getDatum();
     }
@@ -205,7 +205,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setDatum($datum)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDatum', array($datum));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDatum', [$datum]);
 
         return parent::setDatum($datum);
     }
@@ -216,7 +216,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getHivatkozottbizonylat()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHivatkozottbizonylat', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHivatkozottbizonylat', []);
 
         return parent::getHivatkozottbizonylat();
     }
@@ -227,7 +227,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setHivatkozottbizonylat($hivatkozottbizonylat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHivatkozottbizonylat', array($hivatkozottbizonylat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHivatkozottbizonylat', [$hivatkozottbizonylat]);
 
         return parent::setHivatkozottbizonylat($hivatkozottbizonylat);
     }
@@ -238,7 +238,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getBizonylatfej()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylatfej', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylatfej', []);
 
         return parent::getBizonylatfej();
     }
@@ -249,7 +249,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getBizonylatfejId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylatfejId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylatfejId', []);
 
         return parent::getBizonylatfejId();
     }
@@ -260,7 +260,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setBizonylatfej($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBizonylatfej', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBizonylatfej', [$val]);
 
         return parent::setBizonylatfej($val);
     }
@@ -271,7 +271,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function removeBizonylatfej()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBizonylatfej', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBizonylatfej', []);
 
         return parent::removeBizonylatfej();
     }
@@ -282,7 +282,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getBankbizonylatfej()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankbizonylatfej', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankbizonylatfej', []);
 
         return parent::getBankbizonylatfej();
     }
@@ -293,7 +293,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getBankbizonylatfejId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankbizonylatfejId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankbizonylatfejId', []);
 
         return parent::getBankbizonylatfejId();
     }
@@ -304,7 +304,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setBankbizonylatfej($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankbizonylatfej', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankbizonylatfej', [$val]);
 
         return parent::setBankbizonylatfej($val);
     }
@@ -315,7 +315,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function removeBankbizonylatfej()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBankbizonylatfej', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBankbizonylatfej', []);
 
         return parent::removeBankbizonylatfej();
     }
@@ -326,7 +326,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getBankbizonylattetel()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankbizonylattetel', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankbizonylattetel', []);
 
         return parent::getBankbizonylattetel();
     }
@@ -337,7 +337,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getBankbizonylattetelId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankbizonylattetelId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankbizonylattetelId', []);
 
         return parent::getBankbizonylattetelId();
     }
@@ -348,7 +348,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setBankbizonylattetel($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankbizonylattetel', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankbizonylattetel', [$val]);
 
         return parent::setBankbizonylattetel($val);
     }
@@ -359,7 +359,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function removeBankbizonylattetel()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBankbizonylattetel', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBankbizonylattetel', []);
 
         return parent::removeBankbizonylattetel();
     }
@@ -370,7 +370,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getBizonylattipus()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylattipus', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylattipus', []);
 
         return parent::getBizonylattipus();
     }
@@ -381,7 +381,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getBizonylattipusId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylattipusId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylattipusId', []);
 
         return parent::getBizonylattipusId();
     }
@@ -392,7 +392,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setBizonylattipus($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBizonylattipus', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBizonylattipus', [$val]);
 
         return parent::setBizonylattipus($val);
     }
@@ -403,7 +403,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function removeBizonylattipus()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBizonylattipus', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBizonylattipus', []);
 
         return parent::removeBizonylattipus();
     }
@@ -414,7 +414,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getAfa()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', []);
 
         return parent::getAfa();
     }
@@ -425,7 +425,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setAfa($afa)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', array($afa));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', [$afa]);
 
         return parent::setAfa($afa);
     }
@@ -436,7 +436,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getAfahuf()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfahuf', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfahuf', []);
 
         return parent::getAfahuf();
     }
@@ -447,7 +447,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setAfahuf($afahuf)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfahuf', array($afahuf));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfahuf', [$afahuf]);
 
         return parent::setAfahuf($afahuf);
     }
@@ -458,7 +458,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getBrutto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBrutto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBrutto', []);
 
         return parent::getBrutto();
     }
@@ -469,7 +469,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setBrutto($brutto)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBrutto', array($brutto));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBrutto', [$brutto]);
 
         return parent::setBrutto($brutto);
     }
@@ -480,7 +480,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getBruttohuf()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttohuf', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttohuf', []);
 
         return parent::getBruttohuf();
     }
@@ -491,7 +491,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setBruttohuf($bruttohuf)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBruttohuf', array($bruttohuf));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBruttohuf', [$bruttohuf]);
 
         return parent::setBruttohuf($bruttohuf);
     }
@@ -502,7 +502,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getIrany()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIrany', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIrany', []);
 
         return parent::getIrany();
     }
@@ -513,7 +513,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setIrany($irany)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIrany', array($irany));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIrany', [$irany]);
 
         return parent::setIrany($irany);
     }
@@ -524,7 +524,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getNetto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNetto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNetto', []);
 
         return parent::getNetto();
     }
@@ -535,7 +535,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setNetto($netto)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNetto', array($netto));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNetto', [$netto]);
 
         return parent::setNetto($netto);
     }
@@ -546,7 +546,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getNettohuf()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettohuf', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettohuf', []);
 
         return parent::getNettohuf();
     }
@@ -557,7 +557,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setNettohuf($nettohuf)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNettohuf', array($nettohuf));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNettohuf', [$nettohuf]);
 
         return parent::setNettohuf($nettohuf);
     }
@@ -568,7 +568,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getRontott()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRontott', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRontott', []);
 
         return parent::getRontott();
     }
@@ -579,7 +579,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setRontott($rontott)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRontott', array($rontott));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRontott', [$rontott]);
 
         return parent::setRontott($rontott);
     }
@@ -590,7 +590,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getStorno()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStorno', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStorno', []);
 
         return parent::getStorno();
     }
@@ -601,7 +601,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setStorno($storno)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStorno', array($storno));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStorno', [$storno]);
 
         return parent::setStorno($storno);
     }
@@ -612,7 +612,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getStornozott()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStornozott', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStornozott', []);
 
         return parent::getStornozott();
     }
@@ -623,7 +623,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setStornozott($stornozott)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStornozott', array($stornozott));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStornozott', [$stornozott]);
 
         return parent::setStornozott($stornozott);
     }
@@ -634,7 +634,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getPartner()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartner', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartner', []);
 
         return parent::getPartner();
     }
@@ -645,7 +645,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getPartnerId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', []);
 
         return parent::getPartnerId();
     }
@@ -656,7 +656,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setPartner($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartner', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartner', [$val]);
 
         return parent::setPartner($val);
     }
@@ -667,7 +667,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function removePartner()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', []);
 
         return parent::removePartner();
     }
@@ -678,7 +678,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getUzletkoto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkoto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkoto', []);
 
         return parent::getUzletkoto();
     }
@@ -689,7 +689,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getUzletkotoId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkotoId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUzletkotoId', []);
 
         return parent::getUzletkotoId();
     }
@@ -700,7 +700,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setUzletkoto($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUzletkoto', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUzletkoto', [$val]);
 
         return parent::setUzletkoto($val);
     }
@@ -711,7 +711,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function removeUzletkoto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeUzletkoto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeUzletkoto', []);
 
         return parent::removeUzletkoto();
     }
@@ -722,7 +722,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getFizmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmod', []);
 
         return parent::getFizmod();
     }
@@ -733,7 +733,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getFizmodId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodId', []);
 
         return parent::getFizmodId();
     }
@@ -744,7 +744,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setFizmod($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizmod', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizmod', [$val]);
 
         return parent::setFizmod($val);
     }
@@ -755,7 +755,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function removeFizmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeFizmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeFizmod', []);
 
         return parent::removeFizmod();
     }
@@ -766,7 +766,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getValutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', []);
 
         return parent::getValutanem();
     }
@@ -777,7 +777,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getValutanemnev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemnev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemnev', []);
 
         return parent::getValutanemnev();
     }
@@ -788,7 +788,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getValutanemId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', []);
 
         return parent::getValutanemId();
     }
@@ -799,7 +799,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setValutanem($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', [$val]);
 
         return parent::setValutanem($val);
     }
@@ -810,7 +810,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function removeValutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValutanem', []);
 
         return parent::removeValutanem();
     }
@@ -821,7 +821,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getHivatkozottdatum()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHivatkozottdatum', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHivatkozottdatum', []);
 
         return parent::getHivatkozottdatum();
     }
@@ -832,7 +832,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function getHivatkozottdatumStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHivatkozottdatumStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHivatkozottdatumStr', []);
 
         return parent::getHivatkozottdatumStr();
     }
@@ -843,7 +843,7 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function setHivatkozottdatum($adat = '')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHivatkozottdatum', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHivatkozottdatum', [$adat]);
 
         return parent::setHivatkozottdatum($adat);
     }

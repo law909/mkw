@@ -36,7 +36,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'url', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'valtozatok');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'url', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'valtozatok'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'url', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'valtozatok');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'url', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'valtozatok'];
     }
 
     /**
@@ -97,7 +97,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function getTermek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', []);
 
         return parent::getTermek();
     }
@@ -205,7 +205,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekNev', []);
 
         return parent::getTermekNev();
     }
@@ -216,7 +216,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function setTermek(\Entities\Termek $termek)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermek', array($termek));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermek', [$termek]);
 
         return parent::setTermek($termek);
     }
@@ -227,7 +227,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function removeTermek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', []);
 
         return parent::removeTermek();
     }
@@ -238,7 +238,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function getUrl($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrl', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrl', [$pre]);
 
         return parent::getUrl($pre);
     }
@@ -249,7 +249,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function getUrlMini($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrlMini', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrlMini', [$pre]);
 
         return parent::getUrlMini($pre);
     }
@@ -260,7 +260,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function getUrlSmall($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrlSmall', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrlSmall', [$pre]);
 
         return parent::getUrlSmall($pre);
     }
@@ -271,7 +271,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function getUrlMedium($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrlMedium', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrlMedium', [$pre]);
 
         return parent::getUrlMedium($pre);
     }
@@ -282,7 +282,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function getUrlLarge($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrlLarge', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrlLarge', [$pre]);
 
         return parent::getUrlLarge($pre);
     }
@@ -293,7 +293,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function setUrl($url)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUrl', array($url));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUrl', [$url]);
 
         return parent::setUrl($url);
     }
@@ -304,7 +304,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function getLeiras()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras', []);
 
         return parent::getLeiras();
     }
@@ -315,7 +315,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function setLeiras($leiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras', array($leiras));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras', [$leiras]);
 
         return parent::setLeiras($leiras);
     }
@@ -326,7 +326,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function getLastmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', []);
 
         return parent::getLastmod();
     }
@@ -337,7 +337,7 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function getCreated()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
     }

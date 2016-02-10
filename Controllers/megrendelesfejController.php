@@ -209,7 +209,6 @@ class megrendelesfejController extends bizonylatfejController {
                         $regibiz->setBizonylatstatusz($backorder);
                         $result = 1;
                     }
-                    $regibiz->doStuffOnPrePersist();
                     $this->getEm()->persist($regibiz);
                     $this->getEm()->flush();
                     $this->getEm()->commit();
@@ -221,7 +220,6 @@ class megrendelesfejController extends bizonylatfejController {
                     $ujbiz->clearId();
                     $ujbiz->clearCreated();
                     $ujbiz->clearLastmod();
-                    $ujbiz->generateId();
                     $ujbiz->setKelt();
                     $ujbiz->setBizonylatstatusz($backorder);
                     foreach($regibiz->getBizonylattetelek() as $regitetel) {
@@ -269,8 +267,6 @@ class megrendelesfejController extends bizonylatfejController {
                     $this->getEm()->persist($ujbiz);
                     $this->getRepo()->createSzallitasiKtg($regibiz, $regibiz->getSzallitasimod());
                     $this->getRepo()->createSzallitasiKtg($ujbiz, $ujbiz->getSzallitasimod());
-                    $regibiz->doStuffOnPrePersist();
-                    $ujbiz->doStuffOnPrePersist();
                     $this->getEm()->persist($regibiz);
                     $this->getEm()->persist($ujbiz);
                     $this->getEm()->flush();

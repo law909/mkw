@@ -8,12 +8,10 @@ use mkw\store;
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylatfejRepository")
  * @ORM\Table(name="bizonylatfej",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
- * @ORM\HasLifecycleCallbacks
  * */
 class Bizonylatfej {
 
     private $duplication;
-    public $dontCreateFolyoszamla;
 
     /**
      * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)
@@ -449,25 +447,6 @@ class Bizonylatfej {
         return (string)$this->id;
     }
 
-    /**
-     * @ORM\PostPersist
-     * @ORM\PostUpdate
-     */
-    public function generateFolyoszamla() {
-        \mkw\Store::getEm()->getRepository('Entities\Bizonylatfej')->createFolyoszamla($this);
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function generateTrxId() {
-        $conn = \mkw\Store::getEm()->getConnection();
-        $stmt = $conn->prepare('INSERT INTO bizonylatseq (data) VALUES (1)');
-        $stmt->execute();
-        $this->trxid = $conn->lastInsertId();
-        $this->setMasterPassCorrelationID(\mkw\Store::createGUID());
-    }
-
     public function calcOsszesen() {
         $mincimlet = 0;
         $kerekit = false;
@@ -531,6 +510,12 @@ class Bizonylatfej {
     public function calcOsztottFizetendo() {
         // superzone osztott fizetendo
         if (\mkw\Store::isOsztottFizmod()) {
+            $this->setEsedekesseg1();
+            $this->setFizetendo1(0);
+            $this->setEsedekesseg2();
+            $this->setFizetendo2(0);
+            $this->setEsedekesseg3();
+            $this->setFizetendo3(0);
             $eddigi = 0;
             $fizmod = $this->getFizmod();
             $kelt = new \DateTimeImmutable(\mkw\Store::convDate($this->getKeltStr()));
@@ -557,16 +542,6 @@ class Bizonylatfej {
                 $this->setFizetendo3($this->fizetendo - $eddigi);
             }
         }
-    }
-
-    /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function doStuffOnPrePersist() {
-        $this->calcOsszesen();
-        $this->calcRugalmasFizmod();
-        $this->calcOsztottFizetendo();
     }
 
     public function __construct() {
@@ -736,6 +711,12 @@ class Bizonylatfej {
         return $this->id;
     }
 
+    public function setId($val) {
+        if (!$this->id) {
+            $this->id = $val;
+        }
+    }
+
     public function clearId() {
         $this->id = null;
     }
@@ -753,6 +734,9 @@ class Bizonylatfej {
     }
 
     public function generateId($from = null) {
+        if ($this->getId()) {
+            return $this->getId();
+        }
         $bt = $this->getBizonylattipus();
         $szam = 0;
         if ($bt && is_null($this->id)) {
@@ -2218,6 +2202,9 @@ class Bizonylatfej {
             if ($adat != '') {
                 $this->esedekesseg1 = new \DateTime(store::convDate($adat));
             }
+            else {
+                $this->esedekesseg1 = null;
+            }
         }
     }
 
@@ -2248,6 +2235,9 @@ class Bizonylatfej {
             if ($adat != '') {
                 $this->esedekesseg2 = new \DateTime(store::convDate($adat));
             }
+            else {
+                $this->esedekesseg2 = null;
+            }
         }
     }
 
@@ -2277,6 +2267,9 @@ class Bizonylatfej {
         else {
             if ($adat != '') {
                 $this->esedekesseg3 = new \DateTime(store::convDate($adat));
+            }
+            else {
+                $this->esedekesseg3 = null;
             }
         }
     }

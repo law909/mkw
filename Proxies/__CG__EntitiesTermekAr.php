@@ -36,7 +36,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'id', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'created', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'azonosito', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'valutanem');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'id', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'created', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'azonosito', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'valutanem'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'id', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'created', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'azonosito', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'valutanem');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'id', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'created', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'azonosito', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'valutanem'];
     }
 
     /**
@@ -97,7 +97,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function getTermek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', []);
 
         return parent::getTermek();
     }
@@ -205,7 +205,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekNev', []);
 
         return parent::getTermekNev();
     }
@@ -216,7 +216,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function setTermek(\Entities\Termek $termek)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermek', array($termek));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermek', [$termek]);
 
         return parent::setTermek($termek);
     }
@@ -227,7 +227,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function removeTermek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', []);
 
         return parent::removeTermek();
     }
@@ -238,7 +238,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function getLastmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', []);
 
         return parent::getLastmod();
     }
@@ -249,7 +249,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function getCreated()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
     }
@@ -260,7 +260,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function getAzonosito()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAzonosito', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAzonosito', []);
 
         return parent::getAzonosito();
     }
@@ -271,7 +271,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function setAzonosito($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAzonosito', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAzonosito', [$val]);
 
         return parent::setAzonosito($val);
     }
@@ -282,7 +282,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function getValutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', []);
 
         return parent::getValutanem();
     }
@@ -293,7 +293,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function getValutanemnev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemnev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemnev', []);
 
         return parent::getValutanemnev();
     }
@@ -304,7 +304,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function getValutanemId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', []);
 
         return parent::getValutanemId();
     }
@@ -315,7 +315,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function setValutanem($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', [$val]);
 
         return parent::setValutanem($val);
     }
@@ -326,7 +326,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function removeValutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValutanem', []);
 
         return parent::removeValutanem();
     }
@@ -337,7 +337,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function getNetto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNetto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNetto', []);
 
         return parent::getNetto();
     }
@@ -348,7 +348,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function setNetto($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNetto', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNetto', [$val]);
 
         return parent::setNetto($val);
     }
@@ -359,7 +359,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function getBrutto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBrutto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBrutto', []);
 
         return parent::getBrutto();
     }
@@ -370,7 +370,7 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function setBrutto($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBrutto', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBrutto', [$val]);
 
         return parent::setBrutto($val);
     }

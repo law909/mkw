@@ -8,7 +8,6 @@ use mkw\Store as store;
 
 /** @ORM\Entity(repositoryClass="Entities\BankbizonylatfejRepository")
  * @ORM\Table(name="bankbizonylatfej",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
- * @ORM\HasLifecycleCallbacks
  * */
 class Bankbizonylatfej {
 
@@ -130,107 +129,10 @@ class Bankbizonylatfej {
         return $this->id;
     }
 
-    /**
-     * @ORM\PostPersist
-     * @ORM\PostUpdate
-     */
-    public function generateFolyoszamla() {
-        \mkw\Store::getEm()->getRepository('Entities\Bankbizonylatfej')->createFolyoszamla($this);
-    }
-
-    public function calcOsszesen() {
-        $mincimlet = 0;
-        $kerekit = false;
-        $defakerekit = false;
-        if ($this->getValutanem()) {
-            $mincimlet = $this->getValutanem()->getMincimlet();
-            $kerekit = $this->getValutanem()->getKerekit();
+    public function setId($val) {
+        if (!$this->id) {
+            $this->id = $val;
         }
-        $defavaluta = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\Store::getParameter(\mkw\consts::Valutanem));
-        if ($defavaluta) {
-            $defakerekit = $defavaluta->getKerekit();
-        }
-        $this->netto = 0;
-        $this->afa = 0;
-        $this->brutto = 0;
-        foreach ($this->bizonylattetelek as $bt) {
-            $this->netto += $bt->getNetto();
-            $this->afa += $bt->getAfa();
-            $this->brutto += $bt->getBrutto();
-        }
-        if ($kerekit) {
-            $this->brutto = round($this->brutto);
-        }
-        if ($mincimlet && ($this->getBizonylattipusId() === 'bank')) {
-            $valosbrutto = $this->brutto;
-            $this->brutto = \mkw\Store::kerekit($this->brutto, $mincimlet);
-            $this->kerkul = $this->brutto - $valosbrutto;
-        }
-        $this->fizetendo = $this->brutto;
-    }
-
-    public function generateId($from = null) {
-        $bt = $this->getBizonylattipus();
-        $szam = 0;
-        if ($bt && is_null($this->id)) {
-            $azon = $bt->getAzonosito();
-            if (is_null($azon)) {
-                $azon = '';
-            }
-            $kezdo = $bt->getKezdosorszam();
-            $ev = $this->getKelt()->format('Y');
-            if (!$from) {
-                $q = store::getEm()->createQuery('SELECT COUNT(bf) FROM Entities\Bankbizonylatfej bf WHERE bf.bizonylattipus=:p');
-                $q->setParameters(array('p' => $bt));
-                if ($q->getSingleScalarResult() > 0) {
-                    $kezdo = 1;
-                }
-                if (!$kezdo) {
-                    $kezdo = 1;
-                }
-                $szam = $kezdo;
-                $q = store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bankbizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
-                $q->setParameters(array(
-                    'p1' => $bt,
-                    'p2' => $ev
-                ));
-                $max = $q->getSingleScalarResult();
-                if ($max) {
-                    $szam = explode('/', $max);
-                    if (is_array($szam)) {
-                        $szam = $szam[1] + 1;
-                    }
-                }
-            }
-            else {
-                $szam = $from;
-                $q = store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bankbizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
-                $q->setParameters(array(
-                    'p1' => $bt,
-                    'p2' => $ev
-                ));
-                $max = $q->getSingleScalarResult();
-                if ($max) {
-                    $szam = explode('/', $max);
-                    if (is_array($szam)) {
-                        $szam = $szam[1] + 1;
-                    }
-                }
-                if ($szam < $from) {
-                    $szam = $from;
-                }
-            }
-            $this->id = \mkw\Store::createBizonylatszam($azon, $ev, $szam);
-        }
-        return $szam;
-    }
-
-    /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function doStuffOnPrePersist() {
-        $this->calcOsszesen();
     }
 
     public function __construct() {
@@ -649,4 +551,6 @@ class Bankbizonylatfej {
             \mkw\Store::getEm()->persist($bt);
         }
     }
+
+
 }

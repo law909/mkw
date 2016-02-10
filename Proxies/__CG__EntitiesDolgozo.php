@@ -36,7 +36,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -205,7 +205,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -216,7 +216,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getIrszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIrszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIrszam', []);
 
         return parent::getIrszam();
     }
@@ -227,7 +227,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function setIrszam($irszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIrszam', array($irszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIrszam', [$irszam]);
 
         return parent::setIrszam($irszam);
     }
@@ -238,7 +238,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getVaros()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVaros', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVaros', []);
 
         return parent::getVaros();
     }
@@ -249,7 +249,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function setVaros($varos)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVaros', array($varos));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVaros', [$varos]);
 
         return parent::setVaros($varos);
     }
@@ -260,7 +260,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getUtca()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUtca', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUtca', []);
 
         return parent::getUtca();
     }
@@ -271,7 +271,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function setUtca($utca)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUtca', array($utca));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUtca', [$utca]);
 
         return parent::setUtca($utca);
     }
@@ -282,7 +282,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getTelefon()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTelefon', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTelefon', []);
 
         return parent::getTelefon();
     }
@@ -293,7 +293,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function setTelefon($telefon)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTelefon', array($telefon));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTelefon', [$telefon]);
 
         return parent::setTelefon($telefon);
     }
@@ -304,7 +304,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getEmail()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', []);
 
         return parent::getEmail();
     }
@@ -315,7 +315,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function setEmail($email)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', array($email));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', [$email]);
 
         return parent::setEmail($email);
     }
@@ -326,7 +326,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getSzulido()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzulido', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzulido', []);
 
         return parent::getSzulido();
     }
@@ -337,7 +337,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getSzulidoStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzulidoStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzulidoStr', []);
 
         return parent::getSzulidoStr();
     }
@@ -348,7 +348,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function setSzulido($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzulido', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzulido', [$adat]);
 
         return parent::setSzulido($adat);
     }
@@ -359,7 +359,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getSzulhely()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzulhely', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzulhely', []);
 
         return parent::getSzulhely();
     }
@@ -370,7 +370,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function setSzulhely($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzulhely', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzulhely', [$adat]);
 
         return parent::setSzulhely($adat);
     }
@@ -381,7 +381,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getEvesmaxszabi()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEvesmaxszabi', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEvesmaxszabi', []);
 
         return parent::getEvesmaxszabi();
     }
@@ -392,7 +392,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function setEvesmaxszabi($eves)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEvesmaxszabi', array($eves));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEvesmaxszabi', [$eves]);
 
         return parent::setEvesmaxszabi($eves);
     }
@@ -403,7 +403,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getMunkaviszonykezdete()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkaviszonykezdete', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkaviszonykezdete', []);
 
         return parent::getMunkaviszonykezdete();
     }
@@ -414,7 +414,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getMunkaviszonykezdeteStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkaviszonykezdeteStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkaviszonykezdeteStr', []);
 
         return parent::getMunkaviszonykezdeteStr();
     }
@@ -425,7 +425,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function setMunkaviszonykezdete($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMunkaviszonykezdete', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMunkaviszonykezdete', [$adat]);
 
         return parent::setMunkaviszonykezdete($adat);
     }
@@ -436,7 +436,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getMunkakor()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkakor', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkakor', []);
 
         return parent::getMunkakor();
     }
@@ -447,7 +447,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getMunkakorNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkakorNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkakorNev', []);
 
         return parent::getMunkakorNev();
     }
@@ -458,7 +458,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getMunkakorId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkakorId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkakorId', []);
 
         return parent::getMunkakorId();
     }
@@ -469,7 +469,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function setMunkakor(\Entities\Munkakor $munkakor)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMunkakor', array($munkakor));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMunkakor', [$munkakor]);
 
         return parent::setMunkakor($munkakor);
     }
@@ -480,7 +480,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function removeMunkakor()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeMunkakor', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeMunkakor', []);
 
         return parent::removeMunkakor();
     }
@@ -491,7 +491,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getJog()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJog', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJog', []);
 
         return parent::getJog();
     }
@@ -502,7 +502,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getJelenletek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJelenletek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJelenletek', []);
 
         return parent::getJelenletek();
     }
@@ -513,7 +513,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function addJelenlet(\Entities\Jelenletiiv $adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addJelenlet', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addJelenlet', [$adat]);
 
         return parent::addJelenlet($adat);
     }
@@ -524,7 +524,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function removeJelenlet(\Entities\Jelenletiiv $adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeJelenlet', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeJelenlet', [$adat]);
 
         return parent::removeJelenlet($adat);
     }
@@ -535,7 +535,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getJelszo()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJelszo', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJelszo', []);
 
         return parent::getJelszo();
     }
@@ -546,7 +546,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function setPlainJelszo($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPlainJelszo', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPlainJelszo', [$adat]);
 
         return parent::setPlainJelszo($adat);
     }
@@ -557,7 +557,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function checkPlainJelszo($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'checkPlainJelszo', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'checkPlainJelszo', [$adat]);
 
         return parent::checkPlainJelszo($adat);
     }
@@ -568,7 +568,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function setJelszo($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJelszo', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJelszo', [$adat]);
 
         return parent::setJelszo($adat);
     }
@@ -579,7 +579,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function checkJelszo($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'checkJelszo', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'checkJelszo', [$adat]);
 
         return parent::checkJelszo($adat);
     }
@@ -590,7 +590,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function getUitheme()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUitheme', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUitheme', []);
 
         return parent::getUitheme();
     }
@@ -601,7 +601,7 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function setUitheme($uitheme)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUitheme', array($uitheme));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUitheme', [$uitheme]);
 
         return parent::setUitheme($uitheme);
     }

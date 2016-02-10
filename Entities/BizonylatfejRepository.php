@@ -197,46 +197,52 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 else {
                     $ktg = $bruttoegysar;
                 }
+                $ktg = $ktg * 1;
 
-                $k = $this->getTetelsor($bizfej->getId(), $termekid);
-                if ($k) {
-                    $k->setMennyiseg(1);
-                    if ($nullasafa) {
-                        $k->setAfa($nullasafa);
+                if ($ktg) {
+                    $k = $this->getTetelsor($bizfej->getId(), $termekid);
+                    if ($k) {
+                        $k->setMennyiseg(1);
+                        if ($nullasafa) {
+                            $k->setAfa($nullasafa);
+                        }
+                        else {
+                            $k->setAfa($termek->getAfa());
+                        }
+                        $k->setBruttoegysar($ktg);
+                        $k->setBruttoegysarhuf($ktg);
+                        $k->calc();
+                        $this->_em->persist($k);
                     }
                     else {
-                        $k->setAfa($termek->getAfa());
+                        $tetel = new \Entities\Bizonylattetel();
+                        $bizfej->addBizonylattetel($tetel);
+                        $tetel->setPersistentData();
+                        $tetel->setArvaltoztat(0);
+                        if ($termek) {
+                            $tetel->setTermek($termek);
+                        }
+                        $tetel->setMozgat();
+                        $tetel->setFoglal();
+                        $tetel->setMennyiseg(1);
+                        if ($nullasafa) {
+                            $tetel->setAfa($nullasafa);
+                            $tetel->setNettoegysar($ktg);
+                            $tetel->setNettoegysarhuf($ktg);
+                        }
+                        else {
+                            $tetel->setAfa($termek->getAfa());
+                            $tetel->setBruttoegysar($ktg);
+                            $tetel->setBruttoegysarhuf($ktg);
+                        }
+                        $tetel->calc();
+                        $this->_em->persist($tetel);
                     }
-                    $k->setBruttoegysar($ktg);
-                    $k->setBruttoegysarhuf($ktg);
-                    $k->calc();
-                    $this->_em->persist($k);
+                    $this->_em->flush();
                 }
                 else {
-                    $tetel = new \Entities\Bizonylattetel();
-                    $bizfej->addBizonylattetel($tetel);
-                    $tetel->setPersistentData();
-                    $tetel->setArvaltoztat(0);
-                    if ($termek) {
-                        $tetel->setTermek($termek);
-                    }
-                    $tetel->setMozgat();
-                    $tetel->setFoglal();
-                    $tetel->setMennyiseg(1);
-                    if ($nullasafa) {
-                        $tetel->setAfa($nullasafa);
-                        $tetel->setNettoegysar($ktg);
-                        $tetel->setNettoegysarhuf($ktg);
-                    }
-                    else {
-                        $tetel->setAfa($termek->getAfa());
-                        $tetel->setBruttoegysar($ktg);
-                        $tetel->setBruttoegysarhuf($ktg);
-                    }
-                    $tetel->calc();
-                    $this->_em->persist($tetel);
+                    $this->remove($bizfej->getId(), $termek);
                 }
-                $this->_em->flush();
             }
             else {
                 $this->remove($bizfej->getId(), $termek);
@@ -244,94 +250,6 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         }
         else {
             $this->remove($bizfej->getId(), $termek);
-        }
-    }
-
-    /**
-     * @param \Entities\Bizonylatfej $bizonylat
-     * @param $szam
-     */
-    private function createFSzla($bizonylat, $szam) {
-        $fszla = new \Entities\Folyoszamla();
-        $fszla->setDatum($bizonylat->getKelt());
-        $fszla->setFizmod($bizonylat->getFizmod());
-        $fszla->setPartner($bizonylat->getPartner());
-        $fszla->setBizonylattipus($bizonylat->getBizonylattipus());
-        $fszla->setRontott($bizonylat->getRontott());
-        $fszla->setStorno($bizonylat->getStorno());
-        $fszla->setStornozott($bizonylat->getStornozott());
-        $fszla->setHivatkozottbizonylat($bizonylat->getId());
-        $fszla->setUzletkoto($bizonylat->getUzletkoto());
-        $fszla->setValutanem($bizonylat->getValutanem());
-        $fszla->setIrany($bizonylat->getIrany() * -1);
-        switch ($szam) {
-            case 0:
-                $fszla->setBrutto($bizonylat->getFizetendo());
-                $fszla->setHivatkozottdatum($bizonylat->getEsedekessegStr());
-                break;
-            case 1:
-                $fszla->setBrutto($bizonylat->getFizetendo1());
-                $fszla->setHivatkozottdatum($bizonylat->getEsedekesseg1Str());
-                break;
-            case 2:
-                $fszla->setBrutto($bizonylat->getFizetendo2());
-                $fszla->setHivatkozottdatum($bizonylat->getEsedekesseg2Str());
-                break;
-            case 3:
-                $fszla->setBrutto($bizonylat->getFizetendo3());
-                $fszla->setHivatkozottdatum($bizonylat->getEsedekesseg3Str());
-                break;
-        }
-        $fszla->setBizonylatfej($bizonylat);
-        $this->_em->persist($fszla);
-    }
-
-    /**
-     * @param \Entities\Bizonylatfej $bizonylat
-     */
-    public function createFolyoszamla($bizonylat) {
-        if (!$bizonylat->getPenztmozgat()) {
-            foreach ($bizonylat->getFolyoszamlak() as $fsz) {
-                $this->_em->remove($fsz);
-            }
-            $bizonylat->clearFolyoszamlak();
-            $this->_em->flush();
-        }
-        else {
-            $fm = $bizonylat->getFizmod();
-            $fmt = '';
-            if ($fm) {
-                $fmt = $fm->getTipus();
-            }
-            if ($fmt !== 'P') {
-                foreach ($bizonylat->getFolyoszamlak() as $fsz) {
-                    $this->_em->remove($fsz);
-                }
-                $bizonylat->clearFolyoszamlak();
-
-                if (\mkw\Store::isOsztottFizmod()) {
-                    $volt = false;
-                    if ($bizonylat->getFizetendo1()) {
-                        $this->createFSzla($bizonylat, 1);
-                        $volt = true;
-                    }
-                    if ($bizonylat->getFizetendo2()) {
-                        $this->createFSzla($bizonylat, 2);
-                        $volt = true;
-                    }
-                    if ($bizonylat->getFizetendo3()) {
-                        $this->createFSzla($bizonylat, 3);
-                        $volt = true;
-                    }
-                    if (!$volt) {
-                        $this->createFSzla($bizonylat, 0);
-                    }
-                }
-                else {
-                    $this->createFSzla($bizonylat, 0);
-                }
-                $this->_em->flush();
-            }
         }
     }
 

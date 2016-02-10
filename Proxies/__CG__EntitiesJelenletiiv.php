@@ -36,7 +36,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'id', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'datum', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'munkaido', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'jelenlettipus');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'id', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'datum', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'munkaido', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'jelenlettipus'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'id', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'datum', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'munkaido', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'jelenlettipus');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'id', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'datum', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'munkaido', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'jelenlettipus'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function getDatum()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatum', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatum', []);
 
         return parent::getDatum();
     }
@@ -205,7 +205,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function getDatumStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatumStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatumStr', []);
 
         return parent::getDatumStr();
     }
@@ -216,7 +216,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function setDatum($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDatum', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDatum', [$adat]);
 
         return parent::setDatum($adat);
     }
@@ -227,7 +227,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function getDolgozo()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDolgozo', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDolgozo', []);
 
         return parent::getDolgozo();
     }
@@ -238,7 +238,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function getDolgozoNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDolgozoNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDolgozoNev', []);
 
         return parent::getDolgozoNev();
     }
@@ -249,7 +249,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function getDolgozoId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDolgozoId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDolgozoId', []);
 
         return parent::getDolgozoId();
     }
@@ -260,7 +260,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function setDolgozo(\Entities\Dolgozo $adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDolgozo', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDolgozo', [$adat]);
 
         return parent::setDolgozo($adat);
     }
@@ -271,7 +271,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function removeDolgozo()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeDolgozo', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeDolgozo', []);
 
         return parent::removeDolgozo();
     }
@@ -282,7 +282,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function getMunkaido()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkaido', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkaido', []);
 
         return parent::getMunkaido();
     }
@@ -293,7 +293,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function setMunkaido($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMunkaido', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMunkaido', [$adat]);
 
         return parent::setMunkaido($adat);
     }
@@ -304,7 +304,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function getJelenlettipus()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJelenlettipus', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJelenlettipus', []);
 
         return parent::getJelenlettipus();
     }
@@ -315,7 +315,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function getJelenlettipusNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJelenlettipusNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJelenlettipusNev', []);
 
         return parent::getJelenlettipusNev();
     }
@@ -326,7 +326,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function getJelenlettipusId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJelenlettipusId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJelenlettipusId', []);
 
         return parent::getJelenlettipusId();
     }
@@ -337,7 +337,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function setJelenlettipus(\Entities\Jelenlettipus $adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJelenlettipus', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJelenlettipus', [$adat]);
 
         return parent::setJelenlettipus($adat);
     }
@@ -348,7 +348,7 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function removeJelenlettipus()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeJelenlettipus', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeJelenlettipus', []);
 
         return parent::removeJelenlettipus();
     }

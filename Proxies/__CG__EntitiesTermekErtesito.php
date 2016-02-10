@@ -36,7 +36,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'id', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'created', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'email', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'partner', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'sent');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'id', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'created', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'email', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'partner', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'sent'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'id', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'created', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'email', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'partner', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'sent');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'id', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'created', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'email', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'partner', '' . "\0" . 'Entities\\TermekErtesito' . "\0" . 'sent'];
     }
 
     /**
@@ -97,7 +97,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function getCreated()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
     }
@@ -205,7 +205,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function getCreatedStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedStr', []);
 
         return parent::getCreatedStr();
     }
@@ -216,7 +216,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function getEmail()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', []);
 
         return parent::getEmail();
     }
@@ -227,7 +227,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function setEmail($email)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', array($email));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', [$email]);
 
         return parent::setEmail($email);
     }
@@ -238,7 +238,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function getPartner()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartner', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartner', []);
 
         return parent::getPartner();
     }
@@ -249,7 +249,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function getPartnerId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', []);
 
         return parent::getPartnerId();
     }
@@ -260,7 +260,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function getPartnerNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerNev', []);
 
         return parent::getPartnerNev();
     }
@@ -271,7 +271,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function setPartner(\Entities\Partner $val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartner', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartner', [$val]);
 
         return parent::setPartner($val);
     }
@@ -282,7 +282,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function removePartner()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', []);
 
         return parent::removePartner();
     }
@@ -293,7 +293,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function getTermek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', []);
 
         return parent::getTermek();
     }
@@ -304,7 +304,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function getTermekId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekId', []);
 
         return parent::getTermekId();
     }
@@ -315,7 +315,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function getTermekNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekNev', []);
 
         return parent::getTermekNev();
     }
@@ -326,7 +326,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function setTermek(\Entities\Termek $val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermek', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermek', [$val]);
 
         return parent::setTermek($val);
     }
@@ -337,7 +337,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function removeTermek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', []);
 
         return parent::removeTermek();
     }
@@ -348,7 +348,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function getSent()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSent', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSent', []);
 
         return parent::getSent();
     }
@@ -359,7 +359,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function getSentStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSentStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSentStr', []);
 
         return parent::getSentStr();
     }
@@ -370,7 +370,7 @@ class TermekErtesito extends \Entities\TermekErtesito implements \Doctrine\ORM\P
     public function setSent($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSent', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSent', [$adat]);
 
         return parent::setSent($adat);
     }

@@ -36,7 +36,7 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'id', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'nev', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kerekit', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'hivatalos', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'mincimlet', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'partnerek');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'id', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'nev', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kerekit', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'hivatalos', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'mincimlet', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'partnerek'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'id', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'nev', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kerekit', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'hivatalos', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'mincimlet', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'partnerek');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'id', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'nev', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kerekit', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'hivatalos', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'mincimlet', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'partnerek'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -205,7 +205,7 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -216,7 +216,7 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
     public function getKerekit()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKerekit', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKerekit', []);
 
         return parent::getKerekit();
     }
@@ -227,7 +227,7 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
     public function setKerekit($kerekit)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKerekit', array($kerekit));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKerekit', [$kerekit]);
 
         return parent::setKerekit($kerekit);
     }
@@ -238,7 +238,7 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
     public function getHivatalos()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHivatalos', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHivatalos', []);
 
         return parent::getHivatalos();
     }
@@ -249,7 +249,7 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
     public function setHivatalos($hivatalos)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHivatalos', array($hivatalos));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHivatalos', [$hivatalos]);
 
         return parent::setHivatalos($hivatalos);
     }
@@ -260,7 +260,7 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
     public function getMincimlet()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMincimlet', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMincimlet', []);
 
         return parent::getMincimlet();
     }
@@ -271,7 +271,7 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
     public function setMincimlet($mincimlet)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMincimlet', array($mincimlet));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMincimlet', [$mincimlet]);
 
         return parent::setMincimlet($mincimlet);
     }
@@ -282,7 +282,7 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
     public function getBankszamla()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankszamla', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankszamla', []);
 
         return parent::getBankszamla();
     }
@@ -293,7 +293,7 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
     public function getBankszamlaId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankszamlaId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankszamlaId', []);
 
         return parent::getBankszamlaId();
     }
@@ -304,7 +304,7 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
     public function setBankszamla($bankszamla)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankszamla', array($bankszamla));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankszamla', [$bankszamla]);
 
         return parent::setBankszamla($bankszamla);
     }

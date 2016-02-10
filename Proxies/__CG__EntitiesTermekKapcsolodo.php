@@ -36,7 +36,7 @@ class TermekKapcsolodo extends \Entities\TermekKapcsolodo implements \Doctrine\O
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class TermekKapcsolodo extends \Entities\TermekKapcsolodo implements \Doctrine\O
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'altermek');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'altermek'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'altermek');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKapcsolodo' . "\0" . 'altermek'];
     }
 
     /**
@@ -97,7 +97,7 @@ class TermekKapcsolodo extends \Entities\TermekKapcsolodo implements \Doctrine\O
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class TermekKapcsolodo extends \Entities\TermekKapcsolodo implements \Doctrine\O
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class TermekKapcsolodo extends \Entities\TermekKapcsolodo implements \Doctrine\O
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class TermekKapcsolodo extends \Entities\TermekKapcsolodo implements \Doctrine\O
     public function getTermek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', []);
 
         return parent::getTermek();
     }
@@ -205,7 +205,7 @@ class TermekKapcsolodo extends \Entities\TermekKapcsolodo implements \Doctrine\O
     public function getTermekNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekNev', []);
 
         return parent::getTermekNev();
     }
@@ -216,7 +216,7 @@ class TermekKapcsolodo extends \Entities\TermekKapcsolodo implements \Doctrine\O
     public function setTermek(\Entities\Termek $termek)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermek', array($termek));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermek', [$termek]);
 
         return parent::setTermek($termek);
     }
@@ -227,7 +227,7 @@ class TermekKapcsolodo extends \Entities\TermekKapcsolodo implements \Doctrine\O
     public function removeTermek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', []);
 
         return parent::removeTermek();
     }
@@ -238,7 +238,7 @@ class TermekKapcsolodo extends \Entities\TermekKapcsolodo implements \Doctrine\O
     public function getAlTermek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAlTermek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAlTermek', []);
 
         return parent::getAlTermek();
     }
@@ -249,7 +249,7 @@ class TermekKapcsolodo extends \Entities\TermekKapcsolodo implements \Doctrine\O
     public function getAlTermekNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAlTermekNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAlTermekNev', []);
 
         return parent::getAlTermekNev();
     }
@@ -260,7 +260,7 @@ class TermekKapcsolodo extends \Entities\TermekKapcsolodo implements \Doctrine\O
     public function setAlTermek(\Entities\Termek $altermek)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAlTermek', array($altermek));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAlTermek', [$altermek]);
 
         return parent::setAlTermek($altermek);
     }
@@ -271,7 +271,7 @@ class TermekKapcsolodo extends \Entities\TermekKapcsolodo implements \Doctrine\O
     public function removeAlTermek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAlTermek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAlTermek', []);
 
         return parent::removeAlTermek();
     }
@@ -282,7 +282,7 @@ class TermekKapcsolodo extends \Entities\TermekKapcsolodo implements \Doctrine\O
     public function getLastmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', []);
 
         return parent::getLastmod();
     }
@@ -293,7 +293,7 @@ class TermekKapcsolodo extends \Entities\TermekKapcsolodo implements \Doctrine\O
     public function getCreated()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
     }

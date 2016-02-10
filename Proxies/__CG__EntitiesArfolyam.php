@@ -36,7 +36,7 @@ class Arfolyam extends \Entities\Arfolyam implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Arfolyam extends \Entities\Arfolyam implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'id', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'created', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'datum', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'arfolyam');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'id', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'created', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'datum', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'arfolyam'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'id', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'created', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'datum', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'arfolyam');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'id', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'created', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'datum', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Arfolyam' . "\0" . 'arfolyam'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Arfolyam extends \Entities\Arfolyam implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Arfolyam extends \Entities\Arfolyam implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Arfolyam extends \Entities\Arfolyam implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Arfolyam extends \Entities\Arfolyam implements \Doctrine\ORM\Proxy\Proxy
     public function getDatum()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatum', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatum', []);
 
         return parent::getDatum();
     }
@@ -205,7 +205,7 @@ class Arfolyam extends \Entities\Arfolyam implements \Doctrine\ORM\Proxy\Proxy
     public function getDatumString()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatumString', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatumString', []);
 
         return parent::getDatumString();
     }
@@ -216,7 +216,7 @@ class Arfolyam extends \Entities\Arfolyam implements \Doctrine\ORM\Proxy\Proxy
     public function setDatum($datum)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDatum', array($datum));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDatum', [$datum]);
 
         return parent::setDatum($datum);
     }
@@ -227,7 +227,7 @@ class Arfolyam extends \Entities\Arfolyam implements \Doctrine\ORM\Proxy\Proxy
     public function getValutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', []);
 
         return parent::getValutanem();
     }
@@ -238,7 +238,7 @@ class Arfolyam extends \Entities\Arfolyam implements \Doctrine\ORM\Proxy\Proxy
     public function getValutanemNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemNev', []);
 
         return parent::getValutanemNev();
     }
@@ -249,7 +249,7 @@ class Arfolyam extends \Entities\Arfolyam implements \Doctrine\ORM\Proxy\Proxy
     public function setValutanem($valutanem)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', array($valutanem));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', [$valutanem]);
 
         return parent::setValutanem($valutanem);
     }
@@ -260,7 +260,7 @@ class Arfolyam extends \Entities\Arfolyam implements \Doctrine\ORM\Proxy\Proxy
     public function getArfolyam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArfolyam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArfolyam', []);
 
         return parent::getArfolyam();
     }
@@ -271,7 +271,7 @@ class Arfolyam extends \Entities\Arfolyam implements \Doctrine\ORM\Proxy\Proxy
     public function setArfolyam($arfolyam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setArfolyam', array($arfolyam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setArfolyam', [$arfolyam]);
 
         return parent::setArfolyam($arfolyam);
     }
@@ -282,7 +282,7 @@ class Arfolyam extends \Entities\Arfolyam implements \Doctrine\ORM\Proxy\Proxy
     public function getLastmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', []);
 
         return parent::getLastmod();
     }
@@ -293,7 +293,7 @@ class Arfolyam extends \Entities\Arfolyam implements \Doctrine\ORM\Proxy\Proxy
     public function getCreated()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
     }

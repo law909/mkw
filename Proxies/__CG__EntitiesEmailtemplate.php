@@ -36,7 +36,7 @@ class Emailtemplate extends \Entities\Emailtemplate implements \Doctrine\ORM\Pro
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Emailtemplate extends \Entities\Emailtemplate implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'id', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'nev', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'targy', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'bizonylatstatuszok');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'id', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'nev', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'targy', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'bizonylatstatuszok'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'id', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'nev', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'targy', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'bizonylatstatuszok');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'id', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'nev', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'targy', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Emailtemplate' . "\0" . 'bizonylatstatuszok'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Emailtemplate extends \Entities\Emailtemplate implements \Doctrine\ORM\Pro
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Emailtemplate extends \Entities\Emailtemplate implements \Doctrine\ORM\Pro
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Emailtemplate extends \Entities\Emailtemplate implements \Doctrine\ORM\Pro
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Emailtemplate extends \Entities\Emailtemplate implements \Doctrine\ORM\Pro
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -205,7 +205,7 @@ class Emailtemplate extends \Entities\Emailtemplate implements \Doctrine\ORM\Pro
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -216,7 +216,7 @@ class Emailtemplate extends \Entities\Emailtemplate implements \Doctrine\ORM\Pro
     public function getSzoveg()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzoveg', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzoveg', []);
 
         return parent::getSzoveg();
     }
@@ -227,7 +227,7 @@ class Emailtemplate extends \Entities\Emailtemplate implements \Doctrine\ORM\Pro
     public function getHTMLSzoveg()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHTMLSzoveg', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHTMLSzoveg', []);
 
         return parent::getHTMLSzoveg();
     }
@@ -238,7 +238,7 @@ class Emailtemplate extends \Entities\Emailtemplate implements \Doctrine\ORM\Pro
     public function setSzoveg($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzoveg', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzoveg', [$adat]);
 
         return parent::setSzoveg($adat);
     }
@@ -249,7 +249,7 @@ class Emailtemplate extends \Entities\Emailtemplate implements \Doctrine\ORM\Pro
     public function getTargy()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTargy', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTargy', []);
 
         return parent::getTargy();
     }
@@ -260,7 +260,7 @@ class Emailtemplate extends \Entities\Emailtemplate implements \Doctrine\ORM\Pro
     public function setTargy($t)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTargy', array($t));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTargy', [$t]);
 
         return parent::setTargy($t);
     }

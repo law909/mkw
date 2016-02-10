@@ -36,7 +36,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nyomtatni', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'azonosito', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'kezdosorszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'peldanyszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'penztmozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'editprinted', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showteljesites', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showesedekesseg', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhatarido', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbizonylatstatuszeditor', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitobutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkivetbutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkeziszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbevetbutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showuzenet', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitasicim', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showerbizonylatszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showfuvarlevelszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhaszonszazalek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showstorno', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbackorder', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showmesebutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'tplname');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nyomtatni', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'azonosito', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'kezdosorszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'peldanyszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'penztmozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'editprinted', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showteljesites', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showesedekesseg', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhatarido', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbizonylatstatuszeditor', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitobutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkivetbutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkeziszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbevetbutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showuzenet', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitasicim', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showerbizonylatszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showfuvarlevelszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhaszonszazalek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showstorno', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbackorder', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showmesebutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'tplname'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nyomtatni', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'azonosito', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'kezdosorszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'peldanyszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'penztmozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'editprinted', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showteljesites', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showesedekesseg', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhatarido', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbizonylatstatuszeditor', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitobutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkivetbutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkeziszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbevetbutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showuzenet', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitasicim', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showerbizonylatszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showfuvarlevelszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhaszonszazalek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showstorno', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbackorder', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showmesebutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'tplname');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'irany', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'nyomtatni', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'azonosito', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'kezdosorszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'peldanyszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'penztmozgat', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'editprinted', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showteljesites', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showesedekesseg', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhatarido', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbizonylatstatuszeditor', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitobutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkivetbutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showkeziszamlabutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbevetbutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showuzenet', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showszallitasicim', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showerbizonylatszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showfuvarlevelszam', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showhaszonszazalek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showstorno', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showbackorder', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'showmesebutton', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylattipus' . "\0" . 'tplname'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setTemplateVars($view)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTemplateVars', array($view));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTemplateVars', [$view]);
 
         return parent::setTemplateVars($view);
     }
@@ -194,7 +194,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -205,7 +205,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -216,7 +216,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setNev($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$val]);
 
         return parent::setNev($val);
     }
@@ -227,7 +227,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getIrany()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIrany', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIrany', []);
 
         return parent::getIrany();
     }
@@ -238,7 +238,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setIrany($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIrany', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIrany', [$val]);
 
         return parent::setIrany($val);
     }
@@ -249,7 +249,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getNyomtatni()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNyomtatni', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNyomtatni', []);
 
         return parent::getNyomtatni();
     }
@@ -260,7 +260,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setNyomtatni($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNyomtatni', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNyomtatni', [$val]);
 
         return parent::setNyomtatni($val);
     }
@@ -271,7 +271,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getAzonosito()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAzonosito', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAzonosito', []);
 
         return parent::getAzonosito();
     }
@@ -282,7 +282,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setAzonosito($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAzonosito', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAzonosito', [$val]);
 
         return parent::setAzonosito($val);
     }
@@ -293,7 +293,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getKezdosorszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKezdosorszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKezdosorszam', []);
 
         return parent::getKezdosorszam();
     }
@@ -304,7 +304,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setKezdosorszam($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKezdosorszam', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKezdosorszam', [$val]);
 
         return parent::setKezdosorszam($val);
     }
@@ -315,7 +315,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getPeldanyszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPeldanyszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPeldanyszam', []);
 
         return parent::getPeldanyszam();
     }
@@ -326,7 +326,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setPeldanyszam($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPeldanyszam', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPeldanyszam', [$val]);
 
         return parent::setPeldanyszam($val);
     }
@@ -337,7 +337,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getMozgat()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMozgat', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMozgat', []);
 
         return parent::getMozgat();
     }
@@ -348,7 +348,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setMozgat($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMozgat', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMozgat', [$val]);
 
         return parent::setMozgat($val);
     }
@@ -359,7 +359,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getPenztmozgat()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPenztmozgat', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPenztmozgat', []);
 
         return parent::getPenztmozgat();
     }
@@ -370,7 +370,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setPenztmozgat($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPenztmozgat', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPenztmozgat', [$val]);
 
         return parent::setPenztmozgat($val);
     }
@@ -381,7 +381,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getEditprinted()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEditprinted', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEditprinted', []);
 
         return parent::getEditprinted();
     }
@@ -392,7 +392,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setEditprinted($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEditprinted', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEditprinted', [$val]);
 
         return parent::setEditprinted($val);
     }
@@ -403,7 +403,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowteljesites()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowteljesites', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowteljesites', []);
 
         return parent::getShowteljesites();
     }
@@ -414,7 +414,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowteljesites($show)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowteljesites', array($show));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowteljesites', [$show]);
 
         return parent::setShowteljesites($show);
     }
@@ -425,7 +425,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowesedekesseg()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowesedekesseg', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowesedekesseg', []);
 
         return parent::getShowesedekesseg();
     }
@@ -436,7 +436,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowesedekesseg($show)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowesedekesseg', array($show));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowesedekesseg', [$show]);
 
         return parent::setShowesedekesseg($show);
     }
@@ -447,7 +447,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowhatarido()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowhatarido', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowhatarido', []);
 
         return parent::getShowhatarido();
     }
@@ -458,7 +458,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowhatarido($show)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowhatarido', array($show));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowhatarido', [$show]);
 
         return parent::setShowhatarido($show);
     }
@@ -469,7 +469,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowvalutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowvalutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowvalutanem', []);
 
         return parent::getShowvalutanem();
     }
@@ -480,7 +480,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getTplname()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTplname', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTplname', []);
 
         return parent::getTplname();
     }
@@ -491,7 +491,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setTplname($d)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTplname', array($d));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTplname', [$d]);
 
         return parent::setTplname($d);
     }
@@ -502,7 +502,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowbizonylatstatuszeditor()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowbizonylatstatuszeditor', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowbizonylatstatuszeditor', []);
 
         return parent::getShowbizonylatstatuszeditor();
     }
@@ -513,7 +513,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowbizonylatstatuszeditor($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowbizonylatstatuszeditor', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowbizonylatstatuszeditor', [$val]);
 
         return parent::setShowbizonylatstatuszeditor($val);
     }
@@ -524,7 +524,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowszamlabutton()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowszamlabutton', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowszamlabutton', []);
 
         return parent::getShowszamlabutton();
     }
@@ -535,7 +535,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowszamlabutton($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowszamlabutton', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowszamlabutton', [$val]);
 
         return parent::setShowszamlabutton($val);
     }
@@ -546,7 +546,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowkeziszamlabutton()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowkeziszamlabutton', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowkeziszamlabutton', []);
 
         return parent::getShowkeziszamlabutton();
     }
@@ -557,7 +557,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowkeziszamlabutton($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowkeziszamlabutton', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowkeziszamlabutton', [$val]);
 
         return parent::setShowkeziszamlabutton($val);
     }
@@ -568,7 +568,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowkivetbutton()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowkivetbutton', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowkivetbutton', []);
 
         return parent::getShowkivetbutton();
     }
@@ -579,7 +579,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowkivetbutton($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowkivetbutton', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowkivetbutton', [$val]);
 
         return parent::setShowkivetbutton($val);
     }
@@ -590,7 +590,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowbevetbutton()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowbevetbutton', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowbevetbutton', []);
 
         return parent::getShowbevetbutton();
     }
@@ -601,7 +601,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowbevetbutton($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowbevetbutton', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowbevetbutton', [$val]);
 
         return parent::setShowbevetbutton($val);
     }
@@ -612,7 +612,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowszallitobutton()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowszallitobutton', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowszallitobutton', []);
 
         return parent::getShowszallitobutton();
     }
@@ -623,7 +623,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowszallitobtn($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowszallitobtn', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowszallitobtn', [$val]);
 
         return parent::setShowszallitobtn($val);
     }
@@ -634,7 +634,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowuzenet()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowuzenet', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowuzenet', []);
 
         return parent::getShowuzenet();
     }
@@ -645,7 +645,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowuzenet($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowuzenet', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowuzenet', [$val]);
 
         return parent::setShowuzenet($val);
     }
@@ -656,7 +656,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowszallitasicim()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowszallitasicim', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowszallitasicim', []);
 
         return parent::getShowszallitasicim();
     }
@@ -667,7 +667,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowszallitasicim($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowszallitasicim', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowszallitasicim', [$val]);
 
         return parent::setShowszallitasicim($val);
     }
@@ -678,7 +678,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowerbizonylatszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowerbizonylatszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowerbizonylatszam', []);
 
         return parent::getShowerbizonylatszam();
     }
@@ -689,7 +689,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowerbizonylatszam($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowerbizonylatszam', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowerbizonylatszam', [$val]);
 
         return parent::setShowerbizonylatszam($val);
     }
@@ -700,7 +700,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowfuvarlevelszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowfuvarlevelszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowfuvarlevelszam', []);
 
         return parent::getShowfuvarlevelszam();
     }
@@ -711,7 +711,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowfuvarlevelszam($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowfuvarlevelszam', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowfuvarlevelszam', [$val]);
 
         return parent::setShowfuvarlevelszam($val);
     }
@@ -722,7 +722,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowhaszonszazalek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowhaszonszazalek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowhaszonszazalek', []);
 
         return parent::getShowhaszonszazalek();
     }
@@ -733,7 +733,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowhaszonszazalek($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowhaszonszazalek', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowhaszonszazalek', [$val]);
 
         return parent::setShowhaszonszazalek($val);
     }
@@ -744,7 +744,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowstorno()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowstorno', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowstorno', []);
 
         return parent::getShowstorno();
     }
@@ -755,7 +755,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowstorno($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowstorno', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowstorno', [$adat]);
 
         return parent::setShowstorno($adat);
     }
@@ -766,7 +766,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowbackorder()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowbackorder', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowbackorder', []);
 
         return parent::getShowbackorder();
     }
@@ -777,7 +777,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowbackorder($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowbackorder', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowbackorder', [$adat]);
 
         return parent::setShowbackorder($adat);
     }
@@ -788,7 +788,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getFoglal()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFoglal', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFoglal', []);
 
         return parent::getFoglal();
     }
@@ -799,7 +799,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setFoglal($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFoglal', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFoglal', [$adat]);
 
         return parent::setFoglal($adat);
     }
@@ -810,7 +810,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function getShowmesebutton()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowmesebutton', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowmesebutton', []);
 
         return parent::getShowmesebutton();
     }
@@ -821,7 +821,7 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
     public function setShowmesebutton($showmesebutton)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowmesebutton', array($showmesebutton));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setShowmesebutton', [$showmesebutton]);
 
         return parent::setShowmesebutton($showmesebutton);
     }

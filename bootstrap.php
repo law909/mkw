@@ -95,7 +95,8 @@ if (Store::isMultilang()) {
     Store::setTranslationListener($translatableListener);
 }
 
-$evm->addEventListener(array('onFlush'), new Listeners\BizonylatfejListener());
+$evm->addEventListener(array('onFlush', 'prePersist'), new Listeners\BizonylatfejListener());
+$evm->addEventListener(array('onFlush', 'prePersist'), new Listeners\BankbizonylatfejListener());
 
 $em = \Doctrine\ORM\EntityManager::create($connectionOptions, $config, $evm);
 

@@ -36,7 +36,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'id', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'nev', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'url', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'lathato', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'sorrend');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'id', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'nev', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'url', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'lathato', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'sorrend'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'id', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'nev', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'url', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'lathato', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'sorrend');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'id', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'nev', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'url', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'lathato', '' . "\0" . 'Entities\\Korhinta' . "\0" . 'sorrend'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function convertToArray()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'convertToArray', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'convertToArray', []);
 
         return parent::convertToArray();
     }
@@ -194,7 +194,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -205,7 +205,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -216,7 +216,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -227,7 +227,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function getSzoveg()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzoveg', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzoveg', []);
 
         return parent::getSzoveg();
     }
@@ -238,7 +238,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function setSzoveg($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzoveg', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzoveg', [$adat]);
 
         return parent::setSzoveg($adat);
     }
@@ -249,7 +249,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function getUrl()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrl', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrl', []);
 
         return parent::getUrl();
     }
@@ -260,7 +260,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function setUrl($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUrl', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUrl', [$adat]);
 
         return parent::setUrl($adat);
     }
@@ -271,7 +271,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function getKepurl($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl', [$pre]);
 
         return parent::getKepurl($pre);
     }
@@ -282,7 +282,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function getKepurlSmall($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlSmall', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlSmall', [$pre]);
 
         return parent::getKepurlSmall($pre);
     }
@@ -293,7 +293,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function getKepurlMedium($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlMedium', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlMedium', [$pre]);
 
         return parent::getKepurlMedium($pre);
     }
@@ -304,7 +304,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function getKepurlLarge($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlLarge', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlLarge', [$pre]);
 
         return parent::getKepurlLarge($pre);
     }
@@ -315,7 +315,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function setKepurl($kepurl)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepurl', array($kepurl));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepurl', [$kepurl]);
 
         return parent::setKepurl($kepurl);
     }
@@ -326,7 +326,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function getKepleiras()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepleiras', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepleiras', []);
 
         return parent::getKepleiras();
     }
@@ -337,7 +337,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function setKepleiras($kepleiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepleiras', array($kepleiras));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepleiras', [$kepleiras]);
 
         return parent::setKepleiras($kepleiras);
     }
@@ -348,7 +348,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function getKepnev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepnev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepnev', []);
 
         return parent::getKepnev();
     }
@@ -359,7 +359,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function setKepnev($kepnev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepnev', array($kepnev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepnev', [$kepnev]);
 
         return parent::setKepnev($kepnev);
     }
@@ -370,7 +370,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function getLathato()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato', []);
 
         return parent::getLathato();
     }
@@ -381,7 +381,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function setLathato($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato', [$adat]);
 
         return parent::setLathato($adat);
     }
@@ -392,7 +392,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function getSorrend()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSorrend', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSorrend', []);
 
         return parent::getSorrend();
     }
@@ -403,7 +403,7 @@ class Korhinta extends \Entities\Korhinta implements \Doctrine\ORM\Proxy\Proxy
     public function setSorrend($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', [$adat]);
 
         return parent::setSorrend($adat);
     }

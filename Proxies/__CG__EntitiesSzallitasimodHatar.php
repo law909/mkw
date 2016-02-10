@@ -36,7 +36,7 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'id', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'hatarertek', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'osszeg');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'id', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'hatarertek', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'osszeg'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'id', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'hatarertek', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'osszeg');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'id', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'hatarertek', '' . "\0" . 'Entities\\SzallitasimodHatar' . "\0" . 'osszeg'];
     }
 
     /**
@@ -97,7 +97,7 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
     public function getHatarertek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatarertek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatarertek', []);
 
         return parent::getHatarertek();
     }
@@ -205,7 +205,7 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
     public function setHatarertek($hatarertek)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHatarertek', array($hatarertek));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHatarertek', [$hatarertek]);
 
         return parent::setHatarertek($hatarertek);
     }
@@ -216,7 +216,7 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
     public function getSzallitasimod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasimod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasimod', []);
 
         return parent::getSzallitasimod();
     }
@@ -227,7 +227,7 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
     public function setSzallitasimod($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallitasimod', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallitasimod', [$val]);
 
         return parent::setSzallitasimod($val);
     }
@@ -238,7 +238,7 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
     public function getValutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', []);
 
         return parent::getValutanem();
     }
@@ -249,7 +249,7 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
     public function getValutanemNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemNev', []);
 
         return parent::getValutanemNev();
     }
@@ -260,7 +260,7 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
     public function getValutanemId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', []);
 
         return parent::getValutanemId();
     }
@@ -271,7 +271,7 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
     public function setValutanem($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', [$val]);
 
         return parent::setValutanem($val);
     }
@@ -282,7 +282,7 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
     public function getOsszeg()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsszeg', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsszeg', []);
 
         return parent::getOsszeg();
     }
@@ -293,7 +293,7 @@ class SzallitasimodHatar extends \Entities\SzallitasimodHatar implements \Doctri
     public function setOsszeg($osszeg)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsszeg', array($osszeg));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsszeg', [$osszeg]);
 
         return parent::setOsszeg($osszeg);
     }

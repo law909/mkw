@@ -482,7 +482,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $obj->setWebshopmessage($this->params->getStringRequestParam('webshopmessage'));
         $obj->setCouriermessage($this->params->getStringRequestParam('couriermessage'));
 
-        $obj->generateId(); // az üres kelt miatt került a végére
 
         switch ($parancs) {
             case $this->inheritOperation:
@@ -721,7 +720,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         else {
             if ($this->params->getBoolRequestParam('szallitasiktgkell')) {
                 $this->getRepo()->createSzallitasiKtg($o, $o->getSzallitasimodId());
-                $o->doStuffOnPrePersist();
                 $this->getEm()->persist($o);
                 $this->getEm()->flush();
             }

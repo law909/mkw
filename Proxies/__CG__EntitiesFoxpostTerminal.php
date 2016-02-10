@@ -36,7 +36,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'id', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nev', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'cim', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'csoport', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'subgroup', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nyitva', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'findme', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolat', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolng', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'bizonylatfejek');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'id', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nev', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'cim', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'csoport', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'subgroup', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nyitva', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'findme', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolat', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolng', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'bizonylatfejek'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'id', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nev', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'cim', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'csoport', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'subgroup', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nyitva', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'findme', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolat', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolng', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'bizonylatfejek');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'id', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nev', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'cim', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'csoport', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'subgroup', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nyitva', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'findme', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolat', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolng', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'bizonylatfejek'];
     }
 
     /**
@@ -97,7 +97,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function setId($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setId', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setId', [$val]);
 
         return parent::setId($val);
     }
@@ -205,7 +205,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -216,7 +216,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function setNev($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$adat]);
 
         return parent::setNev($adat);
     }
@@ -227,7 +227,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function getCim()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCim', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCim', []);
 
         return parent::getCim();
     }
@@ -238,7 +238,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function setCim($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCim', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCim', [$adat]);
 
         return parent::setCim($adat);
     }
@@ -249,7 +249,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function getCsoport()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCsoport', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCsoport', []);
 
         return parent::getCsoport();
     }
@@ -260,7 +260,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function setCsoport($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCsoport', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCsoport', [$adat]);
 
         return parent::setCsoport($adat);
     }
@@ -271,7 +271,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function getSubgroup()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSubgroup', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSubgroup', []);
 
         return parent::getSubgroup();
     }
@@ -282,7 +282,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function setSubgroup($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSubgroup', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSubgroup', [$adat]);
 
         return parent::setSubgroup($adat);
     }
@@ -293,7 +293,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function getNyitva()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNyitva', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNyitva', []);
 
         return parent::getNyitva();
     }
@@ -304,7 +304,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function setNyitva($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNyitva', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNyitva', [$adat]);
 
         return parent::setNyitva($adat);
     }
@@ -315,7 +315,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function getFindme()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFindme', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFindme', []);
 
         return parent::getFindme();
     }
@@ -326,7 +326,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function setFindme($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFindme', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFindme', [$adat]);
 
         return parent::setFindme($adat);
     }
@@ -337,7 +337,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function getGeolat()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGeolat', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGeolat', []);
 
         return parent::getGeolat();
     }
@@ -348,7 +348,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function setGeolat($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setGeolat', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setGeolat', [$adat]);
 
         return parent::setGeolat($adat);
     }
@@ -359,7 +359,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function getGeolng()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGeolng', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGeolng', []);
 
         return parent::getGeolng();
     }
@@ -370,7 +370,7 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function setGeolng($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setGeolng', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setGeolng', [$adat]);
 
         return parent::setGeolng($adat);
     }

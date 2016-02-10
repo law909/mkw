@@ -36,7 +36,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'id', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'nev', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'tipus', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'haladek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'webes', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'rugalmas', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek3');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'id', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'nev', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'tipus', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'haladek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'webes', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'rugalmas', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek3'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'id', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'nev', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'tipus', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'haladek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'webes', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'rugalmas', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek3');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'id', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'nev', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'tipus', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'haladek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'webes', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'rugalmas', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek3'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -205,7 +205,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -216,7 +216,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function getTipus()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipus', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipus', []);
 
         return parent::getTipus();
     }
@@ -227,7 +227,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function setTipus($tipus)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTipus', array($tipus));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTipus', [$tipus]);
 
         return parent::setTipus($tipus);
     }
@@ -238,7 +238,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function getHaladek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHaladek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHaladek', []);
 
         return parent::getHaladek();
     }
@@ -249,7 +249,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function setHaladek($haladek)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHaladek', array($haladek));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHaladek', [$haladek]);
 
         return parent::setHaladek($haladek);
     }
@@ -260,7 +260,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function getWebes()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWebes', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWebes', []);
 
         return parent::getWebes();
     }
@@ -271,7 +271,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function setWebes($webes)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWebes', array($webes));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWebes', [$webes]);
 
         return parent::setWebes($webes);
     }
@@ -282,7 +282,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function getLeiras()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras', []);
 
         return parent::getLeiras();
     }
@@ -293,7 +293,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function setLeiras($leiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras', array($leiras));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras', [$leiras]);
 
         return parent::setLeiras($leiras);
     }
@@ -304,7 +304,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function getSorrend()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSorrend', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSorrend', []);
 
         return parent::getSorrend();
     }
@@ -315,7 +315,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function setSorrend($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', [$val]);
 
         return parent::setSorrend($val);
     }
@@ -326,7 +326,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function getOsztotthaladek1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztotthaladek1', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztotthaladek1', []);
 
         return parent::getOsztotthaladek1();
     }
@@ -337,7 +337,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function setOsztotthaladek1($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztotthaladek1', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztotthaladek1', [$adat]);
 
         return parent::setOsztotthaladek1($adat);
     }
@@ -348,7 +348,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function getOsztottszazalek1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztottszazalek1', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztottszazalek1', []);
 
         return parent::getOsztottszazalek1();
     }
@@ -359,7 +359,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function setOsztottszazalek1($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztottszazalek1', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztottszazalek1', [$adat]);
 
         return parent::setOsztottszazalek1($adat);
     }
@@ -370,7 +370,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function getOsztotthaladek2()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztotthaladek2', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztotthaladek2', []);
 
         return parent::getOsztotthaladek2();
     }
@@ -381,7 +381,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function setOsztotthaladek2($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztotthaladek2', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztotthaladek2', [$adat]);
 
         return parent::setOsztotthaladek2($adat);
     }
@@ -392,7 +392,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function getOsztottszazalek2()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztottszazalek2', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztottszazalek2', []);
 
         return parent::getOsztottszazalek2();
     }
@@ -403,7 +403,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function setOsztottszazalek2($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztottszazalek2', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztottszazalek2', [$adat]);
 
         return parent::setOsztottszazalek2($adat);
     }
@@ -414,7 +414,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function getOsztotthaladek3()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztotthaladek3', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztotthaladek3', []);
 
         return parent::getOsztotthaladek3();
     }
@@ -425,7 +425,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function setOsztotthaladek3($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztotthaladek3', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztotthaladek3', [$adat]);
 
         return parent::setOsztotthaladek3($adat);
     }
@@ -436,7 +436,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function getOsztottszazalek3()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztottszazalek3', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztottszazalek3', []);
 
         return parent::getOsztottszazalek3();
     }
@@ -447,7 +447,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function setOsztottszazalek3($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztottszazalek3', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztottszazalek3', [$adat]);
 
         return parent::setOsztottszazalek3($adat);
     }
@@ -458,7 +458,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function getRugalmas()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRugalmas', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRugalmas', []);
 
         return parent::getRugalmas();
     }
@@ -469,7 +469,7 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function setRugalmas($rugalmas)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRugalmas', array($rugalmas));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRugalmas', [$rugalmas]);
 
         return parent::setRugalmas($rugalmas);
     }

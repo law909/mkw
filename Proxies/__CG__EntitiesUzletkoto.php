@@ -36,7 +36,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'id', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'nev', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'irszam', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'varos', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'utca', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'telefon', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'mobil', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fax', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'email', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'honlap', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'pw', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'jutalek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'felhasznalo', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnervalutanem', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerfizmod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnertermekarazonosito', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerbizonylatnyelv', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszallitasimod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszamlatipus');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'id', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'nev', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'irszam', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'varos', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'utca', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'telefon', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'mobil', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fax', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'email', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'honlap', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'pw', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'jutalek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'felhasznalo', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnervalutanem', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerfizmod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnertermekarazonosito', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerbizonylatnyelv', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszallitasimod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszamlatipus'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'id', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'nev', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'irszam', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'varos', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'utca', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'telefon', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'mobil', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fax', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'email', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'honlap', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'pw', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'jutalek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'felhasznalo', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnervalutanem', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerfizmod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnertermekarazonosito', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerbizonylatnyelv', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszallitasimod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszamlatipus');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'id', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'nev', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'irszam', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'varos', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'utca', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'telefon', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'mobil', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fax', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'email', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'honlap', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'pw', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'jutalek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'felhasznalo', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnervalutanem', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerfizmod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnertermekarazonosito', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerbizonylatnyelv', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszallitasimod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszamlatipus'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getCim()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCim', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCim', []);
 
         return parent::getCim();
     }
@@ -194,7 +194,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -205,7 +205,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -216,7 +216,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -227,7 +227,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getIrszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIrszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIrszam', []);
 
         return parent::getIrszam();
     }
@@ -238,7 +238,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setIrszam($irszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIrszam', array($irszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIrszam', [$irszam]);
 
         return parent::setIrszam($irszam);
     }
@@ -249,7 +249,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getVaros()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVaros', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVaros', []);
 
         return parent::getVaros();
     }
@@ -260,7 +260,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setVaros($varos)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVaros', array($varos));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVaros', [$varos]);
 
         return parent::setVaros($varos);
     }
@@ -271,7 +271,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getUtca()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUtca', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUtca', []);
 
         return parent::getUtca();
     }
@@ -282,7 +282,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setUtca($utca)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUtca', array($utca));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUtca', [$utca]);
 
         return parent::setUtca($utca);
     }
@@ -293,7 +293,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getTelefon()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTelefon', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTelefon', []);
 
         return parent::getTelefon();
     }
@@ -304,7 +304,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setTelefon($telefon)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTelefon', array($telefon));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTelefon', [$telefon]);
 
         return parent::setTelefon($telefon);
     }
@@ -315,7 +315,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getMobil()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMobil', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMobil', []);
 
         return parent::getMobil();
     }
@@ -326,7 +326,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setMobil($mobil)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMobil', array($mobil));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMobil', [$mobil]);
 
         return parent::setMobil($mobil);
     }
@@ -337,7 +337,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getFax()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFax', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFax', []);
 
         return parent::getFax();
     }
@@ -348,7 +348,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setFax($fax)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFax', array($fax));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFax', [$fax]);
 
         return parent::setFax($fax);
     }
@@ -359,7 +359,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getEmail()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', []);
 
         return parent::getEmail();
     }
@@ -370,7 +370,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setEmail($email)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', array($email));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', [$email]);
 
         return parent::setEmail($email);
     }
@@ -381,7 +381,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getHonlap()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHonlap', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHonlap', []);
 
         return parent::getHonlap();
     }
@@ -392,7 +392,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setHonlap($honlap)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHonlap', array($honlap));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHonlap', [$honlap]);
 
         return parent::setHonlap($honlap);
     }
@@ -403,7 +403,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getPw()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPw', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPw', []);
 
         return parent::getPw();
     }
@@ -414,7 +414,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setPw($pw)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPw', array($pw));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPw', [$pw]);
 
         return parent::setPw($pw);
     }
@@ -425,7 +425,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnerek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerek', []);
 
         return parent::getPartnerek();
     }
@@ -436,7 +436,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function addPartner(\Entities\Partner $partner)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addPartner', array($partner));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addPartner', [$partner]);
 
         return parent::addPartner($partner);
     }
@@ -447,7 +447,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function removePartner(\Entities\Partner $partner)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', array($partner));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', [$partner]);
 
         return parent::removePartner($partner);
     }
@@ -458,7 +458,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setFelhasznalo(\Entities\Felhasznalo $felhasznalo)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFelhasznalo', array($felhasznalo));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFelhasznalo', [$felhasznalo]);
 
         return parent::setFelhasznalo($felhasznalo);
     }
@@ -469,7 +469,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function removeFelhasznalo()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeFelhasznalo', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeFelhasznalo', []);
 
         return parent::removeFelhasznalo();
     }
@@ -480,7 +480,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getMegjegyzes()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMegjegyzes', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMegjegyzes', []);
 
         return parent::getMegjegyzes();
     }
@@ -491,7 +491,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setMegjegyzes($megjegyzes)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMegjegyzes', array($megjegyzes));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMegjegyzes', [$megjegyzes]);
 
         return parent::setMegjegyzes($megjegyzes);
     }
@@ -502,7 +502,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getJutalek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJutalek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJutalek', []);
 
         return parent::getJutalek();
     }
@@ -513,7 +513,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setJutalek($jutalek)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJutalek', array($jutalek));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJutalek', [$jutalek]);
 
         return parent::setJutalek($jutalek);
     }
@@ -524,7 +524,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getSessionid()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSessionid', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSessionid', []);
 
         return parent::getSessionid();
     }
@@ -535,7 +535,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setSessionid($sessionid)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSessionid', array($sessionid));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSessionid', [$sessionid]);
 
         return parent::setSessionid($sessionid);
     }
@@ -546,7 +546,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnerszamlatipus()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerszamlatipus', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerszamlatipus', []);
 
         return parent::getPartnerszamlatipus();
     }
@@ -557,7 +557,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setPartnerszamlatipus($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerszamlatipus', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerszamlatipus', [$val]);
 
         return parent::setPartnerszamlatipus($val);
     }
@@ -568,7 +568,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnervalutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnervalutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnervalutanem', []);
 
         return parent::getPartnervalutanem();
     }
@@ -579,7 +579,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnervalutanemnev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnervalutanemnev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnervalutanemnev', []);
 
         return parent::getPartnervalutanemnev();
     }
@@ -590,7 +590,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnervalutanemId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnervalutanemId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnervalutanemId', []);
 
         return parent::getPartnervalutanemId();
     }
@@ -601,7 +601,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setPartnervalutanem($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnervalutanem', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnervalutanem', [$val]);
 
         return parent::setPartnervalutanem($val);
     }
@@ -612,7 +612,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function removePartnervalutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartnervalutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartnervalutanem', []);
 
         return parent::removePartnervalutanem();
     }
@@ -623,7 +623,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnertermekarazonosito()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnertermekarazonosito', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnertermekarazonosito', []);
 
         return parent::getPartnertermekarazonosito();
     }
@@ -634,7 +634,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setPartnertermekarazonosito($v)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnertermekarazonosito', array($v));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnertermekarazonosito', [$v]);
 
         return parent::setPartnertermekarazonosito($v);
     }
@@ -645,7 +645,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnerszallitasimod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerszallitasimod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerszallitasimod', []);
 
         return parent::getPartnerszallitasimod();
     }
@@ -656,7 +656,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnerszallitasimodNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerszallitasimodNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerszallitasimodNev', []);
 
         return parent::getPartnerszallitasimodNev();
     }
@@ -667,7 +667,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnerszallitasimodId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerszallitasimodId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerszallitasimodId', []);
 
         return parent::getPartnerszallitasimodId();
     }
@@ -678,7 +678,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setPartnerszallitasimod($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerszallitasimod', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerszallitasimod', [$val]);
 
         return parent::setPartnerszallitasimod($val);
     }
@@ -689,7 +689,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function removePartnerszallitasimod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartnerszallitasimod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartnerszallitasimod', []);
 
         return parent::removePartnerszallitasimod();
     }
@@ -700,7 +700,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnerbizonylatnyelv()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerbizonylatnyelv', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerbizonylatnyelv', []);
 
         return parent::getPartnerbizonylatnyelv();
     }
@@ -711,7 +711,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setPartnerbizonylatnyelv($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerbizonylatnyelv', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerbizonylatnyelv', [$adat]);
 
         return parent::setPartnerbizonylatnyelv($adat);
     }
@@ -722,7 +722,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnerfizmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerfizmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerfizmod', []);
 
         return parent::getPartnerfizmod();
     }
@@ -733,7 +733,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnerfizmodNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerfizmodNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerfizmodNev', []);
 
         return parent::getPartnerfizmodNev();
     }
@@ -744,7 +744,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnerfizmodId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerfizmodId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerfizmodId', []);
 
         return parent::getPartnerfizmodId();
     }
@@ -755,7 +755,7 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function setPartnerfizmod(\Entities\Fizmod $fizmod)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerfizmod', array($fizmod));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerfizmod', [$fizmod]);
 
         return parent::setPartnerfizmod($fizmod);
     }

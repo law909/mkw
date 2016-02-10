@@ -36,7 +36,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'netto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'afa', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbanknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbankszamlaszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajswift', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajiban', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'folyoszamlak');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'netto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'afa', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbanknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbankszamlaszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajswift', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajiban', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'folyoszamlak'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'netto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'afa', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbanknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbankszamlaszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajswift', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajiban', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'folyoszamlak');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'netto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'afa', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbanknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbankszamlaszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajswift', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajiban', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'folyoszamlak'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -191,45 +191,12 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     /**
      * {@inheritDoc}
      */
-    public function generateFolyoszamla()
+    public function setId($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'generateFolyoszamla', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setId', [$val]);
 
-        return parent::generateFolyoszamla();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function calcOsszesen()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcOsszesen', array());
-
-        return parent::calcOsszesen();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function generateId($from = NULL)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'generateId', array($from));
-
-        return parent::generateId($from);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function doStuffOnPrePersist()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'doStuffOnPrePersist', array());
-
-        return parent::doStuffOnPrePersist();
+        return parent::setId($val);
     }
 
     /**
@@ -238,7 +205,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getBizonylattetelek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylattetelek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylattetelek', []);
 
         return parent::getBizonylattetelek();
     }
@@ -249,7 +216,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function addBizonylattetel(\Entities\Bankbizonylattetel $val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addBizonylattetel', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addBizonylattetel', [$val]);
 
         return parent::addBizonylattetel($val);
     }
@@ -260,7 +227,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function removeBizonylattetel(\Entities\Bizonylattetel $val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBizonylattetel', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBizonylattetel', [$val]);
 
         return parent::removeBizonylattetel($val);
     }
@@ -271,7 +238,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function clearBizonylattetelek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearBizonylattetelek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearBizonylattetelek', []);
 
         return parent::clearBizonylattetelek();
     }
@@ -282,7 +249,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getFolyoszamlak()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFolyoszamlak', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFolyoszamlak', []);
 
         return parent::getFolyoszamlak();
     }
@@ -293,7 +260,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function addFolyoszamla(\Entities\Folyoszamla $val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addFolyoszamla', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addFolyoszamla', [$val]);
 
         return parent::addFolyoszamla($val);
     }
@@ -304,7 +271,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function removeFolyoszamla(\Entities\Folyoszamla $val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeFolyoszamla', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeFolyoszamla', [$val]);
 
         return parent::removeFolyoszamla($val);
     }
@@ -315,7 +282,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function clearFolyoszamlak()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearFolyoszamlak', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearFolyoszamlak', []);
 
         return parent::clearFolyoszamlak();
     }
@@ -326,7 +293,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getIrany()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIrany', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIrany', []);
 
         return parent::getIrany();
     }
@@ -337,7 +304,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setIrany($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIrany', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIrany', [$val]);
 
         return parent::setIrany($val);
     }
@@ -348,7 +315,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getBizonylattipus()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylattipus', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylattipus', []);
 
         return parent::getBizonylattipus();
     }
@@ -359,7 +326,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getBizonylattipusId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylattipusId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylattipusId', []);
 
         return parent::getBizonylattipusId();
     }
@@ -370,7 +337,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setBizonylattipus($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBizonylattipus', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBizonylattipus', [$val]);
 
         return parent::setBizonylattipus($val);
     }
@@ -381,7 +348,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function removeBizonylattipus()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBizonylattipus', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBizonylattipus', []);
 
         return parent::removeBizonylattipus();
     }
@@ -392,7 +359,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getKelt()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKelt', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKelt', []);
 
         return parent::getKelt();
     }
@@ -403,7 +370,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getKeltStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKeltStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKeltStr', []);
 
         return parent::getKeltStr();
     }
@@ -414,7 +381,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setKelt($adat = '')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKelt', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKelt', [$adat]);
 
         return parent::setKelt($adat);
     }
@@ -425,7 +392,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getNetto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNetto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNetto', []);
 
         return parent::getNetto();
     }
@@ -436,7 +403,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setNetto($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNetto', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNetto', [$val]);
 
         return parent::setNetto($val);
     }
@@ -447,7 +414,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getAfa()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', []);
 
         return parent::getAfa();
     }
@@ -458,7 +425,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setAfa($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', [$val]);
 
         return parent::setAfa($val);
     }
@@ -469,7 +436,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getBrutto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBrutto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBrutto', []);
 
         return parent::getBrutto();
     }
@@ -480,7 +447,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setBrutto($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBrutto', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBrutto', [$val]);
 
         return parent::setBrutto($val);
     }
@@ -491,7 +458,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getValutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', []);
 
         return parent::getValutanem();
     }
@@ -502,7 +469,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getValutanemnev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemnev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemnev', []);
 
         return parent::getValutanemnev();
     }
@@ -513,7 +480,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getValutanemId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', []);
 
         return parent::getValutanemId();
     }
@@ -524,7 +491,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setValutanem($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', [$val]);
 
         return parent::setValutanem($val);
     }
@@ -535,7 +502,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function removeValutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValutanem', []);
 
         return parent::removeValutanem();
     }
@@ -546,7 +513,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getPartner()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartner', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartner', []);
 
         return parent::getPartner();
     }
@@ -557,7 +524,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getPartnerId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', []);
 
         return parent::getPartnerId();
     }
@@ -568,7 +535,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setPartner($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartner', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartner', [$val]);
 
         return parent::setPartner($val);
     }
@@ -579,7 +546,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function removePartner()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', []);
 
         return parent::removePartner();
     }
@@ -590,7 +557,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getPartnernev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnernev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnernev', []);
 
         return parent::getPartnernev();
     }
@@ -601,7 +568,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setPartnernev($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnernev', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnernev', [$val]);
 
         return parent::setPartnernev($val);
     }
@@ -612,7 +579,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getPartnervezeteknev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnervezeteknev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnervezeteknev', []);
 
         return parent::getPartnervezeteknev();
     }
@@ -623,7 +590,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setPartnervezeteknev($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnervezeteknev', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnervezeteknev', [$val]);
 
         return parent::setPartnervezeteknev($val);
     }
@@ -634,7 +601,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getPartnerkeresztnev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerkeresztnev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerkeresztnev', []);
 
         return parent::getPartnerkeresztnev();
     }
@@ -645,7 +612,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setPartnerkeresztnev($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerkeresztnev', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerkeresztnev', [$val]);
 
         return parent::setPartnerkeresztnev($val);
     }
@@ -656,7 +623,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getPartneradoszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartneradoszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartneradoszam', []);
 
         return parent::getPartneradoszam();
     }
@@ -667,7 +634,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setPartneradoszam($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartneradoszam', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartneradoszam', [$val]);
 
         return parent::setPartneradoszam($val);
     }
@@ -678,7 +645,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getPartnereuadoszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnereuadoszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnereuadoszam', []);
 
         return parent::getPartnereuadoszam();
     }
@@ -689,7 +656,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setPartnereuadoszam($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnereuadoszam', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnereuadoszam', [$val]);
 
         return parent::setPartnereuadoszam($val);
     }
@@ -700,7 +667,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getPartnerirszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerirszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerirszam', []);
 
         return parent::getPartnerirszam();
     }
@@ -711,7 +678,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setPartnerirszam($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerirszam', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerirszam', [$val]);
 
         return parent::setPartnerirszam($val);
     }
@@ -722,7 +689,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getPartnerutca()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerutca', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerutca', []);
 
         return parent::getPartnerutca();
     }
@@ -733,7 +700,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setPartnerutca($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerutca', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerutca', [$val]);
 
         return parent::setPartnerutca($val);
     }
@@ -744,7 +711,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getPartnervaros()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnervaros', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnervaros', []);
 
         return parent::getPartnervaros();
     }
@@ -755,7 +722,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setPartnervaros($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnervaros', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnervaros', [$val]);
 
         return parent::setPartnervaros($val);
     }
@@ -766,7 +733,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getBankszamla()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankszamla', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankszamla', []);
 
         return parent::getBankszamla();
     }
@@ -777,7 +744,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getTulajbankszamlaszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTulajbankszamlaszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTulajbankszamlaszam', []);
 
         return parent::getTulajbankszamlaszam();
     }
@@ -788,7 +755,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getBankszamlaId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankszamlaId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankszamlaId', []);
 
         return parent::getBankszamlaId();
     }
@@ -799,7 +766,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setBankszamla($val = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankszamla', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankszamla', [$val]);
 
         return parent::setBankszamla($val);
     }
@@ -810,7 +777,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function removeBankszamla()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBankszamla', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBankszamla', []);
 
         return parent::removeBankszamla();
     }
@@ -821,7 +788,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getTulajswift()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTulajswift', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTulajswift', []);
 
         return parent::getTulajswift();
     }
@@ -832,7 +799,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getTulajbanknev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTulajbanknev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTulajbanknev', []);
 
         return parent::getTulajbanknev();
     }
@@ -843,7 +810,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getTulajiban()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTulajiban', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTulajiban', []);
 
         return parent::getTulajiban();
     }
@@ -854,7 +821,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getErbizonylatszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getErbizonylatszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getErbizonylatszam', []);
 
         return parent::getErbizonylatszam();
     }
@@ -865,7 +832,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setErbizonylatszam($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setErbizonylatszam', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setErbizonylatszam', [$val]);
 
         return parent::setErbizonylatszam($val);
     }
@@ -876,7 +843,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getMegjegyzes()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMegjegyzes', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMegjegyzes', []);
 
         return parent::getMegjegyzes();
     }
@@ -887,7 +854,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setMegjegyzes($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMegjegyzes', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMegjegyzes', [$val]);
 
         return parent::setMegjegyzes($val);
     }
@@ -898,7 +865,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getLastmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', []);
 
         return parent::getLastmod();
     }
@@ -909,7 +876,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function clearLastmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearLastmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearLastmod', []);
 
         return parent::clearLastmod();
     }
@@ -920,7 +887,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getCreated()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
     }
@@ -931,7 +898,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function clearCreated()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearCreated', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearCreated', []);
 
         return parent::clearCreated();
     }
@@ -942,7 +909,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function getRontott()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRontott', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRontott', []);
 
         return parent::getRontott();
     }
@@ -953,7 +920,7 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function setRontott($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRontott', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRontott', [$adat]);
 
         return parent::setRontott($adat);
     }

@@ -36,7 +36,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Hir' . "\0" . 'id', '' . "\0" . 'Entities\\Hir' . "\0" . 'cim', '' . "\0" . 'Entities\\Hir' . "\0" . 'slug', '' . "\0" . 'Entities\\Hir' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Hir' . "\0" . 'forras', '' . "\0" . 'Entities\\Hir' . "\0" . 'lead', '' . "\0" . 'Entities\\Hir' . "\0" . 'elsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'utolsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'datum', '' . "\0" . 'Entities\\Hir' . "\0" . 'lathato', '' . "\0" . 'Entities\\Hir' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Hir' . "\0" . 'seodescription');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Hir' . "\0" . 'id', '' . "\0" . 'Entities\\Hir' . "\0" . 'cim', '' . "\0" . 'Entities\\Hir' . "\0" . 'slug', '' . "\0" . 'Entities\\Hir' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Hir' . "\0" . 'forras', '' . "\0" . 'Entities\\Hir' . "\0" . 'lead', '' . "\0" . 'Entities\\Hir' . "\0" . 'elsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'utolsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'datum', '' . "\0" . 'Entities\\Hir' . "\0" . 'lathato', '' . "\0" . 'Entities\\Hir' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Hir' . "\0" . 'seodescription'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Hir' . "\0" . 'id', '' . "\0" . 'Entities\\Hir' . "\0" . 'cim', '' . "\0" . 'Entities\\Hir' . "\0" . 'slug', '' . "\0" . 'Entities\\Hir' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Hir' . "\0" . 'forras', '' . "\0" . 'Entities\\Hir' . "\0" . 'lead', '' . "\0" . 'Entities\\Hir' . "\0" . 'elsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'utolsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'datum', '' . "\0" . 'Entities\\Hir' . "\0" . 'lathato', '' . "\0" . 'Entities\\Hir' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Hir' . "\0" . 'seodescription');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Hir' . "\0" . 'id', '' . "\0" . 'Entities\\Hir' . "\0" . 'cim', '' . "\0" . 'Entities\\Hir' . "\0" . 'slug', '' . "\0" . 'Entities\\Hir' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Hir' . "\0" . 'forras', '' . "\0" . 'Entities\\Hir' . "\0" . 'lead', '' . "\0" . 'Entities\\Hir' . "\0" . 'elsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'utolsodatum', '' . "\0" . 'Entities\\Hir' . "\0" . 'datum', '' . "\0" . 'Entities\\Hir' . "\0" . 'lathato', '' . "\0" . 'Entities\\Hir' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Hir' . "\0" . 'seodescription'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function convertToArray()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'convertToArray', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'convertToArray', []);
 
         return parent::convertToArray();
     }
@@ -190,7 +190,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getLink()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLink', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLink', []);
 
         return parent::getLink();
     }
@@ -205,7 +205,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -216,7 +216,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getCim()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCim', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCim', []);
 
         return parent::getCim();
     }
@@ -227,7 +227,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getShowCim()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowCim', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowCim', []);
 
         return parent::getShowCim();
     }
@@ -238,7 +238,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function setCim($cim)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCim', array($cim));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCim', [$cim]);
 
         return parent::setCim($cim);
     }
@@ -249,7 +249,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getSlug()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSlug', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSlug', []);
 
         return parent::getSlug();
     }
@@ -260,7 +260,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function setSlug($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', [$adat]);
 
         return parent::setSlug($adat);
     }
@@ -271,7 +271,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getShowSeodescription()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowSeodescription', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowSeodescription', []);
 
         return parent::getShowSeodescription();
     }
@@ -282,7 +282,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getSeodescription()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSeodescription', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSeodescription', []);
 
         return parent::getSeodescription();
     }
@@ -293,7 +293,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function setSeodescription($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSeodescription', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSeodescription', [$adat]);
 
         return parent::setSeodescription($adat);
     }
@@ -304,7 +304,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getElsodatum()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElsodatum', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElsodatum', []);
 
         return parent::getElsodatum();
     }
@@ -315,7 +315,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getElsodatumStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElsodatumStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElsodatumStr', []);
 
         return parent::getElsodatumStr();
     }
@@ -326,7 +326,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function setElsodatum($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElsodatum', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElsodatum', [$adat]);
 
         return parent::setElsodatum($adat);
     }
@@ -337,7 +337,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getUtolsodatum()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUtolsodatum', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUtolsodatum', []);
 
         return parent::getUtolsodatum();
     }
@@ -348,7 +348,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getUtolsodatumStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUtolsodatumStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUtolsodatumStr', []);
 
         return parent::getUtolsodatumStr();
     }
@@ -359,7 +359,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function setUtolsodatum($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUtolsodatum', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUtolsodatum', [$adat]);
 
         return parent::setUtolsodatum($adat);
     }
@@ -370,7 +370,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getDatum()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatum', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatum', []);
 
         return parent::getDatum();
     }
@@ -381,7 +381,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getDatumStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatumStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatumStr', []);
 
         return parent::getDatumStr();
     }
@@ -392,7 +392,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function setDatum($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDatum', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDatum', [$adat]);
 
         return parent::setDatum($adat);
     }
@@ -403,7 +403,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getLathato()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato', []);
 
         return parent::getLathato();
     }
@@ -414,7 +414,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function setLathato($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato', [$adat]);
 
         return parent::setLathato($adat);
     }
@@ -425,7 +425,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getSzoveg()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzoveg', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzoveg', []);
 
         return parent::getSzoveg();
     }
@@ -436,7 +436,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function setSzoveg($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzoveg', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzoveg', [$adat]);
 
         return parent::setSzoveg($adat);
     }
@@ -447,7 +447,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getForras()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getForras', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getForras', []);
 
         return parent::getForras();
     }
@@ -458,7 +458,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function setForras($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setForras', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setForras', [$adat]);
 
         return parent::setForras($adat);
     }
@@ -469,7 +469,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getLead()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLead', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLead', []);
 
         return parent::getLead();
     }
@@ -480,7 +480,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function setLead($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLead', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLead', [$adat]);
 
         return parent::setLead($adat);
     }
@@ -491,7 +491,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function getSorrend()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSorrend', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSorrend', []);
 
         return parent::getSorrend();
     }
@@ -502,7 +502,7 @@ class Hir extends \Entities\Hir implements \Doctrine\ORM\Proxy\Proxy
     public function setSorrend($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', [$adat]);
 
         return parent::setSorrend($adat);
     }

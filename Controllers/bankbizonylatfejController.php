@@ -87,7 +87,6 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
             case 'p':
                 break;
         }
-        $obj->generateId(); // az üres kelt miatt került a végére
 
         switch ($type) {
             case 'b':

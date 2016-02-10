@@ -36,7 +36,7 @@ class Projekt extends \Entities\Projekt implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Projekt extends \Entities\Projekt implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Projekt' . "\0" . 'id', '' . "\0" . 'Entities\\Projekt' . "\0" . 'created', '' . "\0" . 'Entities\\Projekt' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Projekt' . "\0" . 'nev');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Projekt' . "\0" . 'id', '' . "\0" . 'Entities\\Projekt' . "\0" . 'created', '' . "\0" . 'Entities\\Projekt' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Projekt' . "\0" . 'nev'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Projekt' . "\0" . 'id', '' . "\0" . 'Entities\\Projekt' . "\0" . 'created', '' . "\0" . 'Entities\\Projekt' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Projekt' . "\0" . 'nev');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Projekt' . "\0" . 'id', '' . "\0" . 'Entities\\Projekt' . "\0" . 'created', '' . "\0" . 'Entities\\Projekt' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Projekt' . "\0" . 'nev'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Projekt extends \Entities\Projekt implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Projekt extends \Entities\Projekt implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Projekt extends \Entities\Projekt implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Projekt extends \Entities\Projekt implements \Doctrine\ORM\Proxy\Proxy
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -205,7 +205,7 @@ class Projekt extends \Entities\Projekt implements \Doctrine\ORM\Proxy\Proxy
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -216,7 +216,7 @@ class Projekt extends \Entities\Projekt implements \Doctrine\ORM\Proxy\Proxy
     public function getLastmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', []);
 
         return parent::getLastmod();
     }
@@ -227,7 +227,7 @@ class Projekt extends \Entities\Projekt implements \Doctrine\ORM\Proxy\Proxy
     public function getCreated()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
     }

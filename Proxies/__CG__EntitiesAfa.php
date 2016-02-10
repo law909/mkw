@@ -36,7 +36,7 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -205,7 +205,7 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -216,7 +216,7 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
     public function getErtek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getErtek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getErtek', []);
 
         return parent::getErtek();
     }
@@ -227,7 +227,7 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
     public function setErtek($ertek)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setErtek', array($ertek));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setErtek', [$ertek]);
 
         return parent::setErtek($ertek);
     }
@@ -238,7 +238,7 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
     public function getRLBkod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRLBkod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRLBkod', []);
 
         return parent::getRLBkod();
     }
@@ -249,7 +249,7 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
     public function setRLBKod($d)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRLBKod', array($d));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRLBKod', [$d]);
 
         return parent::setRLBKod($d);
     }
@@ -260,7 +260,7 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
     public function calcBrutto($netto)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcBrutto', array($netto));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcBrutto', [$netto]);
 
         return parent::calcBrutto($netto);
     }
@@ -271,7 +271,7 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
     public function calcNetto($brutto)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcNetto', array($brutto));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcNetto', [$brutto]);
 
         return parent::calcNetto($brutto);
     }

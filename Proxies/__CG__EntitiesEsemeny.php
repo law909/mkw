@@ -36,7 +36,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Esemeny' . "\0" . 'partner');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Esemeny' . "\0" . 'partner'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Esemeny' . "\0" . 'partner');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Esemeny' . "\0" . 'partner'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function getPartner()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartner', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartner', []);
 
         return parent::getPartner();
     }
@@ -190,7 +190,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnerId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', []);
 
         return parent::getPartnerId();
     }
@@ -201,7 +201,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function getPartnerNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerNev', []);
 
         return parent::getPartnerNev();
     }
@@ -212,7 +212,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function setPartner(\Entities\Partner $partner)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartner', array($partner));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartner', [$partner]);
 
         return parent::setPartner($partner);
     }
@@ -223,7 +223,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function removePartner()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', []);
 
         return parent::removePartner();
     }
@@ -238,7 +238,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -249,7 +249,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function getBejegyzes()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBejegyzes', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBejegyzes', []);
 
         return parent::getBejegyzes();
     }
@@ -260,7 +260,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function setBejegyzes($bejegyzes)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBejegyzes', array($bejegyzes));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBejegyzes', [$bejegyzes]);
 
         return parent::setBejegyzes($bejegyzes);
     }
@@ -271,7 +271,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function getLeiras()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras', []);
 
         return parent::getLeiras();
     }
@@ -282,7 +282,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function setLeiras($leiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras', array($leiras));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras', [$leiras]);
 
         return parent::setLeiras($leiras);
     }
@@ -293,7 +293,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function getLetrehozva()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLetrehozva', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLetrehozva', []);
 
         return parent::getLetrehozva();
     }
@@ -304,7 +304,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function setLetrehozvaOnPreInsert()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLetrehozvaOnPreInsert', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLetrehozvaOnPreInsert', []);
 
         return parent::setLetrehozvaOnPreInsert();
     }
@@ -315,7 +315,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function setLetrehozva($letrehozva)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLetrehozva', array($letrehozva));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLetrehozva', [$letrehozva]);
 
         return parent::setLetrehozva($letrehozva);
     }
@@ -326,7 +326,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function getEsedekes()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEsedekes', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEsedekes', []);
 
         return parent::getEsedekes();
     }
@@ -337,7 +337,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function getEsedekesStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEsedekesStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEsedekesStr', []);
 
         return parent::getEsedekesStr();
     }
@@ -348,7 +348,7 @@ class Esemeny extends \Entities\Esemeny implements \Doctrine\ORM\Proxy\Proxy
     public function setEsedekes($esedekes = '')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEsedekes', array($esedekes));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEsedekes', [$esedekes]);
 
         return parent::setEsedekes($esedekes);
     }

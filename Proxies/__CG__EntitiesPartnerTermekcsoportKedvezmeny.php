@@ -36,7 +36,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'id', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'created', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'partner', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'termekcsoport', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'kedvezmeny');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'id', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'created', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'partner', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'termekcsoport', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'kedvezmeny'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'id', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'created', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'partner', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'termekcsoport', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'kedvezmeny');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'id', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'created', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'partner', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'termekcsoport', '' . "\0" . 'Entities\\PartnerTermekcsoportKedvezmeny' . "\0" . 'kedvezmeny'];
     }
 
     /**
@@ -97,7 +97,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
     public function toLista()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', []);
 
         return parent::toLista();
     }
@@ -190,7 +190,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
     public function getCreated()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
     }
@@ -205,7 +205,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -216,7 +216,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
     public function getKedvezmeny()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmeny', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmeny', []);
 
         return parent::getKedvezmeny();
     }
@@ -227,7 +227,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
     public function setKedvezmeny($kedvezmeny)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKedvezmeny', array($kedvezmeny));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKedvezmeny', [$kedvezmeny]);
 
         return parent::setKedvezmeny($kedvezmeny);
     }
@@ -238,7 +238,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
     public function getLastmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', []);
 
         return parent::getLastmod();
     }
@@ -249,7 +249,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
     public function getPartner()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartner', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartner', []);
 
         return parent::getPartner();
     }
@@ -260,7 +260,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
     public function getPartnerId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerId', []);
 
         return parent::getPartnerId();
     }
@@ -271,7 +271,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
     public function getPartnerNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerNev', []);
 
         return parent::getPartnerNev();
     }
@@ -282,7 +282,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
     public function setPartner($partner)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartner', array($partner));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartner', [$partner]);
 
         return parent::setPartner($partner);
     }
@@ -293,7 +293,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
     public function getTermekcsoport()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoport', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoport', []);
 
         return parent::getTermekcsoport();
     }
@@ -304,7 +304,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
     public function getTermekcsoportId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoportId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoportId', []);
 
         return parent::getTermekcsoportId();
     }
@@ -315,7 +315,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
     public function getTermekcsoportNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoportNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoportNev', []);
 
         return parent::getTermekcsoportNev();
     }
@@ -326,7 +326,7 @@ class PartnerTermekcsoportKedvezmeny extends \Entities\PartnerTermekcsoportKedve
     public function setTermekcsoport($termekcsoport)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekcsoport', array($termekcsoport));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekcsoport', [$termekcsoport]);
 
         return parent::setTermekcsoport($termekcsoport);
     }

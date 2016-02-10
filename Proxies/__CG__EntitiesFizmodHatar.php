@@ -36,7 +36,7 @@ class FizmodHatar extends \Entities\FizmodHatar implements \Doctrine\ORM\Proxy\P
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class FizmodHatar extends \Entities\FizmodHatar implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'id', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'fizmod', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'hatarertek');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'id', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'fizmod', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'hatarertek'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'id', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'fizmod', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'hatarertek');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'id', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'fizmod', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'valutanem', '' . "\0" . 'Entities\\FizmodHatar' . "\0" . 'hatarertek'];
     }
 
     /**
@@ -97,7 +97,7 @@ class FizmodHatar extends \Entities\FizmodHatar implements \Doctrine\ORM\Proxy\P
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class FizmodHatar extends \Entities\FizmodHatar implements \Doctrine\ORM\Proxy\P
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class FizmodHatar extends \Entities\FizmodHatar implements \Doctrine\ORM\Proxy\P
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class FizmodHatar extends \Entities\FizmodHatar implements \Doctrine\ORM\Proxy\P
     public function getHatarertek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatarertek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHatarertek', []);
 
         return parent::getHatarertek();
     }
@@ -205,7 +205,7 @@ class FizmodHatar extends \Entities\FizmodHatar implements \Doctrine\ORM\Proxy\P
     public function setHatarertek($hatarertek)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHatarertek', array($hatarertek));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHatarertek', [$hatarertek]);
 
         return parent::setHatarertek($hatarertek);
     }
@@ -216,7 +216,7 @@ class FizmodHatar extends \Entities\FizmodHatar implements \Doctrine\ORM\Proxy\P
     public function getFizmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmod', []);
 
         return parent::getFizmod();
     }
@@ -227,7 +227,7 @@ class FizmodHatar extends \Entities\FizmodHatar implements \Doctrine\ORM\Proxy\P
     public function setFizmod($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizmod', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizmod', [$val]);
 
         return parent::setFizmod($val);
     }
@@ -238,7 +238,7 @@ class FizmodHatar extends \Entities\FizmodHatar implements \Doctrine\ORM\Proxy\P
     public function getValutanem()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', []);
 
         return parent::getValutanem();
     }
@@ -249,7 +249,7 @@ class FizmodHatar extends \Entities\FizmodHatar implements \Doctrine\ORM\Proxy\P
     public function getValutanemNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemNev', []);
 
         return parent::getValutanemNev();
     }
@@ -260,7 +260,7 @@ class FizmodHatar extends \Entities\FizmodHatar implements \Doctrine\ORM\Proxy\P
     public function getValutanemId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', []);
 
         return parent::getValutanemId();
     }
@@ -271,7 +271,7 @@ class FizmodHatar extends \Entities\FizmodHatar implements \Doctrine\ORM\Proxy\P
     public function setValutanem($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', [$val]);
 
         return parent::setValutanem($val);
     }

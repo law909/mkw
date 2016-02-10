@@ -36,7 +36,7 @@ class Parameterek extends \Entities\Parameterek implements \Doctrine\ORM\Proxy\P
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Parameterek extends \Entities\Parameterek implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'id', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'ertek');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'id', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'ertek'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'id', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'ertek');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'id', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'ertek'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Parameterek extends \Entities\Parameterek implements \Doctrine\ORM\Proxy\P
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Parameterek extends \Entities\Parameterek implements \Doctrine\ORM\Proxy\P
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Parameterek extends \Entities\Parameterek implements \Doctrine\ORM\Proxy\P
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Parameterek extends \Entities\Parameterek implements \Doctrine\ORM\Proxy\P
     public function setId($id)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setId', array($id));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setId', [$id]);
 
         return parent::setId($id);
     }
@@ -205,7 +205,7 @@ class Parameterek extends \Entities\Parameterek implements \Doctrine\ORM\Proxy\P
     public function getErtek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getErtek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getErtek', []);
 
         return parent::getErtek();
     }
@@ -216,7 +216,7 @@ class Parameterek extends \Entities\Parameterek implements \Doctrine\ORM\Proxy\P
     public function setErtek($ertek)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setErtek', array($ertek));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setErtek', [$ertek]);
 
         return parent::setErtek($ertek);
     }

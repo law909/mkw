@@ -36,7 +36,7 @@ class TermekValtozatAdatTipus extends \Entities\TermekValtozatAdatTipus implemen
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class TermekValtozatAdatTipus extends \Entities\TermekValtozatAdatTipus implemen
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok1', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok2');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok1', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok2'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok1', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok2');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok1', '' . "\0" . 'Entities\\TermekValtozatAdatTipus' . "\0" . 'valtozatok2'];
     }
 
     /**
@@ -97,7 +97,7 @@ class TermekValtozatAdatTipus extends \Entities\TermekValtozatAdatTipus implemen
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class TermekValtozatAdatTipus extends \Entities\TermekValtozatAdatTipus implemen
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class TermekValtozatAdatTipus extends \Entities\TermekValtozatAdatTipus implemen
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class TermekValtozatAdatTipus extends \Entities\TermekValtozatAdatTipus implemen
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -205,7 +205,7 @@ class TermekValtozatAdatTipus extends \Entities\TermekValtozatAdatTipus implemen
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -216,7 +216,7 @@ class TermekValtozatAdatTipus extends \Entities\TermekValtozatAdatTipus implemen
     public function getValtozatok1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatok1', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatok1', []);
 
         return parent::getValtozatok1();
     }
@@ -227,7 +227,7 @@ class TermekValtozatAdatTipus extends \Entities\TermekValtozatAdatTipus implemen
     public function addValtozat1(\Entities\TermekValtozat $valt)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addValtozat1', array($valt));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addValtozat1', [$valt]);
 
         return parent::addValtozat1($valt);
     }
@@ -238,7 +238,7 @@ class TermekValtozatAdatTipus extends \Entities\TermekValtozatAdatTipus implemen
     public function removeValtozat1(\Entities\TermekValtozat $valt)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValtozat1', array($valt));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValtozat1', [$valt]);
 
         return parent::removeValtozat1($valt);
     }
@@ -249,7 +249,7 @@ class TermekValtozatAdatTipus extends \Entities\TermekValtozatAdatTipus implemen
     public function getValtozatok2()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatok2', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatok2', []);
 
         return parent::getValtozatok2();
     }
@@ -260,7 +260,7 @@ class TermekValtozatAdatTipus extends \Entities\TermekValtozatAdatTipus implemen
     public function addValtozat2(\Entities\TermekValtozat $valt)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addValtozat2', array($valt));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addValtozat2', [$valt]);
 
         return parent::addValtozat2($valt);
     }
@@ -271,7 +271,7 @@ class TermekValtozatAdatTipus extends \Entities\TermekValtozatAdatTipus implemen
     public function removeValtozat2(\Entities\TermekValtozat $valt)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValtozat2', array($valt));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValtozat2', [$valt]);
 
         return parent::removeValtozat2($valt);
     }

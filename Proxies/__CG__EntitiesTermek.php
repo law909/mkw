@@ -36,7 +36,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Termek' . "\0" . 'id', '' . "\0" . 'Entities\\Termek' . "\0" . 'created', '' . "\0" . 'Entities\\Termek' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev', '' . "\0" . 'Entities\\Termek' . "\0" . 'me', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Termek' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Termek' . "\0" . 'afa', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkenevek', '' . "\0" . 'Entities\\Termek' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'leiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Termek' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Termek' . "\0" . 'slug', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato', '' . "\0" . 'Entities\\Termek' . "\0" . 'hozzaszolas', '' . "\0" . 'Entities\\Termek' . "\0" . 'ajanlott', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiemelt', '' . "\0" . 'Entities\\Termek' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Termek' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Termek' . "\0" . 'fuggoben', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekexportbanszerepel', '' . "\0" . 'Entities\\Termek' . "\0" . 'hparany', '' . "\0" . 'Entities\\Termek' . "\0" . 'netto', '' . "\0" . 'Entities\\Termek' . "\0" . 'brutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosnetto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosbrutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostart', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostop', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'magassag', '' . "\0" . 'Entities\\Termek' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Termek' . "\0" . 'suly', '' . "\0" . 'Entities\\Termek' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkepek', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatok', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Termek' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'megtekintesdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'megvasarlasdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatadattipus', '' . "\0" . 'Entities\\Termek' . "\0" . 'nemkaphato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Termek' . "\0" . 'gyarto', '' . "\0" . 'Entities\\Termek' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Termek' . "\0" . 'regikepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'translations', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekcsoport', 'locale', '' . "\0" . 'Entities\\Termek' . "\0" . 'kozvetitett');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Termek' . "\0" . 'id', '' . "\0" . 'Entities\\Termek' . "\0" . 'created', '' . "\0" . 'Entities\\Termek' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev', '' . "\0" . 'Entities\\Termek' . "\0" . 'me', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Termek' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Termek' . "\0" . 'afa', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkenevek', '' . "\0" . 'Entities\\Termek' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'leiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Termek' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Termek' . "\0" . 'slug', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato', '' . "\0" . 'Entities\\Termek' . "\0" . 'hozzaszolas', '' . "\0" . 'Entities\\Termek' . "\0" . 'ajanlott', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiemelt', '' . "\0" . 'Entities\\Termek' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Termek' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Termek' . "\0" . 'fuggoben', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekexportbanszerepel', '' . "\0" . 'Entities\\Termek' . "\0" . 'hparany', '' . "\0" . 'Entities\\Termek' . "\0" . 'netto', '' . "\0" . 'Entities\\Termek' . "\0" . 'brutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosnetto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosbrutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostart', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostop', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'magassag', '' . "\0" . 'Entities\\Termek' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Termek' . "\0" . 'suly', '' . "\0" . 'Entities\\Termek' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkepek', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatok', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Termek' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'megtekintesdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'megvasarlasdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatadattipus', '' . "\0" . 'Entities\\Termek' . "\0" . 'nemkaphato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Termek' . "\0" . 'gyarto', '' . "\0" . 'Entities\\Termek' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Termek' . "\0" . 'regikepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'translations', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekcsoport', 'locale', '' . "\0" . 'Entities\\Termek' . "\0" . 'kozvetitett'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Termek' . "\0" . 'id', '' . "\0" . 'Entities\\Termek' . "\0" . 'created', '' . "\0" . 'Entities\\Termek' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev', '' . "\0" . 'Entities\\Termek' . "\0" . 'me', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Termek' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Termek' . "\0" . 'afa', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkenevek', '' . "\0" . 'Entities\\Termek' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'leiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Termek' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Termek' . "\0" . 'slug', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato', '' . "\0" . 'Entities\\Termek' . "\0" . 'hozzaszolas', '' . "\0" . 'Entities\\Termek' . "\0" . 'ajanlott', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiemelt', '' . "\0" . 'Entities\\Termek' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Termek' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Termek' . "\0" . 'fuggoben', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekexportbanszerepel', '' . "\0" . 'Entities\\Termek' . "\0" . 'hparany', '' . "\0" . 'Entities\\Termek' . "\0" . 'netto', '' . "\0" . 'Entities\\Termek' . "\0" . 'brutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosnetto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosbrutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostart', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostop', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'magassag', '' . "\0" . 'Entities\\Termek' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Termek' . "\0" . 'suly', '' . "\0" . 'Entities\\Termek' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkepek', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatok', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Termek' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'megtekintesdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'megvasarlasdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatadattipus', '' . "\0" . 'Entities\\Termek' . "\0" . 'nemkaphato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Termek' . "\0" . 'gyarto', '' . "\0" . 'Entities\\Termek' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Termek' . "\0" . 'regikepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'translations', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekcsoport', 'locale', '' . "\0" . 'Entities\\Termek' . "\0" . 'kozvetitett');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Termek' . "\0" . 'id', '' . "\0" . 'Entities\\Termek' . "\0" . 'created', '' . "\0" . 'Entities\\Termek' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'nev', '' . "\0" . 'Entities\\Termek' . "\0" . 'me', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiszereles', '' . "\0" . 'Entities\\Termek' . "\0" . 'vtsz', '' . "\0" . 'Entities\\Termek' . "\0" . 'afa', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkek', '' . "\0" . 'Entities\\Termek' . "\0" . 'cimkenevek', '' . "\0" . 'Entities\\Termek' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\Termek' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'leiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Termek' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Termek' . "\0" . 'slug', '' . "\0" . 'Entities\\Termek' . "\0" . 'lathato', '' . "\0" . 'Entities\\Termek' . "\0" . 'hozzaszolas', '' . "\0" . 'Entities\\Termek' . "\0" . 'ajanlott', '' . "\0" . 'Entities\\Termek' . "\0" . 'kiemelt', '' . "\0" . 'Entities\\Termek' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Termek' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Termek' . "\0" . 'fuggoben', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekexportbanszerepel', '' . "\0" . 'Entities\\Termek' . "\0" . 'hparany', '' . "\0" . 'Entities\\Termek' . "\0" . 'netto', '' . "\0" . 'Entities\\Termek' . "\0" . 'brutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosnetto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciosbrutto', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostart', '' . "\0" . 'Entities\\Termek' . "\0" . 'akciostop', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa1karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa2karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekfa3karkod', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Termek' . "\0" . 'szelesseg', '' . "\0" . 'Entities\\Termek' . "\0" . 'magassag', '' . "\0" . 'Entities\\Termek' . "\0" . 'hosszusag', '' . "\0" . 'Entities\\Termek' . "\0" . 'suly', '' . "\0" . 'Entities\\Termek' . "\0" . 'osszehajthato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkepek', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatok', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekreceptek', '' . "\0" . 'Entities\\Termek' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Termek' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'megtekintesdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'megvasarlasdb', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'altermekkapcsolodok', '' . "\0" . 'Entities\\Termek' . "\0" . 'valtozatadattipus', '' . "\0" . 'Entities\\Termek' . "\0" . 'nemkaphato', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekertesitok', '' . "\0" . 'Entities\\Termek' . "\0" . 'gyarto', '' . "\0" . 'Entities\\Termek' . "\0" . 'szallitasiido', '' . "\0" . 'Entities\\Termek' . "\0" . 'regikepurl', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Termek' . "\0" . 'translations', '' . "\0" . 'Entities\\Termek' . "\0" . 'termekcsoport', 'locale', '' . "\0" . 'Entities\\Termek' . "\0" . 'kozvetitett'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function generateVonalkod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'generateVonalkod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'generateVonalkod', []);
 
         return parent::generateVonalkod();
     }
@@ -190,7 +190,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function doStuffOnPrePersist()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'doStuffOnPrePersist', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'doStuffOnPrePersist', []);
 
         return parent::doStuffOnPrePersist();
     }
@@ -201,7 +201,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getUjTermek($min)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUjTermek', array($min));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUjTermek', [$min]);
 
         return parent::getUjTermek($min);
     }
@@ -212,7 +212,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTop10($top10min)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTop10', array($top10min));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTop10', [$top10min]);
 
         return parent::getTop10($top10min);
     }
@@ -223,7 +223,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getKeszlet($datum = NULL, $raktarid = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKeszlet', array($datum, $raktarid));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKeszlet', [$datum, $raktarid]);
 
         return parent::getKeszlet($datum, $raktarid);
     }
@@ -234,7 +234,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getFoglaltMennyiseg($kivevebiz = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFoglaltMennyiseg', array($kivevebiz));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFoglaltMennyiseg', [$kivevebiz]);
 
         return parent::getFoglaltMennyiseg($kivevebiz);
     }
@@ -245,7 +245,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function toTermekLista($valtozat = NULL, $ujtermekid = NULL, $top10min = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toTermekLista', array($valtozat, $ujtermekid, $top10min));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toTermekLista', [$valtozat, $ujtermekid, $top10min]);
 
         return parent::toTermekLista($valtozat, $ujtermekid, $top10min);
     }
@@ -256,7 +256,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function toKiemeltLista($valtozat = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toKiemeltLista', array($valtozat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toKiemeltLista', [$valtozat]);
 
         return parent::toKiemeltLista($valtozat);
     }
@@ -267,7 +267,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function toTermekLap($valtozat = NULL, $ujtermekid = NULL, $top10min = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toTermekLap', array($valtozat, $ujtermekid, $top10min));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toTermekLap', [$valtozat, $ujtermekid, $top10min]);
 
         return parent::toTermekLap($valtozat, $ujtermekid, $top10min);
     }
@@ -278,7 +278,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function toKapcsolodo($valtozat = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toKapcsolodo', array($valtozat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toKapcsolodo', [$valtozat]);
 
         return parent::toKapcsolodo($valtozat);
     }
@@ -289,7 +289,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function toKosar($valtozat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toKosar', array($valtozat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toKosar', [$valtozat]);
 
         return parent::toKosar($valtozat);
     }
@@ -300,7 +300,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function toMenu()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toMenu', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toMenu', []);
 
         return parent::toMenu();
     }
@@ -311,7 +311,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function toRiport($valtozat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toRiport', array($valtozat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toRiport', [$valtozat]);
 
         return parent::toRiport($valtozat);
     }
@@ -326,7 +326,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -337,7 +337,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -348,7 +348,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -359,7 +359,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getMe()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMe', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMe', []);
 
         return parent::getMe();
     }
@@ -370,7 +370,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setMe($me)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMe', array($me));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMe', [$me]);
 
         return parent::setMe($me);
     }
@@ -381,7 +381,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getVtsz()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVtsz', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVtsz', []);
 
         return parent::getVtsz();
     }
@@ -392,7 +392,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getVtszNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVtszNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVtszNev', []);
 
         return parent::getVtszNev();
     }
@@ -403,7 +403,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getVtszId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVtszId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVtszId', []);
 
         return parent::getVtszId();
     }
@@ -414,7 +414,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setVtsz($vtsz)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVtsz', array($vtsz));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVtsz', [$vtsz]);
 
         return parent::setVtsz($vtsz);
     }
@@ -425,7 +425,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getAfa()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', []);
 
         return parent::getAfa();
     }
@@ -436,7 +436,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getAfaNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaNev', []);
 
         return parent::getAfaNev();
     }
@@ -447,7 +447,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getAfaId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaId', []);
 
         return parent::getAfaId();
     }
@@ -458,7 +458,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setAfa($afa)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', array($afa));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', [$afa]);
 
         return parent::setAfa($afa);
     }
@@ -469,7 +469,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getCikkszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCikkszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCikkszam', []);
 
         return parent::getCikkszam();
     }
@@ -480,7 +480,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setCikkszam($cikkszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCikkszam', array($cikkszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCikkszam', [$cikkszam]);
 
         return parent::setCikkszam($cikkszam);
     }
@@ -491,7 +491,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getIdegencikkszam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdegencikkszam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdegencikkszam', []);
 
         return parent::getIdegencikkszam();
     }
@@ -502,7 +502,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setIdegencikkszam($idegencikkszam)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdegencikkszam', array($idegencikkszam));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdegencikkszam', [$idegencikkszam]);
 
         return parent::setIdegencikkszam($idegencikkszam);
     }
@@ -513,7 +513,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getVonalkod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVonalkod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVonalkod', []);
 
         return parent::getVonalkod();
     }
@@ -524,7 +524,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setVonalkod($vonalkod)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVonalkod', array($vonalkod));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVonalkod', [$vonalkod]);
 
         return parent::setVonalkod($vonalkod);
     }
@@ -535,7 +535,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getLeiras()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras', []);
 
         return parent::getLeiras();
     }
@@ -546,7 +546,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setLeiras($leiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras', array($leiras));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras', [$leiras]);
 
         return parent::setLeiras($leiras);
     }
@@ -557,7 +557,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getRovidleiras()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRovidleiras', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRovidleiras', []);
 
         return parent::getRovidleiras();
     }
@@ -568,7 +568,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setRovidleiras($rovidleiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRovidleiras', array($rovidleiras));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRovidleiras', [$rovidleiras]);
 
         return parent::setRovidleiras($rovidleiras);
     }
@@ -579,7 +579,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getOldalcim()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOldalcim', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOldalcim', []);
 
         return parent::getOldalcim();
     }
@@ -590,7 +590,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getShowOldalcim()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowOldalcim', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowOldalcim', []);
 
         return parent::getShowOldalcim();
     }
@@ -601,7 +601,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setOldalcim($oldalcim)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldalcim', array($oldalcim));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldalcim', [$oldalcim]);
 
         return parent::setOldalcim($oldalcim);
     }
@@ -612,7 +612,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getSeodescription()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSeodescription', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSeodescription', []);
 
         return parent::getSeodescription();
     }
@@ -623,7 +623,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getShowSeodescription()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowSeodescription', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowSeodescription', []);
 
         return parent::getShowSeodescription();
     }
@@ -634,7 +634,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setSeodescription($seodescription)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSeodescription', array($seodescription));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSeodescription', [$seodescription]);
 
         return parent::setSeodescription($seodescription);
     }
@@ -645,7 +645,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getSlug()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSlug', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSlug', []);
 
         return parent::getSlug();
     }
@@ -656,7 +656,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setSlug($slug)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', array($slug));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', [$slug]);
 
         return parent::setSlug($slug);
     }
@@ -667,7 +667,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getLathato()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato', []);
 
         return parent::getLathato();
     }
@@ -678,7 +678,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setLathato($lathato)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato', array($lathato));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato', [$lathato]);
 
         return parent::setLathato($lathato);
     }
@@ -689,7 +689,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getHozzaszolas()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHozzaszolas', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHozzaszolas', []);
 
         return parent::getHozzaszolas();
     }
@@ -700,7 +700,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setHozzaszolas($hozzaszolas)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHozzaszolas', array($hozzaszolas));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHozzaszolas', [$hozzaszolas]);
 
         return parent::setHozzaszolas($hozzaszolas);
     }
@@ -711,7 +711,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getAjanlott()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAjanlott', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAjanlott', []);
 
         return parent::getAjanlott();
     }
@@ -722,7 +722,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setAjanlott($ajanlott)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAjanlott', array($ajanlott));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAjanlott', [$ajanlott]);
 
         return parent::setAjanlott($ajanlott);
     }
@@ -733,7 +733,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getMozgat()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMozgat', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMozgat', []);
 
         return parent::getMozgat();
     }
@@ -744,7 +744,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setMozgat($mozgat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMozgat', array($mozgat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMozgat', [$mozgat]);
 
         return parent::setMozgat($mozgat);
     }
@@ -755,7 +755,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getInaktiv()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getInaktiv', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getInaktiv', []);
 
         return parent::getInaktiv();
     }
@@ -766,7 +766,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setInaktiv($inaktiv)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setInaktiv', array($inaktiv));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setInaktiv', [$inaktiv]);
 
         return parent::setInaktiv($inaktiv);
     }
@@ -777,7 +777,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekexportbanszerepel()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekexportbanszerepel', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekexportbanszerepel', []);
 
         return parent::getTermekexportbanszerepel();
     }
@@ -788,7 +788,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setTermekexportbanszerepel($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekexportbanszerepel', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekexportbanszerepel', [$adat]);
 
         return parent::setTermekexportbanszerepel($adat);
     }
@@ -799,7 +799,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getHparany()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHparany', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHparany', []);
 
         return parent::getHparany();
     }
@@ -810,7 +810,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setHparany($hparany)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHparany', array($hparany));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHparany', [$hparany]);
 
         return parent::setHparany($hparany);
     }
@@ -821,7 +821,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getNetto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNetto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNetto', []);
 
         return parent::getNetto();
     }
@@ -832,7 +832,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setNetto($netto)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNetto', array($netto));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNetto', [$netto]);
 
         return parent::setNetto($netto);
     }
@@ -843,7 +843,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getBrutto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBrutto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBrutto', []);
 
         return parent::getBrutto();
     }
@@ -854,7 +854,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setBrutto($brutto)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBrutto', array($brutto));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBrutto', [$brutto]);
 
         return parent::setBrutto($brutto);
     }
@@ -865,7 +865,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getAkcios()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkcios', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkcios', []);
 
         return parent::getAkcios();
     }
@@ -876,7 +876,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getAkcioTipus()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkcioTipus', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkcioTipus', []);
 
         return parent::getAkcioTipus();
     }
@@ -887,7 +887,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getAkciosnetto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkciosnetto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkciosnetto', []);
 
         return parent::getAkciosnetto();
     }
@@ -898,7 +898,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setAkciosnetto($netto)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAkciosnetto', array($netto));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAkciosnetto', [$netto]);
 
         return parent::setAkciosnetto($netto);
     }
@@ -909,7 +909,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getAkciosbrutto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkciosbrutto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkciosbrutto', []);
 
         return parent::getAkciosbrutto();
     }
@@ -920,7 +920,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setAkciosbrutto($brutto)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAkciosbrutto', array($brutto));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAkciosbrutto', [$brutto]);
 
         return parent::setAkciosbrutto($brutto);
     }
@@ -931,7 +931,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getAkciostart()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkciostart', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkciostart', []);
 
         return parent::getAkciostart();
     }
@@ -942,7 +942,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getAkciostartStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkciostartStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkciostartStr', []);
 
         return parent::getAkciostartStr();
     }
@@ -953,7 +953,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setAkciostart($adat = '')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAkciostart', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAkciostart', [$adat]);
 
         return parent::setAkciostart($adat);
     }
@@ -964,7 +964,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getAkciostop()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkciostop', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkciostop', []);
 
         return parent::getAkciostop();
     }
@@ -975,7 +975,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getAkciostopStr()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkciostopStr', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkciostopStr', []);
 
         return parent::getAkciostopStr();
     }
@@ -986,7 +986,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setAkciostop($adat = '')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAkciostop', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAkciostop', [$adat]);
 
         return parent::setAkciostop($adat);
     }
@@ -997,7 +997,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getCimkek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCimkek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCimkek', []);
 
         return parent::getCimkek();
     }
@@ -1008,7 +1008,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getAllCimkeId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAllCimkeId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAllCimkeId', []);
 
         return parent::getAllCimkeId();
     }
@@ -1019,7 +1019,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setCimkeNevek($cimkenevek)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCimkeNevek', array($cimkenevek));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCimkeNevek', [$cimkenevek]);
 
         return parent::setCimkeNevek($cimkenevek);
     }
@@ -1030,7 +1030,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getCimkeNevek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCimkeNevek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCimkeNevek', []);
 
         return parent::getCimkeNevek();
     }
@@ -1041,7 +1041,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function addCimke(\Entities\Cimketorzs $cimke)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addCimke', array($cimke));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addCimke', [$cimke]);
 
         return parent::addCimke($cimke);
     }
@@ -1052,7 +1052,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function removeCimke(\Entities\Cimketorzs $cimke)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeCimke', array($cimke));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeCimke', [$cimke]);
 
         return parent::removeCimke($cimke);
     }
@@ -1063,7 +1063,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function removeAllCimke()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAllCimke', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAllCimke', []);
 
         return parent::removeAllCimke();
     }
@@ -1074,7 +1074,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getCimkeByCategory($cat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCimkeByCategory', array($cat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCimkeByCategory', [$cat]);
 
         return parent::getCimkeByCategory($cat);
     }
@@ -1085,7 +1085,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getIdegenkod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdegenkod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdegenkod', []);
 
         return parent::getIdegenkod();
     }
@@ -1096,7 +1096,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setIdegenkod($idegenkod)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdegenkod', array($idegenkod));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdegenkod', [$idegenkod]);
 
         return parent::setIdegenkod($idegenkod);
     }
@@ -1107,7 +1107,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getKiszereles()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKiszereles', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKiszereles', []);
 
         return parent::getKiszereles();
     }
@@ -1118,7 +1118,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setKiszereles($kiszereles)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKiszereles', array($kiszereles));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKiszereles', [$kiszereles]);
 
         return parent::setKiszereles($kiszereles);
     }
@@ -1129,7 +1129,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekfa1()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa1', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa1', []);
 
         return parent::getTermekfa1();
     }
@@ -1140,7 +1140,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekfa1Nev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa1Nev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa1Nev', []);
 
         return parent::getTermekfa1Nev();
     }
@@ -1151,7 +1151,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekfa1Id()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa1Id', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa1Id', []);
 
         return parent::getTermekfa1Id();
     }
@@ -1162,7 +1162,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setTermekfa1($termekfa)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekfa1', array($termekfa));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekfa1', [$termekfa]);
 
         return parent::setTermekfa1($termekfa);
     }
@@ -1173,7 +1173,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekfa2()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa2', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa2', []);
 
         return parent::getTermekfa2();
     }
@@ -1184,7 +1184,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekfa2Nev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa2Nev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa2Nev', []);
 
         return parent::getTermekfa2Nev();
     }
@@ -1195,7 +1195,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekfa2Id()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa2Id', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa2Id', []);
 
         return parent::getTermekfa2Id();
     }
@@ -1206,7 +1206,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setTermekfa2($termekfa)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekfa2', array($termekfa));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekfa2', [$termekfa]);
 
         return parent::setTermekfa2($termekfa);
     }
@@ -1217,7 +1217,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekfa3()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa3', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa3', []);
 
         return parent::getTermekfa3();
     }
@@ -1228,7 +1228,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekfa3Nev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa3Nev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa3Nev', []);
 
         return parent::getTermekfa3Nev();
     }
@@ -1239,7 +1239,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekfa3Id()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa3Id', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekfa3Id', []);
 
         return parent::getTermekfa3Id();
     }
@@ -1250,7 +1250,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setTermekfa3($termekfa)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekfa3', array($termekfa));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekfa3', [$termekfa]);
 
         return parent::setTermekfa3($termekfa);
     }
@@ -1261,7 +1261,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekAr($valtozat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekAr', array($valtozat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekAr', [$valtozat]);
 
         return parent::getTermekAr($valtozat);
     }
@@ -1272,7 +1272,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekKepek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekKepek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekKepek', []);
 
         return parent::getTermekKepek();
     }
@@ -1283,7 +1283,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function addTermekKep(\Entities\TermekKep $kep)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTermekKep', array($kep));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTermekKep', [$kep]);
 
         return parent::addTermekKep($kep);
     }
@@ -1294,7 +1294,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function removeTermekKep(\Entities\TermekKep $kep)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermekKep', array($kep));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermekKep', [$kep]);
 
         return parent::removeTermekKep($kep);
     }
@@ -1305,7 +1305,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getKepurl($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl', [$pre]);
 
         return parent::getKepurl($pre);
     }
@@ -1316,7 +1316,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getKepurlMini($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlMini', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlMini', [$pre]);
 
         return parent::getKepurlMini($pre);
     }
@@ -1327,7 +1327,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getKepurlSmall($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlSmall', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlSmall', [$pre]);
 
         return parent::getKepurlSmall($pre);
     }
@@ -1338,7 +1338,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getKepurlMedium($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlMedium', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlMedium', [$pre]);
 
         return parent::getKepurlMedium($pre);
     }
@@ -1349,7 +1349,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getKepurlLarge($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlLarge', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlLarge', [$pre]);
 
         return parent::getKepurlLarge($pre);
     }
@@ -1360,7 +1360,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setKepurl($kepurl)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepurl', array($kepurl));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepurl', [$kepurl]);
 
         return parent::setKepurl($kepurl);
     }
@@ -1371,7 +1371,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getKepleiras()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepleiras', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepleiras', []);
 
         return parent::getKepleiras();
     }
@@ -1382,7 +1382,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setKepleiras($kepleiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepleiras', array($kepleiras));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepleiras', [$kepleiras]);
 
         return parent::setKepleiras($kepleiras);
     }
@@ -1393,7 +1393,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getSzelesseg()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzelesseg', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzelesseg', []);
 
         return parent::getSzelesseg();
     }
@@ -1404,7 +1404,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setSzelesseg($szelesseg)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzelesseg', array($szelesseg));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzelesseg', [$szelesseg]);
 
         return parent::setSzelesseg($szelesseg);
     }
@@ -1415,7 +1415,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getMagassag()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMagassag', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMagassag', []);
 
         return parent::getMagassag();
     }
@@ -1426,7 +1426,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setMagassag($magassag)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMagassag', array($magassag));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMagassag', [$magassag]);
 
         return parent::setMagassag($magassag);
     }
@@ -1437,7 +1437,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getHosszusag()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHosszusag', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHosszusag', []);
 
         return parent::getHosszusag();
     }
@@ -1448,7 +1448,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setHosszusag($hosszusag)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHosszusag', array($hosszusag));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHosszusag', [$hosszusag]);
 
         return parent::setHosszusag($hosszusag);
     }
@@ -1459,7 +1459,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getOsszehajthato()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsszehajthato', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsszehajthato', []);
 
         return parent::getOsszehajthato();
     }
@@ -1470,7 +1470,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setOsszehajthato($osszehajthato)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsszehajthato', array($osszehajthato));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsszehajthato', [$osszehajthato]);
 
         return parent::setOsszehajthato($osszehajthato);
     }
@@ -1481,7 +1481,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getSuly()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSuly', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSuly', []);
 
         return parent::getSuly();
     }
@@ -1492,7 +1492,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setSuly($suly)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSuly', array($suly));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSuly', [$suly]);
 
         return parent::setSuly($suly);
     }
@@ -1503,7 +1503,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getValtozatok()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatok', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatok', []);
 
         return parent::getValtozatok();
     }
@@ -1514,7 +1514,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function addValtozat(\Entities\TermekValtozat $valt)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addValtozat', array($valt));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addValtozat', [$valt]);
 
         return parent::addValtozat($valt);
     }
@@ -1525,7 +1525,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function removeValtozat(\Entities\TermekValtozat $valt)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValtozat', array($valt));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeValtozat', [$valt]);
 
         return parent::removeValtozat($valt);
     }
@@ -1536,7 +1536,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekReceptek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekReceptek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekReceptek', []);
 
         return parent::getTermekReceptek();
     }
@@ -1547,7 +1547,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function addTermekRecept(\Entities\TermekRecept $recept)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTermekRecept', array($recept));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTermekRecept', [$recept]);
 
         return parent::addTermekRecept($recept);
     }
@@ -1558,7 +1558,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function removeTermekRecept(\Entities\TermekRecept $recept)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermekRecept', array($recept));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermekRecept', [$recept]);
 
         return parent::removeTermekRecept($recept);
     }
@@ -1569,7 +1569,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getAlTermekReceptek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAlTermekReceptek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAlTermekReceptek', []);
 
         return parent::getAlTermekReceptek();
     }
@@ -1580,7 +1580,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function addAlTermekRecept(\Entities\TermekRecept $recept)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addAlTermekRecept', array($recept));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addAlTermekRecept', [$recept]);
 
         return parent::addAlTermekRecept($recept);
     }
@@ -1591,7 +1591,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function removeAlTermekRecept(\Entities\TermekRecept $recept)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAlTermekRecept', array($recept));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAlTermekRecept', [$recept]);
 
         return parent::removeAlTermekRecept($recept);
     }
@@ -1602,7 +1602,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getMegtekintesdb()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMegtekintesdb', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMegtekintesdb', []);
 
         return parent::getMegtekintesdb();
     }
@@ -1613,7 +1613,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setMegtekintesdb($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMegtekintesdb', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMegtekintesdb', [$adat]);
 
         return parent::setMegtekintesdb($adat);
     }
@@ -1624,7 +1624,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function incMegtekintesdb()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'incMegtekintesdb', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'incMegtekintesdb', []);
 
         return parent::incMegtekintesdb();
     }
@@ -1635,7 +1635,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getMegvasarlasdb()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMegvasarlasdb', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMegvasarlasdb', []);
 
         return parent::getMegvasarlasdb();
     }
@@ -1646,7 +1646,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setMegvasarlasdb($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMegvasarlasdb', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMegvasarlasdb', [$adat]);
 
         return parent::setMegvasarlasdb($adat);
     }
@@ -1657,7 +1657,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function incMegvasarlasdb()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'incMegvasarlasdb', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'incMegvasarlasdb', []);
 
         return parent::incMegvasarlasdb();
     }
@@ -1668,7 +1668,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getKiemelt()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKiemelt', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKiemelt', []);
 
         return parent::getKiemelt();
     }
@@ -1679,7 +1679,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setKiemelt($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKiemelt', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKiemelt', [$adat]);
 
         return parent::setKiemelt($adat);
     }
@@ -1690,7 +1690,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekKapcsolodok()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekKapcsolodok', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekKapcsolodok', []);
 
         return parent::getTermekKapcsolodok();
     }
@@ -1701,7 +1701,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function addTermekKapcsolodo(\Entities\TermekKapcsolodo $adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTermekKapcsolodo', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTermekKapcsolodo', [$adat]);
 
         return parent::addTermekKapcsolodo($adat);
     }
@@ -1712,7 +1712,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function removeTermekKapcsolodo(\Entities\TermekKapcsolodo $adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermekKapcsolodo', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermekKapcsolodo', [$adat]);
 
         return parent::removeTermekKapcsolodo($adat);
     }
@@ -1723,7 +1723,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getAlTermekKapcsolodok()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAlTermekKapcsolodok', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAlTermekKapcsolodok', []);
 
         return parent::getAlTermekKapcsolodok();
     }
@@ -1734,7 +1734,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function addAlTermekKapcsolodo(\Entities\TermekKapcsolodo $adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addAlTermekKapcsolodo', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addAlTermekKapcsolodo', [$adat]);
 
         return parent::addAlTermekKapcsolodo($adat);
     }
@@ -1745,7 +1745,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function removeAlTermekKapcsolodo(\Entities\TermekKapcsolodo $adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAlTermekKapcsolodo', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAlTermekKapcsolodo', [$adat]);
 
         return parent::removeAlTermekKapcsolodo($adat);
     }
@@ -1756,7 +1756,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getLastmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', []);
 
         return parent::getLastmod();
     }
@@ -1767,7 +1767,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getCreated()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
     }
@@ -1778,7 +1778,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getValtozatadattipus()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatadattipus', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatadattipus', []);
 
         return parent::getValtozatadattipus();
     }
@@ -1789,7 +1789,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getValtozatadattipusNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatadattipusNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatadattipusNev', []);
 
         return parent::getValtozatadattipusNev();
     }
@@ -1800,7 +1800,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getValtozatadattipusId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatadattipusId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatadattipusId', []);
 
         return parent::getValtozatadattipusId();
     }
@@ -1811,7 +1811,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setValtozatadattipus($a)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValtozatadattipus', array($a));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValtozatadattipus', [$a]);
 
         return parent::setValtozatadattipus($a);
     }
@@ -1822,7 +1822,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekcsoportKedvezmeny($partner = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoportKedvezmeny', array($partner));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoportKedvezmeny', [$partner]);
 
         return parent::getTermekcsoportKedvezmeny($partner);
     }
@@ -1833,7 +1833,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getNettoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoAr', array($valtozat, $partner, $valutanem));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoAr', [$valtozat, $partner, $valutanem]);
 
         return parent::getNettoAr($valtozat, $partner, $valutanem);
     }
@@ -1844,7 +1844,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getKedvezmenynelkuliNettoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmenynelkuliNettoAr', array($valtozat, $partner, $valutanem));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmenynelkuliNettoAr', [$valtozat, $partner, $valutanem]);
 
         return parent::getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem);
     }
@@ -1855,7 +1855,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getBruttoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoAr', array($valtozat, $partner, $valutanem));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoAr', [$valtozat, $partner, $valutanem]);
 
         return parent::getBruttoAr($valtozat, $partner, $valutanem);
     }
@@ -1866,7 +1866,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getKedvezmenynelkuliBruttoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmenynelkuliBruttoAr', array($valtozat, $partner, $valutanem));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmenynelkuliBruttoAr', [$valtozat, $partner, $valutanem]);
 
         return parent::getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem);
     }
@@ -1877,7 +1877,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getEredetiBruttoAr($valtozat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEredetiBruttoAr', array($valtozat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEredetiBruttoAr', [$valtozat]);
 
         return parent::getEredetiBruttoAr($valtozat);
     }
@@ -1888,7 +1888,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getArValutanem($valtozat = NULL, $partner = NULL, $valutanem = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArValutanem', array($valtozat, $partner, $valutanem));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArValutanem', [$valtozat, $partner, $valutanem]);
 
         return parent::getArValutanem($valtozat, $partner, $valutanem);
     }
@@ -1899,7 +1899,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getNemkaphato()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNemkaphato', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNemkaphato', []);
 
         return parent::getNemkaphato();
     }
@@ -1910,7 +1910,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setNemkaphato($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNemkaphato', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNemkaphato', [$val]);
 
         return parent::setNemkaphato($val);
     }
@@ -1921,7 +1921,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getGyarto()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGyarto', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGyarto', []);
 
         return parent::getGyarto();
     }
@@ -1932,7 +1932,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getGyartoNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGyartoNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGyartoNev', []);
 
         return parent::getGyartoNev();
     }
@@ -1943,7 +1943,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getGyartoId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGyartoId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGyartoId', []);
 
         return parent::getGyartoId();
     }
@@ -1954,7 +1954,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setGyarto($gyarto)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setGyarto', array($gyarto));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setGyarto', [$gyarto]);
 
         return parent::setGyarto($gyarto);
     }
@@ -1965,7 +1965,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getFuggoben()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFuggoben', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFuggoben', []);
 
         return parent::getFuggoben();
     }
@@ -1976,7 +1976,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setFuggoben($d)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFuggoben', array($d));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFuggoben', [$d]);
 
         return parent::setFuggoben($d);
     }
@@ -1987,7 +1987,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getSzallitasiido()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasiido', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasiido', []);
 
         return parent::getSzallitasiido();
     }
@@ -1998,7 +1998,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setSzallitasiido($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallitasiido', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallitasiido', [$adat]);
 
         return parent::setSzallitasiido($adat);
     }
@@ -2009,7 +2009,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getRegikepurl()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRegikepurl', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRegikepurl', []);
 
         return parent::getRegikepurl();
     }
@@ -2020,7 +2020,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setRegikepurl($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRegikepurl', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRegikepurl', [$adat]);
 
         return parent::setRegikepurl($adat);
     }
@@ -2031,7 +2031,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekArak()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekArak', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekArak', []);
 
         return parent::getTermekArak();
     }
@@ -2042,7 +2042,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function addTermekAr(\Entities\TermekAr $adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTermekAr', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTermekAr', [$adat]);
 
         return parent::addTermekAr($adat);
     }
@@ -2053,7 +2053,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function removeTermekAr(\Entities\TermekAr $adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermekAr', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermekAr', [$adat]);
 
         return parent::removeTermekAr($adat);
     }
@@ -2064,7 +2064,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTranslations()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslations', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslations', []);
 
         return parent::getTranslations();
     }
@@ -2075,7 +2075,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function addTranslation(\Entities\TermekTranslation $t)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTranslation', array($t));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTranslation', [$t]);
 
         return parent::addTranslation($t);
     }
@@ -2086,7 +2086,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function removeTranslation(\Entities\TermekTranslation $t)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTranslation', array($t));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTranslation', [$t]);
 
         return parent::removeTranslation($t);
     }
@@ -2097,7 +2097,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getLocale()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocale', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocale', []);
 
         return parent::getLocale();
     }
@@ -2108,7 +2108,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setLocale($locale)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLocale', array($locale));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLocale', [$locale]);
 
         return parent::setLocale($locale);
     }
@@ -2119,7 +2119,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekcsoport()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoport', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoport', []);
 
         return parent::getTermekcsoport();
     }
@@ -2130,7 +2130,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekcsoportNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoportNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoportNev', []);
 
         return parent::getTermekcsoportNev();
     }
@@ -2141,7 +2141,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getTermekcsoportId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoportId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekcsoportId', []);
 
         return parent::getTermekcsoportId();
     }
@@ -2152,7 +2152,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setTermekcsoport($termekcsoport)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekcsoport', array($termekcsoport));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekcsoport', [$termekcsoport]);
 
         return parent::setTermekcsoport($termekcsoport);
     }
@@ -2163,7 +2163,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function getKozvetitett()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKozvetitett', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKozvetitett', []);
 
         return parent::getKozvetitett();
     }
@@ -2174,7 +2174,7 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     public function setKozvetitett($kozvetitett)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKozvetitett', array($kozvetitett));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKozvetitett', [$kozvetitett]);
 
         return parent::setKozvetitett($kozvetitett);
     }

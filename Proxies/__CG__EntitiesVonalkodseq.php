@@ -36,7 +36,7 @@ class Vonalkodseq extends \Entities\Vonalkodseq implements \Doctrine\ORM\Proxy\P
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Vonalkodseq extends \Entities\Vonalkodseq implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Vonalkodseq' . "\0" . 'id', '' . "\0" . 'Entities\\Vonalkodseq' . "\0" . 'data');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Vonalkodseq' . "\0" . 'id', '' . "\0" . 'Entities\\Vonalkodseq' . "\0" . 'data'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Vonalkodseq' . "\0" . 'id', '' . "\0" . 'Entities\\Vonalkodseq' . "\0" . 'data');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Vonalkodseq' . "\0" . 'id', '' . "\0" . 'Entities\\Vonalkodseq' . "\0" . 'data'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Vonalkodseq extends \Entities\Vonalkodseq implements \Doctrine\ORM\Proxy\P
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Vonalkodseq extends \Entities\Vonalkodseq implements \Doctrine\ORM\Proxy\P
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**

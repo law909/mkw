@@ -1485,7 +1485,7 @@ class importController extends \mkwhelpers\Controller {
                 }
                 $fej->setBelsomegjegyzes('Vatera ' . $rk);
 
-                $fej->generateId(); // az üres kelt miatt került a végére
+                //$fej->generateId(); // az üres kelt miatt került a végére
 
                 $hibascikkszam = array();
                 foreach ($r['termek'] as $rtetel) {
@@ -1512,12 +1512,10 @@ class importController extends \mkwhelpers\Controller {
                 if ($hibascikkszam) {
                     $fej->setBelsomegjegyzes($fej->getBelsomegjegyzes() . ' Hibás cikkszámok: ' . implode(',', $hibascikkszam));
                 }
-                $fej->doStuffOnPrePersist();
                 store::getEm()->persist($fej);
                 store::getEm()->flush();
                 if ($r['szallktg']) {
                     store::getEm()->getRepository('Entities\Bizonylatfej')->createSzallitasiKtg($fej, false, $r['szallktg']);
-                    $fej->doStuffOnPrePersist();
                     store::getEm()->persist($fej);
                     store::getEm()->flush();
                 }

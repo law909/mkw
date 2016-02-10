@@ -36,7 +36,7 @@ class Raktar extends \Entities\Raktar implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Raktar extends \Entities\Raktar implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Raktar extends \Entities\Raktar implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Raktar extends \Entities\Raktar implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Raktar extends \Entities\Raktar implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Raktar extends \Entities\Raktar implements \Doctrine\ORM\Proxy\Proxy
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -205,7 +205,7 @@ class Raktar extends \Entities\Raktar implements \Doctrine\ORM\Proxy\Proxy
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -216,7 +216,7 @@ class Raktar extends \Entities\Raktar implements \Doctrine\ORM\Proxy\Proxy
     public function getMozgat()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMozgat', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMozgat', []);
 
         return parent::getMozgat();
     }
@@ -227,7 +227,7 @@ class Raktar extends \Entities\Raktar implements \Doctrine\ORM\Proxy\Proxy
     public function setMozgat($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMozgat', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMozgat', [$val]);
 
         return parent::setMozgat($val);
     }

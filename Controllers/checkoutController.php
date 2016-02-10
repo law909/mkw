@@ -354,7 +354,6 @@ class checkoutController extends \mkwhelpers\MattableController {
                         }
                     }
 
-                    $megrendfej->generateId();
 
                     $lasttermeknevek = array();
                     $lasttermekids = array();
@@ -487,8 +486,6 @@ class checkoutController extends \mkwhelpers\MattableController {
                     }
                     $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
                     $megrendfej->setBizonylatstatusz($bizstatusz);
-
-                    $megrendfej->generateId();
 
                     $lasttermeknevek = array();
                     $lasttermekids = array();

@@ -46,46 +46,4 @@ class BankbizonylatfejRepository extends \mkwhelpers\Repository {
         return $q->getSingleScalarResult();
     }
 
-    /**
-     * @param \Entities\Bankbizonylatfej $bizonylat
-     */
-    public function createFolyoszamla($bizonylat) {
-
-        foreach($bizonylat->getFolyoszamlak() as $fsz) {
-            $this->_em->remove($fsz);
-        }
-        $bizonylat->clearFolyoszamlak();
-
-        /** @var \Entities\Bankbizonylattetel $tetel */
-        foreach($bizonylat->getBizonylattetelek() as $tetel) {
-            $bbf = $tetel->getBizonylatfej();
-            if ($tetel->getHivatkozottbizonylat()) {
-                /** @var \Entities\Bizonylatfej $bf */
-                $bf = \mkw\Store::getEm()->getRepository('Entities\Bizonylatfej')->find($tetel->getHivatkozottbizonylat());
-            }
-            $fszla = new \Entities\Folyoszamla();
-            $fszla->setDatum($tetel->getDatum());
-            $fszla->setPartner($tetel->getPartner());
-            if ($bf) {
-                $fszla->setUzletkoto($bf->getUzletkoto());
-                $fszla->setFizmod($bf->getFizmod());
-            }
-            $fszla->setBizonylattipus($bbf->getBizonylattipus());
-            $fszla->setRontott($tetel->getRontott());
-            $fszla->setStorno(false);
-            $fszla->setStornozott(false);
-            $fszla->setHivatkozottbizonylat($tetel->getHivatkozottbizonylat());
-            $fszla->setHivatkozottdatum($tetel->getHivatkozottdatum());
-            $fszla->setValutanem($tetel->getValutanem());
-            $fszla->setIrany($tetel->getIrany() * -1);
-            $fszla->setNetto($tetel->getNetto());
-            $fszla->setAfa($tetel->getAfa());
-            $fszla->setBrutto($tetel->getBrutto());
-            $fszla->setBankbizonylatfej($tetel->getBizonylatfej());
-            $fszla->setBankbizonylattetel($tetel);
-
-            $this->_em->persist($fszla);
-        }
-        $this->_em->flush();
-    }
 }

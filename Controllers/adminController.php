@@ -126,6 +126,7 @@ class adminController extends mkwhelpers\Controller {
     }
 
     public function generateFolyoszamla() {
+        /*
         $repo = $this->getRepo('Entities\Bizonylatfej');
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('penztmozgat', '=', true);
@@ -139,7 +140,7 @@ class adminController extends mkwhelpers\Controller {
         foreach ($bfs as $bf) {
             $bbrepo->createFolyoszamla($bf);
         }
-
+        */
         echo 'kesz';
     }
 }

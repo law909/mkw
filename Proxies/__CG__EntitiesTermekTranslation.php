@@ -36,7 +36,7 @@ class TermekTranslation extends \Entities\TermekTranslation implements \Doctrine
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class TermekTranslation extends \Entities\TermekTranslation implements \Doctrine
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'object', 'id', 'locale', 'field', 'content');
+            return ['__isInitialized__', 'object', 'id', 'locale', 'field', 'content'];
         }
 
-        return array('__isInitialized__', 'object', 'id', 'locale', 'field', 'content');
+        return ['__isInitialized__', 'object', 'id', 'locale', 'field', 'content'];
     }
 
     /**
@@ -97,7 +97,7 @@ class TermekTranslation extends \Entities\TermekTranslation implements \Doctrine
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class TermekTranslation extends \Entities\TermekTranslation implements \Doctrine
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class TermekTranslation extends \Entities\TermekTranslation implements \Doctrine
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class TermekTranslation extends \Entities\TermekTranslation implements \Doctrine
     public function setLocale($locale)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLocale', array($locale));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLocale', [$locale]);
 
         return parent::setLocale($locale);
     }
@@ -205,7 +205,7 @@ class TermekTranslation extends \Entities\TermekTranslation implements \Doctrine
     public function getLocale()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocale', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocale', []);
 
         return parent::getLocale();
     }
@@ -216,7 +216,7 @@ class TermekTranslation extends \Entities\TermekTranslation implements \Doctrine
     public function setField($field)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setField', array($field));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setField', [$field]);
 
         return parent::setField($field);
     }
@@ -227,7 +227,7 @@ class TermekTranslation extends \Entities\TermekTranslation implements \Doctrine
     public function getField()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getField', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getField', []);
 
         return parent::getField();
     }
@@ -238,7 +238,7 @@ class TermekTranslation extends \Entities\TermekTranslation implements \Doctrine
     public function setObject($object)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setObject', array($object));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setObject', [$object]);
 
         return parent::setObject($object);
     }
@@ -249,7 +249,7 @@ class TermekTranslation extends \Entities\TermekTranslation implements \Doctrine
     public function getObject()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getObject', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getObject', []);
 
         return parent::getObject();
     }
@@ -260,7 +260,7 @@ class TermekTranslation extends \Entities\TermekTranslation implements \Doctrine
     public function setContent($content)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setContent', array($content));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setContent', [$content]);
 
         return parent::setContent($content);
     }
@@ -271,7 +271,7 @@ class TermekTranslation extends \Entities\TermekTranslation implements \Doctrine
     public function getContent()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getContent', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getContent', []);
 
         return parent::getContent();
     }

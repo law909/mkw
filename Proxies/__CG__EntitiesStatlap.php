@@ -36,7 +36,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Statlap' . "\0" . 'id', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Statlap' . "\0" . 'slug', '' . "\0" . 'Entities\\Statlap' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Statlap' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Statlap' . "\0" . 'created', '' . "\0" . 'Entities\\Statlap' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldurl');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Statlap' . "\0" . 'id', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Statlap' . "\0" . 'slug', '' . "\0" . 'Entities\\Statlap' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Statlap' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Statlap' . "\0" . 'created', '' . "\0" . 'Entities\\Statlap' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldurl'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Statlap' . "\0" . 'id', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Statlap' . "\0" . 'slug', '' . "\0" . 'Entities\\Statlap' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Statlap' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Statlap' . "\0" . 'created', '' . "\0" . 'Entities\\Statlap' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldurl');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Statlap' . "\0" . 'id', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\Statlap' . "\0" . 'slug', '' . "\0" . 'Entities\\Statlap' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Statlap' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Statlap' . "\0" . 'created', '' . "\0" . 'Entities\\Statlap' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Statlap' . "\0" . 'oldurl'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function getOldalcim()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOldalcim', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOldalcim', []);
 
         return parent::getOldalcim();
     }
@@ -205,7 +205,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function getShowOldalcim()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowOldalcim', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowOldalcim', []);
 
         return parent::getShowOldalcim();
     }
@@ -216,7 +216,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function setOldalcim($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldalcim', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldalcim', [$adat]);
 
         return parent::setOldalcim($adat);
     }
@@ -227,7 +227,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function getSlug()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSlug', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSlug', []);
 
         return parent::getSlug();
     }
@@ -238,7 +238,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function setSlug($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', [$adat]);
 
         return parent::setSlug($adat);
     }
@@ -249,7 +249,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function getSzoveg()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzoveg', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzoveg', []);
 
         return parent::getSzoveg();
     }
@@ -260,7 +260,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function setSzoveg($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzoveg', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzoveg', [$adat]);
 
         return parent::setSzoveg($adat);
     }
@@ -271,7 +271,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function getSeodescription()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSeodescription', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSeodescription', []);
 
         return parent::getSeodescription();
     }
@@ -282,7 +282,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function getShowSeodescription()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowSeodescription', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getShowSeodescription', []);
 
         return parent::getShowSeodescription();
     }
@@ -293,7 +293,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function setSeodescription($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSeodescription', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSeodescription', [$adat]);
 
         return parent::setSeodescription($adat);
     }
@@ -304,7 +304,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function getLastmod()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', []);
 
         return parent::getLastmod();
     }
@@ -315,7 +315,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function getCreated()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
     }
@@ -326,7 +326,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function getOldurl()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOldurl', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOldurl', []);
 
         return parent::getOldurl();
     }
@@ -337,7 +337,7 @@ class Statlap extends \Entities\Statlap implements \Doctrine\ORM\Proxy\Proxy
     public function setOldurl($u)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldurl', array($u));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldurl', [$u]);
 
         return parent::setOldurl($u);
     }

@@ -36,7 +36,7 @@ class Vtsz extends \Entities\Vtsz implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Vtsz extends \Entities\Vtsz implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'id', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'szam', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'nev', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'afa', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'bizonylattetelek');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'id', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'szam', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'nev', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'afa', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'bizonylattetelek'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'id', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'szam', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'nev', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'afa', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'bizonylattetelek');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'id', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'szam', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'nev', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'afa', '' . "\0" . 'Entities\\Vtsz' . "\0" . 'bizonylattetelek'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Vtsz extends \Entities\Vtsz implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Vtsz extends \Entities\Vtsz implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Vtsz extends \Entities\Vtsz implements \Doctrine\ORM\Proxy\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Vtsz extends \Entities\Vtsz implements \Doctrine\ORM\Proxy\Proxy
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -205,7 +205,7 @@ class Vtsz extends \Entities\Vtsz implements \Doctrine\ORM\Proxy\Proxy
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -216,7 +216,7 @@ class Vtsz extends \Entities\Vtsz implements \Doctrine\ORM\Proxy\Proxy
     public function getSzam()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzam', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzam', []);
 
         return parent::getSzam();
     }
@@ -227,7 +227,7 @@ class Vtsz extends \Entities\Vtsz implements \Doctrine\ORM\Proxy\Proxy
     public function setSzam($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzam', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzam', [$nev]);
 
         return parent::setSzam($nev);
     }
@@ -238,7 +238,7 @@ class Vtsz extends \Entities\Vtsz implements \Doctrine\ORM\Proxy\Proxy
     public function getAfa()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfa', []);
 
         return parent::getAfa();
     }
@@ -249,7 +249,7 @@ class Vtsz extends \Entities\Vtsz implements \Doctrine\ORM\Proxy\Proxy
     public function getAfaId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAfaId', []);
 
         return parent::getAfaId();
     }
@@ -260,7 +260,7 @@ class Vtsz extends \Entities\Vtsz implements \Doctrine\ORM\Proxy\Proxy
     public function setAfa($afa)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', array($afa));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAfa', [$afa]);
 
         return parent::setAfa($afa);
     }

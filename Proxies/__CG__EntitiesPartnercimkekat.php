@@ -36,7 +36,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Partnercimkekat' . "\0" . 'nev', '' . "\0" . 'Entities\\Partnercimkekat' . "\0" . 'slug', '' . "\0" . 'Entities\\Partnercimkekat' . "\0" . 'cimkek');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Partnercimkekat' . "\0" . 'nev', '' . "\0" . 'Entities\\Partnercimkekat' . "\0" . 'slug', '' . "\0" . 'Entities\\Partnercimkekat' . "\0" . 'cimkek'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Partnercimkekat' . "\0" . 'nev', '' . "\0" . 'Entities\\Partnercimkekat' . "\0" . 'slug', '' . "\0" . 'Entities\\Partnercimkekat' . "\0" . 'cimkek');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Partnercimkekat' . "\0" . 'nev', '' . "\0" . 'Entities\\Partnercimkekat' . "\0" . 'slug', '' . "\0" . 'Entities\\Partnercimkekat' . "\0" . 'cimkek'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function getCimkek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCimkek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCimkek', []);
 
         return parent::getCimkek();
     }
@@ -190,7 +190,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function AddCimke(\Entities\Cimketorzs $cimke)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'AddCimke', array($cimke));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'AddCimke', [$cimke]);
 
         return parent::AddCimke($cimke);
     }
@@ -201,7 +201,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function removeCimke(\Entities\Cimketorzs $cimke)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeCimke', array($cimke));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeCimke', [$cimke]);
 
         return parent::removeCimke($cimke);
     }
@@ -212,7 +212,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -223,7 +223,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -234,7 +234,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function getSlug()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSlug', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSlug', []);
 
         return parent::getSlug();
     }
@@ -245,7 +245,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function setSlug($slug)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', array($slug));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', [$slug]);
 
         return parent::setSlug($slug);
     }
@@ -260,7 +260,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -271,7 +271,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function getLathato()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato', []);
 
         return parent::getLathato();
     }
@@ -282,7 +282,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function setLathato($lathato)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato', array($lathato));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato', [$lathato]);
 
         return parent::setLathato($lathato);
     }
@@ -293,7 +293,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function getTermeklaponlathato()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermeklaponlathato', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermeklaponlathato', []);
 
         return parent::getTermeklaponlathato();
     }
@@ -304,7 +304,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function setTermeklaponlathato($lathato)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermeklaponlathato', array($lathato));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermeklaponlathato', [$lathato]);
 
         return parent::setTermeklaponlathato($lathato);
     }
@@ -315,7 +315,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function getTermekakciodobozbanlathato()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekakciodobozbanlathato', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekakciodobozbanlathato', []);
 
         return parent::getTermekakciodobozbanlathato();
     }
@@ -326,7 +326,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function setTermekakciodobozbanlathato($lathato)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekakciodobozbanlathato', array($lathato));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekakciodobozbanlathato', [$lathato]);
 
         return parent::setTermekakciodobozbanlathato($lathato);
     }
@@ -337,7 +337,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function getTermeklistabanlathato()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermeklistabanlathato', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermeklistabanlathato', []);
 
         return parent::getTermeklistabanlathato();
     }
@@ -348,7 +348,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function setTermeklistabanlathato($lathato)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermeklistabanlathato', array($lathato));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermeklistabanlathato', [$lathato]);
 
         return parent::setTermeklistabanlathato($lathato);
     }
@@ -359,7 +359,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function getTermekszurobenlathato()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekszurobenlathato', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekszurobenlathato', []);
 
         return parent::getTermekszurobenlathato();
     }
@@ -370,7 +370,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function setTermekszurobenlathato($lathato)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekszurobenlathato', array($lathato));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermekszurobenlathato', [$lathato]);
 
         return parent::setTermekszurobenlathato($lathato);
     }
@@ -381,7 +381,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function getSorrend()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSorrend', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSorrend', []);
 
         return parent::getSorrend();
     }
@@ -392,7 +392,7 @@ class Partnercimkekat extends \Entities\Partnercimkekat implements \Doctrine\ORM
     public function setSorrend($sorrend)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', array($sorrend));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', [$sorrend]);
 
         return parent::setSorrend($sorrend);
     }

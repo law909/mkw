@@ -36,7 +36,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'nev', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'slug', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'kategoria');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'nev', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'slug', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'kategoria'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'nev', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'slug', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'kategoria');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'nev', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'slug', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Partnercimketorzs' . "\0" . 'kategoria'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getKategoria()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKategoria', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKategoria', []);
 
         return parent::getKategoria();
     }
@@ -190,7 +190,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getKategoriaId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKategoriaId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKategoriaId', []);
 
         return parent::getKategoriaId();
     }
@@ -201,7 +201,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function setKategoria(\Entities\Cimkekat $kategoria)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKategoria', array($kategoria));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKategoria', [$kategoria]);
 
         return parent::setKategoria($kategoria);
     }
@@ -212,7 +212,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function removeKategoria()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeKategoria', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeKategoria', []);
 
         return parent::removeKategoria();
     }
@@ -223,7 +223,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -234,7 +234,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -245,7 +245,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getSlug()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSlug', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSlug', []);
 
         return parent::getSlug();
     }
@@ -256,7 +256,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function setSlug($slug)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', array($slug));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', [$slug]);
 
         return parent::setSlug($slug);
     }
@@ -267,7 +267,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getPartnerek()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerek', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerek', []);
 
         return parent::getPartnerek();
     }
@@ -278,7 +278,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function addPartner(\Entities\Partner $partner)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addPartner', array($partner));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addPartner', [$partner]);
 
         return parent::addPartner($partner);
     }
@@ -289,7 +289,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function removePartner(\Entities\Partner $partner)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', array($partner));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePartner', [$partner]);
 
         return parent::removePartner($partner);
     }
@@ -304,7 +304,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -315,7 +315,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getMenu1lathato()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMenu1lathato', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMenu1lathato', []);
 
         return parent::getMenu1lathato();
     }
@@ -326,7 +326,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function setMenu1lathato($menu1lathato)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMenu1lathato', array($menu1lathato));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMenu1lathato', [$menu1lathato]);
 
         return parent::setMenu1lathato($menu1lathato);
     }
@@ -337,7 +337,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getMenu2lathato()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMenu2lathato', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMenu2lathato', []);
 
         return parent::getMenu2lathato();
     }
@@ -348,7 +348,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function setMenu2lathato($menu2lathato)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMenu2lathato', array($menu2lathato));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMenu2lathato', [$menu2lathato]);
 
         return parent::setMenu2lathato($menu2lathato);
     }
@@ -359,7 +359,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getMenu3lathato()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMenu3lathato', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMenu3lathato', []);
 
         return parent::getMenu3lathato();
     }
@@ -370,7 +370,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function setMenu3lathato($menu3lathato)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMenu3lathato', array($menu3lathato));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMenu3lathato', [$menu3lathato]);
 
         return parent::setMenu3lathato($menu3lathato);
     }
@@ -381,7 +381,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getMenu4lathato()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMenu4lathato', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMenu4lathato', []);
 
         return parent::getMenu4lathato();
     }
@@ -392,7 +392,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function setMenu4lathato($menu4lathato)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMenu4lathato', array($menu4lathato));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMenu4lathato', [$menu4lathato]);
 
         return parent::setMenu4lathato($menu4lathato);
     }
@@ -403,7 +403,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getLeiras()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLeiras', []);
 
         return parent::getLeiras();
     }
@@ -414,7 +414,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function setLeiras($leiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras', array($leiras));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLeiras', [$leiras]);
 
         return parent::setLeiras($leiras);
     }
@@ -425,7 +425,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getOldalcim()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOldalcim', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOldalcim', []);
 
         return parent::getOldalcim();
     }
@@ -436,7 +436,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function setOldalcim($oldalcim)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldalcim', array($oldalcim));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOldalcim', [$oldalcim]);
 
         return parent::setOldalcim($oldalcim);
     }
@@ -447,7 +447,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getKepurl($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurl', [$pre]);
 
         return parent::getKepurl($pre);
     }
@@ -458,7 +458,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getKepurlSmall($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlSmall', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlSmall', [$pre]);
 
         return parent::getKepurlSmall($pre);
     }
@@ -469,7 +469,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getKepurlMedium($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlMedium', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlMedium', [$pre]);
 
         return parent::getKepurlMedium($pre);
     }
@@ -480,7 +480,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getKepurlLarge($pre = '/')
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlLarge', array($pre));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepurlLarge', [$pre]);
 
         return parent::getKepurlLarge($pre);
     }
@@ -491,7 +491,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function setKepurl($kepurl)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepurl', array($kepurl));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepurl', [$kepurl]);
 
         return parent::setKepurl($kepurl);
     }
@@ -502,7 +502,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getKepleiras()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepleiras', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepleiras', []);
 
         return parent::getKepleiras();
     }
@@ -513,7 +513,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function setKepleiras($kepleiras)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepleiras', array($kepleiras));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepleiras', [$kepleiras]);
 
         return parent::setKepleiras($kepleiras);
     }
@@ -524,7 +524,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function getSorrend()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSorrend', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSorrend', []);
 
         return parent::getSorrend();
     }
@@ -535,7 +535,7 @@ class Partnercimketorzs extends \Entities\Partnercimketorzs implements \Doctrine
     public function setSorrend($sorrend)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', array($sorrend));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', [$sorrend]);
 
         return parent::setSorrend($sorrend);
     }

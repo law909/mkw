@@ -36,7 +36,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek');
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek');
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function getNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
 
         return parent::getNev();
     }
@@ -205,7 +205,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function setNev($nev)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', array($nev));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
     }
@@ -216,7 +216,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function getEmailtemplate()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmailtemplate', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmailtemplate', []);
 
         return parent::getEmailtemplate();
     }
@@ -227,7 +227,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function getEmailtemplateId()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmailtemplateId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmailtemplateId', []);
 
         return parent::getEmailtemplateId();
     }
@@ -238,7 +238,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function getEmailtemplateNev()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmailtemplateNev', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmailtemplateNev', []);
 
         return parent::getEmailtemplateNev();
     }
@@ -249,7 +249,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function setEmailtemplate($val)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmailtemplate', array($val));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmailtemplate', [$val]);
 
         return parent::setEmailtemplate($val);
     }
@@ -260,7 +260,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function removeEmailtemplate()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeEmailtemplate', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeEmailtemplate', []);
 
         return parent::removeEmailtemplate();
     }
@@ -271,7 +271,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function getSorrend()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSorrend', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSorrend', []);
 
         return parent::getSorrend();
     }
@@ -282,7 +282,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function setSorrend($s)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', array($s));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', [$s]);
 
         return parent::setSorrend($s);
     }
@@ -293,7 +293,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function getCsoport()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCsoport', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCsoport', []);
 
         return parent::getCsoport();
     }
@@ -304,7 +304,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function setCsoport($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCsoport', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCsoport', [$adat]);
 
         return parent::setCsoport($adat);
     }
@@ -315,7 +315,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function getFoglal()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFoglal', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFoglal', []);
 
         return parent::getFoglal();
     }
@@ -326,7 +326,7 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function setFoglal($adat)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFoglal', array($adat));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFoglal', [$adat]);
 
         return parent::setFoglal($adat);
     }
