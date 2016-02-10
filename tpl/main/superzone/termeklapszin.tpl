@@ -8,14 +8,16 @@
     </div>
     <div class="row">
         {foreach $termek.valtozatok as $_valt}
-        <div class="col-md-4">
-            <div class="szindoboz">
-                <a href="{$_valt.link}">
-                    <img src="{$_valt.kepurlmedium}" class="szinkep">
-                    <div class="szinszoveg">{$_valt.caption}</div>
-                </a>
-            </div>
-        </div>
+            {if ($_valt.keszlet > 0)}
+                <div class="col-md-4">
+                    <div class="szindoboz">
+                        <a href="{$_valt.link}">
+                            <img src="{$_valt.kepurlmedium}" class="szinkep">
+                            <div class="szinszoveg">{$_valt.caption}</div>
+                        </a>
+                    </div>
+                </div>
+            {/if}
         {/foreach}
     </div>
 {/block}
