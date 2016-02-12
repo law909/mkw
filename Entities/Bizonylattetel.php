@@ -560,11 +560,6 @@ class Bizonylattetel {
                 $this->termek = $val;
                 if (!$this->duplication) {
                     $this->setTermeknev($val->getNev());
-                    $this->translations->clear();
-                    foreach ($val->getTranslations() as $trans) {
-                        $uj = new BizonylattetelTranslation($trans->getLocale(), 'termeknev', $trans->getContent());
-                        $this->addTranslation($uj);
-                    }
                     $this->setCikkszam($val->getCikkszam());
                     $this->setHosszusag($val->getHosszusag());
                     $this->setEhparany($val->getHparany());

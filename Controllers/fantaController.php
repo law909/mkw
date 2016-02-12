@@ -77,12 +77,6 @@ class fantaController extends \mkwhelpers\MattableController {
                                 $ujtetel->clearCreated();
                                 $ujtetel->clearLastmod();
 
-                                foreach ($biztetel->getTranslations() as $trans) {
-                                    $ujtrans = clone $trans;
-                                    $ujtetel->addTranslation($ujtrans);
-                                    $em->persist($ujtrans);
-                                }
-
                                 $em->persist($ujtetel);
                             }
                             $em->persist($uj);
@@ -143,20 +137,12 @@ class fantaController extends \mkwhelpers\MattableController {
                     $uj->setNyomtatva(false);
                     $uj->setFix(false);
                     $uj->setBizonylattipus($ujbt);
-                    //$uj->generateId();
                     foreach ($szamla->getBizonylattetelek() as $biztetel) {
                         $ujtetel = new \Entities\Bizonylattetel();
                         $uj->addBizonylattetel($ujtetel);
                         $ujtetel->duplicateFrom($biztetel);
                         $ujtetel->clearCreated();
                         $ujtetel->clearLastmod();
-
-                        foreach ($biztetel->getTranslations() as $trans) {
-                            $ujtrans = clone $trans;
-                            $ujtetel->addTranslation($ujtrans);
-                            $em->persist($ujtrans);
-                        }
-
                         $em->persist($ujtetel);
                     }
                     $em->persist($uj);

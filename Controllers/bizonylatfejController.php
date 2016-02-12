@@ -482,6 +482,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $obj->setWebshopmessage($this->params->getStringRequestParam('webshopmessage'));
         $obj->setCouriermessage($this->params->getStringRequestParam('couriermessage'));
 
+        $obj->setKellszallitasikoltsegetszamolni($this->params->getBoolRequestParam('szallitasiktgkell'));
+        $obj->setSzallitasikoltsegbrutto(0);
 
         switch ($parancs) {
             case $this->inheritOperation:
@@ -715,13 +717,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                     $this->getEm()->persist($parent);
                     $this->getEm()->flush();
                 }
-            }
-        }
-        else {
-            if ($this->params->getBoolRequestParam('szallitasiktgkell')) {
-                $this->getRepo()->createSzallitasiKtg($o, $o->getSzallitasimodId());
-                $this->getEm()->persist($o);
-                $this->getEm()->flush();
             }
         }
         if ($this->params->getBoolRequestParam('bizonylatstatuszertesito')) {

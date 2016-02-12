@@ -16,7 +16,7 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 class BizonylattetelTranslation extends AbstractPersonalTranslation {
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bizonylattetel", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="Bizonylattetel", inversedBy="translations", cascade={"persist"})
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $object;

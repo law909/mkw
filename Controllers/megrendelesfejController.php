@@ -265,10 +265,6 @@ class megrendelesfejController extends bizonylatfejController {
                     $regibiz->setBizonylatstatusz($teljesitheto);
                     $this->getEm()->persist($regibiz);
                     $this->getEm()->persist($ujbiz);
-                    $this->getRepo()->createSzallitasiKtg($regibiz, $regibiz->getSzallitasimod());
-                    $this->getRepo()->createSzallitasiKtg($ujbiz, $ujbiz->getSzallitasimod());
-                    $this->getEm()->persist($regibiz);
-                    $this->getEm()->persist($ujbiz);
                     $this->getEm()->flush();
                     $this->getEm()->commit();
                     echo json_encode(array('refresh' => 1));

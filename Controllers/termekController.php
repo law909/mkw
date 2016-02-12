@@ -658,7 +658,7 @@ class termekController extends \mkwhelpers\MattableController {
 		echo $ret;
 	}
 
-	public function getValtozatList($termekid, $sel, $raktarid) {
+	public function getValtozatList($termekid, $sel, $raktarid = null) {
 		$ret = array();
 		$termek = $this->getRepo()->findWithJoins($termekid);
 		if ($termek) {

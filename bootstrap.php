@@ -86,7 +86,7 @@ $timestampableListener->setAnnotationReader($cachedAnnotationReader);
 $evm->addEventSubscriber($timestampableListener);
 
 if (Store::isMultilang()) {
-    $translatableListener=new Gedmo\Translatable\TranslatableListener();
+    $translatableListener = new Gedmo\Translatable\TranslatableListener();
     $translatableListener->setAnnotationReader($cachedAnnotationReader);
     $translatableListener->setDefaultLocale('hu_hu');
     $translatableListener->setTranslatableLocale('hu_hu');
@@ -97,6 +97,7 @@ if (Store::isMultilang()) {
 
 $evm->addEventListener(array('onFlush', 'prePersist'), new Listeners\BizonylatfejListener());
 $evm->addEventListener(array('onFlush', 'prePersist'), new Listeners\BankbizonylatfejListener());
+$evm->addEventListener(array('onFlush'), new Listeners\BizonylattetelListener());
 
 $em = \Doctrine\ORM\EntityManager::create($connectionOptions, $config, $evm);
 

@@ -12,6 +12,8 @@ use mkw\store;
 class Bizonylatfej {
 
     private $duplication;
+    private $kellszallitasikoltsegetszamolni = true;
+    private $szallitasikoltsegbrutto;
 
     /**
      * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)
@@ -2501,5 +2503,34 @@ class Bizonylatfej {
     public function setTulajkisadozo($tulajkisadozo) {
         $this->tulajkisadozo = $tulajkisadozo;
     }
+
+    /**
+     * @return boolean
+     */
+    public function isKellszallitasikoltsegetszamolni() {
+        return $this->kellszallitasikoltsegetszamolni;
+    }
+
+    /**
+     * @param boolean $kellszallitasikoltsegetszamolni
+     */
+    public function setKellszallitasikoltsegetszamolni($kellszallitasikoltsegetszamolni) {
+        $this->kellszallitasikoltsegetszamolni = $kellszallitasikoltsegetszamolni;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzallitasikoltsegbrutto() {
+        return $this->szallitasikoltsegbrutto;
+    }
+
+    /**
+     * @param mixed $szallitasikoltsegbrutto
+     */
+    public function setSzallitasikoltsegbrutto($szallitasikoltsegbrutto) {
+        $this->szallitasikoltsegbrutto = $szallitasikoltsegbrutto;
+    }
+
 
 }

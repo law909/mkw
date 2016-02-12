@@ -1512,14 +1512,13 @@ class importController extends \mkwhelpers\Controller {
                 if ($hibascikkszam) {
                     $fej->setBelsomegjegyzes($fej->getBelsomegjegyzes() . ' Hibás cikkszámok: ' . implode(',', $hibascikkszam));
                 }
+
+                $fej->setKellszallitasikoltsegetszamolni((boolean)$r['szallktg']);
+                $fej->setSzallitasikoltsegbrutto($r['szallktg']);
                 store::getEm()->persist($fej);
                 store::getEm()->flush();
-                if ($r['szallktg']) {
-                    store::getEm()->getRepository('Entities\Bizonylatfej')->createSzallitasiKtg($fej, false, $r['szallktg']);
-                    store::getEm()->persist($fej);
-                    store::getEm()->flush();
-                }
-                /**                $statusz = $fej->getBizonylatstatusz();
+                /**
+                 * $statusz = $fej->getBizonylatstatusz();
                  * if ($statusz) {
                  * $emailtpl = $statusz->getEmailtemplate();
                  * $fej->sendStatuszEmail($emailtpl, null, false);
