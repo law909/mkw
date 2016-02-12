@@ -249,7 +249,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setReferrer(Store::getMainSession()->referrer);
             $obj->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));
             $obj->setUjdonsaghirlevelkell($this->params->getBoolRequestParam('ujdonsaghirlevelkell'));
-            $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
+            $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizetesimod', 0));
             if ($fizmod) {
                 $obj->setFizmod($fizmod);
             }
