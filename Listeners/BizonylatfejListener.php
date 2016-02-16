@@ -175,7 +175,7 @@ class BizonylatfejListener {
                             $k->setAfa($termek->getAfa());
                         }
                         $k->setBruttoegysar($ktg);
-                        $k->setBruttoegysarhuf($ktg);
+                        $k->setBruttoegysarhuf($ktg * $k->getArfolyam());
                         $k->calc();
                         $this->em->persist($k);
                         $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $k);
@@ -194,12 +194,12 @@ class BizonylatfejListener {
                         if ($nullasafa) {
                             $k->setAfa($nullasafa);
                             $k->setNettoegysar($ktg);
-                            $k->setNettoegysarhuf($ktg);
+                            $k->setNettoegysarhuf($ktg * $k->getArfolyam());
                         }
                         else {
                             $k->setAfa($termek->getAfa());
                             $k->setBruttoegysar($ktg);
-                            $k->setBruttoegysarhuf($ktg);
+                            $k->setBruttoegysarhuf($ktg * $k->getArfolyam());
                         }
                         $k->calc();
                         $this->em->persist($k);
