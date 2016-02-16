@@ -161,7 +161,11 @@ class BizonylatfejListener {
                 $ktg = $ktg * 1;
 
                 if ($ktg) {
-                    $k = $this->em->getRepository('Entities\Bizonylatfej')->getTetelsor($bizfej->getId(), $termekid);
+                    foreach ($bizfej->getBizonylattetelek() as $btetel) {
+                        if ($btetel->getTermekId() == $termekid) {
+                            $k = $btetel;
+                        }
+                    }
                     if ($k) {
                         $k->setMennyiseg(1);
                         if ($nullasafa) {
@@ -203,25 +207,27 @@ class BizonylatfejListener {
                     }
                 }
                 else {
-                    $this->removeBiztetel($bizfej->getId(), $termek);
+                    $this->removeBiztetel($bizfej, $termekid);
                 }
             }
             else {
-                $this->removeBiztetel($bizfej->getId(), $termek);
+                $this->removeBiztetel($bizfej, $termekid);
             }
         }
         else {
-            $this->removeBiztetel($bizfej->getId(), $termek);
+            $this->removeBiztetel($bizfej, $termekid);
         }
     }
 
-    private function removeBiztetel($bizszam, $termekid, $valtozatid = null) {
-        $t = $this->em->getRepository('Entities\Bizonylatfej')->getTetelsor($bizszam, $termekid, $valtozatid);
-        if ($t) {
-            $this->em->remove($t);
+    private function removeBiztetel($bizfej, $termekid) {
+        foreach ($bizfej->getBizonylattetelek() as $tetel) {
+            if ($tetel->getTermekId() == $termekid) {
+                $bizfej->removeBizonylattetel($tetel);
+                $this->em->remove($tetel);
+            }
         }
     }
-    
+
     public function prePersist(LifecycleEventArgs $args) {
 
         $this->em = $args->getEntityManager();
