@@ -1,9 +1,20 @@
 <?php
 namespace Controllers;
 
-use mkw\store, mkw\thumbnail;
+use mkw\store;
+use Symfony\Component\DomCrawler\Crawler;
 
 class importController extends \mkwhelpers\Controller {
+
+    private $settings;
+
+    public function __construct($params) {
+        parent::__construct($params);
+        $this->settings = array(
+            'quality' => 80,
+            'sizes' => array('100' => '100x100', '150' => '150x150', '250' => '250x250', '1000' => '1000x800')
+        );
+    }
 
     private function toutf($mit) {
         return mb_convert_encoding($mit, 'UTF8', 'ISO-8859-2');
@@ -116,9 +127,9 @@ class importController extends \mkwhelpers\Controller {
         $arszaz = $this->params->getNumRequestParam('arszaz', 100);
         $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-        $urleleje = \mkw\Store::changeDirSeparator(\mkw\Store::getParameter(\mkw\consts::PathKreativ, \mkw\Store::getConfigValue('path.termekkep')));
+        $urleleje = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathKreativ));
 
-        $path = \mkw\Store::changeDirSeparator(\mkw\Store::getParameter(\mkw\consts::PathKreativ, \mkw\Store::getConfigValue('path.termekkep')));
+        $path = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathKreativ));
         $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
         if ($mainpath) {
             $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
@@ -159,10 +170,6 @@ class importController extends \mkwhelpers\Controller {
 
         $fh = fopen('kreativpuzzlestock.txt', 'r');
         if ($fh) {
-            $settings = array(
-                'quality' => 80,
-                'sizes' => array('100' => '100x100', '150' => '150x150', '250' => '250x250', '1000' => '1000x800')
-            );
             $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
             $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
@@ -241,10 +248,10 @@ class importController extends \mkwhelpers\Controller {
                                     \curl_exec($ch);
                                     fclose($ih);
 
-                                    foreach ($settings['sizes'] as $k => $size) {
+                                    foreach ($this->settings['sizes'] as $k => $size) {
                                         $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                         $matches = explode('x', $size);
-                                        \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $settings['quality'], true);
+                                        \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                                     }
                                     if (((count($imagelist[$data[$this->n('a')]]) > 1) && ($imgcnt == 1)) || (count($imagelist[$data[$this->n('a')]]) == 1)) {
                                         $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
@@ -369,9 +376,9 @@ class importController extends \mkwhelpers\Controller {
         $deltondownload = $this->params->getBoolRequestParam('deltondownload', false);
         $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-        $urleleje = \mkw\Store::changeDirSeparator(\mkw\Store::getParameter(\mkw\consts::PathDelton, \mkw\Store::getConfigValue('path.termekkep')));
+        $urleleje = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathDelton));
 
-        $path = \mkw\Store::changeDirSeparator(\mkw\Store::getParameter(\mkw\consts::PathDelton, \mkw\Store::getConfigValue('path.termekkep')));
+        $path = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathDelton));
         $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
         if ($mainpath) {
             $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
@@ -390,10 +397,6 @@ class importController extends \mkwhelpers\Controller {
         }
         $fh = fopen('delton.txt', 'r');
         if ($fh) {
-            $settings = array(
-                'quality' => 80,
-                'sizes' => array('100' => '100x100', '150' => '150x150', '250' => '250x250', '1000' => '1000x800')
-            );
             $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
             $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
@@ -484,10 +487,10 @@ class importController extends \mkwhelpers\Controller {
                             \curl_exec($ch);
                             fclose($ih);
 
-                            foreach ($settings['sizes'] as $k => $size) {
+                            foreach ($this->settings['sizes'] as $k => $size) {
                                 $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                 $matches = explode('x', $size);
-                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $settings['quality'], true);
+                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                             }
                             $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
                             $termek->setKepleiras($termeknev);
@@ -571,7 +574,7 @@ class importController extends \mkwhelpers\Controller {
 
         //$urleleje = \mkw\Store::changeDirSeparator();
 
-        //$path = \mkw\Store::changeDirSeparator($this->params->getStringRequestParam('path', \mkw\Store::getConfigValue('path.termekkep')));
+        //$path = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . $this->params->getStringRequestParam('path'));
         $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
         if ($mainpath) {
             $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
@@ -589,10 +592,6 @@ class importController extends \mkwhelpers\Controller {
 
         $xml = simplexml_load_file(temppath . "nomad.xml");
         if ($xml) {
-            $settings = array(
-                'quality' => 80,
-                'sizes' => array('100' => '100x100', '150' => '150x150', '250' => '250x250', '1000' => '1000x800')
-            );
             $afa = store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
             $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
             $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
@@ -680,10 +679,10 @@ class importController extends \mkwhelpers\Controller {
                             \curl_exec($ch);
                             fclose($ih);
 
-                            foreach ($settings['sizes'] as $k => $size) {
+                            foreach ($this->settings['sizes'] as $k => $size) {
                                 $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                 $matches = explode('x', $size);
-                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $settings['quality'], true);
+                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                             }
                             $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
                             $termek->setKepleiras($termeknev);
@@ -899,9 +898,9 @@ class importController extends \mkwhelpers\Controller {
         $arszaz = $this->params->getNumRequestParam('arszaz', 100);
         $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-        $urleleje = \mkw\Store::changeDirSeparator(\mkw\Store::getParameter(\mkw\consts::PathMaxutov, \mkw\Store::getConfigValue('path.termekkep')));
+        $urleleje = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathMaxutov));
 
-        $path = \mkw\Store::changeDirSeparator(\mkw\Store::getParameter(\mkw\consts::PathMaxutov, \mkw\Store::getConfigValue('path.termekkep')));
+        $path = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathMaxutov));
         $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
         if ($mainpath) {
             $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
@@ -918,10 +917,6 @@ class importController extends \mkwhelpers\Controller {
 
         $fh = fopen('makszutov.txt', 'r');
         if ($fh) {
-            $settings = array(
-                'quality' => 80,
-                'sizes' => array('100' => '100x100', '150' => '150x150', '250' => '250x250', '1000' => '1000x800')
-            );
             $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
             $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
@@ -1026,10 +1021,10 @@ class importController extends \mkwhelpers\Controller {
                             \curl_exec($ch);
                             fclose($ih);
 
-                            foreach ($settings['sizes'] as $k => $size) {
+                            foreach ($this->settings['sizes'] as $k => $size) {
                                 $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
                                 $matches = explode('x', $size);
-                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $settings['quality'], true);
+                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
                             }
                             if (((count($imagelist) > 1) && ($imgcnt == 1)) || (count($imagelist) == 1)) {
                                 $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
@@ -1255,6 +1250,240 @@ class importController extends \mkwhelpers\Controller {
 
         $excel->disconnectWorksheets();
         \unlink($filenev);
+
+    }
+
+    public function btechImport() {
+
+        function isTermeksor($adat) {
+            return trim($adat,'\'') * 1 > 0;
+        }
+
+        $volthiba = false;
+
+        $parentid = $this->params->getIntRequestParam('katid', 0);
+        $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoBtech);
+        $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+        $dbig = $this->params->getIntRequestParam('dbig', 0);
+        $editleiras = $this->params->getBoolRequestParam('editleiras', false);
+        $createuj = $this->params->getBoolRequestParam('createuj', false);
+        $arszaz = $this->params->getNumRequestParam('arszaz', 100);
+        $batchsize = $this->params->getNumRequestParam('batchsize', 20);
+
+        $urleleje = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathBtech));
+
+        $path = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathBtech));
+        $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
+        if ($mainpath) {
+            $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        }
+        $path = $mainpath . $path;
+        $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+
+        $parent = store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+        if ($dbtol < 3) {
+            $dbtol = 3;
+        }
+
+        $filenev = $_FILES['toimport']['name'];
+        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        //pathinfo
+
+        $filetype = \PHPExcel_IOFactory::identify($filenev);
+        $reader = \PHPExcel_IOFactory::createReader($filetype);
+        $reader->setReadDataOnly(true);
+        $excel = $reader->load($filenev);
+        $sheet = $excel->getActiveSheet();
+        $maxrow = $sheet->getHighestRow() * 1;
+        if (!$dbig) {
+            $dbig = $maxrow;
+        }
+
+        $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+        $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+
+        for ($row = $dbtol; $row <= $dbig; ++$row) {
+            $adat = $sheet->getCell('A' . $row)->getValue();
+            if ($adat && !isTermeksor($adat)) {
+                $katnev = $adat;
+                $parent = $this->createKategoria($katnev, $parentid);
+            }
+        }
+
+        @unlink('btechimport.error');
+
+        $termekdb = 0;
+        for ($row = $dbtol; $row <= $dbig; ++$row) {
+            $adat = $sheet->getCell('A' . $row)->getValue();
+            if ($adat) {
+                if (isTermeksor($adat)) {
+                    $termekdb++;
+
+                    $kaphato = true;
+                    $cikkszam = $sheet->getCell('A' . $row)->getValue();
+                    $termeknev = $sheet->getCell('B' . $row)->getValue();
+                    $link = $sheet->getCell('D' . $row)->getValue();
+
+                    if ($link) {
+                        $ch = curl_init();
+                        curl_setopt($ch, CURLOPT_URL, $link);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                        curl_setopt($ch, CURLOPT_USERAGENT, 'MKW Webshop Import');
+                        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+                        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+                        $termekpage = curl_exec($ch);
+                        $curlerror = curl_error($ch);
+                        $curlerrno = curl_errno($ch);
+                        curl_close($ch);
+                    }
+                    else {
+                        $volthiba = true;
+                        $termekpage = false;
+                        \mkw\Store::writelog($cikkszam . ': empty url', 'btechimport.error');
+                    }
+
+                    if ($termekpage) {
+                        $crawler = new Crawler($termekpage);
+                        $nodelist = $crawler->filter('div#item-page > div.left > h1');
+                        if ($nodelist->count()) {
+                            $termeknev = $nodelist->text();
+                        }
+
+                        $nodelist = $crawler->filter('div#item-page > div.description');
+                        $le = '';
+                        if ($nodelist->count()) {
+                            $le = $nodelist->html();
+                        }
+                        $puri = new \mkwhelpers\HtmlPurifierSanitizer(array(
+                            'HTML.Allowed' => 'p,ul,li,b,strong,br'
+                        ));
+                        $leiras = str_replace("\t", '', $puri->sanitize($le));
+                        $puri2 = store::getSanitizer();
+                        $kisleiras = str_replace("\t", '', $puri2->sanitize($le));
+
+                        $nodelist = $crawler->filter('div#item-page > div.right > div.item-image a');
+                        $imagelist = $nodelist->each(function (Crawler $node, $i) {
+                            return 'http://btech.hu' . $node->attr('href');
+                        });
+
+                        $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $cikkszam, 'gyarto' => $gyartoid));
+
+                        if (!$termek) {
+                            if ($createuj && $kaphato) {
+
+                                $termek = new \Entities\Termek();
+                                $termek->setFuggoben(true);
+                                $termek->setMe('db');
+                                $termek->setNev($termeknev);
+                                $termek->setLeiras($leiras);
+                                $termek->setRovidleiras(mb_substr($kisleiras, 0, 100, 'UTF8') . '...');
+                                $termek->setCikkszam($cikkszam);
+                                $termek->setIdegencikkszam($cikkszam);
+                                $termek->setTermekfa1($parent);
+                                $termek->setVtsz($vtsz[0]);
+                                $termek->setHparany(3);
+                                if ($gyarto) {
+                                    $termek->setGyarto($gyarto);
+                                }
+                                $termek->setNemkaphato(false);
+                                $termek->setNetto($sheet->getCell('C' . $row)->getValue() * 1 * $arszaz / 100);
+                                $termek->setBrutto(round($termek->getBrutto(), -1));
+
+                                $imgcnt = 0;
+                                foreach ($imagelist as $imgurl) {
+                                    $imgcnt++;
+
+                                    $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev . '_' . $cikkszam);
+                                    $kepnev = \mkw\Store::urlize($termeknev . '_' . $cikkszam);
+                                    if (count($imagelist) > 1) {
+                                        $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
+                                        $kepnev = $kepnev . '_' . $imgcnt;
+                                    }
+
+                                    $extension = \mkw\Store::getExtension($imgurl);
+                                    $imgpath = $nameWithoutExt . '.' . $extension;
+
+                                    $ch = \curl_init($imgurl);
+                                    $ih = fopen($imgpath, 'w');
+                                    \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                    \curl_exec($ch);
+                                    fclose($ih);
+
+                                    foreach ($this->settings['sizes'] as $k => $size) {
+                                        $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                        $matches = explode('x', $size);
+                                        \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                    }
+                                    if (((count($imagelist) > 1) && ($imgcnt == 1)) || (count($imagelist) == 1)) {
+                                        $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                        $termek->setKepleiras($termeknev);
+                                    }
+                                    else {
+                                        $kep = new \Entities\TermekKep();
+                                        $termek->addTermekKep($kep);
+                                        $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                        $kep->setLeiras($termeknev);
+                                        store::getEm()->persist($kep);
+                                    }
+                                }
+
+                                store::getEm()->persist($termek);
+                            }
+                        }
+                        else {
+                            if (is_array($termek)) {
+                                $termek = $termek[0];
+                            }
+                            if ($editleiras) {
+                                $termek->setLeiras($leiras);
+                            }
+                            if (!$kaphato) {
+                                $termek->setNemkaphato(true);
+                            }
+                            else {
+                                $termek->setNemkaphato(false);
+                            }
+                            $termek->setNetto($sheet->getCell('C' . $row)->getValue() * 1 * $arszaz / 100);
+                            $termek->setBrutto(round($termek->getBrutto(), -1));
+                            store::getEm()->persist($termek);
+                        }
+
+                        if (($termekdb % $batchsize) === 0) {
+                            \mkw\Store::getEm()->flush();
+                            \mkw\Store::getEm()->clear();
+                            $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                            $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                            $parent = $this->createKategoria($katnev, $parentid);
+                        }
+                    }
+                    else {
+                        $volthiba = true;
+                        if ($termekpage === false) {
+                            \mkw\Store::writelog($cikkszam . ': ' . $curlerrno . ' - ' . $curlerror, 'btechimport.error');
+                        }
+                        else {
+                            \mkw\Store::writelog($cikkszam . ': ' . gettype($termekpage) . ' = ' . $termekpage, 'btechimport.error');
+                        }
+                    }
+                }
+                else {
+                    $katnev = $sheet->getCell('A' . $row)->getValue();
+                    $parent = $this->createKategoria($katnev, $parentid);
+                    $urlkatnev = \mkw\Store::urlize($katnev);
+                    \mkw\Store::createDirectoryRecursively($path . $urlkatnev);
+                }
+            }
+        }
+        \mkw\Store::getEm()->flush();
+        \mkw\Store::getEm()->clear();
+
+        $excel->disconnectWorksheets();
+        \unlink($filenev);
+
+        if ($volthiba) {
+            echo json_encode(array('url' => '/btechimport.error'));
+        }
 
     }
 

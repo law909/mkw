@@ -176,6 +176,17 @@ class TermekFa extends \Entities\TermekFa implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function __toString()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__toString', []);
+
+        return parent::__toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {

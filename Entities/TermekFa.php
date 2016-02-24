@@ -137,6 +137,10 @@ class TermekFa {
      */
     private $locale;
 
+    public function __toString() {
+        return (string)$this->id . ' - ' . $this->nev;
+    }
+
     public function __construct() {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekek1 = new \Doctrine\Common\Collections\ArrayCollection();

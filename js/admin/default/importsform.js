@@ -8,7 +8,7 @@ $(document).ready(function() {
 		saveUrl:'/admin/save',
 		beforeShow:function() {
 
-            $('.js-kreativimport,.js-deltonimport,.js-reinteximport,.js-tutisportimport,.js-makszutovimport,.js-silkoimport').on('click', function(e) {
+            $('.js-kreativimport,.js-deltonimport,.js-reinteximport,.js-tutisportimport,.js-makszutovimport,.js-silkoimport,.js-btechimport').on('click', function(e) {
                 e.preventDefault();
                 if (!$('#TermekKategoria1').attr('data-value')) {
                     alert('Válasszon kategóriát.');
@@ -22,8 +22,16 @@ $(document).ready(function() {
                         processData: false,
                         contentType: false,
                         data: data,
-                        success: function() {
-                            alert('Kész.');
+                        success: function(d) {
+                            if (!d) {
+                                alert('Kész.');
+                            }
+                            else {
+                                var adat = JSON.parse(d);
+                                if (adat.url) {
+                                    document.location = adat.url;
+                                }
+                            }
                         }
                     });
                 }

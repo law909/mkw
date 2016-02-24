@@ -343,6 +343,7 @@ $router->map('POST','/admin/import/reintex', 'importController#reintexImport', '
 $router->map('POST','/admin/import/tutisport', 'importController#tutisportImport', 'admintutisportimport');
 $router->map('POST','/admin/import/makszutov', 'importController#makszutovImport', 'adminmakszutovimport');
 $router->map('POST','/admin/import/silko', 'importController#silkoImport', 'adminsilkoimport');
+$router->map('POST','/admin/import/btech', 'importController#btechImport', 'adminbtechimport');
 $router->map('POST','/admin/import/vatera', 'importController#vateraImport', 'adminvateraimport');
 //$router->map('POST','/admin/import/szatalakit', 'importController#szAtalakit', 'adminszatalakit');
 //$router->map('POST','/admin/import/szinvarimport', 'importController#szInvarImport', 'adminszinvarimport');

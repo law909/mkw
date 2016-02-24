@@ -280,6 +280,10 @@ class Termek {
     /** @ORM\Column(type="boolean") */
     private $kozvetitett = 0;
 
+    public function __toString() {
+        return (string)$this->id . ' - ' . $this->nev;
+    }
+
     /**
      * @ORM\PrePersist
      */
