@@ -283,7 +283,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
                 ->setCellValue('F' . $sor, $item['bizonylatfej_id'])
                 ->setCellValue('G' . $sor, $item['kelt'])
                 ->setCellValue('H' . $sor, $item['teljesites'])
-                ->setCellValue('I' . $sor, $item['esedekesseg'])
+                ->setCellValue('I' . $sor, $item['hivatkozottdatum'])
                 ->setCellValue('J' . $sor, $item['brutto'])
                 ->setCellValue('K' . $sor, $item['tartozas'])
                 ->setCellValue('L' . $sor, $item['valutanemnev'])
