@@ -1344,7 +1344,16 @@ class importController extends \mkwhelpers\Controller {
                     }
 
                     if ($termekpage) {
+
+                        $ar = 0;
                         $crawler = new Crawler($termekpage);
+                        $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price');
+                        if ($nodelist->count()) {
+                            $ar = $nodelist->text();
+                            $ar = str_replace(array(' ', 'Ft'), '', $ar);
+                            $ar = $ar * 1;
+                        }
+
                         $nodelist = $crawler->filter('div#item-page > div.left > h1');
                         if ($nodelist->count()) {
                             $termeknev = $nodelist->text();
@@ -1367,7 +1376,7 @@ class importController extends \mkwhelpers\Controller {
                             return 'http://btech.hu' . $node->attr('href');
                         });
 
-                        $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $cikkszam, 'gyarto' => $gyartoid));
+                        $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikkszam, 'gyarto' => $gyartoid));
 
                         if (!$termek) {
                             if ($createuj && $kaphato) {
@@ -1387,8 +1396,7 @@ class importController extends \mkwhelpers\Controller {
                                     $termek->setGyarto($gyarto);
                                 }
                                 $termek->setNemkaphato(false);
-                                $termek->setNetto($sheet->getCell('C' . $row)->getValue() * 1 * $arszaz / 100);
-                                $termek->setBrutto(round($termek->getBrutto(), -1));
+                                $termek->setBrutto($ar);
 
                                 $imgcnt = 0;
                                 foreach ($imagelist as $imgurl) {
@@ -1444,8 +1452,9 @@ class importController extends \mkwhelpers\Controller {
                             else {
                                 $termek->setNemkaphato(false);
                             }
-                            $termek->setNetto($sheet->getCell('C' . $row)->getValue() * 1 * $arszaz / 100);
-                            $termek->setBrutto(round($termek->getBrutto(), -1));
+                            if ($ar) {
+                                $termek->setBrutto($ar);
+                            }
                             store::getEm()->persist($termek);
                         }
 
