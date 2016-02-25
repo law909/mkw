@@ -14,6 +14,7 @@ use mkw\store,
 class Bizonylattetel {
 
     private $duplication;
+    private $vanmozgatoos;
     /**
      * @ORM\Id @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -40,13 +41,13 @@ class Bizonylattetel {
     private $bizonylatfej;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $mozgat;
+    private $mozgat = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $foglal;
+    private $foglal = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $kozvetitett;
+    private $kozvetitett = false;
 
     /** @ORM\Column(type="integer") */
     private $irany;
@@ -402,7 +403,17 @@ class Bizonylattetel {
         return $this->mozgat;
     }
 
+    private function walkParents($par) {
+        if ($par) {
+            if (($par->getIrany() == $this->getIrany()) && $par->getMozgat()) {
+                $this->vanmozgatoos = true;
+            }
+            $this->walkParents($par->getParbizonylattetel());
+        }
+    }
+
     public function setMozgat($mozgat = null) {
+
         if ($this->duplication) {
             $this->mozgat = $mozgat;
         }
@@ -413,8 +424,9 @@ class Bizonylattetel {
             }
             else {
                 $par = $this->getParbizonylattetel();
-                if ($par && !$this->getStorno() && !$this->getStornozott()) {
-                    if (($par->getIrany() == $this->getIrany()) && $par->getMozgat()) {
+                if ($par) {
+                    $this->walkParents($par);
+                    if ($this->vanmozgatoos) {
                         $this->mozgat = false;
                         return true;
                     }
@@ -592,8 +604,8 @@ class Bizonylattetel {
                     else {
                         $this->setAfa(null);
                     }
-                    $this->setMozgat();
-                    $this->setFoglal();
+                    //$this->setMozgat();
+                    //$this->setFoglal();
                 }
             }
         }
@@ -615,8 +627,8 @@ class Bizonylattetel {
                 $this->suly = 0;
                 $this->szelesseg = 0;
                 $this->setKozvetitett(false);
-                $this->setMozgat();
-                $this->setFoglal();
+                //$this->setMozgat();
+                //$this->setFoglal();
             }
         }
     }

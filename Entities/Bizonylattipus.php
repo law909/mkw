@@ -65,6 +65,8 @@ class Bizonylattipus {
     private $showbackorder = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showmesebutton = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showcsomagbutton = false;
     /** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylattipus",cascade={"persist"}) */
     private $bizonylatfejek;
     /** @ORM\Column(type="string",length=200,nullable=true) */
@@ -93,6 +95,7 @@ class Bizonylattipus {
         $view->setVar('showstorno', $this->getShowstorno());
         $view->setVar('showbackorder', $this->getShowbackorder());
         $view->setVar('showmesebutton', $this->getShowmesebutton());
+        $view->setVar('showcsomagbutton', $this->getShowcsomagbutton());
     }
 
     public function getId() {
@@ -332,5 +335,20 @@ class Bizonylattipus {
     public function setShowmesebutton($showmesebutton) {
         $this->showmesebutton = $showmesebutton;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getShowcsomagbutton() {
+        return $this->showcsomagbutton;
+    }
+
+    /**
+     * @param mixed $showcsomagbutton
+     */
+    public function setShowcsomagbutton($showcsomagbutton) {
+        $this->showcsomagbutton = $showcsomagbutton;
+    }
+
 
 }

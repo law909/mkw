@@ -521,6 +521,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         foreach ($tetelids as $tetelid) {
             if (($this->params->getIntRequestParam('teteltermek_' . $tetelid) > 0)) {
                 $oper = $this->params->getStringRequestParam('teteloper_' . $tetelid);
+
                 $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('teteltermek_' . $tetelid));
                 if ($termek) {
                     $termekvaltozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('tetelvaltozat_' . $tetelid));
@@ -538,8 +539,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                             if ($termekvaltozat) {
                                 $tetel->setTermekvaltozat($termekvaltozat);
                             }
-                            $tetel->setMozgat();
-                            $tetel->setFoglal();
+//                            $tetel->setMozgat();
+//                            $tetel->setFoglal();
                             $tetel->setElolegtipus($this->params->getIntRequestParam('tetelelolegtipus_' . $tetelid));
 
                             if (!$quick) {
@@ -624,8 +625,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                 if ($termekvaltozat) {
                                     $tetel->setTermekvaltozat($termekvaltozat);
                                 }
-                                $tetel->setMozgat();
-                                $tetel->setFoglal();
+                                //$tetel->setMozgat();
+                                //$tetel->setFoglal();
                                 $tetel->setElolegtipus($this->params->getIntRequestParam('tetelelolegtipus_' . $tetelid));
 
                                 if (!$quick) {

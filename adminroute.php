@@ -139,6 +139,22 @@ $router->map('POST', '/admin/egyebfej/save', 'egyebmozgasfejController#save', 'a
 $router->map('GET', '/admin/egyebfej/print', 'egyebmozgasfejController#doPrint', 'adminegyebmozgasfejprint');
 $router->map('POST', '/admin/egyebfej/ront', 'egyebmozgasfejController#ront', 'adminegyebmozgasfejront');
 
+$router->map('GET', '/admin/selejtfej/getlistbody', 'selejtfejController#getlistbody', 'adminselejtfejgetlistbody');
+$router->map('GET', '/admin/selejtfej/viewlist', 'selejtfejController#viewlist', 'adminselejtfejviewlist');
+$router->map('GET', '/admin/selejtfej/getkarb', 'selejtfejController#getkarb', 'adminselejtfejgetkarb');
+$router->map('GET', '/admin/selejtfej/viewkarb', 'selejtfejController#viewkarb', 'adminselejtfejviewkarb');
+$router->map('POST', '/admin/selejtfej/save', 'selejtfejController#save', 'adminselejtfejsave');
+$router->map('GET', '/admin/selejtfej/print', 'selejtfejController#doPrint', 'adminselejtfejprint');
+$router->map('POST', '/admin/selejtfej/ront', 'selejtfejController#ront', 'adminselejtfejront');
+
+$router->map('GET', '/admin/csomagfej/viewlist', 'csomagfejController#viewlist', 'admincsomagfejviewlist');
+$router->map('GET', '/admin/csomagfej/getlistbody', 'csomagfejController#getlistbody', 'admincsomagfejgetlistbody');
+$router->map('GET', '/admin/csomagfej/getkarb', 'csomagfejController#getkarb', 'admincsomagfejgetkarb');
+$router->map('GET', '/admin/csomagfej/viewkarb', 'csomagfejController#viewkarb', 'admincsomagfejviewkarb');
+$router->map('POST', '/admin/csomagfej/save', 'csomagfejController#save', 'admincsomagfejsave');
+$router->map('GET', '/admin/csomagfej/print', 'csomagfejController#doPrint', 'admincsomagfejprint');
+$router->map('POST', '/admin/csomagfej/ront', 'csomagfejController#ront', 'admincsomagfejront');
+
 $router->map('GET', '/admin/keziszamlafej/viewlist', 'keziszamlafejController#viewlist', 'adminkeziszamlafejviewlist');
 $router->map('GET', '/admin/keziszamlafej/getlistbody', 'keziszamlafejController#getlistbody', 'adminkeziszamlafejgetlistbody');
 $router->map('GET', '/admin/keziszamlafej/getkarb', 'keziszamlafejController#getkarb', 'adminkeziszamlafejgetkarb');

@@ -273,11 +273,13 @@ class BizonylatfejListener {
             if ($entity instanceof \Entities\Bizonylatfej) {
 
                 foreach ($entity->getBizonylattetelek() as $tetel) {
-                    $tetel->setMozgat();
-                    if (\mkw\Store::isFoglalas()) {
-                        $tetel->setFoglal();
+                    if (!$tetel->getStorno() && !$tetel->getStornozott()) {
+                        $tetel->setMozgat();
+                        if (\mkw\Store::isFoglalas()) {
+                            $tetel->setFoglal();
+                        }
+                        $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $tetel);
                     }
-                    $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $tetel);
                 }
 
                 $this->createSzallitasiKtg($entity);
