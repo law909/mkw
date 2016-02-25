@@ -1496,6 +1496,144 @@ class importController extends \mkwhelpers\Controller {
 
     }
 
+    public function kressgepImport() {
+
+        function isTermeksor($adat) {
+            return (bool)str_replace(' ', '', $adat);
+        }
+
+        $parentid = $this->params->getIntRequestParam('katid', 0);
+        $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoKress);
+        $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+        $dbig = $this->params->getIntRequestParam('dbig', 0);
+        $editleiras = $this->params->getBoolRequestParam('editleiras', false);
+        $createuj = $this->params->getBoolRequestParam('createuj', false);
+        $arszaz = $this->params->getNumRequestParam('arszaz', 100);
+        $batchsize = $this->params->getNumRequestParam('batchsize', 20);
+
+        if ($dbtol < 6) {
+            $dbtol = 6;
+        }
+
+        $filenev = $_FILES['toimport']['name'];
+        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        //pathinfo
+
+        $filetype = \PHPExcel_IOFactory::identify($filenev);
+        $reader = \PHPExcel_IOFactory::createReader($filetype);
+        $reader->setReadDataOnly(true);
+        $excel = $reader->load($filenev);
+        $sheet = $excel->getActiveSheet();
+        $maxrow = $sheet->getHighestRow() * 1;
+        if (!$dbig) {
+            $dbig = $maxrow;
+        }
+
+        $termekdb = 0;
+        for ($row = $dbtol; $row <= $dbig; ++$row) {
+            $adat = $sheet->getCell('C' . $row)->getValue();
+            if ($adat) {
+                if (isTermeksor($adat)) {
+                    $termekdb++;
+
+                    $cikkszam = str_replace(' ', '', $sheet->getCell('C' . $row)->getValue());
+                    $ar = $sheet->getCell('F' . $row)->getValue() * 1;
+
+                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikkszam, 'gyarto' => $gyartoid));
+
+                    if ($termek) {
+                        if (is_array($termek)) {
+                            $termek = $termek[0];
+                        }
+                        if ($ar) {
+                            $termek->setBrutto($ar);
+                        }
+                        store::getEm()->persist($termek);
+                    }
+
+                    if (($termekdb % $batchsize) === 0) {
+                        \mkw\Store::getEm()->flush();
+                        \mkw\Store::getEm()->clear();
+                    }
+                }
+            }
+        }
+        \mkw\Store::getEm()->flush();
+        \mkw\Store::getEm()->clear();
+
+        $excel->disconnectWorksheets();
+        \unlink($filenev);
+    }
+
+    public function kresstartozekImport() {
+
+        function isTermeksor($adat) {
+            return (bool)str_replace(' ', '', $adat);
+        }
+
+        $parentid = $this->params->getIntRequestParam('katid', 0);
+        $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoKress);
+        $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+        $dbig = $this->params->getIntRequestParam('dbig', 0);
+        $editleiras = $this->params->getBoolRequestParam('editleiras', false);
+        $createuj = $this->params->getBoolRequestParam('createuj', false);
+        $arszaz = $this->params->getNumRequestParam('arszaz', 100);
+        $batchsize = $this->params->getNumRequestParam('batchsize', 20);
+
+        if ($dbtol < 5) {
+            $dbtol = 5;
+        }
+
+        $filenev = $_FILES['toimport']['name'];
+        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        //pathinfo
+
+        $filetype = \PHPExcel_IOFactory::identify($filenev);
+        $reader = \PHPExcel_IOFactory::createReader($filetype);
+        $reader->setReadDataOnly(true);
+        $excel = $reader->load($filenev);
+        $sheet = $excel->getActiveSheet();
+        $maxrow = $sheet->getHighestRow() * 1;
+        if (!$dbig) {
+            $dbig = $maxrow;
+        }
+
+        $termekdb = 0;
+        for ($row = $dbtol; $row <= $dbig; ++$row) {
+            $adat = $sheet->getCell('B' . $row)->getValue();
+            if ($adat) {
+                if (isTermeksor($adat)) {
+                    $termekdb++;
+
+                    $cikkszam = str_replace(' ', '', $sheet->getCell('B' . $row)->getValue());
+                    $ar = $sheet->getCell('E' . $row)->getValue() * 1;
+
+                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikkszam, 'gyarto' => $gyartoid));
+
+                    if ($termek) {
+                        if (is_array($termek)) {
+                            $termek = $termek[0];
+                        }
+                        if ($ar) {
+                            $termek->setBrutto($ar);
+                        }
+                        store::getEm()->persist($termek);
+                    }
+
+                    if (($termekdb % $batchsize) === 0) {
+                        \mkw\Store::getEm()->flush();
+                        \mkw\Store::getEm()->clear();
+                    }
+                }
+            }
+        }
+        \mkw\Store::getEm()->flush();
+        \mkw\Store::getEm()->clear();
+
+        $excel->disconnectWorksheets();
+        \unlink($filenev);
+    }
+
     public function createVateraPartner($pa) {
         $me = store::getEm()->getRepository('Entities\Partner')->findBy(array('email' => $pa['temail']));
 

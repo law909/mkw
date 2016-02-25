@@ -330,6 +330,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('gyartosilkolist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(consts::GyartoTutisport);
         $view->setVar('gyartotutisportlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(consts::GyartoKress);
+        $view->setVar('gyartokresslist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::PathBtech);
         $view->setVar(\mkw\consts::PathBtech, ($p ? $p->getErtek() : ''));
@@ -345,6 +347,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::PathMaxutov, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::PathReintex);
         $view->setVar(\mkw\consts::PathReintex, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::PathKress);
+        $view->setVar(\mkw\consts::PathKress, ($p ? $p->getErtek() : ''));
 
         $view->printTemplateResult();
     }
@@ -680,6 +684,14 @@ class setupController extends \mkwhelpers\Controller {
         else {
             $this->setObj(\mkw\consts::GyartoSilko, '');
         }
+        $x = $this->params->getIntRequestParam('gyartokress', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoKress, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GyartoKress, '');
+        }
 
         $this->setObj(\mkw\consts::PathBtech, $this->params->getStringRequestParam('pathbtech', ''));
         $this->setObj(\mkw\consts::PathDelton, $this->params->getStringRequestParam('pathdelton', ''));
@@ -688,6 +700,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::PathReintex, $this->params->getStringRequestParam('pathreintex', ''));
         $this->setObj(\mkw\consts::PathSilko, $this->params->getStringRequestParam('pathsilko', ''));
         $this->setObj(\mkw\consts::PathTutisport, $this->params->getStringRequestParam('pathtutisport', ''));
+        $this->setObj(\mkw\consts::PathKress, $this->params->getStringRequestParam('pathkress', ''));
 
 
 

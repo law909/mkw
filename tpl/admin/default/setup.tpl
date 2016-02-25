@@ -552,6 +552,18 @@
                 <label for="PathBtechEdit">Képek mappája:</label>
                 <input id="PathBtechEdit" name="pathbtech" value="{$pathbtech}">
             </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="KressEdit">Kress:</label>
+                <select id="KressEdit" name="gyartokress">
+                    <option value="">{t('válasszon')}</option>
+                    {foreach $gyartokresslist as $_gyarto}
+                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                    {/foreach}
+                </select>
+                <label for="PathKressEdit">Képek mappája:</label>
+                <input id="PathKressEdit" name="pathkress" value="{$pathkress}">
+            </div>
         </div>
         {/if}
 		<div id="IdTab" class="mattkarb-page" data-visible="visible">

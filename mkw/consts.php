@@ -144,6 +144,7 @@ class consts {
     const GyartoMaxutov = 'gyartomaxutov';
     const GyartoSilko = 'gyartosilko';
     const GyartoBtech = 'gyartobtech';
+    const GyartoKress = 'gyartokress';
 
     const PathKreativ = 'pathkreativ';
     const PathDelton = 'pathdelton';
@@ -152,5 +153,6 @@ class consts {
     const PathMaxutov = 'pathmaxutov';
     const PathSilko = 'pathsilko';
     const PathBtech = 'pathbtech';
+    const PathKress = 'pathkress';
 
 }

@@ -64,15 +64,20 @@
             </div>
 	<div class="matt-hseparator"></div>
             <div>
-            <a href="/admin/import/kreativ" class="js-kreativimport">Kreativ puzzle</a>
-            <a href="/admin/import/delton" class="js-deltonimport">Delton</a>
-            <a href="/admin/import/reintex" class="js-reinteximport">Reintex</a>
-            <a href="/admin/import/tutisport" class="js-tutisportimport">Tutisport</a>
-            <a href="/admin/import/makszutov" class="js-makszutovimport">Makszutov</a>
-            <a href="/admin/import/silko" class="js-silkoimport">Silko&Co</a>
-            <a href="/admin/import/btech" class="js-btechimport">Btech</a>
+                <a href="/admin/import/kreativ" class="js-kreativimport">Kreativ puzzle</a>
+                <a href="/admin/import/delton" class="js-deltonimport">Delton</a>
+                <a href="/admin/import/reintex" class="js-reinteximport">Reintex</a>
+                <a href="/admin/import/tutisport" class="js-tutisportimport">Tutisport</a>
+                <a href="/admin/import/makszutov" class="js-makszutovimport">Makszutov</a>
+                <a href="/admin/import/silko" class="js-silkoimport">Silko&Co</a>
+                <a href="/admin/import/btech" class="js-btechimport">Btech</a>
             </div>
 	<div class="matt-hseparator"></div>
+            <div>
+                <a href="/admin/import/kressgep" class="js-kressgepimport">Kress gép</a>
+                <a href="/admin/import/kresstartozek" class="js-kresstartozekimport">Kress tartozék</a>
+            </div>
+    <div class="matt-hseparator"></div>
             <div>
             <a href="/admin/import/foxpostterminal" class="js-foxpostterminalimport">Foxpost terminálok</a>
             </div>

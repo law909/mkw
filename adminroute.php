@@ -360,6 +360,8 @@ $router->map('POST','/admin/import/tutisport', 'importController#tutisportImport
 $router->map('POST','/admin/import/makszutov', 'importController#makszutovImport', 'adminmakszutovimport');
 $router->map('POST','/admin/import/silko', 'importController#silkoImport', 'adminsilkoimport');
 $router->map('POST','/admin/import/btech', 'importController#btechImport', 'adminbtechimport');
+$router->map('POST','/admin/import/kressgep', 'importController#kressgepImport', 'adminkressgepimport');
+$router->map('POST','/admin/import/kresstartozek', 'importController#kresstartozekImport', 'adminkresstartozekimport');
 $router->map('POST','/admin/import/vatera', 'importController#vateraImport', 'adminvateraimport');
 //$router->map('POST','/admin/import/szatalakit', 'importController#szAtalakit', 'adminszatalakit');
 //$router->map('POST','/admin/import/szinvarimport', 'importController#szInvarImport', 'adminszinvarimport');
