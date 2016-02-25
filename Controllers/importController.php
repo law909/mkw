@@ -1348,6 +1348,7 @@ class importController extends \mkwhelpers\Controller {
                         $crawler = new Crawler($termekpage);
 
                         $ar = 0;
+                        $regiar = 0;
                         $akcios = false;
 
                         $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price > span.sale-price');
@@ -1371,6 +1372,22 @@ class importController extends \mkwhelpers\Controller {
                                 $ar = $nodelist->text();
                                 $ar = str_replace(array(' ', 'Ft'), '', $ar);
                                 $ar = $ar * 1;
+                            }
+                        }
+
+                        $hibatext = array();
+                        if ($akcios) {
+                            if (!$regiar) {
+                                $hibatext[] = 'nincs regi ar';
+                            }
+                            if (!$ar) {
+                                $hibatext[] = 'nincs akcios ar';
+                            }
+                            \mkw\Store::writelog($cikkszam . ': akcios, de ' . implode(', ', $hibatext));
+                        }
+                        else {
+                            if (!$ar) {
+                                \mkw\Store::writelog($cikkszam . ': nem akcios, de nincs ar');
                             }
                         }
 
