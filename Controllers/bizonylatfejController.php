@@ -714,6 +714,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             if ($parentid) {
                 $parent = $this->getRepo()->find($parentid);
                 if ($parent) {
+                    $parent->setKellszallitasikoltsegetszamolni(false);
                     $parent->setStornozott(true);
                     $this->getEm()->persist($parent);
                     $this->getEm()->flush();
@@ -761,6 +762,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         if ($id) {
             $bf = $this->getRepo()->find($id);
             if ($bf) {
+                $bf->setKellszallitasikoltsegetszamolni(false);
                 $bf->setRontott(true);
                 $this->getEm()->persist($bf);
                 $this->getEm()->flush();
@@ -942,6 +944,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         if ($bf) {
             $statusz = $this->getRepo('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('statusz'));
             if ($statusz) {
+                $bf->setKellszallitasikoltsegetszamolni(false);
                 $bf->setBizonylatstatusz($statusz);
                 $this->getEm()->persist($bf);
                 $this->getEm()->flush();
@@ -956,6 +959,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
     public function setNyomtatva() {
         $bf = $this->getRepo()->find($this->params->getStringRequestParam('id'));
         if ($bf) {
+            $bf->setKellszallitasikoltsegetszamolni(false);
             $bf->setNyomtatva($this->params->getBoolRequestParam('printed'));
             $this->getEm()->persist($bf);
             $this->getEm()->flush();
