@@ -1345,13 +1345,33 @@ class importController extends \mkwhelpers\Controller {
 
                     if ($termekpage) {
 
-                        $ar = 0;
                         $crawler = new Crawler($termekpage);
-                        $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price');
+
+                        $ar = 0;
+                        $akcios = false;
+
+                        $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price > span.sale-price');
                         if ($nodelist->count()) {
                             $ar = $nodelist->text();
                             $ar = str_replace(array(' ', 'Ft'), '', $ar);
                             $ar = $ar * 1;
+                            $akcios = true;
+                        }
+
+                        $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price > span.old-price');
+                        if ($nodelist->count()) {
+                            $regiar = $nodelist->text();
+                            $regiar = str_replace(array(' ', 'Ft'), '', $regiar);
+                            $regiar = $regiar * 1;
+                        }
+
+                        if (!$akcios) {
+                            $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price');
+                            if ($nodelist->count()) {
+                                $ar = $nodelist->text();
+                                $ar = str_replace(array(' ', 'Ft'), '', $ar);
+                                $ar = $ar * 1;
+                            }
                         }
 
                         $nodelist = $crawler->filter('div#item-page > div.left > h1');
@@ -1396,7 +1416,21 @@ class importController extends \mkwhelpers\Controller {
                                     $termek->setGyarto($gyarto);
                                 }
                                 $termek->setNemkaphato(false);
-                                $termek->setBrutto($ar);
+                                if (!$akcios) {
+                                    if ($ar) {
+                                        $termek->setBrutto($ar);
+                                    }
+                                }
+                                else {
+                                    if ($regiar) {
+                                        $termek->setBrutto($regiar);
+                                    }
+                                    if ($ar) {
+                                        $termek->setAkciosbrutto($ar);
+                                    }
+                                    $termek->setAkciostart(date(store::$DateFormat));
+                                    $termek->setAkciostop(date(store::$LastDayDateFormat));
+                                }
 
                                 $imgcnt = 0;
                                 foreach ($imagelist as $imgurl) {
@@ -1452,8 +1486,20 @@ class importController extends \mkwhelpers\Controller {
                             else {
                                 $termek->setNemkaphato(false);
                             }
-                            if ($ar) {
-                                $termek->setBrutto($ar);
+                            if (!$akcios) {
+                                if ($ar) {
+                                    $termek->setBrutto($ar);
+                                }
+                            }
+                            else {
+                                if ($regiar) {
+                                    $termek->setBrutto($regiar);
+                                }
+                                if ($ar) {
+                                    $termek->setAkciosbrutto($ar);
+                                }
+                                $termek->setAkciostart(date(store::$DateFormat));
+                                $termek->setAkciostop(date(store::$LastDayDateFormat));
                             }
                             store::getEm()->persist($termek);
                         }

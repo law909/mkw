@@ -36,6 +36,7 @@ class Store {
     private static $loggedinukpartner;
     private static $routename;
     public static $DateFormat = 'Y.m.d';
+    public static $LastDayDateFormat = 'Y.m.t';
     public static $SQLDateFormat = 'Y-m-d';
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
 
