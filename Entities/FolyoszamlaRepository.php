@@ -23,6 +23,18 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
         return $q->getSingleScalarResult();
     }
 
+    public function getCountByHivatkozottBizonylat($bizszam) {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('hivatkozottbizonylat', '=', $bizszam);
+        $filter->addSql('_xx.bizonylatfej IS NULL');
+
+        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+            . ' FROM Entities\Folyoszamla _xx'
+            . $this->getFilterString($filter));
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getSingleScalarResult();
+    }
+
     public function getSumByHivatkozottBizonylatDatum($bizszam) {
         $filter = new FilterDescriptor();
         $filter->addFilter('hivatkozottbizonylat', '=', $bizszam);

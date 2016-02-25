@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use mkw\store;
+use mkwhelpers\FilterDescriptor;
 
 class fantaController extends \mkwhelpers\MattableController {
 
@@ -122,41 +123,65 @@ class fantaController extends \mkwhelpers\MattableController {
     public function mese() {
         if (havejog(99)) {
             $bizszam = $this->params->getStringRequestParam('b');
-            /** @var \Entities\Bizonylatfej $szamla */
-            $szamla = $this->getRepo('Entities\Bizonylatfej')->find($bizszam);
-            if ($szamla && !$szamla->getStorno() && !$szamla->getStornozott()
-                && !$szamla->getFix() && !$szamla->getMese()) {
-                $ujbt = $this->getRepo('Entities\Bizonylattipus')->find('egyeb');
+            $mindenaron = $this->params->getBoolRequestParam('mindenaron');
+            if (!$mindenaron) {
+                $filter = new FilterDescriptor();
+                $filter->addFilter('bizonylattipus', '=', 'szamla');
+                $filter->addFilter('fix', '=', true);
+                $filter->addFilter('id', '>', $bizszam);
+                $db = $this->getRepo('Entities\Bizonylatfej')->getCount($filter);
+                if (!$db) {
+                    $mindenaron = false;
+                    echo json_encode(array('qst' => 'Nincs fix bizonylat, biztosan akarod?'));
+                }
+                else {
+                    $mindenaron = true;
+                }
+            }
+            if ($mindenaron) {
+                /** @var \Entities\Bizonylatfej $szamla */
+                $szamla = $this->getRepo('Entities\Bizonylatfej')->find($bizszam);
+                if ($szamla && !$szamla->getStorno() && !$szamla->getStornozott()
+                    && !$szamla->getFix() && !$szamla->getMese()
+                ) {
 
-                $this->getEm()->transactional(function ($em) use ($szamla, $ujbt) {
-                    $uj = new \Entities\Bizonylatfej();
-                    $uj->duplicateFrom($szamla);
-                    $uj->clearId();
-                    $uj->clearCreated();
-                    $uj->clearLastmod();
-                    $uj->setNyomtatva(false);
-                    $uj->setFix(false);
-                    $uj->setBizonylattipus($ujbt);
-                    foreach ($szamla->getBizonylattetelek() as $biztetel) {
-                        $ujtetel = new \Entities\Bizonylattetel();
-                        $uj->addBizonylattetel($ujtetel);
-                        $ujtetel->duplicateFrom($biztetel);
-                        $ujtetel->clearCreated();
-                        $ujtetel->clearLastmod();
-                        $em->persist($ujtetel);
+                    $bankcnt = $this->getRepo('Entities\Folyoszamla')->getCountByHivatkozottBizonylat($bizszam);
+                    if ($bankcnt) {
+                        echo json_encode(array('msg' => 'A bizonylatnak van kiegyenlítése, kezeld.'));
                     }
-                    $em->persist($uj);
-                    $szamla->setNyomtatva(false);
-                    $szamla->setMese(true);
-                    $szamla->setPenztmozgat(false);
-                    /** @var \Entities\Bizonylattetel $bt */
-                    foreach ($szamla->getBizonylattetelek() as $bt) {
-                        $bt->setMozgat();
-                        $bt->setMese(true);
-                        $em->persist($bt);
-                    }
-                    $em->persist($szamla);
-                });
+
+                    $ujbt = $this->getRepo('Entities\Bizonylattipus')->find('egyeb');
+
+                    $this->getEm()->transactional(function ($em) use ($szamla, $ujbt) {
+                        $uj = new \Entities\Bizonylatfej();
+                        $uj->duplicateFrom($szamla);
+                        $uj->clearId();
+                        $uj->clearCreated();
+                        $uj->clearLastmod();
+                        $uj->setNyomtatva(false);
+                        $uj->setFix(false);
+                        $uj->setBizonylattipus($ujbt);
+                        foreach ($szamla->getBizonylattetelek() as $biztetel) {
+                            $ujtetel = new \Entities\Bizonylattetel();
+                            $uj->addBizonylattetel($ujtetel);
+                            $ujtetel->duplicateFrom($biztetel);
+                            $ujtetel->clearCreated();
+                            $ujtetel->clearLastmod();
+                            $em->persist($ujtetel);
+                        }
+                        $em->persist($uj);
+                        $szamla->setNyomtatva(false);
+                        $szamla->setMese(true);
+                        $szamla->setPenztmozgat(false);
+                        /** @var \Entities\Bizonylattetel $bt */
+                        foreach ($szamla->getBizonylattetelek() as $bt) {
+                            $bt->setMozgat();
+                            $bt->setMese(true);
+                            $em->persist($bt);
+                        }
+                        $em->persist($szamla);
+                    });
+                }
             }
         }
     }

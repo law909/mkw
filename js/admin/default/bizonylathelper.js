@@ -1052,8 +1052,55 @@ var bizonylathelper = function($) {
                 $.ajax({
                     url: $this.data('href'),
                     type: 'GET',
-                    success: function() {
-                        $('.mattable-tablerefresh').click();
+                    success: function(d) {
+                        if (d) {
+                            var adat = JSON.parse(d);
+                            if (adat.qst) {
+                                dialogcenter.html(adat.qst).dialog({
+                                    resizable: false,
+                                    height: 140,
+                                    modal: true,
+                                    buttons: {
+                                        'Igen': function() {
+                                            var dial = $(this);
+                                            $.ajax({
+                                                url: $this.data('href'),
+                                                type: 'GET',
+                                                data: {
+                                                    mindenaron: 1
+                                                },
+                                                success: function() {
+                                                    $('.mattable-tablerefresh').click();
+                                                    dial.dialog('close');
+                                                }
+                                            });
+                                        },
+                                        'Nem': function() {
+                                            $('.mattable-tablerefresh').click();
+                                            $(this).dialog('close');
+                                        }
+                                    }
+                                });
+                            }
+                            else {
+                                if (adat.msg) {
+                                    dialogcenter.html(adat.msg).dialog({
+                                        resizable: false,
+                                        height: 140,
+                                        modal: true,
+                                        buttons: {
+                                            'OK': function() {
+                                                $('.mattable-tablerefresh').click();
+                                                $(this).dialog('close');
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        else {
+                            $('.mattable-tablerefresh').click();
+                        }
                     }
                 });
             })
