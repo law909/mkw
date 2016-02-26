@@ -1054,9 +1054,13 @@ var bizonylathelper = function($) {
                     type: 'GET',
                     success: function(d) {
                         if (d) {
-                            var adat = JSON.parse(d);
+                            var adat = JSON.parse(d), szoveg = '';
                             if (adat.qst) {
-                                dialogcenter.html(adat.qst).dialog({
+                                if (adat.msg) {
+                                    szoveg = szoveg + adat.msg + '<br>';
+                                }
+                                szoveg = szoveg + adat.msg;
+                                dialogcenter.html(szoveg).dialog({
                                     resizable: false,
                                     height: 140,
                                     modal: true,

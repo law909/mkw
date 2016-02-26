@@ -122,6 +122,7 @@ class fantaController extends \mkwhelpers\MattableController {
 
     public function mese() {
         if (havejog(99)) {
+            $ret = array();
             $bizszam = $this->params->getStringRequestParam('b');
             $mindenaron = $this->params->getBoolRequestParam('mindenaron');
             if (!$mindenaron) {
@@ -132,10 +133,14 @@ class fantaController extends \mkwhelpers\MattableController {
                 $db = $this->getRepo('Entities\Bizonylatfej')->getCount($filter);
                 if (!$db) {
                     $mindenaron = false;
-                    echo json_encode(array('qst' => 'Nincs fix bizonylat, biztosan akarod?'));
+                    $ret['qst'] = 'Nincs fix bizonylat, biztosan akarod?';
                 }
                 else {
                     $mindenaron = true;
+                }
+                $bankcnt = $this->getRepo('Entities\Folyoszamla')->getCountByHivatkozottBizonylat($bizszam);
+                if ($bankcnt) {
+                    $ret['msg'] = 'A bizonylatnak van kiegyenlítése, kezeld.';
                 }
             }
             if ($mindenaron) {
@@ -144,11 +149,6 @@ class fantaController extends \mkwhelpers\MattableController {
                 if ($szamla && !$szamla->getStorno() && !$szamla->getStornozott()
                     && !$szamla->getFix() && !$szamla->getMese()
                 ) {
-
-                    $bankcnt = $this->getRepo('Entities\Folyoszamla')->getCountByHivatkozottBizonylat($bizszam);
-                    if ($bankcnt) {
-                        echo json_encode(array('msg' => 'A bizonylatnak van kiegyenlítése, kezeld.'));
-                    }
 
                     $ujbt = $this->getRepo('Entities\Bizonylattipus')->find('egyeb');
 
@@ -183,6 +183,7 @@ class fantaController extends \mkwhelpers\MattableController {
                     });
                 }
             }
+            echo json_encode($ret);
         }
     }
 }
