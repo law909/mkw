@@ -1039,7 +1039,6 @@ class importController extends \mkwhelpers\Controller {
                             }
                         }
                         store::getEm()->persist($termek);
-//                        store::getEm()->flush();
                     }
                 }
                 else {
@@ -1059,7 +1058,16 @@ class importController extends \mkwhelpers\Controller {
                             $valtozat->setElerheto(true);
                         }
                         store::getEm()->persist($valtozat);
-//                        store::getEm()->flush();
+                        if ($termek) {
+                            $egysemkaphato = true;
+                            foreach ($termek->getValtozatok() as $valt) {
+                                if ($valt->getElerheto()) {
+                                    $egysemkaphato = false;
+                                }
+                            }
+                            $termek->setNemkaphato($egysemkaphato);
+                            store::getEm()->persist($termek);
+                        }
                     }
                     else {
                         if ($termek) {
@@ -1074,7 +1082,6 @@ class importController extends \mkwhelpers\Controller {
                             }
                             $termek->setBrutto(round($data[$this->n('g')] * 1 * $arszaz / 100, -1));
                             store::getEm()->persist($termek);
-//                            store::getEm()->flush();
                         }
                     }
                 }
