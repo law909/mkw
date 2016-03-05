@@ -1,6 +1,21 @@
 $(document).ready(function () {
     var dialogcenter = $('#dialogcenter');
 
+    function termekAutocompleteConfig() {
+        return {
+            minLength: 4,
+            autoFocus: true,
+            source: '/admin/termek/getkapcsolodolist',
+            select: function(event, ui) {
+                var termek = ui.item;
+                if (termek) {
+                    var $this = $(this);
+                    $this.siblings().val(termek.id);
+                }
+            }
+        };
+    }
+
     function createImageSelectable(n, m) {
         $(n).selectable({
             unselected: function () {
@@ -390,6 +405,7 @@ $(document).ready(function () {
                             var tbody = $('#KapcsolodoTab');
                             tbody.append(data);
                             $('.js-kapcsolodonewbutton,.js-kapcsolododelbutton').button();
+                            $('.js-kapcsolodoselect').autocomplete(termekAutocompleteConfig());
                             $this.remove();
                         }
                     });
@@ -565,6 +581,8 @@ $(document).ready(function () {
                 });
                 return false;
             });
+            $('.js-kapcsolodoselect').autocomplete(termekAutocompleteConfig());
+
             createImageSelectable('.js-valtozatkepedit', '#ValtozatKepId_');
             $('.js-valtozatnewbutton,.js-valtozatdelbutton,#valtozatgeneratorbutton').button();
 

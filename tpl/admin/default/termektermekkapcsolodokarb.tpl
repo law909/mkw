@@ -3,14 +3,13 @@
     <input name="kapcsolodoid[]" type="hidden" value="{$kapcsolodo.id}">
     <input name="kapcsolodooper_{$kapcsolodo.id}" type="hidden" value="{$kapcsolodo.oper}">
     <tr>
-        <td><img src="{$mainurl}{$kapcsolodo.altermekkepurl}"></td>
-        <td><label for="KapcsolodoAltermekEdit{$kapcsolodo.id}">{t('Termék')}:</label></td>
-        <td><select id="KapcsolodoAltermekEdit{$kapcsolodo.id}" name="kapcsolodoaltermek_{$kapcsolodo.id}" required="required">
-                <option value="">{t('válasszon')}</option>
-                {foreach $kapcsolodo.termeklist as $_altermek}
-                    <option value="{$_altermek.id}"{if ($_altermek.selected)} selected="selected"{/if}>{$_altermek.caption}</option>
-                {/foreach}
-            </select>
+        <td>
+            {if ($kapcsolodo.oper=='add')}
+                <input id="KapcsolodoSelect{$kapcsolodo.id}" type="text" name="kapcsolodotermeknev_{$kapcsolodo.id}" class="js-kapcsolodoselect termekselect mattable-important" value="{$kapcsolodo.termeknev}" required="required">
+            {else}
+                {$kapcsolodo.altermeknev}
+            {/if}
+            <input class="js-kapcsolodotermekid" name="kapcsolodoaltermek_{$kapcsolodo.id}" type="hidden" value="{$kapcsolodo.altermekid}">
         </td>
         <td>
             <a class="js-kapcsolododelbutton" href="#" data-id="{$kapcsolodo.id}"{if ($kapcsolodo.oper=='add')} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>

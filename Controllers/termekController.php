@@ -5,6 +5,7 @@ namespace Controllers;
 use Entities\TermekValtozat,
 	Entities\TermekRecept;
 use mkw\store;
+use mkwhelpers\FilterDescriptor;
 
 class termekController extends \mkwhelpers\MattableController {
 
@@ -677,6 +678,24 @@ class termekController extends \mkwhelpers\MattableController {
 		}
 		return $ret;
 	}
+
+    public function getKapcsolodoSelectList() {
+        $term = trim($this->params->getStringRequestParam('term'));
+        $ret = array();
+        if ($term) {
+            $filter = new FilterDescriptor();
+            $filter->addFilter(array('_xx.nev', '_xx.cikkszam', '_xx.vonalkod'), 'LIKE', '%' . $term . '%');
+            $r = store::getEm()->getRepository('\Entities\Termek');
+            $res = $r->getAllForSelectList($filter);
+            foreach ($res as $r) {
+                $ret[] = array(
+                    'id' => $r['id'],
+                    'value' => $r['nev']
+                );
+            }
+        }
+        echo json_encode($ret);
+    }
 
 	public function getBizonylattetelSelectList() {
 		$term = trim($this->params->getStringRequestParam('term'));

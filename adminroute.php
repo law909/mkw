@@ -191,6 +191,7 @@ $router->map('POST', '/admin/termek/setflag', 'termekController#setflag', 'admin
 $router->map('GET', '/admin/termek/arexport', 'termekController#arexport', 'admintermekarexport');
 $router->map('GET', '/admin/termek/getkeszletbyraktar', 'termekController#getKeszletByRaktar', 'admingetkeszletbyraktar');
 $router->map('POST', '/admin/termek/tcsset', 'termekController#setTermekcsoport', 'admintermektcsset');
+$router->map('GET', '/admin/termek/getkapcsolodolist', 'termekController#getKapcsolodoSelectList', 'admingettermekkapcsolodolist');
 
 $router->map('GET', '/admin/termekkapcsolodo/getemptyrow', 'termekkapcsolodoController#getemptyrow', 'admintermekkapcsolodogetemptyrow');
 $router->map('POST', '/admin/termekkapcsolodo/save', 'termekkapcsolodoController#save', 'admintermekkapcsolodosave');
