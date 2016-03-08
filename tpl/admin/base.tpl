@@ -98,8 +98,9 @@
                         <div><a class="menupont" href="/admin/kintlevoseglista/view">{t('Kintlevőség')}</a></div>
                     {/if}
                     {if (!$setup.kisszamlazo)}
-                    <div><a class="menupont" href="/admin/keszletlista/view">{t('Készlet')}</a></div>
-                    <div><a class="menupont" href="/admin/fifo/view">{t('Készletérték')}</a></div>
+                        <div><a class="menupont" href="/admin/termekforgalmilista/view">{t('Termékforgalmi lista')}</a></div>
+                        <div><a class="menupont" href="/admin/keszletlista/view">{t('Készlet')}</a></div>
+                        <div><a class="menupont" href="/admin/fifo/view">{t('Készletérték')}</a></div>
                     {/if}
                 </div>
                 {if (!$setup.kisszamlazo)}
