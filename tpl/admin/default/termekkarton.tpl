@@ -27,6 +27,8 @@
                 <div class="matt-hseparator"></div>
                 {include "comp_idoszak.tpl" comptype="szamla"}
                 <div class="matt-hseparator"></div>
+                {include "comp_partnerselect.tpl"}
+                <div class="matt-hseparator"></div>
                 <div>
                     <label for="RaktarEdit">Raktár:</label>
                     <select id="RaktarEdit" name="raktar">

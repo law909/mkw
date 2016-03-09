@@ -23,6 +23,8 @@ class termekkartonController extends \mkwhelpers\Controller {
         }
         $rc = new raktarController($this->params);
         $view->setVar('raktarlista', $rc->getSelectList());
+        $partner = new partnerController($this->params);
+        $view->setVar('partnerlist', $partner->getSelectList());
 
         $view->printTemplateResult(false);
 
@@ -33,6 +35,7 @@ class termekkartonController extends \mkwhelpers\Controller {
         $valtozatid = $this->params->getIntRequestParam('valtozatid');
         $mozgat = $this->params->getIntRequestParam('mozgat');
         $raktarid = $this->params->getIntRequestParam('raktarid');
+        $partnerid = $this->params->getIntRequestParam('partnerid');
         $datumtipus = $this->params->getStringRequestParam('datumtipus');
         switch ($datumtipus) {
             case 'kelt':
@@ -68,6 +71,9 @@ class termekkartonController extends \mkwhelpers\Controller {
         }
         if ($raktarid) {
             $filter->addFilter('bf.raktar', '=', $raktarid);
+        }
+        if ($partnerid) {
+            $filter->addFilter('bf.partner', '=', $partnerid);
         }
         $tetelek = $this->getRepo('Entities\Termek')->getKarton($filter, array($datumtipus => 'ASC'));
         $kartontetelek = array();

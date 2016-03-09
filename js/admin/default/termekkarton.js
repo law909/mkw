@@ -22,7 +22,8 @@ $(document).ready(function() {
                             datumtol: $('input[name="tol"]').val(),
                             datumig: $('input[name="ig"]').val(),
                             mozgat: $('select[name="mozgat"] option:selected').val(),
-                            raktarid: $('select[name="raktar"] option:selected').val()
+                            raktarid: $('select[name="raktar"] option:selected').val(),
+                            partnerid: $('select[name="partner"] option:selected').val()
                         },
                         success: function(d) {
                             $('#eredmeny').html(d);
