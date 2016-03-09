@@ -468,9 +468,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
         }
-        if ($datumtol) {
-            $filter->addFilter($datumtipus, '<=', $datumtol);
-        }
+        $filter->addFilter($datumtipus, '<=', $datumtol);
         if ($raktarid) {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
