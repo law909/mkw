@@ -281,6 +281,7 @@ class mainController extends \mkwhelpers\Controller {
             }
             $t['kedvezmeny'] = $termek->getTermekcsoportKedvezmeny($partner);
             $valtozatok = $termek->getValtozatok();
+            $ma = new \DateTime();
             foreach ($valtozatok as $valt) {
                 if ($valt->getElerheto() && $valt->getLathato()) {
                     if (($valt->getAdatTipus1Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) && ($valt->getErtek1() == $szin)) {
@@ -288,14 +289,18 @@ class mainController extends \mkwhelpers\Controller {
                         $vtt[] = array(
                             'id' => $valt->getId(),
                             'caption' => $valt->getErtek2(),
-                            'keszlet' => $valt->getKeszlet() - $valt->getFoglaltMennyiseg()
+                            'keszlet' => $valt->getKeszlet() - $valt->getFoglaltMennyiseg(),
+                            'beerkezesdatumstr' => $valt->getBeerkezesdatumStr(),
+                            'bejon' => (($valt->getKeszlet() - $valt->getFoglaltMennyiseg() <= 0) && ($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma) ? true : false)
                         );
                     }
                     if (($valt->getAdatTipus2Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) && ($valt->getErtek2() == $szin)) {
                         $vtt[] = array(
                             'id' => $valt->getId(),
                             'caption' => $valt->getErtek1(),
-                            'keszlet' => $valt->getKeszlet() - $valt->getFoglaltMennyiseg()
+                            'keszlet' => $valt->getKeszlet() - $valt->getFoglaltMennyiseg(),
+                            'beerkezesdatumstr' => $valt->getBeerkezesdatumStr(),
+                            'bejon' => (($valt->getKeszlet() - $valt->getFoglaltMennyiseg() <= 0) && ($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma) ? true : false)
                         );
                     }
                 }

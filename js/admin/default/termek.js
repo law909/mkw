@@ -638,6 +638,9 @@ $(document).ready(function () {
             });
             mkwcomp.datumEdit.init('#AkcioStartEdit');
             mkwcomp.datumEdit.init('#AkcioStopEdit');
+            $('.js-valtozatbeerkezesdatumedit').each(function() {
+                mkwcomp.datumEdit.init($(this));
+            });
 
             $('.js-termekfabutton').on('click', function (e) {
                     var edit = $(this);

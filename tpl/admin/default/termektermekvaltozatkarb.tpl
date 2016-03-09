@@ -24,6 +24,8 @@
             <td class="mattable-cell">
                 {$valtozat.keszlet}
             </td>
+            <td class="mattable-cell"><label for="BeerkezesdatumEdit{$valtozat.id}">{t('Beérkezés')}:</label></td>
+            <td class="mattable-cell"><input id="BeerkezesdatumEdit{$valtozat.id}" name="valtozatbeerkezesdatum_{$valtozat.id}" class="js-valtozatbeerkezesdatumedit" type="text" size="12" data-datum="{$valtozat.beerkezesdatumstr}"></td>
         </tr>
         <tr>
             <td class="mattable-cell">

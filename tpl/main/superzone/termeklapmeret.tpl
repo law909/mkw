@@ -47,7 +47,11 @@
                             {if ($_valt.keszlet <= 0)}0{else}{$_valt.keszlet}{/if} pcs
                         </td>
                         <td class="valtozatkeszlet textaligncenter">
-                            <img src="{if ($_valt.keszlet <= 0)}/themes/main/superzone/nincs.jpg{else}/themes/main/superzone/van.jpg{/if}">
+                            {if ($_valt.bejon)}
+                                {$_valt.beerkezesdatumstr}
+                            {else}
+                                <img src="{if ($_valt.keszlet <= 0)}/themes/main/superzone/nincs.jpg{else}/themes/main/superzone/van.jpg{/if}">
+                            {/if}
                         </td>
                         <td class="valtozatmenny">
                             <div class="desktopright">

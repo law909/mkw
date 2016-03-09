@@ -85,14 +85,21 @@ class TermekValtozat {
 	 * @ORM\JoinColumn(name="termekkep_id",referencedColumnName="id",nullable=true,onDelete="restrict")
 	 */
 	private $kep;
+
 	/** @ORM\Column(type="string",length=50,nullable=true) */
 	private $cikkszam='';
+
 	/** @ORM\Column(type="string",length=50,nullable=true) */
 	private $idegencikkszam='';
+
     /** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="termekvaltozat",cascade={"persist"}) */
     private $bizonylattetelek;
+
 	/** @ORM\Column(type="string",length=255,nullable=true) */
 	private $vonalkod;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $beerkezesdatum;
 
     /**
      * @ORM\PrePersist
@@ -417,5 +424,30 @@ class TermekValtozat {
 
     public function setVonalkod($vonalkod) {
         $this->vonalkod = $vonalkod;
+    }
+
+    public function getBeerkezesdatum() {
+        return $this->beerkezesdatum;
+    }
+
+    public function getBeerkezesdatumStr() {
+        if ($this->getBeerkezesdatum()) {
+            return $this->getBeerkezesdatum()->format(\mkw\Store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setBeerkezesdatum($adat = '') {
+        if (is_a($adat, 'DateTime')) {
+            $this->beerkezesdatum = $adat;
+        }
+        else {
+            if ($adat == '') {
+                $this->beerkezesdatum = null;
+            }
+            else {
+                $this->beerkezesdatum = new \DateTime(\mkw\Store::convDate($adat));
+            }
+        }
     }
 }
