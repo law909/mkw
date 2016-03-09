@@ -101,6 +101,7 @@
                         <div><a class="menupont" href="/admin/termekforgalmilista/view">{t('Termékforgalmi lista')}</a></div>
                         <div><a class="menupont" href="/admin/keszletlista/view">{t('Készlet')}</a></div>
                         <div><a class="menupont" href="/admin/fifo/view">{t('Készletérték')}</a></div>
+                        <div><a class="menupont" href="/admin/bizomanyosertekesiteslista/view">{t('Bizományos értékesítés lista')}</a></div>
                     {/if}
                 </div>
                 {if (!$setup.kisszamlazo)}

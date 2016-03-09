@@ -592,4 +592,161 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 
         return $ret;
     }
+
+    public function getBizomanyosErtekesitesLista($partnerid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav) {
+        switch ($datumtipus) {
+            case 'kelt':
+            case 'teljesites':
+            case 'esedekesseg':
+                $datumtipus = 'bf.' . $datumtipus;
+                break;
+            default:
+                $datumtipus = 'bf.kelt';
+                break;
+        }
+        $plusparams = array();
+        $arsavsql = '';
+        switch ($ertektipus) {
+            case 0:
+                $ertekmezo1 = ', 0 AS ertek';
+                $ertekmezo2 = ', 0 AS ertek';
+                break;
+            case 1:
+                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*bt.nettoegysar) AS ertek';
+                $ertekmezo2 = ',SUM(bt.mennyiseg*bt.nettoegysar) AS ertek';
+                break;
+            case 2:
+                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*bt.bruttoegysar) AS ertek';
+                $ertekmezo2 = ',SUM(bt.mennyiseg*bt.bruttoegysar) AS ertek';
+                break;
+            case 3:
+                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*bt.nettoegysarhuf) AS ertek';
+                $ertekmezo2 = ',SUM(bt.mennyiseg*bt.nettoegysarhuf) AS ertek';
+                break;
+            case 4:
+                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*bt.bruttoegysarhuf) AS ertek';
+                $ertekmezo2 = ',SUM(bt.mennyiseg*bt.bruttoegysarhuf) AS ertek';
+                break;
+            case 5:
+                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.netto) AS ertek';
+                $ertekmezo2 = ',SUM(bt.mennyiseg*ta.netto) AS ertek';
+                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (azonosito=:arsavnev) ';
+                $plusparams['arsavnev'] = $arsav;
+                break;
+            case 6:
+                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.brutto) AS ertek';
+                $ertekmezo2 = ',SUM(bt.mennyiseg*ta.brutto) AS ertek';
+                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (azonosito=:arsavnev) ';
+                $plusparams['arsavnev'] = $arsav;
+                break;
+            case 7:
+                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*t.netto) AS ertek';
+                $ertekmezo2 = ',SUM(bt.mennyiseg*t.netto) AS ertek';
+                break;
+            case 8:
+                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*t.brutto) AS ertek';
+                $ertekmezo2 = ',SUM(bt.mennyiseg*t.brutto) AS ertek';
+                break;
+            default:
+                $ertekmezo1 = ', 0 AS ertek';
+                $ertekmezo2 = ', 0 AS ertek';
+                break;
+        }
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('termek_id', 'termek_id');
+        $rsm->addScalarResult('termekvaltozat_id', 'termekvaltozat_id');
+        $rsm->addScalarResult('mennyiseg', 'mennyiseg');
+        $rsm->addScalarResult('ertek', 'ertek');
+        $rsm->addScalarResult('cikkszam', 'cikkszam');
+        $rsm->addScalarResult('nev', 'nev');
+        $rsm->addScalarResult('ertek1', 'ertek1');
+        $rsm->addScalarResult('ertek2', 'ertek2');
+
+        $ret = array();
+
+        /**************
+         * be
+         */
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('bt.mozgat', '=', true);
+        $filter->addFilter('bt.irany', '>', 0);
+        if ($partnerid) {
+            $filter->addFilter('bf.partner_id', '=', $partnerid);
+        }
+        if ($datumtol) {
+            $filter->addFilter($datumtipus, '>=', $datumtol);
+        }
+        if ($datumig) {
+            $filter->addFilter($datumtipus, '<=', $datumig);
+        }
+
+        $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,t.cikkszam,t.nev,tv.ertek1,tv.ertek2,SUM(bt.mennyiseg) AS mennyiseg '
+            . $ertekmezo2
+            . ' FROM bizonylattetel bt '
+            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id)'
+            . ' LEFT OUTER JOIN termekvaltozat tv ON (bt.termekvaltozat_id=tv.id)'
+            . $arsavsql
+            . $this->getFilterString($filter)
+            . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
+            , $rsm);
+        $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
+        $res = $q->getScalarResult();
+        foreach ($res as $rekord) {
+            $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
+            $ret[$kulcs]['cikkszam'] = $rekord['cikkszam'];
+            $ret[$kulcs]['nev'] = $rekord['nev'];
+            $ret[$kulcs]['ertek1'] = $rekord['ertek1'];
+            $ret[$kulcs]['ertek2'] = $rekord['ertek2'];
+            $ret[$kulcs]['be'] = $rekord['mennyiseg'] * 1;
+            $ret[$kulcs]['beertek'] = $rekord['ertek'] * 1;
+            $ret[$kulcs]['ki'] = 0;
+            $ret[$kulcs]['kiertek'] = 0;
+        }
+
+        /*******************
+         * ki
+         */
+        $filter->clear();
+        $filter->addFilter('bt.mozgat', '=', true);
+        $filter->addFilter('bt.irany', '<', 0);
+        if ($partnerid) {
+            $filter->addFilter('bf.partner_id', '=', $partnerid);
+        }
+        if ($datumtol) {
+            $filter->addFilter($datumtipus, '>=', $datumtol);
+        }
+        if ($datumig) {
+            $filter->addFilter($datumtipus, '<=', $datumig);
+        }
+
+        $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,t.cikkszam,t.nev,tv.ertek1,tv.ertek2,SUM(bt.mennyiseg) AS mennyiseg '
+            . $ertekmezo2
+            . ' FROM bizonylattetel bt '
+            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id)'
+            . ' LEFT OUTER JOIN termekvaltozat tv ON (bt.termekvaltozat_id=tv.id)'
+            . $arsavsql
+            . $this->getFilterString($filter)
+            . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
+            , $rsm);
+        $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
+        $res = $q->getScalarResult();
+        foreach ($res as $rekord) {
+            $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
+            $marvan = array_key_exists($kulcs, $ret);
+            if (!$marvan) {
+                $ret[$kulcs]['cikkszam'] = $rekord['cikkszam'];
+                $ret[$kulcs]['nev'] = $rekord['nev'];
+                $ret[$kulcs]['ertek1'] = $rekord['ertek1'];
+                $ret[$kulcs]['ertek2'] = $rekord['ertek2'];
+                $ret[$kulcs]['be'] = 0;
+                $ret[$kulcs]['beertek'] = 0;
+            }
+            $ret[$kulcs]['ki'] = $rekord['mennyiseg'] * 1;
+            $ret[$kulcs]['kiertek'] = $rekord['ertek'] * 1;
+        }
+
+        return $ret;
+    }
 }

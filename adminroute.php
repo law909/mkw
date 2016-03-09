@@ -413,6 +413,9 @@ $router->map('GET', '/admin/termekkarton/refresh', 'termekkartonController#refre
 $router->map('GET', '/admin/termekforgalmilista/view', 'termekforgalmilistaController#view', 'admintermekforgalmilistaview');
 $router->map('GET', '/admin/termekforgalmilista/refresh', 'termekforgalmilistaController#refresh', 'admintermekforgalmilistarefresh');
 
+$router->map('GET', '/admin/bizomanyosertekesiteslista/view', 'bizomanyosertekesiteslistaController#view', 'adminbizomanyosertekesiteslistaview');
+$router->map('GET', '/admin/bizomanyosertekesiteslista/refresh', 'bizomanyosertekesiteslistaController#refresh', 'adminbizomanyosertekesiteslistarefresh');
+
 if (\mkw\Store::getTheme() == 'superzone') {
     if (haveJog(99)) {
         $router->map('GET', '/admin/mese', 'fantaController#mese', 'adminmese');
