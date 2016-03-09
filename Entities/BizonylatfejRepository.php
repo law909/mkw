@@ -408,12 +408,12 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             case 7:
                 $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*t.netto) AS ertek';
                 $ertekmezo2 = ',SUM(bt.mennyiseg*t.netto) AS ertek';
-                $arsavsql = '';
+                $arsavsql = ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id) ';
                 break;
             case 8:
                 $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*t.brutto) AS ertek';
                 $ertekmezo2 = ',SUM(bt.mennyiseg*t.brutto) AS ertek';
-                $arsavsql = '';
+                $arsavsql = ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id) ';
                 break;
             default:
                 $ertekmezo1 = ', 0 AS ertek';
