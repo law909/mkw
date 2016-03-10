@@ -34,6 +34,7 @@ class termekkartonController extends \mkwhelpers\Controller {
         $termekid = $this->params->getIntRequestParam('termekid');
         $valtozatid = $this->params->getIntRequestParam('valtozatid');
         $mozgat = $this->params->getIntRequestParam('mozgat');
+        $rontott = $this->params->getIntRequestParam('rontott');
         $raktarid = $this->params->getIntRequestParam('raktarid');
         $partnerid = $this->params->getIntRequestParam('partnerid');
         $datumtipus = $this->params->getStringRequestParam('datumtipus');
@@ -67,6 +68,13 @@ class termekkartonController extends \mkwhelpers\Controller {
                 break;
             case 2:
                 $filter->addFilter('bt.mozgat', '=', false);
+                break;
+        }
+        switch ($rontott) {
+            case 1:
+                break;
+            case 2:
+                $filter->addFilter('bf.rontott', '<>', true);
                 break;
         }
         if ($raktarid) {

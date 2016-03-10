@@ -131,13 +131,13 @@ $router->map('POST', '/admin/szamlafej/save', 'szamlafejController#save', 'admin
 $router->map('GET', '/admin/szamlafej/print', 'szamlafejController#doPrint', 'adminszamlafejprint');
 $router->map('GET', '/admin/szamlafej/storno', 'szamlafejController#storno', 'adminszamlafejstorno');
 
-$router->map('GET', '/admin/egyebfej/viewlist', 'egyebmozgasfejController#viewlist', 'adminegyebmozgasfejviewlist');
-$router->map('GET', '/admin/egyebfej/getlistbody', 'egyebmozgasfejController#getlistbody', 'adminegyebmozgasfejgetlistbody');
-$router->map('GET', '/admin/egyebfej/getkarb', 'egyebmozgasfejController#getkarb', 'adminegyebmozgasfejgetkarb');
-$router->map('GET', '/admin/egyebfej/viewkarb', 'egyebmozgasfejController#viewkarb', 'adminegyebmozgasfejviewkarb');
-$router->map('POST', '/admin/egyebfej/save', 'egyebmozgasfejController#save', 'adminegyebmozgasfejsave');
-$router->map('GET', '/admin/egyebfej/print', 'egyebmozgasfejController#doPrint', 'adminegyebmozgasfejprint');
-$router->map('POST', '/admin/egyebfej/ront', 'egyebmozgasfejController#ront', 'adminegyebmozgasfejront');
+$router->map('GET', '/admin/egyebfej/viewlist', 'egyebmozgasfejController#viewlist', 'adminegyebfejviewlist');
+$router->map('GET', '/admin/egyebfej/getlistbody', 'egyebmozgasfejController#getlistbody', 'adminegyebfejgetlistbody');
+$router->map('GET', '/admin/egyebfej/getkarb', 'egyebmozgasfejController#getkarb', 'adminegyebfejgetkarb');
+$router->map('GET', '/admin/egyebfej/viewkarb', 'egyebmozgasfejController#viewkarb', 'adminegyebfejviewkarb');
+$router->map('POST', '/admin/egyebfej/save', 'egyebmozgasfejController#save', 'adminegyebfejsave');
+$router->map('GET', '/admin/egyebfej/print', 'egyebmozgasfejController#doPrint', 'adminegyebfejprint');
+$router->map('POST', '/admin/egyebfej/ront', 'egyebmozgasfejController#ront', 'adminegyebfejront');
 
 $router->map('GET', '/admin/selejtfej/getlistbody', 'selejtfejController#getlistbody', 'adminselejtfejgetlistbody');
 $router->map('GET', '/admin/selejtfej/viewlist', 'selejtfejController#viewlist', 'adminselejtfejviewlist');

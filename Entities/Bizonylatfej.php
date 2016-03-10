@@ -671,6 +671,19 @@ class Bizonylatfej {
         $ret['stornotipus'] = $this->getStornotipus();
         $ret['storno'] = $this->getStorno();
         $ret['stornozott'] = $this->getStornozott();
+        $ret['rontott'] = $this->getRontott();
+        $ret['printurl'] = \mkw\Store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejprint', false, array(), array(
+            'id' => $this->getId()
+        ));
+        if (!$this->getNyomtatva()) {
+            $ret['editurl'] = \mkw\Store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejviewkarb', false, array(), array(
+                'id' => $this->getId(),
+                'oper' => 'edit'
+            ));
+        }
+        else {
+            $ret['editurl'] = $ret['printurl'];
+        }
         $ret['foxpost'] = false;
         if ($this->foxpostterminal) {
             $ret['foxpost'] = true;

@@ -47,6 +47,13 @@
                     </select>
                 </div>
                 <div class="matt-hseparator"></div>
+                <div>
+                    <select name="rontott">
+                        <option value="1">rontottak látszanak</option>
+                        <option value="2" selected="selected">rontottak NEM látszanak</option>
+                    </select>
+                </div>
+                <div class="matt-hseparator"></div>
                 <a href="#" class="js-refresh">Frissít</a>
                 <input name="termekid" type="hidden" value="{$termekid}">
                 <div class="matt-hseparator"></div>
