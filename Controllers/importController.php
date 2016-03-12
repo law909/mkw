@@ -569,18 +569,27 @@ class importController extends \mkwhelpers\Controller {
                     while ($data = $this->fgetdeltoncsv($fh)) {
                         $idegenkodok[] = 'DT' . $data[1];
                     }
-                    $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
-                    foreach ($termekek as $t) {
-                        if (!in_array($t['idegenkod'], $idegenkodok)) {
-                            /** @var \Entities\Termek $termek */
-                            $termek = $this->getRepo('Entities\Termek')->find($t['id']);
-                            if ($termek) {
-                                $termek->setFuggoben(true);
-                                $termek->setInaktiv(true);
-                                \mkw\Store::getEm()->persist($termek);
-                                \mkw\Store::getEm()->flush();
+                    if ($idegenkodok) {
+                        $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
+                        $termekdb = 0;
+                        foreach ($termekek as $t) {
+                            if (!in_array($t['idegenkod'], $idegenkodok)) {
+                                /** @var \Entities\Termek $termek */
+                                $termek = $this->getRepo('Entities\Termek')->find($t['id']);
+                                if ($termek) {
+                                    $termekdb++;
+                                    $termek->setFuggoben(true);
+                                    $termek->setInaktiv(true);
+                                    \mkw\Store::getEm()->persist($termek);
+                                    if (($termekdb % $batchsize) === 0) {
+                                        \mkw\Store::getEm()->flush();
+                                        \mkw\Store::getEm()->clear();
+                                    }
+                                }
                             }
                         }
+                        \mkw\Store::getEm()->flush();
+                        \mkw\Store::getEm()->clear();
                     }
                 }
             }
@@ -1142,18 +1151,27 @@ class importController extends \mkwhelpers\Controller {
                     while ($data = fgetcsv($fh, 0, $sep, '"')) {
                         $idegenkodok[] = (string)$data[0];
                     }
-                    $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
-                    foreach ($termekek as $t) {
-                        if (!in_array($t['idegencikkszam'], $idegenkodok)) {
-                            /** @var \Entities\Termek $termek */
-                            $termek = $this->getRepo('Entities\Termek')->find($t['id']);
-                            if ($termek) {
-                                $termek->setFuggoben(true);
-                                $termek->setInaktiv(true);
-                                \mkw\Store::getEm()->persist($termek);
-                                \mkw\Store::getEm()->flush();
+                    if ($idegenkodok) {
+                        $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
+                        $termekdb = 0;
+                        foreach ($termekek as $t) {
+                            if (!in_array($t['idegencikkszam'], $idegenkodok)) {
+                                /** @var \Entities\Termek $termek */
+                                $termek = $this->getRepo('Entities\Termek')->find($t['id']);
+                                if ($termek) {
+                                    $termekdb++;
+                                    $termek->setFuggoben(true);
+                                    $termek->setInaktiv(true);
+                                    \mkw\Store::getEm()->persist($termek);
+                                    if (($termekdb % $batchsize) === 0) {
+                                        \mkw\Store::getEm()->flush();
+                                        \mkw\Store::getEm()->clear();
+                                    }
+                                }
                             }
                         }
+                        \mkw\Store::getEm()->flush();
+                        \mkw\Store::getEm()->clear();
                     }
                 }
             }
@@ -1365,11 +1383,14 @@ class importController extends \mkwhelpers\Controller {
 
         @unlink('btechimport.error');
 
+        $letezocikkszamok = array();
+
         $termekdb = 0;
         for ($row = $dbtol; $row <= $dbig; ++$row) {
             $adat = $sheet->getCell('A' . $row)->getValue();
             if ($adat) {
                 if (isTermeksor($adat)) {
+                    $letezocikkszamok[] = $adat;
                     $termekdb++;
 
                     $kaphato = true;
@@ -1601,6 +1622,29 @@ class importController extends \mkwhelpers\Controller {
         }
         \mkw\Store::getEm()->flush();
         \mkw\Store::getEm()->clear();
+
+        if ($gyarto && $letezocikkszamok) {
+            $termekdb = 0;
+            $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
+            foreach ($termekek as $t) {
+                if (!in_array($t['cikkszam'], $letezocikkszamok)) {
+                    /** @var \Entities\Termek $termek */
+                    $termek = $this->getRepo('Entities\Termek')->find($t['id']);
+                    if ($termek) {
+                        $termekdb++;
+                        $termek->setFuggoben(true);
+                        $termek->setInaktiv(true);
+                        \mkw\Store::getEm()->persist($termek);
+                        if (($termekdb % $batchsize) === 0) {
+                            \mkw\Store::getEm()->flush();
+                            \mkw\Store::getEm()->clear();
+                        }
+                    }
+                }
+            }
+            \mkw\Store::getEm()->flush();
+            \mkw\Store::getEm()->clear();
+        }
 
         $excel->disconnectWorksheets();
         \unlink($filenev);
