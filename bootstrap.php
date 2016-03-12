@@ -53,6 +53,7 @@ $driverchain->addDriver($doctrinedriver, 'Entities');
 
 $config->addCustomStringFunction('YEAR', 'mkwhelpers\year');
 $config->addCustomStringFunction('IF', 'mkwhelpers\ifelse');
+$config->addCustomStringFunction('RAND', 'mkwhelpers\rand');
 
 $config->setMetadataDriverImpl($driverchain);
 $config->setProxyDir(__DIR__ . '/Proxies');

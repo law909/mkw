@@ -148,6 +148,26 @@ $(document).ready(
             });
         }
 
+        $('.js-nepszerusegclear').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/nepszeruseg/clear',
+                type: 'POST',
+                success: function(data) {
+                    dialogcenter.html('A népszerűség inicializálás sikerült.').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function() {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                }
+            })
+        });
+
         $('.js-teljesitmenyjelentes').on('click', function(e) {
             e.preventDefault();
             $.ajax({

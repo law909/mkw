@@ -102,11 +102,11 @@ class Repository extends EntityRepository {
         $orderstring = '';
         if ($order) {
             foreach ($order as $field => $irany) {
-                if (strpos($field, '.') === false) {
+                if (strpos($field, '.') === false && strpos($field, '(') === false) {
                     $orderarr[] = $this->alias . '.' . $field . ' ' . $irany;
                 }
                 else {
-                    if (strpos($field, '.') === 0) {
+                    if (strpos($field, '.') === 0 && strpos($field, '(') === false) {
                         $orderarr[] = substr($field, 1) . ' ' . $irany;
                     }
                     else {

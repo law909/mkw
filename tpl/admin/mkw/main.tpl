@@ -33,6 +33,14 @@
             </form>
         </div>
     </div>
+    <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+        <div class="ui-widget-header ui-corner-top">
+            <div class="mainboxinner ui-corner-top">Termék népszerűség</div>
+        </div>
+        <div class="mainboxinner">
+            <button class="js-nepszerusegclear ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Nulláz</span></button>
+        </div>
+    </div>
 </div>
 {/if}
 {/block}

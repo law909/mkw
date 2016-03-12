@@ -232,6 +232,9 @@ class Termek {
     /** @ORM\Column(type="integer",nullable=true) */
     private $megvasarlasdb;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $nepszeruseg;
+
     /** @ORM\OneToMany(targetEntity="TermekKapcsolodo", mappedBy="termek", cascade={"persist"}) */
     private $termekkapcsolodok;
 
@@ -1811,5 +1814,23 @@ class Termek {
 
     public function setKozvetitett($kozvetitett) {
         $this->kozvetitett = $kozvetitett;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNepszeruseg() {
+        return $this->nepszeruseg;
+    }
+
+    /**
+     * @param mixed $nepszeruseg
+     */
+    public function setNepszeruseg($nepszeruseg) {
+        $this->nepszeruseg = $nepszeruseg;
+    }
+
+    public function incNepszeruseg() {
+        $this->nepszeruseg++;
     }
 }

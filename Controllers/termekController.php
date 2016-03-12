@@ -168,6 +168,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['osszehajthato'] = $t->getOsszehajthato();
 		$x['megtekintesdb'] = $t->getMegtekintesdb();
 		$x['megvasarlasdb'] = $t->getMegvasarlasdb();
+        $x['nepszeruseg'] = $t->getNepszeruseg();
         $x['gyartonev'] = $t->getGyartoNev();
         $x['keszlet'] = $t->getKeszlet();
 		$x['termekcsoportnev'] = $t->getTermekcsoportNev();
@@ -931,6 +932,9 @@ class termekController extends \mkwhelpers\MattableController {
 		$ret['termek'] = $termek->toTermekLap(null, $ujtermekminid, $top10min);
 
 		$termek->incMegtekintesdb();
+        if (\mkw\Store::getTheme() == 'mkwcansas') {
+            $termek->incNepszeruseg();
+        }
 		$this->getEm()->persist($termek);
 		$this->getEm()->flush();
 		return $ret;
@@ -953,6 +957,10 @@ class termekController extends \mkwhelpers\MattableController {
 		}
 		return $ret;
 	}
+
+    public function clearNepszeruseg() {
+        $this->getRepo()->clearNepszeruseg();
+    }
 
 	public function getLegujabbLista() {
 		$termekek = $this->getRepo()->getLegujabbTermekek(store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5));

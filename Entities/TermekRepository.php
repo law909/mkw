@@ -372,7 +372,7 @@ class TermekRepository extends \mkwhelpers\Repository {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
-        $order = array('_xx.megtekintesdb' => 'DESC');
+        $order = array('_xx.nepszeruseg' => 'DESC', 'RAND()' => 'ASC');
 
         return $this->getWithJoins($filter, $order, 0, $db);
     }
@@ -602,4 +602,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
+    public function clearNepszeruseg() {
+        $q = $this->_em->createQuery('UPDATE Entities\Termek x SET x.nepszeruseg = 0');
+        $q->Execute();
+    }
 }
