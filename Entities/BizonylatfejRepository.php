@@ -468,7 +468,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
         }
-        $filter->addFilter($datumtipus, '<=', $datumtol);
+        $filter->addFilter($datumtipus, '<', $datumtol);
         if ($raktarid) {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
@@ -499,10 +499,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
         }
         if ($datumtol) {
-            $filter->addFilter($datumtipus, '>', $datumtol);
+            $filter->addFilter($datumtipus, '>=', $datumtol);
         }
         if ($datumig) {
-            $filter->addFilter($datumtipus, '<', $datumig);
+            $filter->addFilter($datumtipus, '<=', $datumig);
         }
         if ($raktarid) {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
@@ -534,10 +534,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
         }
         if ($datumtol) {
-            $filter->addFilter($datumtipus, '>', $datumtol);
+            $filter->addFilter($datumtipus, '>=', $datumtol);
         }
         if ($datumig) {
-            $filter->addFilter($datumtipus, '<', $datumig);
+            $filter->addFilter($datumtipus, '<=', $datumig);
         }
         if ($raktarid) {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
@@ -568,7 +568,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
         }
         if ($datumig) {
-            $filter->addFilter($datumtipus, '<=', $datumig);
+            $filter->addFilter($datumtipus, '<', $datumig);
         }
         if ($raktarid) {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
