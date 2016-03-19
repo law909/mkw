@@ -32,6 +32,7 @@ $(document).ready(function() {
                             forgalomfilter: $('select[name="forgalomfilter"] option:selected').val(),
                             ertektipus: $('select[name="ertektipus"] option:selected').val(),
                             arsav: $('select[name="arsav"] option:selected').val(),
+                            nevfilter: $('input[name="nevfilter"]').val(),
                             fafilter: fafilter
                         },
                         success: function(d) {
