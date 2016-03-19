@@ -834,6 +834,7 @@ var bizonylathelper = function($) {
                         '#bizonylatrontottfilter',
                         '#fizmodfilter',
                         '#valutanemfilter',
+                        '#raktarfilter',
                         '#szallitasimodfilter',
                         '#fuvarlevelszamfilter',
                         '#erbizonylatszamfilter',

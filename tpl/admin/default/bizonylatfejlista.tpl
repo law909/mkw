@@ -103,6 +103,13 @@
     </div>
     <div class="matt-hseparator"></div>
     <div>
+        <label for="raktarfilter">Raktár:</label>
+        <select id="raktarfilter" name="raktarfilter">
+            <option value="">Mindegy</option>
+            {foreach $raktarlist as $_role}
+                <option value="{$_role.id}">{$_role.caption}</option>
+            {/foreach}
+        </select>
         <label for="valutanemfilter">Valutanem:</label>
         <select id="valutanemfilter" name="valutanemfilter">
             <option value="">Mindegy</option>

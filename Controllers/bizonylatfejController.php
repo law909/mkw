@@ -55,6 +55,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $fmc = new valutanemController($this->params);
         $view->setVar('valutanemlist', $fmc->getSelectList());
 
+        $raktar = new raktarController($this->params);
+        $view->setVar('raktarlist', $raktar->getSelectList());
+
         $bsc = new bizonylatstatuszController($this->params);
         switch (\mkw\Store::getTheme()) {
             case 'mkwcansas':
@@ -186,6 +189,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $bs = $this->getRepo('Entities\Valutanem')->findOneById($f);
             if ($bs) {
                 $filter->addFilter('valutanem', '=', $bs);
+            }
+        }
+        $f = $this->params->getIntRequestParam('raktarfilter');
+        if ($f) {
+            $bs = $this->getRepo('Entities\Raktar')->findOneById($f);
+            if ($bs) {
+                $filter->addFilter('raktar', '=', $bs);
             }
         }
         $f = $this->params->getStringRequestParam('fuvarlevelszamfilter');
