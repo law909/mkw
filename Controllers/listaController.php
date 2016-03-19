@@ -109,6 +109,7 @@ class listaController extends \mkwhelpers\Controller {
                 ->addFilter('bf.rontott', '=', false)
                 ->addFilter('f.tipus', '=', 'P')
                 ->addFilter('bf.mese', '=', false)
+                ->addFilter('bf.raktar_id', '=', 3)
                 ->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $csoport['karkod'] . '%')
                 ->addFilter('bf.bizonylattipus_id', 'IN', array('szamla', 'egyeb', 'keziszamla'));
 
