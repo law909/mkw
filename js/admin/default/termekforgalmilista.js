@@ -27,6 +27,7 @@ $(document).ready(function() {
                             datumtol: $('input[name="tol"]').val(),
                             datumig: $('input[name="ig"]').val(),
                             raktarid: $('select[name="raktar"] option:selected').val(),
+                            gyartoid: $('select[name="gyarto"] option:selected').val(),
                             partnerid: $('select[name="partner"] option:selected').val(),
                             keszletfilter: $('select[name="keszletfilter"] option:selected').val(),
                             forgalomfilter: $('select[name="forgalomfilter"] option:selected').val(),

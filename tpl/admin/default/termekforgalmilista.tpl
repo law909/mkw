@@ -30,6 +30,8 @@
                     </select>
                 </div>
                 <div class="matt-hseparator"></div>
+                {include "comp_gyartoselect.tpl"}
+                <div class="matt-hseparator"></div>
                 <div>
                     <label for="KeszletEdit">Készlet:</label>
                     <select id="KeszletEdit" name="keszletfilter">

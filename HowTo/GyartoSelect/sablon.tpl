@@ -1,0 +1,1 @@
+{include "comp_gyartoselect.tpl"}

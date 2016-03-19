@@ -357,7 +357,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return false;
     }
 
-    public function getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $fafilter, $nevfilter) {
+    public function getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $fafilter, $nevfilter,
+        $gyartoid) {
         switch ($datumtipus) {
             case 'kelt':
             case 'teljesites':
@@ -446,6 +447,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         }
         if (!is_null($nevfilter)) {
             $termekfilter->addFilter(array('t.nev', 't.rovidleiras', 't.cikkszam', 't.vonalkod'), 'LIKE', '%' . $nevfilter . '%');
+        }
+        if ($gyartoid) {
+            $termekfilter->addFilter('t.gyarto_id', '=', $gyartoid);
         }
 
         $trsm = new ResultSetMapping();

@@ -14,6 +14,7 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         $view->setVar('raktarlista', $rc->getSelectList());
         $partner = new partnerController($this->params);
         $view->setVar('partnerlist', $partner->getSelectList());
+        $view->setVar('gyartolist', $partner->getSzallitoSelectList(0));
         $arsav = new termekarController($this->params);
         $view->setVar('arsavlist', $arsav->getSelectList());
 
@@ -33,9 +34,10 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         $arsav = $this->params->getStringRequestParam('arsav');
         $fafilter = $this->params->getArrayRequestParam('fafilter');
         $nevfilter = $this->params->getRequestParam('nevfilter', NULL);
+        $gyartoid = $this->params->getIntRequestParam('gyartoid');
 
         $tetelek = $this->getRepo('Entities\Bizonylatfej')->getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
-            $arsav, $fafilter, $nevfilter);
+            $arsav, $fafilter, $nevfilter, $gyartoid);
 
         switch ($keszletfilter) {
             case 1: // van keszleten
