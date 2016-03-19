@@ -97,6 +97,7 @@
                 {if ($setup.fanta && $_egyed.fix)}
                 <tr><td></td><td>Fix</td></tr>
                 {/if}
+                <tr><td></td><td>{$_egyed.raktarnev}</td></tr>
                 <tr><td></td><td>{$_egyed.fizmodnev}</td></tr>
                 <tr><td></td><td>{$_egyed.szallitasimodnev}</td></tr>
                 {if ($_egyed.uzletkotonev)}
