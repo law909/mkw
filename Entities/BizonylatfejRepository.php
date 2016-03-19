@@ -3,6 +3,8 @@
 namespace Entities;
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use mkwhelpers\Filter;
+use mkwhelpers\FilterDescriptor;
 
 class BizonylatfejRepository extends \mkwhelpers\Repository {
 
@@ -355,7 +357,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return false;
     }
 
-    public function getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav) {
+    public function getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $fafilter, $nevfilter) {
         switch ($datumtipus) {
             case 'kelt':
             case 'teljesites':
@@ -429,6 +431,23 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 
         $ret = array();
 
+        $termekfilter = new FilterDescriptor();
+        if (!empty($fafilter)) {
+            $ff = new FilterDescriptor();
+            $ff->addFilter('id', 'IN', $fafilter);
+            $res = \mkw\Store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, array());
+            $faszuro = array();
+            foreach ($res as $sor) {
+                $faszuro[] = $sor->getKarkod() . '%';
+            }
+            if ($faszuro) {
+                $termekfilter->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $faszuro);
+            }
+        }
+        if (!is_null($nevfilter)) {
+            $termekfilter->addFilter(array('t.nev', 't.rovidleiras', 't.cikkszam', 't.vonalkod'), 'LIKE', '%' . $nevfilter . '%');
+        }
+
         $trsm = new ResultSetMapping();
         $trsm->addScalarResult('id', 'id');
         $trsm->addScalarResult('cikkszam', 'cikkszam');
@@ -439,8 +458,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $q = $this->_em->createNativeQuery('SELECT t.id,t.cikkszam,t.nev,tv.id AS tvid,tv.ertek1,tv.ertek2'
             . ' FROM termek t'
             . ' LEFT OUTER JOIN termekvaltozat tv ON (tv.termek_id=t.id)'
+            . $this->getFilterString($termekfilter)
             . ' ORDER BY t.cikkszam,t.nev,tv.ertek1,tv.ertek2', $trsm
         );
+        $q->setParameters($this->getQueryParameters($termekfilter));
         $res = $q->getScalarResult();
         foreach ($res as $rekord) {
             $kulcs = $rekord['id'] . '-' . $rekord['tvid'];
@@ -485,8 +506,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $res = $q->getScalarResult();
         foreach ($res as $rekord) {
             $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
-            $ret[$kulcs]['nyito'] = $rekord['mennyiseg'] * 1;
-            $ret[$kulcs]['nyitoertek'] = $rekord['ertek'] * 1;
+            if (array_key_exists($kulcs, $ret)) {
+                $ret[$kulcs]['nyito'] = $rekord['mennyiseg'] * 1;
+                $ret[$kulcs]['nyitoertek'] = $rekord['ertek'] * 1;
+            }
         }
 
         /**************
@@ -520,8 +543,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $res = $q->getScalarResult();
         foreach ($res as $rekord) {
             $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
-            $ret[$kulcs]['be'] = $rekord['mennyiseg'] * 1;
-            $ret[$kulcs]['beertek'] = $rekord['ertek'] * 1;
+            if (array_key_exists($kulcs, $ret)) {
+                $ret[$kulcs]['be'] = $rekord['mennyiseg'] * 1;
+                $ret[$kulcs]['beertek'] = $rekord['ertek'] * 1;
+            }
         }
 
         /*******************
@@ -555,8 +580,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $res = $q->getScalarResult();
         foreach ($res as $rekord) {
             $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
-            $ret[$kulcs]['ki'] = $rekord['mennyiseg'] * 1;
-            $ret[$kulcs]['kiertek'] = $rekord['ertek'] * 1;
+            if (array_key_exists($kulcs, $ret)) {
+                $ret[$kulcs]['ki'] = $rekord['mennyiseg'] * 1;
+                $ret[$kulcs]['kiertek'] = $rekord['ertek'] * 1;
+            }
         }
 
         /****************
@@ -586,8 +613,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $res = $q->getScalarResult();
         foreach ($res as $rekord) {
             $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
-            $ret[$kulcs]['zaro'] = $rekord['mennyiseg'] * 1;
-            $ret[$kulcs]['zaroertek'] = $rekord['ertek'] * 1;
+            if (array_key_exists($kulcs, $ret)) {
+                $ret[$kulcs]['zaro'] = $rekord['mennyiseg'] * 1;
+                $ret[$kulcs]['zaroertek'] = $rekord['ertek'] * 1;
+            }
         }
 
         return $ret;

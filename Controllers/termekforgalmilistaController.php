@@ -31,8 +31,11 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         $keszletfilter = $this->params->getIntRequestParam('keszletfilter');
         $ertektipus = $this->params->getIntRequestParam('ertektipus');
         $arsav = $this->params->getStringRequestParam('arsav');
+        $fafilter = $this->params->getArrayRequestParam('fafilter');
+        $nevfilter = $this->params->getRequestParam('nevfilter', NULL);
 
-        $tetelek = $this->getRepo('Entities\Bizonylatfej')->getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus, $arsav);
+        $tetelek = $this->getRepo('Entities\Bizonylatfej')->getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
+            $arsav, $fafilter, $nevfilter);
 
         switch ($keszletfilter) {
             case 1: // van keszleten

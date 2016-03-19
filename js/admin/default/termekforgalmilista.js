@@ -9,8 +9,16 @@ $(document).ready(function() {
         beforeShow:function() {
             mkwcomp.datumEdit.init('#TolEdit');
             mkwcomp.datumEdit.init('#IgEdit');
+            mkwcomp.termekfaFilter.init('#termekfa');
             $('.js-refresh')
                 .on('click', function() {
+
+                    var fak, fafilter;
+                    fak = mkwcomp.termekfaFilter.getFilter('#termekfa');
+                    if (fak.length > 0) {
+                        fafilter = fak;
+                    }
+
                     $.ajax({
                         url: '/admin/termekforgalmilista/refresh',
                         type: 'GET',
@@ -23,7 +31,8 @@ $(document).ready(function() {
                             keszletfilter: $('select[name="keszletfilter"] option:selected').val(),
                             forgalomfilter: $('select[name="forgalomfilter"] option:selected').val(),
                             ertektipus: $('select[name="ertektipus"] option:selected').val(),
-                            arsav: $('select[name="arsav"] option:selected').val()
+                            arsav: $('select[name="arsav"] option:selected').val(),
+                            fafilter: fafilter
                         },
                         success: function(d) {
                             $('#eredmeny').html(d);
