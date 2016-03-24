@@ -534,7 +534,7 @@ class importController extends \mkwhelpers\Controller {
                         // $termek->setNemkaphato(($data[6] * 1) == 0);
                         if ($termek) {
                             // $termek->setAfa($afa[0]);
-                            if (substr($data[11], -6) == 'rkezik') {
+                            if ((substr($data[11], -6) == 'rkezik')||(substr($data[11], 0, 6) == 'rendel')) {
                                 $termek->setNemkaphato(true);
                             }
                             else {
@@ -1630,7 +1630,7 @@ class importController extends \mkwhelpers\Controller {
                 if (!in_array($t['cikkszam'], $letezocikkszamok)) {
                     /** @var \Entities\Termek $termek */
                     $termek = $this->getRepo('Entities\Termek')->find($t['id']);
-                    if ($termek) {
+                    if ($termek && $termek->getKeszlet() <= 0) {
                         $termekdb++;
                         $termek->setFuggoben(true);
                         $termek->setInaktiv(true);
