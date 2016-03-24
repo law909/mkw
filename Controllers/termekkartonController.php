@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use mkwhelpers\Filter;
 use mkwhelpers\FilterDescriptor;
 
 class termekkartonController extends \mkwhelpers\Controller {
@@ -51,12 +52,16 @@ class termekkartonController extends \mkwhelpers\Controller {
         $datumtolstr = $this->params->getStringRequestParam('datumtol');
         $datumigstr = $this->params->getStringRequestParam('datumig');
 
+        $nyitofilter = new FilterDescriptor();
         $filter = new FilterDescriptor();
+        $nyitofilter->addFilter('bt.termek', '=', $termekid);
         $filter->addFilter('bt.termek', '=', $termekid);
         if ($valtozatid) {
+            $nyitofilter->addFilter('bt.termekvaltozat', '=', $valtozatid);
             $filter->addFilter('bt.termekvaltozat', '=', $valtozatid);
         }
         if ($datumtolstr) {
+            $nyitofilter->addFilter($datumtipus, '<', $datumtolstr);
             $filter->addFilter($datumtipus, '>=', $datumtolstr);
         }
         if ($datumigstr) {
@@ -64,9 +69,11 @@ class termekkartonController extends \mkwhelpers\Controller {
         }
         switch ($mozgat) {
             case 1:
+                $nyitofilter->addFilter('bt.mozgat', '=', true);
                 $filter->addFilter('bt.mozgat', '=', true);
                 break;
             case 2:
+                $nyitofilter->addFilter('bt.mozgat', '=', false);
                 $filter->addFilter('bt.mozgat', '=', false);
                 break;
         }
@@ -74,14 +81,24 @@ class termekkartonController extends \mkwhelpers\Controller {
             case 1:
                 break;
             case 2:
+                $nyitofilter->addFilter('bf.rontott', '<>', true);
                 $filter->addFilter('bf.rontott', '<>', true);
                 break;
         }
         if ($raktarid) {
+            $nyitofilter->addFilter('bf.raktar', '=', $raktarid);
             $filter->addFilter('bf.raktar', '=', $raktarid);
         }
         if ($partnerid) {
+            $nyitofilter->addFilter('bf.partner', '=', $partnerid);
             $filter->addFilter('bf.partner', '=', $partnerid);
+        }
+        if ($datumtolstr) {
+            $nyito = $this->getRepo('Entities\Termek')->calcKeszlet($nyitofilter);
+            $nyito = $nyito[0];
+        }
+        else {
+            $nyito = array('mennyiseg' => 0, 'nettohuf' => 0, 'bruttohuf' => 0);
         }
         $tetelek = $this->getRepo('Entities\Termek')->getKarton($filter, array($datumtipus => 'ASC'));
         $kartontetelek = array();
@@ -94,6 +111,7 @@ class termekkartonController extends \mkwhelpers\Controller {
         }
 
         $view = $this->createView('termekkartontetel.tpl');
+        $view->setVar('nyito', $nyito['mennyiseg']);
         $view->setVar('kartontetelek', $kartontetelek);
         $view->printTemplateResult();
     }

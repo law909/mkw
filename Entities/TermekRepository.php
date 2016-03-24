@@ -546,7 +546,8 @@ class TermekRepository extends \mkwhelpers\Repository {
         if ($plusfields) {
             $plusfields = ' ,' . $plusfields . ' ';
         }
-        $q = $this->_em->createQuery('SELECT SUM(bt.mennyiseg) AS mennyiseg, SUM(bt.nettohuf) AS nettohuf, SUM(bt.bruttohuf) AS bruttohuf '
+        $q = $this->_em->createQuery('SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg,'
+            . 'SUM(bt.nettohuf * bt.irany) AS nettohuf, SUM(bt.bruttohuf * bt.irany) AS bruttohuf '
             . $plusfields
             . 'FROM Entities\Bizonylattetel bt '
             . 'LEFT JOIN bt.bizonylatfej bf '
