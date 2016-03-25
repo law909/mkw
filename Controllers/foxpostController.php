@@ -63,7 +63,7 @@ class foxpostController extends \mkwhelpers\MattableController {
             'refcode' => $fej->getId()
         );
         if ($fej->getFizmodId() == \mkw\Store::getParameter(\mkw\consts::UtanvetFizmod)) {
-            $fields['cod_amount'] = (int)$fej->getBrutto();
+            $fields['cod_amount'] = (int)$fej->getBrutto() * 100;
             $fields['cod_currency'] = 'HUF';
         }
         $tosend = json_encode($fields);
