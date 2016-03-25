@@ -724,7 +724,8 @@ class termekController extends \mkwhelpers\MattableController {
                             'link' => \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
                             'mainurl' => store::getConfigValue('mainurl'),
                             'nemlathato' => (!$r->getLathato()||$r->getInaktiv()||$r->getNemkaphato()),
-                            'defaultmennyiseg' => \mkw\Store::getParameter(\mkw\consts::BizonylatMennyiseg, 0)
+                            'defaultmennyiseg' => \mkw\Store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
+                            'kartonurl' => \mkw\Store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
                         );
                     }
                     break;
@@ -746,7 +747,8 @@ class termekController extends \mkwhelpers\MattableController {
                             'link' => \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
                             'mainurl' => store::getConfigValue('mainurl'),
                             'nemlathato' => (!$r->getLathato()||$r->getInaktiv()||$r->getNemkaphato()),
-                            'defaultmennyiseg' => \mkw\Store::getParameter(\mkw\consts::BizonylatMennyiseg, 0)
+                            'defaultmennyiseg' => \mkw\Store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
+                            'kartonurl' => \mkw\Store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
                         );
                     }
                     break;
@@ -767,7 +769,8 @@ class termekController extends \mkwhelpers\MattableController {
                             'link' => \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
                             'mainurl' => store::getConfigValue('mainurl'),
                             'nemlathato' => (!$r->getLathato() || $r->getInaktiv() || $r->getNemkaphato()),
-                            'defaultmennyiseg' => \mkw\Store::getParameter(\mkw\consts::BizonylatMennyiseg, 0)
+                            'defaultmennyiseg' => \mkw\Store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
+                            'kartonurl' => \mkw\Store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
                         );
                     }
                     break;

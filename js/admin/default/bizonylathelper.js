@@ -338,6 +338,7 @@ var bizonylathelper = function($) {
                     $('.js-toflyout', kepsor).attr('href', termek.mainurl + termek.kepurl);
                     $('.js-toflyout img', kepsor).attr('src', termek.mainurl + termek.kiskepurl);
                     $('.js-termeklink', kepsor).attr('href', termek.link).html(termek.link);
+                    $('.js-kartonlink', kepsor).attr('href', termek.kartonurl);
                     loadValtozatList(termek.id, sorid, selvaltozat, valtozatplace);
                 }
             }
@@ -449,6 +450,7 @@ var bizonylathelper = function($) {
                     $('.js-toflyout', kepsor).attr('href', termek.mainurl + termek.kepurl);
                     $('.js-toflyout img', kepsor).attr('src', termek.mainurl + termek.kiskepurl);
                     $('.js-termeklink', kepsor).attr('href', termek.link).html(termek.link);
+                    $('.js-kartonlink', kepsor).attr('href', termek.kartonurl);
                     loadquickValtozatList(termek.id, sorid);
                     quicksetTermekAr(sorid);
                 }

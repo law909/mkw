@@ -57,7 +57,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$x['nettoegysar'] = $t->getNettoegysar();
 		$x['bruttoegysar'] = $t->getBruttoegysar();
 		$x['nettoegysarhuf'] = $t->getNettoegysarhuf();
-		$x['bruttoegysarhuf'] = $t->getBruttoegysarhuf();
+		$x['bruttoejs-termeklinkgysarhuf'] = $t->getBruttoegysarhuf();
 
         $x['enettoegysar'] = $t->getEnettoegysar();
         $x['ebruttoegysar'] = $t->getEbruttoegysar();
@@ -86,6 +86,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 			$x['kepurl'] = $term->getKepUrlLarge();
 			$x['slug'] = $term->getSlug();
             $x['link'] = \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $term->getSlug()));
+            $x['kartonurl'] = \mkw\Store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $term->getId()));
         }
 
 		if ($forKarb) {
