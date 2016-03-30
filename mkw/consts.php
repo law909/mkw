@@ -155,4 +155,13 @@ class consts {
     const PathBtech = 'pathbtech';
     const PathKress = 'pathkress';
 
+    const RunningKreativImport = 'runningkreativimport';
+    const RunningDeltonImport = 'runningdeltonimport';
+    const RunningReintexImport = 'runningreinteximport';
+    const RunningTutisportImport = 'runningtutisportimport';
+    const RunningMaxutovImport = 'runningmaxutovimport';
+    const RunningSilkoImport = 'runningsilkoimport';
+    const RunningBtechImport = 'runningbtechimport';
+    const RunningKressgepImport = 'runningkressgepimport';
+    const RunningKresstartozekImport = 'runningkresstartozekimport';
 }

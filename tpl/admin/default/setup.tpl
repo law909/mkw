@@ -24,7 +24,7 @@
 			<li><a href="#WebTab">{t('Web beállítások')}</a></li>
 			<li><a href="#SzallitasiKtgTab">{t('Szállítási költség')}</a></li>
             {if ($maintheme == 'mkwcansas')}
-            <li><a href="#ImportPartnerTab">{t('Import partnerek')}</a></li>
+            <li><a href="#ImportTab">{t('Import')}</a></li>
             {/if}
 			<li><a href="#IdTab">{t('Azonosítók, kódok')}</a></li>
 			<li><a href="#EmailTab">{t('Email')}</a></li>
@@ -468,7 +468,7 @@
 		</tbody></table>
 		</div>
         {if ($maintheme == 'mkwcansas')}
-        <div id="ImportPartnerTab" class="mattkarb-page" data-visible="visible">
+        <div id="ImportTab" class="mattkarb-page" data-visible="visible">
             <div>
                 <label for="KreativEdit">Kreatív puzzle:</label>
                 <select id="KreativEdit" name="gyartokreativ">
@@ -479,6 +479,7 @@
                 </select>
                 <label for="PathKreativEdit">Képek mappája:</label>
                 <input id="PathKreativEdit" name="pathkreativ" value="{$pathkreativ}">
+                <a href="#" class="js-stopimport" data-href="{$stopkreativimporturl}">Stop import</a>
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -491,6 +492,7 @@
                 </select>
                 <label for="PathDeltonEdit">Képek mappája:</label>
                 <input id="PathDeltonEdit" name="pathdelton" value="{$pathdelton}">
+                <a href="#" class="js-stopimport" data-href="{$stopdeltonimporturl}">Stop import</a>
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -503,6 +505,7 @@
                 </select>
                 <label for="PathReintexEdit">Képek mappája:</label>
                 <input id="PathReintexEdit" name="pathreintex" value="{$pathreintex}">
+                <a href="#" class="js-stopimport" data-href="{$stopreinteximporturl}">Stop import</a>
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -515,6 +518,7 @@
                 </select>
                 <label for="PathTutisportEdit">Képek mappája:</label>
                 <input id="PathTutisportEdit" name="pathtutisport" value="{$pathtutisport}">
+                <a href="#" class="js-stopimport" data-href="{$stoptutisportimporturl}">Stop import</a>
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -527,6 +531,7 @@
                 </select>
                 <label for="PathMaxutovEdit">Képek mappája:</label>
                 <input id="PathMaxutovEdit" name="pathmaxutov" value="{$pathmaxutov}">
+                <a href="#" class="js-stopimport" data-href="{$stopmaxutovimporturl}">Stop import</a>
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -539,6 +544,7 @@
                 </select>
                 <label for="PathSilkoEdit">Képek mappája:</label>
                 <input id="PathSilkoEdit" name="pathsilko" value="{$pathsilko}">
+                <a href="#" class="js-stopimport" data-href="{$stopsilkoimporturl}">Stop import</a>
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -551,6 +557,7 @@
                 </select>
                 <label for="PathBtechEdit">Képek mappája:</label>
                 <input id="PathBtechEdit" name="pathbtech" value="{$pathbtech}">
+                <a href="#" class="js-stopimport" data-href="{$stopbtechimporturl}">Stop import</a>
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -563,6 +570,8 @@
                 </select>
                 <label for="PathKressEdit">Képek mappája:</label>
                 <input id="PathKressEdit" name="pathkress" value="{$pathkress}">
+                <a href="#" class="js-stopimport" data-href="{$stopkressgepimporturl}">Stop gép import</a>
+                <a href="#" class="js-stopimport" data-href="{$stopkresstartozekimporturl}">Stop tart. import</a>
             </div>
         </div>
         {/if}

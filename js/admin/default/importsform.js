@@ -32,6 +32,11 @@ $(document).ready(function() {
                                 if (adat.url) {
                                     document.location = adat.url;
                                 }
+                                else {
+                                    if (adat.msg) {
+                                        alert(adat.msg);
+                                    }
+                                }
                             }
                         }
                     });

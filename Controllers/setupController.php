@@ -350,6 +350,15 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::PathKress);
         $view->setVar(\mkw\consts::PathKress, ($p ? $p->getErtek() : ''));
 
+        $view->setVar('stopkreativimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'kreativ')));
+        $view->setVar('stopdeltonimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'delton')));
+        $view->setVar('stopreinteximporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'reintex')));
+        $view->setVar('stoptutisportimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'tutisport')));
+        $view->setVar('stopmaxutovimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'maxutov')));
+        $view->setVar('stopsilkoimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'silko')));
+        $view->setVar('stopbtechimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'btech')));
+        $view->setVar('stopkressgepimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'kressgep')));
+        $view->setVar('stopkresstartozekimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'kresstartozek')));
         $view->printTemplateResult();
     }
 

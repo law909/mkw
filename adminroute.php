@@ -352,6 +352,7 @@ $router->map('GET', '/admin/sitemap/create', 'sitemapController#create', 'admins
 $router->map('GET', '/admin/export/view', 'exportController#view', 'adminexportview');
 $router->map('GET', '/admin/export/grando', 'exportController#GrandoExport', 'admingrandoexport');
 
+$router->map('POST', '/admin/import/stop/[:impname]', 'importController#stop', 'adminimportstop');
 $router->map('GET', '/admin/import/view', 'importController#view', 'adminimportview');
 $router->map('POST','/admin/import/kreativ', 'importController#kreativpuzzleImport', 'adminkreativpuzzleimport');
 $router->map('POST','/admin/import/delton', 'importController#deltonImport', 'admindeltonimport');
