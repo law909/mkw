@@ -193,6 +193,7 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
+            @unlink('kreativ_fuggoben.txt');
 
             $ch = \curl_init('http://kreativpuzzle.hu/lawstocklist/');
             $fh = fopen('kreativpuzzlestock.txt', 'w');
@@ -372,6 +373,7 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\Store::getEm()->flush();
                     \mkw\Store::getEm()->clear();
 
+                    $lettfuggoben = false;
                     if ($gyarto) {
                         rewind($fh);
                         fgetcsv($fh, 0, $sep, '"');
@@ -385,6 +387,8 @@ class importController extends \mkwhelpers\Controller {
                                 /** @var \Entities\Termek $termek */
                                 $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                 if ($termek) {
+                                    $lettfuggoben = true;
+                                    \mkw\Store::writelog('cikkszám: ' . $termek->getCikkszam(), 'kreativ_fuggoben.txt');
                                     $termek->setFuggoben(true);
                                     $termek->setInaktiv(true);
                                     \mkw\Store::getEm()->persist($termek);
@@ -392,6 +396,9 @@ class importController extends \mkwhelpers\Controller {
                                 }
                             }
                         }
+                    }
+                    if ($lettfuggoben) {
+                        echo json_encode(array('url' => '/kreativ_fuggoben.txt'));
                     }
                 }
                 fclose($fh);
@@ -464,6 +471,8 @@ class importController extends \mkwhelpers\Controller {
             $path = $mainpath . $path;
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+
+            @unlink('delton_fuggoben.txt');
 
             if ($deltondownload) {
                 \unlink('delton.txt');
@@ -626,6 +635,7 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\Store::getEm()->flush();
                     \mkw\Store::getEm()->clear();
 
+                    $lettfuggoben = false;
                     if ($gyarto) {
                         rewind($fh);
                         $idegenkodok = array();
@@ -641,6 +651,8 @@ class importController extends \mkwhelpers\Controller {
                                     $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                     if ($termek) {
                                         $termekdb++;
+                                        \mkw\Store::writelog('cikkszám: ' . $termek->getCikkszam(), 'delton_fuggoben.txt');
+                                        $lettfuggoben = true;
                                         $termek->setFuggoben(true);
                                         $termek->setInaktiv(true);
                                         \mkw\Store::getEm()->persist($termek);
@@ -654,6 +666,9 @@ class importController extends \mkwhelpers\Controller {
                             \mkw\Store::getEm()->flush();
                             \mkw\Store::getEm()->clear();
                         }
+                    }
+                    if ($lettfuggoben) {
+                        echo json_encode(array('url' => '/delton_fuggoben.txt'));
                     }
                 }
                 fclose($fh);
@@ -1046,6 +1061,8 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
+            @\unlink('makszutov_fuggoben.txt');
+
             $ch = \curl_init('http://www.tavcso-mikroszkop.hu/partner-arlista?format=csv');
             $fh = fopen('makszutov.txt', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
@@ -1242,6 +1259,7 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\Store::getEm()->flush();
                     \mkw\Store::getEm()->clear();
 
+                    $lettfuggoben = false;
                     if ($gyarto) {
                         rewind($fh);
                         fgetcsv($fh, 0, $sep, '"');
@@ -1258,6 +1276,8 @@ class importController extends \mkwhelpers\Controller {
                                     $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                     if ($termek) {
                                         $termekdb++;
+                                        \mkw\Store::writelog('idegen cikkszám: ' . $t['idegencikkszam'], 'makszutov_fuggoben.txt');
+                                        $lettfuggoben = true;
                                         $termek->setFuggoben(true);
                                         $termek->setInaktiv(true);
                                         \mkw\Store::getEm()->persist($termek);
@@ -1271,6 +1291,9 @@ class importController extends \mkwhelpers\Controller {
                             \mkw\Store::getEm()->flush();
                             \mkw\Store::getEm()->clear();
                         }
+                    }
+                    if ($lettfuggoben) {
+                        echo json_encode(array('url' => '/makszutov_fuggoben.txt'));
                     }
                 }
                 fclose($fh);
