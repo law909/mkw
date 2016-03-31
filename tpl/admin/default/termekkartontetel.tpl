@@ -4,12 +4,12 @@
             <th class="headercell"></th>
             <th class="headercell">Biz.szám</th>
             <th class="headercell"></th>
+            {if ($maintheme != 'mkwcansas')}
             <th class="headercell">Raktár</th>
+            {/if}
             <th class="headercell">Kelt</th>
             <th class="headercell">Teljesítés</th>
-            <th class="headercell">Esedékesség</th>
             <th class="headercell">Partner</th>
-            <th class="headercell"></th>
             <th class="headercell textalignright">Nettó egys.ár</th>
             <th class="headercell textalignright">Bruttó egys.ár</th>
             <th class="headercell textalignright">Mennyiség</th>
@@ -54,12 +54,12 @@
             {/if}
             <td class="datacell"><a href="{$tetel.fej.printurl}" target="_blank" title="Nyomtatási kép">{$tetel.fej.id}</a></td>
             <td class="datacell"><a href="{$tetel.fej.editurl}" target="_blank" title="Szerkesztés / nyomtatási kép">{$tetel.fej.bizonylatnev}</a></td>
+            {if ($maintheme != 'mkwcansas')}
             <td class="datacell">{$tetel.fej.raktarnev}</td>
+            {/if}
             <td class="datacell">{$tetel.fej.keltstr}</td>
             <td class="datacell">{$tetel.fej.teljesitesstr}</td>
-            <td class="datacell">{$tetel.fej.esedekessegstr}</td>
             <td class="datacell">{$tetel.fej.szamlanev}</td>
-            <td class="datacell">{$tetel.fej.szamlairszam} {$tetel.fej.szamlavaros} {$tetel.fej.szamlautca}</td>
             <td class="datacell textalignright">{bizformat($tetel.tetel.nettoegysar)}</td>
             <td class="datacell textalignright">{bizformat($tetel.tetel.bruttoegysar)}</td>
             <td class="datacell textalignright">{bizformat($tetel.tetel.mennyiseg*$tetel.tetel.irany)}</td>
@@ -75,9 +75,9 @@
             <td class="datacell"></td>
             <td class="datacell">Összesen</td>
             <td class="datacell"></td>
+            {if ($maintheme != 'mkwcansas')}
             <td class="datacell"></td>
-            <td class="datacell"></td>
-            <td class="datacell"></td>
+            {/if}
             <td class="datacell"></td>
             <td class="datacell"></td>
             <td class="datacell"></td>
@@ -92,9 +92,9 @@
             <td class="datacell"></td>
             <td class="datacell"></td>
             <td class="datacell"></td>
+            {if ($maintheme != 'mkwcansas')}
             <td class="datacell"></td>
-            <td class="datacell"></td>
-            <td class="datacell"></td>
+            {/if}
             <td class="datacell"></td>
             <td class="datacell"></td>
             <td class="datacell"></td>
@@ -107,9 +107,9 @@
             <td class="datacell"></td>
             <td class="datacell"></td>
             <td class="datacell"></td>
+            {if ($maintheme != 'mkwcansas')}
             <td class="datacell"></td>
-            <td class="datacell"></td>
-            <td class="datacell"></td>
+            {/if}
             <td class="datacell"></td>
             <td class="datacell"></td>
             <td class="datacell"></td>
@@ -122,9 +122,9 @@
             <td class="datacell"></td>
             <td class="datacell"></td>
             <td class="datacell"></td>
+            {if ($maintheme != 'mkwcansas')}
             <td class="datacell"></td>
-            <td class="datacell"></td>
-            <td class="datacell"></td>
+            {/if}
             <td class="datacell"></td>
             <td class="datacell"></td>
             <td class="datacell"></td>
@@ -137,9 +137,9 @@
             <td class="datacell"></td>
             <td class="datacell"></td>
             <td class="datacell"></td>
+            {if ($maintheme != 'mkwcansas')}
             <td class="datacell"></td>
-            <td class="datacell"></td>
-            <td class="datacell"></td>
+            {/if}
             <td class="datacell"></td>
             <td class="datacell"></td>
             <td class="datacell"></td>

@@ -111,6 +111,7 @@ class termekkartonController extends \mkwhelpers\Controller {
         }
 
         $view = $this->createView('termekkartontetel.tpl');
+        $view->setVar('maintheme', \mkw\Store::getTheme());
         $view->setVar('nyito', $nyito['mennyiseg']);
         $view->setVar('kartontetelek', $kartontetelek);
         $view->printTemplateResult();
