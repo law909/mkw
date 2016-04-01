@@ -119,10 +119,9 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$rsm->addScalarResult('parent_id', 'parent_id');
 		$rsm->addScalarResult('nev', 'nev');
 		$rsm->addScalarResult('sorrend', 'sorrend');
-        $rsm->addScalarResult('termekdb', 'termekdb');
-		$q = $this->getEm()->createNativeQuery('SELECT id,parent_id,nev,sorrend,(SELECT COUNT(*) FROM termek WHERE (termekfa1karkod LIKE CONCAT(tf.karkod,\'%\')) OR (termekfa2karkod LIKE CONCAT(tf.karkod,\'%\')) OR (termekfa3karkod LIKE CONCAT(tf.karkod,\'%\'))) AS termekdb FROM termekfa tf ORDER BY parent_id,sorrend,nev', $rsm);
+		$q = $this->getEm()->createNativeQuery('SELECT id,parent_id,nev,sorrend FROM termekfa tf ORDER BY parent_id,sorrend,nev', $rsm);
 		$this->fatomb = $q->getScalarResult();
-		$retomb = array('data' => array('title' => $this->fatomb[0]['nev'] . ' (' . $this->fatomb[0]['termekdb'] . ')', 'attr' => array('id' => $elotag . $this->fatomb[0]['id'])), 'children' => $this->bejar($this->fatomb[0]['id'], $elotag));
+		$retomb = array('data' => array('title' => $this->fatomb[0]['nev'], 'attr' => array('id' => $elotag . $this->fatomb[0]['id'])), 'children' => $this->bejar($this->fatomb[0]['id'], $elotag));
 		echo json_encode($retomb);
 	}
 
@@ -130,7 +129,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$ret = array();
 		foreach ($this->fatomb as $key => $val) {
 			if ($val['parent_id'] == $szuloid) {
-				$ret[] = array('data' => array('title' => $val['nev'] . ' (' . $val['termekdb'] . ')', 'attr' => array('id' => $elotag . $val['id'])), 'children' => $this->bejar($val['id'], $elotag));
+				$ret[] = array('data' => array('title' => $val['nev'], 'attr' => array('id' => $elotag . $val['id'])), 'children' => $this->bejar($val['id'], $elotag));
 			}
 		}
 		return $ret;
