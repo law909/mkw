@@ -603,6 +603,8 @@ class Bizonylatfej {
     public function toLista() {
         $ret = array();
         $ret['id'] = $this->getId();
+        $ret['lastmodstr'] = $this->getLastmodStr();
+        $ret['createdstr'] = $this->getCreatedStr();
         $ret['editprinted'] = $this->getBizonylattipus() ? $this->getBizonylattipus()->getEditprinted() : false;
         $ret['bizonylatnev'] = $this->getBizonylatnev();
         $ret['nyomtatva'] = $this->getNyomtatva();
@@ -1807,12 +1809,26 @@ class Bizonylatfej {
         return $this->lastmod;
     }
 
+    public function getLastmodStr() {
+        if ($this->getLastmod()) {
+            return $this->getLastmod()->format(\mkw\Store::$DateTimeFormat);
+        }
+        return '';
+    }
+
     public function clearLastmod() {
         $this->lastmod = null;
     }
 
     public function getCreated() {
         return $this->created;
+    }
+
+    public function getCreatedStr() {
+        if ($this->getCreated()) {
+            return $this->getCreated()->format(\mkw\Store::$DateTimeFormat);
+        }
+        return '';
     }
 
     public function clearCreated() {

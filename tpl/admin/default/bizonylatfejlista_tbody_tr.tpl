@@ -74,6 +74,10 @@
                         IP: {$_egyed.ip} Ref.: {$_egyed.referrer}
                     </td>
                 </tr>
+                <tr><td colspan="5">
+                        Létrehozva: {$_egyed.createdstr} Utoljára módosítva: {$_egyed.lastmodstr}
+                    </td>
+                </tr>
                 {if (($_egyed.bizonylattipusid=='megrendeles') && ($_egyed.regmode > 0))}
                     <tr><td colspan="5">
                             Reg.mód: {if ($_egyed.regmode == 1)}vendég{elseif ($_egyed.regmode == 2)}regisztrált{elseif ($_egyed.regmode == 3)}bejelentkezett{/if}
