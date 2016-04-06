@@ -2006,6 +2006,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getLastmodStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmodStr', []);
+
+        return parent::getLastmodStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function clearLastmod()
     {
 
@@ -2023,6 +2034,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedStr', []);
+
+        return parent::getCreatedStr();
     }
 
     /**
