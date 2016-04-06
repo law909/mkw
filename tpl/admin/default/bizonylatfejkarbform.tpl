@@ -197,7 +197,7 @@
             {if ($showfuvarlevelszam)}
             <tr>
                 <td><label for="FuvarlevelszamEdit">{t('Fuvarlevélszám')}:</label></td>
-                <td><input id="FuvarlevelszamEdit" name="fuvarlevelszam" type="text" value="{$egyed.fuvarlevelszam}"></td>
+                <td colspan="7"><textarea id="FuvarlevelszamEdit" name="fuvarlevelszam" rows="1" cols="100">{$egyed.fuvarlevelszam}</textarea></td>
             </tr>
             {/if}
             <tr>

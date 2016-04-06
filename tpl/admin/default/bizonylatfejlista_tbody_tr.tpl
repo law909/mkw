@@ -107,7 +107,7 @@
                     <tr><td>Er.biz.szám:</td><td>{$_egyed.erbizonylatszam}</td></tr>
                 {/if}
                 {if ($showfuvarlevelszam)}
-                    <tr><td>Fuvarlevél:</td><td>{$_egyed.fuvarlevelszam}</td></tr>
+                    <tr><td>Fuvarlevél:</td><td class="fuvarlevel">{$_egyed.fuvarlevelszam}</td></tr>
                 {/if}
                 <tr><td>{t('Kelt')}:</td><td>{$_egyed.keltstr}</td></tr>
                 {if ($showteljesites)}

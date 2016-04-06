@@ -111,6 +111,11 @@ img {
     word-wrap: break-word;
 }
 
+.fuvarlevel {
+    max-width: 300px;
+    word-wrap: break-word;
+}
+
 .pricenowrap {
     white-space: nowrap;
 }

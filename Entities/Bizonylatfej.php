@@ -143,7 +143,7 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=30,nullable=true) */
     private $erbizonylatszam;
 
-    /** @ORM\Column(type="string",length=100,nullable=true) */
+    /** @ORM\Column(type="text",nullable=true) */
     private $fuvarlevelszam;
 
     /** @ORM\Column(type="date",nullable=false) */
