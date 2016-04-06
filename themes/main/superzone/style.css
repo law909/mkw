@@ -446,6 +446,10 @@ thead.acc-megrendelestetellist td {
     padding: 5px 10px;
 }
 
+.arrival {
+    color: #3a8104;
+}
+
 @media (min-width: 480px) {
 }
 

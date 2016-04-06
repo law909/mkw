@@ -22,6 +22,7 @@
                             <th class="textalignright">Discount</th>
                             <th class="textalignright">Unit price</th>
                             <th class="textalignright">Stock</th>
+                            <th>Arrival</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,7 +49,7 @@
                         </td>
                         <td class="valtozatkeszlet textaligncenter">
                             {if ($_valt.bejon)}
-                                {$_valt.beerkezesdatumstr}
+                                <span class="arrival">{$_valt.beerkezesdatumstr}</span>
                             {else}
                                 <img src="{if ($_valt.keszlet <= 0)}/themes/main/superzone/nincs.jpg{else}/themes/main/superzone/van.jpg{/if}">
                             {/if}
