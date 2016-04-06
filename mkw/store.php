@@ -200,6 +200,13 @@ class Store {
         return $dat->format('Y-m-d');
     }
 
+    public static function getExcelCoordinate($o, $sor) {
+        if ($o < 26) {
+            return chr(65 + $o) . (string)$sor;
+        }
+        return chr(65 + floor($o / 26) - 1) . chr(65 + ($o % 26)) . (string)$sor;
+    }
+
     public static function toBoolStr($i) {
         if ($i) {
             return 'true';

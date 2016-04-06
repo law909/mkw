@@ -17,7 +17,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $this->setListBodyRowTplName('bizonylatfejlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
         parent::__construct($params);
-        $this->getRepo()->addToBatches(array('excelexport' => 'Export'));
+        $this->getRepo()->addToBatches(array('excelfejexport' => 'Fejadat export'));
+        $this->getRepo()->addToBatches(array('exceltetelexport' => 'Tételadat export'));
     }
 
     public function viewselect() {
@@ -988,6 +989,223 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $this->getEm()->persist($bf);
             $this->getEm()->flush();
         }
+    }
+
+    public function fejexport() {
+
+        function x($o, $sor) {
+            return \mkw\Store::getExcelCoordinate($o, $sor);
+        }
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $ids = $this->params->getStringRequestParam('ids');
+        if ($ids) {
+            $filter->addFilter('id', 'IN', explode(',', $ids));
+        }
+        $fejek = $this->getRepo()->getWithJoins($filter, array());
+        $o = 0;
+        $excel = new \PHPExcel();
+        if ($this->biztipus === 'megrendeles') {
+            $excel->setActiveSheetIndex(0)->setCellValue(x($o++, 1), 'Státusz');
+        }
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue(x($o++, 1), 'Állapot')
+            ->setCellValue(x($o++, 1), 'Biz.szám')
+            ->setCellValue(x($o++, 1), 'Kelt')
+            ->setCellValue(x($o++, 1), 'Teljesítés')
+            ->setCellValue(x($o++, 1), 'Esedékesség')
+            ->setCellValue(x($o++, 1), 'Raktár')
+            ->setCellValue(x($o++, 1), 'Fizetési mód')
+            ->setCellValue(x($o++, 1), 'Szállítási mód')
+            ->setCellValue(x($o++, 1), 'Partner neve')
+            ->setCellValue(x($o++, 1), 'Partner címe')
+            ->setCellValue(x($o++, 1), 'Partner adószáma')
+            ->setCellValue(x($o++, 1), 'Nettó')
+            ->setCellValue(x($o++, 1), 'ÁFA')
+            ->setCellValue(x($o++, 1), 'Bruttó')
+            ->setCellValue(x($o++, 1), 'Valuta')
+            ->setCellValue(x($o++, 1), 'Árfolyam')
+            ->setCellValue(x($o++, 1), 'Nettó HUF')
+            ->setCellValue(x($o++, 1), 'ÁFA HUF')
+            ->setCellValue(x($o++, 1), 'Bruttó HUF')
+            ->setCellValue(x($o++, 1), 'Fuvarlevél');
+
+        if ($fejek) {
+
+            $sor = 2;
+            /** @var \Entities\Bizonylatfej $fej */
+            foreach ($fejek as $fej) {
+                $o = 0;
+                if ($this->biztipus === 'megrendeles') {
+                    $excel->setActiveSheetIndex(0)->setCellValue(x($o++, $sor), $fej->getBizonylatstatusznev());
+                }
+                $excel->setActiveSheetIndex(0)
+                    ->setCellValue(x($o++, $sor), $fej->getStornoStr())
+                    ->setCellValue(x($o++, $sor), $fej->getId())
+                    ->setCellValue(x($o++, $sor), $fej->getKeltStr())
+                    ->setCellValue(x($o++, $sor), $fej->getTeljesitesStr())
+                    ->setCellValue(x($o++, $sor), $fej->getEsedekessegStr())
+                    ->setCellValue(x($o++, $sor), $fej->getRaktarnev())
+                    ->setCellValue(x($o++, $sor), $fej->getFizmodnev())
+                    ->setCellValue(x($o++, $sor), $fej->getSzallitasimodnev())
+                    ->setCellValue(x($o++, $sor), $fej->getPartnernev())
+                    ->setCellValue(x($o++, $sor), $fej->getPartnerCim())
+                    ->setCellValue(x($o++, $sor), $fej->getPartneradoszam())
+                    ->setCellValue(x($o++, $sor), $fej->getNetto())
+                    ->setCellValue(x($o++, $sor), $fej->getAfa())
+                    ->setCellValue(x($o++, $sor), $fej->getBrutto())
+                    ->setCellValue(x($o++, $sor), $fej->getValutanemnev())
+                    ->setCellValue(x($o++, $sor), $fej->getArfolyam())
+                    ->setCellValue(x($o++, $sor), $fej->getNettohuf())
+                    ->setCellValue(x($o++, $sor), $fej->getAfahuf())
+                    ->setCellValue(x($o++, $sor), $fej->getBruttohuf())
+                    ->setCellValue(x($o++, $sor), $fej->getFuvarlevelszam());
+
+                $sor++;
+            }
+        }
+        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+
+        $filepath = uniqid('bizonylatfej') . '.xlsx';
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $fileSize);
+        header("Content-Disposition: attachment; filename=" . $filepath);
+
+        readfile($filepath);
+
+        \unlink($filepath);
+    }
+
+    public function tetelexport() {
+
+        function x($o, $sor) {
+            return \mkw\Store::getExcelCoordinate($o, $sor);
+        }
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $ids = $this->params->getStringRequestParam('ids');
+        if ($ids) {
+            $filter->addFilter('id', 'IN', explode(',', $ids));
+        }
+        $fejek = $this->getRepo()->getWithTetelek($filter, array());
+        $o = 0;
+        $excel = new \PHPExcel();
+        if ($this->biztipus === 'megrendeles') {
+            $excel->setActiveSheetIndex(0)->setCellValue(x($o++, 1), 'Státusz');
+        }
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue(x($o++, 1), 'Állapot')
+            ->setCellValue(x($o++, 1), 'Biz.szám')
+            ->setCellValue(x($o++, 1), 'Kelt')
+            ->setCellValue(x($o++, 1), 'Teljesítés')
+            ->setCellValue(x($o++, 1), 'Esedékesség')
+            ->setCellValue(x($o++, 1), 'Raktár')
+            ->setCellValue(x($o++, 1), 'Fizetési mód')
+            ->setCellValue(x($o++, 1), 'Szállítási mód')
+            ->setCellValue(x($o++, 1), 'Partner neve')
+            ->setCellValue(x($o++, 1), 'Partner címe')
+            ->setCellValue(x($o++, 1), 'Partner adószáma')
+            ->setCellValue(x($o++, 1), 'Nettó')
+            ->setCellValue(x($o++, 1), 'ÁFA')
+            ->setCellValue(x($o++, 1), 'Bruttó')
+            ->setCellValue(x($o++, 1), 'Valuta')
+            ->setCellValue(x($o++, 1), 'Árfolyam')
+            ->setCellValue(x($o++, 1), 'Nettó HUF')
+            ->setCellValue(x($o++, 1), 'ÁFA HUF')
+            ->setCellValue(x($o++, 1), 'Bruttó HUF')
+            ->setCellValue(x($o++, 1), 'Fuvarlevél')
+            ->setCellValue(x($o++, 1), 'Cikkszám')
+            ->setCellValue(x($o++, 1), 'Termék neve')
+            ->setCellValue(x($o++, 1), 'Változat érték 1')
+            ->setCellValue(x($o++, 1), 'Változat érték 2')
+            ->setCellValue(x($o++, 1), 'Mennyiség')
+            ->setCellValue(x($o++, 1), 'ME')
+            ->setCellValue(x($o++, 1), 'Nettó egységár')
+            ->setCellValue(x($o++, 1), 'Bruttó egységár')
+            ->setCellValue(x($o++, 1), 'Nettó egységár HUF')
+            ->setCellValue(x($o++, 1), 'Bruttó egységár HUF')
+            ->setCellValue(x($o++, 1), 'Nettó érték')
+            ->setCellValue(x($o++, 1), 'ÁFA érték')
+            ->setCellValue(x($o++, 1), 'Bruttó érték')
+            ->setCellValue(x($o++, 1), 'Nettó érték HUF')
+            ->setCellValue(x($o++, 1), 'ÁFA érték HUF')
+            ->setCellValue(x($o++, 1), 'Bruttó érték HUF');
+
+        if ($fejek) {
+
+            $sor = 2;
+            /** @var \Entities\Bizonylatfej $fej */
+            foreach ($fejek as $fej) {
+                /** @var \Entities\Bizonylattetel $tetel */
+                foreach ($fej->getBizonylattetelek() as $tetel) {
+                    $o = 0;
+                    if ($this->biztipus === 'megrendeles') {
+                        $excel->setActiveSheetIndex(0)->setCellValue(x($o++, $sor), $fej->getBizonylatstatusznev());
+                    }
+                    $excel->setActiveSheetIndex(0)
+                        ->setCellValue(x($o++, $sor), $fej->getStornoStr())
+                        ->setCellValue(x($o++, $sor), $fej->getId())
+                        ->setCellValue(x($o++, $sor), $fej->getKeltStr())
+                        ->setCellValue(x($o++, $sor), $fej->getTeljesitesStr())
+                        ->setCellValue(x($o++, $sor), $fej->getEsedekessegStr())
+                        ->setCellValue(x($o++, $sor), $fej->getRaktarnev())
+                        ->setCellValue(x($o++, $sor), $fej->getFizmodnev())
+                        ->setCellValue(x($o++, $sor), $fej->getSzallitasimodnev())
+                        ->setCellValue(x($o++, $sor), $fej->getPartnernev())
+                        ->setCellValue(x($o++, $sor), $fej->getPartnerCim())
+                        ->setCellValue(x($o++, $sor), $fej->getPartneradoszam())
+                        ->setCellValue(x($o++, $sor), $fej->getNetto())
+                        ->setCellValue(x($o++, $sor), $fej->getAfa())
+                        ->setCellValue(x($o++, $sor), $fej->getBrutto())
+                        ->setCellValue(x($o++, $sor), $fej->getValutanemnev())
+                        ->setCellValue(x($o++, $sor), $fej->getArfolyam())
+                        ->setCellValue(x($o++, $sor), $fej->getNettohuf())
+                        ->setCellValue(x($o++, $sor), $fej->getAfahuf())
+                        ->setCellValue(x($o++, $sor), $fej->getBruttohuf())
+                        ->setCellValue(x($o++, $sor), $fej->getFuvarlevelszam())
+                        ->setCellValue(x($o++, $sor), $tetel->getCikkszam())
+                        ->setCellValue(x($o++, $sor), $tetel->getTermeknev())
+                        ->setCellValue(x($o++, $sor), $tetel->getValtozatertek1())
+                        ->setCellValue(x($o++, $sor), $tetel->getValtozatertek2())
+                        ->setCellValue(x($o++, $sor), $tetel->getMennyiseg())
+                        ->setCellValue(x($o++, $sor), $tetel->getME())
+                        ->setCellValue(x($o++, $sor), $tetel->getNettoegysar())
+                        ->setCellValue(x($o++, $sor), $tetel->getBruttoegysar())
+                        ->setCellValue(x($o++, $sor), $tetel->getNettoegysarhuf())
+                        ->setCellValue(x($o++, $sor), $tetel->getBruttoegysarhuf())
+                        ->setCellValue(x($o++, $sor), $tetel->getNetto())
+                        ->setCellValue(x($o++, $sor), $tetel->getAfaertek())
+                        ->setCellValue(x($o++, $sor), $tetel->getBrutto())
+                        ->setCellValue(x($o++, $sor), $tetel->getNettohuf())
+                        ->setCellValue(x($o++, $sor), $tetel->getAfaertekhuf())
+                        ->setCellValue(x($o++, $sor), $tetel->getBruttohuf());
+
+                    $sor++;
+                }
+            }
+        }
+        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+
+        $filepath = uniqid('bizonylattetel') . '.xlsx';
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $fileSize);
+        header("Content-Disposition: attachment; filename=" . $filepath);
+
+        readfile($filepath);
+
+        \unlink($filepath);
     }
 
 }

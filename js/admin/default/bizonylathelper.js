@@ -939,6 +939,56 @@ var bizonylathelper = function($) {
                             });
                         }
                         break;
+                    case 'excelfejexport':
+                        cbs = $('.maincheckbox:checked');
+                        if (cbs.length) {
+                            var tomb = [],
+                                $exportform = $('#exportform');
+                            cbs.closest('tr').each(function(index, elem) {
+                                tomb.push($(elem).data('egyedid'));
+                            });
+                            $exportform.attr('action', '/admin/' + bizonylattipus + 'fej/fejexport');
+                            $('input[name="ids"]', $exportform).val(tomb);
+                            $exportform.submit();
+                        }
+                        else {
+                            dialogcenter.html('Válasszon ki legalább egy bizonylatot!').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'OK': function() {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                        break;
+                    case 'exceltetelexport':
+                        cbs = $('.maincheckbox:checked');
+                        if (cbs.length) {
+                            var tomb = [],
+                                $exportform = $('#exportform');
+                            cbs.closest('tr').each(function(index, elem) {
+                                tomb.push($(elem).data('egyedid'));
+                            });
+                            $exportform.attr('action', '/admin/' + bizonylattipus + 'fej/tetelexport');
+                            $('input[name="ids"]', $exportform).val(tomb);
+                            $exportform.submit();
+                        }
+                        else {
+                            dialogcenter.html('Válasszon ki legalább egy bizonylatot!').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'OK': function() {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                        break;
                 }
 
             });

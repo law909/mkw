@@ -1070,10 +1070,7 @@ class termekController extends \mkwhelpers\MattableController {
     public function arexport() {
 
         function x($o) {
-            if ($o <= 26) {
-                return chr(65 + $o);
-            }
-            return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
+            return \mkw\Store::getExcelCoordinate($o, '');
         }
 
         $ids = $this->params->getStringRequestParam('ids');

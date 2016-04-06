@@ -11,6 +11,7 @@
 {/block}
 
 {block "kozep"}
+<form id="exportform" method="POST"><input type="hidden" name="ids"></form>
 <div id="mattable-select" data-theme="{$theme}">
 <div id="mattable-header" data-title="{t('Frissítés')}" data-caption="{$pagetitle}"></div>
 <div id="mattable-filterwrapper">

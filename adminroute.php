@@ -114,6 +114,8 @@ $router->map('GET', '/admin/megrendelesfej/printelolegbekero', 'megrendelesfejCo
 $router->map('POST', '/admin/megrendelesfej/sendtofoxpost', 'megrendelesfejController#sendToFoxPost', 'adminmegrendelessendtofoxpost');
 $router->map('POST', '/admin/megrendelesfej/ront', 'megrendelesfejController#ront', 'adminmegrendelesfejront');
 $router->map('POST', '/admin/megrendelesfej/backorder', 'megrendelesfejController#backOrder', 'adminmegrendelesfejbackorder');
+$router->map('POST', '/admin/megrendelesfej/fejexport', 'megrendelesfejController#fejexport', 'adminmegrendelesfejfejexport');
+$router->map('POST', '/admin/megrendelesfej/tetelexport', 'megrendelesfejController#tetelexport', 'adminmegrendelesfejtetelexport');
 
 $router->map('GET', '/admin/szallitofej/viewlist', 'szallitofejController#viewlist', 'adminszallitofejviewlist');
 $router->map('GET', '/admin/szallitofej/getlistbody', 'szallitofejController#getlistbody', 'adminszallitofejgetlistbody');
@@ -122,6 +124,8 @@ $router->map('GET', '/admin/szallitofej/viewkarb', 'szallitofejController#viewka
 $router->map('POST', '/admin/szallitofej/save', 'szallitofejController#save', 'adminszallitofejsave');
 $router->map('GET', '/admin/szallitofej/print', 'szallitofejController#doPrint', 'adminszallitofejprint');
 $router->map('POST', '/admin/szallitofej/ront', 'szallitofejController#ront', 'adminszallitofejront');
+$router->map('POST', '/admin/szallitofej/fejexport', 'szallitofejController#fejexport', 'adminszallitofejfejexport');
+$router->map('POST', '/admin/szallitofej/tetelexport', 'szallitofejController#tetelexport', 'adminszallitofejtetelexport');
 
 $router->map('GET', '/admin/szamlafej/viewlist', 'szamlafejController#viewlist', 'adminszamlafejviewlist');
 $router->map('GET', '/admin/szamlafej/getlistbody', 'szamlafejController#getlistbody', 'adminszamlafejgetlistbody');
@@ -130,6 +134,8 @@ $router->map('GET', '/admin/szamlafej/viewkarb', 'szamlafejController#viewkarb',
 $router->map('POST', '/admin/szamlafej/save', 'szamlafejController#save', 'adminszamlafejsave');
 $router->map('GET', '/admin/szamlafej/print', 'szamlafejController#doPrint', 'adminszamlafejprint');
 $router->map('GET', '/admin/szamlafej/storno', 'szamlafejController#storno', 'adminszamlafejstorno');
+$router->map('POST', '/admin/szamlafej/fejexport', 'szamlafejController#fejexport', 'adminszamlafejfejexport');
+$router->map('POST', '/admin/szamlafej/tetelexport', 'szamlafejController#tetelexport', 'adminszamlafejtetelexport');
 
 $router->map('GET', '/admin/egyebfej/viewlist', 'egyebmozgasfejController#viewlist', 'adminegyebfejviewlist');
 $router->map('GET', '/admin/egyebfej/getlistbody', 'egyebmozgasfejController#getlistbody', 'adminegyebfejgetlistbody');
@@ -138,6 +144,8 @@ $router->map('GET', '/admin/egyebfej/viewkarb', 'egyebmozgasfejController#viewka
 $router->map('POST', '/admin/egyebfej/save', 'egyebmozgasfejController#save', 'adminegyebfejsave');
 $router->map('GET', '/admin/egyebfej/print', 'egyebmozgasfejController#doPrint', 'adminegyebfejprint');
 $router->map('POST', '/admin/egyebfej/ront', 'egyebmozgasfejController#ront', 'adminegyebfejront');
+$router->map('POST', '/admin/egyebfej/fejexport', 'egyebmozgasfejController#fejexport', 'adminegyebfejfejexport');
+$router->map('POST', '/admin/egyebfej/tetelexport', 'egyebmozgasfejController#tetelexport', 'adminegyebfejtetelexport');
 
 $router->map('GET', '/admin/selejtfej/getlistbody', 'selejtfejController#getlistbody', 'adminselejtfejgetlistbody');
 $router->map('GET', '/admin/selejtfej/viewlist', 'selejtfejController#viewlist', 'adminselejtfejviewlist');
@@ -146,6 +154,8 @@ $router->map('GET', '/admin/selejtfej/viewkarb', 'selejtfejController#viewkarb',
 $router->map('POST', '/admin/selejtfej/save', 'selejtfejController#save', 'adminselejtfejsave');
 $router->map('GET', '/admin/selejtfej/print', 'selejtfejController#doPrint', 'adminselejtfejprint');
 $router->map('POST', '/admin/selejtfej/ront', 'selejtfejController#ront', 'adminselejtfejront');
+$router->map('POST', '/admin/selejtfej/fejexport', 'selejtfejController#fejexport', 'adminselejtfejfejexport');
+$router->map('POST', '/admin/selejtfej/', 'selejtfejController#', 'adminselejtfej');
 
 $router->map('GET', '/admin/csomagfej/viewlist', 'csomagfejController#viewlist', 'admincsomagfejviewlist');
 $router->map('GET', '/admin/csomagfej/getlistbody', 'csomagfejController#getlistbody', 'admincsomagfejgetlistbody');
@@ -154,6 +164,8 @@ $router->map('GET', '/admin/csomagfej/viewkarb', 'csomagfejController#viewkarb',
 $router->map('POST', '/admin/csomagfej/save', 'csomagfejController#save', 'admincsomagfejsave');
 $router->map('GET', '/admin/csomagfej/print', 'csomagfejController#doPrint', 'admincsomagfejprint');
 $router->map('POST', '/admin/csomagfej/ront', 'csomagfejController#ront', 'admincsomagfejront');
+$router->map('POST', '/admin/csomagfej/fejexport', 'csomagfejController#fejexport', 'admincsomagfejfejexport');
+$router->map('POST', '/admin/csomagfej/tetelexport', 'csomagfejController#tetelexport', 'admincsomagfejtetelexport');
 
 $router->map('GET', '/admin/keziszamlafej/viewlist', 'keziszamlafejController#viewlist', 'adminkeziszamlafejviewlist');
 $router->map('GET', '/admin/keziszamlafej/getlistbody', 'keziszamlafejController#getlistbody', 'adminkeziszamlafejgetlistbody');
@@ -162,6 +174,8 @@ $router->map('GET', '/admin/keziszamlafej/viewkarb', 'keziszamlafejController#vi
 $router->map('POST', '/admin/keziszamlafej/save', 'keziszamlafejController#save', 'adminkeziszamlafejsave');
 $router->map('GET', '/admin/keziszamlafej/print', 'keziszamlafejController#doPrint', 'adminkeziszamlafejprint');
 $router->map('POST', '/admin/keziszamlafej/ront', 'keziszamlafejController#ront', 'adminkeziszamlafejront');
+$router->map('POST', '/admin/keziszamlafej/fejexport', 'keziszamlafejController#fejexport', 'adminkeziszamlafejfejexport');
+$router->map('POST', '/admin/keziszamlafej/tetelexport', 'keziszamlafejController#tetelexport', 'adminkeziszamlafejtetelexport');
 
 $router->map('GET', '/admin/bevetfej/viewlist', 'bevetfejController#viewlist', 'adminbevetfejviewlist');
 $router->map('GET', '/admin/bevetfej/getlistbody', 'bevetfejController#getlistbody', 'adminbevetfejgetlistbody');
@@ -170,6 +184,8 @@ $router->map('GET', '/admin/bevetfej/viewkarb', 'bevetfejController#viewkarb', '
 $router->map('POST', '/admin/bevetfej/save', 'bevetfejController#save', 'adminbevetfejsave');
 $router->map('GET', '/admin/bevetfej/print', 'bevetfejController#doPrint', 'adminbevetfejprint');
 $router->map('POST', '/admin/bevetfej/ront', 'bevetfejController#ront', 'adminbevetfejront');
+$router->map('POST', '/admin/bevetfej/fejexport', 'bevetfejController#fejexport', 'adminbevetfejfejexport');
+$router->map('POST', '/admin/bevetfej/tetelexport', 'bevetfejController#tetelexport', 'adminbevetfejtetelexport');
 
 $router->map('GET', '/admin/kivetfej/viewlist', 'kivetfejController#viewlist', 'adminkivetfejviewlist');
 $router->map('GET', '/admin/kivetfej/getlistbody', 'kivetfejController#getlistbody', 'adminkivetfejgetlistbody');
@@ -178,6 +194,8 @@ $router->map('GET', '/admin/kivetfej/viewkarb', 'kivetfejController#viewkarb', '
 $router->map('POST', '/admin/kivetfej/save', 'kivetfejController#save', 'adminkivetfejsave');
 $router->map('GET', '/admin/kivetfej/print', 'kivetfejController#doPrint', 'adminkivetfejprint');
 $router->map('POST', '/admin/kivetfej/ront', 'kivetfejController#ront', 'adminkivetfejront');
+$router->map('POST', '/admin/kivetfej/fejexport', 'kivetfejController#fejexport', 'adminkivetfejfejexport');
+$router->map('POST', '/admin/kivetfej/tetelexport', 'kivetfejController#tetelexport', 'adminkivetfejtetelexport');
 
 $router->map('GET', '/admin/termek/viewlist', 'termekController#viewlist', 'admintermekviewlist');
 $router->map('GET', '/admin/termek/htmllist', 'termekController#htmllist', 'admintermekhtmllist');

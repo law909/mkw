@@ -952,6 +952,16 @@ class Bizonylatfej {
         }
     }
 
+    public function getStornoStr() {
+        if ($this->storno) {
+            return 'Storno';
+        }
+        if ($this->stornozott) {
+            return 'Stornozott';
+        }
+        return '';
+    }
+
     public function getMozgat() {
         $bt = $this->getBizonylattipus();
         $raktar = $this->getRaktar();
