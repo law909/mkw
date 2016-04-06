@@ -4,6 +4,7 @@
 <script type="text/javascript" src="/js/admin/default/jquery.form.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.mattkarb.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.mattable.js"></script>
+<script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.flyout.js"></script>
 <script type="text/javascript" src="/js/admin/default/bizonylathelper.js"></script>
 <script type="text/javascript" src="/js/admin/default/{$controllerscript}"></script>
@@ -132,6 +133,8 @@
         <input id="erbizonylatszamfilter" name="erbizonylatszamfilter" type="text" size="20">
     </div>
     {/if}
+    <div class="matt-hseparator"></div>
+    {include "comp_partnercimkefilter.tpl"}
 </div>
 <div class="mattable-pagerwrapper">
 	<div class="mattable-order">

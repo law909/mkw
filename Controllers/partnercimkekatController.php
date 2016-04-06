@@ -43,7 +43,7 @@ class partnercimkekatController extends \mkwhelpers\JQGridController {
         return $res;
     }
 
-    public function getWithCimkek($selected) {
+    public function getWithCimkek($selected = null) {
         $cimkekat = $this->getRepo()->getWithJoins(array(), array('_xx.nev' => 'asc', 'c.nev' => 'asc'));
         $res = array();
         foreach ($cimkekat as $kat) {

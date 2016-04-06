@@ -17,6 +17,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $this->setListBodyRowTplName('bizonylatfejlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
         parent::__construct($params);
+        $this->getRepo()->addToBatches(array('excelexport' => 'Export'));
     }
 
     public function viewselect() {
@@ -83,6 +84,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         if ($a) {
             $view->setVar('datumtolfilter', $a);
         }
+
+        $pcc = new partnercimkekatController($this->params);
+        $view->setVar('cimkekat', $pcc->getWithCimkek());
+
     }
 
     /**
@@ -226,6 +231,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $filter->addFilter(array('storno', 'stornozott'), '=', true);
                 break;
         }
+
+        $cf = $this->params->getArrayRequestParam('cimkefilter');
+        if ($cf) {
+            $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($cf);
+            if ($partnerkodok) {
+                $filter->addFilter('partner', 'IN', $partnerkodok);
+            }
+        }
+
         return $filter;
     }
 
