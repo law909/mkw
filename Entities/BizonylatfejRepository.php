@@ -80,8 +80,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getWithTetelek($filter, $order = array(), $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT _xx'
+    public function getWithTetelek($filter, $order = array(), $offset = 0, $elemcount = 0, $locale = false) {
+        $q = $this->_em->createQuery('SELECT _xx, bt'
             . ' FROM Entities\Bizonylatfej _xx'
             . ' LEFT JOIN _xx.bizonylattetelek bt'
             . $this->getFilterString($filter)
@@ -92,6 +92,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         }
         if ($elemcount > 0) {
             $q->setMaxResults($elemcount);
+        }
+        if ($locale) {
+            \mkw\Store::setTranslationHint($q, $locale);
         }
         return $q->getResult();
     }

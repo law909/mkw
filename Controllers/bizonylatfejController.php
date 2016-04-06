@@ -1093,7 +1093,14 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         if ($ids) {
             $filter->addFilter('id', 'IN', explode(',', $ids));
         }
-        $fejek = $this->getRepo()->getWithTetelek($filter, array());
+
+        if (\mkw\Store::getTheme() === 'superzone') {
+            $fejek = $this->getRepo()->getWithTetelek($filter, array(), 0, 0, \mkw\Store::getParameter(\mkw\consts::Locale));
+        }
+        else {
+            $fejek = $this->getRepo()->getWithTetelek($filter);
+        }
+
         $o = 0;
         $excel = new \PHPExcel();
         if ($this->biztipus === 'megrendeles') {
