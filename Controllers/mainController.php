@@ -209,6 +209,7 @@ class mainController extends \mkwhelpers\Controller {
                     $t['caption'] = $termek->getNev();
                     $t['cikkszam'] = $termek->getCikkszam();
                     $valtozatok = $termek->getValtozatok();
+                    $ma = new \DateTime();
                     foreach ($valtozatok as $valt) {
                         if ($valt->getElerheto() && $valt->getLathato()) {
                             if ($valt->getAdatTipus1Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) {
@@ -219,6 +220,7 @@ class mainController extends \mkwhelpers\Controller {
                                 $vtt[$valt->getErtek1()]['kepurlmedium'] = $valt->getKepurlMedium();
                                 $vtt[$valt->getErtek1()]['kepurllarge'] = $valt->getKepurlLarge();
                                 $vtt[$valt->getErtek1()]['keszlet'] += $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
+                                $vtt[$valt->getErtek1()]['bejon'] = $vtt[$valt->getErtek1()]['bejon'] || (($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma) ? true : false);
                                 $vtt[$valt->getErtek1()]['link'] = \mkw\Store::getRouter()->generate('showtermekm', false, array('slug' => $com), array('szin' => urlencode($valt->getErtek1())));
                             }
                             if ($valt->getAdatTipus2Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) {
@@ -228,7 +230,8 @@ class mainController extends \mkwhelpers\Controller {
                                 $vtt[$valt->getErtek2()]['kepurlsmall'] = $valt->getKepurlSmall();
                                 $vtt[$valt->getErtek2()]['kepurlmedium'] = $valt->getKepurlMedium();
                                 $vtt[$valt->getErtek2()]['kepurllarge'] = $valt->getKepurlLarge();
-                                $vtt[$valt->getErtek1()]['keszlet'] += $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
+                                $vtt[$valt->getErtek2()]['keszlet'] += $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
+                                $vtt[$valt->getErtek2()]['bejon'] = $vtt[$valt->getErtek2()]['bejon'] || (($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma) ? true : false);
                                 $vtt[$valt->getErtek2()]['link'] = \mkw\Store::getRouter()->generate('showtermekm', false, array('slug' => $com), array('szin' => urlencode($valt->getErtek2())));
                             }
                         }

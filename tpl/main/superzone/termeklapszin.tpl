@@ -8,7 +8,7 @@
     </div>
     <div class="row">
         {foreach $termek.valtozatok as $_valt}
-            {if ($_valt.keszlet > 0)}
+            {if ($_valt.keszlet > 0 || $_valt.bejon)}
                 <div class="col-md-4">
                     <div class="szindoboz">
                         <a href="{$_valt.link}">
