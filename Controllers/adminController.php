@@ -29,6 +29,9 @@ class adminController extends mkwhelpers\Controller {
         $raktarid = store::getParameter(\mkw\consts::Raktar, 0);
         $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
 
+        $megrend = new megrendelesfejController($this->params);
+        $view->setVar('teljesithetobackorderek', $megrend->getTeljesithetoBackorderLista());
+        
         $lista = new listaController($this->params);
         switch (\mkw\Store::getTheme()) {
             case 'superzone':

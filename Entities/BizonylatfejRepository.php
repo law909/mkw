@@ -65,7 +65,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return parent::findWithJoins((string)$id);
     }
 
-    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
+    public function getWithJoins($filter, $order = array(), $offset = 0, $elemcount = 0) {
         $q = $this->_em->createQuery('SELECT _xx'
             . ' FROM Entities\Bizonylatfej _xx'
             . $this->getFilterString($filter)
@@ -80,10 +80,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getWithTetelek($filter, $order, $offset = 0, $elemcount = 0) {
+    public function getWithTetelek($filter, $order = array(), $offset = 0, $elemcount = 0) {
         $q = $this->_em->createQuery('SELECT _xx'
             . ' FROM Entities\Bizonylatfej _xx'
-            . ' JOIN Entities\Bizonylattetel bt'
+            . ' LEFT JOIN _xx.bizonylattetelek bt'
             . $this->getFilterString($filter)
             . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));

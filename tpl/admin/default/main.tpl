@@ -5,7 +5,7 @@
 {/block}
 
 {block "kozep"}
-    <div>
+    <div class="clearboth">
         <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Árfolyamok</div>
@@ -43,7 +43,7 @@
         </div>
         {/if}
     </div>
-    <div>
+    <div class="clearboth">
         <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Napi jelentés</div>
@@ -145,5 +145,33 @@
                 </div>
             {/if}
         {/if}
+    </div>
+    <div class="clearboth">
+        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+            <div class="ui-widget-header ui-corner-top">
+                <div class="mainboxinner ui-corner-top">Teljesíthető backorderek</div>
+            </div>
+            <div class="mainboxinner">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Biz.szám</td>
+                            <td>Kelt</td>
+                            <td>Partner</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    {foreach $teljesithetobackorderek as $mr}
+                        <tr>
+                            <td><a href="{$mr.printurl}" target="_blank" title="Nyomtatási kép">{$mr.id}</a></td>
+                            <td><a href="{$mr.editurl}" target="_blank" title="Szerkesztés">{$mr.kelt}</a></td>
+                            <td>{$mr.partnernev}</td>
+                            <td><a class="js-backorder" href="#" data-egyedid="{$mr.id}" title="{t('Backorder')}"><span class="ui-icon ui-icon-transferthick-e-w"></span></a></td>
+                        </tr>
+                    {/foreach}
+                </table>
+            </div>
+        </div>
+
     </div>
 {/block}

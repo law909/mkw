@@ -223,5 +223,47 @@ $(document).ready(
             });
         })
         .button();
+
+        $('.js-backorder').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/megrendelesfej/backorder',
+                type: 'POST',
+                data: {
+                    id: $(this).data('egyedid')
+                },
+                success: function(data) {
+                    var d = JSON.parse(data);
+                    if (d.refresh) {
+                        dialogcenter.html('A backorder rendelés elkészült.').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'OK': function() {
+                                    $('.mattable-tablerefresh').click();
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        dialogcenter.html('A rendelés teljesíthető.').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'OK': function() {
+                                    $('.mattable-tablerefresh').click();
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        })
+        .button();
+
 	}
 );

@@ -40,6 +40,10 @@ body {
 	float: right;
 }
 
+.clearboth {
+    clear: both;
+}
+
 .bold {
     font-weight: bold;
 }

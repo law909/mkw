@@ -279,4 +279,58 @@ class megrendelesfejController extends bizonylatfejController {
             echo json_encode(array('refresh' => 0));
         }
     }
+
+    public function getTeljesithetoBackorderLista() {
+        $ret = array();
+        $backorder = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\Store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
+        if ($backorder) {
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('bizonylatstatusz', '=', $backorder);
+            $filter->addFilter('bizonylattipus', '=', 'megrendeles');
+            $filter->addFilter('rontott', '=', false);
+            $fejek = $this->getRepo()->getWithTetelek($filter);
+            if ($fejek) {
+                /** @var \Entities\Bizonylatfej $fej */
+                foreach ($fejek as $fej) {
+                    $vankeszlet = false;
+                    $tetelek = $fej->getBizonylattetelek();
+                    /** @var \Entities\Bizonylattetel $tetel */
+                    foreach ($tetelek as $tetel) {
+                        /** @var \Entities\TermekValtozat $termek */
+                        $termekv = $tetel->getTermekvaltozat();
+                        if ($termekv) {
+                            if ($termekv->getKeszlet() > 0) {
+                                $vankeszlet = true;
+                                break;
+                            }
+                        }
+                        else {
+                            $termek = $tetel->getTermek();
+                            if ($termek) {
+                                if ($termek->getKeszlet() > 0) {
+                                    $vankeszlet = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if ($vankeszlet) {
+                        $ret[] = array(
+                            'id' => $fej->getId(),
+                            'kelt' => $fej->getKeltStr(),
+                            'partnernev' => $fej->getPartnernev(),
+                            'printurl' => \mkw\Store::getRouter()->generate('adminmegrendelesfejprint', false, array(), array(
+                                'id' => $fej->getId()
+                            )),
+                            'editurl' => \mkw\Store::getRouter()->generate('adminmegrendelesfejviewkarb', false, array(), array(
+                                'id' => $fej->getId(),
+                                'oper' => 'edit'
+                            ))
+                        );
+                    }
+                }
+            }
+        }
+        return $ret;
+    }
 }
