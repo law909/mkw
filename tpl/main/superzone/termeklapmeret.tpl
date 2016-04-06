@@ -22,7 +22,7 @@
                             <th class="textalignright">Discount</th>
                             <th class="textalignright">Unit price</th>
                             <th class="textalignright">Stock</th>
-                            <th>Arrival</th>
+                            <th class="textaligncenter">Arrival</th>
                         </tr>
                     </thead>
                     <tbody>
