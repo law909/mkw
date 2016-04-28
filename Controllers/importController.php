@@ -1276,7 +1276,7 @@ class importController extends \mkwhelpers\Controller {
                                     $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                     if ($termek) {
                                         $termekdb++;
-                                        \mkw\Store::writelog('idegen cikkszám: ' . $t['idegencikkszam'], 'makszutov_fuggoben.txt');
+                                        \mkw\Store::writelog('idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'makszutov_fuggoben.txt');
                                         $lettfuggoben = true;
                                         $termek->setFuggoben(true);
                                         $termek->setInaktiv(true);
