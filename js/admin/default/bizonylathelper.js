@@ -840,7 +840,8 @@ var bizonylathelper = function($) {
                         '#szallitasimodfilter',
                         '#fuvarlevelszamfilter',
                         '#erbizonylatszamfilter',
-                        '#uzletkotofilter'
+                        '#uzletkotofilter',
+                        '#feketelistafilter'
                     ],
                     onClear:function() {
                         $('.js-cimkefilter').removeClass('ui-state-hover');

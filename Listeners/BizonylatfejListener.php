@@ -288,6 +288,17 @@ class BizonylatfejListener {
                 $entity->calcRugalmasFizmod();
                 $entity->calcOsztottFizetendo();
 
+                $feketelistarepo = $this->em->getRepository('Entities\Feketelista');
+                $fok = $feketelistarepo->getFeketelistaOk($entity->getPartneremail(), $entity->getIp());
+                if ($fok === false) {
+                    $entity->setPartnerfeketelistas(false);
+                    $entity->setPartnerfeketelistaok(null);
+                }
+                else {
+                    $entity->setPartnerfeketelistas(true);
+                    $entity->setPartnerfeketelistaok($fok);
+                }
+
                 $this->createFolyoszamla($entity);
                 $this->uow->recomputeSingleEntityChangeSet($this->bizonylatfejmd, $entity);
             }

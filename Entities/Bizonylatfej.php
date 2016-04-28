@@ -297,6 +297,14 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=40,nullable=true) */
     private $partnertelefon = '';
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $partnerfeketelistas = false;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $partnerfeketelistaok;
+
     /**
      * @ORM\ManyToOne(targetEntity="Bankszamla",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="bankszamla_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -645,6 +653,8 @@ class Bizonylatfej {
         $ret['partnertelefon'] = $this->getPartnertelefon();
         $ret['partnerkeresztnev'] = $this->getPartnerkeresztnev();
         $ret['partnervezeteknev'] = $this->getPartnervezeteknev();
+        $ret['partnerfeketelistas'] = $this->getPartnerfeketelistas();
+        $ret['partnerfeketelistaok'] = $this->getPartnerfeketelistaok();
         $ret['szamlanev'] = $this->getPartnernev();
         $ret['szamlairszam'] = $this->getPartnerirszam();
         $ret['szamlavaros'] = $this->getPartnervaros();
@@ -1471,6 +1481,8 @@ class Bizonylatfej {
                 $this->partnervalligszam = '';
                 $this->partnervaros = '';
                 $this->partnerszamlatipus = 0;
+                $this->partnerfeketelistas = false;
+                $this->partnerfeketelistaok = '';
                 $this->szallnev = '';
                 $this->szallirszam = '';
                 $this->szallvaros = '';
@@ -2571,6 +2583,34 @@ class Bizonylatfej {
      */
     public function setSzallitasikoltsegbrutto($szallitasikoltsegbrutto) {
         $this->szallitasikoltsegbrutto = $szallitasikoltsegbrutto;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPartnerfeketelistas() {
+        return $this->partnerfeketelistas;
+    }
+
+    /**
+     * @param mixed $partnerfeketelistas
+     */
+    public function setPartnerfeketelistas($partnerfeketelistas) {
+        $this->partnerfeketelistas = $partnerfeketelistas;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPartnerfeketelistaok() {
+        return $this->partnerfeketelistaok;
+    }
+
+    /**
+     * @param mixed $partnerfeketelistaok
+     */
+    public function setPartnerfeketelistaok($partnerfeketelistaok) {
+        $this->partnerfeketelistaok = $partnerfeketelistaok;
     }
 
 

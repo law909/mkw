@@ -119,6 +119,12 @@
                 <option value="{$_role.id}">{$_role.caption}</option>
             {/foreach}
         </select>
+        <label for="feketelistafilter">Feketelistás:</label>
+        <select id="feketelistafilter" name="feketelistafilter">
+            <option value="0">Mindegy</option>
+            <option value="1"{if ($bizonylatfeketelistafilter === 1)} selected="selected"{/if}>nem feketelistás</option>
+            <option value="2"{if ($bizonylatfeketelistafilter === 2)} selected="selected"{/if}>feketelistás</option>
+        </select>
     </div>
     {if ($showfuvarlevelszam)}
 	<div class="matt-hseparator"></div>

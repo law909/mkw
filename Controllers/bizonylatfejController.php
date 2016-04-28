@@ -241,6 +241,16 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             }
         }
 
+        $f = $this->params->getIntRequestParam('feketelistafilter');
+        switch ($f) {
+            case 1:
+                $filter->addFilter('partnerfeketelistas', '=', false);
+                break;
+            case 2:
+                $filter->addFilter('partnerfeketelistas', '=', true);
+                break;
+        }
+
         return $filter;
     }
 
@@ -291,6 +301,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['partneradoszam'] = $t->getPartneradoszam();
         $x['partnereuadoszam'] = $t->getPartnereuadoszam();
         $x['partnerszamlatipus'] = $t->getPartnerSzamlatipus();
+        $x['partnerfeketelistas'] = $t->getPartnerfeketelistas();
+        $x['partnerfeketelistaok'] = $t->getPartnerfeketelistaok();
         $x['raktar'] = $t->getRaktarId();
         $x['raktarnev'] = $t->getRaktarnev();
         $x['fizmod'] = $t->getFizmodId();

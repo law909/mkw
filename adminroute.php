@@ -313,6 +313,12 @@ $router->map('GET', '/admin/template/getkarb', 'templateController#getkarb', 'ad
 $router->map('GET', '/admin/template/viewkarb', 'templateController#viewkarb', 'admintemplateviewkarb');
 $router->map('POST', '/admin/template/save', 'templateController#save', 'admintemplatesave');
 
+$router->map('GET', '/admin/feketelista/viewlist', 'feketelistaController#viewlist', 'adminfeketelistaviewlist');
+$router->map('GET', '/admin/feketelista/getlistbody', 'feketelistaController#getlistbody', 'adminfeketelistagetlistbody');
+$router->map('GET', '/admin/feketelista/getkarb', 'feketelistaController#getkarb', 'adminfeketelistagetkarb');
+$router->map('GET', '/admin/feketelista/viewkarb', 'feketelistaController#viewkarb', 'adminfeketelistaviewkarb');
+$router->map('POST', '/admin/feketelista/save', 'feketelistaController#save', 'adminfeketelistasave');
+
 $router->map('GET', '/admin/termekcimke/viewlist', 'termekcimkeController#viewlist', 'admintermekcimkeviewlist');
 $router->map('GET', '/admin/termekcimke/getlistbody', 'termekcimkeController#getlistbody', 'admintermekcimkegetlistbody');
 $router->map('GET', '/admin/termekcimke/getkarb', 'termekcimkeController#getkarb', 'admintermekcimkegetkarb');

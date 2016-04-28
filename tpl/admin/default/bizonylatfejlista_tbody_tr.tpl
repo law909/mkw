@@ -78,6 +78,13 @@
                         Létrehozva: {$_egyed.createdstr} Utoljára módosítva: {$_egyed.lastmodstr}
                     </td>
                 </tr>
+                {if ($_egyed.partnerfeketelistas)}
+                <tr>
+                    <td colspan="5">
+                        <span class="feketelistas">FEKETELISTÁS:</span> {$_egyed.partnerfeketelistaok}
+                    </td>
+                </tr>
+                {/if}
                 {if (($_egyed.bizonylattipusid=='megrendeles') && ($_egyed.regmode > 0))}
                     <tr><td colspan="5">
                             Reg.mód: {if ($_egyed.regmode == 1)}vendég{elseif ($_egyed.regmode == 2)}regisztrált{elseif ($_egyed.regmode == 3)}bejelentkezett{/if}

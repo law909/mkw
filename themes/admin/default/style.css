@@ -207,3 +207,8 @@ tfoot tr td {
 .kiegyenlitetlenselect {
     width: 100%;
 }
+
+.feketelistas {
+    background: black;
+    color: white;
+}
