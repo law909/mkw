@@ -555,7 +555,7 @@ class termekController extends \mkwhelpers\MattableController {
             $filter->addFilter('gyarto' , '=', $this->params->getIntRequestParam('gyartofilter'));
         }
 		if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
-            $filter->addFilter(array('nev', 'rovidleiras', 'cikkszam', 'vonalkod'), 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
+            $filter->addFilter(array('nev', 'rovidleiras', 'cikkszam', 'vonalkod', 'idegencikkszam'), 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
 		}
         if (!is_null($this->params->getRequestParam('kepurlfilter', null))) {
             $filter->addFilter(array('kepurl'), 'LIKE', '%' . $this->params->getStringRequestParam('kepurlfilter') . '%');
