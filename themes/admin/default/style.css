@@ -212,3 +212,7 @@ tfoot tr td {
     background: black;
     color: white;
 }
+
+table.termekkarton tr:nth-child(even) {
+    background: #ddd;
+}

@@ -1,4 +1,4 @@
-<table>
+<table class="termekkarton">
     <thead>
         <tr>
             <th class="headercell"></th>
