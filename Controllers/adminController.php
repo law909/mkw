@@ -31,7 +31,7 @@ class adminController extends mkwhelpers\Controller {
 
         $megrend = new megrendelesfejController($this->params);
         $view->setVar('teljesithetobackorderek', $megrend->getTeljesithetoBackorderLista());
-        
+
         $lista = new listaController($this->params);
         switch (\mkw\Store::getTheme()) {
             case 'superzone':
@@ -65,8 +65,13 @@ class adminController extends mkwhelpers\Controller {
     public function printTeljesitmenyJelentes() {
         $lista = new listaController($this->params);
 
+        $datumstr = $this->params->getStringRequestParam('tol');
+        $datum = \mkw\Store::convDate($datumstr);
+        $igdatumstr = $this->params->getStringRequestParam('ig');
+        $igdatum = \mkw\Store::convDate($igdatumstr);
+
         $view = $this->createView('teljesitmenyjelentesbody.tpl');
-        $view->setVar('tjlista', $lista->teljesitmenyJelentes());
+        $view->setVar('tjlista', $lista->teljesitmenyJelentes($datum, $igdatum));
         $view->printTemplateResult();
     }
 

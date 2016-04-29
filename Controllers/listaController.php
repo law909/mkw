@@ -130,7 +130,7 @@ class listaController extends \mkwhelpers\Controller {
         return $ret;
     }
 
-    public function teljesitmenyJelentes() {
+    public function teljesitmenyJelentes($tol = null, $ig = null) {
 
         function per($a, $b) {
             $a = $a * 1;
@@ -143,18 +143,41 @@ class listaController extends \mkwhelpers\Controller {
 
         /** @var \Entities\BizonylatfejRepository $bfrepo */
         $bfrepo = $this->getRepo('Entities\Bizonylatfej');
-        $evma = date('Y') * 1;
-        $homa = date('m');
-        $napma = date('d');
+
+        if (!$tol) {
+            $evtol = \mkw\Store::getParameter(\mkw\consts::TeljesitmenyKezdoEv, 2014);
+            $hotol = '01';
+            $naptol = '01';
+            $tol = new \DateTime($evtol . '-' . $hotol . '-' . $naptol);
+        }
+        else {
+            $tol = new \DateTime($tol);
+            $evtol = $tol->format('Y') * 1;
+            $hotol = $tol->format('m');
+            $naptol = $tol->format('d');
+        }
+
+        if (!$ig) {
+            $ig = new \DateTime();
+            $evig = date('Y') * 1;
+            $hoig = date('m');
+            $napig = date('d');
+        }
+        else {
+            $ig = new \DateTime($ig);
+            $evig = $ig->format('Y') * 1;
+            $hoig = $ig->format('m');
+            $napig = $ig->format('d');
+        }
+
         $evek = array();
-        for ($ev = \mkw\Store::getParameter(\mkw\consts::TeljesitmenyKezdoEv, 2014); $ev <= $evma; $ev++) {
+        for ($ev = $evtol; $ev <= $evig; $ev++) {
             $evek[] = array(
-                'eleje' => (string)$ev . '-01-01',
-                'vege' => (string)$ev . '-' . $homa . '-' . $napma
+                'eleje' => (string)$ev . '-' . $hotol . '-' . $naptol,
+                'vege' => (string)$ev . '-' . $hoig . '-' . $napig
             );
         }
-        $ma = new \DateTime();
-        $nap = $ma->diff(new \DateTime($evma . '-01-01'));
+        $nap = $ig->diff($tol);
         $nap = $nap->days;
 
         $sqls = array();

@@ -1,3 +1,4 @@
+<div class="js-teljesitmenyjelentesbody">
 <table>
     <thead>
         <tr>
@@ -80,3 +81,4 @@
     {/foreach}
     </tbody>
 </table>
+</div>

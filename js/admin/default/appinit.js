@@ -168,16 +168,34 @@ $(document).ready(
             })
         });
 
-        $('.js-teljesitmenyjelentes').on('click', function(e) {
-            e.preventDefault();
-            $.ajax({
-                url: '/admin/teljesitmenyjelentes',
-                type: 'POST',
-                success: function(data) {
-                    $('.js-teljesitmenyjelentesbody').replaceWith(data);
+        var $teljesitmenyjelentestoledit = $('#TolEdit'),
+            $teljesitmenyjelentesigedit = $('#IgEdit');
+        if ($teljesitmenyjelentestoledit && $teljesitmenyjelentesigedit) {
+            mkwcomp.datumEdit.init($teljesitmenyjelentestoledit);
+            mkwcomp.datumEdit.init($teljesitmenyjelentesigedit);
+            $('.js-teljesitmenyjelentes').on('click', function (e) {
+                e.preventDefault();
+                var tol = $teljesitmenyjelentestoledit.datepicker('getDate'),
+                    ig = $teljesitmenyjelentesigedit.datepicker('getDate');
+                if (tol) {
+                    tol = tol.getFullYear() + '.' + (tol.getMonth() + 1) + '.' + tol.getDate();
                 }
-            })
-        });
+                if (ig) {
+                    ig = ig.getFullYear() + '.' + (ig.getMonth() + 1) + '.' + ig.getDate();
+                }
+                $.ajax({
+                    url: '/admin/teljesitmenyjelentes',
+                    type: 'POST',
+                    data: {
+                        tol: tol,
+                        ig: ig
+                    },
+                    success: function (data) {
+                        $('.js-teljesitmenyjelentesbody').replaceWith(data);
+                    }
+                })
+            });
+        }
 
         $('.js-boltbannincstermekfabutton').on('click', function(e) {
             var edit = $(this),

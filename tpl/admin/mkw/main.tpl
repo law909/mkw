@@ -9,6 +9,8 @@
         </div>
         <div class="mainboxinner">
             <div class="mainboxinner">
+                {include "tpl/admin/default/comp_idoszak.tpl" comptype="datum" datumtipus="teljesites"}
+                <button class="js-teljesitmenyjelentes ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Frissít</span></button>
                 {include "teljesitmenyjelentesbody.tpl"}
             </div>
         </div>
