@@ -180,7 +180,7 @@ class listaController extends \mkwhelpers\Controller {
 
         $elejenaphoz = new \DateTime($evtol . '-' . $hoig . '-' . $napig);
         $nap = $elejenaphoz->diff($tol);
-        $nap = $nap->days;
+        $nap = $nap->days + 1;
 
         $sqls = array();
         foreach ($evek as $ev) {
