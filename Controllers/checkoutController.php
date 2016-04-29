@@ -155,7 +155,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                 $telefon = $this->params->getStringRequestParam('telefon');
                 $jelszo1 = $this->params->getStringRequestParam('jelszo1');
                 $jelszo2 = $this->params->getStringRequestParam('jelszo2');
-                $email = $this->params->getStringRequestParam('kapcsemail');
+                $kapcsemail = $this->params->getStringRequestParam('kapcsemail');
                 $szamlanev = $this->params->getStringRequestParam('szamlanev');
                 $szamlairszam = $this->params->getStringRequestParam('szamlairszam');
                 $szamlavaros = $this->params->getStringRequestParam('szamlavaros');
@@ -241,19 +241,19 @@ class checkoutController extends \mkwhelpers\MattableController {
                 }
                 switch ($regkell) {
                     case 1: // vendég
-                        $ok = $ok && $email;
-                        if (!$email) {
+                        $ok = $ok && $kapcsemail;
+                        if (!$kapcsemail) {
                             $errorlogtext[] = '2vendegemail';
                             $errors[] = 'Nem adott meg emailcímet.';
                         }
                         break;
                     case 2: // regisztráció
-                        $ok = $ok && $jelszo1 && $jelszo2 && ($jelszo1 === $jelszo2) && $email;
+                        $ok = $ok && $jelszo1 && $jelszo2 && ($jelszo1 === $jelszo2) && $kapcsemail;
                         if (!$jelszo1 || !$jelszo2 || ($jelszo1 !== $jelszo2)) {
                             $errorlogtext[] = '3regjelszo';
                             $errors[] = 'Nem adott meg jelszót, vagy a két jelszó nem egyezik.';
                         }
-                        if (!$email) {
+                        if (!$kapcsemail) {
                             $errorlogtext[] = '3regemail';
                             $errors[] = 'Nem adott meg emailcímet.';
                         }
@@ -281,7 +281,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                         case 2: // regisztráció
                             $pc = new \Controllers\partnerController($this->params);
                             $partner = $pc->saveRegistrationData(false);
-                            $pc->login($email, $jelszo1);
+                            $pc->login($kapcsemail, $jelszo1);
                             break;
                         default: // be van jelentkezve
                             $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
@@ -380,10 +380,10 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $this->getEm()->persist($megrendfej);
                     $this->getEm()->flush();
 
-                    \mkw\Store::writelog($megrendfej->getId() . ' : ' . $regmodenev . ' : ' . $partner->getNev() . ' : ' . $email . ' : ' . $partner->getId(), 'checkout.log');
+                    \mkw\Store::writelog($megrendfej->getId() . ' : ' . $regmodenev . ' : ' . $partner->getNev() . ' : ' . $kapcsemail . ' : ' . $partner->getId(), 'checkout.log');
 
                     Store::getMainSession()->lastmegrendeles = $megrendfej->getId();
-                    Store::getMainSession()->lastemail = $email;
+                    Store::getMainSession()->lastemail = $kapcsemail;
                     Store::getMainSession()->lasttermeknevek = $lasttermeknevek;
                     Store::getMainSession()->lasttermekids = $lasttermekids;
                     Store::getMainSession()->lastszallmod = $szallitasimod;
@@ -525,11 +525,11 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $this->getEm()->flush();
 
                     Store::getMainSession()->lastmegrendeles = $megrendfej->getId();
-                    Store::getMainSession()->lastemail = $email;
+                    //Store::getMainSession()->lastemail = $kapcsemail;
                     Store::getMainSession()->lasttermeknevek = $lasttermeknevek;
                     Store::getMainSession()->lasttermekids = $lasttermekids;
-                    Store::getMainSession()->lastszallmod = $szallitasimod;
-                    Store::getMainSession()->lastfizmod = $fizetesimod;
+                    //Store::getMainSession()->lastszallmod = $szallitasimod;
+                    //Store::getMainSession()->lastfizmod = $fizetesimod;
                     $kc = new kosarController($this->params);
                     $kc->clear();
 

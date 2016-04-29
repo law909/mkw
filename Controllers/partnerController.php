@@ -236,11 +236,12 @@ class partnerController extends \mkwhelpers\MattableController {
             if (\mkw\Store::getTheme() === 'mkwcansas') {
                 $obj->setNev($this->params->getStringRequestParam('vezeteknev') . ' ' . $this->params->getStringRequestParam('keresztnev'));
             }
-            if ($this->params->existsRequestParam('email')) {
-                $obj->setEmail($this->params->getStringRequestParam('email'));
+            $email = $this->params->getStringRequestParam('kapcsemail');
+            if ($email) {
+                $obj->setEmail($email);
             }
             else {
-                $obj->setEmail($this->params->getStringRequestParam('kapcsemail'));
+                $obj->setEmail($this->params->getStringRequestParam('email'));
             }
             $obj->setJelszo($this->params->getStringRequestParam('jelszo1'));
             $obj->setVendeg(false);
@@ -262,9 +263,9 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     public function saveRegistrationData($vendeg = false) {
-        $email = $this->params->getStringRequestParam('email');
+        $email = $this->params->getStringRequestParam('kapcsemail');
         if (!$email) {
-            $email = $this->params->getStringRequestParam('kapcsemail');
+            $email = $this->params->getStringRequestParam('email');
         }
         $ps = $this->getRepo()->findVendegByEmail($email);
         if (count($ps) > 0) {
