@@ -177,7 +177,9 @@ class listaController extends \mkwhelpers\Controller {
                 'vege' => (string)$ev . '-' . $hoig . '-' . $napig
             );
         }
-        $nap = $ig->diff($tol);
+
+        $elejenaphoz = new \DateTime($evtol . '-' . $hoig . '-' . $napig);
+        $nap = $elejenaphoz->diff($tol);
         $nap = $nap->days;
 
         $sqls = array();
