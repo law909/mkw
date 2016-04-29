@@ -39,1119 +39,1142 @@
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .gradient-background (@from, @to) {
-	background-color: @to;
-	background-image: -webkit-gradient(linear,0 0,0 100%, from(@from), to(@to));
-	background-image: -webkit-linear-gradient(top,@from,@to);
-	background-image: -moz-linear-gradient(top,@from,@to);
-	background-image: -o-linear-gradient(top,@from,@to);
-	background-image: linear-gradient(to bottom,@from,@to);
+  background-color: @to;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@from), to(@to));
+  background-image: -webkit-linear-gradient(top, @from, @to);
+  background-image: -moz-linear-gradient(top, @from, @to);
+  background-image: -o-linear-gradient(top, @from, @to);
+  background-image: linear-gradient(to bottom, @from, @to);
 }
 
 .border-radius (@a) {
-	-webkit-border-radius: @a;
-	-moz-border-radius: @a;
-	border-radius: @a;
+  -webkit-border-radius: @a;
+  -moz-border-radius: @a;
+  border-radius: @a;
 }
 
 .border-radius-multi (@a, @b, @c, @d) {
-	-webkit-border-radius: @arguments;
-	-moz-border-radius: @arguments;
-	border-radius: @arguments;
+  -webkit-border-radius: @arguments;
+  -moz-border-radius: @arguments;
+  border-radius: @arguments;
 }
 
 .box-shadow (@a, @b, @c, @d) {
-	-webkit-box-shadow: @arguments;
-	-moz-box-shadow: @arguments;
-	box-shadow: @arguments;
+  -webkit-box-shadow: @arguments;
+  -moz-box-shadow: @arguments;
+  box-shadow: @arguments;
 }
 
 h1 {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 h2 {
-    font-size: 17px;
+  font-size: 17px;
 }
 
 h3 {
-    font-size: 15px;
+  font-size: 15px;
 }
 
 h4 {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 h5 {
-    font-size: 13px;
+  font-size: 13px;
 }
 
 .hibas {
-    background-color: #b94a48 !important;
-    border-color: #e9322d !important;
-    -webkit-box-shadow:0 0 6px #f8b9b7 !important;
-    -moz-box-shadow:0 0 6px #f8b9b7 !important;
-    box-shadow:0 0 6px #f8b9b7 !important;
-    color: white !important;
+  background-color: #b94a48 !important;
+  border-color: #e9322d !important;
+  -webkit-box-shadow: 0 0 6px #f8b9b7 !important;
+  -moz-box-shadow: 0 0 6px #f8b9b7 !important;
+  box-shadow: 0 0 6px #f8b9b7 !important;
+  color: white !important;
 
 }
 
 .ii {
-    border-color: #ee5f5b !important;
+  border-color: #ee5f5b !important;
 }
 
 #korhinta {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .copyright {
-    font-size: 11px;
-    text-align: center;
-    margin-top: 40px;
+  font-size: 11px;
+  text-align: center;
+  margin-top: 40px;
 }
 
 .whitebg {
-    background-color: white;
+  background-color: white;
 }
 
 .bgtakaro {
-    padding: 0 10px 10px 10px;
+  padding: 0 10px 10px 10px;
 }
 
 .headbgtakaro {
-    padding: 0 10px;
+  padding: 0 10px;
 }
 
-.tabs-left>.nav-tabs .active>a {
-	font-weight: bold;
-	color: #333;
-	background-color: @fejlecbackground;
+.tabs-left > .nav-tabs .active > a {
+  font-weight: bold;
+  color: #333;
+  background-color: @fejlecbackground;
 }
 
 .textaligncenter {
-	text-align: center;
+  text-align: center;
 }
 
 table th.textaligncenter, table td.textaligncenter {
-	text-align: center;
+  text-align: center;
 }
 
 .textalignright {
-	text-align: right;
+  text-align: right;
 }
 
 .textalignjustify {
-    text-align: justify;
+  text-align: justify;
 }
 
 .simalista {
-	list-style: none;
-	margin: 0;
+  list-style: none;
+  margin: 0;
 }
 
 .bold {
-    font-style: bold;
+  font-style: bold;
 }
 
 .termeknev {
-    font-size: 24.5px;
+  font-size: 24.5px;
 }
 
 .width100percent {
-	width: 100%;
+  width: 100%;
 }
 
 body {
-	font-size: @fontsize;
+  font-size: @fontsize;
 }
 
 .bgimg {
-    background: #dbdbdb url("/themes/main/mkwcansas/img/bg.png") repeat scroll top left;
+  background: #dbdbdb url("/themes/main/mkwcansas/img/bg.png") repeat scroll top left;
 }
 
 a {
-	text-decoration: none;
-	color: @fontcolor;
+  text-decoration: none;
+  color: @fontcolor;
 }
 
 a:hover {
-	text-decoration: none;
-	color: @hoverfontcolor;
+  text-decoration: none;
+  color: @hoverfontcolor;
 }
 
 p, input {
-	font-size: @fontsize;
+  font-size: @fontsize;
 }
 
 select {
-	font-size: @fontsize;
-	width: auto;
-	height: auto;
-	margin: 0;
-	padding: 2px;
+  font-size: @fontsize;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 2px;
 }
 
 .piros {
-	color: red;
+  color: red;
 }
 
 .table {
-	margin: 0;
-	clear: left;
+  margin: 0;
+  clear: left;
 }
 
 td {
-	vertical-align: top;
+  vertical-align: top;
 }
 
 .notvisible {
-	display: none;
+  display: none;
 }
 
 .clearboth {
-	clear: both;
+  clear: both;
 }
 
 .bold {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 .inputiconhack {
-	display: none;
+  display: none;
 }
 
 .form-actions {
-	background: none;
-	border: none;
+  background: none;
+  border: none;
 }
 
 .btn {
-	border: none;
-	.border-radius(@smallradius);
+  border: none;
+  .border-radius(@smallradius);
 }
 
 .btn-large {
-	.border-radius(@bigradius);
+  .border-radius(@bigradius);
 }
 
 .btn-mini {
-	.border-radius(@miniradius);
+  .border-radius(@miniradius);
 }
 
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
-	.border-radius(@smallradius);
+  .border-radius(@smallradius);
 }
 
 .modal {
-	.border-radius(@bigradius);
+  .border-radius(@bigradius);
 }
 
 .okbtn {
-	color: white;
-	text-shadow: 0 0 0;
-	background-color: @okbuttonvilagos;
-	border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-	.gradient-background(@okbuttonvilagos,@okbuttonsotet);
+  color: white;
+  text-shadow: 0 0 0;
+  background-color: @okbuttonvilagos;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  .gradient-background(@okbuttonvilagos, @okbuttonsotet);
 }
 
-.okbtn:hover,.okbtn:focus,.okbtn:active,.okbtn.active,.okbtn.disabled,.okbtn[disabled] {
-	color: white;
-	.gradient-background(@okbuttonvilagos,@okbuttonsotet);
+.okbtn:hover, .okbtn:focus, .okbtn:active, .okbtn.active, .okbtn.disabled, .okbtn[disabled] {
+  color: white;
+  .gradient-background(@okbuttonvilagos, @okbuttonsotet);
 }
-.okbtn:active,.okbtn.active,.okbtn:focus {
-	.gradient-background(@okbuttonvilagos,@okbuttonsotet);
+
+.okbtn:active, .okbtn.active, .okbtn:focus {
+  .gradient-background(@okbuttonvilagos, @okbuttonsotet);
 }
 
 .graybtn {
-	color: white;
-	text-shadow: 0 0 0;
-	background-color: @headernavvilagos;
-	border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-	.gradient-background(@headernavvilagos,@headernavsotet);
+  color: white;
+  text-shadow: 0 0 0;
+  background-color: @headernavvilagos;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  .gradient-background(@headernavvilagos, @headernavsotet);
 }
 
-.graybtn:hover,.graybtn:focus,.graybtn:active,.graybtn.active,.graybtn.disabled,.graybtn[disabled] {
-	color: white;
-	.gradient-background(@headernavvilagos,@headernavsotet);
+.graybtn:hover, .graybtn:focus, .graybtn:active, .graybtn.active, .graybtn.disabled, .graybtn[disabled] {
+  color: white;
+  .gradient-background(@headernavvilagos, @headernavsotet);
 }
-.graybtn:active,.graybtn.active,.graybtn:focus {
-	.gradient-background(@headernavvilagos,@headernavsotet);
+
+.graybtn:active, .graybtn.active, .graybtn:focus {
+  .gradient-background(@headernavvilagos, @headernavsotet);
 }
 
 header a, footer a {
-	color: @headerfontcolor;
+  color: @headerfontcolor;
 }
 
 header a:hover, footer a:hover {
-	color: @headerhoverfontcolor;
+  color: @headerhoverfontcolor;
 }
 
 .headertop {
-	color: @headerfontcolor;
-	.gradient-background(@headervilagos,@headersotet);
+  color: @headerfontcolor;
+  .gradient-background(@headervilagos, @headersotet);
 }
 
 .header-ingyenes {
-    height: @headerrowmargin;
+  height: @headerrowmargin;
 }
 
 .headerbutton {
-	float: left;
-	border-right-style: solid;
-	border-right-width: 2px;
-	border-color: @headerfontcolor;
-	padding: 0 10px;
-	a {
-		line-height: @headerheight;
-		display: block;
-	}
+  float: left;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-color: @headerfontcolor;
+  padding: 0 10px;
+  a {
+    line-height: @headerheight;
+    display: block;
+  }
 }
 
 .lastheaderbutton {
-	border: none;
+  border: none;
 }
 
 .firstheaderbutton {
-	padding-left: 0;
+  padding-left: 0;
 }
 
 .headercarticon {
-	display: block;
-    background: url("img/i_kosar.png") no-repeat scroll center center;
-    width: @headerheight;
-	height: @headerheight;
-	margin-right: 10px;
-	background-color: @cartbuttonvilagos;
+  display: block;
+  background: url("img/i_kosar.png") no-repeat scroll center center;
+  width: @headerheight;
+  height: @headerheight;
+  margin-right: 10px;
+  background-color: @cartbuttonvilagos;
 }
 
 #minikosar {
-	line-height: @headerheight;
+  line-height: @headerheight;
 }
 
 .headercart .cartbtn {
-	margin: 5px 0 5px 10px;
+  margin: 5px 0 5px 10px;
 }
 
 .headerloginicon {
-	display: block;
-	background: url("img/i_emberke.png") no-repeat scroll left center;
-	padding-left: 20px;
+  display: block;
+  background: url("img/i_emberke.png") no-repeat scroll left center;
+  padding-left: 20px;
 }
 
 .headercarttext {
-	font-size: @headercarttextfontsize;
-	color: white;
+  font-size: @headercarttextfontsize;
+  color: white;
 }
 
 .headermid {
-	margin-bottom: @headermidmargin;
-	line-height: normal;
-    padding-top:  10px;
+  margin-bottom: @headermidmargin;
+  line-height: normal;
+  padding-top: 10px;
 }
 
 #searchform, #searchinput {
-	margin: 0;
+  margin: 0;
 }
 
 #searchinput {
-	border-color: @headernavsotet;
-	padding-right: 28px;
-	.border-radius(@smallradius);
+  border-color: @headernavsotet;
+  padding-right: 28px;
+  .border-radius(@smallradius);
 }
 
 #searchinput:focus {
-	.box-shadow(0,1px,6px,@headerfontcolor);
+  .box-shadow(0, 1px, 6px, @headerfontcolor);
 }
 
 #searchbutton {
-	background: url('img/i_keres.png') no-repeat center;
-	background-color: @headernavsotet;
-	border: none;
-	width: 24px;
-	height: 24px;
-	margin-left: -32px;
-	position: absolute;
-	right: 4px;
-	bottom: 3px;
-	.border-radius(@smallradius);
+  background: url('img/i_keres.png') no-repeat center;
+  background-color: @headernavsotet;
+  border: none;
+  width: 24px;
+  height: 24px;
+  margin-left: -32px;
+  position: absolute;
+  right: 4px;
+  bottom: 3px;
+  .border-radius(@smallradius);
 }
 
 .searchinputbox {
-	position: relative;
-	margin: 33px 0 0 10px;
+  position: relative;
+  margin: 33px 0 0 10px;
 }
 
 .headernav {
-	.gradient-background(@headernavvilagos,@headernavsotet);
+  .gradient-background(@headernavvilagos, @headernavsotet);
 }
 
 #navmain {
-    list-style: none outside none;
-    margin: 0;
-    padding: 0;
-    position: relative;
-    z-index: 100;
+  list-style: none outside none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: 100;
 }
 
 #navmain li {
-    float: left;
-	border-left-style: solid;
-	border-left-width: 2px;
-	border-color: @headernavvilagos;
+  float: left;
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-color: @headernavvilagos;
 }
 
 #navmain li.last {
-	border-right-style: solid;
-	border-right-width: 2px;
+  border-right-style: solid;
+  border-right-width: 2px;
 }
 
 #navmain li.first {
-	border-left: none;
+  border-left: none;
 }
 
 #navmain li a {
-	display: block;
-	text-decoration: none;
-	font-weight: bold;
-	font-size: @headernavfontsize;
-	color: @headernavlinkcolor;
-	-webkit-transition: background-color .2s linear;
-	-moz-transition: background-color .2s linear;
-	-o-transition: background-color .2s linear;
-	transition: background-color .2s linear;
-	line-height: 20px;
-	padding: 8px 23px;
+  display: block;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: @headernavfontsize;
+  color: @headernavlinkcolor;
+  -webkit-transition: background-color .2s linear;
+  -moz-transition: background-color .2s linear;
+  -o-transition: background-color .2s linear;
+  transition: background-color .2s linear;
+  line-height: 20px;
+  padding: 8px 23px;
 }
 
 #navmain li a:hover {
-	background: rgba(0,0,0,0.3);
-	z-index: 1;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
 }
 
 #navmain li a.active {
-    background-color: @headernavvilagos;
+  background-color: @headernavvilagos;
 }
 
 #navmain .sub {
-	position: absolute;
-	left: 0;
-	background: @headernavvilagos;
-	padding: 10px;
-	float: left;
-	display: none;
-	opacity: @navopacity;
-	z-index: 100;
-	.border-radius-multi(0,0,@bigradius,@bigradius);
+  position: absolute;
+  left: 0;
+  background: @headernavvilagos;
+  padding: 10px;
+  float: left;
+  display: none;
+  opacity: @navopacity;
+  z-index: 100;
+  .border-radius-multi(0, 0, @bigradius, @bigradius);
 }
 
 #navmain .sub ul {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	width: 190px;
-	float: left;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 190px;
+  float: left;
 }
 
 #navmain .sub ul li {
-	width: 100%;
+  width: 100%;
 }
 
 #navmain .sub ul li a, #navmain .sub ul li p {
-	font-weight: normal;
-	font-size: @fontsize;
-	float: none;
-	text-indent: 0;
-	margin-right: 10px;
-	margin-left: 4px;
-	height: auto;
-	padding: 4px 6px;
-	display: block;
-	text-decoration: none;
-	background-image: none;
-	line-height: 16px;
-	.border-radius(@smallradius);
+  font-weight: normal;
+  font-size: @fontsize;
+  float: none;
+  text-indent: 0;
+  margin-right: 10px;
+  margin-left: 4px;
+  height: auto;
+  padding: 4px 6px;
+  display: block;
+  text-decoration: none;
+  background-image: none;
+  line-height: 16px;
+  .border-radius(@smallradius);
 }
 
 #navmain .sub ul li a:hover {
-	background: @headernavlinkcolor;
-	color: @fontcolor;
+  background: @headernavlinkcolor;
+  color: @fontcolor;
 }
 
 #navmain .sub ul li.categorytitle {
-	margin: 0 0 0 4px;
-	padding: 4px 3px 6px;
-	font-size: @headernavcategoryfontsize;
-	font-weight: bold;
-	color: @headernavlinkcolor;
+  margin: 0 0 0 4px;
+  padding: 4px 3px 6px;
+  font-size: @headernavcategoryfontsize;
+  font-weight: bold;
+  color: @headernavlinkcolor;
 }
 
 footer {
-	margin-top: 20px;
-	padding-top: 20px;
-	color: @headerfontcolor;
-	.gradient-background(@headersotet,@headervilagos);
+  margin-top: 20px;
+  padding-top: 20px;
+  color: @headerfontcolor;
+  .gradient-background(@headersotet, @headervilagos);
 }
 
 footer h5 {
-	color: @logofontcolor;
+  color: @logofontcolor;
 }
 
 footer ul {
-	list-style: none;
-	margin: 0;
+  list-style: none;
+  margin: 0;
 }
 
 footer nav {
-	margin-top: 20px;
+  margin-top: 20px;
 }
 
 .morzsa {
-	font-size: @morzsafontsize;
-	margin-bottom: 20px;
-	background-color: @fejlecbackground;
-	.border-radius(0);
+  font-size: @morzsafontsize;
+  margin-bottom: 20px;
+  background-color: @fejlecbackground;
+  .border-radius(0);
 }
 
 .morzsaszoveg {
-	padding-left: 8px;
+  padding-left: 8px;
 }
 
 .kat {
-	padding: 10px 0;
-	float: left;
-	width: 100%;
-	cursor: pointer;
+  padding: 10px 0;
+  float: left;
+  width: 100%;
+  cursor: pointer;
 }
 
 .kat:hover {
-	background-color: whitesmoke;
+  background-color: whitesmoke;
 }
 
 .katimage {
-	float: left;
-	width: 100px;
-	margin: 0 10px;
-	text-align: center;
+  float: left;
+  width: 100px;
+  margin: 0 10px;
+  text-align: center;
 }
 
 .kattext {
-	margin: 0 10px;
+  margin: 0 10px;
 }
 
 .kattitle {
-	font-size: @headernavfontsize;
-	font-weight: bold;
+  font-size: @headernavfontsize;
+  font-weight: bold;
 }
 
 .sectionheader {
-	font-size: @sectionheaderfontsize;
-	color: @highlite;
-	text-align: center;
+  font-size: @sectionheaderfontsize;
+  color: @highlite;
+  text-align: center;
 }
 
 .szurokontener {
-	border-width: 1px;
-	border-style: solid;
-	border-color: @fejlecbackground;
-	margin-bottom: 15px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: @fejlecbackground;
+  margin-bottom: 15px;
 }
 
 .szurokontener label {
-	font-size: @fontsize;
+  font-size: @fontsize;
 }
 
 .szurofej {
-	background-color: @fejlecbackground;
-	-webkit-transition: background-color .2s linear;
-	-moz-transition: background-color .2s linear;
-	-o-transition: background-color .2s linear;
-	padding: 8px;
-	cursor: pointer;
+  background-color: @fejlecbackground;
+  -webkit-transition: background-color .2s linear;
+  -moz-transition: background-color .2s linear;
+  -o-transition: background-color .2s linear;
+  padding: 8px;
+  cursor: pointer;
 }
 
 .szurofej:hover {
-	background-color: rgba(0,0,0,0.3);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .szurodoboz {
-	padding: 15px;
-	overflow-x: hidden;
-	min-height: 50px;
-	max-height: 175px;
+  padding: 15px;
+  overflow-x: hidden;
+  min-height: 50px;
+  max-height: 175px;
 }
 
 .termek {
-	padding: 10px 0;
-	border-bottom: 1px solid;
-	border-color: @fejlecbackground;
+  padding: 10px 0;
+  border-bottom: 1px solid;
+  border-color: @fejlecbackground;
 }
 
 .termekimage {
-	text-align: center;
+  text-align: center;
+  position: relative;
 }
 
 .termekimageslider {
+  background: white;
+  .rsOverflow, .rsSlide {
     background: white;
-    .rsOverflow, .rsSlide {
-        background: white;
-    }
+  }
 }
 
 .termekcaption, .termekprice {
-	font-size: @headernavfontsize;
-	font-weight: bold;
-	color: @termekcaptionfontcolor;
+  font-size: @headernavfontsize;
+  font-weight: bold;
+  color: @termekcaptionfontcolor;
 }
 
 .termekprice {
-    font-size: @termekpricefontsize;
-	text-align: right;
-	color: @termekpricefontcolor;
+  font-size: @termekpricefontsize;
+  text-align: right;
+  color: @termekpricefontcolor;
 }
 
 .termekvaltozat {
-	font-size: @fontsize;
-	font-weight: bold;
+  font-size: @fontsize;
+  font-weight: bold;
 }
 
 .valtozatselect {
-    width: 100%;
+  width: 100%;
+}
+
+.akciosplecsni {
+  position: absolute;
+  background: rgba(255, 0, 0, 0.3);
+  width: 40px;
+  height: 40px;
+  right: 0px;
+  bottom: 0px;
+  border-radius: 20px;
+}
+
+.akciosplecsniszoveg {
+  color: white;
+  font-weight: bold;
+  vertical-align: middle;
+  line-height: 40px;
 }
 
 .gtermek {
-/*	width: 30%;
-    float: left;
-    */
-	min-height: 1px;
-	border-width: 1px;
-	border-style: solid;
-	border-color: @fejlecbackground;
-	border-width: 0 0 1px 1px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+  /*	width: 30%;
+      float: left;
+      */
+  min-height: 1px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: @fejlecbackground;
+  border-width: 0 0 1px 1px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .gtermekinner {
-    float: left;
-    height: 300px;
-    width: 100%;
+  float: left;
+  height: 300px;
+  width: 100%;
 }
 
 .gtermekinnest {
-	padding: 10px 1.5% 30px;
+  padding: 10px 1.5% 30px;
 }
 
 .gtermekszelso {
-	border-width: 0 1px 1px 1px;
+  border-width: 0 1px 1px 1px;
 }
 
 .gtermekleft {
-	width: 150px;
-    margin-right: 5px;
+  width: 150px;
+  margin-right: 5px;
 }
 
 .gtermekright {
-    width: 182px;
+  width: 182px;
 }
 
 .gtermekadat {
-	height: 285px;
+  height: 285px;
 }
 
 .gtermekcaption {
-    font-size: 13px;
-    font-weight: bold;
+  font-size: 13px;
+  font-weight: bold;
 }
 
 .gvaltozatnev {
-    width: 40%;
+  width: 40%;
 }
 
 .gvaltozatselect {
-    width: 60%;
+  width: 60%;
 }
 
 .gvaltozatcontainer {
-    margin-bottom: 4px;
-    width: 100%;
+  margin-bottom: 4px;
+  width: 100%;
 }
 
 .gtermekupper {
-    height: 150px;
-    width: 100%;
-    overflow-y: hidden;
+  height: 150px;
+  width: 100%;
+  overflow-y: hidden;
 }
+
 .gtermekcenter {
-    margin-top: 5px;
-    width: 100%;
+  margin-top: 5px;
+  width: 100%;
 }
 
 .cartbtn {
-	color: white;
-	font-weight: bold;
-	text-shadow: 0 0 0;
-	border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-	.gradient-background(@cartbuttonvilagos,@cartbuttonsotet);
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 0 0;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  .gradient-background(@cartbuttonvilagos, @cartbuttonsotet);
 }
 
-.cartbtn:hover,.cartbtn:focus,.cartbtn:active,.cartbtn.active,.cartbtn.disabled,.cartbtn[disabled] {
-	color: white;
-	.gradient-background(@cartbuttonvilagos,@cartbuttonsotet);
+.cartbtn:hover, .cartbtn:focus, .cartbtn:active, .cartbtn.active, .cartbtn.disabled, .cartbtn[disabled] {
+  color: white;
+  .gradient-background(@cartbuttonvilagos, @cartbuttonsotet);
 }
 
-.cartbtn:focus,.cartbtn:active,.cartbtn.active {
-	.gradient-background(@cartbuttonvilagos,@cartbuttonsotet);
+.cartbtn:focus, .cartbtn:active, .cartbtn.active {
+  .gradient-background(@cartbuttonvilagos, @cartbuttonsotet);
 }
 
 .cartheader-tooltipbtn {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 .megrendelemcontainer {
-	margin: 20px 0;
+  margin: 20px 0;
 }
 
 .kiemelttermek {
-	text-align: center;
-	margin-bottom: 10px;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 .lapozo {
-	clear: left;
-	background-color: @fejlecbackground;
-	padding: 4px 8px;
+  clear: left;
+  background-color: @fejlecbackground;
+  padding: 4px 8px;
 }
 
 .lapozoform {
-	margin: 0;
+  margin: 0;
 }
 
 .lapozoform table {
-	width: 100%;
+  width: 100%;
 }
 
 .lapozotalalat {
-	width: 20%;
+  width: 20%;
 }
 
 .lapozooldalak {
-	text-align: center;
+  text-align: center;
 }
 
 .lapozorendezes {
-	width: 15%;
-	text-align: right;
+  width: 15%;
+  text-align: right;
 }
 
 a.pageedit {
-	padding: 4px;
+  padding: 4px;
 }
 
 a.pageedit:hover {
-	background-color: white;
+  background-color: white;
 }
 
 span.aktualislap {
-	color: @logofontcolor;
-	background-color: white;
-	padding: 4px;
+  color: @logofontcolor;
+  background-color: white;
+  padding: 4px;
 }
 
 .hiralairas {
-	font-size: @hiralairasfontsize;
+  font-size: @hiralairasfontsize;
 }
 
 #messagecenter {
-	border: none;
-	padding: 15px;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	opacity: .5;
-	color: #fff;
-	font-size: 16px;
-	max-width: 300px;
-	width: auto;
-	background-color: #000;
-	margin: 20px auto;
-	text-align: center;
+  border: none;
+  padding: 15px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  opacity: .5;
+  color: #fff;
+  font-size: 16px;
+  max-width: 300px;
+  width: auto;
+  background-color: #000;
+  margin: 20px auto;
+  text-align: center;
 }
 
 .typeahead {
-	overflow-y: auto;
-	max-height: 210px;
+  overflow-y: auto;
+  max-height: 210px;
 }
 
-.typeahead>.active>a,
-.typeahead>.active>a:hover,
-.typeahead>.active>a:focus
-{
-	color: #fff;
-	text-decoration: none;
-	background-color: #e42721;
-	background-image: -moz-linear-gradient(top,#e42721,#b4130e);
-	background-image: -webkit-gradient(linear,0 0,0 100%,from(#e42721),to(#b4130e));
-	background-image: -webkit-linear-gradient(top,#e42721,#b4130e);
-	background-image: -o-linear-gradient(top,#e42721,#b4130e);
-	background-image: linear-gradient(to bottom,#e42721,#b4130e);
-	background-repeat: repeat-x;
-	outline: 0;
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe42721',endColorstr='#ffb4130e',GradientType=0);
+.typeahead > .active > a,
+.typeahead > .active > a:hover,
+.typeahead > .active > a:focus {
+  color: #fff;
+  text-decoration: none;
+  background-color: #e42721;
+  background-image: -moz-linear-gradient(top, #e42721, #b4130e);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#e42721), to(#b4130e));
+  background-image: -webkit-linear-gradient(top, #e42721, #b4130e);
+  background-image: -o-linear-gradient(top, #e42721, #b4130e);
+  background-image: linear-gradient(to bottom, #e42721, #b4130e);
+  background-repeat: repeat-x;
+  outline: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe42721', endColorstr='#ffb4130e', GradientType=0);
 }
 
-.typeahead>li>a:hover,
-.typeahead>li>a:focus {
-	color: #333;
-	background: #fff;
+.typeahead > li > a:hover,
+.typeahead > li > a:focus {
+  color: #333;
+  background: #fff;
 }
 
 .statlappopup {
-    background-color: white;
-    width: 60%;
-    margin: 5% auto;
-    padding: 20px;
+  background-color: white;
+  width: 60%;
+  margin: 5% auto;
+  padding: 20px;
 }
+
 .checkout {
-	margin-top: 20px;
+  margin-top: 20px;
 }
 
 .chk-datagroupheader {
-	background-color: @fejlecbackground;
-	-webkit-transition: background-color .2s linear;
-	-moz-transition: background-color .2s linear;
-	-o-transition: background-color .2s linear;
-	padding: 8px;
-	margin-bottom: 10px;
-	cursor: pointer;
-	font-size: 18px;
-	font-weight: bold;
-	a {
-		font-size: 12px;
-		font-weight: normal;
-		margin-left: 10px;
-		color: @okbuttonsotet;
-		text-decoration: underline;
-		&:hover {
-			color: white;
-		}
-	}
-	&:hover {
-		background-color: rgba(0,0,0,0.3);
-	}
+  background-color: @fejlecbackground;
+  -webkit-transition: background-color .2s linear;
+  -moz-transition: background-color .2s linear;
+  -o-transition: background-color .2s linear;
+  padding: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  a {
+    font-size: 12px;
+    font-weight: normal;
+    margin-left: 10px;
+    color: @okbuttonsotet;
+    text-decoration: underline;
+    &:hover {
+      color: white;
+    }
+  }
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
 }
 
 .chk-staticheader {
-	background-color: #AFAFAF;
-	padding: 8px;
-	font-size: 16px;
-	font-weight: bold;
+  background-color: #AFAFAF;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .chk-controllabel {
-	margin-top: 5px;
+  margin-top: 5px;
 }
 
 .chk-colleftborder {
-	border-left-style: solid;
-	border-left-width: 1px;
-	border-left-color: @fejlecbackground;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: @fejlecbackground;
 }
 
 .col30percent {
-	width: 33%;
-	min-height: 160px;
+  width: 33%;
+  min-height: 160px;
 }
 
 .chk-colheader {
-	font-size: 14px;
-	font-weight: bold;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .chk-colmargin > div {
-	margin-left: 5px;
+  margin-left: 5px;
 }
 
 .chk-coldatabottom {
-	margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 .chk-actionrow {
-	margin-top: 10px;
-	margin-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .chk-columncontainer {
-	margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .chk-relative {
-	position: relative;
+  position: relative;
 }
 
 .chk-tooltipbtn {
-	position: absolute;
-	right: -16px;
-	top: 31px;
-	cursor: pointer;
-	z-index: 100;
+  position: absolute;
+  right: -16px;
+  top: 31px;
+  cursor: pointer;
+  z-index: 100;
 }
 
 .chk-inlinetooltipbtn {
-	cursor: pointer;
-	z-index: 100;
+  cursor: pointer;
+  z-index: 100;
 }
 
 .chk-courierdesc {
-	margin-bottom: 10px;
-	margin-left: 20px;
-	color: #999;
+  margin-bottom: 10px;
+  margin-left: 20px;
+  color: #999;
 }
 
 .chk-foxpostcontainer {
-	margin-bottom: 10px;
-	margin-left: 20px;
-	color: #999;
+  margin-bottom: 10px;
+  margin-left: 20px;
+  color: #999;
 }
 
 .chk-savecontainer {
-	border-style: solid;
-	border-width: 1px;
-	border-color: @fejlecbackground;
-	padding: 10px;
-	border-radius: 2px;
-	background-color: @fejlecbackground;
-	label a {
-		text-decoration: underline;
-		&:hover {
-			color: white;
-		}
-	}
+  border-style: solid;
+  border-width: 1px;
+  border-color: @fejlecbackground;
+  padding: 10px;
+  border-radius: 2px;
+  background-color: @fejlecbackground;
+  label a {
+    text-decoration: underline;
+    &:hover {
+      color: white;
+    }
+  }
 }
 
 .chk-helpcontainer {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 input[type="submit"].chk-sendorderbtn {
-	width: 100%;
+  width: 100%;
 }
 
 .folyoszoveg {
-	line-height: 1.3em;
+  line-height: 1.3em;
 }
 
 [class^="col"] {
-	float: left;
+  float: left;
 }
 
 .chk-controloffset {
-	margin-left: 30px;
+  margin-left: 30px;
 }
 
 .tooltip-inner {
-	max-width: 350px;
-	background-color: #6E6E6E;
-	font-size: 14px;
+  max-width: 350px;
+  background-color: #6E6E6E;
+  font-size: 14px;
 }
 
 .tooltip.right .tooltip-arrow {
-	border-right-color: #6E6E6E;
+  border-right-color: #6E6E6E;
 }
 
 .chk-tooltippedcontainer {
-	width: auto;
+  width: auto;
 }
 
 .chk-loginrightborder {
-	border-right-color: @fejlecbackground;
-	border-right-style: solid;
-	border-right-width: 1px;
+  border-right-color: @fejlecbackground;
+  border-right-style: solid;
+  border-right-width: 1px;
 }
 
 .acc-copyszamlaadat {
-	padding-left: 180px;
-	padding-bottom: 10px;
-	a {
-		cursor: pointer;
-	}
+  padding-left: 180px;
+  padding-bottom: 10px;
+  a {
+    cursor: pointer;
+  }
 }
 
 thead.acc-megrendeles {
-	background-color: @headernavsotet;
-	color: @headerfontcolor;
-	font-weight: bold;
-	td {
-		padding: 5px 10px;
-	}
+  background-color: @headernavsotet;
+  color: @headerfontcolor;
+  font-weight: bold;
+  td {
+    padding: 5px 10px;
+  }
 }
 
 tbody.acc-megrendeles {
-	td {
-		padding: 5px 10px;
-	}
+  td {
+    padding: 5px 10px;
+  }
 }
 
 .acc-megrendelestablerow {
-	background: @fejlecbackground;
-	cursor: pointer;
+  background: @fejlecbackground;
+  cursor: pointer;
 }
 
 .acc-megrendelesbordertop {
-	border-top: solid;
+  border-top: solid;
 }
 
 .acc-megrendelesborderbottom {
-	border-bottom: solid;
+  border-bottom: solid;
 }
 
 .acc-megrendelescaption {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 .acc-megrendelestetellist {
-	border: solid 1px;
-    border-color: #ddd;
-	width: 100%;
-	margin-top: 5px;
+  border: solid 1px;
+  border-color: #ddd;
+  width: 100%;
+  margin-top: 5px;
 }
 
 thead.acc-megrendelestetellist {
-	font-weight: bold;
-	td {
-		padding: 5px 10px;
-	}
+  font-weight: bold;
+  td {
+    padding: 5px 10px;
+  }
 }
 
 .termekimagecontainer {
-	padding-bottom: 15px;
+  padding-bottom: 15px;
 }
 
 .royalSlider {
-    width: 100%;
+  width: 100%;
 }
 
 .termekSlider {
-    .rsOverflow, .rsSlide {
-        background: white;
-    }
-    border: solid 1px #ddd;
+  .rsOverflow, .rsSlide {
     background: white;
+  }
+  border: solid 1px #ddd;
+  background: white;
 }
 
 .termekSliderTermekInner {
-    padding: 15px;
-    a {
-        display: block;
-    }
+  padding: 15px;
+  a {
+    display: block;
+  }
 }
 
 .termekSliderImageContainer {
-    min-height: 100px;
+  min-height: 100px;
 }
 
 .o404TermekInner {
-    padding: 15px;
+  padding: 15px;
 }
 
 .o404ImageContainer {
-    min-height: 150px;
+  min-height: 150px;
 }
 
 .kapcsolodoTermekInner {
-    padding: 15px;
+  padding: 15px;
 }
 
 .kapcsolodoImageContainer {
-    min-height: 100px;
+  min-height: 100px;
 }
 
 .hirListBlock {
-    dd.title {
-        font-weight: bold;
-        font-size: 14px;
-    }
+  dd.title {
+    font-weight: bold;
+    font-size: 14px;
+  }
 }
 
 /* margo 20px */
 .spanmkw3 {
-    width: 349.5px;
-    margin-left: 0;
+  width: 349.5px;
+  margin-left: 0;
 }
 
 .akciosarszoveg {
-    color: @logofontcolor;
-    font-weight: bold;
-    font-size: 13px;
+  color: @logofontcolor;
+  font-weight: bold;
+  font-size: 13px;
 }
 
 .akciosar {
-    text-decoration: line-through;
+  text-decoration: line-through;
 }
 
 .akciosarszovegtermeklap {
-    font-size: 18px;
+  font-size: 18px;
 }
 
 .itemPrice {
-    font-size: 24.5px;
-    font-weight: bold;
-    margin: 5px 0;
+  font-size: 24.5px;
+  font-weight: bold;
+  margin: 5px 0;
 }
 
 .kosarbacontainer {
-    padding-top: 15px;
+  padding-top: 15px;
 }
 
 .termeklapaddthis div.addthis_toolbox {
-    width: 202px;
-    margin: 0 auto;
+  width: 202px;
+  margin: 0 auto;
 }
 
 h1.main {
-    font-size: 20px;
+  font-size: 20px;
 }
+
 h2.main, h3.main, h4.main, h5.main {
-    font-size: 17.5px;
+  font-size: 17.5px;
 }
 
 h1.termeklista {
-    font-size: 11px;
-    line-height: 20px;
-    display: inline;
+  font-size: 11px;
+  line-height: 20px;
+  display: inline;
 }
+
 h2.termeklista, h3.termeklista, h4.termeklista, h5.termeklista {
-    font-size: 17.5px;
+  font-size: 17.5px;
 }
 
 .checkouterror {
-    color: red;
-    font-weight: bold;
-    font-size: 14px;
+  color: red;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 .checkouterrorblock {
-    border-color: red;
-    border-width: 2px;
-    border-style: dashed;
+  border-color: red;
+  border-width: 2px;
+  border-style: dashed;
 }
 
 .checkouterrorblockinner {
-    padding: 5px;
+  padding: 5px;
 }
 
 .nomargin {
-    margin-left: 0 !important;
+  margin-left: 0 !important;
 }
 
 .fogyaszto-barat {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .tooltipbtn {
@@ -1173,79 +1196,82 @@ h2.termeklista, h3.termeklista, h4.termeklista, h5.termeklista {
 }
 
 select[name="foxpostcsoport"], select[name="foxpostterminal"] {
-    width: 100%;
-    max-width: 100%;
+  width: 100%;
+  max-width: 100%;
 }
 
 /* margo 30px */
 @media (min-width: 1200px) {
-    .spanmkw3 {
-        width: 435px;
-    }
+  .spanmkw3 {
+    width: 435px;
+  }
 
-    .gtermekleft {
-        width: 150px;
-    }
+  .gtermekleft {
+    width: 150px;
+  }
 
-    .gtermekright {
-        width: 265px;
-    }
+  .gtermekright {
+    width: 265px;
+  }
 }
 
 /* margo 20px */
 @media (max-width: 979px) and (min-width: 768px) {
-    .spanmkw3 {
-        width: 268.5px;
-    }
+  .spanmkw3 {
+    width: 268.5px;
+  }
 
-    .gtermekleft {
-        width: 100px;
-    }
+  .gtermekleft {
+    width: 100px;
+  }
 
-    .gtermekright {
-        width: 153px;
-    }
+  .gtermekright {
+    width: 153px;
+  }
 }
 
 @media (min-width: 480px) {
-	#navmain li .sub {
-		width: 400px;
-	}
+  #navmain li .sub {
+    width: 400px;
+  }
 }
 
 @media (max-width: 767px) {
-	.chk-tooltippedcontainer {
-		width: 100%;
-	}
-    .spanmkw3 {
-        width: 100%;
-    }
-    .gtermekleft {
-        width: 30%;
-    }
-    .gtermekright {
-        width: 68%;
-    }
+  .chk-tooltippedcontainer {
+    width: 100%;
+  }
+
+  .spanmkw3 {
+    width: 100%;
+  }
+
+  .gtermekleft {
+    width: 30%;
+  }
+
+  .gtermekright {
+    width: 68%;
+  }
 }
 
 @media (min-width: 767px) {
-	#navmain li .sub {
-		width: 700px;
-	}
+  #navmain li .sub {
+    width: 700px;
+  }
 
-	#navmain li .sub ul {
-		width: 125px;
-		float: left;
-	}
+  #navmain li .sub ul {
+    width: 125px;
+    float: left;
+  }
 }
 
 @media (min-width: 979px) {
-	#navmain li .sub {
-		width: 940px;
-	}
+  #navmain li .sub {
+    width: 940px;
+  }
 
-	#navmain li .sub ul {
-		width: 185px;
-		float: left;
-	}
+  #navmain li .sub ul {
+    width: 185px;
+    float: left;
+  }
 }
