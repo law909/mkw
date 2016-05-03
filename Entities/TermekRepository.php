@@ -607,4 +607,16 @@ class TermekRepository extends \mkwhelpers\Repository {
         $q = $this->_em->createQuery('UPDATE Entities\Termek x SET x.nepszeruseg = 0');
         $q->Execute();
     }
+
+    public function getMarkaCount($cimke) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('db', 'db');
+        $r = array();
+        $q = $this->_em->createNativeQuery('SELECT COUNT(*) AS db '
+            . 'FROM termek_cimkek tc '
+            . 'LEFT OUTER JOIN termek t ON (t.id=tc.termek_id) '
+            . 'WHERE (tc.cimketorzs_id=' . $cimke . ') AND (t.inaktiv=0) AND (t.lathato=1) AND (t.fuggoben=0)', $rsm);
+        $res = $q->getScalarResult();
+        return $res[0]['db'] * 1;
+    }
 }

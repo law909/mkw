@@ -50,8 +50,7 @@ class TermekcimketorzsRepository extends \mkwhelpers\Repository {
         $rsm->addScalarResult('cimketorzs_id', 'cimketorzs_id');
         $q = $this->_em->createNativeQuery('SELECT * FROM termek_cimkek', $rsm);
         $res = $q->getScalarResult();
-        $ret = $res;
-        return $ret;
+        return $res;
     }
 
     public function getTermekIdsWithCimke($cimkekodok) {
@@ -92,8 +91,7 @@ class TermekcimketorzsRepository extends \mkwhelpers\Repository {
                 $ret[] = array('termek_id' => $tid);
             }
         }
-        unset($r);
-        unset($res);
+        unset($r, $res);
         return $ret;
     }
 
