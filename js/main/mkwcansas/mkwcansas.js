@@ -266,6 +266,15 @@ $(document).ready(function() {
                 .done(function(data) {
                     var d = JSON.parse(data);
                     $('#termekprice' + id).text(d['price']);
+                    if (d['kepurllarge']) {
+                        $('#termekkeplink' + id).attr('href', d['kepurllarge']);
+                    }
+                    if (d['kepurlmedium']) {
+                        $('#termekkep' + id).attr('src', d['kepurlmedium']);
+                    }
+                    if (d['kepurlsmall']) {
+                        $('#termekkiskep' + id).attr('src', d['kepurlsmall']);
+                    }
                 })
                 .always(function() {
                     $('.js-kosarbavaltozat[data-id="' + id + '"]').attr('data-vid', $this.val());
@@ -294,6 +303,16 @@ $(document).ready(function() {
                     sel = '';
 
                     $('#termekprice' + id).text(d['price']);
+                    if (d['kepurllarge']) {
+                        $('#termekkeplink' + id).attr('href', d['kepurllarge']);
+                    }
+                    if (d['kepurlmedium']) {
+                        $('#termekkep' + id).attr('src', d['kepurlmedium']);
+                    }
+                    if (d['kepurlsmall']) {
+                        $('#termekkiskep' + id).attr('src', d['kepurlsmall']);
+                    }
+
                     $('option[value!=""]', $masikedit).remove();
                     $.each(adat, function(i, v) {
                         if (v['sel']) {

@@ -324,6 +324,9 @@ class mainController extends \mkwhelpers\Controller {
 		$valtozat = store::getEm()->getRepository('Entities\TermekValtozat')->find($valtozatid);
 		$ret = array();
 		$ret['price'] = number_format($termek->getBruttoAr($valtozat, \mkw\Store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
+        $ret['kepurlmedium'] = $valtozat->getKepurlMedium();
+        $ret['kepurllarge'] = $valtozat->getKepurlLarge();
+        $ret['kepurlsmall'] = $valtozat->getKepurlSmall();
 		echo json_encode($ret);
 	}
 
@@ -348,6 +351,9 @@ class mainController extends \mkwhelpers\Controller {
 		}
 		$termekvaltozat = store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(), $t, $e);
 		$ret['price'] = number_format($termek->getBruttoAr($termekvaltozat, \mkw\Store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
+        $ret['kepurlmedium'] = $termekvaltozat->getKepurlMedium();
+        $ret['kepurllarge'] = $termekvaltozat->getKepurlLarge();
+        $ret['kepurlsmall'] = $termekvaltozat->getKepurlSmall();
 
 		$valtozatok = $termek->getValtozatok();
 		foreach ($valtozatok as $valtozat) {

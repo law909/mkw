@@ -44,8 +44,8 @@
                     <div class="span6">
                         <div class="textaligncenter"><h1 itemprop="name" class="termeknev">{$termek.caption}</h1></div>
                         <div class="termekimagecontainer textaligncenter">
-                            <a href="{$termek.kepurl}" class="js-lightbox" title="{$termek.caption}">
-                                <img itemprop="image" src="{$termek.kozepeskepurl}" alt="{$termek.caption}" title="{$termek.caption}">
+                            <a id="termekkeplink{$termek.id}" href="{$termek.kepurl}" class="js-lightbox" title="{$termek.caption}">
+                                <img id="termekkep{$termek.id}" itemprop="image" src="{$termek.kozepeskepurl}" alt="{$termek.caption}" title="{$termek.caption}">
                             </a>
                         </div>
                         {$kcnt=count($termek.kepek)}

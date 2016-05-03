@@ -148,7 +148,7 @@
                                         {if ($_termek.akcios)}
                                             <div class="akciosplecsni"><span class="akciosplecsniszoveg">-{number_format(100 - ($_termek.bruttohuf / $_termek.eredetibruttohuf * 100),0,',',' ')} %</span></div>
                                         {/if}
-                                        <a href="/termek/{$_termek.slug}"><img itemprop="image" src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
+                                        <a href="/termek/{$_termek.slug}"><img id="termekkiskep{$_termek.id}-{$_termek.valtozatid|default}" itemprop="image" src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
                                     </div>
                                     <div class="span5 termektext">
                                         <a href="/termek/{$_termek.slug}" itemprop="url"><span class="termekcaption" itemprop="name">{$_termek.caption}</span></a>
