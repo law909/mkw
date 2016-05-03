@@ -37,8 +37,8 @@
                 {if (!$setup.kisszamlazo)}
                     {if (haveJog(20))}
                         <div><a class="menupont" href="/admin/bevetfej/viewlist">{t('Bevételezések')}</a></div>
+                        <div><a class="menupont" href="/admin/kivetfej/viewlist">{t('Kivétek')}</a></div>
                     {/if}
-                    <div><a class="menupont" href="/admin/kivetfej/viewlist">{t('Kivétek')}</a></div>
                     {if (($maintheme == 'superzone') && haveJog(20))}
                         <div><a class="menupont" href="/admin/egyebfej/viewlist">{t('Egyéb mozgások')}</a></div>
                     {/if}
@@ -52,14 +52,18 @@
                         <div><a class="menupont" href="/admin/szallitofej/viewlist">{t('Szállítólevelek')}</a></div>
                     {/if}
                 {/if}
-                <div><a class="menupont" href="/admin/szamlafej/viewlist">{t('Számlák')}</a></div>
-                <div><a class="menupont" href="/admin/keziszamlafej/viewlist">{t('Kézi számlák')}</a></div>
+                {if (haveJog(15))}
+                    <div><a class="menupont" href="/admin/szamlafej/viewlist">{t('Számlák')}</a></div>
+                    <div><a class="menupont" href="/admin/keziszamlafej/viewlist">{t('Kézi számlák')}</a></div>
+                {/if}
                 {if (!$setup.kisszamlazo)}
                     {if (haveJog(20))}
                         <div><a class="menupont" href="/admin/selejtfej/viewlist">{t('Selejtezések')}</a></div>
                     {/if}
                 {/if}
-                <div><a class="menupont" href="/admin/partner/viewlist">{t('Partnerek')}</a></div>
+                {if (haveJog(15))}
+                    <div><a class="menupont" href="/admin/partner/viewlist">{t('Partnerek')}</a></div>
+                {/if}
                 <div><a class="menupont" href="/admin/termek/viewlist">{t('Termékek')}</a></div>
                 {if (haveJog(20))}
                     <div><a class="menupont" href="/admin/termekfa/viewlist">{t('Termék kategóriák')}</a></div>
