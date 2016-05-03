@@ -146,7 +146,7 @@
                                 <div class="row">
                                     <div class="span2 termekimage">
                                         {if ($_termek.akcios)}
-                                            <div class="akciosplecsni"><span class="akciosplecsniszoveg">{number_format(100 - ($_termek.bruttohuf / $_termek.eredetibruttohuf * 100),0,',',' ')} %</span></div>
+                                            <div class="akciosplecsni"><span class="akciosplecsniszoveg">-{number_format(100 - ($_termek.bruttohuf / $_termek.eredetibruttohuf * 100),0,',',' ')} %</span></div>
                                         {/if}
                                         <a href="/termek/{$_termek.slug}"><img itemprop="image" src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
                                     </div>
