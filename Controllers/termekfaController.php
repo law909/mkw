@@ -284,6 +284,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 $nativkategoriafilter = new FilterDescriptor();
                 $arfilter = new FilterDescriptor();
                 $termekidfilter = new FilterDescriptor();
+                $akciosfilter = new FilterDescriptor();
                 $ret = array();
 
                 $tc = new termekController($this->params);
@@ -349,6 +350,19 @@ class termekfaController extends \mkwhelpers\MattableController {
                     $keresofilter->addFilter(array('_xx.nev', '_xx.oldalcim', '_xx.cikkszam', '_xx.leiras'), 'LIKE', '%' . $keresoszo . '%');
                 }
 
+                if ($this->params->getBoolRequestParam('csakakcios', false)) {
+                    $mastr = date(Store::$SQLDateFormat);
+                    $akciosfilter->addSql('
+                        (
+                            (_xx.akciostart <> \'\' AND (_xx.akciostart IS NOT NULL)) OR (_xx.akciostop <> \'\' AND (_xx.akciostop IS NOT NULL))
+                        ) AND 
+                        (
+                            (_xx.akciostart <= \'' . $mastr . '\' AND _xx.akciostop >= \'' . $mastr . '\') OR
+                            (_xx.akciostart <= \'' . $mastr . '\' AND (_xx.akciostop = \'\' OR (_xx.akciostop IS NULL))) OR
+                            ((_xx.akciostart = \'\' OR (_xx.akciostart IS NULL)) AND _xx.akciostop >= \'' . $mastr . '\')
+                        )
+                ');
+                }
                 $szurok = explode(',', $szurostr);
                 $szurotomb = array();
                 foreach ($szurok as $egyszuro) {
@@ -385,7 +399,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 $arfilterstring = '((' . $arfilterstring . ') OR (_xx.brutto IS NULL))';
                 $arfilter->addSql($arfilterstring);
 
-                $termekdb = $termekrepo->getTermekListaCount($keresofilter->merge($kategoriafilter)->merge($termekidfilter)->merge($arfilter));
+                $termekdb = $termekrepo->getTermekListaCount($keresofilter->merge($kategoriafilter)->merge($termekidfilter)->merge($arfilter)->merge($akciosfilter));
                 if ($termekdb > 0) {
 
                     // termekdarabszam kategoriaval es cimkevel es arral szurve
@@ -447,7 +461,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                     // termekek kategoriaval es cimkevel es arral szurve, lapozva
                     // ez a konkret termeklista
                     $osszestermekid = array();
-                    $termekek = $termekrepo->getTermekLista($keresofilter->merge($nativkategoriafilter)->merge($termekidfilter)->merge($arfilter), $order, $pager->getOffset(), $elemperpage);
+                    $termekek = $termekrepo->getTermekLista($keresofilter->merge($nativkategoriafilter)->merge($termekidfilter)->merge($arfilter)->merge($akciosfilter), $order, $pager->getOffset(), $elemperpage);
                     foreach ($termekek as $termek) {
                         $osszestermekid[] = $termek['id'];
                         $term = $termekrepo->find($termek['id']);
@@ -463,14 +477,14 @@ class termekfaController extends \mkwhelpers\MattableController {
                     }
                     if (($caller === 'marka')||($caller === 'szuro')) {
                         $osszeslapozatlantermekid = array();
-                        $termekek = $termekrepo->getTermekLista($keresofilter->merge($nativkategoriafilter)->merge($termekidfilter)->merge($arfilter), $order);
+                        $termekek = $termekrepo->getTermekLista($keresofilter->merge($nativkategoriafilter)->merge($termekidfilter)->merge($arfilter)->merge($akciosfilter), $order);
                         foreach ($termekek as $termek) {
                             $osszeslapozatlantermekid[] = $termek['id'];
                         }
                     }
                     // termek id-k csak kategoriaval es arral szurve
                     // a szuroben szereplo cimkek megallapitasahoz
-                    $termekids = $termekrepo->getTermekIds($keresofilter->merge($kategoriafilter)->merge($arfilter), $order);
+                    $termekids = $termekrepo->getTermekIds($keresofilter->merge($kategoriafilter)->merge($arfilter)->merge($akciosfilter), $order);
                     $tid = array();
                     foreach ($termekids as $termek) {
                         $tid[] = $termek['id'];
@@ -515,6 +529,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                     }
                     $ret['keresett'] = $keresoszo;
                     $ret['vt'] = ($this->params->getIntRequestParam('vt') > 0 ? $this->params->getIntRequestParam('vt') : 1);
+                    $ret['csakakcios'] = $this->params->getBoolRequestParam('csakakcios', false);
                     $ret['termekek'] = $t;
                     $ret['lapozo'] = $pager->loadValues();
                     $ret['order'] = $ord;

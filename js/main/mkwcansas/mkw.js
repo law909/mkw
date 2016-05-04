@@ -78,6 +78,9 @@ var mkw = (function($) {
         url = url + '&arfilter=' + $('#ArSlider').val();
         url = url + '&keresett=' + $('.KeresettEdit').val();
         url = url + '&vt=' + $('#ListviewEdit').val();
+        if ($('#CsakakciosEdit').val()) {
+            url = url + '&csakakcios=1';
+        }
         document.location = url;
     }
 

@@ -134,6 +134,7 @@
 						</select>
 						<input class="KeresettEdit" type="hidden" name="keresett" value="{$keresett}">
 						<input id="ListviewEdit" type="hidden" name="vt" value="{$vt}">
+                        <input id="CsakakciosEdit" type="hidden" name="csakakcios" value="{$csakakcios}">
 					</td>
 					</tr></tbody></table>
 				</form>
