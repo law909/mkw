@@ -83,4 +83,30 @@ class feketelistaController extends \mkwhelpers\MattableController {
         $view->setVar('egyed', $this->loadVars($record));
         return $view->getTemplateResult();
     }
+
+    public function add() {
+        $ip = $this->params->getStringRequestParam('ip');
+        $email = $this->params->getStringRequestParam('email');
+        $ok = $this->params->getStringRequestParam('ok');
+        if ($ip) {
+            $e = $this->getRepo()->findOneBy(array('email' => $ip));
+            if (!$e) {
+                $e = new \Entities\Feketelista();
+                $e->setEmail($ip);
+                $e->setOk($ok);
+                $this->getEm()->persist($e);
+                $this->getEm()->flush();
+            }
+        }
+        if ($email) {
+            $e = $this->getRepo()->findOneBy(array('email' => $email));
+            if (!$e) {
+                $e = new \Entities\Feketelista();
+                $e->setEmail($email);
+                $e->setOk($ok);
+                $this->getEm()->persist($e);
+                $this->getEm()->flush();
+            }
+        }
+    }
 }

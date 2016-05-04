@@ -859,7 +859,9 @@ var bizonylathelper = function($) {
                 tablebody: {
                     url: '/admin/' + bizonylattipus + 'fej/getlistbody',
                     onStyle: function() {
-                        $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, .js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno, .js-backorder, .js-mese').button();
+                        $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, ' +
+                            '.js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno, .js-backorder, .js-mese, '+
+                            '.js-feketelista').button();
                     },
                     onDoEditLink: function() {
                         $('.js-inheritbizonylat').each(function() {
@@ -1170,6 +1172,39 @@ var bizonylathelper = function($) {
                         }
                         else {
                             $('.mattable-tablerefresh').click();
+                        }
+                    }
+                });
+            })
+            .on('click', '.js-feketelista', function(e) {
+                var $this = $(this),
+                    $dia = $('#feketelistaokdialog');
+                e.preventDefault();
+                $dia.dialog({
+                    title: 'Feketelista',
+                    resizable: true,
+                    height: 140,
+                    modal: true,
+                    buttons: {
+                        'OK': function() {
+                            var dial = $(this),
+                                ok = $('textarea[name="feketelistaok"]').val();
+                            $('textarea[name="feketelistaok"]').val('');
+                            $.ajax({
+                                url: '/admin/feketelista/add',
+                                type: 'POST',
+                                data: {
+                                    email: $this.data('email'),
+                                    ip: $this.data('ip'),
+                                    ok: ok
+                                },
+                                success: function() {
+                                    dial.dialog('close');
+                                }
+                            });
+                        },
+                        'Mégsem': function() {
+                            $(this).dialog('close');
                         }
                     }
                 });

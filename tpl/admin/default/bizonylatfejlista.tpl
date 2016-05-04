@@ -190,6 +190,10 @@
 	</div>
 </div>
 </div>
+<div id="feketelistaokdialog" class="hidden">
+    <label>Ok:</label>
+    <textarea name="feketelistaok"></textarea>
+</div>
 <div id="mattkarb">
 </div>
 {/block}

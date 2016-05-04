@@ -43,7 +43,10 @@
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="csomagfej" data-oper="inherit" title="{t('Csomag')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
                 {/if}
                 {if ($showmesebutton && havejog(99))}
-                    <a class="js-mese" href="#" title="{t('Mese')}" data-href="/admin/mese?b={$_egyed.id}"><span class="ui-icon ui-icon-alert"></span></a>
+                    <a class="js-mese" href="#" title="{t('Mese')}" data-href="/admin/mese?b={$_egyed.id}"><span class="ui-icon ui-icon-image"></span></a>
+                {/if}
+                {if ($showfeketelistabutton)}
+                    <a class="js-feketelista" href="#" data-email="{$_egyed.partneremail}" data-ip="{$_egyed.ip}" title="{t('Feketelista')}" target="_blank"><span class="ui-icon ui-icon-alert"></span></a>
                 {/if}
                 {if ($_egyed.bizonylattipusid=='megrendeles' && $_egyed.otpayid)}
                     <a class="js-otpayrefund" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{t('OTPay refund')}" target="_blank"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></a>
