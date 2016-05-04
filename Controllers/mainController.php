@@ -320,13 +320,16 @@ class mainController extends \mkwhelpers\Controller {
 	public function valtozatar() {
 		$termekid = $this->params->getIntRequestParam('t');
 		$valtozatid = $this->params->getIntRequestParam('vid');
-		$termek = store::getEm()->getRepository('Entities\Termek')->find($termekid);
-		$valtozat = store::getEm()->getRepository('Entities\TermekValtozat')->find($valtozatid);
+		$termek = Store::getEm()->getRepository('Entities\Termek')->find($termekid);
+		$valtozat = Store::getEm()->getRepository('Entities\TermekValtozat')->find($valtozatid);
 		$ret = array();
 		$ret['price'] = number_format($termek->getBruttoAr($valtozat, \mkw\Store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
         $ret['kepurlmedium'] = $valtozat->getKepurlMedium();
         $ret['kepurllarge'] = $valtozat->getKepurlLarge();
         $ret['kepurlsmall'] = $valtozat->getKepurlSmall();
+
+        $ret['kepek'] = Store::getEm()->getRepository('Entities\Termek')->getKepekKiveve($termek, $valtozat);
+
 		echo json_encode($ret);
 	}
 
@@ -338,8 +341,7 @@ class mainController extends \mkwhelpers\Controller {
 		$masikselected = $this->params->getRequestParam('sel');
 		$ret = array();
 
-		$tc = new termekController($this->params);
-		$termek = $tc->getRepo()->find($termekkod);
+		$termek = Store::getEm()->getRepository('Entities\Termek')->find($termekkod);
 
 		if ($masiktipusid) {
 			$t = array($tipusid, $masiktipusid);
@@ -349,11 +351,12 @@ class mainController extends \mkwhelpers\Controller {
 			$t = array($tipusid);
 			$e = array($valtozatertek);
 		}
-		$termekvaltozat = store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(), $t, $e);
+		$termekvaltozat = Store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(), $t, $e);
 		$ret['price'] = number_format($termek->getBruttoAr($termekvaltozat, \mkw\Store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
         $ret['kepurlmedium'] = $termekvaltozat->getKepurlMedium();
         $ret['kepurllarge'] = $termekvaltozat->getKepurlLarge();
         $ret['kepurlsmall'] = $termekvaltozat->getKepurlSmall();
+        $ret['kepek'] = Store::getEm()->getRepository('Entities\Termek')->getKepekKiveve($termek, $termekvaltozat);
 
 		$valtozatok = $termek->getValtozatok();
 		foreach ($valtozatok as $valtozat) {

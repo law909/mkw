@@ -4,6 +4,32 @@ $(document).ready(function() {
     var $termekertesitomodal = $('#termekertesitoModal'),
             $termekertesitoform = $('#termekertesitoform');
 
+    function changeTermekAdat(id, d) {
+        $('#termekprice' + id).text(d['price']);
+        if ('kepurllarge' in d) {
+            $('#termekkeplink' + id).attr('href', d['kepurllarge']);
+        }
+        if ('kepurlmedium' in d) {
+            $('#termekkep' + id).attr('src', d['kepurlmedium']);
+        }
+        if ('kepurlsmall' in d) {
+            $('#termekkiskep' + id).attr('src', d['kepurlsmall']);
+        }
+        if ('kepek' in d) {
+            $('.js-termekimageslider .js-lightbox').each(function(index, elem) {
+                if (index in d['kepek']) {
+                    var $this = $(elem),
+                        $img = $('img', $this);
+                    $this.attr('href', d['kepek'][index]['kepurl']);
+                    $this.attr('title', d['kepek'][index]['leiras']);
+                    $img.attr('src', d['kepek'][index]['minikepurl']);
+                    $img.attr('alt', d['kepek'][index]['leiras']);
+                    $img.attr('title', d['kepek'][index]['leiras']);
+                }
+            });
+        }
+    }
+
     if ($.fn.mattaccord) {
         $(document).mattaccord();
     }
@@ -265,16 +291,9 @@ $(document).ready(function() {
         })
                 .done(function(data) {
                     var d = JSON.parse(data);
-                    $('#termekprice' + id).text(d['price']);
-                    if (d['kepurllarge']) {
-                        $('#termekkeplink' + id).attr('href', d['kepurllarge']);
-                    }
-                    if (d['kepurlmedium']) {
-                        $('#termekkep' + id).attr('src', d['kepurlmedium']);
-                    }
-                    if (d['kepurlsmall']) {
-                        $('#termekkiskep' + id).attr('src', d['kepurlsmall']);
-                    }
+
+                    changeTermekAdat(id, d);
+                    
                 })
                 .always(function() {
                     $('.js-kosarbavaltozat[data-id="' + id + '"]').attr('data-vid', $this.val());
@@ -302,16 +321,7 @@ $(document).ready(function() {
                             adat = d['adat'];
                     sel = '';
 
-                    $('#termekprice' + id).text(d['price']);
-                    if (d['kepurllarge']) {
-                        $('#termekkeplink' + id).attr('href', d['kepurllarge']);
-                    }
-                    if (d['kepurlmedium']) {
-                        $('#termekkep' + id).attr('src', d['kepurlmedium']);
-                    }
-                    if (d['kepurlsmall']) {
-                        $('#termekkiskep' + id).attr('src', d['kepurlsmall']);
-                    }
+                    changeTermekAdat(id, d);
 
                     $('option[value!=""]', $masikedit).remove();
                     $.each(adat, function(i, v) {

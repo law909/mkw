@@ -619,4 +619,35 @@ class TermekRepository extends \mkwhelpers\Repository {
         $res = $q->getScalarResult();
         return $res[0]['db'] * 1;
     }
+
+    public function getKepekKiveve($termek, $valtozat) {
+        if ($valtozat->getTermekfokep()) {
+            $kivet = 0;
+        }
+        else {
+            $kivet = $valtozat->getKepId();
+        }
+        $altomb = array();
+        foreach ($termek->getTermekKepek() as $kep) {
+            if ($kep->getId() !== $kivet) {
+                $egyed = array();
+                $egyed['kepurl'] = $kep->getUrlLarge();
+                $egyed['kozepeskepurl'] = $kep->getUrlMedium();
+                $egyed['kiskepurl'] = $kep->getUrlSmall();
+                $egyed['minikepurl'] = $kep->getUrlMini();
+                $egyed['leiras'] = $kep->getLeiras();
+                $altomb[] = $egyed;
+            }
+        }
+        if ($kivet != 0) {
+            $egyed = array();
+            $egyed['kepurl'] = $termek->getKepurlLarge();
+            $egyed['kozepeskepurl'] = $termek->getKepUrlMedium();
+            $egyed['kiskepurl'] = $termek->getKepUrlSmall();
+            $egyed['minikepurl'] = $termek->getKepurlMini();
+            $egyed['leiras'] = $termek->getNev();
+            $altomb[] = $egyed;
+        }
+        return $altomb;
+    }
 }
