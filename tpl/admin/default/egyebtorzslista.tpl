@@ -84,6 +84,16 @@
             <table id="kapcsolatfelveteltemagrid"></table>
             <div id="kapcsolatfelveteltemagridpager"></div>
         </div>
+        {if ($setup.mijsz)}
+        <div class="egyebadat-grid">
+            <table id="mijszoklevelkibocsajtogrid"></table>
+            <div id="mijszoklevelkibocsajtogridpager"></div>
+        </div>
+        <div class="egyebadat-grid">
+            <table id="mijszoklevelszintgrid"></table>
+            <div id="mijszoklevelszintgridpager"></div>
+        </div>
+        {/if}
     </div>
     <div class="egyebadat-longwrapper">
         <div class="egyebadat-grid">

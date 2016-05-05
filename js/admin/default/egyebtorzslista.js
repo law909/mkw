@@ -1018,6 +1018,96 @@ $().ready(
             $(_orszag.pager + '_center').hide();
             $(_orszag.pager + '_right').hide();
 
+            // mijszoklevelkibocsajto grid
+            var _mijszoklevelkibocsajto = {
+                grid: '#mijszoklevelkibocsajtogrid',
+                pager: '#mijszoklevelkibocsajtogridpager'
+            };
+            var mijszoklevelkibocsajtogrid = $(_mijszoklevelkibocsajto.grid).jqGrid({
+                url: '/admin/mijszoklevelkibocsajto/jsonlist',
+                editurl: '/admin/mijszoklevelkibocsajto/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _mijszoklevelkibocsajto.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Oklevél kibocsájtók'});
+            $(_mijszoklevelkibocsajto.grid).jqGrid('navGrid', _mijszoklevelkibocsajto.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_mijszoklevelkibocsajto.grid).jqGrid('navButtonAdd', _mijszoklevelkibocsajto.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    mijszoklevelkibocsajtogrid[0].toggleToolbar();
+                }
+            });
+            $(_mijszoklevelkibocsajto.grid).jqGrid('navButtonAdd', _mijszoklevelkibocsajto.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    mijszoklevelkibocsajtogrid[0].clearToolbar();
+                }
+            });
+            $(_mijszoklevelkibocsajto.grid).jqGrid('filterToolbar');
+            $(_mijszoklevelkibocsajto.pager + '_center').hide();
+            $(_mijszoklevelkibocsajto.pager + '_right').hide();
+
+            // mijszoklevelszint grid
+            var _mijszoklevelszint = {
+                grid: '#mijszoklevelszintgrid',
+                pager: '#mijszoklevelszintgridpager'
+            };
+            var mijszoklevelszintgrid = $(_mijszoklevelszint.grid).jqGrid({
+                url: '/admin/mijszoklevelszint/jsonlist',
+                editurl: '/admin/mijszoklevelszint/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _mijszoklevelszint.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Oklevél szintek'});
+            $(_mijszoklevelszint.grid).jqGrid('navGrid', _mijszoklevelszint.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_mijszoklevelszint.grid).jqGrid('navButtonAdd', _mijszoklevelszint.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    mijszoklevelszintgrid[0].toggleToolbar();
+                }
+            });
+            $(_mijszoklevelszint.grid).jqGrid('navButtonAdd', _mijszoklevelszint.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    mijszoklevelszintgrid[0].clearToolbar();
+                }
+            });
+            $(_mijszoklevelszint.grid).jqGrid('filterToolbar');
+            $(_mijszoklevelszint.pager + '_center').hide();
+            $(_mijszoklevelszint.pager + '_right').hide();
+
             // Altalanos
             $('.ui-search-toolbar').hide();
             $('.ui-jqgrid-titlebar').on('click', function(e) {

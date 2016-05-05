@@ -52,6 +52,12 @@ $router->map('POST', '/admin/partnertipus/save', 'partnertipusController#save', 
 $router->map('GET', '/admin/orszag/jsonlist', 'orszagController#jsonlist', 'adminorszagjsonlist');
 $router->map('GET', '/admin/orszag/htmllist', 'orszagController#htmllist', 'adminorszaghtmllist');
 $router->map('POST', '/admin/orszag/save', 'orszagController#save', 'adminorszagsave');
+$router->map('GET', '/admin/mijszoklevelkibocsajto/jsonlist', 'mijszoklevelkibocsajtoController#jsonlist', 'adminmijszoklevelkibocsajtojsonlist');
+$router->map('GET', '/admin/mijszoklevelkibocsajto/htmllist', 'mijszoklevelkibocsajtoController#htmllist', 'adminmijszoklevelkibocsajtohtmllist');
+$router->map('POST', '/admin/mijszoklevelkibocsajto/save', 'mijszoklevelkibocsajtoController#save', 'adminmijszoklevelkibocsajtosave');
+$router->map('GET', '/admin/mijszoklevelszint/jsonlist', 'mijszoklevelszintController#jsonlist', 'adminmijszoklevelszintjsonlist');
+$router->map('GET', '/admin/mijszoklevelszint/htmllist', 'mijszoklevelszintController#htmllist', 'adminmijszoklevelszinthtmllist');
+$router->map('POST', '/admin/mijszoklevelszint/save', 'mijszoklevelszintController#save', 'adminmijszoklevelszintsave');
 
 if (\mkw\Store::isBankpenztar()) {
     $router->map('GET', '/admin/jogcim/jsonlist', 'jogcimController#jsonlist', 'adminjogcimjsonlist');
