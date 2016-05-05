@@ -242,6 +242,12 @@ class Partner {
 	/** @ORM\OneToMany(targetEntity="PartnerTermekcsoportKedvezmeny", mappedBy="partner", cascade={"persist", "remove"}) */
 	private $termekcsoportkedvezmenyek;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Partnertipus",inversedBy="partnerek")
+     * @ORM\JoinColumn(name="partnertipus_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $partnertipus;
+
 	/**
 	 * @ORM\Column(type="boolean")
      */
@@ -972,6 +978,36 @@ class Partner {
      */
     public function getTermekcsoportkedvezmenyek() {
         return $this->termekcsoportkedvezmenyek;
+    }
+
+    public function getPartnertipus() {
+        return $this->partnertipus;
+    }
+
+    public function getPartnertipusNev() {
+        if ($this->partnertipus) {
+            return $this->partnertipus->getNev();
+        }
+        return '';
+    }
+
+    public function getPartnertipusId() {
+        if ($this->partnertipus) {
+            return $this->partnertipus->getId();
+        }
+        return '';
+    }
+
+    public function setPartnertipus($val) {
+        if ($this->partnertipus !== $val) {
+            $this->partnertipus = $val;
+        }
+    }
+
+    public function removePartnertipus() {
+        if ($this->partnertipus !== null) {
+            $this->partnertipus = null;
+        }
     }
 
 }

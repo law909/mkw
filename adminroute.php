@@ -46,6 +46,9 @@ $router->map('POST', '/admin/rw301/save', 'rewrite301Controller#save', 'adminrew
 $router->map('GET', '/admin/termekcsoport/jsonlist', 'termekcsoportController#jsonlist', 'admintermekcsoportjsonlist');
 $router->map('GET', '/admin/termekcsoport/htmllist', 'termekcsoportController#htmllist', 'admintermekcsoporthtmllist');
 $router->map('POST', '/admin/termekcsoport/save', 'termekcsoportController#save', 'admintermekcsoportsave');
+$router->map('GET', '/admin/partnertipus/jsonlist', 'partnertipusController#jsonlist', 'adminpartnertipusjsonlist');
+$router->map('GET', '/admin/partnertipus/htmllist', 'partnertipusController#htmllist', 'adminpartnertipushtmllist');
+$router->map('POST', '/admin/partnertipus/save', 'partnertipusController#save', 'adminpartnertipussave');
 
 if (\mkw\Store::isBankpenztar()) {
     $router->map('GET', '/admin/jogcim/jsonlist', 'jogcimController#jsonlist', 'adminjogcimjsonlist');

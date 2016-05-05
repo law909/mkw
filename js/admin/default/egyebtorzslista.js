@@ -621,7 +621,7 @@ $().ready(
                 height: 100,
                 width: 320,
                 hiddengrid: true,
-                caption: 'Jelenlét tipusok'});
+                caption: 'Jelenlét típusok'});
             $(_jlt.grid).jqGrid('navGrid', _jlt.pager, {edit: true, add: true, del: true, search: false},
             {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
             {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
@@ -928,6 +928,50 @@ $().ready(
             $(_jogcim.pager + '_center').hide();
             $(_jogcim.pager + '_right').hide();
 
+            // Partnertipus grid
+            var _partnertipus = {
+                grid: '#partnertipusgrid',
+                pager: '#partnertipusgridpager'
+            };
+            var partnertipusgrid = $(_partnertipus.grid).jqGrid({
+                url: '/admin/partnertipus/jsonlist',
+                editurl: '/admin/partnertipus/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _partnertipus.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Partner típusok'});
+            $(_partnertipus.grid).jqGrid('navGrid', _partnertipus.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_partnertipus.grid).jqGrid('navButtonAdd', _partnertipus.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    partnertipusgrid[0].toggleToolbar();
+                }
+            });
+            $(_partnertipus.grid).jqGrid('navButtonAdd', _partnertipus.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    partnertipusgrid[0].clearToolbar();
+                }
+            });
+            $(_partnertipus.grid).jqGrid('filterToolbar');
+            $(_partnertipus.pager + '_center').hide();
+            $(_partnertipus.pager + '_right').hide();
 
             // Altalanos
             $('.ui-search-toolbar').hide();

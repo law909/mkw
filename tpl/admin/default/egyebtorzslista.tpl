@@ -49,6 +49,10 @@
     </div>
     <div class="egyebadat-wrapper">
         <div class="egyebadat-grid">
+            <table id="partnertipusgrid"></table>
+            <div id="partnertipusgridpager"></div>
+        </div>
+        <div class="egyebadat-grid">
             <table id="partnercimkekatgrid"></table>
             <div id="partnercimkekatgridpager"></div>
         </div>
