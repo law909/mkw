@@ -248,6 +248,12 @@ class Partner {
      */
     private $partnertipus;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Orszag",inversedBy="partnerek")
+     * @ORM\JoinColumn(name="orszag_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $orszag;
+
 	/**
 	 * @ORM\Column(type="boolean")
      */
@@ -1010,4 +1016,33 @@ class Partner {
         }
     }
 
+    public function getOrszag() {
+        return $this->orszag;
+    }
+
+    public function getOrszagNev() {
+        if ($this->orszag) {
+            return $this->orszag->getNev();
+        }
+        return '';
+    }
+
+    public function getOrszagId() {
+        if ($this->orszag) {
+            return $this->orszag->getId();
+        }
+        return '';
+    }
+
+    public function setOrszag($val) {
+        if ($this->orszag !== $val) {
+            $this->orszag = $val;
+        }
+    }
+
+    public function removeOrszag() {
+        if ($this->orszag !== null) {
+            $this->orszag = null;
+        }
+    }
 }

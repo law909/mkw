@@ -973,6 +973,51 @@ $().ready(
             $(_partnertipus.pager + '_center').hide();
             $(_partnertipus.pager + '_right').hide();
 
+            // Orszag grid
+            var _orszag = {
+                grid: '#orszaggrid',
+                pager: '#orszaggridpager'
+            };
+            var orszaggrid = $(_orszag.grid).jqGrid({
+                url: '/admin/orszag/jsonlist',
+                editurl: '/admin/orszag/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _orszag.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Országok'});
+            $(_orszag.grid).jqGrid('navGrid', _orszag.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_orszag.grid).jqGrid('navButtonAdd', _orszag.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    orszaggrid[0].toggleToolbar();
+                }
+            });
+            $(_orszag.grid).jqGrid('navButtonAdd', _orszag.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    orszaggrid[0].clearToolbar();
+                }
+            });
+            $(_orszag.grid).jqGrid('filterToolbar');
+            $(_orszag.pager + '_center').hide();
+            $(_orszag.pager + '_right').hide();
+
             // Altalanos
             $('.ui-search-toolbar').hide();
             $('.ui-jqgrid-titlebar').on('click', function(e) {
