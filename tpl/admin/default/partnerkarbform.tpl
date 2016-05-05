@@ -46,6 +46,23 @@
 				<td><label for="EUAdoszamEdit">{t('Közösségi adószám')}:</label></td>
 				<td><input id="EUAdoszamEdit" name="euadoszam" type="text" size="13" maxlength="30" value="{$partner.euadoszam}"></td>
 			</tr>
+            {if ($setup.mijsz)}
+            <tr>
+                <td><label for="MIJSZMiotajogazikEdit">{t('Mióta jógázik')}:</label></td>
+                <td><input id="MIJSZMiotajogazikEdit" name="mijszmiotajogazik" type="text" size="20" maxlength="255" value="{$partner.mijszmiotajogazik}">
+                <td><label for="MIJSZMiotatanitEdit">{t('Mióta tanít')}:</label></td>
+                <td><input id="MIJSZMiotatanitEdit" name="mijszmiotatanit" type="text" size="20" maxlength="255" value="{$partner.mijszmiotatanit}">
+            </tr>
+            {/if}
+            <tr>
+                <td><label for="PartnertipusEdit">{t('Partner típus')}:</label></td>
+                <td><select id="PartnertipusEdit" name="partnertipus">
+                        <option value="">{t('válasszon')}</option>
+                        {foreach $partnertipuslist as $_szt}
+                            <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+                        {/foreach}
+                    </select></td>
+            </tr>
 			<tr>
 				<td><label for="SzamlatipusEdit">{t('Számla típus')}:</label></td>
 				<td><select id="SzamlatipusEdit" name="szamlatipus">
@@ -62,8 +79,8 @@
 					{/foreach}
 				</select></td>
             </tr>
-            {if ($setup.multilang)}
 			<tr>
+                {if ($setup.multilang)}
 				<td><label for="BizonylatnyelvEdit">{t('Bizonylatok nyelve')}:</label></td>
 				<td><select id="BizonylatnyelvEdit" name="bizonylatnyelv">
 					<option value="">{t('válasszon')}</option>
@@ -71,8 +88,16 @@
 					<option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
 					{/foreach}
 				</select></td>
+                {/if}
+                <td><label for="OrszagEdit">{t('Ország')}:</label></td>
+                <td><select id="OrszagEdit" name="orszag">
+                        <option value="">{t('válasszon')}</option>
+                        {foreach $orszaglist as $_szt}
+                            <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+                        {/foreach}
+                    </select>
+                </td>
             </tr>
-            {/if}
             <tr>
 				<td><label for="SzallmodEdit">{t('Szállítási mód')}:</label></td>
 				<td><select id="SzallmodEdit" name="szallitasimod">

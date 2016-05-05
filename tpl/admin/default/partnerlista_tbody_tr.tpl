@@ -8,16 +8,23 @@
         <table class="fullwidth">
             <tbody>
                 <tr><td colspan="2">{$_partner.vezeteknev} {$_partner.keresztnev}</td></tr>
-                <tr><td>{t('Üzletkötő')}:</td><td>{$_partner.uzletkotonev}</td></tr>
-                <tr><td>{t('Adószám')}:</td><td>{$_partner.adoszam}</td></tr>
-                <tr><td>{t('Fizetési mód')}:</td><td>{$_partner.fizmodnev}</td></tr>
-                <tr><td>{t('Szállítási mód')}:</td><td>{$_partner.szallitasimodnev}</td></tr>
-                {if ($setup.multilang)}
-                <tr><td>{t('Bizonylatok nyelve')}:</td><td>{$_partner.bizonylatnyelv}</td></tr>
-                {/if}
-                {if ($setup.arsavok)}
-                <tr><td>{t('Valutanem')}:</td><td>{$_partner.valutanemnev}</td></tr>
-                <tr><td>{t('Ársáv')}:</td><td>{$_partner.termekarazonosito}</td></tr>
+                {if ($setup.mijsz)}
+                    <tr><td>{$_partner.partnertipusnev}</td></tr>
+                    <tr><td>{$_partner.orszagnev}</td></tr>
+                    <tr><td>{t('Mióta jógázik')}:</td><td>{$_partner.mijszmiotajogazik}</td></tr>
+                    <tr><td>{t('Mióta tanít')}:</td><td>{$_partner.mijszmiotatanit}</td></tr>
+                {else}
+                    <tr><td>{t('Üzletkötő')}:</td><td>{$_partner.uzletkotonev}</td></tr>
+                    <tr><td>{t('Adószám')}:</td><td>{$_partner.adoszam}</td></tr>
+                    <tr><td>{t('Fizetési mód')}:</td><td>{$_partner.fizmodnev}</td></tr>
+                    <tr><td>{t('Szállítási mód')}:</td><td>{$_partner.szallitasimodnev}</td></tr>
+                    {if ($setup.multilang)}
+                        <tr><td>{t('Bizonylatok nyelve')}:</td><td>{$_partner.bizonylatnyelv}</td></tr>
+                    {/if}
+                    {if ($setup.arsavok)}
+                        <tr><td>{t('Valutanem')}:</td><td>{$_partner.valutanemnev}</td></tr>
+                        <tr><td>{t('Ársáv')}:</td><td>{$_partner.termekarazonosito}</td></tr>
+                    {/if}
                 {/if}
             </tbody>
         </table>

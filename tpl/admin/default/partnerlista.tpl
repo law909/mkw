@@ -41,6 +41,22 @@
             <option value="0">Nem</option>
             <option value="1">Igen</option>
         </select>
+        <label for="partnertipusfilter">{t('Partner típus')}: </label>
+        <select id="partnertipusfilter" name="partnertipusfilter">
+            <option value="">{t('válasszon')}</option>
+            {foreach $partnertipuslist as $_gyarto}
+                <option
+                    value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+            {/foreach}
+        </select>
+        <label for="orszagfilter">{t('Ország')}: </label>
+        <select id="orszagfilter" name="orszagfilter">
+            <option value="">{t('válasszon')}</option>
+            {foreach $orszaglist as $_gyarto}
+                <option
+                    value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+            {/foreach}
+        </select>
     </div>
 	<div class="matt-hseparator"></div>
 	<div id="cimkefiltercontainer">

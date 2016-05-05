@@ -254,6 +254,12 @@ class Partner {
      */
     private $orszag;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $mijszmiotajogazik = 0;
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $mijszmiotatanit = 0;
+
 	/**
 	 * @ORM\Column(type="boolean")
      */
@@ -1045,4 +1051,34 @@ class Partner {
             $this->orszag = null;
         }
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMijszmiotajogazik() {
+        return $this->mijszmiotajogazik;
+    }
+
+    /**
+     * @param mixed $mijszmiotajogazik
+     */
+    public function setMijszmiotajogazik($mijszmiotajogazik) {
+        $this->mijszmiotajogazik = $mijszmiotajogazik;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMijszmiotatanit() {
+        return $this->mijszmiotatanit;
+    }
+
+    /**
+     * @param mixed $mijszmiotatanit
+     */
+    public function setMijszmiotatanit($mijszmiotatanit) {
+        $this->mijszmiotatanit = $mijszmiotatanit;
+    }
+
+
 }

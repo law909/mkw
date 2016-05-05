@@ -90,9 +90,11 @@
             <table id="bankszamlagrid"></table>
             <div id="bankszamlagridpager"></div>
         </div>
+        {if ($setup.rewrite301)}
         <div class="egyebadat-grid">
             <table id="rw301grid"></table>
             <div id="rw301gridpager"></div>
         </div>
+        {/if}
     </div>
 {/block}

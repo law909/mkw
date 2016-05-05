@@ -201,7 +201,9 @@ $(document).ready(function(){
                     '#szamlazasiirszamfilter',
                     '#szamlazasivarosfilter',
                     '#szamlazasiutcafilter',
-                    '#beszallitofilter'
+                    '#beszallitofilter',
+                    '#partnertipusfilter',
+                    '#orszagfilter'
                 ],
 				onClear:function() {
 					$('.js-cimkefilter').removeClass('ui-state-hover');
