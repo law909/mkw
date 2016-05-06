@@ -10,6 +10,9 @@
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
 			<li><a href="#ElerhetosegTab">{t('Elérhetőségek')}</a></li>
 			<li><a href="#KedvezmenyTab">{t('Kedvezmények')}</a></li>
+            {if ($setup.mijsz)}
+                <li><a href="#MIJSZOklevelTab">{t('Oklevelek')}</a></li>
+            {/if}
 			<li><a href="#LoginTab">{t('Bejelentkezés')}</a></li>
 			<li><a href="#BankTab">{t('Banki adatok')}</a></li>
 			<li><a href="#EgyebAzonositoTab">{t('Egyéb azonosító adatok')}</a></li>
@@ -208,6 +211,16 @@
 				<span class="ui-icon ui-icon-circle-plus"></span>
 			</a>
 		</div>
+        {if ($setup.mijsz)}
+            <div id="MIJSZOklevelTab" class="mattkarb-page" data-visible="visible">
+                {foreach $partner.mijszoklevelek as $mijszoklevel}
+                    {include 'partnermijszoklevelkarb.tpl'}
+                {/foreach}
+                <a class="js-mijszoklevelnewbutton" href="#" title="{t('Új')}">
+                    <span class="ui-icon ui-icon-circle-plus"></span>
+                </a>
+            </div>
+        {/if}
 		<div id="LoginTab" class="mattkarb-page" data-visible="visible">
 			<table>
                 <tbody>

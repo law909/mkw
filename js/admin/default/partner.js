@@ -59,7 +59,8 @@ $(document).ready(function(){
 			saveUrl:'/admin/partner/save',
 			beforeShow:function() {
 				var szuletesiidoedit=$('#SzuletesiidoEdit'),
-                    termekcsoportkedvezmenytab = $('#KedvezmenyTab');
+                    termekcsoportkedvezmenytab = $('#KedvezmenyTab'),
+                    mijszokleveltab = $('#MIJSZOklevelTab');
 
                 szuletesiidoedit.datepicker($.datepicker.regional['hu']);
                 szuletesiidoedit.datepicker('option','dateFormat','yy.mm.dd');
@@ -145,7 +146,57 @@ $(document).ready(function(){
 							});
 						}
 					});
-				$('.js-termekcsoportkedvezmenynewbutton,.js-termekcsoportkedvezmenydelbutton').button();
+				$('.js-mijszoklevelnewbutton,.js-mijszokleveldelbutton').button();
+                mijszokleveltab.on('click', '.js-mijszoklevelnewbutton', function(e) {
+                        var $this = $(this);
+                        e.preventDefault();
+                        $.ajax({
+                            url: '/admin/partnermijszoklevel/getemptyrow',
+                            type: 'GET',
+                            success: function(data) {
+                                var tbody = $('#MIJSZOklevelTab');
+                                tbody.append(data);
+                                $('.js-mijszoklevelnewbutton,.js-mijszokleveldelbutton').button();
+                                $this.remove();
+                            }
+                        });
+                    })
+                    .on('click', '.js-mijszokleveldelbutton', function(e) {
+                        e.preventDefault();
+                        var argomb = $(this),
+                            arid = argomb.attr('data-id');
+                        if (argomb.attr('data-source') === 'client') {
+                            $('#mijszokleveltable_' + arid).remove();
+                        }
+                        else {
+                            dialogcenter.html('Biztos, hogy törli az oklevelet?').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'Igen': function() {
+                                        $.ajax({
+                                            url: '/admin/partnermijszoklevel/save',
+                                            type: 'POST',
+                                            data: {
+                                                id: arid,
+                                                oper: 'del'
+                                            },
+                                            success: function(data) {
+                                                $('#mijszokleveltable_' + data).remove();
+                                            }
+                                        });
+                                        $(this).dialog('close');
+                                    },
+                                    'Nem': function() {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                    });
+                $('.js-mijszoklevelnewbutton,.js-mijszokleveldelbutton').button();
+
 				irszamAutocomplete('#IrszamEdit','#VarosEdit');
 				varosAutocomplete('#IrszamEdit','#VarosEdit');
 				irszamAutocomplete('#SzamlaIrszamEdit','#SzamlaVarosEdit');

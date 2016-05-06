@@ -771,6 +771,10 @@ class Store {
         return self::getSetupValue('multivaluta');
     }
 
+    public static function isMIJSZ() {
+        return self::getSetupValue('mijsz');
+    }
+
     public static function isFoxpostSzallitasimod($szm) {
         $i = $szm;
         if (is_a($szm, 'Entities\FoxpostTerminal')) {

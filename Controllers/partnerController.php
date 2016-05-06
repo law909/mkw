@@ -17,6 +17,7 @@ class partnerController extends \mkwhelpers\MattableController {
 
     protected function loadVars($t) {
         $kedvCtrl = new \Controllers\partnertermekcsoportkedvezmenyController($this->params);
+        $mijszokCtrl = new \Controllers\partnermijszoklevelController($this->params);
         $x = array();
         if (!$t) {
             $t = new \Entities\Partner();
@@ -99,6 +100,13 @@ class partnerController extends \mkwhelpers\MattableController {
         }
         $x['termekcsoportkedvezmenyek'] = $kedv;
 
+        if (\mkw\Store::isMIJSZ()) {
+            $okl = array();
+            foreach ($t->getMijszoklevelek() as $tar) {
+                $okl[] = $mijszokCtrl->loadVars($tar, true);
+            }
+            $x['mijszoklevelek'] = $okl;
+        }
         return $x;
     }
 
@@ -169,6 +177,35 @@ class partnerController extends \mkwhelpers\MattableController {
             $partnertipus = Store::getEm()->getRepository('Entities\Partnertipus')->find($this->params->getIntRequestParam('partnertipus', 0));
             if ($partnertipus) {
                 $obj->setPartnertipus($partnertipus);
+            }
+
+            if (\mkw\Store::isMIJSZ()) {
+                $okids = $this->params->getArrayRequestParam('mijszoklevelid');
+                foreach ($okids as $okid) {
+                    $oper = $this->params->getStringRequestParam('mijszokleveloper_' . $okid);
+                    $kibo = $this->getEm()->getRepository('Entities\MIJSZOklevelkibocsajto')->find($this->params->getIntRequestParam('mijszokleveloklevelkibocsajto_' . $okid));
+                    $szint = $this->getEm()->getRepository('Entities\MIJSZOklevelszint')->find($this->params->getIntRequestParam('mijszokleveloklevelszint_' . $okid));
+                    if ($kibo && $szint) {
+                        if ($oper === 'add') {
+                            $kedv = new \Entities\PartnerMIJSZOklevel();
+                            $kedv->setPartner($obj);
+                            $kedv->setMIJSZOklevelkibocsajto($kibo);
+                            $kedv->setMIJSZOklevelszint($szint);
+                            $kedv->setOklevelev($this->params->getIntRequestParam('mijszokleveloklevelev_' . $okid));
+                            $this->getEm()->persist($kedv);
+                        }
+                        elseif ($oper === 'edit') {
+                            $kedv = $this->getEm()->getRepository('Entities\PartnerMIJSZOklevel')->find($okid);
+                            if ($kedv) {
+                                $kedv->setPartner($obj);
+                                $kedv->setMIJSZOklevelkibocsajto($kibo);
+                                $kedv->setMIJSZOklevelszint($szint);
+                                $kedv->setOklevelev($this->params->getIntRequestParam('mijszokleveloklevelev_' . $okid));
+                                $this->getEm()->persist($kedv);
+                            }
+                        }
+                    }
+                }
             }
 
             $obj->removeAllCimke();

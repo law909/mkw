@@ -265,12 +265,16 @@ class Partner {
      */
     private $ezuzletkoto = false;
 
+    /** @ORM\OneToMany(targetEntity="PartnerMIJSZOklevel", mappedBy="partner", cascade={"persist", "remove"}) */
+    private $mijszoklevelek;
+
 	public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->termekertesitok = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->termekcsoportkedvezmenyek = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->mijszoklevelek = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function getCim() {
@@ -1080,5 +1084,10 @@ class Partner {
         $this->mijszmiotatanit = $mijszmiotatanit;
     }
 
-
+    /**
+     * @return \Entities\PartnerMIJSZOklevel
+     */
+    public function getMijszoklevelek() {
+        return $this->mijszoklevelek;
+    }
 }
