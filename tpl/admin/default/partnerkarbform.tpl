@@ -29,12 +29,14 @@
 				<td><label for="KeresztnevEdit">{t('Keresztnév')}:</label></td>
 				<td><input id="KeresztnevEdit" name="keresztnev" type="text" size="20" maxlength="255" value="{$partner.keresztnev}">
 			</tr>
+            {if (!$setup.mijsz)}
 			<tr>
 				<td><label for="SzallitoEdit">{t('Beszállító')}:</label></td>
 				<td><input id="SzallitoEdit" name="szallito" type="checkbox"{if ($partner.szallito==1)} checked="checked"{/if}></td>
 				<td><label for="EzuzletkotoEdit">{t('Üzletkötő')}:</label></td>
 				<td><input id="EzuzletkotoEdit" name="ezuzletkoto" type="checkbox"{if ($partner.ezuzletkoto==1)} checked="checked"{/if}></td>
 			</tr>
+            {/if}
 			<tr>
 				<td><label for="IrszamEdit">{t('Cím')}:</label></td>
 				<td colspan="3">
@@ -42,6 +44,14 @@
 					<input id="VarosEdit" name="varos" type="text" size="20" maxlength="40" value="{$partner.varos}" placeholder="{t('város')}" required="required">
 					<input id="UtcaEdit" name="utca" type="text" size="40" maxlength="60" value="{$partner.utca}" placeholder="{t('utca, házszám')}">
 				</td>
+                <td><label for="OrszagEdit">{t('Ország')}:</label></td>
+                <td><select id="OrszagEdit" name="orszag">
+                        <option value="">{t('válasszon')}</option>
+                        {foreach $orszaglist as $_szt}
+                            <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+                        {/foreach}
+                    </select>
+                </td>
 			</tr>
 			<tr>
 				<td><label for="AdoszamEdit">{t('Adószám')}:</label></td>
@@ -82,8 +92,8 @@
 					{/foreach}
 				</select></td>
             </tr>
+            {if ($setup.multilang)}
 			<tr>
-                {if ($setup.multilang)}
 				<td><label for="BizonylatnyelvEdit">{t('Bizonylatok nyelve')}:</label></td>
 				<td><select id="BizonylatnyelvEdit" name="bizonylatnyelv">
 					<option value="">{t('válasszon')}</option>
@@ -91,16 +101,9 @@
 					<option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
 					{/foreach}
 				</select></td>
-                {/if}
-                <td><label for="OrszagEdit">{t('Ország')}:</label></td>
-                <td><select id="OrszagEdit" name="orszag">
-                        <option value="">{t('válasszon')}</option>
-                        {foreach $orszaglist as $_szt}
-                            <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
-                        {/foreach}
-                    </select>
-                </td>
             </tr>
+            {/if}
+            {if (!$setup.mijsz)}
             <tr>
 				<td><label for="SzallmodEdit">{t('Szállítási mód')}:</label></td>
 				<td><select id="SzallmodEdit" name="szallitasimod">
@@ -117,6 +120,7 @@
 					{/foreach}
 				</select></td>
 			</tr>
+            {/if}
             {if ($setup.arsavok)}
                 <tr>
                     <td><label for="ValutanemEdit">{t('Valutanem')}:</label></td>
@@ -135,6 +139,7 @@
                     </select></td>
                 </tr>
             {/if}
+            {if (!$setup.mijsz)}
 			<tr>
 				<td><label for="FizhatidoEdit">{t('Fizetési haladék')}:</label></td>
 				<td><input id="FizhatidoEdit" name="fizhatido" type="number" size="5" maxlength="3" value="{$partner.fizhatido}"></td>
@@ -147,6 +152,7 @@
 				<td><label for="UjdonsaghirlevelkellEdit">{t('Kér újdonság hírlevelet')}:</label></td>
 				<td><input id="UjdonsaghirlevelkellEdit" name="ujdonsaghirlevelkell" type="checkbox"{if ($partner.ujdonsaghirlevelkell==1)} checked="checked"{/if}></td>
 			</tr>
+            {/if}
 			</tbody></table>
 				<div id="cimkekarbcontainer">
 				{foreach $cimkekat as $_cimkekat}

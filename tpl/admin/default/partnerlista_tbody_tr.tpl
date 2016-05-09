@@ -10,7 +10,6 @@
                 <tr><td colspan="2">{$_partner.vezeteknev} {$_partner.keresztnev}</td></tr>
                 {if ($setup.mijsz)}
                     <tr><td>{$_partner.partnertipusnev}</td></tr>
-                    <tr><td>{$_partner.orszagnev}</td></tr>
                     <tr><td>{t('Mióta jógázik')}:</td><td>{$_partner.mijszmiotajogazik}</td></tr>
                     <tr><td>{t('Mióta tanít')}:</td><td>{$_partner.mijszmiotatanit}</td></tr>
                 {else}
@@ -29,7 +28,7 @@
             </tbody>
         </table>
     </td>
-    <td class="cell">{$_partner.cim}<br />{if ($_partner.lcim!=='')}({t('Levélcím')}: {$_partner.lcim}){/if}</td>
+    <td class="cell">{$_partner.orszagnev}<br />{$_partner.cim}<br />{if ($_partner.lcim!=='')}({t('Levélcím')}: {$_partner.lcim}){/if}</td>
     <td class="cell">
         <table>
             <tbody>
