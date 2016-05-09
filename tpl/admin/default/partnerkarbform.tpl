@@ -44,6 +44,8 @@
 					<input id="VarosEdit" name="varos" type="text" size="20" maxlength="40" value="{$partner.varos}" placeholder="{t('város')}" required="required">
 					<input id="UtcaEdit" name="utca" type="text" size="40" maxlength="60" value="{$partner.utca}" placeholder="{t('utca, házszám')}">
 				</td>
+            </tr>
+            <tr>
                 <td><label for="OrszagEdit">{t('Ország')}:</label></td>
                 <td><select id="OrszagEdit" name="orszag">
                         <option value="">{t('válasszon')}</option>
