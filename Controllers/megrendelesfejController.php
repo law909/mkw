@@ -299,7 +299,7 @@ class megrendelesfejController extends bizonylatfejController {
                         /** @var \Entities\TermekValtozat $termek */
                         $termekv = $tetel->getTermekvaltozat();
                         if ($termekv) {
-                            if ($termekv->getKeszlet() > 0) {
+                            if ($termekv->getKeszlet() - $termekv->getFoglaltMennyiseg() > 0) {
                                 $vankeszlet = true;
                                 break;
                             }
@@ -307,7 +307,7 @@ class megrendelesfejController extends bizonylatfejController {
                         else {
                             $termek = $tetel->getTermek();
                             if ($termek) {
-                                if ($termek->getKeszlet() > 0) {
+                                if ($termek->getKeszlet() - $termek->getFoglaltMennyiseg() > 0) {
                                     $vankeszlet = true;
                                     break;
                                 }
