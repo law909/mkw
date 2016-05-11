@@ -350,6 +350,13 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::PathKress);
         $view->setVar(\mkw\consts::PathKress, ($p ? $p->getErtek() : ''));
 
+        $p = $repo->find(\mkw\consts::MiniCRMHasznalatban);
+        $view->setVar(\mkw\consts::MiniCRMHasznalatban, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MiniCRMSystemId);
+        $view->setVar(\mkw\consts::MiniCRMSystemId, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MiniCRMAPIKey);
+        $view->setVar(\mkw\consts::MiniCRMAPIKey, ($p ? $p->getErtek() : ''));
+
         $view->setVar('stopkreativimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'kreativ')));
         $view->setVar('stopdeltonimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'delton')));
         $view->setVar('stopreinteximporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'reintex')));
@@ -465,6 +472,10 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::FoxpostApiURL, $this->params->getStringRequestParam('foxpostapiurl'));
         $this->setObj(\mkw\consts::FoxpostUsername, $this->params->getStringRequestParam('foxpostusername'));
         $this->setObj(\mkw\consts::FoxpostPassword, $this->params->getStringRequestParam('foxpostpassword'));
+        $this->setObj(\mkw\consts::MiniCRMHasznalatban, $this->params->getBoolRequestParam('minicrmhasznalatban'));
+        $this->setObj(\mkw\consts::MiniCRMSystemId, $this->params->getStringRequestParam('minicrmsystemid'));
+        $this->setObj(\mkw\consts::MiniCRMAPIKey, $this->params->getStringRequestParam('minicrmapikey'));
+
         // alapertelmezes
         $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
         if ($fizmod) {

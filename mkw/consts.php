@@ -164,4 +164,8 @@ class consts {
     const RunningBtechImport = 'runningbtechimport';
     const RunningKressgepImport = 'runningkressgepimport';
     const RunningKresstartozekImport = 'runningkresstartozekimport';
+
+    const MiniCRMHasznalatban = 'minicrmhasznalatban';
+    const MiniCRMSystemId = 'minicrmsystemid';
+    const MiniCRMAPIKey = 'minicrmapikey';
 }

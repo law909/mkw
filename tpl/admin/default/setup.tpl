@@ -588,6 +588,14 @@
                 <td><label>{t('Password')}:</label></td>
                 <td><input name="foxpostpassword" type="password" value="{$foxpostpassword}" autocomplete="off"></td>
             </tr>
+            <tr>
+                <td><label>{t('MiniCRM bekapcsolva')}:</label></td>
+                <td><input name="minicrmhasznalatban" type="checkbox"{if ($minicrmhasznalatban)} checked="checked"{/if}"></td>
+                <td><label>{t('MiniCRM System Id')}:</label></td>
+                <td><input name="minicrmsystemid" type="text" value="{$minicrmsystemid}" autocomplete="off"></td>
+                <td><label>{t('MiniCRM API key')}:</label></td>
+                <td><input name="minicrmapikey" type="text" value="{$minicrmapikey}" autocomplete="off"></td>
+            </tr>
         </tbody></table>
         </div>
 		<div id="EmailTab" class="mattkarb-page" data-visible="visible">
