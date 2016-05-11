@@ -463,3 +463,5 @@ if (\mkw\store::getTheme() == 'superzone') {
         $router->map('GET', '/admin/mese', 'fantaController#mese', 'adminmese');
     }
 }
+
+//$router->map('GET', '/admin/t/minicrm', 'adminController#minicrm', 'adminminicrm');

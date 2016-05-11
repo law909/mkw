@@ -149,4 +149,17 @@ class adminController extends mkwhelpers\Controller {
         */
         echo 'kesz';
     }
+
+    public function minicrm() {
+        require 'busvendor/MiniCRM/minicrm-api.phar';
+        $minicrm = new \MiniCRM_Connection(\mkw\store::getParameter(\mkw\consts::MiniCRMSystemId), \mkw\store::getParameter(\mkw\consts::MiniCRMAPIKey));
+        $res = \MiniCRM_Contact::FieldSearch($minicrm, array('Email' => 'balint.lovey@gmail.com'));
+        if ($res['Count']) {
+            $res = array_values($res['Results']);
+            $balint = new \MiniCRM_Contact($minicrm, $res[0]['Id']);
+            echo '<pre>';
+            print_r($balint);
+            echo '</pre>';
+        }
+    }
 }
