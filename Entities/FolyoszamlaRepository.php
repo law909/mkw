@@ -67,9 +67,9 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
     }
 
     public function getLejartKintlevosegByValutanem($partnerkodok = null) {
-        $pluszsql = '';
+        $pluszsql = ' WHERE (storno=0) AND (stornozott=0)';
         if ($partnerkodok) {
-            $pluszsql = ' WHERE (partner_id IN (' . implode(',', $partnerkodok) . '))';
+            $pluszsql = ' AND (partner_id IN (' . implode(',', $partnerkodok) . '))';
         }
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('nev', 'nev');
