@@ -48,7 +48,7 @@ class Feketelista {
 
     public function getCreatedStr() {
         if ($this->getCreated()) {
-            return $this->getCreated()->format(\mkw\Store::$DateTimeFormat);
+            return $this->getCreated()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }

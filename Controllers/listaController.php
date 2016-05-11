@@ -31,7 +31,7 @@ class listaController extends \mkwhelpers\Controller {
         $filter
             ->addFilter('bt.mozgat', '=', 1)
             ->addFilter('bf.raktar_id', '<>', $raktarid)
-            ->addFilter('bf.teljesites', '<=', date(\mkw\Store::$DateFormat));
+            ->addFilter('bf.teljesites', '<=', date(\mkw\store::$DateFormat));
         if ($termekfa) {
             $filter->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $termekfa->getKarkod() . '%');
         }
@@ -78,7 +78,7 @@ class listaController extends \mkwhelpers\Controller {
 
         $view = $this->createView('rep_boltbannincsmasholvan.tpl');
         $view->setVar('raktarnev', $boltraktar->getNev());
-        $view->setVar('datum', date(\mkw\Store::convDate(\mkw\Store::$DateFormat)));
+        $view->setVar('datum', date(\mkw\store::convDate(\mkw\store::$DateFormat)));
         if ($termekfa) {
             $view->setVar('termekcsoport', $termekfa->getNev());
         }
@@ -88,18 +88,18 @@ class listaController extends \mkwhelpers\Controller {
 
     public function napiJelentes($datum = null, $ig = null) {
         if (!$datum) {
-            $datum = date(\mkw\Store::$SQLDateFormat);
+            $datum = date(\mkw\store::$SQLDateFormat);
         }
-        $datum = \mkw\Store::convDate($datum);
+        $datum = \mkw\store::convDate($datum);
         if (!$ig) {
-            $ig = date(\mkw\Store::$SQLDateFormat);
+            $ig = date(\mkw\store::$SQLDateFormat);
         }
-        $ig = \mkw\Store::convDate($ig);
+        $ig = \mkw\store::convDate($ig);
         $btrepo = $this->getRepo('Entities\Bizonylattipus');
         $termekrepo = $this->getRepo('Entities\Termek');
         $farepo = $this->getRepo('Entities\TermekFa');
         $focsoportok = $farepo->getForParent(1);
-        $kiskercimke = \mkw\Store::getParameter(\mkw\consts::KiskerCimke);
+        $kiskercimke = \mkw\store::getParameter(\mkw\consts::KiskerCimke);
         $ret = array();
         foreach($focsoportok as $csoport) {
             $filter = new \mkwhelpers\FilterDescriptor();
@@ -145,7 +145,7 @@ class listaController extends \mkwhelpers\Controller {
         $bfrepo = $this->getRepo('Entities\Bizonylatfej');
 
         if (!$tol) {
-            $evtol = \mkw\Store::getParameter(\mkw\consts::TeljesitmenyKezdoEv, 2014);
+            $evtol = \mkw\store::getParameter(\mkw\consts::TeljesitmenyKezdoEv, 2014);
             $hotol = '01';
             $naptol = '01';
             $tol = new \DateTime($evtol . '-' . $hotol . '-' . $naptol);
@@ -258,7 +258,7 @@ class listaController extends \mkwhelpers\Controller {
         $termekek = $rep->getNemkaphatoTermekek($order);
         $lista = array();
         foreach ($termekek as $termek) {
-            $termek['karburl'] = \mkw\Store::getRouter()->generate('admintermekviewkarb', false, array(),
+            $termek['karburl'] = \mkw\store::getRouter()->generate('admintermekviewkarb', false, array(),
                 array('oper' => 'edit', 'id' => $termek['id']));
             $lista[] = $termek;
         }

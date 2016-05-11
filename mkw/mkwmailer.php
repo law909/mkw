@@ -54,14 +54,14 @@ class mkwmailer {
             $this->headers = $headers;
         }
         else {
-            $this->headers = "From: " . Store::getParameter(consts::EmailFrom) . "\r\n";
+            $this->headers = "From: " . \mkw\store::getParameter(\mkw\consts::EmailFrom) . "\r\n";
             if (!$this->replyto) {
-                $this->headers .= "Reply-to: " . Store::getParameter(consts::EmailReplyTo) . "\r\n";
+                $this->headers .= "Reply-to: " . \mkw\store::getParameter(\mkw\consts::EmailReplyTo) . "\r\n";
             }
             else {
                 $this->headers .= $this->replyto . "\r\n";
             }
-            $this->headers .= "Bcc: " . Store::getParameter(consts::EmailBcc) . "\r\n"
+            $this->headers .= "Bcc: " . \mkw\store::getParameter(\mkw\consts::EmailBcc) . "\r\n"
                 . "MIME-version: 1.0\r\n"
                 . "Content-Type: text/html; charset=utf-8\r\n";
         }

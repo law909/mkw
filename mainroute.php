@@ -1,6 +1,6 @@
 <?php
 
-if (\mkw\Store::getTheme() === 'mkwcansas') {
+if (\mkw\store::getTheme() === 'mkwcansas') {
     $router->map('GET', '/ProductDetails', 'termekController#redirectOldUrl', 'termekredirectoldurl');
     $router->map('GET', '/', 'termekfaController#redirectOldUrl', 'termekfaredirectoldurl');
     $router->map('GET', '/Static', 'statlapController#redirectOldUrl', 'statlapredirectoldurl');
@@ -9,13 +9,13 @@ if (\mkw\Store::getTheme() === 'mkwcansas') {
     $router->map('GET', '/MiddleTier/ReadImage', 'termekController#redirectRegikepUrl', 'termekredirectregikepurl');
 }
 
-if (\mkw\Store::getTheme() === 'superzone') {
+if (\mkw\store::getTheme() === 'superzone') {
     $router->map('GET', '/termekm/[:slug]', 'mainController#termekm', 'showtermekm');
     $router->map('GET', '/fanta', 'fantaController#show', 'showfanta');
     $router->map('POST', '/fanta/do', 'fantaController#doit', 'dofanta');
 }
 
-if (\mkw\Store::isB2B()) {
+if (\mkw\store::isB2B()) {
     $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo|discounts:subject]', 'b2bpartnerController#saveAccount', 'saveaccount');
     $router->map('GET', '/regisztracio', 'b2bpartnerController#showRegistrationForm', 'showregistration');
     $router->map('POST', '/regisztracio/ment', 'b2bpartnerController#saveRegistration', 'saveregistration');

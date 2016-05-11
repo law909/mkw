@@ -275,7 +275,7 @@ class Uzletkoto {
 	 */
 	public function getPartnervalutanem() {
 		if (!$this->id && !$this->partnervalutanem) {
-			$this->setPartnervalutanem(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+			$this->setPartnervalutanem(\mkw\store::getParameter(\mkw\consts::Valutanem));
 		}
 		return $this->partnervalutanem;
 	}
@@ -301,7 +301,7 @@ class Uzletkoto {
 	 */
 	public function setPartnervalutanem($val) {
 		if (!($val instanceof \Entities\Valutanem)) {
-			$val = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find($val);
+			$val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
 		}
 		if ($this->partnervalutanem !== $val) {
 			$this->partnervalutanem = $val;

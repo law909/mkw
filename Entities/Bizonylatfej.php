@@ -3,8 +3,6 @@ namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use mkw\consts;
-use mkw\store;
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylatfejRepository")
  * @ORM\Table(name="bizonylatfej",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
@@ -465,7 +463,7 @@ class Bizonylatfej {
             $mincimlet = $this->getValutanem()->getMincimlet();
             $kerekit = $this->getValutanem()->getKerekit();
         }
-        $defavaluta = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+        $defavaluta = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
         if ($defavaluta) {
             $defakerekit = $defavaluta->getKerekit();
         }
@@ -496,7 +494,7 @@ class Bizonylatfej {
         }
         if ($mincimlet && ($fizmodtipus == 'P')) {
             $valosbrutto = $this->brutto;
-            $this->brutto = \mkw\Store::kerekit($this->brutto, $mincimlet);
+            $this->brutto = \mkw\store::kerekit($this->brutto, $mincimlet);
             $this->kerkul = $this->brutto - $valosbrutto;
         }
         $this->fizetendo = $this->brutto;
@@ -511,7 +509,7 @@ class Bizonylatfej {
     public function calcRugalmasFizmod() {
         $regifizmod = $this->getFizmod();
         if ($regifizmod->getRugalmas()) {
-            $fh = \mkw\Store::getEm()->getRepository('Entities\FizmodHatar')->getByValutanemHatar($this->getValutanem(), $this->getFizetendo());
+            $fh = \mkw\store::getEm()->getRepository('Entities\FizmodHatar')->getByValutanemHatar($this->getValutanem(), $this->getFizetendo());
             if ($fh) {
                 $this->setFizmod($fh->getFizmod());
             }
@@ -519,7 +517,7 @@ class Bizonylatfej {
     }
     public function calcOsztottFizetendo() {
         // superzone osztott fizetendo
-        if (\mkw\Store::isOsztottFizmod()) {
+        if (\mkw\store::isOsztottFizmod()) {
             $this->setEsedekesseg1();
             $this->setFizetendo1(0);
             $this->setEsedekesseg2();
@@ -528,7 +526,7 @@ class Bizonylatfej {
             $this->setFizetendo3(0);
             $eddigi = 0;
             $fizmod = $this->getFizmod();
-            $kelt = new \DateTimeImmutable(\mkw\Store::convDate($this->getKeltStr()));
+            $kelt = new \DateTimeImmutable(\mkw\store::convDate($this->getKeltStr()));
             if ($fizmod->getOsztotthaladek1() && ($fizmod->getOsztottszazalek1() * 1 > 0)) {
                 $this->setEsedekesseg1($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek1() . 'D')));
                 $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek1() / 100, 2);
@@ -565,14 +563,14 @@ class Bizonylatfej {
         if ($this->getStorno() || $this->getStornozott() || $this->getRontott() || !$this->getPenztmozgat()) {
             return 0;
         }
-        return \mkw\Store::getEm()->getRepository('Entities\Folyoszamla')->getSumByHivatkozottBizonylat($this->getId());
+        return \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getSumByHivatkozottBizonylat($this->getId());
     }
 
     public function getOsztottEgyenleg() {
         if ($this->getStorno() || $this->getStornozott() || $this->getRontott() || !$this->getPenztmozgat()) {
             return 0;
         }
-        return \mkw\Store::getEm()->getRepository('Entities\Folyoszamla')->getSumByHivatkozottBizonylatDatum($this->getId());
+        return \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getSumByHivatkozottBizonylatDatum($this->getId());
     }
 
     /**
@@ -586,16 +584,16 @@ class Bizonylatfej {
         }
         if ($emailtpl) {
             $tpldata = $bf->toLista();
-            $subject = \mkw\Store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+            $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
             $subject->setVar('rendeles', $tpldata);
-            $body = \mkw\Store::getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
+            $body = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
             $body->setVar('rendeles', $tpldata);
-            if (\mkw\Store::getConfigValue('developer')) {
-                \mkw\Store::writelog($subject->getTemplateResult(), 'bizstatuszemail.html');
-                \mkw\Store::writelog($body->getTemplateResult(), 'bizstatuszemail.html');
+            if (\mkw\store::getConfigValue('developer')) {
+                \mkw\store::writelog($subject->getTemplateResult(), 'bizstatuszemail.html');
+                \mkw\store::writelog($body->getTemplateResult(), 'bizstatuszemail.html');
             }
             else {
-                $mailer = \mkw\Store::getMailer();
+                $mailer = \mkw\store::getMailer();
                 if ($topartner) {
                     $mailer->addTo($bf->getPartneremail());
                     $m = explode(',', $bf->getUzletkotoemail());
@@ -642,7 +640,7 @@ class Bizonylatfej {
         $ret['afa'] = $this->getAfa();
         $ret['brutto'] = $this->getBrutto();
         $ret['fizetendo'] = $this->getFizetendo();
-        $ret['fizetendokiirva'] = \mkw\Store::Num2Text($this->getFizetendo());
+        $ret['fizetendokiirva'] = \mkw\store::Num2Text($this->getFizetendo());
         $ret['fizmodnev'] = $this->getFizmodnev();
         $ret['szallitasimodnev'] = $this->getSzallitasimodnev();
         $ret['tulajbanknev'] = $this->getTulajbanknev();
@@ -684,12 +682,12 @@ class Bizonylatfej {
         $ret['storno'] = $this->getStorno();
         $ret['stornozott'] = $this->getStornozott();
         $ret['rontott'] = $this->getRontott();
-        if (\mkw\Store::getConfigValue('admin', false)) {
-            $ret['printurl'] = \mkw\Store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejprint', false, array(), array(
+        if (\mkw\store::getConfigValue('admin', false)) {
+            $ret['printurl'] = \mkw\store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejprint', false, array(), array(
                 'id' => $this->getId()
             ));
             if (!$this->getNyomtatva()) {
-                $ret['editurl'] = \mkw\Store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejviewkarb', false, array(), array(
+                $ret['editurl'] = \mkw\store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejviewkarb', false, array(), array(
                     'id' => $this->getId(),
                     'oper' => 'edit'
                 ));
@@ -719,21 +717,21 @@ class Bizonylatfej {
     }
 
     protected function setTulajData() {
-        $this->setTulajnev(store::getParameter(\mkw\consts::Tulajnev));
-        $this->setTulajirszam(store::getParameter(\mkw\consts::Tulajirszam));
-        $this->setTulajvaros(store::getParameter(\mkw\consts::Tulajvaros));
-        $this->setTulajutca(store::getParameter(\mkw\consts::Tulajutca));
-        $this->setTulajadoszam(store::getParameter(\mkw\consts::Tulajadoszam));
-        $this->setTulajeuadoszam(store::getParameter(\mkw\consts::Tulajeuadoszam));
-        $this->setTulajeorinr(store::getParameter(\mkw\consts::Tulajeorinr));
-        $this->setTulajkisadozo(store::getParameter(consts::Tulajkisadozo, false));
-        $this->setTulajegyenivallalkozo(store::getParameter(consts::Tulajegyenivallalkozo, false));
-        $this->setTulajevnev(store::getParameter(consts::Tulajevnev));
-        $this->setTulajevnyilvszam(store::getParameter(consts::Tulajevnyilvszam));
+        $this->setTulajnev(\mkw\store::getParameter(\mkw\consts::Tulajnev));
+        $this->setTulajirszam(\mkw\store::getParameter(\mkw\consts::Tulajirszam));
+        $this->setTulajvaros(\mkw\store::getParameter(\mkw\consts::Tulajvaros));
+        $this->setTulajutca(\mkw\store::getParameter(\mkw\consts::Tulajutca));
+        $this->setTulajadoszam(\mkw\store::getParameter(\mkw\consts::Tulajadoszam));
+        $this->setTulajeuadoszam(\mkw\store::getParameter(\mkw\consts::Tulajeuadoszam));
+        $this->setTulajeorinr(\mkw\store::getParameter(\mkw\consts::Tulajeorinr));
+        $this->setTulajkisadozo(\mkw\store::getParameter(\mkw\consts::Tulajkisadozo, false));
+        $this->setTulajegyenivallalkozo(\mkw\store::getParameter(\mkw\consts::Tulajegyenivallalkozo, false));
+        $this->setTulajevnev(\mkw\store::getParameter(\mkw\consts::Tulajevnev));
+        $this->setTulajevnyilvszam(\mkw\store::getParameter(\mkw\consts::Tulajevnyilvszam));
     }
 
     public function calcEsedekesseg() {
-        $this->esedekesseg = \mkw\Store::calcEsedekesseg($this->getKelt(), $this->getFizmod(), $this->getPartner());
+        $this->esedekesseg = \mkw\store::calcEsedekesseg($this->getKelt(), $this->getFizmod(), $this->getPartner());
     }
 
     public function getId() {
@@ -776,7 +774,7 @@ class Bizonylatfej {
             $kezdo = $bt->getKezdosorszam();
             $ev = $this->getKelt()->format('Y');
             if (!$from) {
-                $q = store::getEm()->createQuery('SELECT COUNT(bf) FROM Entities\Bizonylatfej bf WHERE bf.bizonylattipus=:p');
+                $q = \mkw\store::getEm()->createQuery('SELECT COUNT(bf) FROM Entities\Bizonylatfej bf WHERE bf.bizonylattipus=:p');
                 $q->setParameters(array('p' => $bt));
                 if ($q->getSingleScalarResult() > 0) {
                     $kezdo = 1;
@@ -785,7 +783,7 @@ class Bizonylatfej {
                     $kezdo = 1;
                 }
                 $szam = $kezdo;
-                $q = store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
+                $q = \mkw\store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
                 $q->setParameters(array(
                     'p1' => $bt,
                     'p2' => $ev
@@ -800,7 +798,7 @@ class Bizonylatfej {
             }
             else {
                 $szam = $from;
-                $q = store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
+                $q = \mkw\store::getEm()->createQuery('SELECT MAX(bf.id) FROM Entities\Bizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2)');
                 $q->setParameters(array(
                     'p1' => $bt,
                     'p2' => $ev
@@ -816,7 +814,7 @@ class Bizonylatfej {
                     $szam = $from;
                 }
             }
-            $this->id = \mkw\Store::createBizonylatszam($azon, $ev, $szam);
+            $this->id = \mkw\store::createBizonylatszam($azon, $ev, $szam);
         }
         return $szam;
     }
@@ -959,7 +957,7 @@ class Bizonylatfej {
         if (!$this->duplication) {
             foreach ($this->bizonylattetelek as $bt) {
                 $bt->setStornozott($val);
-                \mkw\Store::getEm()->persist($bt);
+                \mkw\store::getEm()->persist($bt);
             }
         }
     }
@@ -1057,14 +1055,14 @@ class Bizonylatfej {
 
     public function getKelt() {
         if (!$this->id && !$this->kelt) {
-            $this->kelt = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+            $this->kelt = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->kelt;
     }
 
     public function getKeltStr() {
         if ($this->getKelt()) {
-            return $this->getKelt()->format(store::$DateFormat);
+            return $this->getKelt()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
@@ -1075,22 +1073,22 @@ class Bizonylatfej {
         }
         else {
             if ($adat == '') {
-                $adat = date(store::$DateFormat);
+                $adat = date(\mkw\store::$DateFormat);
             }
-            $this->kelt = new \DateTime(store::convDate($adat));
+            $this->kelt = new \DateTime(\mkw\store::convDate($adat));
         }
     }
 
     public function getTeljesites() {
         if (!$this->id && !$this->teljesites) {
-            $this->teljesites = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+            $this->teljesites = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->teljesites;
     }
 
     public function getTeljesitesStr() {
         if ($this->getTeljesites()) {
-            return $this->getTeljesites()->format(store::$DateFormat);
+            return $this->getTeljesites()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
@@ -1101,22 +1099,22 @@ class Bizonylatfej {
         }
         else {
             if ($adat == '') {
-                $adat = date(store::$DateFormat);
+                $adat = date(\mkw\store::$DateFormat);
             }
-            $this->teljesites = new \DateTime(store::convDate($adat));
+            $this->teljesites = new \DateTime(\mkw\store::convDate($adat));
         }
     }
 
     public function getEsedekesseg() {
         if (!$this->id && !$this->esedekesseg) {
-            $this->esedekesseg = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+            $this->esedekesseg = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->esedekesseg;
     }
 
     public function getEsedekessegStr() {
         if ($this->getEsedekesseg()) {
-            return $this->getEsedekesseg()->format(store::$DateFormat);
+            return $this->getEsedekesseg()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
@@ -1127,22 +1125,22 @@ class Bizonylatfej {
         }
         else {
             if ($adat == '') {
-                $adat = date(store::$DateFormat);
+                $adat = date(\mkw\store::$DateFormat);
             }
-            $this->esedekesseg = new \DateTime(store::convDate($adat));
+            $this->esedekesseg = new \DateTime(\mkw\store::convDate($adat));
         }
     }
 
     public function getHatarido() {
         if (!$this->id && !$this->hatarido) {
-            $this->hatarido = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+            $this->hatarido = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->hatarido;
     }
 
     public function getHataridoStr() {
         if ($this->getHatarido()) {
-            return $this->getHatarido()->format(store::$DateFormat);
+            return $this->getHatarido()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
@@ -1153,9 +1151,9 @@ class Bizonylatfej {
         }
         else {
             if ($adat == '') {
-                $adat = date(store::$DateFormat);
+                $adat = date(\mkw\store::$DateFormat);
             }
-            $this->hatarido = new \DateTime(store::convDate($adat));
+            $this->hatarido = new \DateTime(\mkw\store::convDate($adat));
         }
     }
 
@@ -1164,7 +1162,7 @@ class Bizonylatfej {
      */
     public function getFizmod() {
         if (!$this->id && !$this->fizmod) {
-            $this->setFizmod(\mkw\Store::getParameter(\mkw\consts::Fizmod));
+            $this->setFizmod(\mkw\store::getParameter(\mkw\consts::Fizmod));
         }
         return $this->fizmod;
     }
@@ -1186,7 +1184,7 @@ class Bizonylatfej {
      */
     public function setFizmod($val) {
         if (!($val instanceof \Entities\Fizmod)) {
-            $val = \mkw\Store::getEm()->getRepository('Entities\Fizmod')->find($val);
+            $val = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($val);
         }
         if ($this->fizmod !== $val) {
             if (!$val) {
@@ -1291,7 +1289,7 @@ class Bizonylatfej {
      */
     public function getValutanem() {
         if (!$this->id && !$this->valutanem) {
-            $this->setValutanem(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+            $this->setValutanem(\mkw\store::getParameter(\mkw\consts::Valutanem));
         }
         return $this->valutanem;
     }
@@ -1313,7 +1311,7 @@ class Bizonylatfej {
      */
     public function setValutanem($val) {
         if (!($val instanceof \Entities\Valutanem)) {
-            $val = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find($val);
+            $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
         }
         if ($this->valutanem !== $val) {
             if (!$val) {
@@ -1364,7 +1362,7 @@ class Bizonylatfej {
 
     public function getArfolyam() {
         if (!$this->id && !$this->arfolyam) {
-            if ($this->getValutanemId() == \mkw\Store::getParameter(\mkw\consts::Valutanem)) {
+            if ($this->getValutanemId() == \mkw\store::getParameter(\mkw\consts::Valutanem)) {
                 $this->setArfolyam(1);
             }
             else {
@@ -1823,7 +1821,7 @@ class Bizonylatfej {
 
     public function getLastmodStr() {
         if ($this->getLastmod()) {
-            return $this->getLastmod()->format(\mkw\Store::$DateTimeFormat);
+            return $this->getLastmod()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
@@ -1838,7 +1836,7 @@ class Bizonylatfej {
 
     public function getCreatedStr() {
         if ($this->getCreated()) {
-            return $this->getCreated()->format(\mkw\Store::$DateTimeFormat);
+            return $this->getCreated()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
@@ -1970,7 +1968,7 @@ class Bizonylatfej {
      */
     public function setBizonylatstatusz($val) {
         if (!($val instanceof \Entities\Bizonylatstatusz)) {
-            $val = \mkw\Store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($val);
+            $val = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($val);
         }
         if ($this->bizonylatstatusz !== $val) {
             if (!$val) {
@@ -2189,7 +2187,7 @@ class Bizonylatfej {
         if (!$this->duplication) {
             foreach ($this->bizonylattetelek as $bt) {
                 $bt->setRontott($adat);
-                \mkw\Store::getEm()->persist($bt);
+                \mkw\store::getEm()->persist($bt);
             }
         }
     }
@@ -2244,7 +2242,7 @@ class Bizonylatfej {
 
     public function getEsedekesseg1Str() {
         if ($this->getEsedekesseg1()) {
-            return $this->getEsedekesseg1()->format(store::$DateFormat);
+            return $this->getEsedekesseg1()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
@@ -2255,7 +2253,7 @@ class Bizonylatfej {
         }
         else {
             if ($adat != '') {
-                $this->esedekesseg1 = new \DateTime(store::convDate($adat));
+                $this->esedekesseg1 = new \DateTime(\mkw\store::convDate($adat));
             }
             else {
                 $this->esedekesseg1 = null;
@@ -2277,7 +2275,7 @@ class Bizonylatfej {
 
     public function getEsedekesseg2Str() {
         if ($this->getEsedekesseg2()) {
-            return $this->getEsedekesseg2()->format(store::$DateFormat);
+            return $this->getEsedekesseg2()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
@@ -2288,7 +2286,7 @@ class Bizonylatfej {
         }
         else {
             if ($adat != '') {
-                $this->esedekesseg2 = new \DateTime(store::convDate($adat));
+                $this->esedekesseg2 = new \DateTime(\mkw\store::convDate($adat));
             }
             else {
                 $this->esedekesseg2 = null;
@@ -2310,7 +2308,7 @@ class Bizonylatfej {
 
     public function getEsedekesseg3Str() {
         if ($this->getEsedekesseg3()) {
-            return $this->getEsedekesseg3()->format(store::$DateFormat);
+            return $this->getEsedekesseg3()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
@@ -2321,7 +2319,7 @@ class Bizonylatfej {
         }
         else {
             if ($adat != '') {
-                $this->esedekesseg3 = new \DateTime(store::convDate($adat));
+                $this->esedekesseg3 = new \DateTime(\mkw\store::convDate($adat));
             }
             else {
                 $this->esedekesseg3 = null;

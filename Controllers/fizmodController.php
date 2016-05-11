@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use mkw\store;
-
 class fizmodController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -71,7 +69,7 @@ class fizmodController extends \mkwhelpers\MattableController {
             $oper = $this->params->getStringRequestParam('hataroper_' . $hatarid);
             $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('hatarvalutanem_' . $hatarid));
             if (!$valutanem) {
-                $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find(store::getParameter(\mkw\consts::Valutanem));
+                $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
             }
             if ($oper == 'add') {
                 $hatar = new \Entities\FizmodHatar();
@@ -133,7 +131,7 @@ class fizmodController extends \mkwhelpers\MattableController {
         $view = $this->createView($tplname);
 
         $view->setVar('pagetitle', t('Fizetési mód'));
-        $view->setVar('formaction', \mkw\Store::getRouter()->generate('adminfizetesimodsave'));
+        $view->setVar('formaction', \mkw\store::getRouter()->generate('adminfizetesimodsave'));
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->find($id);
         $view->setVar('egyed', $this->loadVars($record, true));
@@ -141,7 +139,7 @@ class fizmodController extends \mkwhelpers\MattableController {
     }
 
     public function getSelectList($selid = null, $szallmod = null, $exc = null) {
-        if (\mkw\Store::isAdminMode()) {
+        if (\mkw\store::isAdminMode()) {
             $rec = $this->getRepo()->getAllBySzallitasimod($szallmod, $exc);
         }
         else {
@@ -149,7 +147,7 @@ class fizmodController extends \mkwhelpers\MattableController {
         }
         $res = array();
         // mkwnál ki kell választani az elsőt
-        $vanvalasztott = \mkw\Store::getTheme() !== 'mkwcansas';
+        $vanvalasztott = \mkw\store::getTheme() !== 'mkwcansas';
         foreach ($rec as $sor) {
             $r = array(
                 'id' => $sor->getId(),

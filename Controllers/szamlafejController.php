@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use mkw\store;
-
 class SzamlafejController extends bizonylatfejController {
 
     public function __construct($params) {
@@ -17,18 +15,18 @@ class SzamlafejController extends bizonylatfejController {
         $source = $this->params->getStringRequestParam('source', '');
         switch ($oper) {
             case 'inherit':
-                $egyed['id'] = store::createUID();
+                $egyed['id'] = \mkw\store::createUID();
                 $egyed['parentid'] = $id;
-                $kelt = date(\mkw\Store::$DateFormat);
+                $kelt = date(\mkw\store::$DateFormat);
                 $egyed['keltstr'] = $kelt;
                 $egyed['teljesitesstr'] = $kelt;
-                $egyed['esedekessegstr'] = \mkw\Store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
+                $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
                 $egyed['reportfile'] = '';
                 $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->biztipus));
                 switch ($source) {
                     case 'megrendeles':
                         $egyed['megjegyzes'] = 'Rendelés: ' . $id;
-                        $arf = $this->getRepo('Entities\Arfolyam')->getActualArfolyam($egyed['valutanem'], new \DateTime(\mkw\Store::convDate($egyed['teljesitesstr'])));
+                        $arf = $this->getRepo('Entities\Arfolyam')->getActualArfolyam($egyed['valutanem'], new \DateTime(\mkw\store::convDate($egyed['teljesitesstr'])));
                         if ($arf) {
                             $egyed['arfolyam'] = $arf->getArfolyam();
                         }
@@ -41,7 +39,7 @@ class SzamlafejController extends bizonylatfejController {
                 $cikl = 1;
                 foreach($egyed['tetelek'] as $tetel) {
                     $tetel['parentid'] = $tetel['id'];
-                    $tetel['id'] = store::createUID($cikl);
+                    $tetel['id'] = \mkw\store::createUID($cikl);
                     $tetel['oper'] = 'inherit';
                     if ($source == 'megrendeles') {
                         $tetel['nettoegysarhuf'] = $tetel['nettoegysar'] * $egyed['arfolyam'];
@@ -56,19 +54,19 @@ class SzamlafejController extends bizonylatfejController {
                 $egyed['tetelek'] = $ttk;
                 break;
             case 'storno':
-                $egyed['id'] = store::createUID();
+                $egyed['id'] = \mkw\store::createUID();
                 $egyed['parentid'] = $id;
                 $egyed['stornotip'] = $stornotip;
-                $kelt = date(\mkw\Store::$DateFormat);
+                $kelt = date(\mkw\store::$DateFormat);
                 $egyed['keltstr'] = $kelt;
 //                $egyed['teljesitesstr'] = $kelt;
-//                $egyed['esedekessegstr'] = \mkw\Store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
+//                $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
                 $egyed['megjegyzes'] = $id . ' stornó bizonylata';
                 $ttk = array();
                 $cikl = 1;
                 foreach($egyed['tetelek'] as $tetel) {
                     $tetel['parentid'] = $tetel['id'];
-                    $tetel['id'] = store::createUID($cikl);
+                    $tetel['id'] = \mkw\store::createUID($cikl);
                     $tetel['oper'] = 'storno';
                     $ttk[] = $tetel;
                     $cikl++;

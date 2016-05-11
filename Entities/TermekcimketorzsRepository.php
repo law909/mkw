@@ -116,7 +116,7 @@ class TermekcimketorzsRepository extends \mkwhelpers\Repository {
 
     public function getMarkak() {
         $filter = new FilterDescriptor();
-        $filter->addFilter('kategoria', '=', \mkw\Store::getParameter(\mkw\consts::MarkaCs, 0));
+        $filter->addFilter('kategoria', '=', \mkw\store::getParameter(\mkw\consts::MarkaCs, 0));
         return $this->getWithJoins($filter, array('sorrend' => 'ASC'));
     }
 

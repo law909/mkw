@@ -2,7 +2,6 @@
 
 namespace Controllers;
 
-use mkwhelpers\Filter;
 use mkwhelpers\FilterDescriptor;
 
 class termekkartonController extends \mkwhelpers\Controller {
@@ -111,7 +110,7 @@ class termekkartonController extends \mkwhelpers\Controller {
         }
 
         $view = $this->createView('termekkartontetel.tpl');
-        $view->setVar('maintheme', \mkw\Store::getTheme());
+        $view->setVar('maintheme', \mkw\store::getTheme());
         $view->setVar('nyito', $nyito['mennyiseg']);
         $view->setVar('kartontetelek', $kartontetelek);
         $view->printTemplateResult();

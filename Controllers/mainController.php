@@ -2,9 +2,6 @@
 
 namespace Controllers;
 
-use mkw\store,
-	mkw\consts;
-
 class mainController extends \mkwhelpers\Controller {
 
 	private $view;
@@ -24,7 +21,7 @@ class mainController extends \mkwhelpers\Controller {
 
 	public function show404($head = null) {
 		$this->view = $this->getTemplateFactory()->createMainView('404.tpl');
-		store::fillTemplate($this->view);
+        \mkw\store::fillTemplate($this->view);
 		$tc = new termekController($this->params);
 		$this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
 		$this->view->setVar('seodescription', t('Sajnos nem találjuk.'));
@@ -37,21 +34,21 @@ class mainController extends \mkwhelpers\Controller {
 
 	public function view() {
 		$this->view = $this->getTemplateFactory()->createMainView('main.tpl');
-		store::fillTemplate($this->view);
+        \mkw\store::fillTemplate($this->view);
 		$hc = new hirController($this->params);
 		$tc = new termekController($this->params);
 		$khc = new korhintaController($this->params);
 		$tfc = new termekfaController($this->params);
         $tcc = new termekcimkeController($this->params);
-		$this->view->setVar('pagetitle', store::getParameter(consts::Oldalcim));
-		$this->view->setVar('seodescription', store::getParameter(consts::Seodescription));
-        if (\mkw\Store::getTheme() == 'mkwcansas') {
+		$this->view->setVar('pagetitle', \mkw\store::getParameter(\mkw\consts::Oldalcim));
+		$this->view->setVar('seodescription', \mkw\store::getParameter(\mkw\consts::Seodescription));
+        if (\mkw\store::getTheme() == 'mkwcansas') {
             $this->view->setVar('hirek', $hc->gethirlist());
             $this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
-            $this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5)));
+            $this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(\mkw\store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5)));
             $this->view->setVar('legujabbtermekek', $tc->getLegujabbLista());
             $this->view->setVar('korhintalista', $khc->getLista());
-            $this->view->setVar('topkategorialista', $tfc->getformenu(store::getSetupValue('topkategoriamenunum'), 0));
+            $this->view->setVar('topkategorialista', $tfc->getformenu(\mkw\store::getSetupValue('topkategoriamenunum'), 0));
             $this->view->setVar('kiemeltmarkalista', $tcc->getKiemeltList());
         }
 		$this->view->printTemplateResult(true);
@@ -73,13 +70,13 @@ class mainController extends \mkwhelpers\Controller {
 			foreach ($t as $k => $v) {
 				$this->view->setVar($k, $v);
 			}
-			store::fillTemplate($this->view);
+            \mkw\store::fillTemplate($this->view);
 			$this->view->setVar('pagetitle', $ag->getShowOldalcim());
 			$this->view->setVar('seodescription', $ag->getShowSeodescription());
 			$this->view->printTemplateResult(true);
 		}
 		else {
-			store::redirectTo404($com, $this->params);
+            \mkw\store::redirectTo404($com, $this->params);
 		}
 	}
 
@@ -94,32 +91,32 @@ class mainController extends \mkwhelpers\Controller {
             foreach ($t as $k => $v) {
                 $this->view->setVar($k, $v);
             }
-            store::fillTemplate($this->view);
+            \mkw\store::fillTemplate($this->view);
 
-            $mpt = store::getParameter(\mkw\consts::Markaoldalcim);
+            $mpt = \mkw\store::getParameter(\mkw\consts::Markaoldalcim);
             if ($mpt) {
                 $mpt = str_replace('[markanev]', $c->getNev(), $mpt);
-                $mpt = str_replace('[global]', store::getParameter(\mkw\consts::Oldalcim), $mpt);
+                $mpt = str_replace('[global]', \mkw\store::getParameter(\mkw\consts::Oldalcim), $mpt);
             }
             else {
-                $mpt = store::getParameter(\mkw\consts::Oldalcim);
+                $mpt = \mkw\store::getParameter(\mkw\consts::Oldalcim);
             }
             $this->view->setVar('pagetitle', $mpt);
 
-            $msd = store::getParameter(\mkw\consts::Markaseodescription);
+            $msd = \mkw\store::getParameter(\mkw\consts::Markaseodescription);
             if ($msd) {
                 $msd = str_replace('[markanev]', $c->getNev(), $msd);
-                $msd = str_replace('[global]', store::getParameter(\mkw\consts::Seodescription), $msd);
+                $msd = str_replace('[global]', \mkw\store::getParameter(\mkw\consts::Seodescription), $msd);
             }
             else {
-                $msd = store::getParameter(\mkw\consts::Seodescription);
+                $msd = \mkw\store::getParameter(\mkw\consts::Seodescription);
             }
             $this->view->setVar('seodescription', $msd);
 
             $this->view->printTemplateResult(true);
         }
         else {
-            store::redirectTo404($com, $this->params);
+            \mkw\store::redirectTo404($com, $this->params);
         }
     }
 
@@ -130,14 +127,14 @@ class mainController extends \mkwhelpers\Controller {
         foreach ($t as $k => $v) {
             $this->view->setVar($k, $v);
         }
-        store::fillTemplate($this->view);
+        \mkw\store::fillTemplate($this->view);
         $this->view->printTemplateResult(true);
     }
 
 	public function kereses() {
 		$term = trim($this->params->getStringRequestParam('term'));
 		if ($term) {
-			$r = store::getEm()->getRepository('\Entities\Termek');
+			$r = \mkw\store::getEm()->getRepository('\Entities\Termek');
 			$res = $r->getNevek($term);
 			echo json_encode($res);
 		}
@@ -145,8 +142,8 @@ class mainController extends \mkwhelpers\Controller {
 			$keresoszo = trim($this->params->getStringRequestParam('keresett'));
 			if ($keresoszo != '') {
 				$log = new \Entities\Keresoszolog($keresoszo);
-				store::getEm()->persist($log);
-				store::getEm()->flush();
+                \mkw\store::getEm()->persist($log);
+                \mkw\store::getEm()->flush();
 
 				$tf = new termekfaController($this->params);
 				$t = $tf->gettermeklistaforparent(null, 'kereses');
@@ -155,7 +152,7 @@ class mainController extends \mkwhelpers\Controller {
                 foreach ($t as $k => $v) {
                     $this->view->setVar($k, $v);
                 }
-				store::fillTemplate($this->view);
+                \mkw\store::fillTemplate($this->view);
 				$this->view->setVar('seodescription', t('A keresett kifejezés: ') . $keresoszo);
 				$this->view->setVar('pagetitle', t('A keresett kifejezés: ') . $keresoszo);
 				$this->view->printTemplateResult(true);
@@ -164,7 +161,7 @@ class mainController extends \mkwhelpers\Controller {
 				$this->view = $this->getTemplateFactory()->createMainView('nincstalalat.tpl');
 				$tc = new termekController($this->params);
 				$this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
-				store::fillTemplate($this->view);
+                \mkw\store::fillTemplate($this->view);
 				$this->view->setVar('seodescription', t('Keressen valamit.'));
 				$this->view->setVar('pagetitle', t('Keressen valamit.'));
 				$this->view->printTemplateResult(true);
@@ -173,17 +170,17 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function termek() {
-        switch (\mkw\Store::getTheme()) {
+        switch (\mkw\store::getTheme()) {
             case 'mkwcansas':
                 $com = $this->params->getStringParam('slug');
                 $tc = new termekController($this->params);
                 $termek = $tc->getRepo()->findOneBySlug($com);
                 if ($termek && !$termek->getInaktiv() && $termek->getLathato() && !$termek->getFuggoben()) {
                     $this->view = $this->getTemplateFactory()->createMainView('termeklap.tpl');
-                    store::fillTemplate($this->view);
+                    \mkw\store::fillTemplate($this->view);
                     $this->view->setVar('pagetitle', $termek->getShowOldalcim());
                     $this->view->setVar('seodescription', $termek->getShowSeodescription());
-                    $this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(store::getParameter(\mkw\consts::Termeklapnepszerutermekdb, 5)));
+                    $this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(\mkw\store::getParameter(\mkw\consts::Termeklapnepszerutermekdb, 5)));
                     $this->view->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($termek));
                     $t = $tc->getTermekLap($termek);
                     foreach ($t as $k => $v) {
@@ -192,7 +189,7 @@ class mainController extends \mkwhelpers\Controller {
                     $this->view->printTemplateResult(true);
                 }
                 else {
-                    store::redirectTo404($com, $this->params);
+                    \mkw\store::redirectTo404($com, $this->params);
                 }
                 break;
             case 'superzone':
@@ -201,7 +198,7 @@ class mainController extends \mkwhelpers\Controller {
                 $termek = $tc->getRepo()->findOneBySlug($com);
                 if ($termek && !$termek->getInaktiv() && $termek->getLathato() && !$termek->getFuggoben()) {
                     $this->view = $this->getTemplateFactory()->createMainView('termeklapszin.tpl');
-                    store::fillTemplate($this->view);
+                    \mkw\store::fillTemplate($this->view);
                     $this->view->setVar('pagetitle', $termek->getShowOldalcim());
                     $this->view->setVar('seodescription', $termek->getShowSeodescription());
                     $t = array();
@@ -212,7 +209,7 @@ class mainController extends \mkwhelpers\Controller {
                     $ma = new \DateTime();
                     foreach ($valtozatok as $valt) {
                         if ($valt->getElerheto() && $valt->getLathato()) {
-                            if ($valt->getAdatTipus1Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) {
+                            if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
                                 $vtt[$valt->getErtek1()]['id'] = $valt->getErtek1();
                                 $vtt[$valt->getErtek1()]['caption'] = $valt->getErtek1();
                                 $vtt[$valt->getErtek1()]['kepurlmini'] = $valt->getKepurlMini();
@@ -221,9 +218,9 @@ class mainController extends \mkwhelpers\Controller {
                                 $vtt[$valt->getErtek1()]['kepurllarge'] = $valt->getKepurlLarge();
                                 $vtt[$valt->getErtek1()]['keszlet'] += $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
                                 $vtt[$valt->getErtek1()]['bejon'] = $vtt[$valt->getErtek1()]['bejon'] || (($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma) ? true : false);
-                                $vtt[$valt->getErtek1()]['link'] = \mkw\Store::getRouter()->generate('showtermekm', false, array('slug' => $com), array('szin' => urlencode($valt->getErtek1())));
+                                $vtt[$valt->getErtek1()]['link'] = \mkw\store::getRouter()->generate('showtermekm', false, array('slug' => $com), array('szin' => urlencode($valt->getErtek1())));
                             }
-                            if ($valt->getAdatTipus2Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) {
+                            if ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
                                 $vtt[$valt->getErtek2()]['id'] = $valt->getErtek2();
                                 $vtt[$valt->getErtek2()]['caption'] = $valt->getErtek2();
                                 $vtt[$valt->getErtek2()]['kepurlmini'] = $valt->getKepurlMini();
@@ -232,7 +229,7 @@ class mainController extends \mkwhelpers\Controller {
                                 $vtt[$valt->getErtek2()]['kepurllarge'] = $valt->getKepurlLarge();
                                 $vtt[$valt->getErtek2()]['keszlet'] += $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
                                 $vtt[$valt->getErtek2()]['bejon'] = $vtt[$valt->getErtek2()]['bejon'] || (($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma) ? true : false);
-                                $vtt[$valt->getErtek2()]['link'] = \mkw\Store::getRouter()->generate('showtermekm', false, array('slug' => $com), array('szin' => urlencode($valt->getErtek2())));
+                                $vtt[$valt->getErtek2()]['link'] = \mkw\store::getRouter()->generate('showtermekm', false, array('slug' => $com), array('szin' => urlencode($valt->getErtek2())));
                             }
                         }
                     }
@@ -241,7 +238,7 @@ class mainController extends \mkwhelpers\Controller {
                     $this->view->printTemplateResult(true);
                 }
                 else {
-                    store::redirectTo404($com, $this->params);
+                    \mkw\store::redirectTo404($com, $this->params);
                 }
                 break;
         }
@@ -256,7 +253,7 @@ class mainController extends \mkwhelpers\Controller {
         $termek = $tc->getRepo()->findOneBySlug($com);
         if ($termek && !$termek->getInaktiv() && $termek->getLathato() && !$termek->getFuggoben()) {
             $this->view = $this->getTemplateFactory()->createMainView('termeklapmeret.tpl');
-            store::fillTemplate($this->view);
+            \mkw\store::fillTemplate($this->view);
             $this->view->setVar('pagetitle', $termek->getShowOldalcim());
             $this->view->setVar('seodescription', $termek->getShowSeodescription());
             $t = array();
@@ -266,7 +263,7 @@ class mainController extends \mkwhelpers\Controller {
             $t['cikkszam'] = $termek->getCikkszam();
             $t['leiras'] = $termek->getLeiras();
             $t['szin'] = $szin;
-            $partner = \mkw\Store::getLoggedInUser();
+            $partner = \mkw\store::getLoggedInUser();
             $valutanem = $termek->getArValutanem(null, $partner);
             if ($valutanem) {
                 $t['valutanemnev'] = $valutanem->getNev();
@@ -287,7 +284,7 @@ class mainController extends \mkwhelpers\Controller {
             $ma = new \DateTime();
             foreach ($valtozatok as $valt) {
                 if ($valt->getElerheto() && $valt->getLathato()) {
-                    if (($valt->getAdatTipus1Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) && ($valt->getErtek1() == $szin)) {
+                    if (($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) && ($valt->getErtek1() == $szin)) {
                         $t['kepurlmedium'] = $valt->getKepurlMedium();
                         $vtt[] = array(
                             'id' => $valt->getId(),
@@ -297,7 +294,7 @@ class mainController extends \mkwhelpers\Controller {
                             'bejon' => (($valt->getKeszlet() - $valt->getFoglaltMennyiseg() <= 0) && ($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma) ? true : false)
                         );
                     }
-                    if (($valt->getAdatTipus2Id() == \mkw\Store::getParameter(consts::ValtozatTipusSzin)) && ($valt->getErtek2() == $szin)) {
+                    if (($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) && ($valt->getErtek2() == $szin)) {
                         $vtt[] = array(
                             'id' => $valt->getId(),
                             'caption' => $valt->getErtek1(),
@@ -313,22 +310,22 @@ class mainController extends \mkwhelpers\Controller {
             $this->view->printTemplateResult(true);
         }
         else {
-            store::redirectTo404($com, $this->params);
+            \mkw\store::redirectTo404($com, $this->params);
         }
     }
 
 	public function valtozatar() {
 		$termekid = $this->params->getIntRequestParam('t');
 		$valtozatid = $this->params->getIntRequestParam('vid');
-		$termek = Store::getEm()->getRepository('Entities\Termek')->find($termekid);
-		$valtozat = Store::getEm()->getRepository('Entities\TermekValtozat')->find($valtozatid);
+		$termek = \mkw\store::getEm()->getRepository('Entities\Termek')->find($termekid);
+		$valtozat = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->find($valtozatid);
 		$ret = array();
-		$ret['price'] = number_format($termek->getBruttoAr($valtozat, \mkw\Store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
+		$ret['price'] = number_format($termek->getBruttoAr($valtozat, \mkw\store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
         $ret['kepurlmedium'] = $valtozat->getKepurlMedium();
         $ret['kepurllarge'] = $valtozat->getKepurlLarge();
         $ret['kepurlsmall'] = $valtozat->getKepurlSmall();
 
-        $ret['kepek'] = Store::getEm()->getRepository('Entities\Termek')->getKepekKiveve($termek, $valtozat);
+        $ret['kepek'] = \mkw\store::getEm()->getRepository('Entities\Termek')->getKepekKiveve($termek, $valtozat);
 
 		echo json_encode($ret);
 	}
@@ -341,7 +338,7 @@ class mainController extends \mkwhelpers\Controller {
 		$masikselected = $this->params->getRequestParam('sel');
 		$ret = array();
 
-		$termek = Store::getEm()->getRepository('Entities\Termek')->find($termekkod);
+		$termek = \mkw\store::getEm()->getRepository('Entities\Termek')->find($termekkod);
 
 		if ($masiktipusid) {
 			$t = array($tipusid, $masiktipusid);
@@ -351,12 +348,12 @@ class mainController extends \mkwhelpers\Controller {
 			$t = array($tipusid);
 			$e = array($valtozatertek);
 		}
-		$termekvaltozat = Store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(), $t, $e);
-		$ret['price'] = number_format($termek->getBruttoAr($termekvaltozat, \mkw\Store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
+		$termekvaltozat = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(), $t, $e);
+		$ret['price'] = number_format($termek->getBruttoAr($termekvaltozat, \mkw\store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
         $ret['kepurlmedium'] = $termekvaltozat->getKepurlMedium();
         $ret['kepurllarge'] = $termekvaltozat->getKepurlLarge();
         $ret['kepurlsmall'] = $termekvaltozat->getKepurlSmall();
-        $ret['kepek'] = Store::getEm()->getRepository('Entities\Termek')->getKepekKiveve($termek, $termekvaltozat);
+        $ret['kepek'] = \mkw\store::getEm()->getRepository('Entities\Termek')->getKepekKiveve($termek, $termekvaltozat);
 
 		$valtozatok = $termek->getValtozatok();
 		foreach ($valtozatok as $valtozat) {
@@ -383,7 +380,7 @@ class mainController extends \mkwhelpers\Controller {
 				$email2 = $this->params->getStringRequestParam('email2');
 				$telefon = $this->params->getStringRequestParam('telefon');
 				$rendelesszam = $this->params->getStringRequestParam('rendelesszam');
-                $tema = \mkw\Store::getEm()->getRepository('Entities\Kapcsolatfelveteltema')->find($this->params->getStringRequestParam('tema'));
+                $tema = \mkw\store::getEm()->getRepository('Entities\Kapcsolatfelveteltema')->find($this->params->getStringRequestParam('tema'));
                 if ($tema) {
                     $temanev = $tema->getNev();
                 }
@@ -408,7 +405,7 @@ class mainController extends \mkwhelpers\Controller {
 					$hibak['tema'] = t('Nincs megadva téma');
 				}
 				if (!$hibas) {
-                    $mailer = \mkw\Store::getMailer();
+                    $mailer = \mkw\store::getMailer();
                     $mailer->setTo('info@mindentkapni.hu');
                     $mailer->setSubject('Kapcsolatfelvétel, ' . $rendelesszam . ' ' . $nev);
                     $mailer->setMessage(
@@ -422,7 +419,7 @@ class mainController extends \mkwhelpers\Controller {
                     $mailer->setReplyTo($email1);
                     $mailer->send();
 					$view = $this->getTemplateFactory()->createMainView('kapcsolatkosz.tpl');
-					store::fillTemplate($view);
+                    \mkw\store::fillTemplate($view);
 				}
 				else {
 					$kftc = new kapcsolatfelveteltemaController($this->params);
@@ -441,8 +438,8 @@ class mainController extends \mkwhelpers\Controller {
 			default :
 				$kftc = new kapcsolatfelveteltemaController($this->params);
 				$this->view = $this->getTemplateFactory()->createMainView('kapcsolat.tpl');
-				store::fillTemplate($this->view);
-                $this->view->setVar('pagetitle', 'Kapcsolatfelvétel a webáruház ügyfélszolgálatával - ' . \mkw\Store::getParameter('oldalcim'));
+                \mkw\store::fillTemplate($this->view);
+                $this->view->setVar('pagetitle', 'Kapcsolatfelvétel a webáruház ügyfélszolgálatával - ' . \mkw\store::getParameter('oldalcim'));
 				$this->view->setVar('temalista', $kftc->getSelectList(0));
 				$this->view->printTemplateResult(true);
 				break;

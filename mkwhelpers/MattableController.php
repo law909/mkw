@@ -22,7 +22,7 @@ class MattableController extends Controller {
 
     public function __construct($params) {
         parent::__construct($params);
-        $this->setTemplateFactory(\mkw\Store::getTemplateFactory());
+        $this->setTemplateFactory(\mkw\store::getTemplateFactory());
     }
 
     public function setPageTitle($val) {
@@ -156,7 +156,7 @@ class MattableController extends Controller {
 
     protected function initPager($elemcount, $elemperpage = null, $pageno = null) {
         if (!$elemperpage) {
-            $elemperpage = $this->params->getIntRequestParam('elemperpage', \mkw\Store::getParameter(\mkw\consts::Termeklistatermekdb, 30));
+            $elemperpage = $this->params->getIntRequestParam('elemperpage', \mkw\store::getParameter(\mkw\consts::Termeklistatermekdb, 30));
         }
         if (!$pageno) {
             $pageno = $this->params->getIntRequestParam('pageno', 1);

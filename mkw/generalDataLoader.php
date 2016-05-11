@@ -13,33 +13,33 @@ class generalDataLoader {
             $view->setVar('mobilebrowser', false);
         }
         $view->setVar('theme', store::getConfigValue('theme'));
-        $uitheme = \mkw\Store::getAdminSession()->loggedinuser['uitheme'];
+        $uitheme = \mkw\store::getAdminSession()->loggedinuser['uitheme'];
         if (!$uitheme) {
             $uitheme = 'sunny';
         }
         $view->setVar('uitheme', $uitheme);
-        $view->setVar('mainurl', store::getConfigValue('mainurl'));
-        $view->setVar('userloggedin', Store::getAdminSession()->pk);
-        $view->setVar('loggedinuser', Store::getAdminSession()->loggedinuser);
-        $view->setVar('dev', store::getConfigValue('developer', false));
-        $view->setVar('jsversion', store::getJSVersion());
-        $view->setVar('bootstrapjsversion', store::getBootstrapJSVersion());
-        $view->setVar('localelist', store::getLocaleList());
-        $setup = store::getSetup();
+        $view->setVar('mainurl', \mkw\store::getConfigValue('mainurl'));
+        $view->setVar('userloggedin', \mkw\store::getAdminSession()->pk);
+        $view->setVar('loggedinuser', \mkw\store::getAdminSession()->loggedinuser);
+        $view->setVar('dev', \mkw\store::getConfigValue('developer', false));
+        $view->setVar('jsversion', \mkw\store::getJSVersion());
+        $view->setVar('bootstrapjsversion', \mkw\store::getBootstrapJSVersion());
+        $view->setVar('localelist', \mkw\store::getLocaleList());
+        $setup = \mkw\store::getSetup();
         $view->setVar('setup', $setup);
-        $view->setVar('maintheme', Store::getTheme());
-        $view->setVar('today', date(Store::$DateFormat));
-        if (\mkw\Store::isBankpenztar() &&
-            ((Store::getRouteName() === 'adminview') || (Store::getRouteName() === 'adminview2'))) {
-            $view->setVar('lejartkintlevoseg', \mkw\Store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem());
-            $view->setVar('kintlevoseg', \mkw\Store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem());
-            if (Store::getTheme() === 'superzone') {
-                $spc = Store::getParameter(\mkw\consts::SpanyolCimke);
-                $partnerkodok = \mkw\Store::getEm()->getRepository('Entities\Partner')->getByCimkek(array($spc));
+        $view->setVar('maintheme', \mkw\store::getTheme());
+        $view->setVar('today', date(\mkw\store::$DateFormat));
+        if (\mkw\store::isBankpenztar() &&
+            ((\mkw\store::getRouteName() === 'adminview') || (\mkw\store::getRouteName() === 'adminview2'))) {
+            $view->setVar('lejartkintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem());
+            $view->setVar('kintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem());
+            if (\mkw\store::getTheme() === 'superzone') {
+                $spc = \mkw\store::getParameter(\mkw\consts::SpanyolCimke);
+                $partnerkodok = \mkw\store::getEm()->getRepository('Entities\Partner')->getByCimkek(array($spc));
                 $view->setVar('spanyollejartkintlevoseg',
-                    \mkw\Store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem($partnerkodok));
+                    \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem($partnerkodok));
                 $view->setVar('spanyolkintlevoseg',
-                    \mkw\Store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem($partnerkodok));
+                    \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem($partnerkodok));
             }
         }
         $view->setVar('uithemes', array(

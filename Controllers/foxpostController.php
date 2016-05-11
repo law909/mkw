@@ -11,12 +11,12 @@ class foxpostController extends \mkwhelpers\MattableController {
     }
 
     public function initCurl($resource) {
-        $ch = curl_init(\mkw\Store::getParameter(\mkw\consts::FoxpostApiURL) . $resource);
+        $ch = curl_init(\mkw\store::getParameter(\mkw\consts::FoxpostApiURL) . $resource);
 
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_HEADER, "Accept:application/vnd.cleveron+json; version=1.0");
         curl_setopt($ch, CURLOPT_HEADER, "Content-Type:application/vnd.cleveron+json");
-        curl_setopt($ch, CURLOPT_USERPWD, \mkw\Store::getParameter(\mkw\consts::FoxpostUsername) . ":" . \mkw\Store::getParameter(\mkw\consts::FoxpostPassword));
+        curl_setopt($ch, CURLOPT_USERPWD, \mkw\store::getParameter(\mkw\consts::FoxpostUsername) . ":" . \mkw\store::getParameter(\mkw\consts::FoxpostPassword));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         return $ch;
@@ -57,12 +57,12 @@ class foxpostController extends \mkwhelpers\MattableController {
         $ch = $this->initCurl('orders');
         $fields = array(
             'place_id' => (int)$fej->getFoxpostterminalId(),
-            'name' => ( \mkw\Store::getConfigValue('developer') ? 'teszt' : $fej->getPartnernev()),
+            'name' => ( \mkw\store::getConfigValue('developer') ? 'teszt' : $fej->getPartnernev()),
             'phone' => $fej->getPartnertelefon(),
             'email' => $fej->getPartneremail(),
             'refcode' => $fej->getId()
         );
-        if ($fej->getFizmodId() == \mkw\Store::getParameter(\mkw\consts::UtanvetFizmod)) {
+        if ($fej->getFizmodId() == \mkw\store::getParameter(\mkw\consts::UtanvetFizmod)) {
             $fields['cod_amount'] = (int)$fej->getBrutto() * 100;
             $fields['cod_currency'] = 'HUF';
         }
@@ -97,7 +97,7 @@ class foxpostController extends \mkwhelpers\MattableController {
             }
             $res[] = $r;
         }
-		$view = \mkw\Store::getTemplateFactory()->createMainView('checkoutfoxpostcsoportlist.tpl');
+		$view = \mkw\store::getTemplateFactory()->createMainView('checkoutfoxpostcsoportlist.tpl');
 		$view->setVar('foxpostcsoportlist', $res);
 		echo json_encode(array(
             'html' => $view->getTemplateResult()
@@ -123,7 +123,7 @@ class foxpostController extends \mkwhelpers\MattableController {
             }
             $res[] = $r;
         }
-		$view = \mkw\Store::getTemplateFactory()->createMainView('checkoutfoxpostterminallist.tpl');
+		$view = \mkw\store::getTemplateFactory()->createMainView('checkoutfoxpostterminallist.tpl');
 		$view->setVar('foxpostterminallist', $res);
 		echo json_encode(array(
             'html' => $view->getTemplateResult()

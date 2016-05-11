@@ -16,7 +16,7 @@ class szallitasimodhatarController extends \mkwhelpers\MattableController {
             $t = new \Entities\SzallitasimodHatar();
             $this->getEm()->detach($t);
             $x['oper'] = 'add';
-            $x['id'] = \mkw\Store::createUID();
+            $x['id'] = \mkw\store::createUID();
         }
         else {
             $x['oper'] = 'edit';

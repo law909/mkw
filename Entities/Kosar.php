@@ -88,7 +88,7 @@ class Kosar {
 		$ret = array();
 		$termek = $this->getTermek();
 		$ret = $ret + $termek->toKosar($this->getTermekvaltozat());
-        $ret['noedit'] = $termek->getId() == \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
+        $ret['noedit'] = $termek->getId() == \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
 		$ret['id'] = $this->getId();
         if ($partner && $partner->getSzamlatipus()) {
             $ret['bruttoegysarhuf'] = $this->getNettoegysar() * 1;
@@ -119,8 +119,8 @@ class Kosar {
 			}
 		}
 		$ret['valtozatok'] = $v;
-		$ret['editlink'] = \mkw\Store::getRouter()->generate('kosaredit');
-		$ret['showcheckoutlink'] = \mkw\Store::getRouter()->generate('showcheckout');
+		$ret['editlink'] = \mkw\store::getRouter()->generate('kosaredit');
+		$ret['showcheckoutlink'] = \mkw\store::getRouter()->generate('showcheckout');
 		return $ret;
 	}
 
@@ -242,7 +242,7 @@ class Kosar {
 
     public function getCreatedStr() {
         if ($this->getCreated()) {
-            return $this->getCreated()->format(\mkw\Store::$DateTimeFormat);
+            return $this->getCreated()->format(\mkw\store::$DateTimeFormat);
         }
         return '';
     }
@@ -366,7 +366,7 @@ class Kosar {
 	 */
 	public function setAfa($val) {
 		if (!is_object($val)) {
-			$val = \mkw\Store::getEm()->getRepository('Entities\Afa')->find($val);
+			$val = \mkw\store::getEm()->getRepository('Entities\Afa')->find($val);
 		}
 		if (!$val) {
 			$this->removeAfa();

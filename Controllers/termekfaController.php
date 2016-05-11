@@ -3,7 +3,6 @@
 namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
-use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
 class termekfaController extends \mkwhelpers\MattableController {
@@ -44,7 +43,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$x['parentnev'] = $t->getParentNev();
         $x['inaktiv'] = $t->getInaktiv();
         $x['idegenkod'] = $t->getIdegenkod();
-        if (\mkw\Store::isMultilang()) {
+        if (\mkw\store::isMultilang()) {
             $translationsCtrl = new termekfatranslationController($this->params);
             foreach($t->getTranslations() as $tr) {
                 $translations[] = $translationsCtrl->loadVars($tr);
@@ -73,7 +72,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$obj->setKepleiras($this->params->getStringRequestParam('kepleiras'));
 		$obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
-        if (\mkw\Store::isMultilang()) {
+        if (\mkw\store::isMultilang()) {
             $translationids = $this->params->getArrayRequestParam('translationid');
             foreach ($translationids as $translationid) {
 				$oper = $this->params->getStringRequestParam('translationoper_' . $translationid);
@@ -193,28 +192,28 @@ class termekfaController extends \mkwhelpers\MattableController {
 	}
 
     public function getformenu($menunum, $almenunum = 0) {
-        switch (\mkw\Store::getTheme()) {
+        switch (\mkw\store::getTheme()) {
             case 'mkwcansas':
                 $repo = $this->getRepo();
                 $f = $repo->getForMenu($menunum);
                 $t = array();
                 foreach ($f as $o) {
-                    $o['kozepeskepurl'] = store::createMediumImageUrl($o['kepurl']);
-                    $o['kiskepurl'] = store::createSmallImageUrl($o['kepurl']);
-                    $o['kepurl'] = store::createBigImageUrl($o['kepurl']);
+                    $o['kozepeskepurl'] = \mkw\store::createMediumImageUrl($o['kepurl']);
+                    $o['kiskepurl'] = \mkw\store::createSmallImageUrl($o['kepurl']);
+                    $o['kepurl'] = \mkw\store::createBigImageUrl($o['kepurl']);
                     if ($almenunum > 0) { // mkw lebegő menüje
                         $o['children'] = array();
                         $children = $repo->getForParent($o['id'], $almenunum);
                         foreach ($children as $child) {
-                            $child['kozepeskepurl'] = store::createMediumImageUrl($child['kepurl']);
-                            $child['kiskepurl'] = store::createSmallImageUrl($child['kepurl']);
-                            $child['kepurl'] = store::createBigImageUrl($child['kepurl']);
+                            $child['kozepeskepurl'] = \mkw\store::createMediumImageUrl($child['kepurl']);
+                            $child['kiskepurl'] = \mkw\store::createSmallImageUrl($child['kepurl']);
+                            $child['kepurl'] = \mkw\store::createBigImageUrl($child['kepurl']);
                             $chchildren = $repo->getForParent($child['id'], $almenunum);
                             $child['childcount'] = count($chchildren);
                             foreach ($chchildren as $chchild) {
-                                $chchild['kozepeskepurl'] = store::createMediumImageUrl($chchild['kepurl']);
-                                $chchild['kiskepurl'] = store::createSmallImageUrl($chchild['kepurl']);
-                                $chchild['kepurl'] = store::createBigImageUrl($chchild['kepurl']);
+                                $chchild['kozepeskepurl'] = \mkw\store::createMediumImageUrl($chchild['kepurl']);
+                                $chchild['kiskepurl'] = \mkw\store::createSmallImageUrl($chchild['kepurl']);
+                                $chchild['kepurl'] = \mkw\store::createBigImageUrl($chchild['kepurl']);
                                 $chchild['childcount'] = 0;
                                 $child['children'][] = $chchild;
                             }
@@ -230,9 +229,9 @@ class termekfaController extends \mkwhelpers\MattableController {
                 $f = $repo->getForMenu($menunum);
                 $x = array();
                 foreach ($f as $o) {
-                    $o['kozepeskepurl'] = store::createMediumImageUrl($o['kepurl']);
-                    $o['kiskepurl'] = store::createSmallImageUrl($o['kepurl']);
-                    $o['kepurl'] = store::createBigImageUrl($o['kepurl']);
+                    $o['kozepeskepurl'] = \mkw\store::createMediumImageUrl($o['kepurl']);
+                    $o['kiskepurl'] = \mkw\store::createSmallImageUrl($o['kepurl']);
+                    $o['kepurl'] = \mkw\store::createBigImageUrl($o['kepurl']);
                     $o['children'] = $this->gettermeklistaforparent($o);
                     $x[] = $o;
                 }
@@ -262,9 +261,9 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$children = $repo->getForParent($parent->getId(), 4);
 		$t = array();
 		foreach ($children as $child) {
-			$child['kozepeskepurl'] = store::createMediumImageUrl($child['kepurl']);
-			$child['kiskepurl'] = store::createSmallImageUrl($child['kepurl']);
-			$child['kepurl'] = store::createBigImageUrl($child['kepurl']);
+			$child['kozepeskepurl'] = \mkw\store::createMediumImageUrl($child['kepurl']);
+			$child['kiskepurl'] = \mkw\store::createSmallImageUrl($child['kepurl']);
+			$child['kepurl'] = \mkw\store::createBigImageUrl($child['kepurl']);
 //			$chchildren=$repo->getForParent($child['id']);
 //			$child['childcount']=count($chchildren);
 			$child['childcount'] = $repo->getForParentCount($child['id']);
@@ -278,7 +277,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 	}
 
 	public function gettermeklistaforparent($parent, $caller = null) {
-        switch (\mkw\Store::getTheme()) {
+        switch (\mkw\store::getTheme()) {
             case 'mkwcansas':
                 $kategoriafilter = new FilterDescriptor();
                 $nativkategoriafilter = new FilterDescriptor();
@@ -291,7 +290,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 $termekrepo = $tc->getRepo();
                 $tck = new termekcimkekatController($this->params);
 
-                $kiemelttermekdb = store::getParameter(\mkw\consts::Kiemelttermekdb, 3);
+                $kiemelttermekdb = \mkw\store::getParameter(\mkw\consts::Kiemelttermekdb, 3);
                 /**
                   'elemperpage'=>$this->params->getIntRequestParam('elemperpage',20),
                   'pageno'=>$this->params->getIntRequestParam('pageno',1),
@@ -302,7 +301,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                   'keresett'=>$this->params->getStringRequestParam('keresett',''),
                   'vt'=>$this->params->getIntRequestParam('vt',1)
                  */
-                $elemperpage = $this->params->getIntRequestParam('elemperpage', \mkw\Store::getParameter(\mkw\consts::Termeklistatermekdb, 30));
+                $elemperpage = $this->params->getIntRequestParam('elemperpage', \mkw\store::getParameter(\mkw\consts::Termeklistatermekdb, 30));
 
                 $pageno = $this->params->getIntRequestParam('pageno', 1);
                 $ord = $this->params->getStringRequestParam('order');
@@ -351,7 +350,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 }
 
                 if ($this->params->getBoolRequestParam('csakakcios', false)) {
-                    $mastr = date(Store::$SQLDateFormat);
+                    $mastr = date(\mkw\store::$SQLDateFormat);
                     $akciosfilter->addSql('
                         (
                             (_xx.akciostart <> \'\' AND (_xx.akciostart IS NOT NULL)) OR (_xx.akciostop <> \'\' AND (_xx.akciostop IS NOT NULL))
@@ -388,7 +387,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 // termek max ar kategoriaval es cimkevel szurve
                 $maxar = $termekrepo->getTermekListaMaxAr($keresofilter->merge($kategoriafilter)->merge($termekidfilter));
 
-                if ($maxarfilter == 0 || \mkw\Store::getMainSession()->autoepp) {
+                if ($maxarfilter == 0 || \mkw\store::getMainSession()->autoepp) {
                     $maxarfilter = $maxar;
                 }
 
@@ -490,7 +489,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                         $tid[] = $termek['id'];
                     }
 
-                    $ret['arfilterstep'] = store::getParameter(\mkw\consts::Arfilterstep, 500);
+                    $ret['arfilterstep'] = \mkw\store::getParameter(\mkw\consts::Arfilterstep, 500);
                     if (($maxar % $ret['arfilterstep']) != 0) {
                         $ret['maxar'] = (floor($maxar / $ret['arfilterstep']) + 1) * $ret['arfilterstep'];
                     }
@@ -576,7 +575,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 }
                 return $t;
             default :
-                throw new Exception('ISMERETLEN THEME: ' . \mkw\Store::getTheme());
+                throw new Exception('ISMERETLEN THEME: ' . \mkw\store::getTheme());
         }
 	}
 
@@ -585,14 +584,14 @@ class termekfaController extends \mkwhelpers\MattableController {
         if ($faid) {
             $fa = $this->getRepo()->findOneById($faid);
             if ($fa) {
-                $newlink = \mkw\Store::getRouter()->generate('showtermekfa', false, array('slug' => $fa->getSlug()));
+                $newlink = \mkw\store::getRouter()->generate('showtermekfa', false, array('slug' => $fa->getSlug()));
             }
             else {
-                $newlink = \mkw\Store::getRouter()->generate('show404');
+                $newlink = \mkw\store::getRouter()->generate('show404');
             }
         }
         else {
-            $newlink = \mkw\Store::getRouter()->generate('show404');
+            $newlink = \mkw\store::getRouter()->generate('show404');
         }
         header("HTTP/1.1 301 Moved Permanently");
         header('Location: ' . $newlink);

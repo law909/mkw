@@ -73,7 +73,7 @@ class BankbizonylatfejListener {
                     $szam = $from;
                 }
             }
-            $entity->setId(\mkw\Store::createBizonylatszam($azon, $ev, $szam));
+            $entity->setId(\mkw\store::createBizonylatszam($azon, $ev, $szam));
         }
         return $szam;
     }
@@ -93,7 +93,7 @@ class BankbizonylatfejListener {
             $bbf = $tetel->getBizonylatfej();
             if ($tetel->getHivatkozottbizonylat()) {
                 /** @var \Entities\Bizonylatfej $bf */
-                $bf = \mkw\Store::getEm()->getRepository('Entities\Bizonylatfej')->find($tetel->getHivatkozottbizonylat());
+                $bf = \mkw\store::getEm()->getRepository('Entities\Bizonylatfej')->find($tetel->getHivatkozottbizonylat());
             }
             $fszla = new \Entities\Folyoszamla();
             $fszla->setDatum($tetel->getDatum());
@@ -144,7 +144,7 @@ class BankbizonylatfejListener {
             $entity->setBrutto(round($brutto));
         }
         if ($mincimlet && ($entity->getBizonylattipusId() === 'penztar')) {
-            $entity->setBrutto(\mkw\Store::kerekit($entity->getBrutto(), $mincimlet));
+            $entity->setBrutto(\mkw\store::kerekit($entity->getBrutto(), $mincimlet));
         }
     }
 

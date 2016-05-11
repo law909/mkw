@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use mkw\store;
-
 class hirController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -105,8 +103,8 @@ class hirController extends \mkwhelpers\MattableController {
         $obj = $this->getRepo()->find($id);
         if ($obj) {
             $obj->setLathato($kibe);
-            store::getEm()->persist($obj);
-            store::getEm()->flush();
+            \mkw\store::getEm()->persist($obj);
+            \mkw\store::getEm()->flush();
         }
     }
 
@@ -128,14 +126,14 @@ class hirController extends \mkwhelpers\MattableController {
         $hir = $this->getRepo()->findOneBySlug($com);
         if ($hir) {
             $view = $this->getTemplateFactory()->createMainView('hir.tpl');
-            store::fillTemplate($view);
+            \mkw\store::fillTemplate($view);
             $view->setVar('pagetitle', $hir->getShowCim());
             $view->setVar('seodescription', $hir->getShowSeodescription());
             $view->setVar('hir', $hir->convertToArray());
             $view->printTemplateResult(false);
         }
         else {
-            store::redirectTo404($com, $this->params);
+            \mkw\store::redirectTo404($com, $this->params);
         }
     }
 
@@ -146,23 +144,23 @@ class hirController extends \mkwhelpers\MattableController {
         foreach ($hirek as $hir) {
             $t[] = $hir->convertToArray();
         }
-        store::fillTemplate($view);
+        \mkw\store::fillTemplate($view);
 
-        $mpt = store::getParameter(\mkw\consts::Hirekoldalcim);
+        $mpt = \mkw\store::getParameter(\mkw\consts::Hirekoldalcim);
         if ($mpt) {
-            $mpt = str_replace('[global]', store::getParameter(\mkw\consts::Oldalcim), $mpt);
+            $mpt = str_replace('[global]', \mkw\store::getParameter(\mkw\consts::Oldalcim), $mpt);
         }
         else {
-            $mpt = store::getParameter(\mkw\consts::Oldalcim);
+            $mpt = \mkw\store::getParameter(\mkw\consts::Oldalcim);
         }
         $view->setVar('pagetitle', $mpt);
 
-        $msd = store::getParameter(\mkw\consts::Hirekseodescription);
+        $msd = \mkw\store::getParameter(\mkw\consts::Hirekseodescription);
         if ($msd) {
-            $msd = str_replace('[global]', store::getParameter(\mkw\consts::Seodescription), $msd);
+            $msd = str_replace('[global]', \mkw\store::getParameter(\mkw\consts::Seodescription), $msd);
         }
         else {
-            $msd = store::getParameter(\mkw\consts::Seodescription);
+            $msd = \mkw\store::getParameter(\mkw\consts::Seodescription);
         }
         $view->setVar('seodescription', $msd);
 
@@ -172,19 +170,19 @@ class hirController extends \mkwhelpers\MattableController {
 
     public function feed() {
         $feedview = $this->getTemplateFactory()->createMainView('feed.tpl');
-        $feedview->setVar('title', store::getParameter(\mkw\consts::Feedhirtitle, t('Híreink')));
-        $feedview->setVar('link', store::getRouter()->generate('hirfeed', true));
+        $feedview->setVar('title', \mkw\store::getParameter(\mkw\consts::Feedhirtitle, t('Híreink')));
+        $feedview->setVar('link', \mkw\store::getRouter()->generate('hirfeed', true));
         $d = new \DateTime();
         $feedview->setVar('pubdate', $d->format('D, d M Y H:i:s'));
         $feedview->setVar('lastbuilddate', $d->format('D, d M Y H:i:s'));
-        $feedview->setVar('description', store::getParameter(\mkw\consts::Feedhirdescription, ''));
+        $feedview->setVar('description', \mkw\store::getParameter(\mkw\consts::Feedhirdescription, ''));
         $entries = array();
         $hirek = $this->getfeedhirlist();
         foreach ($hirek as $hir) {
             $entries[] = array(
                 'title' => $hir->getCim(),
-                'link' => store::getRouter()->generate('showhir', true, array('hir' => $hir->getSlug())),
-                'guid' => store::getRouter()->generate('showhir', true, array('hir' => $hir->getSlug())),
+                'link' => \mkw\store::getRouter()->generate('showhir', true, array('hir' => $hir->getSlug())),
+                'guid' => \mkw\store::getRouter()->generate('showhir', true, array('hir' => $hir->getSlug())),
                 'description' => $hir->getSzoveg(),
                 'pubdate' => $hir->getDatum()->format('D, d M Y H:i:s')
             );
@@ -195,7 +193,7 @@ class hirController extends \mkwhelpers\MattableController {
     }
 
     public function redirectOldRSSUrl() {
-        $newlink = \mkw\Store::getRouter()->generate('hirfeed');
+        $newlink = \mkw\store::getRouter()->generate('hirfeed');
         header("HTTP/1.1 301 Moved Permanently");
         header('Location: ' . $newlink);
     }

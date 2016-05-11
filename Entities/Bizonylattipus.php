@@ -82,7 +82,7 @@ class Bizonylattipus {
         $view->setVar('showteljesites', $this->getShowteljesites());
         $view->setVar('showesedekesseg', $this->getShowesedekesseg());
         $view->setVar('showhatarido', $this->getShowhatarido());
-        $view->setVar('showvalutanem', \mkw\Store::isMultiValuta());
+        $view->setVar('showvalutanem', \mkw\store::isMultiValuta());
         $view->setVar('showbizonylatstatuszeditor', $this->getShowbizonylatstatuszeditor());
         $view->setVar('showszamlabutton', $this->getShowszamlabutton());
         $view->setVar('showkeziszamlabutton', $this->getShowkeziszamlabutton());
@@ -202,7 +202,7 @@ class Bizonylattipus {
     }
 
     public function getShowvalutanem() {
-        return \mkw\Store::isMultiValuta();
+        return \mkw\store::isMultiValuta();
     }
 
     public function getTplname() {

@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use mkw\store;
-
 class bizonylattetelController extends \mkwhelpers\MattableController {
 
 	public function __construct($params) {
@@ -24,7 +22,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		if (!$t) {
 			$t = new \Entities\Bizonylattetel();
 			$this->getEm()->detach($t);
-			$x['id'] = store::createUID();
+			$x['id'] = \mkw\store::createUID();
 			$x['oper'] = 'add';
 		}
 		else {
@@ -67,7 +65,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
         $x['kedvezmeny'] = $t->getKedvezmeny();
 
 		$x['hataridostr'] = $t->getHataridoStr();
-        $x['mainurl'] = store::getConfigValue('mainurl');
+        $x['mainurl'] = \mkw\store::getConfigValue('mainurl');
         $x['afanev'] = $t->getAfanev();
         $x['elolegtipus'] = $t->getElolegtipus();
 		$term = $t->getTermek();
@@ -85,8 +83,8 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 			$x['minikepurl'] = $term->getKepUrlMini();
 			$x['kepurl'] = $term->getKepUrlLarge();
 			$x['slug'] = $term->getSlug();
-            $x['link'] = \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $term->getSlug()));
-            $x['kartonurl'] = \mkw\Store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $term->getId()));
+            $x['link'] = \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), array('slug' => $term->getSlug()));
+            $x['kartonurl'] = \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $term->getId()));
         }
 
 		if ($forKarb) {
@@ -121,7 +119,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 
 	public function getar() {
         // Nincsenek ársávok
-        if (!\mkw\Store::isArsavok()) {
+        if (!\mkw\store::isArsavok()) {
             $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
             $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
             $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
@@ -254,7 +252,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
         $valtozatlist = $tc->getValtozatList($termekid, 0);
         $vlist = array();
         foreach($valtozatlist as $v) {
-            $v['tetelid'] = \mkw\Store::createUID();
+            $v['tetelid'] = \mkw\store::createUID();
             $v['termekid'] = $termekid;
             $v['termektetelid'] = $termektetelid;
             $vlist[] = $v;

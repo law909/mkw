@@ -59,7 +59,7 @@ $router->map('GET', '/admin/mijszoklevelszint/jsonlist', 'mijszoklevelszintContr
 $router->map('GET', '/admin/mijszoklevelszint/htmllist', 'mijszoklevelszintController#htmllist', 'adminmijszoklevelszinthtmllist');
 $router->map('POST', '/admin/mijszoklevelszint/save', 'mijszoklevelszintController#save', 'adminmijszoklevelszintsave');
 
-if (\mkw\Store::isBankpenztar()) {
+if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/jogcim/jsonlist', 'jogcimController#jsonlist', 'adminjogcimjsonlist');
     $router->map('GET', '/admin/jogcim/htmllist', 'jogcimController#htmllist', 'adminjogcimhtmllist');
     $router->map('POST', '/admin/jogcim/save', 'jogcimController#save', 'adminjogcimsave');
@@ -458,7 +458,7 @@ $router->map('GET', '/admin/termekforgalmilista/refresh', 'termekforgalmilistaCo
 $router->map('GET', '/admin/bizomanyosertekesiteslista/view', 'bizomanyosertekesiteslistaController#view', 'adminbizomanyosertekesiteslistaview');
 $router->map('GET', '/admin/bizomanyosertekesiteslista/refresh', 'bizomanyosertekesiteslistaController#refresh', 'adminbizomanyosertekesiteslistarefresh');
 
-if (\mkw\Store::getTheme() == 'superzone') {
+if (\mkw\store::getTheme() == 'superzone') {
     if (haveJog(99)) {
         $router->map('GET', '/admin/mese', 'fantaController#mese', 'adminmese');
     }

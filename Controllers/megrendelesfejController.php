@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use mkw\store;
-
 class megrendelesfejController extends bizonylatfejController {
 
     public function __construct($params) {
@@ -30,7 +28,7 @@ class megrendelesfejController extends bizonylatfejController {
         if ($o) {
             $biztip = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
             if ($biztip) {
-                if (\mkw\Store::getTheme() == 'superzone') {
+                if (\mkw\store::getTheme() == 'superzone') {
                     $view = $this->createView('biz_elolegbekero_eng.tpl');
                 }
                 else {
@@ -84,7 +82,7 @@ class megrendelesfejController extends bizonylatfejController {
                 try {
                     $client = new \MerchTerm_umg_client();
                     $response = $client->PostImCreditInit($request);
-                    \mkw\Store::writelog(print_r($response, true), 'otpay.log');
+                    \mkw\store::writelog(print_r($response, true), 'otpay.log');
                     /*
                     if ($response->result == 0) {
                         $mr->setFizetve(false);
@@ -92,7 +90,7 @@ class megrendelesfejController extends bizonylatfejController {
                         $this->getEm()->flush();
                     }
                     else {
-                        $error = Store::getOTPayErrorMessage($response->result);
+                        $error = \mkw\store::getOTPayErrorMessage($response->result);
                     }
                      *
                      */
@@ -124,7 +122,7 @@ class megrendelesfejController extends bizonylatfejController {
             try {
                 $client = new \MerchTerm_umg_client();
                 $response = $client->PostImCreditInit($request);
-                \mkw\Store::writelog(print_r($response, true), 'otpay.log');
+                \mkw\store::writelog(print_r($response, true), 'otpay.log');
                 /*
                 if ($response->result == 0) {
                     $mr->setFizetve(false);
@@ -132,7 +130,7 @@ class megrendelesfejController extends bizonylatfejController {
                     $this->getEm()->flush();
                 }
                 else {
-                    $error = Store::getOTPayErrorMessage($response->result);
+                    $error = \mkw\store::getOTPayErrorMessage($response->result);
                 }
                  *
                  */
@@ -149,7 +147,7 @@ class megrendelesfejController extends bizonylatfejController {
         $ids = $this->params->getArrayRequestParam('ids');
         foreach($ids as $id) {
             $megrendfej = $this->getRepo()->find($id);
-            if ($megrendfej && Store::isFoxpostSzallitasimod($megrendfej->getSzallitasimodId()) && !$megrendfej->getFoxpostBarcode()) {
+            if ($megrendfej && \mkw\store::isFoxpostSzallitasimod($megrendfej->getSzallitasimodId()) && !$megrendfej->getFoxpostBarcode()) {
                 $fpc = new \Controllers\foxpostController($this->params);
                 $fpres = $fpc->sendMegrendeles($megrendfej);
                 if ($fpres) {
@@ -169,8 +167,8 @@ class megrendelesfejController extends bizonylatfejController {
         $id = $this->params->getStringRequestParam('id');
         $regibiz = $this->getRepo()->find($id);
         if ($regibiz) {
-            $teljesitheto = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\Store::getParameter(\mkw\consts::BizonylatStatuszTeljesitheto));
-            $backorder = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\Store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
+            $teljesitheto = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszTeljesitheto));
+            $backorder = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
             $this->getEm()->beginTransaction();
             try {
                 $ujdb = 0;
@@ -282,7 +280,7 @@ class megrendelesfejController extends bizonylatfejController {
 
     public function getTeljesithetoBackorderLista() {
         $ret = array();
-        $backorder = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\Store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
+        $backorder = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
         if ($backorder) {
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('bizonylatstatusz', '=', $backorder);
@@ -319,10 +317,10 @@ class megrendelesfejController extends bizonylatfejController {
                             'id' => $fej->getId(),
                             'kelt' => $fej->getKeltStr(),
                             'partnernev' => $fej->getPartnernev(),
-                            'printurl' => \mkw\Store::getRouter()->generate('adminmegrendelesfejprint', false, array(), array(
+                            'printurl' => \mkw\store::getRouter()->generate('adminmegrendelesfejprint', false, array(), array(
                                 'id' => $fej->getId()
                             )),
-                            'editurl' => \mkw\Store::getRouter()->generate('adminmegrendelesfejviewkarb', false, array(), array(
+                            'editurl' => \mkw\store::getRouter()->generate('adminmegrendelesfejviewkarb', false, array(), array(
                                 'id' => $fej->getId(),
                                 'oper' => 'edit'
                             ))

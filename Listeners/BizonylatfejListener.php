@@ -22,7 +22,7 @@ class BizonylatfejListener {
         $stmt = $conn->prepare('INSERT INTO bizonylatseq (data) VALUES (1)');
         $stmt->execute();
         $entity->setTrxid($conn->lastInsertId());
-        $entity->setMasterPassCorrelationID(\mkw\Store::createGUID());
+        $entity->setMasterPassCorrelationID(\mkw\store::createGUID());
     }
 
     /**
@@ -87,7 +87,7 @@ class BizonylatfejListener {
                 }
                 $bizonylat->clearFolyoszamlak();
 
-                if (\mkw\Store::isOsztottFizmod()) {
+                if (\mkw\store::isOsztottFizmod()) {
                     $volt = false;
                     if ($bizonylat->getFizetendo1()) {
                         $this->createFSzla($bizonylat, 1);
@@ -132,7 +132,7 @@ class BizonylatfejListener {
             $szamol = $szallmod->getVanszallitasiktg();
         }
 
-        $termekid = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
+        $termekid = \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
         $termek = $this->em->getRepository('Entities\Termek')->find($termekid);
 
         // $bruttoegysar csak vatera megrendeles importkor van megadva, ilyenkor mindegy, hogy milyen szall.mod van
@@ -148,7 +148,7 @@ class BizonylatfejListener {
             }
             if ($cnt != 0) {
                 if ($bizfej->getPartner() && ($bizfej->getPartner()->getSzamlatipus() > 0)) {
-                    $nullasafa = $this->em->getRepository('Entities\Afa')->find(\mkw\Store::getParameter(\mkw\consts::NullasAfa));
+                    $nullasafa = $this->em->getRepository('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
                 }
 
                 if (!$bruttoegysar) {
@@ -275,7 +275,7 @@ class BizonylatfejListener {
                 foreach ($entity->getBizonylattetelek() as $tetel) {
                     if (!$tetel->getStorno() && !$tetel->getStornozott()) {
                         $tetel->setMozgat();
-                        if (\mkw\Store::isFoglalas()) {
+                        if (\mkw\store::isFoglalas()) {
                             $tetel->setFoglal();
                         }
                         $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $tetel);

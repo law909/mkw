@@ -3,7 +3,6 @@ namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use mkw\store;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\HirRepository")
@@ -60,7 +59,7 @@ class Hir {
 	}
 
     public function getLink() {
-        return \mkw\Store::getRouter()->generate('showhir', \mkw\Store::getConfigValue('mainurl', true), array('hir' => $this->getSlug()));
+        return \mkw\store::getRouter()->generate('showhir', \mkw\store::getConfigValue('mainurl', true), array('hir' => $this->getSlug()));
     }
 
 	public function getId() {
@@ -72,7 +71,7 @@ class Hir {
 	}
 
 	public function getShowCim() {
-		return $this->cim.' - '.\mkw\Store::getParameter(\mkw\consts::Oldalcim);
+		return $this->cim.' - '.\mkw\store::getParameter(\mkw\consts::Oldalcim);
 	}
 
 	public function setCim($cim) {
@@ -91,7 +90,7 @@ class Hir {
 		if ($this->seodescription) {
 			return $this->seodescription;
 		}
-		return $this->cim.' - '.\mkw\Store::getParameter(\mkw\consts::Seodescription);
+		return $this->cim.' - '.\mkw\store::getParameter(\mkw\consts::Seodescription);
 	}
 
 	public function getSeodescription() {
@@ -108,14 +107,14 @@ class Hir {
 
 	public function getElsodatumStr() {
 		if ($this->getElsodatum()) {
-			return $this->getElsodatum()->format(store::$DateFormat);
+			return $this->getElsodatum()->format(\mkw\store::$DateFormat);
 		}
 		return '';
 	}
 
 	public function setElsodatum($adat) {
-		if ($adat=='') $adat=date(store::$DateFormat);
-		$this->elsodatum = new \DateTime(store::convDate($adat));
+		if ($adat=='') $adat=date(\mkw\store::$DateFormat);
+		$this->elsodatum = new \DateTime(\mkw\store::convDate($adat));
 	}
 
 	public function getUtolsodatum() {
@@ -124,14 +123,14 @@ class Hir {
 
 	public function getUtolsodatumStr() {
 		if ($this->getUtolsodatum()) {
-			return $this->getUtolsodatum()->format(store::$DateFormat);
+			return $this->getUtolsodatum()->format(\mkw\store::$DateFormat);
 		}
 		return '';
 	}
 
 	public function setUtolsodatum($adat) {
-		if ($adat=='') $adat=date(store::$DateFormat);
-		$this->utolsodatum = new \DateTime(store::convDate($adat));
+		if ($adat=='') $adat=date(\mkw\store::$DateFormat);
+		$this->utolsodatum = new \DateTime(\mkw\store::convDate($adat));
 	}
 
 	public function getDatum() {
@@ -140,14 +139,14 @@ class Hir {
 
 	public function getDatumStr() {
 		if ($this->getDatum()) {
-			return $this->getDatum()->format(store::$DateFormat);
+			return $this->getDatum()->format(\mkw\store::$DateFormat);
 		}
 		return '';
 	}
 
 	public function setDatum($adat) {
-		if ($adat=='') $adat=date(store::$DateFormat);
-		$this->datum = new \DateTime(store::convDate($adat));
+		if ($adat=='') $adat=date(\mkw\store::$DateFormat);
+		$this->datum = new \DateTime(\mkw\store::convDate($adat));
 	}
 
 	public function getLathato() {

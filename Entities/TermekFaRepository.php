@@ -55,7 +55,7 @@ class TermekFaRepository extends \mkwhelpers\Repository {
     }
 
     public function getForMenu($menunum) {
-        if (!\mkw\Store::isMultilang()) {
+        if (!\mkw\store::isMultilang()) {
             $rsm = new ResultSetMapping();
             $rsm->addScalarResult('id', 'id');
             $rsm->addScalarResult('nev', 'caption');
@@ -76,8 +76,8 @@ class TermekFaRepository extends \mkwhelpers\Repository {
         }
         else {
             $q = $this->_em->createQuery('SELECT f FROM Entities\TermekFa f WHERE f.menu' . $menunum . 'lathato=1 ORDER BY f.sorrend');
-            if (\mkw\Store::isMainMode()) {
-                \mkw\Store::setTranslationHint($q, \mkw\Store::getParameter(\mkw\consts::Locale));
+            if (\mkw\store::isMainMode()) {
+                \mkw\store::setTranslationHint($q, \mkw\store::getParameter(\mkw\consts::Locale));
             }
             $res = $q->getResult();
             $ret = array();

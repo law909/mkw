@@ -19,9 +19,9 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
     public function view() {
         $view = $this->createView('kintlevoseglista.tpl');
 
-        $view->setVar('toldatum', date(\mkw\Store::$DateFormat));
-        $view->setVar('igdatum', date(\mkw\Store::$DateFormat));
-        $view->setVar('befdatum', date(\mkw\Store::$DateFormat));
+        $view->setVar('toldatum', date(\mkw\store::$DateFormat));
+        $view->setVar('igdatum', date(\mkw\store::$DateFormat));
+        $view->setVar('befdatum', date(\mkw\store::$DateFormat));
         $view->setVar('datumtipus', 'teljesites');
 
         $uk = new uzletkotoController($this->params);
@@ -40,7 +40,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         $filter = new FilterDescriptor();
 
         $this->befdatumstr = $this->params->getStringRequestParam('befdatum');
-        $this->befdatumstr = date(\mkw\Store::$DateFormat, strtotime(\mkw\Store::convDate($this->befdatumstr)));
+        $this->befdatumstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->befdatumstr)));
 
         $filter->addFilter('fa.datum', '<=', $this->befdatumstr);
         return $filter;
@@ -50,10 +50,10 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         $filter = new FilterDescriptor();
 
         $this->tolstr = $this->params->getStringRequestParam('tol');
-        $this->tolstr = date(\mkw\Store::$DateFormat, strtotime(\mkw\Store::convDate($this->tolstr)));
+        $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->tolstr)));
 
         $this->igstr = $this->params->getStringRequestParam('ig');
-        $this->igstr = date(\mkw\Store::$DateFormat, strtotime(\mkw\Store::convDate($this->igstr)));
+        $this->igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->igstr)));
 
         $mt = $this->params->getStringRequestParam('datumtipus');
         switch ($mt) {
@@ -196,8 +196,8 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
 
         $d = $q->getScalarResult();
         $ret = array();
-        $ma = new \DateTime(date(\mkw\Store::$SQLDateFormat));
-        $mastr = date(\mkw\Store::$SQLDateFormat);
+        $ma = new \DateTime(date(\mkw\store::$SQLDateFormat));
+        $mastr = date(\mkw\store::$SQLDateFormat);
         foreach($d as $sor) {
             $sor['lejart'] = $sor['hivatkozottdatum'] <= $mastr;
             $es = new \DateTime($sor['hivatkozottdatum']);

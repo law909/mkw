@@ -2,7 +2,6 @@
 
 namespace Controllers;
 
-use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
 class fantaController extends \mkwhelpers\MattableController {
@@ -21,12 +20,12 @@ class fantaController extends \mkwhelpers\MattableController {
         $ev = $this->params->getIntRequestParam('ev');
         $bizszam = $this->params->getIntRequestParam('tol');
         $pw = $this->params->getStringRequestParam('pw');
-        if (md5($pw . \mkw\Store::getAdminSalt()) == \mkw\Store::getParameter(\mkw\consts::Tulajcrc)) {
+        if (md5($pw . \mkw\store::getAdminSalt()) == \mkw\store::getParameter(\mkw\consts::Tulajcrc)) {
             $bt = $this->getRepo('Entities\Bizonylattipus')->find('szamla');
             $ujbt = $this->getRepo('Entities\Bizonylattipus')->find('egyeb');
 
             if ($bt && $ujbt) {
-                $szamlaszam = \mkw\Store::createBizonylatszam($bt->getAzonosito(), $ev, $bizszam);
+                $szamlaszam = \mkw\store::createBizonylatszam($bt->getAzonosito(), $ev, $bizszam);
 
                 $filter = new \mkwhelpers\FilterDescriptor();
                 $filter

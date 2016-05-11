@@ -74,7 +74,7 @@ class mkwzendmailer {
     }
 
     protected function getBccArray() {
-        $bcc = Store::getParameter(consts::EmailBcc);
+        $bcc = \mkw\store::getParameter(\mkw\consts::EmailBcc);
         return explode(',', $bcc);
     }
 
@@ -83,7 +83,7 @@ class mkwzendmailer {
         $this->mailer->setBodyHtml($this->message);
         $this->mailer->setSubject($this->subject);
 
-        $from = Store::getParameter(consts::EmailFrom);
+        $from = \mkw\store::getParameter(\mkw\consts::EmailFrom);
         $fromdata = explode(';', $from);
         $this->mailer->setFrom($fromdata[0], $fromdata[1]);
 
@@ -110,7 +110,7 @@ class mkwzendmailer {
         }
 
         if (!$this->replyto) {
-            $this->mailer->setReplyTo(Store::getParameter(consts::EmailReplyTo));
+            $this->mailer->setReplyTo(\mkw\store::getParameter(\mkw\consts::EmailReplyTo));
         }
         else {
             $this->mailer->setReplyTo($this->replyto);

@@ -2,8 +2,7 @@
 
 namespace Entities;
 
-use Doctrine\ORM\Mapping as ORM;
-use mkw\store,
+use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
 
 /** @ORM\Entity(repositoryClass="Entities\DolgozoRepository")
@@ -241,11 +240,11 @@ class Dolgozo {
     }
 
     public function setJelszo($adat) {
-        $this->jelszo = sha1(strtoupper(md5($adat)) . \mkw\Store::getAdminSalt());
+        $this->jelszo = sha1(strtoupper(md5($adat)) . \mkw\store::getAdminSalt());
     }
 
     public function checkJelszo($adat) {
-        return $this->jelszo === sha1(strtoupper(md5($adat)) . \mkw\Store::getAdminSalt());
+        return $this->jelszo === sha1(strtoupper(md5($adat)) . \mkw\store::getAdminSalt());
     }
 
     /**

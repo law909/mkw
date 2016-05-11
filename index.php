@@ -1,5 +1,5 @@
 <?php
-use mkw\Store;
+use mkw\store;
 
 date_default_timezone_set('Europe/Budapest');
 
@@ -19,7 +19,7 @@ function t($msgid) {
 }
 
 function haveJog($jog) {
-    return \mkw\Store::haveJog($jog);
+    return \mkw\store::haveJog($jog);
 }
 
 function bizformat($mit, $mire = false) {
@@ -59,7 +59,7 @@ function exc_handler($e) {
 //set_exception_handler('exc_handler');
 
 if ($ini['developer']) {
-    if (in_array(\mkw\Store::getExtension($_SERVER['REQUEST_URI']), array('jpg', 'gif', 'png', 'jpeg')))  {
+    if (in_array(\mkw\store::getExtension($_SERVER['REQUEST_URI']), array('jpg', 'gif', 'png', 'jpeg')))  {
         die();
     }
 }
@@ -79,7 +79,7 @@ if ($ini['mail.smtp'] == 1) {
 }
 
 try {
-    $conn = Store::getEm()->getConnection()->connect();
+    $conn = store::getEm()->getConnection()->connect();
 }
 catch (\Exception $e) {
     $lee = file_get_contents('lasterroremail.log');
@@ -87,7 +87,7 @@ catch (\Exception $e) {
         if (!$ini['developer']) {
             file_put_contents('lasterroremail.log', time());
             if ($ini['onerror.email']) {
-                $m = Store::getMailer();
+                $m = store::getMailer();
                 $m->setTo($ini['onerror.email']);
                 $m->setSubject($ini['onerror.subject']);
                 $m->setMessage('Error code: ' . $e->getCode() . ' ' . $e->getMessage());
@@ -106,12 +106,12 @@ catch (\Exception $e) {
     throw $e;
 }
 
-if (Store::getSetupValue('rewrite301')) {
+if (store::getSetupValue('rewrite301')) {
     $rw301c = new \Controllers\rewrite301Controller(array());
     $rw301c->rewrite();
 }
 
-$router = Store::getRouter();
+$router = store::getRouter();
 if (file_exists('mainroute.php')) {
 	require_once 'mainroute.php';
 }
@@ -122,18 +122,18 @@ if ($ini['admin'] && file_exists('adminroute.php')) {
 $match = $router->match();
 
 if ($match) {
-    Store::setRouteName($match['name']);
+    store::setRouteName($match['name']);
     if (substr($match['name'], 0, 5) === 'admin') {
-        Store::setAdminMode();
+        store::setAdminMode();
         if ((!in_array($match['name'], array('adminshowlogin', 'adminlogin', 'adminrlbexport')))) {
-            $linuser = Store::getAdminSession()->pk;
+            $linuser = store::getAdminSession()->pk;
             if (!$linuser) {
                 Header('Location: ' . $router->generate('adminshowlogin'));
             }
         }
     }
     else {
-        Store::setMainMode();
+        store::setMainMode();
         if (!$mainsess->referrer) {
             if (array_key_exists('HTTP_REFERER', $_SERVER)) {
                 $mainsess->referrer = $_SERVER['HTTP_REFERER'];
@@ -152,7 +152,7 @@ if ($match) {
                 $pc->setUtolsoKlikk();
             }
         }
-        elseif (Store::mustLogin() && !in_array($match['name'], array('showlogin', 'dologin', 'showfanta', 'dofanta'))) {
+        elseif (store::mustLogin() && !in_array($match['name'], array('showlogin', 'dologin', 'showfanta', 'dofanta'))) {
             $mainsess->redirafterlogin = $_SERVER['REQUEST_URI'];
             header('Location: ' . $router->generate('showlogin'));
         }

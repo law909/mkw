@@ -4,7 +4,6 @@ namespace Controllers;
 
 use Entities\TermekValtozat,
 	Entities\TermekRecept;
-use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
 class termekController extends \mkwhelpers\MattableController {
@@ -63,7 +62,7 @@ class termekController extends \mkwhelpers\MattableController {
         $x['kozvetitett'] = $t->getKozvetitett();
 		$x['hparany'] = $t->getHparany();
 		$x['cimkek'] = $t->getCimkeNevek();
-        if (!\mkw\Store::isArsavok()) {
+        if (!\mkw\store::isArsavok()) {
             $x['netto'] = $t->getNetto();
             $x['brutto'] = $t->getBrutto();
             $x['akciosnetto'] = $t->getAkciosnetto();
@@ -87,13 +86,13 @@ class termekController extends \mkwhelpers\MattableController {
 /*            $x['netto'] = 0;
             $x['brutto'] = 0;
             if (!$this->showarsav) {
-                $this->showarsav = \mkw\Store::getParameter(\mkw\consts::ShowTermekArsav);
+                $this->showarsav = \mkw\store::getParameter(\mkw\consts::ShowTermekArsav);
             }
             if (!$this->showarsavvalutanem) {
-                $this->showarsavvalutanem = \mkw\Store::getParameter(\mkw\consts::ShowTermekArsavValutanem);
+                $this->showarsavvalutanem = \mkw\store::getParameter(\mkw\consts::ShowTermekArsavValutanem);
             }
             if ($this->showarsav && $this->showarsavvalutanem) {
-                $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($t, $this->showarsavvalutanem, $this->showarsav);
+                $arsav = \mkw\store::getEm()->getRepository('Entities\TermekAr')->getArsav($t, $this->showarsavvalutanem, $this->showarsav);
                 if ($arsav) {
                     $x['netto'] = $arsav->getNetto();
                     $x['brutto'] = $arsav->getBrutto();
@@ -114,7 +113,7 @@ class termekController extends \mkwhelpers\MattableController {
 			//$kep[]=$kepCtrl->loadVars(null);
 			$x['kepek'] = $kep;
 
-            if (store::getSetupValue('kapcsolodotermekek')) {
+            if (\mkw\store::getSetupValue('kapcsolodotermekek')) {
                 foreach ($t->getTermekKapcsolodok() as $tkapcsolodo) {
                     $kapcsolodo[] = $kapcsolodoCtrl->loadVars($tkapcsolodo, true);
                 }
@@ -122,27 +121,27 @@ class termekController extends \mkwhelpers\MattableController {
                 $x['kapcsolodok'] = $kapcsolodo;
             }
 
-			if (store::getSetupValue('receptura')) {
+			if (\mkw\store::getSetupValue('receptura')) {
 				foreach ($t->getTermekReceptek() as $trecept) {
 					$recept[] = $receptCtrl->loadVars($trecept, true);
 				}
 				//$recept[]=$receptCtrl->loadVars(null,true);
 				$x['receptek'] = $recept;
 			}
-			if (store::getSetupValue('termekvaltozat')) {
+			if (\mkw\store::getSetupValue('termekvaltozat')) {
 				foreach ($t->getValtozatok() as $tvaltozat) {
 					$valtozat[] = $valtozatCtrl->loadVars($tvaltozat, $t);
 				}
 				//$valtozat[]=$valtozatCtrl->loadVars(null);
 				$x['valtozatok'] = $valtozat;
 			}
-            if (\mkw\Store::isArsavok()) {
+            if (\mkw\store::isArsavok()) {
                 foreach ($t->getTermekArak() as $tar) {
                     $ar[] = $termekarCtrl->loadVars($tar, true);
                 }
                 $x['arak'] = $ar;
             }
-            if (\mkw\Store::isMultilang()) {
+            if (\mkw\store::isMultilang()) {
                 foreach($t->getTranslations() as $tr) {
                     $translations[] = $translationsCtrl->loadVars($tr);
                 }
@@ -172,7 +171,7 @@ class termekController extends \mkwhelpers\MattableController {
         $x['gyartonev'] = $t->getGyartoNev();
         $x['keszlet'] = $t->getKeszlet();
 		$x['termekcsoportnev'] = $t->getTermekcsoportNev();
-        if (store::getSetupValue('termekvaltozat')) {
+        if (\mkw\store::getSetupValue('termekvaltozat')) {
             foreach ($t->getValtozatok() as $tvaltozat) {
                 $mozgasdb = $tvaltozat->getMozgasDb();
                 if ($mozgasdb) {
@@ -190,22 +189,22 @@ class termekController extends \mkwhelpers\MattableController {
      */
 	protected function setFields($obj) {
         $oldnemkaphato = $obj->getNemkaphato();
-		$afa = store::getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afa'));
+		$afa = \mkw\store::getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afa'));
 		if ($afa) {
 			$obj->setAfa($afa);
 		}
-		$vtsz = store::getEm()->getRepository('Entities\Vtsz')->find($this->params->getIntRequestParam('vtsz'));
+		$vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->find($this->params->getIntRequestParam('vtsz'));
 		if ($vtsz) {
 			$obj->setVtsz($vtsz);
 		}
-		$valt = store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozatadattipus'));
+		$valt = \mkw\store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozatadattipus'));
 		if ($valt) {
 			$obj->setValtozatadattipus($valt);
 		}
 		else {
 			$obj->setValtozatadattipus(null);
 		}
-		$ck = store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('gyarto'));
+		$ck = \mkw\store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('gyarto'));
 		if ($ck) {
 			$obj->setGyarto($ck);
 		}
@@ -249,7 +248,7 @@ class termekController extends \mkwhelpers\MattableController {
         $obj->setFuggoben($this->params->getBoolRequestParam('fuggoben'));
         $obj->setSzallitasiido($this->params->getIntRequestParam('szallitasiido'));
         $obj->setKozvetitett($this->params->getBoolRequestParam('kozvetitett'));
-		$farepo = store::getEm()->getRepository('Entities\TermekFa');
+		$farepo = \mkw\store::getEm()->getRepository('Entities\TermekFa');
 		$fa = $farepo->find($this->params->getIntRequestParam('termekfa1'));
 		if ($fa) {
 			$obj->setTermekfa1($fa);
@@ -297,7 +296,7 @@ class termekController extends \mkwhelpers\MattableController {
 					$this->getEm()->persist($kep);
 				}
 				elseif ($oper == 'edit') {
-					$kep = store::getEm()->getRepository('Entities\TermekKep')->find($kepid);
+					$kep = \mkw\store::getEm()->getRepository('Entities\TermekKep')->find($kepid);
 					if ($kep) {
 						$kep->setUrl($this->params->getStringRequestParam('kepurl_' . $kepid));
 						$kep->setLeiras($this->params->getStringRequestParam('kepleiras_' . $kepid));
@@ -306,13 +305,13 @@ class termekController extends \mkwhelpers\MattableController {
 				}
 			}
 		}
-        if (\mkw\Store::isArsavok()) {
+        if (\mkw\store::isArsavok()) {
             $arids = $this->params->getArrayRequestParam('arid');
             foreach ($arids as $arid) {
 				$oper = $this->params->getStringRequestParam('aroper_' . $arid);
                 $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('arvalutanem_' . $arid));
                 if (!$valutanem) {
-                    $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find(store::getParameter(\mkw\consts::Valutanem));
+                    $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
                 }
 				if ($oper == 'add') {
 					$ar = new \Entities\TermekAr();
@@ -345,7 +344,7 @@ class termekController extends \mkwhelpers\MattableController {
 				}
             }
         }
-        if (\mkw\Store::isMultilang()) {
+        if (\mkw\store::isMultilang()) {
             $translationids = $this->params->getArrayRequestParam('translationid');
             foreach ($translationids as $translationid) {
 				$oper = $this->params->getStringRequestParam('translationoper_' . $translationid);
@@ -369,7 +368,7 @@ class termekController extends \mkwhelpers\MattableController {
 				}
             }
         }
-        if (store::getSetupValue('kapcsolodotermekek')) {
+        if (\mkw\store::getSetupValue('kapcsolodotermekek')) {
             $kapcsolodoids = $this->params->getArrayRequestParam('kapcsolodoid');
             foreach ($kapcsolodoids as $kapcsolodoid) {
                 if (($this->params->getIntRequestParam('kapcsolodoaltermek_' . $kapcsolodoid) > 0)) {
@@ -395,7 +394,7 @@ class termekController extends \mkwhelpers\MattableController {
                 }
             }
         }
-		if (store::getSetupValue('receptura')) {
+		if (\mkw\store::getSetupValue('receptura')) {
 			$receptids = $this->params->getArrayRequestParam('receptid');
 			foreach ($receptids as $receptid) {
 				if (($this->params->getIntRequestParam('receptaltermek_' . $receptid) > 0)) {
@@ -425,7 +424,7 @@ class termekController extends \mkwhelpers\MattableController {
 				}
 			}
 		}
-		if (store::getSetupValue('termekvaltozat')) {
+		if (\mkw\store::getSetupValue('termekvaltozat')) {
 			$valtozatids = $this->params->getArrayRequestParam('valtozatid');
 			foreach ($valtozatids as $valtozatid) {
 				$valtdb = 0;
@@ -587,7 +586,7 @@ class termekController extends \mkwhelpers\MattableController {
 
 		$fv = $this->params->getArrayRequestParam('cimkefilter');
 		if (!empty($fv)) {
-			$res = Store::getEm()->getRepository('Entities\Termekcimketorzs')->getTermekIdsWithCimke($fv);
+			$res = \mkw\store::getEm()->getRepository('Entities\Termekcimketorzs')->getTermekIdsWithCimke($fv);
 			$cimkefilter = array();
 			foreach ($res as $sor) {
 				$cimkefilter[] = $sor['id'];
@@ -604,7 +603,7 @@ class termekController extends \mkwhelpers\MattableController {
 		if (!empty($fv)) {
 			$ff = new \mkwhelpers\FilterDescriptor();
             $ff->addFilter('id', 'IN', $fv);
-			$res = store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, array());
+			$res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, array());
 			$faszuro = array();
 			foreach ($res as $sor) {
 				$faszuro[] = $sor->getKarkod() . '%';
@@ -614,14 +613,14 @@ class termekController extends \mkwhelpers\MattableController {
 
         $this->vanshowarsav = false;
 
-        if (!\mkw\Store::isArsavok()) {
+        if (!\mkw\store::isArsavok()) {
             $this->initPager($this->getRepo()->getCount($filter));
             $egyedek = $this->getRepo()->getWithJoins(
                     $filter, $this->getOrderArray(), $this->getPager()->getOffset(), $this->getPager()->getElemPerPage());
         }
         else {
-            $showarsav = \mkw\Store::getParameter(\mkw\consts::ShowTermekArsav);
-            $showarsavvalutanem = \mkw\Store::getParameter(\mkw\consts::ShowTermekArsavValutanem);
+            $showarsav = \mkw\store::getParameter(\mkw\consts::ShowTermekArsav);
+            $showarsavvalutanem = \mkw\store::getParameter(\mkw\consts::ShowTermekArsavValutanem);
             if ($showarsav && $showarsavvalutanem) {
                 $this->vanshowarsav = true;
                 $this->initPager($this->getRepo()->getCount($filter));
@@ -688,7 +687,7 @@ class termekController extends \mkwhelpers\MattableController {
         if ($term) {
             $filter = new FilterDescriptor();
             $filter->addFilter(array('_xx.nev', '_xx.cikkszam', '_xx.vonalkod'), 'LIKE', '%' . $term . '%');
-            $r = store::getEm()->getRepository('\Entities\Termek');
+            $r = \mkw\store::getEm()->getRepository('\Entities\Termek');
             $res = $r->getAllForSelectList($filter);
             foreach ($res as $r) {
                 $ret[] = array(
@@ -704,9 +703,9 @@ class termekController extends \mkwhelpers\MattableController {
 		$term = trim($this->params->getStringRequestParam('term'));
 		$ret = array();
 		if ($term) {
-			$r = store::getEm()->getRepository('\Entities\Termek');
+			$r = \mkw\store::getEm()->getRepository('\Entities\Termek');
 			$res = $r->getBizonylattetelLista($term);
-            switch (\mkw\Store::getTheme()) {
+            switch (\mkw\store::getTheme()) {
                 case 'mkwcansas':
                     foreach ($res as $r) {
                         $ret[] = array(
@@ -721,11 +720,11 @@ class termekController extends \mkwhelpers\MattableController {
                             'kiskepurl' => $r->getKepUrlSmall(),
                             'kepurl' => $r->getKepUrlLarge(),
                             'slug' => $r->getSlug(),
-                            'link' => \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
-                            'mainurl' => store::getConfigValue('mainurl'),
+                            'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
+                            'mainurl' => \mkw\store::getConfigValue('mainurl'),
                             'nemlathato' => (!$r->getLathato()||$r->getInaktiv()||$r->getNemkaphato()),
-                            'defaultmennyiseg' => \mkw\Store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
-                            'kartonurl' => \mkw\Store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
+                            'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
+                            'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
                         );
                     }
                     break;
@@ -744,11 +743,11 @@ class termekController extends \mkwhelpers\MattableController {
                             'kiskepurl' => $r->getKepUrlSmall(),
                             'kepurl' => $r->getKepUrlLarge(),
                             'slug' => $r->getSlug(),
-                            'link' => \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
-                            'mainurl' => store::getConfigValue('mainurl'),
+                            'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
+                            'mainurl' => \mkw\store::getConfigValue('mainurl'),
                             'nemlathato' => (!$r->getLathato()||$r->getInaktiv()||$r->getNemkaphato()),
-                            'defaultmennyiseg' => \mkw\Store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
-                            'kartonurl' => \mkw\Store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
+                            'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
+                            'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
                         );
                     }
                     break;
@@ -766,11 +765,11 @@ class termekController extends \mkwhelpers\MattableController {
                             'kiskepurl' => $r->getKepUrlSmall(),
                             'kepurl' => $r->getKepUrlLarge(),
                             'slug' => $r->getSlug(),
-                            'link' => \mkw\Store::getRouter()->generate('showtermek', store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
-                            'mainurl' => store::getConfigValue('mainurl'),
+                            'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
+                            'mainurl' => \mkw\store::getConfigValue('mainurl'),
                             'nemlathato' => (!$r->getLathato() || $r->getInaktiv() || $r->getNemkaphato()),
-                            'defaultmennyiseg' => \mkw\Store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
-                            'kartonurl' => \mkw\Store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
+                            'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
+                            'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
                         );
                     }
                     break;
@@ -935,7 +934,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$ret['termek'] = $termek->toTermekLap(null, $ujtermekminid, $top10min);
 
 		$termek->incMegtekintesdb();
-        if (\mkw\Store::getTheme() == 'mkwcansas') {
+        if (\mkw\store::getTheme() == 'mkwcansas') {
             $termek->incNepszeruseg();
         }
 		$this->getEm()->persist($termek);
@@ -944,7 +943,7 @@ class termekController extends \mkwhelpers\MattableController {
 	}
 
 	public function getAjanlottLista() {
-		$termekek = $this->getRepo()->getAjanlottTermekek(store::getParameter(\mkw\consts::Fooldalajanlotttermekdb, 5));
+		$termekek = $this->getRepo()->getAjanlottTermekek(\mkw\store::getParameter(\mkw\consts::Fooldalajanlotttermekdb, 5));
 		$ret = array();
 		foreach ($termekek as $termek) {
 			$ret[] = $termek->toTermekLista();
@@ -966,7 +965,7 @@ class termekController extends \mkwhelpers\MattableController {
     }
 
 	public function getLegujabbLista() {
-		$termekek = $this->getRepo()->getLegujabbTermekek(store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5));
+		$termekek = $this->getRepo()->getLegujabbTermekek(\mkw\store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5));
 		$ret = array();
 		foreach ($termekek as $termek) {
 			$ret[] = $termek->toTermekLista();
@@ -988,22 +987,22 @@ class termekController extends \mkwhelpers\MattableController {
     public function feed() {
 		$feedview = $this->getTemplateFactory()->createMainView('feed.tpl');
 		$view = $this->getTemplateFactory()->createMainView('termekfeed.tpl');
-		$feedview->setVar('title', store::getParameter(\mkw\consts::Feedtermektitle, t('Termékeink')));
-		$feedview->setVar('link', store::getRouter()->generate('termekfeed', true));
+		$feedview->setVar('title', \mkw\store::getParameter(\mkw\consts::Feedtermektitle, t('Termékeink')));
+		$feedview->setVar('link', \mkw\store::getRouter()->generate('termekfeed', true));
 		$d = new \DateTime();
 		$feedview->setVar('pubdate', $d->format('D, d M Y H:i:s'));
 		$feedview->setVar('lastbuilddate', $d->format('D, d M Y H:i:s'));
-		$feedview->setVar('description', store::getParameter(\mkw\consts::Feedtermekdescription, ''));
+		$feedview->setVar('description', \mkw\store::getParameter(\mkw\consts::Feedtermekdescription, ''));
 		$entries = array();
 		$termekek = $this->getRepo()->getFeedTermek();
 		foreach ($termekek as $termek) {
 			$view->setVar('kepurl', $termek->getKepUrlSmall());
 			$view->setVar('szoveg', $termek->getRovidLeiras());
-			$view->setVar('url', store::getRouter()->generate('showtermek', true, array('slug' => $termek->getSlug())));
+			$view->setVar('url', \mkw\store::getRouter()->generate('showtermek', true, array('slug' => $termek->getSlug())));
 			$entries[] = array(
 				'title' => $termek->getNev(),
-				'link' => store::getRouter()->generate('showtermek', true, array('slug' => $termek->getSlug())),
-				'guid' => store::getRouter()->generate('showtermek', true, array('slug' => $termek->getSlug())),
+				'link' => \mkw\store::getRouter()->generate('showtermek', true, array('slug' => $termek->getSlug())),
+				'guid' => \mkw\store::getRouter()->generate('showtermek', true, array('slug' => $termek->getSlug())),
 				'description' => $view->getTemplateResult(),
 				'pubdate' => $d->format('D, d M Y H:i:s')
 			);
@@ -1018,7 +1017,7 @@ class termekController extends \mkwhelpers\MattableController {
         if ($tid) {
             $termek = $this->getRepo()->findOneByIdegenkod($tid);
             if ($termek) {
-                $newlink = \mkw\Store::getRouter()->generate('showtermek', false, array('slug' => $termek->getSlug()));
+                $newlink = \mkw\store::getRouter()->generate('showtermek', false, array('slug' => $termek->getSlug()));
                 header("HTTP/1.1 301 Moved Permanently");
                 header('Location: ' . $newlink);
                 return;
@@ -1029,7 +1028,7 @@ class termekController extends \mkwhelpers\MattableController {
     }
 
     public function redirectOldRSSUrl() {
-        $newlink = \mkw\Store::getRouter()->generate('termekfeed');
+        $newlink = \mkw\store::getRouter()->generate('termekfeed');
         header("HTTP/1.1 301 Moved Permanently");
         header('Location: ' . $newlink);
     }
@@ -1039,7 +1038,7 @@ class termekController extends \mkwhelpers\MattableController {
         if ($filename) {
             $termek = $this->getRepo()->findOneByRegikepurl($filename);
             if ($termek) {
-                $newlink = \mkw\Store::getFullUrl($termek->getKepurlLarge(), \mkw\Store::getConfigValue('mainurl'));
+                $newlink = \mkw\store::getFullUrl($termek->getKepurlLarge(), \mkw\store::getConfigValue('mainurl'));
                 header("HTTP/1.1 301 Moved Permanently");
                 header('Location: ' . $newlink);
                 return;
@@ -1070,14 +1069,14 @@ class termekController extends \mkwhelpers\MattableController {
     public function arexport() {
 
         function x($o) {
-            return \mkw\Store::getExcelCoordinate($o, '');
+            return \mkw\store::getExcelCoordinate($o, '');
         }
 
         $ids = $this->params->getStringRequestParam('ids');
         $ids = explode(',', $ids);
 
         $arsavok = $this->getRepo('Entities\TermekAr')->getExistingArsavok();
-        $defavaluta = \mkw\Store::getParameter(\mkw\consts::Valutanem);
+        $defavaluta = \mkw\store::getParameter(\mkw\consts::Valutanem);
 
         $excel = new \PHPExcel();
         $excel->setActiveSheetIndex(0)

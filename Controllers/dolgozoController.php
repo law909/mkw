@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use mkw\store;
-
 class dolgozoController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -61,7 +59,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
                 $obj->setJelszo($pass1);
             }
         }
-        $ck = store::getEm()->getRepository('Entities\Munkakor')->find($this->params->getIntRequestParam('munkakor', 0));
+        $ck = \mkw\store::getEm()->getRepository('Entities\Munkakor')->find($this->params->getIntRequestParam('munkakor', 0));
         if ($ck) {
             $obj->setMunkakor($ck);
         }
@@ -126,7 +124,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
 
     public function showlogin() {
         $v = $this->createView('login.tpl');
-        $v->setVar('loginurl', Store::getRouter()->generate('adminlogin'));
+        $v->setVar('loginurl', \mkw\store::getRouter()->generate('adminlogin'));
         $v->printTemplateResult(false);
     }
 
@@ -148,31 +146,31 @@ class dolgozoController extends \mkwhelpers\MattableController {
                 $oldid = \Zend_Session::getId();
                 \Zend_Session::regenerateId();
                 if ($sysadmin) {
-                    \mkw\Store::getAdminSession()->pk = -1;
+                    \mkw\store::getAdminSession()->pk = -1;
                 }
                 else {
-                    \mkw\Store::getAdminSession()->pk = $d->getId();
+                    \mkw\store::getAdminSession()->pk = $d->getId();
                 }
-                \mkw\Store::getAdminSession()->loggedinuser = array(
+                \mkw\store::getAdminSession()->loggedinuser = array(
                     'name' => $d->getNev(),
                     'id' => $d->getId(),
                     'jog' => ($sysadmin ? 999 : $d->getJog()),
                     'uitheme' => ($sysadmin ? 'sunny' : $d->getUitheme()),
-                    'admin' => ($sysadmin ? true : $d->getMunkakorId() == \mkw\Store::getParameter(\mkw\consts::AdminRole, 1))
+                    'admin' => ($sysadmin ? true : $d->getMunkakorId() == \mkw\store::getParameter(\mkw\consts::AdminRole, 1))
                 );
-                Header('Location: ' . Store::getRouter()->generate('adminview'));
+                Header('Location: ' . \mkw\store::getRouter()->generate('adminview'));
             }
             else {
-                Header('Location: ' . Store::getRouter()->generate('adminshowlogin'));
+                Header('Location: ' . \mkw\store::getRouter()->generate('adminshowlogin'));
             }
         }
         else {
-            Header('Location: ' . Store::getRouter()->generate('adminshowlogin'));
+            Header('Location: ' . \mkw\store::getRouter()->generate('adminshowlogin'));
         }
     }
 
     public function logout() {
-        \mkw\Store::destroyAdminSession();
-        Header('Location: ' . Store::getRouter()->generate('adminshowlogin'));
+        \mkw\store::destroyAdminSession();
+        Header('Location: ' . \mkw\store::getRouter()->generate('adminshowlogin'));
     }
 }

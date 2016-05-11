@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use mkw\store;
-
 class sitemapController extends \mkwhelpers\Controller {
 
     public function __construct($params) {
@@ -19,17 +17,17 @@ class sitemapController extends \mkwhelpers\Controller {
     }
 
     protected function generate() {
-        $router = \mkw\Store::getRouter();
+        $router = \mkw\store::getRouter();
         $smview = $this->createView('sitemapxml.tpl');
         $urls[] = array(
-            'url' => $router->generate('home', \mkw\Store::getConfigValue('mainurl')),
+            'url' => $router->generate('home', \mkw\store::getConfigValue('mainurl')),
             'lastmod' => date('Y-m-d'),
-            'changefreq' => store::getParameter(\mkw\consts::Fooldalchangefreq, 'daily'),
-            'priority' => store::getParameter(\mkw\consts::Fooldalprior, '1.0')
+            'changefreq' => \mkw\store::getParameter(\mkw\consts::Fooldalchangefreq, 'daily'),
+            'priority' => \mkw\store::getParameter(\mkw\consts::Fooldalprior, '1.0')
         );
-        $c = store::getParameter(\mkw\consts::Kategoriachangefreq, 'daily');
-        $p = store::getParameter(\mkw\consts::Kategoriaprior, '0.7');
-        $tr = store::getEm()->getRepository('\Entities\TermekFa');
+        $c = \mkw\store::getParameter(\mkw\consts::Kategoriachangefreq, 'daily');
+        $p = \mkw\store::getParameter(\mkw\consts::Kategoriaprior, '0.7');
+        $tr = \mkw\store::getEm()->getRepository('\Entities\TermekFa');
         $rec = $tr->getForSitemapXml();
         foreach ($rec as $sor) {
             $d = new \DateTime($sor['lastmod']);
@@ -37,13 +35,13 @@ class sitemapController extends \mkwhelpers\Controller {
             if ($sor['kepurl']) {
                 $kep = array(
                     array(
-                        'url' => htmlentities(\mkw\Store::getFullUrl($sor['kepurl'], \mkw\Store::getConfigValue('mainurl'))),
+                        'url' => htmlentities(\mkw\store::getFullUrl($sor['kepurl'], \mkw\store::getConfigValue('mainurl'))),
                         'title' => $sor['kepleiras']
                     )
                 );
             }
             $u = array(
-                'url' => htmlentities($router->generate('showtermekfa', \mkw\Store::getConfigValue('mainurl'), array('slug' => $sor['slug']))),
+                'url' => htmlentities($router->generate('showtermekfa', \mkw\store::getConfigValue('mainurl'), array('slug' => $sor['slug']))),
                 'lastmod' => $d->format('Y-m-d'),
                 'changefreq' => $c,
                 'priority' => $p
@@ -53,29 +51,29 @@ class sitemapController extends \mkwhelpers\Controller {
             }
             $urls[] = $u;
         }
-        $c = store::getParameter(\mkw\consts::Termekchangefreq, 'daily');
-        $p = store::getParameter(\mkw\consts::Termekprior, '0.5');
-        $tkr = store::getEm()->getRepository('\Entities\TermekKep');
-        $tr = store::getEm()->getRepository('\Entities\Termek');
+        $c = \mkw\store::getParameter(\mkw\consts::Termekchangefreq, 'daily');
+        $p = \mkw\store::getParameter(\mkw\consts::Termekprior, '0.5');
+        $tkr = \mkw\store::getEm()->getRepository('\Entities\TermekKep');
+        $tr = \mkw\store::getEm()->getRepository('\Entities\Termek');
         $rec = $tr->getForSitemapXml();
         foreach ($rec as $sor) {
             $d = new \DateTime($sor['lastmod']);
             $kep = array();
             if ($sor['kepurl']) {
                 $kep[] = array(
-                    'url' => htmlentities(\mkw\Store::getFullUrl($sor['kepurl'], \mkw\Store::getConfigValue('mainurl'))),
+                    'url' => htmlentities(\mkw\store::getFullUrl($sor['kepurl'], \mkw\store::getConfigValue('mainurl'))),
                     'title' => $sor['kepleiras']
                 );
             }
             $kepek = $tkr->getByTermekForSitemapXml($sor['id']);
             foreach($kepek as $k) {
                 $kep[] = array(
-                    'url' => htmlentities(\mkw\Store::getFullUrl($k['url'], \mkw\Store::getConfigValue('mainurl'))),
+                    'url' => htmlentities(\mkw\store::getFullUrl($k['url'], \mkw\store::getConfigValue('mainurl'))),
                     'title' => $k['leiras']
                 );
             }
             $u = array(
-                'url' => htmlentities($router->generate('showtermek', \mkw\Store::getConfigValue('mainurl'), array('slug' => $sor['slug']))),
+                'url' => htmlentities($router->generate('showtermek', \mkw\store::getConfigValue('mainurl'), array('slug' => $sor['slug']))),
                 'lastmod' => $d->format('Y-m-d'),
                 'changefreq' => $c,
                 'priority' => $p
@@ -85,21 +83,21 @@ class sitemapController extends \mkwhelpers\Controller {
             }
             $urls[] = $u;
         }
-        $c = store::getParameter(\mkw\consts::Statlapchangefreq, 'monthly');
-        $p = store::getParameter(\mkw\consts::Statlapprior, '0.4');
-        $tr = store::getEm()->getRepository('\Entities\Statlap');
+        $c = \mkw\store::getParameter(\mkw\consts::Statlapchangefreq, 'monthly');
+        $p = \mkw\store::getParameter(\mkw\consts::Statlapprior, '0.4');
+        $tr = \mkw\store::getEm()->getRepository('\Entities\Statlap');
         $rec = $tr->getForSitemapXml();
         foreach ($rec as $sor) {
             $d = new \DateTime($sor['lastmod']);
             $urls[] = array(
-                'url' => htmlentities($router->generate('showstatlap', \mkw\Store::getConfigValue('mainurl'), array('lap' => $sor['slug']))),
+                'url' => htmlentities($router->generate('showstatlap', \mkw\store::getConfigValue('mainurl'), array('lap' => $sor['slug']))),
                 'lastmod' => $d->format('Y-m-d'),
                 'changefreq' => $c,
                 'priority' => $p
             );
         }
         $urls[] = array(
-            'url' => htmlentities($router->generate('markak', \mkw\Store::getConfigValue('mainurl'), array())),
+            'url' => htmlentities($router->generate('markak', \mkw\store::getConfigValue('mainurl'), array())),
             'lastmod' => date('Y-m-d'),
             'changefreq' => $c,
             'priority' => $p
@@ -117,7 +115,7 @@ class sitemapController extends \mkwhelpers\Controller {
     }
 
     public function create() {
-        $r = file_put_contents(\mkw\Store::getConfigValue('mainpath') . 'sitemap.xml', $this->generate());
+        $r = file_put_contents(\mkw\store::getConfigValue('mainpath') . 'sitemap.xml', $this->generate());
 
         $gd = new \mkw\generalDataLoader();
         $view = $this->createView('sitemap.tpl');

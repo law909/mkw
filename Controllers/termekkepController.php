@@ -2,9 +2,6 @@
 
 namespace Controllers;
 
-use Entities\TermekKep;
-use mkw\store;
-
 class termekkepController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -22,7 +19,7 @@ class termekkepController extends \mkwhelpers\MattableController {
             $t = new \Entities\TermekKep();
             $this->getEm()->detach($t);
             $x['oper'] = 'add';
-            $x['id'] = store::createUID();
+            $x['id'] = \mkw\store::createUID();
         }
         else {
             $x['oper'] = 'edit';
@@ -58,7 +55,7 @@ class termekkepController extends \mkwhelpers\MattableController {
     }
 
     public function del() {
-        $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
+        $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
         if ($mainpath) {
             $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         }

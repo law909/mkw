@@ -3,8 +3,7 @@
 namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\ORM\Mapping as ORM;
-use mkw\store,
+use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylattetelRepository")
@@ -448,7 +447,7 @@ class Bizonylattetel {
 
     public function setFoglal() {
         $this->foglal = false;
-        if (\mkw\Store::isFoglalas()) {
+        if (\mkw\store::isFoglalas()) {
             $bf = $this->bizonylatfej;
             $t = $this->termek;
             if ($bf && $t) {
@@ -689,7 +688,7 @@ class Bizonylattetel {
      */
     public function setVtsz($val) {
         if (!is_object($val)) {
-            $val = \mkw\Store::getEm()->getRepository('Entities\Vtsz')->find($val);
+            $val = \mkw\store::getEm()->getRepository('Entities\Vtsz')->find($val);
         }
         if (!$val) {
             $this->removeVtsz();
@@ -741,7 +740,7 @@ class Bizonylattetel {
      */
     public function setAfa($val) {
         if (!is_object($val)) {
-            $val = \mkw\Store::getEm()->getRepository('Entities\Afa')->find($val);
+            $val = \mkw\store::getEm()->getRepository('Entities\Afa')->find($val);
         }
         if (!$val) {
             $this->removeAfa();
@@ -992,7 +991,7 @@ class Bizonylattetel {
 
     public function getHataridoStr() {
         if ($this->getHatarido()) {
-            return $this->getHatarido()->format(store::$DateFormat);
+            return $this->getHatarido()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
@@ -1003,9 +1002,9 @@ class Bizonylattetel {
         }
         else {
             if ($adat == '') {
-                $adat = date(store::$DateFormat);
+                $adat = date(\mkw\store::$DateFormat);
             }
-            $this->hatarido = new \DateTime(store::convDate($adat));
+            $this->hatarido = new \DateTime(\mkw\store::convDate($adat));
         }
     }
 

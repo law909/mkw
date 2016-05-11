@@ -39,10 +39,10 @@ class TermekArRepository extends \mkwhelpers\Repository {
 
     public function getArsav($termek, $valutanem = null, $azonosito = null) {
         if (!$azonosito) {
-            $azonosito = \mkw\Store::getParameter(\mkw\consts::Arsav);
+            $azonosito = \mkw\store::getParameter(\mkw\consts::Arsav);
         }
         if (!$valutanem) {
-            $valutanem = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+            $valutanem = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
         }
         $filter = new FilterDescriptor();
         $filter

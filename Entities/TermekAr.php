@@ -118,7 +118,7 @@ class TermekAr {
 
     public function setValutanem($val) {
         if (!($val instanceof \Entities\Valutanem)) {
-            $val = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find($val);
+            $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
         }
         if ($this->valutanem !== $val) {
             $this->valutanem = $val;

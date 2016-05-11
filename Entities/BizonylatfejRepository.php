@@ -3,7 +3,6 @@
 namespace Entities;
 
 use Doctrine\ORM\Query\ResultSetMapping;
-use mkwhelpers\Filter;
 use mkwhelpers\FilterDescriptor;
 
 class BizonylatfejRepository extends \mkwhelpers\Repository {
@@ -23,7 +22,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 
     public function getReportfileSelectList($sel, $biztip) {
         $elo = 'biz_' . $biztip;
-        $files = dir(\mkw\Store::getAdminDefaultTemplatePath());
+        $files = dir(\mkw\store::getAdminDefaultTemplatePath());
         $list = array();
         while (false !== ($entry = $files->read())) {
             if (($entry != '.') && ($entry != '..')) {
@@ -37,7 +36,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 }
             }
         }
-        $files = dir(\mkw\Store::getAdminTemplatePath());
+        $files = dir(\mkw\store::getAdminTemplatePath());
         while (false !== ($entry = $files->read())) {
             if (($entry != '.') && ($entry != '..')) {
                 $path_parts = pathinfo($entry);
@@ -94,7 +93,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $q->setMaxResults($elemcount);
         }
         if ($locale) {
-            \mkw\Store::setTranslationHint($q, $locale);
+            \mkw\store::setTranslationHint($q, $locale);
         }
         return $q->getResult();
     }
@@ -193,7 +192,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $szm = $this->getRepo('Entities\Szallitasimod')->find($szallmod);
             $szamol = $szm->getVanszallitasiktg();
         }
-        $termekid = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
+        $termekid = \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
         $termek = $this->getRepo('Entities\Termek')->find($termekid);
 
         if ($szamol) {
@@ -208,7 +207,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             }
             if ($cnt != 0) {
                 if ($bizfej->getPartner() && ($bizfej->getPartner()->getSzamlatipus() > 0)) {
-                    $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\Store::getParameter(\mkw\consts::NullasAfa));
+                    $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
                 }
 
                 if (!$bruttoegysar) {
@@ -318,7 +317,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 
         $q->setParameters($this->getQueryParameters($filter));
 
-        \mkw\Store::setTranslationHint($q, $locale);
+        \mkw\store::setTranslationHint($q, $locale);
 
         $res = $q->getResult();
         if (count($res)) {
@@ -332,7 +331,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         if (is_string($bf)) {
             $bizfej = $this->find($bf);
         }
-        $termekid = \mkw\Store::getIntParameter(\mkw\consts::SzallitasiKtgTermek);
+        $termekid = \mkw\store::getIntParameter(\mkw\consts::SzallitasiKtgTermek);
         $cnt = 0;
         foreach ($bizfej->getBizonylattetelek() as $btetel) {
             if ($btetel->getTermekId() === $termekid) {
@@ -347,7 +346,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         if (is_string($bf)) {
             $bizfej = $this->find($bf);
         }
-        $termekid = \mkw\Store::getIntParameter(\mkw\consts::SzallitasiKtgTermek);
+        $termekid = \mkw\store::getIntParameter(\mkw\consts::SzallitasiKtgTermek);
         $ret = null;
         foreach ($bizfej->getBizonylattetelek() as $btetel) {
             if ($btetel->getTermekId() === $termekid) {
@@ -455,7 +454,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         if (!empty($fafilter)) {
             $ff = new FilterDescriptor();
             $ff->addFilter('id', 'IN', $fafilter);
-            $res = \mkw\Store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, array());
+            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, array());
             $faszuro = array();
             foreach ($res as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';

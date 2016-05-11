@@ -94,7 +94,7 @@ class Korhinta {
         if ($url) {
             $t = explode('.', $url);
             $ext = array_pop($t);
-            return implode('.', $t) . \mkw\Store::getParameter(\mkw\consts::Smallimgpost, '') . '.' . $ext;
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::Smallimgpost, '') . '.' . $ext;
         }
         return '';
     }
@@ -104,7 +104,7 @@ class Korhinta {
         if ($url) {
             $t = explode('.', $url);
             $ext = array_pop($t);
-            return implode('.', $t) . \mkw\Store::getParameter(\mkw\consts::Mediumimgpost, '') . '.' . $ext;
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::Mediumimgpost, '') . '.' . $ext;
         }
         return '';
     }
@@ -114,7 +114,7 @@ class Korhinta {
         if ($url) {
             $t = explode('.', $url);
             $ext = array_pop($t);
-            return implode('.', $t) . \mkw\Store::getParameter(\mkw\consts::Bigimgpost, '') . '.' . $ext;
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::Bigimgpost, '') . '.' . $ext;
         }
         return '';
     }

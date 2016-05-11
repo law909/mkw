@@ -1,8 +1,6 @@
 <?php
 namespace Controllers;
 
-use mkw\store;
-
 class fifoController extends \mkwhelpers\Controller {
 
     public function view() {
@@ -38,7 +36,7 @@ class fifoController extends \mkwhelpers\Controller {
         $type = $this->params->getStringRequestParam('type', 'pre');
         $cikksz = $this->params->getStringRequestParam('cikkszam');
         $stornokell = $this->params->getBoolRequestParam('storno', false);
-        $rep = \mkw\Store::getEm()->getRepository('Entities\Fifo');
+        $rep = \mkw\store::getEm()->getRepository('Entities\Fifo');
         $rep->loadData($stornokell, $id, $vid, $cikksz);
         $rep->calculate();
         switch($type) {
@@ -60,7 +58,7 @@ class fifoController extends \mkwhelpers\Controller {
 
     public function calculate() {
         $stornokell = $this->params->getBoolRequestParam('storno', false);
-        $rep = \mkw\Store::getEm()->getRepository('Entities\Fifo');
+        $rep = \mkw\store::getEm()->getRepository('Entities\Fifo');
         $rep->loadData($stornokell);
         $rep->calculate();
         $rep->saveData();
@@ -80,7 +78,7 @@ class fifoController extends \mkwhelpers\Controller {
 
         $fp = fopen('php://output', 'w');
 
-        $rep = \mkw\Store::getEm()->getRepository('Entities\Fifo');
+        $rep = \mkw\store::getEm()->getRepository('Entities\Fifo');
         $fifok = $rep->getWithJoins(array(), array());
         fputcsv($fp, $this->toiso(array(
             'Raktár',
@@ -162,7 +160,7 @@ class fifoController extends \mkwhelpers\Controller {
 
         $fp = fopen('php://output', 'w');
 
-        $rep = \mkw\Store::getEm()->getRepository('Entities\Keszlet');
+        $rep = \mkw\store::getEm()->getRepository('Entities\Keszlet');
         $fifok = $rep->getWithJoins(array(), array());
         fputcsv($fp, $this->toiso(array(
             'Raktár',

@@ -4,7 +4,6 @@ namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use mkw\Store as store;
 
 /** @ORM\Entity(repositoryClass="Entities\BankbizonylatfejRepository")
  * @ORM\Table(name="bankbizonylatfej",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
@@ -232,7 +231,7 @@ class Bankbizonylatfej {
 
     public function getKelt() {
         if (!$this->id && !$this->kelt) {
-            $this->kelt = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+            $this->kelt = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->kelt;
     }
@@ -285,7 +284,7 @@ class Bankbizonylatfej {
      */
     public function getValutanem() {
         if (!$this->id && !$this->valutanem) {
-            $this->setValutanem(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+            $this->setValutanem(\mkw\store::getParameter(\mkw\consts::Valutanem));
         }
         return $this->valutanem;
     }
@@ -307,7 +306,7 @@ class Bankbizonylatfej {
      */
     public function setValutanem($val) {
         if (!($val instanceof \Entities\Valutanem)) {
-            $val = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find($val);
+            $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
         }
         if ($this->valutanem !== $val) {
             if (!$val) {
@@ -548,7 +547,7 @@ class Bankbizonylatfej {
         $this->rontott = $adat;
         foreach ($this->bizonylattetelek as $bt) {
             $bt->setRontott($adat);
-            \mkw\Store::getEm()->persist($bt);
+            \mkw\store::getEm()->persist($bt);
         }
     }
 

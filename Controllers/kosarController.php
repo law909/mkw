@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use mkw\store;
-
 class kosarController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -110,8 +108,8 @@ class kosarController extends \mkwhelpers\MattableController {
     public function getMiniData() {
         $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
         $megingyeneshez = 0;
-        $hatar = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtg3Tol, 0);
-        $partner = \mkw\Store::getLoggedInUser();
+        $hatar = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg3Tol, 0);
+        $partner = \mkw\store::getLoggedInUser();
         if ($partner && $partner->getSzamlatipus()) {
             $osszeg = $m[0][3] * 1;
         }
@@ -135,9 +133,9 @@ class kosarController extends \mkwhelpers\MattableController {
 
     public function get() {
         $v = $this->getTemplateFactory()->createMainView('kosar.tpl');
-        store::fillTemplate($v);
-        $this->getRepo()->remove(\mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek));
-        $partner = \mkw\Store::getLoggedInUser();
+        \mkw\store::fillTemplate($v);
+        $this->getRepo()->remove(\mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek));
+        $partner = \mkw\store::getLoggedInUser();
         $valutanem = 'Ft';
         if ($partner) {
             $valutanem = $partner->getValutanemnev();
@@ -198,8 +196,8 @@ class kosarController extends \mkwhelpers\MattableController {
                 ));
             }
             else {
-                if (\mkw\Store::getMainSession()->prevuri) {
-                    Header('Location: ' . store::getMainSession()->prevuri);
+                if (\mkw\store::getMainSession()->prevuri) {
+                    Header('Location: ' . \mkw\store::getMainSession()->prevuri);
                 }
                 else {
                     Header('Location: /');
@@ -248,11 +246,11 @@ class kosarController extends \mkwhelpers\MattableController {
                 echo 'ok';
             }
             else {
-                if (\mkw\Store::getMainSession()->prevuri) {
-                    Header('Location: ' . store::getRouter()->generate('kosarget'));
+                if (\mkw\store::getMainSession()->prevuri) {
+                    Header('Location: ' . \mkw\store::getRouter()->generate('kosarget'));
                 }
                 else {
-                    Header('Location: ' . store::getRouter()->generate('kosarget'));
+                    Header('Location: ' . \mkw\store::getRouter()->generate('kosarget'));
                 }
             }
         }
@@ -270,7 +268,7 @@ class kosarController extends \mkwhelpers\MattableController {
                 echo 'ok';
             }
             else {
-                $partner = \mkw\Store::getLoggedInUser();
+                $partner = \mkw\store::getLoggedInUser();
                 $minidata = $this->getMiniData();
                 $v = $this->getTemplateFactory()->createMainView('minikosar.tpl');
                 $v->setVar('kosar', $minidata);
@@ -291,7 +289,7 @@ class kosarController extends \mkwhelpers\MattableController {
                     $mennyisegsum = $m['mennyisegsum'];
                 }
                 $valutanemnev = 'Ft';
-                if (\mkw\Store::getTheme() !== 'mkwcansas') {
+                if (\mkw\store::getTheme() !== 'mkwcansas') {
                     if ($partner) {
                         $valutanemnev = $partner->getValutanemnev();
                         $valutanem = $partner->getValutanem();
@@ -299,7 +297,7 @@ class kosarController extends \mkwhelpers\MattableController {
                 }
                 $ker = 0;
                 if (!$valutanem) {
-                    $valutanem = $this->getRepo('Entities\Valutanem')->find(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+                    $valutanem = $this->getRepo('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
                 }
                 if ($valutanem) {
                     $ker = 2;

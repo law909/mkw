@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use mkw\store;
-
 class SzallitofejController extends bizonylatfejController {
 
     public function __construct($params) {
@@ -17,11 +15,11 @@ class SzallitofejController extends bizonylatfejController {
         $source = $this->params->getStringRequestParam('source', '');
         switch ($oper) {
             case 'inherit':
-                $egyed['id'] = store::createUID();
+                $egyed['id'] = \mkw\store::createUID();
                 $egyed['parentid'] = $id;
-                $kelt = date(\mkw\Store::$DateFormat);
+                $kelt = date(\mkw\store::$DateFormat);
                 $egyed['keltstr'] = $kelt;
-                $egyed['esedekessegstr'] = \mkw\Store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
+                $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
                 switch ($source) {
                     case 'megrendeles':
                         $egyed['megjegyzes'] = 'Rendelés: ' . $id;
@@ -31,7 +29,7 @@ class SzallitofejController extends bizonylatfejController {
                 $cikl = 1;
                 foreach($egyed['tetelek'] as $tetel) {
                     $tetel['parentid'] = $tetel['id'];
-                    $tetel['id'] = store::createUID($cikl);
+                    $tetel['id'] = \mkw\store::createUID($cikl);
                     $tetel['oper'] = 'inherit';
                     $ttk[] = $tetel;
                     $cikl++;

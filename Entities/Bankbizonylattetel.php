@@ -4,8 +4,6 @@ namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use mkw\store,
-    Doctrine\Common\Collections\ArrayCollection;
 
 /** @ORM\Entity(repositoryClass="Entities\BankbizonylattetelRepository")
  * @ORM\Table(name="bankbizonylattetel",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
@@ -192,14 +190,14 @@ class Bankbizonylattetel {
 
     public function getDatum() {
         if (!$this->id && !$this->datum) {
-            $this->datum = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+            $this->datum = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->datum;
     }
 
     public function getDatumStr() {
         if ($this->getDatum()) {
-            return $this->getDatum()->format(store::$DateFormat);
+            return $this->getDatum()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
@@ -210,9 +208,9 @@ class Bankbizonylattetel {
         }
         else {
             if ($adat == '') {
-                $adat = date(store::$DateFormat);
+                $adat = date(\mkw\store::$DateFormat);
             }
-            $this->datum = new \DateTime(store::convDate($adat));
+            $this->datum = new \DateTime(\mkw\store::convDate($adat));
         }
     }
 
@@ -221,7 +219,7 @@ class Bankbizonylattetel {
      */
     public function getValutanem() {
         if (!$this->id && !$this->valutanem) {
-            $this->setValutanem(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+            $this->setValutanem(\mkw\store::getParameter(\mkw\consts::Valutanem));
         }
         return $this->valutanem;
     }
@@ -243,7 +241,7 @@ class Bankbizonylattetel {
      */
     public function setValutanem($val) {
         if (!($val instanceof \Entities\Valutanem)) {
-            $val = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find($val);
+            $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
         }
         if ($this->valutanem !== $val) {
             if (!$val) {
@@ -530,14 +528,14 @@ class Bankbizonylattetel {
 
     public function getHivatkozottdatum() {
         if (!$this->id && !$this->hivatkozottdatum) {
-            $this->hivatkozottdatum = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+            $this->hivatkozottdatum = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->hivatkozottdatum;
     }
 
     public function getHivatkozottdatumStr() {
         if ($this->getHivatkozottdatum()) {
-            return $this->getHivatkozottdatum()->format(\mkw\Store::$DateFormat);
+            return $this->getHivatkozottdatum()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
@@ -548,9 +546,9 @@ class Bankbizonylattetel {
         }
         else {
             if ($adat == '') {
-                $adat = date(\mkw\Store::$DateFormat);
+                $adat = date(\mkw\store::$DateFormat);
             }
-            $this->hivatkozottdatum = new \DateTime(\mkw\Store::convDate($adat));
+            $this->hivatkozottdatum = new \DateTime(\mkw\store::convDate($adat));
         }
     }
 

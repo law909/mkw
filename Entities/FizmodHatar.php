@@ -63,7 +63,7 @@ class FizmodHatar {
      */
     public function setFizmod($val) {
         if (!($val instanceof \Entities\Fizmod)) {
-            $val = \mkw\Store::getEm()->getRepository('Entities\Fizmod')->find($val);
+            $val = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($val);
         }
         $this->fizmod = $val;
     }
@@ -96,7 +96,7 @@ class FizmodHatar {
      */
     public function setValutanem($val) {
         if (!($val instanceof \Entities\Valutanem)) {
-            $val = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find($val);
+            $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
         }
         $this->valutanem = $val;
     }

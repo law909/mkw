@@ -30,8 +30,8 @@ class KosarRepository extends \mkwhelpers\Repository {
         if ($elemcount > 0) {
             $q->setMaxResults($elemcount);
         }
-        if (\mkw\Store::isMainMode()) {
-            \mkw\Store::setTranslationHint($q, \mkw\Store::getParameter(\mkw\consts::Locale));
+        if (\mkw\store::isMainMode()) {
+            \mkw\store::setTranslationHint($q, \mkw\store::getParameter(\mkw\consts::Locale));
         }
         return $q->getResult();
     }
@@ -47,7 +47,7 @@ class KosarRepository extends \mkwhelpers\Repository {
     }
 
     public function getMiniDataBySessionId($sessionid) {
-        $szktid = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
+        $szktid = \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
 
         $filter = new FilterDescriptor();
         $filter->addFilter('sessionid', '=', $sessionid);
@@ -79,7 +79,7 @@ class KosarRepository extends \mkwhelpers\Repository {
     }
 
     public function calcSumBySessionId($sessionid) {
-        $szktid = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
+        $szktid = \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
 
         $filter = new FilterDescriptor();
         $filter->addFilter('sessionid', '=', $sessionid);
@@ -147,14 +147,14 @@ class KosarRepository extends \mkwhelpers\Repository {
         if ($partner) {
             $partnerid = $partner->getId();
             if ($partner->getSzamlatipus() > 0) {
-                $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\Store::getParameter(\mkw\consts::NullasAfa));
+                $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             }
         }
 
-        $valutanemid = \mkw\Store::getParameter(\mkw\consts::Valutanem);
+        $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
 
         $k = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanemid);
-        if ($termekid == \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek)) {
+        if ($termekid == \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek)) {
             if ($k) {
                 $k->setMennyiseg(1);
                 if ($nullasafa) {
@@ -244,14 +244,14 @@ class KosarRepository extends \mkwhelpers\Repository {
         if ($partner) {
             $partnerid = $partner->getId();
             if ($partner->getSzamlatipus() > 0) {
-                $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\Store::getParameter(\mkw\consts::NullasAfa));
+                $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             }
         }
 
-        $valutanemid = \mkw\Store::getParameter(\mkw\consts::Valutanem);
+        $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
 
         $k = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanemid);
-        if ($termekid == \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek)) {
+        if ($termekid == \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek)) {
             if ($k) {
                 $k->setMennyiseg(1);
                 if ($nullasafa) {
@@ -341,7 +341,7 @@ class KosarRepository extends \mkwhelpers\Repository {
             $partnerid = $partner->getId();
         }
 
-        $valutanemid = \mkw\Store::getParameter(\mkw\consts::Valutanem);
+        $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
 
         $sor = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanemid);
         if ($sor) {
@@ -415,7 +415,7 @@ class KosarRepository extends \mkwhelpers\Repository {
             $szm = $this->getRepo('Entities\Szallitasimod')->find($szallmod);
             $szamol = $szm->getVanszallitasiktg();
         }
-        $termekid = \mkw\Store::getParameter(\mkw\consts::SzallitasiKtgTermek);
+        $termekid = \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
         $termek = $this->getRepo('Entities\Termek')->find($termekid);
 
         if ($termekid && $termek) {
@@ -424,9 +424,9 @@ class KosarRepository extends \mkwhelpers\Repository {
                 $ertek = $e['sum'];
                 $cnt = $e['count'];
                 if ($cnt != 0) {
-                    $partner = \mkw\Store::getLoggedInUser();
+                    $partner = \mkw\store::getLoggedInUser();
                     $ktg = $this->getRepo('Entities\SzallitasimodHatar')->getBySzallitasimodValutanemHatar($szallmod,
-                        \mkw\Store::getPartnerValutanem($partner), $ertek);
+                        \mkw\store::getPartnerValutanem($partner), $ertek);
                     $this->add($termekid, null, $ktg ? $ktg->getOsszeg() : 0);
                 }
                 else {

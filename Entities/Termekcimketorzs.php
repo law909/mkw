@@ -45,12 +45,12 @@ class Termekcimketorzs extends Cimketorzs {
         $x['kozepeskepurl'] = $this->getKepUrlMedium();
         $x['kiskepurl'] = $this->getKepUrlSmall();
         $x['kategorianev'] = $this->getKategoria()->getNev();
-        $mk = \mkw\Store::getParameter(\mkw\consts::MarkaCs);
+        $mk = \mkw\store::getParameter(\mkw\consts::MarkaCs);
         $x['dontshowcaption'] = $mk == $this->getKategoriaId();
         $x['ismarka'] = $mk == $this->getKategoriaId();
         $x['kiemelt'] = $this->getKiemelt();
         $x['termekfilter'] = $this->getTermekFilter();
-        $x['termeklisturl'] = \mkw\Store::getRouter()->generate('showmarka', true, array('slug' => $x['slug']));
+        $x['termeklisturl'] = \mkw\store::getRouter()->generate('showmarka', true, array('slug' => $x['slug']));
         $x['leiras'] = $this->getLeiras();
         return $x;
     }

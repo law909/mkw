@@ -1,8 +1,6 @@
 <?php
 namespace Controllers;
 
-use mkw\store;
-
 class arfolyamController extends \mkwhelpers\JQGridController {
 
     public function __construct($params) {
@@ -18,7 +16,7 @@ class arfolyamController extends \mkwhelpers\JQGridController {
     protected function setFields($obj) {
         $obj->setDatum(new \DateTime(str_replace('.', '-', $this->params->getStringRequestParam('datum'))));
         $obj->setArfolyam($this->params->getNumRequestParam('arfolyam'));
-        $valutanem = store::getEm()->getReference('Entities\Valutanem', $this->params->getIntRequestParam('valutanem', 0));
+        $valutanem = \mkw\store::getEm()->getReference('Entities\Valutanem', $this->params->getIntRequestParam('valutanem', 0));
         try {
             $valutanem->getId();
             $obj->setValutanem($valutanem);
@@ -71,10 +69,10 @@ class arfolyamController extends \mkwhelpers\JQGridController {
     }
 
     public function downloadArfolyam() {
-        $datum = \mkw\Store::convDate($this->params->getStringRequestParam('datum'));
-        $datum = date(\mkw\Store::$DateFormat, strtotime($datum));
-        $rvaluta = \mkw\Store::getParameter(\mkw\consts::Valutanem);
-        $vr = \mkw\Store::getEm()->getRepository('Entities\Valutanem');
+        $datum = \mkw\store::convDate($this->params->getStringRequestParam('datum'));
+        $datum = date(\mkw\store::$DateFormat, strtotime($datum));
+        $rvaluta = \mkw\store::getParameter(\mkw\consts::Valutanem);
+        $vr = \mkw\store::getEm()->getRepository('Entities\Valutanem');
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('id', '<>', $rvaluta);
@@ -103,10 +101,10 @@ class arfolyamController extends \mkwhelpers\JQGridController {
                         if (!$arf) {
                             $arf = new \Entities\Arfolyam();
                             $arf->setValutanem($valutanem);
-                            $arf->setDatum(new \DateTime(\mkw\Store::convDate($datum)));
+                            $arf->setDatum(new \DateTime(\mkw\store::convDate($datum)));
                             $arf->setArfolyam(str_replace(',', '.', $rate) * 1);
-                            \mkw\Store::getEm()->persist($arf);
-                            \mkw\Store::getEm()->flush();
+                            \mkw\store::getEm()->persist($arf);
+                            \mkw\store::getEm()->flush();
                         }
                     }
                 }

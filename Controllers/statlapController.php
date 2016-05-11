@@ -1,8 +1,6 @@
 <?php
 namespace Controllers;
 
-use mkw\store;
-
 class statlapController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -96,14 +94,14 @@ class statlapController extends \mkwhelpers\MattableController {
         $statlap = $this->getRepo()->findOneBySlug($com);
         if ($statlap) {
             $view = $this->getTemplateFactory()->createMainView('statlap.tpl');
-            store::fillTemplate($view);
+            \mkw\store::fillTemplate($view);
             $view->setVar('pagetitle', $statlap->getShowOldalcim());
             $view->setVar('seodescription', $statlap->getShowSeodescription());
             $view->setVar('statlap', $this->getstatlap($statlap));
             $view->printTemplateResult(true);
         }
         else {
-            store::redirectTo404($com, $this->params);
+            \mkw\store::redirectTo404($com, $this->params);
         }
     }
 
@@ -112,7 +110,7 @@ class statlapController extends \mkwhelpers\MattableController {
         $statlap = $this->getRepo()->findOneBySlug($com);
         if ($statlap) {
             $view = $this->getTemplateFactory()->createMainView('statlappopup.tpl');
-            store::fillTemplate($view);
+            \mkw\store::fillTemplate($view);
             $view->setVar('szoveg', $statlap->getSzoveg());
             $view->printTemplateResult(false);
         }
@@ -126,19 +124,19 @@ class statlapController extends \mkwhelpers\MattableController {
         if ($lapid) {
             switch ($lapid) {
                 case 'hirek':
-                    $newlink = \mkw\Store::getRouter()->generate('showhirlist', false, array());
+                    $newlink = \mkw\store::getRouter()->generate('showhirlist', false, array());
                     header("HTTP/1.1 301 Moved Permanently");
                     header('Location: ' . $newlink);
                     return;
                 case 'markak':
-                    $newlink = \mkw\Store::getRouter()->generate('markak', false, array());
+                    $newlink = \mkw\store::getRouter()->generate('markak', false, array());
                     header("HTTP/1.1 301 Moved Permanently");
                     header('Location: ' . $newlink);
                     return;
                 default:
                     $lap = $this->getRepo()->findOneByOldurl($lapid);
                     if ($lap) {
-                        $newlink = \mkw\Store::getRouter()->generate('showstatlap', false, array('lap' => $lap->getSlug()));
+                        $newlink = \mkw\store::getRouter()->generate('showstatlap', false, array('lap' => $lap->getSlug()));
                         header("HTTP/1.1 301 Moved Permanently");
                         header('Location: ' . $newlink);
                         return;

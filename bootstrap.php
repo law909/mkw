@@ -1,6 +1,5 @@
 <?php
-use \Doctrine\Common\EventManager,
-    \mkw\store;
+use \Doctrine\Common\EventManager;
 
 require 'vendor/autoload.php';
 
@@ -25,15 +24,16 @@ $classLoader->register();
 $classLoader=new \Doctrine\Common\ClassLoader('Controllers');
 $classLoader->register();
 
-Store::setConfig($ini);
-Store::setSetup($setini);
+mkw\store::setConfig($ini);
+mkw\store::setSetup($setini);
 
 $config = new Doctrine\ORM\Configuration();
 
 // DriverChain
-$driverchain = new \Doctrine\ORM\Mapping\Driver\DriverChain();
+//$driverchain = new \Doctrine\ORM\Mapping\Driver\DriverChain();
+$driverchain = new \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain();
 if (array_key_exists('cache', $ini) && $ini['cache'] === 'apc') {
-    $metacache = new Doctrine\Common\Cache\ApcCache();
+    $metacache = new Doctrine\Common\Cache\ApcuCache();
 }
 else {
     $metacache = new Doctrine\Common\Cache\ArrayCache();
@@ -86,14 +86,14 @@ $timestampableListener = new Gedmo\Timestampable\TimestampableListener;
 $timestampableListener->setAnnotationReader($cachedAnnotationReader);
 $evm->addEventSubscriber($timestampableListener);
 
-if (Store::isMultilang()) {
+if (mkw\store::isMultilang()) {
     $translatableListener = new Gedmo\Translatable\TranslatableListener();
     $translatableListener->setAnnotationReader($cachedAnnotationReader);
     $translatableListener->setDefaultLocale('hu_hu');
     $translatableListener->setTranslatableLocale('hu_hu');
     $translatableListener->setTranslationFallback(true);
     $evm->addEventSubscriber($translatableListener);
-    Store::setTranslationListener($translatableListener);
+    mkw\store::setTranslationListener($translatableListener);
 }
 
 $evm->addEventListener(array('onFlush', 'prePersist'), new Listeners\BizonylatfejListener());
@@ -104,4 +104,4 @@ $em = \Doctrine\ORM\EntityManager::create($connectionOptions, $config, $evm);
 
 //Zend_Session::start();
 
-Store::setEm($em);
+mkw\store::setEm($em);

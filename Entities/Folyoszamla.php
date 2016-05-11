@@ -572,14 +572,14 @@ class Folyoszamla {
 
     public function getHivatkozottdatum() {
         if (!$this->id && !$this->hivatkozottdatum) {
-            $this->hivatkozottdatum = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+            $this->hivatkozottdatum = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
         }
         return $this->hivatkozottdatum;
     }
 
     public function getHivatkozottdatumStr() {
         if ($this->getHivatkozottdatum()) {
-            return $this->getHivatkozottdatum()->format(\mkw\Store::$DateFormat);
+            return $this->getHivatkozottdatum()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
@@ -590,9 +590,9 @@ class Folyoszamla {
         }
         else {
             if ($adat == '') {
-                $adat = date(\mkw\Store::$DateFormat);
+                $adat = date(\mkw\store::$DateFormat);
             }
-            $this->hivatkozottdatum = new \DateTime(\mkw\Store::convDate($adat));
+            $this->hivatkozottdatum = new \DateTime(\mkw\store::convDate($adat));
         }
     }
 

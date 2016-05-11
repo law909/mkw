@@ -2,7 +2,6 @@
 namespace Controllers;
 
 use Entities\Bankbizonylattetel;
-use mkw\store;
 
 class bankbizonylatfejController extends \mkwhelpers\MattableController {
 
@@ -69,12 +68,12 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
         $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
         $obj->setKelt($this->params->getStringRequestParam('kelt'));
 
-        $valutanem = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+        $valutanem = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
         if ($valutanem) {
             $obj->setValutanem($valutanem);
         }
 
-        $ck = store::getEm()->getRepository('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
+        $ck = \mkw\store::getEm()->getRepository('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
         if ($ck) {
             $obj->setBankszamla($ck);
         }
@@ -147,7 +146,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
                             }
                         }
                         else {
-                            \mkw\Store::writelog(print_r($this->params->asArray(), true), 'nincsjogcim.log');
+                            \mkw\store::writelog(print_r($this->params->asArray(), true), 'nincsjogcim.log');
                         }
                     }
                 }
@@ -268,7 +267,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
 
         $valutanem = new valutanemController($this->params);
         if (!$record || !$record->getValutanemId()) {
-            $valutaid = store::getParameter(\mkw\consts::Valutanem, 0);
+            $valutaid = \mkw\store::getParameter(\mkw\consts::Valutanem, 0);
         }
         else {
             $valutaid = $record->getValutanemId();

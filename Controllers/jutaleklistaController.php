@@ -11,8 +11,8 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
     public function view() {
         $view = $this->createView('jutaleklista.tpl');
 
-        $view->setVar('toldatum', date(\mkw\Store::$DateFormat));
-        $view->setVar('igdatum', date(\mkw\Store::$DateFormat));
+        $view->setVar('toldatum', date(\mkw\store::$DateFormat));
+        $view->setVar('igdatum', date(\mkw\store::$DateFormat));
 
         $pcc = new partnercimkekatController($this->params);
         $view->setVar('cimkekat', $pcc->getWithCimkek(null));
@@ -22,10 +22,10 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
 
     protected function createFilter() {
         $this->tolstr = $this->params->getStringRequestParam('tol');
-        $this->tolstr = date(\mkw\Store::$DateFormat, strtotime(\mkw\Store::convDate($this->tolstr)));
+        $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->tolstr)));
 
         $this->igstr = $this->params->getStringRequestParam('ig');
-        $this->igstr = date(\mkw\Store::$DateFormat, strtotime(\mkw\Store::convDate($this->igstr)));
+        $this->igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->igstr)));
 
         $datummezo = 'datum';
 
@@ -49,7 +49,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
         $bbtrepo = $this->getRepo('Entities\Bankbizonylattetel');
         $ret = array();
         foreach ($mihez as $sor) {
-            $sor['jutalekosszeg'] = \mkw\Store::kerekit($sor['brutto'] * $sor['uzletkotojutalek'] / 100, 0.01);
+            $sor['jutalekosszeg'] = \mkw\store::kerekit($sor['brutto'] * $sor['uzletkotojutalek'] / 100, 0.01);
             $sor['type'] = 'Item';
             $ret[] = $sor;
             $bf = $bfrepo->find($sor['hivatkozottbizonylat']);
@@ -73,7 +73,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
                         'uzletkotojutalek' => $sor['uzletkotojutalek'],
                         'partnernev' => $sor['partnernev'],
                         'brutto' => $bt->getBrutto() * -1,
-                        'jutalekosszeg' => \mkw\Store::kerekit($bt->getBrutto() * $sor['uzletkotojutalek'] / 100 * -1, 0.01),
+                        'jutalekosszeg' => \mkw\store::kerekit($bt->getBrutto() * $sor['uzletkotojutalek'] / 100 * -1, 0.01),
                         'type' => 'Transport cost'
                     );
                 }

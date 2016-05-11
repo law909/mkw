@@ -2,9 +2,6 @@
 
 namespace Controllers;
 
-use mkw\consts;
-use mkw\store;
-
 class setupController extends \mkwhelpers\Controller {
 
     public function __construct($params) {
@@ -13,7 +10,7 @@ class setupController extends \mkwhelpers\Controller {
     }
 
     public function view() {
-        $repo = store::getEm()->getRepository($this->getEntityName());
+        $repo = \mkw\store::getEm()->getRepository($this->getEntityName());
         $view = $this->createView('setup.tpl');
         $view->setVar('pagetitle', t('Beállítások'));
 
@@ -186,12 +183,12 @@ class setupController extends \mkwhelpers\Controller {
         $szallmod = new szallitasimodController($this->params);
         $view->setVar('szallitasimodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0)));
 
-        if (\mkw\Store::isOTPay()) {
+        if (\mkw\store::isOTPay()) {
             $p = $repo->find(\mkw\consts::OTPayFizmod);
             $view->setVar('otpayfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
         }
 
-        if (\mkw\Store::isMasterPass()) {
+        if (\mkw\store::isMasterPass()) {
             $p = $repo->find(\mkw\consts::MasterPassFizmod);
             $view->setVar('masterpassfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
         }
@@ -242,11 +239,11 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::Esedekessegalap, ($p ? $p->getErtek() : '1'));
 
         $p = $repo->find(\mkw\consts::Locale);
-        $view->setVar('localelist', \mkw\Store::getLocaleSelectList(($p ? $p->getErtek() : '')));
+        $view->setVar('localelist', \mkw\store::getLocaleSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::ImportNewKatId);
         $inkid = $p ? $p->getErtek() : 0;
-        $importnewkat = store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
+        $importnewkat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
         if ($importnewkat) {
             $view->setVar('importnewkat', array(
                 'caption' => $importnewkat->getNev(),
@@ -357,21 +354,21 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::MiniCRMAPIKey);
         $view->setVar(\mkw\consts::MiniCRMAPIKey, ($p ? $p->getErtek() : ''));
 
-        $view->setVar('stopkreativimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'kreativ')));
-        $view->setVar('stopdeltonimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'delton')));
-        $view->setVar('stopreinteximporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'reintex')));
-        $view->setVar('stoptutisportimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'tutisport')));
-        $view->setVar('stopmaxutovimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'maxutov')));
-        $view->setVar('stopsilkoimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'silko')));
-        $view->setVar('stopbtechimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'btech')));
-        $view->setVar('stopkressgepimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'kressgep')));
-        $view->setVar('stopkresstartozekimporturl', \mkw\Store::getRouter()->generate('adminimportstop', false, array('impname' => 'kresstartozek')));
+        $view->setVar('stopkreativimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'kreativ')));
+        $view->setVar('stopdeltonimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'delton')));
+        $view->setVar('stopreinteximporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'reintex')));
+        $view->setVar('stoptutisportimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'tutisport')));
+        $view->setVar('stopmaxutovimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'maxutov')));
+        $view->setVar('stopsilkoimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'silko')));
+        $view->setVar('stopbtechimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'btech')));
+        $view->setVar('stopkressgepimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'kressgep')));
+        $view->setVar('stopkresstartozekimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'kresstartozek')));
         $view->printTemplateResult();
     }
 
     private function setObj($par, $value) {
         $en = $this->getEntityName();
-        $p = store::getEm()->getRepository($en)->find($par);
+        $p = \mkw\store::getEm()->getRepository($en)->find($par);
         if ($p) {
             $p->setErtek($value);
         }
@@ -380,7 +377,7 @@ class setupController extends \mkwhelpers\Controller {
             $p->setId($par);
             $p->setErtek($value);
         }
-        store::getEm()->persist($p);
+        \mkw\store::getEm()->persist($p);
     }
 
     public function save() {
@@ -398,7 +395,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Tulajevnyilvszam, $this->params->getStringRequestParam(\mkw\consts::Tulajevnyilvszam));
 
         if ($this->params->getStringRequestParam('tulajcrc')) {
-            $this->setObj(\mkw\consts::Tulajcrc, md5($this->params->getStringRequestParam('tulajcrc') . \mkw\Store::getAdminSalt()));
+            $this->setObj(\mkw\consts::Tulajcrc, md5($this->params->getStringRequestParam('tulajcrc') . \mkw\store::getAdminSalt()));
         }
 
         $this->setObj(\mkw\consts::EmailFrom, $this->params->getOriginalStringRequestParam('emailfrom'));
@@ -423,11 +420,11 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::SzallitasiKtg3Tol, $this->params->getStringRequestParam('szallitasiktg3tol'));
         $this->setObj(\mkw\consts::SzallitasiKtg3Ig, $this->params->getStringRequestParam('szallitasiktg3ig'));
         $this->setObj(\mkw\consts::SzallitasiKtg3Ertek, $this->params->getStringRequestParam('szallitasiktg3ertek'));
-        $szkt = store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('szallitasiktgtermek', 0));
+        $szkt = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('szallitasiktgtermek', 0));
         if ($szkt) {
             $this->setObj(\mkw\consts::SzallitasiKtgTermek, $szkt->getId());
         }
-        $szm = store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('foxpostszallmod', 0));
+        $szm = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('foxpostszallmod', 0));
         if ($szm) {
             $this->setObj(\mkw\consts::FoxpostSzallitasiMod, $szm->getId());
         }
@@ -477,23 +474,23 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::MiniCRMAPIKey, $this->params->getStringRequestParam('minicrmapikey'));
 
         // alapertelmezes
-        $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
+        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
         if ($fizmod) {
             $this->setObj(\mkw\consts::Fizmod, $fizmod->getId());
         }
-        $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('utanvetfizmod', 0));
+        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('utanvetfizmod', 0));
         if ($fizmod) {
             $this->setObj(\mkw\consts::UtanvetFizmod, $fizmod->getId());
         }
         else {
             $this->setObj(\mkw\consts::UtanvetFizmod, '');
         }
-        $szallmod = store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod', 0));
+        $szallmod = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod', 0));
         if ($szallmod) {
             $this->setObj(\mkw\consts::Szallitasimod, $szallmod->getId());
         }
-        if (\mkw\Store::isOTPay()) {
-            $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('otpayfizmod', 0));
+        if (\mkw\store::isOTPay()) {
+            $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('otpayfizmod', 0));
             if ($fizmod) {
                 $this->setObj(\mkw\consts::OTPayFizmod, $fizmod->getId());
             }
@@ -501,8 +498,8 @@ class setupController extends \mkwhelpers\Controller {
                 $this->setObj(\mkw\consts::OTPayFizmod, '');
             }
         }
-        if (\mkw\Store::isMasterPass()) {
-            $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('masterpassfizmod', 0));
+        if (\mkw\store::isMasterPass()) {
+            $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('masterpassfizmod', 0));
             if ($fizmod) {
                 $this->setObj(\mkw\consts::MasterPassFizmod, $fizmod->getId());
             }
@@ -510,20 +507,20 @@ class setupController extends \mkwhelpers\Controller {
                 $this->setObj(\mkw\consts::MasterPassFizmod, '');
             }
         }
-        $afa = store::getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('nullasafa', 0));
+        $afa = \mkw\store::getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('nullasafa', 0));
         if ($afa) {
             $this->setObj(\mkw\consts::NullasAfa, $afa->getId());
         }
-        $raktar = store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar', 0));
+        $raktar = \mkw\store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar', 0));
         if ($raktar) {
             $this->setObj(\mkw\consts::Raktar, $raktar->getId());
         }
-        $valutanem = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
+        $valutanem = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
         if ($valutanem) {
             $this->setObj(\mkw\consts::Valutanem, $valutanem->getId());
         }
 
-        $valutanem = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('showtermekarsavvalutanem', 0));
+        $valutanem = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('showtermekarsavvalutanem', 0));
         if ($valutanem) {
             $this->setObj(\mkw\consts::ShowTermekArsavValutanem, $valutanem->getId());
         }
@@ -531,7 +528,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Arsav, $this->params->getStringRequestParam('arsav'));
         $this->setObj(\mkw\consts::ShowTermekArsav, $this->params->getStringRequestParam('showtermekarsav'));
 
-        $markacs = store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('markacs', 0));
+        $markacs = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('markacs', 0));
         if ($markacs) {
             $this->setObj(\mkw\consts::MarkaCs, $markacs->getId());
         }
@@ -539,7 +536,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::MarkaCs, '');
         }
 
-        $kiskercimke = store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('kiskercimke', 0));
+        $kiskercimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('kiskercimke', 0));
         if ($kiskercimke) {
             $this->setObj(\mkw\consts::KiskerCimke, $kiskercimke->getId());
         }
@@ -547,7 +544,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::KiskerCimke, '');
         }
 
-        $spanyolcimke = store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('spanyolcimke', 0));
+        $spanyolcimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('spanyolcimke', 0));
         if ($spanyolcimke) {
             $this->setObj(\mkw\consts::SpanyolCimke, $spanyolcimke->getId());
         }
@@ -555,7 +552,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::SpanyolCimke, '');
         }
 
-        $sz = store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozattipusszin', 0));
+        $sz = \mkw\store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozattipusszin', 0));
         if ($sz) {
             $this->setObj(\mkw\consts::ValtozatTipusSzin, $sz->getId());
         }
@@ -563,7 +560,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::ValtozatTipusSzin, '');
         }
 
-        $sz = store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozattipusmeret', 0));
+        $sz = \mkw\store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozattipusmeret', 0));
         if ($sz) {
             $this->setObj(\mkw\consts::ValtozatTipusMeret, $sz->getId());
         }
@@ -571,7 +568,7 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::ValtozatTipusMeret, '');
         }
 
-        $sz = store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('rendezendovaltozat', 0));
+        $sz = \mkw\store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('rendezendovaltozat', 0));
         if ($sz) {
             $this->setObj(\mkw\consts::RendezendoValtozat, $sz->getId());
         }
@@ -583,7 +580,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::BizonylatMennyiseg, $this->params->getStringRequestParam(\mkw\consts::BizonylatMennyiseg));
         $this->setObj(\mkw\consts::TeljesitmenyKezdoEv, $this->params->getStringRequestParam(\mkw\consts::TeljesitmenyKezdoEv));
 
-        $rolerep = store::getEm()->getRepository('Entities\Munkakor');
+        $rolerep = \mkw\store::getEm()->getRepository('Entities\Munkakor');
         $role = $rolerep->find($this->params->getIntRequestParam('adminrole', 0));
         if ($role) {
             $this->setObj(\mkw\consts::AdminRole, $role->getId());
@@ -593,21 +590,21 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::TermekfeltoltoRole, $role->getId());
         }
 
-        $bsf = store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatuszfuggoben', 0));
+        $bsf = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatuszfuggoben', 0));
         if ($bsf) {
             $this->setObj(\mkw\consts::BizonylatStatuszFuggoben, $bsf->getId());
         }
         else {
             $this->setObj(\mkw\consts::BizonylatStatuszFuggoben, '');
         }
-        $bsf = store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatuszteljesitheto', 0));
+        $bsf = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatuszteljesitheto', 0));
         if ($bsf) {
             $this->setObj(\mkw\consts::BizonylatStatuszTeljesitheto, $bsf->getId());
         }
         else {
             $this->setObj(\mkw\consts::BizonylatStatuszTeljesitheto, '');
         }
-        $bsf = store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatuszbackorder', 0));
+        $bsf = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatuszbackorder', 0));
         if ($bsf) {
             $this->setObj(\mkw\consts::BizonylatStatuszBackorder, $bsf->getId());
         }
@@ -621,7 +618,7 @@ class setupController extends \mkwhelpers\Controller {
 
         $inkid = $this->params->getIntRequestParam('importnewkatid');
         if ($inkid) {
-            $importnewkat = store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
+            $importnewkat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
             $this->setObj(\mkw\consts::ImportNewKatId, $importnewkat->getId());
         }
         else {
@@ -646,7 +643,7 @@ class setupController extends \mkwhelpers\Controller {
 
         $this->setObj(\mkw\consts::AKTrustedShopApiKey, $this->params->getStringRequestParam('aktrustedshopapikey', ''));
 
-        $gyarto = store::getEm()->getRepository('Entities\Partner');
+        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner');
 
         $x = $this->params->getIntRequestParam('gyartobtech', 0);
         $partner = $gyarto->find($x);
@@ -724,7 +721,7 @@ class setupController extends \mkwhelpers\Controller {
 
 
 
-        store::getEm()->flush();
+        \mkw\store::getEm()->flush();
 
     }
 

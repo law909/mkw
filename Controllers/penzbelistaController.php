@@ -8,8 +8,8 @@ class penzbelistaController extends \mkwhelpers\MattableController {
     public function view() {
         $view = $this->createView('penzbelista.tpl');
 
-        $view->setVar('toldatum', date(\mkw\Store::$DateFormat));
-        $view->setVar('igdatum', date(\mkw\Store::$DateFormat));
+        $view->setVar('toldatum', date(\mkw\store::$DateFormat));
+        $view->setVar('igdatum', date(\mkw\store::$DateFormat));
 
         $pcc = new partnercimkekatController($this->params);
         $view->setVar('cimkekat', $pcc->getWithCimkek(null));
@@ -31,10 +31,10 @@ class penzbelistaController extends \mkwhelpers\MattableController {
         }
 
         $tolstr = $this->params->getStringRequestParam('tol');
-        $tolstr = date(\mkw\Store::$DateFormat, strtotime(\mkw\Store::convDate($tolstr)));
+        $tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($tolstr)));
 
         $igstr = $this->params->getStringRequestParam('ig');
-        $igstr = date(\mkw\Store::$DateFormat, strtotime(\mkw\Store::convDate($igstr)));
+        $igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($igstr)));
 
         $datummezo = 'datum';
 

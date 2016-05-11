@@ -119,7 +119,7 @@ class PartnercimketorzsRepository extends \mkwhelpers\Repository {
                 $cimkekodok = $cimkefilter;
             }
             if ($cimkekodok) {
-                $q = \mkw\Store::getEm()->createQuery('SELECT pc.nev FROM Entities\Partnercimketorzs pc WHERE pc.id IN (' . $cimkekodok . ')');
+                $q = \mkw\store::getEm()->createQuery('SELECT pc.nev FROM Entities\Partnercimketorzs pc WHERE pc.id IN (' . $cimkekodok . ')');
                 $res = $q->getScalarResult();
                 foreach ($res as $sor) {
                     $cimkenevek[] = $sor['nev'];

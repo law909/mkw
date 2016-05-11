@@ -1,7 +1,6 @@
 <?php
 namespace Controllers;
 
-use mkw\store;
 use Symfony\Component\DomCrawler\Crawler;
 
 class importController extends \mkwhelpers\Controller {
@@ -29,7 +28,7 @@ class importController extends \mkwhelpers\Controller {
 
         $view->setVar('pagetitle', t('Importok'));
 
-        $termekfa = store::getEm()->getRepository('Entities\TermekFa')->find(\mkw\Store::getParameter(\mkw\consts::ImportNewKatId));
+        $termekfa = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find(\mkw\store::getParameter(\mkw\consts::ImportNewKatId));
         if ($termekfa) {
             $view->setVar('termekfa', array(
                 'id' => $termekfa->getId(),
@@ -47,10 +46,10 @@ class importController extends \mkwhelpers\Controller {
     }
 
     public function createKategoria($nev, $parentid) {
-        $me = store::getEm()->getRepository('Entities\TermekFa')->findBy(array('nev' => $nev, 'parent' => $parentid));
+        $me = \mkw\store::getEm()->getRepository('Entities\TermekFa')->findBy(array('nev' => $nev, 'parent' => $parentid));
 
         if (!$me || $me[0]->getParentId() !== $parentid) {
-            $parent = store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+            $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
             $me = new \Entities\TermekFa();
             $me->setNev($nev);
             $me->setParent($parent);
@@ -58,8 +57,8 @@ class importController extends \mkwhelpers\Controller {
             $me->setMenu2lathato(false);
             $me->setMenu3lathato(false);
             $me->setMenu4lathato(false);
-            store::getEm()->persist($me);
-            store::getEm()->flush();
+            \mkw\store::getEm()->persist($me);
+            \mkw\store::getEm()->flush();
         }
         else {
             $me = $me[0];
@@ -68,33 +67,33 @@ class importController extends \mkwhelpers\Controller {
     }
 
     public function getKategoriaByIdegenkod($ik) {
-        $me = store::getEm()->getRepository('Entities\TermekFa')->findBy(array('idegenkod' => $ik));
+        $me = \mkw\store::getEm()->getRepository('Entities\TermekFa')->findBy(array('idegenkod' => $ik));
         if (!$me) {
-            $me = store::getEm()->getRepository('Entities\TermekFa')->find(1);
+            $me = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find(1);
         }
         return $me[0];
     }
 
     public function createTermekValtozatAdatTipus($nev) {
-        $res = store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->findByNev($nev);
+        $res = \mkw\store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->findByNev($nev);
         if (!$res) {
             $res = new \Entities\TermekValtozatAdatTipus();
             $res->setNev($nev);
-            store::getEm()->persist($res);
-            store::getEm()->flush();
+            \mkw\store::getEm()->persist($res);
+            \mkw\store::getEm()->flush();
             return $res;
         }
         return $res[0];
     }
 
     public function createVtsz($szam, $afa) {
-        $res = store::getEm()->getRepository('Entities\Vtsz')->findBySzam($szam);
+        $res = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam($szam);
         if (!$res) {
             $res = new \Entities\Vtsz();
             $res->setSzam($szam);
             $res->setAfa($afa);
-            store::getEm()->persist($res);
-            store::getEm()->flush();
+            \mkw\store::getEm()->persist($res);
+            \mkw\store::getEm()->flush();
             return $res;
         }
         return $res[0];
@@ -104,23 +103,23 @@ class importController extends \mkwhelpers\Controller {
         if (!$nev) {
             return null;
         }
-        $cimke1 = store::getEm()->getRepository('Entities\Partnercimketorzs')->getByNevAndKategoria($nev, $ckat);
+        $cimke1 = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->getByNevAndKategoria($nev, $ckat);
         if (!$cimke1) {
             $cimke1 = new \Entities\Partnercimketorzs();
             $cimke1->setKategoria($ckat);
             $cimke1->setNev($nev);
             $cimke1->setMenu1lathato(false);
-            store::getEm()->persist($cimke1);
+            \mkw\store::getEm()->persist($cimke1);
         }
         return $cimke1;
     }
 
     private function checkRunningImport($imp) {
-        return (boolean) \mkw\Store::getParameter($imp);
+        return (boolean) \mkw\store::getParameter($imp);
     }
 
     private function setRunningImport($imp, $onoff) {
-        \mkw\Store::setParameter($imp, $onoff);
+        \mkw\store::setParameter($imp, $onoff);
     }
 
     public function stop() {
@@ -174,7 +173,7 @@ class importController extends \mkwhelpers\Controller {
             $sep = ';';
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
-            $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoKreativ);
+            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoKreativ);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
             $dbig = $this->params->getIntRequestParam('dbig', 0);
             $editleiras = $this->params->getBoolRequestParam('editleiras', false);
@@ -182,10 +181,10 @@ class importController extends \mkwhelpers\Controller {
             $arszaz = $this->params->getNumRequestParam('arszaz', 100);
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-            $urleleje = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathKreativ));
+            $urleleje = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathKreativ));
 
-            $path = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathKreativ));
-            $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
+            $path = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathKreativ));
+            $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
             if ($mainpath) {
                 $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             }
@@ -237,8 +236,8 @@ class importController extends \mkwhelpers\Controller {
             if ($linecount > 1) {
                 $fh = fopen('kreativpuzzlestock.txt', 'r');
                 if ($fh) {
-                    $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                    $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                    $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                    $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
                     $termekdb = 0;
                     fgetcsv($fh, 0, $sep, '"');
@@ -263,13 +262,13 @@ class importController extends \mkwhelpers\Controller {
                     while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                         $termekdb++;
                         if ($data[$this->n('c')] * 1 > 0) {
-                            $termek = store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('KP' . $data[$this->n('a')]);
+                            $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('KP' . $data[$this->n('a')]);
                             if (!$termek) {
 
                                 if ($createuj) {
                                     $katnev = $this->toutf(trim($data[$this->n('h')]));
-                                    $urlkatnev = \mkw\Store::urlize($katnev);
-                                    \mkw\Store::createDirectoryRecursively($path . $urlkatnev);
+                                    $urlkatnev = \mkw\store::urlize($katnev);
+                                    \mkw\store::createDirectoryRecursively($path . $urlkatnev);
                                     $parent = $this->createKategoria($katnev, $parentid);
                                     $termeknev = $this->toutf(trim($data[$this->n('b')]));
 
@@ -299,14 +298,14 @@ class importController extends \mkwhelpers\Controller {
                                         foreach ($imagelist[$data[$this->n('a')]] as $imgurl) {
                                             $imgcnt++;
 
-                                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev . '_' . $idegenkod);
-                                            $kepnev = \mkw\Store::urlize($termeknev . '_' . $idegenkod);
+                                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegenkod);
+                                            $kepnev = \mkw\store::urlize($termeknev . '_' . $idegenkod);
                                             if (count($imagelist[$data[$this->n('a')]]) > 1) {
                                                 $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
                                                 $kepnev = $kepnev . '_' . $imgcnt;
                                             }
 
-                                            $extension = \mkw\Store::getExtension($imgurl);
+                                            $extension = \mkw\store::getExtension($imgurl);
                                             $imgpath = $nameWithoutExt . '.' . $extension;
 
                                             $ch = \curl_init($imgurl);
@@ -329,7 +328,7 @@ class importController extends \mkwhelpers\Controller {
                                                 $termek->addTermekKep($kep);
                                                 $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
                                                 $kep->setLeiras($termeknev);
-                                                \mkw\Store::getEm()->persist($kep);
+                                                \mkw\store::getEm()->persist($kep);
                                             }
                                         }
                                     }
@@ -349,29 +348,29 @@ class importController extends \mkwhelpers\Controller {
 //                        $termek->setAfa($afa[0]);
                                 $termek->setNetto($data[$this->n('d')] * 1 * $arszaz / 100);
                                 $termek->setBrutto(round($termek->getBrutto(), -1));
-                                \mkw\Store::getEm()->persist($termek);
-//                        store::getEm()->flush();
+                                \mkw\store::getEm()->persist($termek);
+//                        \mkw\store::getEm()->flush();
                             }
                         }
                         else {
-                            $termek = store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('KP' . $data[$this->n('a')]);
+                            $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('KP' . $data[$this->n('a')]);
                             if ($termek) {
                                 $termek = $termek[0];
                                 $termek->setNemkaphato(true);
                                 $termek->setLathato(false);
-                                \mkw\Store::getEm()->persist($termek);
-//                        store::getEm()->flush();
+                                \mkw\store::getEm()->persist($termek);
+//                        \mkw\store::getEm()->flush();
                             }
                         }
                         if (($termekdb % $batchsize) === 0) {
-                            \mkw\Store::getEm()->flush();
-                            \mkw\Store::getEm()->clear();
-                            $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                            $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                            \mkw\store::getEm()->flush();
+                            \mkw\store::getEm()->clear();
+                            $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                            $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                         }
                     }
-                    \mkw\Store::getEm()->flush();
-                    \mkw\Store::getEm()->clear();
+                    \mkw\store::getEm()->flush();
+                    \mkw\store::getEm()->clear();
 
                     $lettfuggoben = false;
                     if ($gyarto) {
@@ -388,11 +387,11 @@ class importController extends \mkwhelpers\Controller {
                                 $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                 if ($termek) {
                                     $lettfuggoben = true;
-                                    \mkw\Store::writelog('cikkszám: ' . $termek->getCikkszam(), 'kreativ_fuggoben.txt');
+                                    \mkw\store::writelog('cikkszám: ' . $termek->getCikkszam(), 'kreativ_fuggoben.txt');
                                     $termek->setFuggoben(true);
                                     $termek->setInaktiv(true);
-                                    \mkw\Store::getEm()->persist($termek);
-                                    \mkw\Store::getEm()->flush();
+                                    \mkw\store::getEm()->persist($termek);
+                                    \mkw\store::getEm()->flush();
                                 }
                             }
                         }
@@ -452,7 +451,7 @@ class importController extends \mkwhelpers\Controller {
             $this->setRunningImport(\mkw\consts::RunningDeltonImport, 1);
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
-            $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoDelton);
+            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoDelton);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
             $dbig = $this->params->getIntRequestParam('dbig', 0);
             $editleiras = $this->params->getBoolRequestParam('editleiras', false);
@@ -461,10 +460,10 @@ class importController extends \mkwhelpers\Controller {
             $deltondownload = $this->params->getBoolRequestParam('deltondownload', false);
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-            $urleleje = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathDelton));
+            $urleleje = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathDelton));
 
-            $path = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathDelton));
-            $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
+            $path = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathDelton));
+            $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
             if ($mainpath) {
                 $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             }
@@ -495,8 +494,8 @@ class importController extends \mkwhelpers\Controller {
             if ($linecount > 1) {
                 $fh = fopen('delton.txt', 'r');
                 if ($fh) {
-                    $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                    $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                    $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                    $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
                     $termekdb = 0;
                     // $this->fgetdeltoncsv($fh);
@@ -529,7 +528,7 @@ class importController extends \mkwhelpers\Controller {
                     while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = $this->fgetdeltoncsv($fh))) {
                         $termekdb++;
                         if ($data[1]) {
-                            $termek = store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('DT' . $data[1]);
+                            $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('DT' . $data[1]);
                             if (!$termek) {
 
                                 if ($createuj) {
@@ -542,8 +541,8 @@ class importController extends \mkwhelpers\Controller {
                                     elseif ($data[4]) {
                                         $katnev = $this->toutf(trim($data[4]));
                                     }
-                                    $urlkatnev = \mkw\Store::urlize($katnev);
-                                    \mkw\Store::createDirectoryRecursively($path . $urlkatnev);
+                                    $urlkatnev = \mkw\store::urlize($katnev);
+                                    \mkw\store::createDirectoryRecursively($path . $urlkatnev);
                                     $parent = $this->createKategoria($katnev, $parentid);
                                     $termeknev = $this->toutf(trim($data[0]));
 
@@ -573,10 +572,10 @@ class importController extends \mkwhelpers\Controller {
                                     if (!strpos($imgurl, 'http://')) {
                                         $imgurl = 'http://' . $imgurl;
                                     }
-                                    $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev . '_' . $idegenkod);
-                                    $kepnev = \mkw\Store::urlize($termeknev . '_' . $idegenkod);
+                                    $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegenkod);
+                                    $kepnev = \mkw\store::urlize($termeknev . '_' . $idegenkod);
 
-                                    $extension = \mkw\Store::getExtension($imgurl);
+                                    $extension = \mkw\store::getExtension($imgurl);
                                     $imgpath = $nameWithoutExt . '.' . $extension;
 
                                     $ch = \curl_init($imgurl);
@@ -621,19 +620,19 @@ class importController extends \mkwhelpers\Controller {
                                     $termek->setNetto($kiskerar * $arszaz / 100);
                                 }
                                 $termek->setBrutto(round($termek->getBrutto(), -1));
-                                store::getEm()->persist($termek);
-                                // store::getEm()->flush();
+                                \mkw\store::getEm()->persist($termek);
+                                // \mkw\store::getEm()->flush();
                             }
                         }
                         if (($termekdb % $batchsize) === 0) {
-                            \mkw\Store::getEm()->flush();
-                            \mkw\Store::getEm()->clear();
-                            $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                            $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                            \mkw\store::getEm()->flush();
+                            \mkw\store::getEm()->clear();
+                            $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                            $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                         }
                     }
-                    \mkw\Store::getEm()->flush();
-                    \mkw\Store::getEm()->clear();
+                    \mkw\store::getEm()->flush();
+                    \mkw\store::getEm()->clear();
 
                     $lettfuggoben = false;
                     if ($gyarto) {
@@ -651,20 +650,20 @@ class importController extends \mkwhelpers\Controller {
                                     $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                     if ($termek) {
                                         $termekdb++;
-                                        \mkw\Store::writelog('cikkszám: ' . $termek->getCikkszam(), 'delton_fuggoben.txt');
+                                        \mkw\store::writelog('cikkszám: ' . $termek->getCikkszam(), 'delton_fuggoben.txt');
                                         $lettfuggoben = true;
                                         $termek->setFuggoben(true);
                                         $termek->setInaktiv(true);
-                                        \mkw\Store::getEm()->persist($termek);
+                                        \mkw\store::getEm()->persist($termek);
                                         if (($termekdb % $batchsize) === 0) {
-                                            \mkw\Store::getEm()->flush();
-                                            \mkw\Store::getEm()->clear();
+                                            \mkw\store::getEm()->flush();
+                                            \mkw\store::getEm()->clear();
                                         }
                                     }
                                 }
                             }
-                            \mkw\Store::getEm()->flush();
-                            \mkw\Store::getEm()->clear();
+                            \mkw\store::getEm()->flush();
+                            \mkw\store::getEm()->clear();
                         }
                     }
                     if ($lettfuggoben) {
@@ -697,10 +696,10 @@ class importController extends \mkwhelpers\Controller {
             $arszaz = $this->params->getNumRequestParam('arszaz', 100);
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-            //$urleleje = \mkw\Store::changeDirSeparator();
+            //$urleleje = \mkw\store::changeDirSeparator();
 
-            //$path = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . $this->params->getStringRequestParam('path'));
-            $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
+            //$path = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . $this->params->getStringRequestParam('path'));
+            $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
             if ($mainpath) {
                 $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             }
@@ -717,9 +716,9 @@ class importController extends \mkwhelpers\Controller {
 
             $xml = simplexml_load_file(temppath . "nomad.xml");
             if ($xml) {
-                $afa = store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
-                $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                $afa = \mkw\store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
+                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
                 $products = $xml->products;
 
@@ -750,7 +749,7 @@ class importController extends \mkwhelpers\Controller {
                     $data = $products[$termekdb];
                     $termekdb++;
                     if ($data->sku) {
-                        $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data->catalog_first, 'idegencikkszam' => $data->sku));
+                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data->catalog_first, 'idegencikkszam' => $data->sku));
                         if (!$termek) {
 
                             if ($createuj) {
@@ -764,8 +763,8 @@ class importController extends \mkwhelpers\Controller {
                                 elseif ($data[4]) {
                                     $katnev = $this->toutf(trim($data[4]));
                                 }
-                                $urlkatnev = \mkw\Store::urlize($katnev);
-                                \mkw\Store::createDirectoryRecursively($path . $urlkatnev);
+                                $urlkatnev = \mkw\store::urlize($katnev);
+                                \mkw\store::createDirectoryRecursively($path . $urlkatnev);
                                 $parent = $this->createKategoria($katnev, $parentid);
                                 $termeknev = $this->toutf(trim($data[0]));
 
@@ -792,10 +791,10 @@ class importController extends \mkwhelpers\Controller {
                                 if (!strpos($imgurl, 'http://')) {
                                     $imgurl = 'http://' . $imgurl;
                                 }
-                                $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev . '_' . $idegenkod);
-                                $kepnev = \mkw\Store::urlize($termeknev . '_' . $idegenkod);
+                                $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegenkod);
+                                $kepnev = \mkw\store::urlize($termeknev . '_' . $idegenkod);
 
-                                $extension = \mkw\Store::getExtension($imgurl);
+                                $extension = \mkw\store::getExtension($imgurl);
                                 $imgpath = $nameWithoutExt . '.' . $extension;
 
                                 $ch = \curl_init($imgurl);
@@ -827,8 +826,8 @@ class importController extends \mkwhelpers\Controller {
 //                        $termek->setAfa($afa[0]);
                             $termek->setNetto($data[7] * 1 * $arszaz / 100);
                             $termek->setBrutto(round($termek->getBrutto(), -1));
-                            store::getEm()->persist($termek);
-                            store::getEm()->flush();
+                            \mkw\store::getEm()->persist($termek);
+                            \mkw\store::getEm()->flush();
                         }
                     }
                 }
@@ -852,7 +851,7 @@ class importController extends \mkwhelpers\Controller {
             $sep = ';';
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
-            $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoReintex);
+            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoReintex);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
             $dbig = $this->params->getIntRequestParam('dbig', 0);
             $editleiras = $this->params->getBoolRequestParam('editleiras', false);
@@ -863,9 +862,9 @@ class importController extends \mkwhelpers\Controller {
 
             $fh = fopen('reinteximport.csv', 'r');
             if ($fh) {
-                $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
-                $parent = store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
                 $termekdb = 0;
                 fgetcsv($fh, 0, $sep, '"');
                 while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
@@ -874,7 +873,7 @@ class importController extends \mkwhelpers\Controller {
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                     $termekdb++;
                     if ($data[$this->n('a')]) {
-                        $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data[$this->n('a')], 'gyarto' => $gyartoid));
+                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data[$this->n('a')], 'gyarto' => $gyartoid));
                         if (!$termek) {
 
                             if ($createuj) {
@@ -906,20 +905,20 @@ class importController extends \mkwhelpers\Controller {
                         if ($termek) {
                             //$termek->setAfa($afa[0]);
                             $termek->setBrutto(round($data[$this->n('i')] * 1 * $arszaz / 100, -1));
-                            store::getEm()->persist($termek);
-//                        store::getEm()->flush();
+                            \mkw\store::getEm()->persist($termek);
+//                        \mkw\store::getEm()->flush();
                         }
                     }
                     if (($termekdb % $batchsize) === 0) {
-                        \mkw\Store::getEm()->flush();
-                        \mkw\Store::getEm()->clear();
-                        $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                        $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
-                        $parent = store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                        $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
                     }
                 }
-                \mkw\Store::getEm()->flush();
-                \mkw\Store::getEm()->clear();
+                \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->clear();
                 fclose($fh);
                 \unlink('reinteximport.csv');
             }
@@ -938,7 +937,7 @@ class importController extends \mkwhelpers\Controller {
             $sep = ';';
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
-            $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoTutisport);
+            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoTutisport);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
             $dbig = $this->params->getIntRequestParam('dbig', 0);
             $editleiras = $this->params->getBoolRequestParam('editleiras', false);
@@ -949,9 +948,9 @@ class importController extends \mkwhelpers\Controller {
 
             $fh = fopen('tutisportimport.csv', 'r');
             if ($fh) {
-                $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
-                $parent = store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
                 $termekdb = 0;
                 $termekdb = 0;
                 fgetcsv($fh, 0, $sep, '"');
@@ -961,10 +960,10 @@ class importController extends \mkwhelpers\Controller {
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                     $termekdb++;
                     if ($data[$this->n('a')]) {
-                        $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data[$this->n('a')], 'gyarto' => $gyartoid));
+                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data[$this->n('a')], 'gyarto' => $gyartoid));
                         if (!$termek) {
                             $csz = str_replace(' ', '', $data[$this->n('a')]);
-                            $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $csz, 'gyarto' => $gyartoid));
+                            $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $csz, 'gyarto' => $gyartoid));
                         }
                         if ($data[$this->n('d')] * 1 != 0) {
                             if (!$termek) {
@@ -1000,8 +999,8 @@ class importController extends \mkwhelpers\Controller {
                                 $termek->setCikkszam($data[$this->n('a')]);
                                 //$termek->setAfa($afa[0]);
                                 $termek->setBrutto(round($data[$this->n('e')] * 1 * $arszaz / 100, -1));
-                                store::getEm()->persist($termek);
-//                            store::getEm()->flush();
+                                \mkw\store::getEm()->persist($termek);
+//                            \mkw\store::getEm()->flush();
                             }
                         }
                         else {
@@ -1009,21 +1008,21 @@ class importController extends \mkwhelpers\Controller {
                                 $termek = $termek[0];
                                 $termek->setNemkaphato(true);
                                 $termek->setLathato(false);
-                                store::getEm()->persist($termek);
-//                            store::getEm()->flush();
+                                \mkw\store::getEm()->persist($termek);
+//                            \mkw\store::getEm()->flush();
                             }
                         }
                     }
                     if (($termekdb % $batchsize) === 0) {
-                        \mkw\Store::getEm()->flush();
-                        \mkw\Store::getEm()->clear();
-                        $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                        $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
-                        $parent = store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                        $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
                     }
                 }
-                \mkw\Store::getEm()->flush();
-                \mkw\Store::getEm()->clear();
+                \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->clear();
                 fclose($fh);
                 \unlink('tutisportimport.csv');
             }
@@ -1042,7 +1041,7 @@ class importController extends \mkwhelpers\Controller {
             $sep = ';';
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
-            $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoMaxutov);
+            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoMaxutov);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
             $dbig = $this->params->getIntRequestParam('dbig', 0);
             $editleiras = $this->params->getBoolRequestParam('editleiras', false);
@@ -1050,10 +1049,10 @@ class importController extends \mkwhelpers\Controller {
             $arszaz = $this->params->getNumRequestParam('arszaz', 100);
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-            $urleleje = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathMaxutov));
+            $urleleje = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathMaxutov));
 
-            $path = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathMaxutov));
-            $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
+            $path = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathMaxutov));
+            $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
             if ($mainpath) {
                 $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             }
@@ -1081,8 +1080,8 @@ class importController extends \mkwhelpers\Controller {
             if ($linecount > 1) {
                 $fh = fopen('makszutov.txt', 'r');
                 if ($fh) {
-                    $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                    $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                    $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                    $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
                     $termekdb = 0;
                     fgetcsv($fh, 0, $sep, '"');
@@ -1106,7 +1105,7 @@ class importController extends \mkwhelpers\Controller {
                         $termekdb++;
                         $termek = false;
                         $valtozat = false;
-                        $valtozatok = store::getEm()->getRepository('Entities\TermekValtozat')->findBy(array('idegencikkszam' => $idegencikkszam));
+                        $valtozatok = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->findBy(array('idegencikkszam' => $idegencikkszam));
                         if ($valtozatok) {
                             foreach ($valtozatok as $v) {
                                 $termek = $v->getTermek();
@@ -1117,7 +1116,7 @@ class importController extends \mkwhelpers\Controller {
                             }
                         }
                         else {
-                            $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $idegencikkszam, 'gyarto' => $gyartoid));
+                            $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $idegencikkszam, 'gyarto' => $gyartoid));
                         }
                         if ($data[$this->n('j')]) {
                             $ch = \curl_init($data[$this->n('j')]);
@@ -1129,7 +1128,7 @@ class importController extends \mkwhelpers\Controller {
                             ));
                             $leiras = $puri->sanitize($le);
 
-                            $puri2 = store::getSanitizer();
+                            $puri2 = \mkw\store::getSanitizer();
                             $kisleiras = $puri2->sanitize($le);
                         }
                         else {
@@ -1143,8 +1142,8 @@ class importController extends \mkwhelpers\Controller {
 
                             if ($createuj && $kaphato) {
                                 $katnev = $data[$this->n('b')];
-                                $urlkatnev = \mkw\Store::urlize($katnev);
-                                \mkw\Store::createDirectoryRecursively($path . $urlkatnev);
+                                $urlkatnev = \mkw\store::urlize($katnev);
+                                \mkw\store::createDirectoryRecursively($path . $urlkatnev);
                                 $parent = $this->createKategoria($katnev, $parentid);
                                 $termeknev = $data[$this->n('d')];
 
@@ -1169,14 +1168,14 @@ class importController extends \mkwhelpers\Controller {
                                 foreach ($imagelist as $imgurl) {
                                     $imgcnt++;
 
-                                    $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev . '_' . $idegencikkszam);
-                                    $kepnev = \mkw\Store::urlize($termeknev . '_' . $idegencikkszam);
+                                    $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
+                                    $kepnev = \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
                                     if (count($imagelist) > 1) {
                                         $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
                                         $kepnev = $kepnev . '_' . $imgcnt;
                                     }
 
-                                    $extension = \mkw\Store::getExtension($imgurl);
+                                    $extension = \mkw\store::getExtension($imgurl);
                                     $imgpath = $nameWithoutExt . '.' . $extension;
 
                                     $ch = \curl_init($imgurl);
@@ -1199,10 +1198,10 @@ class importController extends \mkwhelpers\Controller {
                                         $termek->addTermekKep($kep);
                                         $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
                                         $kep->setLeiras($termeknev);
-                                        store::getEm()->persist($kep);
+                                        \mkw\store::getEm()->persist($kep);
                                     }
                                 }
-                                store::getEm()->persist($termek);
+                                \mkw\store::getEm()->persist($termek);
                             }
                         }
                         else {
@@ -1221,7 +1220,7 @@ class importController extends \mkwhelpers\Controller {
                                 else {
                                     $valtozat->setElerheto(true);
                                 }
-                                store::getEm()->persist($valtozat);
+                                \mkw\store::getEm()->persist($valtozat);
                                 if ($termek) {
                                     $egysemkaphato = true;
                                     foreach ($termek->getValtozatok() as $valt) {
@@ -1230,7 +1229,7 @@ class importController extends \mkwhelpers\Controller {
                                         }
                                     }
                                     $termek->setNemkaphato($egysemkaphato);
-                                    store::getEm()->persist($termek);
+                                    \mkw\store::getEm()->persist($termek);
                                 }
                             }
                             else {
@@ -1245,19 +1244,19 @@ class importController extends \mkwhelpers\Controller {
                                         $termek->setNemkaphato(false);
                                     }
                                     $termek->setBrutto(round($data[$this->n('g')] * 1 * $arszaz / 100, -1));
-                                    store::getEm()->persist($termek);
+                                    \mkw\store::getEm()->persist($termek);
                                 }
                             }
                         }
                         if (($termekdb % $batchsize) === 0) {
-                            \mkw\Store::getEm()->flush();
-                            \mkw\Store::getEm()->clear();
-                            $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                            $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                            \mkw\store::getEm()->flush();
+                            \mkw\store::getEm()->clear();
+                            $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                            $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                         }
                     }
-                    \mkw\Store::getEm()->flush();
-                    \mkw\Store::getEm()->clear();
+                    \mkw\store::getEm()->flush();
+                    \mkw\store::getEm()->clear();
 
                     $lettfuggoben = false;
                     if ($gyarto) {
@@ -1276,20 +1275,20 @@ class importController extends \mkwhelpers\Controller {
                                     $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                     if ($termek) {
                                         $termekdb++;
-                                        \mkw\Store::writelog('idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'makszutov_fuggoben.txt');
+                                        \mkw\store::writelog('idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'makszutov_fuggoben.txt');
                                         $lettfuggoben = true;
                                         $termek->setFuggoben(true);
                                         $termek->setInaktiv(true);
-                                        \mkw\Store::getEm()->persist($termek);
+                                        \mkw\store::getEm()->persist($termek);
                                         if (($termekdb % $batchsize) === 0) {
-                                            \mkw\Store::getEm()->flush();
-                                            \mkw\Store::getEm()->clear();
+                                            \mkw\store::getEm()->flush();
+                                            \mkw\store::getEm()->clear();
                                         }
                                     }
                                 }
                             }
-                            \mkw\Store::getEm()->flush();
-                            \mkw\Store::getEm()->clear();
+                            \mkw\store::getEm()->flush();
+                            \mkw\store::getEm()->clear();
                         }
                     }
                     if ($lettfuggoben) {
@@ -1315,7 +1314,7 @@ class importController extends \mkwhelpers\Controller {
             $this->setRunningImport(\mkw\consts::RunningSilkoImport, 1);
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
-            $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoSilko);
+            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoSilko);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
             $dbig = $this->params->getIntRequestParam('dbig', 0);
             $editleiras = $this->params->getBoolRequestParam('editleiras', false);
@@ -1323,7 +1322,7 @@ class importController extends \mkwhelpers\Controller {
             $arszaz = $this->params->getNumRequestParam('arszaz', 100);
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-            $parent = store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+            $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
             if ($dbtol < 2) {
                 $dbtol = 2;
             }
@@ -1344,8 +1343,8 @@ class importController extends \mkwhelpers\Controller {
             $maxcol = $sheet->getHighestColumn();
             $maxcolindex = \PHPExcel_Cell::columnIndexFromString($maxcol);
 
-            $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-            $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+            $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+            $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
             for ($row = $dbtol; $row <= $dbig; ++$row) {
                 $katnev = $sheet->getCell('F' . $row)->getValue();
@@ -1377,11 +1376,11 @@ class importController extends \mkwhelpers\Controller {
                 ));
                 $leiras = $puri->sanitize($le);
 
-                $puri2 = store::getSanitizer();
+                $puri2 = \mkw\store::getSanitizer();
                 $kisleiras = $puri2->sanitize($le);
 
 
-                $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $cikkszam, 'gyarto' => $gyartoid));
+                $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $cikkszam, 'gyarto' => $gyartoid));
 
                 if (!$termek) {
                     if ($createuj && $kaphato) {
@@ -1418,7 +1417,7 @@ class importController extends \mkwhelpers\Controller {
                         }
                         $termek->setNemkaphato(false);
                         $termek->setBrutto(round($sheet->getCell('E' . $row)->getValue() * 1 * $arszaz / 100, -1));
-                        store::getEm()->persist($termek);
+                        \mkw\store::getEm()->persist($termek);
                     }
                 }
                 else {
@@ -1435,18 +1434,18 @@ class importController extends \mkwhelpers\Controller {
                         $termek->setNemkaphato(false);
                     }
                     $termek->setBrutto(round($sheet->getCell('E' . $row)->getValue() * 1 * $arszaz / 100, -1));
-                    store::getEm()->persist($termek);
+                    \mkw\store::getEm()->persist($termek);
                 }
 
                 if (($termekdb % $batchsize) === 0) {
-                    \mkw\Store::getEm()->flush();
-                    \mkw\Store::getEm()->clear();
-                    $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                    $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                    \mkw\store::getEm()->flush();
+                    \mkw\store::getEm()->clear();
+                    $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                    $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                 }
             }
-            \mkw\Store::getEm()->flush();
-            \mkw\Store::getEm()->clear();
+            \mkw\store::getEm()->flush();
+            \mkw\store::getEm()->clear();
 
             $excel->disconnectWorksheets();
             \unlink($filenev);
@@ -1470,7 +1469,7 @@ class importController extends \mkwhelpers\Controller {
             $volthiba = false;
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
-            $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoBtech);
+            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoBtech);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
             $dbig = $this->params->getIntRequestParam('dbig', 0);
             $editleiras = $this->params->getBoolRequestParam('editleiras', false);
@@ -1478,10 +1477,10 @@ class importController extends \mkwhelpers\Controller {
             $arszaz = $this->params->getNumRequestParam('arszaz', 100);
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-            $urleleje = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathBtech));
+            $urleleje = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathBtech));
 
-            $path = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('path.termekkep') . \mkw\Store::getParameter(\mkw\consts::PathBtech));
-            $mainpath = \mkw\Store::changeDirSeparator(\mkw\Store::getConfigValue('mainpath'));
+            $path = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathBtech));
+            $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
             if ($mainpath) {
                 $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             }
@@ -1489,7 +1488,7 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            $parent = store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+            $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
             if ($dbtol < 3) {
                 $dbtol = 3;
             }
@@ -1508,8 +1507,8 @@ class importController extends \mkwhelpers\Controller {
                 $dbig = $maxrow;
             }
 
-            $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-            $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+            $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+            $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
             for ($row = $dbtol; $row <= $dbig; ++$row) {
                 $adat = $sheet->getCell('A' . $row)->getValue();
@@ -1551,7 +1550,7 @@ class importController extends \mkwhelpers\Controller {
                         else {
                             $volthiba = true;
                             $termekpage = false;
-                            \mkw\Store::writelog($cikkszam . ': empty url', 'btechimport.error');
+                            \mkw\store::writelog($cikkszam . ': empty url', 'btechimport.error');
                         }
 
                         if ($termekpage) {
@@ -1594,11 +1593,11 @@ class importController extends \mkwhelpers\Controller {
                                 if (!$ar) {
                                     $hibatext[] = 'nincs akcios ar';
                                 }
-                                \mkw\Store::writelog($cikkszam . ': akcios, de ' . implode(', ', $hibatext));
+                                \mkw\store::writelog($cikkszam . ': akcios, de ' . implode(', ', $hibatext));
                             }
                             else {
                                 if (!$ar) {
-                                    \mkw\Store::writelog($cikkszam . ': nem akcios, de nincs ar');
+                                    \mkw\store::writelog($cikkszam . ': nem akcios, de nincs ar');
                                 }
                             }
 
@@ -1616,7 +1615,7 @@ class importController extends \mkwhelpers\Controller {
                                 'HTML.Allowed' => 'p,ul,li,b,strong,br'
                             ));
                             $leiras = str_replace("\t", '', $puri->sanitize($le));
-                            $puri2 = store::getSanitizer();
+                            $puri2 = \mkw\store::getSanitizer();
                             $kisleiras = str_replace("\t", '', $puri2->sanitize($le));
 
                             $nodelist = $crawler->filter('div#item-page > div.right > div.item-image a');
@@ -1624,7 +1623,7 @@ class importController extends \mkwhelpers\Controller {
                                 return 'http://btech.hu' . $node->attr('href');
                             });
 
-                            $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikkszam, 'gyarto' => $gyartoid));
+                            $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikkszam, 'gyarto' => $gyartoid));
 
                             if (!$termek) {
                                 if ($createuj && $kaphato) {
@@ -1656,22 +1655,22 @@ class importController extends \mkwhelpers\Controller {
                                         if ($ar) {
                                             $termek->setAkciosbrutto($ar);
                                         }
-                                        $termek->setAkciostart(date(store::$DateFormat));
-                                        $termek->setAkciostop(date(store::$LastDayDateFormat));
+                                        $termek->setAkciostart(date(\mkw\store::$DateFormat));
+                                        $termek->setAkciostop(date(\mkw\store::$LastDayDateFormat));
                                     }
 
                                     $imgcnt = 0;
                                     foreach ($imagelist as $imgurl) {
                                         $imgcnt++;
 
-                                        $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\Store::urlize($termeknev . '_' . $cikkszam);
-                                        $kepnev = \mkw\Store::urlize($termeknev . '_' . $cikkszam);
+                                        $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $cikkszam);
+                                        $kepnev = \mkw\store::urlize($termeknev . '_' . $cikkszam);
                                         if (count($imagelist) > 1) {
                                             $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
                                             $kepnev = $kepnev . '_' . $imgcnt;
                                         }
 
-                                        $extension = \mkw\Store::getExtension($imgurl);
+                                        $extension = \mkw\store::getExtension($imgurl);
                                         $imgpath = $nameWithoutExt . '.' . $extension;
 
                                         $ch = \curl_init($imgurl);
@@ -1694,11 +1693,11 @@ class importController extends \mkwhelpers\Controller {
                                             $termek->addTermekKep($kep);
                                             $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
                                             $kep->setLeiras($termeknev);
-                                            store::getEm()->persist($kep);
+                                            \mkw\store::getEm()->persist($kep);
                                         }
                                     }
 
-                                    store::getEm()->persist($termek);
+                                    \mkw\store::getEm()->persist($termek);
                                 }
                             }
                             else {
@@ -1726,40 +1725,40 @@ class importController extends \mkwhelpers\Controller {
                                     if ($ar) {
                                         $termek->setAkciosbrutto($ar);
                                     }
-                                    $termek->setAkciostart(date(store::$DateFormat));
-                                    $termek->setAkciostop(date(store::$LastDayDateFormat));
+                                    $termek->setAkciostart(date(\mkw\store::$DateFormat));
+                                    $termek->setAkciostop(date(\mkw\store::$LastDayDateFormat));
                                 }
-                                store::getEm()->persist($termek);
+                                \mkw\store::getEm()->persist($termek);
                             }
 
                             if (($termekdb % $batchsize) === 0) {
-                                \mkw\Store::getEm()->flush();
-                                \mkw\Store::getEm()->clear();
-                                $vtsz = store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                                $gyarto = store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                                \mkw\store::getEm()->flush();
+                                \mkw\store::getEm()->clear();
+                                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                                 $parent = $this->createKategoria($katnev, $parentid);
                             }
                         }
                         else {
                             $volthiba = true;
                             if ($termekpage === false) {
-                                \mkw\Store::writelog($cikkszam . ': ' . $curlerrno . ' - ' . $curlerror, 'btechimport.error');
+                                \mkw\store::writelog($cikkszam . ': ' . $curlerrno . ' - ' . $curlerror, 'btechimport.error');
                             }
                             else {
-                                \mkw\Store::writelog($cikkszam . ': ' . gettype($termekpage) . ' = ' . $termekpage, 'btechimport.error');
+                                \mkw\store::writelog($cikkszam . ': ' . gettype($termekpage) . ' = ' . $termekpage, 'btechimport.error');
                             }
                         }
                     }
                     else {
                         $katnev = $sheet->getCell('A' . $row)->getValue();
                         $parent = $this->createKategoria($katnev, $parentid);
-                        $urlkatnev = \mkw\Store::urlize($katnev);
-                        \mkw\Store::createDirectoryRecursively($path . $urlkatnev);
+                        $urlkatnev = \mkw\store::urlize($katnev);
+                        \mkw\store::createDirectoryRecursively($path . $urlkatnev);
                     }
                 }
             }
-            \mkw\Store::getEm()->flush();
-            \mkw\Store::getEm()->clear();
+            \mkw\store::getEm()->flush();
+            \mkw\store::getEm()->clear();
 
             if ($gyarto && $letezocikkszamok) {
                 $termekdb = 0;
@@ -1772,16 +1771,16 @@ class importController extends \mkwhelpers\Controller {
                             $termekdb++;
                             $termek->setFuggoben(true);
                             $termek->setInaktiv(true);
-                            \mkw\Store::getEm()->persist($termek);
+                            \mkw\store::getEm()->persist($termek);
                             if (($termekdb % $batchsize) === 0) {
-                                \mkw\Store::getEm()->flush();
-                                \mkw\Store::getEm()->clear();
+                                \mkw\store::getEm()->flush();
+                                \mkw\store::getEm()->clear();
                             }
                         }
                     }
                 }
-                \mkw\Store::getEm()->flush();
-                \mkw\Store::getEm()->clear();
+                \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->clear();
             }
 
             $excel->disconnectWorksheets();
@@ -1808,7 +1807,7 @@ class importController extends \mkwhelpers\Controller {
             $this->setRunningImport(\mkw\consts::RunningKressgepImport, 1);
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
-            $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoKress);
+            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoKress);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
             $dbig = $this->params->getIntRequestParam('dbig', 0);
             $editleiras = $this->params->getBoolRequestParam('editleiras', false);
@@ -1844,7 +1843,7 @@ class importController extends \mkwhelpers\Controller {
                         $cikkszam = str_replace(' ', '', $sheet->getCell('C' . $row)->getValue());
                         $ar = $sheet->getCell('F' . $row)->getValue() * 1;
 
-                        $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikkszam, 'gyarto' => $gyartoid));
+                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikkszam, 'gyarto' => $gyartoid));
 
                         if ($termek) {
                             if (is_array($termek)) {
@@ -1853,18 +1852,18 @@ class importController extends \mkwhelpers\Controller {
                             if ($ar) {
                                 $termek->setBrutto($ar);
                             }
-                            store::getEm()->persist($termek);
+                            \mkw\store::getEm()->persist($termek);
                         }
 
                         if (($termekdb % $batchsize) === 0) {
-                            \mkw\Store::getEm()->flush();
-                            \mkw\Store::getEm()->clear();
+                            \mkw\store::getEm()->flush();
+                            \mkw\store::getEm()->clear();
                         }
                     }
                 }
             }
-            \mkw\Store::getEm()->flush();
-            \mkw\Store::getEm()->clear();
+            \mkw\store::getEm()->flush();
+            \mkw\store::getEm()->clear();
 
             $excel->disconnectWorksheets();
             \unlink($filenev);
@@ -1885,7 +1884,7 @@ class importController extends \mkwhelpers\Controller {
             $this->setRunningImport(\mkw\consts::RunningKresstartozekImport, 1);
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
-            $gyartoid = \mkw\Store::getParameter(\mkw\consts::GyartoKress);
+            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoKress);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
             $dbig = $this->params->getIntRequestParam('dbig', 0);
             $editleiras = $this->params->getBoolRequestParam('editleiras', false);
@@ -1921,7 +1920,7 @@ class importController extends \mkwhelpers\Controller {
                         $cikkszam = str_replace(' ', '', $sheet->getCell('B' . $row)->getValue());
                         $ar = $sheet->getCell('E' . $row)->getValue() * 1;
 
-                        $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikkszam, 'gyarto' => $gyartoid));
+                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikkszam, 'gyarto' => $gyartoid));
 
                         if ($termek) {
                             if (is_array($termek)) {
@@ -1930,18 +1929,18 @@ class importController extends \mkwhelpers\Controller {
                             if ($ar) {
                                 $termek->setBrutto($ar);
                             }
-                            store::getEm()->persist($termek);
+                            \mkw\store::getEm()->persist($termek);
                         }
 
                         if (($termekdb % $batchsize) === 0) {
-                            \mkw\Store::getEm()->flush();
-                            \mkw\Store::getEm()->clear();
+                            \mkw\store::getEm()->flush();
+                            \mkw\store::getEm()->clear();
                         }
                     }
                 }
             }
-            \mkw\Store::getEm()->flush();
-            \mkw\Store::getEm()->clear();
+            \mkw\store::getEm()->flush();
+            \mkw\store::getEm()->clear();
 
             $excel->disconnectWorksheets();
             \unlink($filenev);
@@ -1953,7 +1952,7 @@ class importController extends \mkwhelpers\Controller {
     }
 
     public function createVateraPartner($pa) {
-        $me = store::getEm()->getRepository('Entities\Partner')->findBy(array('email' => $pa['temail']));
+        $me = \mkw\store::getEm()->getRepository('Entities\Partner')->findBy(array('email' => $pa['temail']));
 
         if (!$me) {
             $me = new \Entities\Partner();
@@ -2031,8 +2030,8 @@ class importController extends \mkwhelpers\Controller {
                 }
             }
 
-            store::getEm()->persist($me);
-            store::getEm()->flush();
+            \mkw\store::getEm()->persist($me);
+            \mkw\store::getEm()->flush();
         }
         else {
             $me = $me[0];
@@ -2041,15 +2040,15 @@ class importController extends \mkwhelpers\Controller {
     }
 
     public function createVateraSzallitasimod($nev) {
-        $me = store::getEm()->getRepository('Entities\Szallitasimod')->findBy(array('nev' => $nev));
+        $me = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->findBy(array('nev' => $nev));
         if (!$me) {
             $me = new \Entities\Szallitasimod();
             $me->setNev($nev);
             $me->setWebes(false);
             $me->setFizmodok('1');
 
-            store::getEm()->persist($me);
-            store::getEm()->flush();
+            \mkw\store::getEm()->persist($me);
+            \mkw\store::getEm()->flush();
         }
         else {
             $me = $me[0];
@@ -2105,12 +2104,12 @@ class importController extends \mkwhelpers\Controller {
                     $rendelesek[$rid]['tszallmod'] = $this->toutf($t[$this->n('p')]);
                     $rendelesek[$rid]['tszallktg'] = $t[$this->n('q')] * 1;
                     $rendelesek[$rid]['tszallnev'] = $this->toutf($t[$this->n('r')]);
-                    $cim = \mkw\Store::explodeCim($this->toutf($t[$this->n('s')]));
+                    $cim = \mkw\store::explodeCim($this->toutf($t[$this->n('s')]));
                     $rendelesek[$rid]['tszallirszam'] = $cim[0];
                     $rendelesek[$rid]['tszallvaros'] = $cim[1];
                     $rendelesek[$rid]['tszallutca'] = $cim[2];
                     $rendelesek[$rid]['tszamlanev'] = $this->toutf($t[$this->n('t')]);
-                    $cim = \mkw\Store::explodeCim($this->toutf($t[$this->n('u')]));
+                    $cim = \mkw\store::explodeCim($this->toutf($t[$this->n('u')]));
                     $rendelesek[$rid]['tszamlairszam'] = $cim[0];
                     $rendelesek[$rid]['tszamlavaros'] = $cim[1];
                     $rendelesek[$rid]['tszamlautca'] = $cim[2];
@@ -2143,18 +2142,18 @@ class importController extends \mkwhelpers\Controller {
 
             foreach ($rendelesek as $rk => $r) {
                 $fej = new \Entities\Bizonylatfej();
-                $fej->setBizonylattipus(store::getEm()->getRepository('Entities\Bizonylattipus')->find('megrendeles'));
+                $fej->setBizonylattipus(\mkw\store::getEm()->getRepository('Entities\Bizonylattipus')->find('megrendeles'));
                 $fej->setPersistentData();
                 $fej->setErbizonylatszam($rk);
                 $partner = $this->createVateraPartner($r);
                 $fej->setPartner($partner);
                 $szallmod = $this->createVateraSzallitasimod($r['szallmod']);
                 $fej->setSzallitasimod($szallmod);
-                $ck = store::getEm()->getRepository('Entities\Raktar')->find(store::getParameter(\mkw\consts::Raktar));
+                $ck = \mkw\store::getEm()->getRepository('Entities\Raktar')->find(\mkw\store::getParameter(\mkw\consts::Raktar));
                 if ($ck) {
                     $fej->setRaktar($ck);
                 }
-                $ck = store::getEm()->getRepository('Entities\Fizmod')->find(store::getParameter(\mkw\consts::Fizmod));
+                $ck = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find(\mkw\store::getParameter(\mkw\consts::Fizmod));
                 if ($ck) {
                     $fej->setFizmod($ck);
                 }
@@ -2162,14 +2161,14 @@ class importController extends \mkwhelpers\Controller {
                 $fej->setTeljesites();
                 $fej->setEsedekesseg();
                 $fej->setHatarido($r['datum']);
-                $ck = store::getEm()->getRepository('Entities\Valutanem')->find(store::getParameter(\mkw\consts::Valutanem));
+                $ck = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
                 if ($ck) {
                     $fej->setValutanem($ck);
                     $fej->setBankszamla($ck->getBankszamla());
                 }
                 $fej->setArfolyam(1);
 
-                $ck = store::getEm()->getRepository('Entities\Bizonylatstatusz')->find(store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+                $ck = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
                 if ($ck) {
                     $fej->setBizonylatstatusz($ck);
                 }
@@ -2183,7 +2182,7 @@ class importController extends \mkwhelpers\Controller {
 
                 $hibascikkszam = array();
                 foreach ($r['termek'] as $rtetel) {
-                    $termek = store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $rtetel['tcikkszam']));
+                    $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $rtetel['tcikkszam']));
                     if ($termek) {
                         $tetel = new \Entities\Bizonylattetel();
                         $fej->addBizonylattetel($tetel);
@@ -2197,7 +2196,7 @@ class importController extends \mkwhelpers\Controller {
                         $tetel->setBruttoegysar($rtetel['egysar']);
                         $tetel->setBruttoegysarhuf($rtetel['egysar']);
                         $tetel->calc();
-                        store::getEm()->persist($tetel);
+                        \mkw\store::getEm()->persist($tetel);
                     }
                     else {
                         $hibascikkszam[] = $rtetel['tcikkszam'];
@@ -2209,8 +2208,8 @@ class importController extends \mkwhelpers\Controller {
 
                 $fej->setKellszallitasikoltsegetszamolni((boolean)$r['szallktg']);
                 $fej->setSzallitasikoltsegbrutto($r['szallktg']);
-                store::getEm()->persist($fej);
-                store::getEm()->flush();
+                \mkw\store::getEm()->persist($fej);
+                \mkw\store::getEm()->flush();
                 /**
                  * $statusz = $fej->getBizonylatstatusz();
                  * if ($statusz) {
@@ -2275,7 +2274,7 @@ class importController extends \mkwhelpers\Controller {
         move_uploaded_file($_FILES['toimport']['tmp_name'], 'szinvarimport.csv');
         $fh = fopen('szinvarimport.csv', 'r');
         if ($fh) {
-            $afa = store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
+            $afa = \mkw\store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
             $afa = $afa[0];
             $szinvalt = $this->createTermekValtozatAdatTipus('Szín');
             $meretvalt = $this->createTermekValtozatAdatTipus('Méret');
@@ -2291,7 +2290,7 @@ class importController extends \mkwhelpers\Controller {
                 else {
                     $vtsz = $this->createVtsz('-', $afa);
                 }
-                $termek = store::getEm()->getRepository('Entities\Termek')->findOneBy(array('cikkszam' => $data[$this->n('e')], 'nev' => $data[$this->n('f')]));
+                $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findOneBy(array('cikkszam' => $data[$this->n('e')], 'nev' => $data[$this->n('f')]));
                 if (!$termek) {
 
                     $parent = $this->getKategoriaByIdegenkod((string)$data[$this->n('a')]);
@@ -2313,7 +2312,7 @@ class importController extends \mkwhelpers\Controller {
                     $valt->setErtek2($data[$this->n('j')]);
                     $valt->setCikkszam($data[$this->n('e')]);
                     $valt->setVonalkod($data[$this->n('d')]);
-                    store::getEm()->persist($valt);
+                    \mkw\store::getEm()->persist($valt);
                 }
                 else {
                     $termek->setNev($data[$this->n('f')]);
@@ -2321,7 +2320,7 @@ class importController extends \mkwhelpers\Controller {
                     $termek->setTermekfa1($parent);
                     $termek->setVtsz($vtsz);
 
-                    $valt = store::getEm()->getRepository('Entities\TermekValtozat')->findByVonalkod($data[$this->n('d')]);
+                    $valt = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->findByVonalkod($data[$this->n('d')]);
                     if (!$valt) {
                         $valt = new \Entities\TermekValtozat();
                         $valt->setTermek($termek);
@@ -2335,10 +2334,10 @@ class importController extends \mkwhelpers\Controller {
                     $valt->setAdatTipus2($meretvalt);
                     $valt->setErtek2($data[$this->n('j')]);
                     $valt->setCikkszam($data[$this->n('e')]);
-                    store::getEm()->persist($valt);
+                    \mkw\store::getEm()->persist($valt);
                 }
-                store::getEm()->persist($termek);
-                store::getEm()->flush();
+                \mkw\store::getEm()->persist($termek);
+                \mkw\store::getEm()->flush();
             }
         }
         fclose($fh);
@@ -2352,13 +2351,13 @@ class importController extends \mkwhelpers\Controller {
         move_uploaded_file($_FILES['toimport']['tmp_name'], 'szinvarpartner.csv');
         $fh = fopen('szinvarpartner.csv', 'r');
         if ($fh) {
-            $tipuskat = store::getEm()->getRepository('Entities\Partnercimkekat')->findOneBynev('Típus');
+            $tipuskat = \mkw\store::getEm()->getRepository('Entities\Partnercimkekat')->findOneBynev('Típus');
             if (!$tipuskat) {
                 $tipuskat = new \Entities\Partnercimkekat();
                 $tipuskat->setLathato(true);
                 $tipuskat->setNev('Típus');
-                store::getEm()->persist($tipuskat);
-                store::getEm()->flush();
+                \mkw\store::getEm()->persist($tipuskat);
+                \mkw\store::getEm()->flush();
             }
             $termekdb = 0;
             while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
@@ -2402,8 +2401,8 @@ class importController extends \mkwhelpers\Controller {
                         $me->addCimke($marka);
                     }
                 }
-                store::getEm()->persist($me);
-                store::getEm()->flush();
+                \mkw\store::getEm()->persist($me);
+                \mkw\store::getEm()->flush();
             }
         }
         fclose($fh);
@@ -2411,11 +2410,11 @@ class importController extends \mkwhelpers\Controller {
     }
 
     public function szimport() {
-//        $translaterepo = store::getEm()->getRepository('Gedmo\Translatable\Entity\Translation');
+//        $translaterepo = \mkw\store::getEm()->getRepository('Gedmo\Translatable\Entity\Translation');
 
         $createuj = $this->params->getBoolRequestParam('createuj', false);
         $parentid = $this->params->getIntRequestParam('katid', 0);
-        $parent = store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+        $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
         $dbig = $this->params->getIntRequestParam('dbig', 0);
         $dbtol = $this->params->getIntRequestParam('dbtol', 0);
         if ($dbtol < 2) {
@@ -2438,12 +2437,12 @@ class importController extends \mkwhelpers\Controller {
         $maxcol = $sheet->getHighestColumn();
         $maxcolindex = \PHPExcel_Cell::columnIndexFromString($maxcol);
 
-        $afa = store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
+        $afa = \mkw\store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
         $afa = $afa[0];
-        $termekrepo = store::getEm()->getRepository('Entities\Termek');
-        $termekarrepo = store::getEm()->getRepository('Entities\TermekAr');
+        $termekrepo = \mkw\store::getEm()->getRepository('Entities\Termek');
+        $termekarrepo = \mkw\store::getEm()->getRepository('Entities\TermekAr');
         $valutanemek = array();
-        $vnemek = store::getEm()->getRepository('Entities\Valutanem')->getAll(array(), array());
+        $vnemek = \mkw\store::getEm()->getRepository('Entities\Valutanem')->getAll(array(), array());
         foreach ($vnemek as $vn) {
             $valutanemek[$vn->getNev()] = $vn;
         }
@@ -2480,10 +2479,10 @@ class importController extends \mkwhelpers\Controller {
                 }
                 elseif ($cell->getValue() && substr($fej[$col], 0, 4) == 'nev_') {
                     $nyelv = strtoupper(substr($fej[$col], 4));
-                    $nev[\mkw\Store::getLocale($nyelv)] = $cell->getValue();
+                    $nev[\mkw\store::getLocale($nyelv)] = $cell->getValue();
                 }
                 elseif ($cell->getValue() && substr($fej[$col], 0, 3) == 'nev') {
-                    $nev[\mkw\Store::getLocale('HU')] = $cell->getValue();
+                    $nev[\mkw\store::getLocale('HU')] = $cell->getValue();
                 }
                 elseif ($cell->getValue() && substr($fej[$col], 0, 6) == 'netto_') {
                     $n = explode('_', $fej[$col]);
@@ -2553,7 +2552,7 @@ class importController extends \mkwhelpers\Controller {
                                     $ar->setAzonosito($ename);
                                 }
                                 $ar->setBrutto($ertek);
-                                store::getEm()->persist($ar);
+                                \mkw\store::getEm()->persist($ar);
                             }
                         }
                     }
@@ -2576,7 +2575,7 @@ class importController extends \mkwhelpers\Controller {
                                     $ar->setAzonosito($ename);
                                 }
                                 $ar->setNetto($ertek);
-                                store::getEm()->persist($ar);
+                                \mkw\store::getEm()->persist($ar);
                             }
                         }
                     }
@@ -2584,9 +2583,9 @@ class importController extends \mkwhelpers\Controller {
 
                 if ($nev) {
                     foreach ($nev as $loc => $text) {
-                        if ($loc !== store::getTranslationListener()->getDefaultLocale()) {
+                        if ($loc !== \mkw\store::getTranslationListener()->getDefaultLocale()) {
                             if (!$ujtermek) {
-                                $translation = store::getEm()->getRepository('Entities\TermekTranslation')->findBy(
+                                $translation = \mkw\store::getEm()->getRepository('Entities\TermekTranslation')->findBy(
                                     array('object' => $termek->getId(), 'locale' => $loc, 'field' => 'nev'));
                                 if ($translation) {
                                     $translation = $translation[0];
@@ -2598,27 +2597,27 @@ class importController extends \mkwhelpers\Controller {
                             }
                             $translation->setLocale($loc);
                             $translation->setContent($text);
-                            store::getEm()->persist($translation);
+                            \mkw\store::getEm()->persist($translation);
                         }
                         else {
                             $termek->setNev($text);
                         }
                     }
                 }
-                store::getEm()->persist($termek);
-                store::getEm()->flush();
+                \mkw\store::getEm()->persist($termek);
+                \mkw\store::getEm()->flush();
 
 //                if (is_array($nev)) {
 //                    foreach($nev as $loc => $text) {
 //                        $termek->setNev($text);
 //                        $termek->setTranslatableLocale($loc);
-//                        store::getEm()->persist($termek);
-//                        store::getEm()->flush();
+//                        \mkw\store::getEm()->persist($termek);
+//                        \mkw\store::getEm()->flush();
 //                    }
 //                }
 //                else {
-//                    store::getEm()->persist($termek);
-//                    store::getEm()->flush();
+//                    \mkw\store::getEm()->persist($termek);
+//                    \mkw\store::getEm()->flush();
 //                }
             }
         }
@@ -2632,13 +2631,13 @@ class importController extends \mkwhelpers\Controller {
 //        move_uploaded_file($_FILES['toimport']['tmp_name'], 'siikerpartnerek.csv');
         $fh = fopen('siikerpartnerek.csv', 'r');
         if ($fh) {
-            $tipuskat = store::getEm()->getRepository('Entities\Partnercimkekat')->findOneBynev('Típus');
+            $tipuskat = \mkw\store::getEm()->getRepository('Entities\Partnercimkekat')->findOneBynev('Típus');
             if (!$tipuskat) {
                 $tipuskat = new \Entities\Partnercimkekat();
                 $tipuskat->setLathato(true);
                 $tipuskat->setNev('Típus');
-                store::getEm()->persist($tipuskat);
-                store::getEm()->flush();
+                \mkw\store::getEm()->persist($tipuskat);
+                \mkw\store::getEm()->flush();
             }
             $termekdb = 0;
             while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
@@ -2682,8 +2681,8 @@ class importController extends \mkwhelpers\Controller {
                 if ($marka) {
                     $me->addCimke($marka);
                 }
-                store::getEm()->persist($me);
-                store::getEm()->flush();
+                \mkw\store::getEm()->persist($me);
+                \mkw\store::getEm()->flush();
             }
         }
         fclose($fh);

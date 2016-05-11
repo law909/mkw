@@ -2,9 +2,7 @@
 
 namespace Controllers;
 
-use mkwhelpers,
-    mkw\store;
-use Entities;
+use mkwhelpers, Entities;
 
 class adminController extends mkwhelpers\Controller {
 
@@ -26,17 +24,17 @@ class adminController extends mkwhelpers\Controller {
         $view->setVar('pagetitle', t('Főoldal'));
 
         $raktar = new raktarController($this->params);
-        $raktarid = store::getParameter(\mkw\consts::Raktar, 0);
+        $raktarid = \mkw\store::getParameter(\mkw\consts::Raktar, 0);
         $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
 
         $megrend = new megrendelesfejController($this->params);
         $view->setVar('teljesithetobackorderek', $megrend->getTeljesithetoBackorderLista());
 
         $lista = new listaController($this->params);
-        switch (\mkw\Store::getTheme()) {
+        switch (\mkw\store::getTheme()) {
             case 'superzone':
-                $napijelentesdatum = date(\mkw\Store::$DateFormat);
-                $igdatum = date(\mkw\Store::$DateFormat);
+                $napijelentesdatum = date(\mkw\store::$DateFormat);
+                $igdatum = date(\mkw\store::$DateFormat);
                 $view->setVar('napijelenteslista', $lista->napiJelentes($napijelentesdatum, $igdatum));
                 break;
             case 'mkwcansas':
@@ -53,9 +51,9 @@ class adminController extends mkwhelpers\Controller {
     public function printNapijelentes() {
         $lista = new listaController($this->params);
         $datumstr = $this->params->getStringRequestParam('datum');
-        $datum = \mkw\Store::convDate($datumstr);
+        $datum = \mkw\store::convDate($datumstr);
         $igdatumstr = $this->params->getStringRequestParam('datumig');
-        $igdatum = \mkw\Store::convDate($igdatumstr);
+        $igdatum = \mkw\store::convDate($igdatumstr);
         $view = $this->createView('napijelentesbody.tpl');
         $view->setVar('napijelenteslista', $lista->napiJelentes($datum, $igdatum));
 
@@ -66,9 +64,9 @@ class adminController extends mkwhelpers\Controller {
         $lista = new listaController($this->params);
 
         $datumstr = $this->params->getStringRequestParam('tol');
-        $datum = \mkw\Store::convDate($datumstr);
+        $datum = \mkw\store::convDate($datumstr);
         $igdatumstr = $this->params->getStringRequestParam('ig');
-        $igdatum = \mkw\Store::convDate($igdatumstr);
+        $igdatum = \mkw\store::convDate($igdatumstr);
 
         $view = $this->createView('teljesitmenyjelentesbody.tpl');
         $view->setVar('tjlista', $lista->teljesitmenyJelentes($datum, $igdatum));
@@ -76,7 +74,7 @@ class adminController extends mkwhelpers\Controller {
     }
 
     public function regeneratekarkod() {
-        $farepo = store::getEm()->getRepository('Entities\TermekFa');
+        $farepo = \mkw\store::getEm()->getRepository('Entities\TermekFa');
         $farepo->regenerateKarKod();
         echo 'ok';
     }
@@ -93,29 +91,29 @@ class adminController extends mkwhelpers\Controller {
     }
 
     public function setUITheme() {
-        $dolgozo = $this->getRepo('Entities\Dolgozo')->find(\mkw\Store::getAdminSession()->loggedinuser['id']);
+        $dolgozo = $this->getRepo('Entities\Dolgozo')->find(\mkw\store::getAdminSession()->loggedinuser['id']);
         if ($dolgozo) {
             $theme = $this->params->getStringRequestParam('uitheme', 'sunny');
             $dolgozo->setUitheme($theme);
             $this->getEm()->persist($dolgozo);
             $this->getEm()->flush();
-            \mkw\Store::getAdminSession()->loggedinuser['uitheme'] = $theme;
+            \mkw\store::getAdminSession()->loggedinuser['uitheme'] = $theme;
         }
     }
 
     public function getSmallUrl() {
-        echo \mkw\Store::createSmallImageUrl($this->params->getStringRequestParam('url'));
+        echo \mkw\store::createSmallImageUrl($this->params->getStringRequestParam('url'));
     }
 
     public function setVonalkodFromValtozat() {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('vonalkod', '=', '');
-        $termekek = store::getEm()->getRepository('Entities\Termek')->getAll($filter, array());
+        $termekek = \mkw\store::getEm()->getRepository('Entities\Termek')->getAll($filter, array());
         foreach ($termekek as $termek) {
             $valtozatok = $termek->getValtozatok();
             $termek->setVonalkod($valtozatok[0]->getVonalkod());
-            store::getEm()->persist($termek);
-            store::getEm()->flush();
+            \mkw\store::getEm()->persist($termek);
+            \mkw\store::getEm()->flush();
         }
         echo 'ok';
     }

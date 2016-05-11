@@ -22,7 +22,7 @@ class b2bpartnerController extends partnerController {
 
         if (!$hibas) {
             /** @var \Entities\Uzletkoto $uk */
-            $uk = \mkw\Store::getLoggedInUK();
+            $uk = \mkw\store::getLoggedInUK();
             if ($uk) {
                 $partner = new \Entities\Partner();
                 // emailt az uzletkotonek kell kuldeni es egy kozponti cimre
@@ -40,8 +40,8 @@ class b2bpartnerController extends partnerController {
                 $partner->setSzallitasimod($uk->getPartnerszallitasimod());
                 $partner->setSzamlatipus($uk->getPartnerszamlatipus());
                 $partner->setTermekarazonosito($uk->getPartnertermekarazonosito());
-                if (\mkw\Store::getTheme() === 'superzone') {
-                    $spanyol = $this->getRepo('Entities\Partnercimketorzs')->find(\mkw\Store::getParameter(\mkw\consts::SpanyolCimke));
+                if (\mkw\store::getTheme() === 'superzone') {
+                    $spanyol = $this->getRepo('Entities\Partnercimketorzs')->find(\mkw\store::getParameter(\mkw\consts::SpanyolCimke));
                     if ($spanyol) {
                         $partner->addCimke($spanyol);
                     }
@@ -57,14 +57,14 @@ class b2bpartnerController extends partnerController {
                         $tpldata = array(
                             'keresztnev' => $keresztnev,
                             'vezeteknev' => $vezeteknev,
-                            'fiokurl' => \mkw\Store::getRouter()->generate('showaccount', true),
-                            'url' => \mkw\Store::getFullUrl()
+                            'fiokurl' => \mkw\store::getRouter()->generate('showaccount', true),
+                            'url' => \mkw\store::getFullUrl()
                         );
                         $subject = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                         $subject->setVar('user', $tpldata);
                         $body = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
                         $body->setVar('user', $tpldata);
-                        $mailer = \mkw\Store::getMailer();
+                        $mailer = \mkw\store::getMailer();
                         $mailer->setTo($uk->getEmail());
                         $mailer->setSubject($subject->getTemplateResult());
                         $mailer->setMessage($body->getTemplateResult());
@@ -72,10 +72,10 @@ class b2bpartnerController extends partnerController {
                     }
                 }
                 //\Zend_Session::writeClose();
-                Header('Location: ' . \mkw\Store::getRouter()->generate('showaccount'));
+                Header('Location: ' . \mkw\store::getRouter()->generate('showaccount'));
             }
             else {
-                Header('Location: ' . \mkw\Store::getRouter()->generate('showlogin'));
+                Header('Location: ' . \mkw\store::getRouter()->generate('showlogin'));
             }
         }
         else {
@@ -85,9 +85,9 @@ class b2bpartnerController extends partnerController {
 
     public function showRegistrationForm($hibak = array()) {
         $view = $this->getTemplateFactory()->createMainView('regisztracio.tpl');
-        $view->setVar('pagetitle', t('Regisztráció') . ' - ' . \mkw\Store::getParameter(\mkw\consts::Oldalcim));
+        $view->setVar('pagetitle', t('Regisztráció') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
         $view->setVar('hibak', $hibak);
-        \mkw\Store::fillTemplate($view);
+        \mkw\store::fillTemplate($view);
         $ptcsk = new partnertermekcsoportkedvezmenyController($this->params);
         $ptcsklist = $ptcsk->getFiokList(true);
         $view->setVar('discountlist', $ptcsklist);
@@ -99,11 +99,11 @@ class b2bpartnerController extends partnerController {
             $ujpartnerid = $this->params->getIntRequestParam('partner');
         }
         $user = $this->getRepo()->find($ujpartnerid);
-        $regiuser = \mkw\Store::getLoggedInUser();
+        $regiuser = \mkw\store::getLoggedInUser();
         if ($user) {
 
             // pseudo logout old user
-            \mkw\Store::clearLoggedInUser();
+            \mkw\store::clearLoggedInUser();
             if ($regiuser) {
                 $regiuser->setSessionid('');
                 $this->getEm()->persist($regiuser);
@@ -111,7 +111,7 @@ class b2bpartnerController extends partnerController {
             }
             $kc = new kosarController($this->params);
             $kc->removeSessionId(\Zend_Session::getId());
-            \mkw\Store::getMainSession()->pk = null;
+            \mkw\store::getMainSession()->pk = null;
 
             // pseudo login new user
             $user->setSessionid(\Zend_Session::getId());
@@ -119,7 +119,7 @@ class b2bpartnerController extends partnerController {
             $user->clearPasswordreminder();
             $this->getEm()->persist($user);
             $this->getEm()->flush();
-            \mkw\Store::getMainSession()->pk = $user->getId();
+            \mkw\store::getMainSession()->pk = $user->getId();
         }
     }
 

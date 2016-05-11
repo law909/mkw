@@ -2,8 +2,6 @@
 
 namespace Entities;
 
-use mkw\store;
-
 class PartnerRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
@@ -97,7 +95,7 @@ class PartnerRepository extends \mkwhelpers\Repository {
                 $cimkekodok = $cimkefilter;
             }
             if ($cimkekodok) {
-                $q = \mkw\Store::getEm()->createQuery('SELECT p.id FROM Entities\Partnercimketorzs pc JOIN pc.partnerek p WHERE pc.id IN (' . $cimkekodok . ')');
+                $q = \mkw\store::getEm()->createQuery('SELECT p.id FROM Entities\Partnercimketorzs pc JOIN pc.partnerek p WHERE pc.id IN (' . $cimkekodok . ')');
                 $res = $q->getScalarResult();
                 foreach ($res as $sor) {
                     $partnerkodok[] = $sor['id'];
@@ -119,7 +117,7 @@ class PartnerRepository extends \mkwhelpers\Repository {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
             ->addFilter('email', '=', $user)
-            ->addFilter('jelszo', '=', sha1(strtoupper(md5($pass)) . store::getSalt()));
+            ->addFilter('jelszo', '=', sha1(strtoupper(md5($pass)) . \mkw\store::getSalt()));
 		return $this->getAll($filter, array());
 	}
 
@@ -148,8 +146,8 @@ class PartnerRepository extends \mkwhelpers\Repository {
     }
 
     public function checkloggedin() {
-        if (isset(\mkw\Store::getMainSession()->pk)) {
-            $users = $this->findByIdSessionid(\mkw\Store::getMainSession()->pk, \Zend_Session::getId());
+        if (isset(\mkw\store::getMainSession()->pk)) {
+            $users = $this->findByIdSessionid(\mkw\store::getMainSession()->pk, \Zend_Session::getId());
             return count($users) == 1;
         }
         return false;
@@ -157,14 +155,14 @@ class PartnerRepository extends \mkwhelpers\Repository {
 
     public function getLoggedInUser() {
         if ($this->checkloggedin()) {
-            return $this->find(\mkw\Store::getMainSession()->pk);
+            return $this->find(\mkw\store::getMainSession()->pk);
         }
         return null;
     }
 
 	public function checkloggedinUKPartner() {
-		if (isset(\mkw\Store::getMainSession()->ukpartner)) {
-			$users = $this->findByIdSessionid(\mkw\Store::getMainSession()->ukpartner, \Zend_Session::getId());
+		if (isset(\mkw\store::getMainSession()->ukpartner)) {
+			$users = $this->findByIdSessionid(\mkw\store::getMainSession()->ukpartner, \Zend_Session::getId());
 			return count($users) == 1;
 		}
 		return false;
@@ -172,7 +170,7 @@ class PartnerRepository extends \mkwhelpers\Repository {
 
 	public function getLoggedInUKPartner() {
 		if ($this->checkloggedinUKPartner()) {
-			return $this->find(\mkw\Store::getMainSession()->ukpartner);
+			return $this->find(\mkw\store::getMainSession()->ukpartner);
 		}
 		return null;
 	}

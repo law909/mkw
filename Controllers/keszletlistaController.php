@@ -14,7 +14,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
     public function view() {
         $view = $this->createView('keszletlista.tpl');
 
-        $view->setVar('datum', date(\mkw\Store::$DateFormat));
+        $view->setVar('datum', date(\mkw\store::$DateFormat));
 
         $rc = new raktarController($this->params);
         $view->setVar('raktarlist', $rc->getSelectList());
@@ -33,7 +33,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         }
 
         $this->datumstr = $this->params->getStringRequestParam('datum');
-        $this->datumstr = date(\mkw\Store::$DateFormat, strtotime(\mkw\Store::convDate($this->datumstr)));
+        $this->datumstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->datumstr)));
 
         $filter = new FilterDescriptor();
         $filter
@@ -54,7 +54,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         if (!empty($fv)) {
             $ff = new FilterDescriptor();
             $ff->addFilter('id', 'IN', $fv);
-            $res = \mkw\Store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, array());
+            $res = \mkw\store::getEm()->getRepository('Entities\TermekFa')->getAll($ff, array());
             $faszuro = array();
             foreach ($res as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';

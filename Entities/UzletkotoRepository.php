@@ -50,8 +50,8 @@ class UzletkotoRepository extends \mkwhelpers\Repository {
     }
 
     public function checkloggedin() {
-        if (isset(\mkw\Store::getMainSession()->uk)) {
-            $users = $this->findByIdSessionid(\mkw\Store::getMainSession()->uk, \Zend_Session::getId());
+        if (isset(\mkw\store::getMainSession()->uk)) {
+            $users = $this->findByIdSessionid(\mkw\store::getMainSession()->uk, \Zend_Session::getId());
             return count($users) == 1;
         }
         return false;
@@ -59,7 +59,7 @@ class UzletkotoRepository extends \mkwhelpers\Repository {
 
     public function getLoggedInUK() {
         if ($this->checkloggedin()) {
-            return $this->find(\mkw\Store::getMainSession()->uk);
+            return $this->find(\mkw\store::getMainSession()->uk);
         }
         return null;
     }

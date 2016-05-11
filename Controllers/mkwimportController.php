@@ -2,14 +2,12 @@
 
 namespace Controllers;
 
-use mkw\Store;
-
 class mkwimportController extends \mkwhelpers\Controller {
     private function createMindentkapniGyarto($tomb) {
         if (!$tomb['nev']) {
             return null;
         }
-        $gy = Store::getEm()->getRepository('Entities\Partner')->findByNev($tomb['nev']);
+        $gy = \mkw\store::getEm()->getRepository('Entities\Partner')->findByNev($tomb['nev']);
         $gyarto = false;
         if ($gy) {
             $gyarto = $gy[0];
@@ -22,7 +20,7 @@ class mkwimportController extends \mkwhelpers\Controller {
             $gyarto->setUtca($tomb['utca']);
             $gyarto->setNev($tomb['nev']);
             $gyarto->setTelefon($tomb['telefon']);
-            store::getEm()->persist($gyarto);
+            \mkw\store::getEm()->persist($gyarto);
         }
         return $gyarto;
     }
@@ -34,13 +32,13 @@ class mkwimportController extends \mkwhelpers\Controller {
             //$nev='Üres';
             return null;
         }
-        $cimke1 = store::getEm()->getRepository('Entities\Termekcimketorzs')->getByNevAndKategoria($nev, $marka);
+        $cimke1 = \mkw\store::getEm()->getRepository('Entities\Termekcimketorzs')->getByNevAndKategoria($nev, $marka);
         if (!$cimke1) {
             $cimke1 = new Entities\Termekcimketorzs();
             $cimke1->setKategoria($marka);
             $cimke1->setNev($nev);
 //			$cimke1->setKepurl($filenev);
-            store::getEm()->persist($cimke1);
+            \mkw\store::getEm()->persist($cimke1);
         }
         return $cimke1;
     }
@@ -52,13 +50,13 @@ class mkwimportController extends \mkwhelpers\Controller {
             //$nev='Üres';
             return null;
         }
-        $cimke1 = store::getEm()->getRepository('Entities\Termekcimketorzs')->getByNevAndKategoria($nev, $jelzo);
+        $cimke1 = \mkw\store::getEm()->getRepository('Entities\Termekcimketorzs')->getByNevAndKategoria($nev, $jelzo);
         if (!$cimke1) {
             $cimke1 = new Entities\Termekcimketorzs();
             $cimke1->setKategoria($jelzo);
             $cimke1->setNev($nev);
 //			$cimke1->setKepurl($filenev);
-            store::getEm()->persist($cimke1);
+            \mkw\store::getEm()->persist($cimke1);
         }
         return $cimke1;
     }
@@ -67,11 +65,11 @@ class mkwimportController extends \mkwhelpers\Controller {
         if (!$nev) {
             return null;
         }
-        $at = store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->findOneBy(array('nev' => $nev));
+        $at = \mkw\store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->findOneBy(array('nev' => $nev));
         if (!$at) {
             $at = new Entities\TermekValtozatAdatTipus();
             $at->setNev($nev);
-            store::getEm()->persist($at);
+            \mkw\store::getEm()->persist($at);
         }
         return $at;
     }
@@ -136,7 +134,7 @@ class mkwimportController extends \mkwhelpers\Controller {
         $data = fgetcsv($import, 0, ';', '"');
         while (($data = fgetcsv($import, 0, ';', '"')) !== false) {
             $this->writelog('megvasarlasdb: ' . trim($data[0]));
-            $q = \mkw\Store::getEm()->createQuery('UPDATE Entities\Termek x SET x.megvasarlasdb=' . trim($data[1]) . ' WHERE x.idegenkod=' . trim($data[0]) . '');
+            $q = \mkw\store::getEm()->createQuery('UPDATE Entities\Termek x SET x.megvasarlasdb=' . trim($data[1]) . ' WHERE x.idegenkod=' . trim($data[0]) . '');
             $this->writelog($q->getSQL());
             $q->Execute();
         }
@@ -177,7 +175,7 @@ class mkwimportController extends \mkwhelpers\Controller {
             $record = 1000000000;
         }
 
-        $conn = \mkw\Store::getEm()->getConnection();
+        $conn = \mkw\store::getEm()->getConnection();
 
         while ((($data = fgetcsv($import, 0, ';', '"')) !== false) && ($szam <= $record + 1000)) {
             $this->writelog('1');
@@ -186,12 +184,12 @@ class mkwimportController extends \mkwhelpers\Controller {
                 $idegenkod = $idegenkod + 4000000;
             }
             $email = trim($data[9]);
-            $q = \mkw\Store::getEm()->createQuery('SELECT COUNT(x) FROM Entities\Partner x WHERE x.email=:e');
+            $q = \mkw\store::getEm()->createQuery('SELECT COUNT(x) FROM Entities\Partner x WHERE x.email=:e');
             $q->setParameters(array('e' => $email));
             $r = $q->getScalarResult();
             if ($r[0][1] == 0) {
                 $this->writelog('2');
-                $q = \mkw\Store::getEm()->createQuery('SELECT COUNT(x) FROM Entities\Partner x WHERE x.idegenkod=:e');
+                $q = \mkw\store::getEm()->createQuery('SELECT COUNT(x) FROM Entities\Partner x WHERE x.idegenkod=:e');
                 $q->setParameters(array('e' => $idegenkod));
                 $r = $q->getScalarResult();
                 if ($r[0][1] == 0) {
@@ -268,9 +266,9 @@ class mkwimportController extends \mkwhelpers\Controller {
         }
 
         while ((($data = fgetcsv($import, 0, ';', '"')) !== false) && ($szam <= $record + 1000)) {
-            $ppp = \mkw\Store::getEm()->getRepository('Entities\Partner')->findByIdegenkod(trim($data[0]));
+            $ppp = \mkw\store::getEm()->getRepository('Entities\Partner')->findByIdegenkod(trim($data[0]));
             if (!$ppp) {
-                \mkw\Store::writelog('szam=' . $szam . ' idegenkod=' . trim($data[0]));
+                \mkw\store::writelog('szam=' . $szam . ' idegenkod=' . trim($data[0]));
                 $szam++;
                 $p = new Entities\Partner();
                 $p->setIdegenkod(trim($data[0]));
@@ -297,8 +295,8 @@ class mkwimportController extends \mkwhelpers\Controller {
                 $p->setOldloginname(trim($data[5]));
                 $p->setMkwJelszo(trim($data[6]));
                 $p->setEmail(trim($data[9]));
-                store::getEm()->persist($p);
-                store::getEm()->flush();
+                \mkw\store::getEm()->persist($p);
+                \mkw\store::getEm()->flush();
             }
         }
         fclose($import);
@@ -506,27 +504,27 @@ class mkwimportController extends \mkwhelpers\Controller {
         foreach ($termekvaltozattomb as $vari) {
             foreach ($vari as $k => $v) {
                 $this->createMindentkapniTVAdatTipus($k);
-                store::getEm()->flush();
+                \mkw\store::getEm()->flush();
             }
         }
 
-        $markakat = store::getEm()->getRepository('Entities\Termekcimkekat')->findOneBynev('Márkák');
+        $markakat = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->findOneBynev('Márkák');
         if (!$markakat) {
             $markakat = new Entities\Termekcimkekat();
             $markakat->setLathato(true);
             $markakat->setNev('Márkák');
-            store::getEm()->persist($markakat);
+            \mkw\store::getEm()->persist($markakat);
         }
-        $jelzokat = store::getEm()->getRepository('Entities\Termekcimkekat')->findOneBynev('Jelzők');
+        $jelzokat = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->findOneBynev('Jelzők');
         if (!$jelzokat) {
             $jelzokat = new Entities\Termekcimkekat();
             $jelzokat->setLathato(true);
             $jelzokat->setNev('Jelzők');
-            store::getEm()->persist($jelzokat);
+            \mkw\store::getEm()->persist($jelzokat);
         }
-        $vtsz = store::getEm()->getRepository('Entities\Vtsz')->find(2);
-        $afa = store::getEm()->getRepository('Entities\Afa')->find(3);
-        $valuta = store::getEm()->getRepository('Entities\Valutanem')->find(1);
+        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->find(2);
+        $afa = \mkw\store::getEm()->getRepository('Entities\Afa')->find(3);
+        $valuta = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find(1);
 
         $import = fopen('termek.csv', 'r');
         $termekcikl = 0;
@@ -540,7 +538,7 @@ class mkwimportController extends \mkwhelpers\Controller {
 //			if (true) {
                 $termek = new Entities\Termek();
                 $termek->setIdegenkod($data[0]);
-                $kat = store::getEm()->getRepository('Entities\TermekFa')->find($data[5]);
+                $kat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($data[5]);
                 if ($kat) {
                     $termek->setTermekfa1($kat);
                 }
@@ -586,7 +584,7 @@ class mkwimportController extends \mkwhelpers\Controller {
                   $termek->addTermekKep($tk);
                   $tk->setLeiras($kadat[0]);
                   $tk->setUrl($kadat[1]);
-                  store::getEm()->persist($tk);
+                  \mkw\store::getEm()->persist($tk);
                   }
                   }
                  */
@@ -601,19 +599,19 @@ class mkwimportController extends \mkwhelpers\Controller {
 
                 if (array_key_exists($data[0], $termekcimketomb)) {
                     foreach ($termekcimketomb[$data[0]] as $cadat) {
-                        $ckat = store::getEm()->getRepository('Entities\Termekcimkekat')->findOneBynev($cadat[0]);
+                        $ckat = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->findOneBynev($cadat[0]);
                         if (!$ckat) {
                             $ckat = new Entities\Termekcimkekat();
                             $ckat->setLathato(true);
                             $ckat->setNev($cadat[0]);
-                            store::getEm()->persist($ckat);
+                            \mkw\store::getEm()->persist($ckat);
                         }
-                        $cimkex = store::getEm()->getRepository('Entities\Termekcimketorzs')->getByNevAndKategoria($cadat[1], $ckat);
+                        $cimkex = \mkw\store::getEm()->getRepository('Entities\Termekcimketorzs')->getByNevAndKategoria($cadat[1], $ckat);
                         if (!$cimkex) {
                             $cimkex = new Entities\Termekcimketorzs();
                             $cimkex->setKategoria($ckat);
                             $cimkex->setNev($cadat[1]);
-                            store::getEm()->persist($cimkex);
+                            \mkw\store::getEm()->persist($cimkex);
                         }
                         $termek->addCimke($cimkex);
                     }
@@ -648,13 +646,13 @@ class mkwimportController extends \mkwhelpers\Controller {
                             $cnt++;
                         }
                         $valt->setElerheto($elerheto);
-                        store::getEm()->persist($valt);
+                        \mkw\store::getEm()->persist($valt);
                     }
                     unset($valtozattomb);
                 }
 
-                store::getEm()->persist($termek);
-                store::getEm()->flush();
+                \mkw\store::getEm()->persist($termek);
+                \mkw\store::getEm()->flush();
                 unset($termek);
                 $this->writelog($data[0]);
             }

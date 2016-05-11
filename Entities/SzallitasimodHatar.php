@@ -65,7 +65,7 @@ class SzallitasimodHatar {
      */
     public function setSzallitasimod($val) {
         if (!($val instanceof \Entities\Szallitasimod)) {
-            $val = \mkw\Store::getEm()->getRepository('Entities\Szallitasimod')->find($val);
+            $val = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($val);
         }
         $this->szallitasimod = $val;
     }
@@ -98,7 +98,7 @@ class SzallitasimodHatar {
      */
     public function setValutanem($val) {
         if (!($val instanceof \Entities\Valutanem)) {
-            $val = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find($val);
+            $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
         }
         $this->valutanem = $val;
     }

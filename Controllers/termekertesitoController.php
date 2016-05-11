@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use mkw\store;
-
 class termekertesitoController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -58,7 +56,7 @@ class termekertesitoController extends \mkwhelpers\MattableController {
     }
 
     public function sendErtesito($termek) {
-        $mailer = \mkw\Store::getMailer();
+        $mailer = \mkw\store::getMailer();
         $emailtpl = $this->getEm()->getRepository('Entities\Emailtemplate')->findOneByNev('termekertesito');
         if ($emailtpl) {
             $ertesitok = $this->getRepo()->getByTermek($termek);
@@ -77,13 +75,13 @@ class termekertesitoController extends \mkwhelpers\MattableController {
                     $user = array(
                         'keresztnev' => $knev,
                         'vezeteknev' => $vnev,
-                        'fiokurl' => \mkw\Store::getRouter()->generate('showaccount', \mkw\Store::getConfigValue('mainurl', true)),
-                        'url' => \mkw\Store::getFullUrl(null, \mkw\Store::getConfigValue('mainurl'))
+                        'fiokurl' => \mkw\store::getRouter()->generate('showaccount', \mkw\store::getConfigValue('mainurl', true)),
+                        'url' => \mkw\store::getFullUrl(null, \mkw\store::getConfigValue('mainurl'))
                     );
                     $term = array(
                         'nev' => $termek->getNev(),
-                        'url' => \mkw\Store::getRouter()->generate('showtermek', \mkw\Store::getConfigValue('mainurl', true), array('slug' => $termek->getSlug())),
-                        'kepurl' => \mkw\Store::getFullUrl($termek->getKepurlSmall(), \mkw\Store::getConfigValue('mainurl'))
+                        'url' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl', true), array('slug' => $termek->getSlug())),
+                        'kepurl' => \mkw\store::getFullUrl($termek->getKepurlSmall(), \mkw\store::getConfigValue('mainurl'))
                     );
                     $subject = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                     $subject->setVar('user', $user);

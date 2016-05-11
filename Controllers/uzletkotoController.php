@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use mkw\store;
-
 class uzletkotoController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -64,15 +62,15 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         $obj->setPartnerszamlatipus($this->params->getIntRequestParam('partnerszamlatipus'));
         $obj->setPartnertermekarazonosito($this->params->getStringRequestParam('partnertermekarazonosito'));
         $obj->setPartnerbizonylatnyelv($this->params->getStringRequestParam('partnerbizonylatnyelv'));
-        $fizmod = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('partnerfizmod', 0));
+        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('partnerfizmod', 0));
         if ($fizmod) {
             $obj->setPartnerfizmod($fizmod);
         }
-        $valutanem = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('partnervalutanem', 0));
+        $valutanem = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('partnervalutanem', 0));
         if ($valutanem) {
             $obj->setPartnervalutanem($valutanem);
         }
-        $szallmod = store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('partnerszallitasimod', 0));
+        $szallmod = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('partnerszallitasimod', 0));
         if ($szallmod) {
             $obj->setPartnerszallitasimod($szallmod);
         }
@@ -134,7 +132,7 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         $szallmod = new szallitasimodController($this->params);
         $view->setVar('partnerszallitasimodlist', $szallmod->getSelectList(($partner ? $partner->getPartnerszallitasimodId() : 0)));
         $view->setVar('partnerszamlatipuslist', $partnerrepo->getSzamlatipusList(($partner ? $partner->getPartnerszamlatipus() : 0)));
-        $view->setVar('partnerbizonylatnyelvlist', \mkw\Store::getLocaleSelectList($partner ? $partner->getPartnerbizonylatnyelv() : ''));
+        $view->setVar('partnerbizonylatnyelvlist', \mkw\store::getLocaleSelectList($partner ? $partner->getPartnerbizonylatnyelv() : ''));
 
         $view->setVar('uzletkoto', $this->loadVars($partner));
         $view->printTemplateResult();

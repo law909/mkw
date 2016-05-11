@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use mkw\store;
-
 class szallitasimodController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -61,7 +59,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
             $oper = $this->params->getStringRequestParam('hataroper_' . $hatarid);
             $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('hatarvalutanem_' . $hatarid));
             if (!$valutanem) {
-                $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find(store::getParameter(\mkw\consts::Valutanem));
+                $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
             }
             if ($oper === 'add') {
                 $hatar = new \Entities\SzallitasimodHatar();
@@ -125,7 +123,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         $view = $this->createView($tplname);
 
         $view->setVar('pagetitle', t('Szállítási mód'));
-        $view->setVar('formaction', \mkw\Store::getRouter()->generate('adminszallitasimodsave'));
+        $view->setVar('formaction', \mkw\store::getRouter()->generate('adminszallitasimodsave'));
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->find($id);
         $view->setVar('egyed', $this->loadVars($record, true));
@@ -133,7 +131,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
     }
 
     public function getSelectList($selid = null, $mind = false) {
-        $foxpostid = \mkw\Store::getParameter(\mkw\consts::FoxpostSzallitasiMod);
+        $foxpostid = \mkw\store::getParameter(\mkw\consts::FoxpostSzallitasiMod);
         if ($mind) {
             $rec = $this->getRepo()->getAll(array(),array('sorrend'=>'ASC','nev'=>'ASC'));
         }
@@ -142,7 +140,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         }
         $res = array();
         // mkwnál ki kell választani az elsőt
-        $vanvalasztott = true; // \mkw\Store::getTheme() !== 'mkwcansas';
+        $vanvalasztott = true; // \mkw\store::getTheme() !== 'mkwcansas';
         foreach ($rec as $sor) {
             $r = array(
                 'id' => $sor->getId(),

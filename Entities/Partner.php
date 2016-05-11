@@ -3,7 +3,6 @@ namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use mkw\store;
 
 /** @ORM\Entity(repositoryClass="Entities\PartnerRepository")
  *  @ORM\Table(name="partner",
@@ -721,14 +720,14 @@ class Partner {
 
 	public function getSzuletesiidoStr() {
 		if ($this->getSzuletesiido()) {
-			return $this->getSzuletesiido()->format(store::$DateFormat);
+			return $this->getSzuletesiido()->format(\mkw\store::$DateFormat);
 		}
 		return '';
 	}
 
 	public function setSzuletesiido($adat = '') {
 		if ($adat != '') {
-			$this->szuletesiido = new \DateTime(store::convDate($adat));
+			$this->szuletesiido = new \DateTime(\mkw\store::convDate($adat));
 		}
 	}
 
@@ -761,15 +760,15 @@ class Partner {
 	}
 
     public function setMkwJelszo($adat) {
-        $this->jelszo = sha1($adat . \mkw\Store::getSalt());
+        $this->jelszo = sha1($adat . \mkw\store::getSalt());
     }
 
 	public function setJelszo($adat) {
-		$this->jelszo = sha1(strtoupper(md5($adat)) . \mkw\Store::getSalt());
+		$this->jelszo = sha1(strtoupper(md5($adat)) . \mkw\store::getSalt());
 	}
 
 	public function checkJelszo($adat) {
-        $so = \mkw\Store::getSalt();
+        $so = \mkw\store::getSalt();
 		$v = sha1(strtoupper(md5($adat)) . $so);
 		return $this->jelszo === $v;
 	}
@@ -819,7 +818,7 @@ class Partner {
     }
 
     public function setPasswordreminder() {
-        $this->passwordreminder = sha1(md5(time() . \mkw\Store::getSalt()) . \mkw\Store::getSalt());
+        $this->passwordreminder = sha1(md5(time() . \mkw\store::getSalt()) . \mkw\store::getSalt());
         return $this->passwordreminder;
     }
 
@@ -888,7 +887,7 @@ class Partner {
      */
     public function getValutanem() {
         if (!$this->id && !$this->valutanem) {
-            $this->setValutanem(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+            $this->setValutanem(\mkw\store::getParameter(\mkw\consts::Valutanem));
         }
         return $this->valutanem;
     }
@@ -914,7 +913,7 @@ class Partner {
      */
     public function setValutanem($val) {
         if (!($val instanceof \Entities\Valutanem)) {
-            $val = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find($val);
+            $val = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($val);
         }
         if ($this->valutanem !== $val) {
             $this->valutanem = $val;

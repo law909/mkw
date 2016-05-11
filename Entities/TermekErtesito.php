@@ -58,7 +58,7 @@ class TermekErtesito {
 
     public function getCreatedStr() {
         if ($this->getCreated()) {
-            return $this->getCreated()->format(\mkw\Store::$DateFormat);
+            return $this->getCreated()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
@@ -143,16 +143,16 @@ class TermekErtesito {
 
     public function getSentStr() {
         if ($this->getSent()) {
-            return $this->getSent()->format(\mkw\Store::$DateFormat);
+            return $this->getSent()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
     public function setSent($adat) {
         if ($adat == '') {
-            $adat = date(\mkw\Store::$DateFormat);
+            $adat = date(\mkw\store::$DateFormat);
         }
-        $this->sent = new \DateTime(\mkw\Store::convDate($adat));
+        $this->sent = new \DateTime(\mkw\store::convDate($adat));
     }
 
 }

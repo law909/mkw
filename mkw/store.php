@@ -4,7 +4,7 @@ namespace mkw;
 
 use Doctrine\ORM\EntityManager;
 
-class Store {
+class store {
 
     /**
      *
@@ -189,7 +189,7 @@ class Store {
     }
 
     public static function toDate($adat) {
-        return new \DateTime(store::convDate($adat));
+        return new \DateTime(\mkw\store::convDate($adat));
     }
 
     public static function DateToExcel($datum) {
@@ -243,7 +243,7 @@ class Store {
     public static function createSmallImageUrl($kepurl, $pre = '/') {
         $t = explode('.', $kepurl);
         $ext = array_pop($t);
-        $result = implode('.', $t) . store::getParameter('smallimgpost', '') . '.' . $ext;
+        $result = implode('.', $t) . \mkw\store::getParameter('smallimgpost', '') . '.' . $ext;
         if ($kepurl && $kepurl[0] != $pre) {
             return $pre . $result;
         }
@@ -253,7 +253,7 @@ class Store {
     public static function createMediumImageUrl($kepurl, $pre = '/') {
         $t = explode('.', $kepurl);
         $ext = array_pop($t);
-        $result = implode('.', $t) . store::getParameter('mediumimgpost', '') . '.' . $ext;
+        $result = implode('.', $t) . \mkw\store::getParameter('mediumimgpost', '') . '.' . $ext;
         if ($kepurl && $kepurl[0] != $pre) {
             return $pre . $result;
         }
@@ -263,7 +263,7 @@ class Store {
     public static function createBigImageUrl($kepurl, $pre = '/') {
         $t = explode('.', $kepurl);
         $ext = array_pop($t);
-        $result = implode('.', $t) . store::getParameter('bigimgpost', '') . '.' . $ext;
+        $result = implode('.', $t) . \mkw\store::getParameter('bigimgpost', '') . '.' . $ext;
         if ($kepurl && $kepurl[0] != $pre) {
             return $pre . $result;
         }
@@ -355,7 +355,7 @@ class Store {
             $v->setVar('kosar', $kc->getMiniData());
         }
         $v->setVar('serverurl', self::getFullUrl());
-        $v->setVar('logo', self::getParameter(consts::Logo));
+        $v->setVar('logo', self::getParameter(\mkw\consts::Logo));
         $v->setVar('globaltitle', self::getParameter('oldalcim'));
         $pr = self::getEm()->getRepository('Entities\Partner');
         $user = array();
@@ -405,7 +405,7 @@ class Store {
                 $v->setVar('ukpartnerlist', $ukpartnerei);
             }
             $v->setVar('uzletkoto', $uk);
-            $v->setVar('myownaccount', \mkw\Store::getMainSession()->pk === \mkw\Store::getMainSession()->ukpartner);
+            $v->setVar('myownaccount', \mkw\store::getMainSession()->pk === \mkw\store::getMainSession()->ukpartner);
         }
         else {
             $v->setVar('myownaccount', true);
@@ -418,10 +418,10 @@ class Store {
         $v->setVar('kosargetlink', $rut->generate('kosarget'));
         $v->setVar('showcheckoutlink', $rut->generate('showcheckout'));
         $v->setVar('prevuri', self::getMainSession()->prevuri ? self::getMainSession()->prevuri : '/');
-        $v->setVar('ujtermekjelolourl', self::getParameter(consts::UjtermekJelolo));
-        $v->setVar('akciosjelolourl', self::getParameter(consts::AkcioJelolo));
-        $v->setVar('top10jelolourl', self::getParameter(consts::Top10Jelolo));
-        $v->setVar('ingyenszallitasjelolourl', self::getParameter(consts::IngyenszallitasJelolo));
+        $v->setVar('ujtermekjelolourl', self::getParameter(\mkw\consts::UjtermekJelolo));
+        $v->setVar('akciosjelolourl', self::getParameter(\mkw\consts::AkcioJelolo));
+        $v->setVar('top10jelolourl', self::getParameter(\mkw\consts::Top10Jelolo));
+        $v->setVar('ingyenszallitasjelolourl', self::getParameter(\mkw\consts::IngyenszallitasJelolo));
     }
 
     /**
@@ -454,14 +454,14 @@ class Store {
     }
 
     public static function storePrevUri() {
-        store::getMainSession()->prevuri = $_SERVER['REQUEST_URI'];
+        \mkw\store::getMainSession()->prevuri = $_SERVER['REQUEST_URI'];
     }
 
     public static function redirectTo404($keresendo, $params) {
         $view = self::getTemplateFactory()->createMainView('404.tpl');
         $tc = new \Controllers\termekController($params);
         $view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
-        store::fillTemplate($view);
+        \mkw\store::fillTemplate($view);
         $view->setVar('seodescription', t('Sajnos nem találjuk: ') . $keresendo);
         $view->setVar('pagetitle', t('Sajnos nem találjuk: ') . $keresendo);
         $view->printTemplateResult(false);
@@ -495,27 +495,27 @@ class Store {
 
     public static function calcSzallitasiKoltseg($ertek) {
         $ktg = 0;
-        $h = Store::getParameter(\mkw\consts::SzallitasiKtg1Ig);
+        $h = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg1Ig);
         if (($ertek <= $h) || ($h == 0)) {
-            $h = Store::getParameter(\mkw\consts::SzallitasiKtg1Tol);
+            $h = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg1Tol);
             if ($ertek >= $h) {
-                $ktg = Store::getParameter(\mkw\consts::SzallitasiKtg1Ertek);
+                $ktg = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg1Ertek);
             }
         }
         else {
-            $h = Store::getParameter(\mkw\consts::SzallitasiKtg2Ig);
+            $h = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg2Ig);
             if (($ertek <= $h) || ($h == 0)) {
-                $h = Store::getParameter(\mkw\consts::SzallitasiKtg2Tol);
+                $h = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg2Tol);
                 if ($ertek >= $h) {
-                    $ktg = Store::getParameter(\mkw\consts::SzallitasiKtg2Ertek);
+                    $ktg = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg2Ertek);
                 }
             }
             else {
-                $h = Store::getParameter(\mkw\consts::SzallitasiKtg3Ig);
+                $h = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg3Ig);
                 if (($ertek <= $h) || ($h == 0)) {
-                    $h = Store::getParameter(\mkw\consts::SzallitasiKtg3Tol);
+                    $h = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg3Tol);
                     if ($ertek >= $h) {
-                        $ktg = Store::getParameter(\mkw\consts::SzallitasiKtg3Ertek);
+                        $ktg = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg3Ertek);
                     }
                 }
             }
@@ -578,20 +578,20 @@ class Store {
         }
         else {
             if (floor($num / 1000000) > 0) {
-                $t_txt = $t_txt . Store::Szazas(floor($num / 1000000)) . $szamok[13];
+                $t_txt = $t_txt . \mkw\store::Szazas(floor($num / 1000000)) . $szamok[13];
                 if (($num % 1000000) > 0) {
                     $t_txt = $t_txt . '-';
                 }
             }
             $num = $num % 1000000;
             if ((floor($num / 1000)) > 0) {
-                $t_txt = $t_txt . Store::Szazas(floor($num / 1000)) . $szamok[12];
+                $t_txt = $t_txt . \mkw\store::Szazas(floor($num / 1000)) . $szamok[12];
                 if ((($num % 1000) > 0) && ($num > 2000)) {
                     $t_txt = $t_txt . '-';
                 }
             }
             $num = $num % 1000;
-            $t_txt = $t_txt . Store::Szazas($num);
+            $t_txt = $t_txt . \mkw\store::Szazas($num);
         }
         if (!$plus) {
             $t_txt = $szamok[14] . $t_txt;
@@ -780,7 +780,7 @@ class Store {
         if (is_a($szm, 'Entities\FoxpostTerminal')) {
             $i = $szm->getId();
         }
-        return $i == self::getParameter(consts::FoxpostSzallitasiMod);
+        return $i == self::getParameter(\mkw\consts::FoxpostSzallitasiMod);
     }
 
     public static function setAdminMode() {

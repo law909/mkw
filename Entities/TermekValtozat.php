@@ -105,8 +105,8 @@ class TermekValtozat {
      * @ORM\PrePersist
      */
     public function generateVonalkod() {
-        if (\mkw\Store::getSetupValue('vonalkod') && !$this->vonalkod) {
-            $conn = \mkw\Store::getEm()->getConnection();
+        if (\mkw\store::getSetupValue('vonalkod') && !$this->vonalkod) {
+            $conn = \mkw\store::getEm()->getConnection();
             $stmt = $conn->prepare('INSERT INTO vonalkodseq (data) VALUES (1)');
             $stmt->execute();
             $this->setVonalkod((string)$conn->lastInsertId());
@@ -151,7 +151,7 @@ class TermekValtozat {
     }
 
     public function getFoglaltMennyiseg($kivevebiz = null) {
-        if (\mkw\Store::isFoglalas()) {
+        if (\mkw\store::isFoglalas()) {
             if (is_a($kivevebiz, 'Bizonylatfej')) {
                 $kivevebiz = $kivevebiz->getId();
             }
@@ -432,7 +432,7 @@ class TermekValtozat {
 
     public function getBeerkezesdatumStr() {
         if ($this->getBeerkezesdatum()) {
-            return $this->getBeerkezesdatum()->format(\mkw\Store::$DateFormat);
+            return $this->getBeerkezesdatum()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
@@ -446,7 +446,7 @@ class TermekValtozat {
                 $this->beerkezesdatum = null;
             }
             else {
-                $this->beerkezesdatum = new \DateTime(\mkw\Store::convDate($adat));
+                $this->beerkezesdatum = new \DateTime(\mkw\store::convDate($adat));
             }
         }
     }

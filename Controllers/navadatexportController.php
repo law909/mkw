@@ -2,10 +2,6 @@
 
 namespace Controllers;
 
-
-use mkw\consts;
-use mkw\Store;
-
 class navadatexportController extends \mkwhelpers\MattableController {
 
     private $tolstr;
@@ -16,18 +12,18 @@ class navadatexportController extends \mkwhelpers\MattableController {
     public function view() {
         $view = $this->createView('navadatexport.tpl');
 
-        $view->setVar('toldatum', date(\mkw\Store::$DateFormat));
-        $view->setVar('igdatum', date(\mkw\Store::$DateFormat));
+        $view->setVar('toldatum', date(\mkw\store::$DateFormat));
+        $view->setVar('igdatum', date(\mkw\store::$DateFormat));
 
         $view->printTemplateResult();
     }
 
     protected function createFilter() {
         $this->tolstr = $this->params->getStringRequestParam('tol');
-        $this->tolstr = date(\mkw\Store::$DateFormat, strtotime(\mkw\Store::convDate($this->tolstr)));
+        $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->tolstr)));
 
         $this->igstr = $this->params->getStringRequestParam('ig');
-        $this->igstr = date(\mkw\Store::$DateFormat, strtotime(\mkw\Store::convDate($this->igstr)));
+        $this->igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->igstr)));
 
         $this->szlaszamtol = $this->params->getStringRequestParam('szlasztol');
         $this->szlaszamig = $this->params->getStringRequestParam('szlaszig');
@@ -65,10 +61,10 @@ class navadatexportController extends \mkwhelpers\MattableController {
 
         echo '<?xml version="1.0" encoding="UTF-8"?>' .
         '<szamlak xmlns="http://schemas.nav.gov.hu/2013/szamla">' .
-        '<export_datuma>' . \mkw\Store::DateToExcel(date(\mkw\Store::$DateFormat)) . '</export_datuma>' .
+        '<export_datuma>' . \mkw\store::DateToExcel(date(\mkw\store::$DateFormat)) . '</export_datuma>' .
         '<export_szla_db>' . str_pad(count($fej), 1, '0',STR_PAD_LEFT) . '</export_szla_db>' .
-        '<kezdo_ido>' . \mkw\Store::DateToExcel($fej[0]->getKelt()) . '</kezdo_ido>' .
-        '<zaro_ido>' . \mkw\Store::DateToExcel($fej[count($fej)-1]->getKelt()) . '</zaro_ido>' .
+        '<kezdo_ido>' . \mkw\store::DateToExcel($fej[0]->getKelt()) . '</kezdo_ido>' .
+        '<zaro_ido>' . \mkw\store::DateToExcel($fej[count($fej)-1]->getKelt()) . '</zaro_ido>' .
         '<kezdo_szla_szam>' . $fej[0]->getId() . '</kezdo_szla_szam>' .
         '<zaro_szla_szam>' . $fej[count($fej)-1]->getId() . '</zaro_szla_szam>';
 
@@ -92,8 +88,8 @@ class navadatexportController extends \mkwhelpers\MattableController {
                     break;
             }
             echo '</szlatipus>';
-            echo '<szladatum>' . \mkw\Store::DateToExcel($f->getKelt()) . '</szladatum>';
-            echo '<teljdatum>' . \mkw\Store::DateToExcel($f->getTeljesites()) . '</teljdatum>';
+            echo '<szladatum>' . \mkw\store::DateToExcel($f->getKelt()) . '</szladatum>';
+            echo '<teljdatum>' . \mkw\store::DateToExcel($f->getTeljesites()) . '</teljdatum>';
             echo '</fejlec>';
 
             echo '<szamlakibocsato>';
@@ -103,13 +99,13 @@ class navadatexportController extends \mkwhelpers\MattableController {
             if ($f->getTulajeuadoszam()) {
                 echo '<kozadoszam>' . substr($f->getTulajeuadoszam(), 0, 20) . '</kozadoszam>';
             }
-            echo '<kisadozo>' . \mkw\Store::toBoolStr($f->getTulajkisadozo()) . '</kisadozo>';
+            echo '<kisadozo>' . \mkw\store::toBoolStr($f->getTulajkisadozo()) . '</kisadozo>';
             echo '<nev>' . substr($f->getTulajnev(), 0, 100) . '</nev>';
             echo '<cim><iranyitoszam>' . substr($f->getTulajirszam(), 0, 10) . '</iranyitoszam>' .
                 '<telepules>' . substr($f->getTulajvaros(), 0, 100) . '</telepules>' .
                 '<kozterulet_neve>' . substr($f->getTulajutca(), 0, 100) . '</kozterulet_neve></cim>';
 
-            echo '<egyeni_vallalkozo>' . \mkw\Store::toBoolStr($f->getTulajegyenivallalkozo()) . '</egyeni_vallalkozo>';
+            echo '<egyeni_vallalkozo>' . \mkw\store::toBoolStr($f->getTulajegyenivallalkozo()) . '</egyeni_vallalkozo>';
             if ($f->getTulajegyenivallalkozo()) {
                 if ($f->getTulajevnyilvszam()) {
                     echo '<ev_nyilv_tart_szam>' . substr($f->getTulajevnyilvszam(), 0, 100) . '</ev_nyilv_tart_szam>';
@@ -154,19 +150,19 @@ class navadatexportController extends \mkwhelpers\MattableController {
                 if ($bt->getVtszszam()) {
                     echo '<besorszam>' . substr($bt->getVtszszam(), 0, 100) . '</besorszam>';
                 }
-                echo '<menny>' . \mkw\Store::toXMLNum($bt->getMennyiseg()) . '</menny>';
+                echo '<menny>' . \mkw\store::toXMLNum($bt->getMennyiseg()) . '</menny>';
                 if ($bt->getME()) {
                     echo '<mertekegys>' . substr($bt->getME(), 0, 100) . '</mertekegys>';
                 }
                 else {
                     echo '<mertekegys>ismeretlen</mertekegys>';
                 }
-                echo '<kozv_szolgaltatas>' . \mkw\Store::toBoolStr($bt->getKozvetitett()) . '</kozv_szolgaltatas>' .
-                    '<nettoar>' . \mkw\Store::toXMLNum($bt->getNetto()) . '</nettoar>' .
-                    '<nettoegysar>' . \mkw\Store::toXMLNum($bt->getNettoegysar()) . '</nettoegysar>' .
+                echo '<kozv_szolgaltatas>' . \mkw\store::toBoolStr($bt->getKozvetitett()) . '</kozv_szolgaltatas>' .
+                    '<nettoar>' . \mkw\store::toXMLNum($bt->getNetto()) . '</nettoar>' .
+                    '<nettoegysar>' . \mkw\store::toXMLNum($bt->getNettoegysar()) . '</nettoegysar>' .
                     '<adokulcs>' . $bt->getAfakulcs() . '</adokulcs>' .
-                    '<adoertek>' . \mkw\Store::toXMLNum($bt->getAfaertek()) . '</adoertek>' .
-                    '<bruttoar>' . \mkw\Store::toXMLNum($bt->getBrutto()) . '</bruttoar>';
+                    '<adoertek>' . \mkw\store::toXMLNum($bt->getAfaertek()) . '</adoertek>' .
+                    '<bruttoar>' . \mkw\store::toXMLNum($bt->getBrutto()) . '</bruttoar>';
                 echo '</termek_szolgaltatas_tetelek>';
             }
 
@@ -178,17 +174,17 @@ class navadatexportController extends \mkwhelpers\MattableController {
             $ao = $bfrepo->getAFAOsszesito($f);
             foreach ($ao as $a) {
                 echo '<afarovat>' .
-                    '<nettoar>' . \mkw\Store::toXMLNum($a['netto']) . '</nettoar>' .
+                    '<nettoar>' . \mkw\store::toXMLNum($a['netto']) . '</nettoar>' .
                     '<adokulcs>' . $a['afakulcs'] . '</adokulcs>' .
-                    '<adoertek>' . \mkw\Store::toXMLNum($a['afa']) . '</adoertek>' .
-                    '<bruttoar>' . \mkw\Store::toXMLNum($a['brutto']) . '</bruttoar>' .
+                    '<adoertek>' . \mkw\store::toXMLNum($a['afa']) . '</adoertek>' .
+                    '<bruttoar>' . \mkw\store::toXMLNum($a['brutto']) . '</bruttoar>' .
                     '</afarovat>';
             }
 
             echo '<vegosszeg>' .
-                '<nettoarossz>' . \mkw\Store::toXMLNum($f->getNetto()) . '</nettoarossz>' .
-                '<afaertekossz>' . \mkw\Store::toXMLNum($f->getAfa()) . '</afaertekossz>' .
-                '<bruttoarossz>' . \mkw\Store::toXMLNum($f->getBrutto()) . '</bruttoarossz>' .
+                '<nettoarossz>' . \mkw\store::toXMLNum($f->getNetto()) . '</nettoarossz>' .
+                '<afaertekossz>' . \mkw\store::toXMLNum($f->getAfa()) . '</afaertekossz>' .
+                '<bruttoarossz>' . \mkw\store::toXMLNum($f->getBrutto()) . '</bruttoarossz>' .
                 '</vegosszeg>';
             echo '</osszesites>';
             echo "</szamla>\n";
@@ -239,8 +235,8 @@ class navadatexportController extends \mkwhelpers\MattableController {
             }
         }
 
-        $told = \mkw\Store::toDate($tol);
-        $igd = \mkw\Store::toDate($ig);
+        $told = \mkw\store::toDate($tol);
+        $igd = \mkw\store::toDate($ig);
 
         if (($told->format('Y') < 2016) || ($igd->format('Y') < 2016)) {
             echo json_encode(array(
@@ -252,7 +248,7 @@ class navadatexportController extends \mkwhelpers\MattableController {
 
         echo json_encode(array(
             'result' => 'ok',
-            'href' => \mkw\Store::getRouter()->generate('adminnavadatexportget', false, array(), array(
+            'href' => \mkw\store::getRouter()->generate('adminnavadatexportget', false, array(), array(
                 'tol' => $tol,
                 'ig' => $ig,
                 'szlasztol' => $szlasztol,

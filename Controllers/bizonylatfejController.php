@@ -2,9 +2,7 @@
 
 namespace Controllers;
 
-use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
-use mkw\store;
 
 class bizonylatfejController extends \mkwhelpers\MattableController {
 
@@ -61,11 +59,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('raktarlist', $raktar->getSelectList());
 
         $bsc = new bizonylatstatuszController($this->params);
-        switch (\mkw\Store::getTheme()) {
+        switch (\mkw\store::getTheme()) {
             case 'mkwcansas':
-                $a = date(\mkw\Store::$DateFormat, strtotime('-1 week'));
+                $a = date(\mkw\store::$DateFormat, strtotime('-1 week'));
                 if ($this->biztipus == 'megrendeles') {
-                    $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(\mkw\Store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
+                    $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
                 }
                 else {
                     $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
@@ -340,7 +338,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['otpaympid'] = $t->getOTPayMPID();
         $x['otpayresult'] = $t->getOTPayResult();
         $x['otpayresulttext'] = $t->getOTPayResultText();
-        $x['showotpay'] = ($t->getFizmodId() == Store::getParameter(\mkw\consts::OTPayFizmod));
+        $x['showotpay'] = ($t->getFizmodId() == \mkw\store::getParameter(\mkw\consts::OTPayFizmod));
         $x['trxid'] = $t->getTrxId();
         $x['fix'] = $t->getFix();
         $x['uzletkoto'] = $t->getUzletkotoId();
@@ -356,7 +354,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId());
         if ($forKarb) {
             if ($t->getPartner() && ($t->getPartner()->getSzamlatipus() > 0)) {
-                $afa = $this->getRepo('Entities\Afa')->find(\mkw\Store::getParameter(\mkw\consts::NullasAfa));
+                $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
                 $x['partnerafa'] = $afa->getId();
                 $x['partnerafakulcs'] = $afa->getErtek();
             }
@@ -368,23 +366,23 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
         else {
             $x['egyenleg'] = $t->getEgyenleg();
-            if (\mkw\Store::isOsztottFizmod()) {
-                $ma = new \DateTime(\mkw\Store::convDate(date(\mkw\Store::$DateFormat)));
+            if (\mkw\store::isOsztottFizmod()) {
+                $ma = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
                 $egyenlegek = array();
                 $egyenleglist = $t->getOsztottEgyenleg();
                 if ($egyenleglist) {
                     foreach ($egyenleglist as $e) {
                         $d = array();
-                        $d['esedekesseg'] = $e['hivatkozottdatum']->format(\mkw\Store::$DateFormat);
+                        $d['esedekesseg'] = $e['hivatkozottdatum']->format(\mkw\store::$DateFormat);
                         $d['egyenleg'] = $e['egyenleg'];
-                        $d['penzugyistatusz'] = \mkw\Store::getPenzugyiStatusz($e['hivatkozottdatum'], $d['egyenleg']);
+                        $d['penzugyistatusz'] = \mkw\store::getPenzugyiStatusz($e['hivatkozottdatum'], $d['egyenleg']);
                         $egyenlegek[] = $d;
                     }
                     $x['osztottegyenlegek'] = $egyenlegek;
                 }
             }
             else {
-                $x['penzugyistatusz'] = \mkw\Store::getPenzugyiStatusz($t->getEsedekesseg(), $x['egyenleg']);
+                $x['penzugyistatusz'] = \mkw\store::getPenzugyiStatusz($t->getEsedekesseg(), $x['egyenleg']);
             }
         }
         return $x;
@@ -414,7 +412,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
             $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
             $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
-            $ck = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
+            $ck = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
             if ($ck) {
                 $partnerobj->setFizmod($ck);
             }
@@ -422,17 +420,17 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $partnerobj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
             $partnerobj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
             $partnerobj->setSzallutca($this->params->getStringRequestParam('szallutca'));
-            $ck = store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod'));
+            $ck = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod'));
             if ($ck) {
                 $partnerobj->setSzallitasimod($ck);
             }
-            $ck = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+            $ck = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
             if ($ck) {
                 $partnerobj->setValutanem($ck);
             }
             $partnerobj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
 
-            $kiskercimkeid = \mkw\Store::getParameter(\mkw\consts::KiskerCimke);
+            $kiskercimkeid = \mkw\store::getParameter(\mkw\consts::KiskerCimke);
             if ($kiskercimkeid) {
                 $kiskercimke = $this->getRepo('Entities\Partnercimketorzs')->find($kiskercimkeid);
                 $partnerobj->addCimke($kiskercimke);
@@ -447,7 +445,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $obj->setFix($this->params->getBoolRequestParam('fix'));
 
         if ($partnerkod > 0) {
-            $ck = store::getEm()->getRepository('Entities\Partner')->find($partnerkod);
+            $ck = \mkw\store::getEm()->getRepository('Entities\Partner')->find($partnerkod);
             if ($ck) {
                 $obj->setPartner($ck);
             }
@@ -455,19 +453,19 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         else {
             $obj->setPartner($partnerobj);
         }
-        $ck = store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar'));
+        $ck = \mkw\store::getEm()->getRepository('Entities\Raktar')->find($this->params->getIntRequestParam('raktar'));
         if ($ck) {
             $obj->setRaktar($ck);
         }
-        $ck = store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
+        $ck = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
         if ($ck) {
             $obj->setFizmod($ck);
         }
-        $ck = store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod'));
+        $ck = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod'));
         if ($ck) {
             $obj->setSzallitasimod($ck);
         }
-        $ck = store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto'));
+        $ck = \mkw\store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto'));
         if ($ck) {
             $obj->setUzletkoto($ck);
         }
@@ -499,19 +497,19 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
         $obj->setReportfile($this->params->getStringRequestParam('reportfile'));
 
-        $ck = store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+        $ck = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
         if ($ck) {
             $obj->setValutanem($ck);
         }
 
         $obj->setArfolyam($this->params->getNumRequestParam('arfolyam'));
 
-        $ck = store::getEm()->getRepository('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
+        $ck = \mkw\store::getEm()->getRepository('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
         if ($ck) {
             $obj->setBankszamla($ck);
         }
 
-        $ck = store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatusz'));
+        $ck = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('bizonylatstatusz'));
         if ($ck) {
             $obj->setBizonylatstatusz($ck);
         }
@@ -602,7 +600,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                 $tetel->setBrutto($this->params->getFloatRequestParam('tetelbrutto_' . $tetelid));
                                 $tetel->setAfaertek($tetel->getBrutto() - $tetel->getNetto());
 
-                                if (\mkw\Store::isMultiValuta()) {
+                                if (\mkw\store::isMultiValuta()) {
                                     $tetel->setNettoegysarhuf($this->params->getFloatRequestParam('tetelnettoegysarhuf_' . $tetelid));
                                     $tetel->setBruttoegysarhuf($this->params->getFloatRequestParam('tetelbruttoegysarhuf_' . $tetelid));
                                     $tetel->setEnettoegysarhuf($this->params->getFloatRequestParam('tetelenettoegysarhuf_' . $tetelid));
@@ -685,7 +683,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                     $tetel->setBrutto($this->params->getFloatRequestParam('tetelbrutto_' . $tetelid));
                                     $tetel->setAfaertek($tetel->getBrutto() - $tetel->getNetto());
 
-                                    if (\mkw\Store::isMultiValuta()) {
+                                    if (\mkw\store::isMultiValuta()) {
                                         $tetel->setNettoegysarhuf($this->params->getFloatRequestParam('tetelnettoegysarhuf_' . $tetelid));
                                         $tetel->setBruttoegysarhuf($this->params->getFloatRequestParam('tetelbruttoegysarhuf_' . $tetelid));
                                         $tetel->setEnettoegysarhuf($this->params->getFloatRequestParam('tetelenettoegysarhuf_' . $tetelid));
@@ -738,7 +736,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                     }
                 }
                 else {
-                    \mkw\Store::writelog(print_r($this->params->asArray(), true), 'nincstermek.log');
+                    \mkw\store::writelog(print_r($this->params->asArray(), true), 'nincstermek.log');
                 }
             }
         }
@@ -771,7 +769,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
     public function checkKelt() {
         $ret = array('response' => 'error');
-        $keltstr = \mkw\Store::convDate($this->params->getStringRequestParam('kelt'));
+        $keltstr = \mkw\store::convDate($this->params->getStringRequestParam('kelt'));
         $kelt = strtotime($keltstr);
         $biztipid = $this->params->getStringRequestParam('biztipus');
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipid);
@@ -793,7 +791,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $kelt = $this->params->getStringRequestParam('kelt');
         $fm = $this->getRepo('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
         $partner = $this->getRepo('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
-        echo json_encode(array('esedekesseg' => \mkw\Store::calcEsedekesseg($kelt, $fm, $partner)));
+        echo json_encode(array('esedekesseg' => \mkw\store::calcEsedekesseg($kelt, $fm, $partner)));
     }
 
     public function ront() {
@@ -909,7 +907,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $raktar = new raktarController($this->params);
         if (!$record || !$record->getRaktarId()) {
-            $raktarid = store::getParameter(\mkw\consts::Raktar, 0);
+            $raktarid = \mkw\store::getParameter(\mkw\consts::Raktar, 0);
         }
         else {
             $raktarid = $record->getRaktarId();
@@ -918,7 +916,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $fizmod = new fizmodController($this->params);
         if (!$record || !$record->getFizmodId()) {
-            $fmid = \mkw\Store::getParameter(\mkw\consts::Fizmod);
+            $fmid = \mkw\store::getParameter(\mkw\consts::Fizmod);
         }
         else {
             $fmid = $record->getFizmodId();
@@ -927,7 +925,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $szallitasimod = new szallitasimodController($this->params);
         if (!$record || !$record->getSzallitasimodId()) {
-            $fmid = \mkw\Store::getParameter(\mkw\consts::Szallitasimod);
+            $fmid = \mkw\store::getParameter(\mkw\consts::Szallitasimod);
         }
         else {
             $fmid = $record->getSzallitasimodId();
@@ -936,7 +934,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $valutanem = new valutanemController($this->params);
         if (!$record || !$record->getValutanemId()) {
-            $valutaid = store::getParameter(\mkw\consts::Valutanem, 0);
+            $valutaid = \mkw\store::getParameter(\mkw\consts::Valutanem, 0);
         }
         else {
             $valutaid = $record->getValutanemId();
@@ -963,10 +961,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
         $view->setVar('uzletkotolist', $uk->getSelectList($ukid));
 
-        $view->setVar('esedekessegalap', store::getParameter(\mkw\consts::Esedekessegalap, 1));
+        $view->setVar('esedekessegalap', \mkw\store::getParameter(\mkw\consts::Esedekessegalap, 1));
         $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList(($record ? $record->getReportfile() : ''),
             ($record ? $record->getBizonylattipusId() : $this->biztipus)));
-        $view->setVar('bizonylatnyelvlist', store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
+        $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
 
         if (method_exists($this, 'onGetKarb')) {
             $egyed = $this->onGetKarb($view, $record, $egyed, $oper, $id, $stornotip);
@@ -974,7 +972,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $view->setVar('egyed', $egyed);
 
-        $view->setVar('esedekessegalap', store::getParameter(\mkw\consts::Esedekessegalap, 1));
+        $view->setVar('esedekessegalap', \mkw\store::getParameter(\mkw\consts::Esedekessegalap, 1));
         $view->printTemplateResult();
     }
 
@@ -1008,7 +1006,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
     public function fejexport() {
 
         function x($o, $sor) {
-            return \mkw\Store::getExcelCoordinate($o, $sor);
+            return \mkw\store::getExcelCoordinate($o, $sor);
         }
 
         $filter = new \mkwhelpers\FilterDescriptor();
@@ -1099,7 +1097,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
     public function tetelexport() {
 
         function x($o, $sor) {
-            return \mkw\Store::getExcelCoordinate($o, $sor);
+            return \mkw\store::getExcelCoordinate($o, $sor);
         }
 
         $filter = new \mkwhelpers\FilterDescriptor();
@@ -1108,8 +1106,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $filter->addFilter('id', 'IN', explode(',', $ids));
         }
 
-        if (\mkw\Store::getTheme() === 'superzone') {
-            $fejek = $this->getRepo()->getWithTetelek($filter, array(), 0, 0, \mkw\Store::getParameter(\mkw\consts::Locale));
+        if (\mkw\store::getTheme() === 'superzone') {
+            $fejek = $this->getRepo()->getWithTetelek($filter, array(), 0, 0, \mkw\store::getParameter(\mkw\consts::Locale));
         }
         else {
             $fejek = $this->getRepo()->getWithTetelek($filter);

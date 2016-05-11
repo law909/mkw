@@ -3,8 +3,6 @@ namespace Controllers;
 
 use Entities\Jelenletiiv;
 
-use mkw\store;
-
 class jelenletiivController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -36,11 +34,11 @@ class jelenletiivController extends \mkwhelpers\MattableController {
     public function setFields($obj) {
         $obj->setDatum($this->params->getStringRequestParam('datum'));
         $obj->setMunkaido($this->params->getIntRequestParam('munkaido'));
-        $ck = store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('dolgozo', 0));
+        $ck = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('dolgozo', 0));
         if ($ck) {
             $obj->setDolgozo($ck);
         }
-        $ck = store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->params->getIntRequestParam('jelenlettipus', 0));
+        $ck = \mkw\store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->params->getIntRequestParam('jelenlettipus', 0));
         if ($ck) {
             $obj->setJelenlettipus($ck);
         }
@@ -53,10 +51,10 @@ class jelenletiivController extends \mkwhelpers\MattableController {
         $filter = new \mkwhelpers\FilterDescriptor();
 
         if (!is_null($this->params->getRequestParam('tolfilter', NULL))) {
-            $filter->addFilter('datum', '>=', Store::convDate(($this->params->getStringRequestParam('tolfilter', ''))));
+            $filter->addFilter('datum', '>=', \mkw\store::convDate(($this->params->getStringRequestParam('tolfilter', ''))));
         }
         if (!is_null($this->params->getRequestParam('igfilter', NULL))) {
-            $filter->addFilter('datum', '<=', Store::convDate(($this->params->getStringRequestParam('igfilter', ''))));
+            $filter->addFilter('datum', '<=', \mkw\store::convDate(($this->params->getStringRequestParam('igfilter', ''))));
         }
         $fv = $this->params->getIntRequestParam('dolgozofilter');
         if ($fv > 0) {
@@ -117,8 +115,8 @@ class jelenletiivController extends \mkwhelpers\MattableController {
 
     public function generatenapi() {
         $nap = $this->params->getStringRequestParam('datum', '');
-        $jt = store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->params->getIntRequestParam('jt', 0));
-        $egyedek = store::getEm()->getRepository('Entities\Dolgozo')->getWithJoins(array(), array());
+        $jt = \mkw\store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->params->getIntRequestParam('jt', 0));
+        $egyedek = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->getWithJoins(array(), array());
         foreach ($egyedek as $egyed) {
             if ($this->getRepo()->getCount('(_xx.datum=\'' . $nap . '\') AND (d.id=' . $egyed->getId() . ') AND (j.id=' . $jt->getId() . ')') == 0) {
                 $jelen = new Jelenletiiv();

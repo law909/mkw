@@ -291,8 +291,8 @@ class Termek {
      * @ORM\PrePersist
      */
     public function generateVonalkod() {
-        if (\mkw\Store::getSetupValue('vonalkod') && !$this->vonalkod) {
-            $conn = \mkw\Store::getEm()->getConnection();
+        if (\mkw\store::getSetupValue('vonalkod') && !$this->vonalkod) {
+            $conn = \mkw\store::getEm()->getConnection();
             $stmt = $conn->prepare('INSERT INTO vonalkodseq (data) VALUES (1)');
             $stmt->execute();
             $this->setVonalkod((string)$conn->lastInsertId());
@@ -349,7 +349,7 @@ class Termek {
     }
 
     public function getFoglaltMennyiseg($kivevebiz = null) {
-        if (\mkw\Store::isFoglalas()) {
+        if (\mkw\store::isFoglalas()) {
             if (is_a($kivevebiz, 'Bizonylatfej')) {
                 $kivevebiz = $kivevebiz->getId();
             }
@@ -378,17 +378,17 @@ class Termek {
         $x['minikepurl'] = $this->getKepurlMini();
         $x['kepurl'] = $this->getKepurlLarge();
         $x['slug'] = $this->getSlug();
-        $x['link'] = \mkw\Store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
+        $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
         $x['caption'] = $this->getNev();
         $x['rovidleiras'] = $this->getRovidLeiras();
         $x['akcios'] = $this->getAkcios();
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
-        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\Store::getLoggedInUser());
+        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
         $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
-        $x['ingyenszallitas'] = (\mkw\Store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
+        $x['ingyenszallitas'] = (\mkw\store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
         if ($this->szallitasiido) {
             $x['szallitasiido'] = $this->szallitasiido;
         }
@@ -485,13 +485,13 @@ class Termek {
         $x['kepurl'] = $this->getKepurlLarge();
         $x['slug'] = $this->getSlug();
         $x['caption'] = $this->getNev();
-        $x['link'] = \mkw\Store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
+        $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
         $x['rovidleiras'] = $this->getRovidLeiras();
         $x['akcios'] = $this->getAkcios();
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
-        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\Store::getLoggedInUser());
+        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
         $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
 
@@ -516,7 +516,7 @@ class Termek {
         $x['caption'] = $this->getNev();
         $x['slug'] = $this->getSlug();
         $x['kepurl'] = $this->getKepurlLarge();
-        $x['fullkepurl'] = \mkw\Store::getFullUrl($this->getKepurlLarge());
+        $x['fullkepurl'] = \mkw\store::getFullUrl($this->getKepurlLarge());
         $x['kozepeskepurl'] = $this->getKepUrlMedium();
         $x['minikepurl'] = $this->getKepurlMini();
         $x['rovidleiras'] = $this->getRovidleiras();
@@ -528,10 +528,10 @@ class Termek {
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
-        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\Store::getLoggedInUser());
+        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
         $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
-        $x['ingyenszallitas'] = (\mkw\Store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
+        $x['ingyenszallitas'] = (\mkw\store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
         $x['husegpont'] = floor($x['bruttohuf'] * $this->getHparany() / 100);
         if ($this->szallitasiido) {
             $x['szallitasiido'] = $this->szallitasiido;
@@ -596,10 +596,10 @@ class Termek {
         $x['valtozatok'] = $vtt;
 
         $hasontomb = array();
-        $r = \mkw\Store::getEm()->getRepository('Entities\Termek');
+        $r = \mkw\store::getEm()->getRepository('Entities\Termek');
         $hason = $r->getHasonloTermekek($this,
-                \mkw\Store::getParameter(\mkw\consts::Hasonlotermekdb, 3),
-                \mkw\Store::getParameter(\mkw\consts::Hasonlotermekarkulonbseg, 10));
+                \mkw\store::getParameter(\mkw\consts::Hasonlotermekdb, 3),
+                \mkw\store::getParameter(\mkw\consts::Hasonlotermekarkulonbseg, 10));
         foreach($hason as $has) {
             $hasontomb[] = $has->toKapcsolodo();
         }
@@ -619,9 +619,9 @@ class Termek {
         $x['caption'] = $this->getNev();
         $x['rovidleiras'] = $this->getRovidLeiras();
         $x['akcios'] = $this->getAkcios();
-        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\Store::getLoggedInUser());
+        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
         $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
-        $x['link'] = \mkw\Store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
+        $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
         return $x;
     }
 
@@ -645,7 +645,7 @@ class Termek {
                 $x['minikepurl'] = $valtozat->getKepurlMini();
             }
         }
-        $x['link'] = \mkw\Store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
+        $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
         return $x;
     }
 
@@ -657,7 +657,7 @@ class Termek {
         $x['minikepurl'] = $this->getKepurlMini();
         $x['kepurl'] = $this->getKepurlLarge();
         $x['slug'] = $this->getSlug();
-        $x['link'] = \mkw\Store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
+        $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
         $x['caption'] = $this->getNev();
         $x['cikkszam'] = $this->getCikkszam();
         $x['rovidleiras'] = $this->getRovidLeiras();
@@ -811,16 +811,16 @@ class Termek {
             return $this->oldalcim;
         }
         else {
-            $result = \mkw\Store::getParameter(\mkw\consts::Termekoldalcim);
+            $result = \mkw\store::getParameter(\mkw\consts::Termekoldalcim);
             if ($result) {
                 $result = str_replace('[termeknev]', $this->getNev(), $result);
                 $result = str_replace('[kategorianev]', $this->getTermekfa1Nev(), $result);
-                $result = str_replace('[global]', \mkw\Store::getParameter(\mkw\consts::Oldalcim), $result);
-                $result = str_replace('[bruttoar]', number_format($this->getBruttoAr(null, \mkw\Store::getLoggedInUser()), 0, ',', ''), $result);
+                $result = str_replace('[global]', \mkw\store::getParameter(\mkw\consts::Oldalcim), $result);
+                $result = str_replace('[bruttoar]', number_format($this->getBruttoAr(null, \mkw\store::getLoggedInUser()), 0, ',', ''), $result);
                 return $result;
             }
             else {
-                return \mkw\Store::getParameter(\mkw\consts::Oldalcim);
+                return \mkw\store::getParameter(\mkw\consts::Oldalcim);
             }
         }
     }
@@ -838,16 +838,16 @@ class Termek {
             return $this->seodescription;
         }
         else {
-            $result = \mkw\Store::getParameter(\mkw\consts::Termekseodescription);
+            $result = \mkw\store::getParameter(\mkw\consts::Termekseodescription);
             if ($result) {
                 $result = str_replace('[termeknev]', $this->getNev(), $result);
                 $result = str_replace('[kategorianev]', $this->getTermekfa1Nev(), $result);
-                $result = str_replace('[global]', \mkw\Store::getParameter(\mkw\consts::Seodescription), $result);
-                $result = str_replace('[bruttoar]', number_format($this->getBruttoAr(null, \mkw\Store::getLoggedInUser()), 0, ',', ''), $result);
+                $result = str_replace('[global]', \mkw\store::getParameter(\mkw\consts::Seodescription), $result);
+                $result = str_replace('[bruttoar]', number_format($this->getBruttoAr(null, \mkw\store::getLoggedInUser()), 0, ',', ''), $result);
                 return $result;
             }
             else {
-                return \mkw\Store::getParameter(\mkw\consts::Seodescription);
+                return \mkw\store::getParameter(\mkw\consts::Seodescription);
             }
         }
     }
@@ -939,7 +939,7 @@ class Termek {
     }
 
     public function getAkcios() {
-        $ma = date(\mkw\Store::$DateFormat);
+        $ma = date(\mkw\store::$DateFormat);
         return
             (
                 ($this->getAkciostartStr() != '') || ($this->getAkciostopStr() != '')
@@ -988,14 +988,14 @@ class Termek {
 
     public function getAkciostartStr() {
         if ($this->getAkciostart()) {
-            return $this->getAkciostart()->format(\mkw\Store::$DateFormat);
+            return $this->getAkciostart()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
     public function setAkciostart($adat = '') {
         if ($adat != '') {
-            $this->akciostart = new \DateTime(\mkw\Store::convDate($adat));
+            $this->akciostart = new \DateTime(\mkw\store::convDate($adat));
         }
         else{
             $this->akciostart = null;
@@ -1008,14 +1008,14 @@ class Termek {
 
     public function getAkciostopStr() {
         if ($this->getAkciostop()) {
-            return $this->getAkciostop()->format(\mkw\Store::$DateFormat);
+            return $this->getAkciostop()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
     public function setAkciostop($adat = '') {
         if ($adat != '') {
-            $this->akciostop = new \DateTime(\mkw\Store::convDate($adat));
+            $this->akciostop = new \DateTime(\mkw\store::convDate($adat));
         }
         else {
             $this->akciostop = null;
@@ -1232,7 +1232,7 @@ class Termek {
         if ($kepurl) {
             $t = explode('.', $kepurl);
             $ext = array_pop($t);
-            return implode('.', $t) . \mkw\Store::getParameter(\mkw\consts::Miniimgpost, '') . '.' . $ext;
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::Miniimgpost, '') . '.' . $ext;
         }
         return '';
     }
@@ -1242,7 +1242,7 @@ class Termek {
         if ($kepurl) {
             $t = explode('.', $kepurl);
             $ext = array_pop($t);
-            return implode('.', $t) . \mkw\Store::getParameter(\mkw\consts::Smallimgpost, '') . '.' . $ext;
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::Smallimgpost, '') . '.' . $ext;
         }
         return '';
     }
@@ -1252,7 +1252,7 @@ class Termek {
         if ($kepurl) {
             $t = explode('.', $kepurl);
             $ext = array_pop($t);
-            return implode('.', $t) . \mkw\Store::getParameter(\mkw\consts::Mediumimgpost, '') . '.' . $ext;
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::Mediumimgpost, '') . '.' . $ext;
         }
         return '';
     }
@@ -1262,7 +1262,7 @@ class Termek {
         if ($kepurl) {
             $t = explode('.', $kepurl);
             $ext = array_pop($t);
-            return implode('.', $t) . \mkw\Store::getParameter(\mkw\consts::Bigimgpost, '') . '.' . $ext;
+            return implode('.', $t) . \mkw\store::getParameter(\mkw\consts::Bigimgpost, '') . '.' . $ext;
         }
         return '';
     }
@@ -1323,12 +1323,12 @@ class Termek {
     }
 
     public function getValtozatok() {
-        switch (\mkw\Store::getTheme()) {
+        switch (\mkw\store::getTheme()) {
             case 'mkwcansas':
                 return $this->valtozatok;
             case 'superzone':
-                $s = \mkw\Store::getParameter(\mkw\consts::ValtozatSorrend);
-                $rendezendo = \mkw\Store::getParameter(\mkw\consts::RendezendoValtozat);
+                $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);
+                $rendezendo = \mkw\store::getParameter(\mkw\consts::RendezendoValtozat);
                 $sorrend = explode(',', $s);
                 $a = $this->valtozatok->toArray();
                 uasort($a, function($e, $f) use ($sorrend, $rendezendo) {
@@ -1377,7 +1377,7 @@ class Termek {
             case 'kisszamlazo':
                 return null;
             default :
-                throw new \Exception('ISMERETLEN THEME: ' . \mkw\Store::getTheme());
+                throw new \Exception('ISMERETLEN THEME: ' . \mkw\store::getTheme());
         }
     }
 
@@ -1544,7 +1544,7 @@ class Termek {
         if ($partner) {
             $tcs = $this->getTermekcsoport();
             if ($tcs) {
-                $kdv = \mkw\Store::getEm()->getRepository('Entities\PartnerTermekcsoportKedvezmeny')->getByPartnerTermekcsoport($partner, $tcs);
+                $kdv = \mkw\store::getEm()->getRepository('Entities\PartnerTermekcsoportKedvezmeny')->getByPartnerTermekcsoport($partner, $tcs);
                 if ($kdv) {
                     $kedvezmeny = $kdv->getKedvezmeny();
                 }
@@ -1577,7 +1577,7 @@ class Termek {
      * @return float
      */
     public function getKedvezmenynelkuliNettoAr($valtozat = null, $partner = null, $valutanem = null) {
-        if (!\mkw\Store::isArsavok()) {
+        if (!\mkw\store::isArsavok()) {
             $netto = $this->getNetto();
             if ($this->getAkcios()) {
                 $netto = $this->getAkciosnetto();
@@ -1596,9 +1596,9 @@ class Termek {
                 }
             }
             $netto = 0;
-            $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, $arsavazon);
+            $arsav = \mkw\store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, $arsavazon);
             if (!$arsav) {
-                $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, \mkw\Store::getParameter(\mkw\consts::Arsav));
+                $arsav = \mkw\store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, \mkw\store::getParameter(\mkw\consts::Arsav));
                 if ($arsav) {
                     $netto = $arsav->getNetto();
                 }
@@ -1624,7 +1624,7 @@ class Termek {
 
     public function getKedvezmenynelkuliBruttoAr($valtozat = null, $partner = null, $valutanem = null) {
         // Nincsenek ársávok
-        if (!\mkw\Store::isArsavok()) {
+        if (!\mkw\store::isArsavok()) {
             $brutto = $this->getBrutto();
             if ($this->getAkcios()) {
                 $brutto = $this->getAkciosbrutto();
@@ -1644,9 +1644,9 @@ class Termek {
                 }
             }
             $brutto = 0;
-            $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, $arsavazon);
+            $arsav = \mkw\store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, $arsavazon);
             if (!$arsav) {
-                $arsav = \mkw\Store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, \mkw\Store::getParameter(\mkw\consts::Arsav));
+                $arsav = \mkw\store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, \mkw\store::getParameter(\mkw\consts::Arsav));
                 if ($arsav) {
                     $brutto = $arsav->getBrutto();
                 }
@@ -1661,7 +1661,7 @@ class Termek {
 
     public function getEredetiBruttoAr($valtozat) {
         // Nincsenek ársávok
-        if (!\mkw\Store::isArsavok()) {
+        if (!\mkw\store::isArsavok()) {
             $brutto = $this->getBrutto();
             if (!is_null($valtozat)) {
                 return $brutto + $valtozat->getBrutto();
@@ -1681,7 +1681,7 @@ class Termek {
             }
         }
         if (!$valutanem) {
-            $valutanem = \mkw\Store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\Store::getParameter(\mkw\consts::Valutanem));
+            $valutanem = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
         }
         return $valutanem;
     }
