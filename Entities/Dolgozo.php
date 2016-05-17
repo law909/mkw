@@ -124,15 +124,16 @@ class Dolgozo {
 
     public function getSzulidoStr() {
         if ($this->getSzulido()) {
-            return $this->getSzulido()->format(store::$DateFormat);
+            return $this->getSzulido()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
     public function setSzulido($adat) {
-        if ($adat == '')
-            $adat = date(store::$DateFormat);
-        $this->szulido = new \DateTime(store::convDate($adat));
+        if ($adat == '') {
+            $adat = date(\mkw\store::$DateFormat);
+        }
+        $this->szulido = new \DateTime(\mkw\store::convDate($adat));
     }
 
     public function getSzulhely() {
@@ -157,15 +158,16 @@ class Dolgozo {
 
     public function getMunkaviszonykezdeteStr() {
         if ($this->getMunkaviszonykezdete()) {
-            return $this->getMunkaviszonykezdete()->format(store::$DateFormat);
+            return $this->getMunkaviszonykezdete()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
 
     public function setMunkaviszonykezdete($adat) {
-        if ($adat == '')
-            $adat = date(store::$DateFormat);
-        $this->munkaviszonykezdete = new \DateTime(store::convDate($adat));
+        if ($adat == '') {
+            $adat = date(\mkw\store::$DateFormat);
+        }
+        $this->munkaviszonykezdete = new \DateTime(\mkw\store::convDate($adat));
     }
 
     public function getMunkakor() {

@@ -238,7 +238,7 @@ class Bankbizonylatfej {
 
     public function getKeltStr() {
         if ($this->getKelt()) {
-            return $this->getKelt()->format(store::$DateFormat);
+            return $this->getKelt()->format(\mkw\store::$DateFormat);
         }
         return '';
     }
@@ -249,9 +249,9 @@ class Bankbizonylatfej {
         }
         else {
             if ($adat == '') {
-                $adat = date(store::$DateFormat);
+                $adat = date(\mkw\store::$DateFormat);
             }
-            $this->kelt = new \DateTime(store::convDate($adat));
+            $this->kelt = new \DateTime(\mkw\store::convDate($adat));
         }
     }
 
