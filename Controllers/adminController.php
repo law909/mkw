@@ -153,12 +153,45 @@ class adminController extends mkwhelpers\Controller {
     public function minicrm() {
         require 'busvendor/MiniCRM/minicrm-api.phar';
         $minicrm = new \MiniCRM_Connection(\mkw\store::getParameter(\mkw\consts::MiniCRMSystemId), \mkw\store::getParameter(\mkw\consts::MiniCRMAPIKey));
+
         $res = \MiniCRM_Contact::FieldSearch($minicrm, array('Email' => 'balint.lovey@gmail.com'));
         if ($res['Count']) {
             $res = array_values($res['Results']);
             $balint = new \MiniCRM_Contact($minicrm, $res[0]['Id']);
             echo '<pre>';
             print_r($balint);
+            echo '</pre>';
+
+            $res = \MiniCRM_Address::AddressList($minicrm, $balint->Id);
+            echo '<pre>';
+            print_r($res);
+            echo '</pre>';
+
+            $res = \MiniCRM_Contact::GetSchema($minicrm, 'Person');
+            echo '<pre>';
+            print_r($res);
+            echo '</pre>';
+        }
+
+        $res = \MiniCRM_Project::GetCategories($minicrm);
+        echo '<pre>';
+        print_r($res);
+        echo '</pre>';
+
+        $res = \MiniCRM_Project::GetSchema($minicrm, 7);
+        echo '<pre>';
+        print_r($res);
+        echo '</pre>';
+
+        $res = \MiniCRM_Project::FieldSearch($minicrm, array('ContactId' => $balint->Id, 'CategoryId' => 7));
+        if ($res) {
+            echo '<pre>';
+            print_r($res);
+            echo '</pre>';
+            $res = array_values($res['Results']);
+            $balintpr = new \MiniCRM_Project($minicrm, $res[0]['Id']);
+            echo '<pre>';
+            print_r($balintpr);
             echo '</pre>';
         }
     }
