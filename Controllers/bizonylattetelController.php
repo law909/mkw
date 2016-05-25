@@ -33,6 +33,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$x['termekvaltozat'] = $t->getTermekvaltozatId();
 		$x['termeknev'] = $t->getTermeknev();
 		$x['cikkszam'] = $t->getCikkszam();
+        $x['mozgat'] = $t->getMozgat();
 		$x['me'] = $t->getMe();
         if ($oper === 'storno') {
             $x['netto'] = $t->getNetto() * -1;

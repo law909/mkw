@@ -576,8 +576,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                             if ($termekvaltozat) {
                                 $tetel->setTermekvaltozat($termekvaltozat);
                             }
-//                            $tetel->setMozgat();
-//                            $tetel->setFoglal();
                             $tetel->setElolegtipus($this->params->getIntRequestParam('tetelelolegtipus_' . $tetelid));
 
                             if (!$quick) {
@@ -623,6 +621,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                 $tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
                                 if ($oper == $this->stornoOperation) {
                                     $tetel->setStorno(true);
+                                    $tetel->setStornoMozgat($this->params->getBoolRequestParam('tetelmozgat_' . $tetelid));
                                 }
                             }
                             else {
@@ -662,8 +661,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                 if ($termekvaltozat) {
                                     $tetel->setTermekvaltozat($termekvaltozat);
                                 }
-                                //$tetel->setMozgat();
-                                //$tetel->setFoglal();
                                 $tetel->setElolegtipus($this->params->getIntRequestParam('tetelelolegtipus_' . $tetelid));
 
                                 if (!$quick) {

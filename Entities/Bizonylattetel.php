@@ -411,6 +411,15 @@ class Bizonylattetel {
         }
     }
 
+    public function setStornoMozgat($mozgat = null) {
+        if ($this->getStorno()) {
+            $this->mozgat = $mozgat;
+        }
+        else {
+            throw new \Exception('setStornoMozgat() called on a non storno Bizonylattetel!');
+        }
+    }
+
     public function setMozgat($mozgat = null) {
 
         if ($this->duplication) {
