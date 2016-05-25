@@ -13,7 +13,7 @@
         <div id="mattkarb-header">
             <h3>{t('Termékforgalmi lista')}</h3>
         </div>
-        <form id="mattkarb-form" action="" method="post">
+        <form id="termekforgalmi" action="" target="_blank">
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <div class="matt-hseparator"></div>
                 {include "comp_idoszak.tpl" comptype="szamla"}
@@ -80,7 +80,9 @@
                 <div class="matt-hseparator"></div>
                 {include "comp_termekfa.tpl"}
                 <div class="matt-hseparator"></div>
+                <input id="FaFilter" type="hidden" name="fafilter[]">
                 <a href="#" class="js-refresh">Frissít</a>
+                <a href="/admin/termekforgalmilista/export" class="js-exportbutton">Export</a>
                 <div class="matt-hseparator"></div>
                 <div id="eredmeny"></div>
             </div>

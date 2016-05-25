@@ -24,11 +24,11 @@ $(document).ready(function() {
                         type: 'GET',
                         data: {
                             datumtipus: $('select[name="datumtipus"] option:selected').val(),
-                            datumtol: $('input[name="tol"]').val(),
-                            datumig: $('input[name="ig"]').val(),
-                            raktarid: $('select[name="raktar"] option:selected').val(),
-                            gyartoid: $('select[name="gyarto"] option:selected').val(),
-                            partnerid: $('select[name="partner"] option:selected').val(),
+                            tol: $('input[name="tol"]').val(),
+                            ig: $('input[name="ig"]').val(),
+                            raktar: $('select[name="raktar"] option:selected').val(),
+                            gyarto: $('select[name="gyarto"] option:selected').val(),
+                            partner: $('select[name="partner"] option:selected').val(),
                             keszletfilter: $('select[name="keszletfilter"] option:selected').val(),
                             forgalomfilter: $('select[name="forgalomfilter"] option:selected').val(),
                             ertektipus: $('select[name="ertektipus"] option:selected').val(),
@@ -42,6 +42,20 @@ $(document).ready(function() {
                     })
                 })
                 .button();
+            $('.js-exportbutton').on('click', function(e) {
+                var fak, fafilter, $ff;
+                e.preventDefault();
+
+                fak = mkwcomp.termekfaFilter.getFilter('#termekfa');
+                if (fak.length > 0) {
+                    fafilter = fak;
+                }
+                $('#FaFilter').val(fafilter);
+
+                $ff = $('#termekforgalmi');
+                $ff.attr('action', $(this).attr('href'));
+                $ff.submit();
+            }).button();
         },
         onSubmit:function() {
             $('#messagecenter')
