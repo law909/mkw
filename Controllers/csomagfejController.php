@@ -11,6 +11,14 @@ class CsomagfejController extends bizonylatfejController {
         parent::__construct($params);
     }
 
+    /**
+     * @param $view
+     * @param \Entities\Bizonylatfej $record
+     * @param $egyed
+     * @param $oper
+     * @param $id
+     * @return mixed
+     */
     public function onGetKarb($view, $record, $egyed, $oper, $id) {
         $source = $this->params->getStringRequestParam('source', '');
         if ($oper == 'inherit') {
@@ -24,7 +32,7 @@ class CsomagfejController extends bizonylatfejController {
             $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->biztipus));
             switch ($source) {
                 case 'megrendeles':
-                    $egyed['megjegyzes'] = 'Rendelés: ' . $id;
+                    $egyed['megjegyzes'] = \mkw\store::translate('Rendelés szám', $record->getBizonylatnyelv()) . ': ' . $id;
                     break;
             }
             $ttk = array();

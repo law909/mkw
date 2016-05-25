@@ -90,7 +90,6 @@ return array(
 "Termék kategória"=>"Termék kategória",
 "Szállítói cikkszám"=>"Szállítói cikkszám",
 "Weboldalon látható"=>"Weboldalon látható",
-"Ajánlott"=>"Ajánlott",
 "Rövid leírás"=>"Rövid leírás",
 "META leírás"=>"META leírás",
 "META osztály"=>"META osztály",
@@ -195,5 +194,7 @@ return array(
 "Egységár"=>"Egységár",
 "Érték"=>"Érték",
 "Tétel adatok"=>"Tétel adatok",
-"MKW Admin"=>"MKW Admin"
+"MKW Admin"=>"MKW Admin",
+'Rendelés szám' => 'Rendelés szám',
+'Szállítólevél szám' => 'Szállítólevél szám'
 );

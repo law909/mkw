@@ -24,10 +24,10 @@ class KivetfejController extends bizonylatfejController {
             $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->biztipus));
             switch ($source) {
                 case 'megrendeles':
-                    $egyed['megjegyzes'] = 'Rendelés: ' . $id;
+                    $egyed['megjegyzes'] = \mkw\store::translate('Rendelés szám', $record->getBizonylatnyelv()) . ': ' . $id;
                     break;
                 case 'szallito':
-                    $egyed['megjegyzes'] = 'Szállítólevél: ' . $id;
+                    $egyed['megjegyzes'] = \mkw\store::translate('Szállítólevél szám', $record->getBizonylatnyelv()) . ': ' . $id;
                     break;
             }
             $ttk = array();

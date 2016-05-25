@@ -874,4 +874,26 @@ class store {
     public static function haveJog($jog) {
         return self::getAdminSession()->loggedinuser['jog'] >= $jog;
     }
+
+    public static function translate($mit, $mire) {
+        $sz = array(
+            'en' => array(
+                'Rendelés szám' => 'Order no.',
+                'Szállítólevél szám' => 'Delivery bill no.'
+            ),
+            'hu' => array(
+                'Rendelés szám' => 'Rendelés szám',
+                'Szállítólevél szám' => 'Szállítólevél szám'
+            )
+        );
+
+        $mire = substr($mire, 0, 2);
+
+        if (array_key_exists($mire, $sz)) {
+            if (array_key_exists($mit, $sz[$mire])) {
+                return $sz[$mire][$mit];
+            }
+        }
+        return $mire;
+    }
 }
