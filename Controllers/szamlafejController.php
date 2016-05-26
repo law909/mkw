@@ -61,7 +61,13 @@ class SzamlafejController extends bizonylatfejController {
                 $egyed['keltstr'] = $kelt;
 //                $egyed['teljesitesstr'] = $kelt;
 //                $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
-                $egyed['megjegyzes'] = $id . ' stornó bizonylata';
+                switch (\mkw\store::getTheme()) {
+                    case 'mkwcansas':
+                        $egyed['megjegyzes'] = $id . ' stornó bizonylata. Stornózás oka:';
+                        break;
+                    default:
+                        $egyed['megjegyzes'] = $id . ' stornó bizonylata';
+                }
                 $ttk = array();
                 $cikl = 1;
                 foreach($egyed['tetelek'] as $tetel) {
