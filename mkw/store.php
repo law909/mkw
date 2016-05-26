@@ -894,6 +894,6 @@ class store {
                 return $sz[$mire][$mit];
             }
         }
-        return $mire;
+        return $mit;
     }
 }
