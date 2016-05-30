@@ -22,7 +22,7 @@ class SzallitofejController extends bizonylatfejController {
                 $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
                 switch ($source) {
                     case 'megrendeles':
-                        $egyed['megjegyzes'] = \mkw\store::translate('Rendelés szám', $record->getBizonylatnyelv()) . ': ' . $id;
+                        $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
                         break;
                 }
                 $ttk = array();

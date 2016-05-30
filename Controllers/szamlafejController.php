@@ -25,14 +25,14 @@ class SzamlafejController extends bizonylatfejController {
                 $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->biztipus));
                 switch ($source) {
                     case 'megrendeles':
-                        $egyed['megjegyzes'] = \mkw\store::translate('Rendelés szám', $record->getBizonylatnyelv()) . ': ' . $id;
+                        $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
                         $arf = $this->getRepo('Entities\Arfolyam')->getActualArfolyam($egyed['valutanem'], new \DateTime(\mkw\store::convDate($egyed['teljesitesstr'])));
                         if ($arf) {
                             $egyed['arfolyam'] = $arf->getArfolyam();
                         }
                         break;
                     case 'szallito':
-                        $egyed['megjegyzes'] = \mkw\store::translate('Szállítólevél szám', $record->getBizonylatnyelv()) . ': ' . $id;
+                        $egyed['megjegyzes'] = \mkw\store::translate('Szállítólevél', $record->getBizonylatnyelv()) . ': ' . $id;
                         break;
                 }
                 $ttk = array();
