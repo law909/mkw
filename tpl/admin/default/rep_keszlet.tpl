@@ -5,6 +5,7 @@
     <h5>{$datumstr}</h5>
     <h5>{$raktar}</h5>
     <h5>{$nevfilter}</h5>
+    <h5>{$foglalasstr}</h5>
     <table>
         <thead>
         <tr>

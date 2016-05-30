@@ -10,6 +10,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
     private $datumstr;
     private $raktarnev;
     private $nevfilter;
+    private $foglalasstr;
 
     public function view() {
         $view = $this->createView('keszletlista.tpl');
@@ -35,12 +36,22 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         $this->datumstr = $this->params->getStringRequestParam('datum');
         $this->datumstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->datumstr)));
 
+        $foglalas = $this->params->getBoolRequestParam('foglalasszamit');
+        if ($foglalas) {
+            $this->foglalasstr = \mkw\store::translate('Foglalás számít');
+        }
+
         $filter = new FilterDescriptor();
         $filter
             ->addFilter('bf.rontott', '=', false)
-            ->addFilter('bt.mozgat', '=', true)
             ->addFilter('bf.teljesites', '<=', $this->datumstr);
 
+        if ($foglalas) {
+            $filter->addSql('((bt.mozgat=1) OR (bt.foglal=1))');
+        }
+        else {
+            $filter->addFilter('bt.mozgat', '=', true);
+        }
         if ($raktar) {
             $filter->addFilter('bf.raktar_id', '=', $raktar);
         }
@@ -124,6 +135,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         $report->setVar('datumstr', $this->datumstr);
         $report->setVar('raktar', $this->raktarnev);
         $report->setVar('nevfilter', $this->nevfilter);
+        $report->setVar('foglalasstr', $this->foglalasstr);
         $report->printTemplateResult();
 
     }

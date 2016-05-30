@@ -46,6 +46,11 @@
                         <input id="NevEdit" type="text" name="nevfilter">
                     </div>
                     <div class="matt-hseparator"></div>
+                    <div>
+                        <label for="FoglalasEdit">{t('Foglalás számít')}:</label>
+                        <input id="FoglalasEdit" type="checkbox" name="foglalasszamit">
+                    </div>
+                    <div class="matt-hseparator"></div>
                     {include "comp_termekfa.tpl"}
                     <div class="matt-hseparator"></div>
                     <div>
