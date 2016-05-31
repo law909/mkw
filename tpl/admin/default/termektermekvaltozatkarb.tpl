@@ -101,7 +101,7 @@
                 <ul id="ValtozatKepEdit_{$valtozat.id}" class="valtozatkepedit js-valtozatkepedit">
                     {foreach $valtozat.keplista as $kep}
                         <li data-value="{$kep.id}" data-valtozatid="{$valtozat.id}" class="ui-state-default{if ($valtozat.kepid==$kep.id)} ui-selected ui-state-highlight{/if}"><img src="{$mainurl}{$kep.url}"/></li>
-                        {/foreach}
+                    {/foreach}
                 </ul>
                 <input id="ValtozatKepId_{$valtozat.id}" name="valtozatkepid_{$valtozat.id}" type="hidden" value="{$valtozat.kepid}">
             </td>

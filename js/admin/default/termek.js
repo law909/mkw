@@ -19,7 +19,11 @@ $(document).ready(function () {
     function createImageSelectable(n, m) {
         $(n).selectable({
             unselected: function () {
-                $('.ui-state-highlight', this).removeClass('ui-state-highlight');
+                $('.ui-state-highlight', this).each(function() {
+                    var $this = $(this);
+                    $this.removeClass('ui-state-highlight');
+                    $(m + $this.attr('data-valtozatid')).val('');
+                });
             },
             selected: function () {
                 $('.ui-selected', this).each(function () {
