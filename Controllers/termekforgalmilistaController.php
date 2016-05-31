@@ -18,6 +18,8 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         $arsav = new termekarController($this->params);
         $view->setVar('arsavlist', $arsav->getSelectList());
 
+        $view->setVar('nyelvlist', \mkw\store::getLocaleSelectList());
+
         $view->printTemplateResult(false);
 
     }
@@ -35,9 +37,10 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         $fafilter = $this->params->getArrayRequestParam('fafilter');
         $nevfilter = $this->params->getRequestParam('nevfilter', NULL);
         $gyartoid = $this->params->getIntRequestParam('gyarto');
+        $nyelv = \mkw\store::toLocale($this->params->getStringRequestParam('nyelv'));
 
         $tetelek = $this->getRepo('Entities\Bizonylatfej')->getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
-            $arsav, $fafilter, $nevfilter, $gyartoid);
+            $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv);
 
         switch ($keszletfilter) {
             case 1: // van keszleten

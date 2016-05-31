@@ -376,7 +376,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
     }
 
     public function getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $fafilter, $nevfilter,
-        $gyartoid) {
+        $gyartoid, $locale) {
         switch ($datumtipus) {
             case 'kelt':
             case 'teljesites':
@@ -477,11 +477,22 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $trsm->addScalarResult('tvid', 'tvid');
         $trsm->addScalarResult('ertek1', 'ertek1');
         $trsm->addScalarResult('ertek2', 'ertek2');
-        $q = $this->_em->createNativeQuery('SELECT t.id,t.cikkszam,t.nev,tv.id AS tvid,tv.ertek1,tv.ertek2'
+
+        if ($locale) {
+            $termeknevmezo = 'COALESCE(tt.content, t.nev)';
+            $translationjoin = ' LEFT JOIN termek_translations tt ON (t.id=tt.object_id) AND (tt.field="nev") AND (tt.locale="' . $locale . '")';
+        }
+        else {
+            $termeknevmezo = 't.nev';
+            $translationjoin = '';
+        }
+
+        $q = $this->_em->createNativeQuery('SELECT t.id,t.cikkszam,' . $termeknevmezo . ' AS nev,tv.id AS tvid,tv.ertek1,tv.ertek2'
             . ' FROM termek t'
             . ' LEFT OUTER JOIN termekvaltozat tv ON (tv.termek_id=t.id)'
+            . $translationjoin
             . $this->getFilterString($termekfilter)
-            . ' ORDER BY t.cikkszam,t.nev,tv.ertek1,tv.ertek2', $trsm
+            . ' ORDER BY t.cikkszam,' . $termeknevmezo . ',tv.ertek1,tv.ertek2', $trsm
         );
         $q->setParameters($this->getQueryParameters($termekfilter));
         $res = $q->getScalarResult();

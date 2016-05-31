@@ -77,6 +77,10 @@
                     <label for="NevEdit">{t('Termék')}:</label>
                     <input id="NevEdit" type="text" name="nevfilter">
                 </div>
+                {if ($setup.multilang)}
+                    <div class="matt-hseparator"></div>
+                    {include "comp_nyelvselect.tpl"}
+                {/if}
                 <div class="matt-hseparator"></div>
                 {include "comp_termekfa.tpl"}
                 <div class="matt-hseparator"></div>

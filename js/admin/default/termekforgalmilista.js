@@ -34,6 +34,7 @@ $(document).ready(function() {
                             ertektipus: $('select[name="ertektipus"] option:selected').val(),
                             arsav: $('select[name="arsav"] option:selected').val(),
                             nevfilter: $('input[name="nevfilter"]').val(),
+                            nyelv: $('select[name="nyelv"] option:selected').val(),
                             fafilter: fafilter
                         },
                         success: function(d) {
