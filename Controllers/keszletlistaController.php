@@ -20,6 +20,8 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         $rc = new raktarController($this->params);
         $view->setVar('raktarlist', $rc->getSelectList());
 
+        $view->setVar('nyelvlist', \mkw\store::getLocaleSelectList());
+
         $view->printTemplateResult();
     }
 
@@ -94,6 +96,16 @@ class keszletlistaController extends \mkwhelpers\MattableController {
 
         $filter = $this->createFilter();
 
+        $locale = \mkw\store::toLocale($this->params->getStringRequestParam('nyelv'));
+        if ($locale) {
+            $termeknevmezo = 'COALESCE(tt.content, t.nev)';
+            $translationjoin = ' LEFT JOIN termek_translations tt ON (t.id=tt.object_id) AND (field="nev") AND (locale="' . $locale . '")';
+        }
+        else {
+            $termeknevmezo = 't.nev';
+            $translationjoin = '';
+        }
+
         $keszlettipus = '';
 
         switch ($this->params->getIntRequestParam('keszlet')) {
@@ -104,7 +116,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
                 $keszlettipus = ' HAVING keszlet>0';
                 break;
             case 3:
-                $keszlettipus = ' HAVING keszlet<=0';
+                $keszlettipus = ' HAVING (keszlet<=0) OR (keszlet IS NULL)';
                 break;
             case 4:
                 $keszlettipus = ' HAVING keszlet<0';
@@ -113,16 +125,17 @@ class keszletlistaController extends \mkwhelpers\MattableController {
 
         $termekfilter = $this->createTermekFilter();
 
-        $q = $this->getEm()->createNativeQuery('SELECT _xx.termek_id, _xx.id, t.nev AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
+        $q = $this->getEm()->createNativeQuery('SELECT _xx.termek_id, _xx.id, ' . $termeknevmezo . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
             . ' (SELECT SUM(bt.mennyiseg * bt.irany)'
             . ' FROM bizonylattetel bt'
             . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
             . $filter->getFilterString('_xx', 'p') . ' AND (_xx.id=bt.termekvaltozat_id) ) AS keszlet'
             . ' FROM termekvaltozat _xx'
             . ' LEFT JOIN termek t ON (_xx.termek_id=t.id)'
+            . $translationjoin
             . $termekfilter->getFilterString('_xx', 'r')
             . $keszlettipus
-            . ' ORDER BY t.cikkszam, t.nev, _xx.ertek1, _xx.ertek2', $rsm);
+            . ' ORDER BY t.cikkszam, ' . $termeknevmezo . ', _xx.ertek1, _xx.ertek2', $rsm);
 
         $q->setParameters(array_merge_recursive($filter->getQueryParameters('p'), $termekfilter->getQueryParameters('r')));
         return $q->getScalarResult();

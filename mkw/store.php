@@ -688,7 +688,15 @@ class store {
         return array_values(self::$locales);
     }
 
-    public static function getLocaleSelectList($sel) {
+    public static function toLocale($ny) {
+        $a = self::getLocaleList();
+        if (in_array($ny, $a, true)) {
+            return $ny;
+        }
+        return null;
+    }
+
+    public static function getLocaleSelectList($sel = null) {
         $val = array_values(self::$locales);
         $ret = array();
         foreach($val as $v) {
@@ -875,7 +883,7 @@ class store {
         return self::getAdminSession()->loggedinuser['jog'] >= $jog;
     }
 
-    public static function translate($mit, $mire) {
+    public static function translate($mit, $mire = null) {
         $sz = array(
             'en' => array(
                 'Rendelés szám' => 'Order no.',

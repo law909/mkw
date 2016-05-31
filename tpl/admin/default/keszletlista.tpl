@@ -50,6 +50,10 @@
                         <label for="FoglalasEdit">{t('Foglalás számít')}:</label>
                         <input id="FoglalasEdit" type="checkbox" name="foglalasszamit">
                     </div>
+                    {if ($setup.multilang)}
+                        <div class="matt-hseparator"></div>
+                        {include "comp_nyelvselect.tpl"}
+                    {/if}
                     <div class="matt-hseparator"></div>
                     {include "comp_termekfa.tpl"}
                     <div class="matt-hseparator"></div>
