@@ -519,6 +519,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
          */
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('bt.mozgat', '=', true);
+        $filter->addFilter('bf.rontott', '=', false);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
         }
@@ -550,6 +551,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
          */
         $filter->clear();
         $filter->addFilter('bt.mozgat', '=', true);
+        $filter->addFilter('bf.rontott', '=', false);
         $filter->addFilter('bt.irany', '>', 0);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
@@ -587,6 +589,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
          */
         $filter->clear();
         $filter->addFilter('bt.mozgat', '=', true);
+        $filter->addFilter('bf.rontott', '=', false);
         $filter->addFilter('bt.irany', '<', 0);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
@@ -624,6 +627,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
          */
         $filter->clear();
         $filter->addFilter('bt.mozgat', '=', true);
+        $filter->addFilter('bf.rontott', '=', false);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
         }
