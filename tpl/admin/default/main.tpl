@@ -147,6 +147,7 @@
         {/if}
     </div>
     <div class="clearboth">
+        {if (haveJog(20))}
         <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Teljesíthető backorderek</div>
@@ -172,6 +173,6 @@
                 </table>
             </div>
         </div>
-
+        {/if}
     </div>
 {/block}
