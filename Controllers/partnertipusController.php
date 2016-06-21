@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use mkw\Store;
-
 class partnertipusController extends \mkwhelpers\JQGridController {
 
     public function __construct($params) {

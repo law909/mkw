@@ -5,7 +5,7 @@ namespace Controllers;
 
 class bizomanyosertekesiteslistaController extends \mkwhelpers\Controller {
 
-    function view() {
+    public function view() {
         $view = $this->createView('bizomanyosertekesiteslista.tpl');
 
         $view->setVar('pagetitle', t('Bizományos értékesítés lista'));

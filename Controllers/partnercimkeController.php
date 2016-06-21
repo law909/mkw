@@ -32,10 +32,10 @@ class partnercimkeController extends \mkwhelpers\MattableController {
         else {
             $x['cimkekatnev'] = '';
         }
-        $x['menu1lathato'] = $t->getMenu1Lathato();
-        $x['menu2lathato'] = $t->getMenu2Lathato();
-        $x['menu3lathato'] = $t->getMenu3Lathato();
-        $x['menu4lathato'] = $t->getMenu4Lathato();
+        $x['menu1lathato'] = $t->getMenu1lathato();
+        $x['menu2lathato'] = $t->getMenu2lathato();
+        $x['menu3lathato'] = $t->getMenu3lathato();
+        $x['menu4lathato'] = $t->getMenu4lathato();
         return $x;
     }
 

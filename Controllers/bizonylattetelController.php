@@ -34,7 +34,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$x['termeknev'] = $t->getTermeknev();
 		$x['cikkszam'] = $t->getCikkszam();
         $x['mozgat'] = $t->getMozgat();
-		$x['me'] = $t->getMe();
+		$x['me'] = $t->getME();
         if ($oper === 'storno') {
             $x['netto'] = $t->getNetto() * -1;
             $x['afa'] = $t->getAfaertek() * -1;
@@ -79,10 +79,10 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
             else {
                 $x['haszonszazalek'] = 0;
             }
-			$x['kozepeskepurl'] = $term->getKepUrlMedium();
-			$x['kiskepurl'] = $term->getKepUrlSmall();
-			$x['minikepurl'] = $term->getKepUrlMini();
-			$x['kepurl'] = $term->getKepUrlLarge();
+			$x['kozepeskepurl'] = $term->getKepurlMedium();
+			$x['kiskepurl'] = $term->getKepurlSmall();
+			$x['minikepurl'] = $term->getKepurlMini();
+			$x['kepurl'] = $term->getKepurlLarge();
 			$x['slug'] = $term->getSlug();
             $x['link'] = \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), array('slug' => $term->getSlug()));
             $x['kartonurl'] = \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $term->getId()));

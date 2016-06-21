@@ -45,7 +45,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
         $x['termekfokep'] = $t->getTermekfokep();
         $x['kepurl'] = $t->getKepurl();
         $x['kepleiras'] = $t->getKepleiras();
-        $x['kepid'] = $t->getKepid();
+        $x['kepid'] = $t->getKepId();
         $x['netto'] = $t->getNetto();
         $x['brutto'] = $t->getBrutto();
         $x['cikkszam'] = $t->getCikkszam();

@@ -72,10 +72,10 @@ class b2bpartnerController extends partnerController {
                     }
                 }
                 //\Zend_Session::writeClose();
-                Header('Location: ' . \mkw\store::getRouter()->generate('showaccount'));
+                header('Location: ' . \mkw\store::getRouter()->generate('showaccount'));
             }
             else {
-                Header('Location: ' . \mkw\store::getRouter()->generate('showlogin'));
+                header('Location: ' . \mkw\store::getRouter()->generate('showlogin'));
             }
         }
         else {

@@ -72,7 +72,7 @@ class penzbelistaController extends \mkwhelpers\MattableController {
                 'datum' => $item->getDatumStr(),
                 'hivatkozottbizonylat' => $item->getHivatkozottbizonylat(),
                 'partnerid' => $item->getPartnerId(),
-                'partnernev' => $item->getPartnerNev(),
+                'partnernev' => $item->getPartnernev(),
                 'osszeg' => $item->getBrutto(),
                 'valutanem' => $item->getValutanemnev()
             );

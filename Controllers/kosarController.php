@@ -23,7 +23,7 @@ class kosarController extends \mkwhelpers\MattableController {
         $x['session'] = $t->getSessionid();
         $x['mennyiseg'] = $t->getMennyiseg();
         $x['partner'] = $t->getPartnerId();
-        $x['partnernev'] = $t->getPartnernev();
+        $x['partnernev'] = $t->getPartnerNev();
         $x['created'] = $t->getCreated();
         $x['createdstr'] = $t->getCreatedStr();
         $term = $t->getTermek();

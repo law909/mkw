@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use mkw\Store;
-
 class mijszoklevelszintController extends \mkwhelpers\JQGridController {
 
     public function __construct($params) {

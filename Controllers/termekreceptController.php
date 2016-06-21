@@ -33,7 +33,7 @@ class termekreceptController extends \mkwhelpers\MattableController {
 		$x['altermek']=$t->getAlTermek();
 		$x['altermeknev']=$t->getAlTermekNev();
 		if ($forKarb) {
-			$x['termeklist']=$termek->getSelectList(($t->getAlTermek()?$t->getAlTermek()->getId():0));
+			$x['termeklist']=$termek->getselectlist(($t->getAlTermek()?$t->getAlTermek()->getId():0));
 		}
 		return $x;
 	}
