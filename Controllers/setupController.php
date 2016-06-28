@@ -169,6 +169,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::FoxpostUsername, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::FoxpostPassword);
         $view->setVar(\mkw\consts::FoxpostPassword, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::KuponElotag);
+        $view->setVar(\mkw\consts::KuponElotag, ($p ? $p->getErtek() : 'MKW'));
 
         // alapertelmezes
         $p = $repo->find(\mkw\consts::Fizmod);
@@ -313,21 +315,21 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::AKTrustedShopApiKey, ($p ? $p->getErtek() : ''));
 
         $gyarto = new partnerController($this->params);
-        $p = $repo->find(consts::GyartoBtech);
+        $p = $repo->find(\mkw\consts::GyartoBtech);
         $view->setVar('gyartobtechlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
-        $p = $repo->find(consts::GyartoDelton);
+        $p = $repo->find(\mkw\consts::GyartoDelton);
         $view->setVar('gyartodeltonlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
-        $p = $repo->find(consts::GyartoKreativ);
+        $p = $repo->find(\mkw\consts::GyartoKreativ);
         $view->setVar('gyartokreativlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
-        $p = $repo->find(consts::GyartoMaxutov);
+        $p = $repo->find(\mkw\consts::GyartoMaxutov);
         $view->setVar('gyartomaxutovlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
-        $p = $repo->find(consts::GyartoReintex);
+        $p = $repo->find(\mkw\consts::GyartoReintex);
         $view->setVar('gyartoreintexlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
-        $p = $repo->find(consts::GyartoSilko);
+        $p = $repo->find(\mkw\consts::GyartoSilko);
         $view->setVar('gyartosilkolist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
-        $p = $repo->find(consts::GyartoTutisport);
+        $p = $repo->find(\mkw\consts::GyartoTutisport);
         $view->setVar('gyartotutisportlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
-        $p = $repo->find(consts::GyartoKress);
+        $p = $repo->find(\mkw\consts::GyartoKress);
         $view->setVar('gyartokresslist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::PathBtech);
@@ -472,6 +474,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::MiniCRMHasznalatban, $this->params->getBoolRequestParam('minicrmhasznalatban'));
         $this->setObj(\mkw\consts::MiniCRMSystemId, $this->params->getStringRequestParam('minicrmsystemid'));
         $this->setObj(\mkw\consts::MiniCRMAPIKey, $this->params->getStringRequestParam('minicrmapikey'));
+        $this->setObj(\mkw\consts::KuponElotag, $this->params->getStringRequestParam('kuponelotag'));
 
         // alapertelmezes
         $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));

@@ -90,6 +90,7 @@
                     <div><a class="menupont" href="/admin/sitemap/view">{t('Sitemap')}</a></div>
                     <div><a class="menupont" href="/admin/keresoszolista/view">{t('Keresések')}</a></div>
                     <div><a class="menupont" href="/admin/feketelista/viewlist">{t('Feketelista')}</a></div>
+                    <div><a class="menupont" href="/admin/kupon/viewlist">{t('Kuponok')}</a></div>
                 </div>
                 {/if}
                 <div class="menu-titlebar" data-caption="{t('Kimutatások')}" data-refcontrol="#ReportTab"></div>

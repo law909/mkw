@@ -291,6 +291,10 @@
                 <td><label for="TeljesitmenyKezdoEvEdit">{t('Teljesítmény jelentés kezdő éve')}:</label></td>
                 <td><input id="TeljesitmenyKezdoEvEdit" name="teljesitmenykezdoev" type="text" value="{$teljesitmenykezdoev}"></td>
             </tr>
+            <tr>
+                <td><label for="KuponElotagEdit">{t('Kupon előtag')}:</label></td>
+                <td><input id="KuponElotagEdit" name="kuponelotag" type="text" value="{$kuponelotag}"></td>
+            </tr>
         </tbody></table>
         <table><tbody>
             <tr>

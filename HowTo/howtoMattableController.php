@@ -1,8 +1,6 @@
 <?php
 namespace Controllers;
 
-use mkw\store;
-
 class ?howto?Controller extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -47,10 +45,9 @@ class ?howto?Controller extends \mkwhelpers\MattableController {
     public function getlistbody() {
         $view = $this->createView('?howto?lista_tbody.tpl');
 
-        $filter = array();
+        $filter = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
-            $filter['fields'][] = 'nev';
-            $filter['values'][] = $this->params->getStringRequestParam('nevfilter');
+            $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
 
         $this->initPager(

@@ -93,6 +93,7 @@ class consts {
     const FBAppId = 'fbappid';
 
     const MarkaCs = 'markacs';
+    const KuponElotag = 'kuponelotag';
     const AdminRole = 'adminrole';
     const TermekfeltoltoRole = 'termekfeltoltorole';
 

@@ -312,6 +312,17 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function setStornoMozgat($mozgat = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStornoMozgat', [$mozgat]);
+
+        return parent::setStornoMozgat($mozgat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setMozgat($mozgat = NULL)
     {
 

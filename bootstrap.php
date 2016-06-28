@@ -99,6 +99,7 @@ if (mkw\store::isMultilang()) {
 $evm->addEventListener(array('onFlush', 'prePersist'), new Listeners\BizonylatfejListener());
 $evm->addEventListener(array('onFlush', 'prePersist'), new Listeners\BankbizonylatfejListener());
 $evm->addEventListener(array('onFlush'), new Listeners\BizonylattetelListener());
+$evm->addEventListener(array('prePersist'), new Listeners\KuponListener());
 
 $em = \Doctrine\ORM\EntityManager::create($connectionOptions, $config, $evm);
 
