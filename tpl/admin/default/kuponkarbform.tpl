@@ -22,7 +22,7 @@
                     </select></td>
             </tr>
             <tr>
-                <td><label for="LejaratEdit">{t('Lejárat')}:</label></td>
+                <td><label for="LejaratEdit">{t('Állapot')}:</label></td>
                 <td><select id="LejaratEdit" name="lejart">
                         <option value="">{t('válasszon')}</option>
                         {foreach $lejaratlist as $_tcs}

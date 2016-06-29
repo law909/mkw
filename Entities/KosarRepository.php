@@ -409,7 +409,7 @@ class KosarRepository extends \mkwhelpers\Repository {
         }
     }
 
-    public function createSzallitasiKtg($szallmod = null) {
+    public function createSzallitasiKtg($szallmod = null, $kuponkod = null) {
         $szamol = true;
         if ($szallmod) {
             $szm = $this->getRepo('Entities\Szallitasimod')->find($szallmod);
@@ -419,6 +419,12 @@ class KosarRepository extends \mkwhelpers\Repository {
         $termek = $this->getRepo('Entities\Termek')->find($termekid);
 
         if ($termekid && $termek) {
+
+            $kupon = $this->getRepo('Entities\Kupon')->find($kuponkod);
+            if ($kupon && $kupon->isErvenyes() && $kupon->isIngyenSzallitas()) {
+                $szamol = false;
+            }
+
             if ($szamol) {
                 $e = $this->calcSumBySessionId(\Zend_Session::getId());
                 $ertek = $e['sum'];

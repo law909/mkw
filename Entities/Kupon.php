@@ -12,7 +12,7 @@ class Kupon {
 
     private static $lejaratlista = array(
         0 => 'érvényes',
-        1 => 'felhasználva',
+        1 => 'felhasznált',
         2 => 'lejárt'
     );
 
@@ -93,6 +93,10 @@ class Kupon {
         $this->lejart = $lejart;
     }
 
+    public function isErvenyes() {
+        return $this->getLejart() === 0;
+    }
+
     /**
      * @return mixed
      */
@@ -120,5 +124,13 @@ class Kupon {
 
     public static function getLejaratLista() {
         return self::$lejaratlista;
+    }
+
+    public function isIngyenSzallitas() {
+        return $this->getTipus() === 1;
+    }
+
+    public function doFelhasznalt() {
+        $this->setLejart(1);
     }
 }

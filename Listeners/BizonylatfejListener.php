@@ -13,6 +13,7 @@ class BizonylatfejListener {
     private $bizonylattetelmd;
     private $bizonylatteteltranslationmd;
     private $folyoszamlamd;
+    private $kuponmd;
 
     /**
      * @param \Entities\Bizonylatfej $entity
@@ -253,6 +254,7 @@ class BizonylatfejListener {
         $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bizonylattetel');
         $this->bizonylatteteltranslationmd = $this->em->getClassMetadata('Entities\BizonylattetelTranslation');
         $this->folyoszamlamd = $this->em->getClassMetadata('Entities\Folyoszamla');
+        $this->kuponmd = $this->em->getClassMetadata('Entities\Kupon');
 
         $entities = array_merge(
             $this->uow->getScheduledEntityInsertions(),
@@ -272,6 +274,7 @@ class BizonylatfejListener {
         foreach ($entities as $entity) {
             if ($entity instanceof \Entities\Bizonylatfej) {
 
+                /** @var \Entities\Bizonylattetel $tetel */
                 foreach ($entity->getBizonylattetelek() as $tetel) {
                     if (!$tetel->getStorno() && !$tetel->getStornozott()) {
                         $tetel->setMozgat();
@@ -297,6 +300,13 @@ class BizonylatfejListener {
                 else {
                     $entity->setPartnerfeketelistas(true);
                     $entity->setPartnerfeketelistaok($fok);
+                }
+
+                /** @var \Entities\Kupon $kupon */
+                $kupon = $entity->getKuponObject();
+                if ($kupon) {
+                    $kupon->doFelhasznalt();
+                    $this->uow->recomputeSingleEntityChangeSet($this->kuponmd, $kupon);
                 }
 
                 $this->createFolyoszamla($entity);

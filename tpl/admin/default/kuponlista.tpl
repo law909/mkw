@@ -38,7 +38,7 @@
 	<th><input id="maincheckbox" type="checkbox"></th>
     <th>{t('Létrehozva')}</th>
 	<th>{t('Id')}</th>
-    <th>{t('Lejárat')}</th>
+    <th>{t('Állapot')}</th>
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>

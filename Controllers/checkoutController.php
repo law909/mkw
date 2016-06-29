@@ -120,7 +120,26 @@ class checkoutController extends \mkwhelpers\MattableController {
 	}
 
 	public function getTetelList() {
-        $this->getRepo('Entities\Kosar')->createSzallitasiKtg($this->params->getIntRequestParam('szallitasimod'));
+        $kuponkod = $this->params->getStringRequestParam('kupon');
+        $kuponszoveg = '';
+        if ($kuponkod) {
+            /** @var \Entities\Kupon $kupon */
+            $kupon = $this->getRepo('Entities\Kupon')->find($kuponkod);
+            if ($kupon) {
+                if ($kupon->isErvenyes()) {
+                    if ($kupon->isIngyenSzallitas()) {
+                        $kuponszoveg = $kupon->getTipusStr();
+                    }
+                }
+                else {
+                    $kuponszoveg = $kupon->getLejartStr();
+                }
+            }
+            else {
+                $kuponszoveg = 'ismeretlen kupon';
+            }
+        }
+        $this->getRepo('Entities\Kosar')->createSzallitasiKtg($this->params->getIntRequestParam('szallitasimod'), $kuponkod);
 		$view = \mkw\store::getTemplateFactory()->createMainView('checkouttetellist.tpl');
 
         $kr = $this->getRepo('Entities\Kosar');
@@ -136,7 +155,8 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$view->setVar('tetellista', $s);
 		echo json_encode(array(
             'html' => $view->getTemplateResult(),
-            'hash' => $kr->getHash()
+            'hash' => $kr->getHash(),
+            'kuponszoveg' => $kuponszoveg
         ));
 	}
 
@@ -174,6 +194,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                 $akciohirlevel = $this->params->getBoolRequestParam('akciohirlevel');
                 $ujdonsaghirlevel = $this->params->getBoolRequestParam('ujdonsaghirlevel');
                 $foxpostterminalid = $this->params->getIntRequestParam('foxpostterminal');
+                $kuponkod = $this->params->getStringRequestParam('kupon');
 
                 $ok = ($vezeteknev && $keresztnev && $telefon &&
                         $szallirszam && $szallvaros && $szallutca && $szallnev &&
@@ -333,6 +354,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $megrendfej->setHatarido('');
                     $megrendfej->setArfolyam(1);
                     $megrendfej->setPartner($partner);
+                    $megrendfej->setKupon($kuponkod);
                     $megrendfej->setFizmod($this->getEm()->getRepository('Entities\Fizmod')->find($fizetesimod));
                     $megrendfej->setSzallitasimod($this->getEm()->getRepository('Entities\Szallitasimod')->find($szallitasimod));
                     $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
@@ -377,8 +399,6 @@ class checkoutController extends \mkwhelpers\MattableController {
                     }
                     $this->getEm()->persist($megrendfej);
                     $this->getEm()->flush();
-
-                    \mkw\store::writelog($megrendfej->getId() . ' : ' . $regmodenev . ' : ' . $partner->getNev() . ' : ' . $kapcsemail . ' : ' . $partner->getId(), 'checkout.log');
 
                     \mkw\store::getMainSession()->lastmegrendeles = $megrendfej->getId();
                     \mkw\store::getMainSession()->lastemail = $kapcsemail;

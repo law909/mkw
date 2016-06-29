@@ -200,6 +200,12 @@
                 <td colspan="7"><textarea id="FuvarlevelszamEdit" name="fuvarlevelszam" rows="1" cols="100">{$egyed.fuvarlevelszam}</textarea></td>
             </tr>
             {/if}
+            {if ($showkupon)}
+                <tr>
+                    <td><label for="KuponEdit">{t('Kupon')}:</label></td>
+                    <td><input id="KuponEdit" name="kupon" type="text" value="{$egyed.kupon}"></td>
+                </tr>
+            {/if}
             <tr>
                 <td><label for="SzallitasiktgkellEdit">{t('Szállítási költséget kell számolni')}:</label></td>
                 <td><input id="SzallitasiktgkellEdit" name="szallitasiktgkell" type="checkbox"></td>

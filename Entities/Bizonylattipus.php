@@ -69,6 +69,8 @@ class Bizonylattipus {
     private $showcsomagbutton = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showfeketelistabutton = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showkupon = false;
     /** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylattipus",cascade={"persist"}) */
     private $bizonylatfejek;
     /** @ORM\Column(type="string",length=200,nullable=true) */
@@ -99,6 +101,7 @@ class Bizonylattipus {
         $view->setVar('showmesebutton', $this->getShowmesebutton());
         $view->setVar('showcsomagbutton', $this->getShowcsomagbutton());
         $view->setVar('showfeketelistabutton', $this->getShowfeketelistabutton());
+        $view->setVar('showkupon', $this->getShowkupon());
     }
 
     public function getId() {
@@ -365,6 +368,20 @@ class Bizonylattipus {
      */
     public function setShowfeketelistabutton($showfeketelistabutton) {
         $this->showfeketelistabutton = $showfeketelistabutton;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShowkupon() {
+        return $this->showkupon;
+    }
+
+    /**
+     * @param mixed $showkupon
+     */
+    public function setShowkupon($showkupon) {
+        $this->showkupon = $showkupon;
     }
 
 

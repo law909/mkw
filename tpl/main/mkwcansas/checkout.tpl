@@ -185,29 +185,34 @@
 								<div class="span2"><label class="chk-controllabel bold">Szállítási mód:</label></div>
 								<div class="span3 controls js-chkszallmodlist">
 									{foreach $szallitasimodlist as $szallitasimod}
-									<label class="radio">
-										<input type="radio" name="szallitasimod" class="js-chkrefresh{if ($szallitasimod.foxpost)} js-foxpostchk{/if}" value="{$szallitasimod.id}"{if ($szallitasimod.selected)} checked{/if} data-caption="{$szallitasimod.caption}">
-										{$szallitasimod.caption}
-									</label>
-									{if ($szallitasimod.leiras)}
-									<div class="chk-courierdesc folyoszoveg">{$szallitasimod.leiras}</div>
-									{/if}
-                                    {if ($szallitasimod.foxpost)}
-                                    <div class="js-foxpostterminalcontainer chk-foxpostcontainer"></div>
-                                    {/if}
+                                        <label class="radio">
+                                            <input type="radio" name="szallitasimod" class="js-chkrefresh{if ($szallitasimod.foxpost)} js-foxpostchk{/if}" value="{$szallitasimod.id}"{if ($szallitasimod.selected)} checked{/if} data-caption="{$szallitasimod.caption}">
+                                            {$szallitasimod.caption}
+                                        </label>
+                                        {if ($szallitasimod.leiras)}
+                                            <div class="chk-courierdesc folyoszoveg">{$szallitasimod.leiras}</div>
+                                        {/if}
+                                        {if ($szallitasimod.foxpost)}
+                                            <div class="js-foxpostterminalcontainer chk-foxpostcontainer"></div>
+                                        {/if}
 									{/foreach}
 								</div>
 								<div class="span2"><label class="chk-controllabel bold">Fizetési mód:</label></div>
 								<div class="span3 controls js-chkfizmodlist">
 								</div>
 						</div>
+                        <div class="row">
+                            <div class="span2"><label for="KuponEdit">Kuponkód:</label></div>
+                            <div class="span3 controls"><input id="KuponEdit" class="span3" type="text" name="kupon"></div>
+                            <div class="span2 js-kuponszoveg"></div>
+                        </div>
 						<div class="row">
 							<div class="span2"><label for="WebshopMessageEdit" class="bold">Üzenet a webáruháznak:</label></div>
-							<div class="span7 controls"><textarea id="WebshopMessageEdit" class="span5 js-chkrefresh" name="webshopmessage" type="text" rows="2" placeholder="pl. megrendeléssel, számlázással kapcsolatos kérések">{$webshopmessage}</textarea></div>
+							<div class="span7 controls"><textarea id="WebshopMessageEdit" class="span5 js-chkrefresh" name="webshopmessage" rows="2" placeholder="pl. megrendeléssel, számlázással kapcsolatos kérések">{$webshopmessage}</textarea></div>
 						</div>
 						<div class="row">
 							<div class="span2"><label for="CourierMessageEdit" class="bold">Üzenet a futár részére:</label></div>
-							<div class="span7 controls"><textarea id="CourierMessageEdit" class="span5 js-chkrefresh" name="couriermessage" type="text" rows="2" placeholder="pl. kézbesítéssel kapcsolatos kérések">{$couriermessage}</textarea></div>
+							<div class="span7 controls"><textarea id="CourierMessageEdit" class="span5 js-chkrefresh" name="couriermessage" rows="2" placeholder="pl. kézbesítéssel kapcsolatos kérések">{$couriermessage}</textarea></div>
 						</div>
 						<div class="row chk-actionrow"><a href="#block4" class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkattekintesdgh">Tovább</a></div>
 					</div>

@@ -123,6 +123,9 @@
                 {if ($showfuvarlevelszam)}
                     <tr><td>Fuvarlevél:</td><td class="fuvarlevel">{$_egyed.fuvarlevelszam}</td></tr>
                 {/if}
+                {if ($showkupon)}
+                    <tr><td>Kupon:</td><td>{$_egyed.kupon}</td></tr>
+                {/if}
                 <tr><td>{t('Kelt')}:</td><td>{$_egyed.keltstr}</td></tr>
                 {if ($showteljesites)}
                     <tr><td>{t('Teljesítés')}:</td><td>{$_egyed.teljesitesstr}</td></tr>

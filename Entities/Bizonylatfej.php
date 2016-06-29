@@ -451,6 +451,9 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=100,nullable=true) */
     private $tulajevnyilvszam;
 
+    /** @ORM\Column(type="string",length=30,nullable=true) */
+    private $kupon;
+
     public function __toString() {
         return (string)$this->id;
     }
@@ -682,6 +685,7 @@ class Bizonylatfej {
         $ret['storno'] = $this->getStorno();
         $ret['stornozott'] = $this->getStornozott();
         $ret['rontott'] = $this->getRontott();
+        $ret['kupon'] = $this->getKupon();
         if (\mkw\store::getConfigValue('admin', false)) {
             $ret['printurl'] = \mkw\store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejprint', false, array(), array(
                 'id' => $this->getId()
@@ -2559,6 +2563,14 @@ class Bizonylatfej {
      * @return boolean
      */
     public function isKellszallitasikoltsegetszamolni() {
+        if ($this->kellszallitasikoltsegetszamolni) {
+            if ($this->kupon) {
+                $k = $this->getKuponObject();
+                if ($k && $k->isIngyenSzallitas() && $k->isErvenyes()) {
+                    return false;
+                }
+            }
+        }
         return $this->kellszallitasikoltsegetszamolni;
     }
 
@@ -2611,5 +2623,25 @@ class Bizonylatfej {
         $this->partnerfeketelistaok = $partnerfeketelistaok;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getKupon() {
+        return $this->kupon;
+    }
+
+    /**
+     * @param mixed $kupon
+     */
+    public function setKupon($kupon) {
+        $this->kupon = $kupon;
+    }
+
+    public function getKuponObject() {
+        if ($this->kupon) {
+            return \mkw\store::getEm()->getRepository('\Entities\Kupon')->find($this->kupon);
+        }
+        return false;
+    }
 
 }

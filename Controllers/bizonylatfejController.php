@@ -350,6 +350,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['regmode'] = $t->getRegmode();
         $x['lastmodstr'] = $t->getLastmodStr();
         $x['createdstr'] = $t->getCreatedStr();
+        $x['kupon'] = $t->getKupon();
         $bsc = new bizonylatstatuszController($this->params);
         $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId());
         if ($forKarb) {
@@ -479,6 +480,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
         $obj->setFuvarlevelszam($this->params->getStringRequestParam('fuvarlevelszam'));
+        $obj->setKupon($this->params->getStringRequestParam('kupon'));
 
         $obj->setPartnernev($this->params->getStringRequestParam('partnernev'));
         $obj->setPartneradoszam($this->params->getStringRequestParam('partneradoszam'));

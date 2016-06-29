@@ -644,12 +644,16 @@ var checkout = (function($, guid) {
         $.ajax({
             url: '/checkout/gettetellist',
 			data: {
-				szallitasimod: $('input[name="szallitasimod"]:checked').val()
+				szallitasimod: $('input[name="szallitasimod"]:checked').val(),
+                kupon: $('input[name="kupon"]').val()
 			},
             success: function(data) {
                 var d = JSON.parse(data);
                 $('.js-chktetellist').html(d.html);
                 kosarhash = d.hash.value;
+                if (d.kuponszoveg) {
+                    $('.js-kuponszoveg').text(d.kuponszoveg);
+                }
             }
         });
     }
@@ -742,6 +746,9 @@ var checkout = (function($, guid) {
 				loadFizmodList();
                 loadFoxpostCsoportData(true);
 			})
+            .on('blur', 'input[name="kupon"]', function() {
+                loadTetelList();
+            })
 			.on('change', 'input[name="regkell"]', function() {
 				checkoutpasswordcontainer.empty();
 				if ($('input[name="regkell"]:checked').val() * 1 === 2) {

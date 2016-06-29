@@ -279,6 +279,17 @@ class Kupon extends \Entities\Kupon implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function isErvenyes()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isErvenyes', []);
+
+        return parent::isErvenyes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getTipus()
     {
 
@@ -307,6 +318,28 @@ class Kupon extends \Entities\Kupon implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTipus', [$tipus]);
 
         return parent::setTipus($tipus);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isIngyenSzallitas()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isIngyenSzallitas', []);
+
+        return parent::isIngyenSzallitas();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function doFelhasznalt()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'doFelhasznalt', []);
+
+        return parent::doFelhasznalt();
     }
 
 }
