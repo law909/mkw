@@ -170,7 +170,11 @@ class checkoutController extends \mkwhelpers\MattableController {
                 $regkell = $this->params->getIntRequestParam('regkell');
                 $vezeteknev = $this->params->getStringRequestParam('vezeteknev');
                 $keresztnev = $this->params->getStringRequestParam('keresztnev');
-                $telefon = $this->params->getStringRequestParam('telefon');
+                $telefon = preg_replace('/[^0-9+]/', '', $this->params->getStringRequestParam('telefon'));
+                if (substr_count($telefon, '+') > 1) {
+                    $firstPlus = strpos($telefon, '+') + 1;
+                    $telefon = substr($telefon, 0, $firstPlus) . str_replace('+', '', substr($telefon, $firstPlus));
+                }
                 $jelszo1 = $this->params->getStringRequestParam('jelszo1');
                 $jelszo2 = $this->params->getStringRequestParam('jelszo2');
                 $kapcsemail = $this->params->getStringRequestParam('kapcsemail');
