@@ -349,10 +349,12 @@ class mainController extends \mkwhelpers\Controller {
 			$e = array($valtozatertek);
 		}
 		$termekvaltozat = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(), $t, $e);
-		$ret['price'] = number_format($termek->getBruttoAr($termekvaltozat, \mkw\store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
-        $ret['kepurlmedium'] = $termekvaltozat->getKepurlMedium();
-        $ret['kepurllarge'] = $termekvaltozat->getKepurlLarge();
-        $ret['kepurlsmall'] = $termekvaltozat->getKepurlSmall();
+        $ret['price'] = number_format($termek->getBruttoAr($termekvaltozat, \mkw\store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
+        if ($termekvaltozat) {
+            $ret['kepurlmedium'] = $termekvaltozat->getKepurlMedium();
+            $ret['kepurllarge'] = $termekvaltozat->getKepurlLarge();
+            $ret['kepurlsmall'] = $termekvaltozat->getKepurlSmall();
+        }
         $ret['kepek'] = \mkw\store::getEm()->getRepository('Entities\Termek')->getKepekKiveve($termek, $termekvaltozat);
 
 		$valtozatok = $termek->getValtozatok();
