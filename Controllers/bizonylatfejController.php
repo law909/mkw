@@ -206,6 +206,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         if ($f) {
             $filter->addFilter('fuvarlevelszam', 'LIKE', '%' . $f . '%');
         }
+        $f = $this->params->getStringRequestParam('referrerfilter');
+        if ($f) {
+            $filter->addFilter('referrer', 'LIKE', '%' . $f . '%');
+        }
         $f = $this->params->getStringRequestParam('erbizonylatszamfilter');
         if ($f) {
             $filter->addFilter('erbizonylatszam', 'LIKE', '%' . $f . '%');

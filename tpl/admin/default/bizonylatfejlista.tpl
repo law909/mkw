@@ -131,6 +131,8 @@
     <div>
         <label for="fuvarlevelszamfilter">Fuvarlevélszám:</label>
         <input id="fuvarlevelszamfilter" name="fuvarlevelszamfilter" type="text" size="20">
+        <label for="referrerfilter">Referrer:</label>
+        <input id="referrerfilter" name="referrerfilter" type="text" size="20">
     </div>
     {/if}
     {if ($showerbizonylatszam)}
