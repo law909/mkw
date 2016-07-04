@@ -344,7 +344,9 @@ class importController extends \mkwhelpers\Controller {
                                 }
                             }
                             if ($termek) {
-                                $termek->setNemkaphato(($data[$this->n('g')] * 1) == 0);
+                                if ($termek->getKeszlet() <= 0) {
+                                    $termek->setNemkaphato(($data[$this->n('g')] * 1) == 0);
+                                }
 //                        $termek->setAfa($afa[0]);
                                 $termek->setNetto($data[$this->n('d')] * 1 * $arszaz / 100);
                                 $termek->setBrutto(round($termek->getBrutto(), -1));
@@ -356,9 +358,11 @@ class importController extends \mkwhelpers\Controller {
                             $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('KP' . $data[$this->n('a')]);
                             if ($termek) {
                                 $termek = $termek[0];
-                                $termek->setNemkaphato(true);
-                                $termek->setLathato(false);
-                                \mkw\store::getEm()->persist($termek);
+                                if ($termek->getKeszlet() <= 0) {
+                                    $termek->setNemkaphato(true);
+                                    $termek->setLathato(false);
+                                    \mkw\store::getEm()->persist($termek);
+                                }
 //                        \mkw\store::getEm()->flush();
                             }
                         }
@@ -385,7 +389,7 @@ class importController extends \mkwhelpers\Controller {
                             if (!in_array($t['idegenkod'], $idegenkodok)) {
                                 /** @var \Entities\Termek $termek */
                                 $termek = $this->getRepo('Entities\Termek')->find($t['id']);
-                                if ($termek) {
+                                if ($termek && $termek->getKeszlet() <= 0) {
                                     $lettfuggoben = true;
                                     \mkw\store::writelog('cikkszám: ' . $termek->getCikkszam(), 'kreativ_fuggoben.txt');
                                     $termek->setFuggoben(true);
@@ -606,7 +610,9 @@ class importController extends \mkwhelpers\Controller {
                             if ($termek) {
                                 // $termek->setAfa($afa[0]);
                                 if ((substr($data[11], -6) == 'rkezik') || (substr($data[11], 0, 6) == 'rendel')) {
-                                    $termek->setNemkaphato(true);
+                                    if ($termek->getKeszlet() <= 0) {
+                                        $termek->setNemkaphato(true);
+                                    }
                                 }
                                 else {
                                     $termek->setNemkaphato(false);
@@ -648,7 +654,7 @@ class importController extends \mkwhelpers\Controller {
                                 if (!in_array($t['idegenkod'], $idegenkodok)) {
                                     /** @var \Entities\Termek $termek */
                                     $termek = $this->getRepo('Entities\Termek')->find($t['id']);
-                                    if ($termek) {
+                                    if ($termek && $termek->getKeszlet() <= 0) {
                                         $termekdb++;
                                         \mkw\store::writelog('cikkszám: ' . $termek->getCikkszam(), 'delton_fuggoben.txt');
                                         $lettfuggoben = true;
@@ -1006,9 +1012,11 @@ class importController extends \mkwhelpers\Controller {
                         else {
                             if ($termek) {
                                 $termek = $termek[0];
-                                $termek->setNemkaphato(true);
-                                $termek->setLathato(false);
-                                \mkw\store::getEm()->persist($termek);
+                                if ($termek->getKeszlet() <= 0) {
+                                    $termek->setNemkaphato(true);
+                                    $termek->setLathato(false);
+                                    \mkw\store::getEm()->persist($termek);
+                                }
 //                            \mkw\store::getEm()->flush();
                             }
                         }
@@ -1215,7 +1223,9 @@ class importController extends \mkwhelpers\Controller {
                                     $valtozat->setBrutto($ar - $termek->getBrutto());
                                 }
                                 if (!$kaphato) {
-                                    $valtozat->setElerheto(false);
+                                    if ($valtozat->getKeszlet() <= 0) {
+                                        $valtozat->setElerheto(false);
+                                    }
                                 }
                                 else {
                                     $valtozat->setElerheto(true);
@@ -1238,7 +1248,9 @@ class importController extends \mkwhelpers\Controller {
                                         $termek->setLeiras($leiras);
                                     }
                                     if (!$kaphato) {
-                                        $termek->setNemkaphato(true);
+                                        if ($termek->getKeszlet()) {
+                                            $termek->setNemkaphato(true);
+                                        }
                                     }
                                     else {
                                         $termek->setNemkaphato(false);
@@ -1273,7 +1285,7 @@ class importController extends \mkwhelpers\Controller {
                                 if (!in_array($t['idegencikkszam'], $idegenkodok)) {
                                     /** @var \Entities\Termek $termek */
                                     $termek = $this->getRepo('Entities\Termek')->find($t['id']);
-                                    if ($termek) {
+                                    if ($termek && $termek->getKeszlet() <= 0) {
                                         $termekdb++;
                                         \mkw\store::writelog('idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'makszutov_fuggoben.txt');
                                         $lettfuggoben = true;
@@ -1428,7 +1440,9 @@ class importController extends \mkwhelpers\Controller {
                         $termek->setLeiras($leiras);
                     }
                     if (!$kaphato) {
-                        $termek->setNemkaphato(true);
+                        if ($termek->getKeszlet() <= 0) {
+                            $termek->setNemkaphato(true);
+                        }
                     }
                     else {
                         $termek->setNemkaphato(false);
@@ -1558,47 +1572,16 @@ class importController extends \mkwhelpers\Controller {
                             $crawler = new Crawler($termekpage);
 
                             $ar = 0;
-                            $regiar = 0;
-                            $akcios = false;
 
-                            $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price > span.sale-price');
+                            $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price');
                             if ($nodelist->count()) {
                                 $ar = $nodelist->text();
                                 $ar = str_replace(array(' ', 'Ft'), '', $ar);
                                 $ar = $ar * 1;
-                                $akcios = true;
                             }
 
-                            $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price > span.old-price');
-                            if ($nodelist->count()) {
-                                $regiar = $nodelist->text();
-                                $regiar = str_replace(array(' ', 'Ft'), '', $regiar);
-                                $regiar = $regiar * 1;
-                            }
-
-                            if (!$akcios) {
-                                $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price');
-                                if ($nodelist->count()) {
-                                    $ar = $nodelist->text();
-                                    $ar = str_replace(array(' ', 'Ft'), '', $ar);
-                                    $ar = $ar * 1;
-                                }
-                            }
-
-                            $hibatext = array();
-                            if ($akcios) {
-                                if (!$regiar) {
-                                    $hibatext[] = 'nincs regi ar';
-                                }
-                                if (!$ar) {
-                                    $hibatext[] = 'nincs akcios ar';
-                                }
-                                \mkw\store::writelog($cikkszam . ': akcios, de ' . implode(', ', $hibatext));
-                            }
-                            else {
-                                if (!$ar) {
-                                    \mkw\store::writelog($cikkszam . ': nem akcios, de nincs ar');
-                                }
+                            if (!$ar) {
+                                \mkw\store::writelog($cikkszam . ': nem akcios, de nincs ar');
                             }
 
                             $nodelist = $crawler->filter('div#item-page > div.left > h1');
@@ -1643,20 +1626,8 @@ class importController extends \mkwhelpers\Controller {
                                         $termek->setGyarto($gyarto);
                                     }
                                     $termek->setNemkaphato(false);
-                                    if (!$akcios) {
-                                        if ($ar) {
-                                            $termek->setBrutto($ar);
-                                        }
-                                    }
-                                    else {
-                                        if ($regiar) {
-                                            $termek->setBrutto($regiar);
-                                        }
-                                        if ($ar) {
-                                            $termek->setAkciosbrutto($ar);
-                                        }
-                                        $termek->setAkciostart(date(\mkw\store::$DateFormat));
-                                        $termek->setAkciostop(date(\mkw\store::$LastDayDateFormat));
+                                    if ($ar) {
+                                        $termek->setBrutto($ar);
                                     }
 
                                     $imgcnt = 0;
@@ -1708,25 +1679,15 @@ class importController extends \mkwhelpers\Controller {
                                     $termek->setLeiras($leiras);
                                 }
                                 if (!$kaphato) {
-                                    $termek->setNemkaphato(true);
+                                    if ($termek->getKeszlet() <= 0) {
+                                        $termek->setNemkaphato(true);
+                                    }
                                 }
                                 else {
                                     $termek->setNemkaphato(false);
                                 }
-                                if (!$akcios) {
-                                    if ($ar) {
-                                        $termek->setBrutto($ar);
-                                    }
-                                }
-                                else {
-                                    if ($regiar) {
-                                        $termek->setBrutto($regiar);
-                                    }
-                                    if ($ar) {
-                                        $termek->setAkciosbrutto($ar);
-                                    }
-                                    $termek->setAkciostart(date(\mkw\store::$DateFormat));
-                                    $termek->setAkciostop(date(\mkw\store::$LastDayDateFormat));
+                                if ($ar) {
+                                    $termek->setBrutto($ar);
                                 }
                                 \mkw\store::getEm()->persist($termek);
                             }
