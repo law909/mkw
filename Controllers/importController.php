@@ -1573,11 +1573,19 @@ class importController extends \mkwhelpers\Controller {
 
                             $ar = 0;
 
-                            $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price');
+                            $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price > span.old-price');
                             if ($nodelist->count()) {
                                 $ar = $nodelist->text();
                                 $ar = str_replace(array(' ', 'Ft'), '', $ar);
                                 $ar = $ar * 1;
+                            }
+                            else {
+                                $nodelist = $crawler->filter('div#item-page > div.left > div.buy > span.price');
+                                if ($nodelist->count()) {
+                                    $ar = $nodelist->text();
+                                    $ar = str_replace(array(' ', 'Ft'), '', $ar);
+                                    $ar = $ar * 1;
+                                }
                             }
 
                             if (!$ar) {
