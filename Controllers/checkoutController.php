@@ -443,6 +443,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                 $szallutca = $this->params->getStringRequestParam('szallutca');
                 $szalleqszamla = $this->params->getBoolRequestParam('szalleqszamla');
                 $webshopmessage = $this->params->getStringRequestParam('webshopmessage');
+                $hatarido = $this->params->getDateRequestParam('hatarido');
 
                 if ($szalleqszamla) {
                     $szallnev = $szamlanev;
@@ -482,7 +483,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $megrendfej->setKelt('');
                     $megrendfej->setTeljesites('');
                     $megrendfej->setEsedekesseg('');
-                    $megrendfej->setHatarido('');
+                    $megrendfej->setHatarido(new \DateTime(\mkw\store::convDate($hatarido)));
 
                     $megrendfej->setPartner($partner);
 

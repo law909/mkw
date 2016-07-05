@@ -84,6 +84,12 @@
 
                     <h3>Shipping and payment</h3>
                     <div class="form-group col-md-12">
+                        <label for="Hatarido" class="col-md-2 control-label">Requested delivery date</label>
+                        <div class="col-md-10">
+                            <input id="Hatarido" type="text" class="form-control" value="{$hatarido}" name="hatarido">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
                         <label for="SzallitasiMod" class="col-md-2 control-label">Shipping method</label>
                         <div class="col-md-10">
                             <input id="SzallitasiMod" class="form-control" value="{$partnerszallitasimod}" data-id="{$partnerszallitasimodid}" disabled>

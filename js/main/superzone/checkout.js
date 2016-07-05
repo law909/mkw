@@ -31,7 +31,8 @@ var checkout = (function($) {
 			szallvarosinput = $('input[name="szallvaros"]'),
 			szallvarosgr = szallvarosinput.closest('.form-group'),
 			szallutcainput = $('input[name="szallutca"]'),
-			szallutcagr = szallutcainput.closest('.form-group');
+			szallutcagr = szallutcainput.closest('.form-group'),
+            hataridoinput = $('input[name="hatarido"]');
 
         loadTetelList();
 
@@ -43,6 +44,10 @@ var checkout = (function($) {
         $('.js-checkoutsendorder').on('click', function(e) {
             e.preventDefault();
             checkoutform.submit();
+        });
+
+        $('#Hatarido').datetimepicker({
+            format: 'L'
         });
 
         checkoutform.on('submit', function(e) {
