@@ -454,6 +454,12 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=30,nullable=true) */
     private $kupon;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $fakekintlevoseg = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $fakekifizetve = false;
+
     public function __toString() {
         return (string)$this->id;
     }
@@ -686,6 +692,8 @@ class Bizonylatfej {
         $ret['stornozott'] = $this->getStornozott();
         $ret['rontott'] = $this->getRontott();
         $ret['kupon'] = $this->getKupon();
+        $ret['fakekintlevoseg'] = $this->getFakekintlevoseg();
+        $ret['fakekifizetve'] = $this->getFakekifizetve();
         if (\mkw\store::getConfigValue('admin', false)) {
             $ret['printurl'] = \mkw\store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejprint', false, array(), array(
                 'id' => $this->getId()
@@ -2642,6 +2650,34 @@ class Bizonylatfej {
             return \mkw\store::getEm()->getRepository('\Entities\Kupon')->find($this->kupon);
         }
         return false;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFakekifizetve() {
+        return $this->fakekifizetve;
+    }
+
+    /**
+     * @param mixed $fakekifizetve
+     */
+    public function setFakekifizetve($fakekifizetve) {
+        $this->fakekifizetve = $fakekifizetve;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFakekintlevoseg() {
+        return $this->fakekintlevoseg;
+    }
+
+    /**
+     * @param mixed $fakekintlevoseg
+     */
+    public function setFakekintlevoseg($fakekintlevoseg) {
+        $this->fakekintlevoseg = $fakekintlevoseg;
     }
 
 }

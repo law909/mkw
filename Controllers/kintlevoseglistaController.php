@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
 class kintlevoseglistaController extends \mkwhelpers\MattableController {
@@ -223,6 +224,104 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
                     }
                     break;
             }
+        }
+
+        if (\mkw\store::isFakeKintlevoseg()) {
+            $ret = $this->getFakeData($ret);
+        }
+        return $ret;
+    }
+
+    protected function createFakeFilter() {
+        $filter = new FilterDescriptor();
+
+        $tolstr = $this->params->getStringRequestParam('tol');
+        $tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->tolstr)));
+
+        $igstr = $this->params->getStringRequestParam('ig');
+        $igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->igstr)));
+
+        $mt = $this->params->getStringRequestParam('datumtipus');
+        switch ($mt) {
+            case 'kelt':
+                $datummezo = 'bf.kelt';
+                break;
+            case 'teljesites':
+                $datummezo = 'bf.teljesites';
+                break;
+            case 'esedekesseg':
+                $datummezo = 'bf.esedekesseg';
+                break;
+            default:
+                $datummezo = 'bf.teljesites';
+        }
+
+        $ukkod = $this->params->getIntRequestParam('uzletkoto');
+        if ($ukkod) {
+            $filter->addFilter('bf.uzletkoto_id', '=', $ukkod);
+        }
+
+        $partnerkod = $this->params->getIntRequestParam('partner');
+        if ($partnerkod) {
+            $filter->addFilter('bf.partner_id', '=', $partnerkod);
+        }
+        else {
+            $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($this->params->getArrayRequestParam('cimkefilter'));
+            if ($partnerkodok) {
+                $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
+            }
+        }
+
+        $filter
+            ->addFilter('bf.irany', '<', 0)
+            ->addFilter($datummezo, '>=', $tolstr)
+            ->addFilter($datummezo, '<=', $igstr)
+            ->addFilter('bf.rontott', '=', false)
+            ->addFilter('bf.storno', '=', false)
+            ->addFilter('bf.stornozott', '=', false)
+            ->addFilter('bf.fakekintlevoseg', '=', true)
+            ->addFilter('bf.fakekifizetve', '=', false);
+        return $filter;
+    }
+
+    protected function getFakeData($ret) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'bizonylatfej_id');
+        $rsm->addScalarResult('partner_id', 'partner_id');
+        $rsm->addScalarResult('nev', 'nev');
+        $rsm->addScalarResult('telefon', 'telefon');
+        $rsm->addScalarResult('mobil', 'mobil');
+        $rsm->addScalarResult('email', 'email');
+        $rsm->addScalarResult('irszam', 'irszam');
+        $rsm->addScalarResult('varos', 'varos');
+        $rsm->addScalarResult('utca', 'utca');
+        $rsm->addScalarResult('kelt', 'kelt');
+        $rsm->addScalarResult('teljesites', 'teljesites');
+        $rsm->addScalarResult('esedekesseg', 'esedekesseg');
+        $rsm->addScalarResult('datum', 'datum');
+        $rsm->addScalarResult('hivatkozottdatum', 'hivatkozottdatum');
+        $rsm->addScalarResult('brutto', 'brutto');
+        $rsm->addScalarResult('tartozas', 'tartozas');
+        $rsm->addScalarResult('valutanemnev', 'valutanemnev');
+
+        $filter = $this->createFakeFilter();
+
+        $q = $this->getEm()->createNativeQuery(
+            'SELECT bf.id, bf.partner_id, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
+            . ' p.varos, p.utca, bf.kelt, bf.teljesites, bf.esedekesseg, bf.esedekesseg AS datum, bf.esedekesseg AS hivatkozottdatum, bf.brutto,'
+            . ' bf.brutto AS tartozas, bf.valutanemnev'
+            . ' FROM bizonylatfej bf'
+            . ' LEFT OUTER JOIN partner p ON (bf.partner_id = p.id)'
+            . $filter->getFilterString('', 'par')
+            . ' ORDER BY nev, partner_id, kelt'
+            , $rsm);
+        $q->setParameters($filter->getQueryParameters('par'));
+
+        $d = $q->getScalarResult();
+        foreach($d as $sor) {
+            $sor['lejart'] = false;
+            $sor['lejartnap'] = 0;
+            $ret[] = $sor;
         }
 
         return $ret;

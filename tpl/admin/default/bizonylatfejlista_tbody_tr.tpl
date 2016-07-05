@@ -144,6 +144,9 @@
                 {if ($_egyed.fizetve)}
                     <tr><td>Fizetve</td></tr>
                 {/if}
+                {if ($setup.fakekintlevoseg && $_egyed.fakekintlevoseg && !$_egyed.fakekifizetve)}
+                    <tr><td>FAKE kintlévőség</td></tr>
+                {/if}
                 <tr>
                     <td></td>
                     <td class="mattable-rightaligned">{$_egyed.valutanemnev}</td>

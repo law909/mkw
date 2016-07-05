@@ -783,6 +783,10 @@ class store {
         return self::getSetupValue('mijsz');
     }
 
+    public static function isFakeKintlevoseg() {
+        return self::getSetupValue('fakekintlevoseg');
+    }
+
     public static function isFoxpostSzallitasimod($szm) {
         $i = $szm;
         if (is_a($szm, 'Entities\FoxpostTerminal')) {
