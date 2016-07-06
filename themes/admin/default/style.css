@@ -216,3 +216,8 @@ tfoot tr td {
 table.termekkarton tr:nth-child(even) {
     background: #ddd;
 }
+
+.termekforgalmibal {
+    width: 50%;
+    min-height: 250px;
+}

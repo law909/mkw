@@ -20,68 +20,79 @@
                 <div class="matt-hseparator"></div>
                 {include "comp_partnerselect.tpl"}
                 <div class="matt-hseparator"></div>
-                <div>
-                    <label for="RaktarEdit">Raktár:</label>
-                    <select id="RaktarEdit" name="raktar">
-                        <option value="0">válasszon</option>
-                        {foreach $raktarlista as $raktar}
-                            <option value="{$raktar.id}">{$raktar.caption}</option>
-                        {/foreach}
-                    </select>
-                </div>
-                <div class="matt-hseparator"></div>
-                {include "comp_gyartoselect.tpl"}
-                <div class="matt-hseparator"></div>
-                <div>
-                    <label for="KeszletEdit">Készlet:</label>
-                    <select id="KeszletEdit" name="keszletfilter">
-                        <option value="0">mindegy</option>
-                        <option value="1">ami időszak végén van</option>
-                        <option value="2">ami időszak végén nincs</option>
-                        <option value="3">ami időszak végén negatív</option>
-                    </select>
-                </div>
-                <div class="matt-hseparator"></div>
-                <div>
-                    <label for="ForgalomEdit">Forgalom:</label>
-                    <select id="ForgalomEdit" name="forgalomfilter">
-                        <option value="0">mindegy</option>
-                        <option value="1">ami az időszakban mozgott</option>
-                        <option value="2">ami az időszakban nem mozgott</option>
-                    </select>
-                </div>
-                <div class="matt-hseparator"></div>
-                <div>
-                    <label for="ErtekEdit">Érték:</label>
-                    <select id="ErtekEdit" name="ertektipus">
-                        <option value="0">nincs</option>
-                        <option value="1">bizonylaton szereplő nettó</option>
-                        <option value="2">bizonylaton szereplő bruttó</option>
-                        <option value="3">bizonylaton szereplő nettó HUF</option>
-                        <option value="4">bizonylaton szereplő bruttó HUF</option>
-                        {if ($setup.arsavok)}
-                        <option value="5">választott ársáv nettó</option>
-                        <option value="6">választott ársáv bruttó</option>
-                        {else}
-                        <option value="7">eladási ár nettó</option>
-                        <option value="8">eladási ár bruttó</option>
-                        {/if}
-                    </select>
-                </div>
-                {if ($setup.arsavok)}
-                <div class="matt-hseparator"></div>
-                {include "comp_arsavselect.tpl"}
-                {/if}
-                <div class="matt-hseparator"></div>
-                <div>
-                    <label for="NevEdit">{t('Termék')}:</label>
-                    <input id="NevEdit" type="text" name="nevfilter">
-                </div>
-                {if ($setup.multilang)}
+                <div class="balra termekforgalmibal">
+                    <div>
+                        <label for="RaktarEdit">Raktár:</label>
+                        <select id="RaktarEdit" name="raktar">
+                            <option value="0">válasszon</option>
+                            {foreach $raktarlista as $raktar}
+                                <option value="{$raktar.id}">{$raktar.caption}</option>
+                            {/foreach}
+                        </select>
+                    </div>
                     <div class="matt-hseparator"></div>
-                    {include "comp_nyelvselect.tpl"}
-                {/if}
-                <div class="matt-hseparator"></div>
+                    {include "comp_gyartoselect.tpl"}
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <label for="KeszletEdit">Készlet:</label>
+                        <select id="KeszletEdit" name="keszletfilter">
+                            <option value="0">mindegy</option>
+                            <option value="1">ami időszak végén van</option>
+                            <option value="2">ami időszak végén nincs</option>
+                            <option value="3">ami időszak végén negatív</option>
+                        </select>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <label for="ForgalomEdit">Forgalom:</label>
+                        <select id="ForgalomEdit" name="forgalomfilter">
+                            <option value="0">mindegy</option>
+                            <option value="1">ami az időszakban mozgott</option>
+                            <option value="2">ami az időszakban nem mozgott</option>
+                        </select>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <label for="ErtekEdit">Érték:</label>
+                        <select id="ErtekEdit" name="ertektipus">
+                            <option value="0">nincs</option>
+                            <option value="1">bizonylaton szereplő nettó</option>
+                            <option value="2">bizonylaton szereplő bruttó</option>
+                            <option value="3">bizonylaton szereplő nettó HUF</option>
+                            <option value="4">bizonylaton szereplő bruttó HUF</option>
+                            {if ($setup.arsavok)}
+                            <option value="5">választott ársáv nettó</option>
+                            <option value="6">választott ársáv bruttó</option>
+                            {else}
+                            <option value="7">eladási ár nettó</option>
+                            <option value="8">eladási ár bruttó</option>
+                            {/if}
+                        </select>
+                    </div>
+                    {if ($setup.arsavok)}
+                    <div class="matt-hseparator"></div>
+                    {include "comp_arsavselect.tpl"}
+                    {/if}
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <label for="NevEdit">{t('Termék')}:</label>
+                        <input id="NevEdit" type="text" name="nevfilter">
+                    </div>
+                    {if ($setup.multilang)}
+                        <div class="matt-hseparator"></div>
+                        {include "comp_nyelvselect.tpl"}
+                    {/if}
+                </div>
+                <div>
+                    {include "comp_bizonylattipus.tpl"}
+                    <div class="matt-hseparator"></div>
+                    {include "comp_bizonylatstatusz.tpl"}
+                    <div class="matt-hseparator"></div>
+                    {include "comp_bizonylatstatuszcsoport.tpl"}
+                    <div class="matt-hseparator"></div>
+                    <div>Ha itt van kiválasztva bizonylattípus, akkor MINDEN olyan típusú bizonylattétel szerepelni fog a listán, nem csak azok, amik mozgatnak készletet.</div>
+                </div>
+                <div class="matt-hseparator clearboth"></div>
                 {include "comp_termekfa.tpl"}
                 <div class="matt-hseparator"></div>
                 <input id="FaFilter" type="hidden" name="fafilter[]">

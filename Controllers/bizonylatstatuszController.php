@@ -109,7 +109,7 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
             $res[] = array(
                 'id' => $sor['csoport'],
                 'caption' => $sor['csoport'],
-                'selected' => ($sor['csoport'] == $sel));
+                'selected' => (!$sel ? false: $sor['csoport'] == $sel));
         }
         return $res;
     }

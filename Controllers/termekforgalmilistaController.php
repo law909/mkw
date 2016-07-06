@@ -20,6 +20,13 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
 
         $view->setVar('nyelvlist', \mkw\store::getLocaleSelectList());
 
+        $bsc = new bizonylatstatuszController($this->params);
+        $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
+        $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
+
+        $btc = new bizonylattipusController($this->params);
+        $view->setVar('bizonylattipuslist', $btc->getSelectList());
+
         $view->printTemplateResult(false);
 
     }
@@ -38,9 +45,12 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         $nevfilter = $this->params->getRequestParam('nevfilter', NULL);
         $gyartoid = $this->params->getIntRequestParam('gyarto');
         $nyelv = \mkw\store::toLocale($this->params->getStringRequestParam('nyelv'));
+        $bizstatusz = $this->params->getIntRequestParam('bizonylatstatusz');
+        $bizstatuszcsoport = $this->params->getStringRequestParam('bizonylatstatuszcsoport');
+        $bizonylattipusfilter = $this->params->getArrayRequestParam('bizonylattipus');
 
         $tetelek = $this->getRepo('Entities\Bizonylatfej')->getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
-            $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv);
+            $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv, $bizstatusz, $bizstatuszcsoport, $bizonylattipusfilter);
 
         switch ($keszletfilter) {
             case 1: // van keszleten
@@ -109,14 +119,16 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', t('Cikkszám'))
             ->setCellValue('B1', t('Név'))
-            ->setCellValue('C1', t('Nyitó'))
-            ->setCellValue('D1', t('Be'))
-            ->setCellValue('E1', t('Ki'))
-            ->setCellValue('F1', t('Záró'))
-            ->setCellValue('G1', t('Nyitó érték'))
-            ->setCellValue('H1', t('Be érték'))
-            ->setCellValue('I1', t('Ki érték'))
-            ->setCellValue('J1', t('Záró érték'));
+            ->setCellValue('C1', t('Változat 1'))
+            ->setCellValue('D1', t('Változat 2'))
+            ->setCellValue('E1', t('Nyitó'))
+            ->setCellValue('F1', t('Be'))
+            ->setCellValue('G1', t('Ki'))
+            ->setCellValue('H1', t('Záró'))
+            ->setCellValue('I1', t('Nyitó érték'))
+            ->setCellValue('J1', t('Be érték'))
+            ->setCellValue('K1', t('Ki érték'))
+            ->setCellValue('L1', t('Záró érték'));
 
         $res = $this->getData();
         $mind = $res['tetelek'];
@@ -125,15 +137,17 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         foreach ($mind as $item) {
             $excel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $sor, $item['cikkszam'])
-                ->setCellValue('B' . $sor, $item['nev'] . ' ' . $item['ertek1'] . ' ' . $item['ertek2'])
-                ->setCellValue('C' . $sor, $item['nyito'])
-                ->setCellValue('D' . $sor, $item['be'])
-                ->setCellValue('E' . $sor, $item['ki'])
-                ->setCellValue('F' . $sor, $item['zaro'])
-                ->setCellValue('G' . $sor, $item['nyitoertek'])
-                ->setCellValue('H' . $sor, $item['beertek'])
-                ->setCellValue('I' . $sor, $item['kiertek'])
-                ->setCellValue('J' . $sor, $item['zaroertek']);
+                ->setCellValue('B' . $sor, $item['nev'])
+                ->setCellValue('C' . $sor, $item['ertek1'])
+                ->setCellValue('D' . $sor, $item['ertek2'])
+                ->setCellValue('E' . $sor, $item['nyito'])
+                ->setCellValue('F' . $sor, $item['be'])
+                ->setCellValue('G' . $sor, $item['ki'])
+                ->setCellValue('H' . $sor, $item['zaro'])
+                ->setCellValue('I' . $sor, $item['nyitoertek'])
+                ->setCellValue('J' . $sor, $item['beertek'])
+                ->setCellValue('K' . $sor, $item['kiertek'])
+                ->setCellValue('L' . $sor, $item['zaroertek']);
             $sor++;
         }
 

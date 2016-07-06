@@ -13,11 +13,13 @@ $(document).ready(function() {
             $('.js-refresh')
                 .on('click', function() {
 
-                    var fak, fafilter;
+                    var fak, fafilter, biztipusfilter;
                     fak = mkwcomp.termekfaFilter.getFilter('#termekfa');
                     if (fak.length > 0) {
                         fafilter = fak;
                     }
+
+                    biztipusfilter = mkwcomp.bizonylattipusFilter.getFilter('input[name="bizonylattipus"]');
 
                     $.ajax({
                         url: '/admin/termekforgalmilista/refresh',
@@ -35,7 +37,10 @@ $(document).ready(function() {
                             arsav: $('select[name="arsav"] option:selected').val(),
                             nevfilter: $('input[name="nevfilter"]').val(),
                             nyelv: $('select[name="nyelv"] option:selected').val(),
-                            fafilter: fafilter
+                            fafilter: fafilter,
+                            bizonylatstatusz: $('select[name="bizonylatstatusz"] option:selected').val(),
+                            bizonylatstatuszcsoport: $('select[name="bizonylatstatuszcsoport"] option:selected').val(),
+                            bizonylattipus: biztipusfilter
                         },
                         success: function(d) {
                             $('#eredmeny').html(d);

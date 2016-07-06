@@ -376,7 +376,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
     }
 
     public function getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $fafilter, $nevfilter,
-        $gyartoid, $locale) {
+        $gyartoid, $locale, $bizstatusz, $bizstatuscsoport, $bizonylattipusfilter) {
         switch ($datumtipus) {
             case 'kelt':
             case 'teljesites':
@@ -514,12 +514,28 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             );
         }
 
+        $bizstatuszObj = false;
+        if ($bizstatusz) {
+            $bizstatuszObj = $this->getRepo('Entities\Bizonylatstatusz')->findOneById($bizstatusz);
+        }
+
         /**********************
          * nyito
          */
         $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('bt.mozgat', '=', true);
         $filter->addFilter('bf.rontott', '=', false);
+        if ($bizstatuszObj) {
+            $filter->addFilter('bf.bizonylatstatusz_id', '=', $bizstatuszObj);
+        }
+        if ($bizstatuscsoport) {
+            $filter->addFilter('bf.bizonylatstatuszcsoport', '=', $bizstatuscsoport);
+        }
+        if ($bizonylattipusfilter) {
+            $filter->addFilter('bf.bizonylattipus_id', 'IN', $bizonylattipusfilter);
+        }
+        else {
+            $filter->addFilter('bt.mozgat', '=', true);
+        }
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
         }
@@ -550,9 +566,20 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
          * be
          */
         $filter->clear();
-        $filter->addFilter('bt.mozgat', '=', true);
         $filter->addFilter('bf.rontott', '=', false);
         $filter->addFilter('bt.irany', '>', 0);
+        if ($bizstatuszObj) {
+            $filter->addFilter('bf.bizonylatstatusz_id', '=', $bizstatuszObj);
+        }
+        if ($bizstatuscsoport) {
+            $filter->addFilter('bf.bizonylatstatuszcsoport', '=', $bizstatuscsoport);
+        }
+        if ($bizonylattipusfilter) {
+            $filter->addFilter('bf.bizonylattipus_id', 'IN', $bizonylattipusfilter);
+        }
+        else {
+            $filter->addFilter('bt.mozgat', '=', true);
+        }
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
         }
@@ -588,9 +615,20 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
          * ki
          */
         $filter->clear();
-        $filter->addFilter('bt.mozgat', '=', true);
         $filter->addFilter('bf.rontott', '=', false);
         $filter->addFilter('bt.irany', '<', 0);
+        if ($bizstatuszObj) {
+            $filter->addFilter('bf.bizonylatstatusz_id', '=', $bizstatuszObj);
+        }
+        if ($bizstatuscsoport) {
+            $filter->addFilter('bf.bizonylatstatuszcsoport', '=', $bizstatuscsoport);
+        }
+        if ($bizonylattipusfilter) {
+            $filter->addFilter('bf.bizonylattipus_id', 'IN', $bizonylattipusfilter);
+        }
+        else {
+            $filter->addFilter('bt.mozgat', '=', true);
+        }
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
         }
@@ -626,8 +664,19 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
          * zaro
          */
         $filter->clear();
-        $filter->addFilter('bt.mozgat', '=', true);
         $filter->addFilter('bf.rontott', '=', false);
+        if ($bizstatuszObj) {
+            $filter->addFilter('bf.bizonylatstatusz_id', '=', $bizstatuszObj);
+        }
+        if ($bizstatuscsoport) {
+            $filter->addFilter('bf.bizonylatstatuszcsoport', '=', $bizstatuscsoport);
+        }
+        if ($bizonylattipusfilter) {
+            $filter->addFilter('bf.bizonylattipus_id', 'IN', $bizonylattipusfilter);
+        }
+        else {
+            $filter->addFilter('bt.mozgat', '=', true);
+        }
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
         }

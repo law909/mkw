@@ -79,9 +79,25 @@ var mkwcomp = (function($) {
         }
     }
 
+    function bizonylattipusFilter() {
+
+        function getFilter(sel) {
+            var btk = [];
+            $(sel + ':checked').each(function () {
+                btk.push($(this).val());
+            });
+            return btk;
+        }
+
+        return {
+            getFilter: getFilter
+        }
+    }
+
     return {
         termekfaFilter: termekfaFilter(),
-        datumEdit: datumEdit()
+        datumEdit: datumEdit(),
+        bizonylattipusFilter: bizonylattipusFilter()
     }
 
 })(jQuery);
