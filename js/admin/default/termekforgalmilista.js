@@ -13,11 +13,13 @@ $(document).ready(function() {
             $('.js-refresh')
                 .on('click', function() {
 
-                    var fak, fafilter, biztipusfilter;
+                    var fak, fafilter, biztipusfilter, partnercimkefilter;
                     fak = mkwcomp.termekfaFilter.getFilter('#termekfa');
                     if (fak.length > 0) {
                         fafilter = fak;
                     }
+
+                    partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
 
                     biztipusfilter = mkwcomp.bizonylattipusFilter.getFilter('input[name="bizonylattipus"]');
 
@@ -40,7 +42,8 @@ $(document).ready(function() {
                             fafilter: fafilter,
                             bizonylatstatusz: $('select[name="bizonylatstatusz"] option:selected').val(),
                             bizonylatstatuszcsoport: $('select[name="bizonylatstatuszcsoport"] option:selected').val(),
-                            bizonylattipus: biztipusfilter
+                            bizonylattipus: biztipusfilter,
+                            partnercimkefilter: partnercimkefilter
                         },
                         success: function(d) {
                             $('#eredmeny').html(d);
@@ -49,7 +52,7 @@ $(document).ready(function() {
                 })
                 .button();
             $('.js-exportbutton').on('click', function(e) {
-                var fak, fafilter, $ff;
+                var fak, fafilter, $ff, partnercimkefilter;
                 e.preventDefault();
 
                 fak = mkwcomp.termekfaFilter.getFilter('#termekfa');
@@ -58,10 +61,22 @@ $(document).ready(function() {
                 }
                 $('#FaFilter').val(fafilter);
 
+                partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
+                $('#PartnerCimkeFilter').val(partnercimkefilter);
+
                 $ff = $('#termekforgalmi');
                 $ff.attr('action', $(this).attr('href'));
                 $ff.submit();
             }).button();
+            $('#cimkefiltercontainer').mattaccord({
+                header: '',
+                page: '.js-cimkefilterpage',
+                closeUp: '.js-cimkefiltercloseupbutton'
+            });
+            $('.js-cimkefilter').on('click', function(e) {
+                e.preventDefault();
+                $(this).toggleClass('ui-state-hover');
+            });
         },
         onSubmit:function() {
             $('#messagecenter')

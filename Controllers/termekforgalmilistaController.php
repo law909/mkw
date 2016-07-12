@@ -27,6 +27,9 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         $btc = new bizonylattipusController($this->params);
         $view->setVar('bizonylattipuslist', $btc->getSelectList());
 
+        $pcc = new partnercimkekatController($this->params);
+        $view->setVar('cimkekat', $pcc->getWithCimkek());
+
         $view->printTemplateResult(false);
 
     }
@@ -48,49 +51,70 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         $bizstatusz = $this->params->getIntRequestParam('bizonylatstatusz');
         $bizstatuszcsoport = $this->params->getStringRequestParam('bizonylatstatuszcsoport');
         $bizonylattipusfilter = $this->params->getArrayRequestParam('bizonylattipus');
+        $partnercimkefilter = $this->params->getArrayRequestParam('partnercimkefilter');
 
         $tetelek = $this->getRepo('Entities\Bizonylatfej')->getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
-            $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv, $bizstatusz, $bizstatuszcsoport, $bizonylattipusfilter);
+            $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv, $bizstatusz, $bizstatuszcsoport, $bizonylattipusfilter, $partnercimkefilter);
 
-        switch ($keszletfilter) {
-            case 1: // van keszleten
-                foreach ($tetelek as $key => $tetel) {
-                    if ($tetel['zaro'] <= 0) {
-                        unset($tetelek[$key]);
-                    }
-                };
-                break;
-            case 2: // nincs keszleten
-                foreach ($tetelek as $key => $tetel) {
-                    if ($tetel['zaro'] > 0) {
-                        unset($tetelek[$key]);
-                    }
-                };
-                break;
-            case 3: // negativ
-                foreach ($tetelek as $key => $tetel) {
-                    if ($tetel['zaro'] >= 0) {
-                        unset($tetelek[$key]);
-                    }
-                };
-                break;
+        if ($bizonylattipusfilter || $bizstatusz || $bizstatuszcsoport) {
+            switch ($forgalomfilter) {
+                case 1: // mozgott
+                    foreach ($tetelek as $key => $tetel) {
+                        if ($tetel['nyito'] === 0) {
+                            unset($tetelek[$key]);
+                        }
+                    };
+                    break;
+                case 2: // nem mozgott
+                    foreach ($tetelek as $key => $tetel) {
+                        if ($tetel['nyito'] !== 0) {
+                            unset($tetelek[$key]);
+                        }
+                    };
+                    break;
+            }
         }
+        else {
+            switch ($keszletfilter) {
+                case 1: // van keszleten
+                    foreach ($tetelek as $key => $tetel) {
+                        if ($tetel['zaro'] <= 0) {
+                            unset($tetelek[$key]);
+                        }
+                    };
+                    break;
+                case 2: // nincs keszleten
+                    foreach ($tetelek as $key => $tetel) {
+                        if ($tetel['zaro'] > 0) {
+                            unset($tetelek[$key]);
+                        }
+                    };
+                    break;
+                case 3: // negativ
+                    foreach ($tetelek as $key => $tetel) {
+                        if ($tetel['zaro'] >= 0) {
+                            unset($tetelek[$key]);
+                        }
+                    };
+                    break;
+            }
 
-        switch ($forgalomfilter) {
-            case 1: // mozgott
-                foreach ($tetelek as $key => $tetel) {
-                    if ($tetel['be'] === 0 && $tetel['ki'] === 0) {
-                        unset($tetelek[$key]);
-                    }
-                };
-                break;
-            case 2: // nem mozgott
-                foreach ($tetelek as $key => $tetel) {
-                    if ($tetel['be'] !== 0 || $tetel['ki'] !== 0) {
-                        unset($tetelek[$key]);
-                    }
-                };
-                break;
+            switch ($forgalomfilter) {
+                case 1: // mozgott
+                    foreach ($tetelek as $key => $tetel) {
+                        if ($tetel['be'] === 0 && $tetel['ki'] === 0) {
+                            unset($tetelek[$key]);
+                        }
+                    };
+                    break;
+                case 2: // nem mozgott
+                    foreach ($tetelek as $key => $tetel) {
+                        if ($tetel['be'] !== 0 || $tetel['ki'] !== 0) {
+                            unset($tetelek[$key]);
+                        }
+                    };
+                    break;
+            }
         }
 
         return array(
@@ -100,8 +124,17 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
     }
 
     public function refresh() {
+        $bizstatusz = $this->params->getIntRequestParam('bizonylatstatusz');
+        $bizstatuszcsoport = $this->params->getStringRequestParam('bizonylatstatuszcsoport');
+        $bizonylattipusfilter = $this->params->getArrayRequestParam('bizonylattipus');
+
         $res = $this->getData();
-        $view = $this->createView('termekforgalmilistatetel.tpl');
+        if ($bizonylattipusfilter || $bizstatusz || $bizstatuszcsoport) {
+            $view = $this->createView('termekforgalmilistatetel2.tpl');
+        }
+        else {
+            $view = $this->createView('termekforgalmilistatetel.tpl');
+        }
         $view->setVar('ertektipus', $res['ertektipus']);
         $view->setVar('tetelek', $res['tetelek']);
         $view->printTemplateResult();
@@ -115,42 +148,71 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
             return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
         }
 
+        $bizstatusz = $this->params->getIntRequestParam('bizonylatstatusz');
+        $bizstatuszcsoport = $this->params->getStringRequestParam('bizonylatstatuszcsoport');
+        $bizonylattipusfilter = $this->params->getArrayRequestParam('bizonylattipus');
+
         $excel = new \PHPExcel();
-        $excel->setActiveSheetIndex(0)
-            ->setCellValue('A1', t('Cikkszám'))
-            ->setCellValue('B1', t('Név'))
-            ->setCellValue('C1', t('Változat 1'))
-            ->setCellValue('D1', t('Változat 2'))
-            ->setCellValue('E1', t('Nyitó'))
-            ->setCellValue('F1', t('Be'))
-            ->setCellValue('G1', t('Ki'))
-            ->setCellValue('H1', t('Záró'))
-            ->setCellValue('I1', t('Nyitó érték'))
-            ->setCellValue('J1', t('Be érték'))
-            ->setCellValue('K1', t('Ki érték'))
-            ->setCellValue('L1', t('Záró érték'));
-
-        $res = $this->getData();
-        $mind = $res['tetelek'];
-
-        $sor = 2;
-        foreach ($mind as $item) {
+        if ($bizonylattipusfilter || $bizstatusz || $bizstatuszcsoport) {
             $excel->setActiveSheetIndex(0)
-                ->setCellValue('A' . $sor, $item['cikkszam'])
-                ->setCellValue('B' . $sor, $item['nev'])
-                ->setCellValue('C' . $sor, $item['ertek1'])
-                ->setCellValue('D' . $sor, $item['ertek2'])
-                ->setCellValue('E' . $sor, $item['nyito'])
-                ->setCellValue('F' . $sor, $item['be'])
-                ->setCellValue('G' . $sor, $item['ki'])
-                ->setCellValue('H' . $sor, $item['zaro'])
-                ->setCellValue('I' . $sor, $item['nyitoertek'])
-                ->setCellValue('J' . $sor, $item['beertek'])
-                ->setCellValue('K' . $sor, $item['kiertek'])
-                ->setCellValue('L' . $sor, $item['zaroertek']);
-            $sor++;
-        }
+                ->setCellValue('A1', t('Cikkszám'))
+                ->setCellValue('B1', t('Név'))
+                ->setCellValue('C1', t('Változat 1'))
+                ->setCellValue('D1', t('Változat 2'))
+                ->setCellValue('E1', t('Nyitó'))
+                ->setCellValue('F1', t('Nyitó érték'));
 
+            $res = $this->getData();
+            $mind = $res['tetelek'];
+
+            $sor = 2;
+            foreach ($mind as $item) {
+                $excel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $sor, $item['cikkszam'])
+                    ->setCellValue('B' . $sor, $item['nev'])
+                    ->setCellValue('C' . $sor, $item['ertek1'])
+                    ->setCellValue('D' . $sor, $item['ertek2'])
+                    ->setCellValue('E' . $sor, $item['nyito'])
+                    ->setCellValue('F' . $sor, $item['nyitoertek']);
+                $sor++;
+            }
+        }
+        else {
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue('A1', t('Cikkszám'))
+                ->setCellValue('B1', t('Név'))
+                ->setCellValue('C1', t('Változat 1'))
+                ->setCellValue('D1', t('Változat 2'))
+                ->setCellValue('E1', t('Nyitó'))
+                ->setCellValue('F1', t('Be'))
+                ->setCellValue('G1', t('Ki'))
+                ->setCellValue('H1', t('Záró'))
+                ->setCellValue('I1', t('Nyitó érték'))
+                ->setCellValue('J1', t('Be érték'))
+                ->setCellValue('K1', t('Ki érték'))
+                ->setCellValue('L1', t('Záró érték'));
+
+            $res = $this->getData();
+            $mind = $res['tetelek'];
+
+            $sor = 2;
+            foreach ($mind as $item) {
+                $excel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $sor, $item['cikkszam'])
+                    ->setCellValue('B' . $sor, $item['nev'])
+                    ->setCellValue('C' . $sor, $item['ertek1'])
+                    ->setCellValue('D' . $sor, $item['ertek2'])
+                    ->setCellValue('E' . $sor, $item['nyito'])
+                    ->setCellValue('F' . $sor, $item['be'])
+                    ->setCellValue('G' . $sor, $item['ki'])
+                    ->setCellValue('H' . $sor, $item['zaro'])
+                    ->setCellValue('I' . $sor, $item['nyitoertek'])
+                    ->setCellValue('J' . $sor, $item['beertek'])
+                    ->setCellValue('K' . $sor, $item['kiertek'])
+                    ->setCellValue('L' . $sor, $item['zaroertek']);
+                $sor++;
+            }
+        }
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
         $filepath = uniqid('termekforgalmi') . '.xlsx';

@@ -94,10 +94,26 @@ var mkwcomp = (function($) {
         }
     }
 
+    function partnercimkeFilter() {
+
+        function getFilter(sel) {
+            var cimkek = [];
+            $(sel).filter('.ui-state-hover').each(function() {
+                cimkek.push($(this).attr('data-id'));
+            });
+            return cimkek;
+        }
+
+        return {
+            getFilter: getFilter
+        }
+    }
+
     return {
         termekfaFilter: termekfaFilter(),
         datumEdit: datumEdit(),
-        bizonylattipusFilter: bizonylattipusFilter()
+        bizonylattipusFilter: bizonylattipusFilter(),
+        partnercimkeFilter: partnercimkeFilter()
     }
 
 })(jQuery);

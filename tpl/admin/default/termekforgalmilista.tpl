@@ -93,9 +93,12 @@
                     <div>Ha itt van kiválasztva bizonylattípus, akkor MINDEN olyan típusú bizonylattétel szerepelni fog a listán, nem csak azok, amik mozgatnak készletet.</div>
                 </div>
                 <div class="matt-hseparator clearboth"></div>
+                {include "comp_partnercimkefilter.tpl"}
+                <div class="matt-hseparator"></div>
                 {include "comp_termekfa.tpl"}
                 <div class="matt-hseparator"></div>
                 <input id="FaFilter" type="hidden" name="fafilter[]">
+                <input id="PartnerCimkeFilter" type="hidden" name="partnercimkefilter[]">
                 <a href="#" class="js-refresh">Frissít</a>
                 <a href="/admin/termekforgalmilista/export" class="js-exportbutton">Export</a>
                 <div class="matt-hseparator"></div>

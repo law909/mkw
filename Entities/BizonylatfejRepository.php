@@ -376,7 +376,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
     }
 
     public function getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $fafilter, $nevfilter,
-        $gyartoid, $locale, $bizstatusz, $bizstatuscsoport, $bizonylattipusfilter) {
+        $gyartoid, $locale, $bizstatusz, $bizstatuscsoport, $bizonylattipusfilter, $partnercimkefilter) {
         switch ($datumtipus) {
             case 'kelt':
             case 'teljesites':
@@ -519,189 +519,261 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $bizstatuszObj = $this->getRepo('Entities\Bizonylatstatusz')->findOneById($bizstatusz);
         }
 
-        /**********************
-         * nyito
-         */
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('bf.rontott', '=', false);
-        if ($bizstatuszObj) {
-            $filter->addFilter('bf.bizonylatstatusz_id', '=', $bizstatuszObj);
-        }
-        if ($bizstatuscsoport) {
-            $filter->addFilter('bf.bizonylatstatuszcsoport', '=', $bizstatuscsoport);
-        }
-        if ($bizonylattipusfilter) {
-            $filter->addFilter('bf.bizonylattipus_id', 'IN', $bizonylattipusfilter);
-        }
-        else {
-            $filter->addFilter('bt.mozgat', '=', true);
-        }
-        if ($partnerid) {
-            $filter->addFilter('bf.partner_id', '=', $partnerid);
-        }
-        $filter->addFilter($datumtipus, '<', $datumtol);
-        if ($raktarid) {
-            $filter->addFilter('bf.raktar_id', '=', $raktarid);
-        }
+        $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($partnercimkefilter);
 
-        $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany) AS mennyiseg '
-            . $ertekmezo1
-            . ' FROM bizonylattetel bt '
-            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-            . $arsavsql
-            . $this->getFilterString($filter)
-            . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
-            , $rsm);
-        $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
-        $res = $q->getScalarResult();
-        foreach ($res as $rekord) {
-            $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
-            if (array_key_exists($kulcs, $ret)) {
-                $ret[$kulcs]['nyito'] = $rekord['mennyiseg'] * 1;
-                $ret[$kulcs]['nyitoertek'] = $rekord['ertek'] * 1;
+        if ($bizstatusz || $bizstatuscsoport || $bizonylattipusfilter) {
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('bf.rontott', '=', false);
+            if ($bizstatuszObj) {
+                $filter->addFilter('bf.bizonylatstatusz_id', '=', $bizstatuszObj);
+            }
+            if ($bizstatuscsoport) {
+                $filter->addFilter('bf.bizonylatstatuszcsoport', '=', $bizstatuscsoport);
+            }
+            if ($bizonylattipusfilter) {
+                $filter->addFilter('bf.bizonylattipus_id', 'IN', $bizonylattipusfilter);
+            }
+            if ($partnerid) {
+                $filter->addFilter('bf.partner_id', '=', $partnerid);
+            }
+            else {
+                if ($partnerkodok) {
+                    $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
+                }
+            }
+            if ($datumtol) {
+                $filter->addFilter($datumtipus, '>=', $datumtol);
+            }
+            if ($datumig) {
+                $filter->addFilter($datumtipus, '<=', $datumig);
+            }
+            if ($raktarid) {
+                $filter->addFilter('bf.raktar_id', '=', $raktarid);
+            }
+
+            $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany) AS mennyiseg '
+                . $ertekmezo1
+                . ' FROM bizonylattetel bt '
+                . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+                . $arsavsql
+                . $this->getFilterString($filter)
+                . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
+                , $rsm);
+            $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
+            $res = $q->getScalarResult();
+            foreach ($res as $rekord) {
+                $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
+                if (array_key_exists($kulcs, $ret)) {
+                    $ret[$kulcs]['nyito'] = $rekord['mennyiseg'] * -1;
+                    $ret[$kulcs]['nyitoertek'] = $rekord['ertek'] * -1;
+                }
             }
         }
-
-        /**************
-         * be
-         */
-        $filter->clear();
-        $filter->addFilter('bf.rontott', '=', false);
-        $filter->addFilter('bt.irany', '>', 0);
-        if ($bizstatuszObj) {
-            $filter->addFilter('bf.bizonylatstatusz_id', '=', $bizstatuszObj);
-        }
-        if ($bizstatuscsoport) {
-            $filter->addFilter('bf.bizonylatstatuszcsoport', '=', $bizstatuscsoport);
-        }
-        if ($bizonylattipusfilter) {
-            $filter->addFilter('bf.bizonylattipus_id', 'IN', $bizonylattipusfilter);
-        }
         else {
-            $filter->addFilter('bt.mozgat', '=', true);
-        }
-        if ($partnerid) {
-            $filter->addFilter('bf.partner_id', '=', $partnerid);
-        }
-        if ($datumtol) {
-            $filter->addFilter($datumtipus, '>=', $datumtol);
-        }
-        if ($datumig) {
-            $filter->addFilter($datumtipus, '<=', $datumig);
-        }
-        if ($raktarid) {
-            $filter->addFilter('bf.raktar_id', '=', $raktarid);
-        }
-
-        $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg) AS mennyiseg '
-            . $ertekmezo2
-            . ' FROM bizonylattetel bt '
-            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-            . $arsavsql
-            . $this->getFilterString($filter)
-            . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
-            , $rsm);
-        $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
-        $res = $q->getScalarResult();
-        foreach ($res as $rekord) {
-            $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
-            if (array_key_exists($kulcs, $ret)) {
-                $ret[$kulcs]['be'] = $rekord['mennyiseg'] * 1;
-                $ret[$kulcs]['beertek'] = $rekord['ertek'] * 1;
+            /**********************
+             * nyito
+             */
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('bf.rontott', '=', false);
+            if ($bizstatuszObj) {
+                $filter->addFilter('bf.bizonylatstatusz_id', '=', $bizstatuszObj);
             }
-        }
-
-        /*******************
-         * ki
-         */
-        $filter->clear();
-        $filter->addFilter('bf.rontott', '=', false);
-        $filter->addFilter('bt.irany', '<', 0);
-        if ($bizstatuszObj) {
-            $filter->addFilter('bf.bizonylatstatusz_id', '=', $bizstatuszObj);
-        }
-        if ($bizstatuscsoport) {
-            $filter->addFilter('bf.bizonylatstatuszcsoport', '=', $bizstatuscsoport);
-        }
-        if ($bizonylattipusfilter) {
-            $filter->addFilter('bf.bizonylattipus_id', 'IN', $bizonylattipusfilter);
-        }
-        else {
-            $filter->addFilter('bt.mozgat', '=', true);
-        }
-        if ($partnerid) {
-            $filter->addFilter('bf.partner_id', '=', $partnerid);
-        }
-        if ($datumtol) {
-            $filter->addFilter($datumtipus, '>=', $datumtol);
-        }
-        if ($datumig) {
-            $filter->addFilter($datumtipus, '<=', $datumig);
-        }
-        if ($raktarid) {
-            $filter->addFilter('bf.raktar_id', '=', $raktarid);
-        }
-
-        $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg) AS mennyiseg '
-            . $ertekmezo2
-            . ' FROM bizonylattetel bt '
-            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-            . $arsavsql
-            . $this->getFilterString($filter)
-            . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
-            , $rsm);
-        $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
-        $res = $q->getScalarResult();
-        foreach ($res as $rekord) {
-            $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
-            if (array_key_exists($kulcs, $ret)) {
-                $ret[$kulcs]['ki'] = $rekord['mennyiseg'] * 1;
-                $ret[$kulcs]['kiertek'] = $rekord['ertek'] * 1;
+            if ($bizstatuscsoport) {
+                $filter->addFilter('bf.bizonylatstatuszcsoport', '=', $bizstatuscsoport);
             }
-        }
+            if ($bizonylattipusfilter) {
+                $filter->addFilter('bf.bizonylattipus_id', 'IN', $bizonylattipusfilter);
+            }
+            else {
+                $filter->addFilter('bt.mozgat', '=', true);
+            }
+            if ($partnerid) {
+                $filter->addFilter('bf.partner_id', '=', $partnerid);
+            }
+            else {
+                if ($partnerkodok) {
+                    $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
+                }
+            }
+            $filter->addFilter($datumtipus, '<', $datumtol);
+            if ($raktarid) {
+                $filter->addFilter('bf.raktar_id', '=', $raktarid);
+            }
 
-        /****************
-         * zaro
-         */
-        $filter->clear();
-        $filter->addFilter('bf.rontott', '=', false);
-        if ($bizstatuszObj) {
-            $filter->addFilter('bf.bizonylatstatusz_id', '=', $bizstatuszObj);
-        }
-        if ($bizstatuscsoport) {
-            $filter->addFilter('bf.bizonylatstatuszcsoport', '=', $bizstatuscsoport);
-        }
-        if ($bizonylattipusfilter) {
-            $filter->addFilter('bf.bizonylattipus_id', 'IN', $bizonylattipusfilter);
-        }
-        else {
-            $filter->addFilter('bt.mozgat', '=', true);
-        }
-        if ($partnerid) {
-            $filter->addFilter('bf.partner_id', '=', $partnerid);
-        }
-        if ($datumig) {
-            $filter->addFilter($datumtipus, '<=', $datumig);
-        }
-        if ($raktarid) {
-            $filter->addFilter('bf.raktar_id', '=', $raktarid);
-        }
+            $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany) AS mennyiseg '
+                . $ertekmezo1
+                . ' FROM bizonylattetel bt '
+                . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+                . $arsavsql
+                . $this->getFilterString($filter)
+                . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
+                , $rsm);
+            $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
+            $res = $q->getScalarResult();
+            foreach ($res as $rekord) {
+                $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
+                if (array_key_exists($kulcs, $ret)) {
+                    $ret[$kulcs]['nyito'] = $rekord['mennyiseg'] * 1;
+                    $ret[$kulcs]['nyitoertek'] = $rekord['ertek'] * 1;
+                }
+            }
 
-        $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany) AS mennyiseg '
-            . $ertekmezo1
-            . ' FROM bizonylattetel bt '
-            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-            . $arsavsql
-            . $this->getFilterString($filter)
-            . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
-            , $rsm);
-        $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
-        $res = $q->getScalarResult();
-        foreach ($res as $rekord) {
-            $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
-            if (array_key_exists($kulcs, $ret)) {
-                $ret[$kulcs]['zaro'] = $rekord['mennyiseg'] * 1;
-                $ret[$kulcs]['zaroertek'] = $rekord['ertek'] * 1;
+            /**************
+             * be
+             */
+            $filter->clear();
+            $filter->addFilter('bf.rontott', '=', false);
+            $filter->addFilter('bt.irany', '>', 0);
+            if ($bizstatuszObj) {
+                $filter->addFilter('bf.bizonylatstatusz_id', '=', $bizstatuszObj);
+            }
+            if ($bizstatuscsoport) {
+                $filter->addFilter('bf.bizonylatstatuszcsoport', '=', $bizstatuscsoport);
+            }
+            if ($bizonylattipusfilter) {
+                $filter->addFilter('bf.bizonylattipus_id', 'IN', $bizonylattipusfilter);
+            }
+            else {
+                $filter->addFilter('bt.mozgat', '=', true);
+            }
+            if ($partnerid) {
+                $filter->addFilter('bf.partner_id', '=', $partnerid);
+            }
+            else {
+                if ($partnerkodok) {
+                    $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
+                }
+            }
+            if ($datumtol) {
+                $filter->addFilter($datumtipus, '>=', $datumtol);
+            }
+            if ($datumig) {
+                $filter->addFilter($datumtipus, '<=', $datumig);
+            }
+            if ($raktarid) {
+                $filter->addFilter('bf.raktar_id', '=', $raktarid);
+            }
+
+            $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg) AS mennyiseg '
+                . $ertekmezo2
+                . ' FROM bizonylattetel bt '
+                . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+                . $arsavsql
+                . $this->getFilterString($filter)
+                . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
+                , $rsm);
+            $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
+            $res = $q->getScalarResult();
+            foreach ($res as $rekord) {
+                $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
+                if (array_key_exists($kulcs, $ret)) {
+                    $ret[$kulcs]['be'] = $rekord['mennyiseg'] * 1;
+                    $ret[$kulcs]['beertek'] = $rekord['ertek'] * 1;
+                }
+            }
+
+            /*******************
+             * ki
+             */
+            $filter->clear();
+            $filter->addFilter('bf.rontott', '=', false);
+            $filter->addFilter('bt.irany', '<', 0);
+            if ($bizstatuszObj) {
+                $filter->addFilter('bf.bizonylatstatusz_id', '=', $bizstatuszObj);
+            }
+            if ($bizstatuscsoport) {
+                $filter->addFilter('bf.bizonylatstatuszcsoport', '=', $bizstatuscsoport);
+            }
+            if ($bizonylattipusfilter) {
+                $filter->addFilter('bf.bizonylattipus_id', 'IN', $bizonylattipusfilter);
+            }
+            else {
+                $filter->addFilter('bt.mozgat', '=', true);
+            }
+            if ($partnerid) {
+                $filter->addFilter('bf.partner_id', '=', $partnerid);
+            }
+            else {
+                if ($partnerkodok) {
+                    $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
+                }
+            }
+            if ($datumtol) {
+                $filter->addFilter($datumtipus, '>=', $datumtol);
+            }
+            if ($datumig) {
+                $filter->addFilter($datumtipus, '<=', $datumig);
+            }
+            if ($raktarid) {
+                $filter->addFilter('bf.raktar_id', '=', $raktarid);
+            }
+
+            $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg) AS mennyiseg '
+                . $ertekmezo2
+                . ' FROM bizonylattetel bt '
+                . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+                . $arsavsql
+                . $this->getFilterString($filter)
+                . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
+                , $rsm);
+            $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
+            $res = $q->getScalarResult();
+            foreach ($res as $rekord) {
+                $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
+                if (array_key_exists($kulcs, $ret)) {
+                    $ret[$kulcs]['ki'] = $rekord['mennyiseg'] * 1;
+                    $ret[$kulcs]['kiertek'] = $rekord['ertek'] * 1;
+                }
+            }
+
+            /****************
+             * zaro
+             */
+            $filter->clear();
+            $filter->addFilter('bf.rontott', '=', false);
+            if ($bizstatuszObj) {
+                $filter->addFilter('bf.bizonylatstatusz_id', '=', $bizstatuszObj);
+            }
+            if ($bizstatuscsoport) {
+                $filter->addFilter('bf.bizonylatstatuszcsoport', '=', $bizstatuscsoport);
+            }
+            if ($bizonylattipusfilter) {
+                $filter->addFilter('bf.bizonylattipus_id', 'IN', $bizonylattipusfilter);
+            }
+            else {
+                $filter->addFilter('bt.mozgat', '=', true);
+            }
+            if ($partnerid) {
+                $filter->addFilter('bf.partner_id', '=', $partnerid);
+            }
+            else {
+                if ($partnerkodok) {
+                    $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
+                }
+            }
+            if ($datumig) {
+                $filter->addFilter($datumtipus, '<=', $datumig);
+            }
+            if ($raktarid) {
+                $filter->addFilter('bf.raktar_id', '=', $raktarid);
+            }
+
+            $q = $this->_em->createNativeQuery('SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany) AS mennyiseg '
+                . $ertekmezo1
+                . ' FROM bizonylattetel bt '
+                . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+                . $arsavsql
+                . $this->getFilterString($filter)
+                . ' GROUP BY bt.termek_id,bt.termekvaltozat_id'
+                , $rsm);
+            $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
+            $res = $q->getScalarResult();
+            foreach ($res as $rekord) {
+                $kulcs = $rekord['termek_id'] . '-' . $rekord['termekvaltozat_id'];
+                if (array_key_exists($kulcs, $ret)) {
+                    $ret[$kulcs]['zaro'] = $rekord['mennyiseg'] * 1;
+                    $ret[$kulcs]['zaroertek'] = $rekord['ertek'] * 1;
+                }
             }
         }
 
