@@ -479,6 +479,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         else {
             $obj->removeUzletkoto();
         }
+
+        if ($this->params->getNumRequestParam('uzletkotojutalek') !== 0) {
+            $obj->setUzletkotojutalek($this->params->getNumRequestParam('uzletkotojutalek'));
+        }
         $obj->setKelt($this->params->getStringRequestParam('kelt'));
         $obj->setTeljesites($this->params->getStringRequestParam('teljesites'));
         $obj->setEsedekesseg($this->params->getStringRequestParam('esedekesseg'));

@@ -131,6 +131,8 @@
 					{/foreach}
 					</select>
 				</td>
+            </tr>
+            <tr>
 				<td class="mattable-important"><label for="UzletkotoEdit">{t('Üzletkötő')}:</label></td>
 				<td><select id="UzletkotoEdit" name="uzletkoto" class="mattable-important">
 					<option value="">{t('válasszon')}</option>
@@ -139,6 +141,8 @@
 					{/foreach}
 					</select>
 				</td>
+                <td><label for="UKJutalekEdit">{t('Jutalék')} %:</label></td>
+                <td><input id="UKJutalekEdit" name="uzletkotojutalek" type="number" step="any" size="5" value="{$egyed.uzletkotojutalek}"></td>
 			</tr>
 			<tr>
 				<td class="mattable-important"><label for="KeltEdit">{t('Kelt')}:</label></td>

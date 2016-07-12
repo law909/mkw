@@ -115,7 +115,7 @@
                 <tr><td></td><td>{$_egyed.fizmodnev}</td></tr>
                 <tr><td></td><td>{$_egyed.szallitasimodnev}</td></tr>
                 {if ($_egyed.uzletkotonev)}
-                <tr><td></td><td>{$_egyed.uzletkotonev}</td></tr>
+                <tr><td></td><td>{$_egyed.uzletkotonev} ({number_format($_egyed.uzletkotojutalek, 0, '.', ' ')} %)</td></tr>
                 {/if}
                 {if ($showerbizonylatszam)}
                     <tr><td>Er.biz.szám:</td><td>{$_egyed.erbizonylatszam}</td></tr>
