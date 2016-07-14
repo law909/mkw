@@ -13,14 +13,14 @@
     {$snyito = 0}
     {$snyitoe = 0}
     {foreach $tetelek as $key => $tetel}
-        {$snyito = $snyito + $tetel.nyito}
-        {$snyitoe = $snyitoe + $tetel.nyitoertek}
+        {$snyito = $snyito + $tetel.mennyiseg}
+        {$snyitoe = $snyitoe + $tetel.ertek}
         <tr>
             <td class="datacell">{$tetel.cikkszam}</td>
             <td class="datacell">{$tetel.nev} {$tetel.ertek1} {$tetel.ertek2}</td>
-            <td class="datacell textalignright">{bizformat($tetel.nyito)}</td>
+            <td class="datacell textalignright">{bizformat($tetel.mennyiseg)}</td>
             {if ($ertektipus)}
-            <td class="datacell textalignright">{bizformat($tetel.nyitoertek)}</td>
+            <td class="datacell textalignright">{bizformat($tetel.ertek)}</td>
             {/if}
         </tr>
     {/foreach}

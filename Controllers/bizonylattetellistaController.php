@@ -3,12 +3,12 @@
 namespace Controllers;
 
 
-class termekforgalmilistaController extends \mkwhelpers\Controller {
+class bizonylattetellistaController extends \mkwhelpers\Controller {
 
     public function view() {
-        $view = $this->createView('termekforgalmilista.tpl');
+        $view = $this->createView('bizonylattetellista.tpl');
 
-        $view->setVar('pagetitle', t('Termékforgalmi lista'));
+        $view->setVar('pagetitle', t('Bizonylattétel lista'));
         $view->setVar('datumtipus', 'teljesites');
         $rc = new raktarController($this->params);
         $view->setVar('raktarlista', $rc->getSelectList());
@@ -19,6 +19,13 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         $view->setVar('arsavlist', $arsav->getSelectList());
 
         $view->setVar('nyelvlist', \mkw\store::getLocaleSelectList());
+
+        $bsc = new bizonylatstatuszController($this->params);
+        $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
+        $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
+
+        $btc = new bizonylattipusController($this->params);
+        $view->setVar('bizonylattipuslist', $btc->getSelectList());
 
         $pcc = new partnercimkekatController($this->params);
         $view->setVar('cimkekat', $pcc->getWithCimkek());
@@ -34,53 +41,31 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         $datumtolstr = $this->params->getStringRequestParam('tol');
         $datumigstr = $this->params->getStringRequestParam('ig');
         $forgalomfilter = $this->params->getIntRequestParam('forgalomfilter');
-        $keszletfilter = $this->params->getIntRequestParam('keszletfilter');
         $ertektipus = $this->params->getIntRequestParam('ertektipus');
         $arsav = $this->params->getStringRequestParam('arsav');
         $fafilter = $this->params->getArrayRequestParam('fafilter');
         $nevfilter = $this->params->getRequestParam('nevfilter', NULL);
         $gyartoid = $this->params->getIntRequestParam('gyarto');
         $nyelv = \mkw\store::toLocale($this->params->getStringRequestParam('nyelv'));
+        $bizstatusz = $this->params->getIntRequestParam('bizonylatstatusz');
+        $bizstatuszcsoport = $this->params->getStringRequestParam('bizonylatstatuszcsoport');
+        $bizonylattipusfilter = $this->params->getArrayRequestParam('bizonylattipus');
         $partnercimkefilter = $this->params->getArrayRequestParam('partnercimkefilter');
 
-        $tetelek = $this->getRepo('Entities\Bizonylatfej')->getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
-            $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv, $partnercimkefilter);
-
-        switch ($keszletfilter) {
-            case 1: // van keszleten
-                foreach ($tetelek as $key => $tetel) {
-                    if ($tetel['zaro'] <= 0) {
-                        unset($tetelek[$key]);
-                    }
-                };
-                break;
-            case 2: // nincs keszleten
-                foreach ($tetelek as $key => $tetel) {
-                    if ($tetel['zaro'] > 0) {
-                        unset($tetelek[$key]);
-                    }
-                };
-                break;
-            case 3: // negativ
-                foreach ($tetelek as $key => $tetel) {
-                    if ($tetel['zaro'] >= 0) {
-                        unset($tetelek[$key]);
-                    }
-                };
-                break;
-        }
+        $tetelek = $this->getRepo('Entities\Bizonylatfej')->getBizonylatTetelLista($raktarid, $partnerid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
+            $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv, $bizstatusz, $bizstatuszcsoport, $bizonylattipusfilter, $partnercimkefilter);
 
         switch ($forgalomfilter) {
             case 1: // mozgott
                 foreach ($tetelek as $key => $tetel) {
-                    if ($tetel['be'] == 0 && $tetel['ki'] == 0) {
+                    if ($tetel['mennyiseg'] == 0) {
                         unset($tetelek[$key]);
                     }
                 };
                 break;
             case 2: // nem mozgott
                 foreach ($tetelek as $key => $tetel) {
-                    if ($tetel['be'] != 0 || $tetel['ki'] != 0) {
+                    if ($tetel['mennyiseg'] != 0) {
                         unset($tetelek[$key]);
                     }
                 };
@@ -95,7 +80,7 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
 
     public function refresh() {
         $res = $this->getData();
-        $view = $this->createView('termekforgalmilistatetel.tpl');
+        $view = $this->createView('bizonylattetellistatetel.tpl');
         $view->setVar('ertektipus', $res['ertektipus']);
         $view->setVar('tetelek', $res['tetelek']);
         $view->printTemplateResult();
@@ -115,14 +100,8 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
             ->setCellValue('B1', t('Név'))
             ->setCellValue('C1', t('Változat 1'))
             ->setCellValue('D1', t('Változat 2'))
-            ->setCellValue('E1', t('Nyitó'))
-            ->setCellValue('F1', t('Be'))
-            ->setCellValue('G1', t('Ki'))
-            ->setCellValue('H1', t('Záró'))
-            ->setCellValue('I1', t('Nyitó érték'))
-            ->setCellValue('J1', t('Be érték'))
-            ->setCellValue('K1', t('Ki érték'))
-            ->setCellValue('L1', t('Záró érték'));
+            ->setCellValue('E1', t('Mennyiség'))
+            ->setCellValue('F1', t('Érték'));
 
         $res = $this->getData();
         $mind = $res['tetelek'];
@@ -134,19 +113,13 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
                 ->setCellValue('B' . $sor, $item['nev'])
                 ->setCellValue('C' . $sor, $item['ertek1'])
                 ->setCellValue('D' . $sor, $item['ertek2'])
-                ->setCellValue('E' . $sor, $item['nyito'])
-                ->setCellValue('F' . $sor, $item['be'])
-                ->setCellValue('G' . $sor, $item['ki'])
-                ->setCellValue('H' . $sor, $item['zaro'])
-                ->setCellValue('I' . $sor, $item['nyitoertek'])
-                ->setCellValue('J' . $sor, $item['beertek'])
-                ->setCellValue('K' . $sor, $item['kiertek'])
-                ->setCellValue('L' . $sor, $item['zaroertek']);
+                ->setCellValue('E' . $sor, $item['mennyiseg'])
+                ->setCellValue('F' . $sor, $item['ertek']);
             $sor++;
         }
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('termekforgalmi') . '.xlsx';
+        $filepath = uniqid('bizonylattetel') . '.xlsx';
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

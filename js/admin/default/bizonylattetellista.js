@@ -13,7 +13,7 @@ $(document).ready(function() {
             $('.js-refresh')
                 .on('click', function() {
 
-                    var fak, fafilter, partnercimkefilter;
+                    var fak, fafilter, biztipusfilter, partnercimkefilter;
                     fak = mkwcomp.termekfaFilter.getFilter('#termekfa');
                     if (fak.length > 0) {
                         fafilter = fak;
@@ -21,8 +21,10 @@ $(document).ready(function() {
 
                     partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
 
+                    biztipusfilter = mkwcomp.bizonylattipusFilter.getFilter('input[name="bizonylattipus"]');
+
                     $.ajax({
-                        url: '/admin/termekforgalmilista/refresh',
+                        url: '/admin/bizonylattetellista/refresh',
                         type: 'GET',
                         data: {
                             datumtipus: $('select[name="datumtipus"] option:selected').val(),
@@ -31,13 +33,15 @@ $(document).ready(function() {
                             raktar: $('select[name="raktar"] option:selected').val(),
                             gyarto: $('select[name="gyarto"] option:selected').val(),
                             partner: $('select[name="partner"] option:selected').val(),
-                            keszletfilter: $('select[name="keszletfilter"] option:selected').val(),
                             forgalomfilter: $('select[name="forgalomfilter"] option:selected').val(),
                             ertektipus: $('select[name="ertektipus"] option:selected').val(),
                             arsav: $('select[name="arsav"] option:selected').val(),
                             nevfilter: $('input[name="nevfilter"]').val(),
                             nyelv: $('select[name="nyelv"] option:selected').val(),
                             fafilter: fafilter,
+                            bizonylatstatusz: $('select[name="bizonylatstatusz"] option:selected').val(),
+                            bizonylatstatuszcsoport: $('select[name="bizonylatstatuszcsoport"] option:selected').val(),
+                            bizonylattipus: biztipusfilter,
                             partnercimkefilter: partnercimkefilter
                         },
                         success: function(d) {
@@ -59,7 +63,7 @@ $(document).ready(function() {
                 partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
                 $('#PartnerCimkeFilter').val(partnercimkefilter);
 
-                $ff = $('#termekforgalmi');
+                $ff = $('#bizonylattetel');
                 $ff.attr('action', $(this).attr('href'));
                 $ff.submit();
             }).button();
