@@ -2,6 +2,7 @@
 
 namespace Entities;
 
+use mkwhelpers\Filter;
 use mkwhelpers\FilterDescriptor;
 
 class FizmodRepository extends \mkwhelpers\Repository {
@@ -41,6 +42,12 @@ class FizmodRepository extends \mkwhelpers\Repository {
         if ($exc) {
             $filter->addFilter('id', 'NOT IN', $exc);
         }
+        return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
+    }
+
+    public function getAllBanki() {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('tipus', '=', 'B');
         return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
     }
 }

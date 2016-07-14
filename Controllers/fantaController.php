@@ -38,69 +38,89 @@ class fantaController extends \mkwhelpers\MattableController {
                 $fixdb = $this->getRepo('Entities\Bizonylatfej')->getCount($filter->merge($fixfilter));
 
                 if ($fixdb == 0) {
-                    $szamlak = $this->getRepo('Entities\Bizonylatfej')->getAll($filter, array());
 
-                    /**
-                    $this->getEm()->transactional(function ($em) use ($szamlak) {
-                        foreach ($szamlak as $szamla) {
-                            $szamla->removeParbizonylatfej();
-                            $szamla->setPenztmozgat(false);
-                            $em->persist($szamla);
-                            foreach ($szamla->getBizonylattetelek() as $biztetel) {
-                                $biztetel->removeParbizonylattetel();
-                                $em->persist($biztetel);
-                            }
-                        }
-                    });
-                     */
+                    $bankifizmod = $this->getRepo('Entities\Fizmod')->getAllBanki();
+                    $bankifm = array();
+                    foreach ($bankifizmod as $bf) {
+                        $bankifm[] = $bf->getId();
+                    }
+                    $bankfilter = new \mkwhelpers\FilterDescriptor();
+                    $bankfilter->addFilter('fizmod', 'IN', $bankifm);
 
-                    $this->getEm()->transactional(function ($em) use ($szamlak, $ujbt) {
-                        $sorszam = 0;
-                        foreach ($szamlak as $szamla) {
-                            $uj = new \Entities\Bizonylatfej();
-                            $uj->duplicateFrom($szamla);
-                            $uj->clearId();
-                            $uj->clearCreated();
-                            $uj->clearLastmod();
-                            $uj->setNyomtatva(false);
-                            $uj->setFix(false);
-                            $uj->setBizonylattipus($ujbt);
-                            if ($uj->getStorno()) {
-                                $uj->setMegjegyzes(null);
-                            }
-                            $sorszam = $uj->generateId($sorszam);
-                            $sorszam++;
-                            foreach ($szamla->getBizonylattetelek() as $biztetel) {
-                                $ujtetel = new \Entities\Bizonylattetel();
-                                $uj->addBizonylattetel($ujtetel);
-                                $ujtetel->duplicateFrom($biztetel);
-                                $ujtetel->clearCreated();
-                                $ujtetel->clearLastmod();
+                    $bankdb = $this->getRepo('Entities\Bizonylatfej')->getCount($filter->merge($bankfilter));
 
-                                $em->persist($ujtetel);
-                            }
-                            $em->persist($uj);
+                    if ($bankdb == 0) {
 
-                            foreach ($szamla->getBizonylattetelek() as $biztetel) {
-                                foreach ($biztetel->getTranslations() as $trans) {
-                                    $em->remove($trans);
+                        $szamlak = $this->getRepo('Entities\Bizonylatfej')->getAll($filter, array());
+
+                        /**
+                         * $this->getEm()->transactional(function ($em) use ($szamlak) {
+                         * foreach ($szamlak as $szamla) {
+                         * $szamla->removeParbizonylatfej();
+                         * $szamla->setPenztmozgat(false);
+                         * $em->persist($szamla);
+                         * foreach ($szamla->getBizonylattetelek() as $biztetel) {
+                         * $biztetel->removeParbizonylattetel();
+                         * $em->persist($biztetel);
+                         * }
+                         * }
+                         * });
+                         */
+
+                        $this->getEm()->transactional(function ($em) use ($szamlak, $ujbt) {
+                            $sorszam = 0;
+                            foreach ($szamlak as $szamla) {
+                                $uj = new \Entities\Bizonylatfej();
+                                $uj->duplicateFrom($szamla);
+                                $uj->clearId();
+                                $uj->clearCreated();
+                                $uj->clearLastmod();
+                                $uj->setNyomtatva(false);
+                                $uj->setFix(false);
+                                $uj->setBizonylattipus($ujbt);
+                                if ($uj->getStorno()) {
+                                    $uj->setMegjegyzes(null);
                                 }
-                                $em->remove($biztetel);
+                                $sorszam = $uj->generateId($sorszam);
+                                $sorszam++;
+                                foreach ($szamla->getBizonylattetelek() as $biztetel) {
+                                    $ujtetel = new \Entities\Bizonylattetel();
+                                    $uj->addBizonylattetel($ujtetel);
+                                    $ujtetel->duplicateFrom($biztetel);
+                                    $ujtetel->clearCreated();
+                                    $ujtetel->clearLastmod();
+
+                                    $em->persist($ujtetel);
+                                }
+                                $em->persist($uj);
+
+                                foreach ($szamla->getBizonylattetelek() as $biztetel) {
+                                    foreach ($biztetel->getTranslations() as $trans) {
+                                        $em->remove($trans);
+                                    }
+                                    $em->remove($biztetel);
+                                }
+                                $em->remove($szamla);
                             }
-                            $em->remove($szamla);
-                        }
-                    });
+                        });
 
-                    $ret = array(
-                        'ec' => 597,
-                        'em' => 'Internal server error #597.'
-                    );
+                        $ret = array(
+                            'ec' => 597,
+                            'em' => 'Internal server error #597.'
+                        );
 
 
-                    $ret = array(
-                        'ec' => 0,
-                        'em' => 'Ready.'
-                    );
+                        $ret = array(
+                            'ec' => 0,
+                            'em' => 'Ready.'
+                        );
+                    }
+                    else {
+                        $ret = array(
+                            'ec' => 595,
+                            'em' => 'Internal server error #595 BANK.'
+                        );
+                    }
                 }
                 else {
                     $ret = array(
