@@ -9,6 +9,7 @@
 {/block}
 
 {block "kozep"}
+<form id="exportform" method="POST"><input type="hidden" name="ids"></form>
 <div id="mattable-select" data-theme="{$theme}">
 <div id="mattable-header" data-title="{t('Frissítés')}" data-caption="{t('Partnerek')}"></div>
 <div id="mattable-filterwrapper">
@@ -92,6 +93,7 @@
 	<option value="{$_batch.id}">{$_batch.caption}</option>
 	{/foreach}
 	</select>
+    <a href="#" class="mattable-batchbtn">Futtat</a>
 </div>
 <table id="mattable-table">
 <thead>

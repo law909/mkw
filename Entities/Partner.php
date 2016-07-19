@@ -267,6 +267,15 @@ class Partner {
     /** @ORM\OneToMany(targetEntity="PartnerMIJSZOklevel", mappedBy="partner", cascade={"persist", "remove"}) */
     private $mijszoklevelek;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $mijszmembershipbesideshu;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $mijszbusiness;
+
+    /** @ORM\Column(type="boolean") */
+    private $mijszexporttiltva = false;
+
 	public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1088,5 +1097,47 @@ class Partner {
      */
     public function getMijszoklevelek() {
         return $this->mijszoklevelek;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMijszmembershipbesideshu() {
+        return $this->mijszmembershipbesideshu;
+    }
+
+    /**
+     * @param mixed $mijszmembershipbesideshu
+     */
+    public function setMijszmembershipbesideshu($mijszmembershipbesideshu) {
+        $this->mijszmembershipbesideshu = $mijszmembershipbesideshu;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMijszbusiness() {
+        return $this->mijszbusiness;
+    }
+
+    /**
+     * @param mixed $mijszbusiness
+     */
+    public function setMijszbusiness($mijszbusiness) {
+        $this->mijszbusiness = $mijszbusiness;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMijszexporttiltva() {
+        return $this->mijszexporttiltva;
+    }
+
+    /**
+     * @param mixed $mijszexporttiltva
+     */
+    public function setMijszexporttiltva($mijszexporttiltva) {
+        $this->mijszexporttiltva = $mijszexporttiltva;
     }
 }

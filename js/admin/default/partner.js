@@ -146,7 +146,6 @@ $(document).ready(function(){
 							});
 						}
 					});
-				$('.js-mijszoklevelnewbutton,.js-mijszokleveldelbutton').button();
                 mijszokleveltab.on('click', '.js-mijszoklevelnewbutton', function(e) {
                         var $this = $(this);
                         e.preventDefault();
@@ -205,7 +204,7 @@ $(document).ready(function(){
 				varosAutocomplete('#SzallIrszamEdit','#SzallVarosEdit');
 			},
 			beforeSerialize:function(form,opt) {
-				var cimkek = new Array(),
+				var cimkek = [],
                     j1 = $('#Jelszo1Edit').val(),
                     j2 = $('#Jelszo2Edit').val();
 				$('.js-cimkekarb').filter('.js-selectedcimke').each(function() {
@@ -274,6 +273,38 @@ $(document).ready(function(){
 			},
 			karb:partner
 		});
+        $('.mattable-batchbtn').on('click', function(e) {
+            var cbs;
+            e.preventDefault();
+            switch ($('.mattable-batchselect').val()) {
+                case 'mijszexport':
+                    cbs = $('.js-egyedcheckbox:checked');
+                    if (cbs.length) {
+                        var tomb = [],
+                            $exportform = $('#exportform');
+                        cbs.closest('tr').each(function(index, elem) {
+                            tomb.push($(elem).data('egyedid'));
+                        });
+                        $exportform.attr('action', '/admin/partner/mijszexport');
+                        $('input[name="ids"]', $exportform).val(tomb);
+                        $exportform.submit();
+                    }
+                    else {
+                        dialogcenter.html('Válasszon ki legalább egy partnert!').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'OK': function() {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                    break;
+            }
+
+        });
         $('#cimkefiltercontainer').mattaccord({
             header: '#cimkefiltercontainerhead',
             page: '.accordpage',

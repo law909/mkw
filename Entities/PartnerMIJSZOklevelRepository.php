@@ -16,7 +16,7 @@ class PartnerMIJSZOklevelRepository extends \mkwhelpers\Repository {
         $q = $this->_em->createQuery('SELECT _xx,partner, osz, ok'
             . ' FROM Entities\PartnerMIJSZOklevel _xx'
             . ' LEFT JOIN _xx.partner partner'
-            . ' LEFT JOIN _xx.mijszoklevelszin osz'
+            . ' LEFT JOIN _xx.mijszoklevelszint osz'
             . ' LEFT JOIN _xx.mijszoklevelkibocsajto ok'
             . $this->getFilterString($filter)
             . $this->getOrderString($order));
@@ -36,6 +36,17 @@ class PartnerMIJSZOklevelRepository extends \mkwhelpers\Repository {
 
         $kdv = $this->getWithJoins($filter, array());
         return $kdv;
+    }
+
+    public function getLastByPartner($partner) {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('partner', '=', $partner);
+
+        $kdv = $this->getWithJoins($filter, array('_xx.oklevelev' => 'DESC'));
+        if ($kdv) {
+            return $kdv[0];
+        }
+        return false;
     }
 
 }

@@ -87,6 +87,9 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['ezuzletkoto'] = $t->getEzuzletkoto();
         $x['mijszmiotajogazik'] = $t->getMijszmiotajogazik();
         $x['mijszmiotatanit'] = $t->getMijszmiotatanit();
+        $x['mijszmembershipbesideshu'] = $t->getMijszmembershipbesideshu();
+        $x['mijszbusiness'] = $t->getMijszbusiness();
+        $x['mijszexporttiltva'] = $t->getMijszexporttiltva();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             $x['afa'] = $afa->getId();
@@ -146,8 +149,6 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setTermekarazonosito($this->params->getStringRequestParam('termekarazonosito'));
             $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
             $obj->setEzuzletkoto($this->params->getBoolRequestParam('ezuzletkoto'));
-            $obj->setMijszmiotajogazik($this->params->getIntRequestParam('mijszmiotajogazik'));
-            $obj->setMijszmiotatanit($this->params->getIntRequestParam('mijszmiotatanit'));
 
             $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
             if ($fizmod) {
@@ -178,6 +179,11 @@ class partnerController extends \mkwhelpers\MattableController {
             }
 
             if (\mkw\store::isMIJSZ()) {
+                $obj->setMijszmiotajogazik($this->params->getIntRequestParam('mijszmiotajogazik'));
+                $obj->setMijszmiotatanit($this->params->getIntRequestParam('mijszmiotatanit'));
+                $obj->setMijszmembershipbesideshu($this->params->getStringRequestParam('mijszmembershipbesideshu'));
+                $obj->setMijszbusiness($this->params->getStringRequestParam('mijszbusiness'));
+                $obj->setMijszexporttiltva($this->params->getBoolRequestParam('mijszexporttiltva'));
                 $okids = $this->params->getArrayRequestParam('mijszoklevelid');
                 foreach ($okids as $okid) {
                     $oper = $this->params->getStringRequestParam('mijszokleveloper_' . $okid);
@@ -1004,5 +1010,93 @@ class partnerController extends \mkwhelpers\MattableController {
             'html' => $view->getTemplateResult()
         );
         echo json_encode($ret);
+    }
+
+    public function mijszExport() {
+        function x($o, $sor) {
+            return \mkw\store::getExcelCoordinate($o, $sor);
+        }
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $ids = $this->params->getStringRequestParam('ids');
+        if ($ids) {
+            $filter->addFilter('id', 'IN', explode(',', $ids));
+        }
+        $filter->addFilter('mijszexporttiltva', '=', false);
+
+        $partnerek = $this->getRepo()->getAll($filter);
+
+        $o = 0;
+        $excel = new \PHPExcel();
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue(x($o++, 1), 'First name')
+            ->setCellValue(x($o++, 1), 'Last name')
+            ->setCellValue(x($o++, 1), 'Email')
+            ->setCellValue(x($o++, 1), 'Issuer of certificate')
+            ->setCellValue(x($o++, 1), 'Certificate level')
+            ->setCellValue(x($o++, 1), 'Certification year')
+            ->setCellValue(x($o++, 1), 'Membership besides HU')
+            ->setCellValue(x($o++, 1), 'Country of residency')
+            ->setCellValue(x($o++, 1), 'Post code')
+            ->setCellValue(x($o++, 1), 'City')
+            ->setCellValue(x($o++, 1), 'Address')
+            ->setCellValue(x($o++, 1), 'Phone')
+            ->setCellValue(x($o++, 1), 'Business')
+            ->setCellValue(x($o++, 1), 'Web page');
+
+        if ($partnerek) {
+
+            $sor = 2;
+            /** @var \Entities\Partner $partner */
+            foreach ($partnerek as $partner) {
+                /** @var \Entities\PartnerMIJSZOklevel $oklevel */
+                $oklevel = $this->getRepo('Entities\PartnerMIJSZOklevel')->getLastByPartner($partner);
+                $o = 0;
+                $excel->setActiveSheetIndex(0)
+                    ->setCellValue(x($o++, $sor), $partner->getKeresztnev())
+                    ->setCellValue(x($o++, $sor), $partner->getVezeteknev())
+                    ->setCellValue(x($o++, $sor), $partner->getEmail());
+                if ($oklevel) {
+                    $excel->setActiveSheetIndex(0)
+                        ->setCellValue(x($o++, $sor), $oklevel->getMIJSZOklevelkibocsajtoNev())
+                        ->setCellValue(x($o++, $sor), $oklevel->getMIJSZOklevelszintNev())
+                        ->setCellValue(x($o++, $sor), $oklevel->getOklevelev());
+                }
+                else {
+                    $excel->setActiveSheetIndex(0)
+                        ->setCellValue(x($o++, $sor), '')
+                        ->setCellValue(x($o++, $sor), '')
+                        ->setCellValue(x($o++, $sor), '');
+                }
+                $excel->setActiveSheetIndex(0)
+                    ->setCellValue(x($o++, $sor), $partner->getMijszmembershipbesideshu())
+                    ->setCellValue(x($o++, $sor), $partner->getOrszagNev())
+                    ->setCellValue(x($o++, $sor), $partner->getIrszam())
+                    ->setCellValue(x($o++, $sor), $partner->getVaros())
+                    ->setCellValue(x($o++, $sor), $partner->getUtca())
+                    ->setCellValue(x($o++, $sor), $partner->getMobil())
+                    ->setCellValue(x($o++, $sor), $partner->getMijszbusiness())
+                    ->setCellValue(x($o++, $sor), $partner->getHonlap());
+
+                $sor++;
+            }
+        }
+        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+
+        $filepath = uniqid('mijszpartner') . '.xlsx';
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $fileSize);
+        header("Content-Disposition: attachment; filename=" . $filepath);
+
+        readfile($filepath);
+
+        \unlink($filepath);
+
     }
 }

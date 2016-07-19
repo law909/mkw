@@ -11,10 +11,12 @@ class PartnerRepository extends \mkwhelpers\Repository {
 			'1' => array('caption' => 'név szerint növekvő', 'order' => array('nev' => 'ASC')),
 			'2' => array('caption' => 'cím szerint növekvő', 'order' => array('irszam' => 'ASC', 'varos' => 'ASC', 'utca' => 'ASC'))
 		));
-		$this->setBatches(array(
-			'1' => 'címke hozzáadás',
-			'2' => 'címke törlés'
-		));
+
+        $btch = array();
+        if (\mkw\store::isMIJSZ()) {
+            $btch['mijszexport'] = 'MIJSZ oktató export';
+        }
+		$this->setBatches($btch);
 	}
 
     public function getSzamlatipusList($sel) {

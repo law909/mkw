@@ -62,12 +62,22 @@
 				<td><input id="EUAdoszamEdit" name="euadoszam" type="text" size="13" maxlength="30" value="{$partner.euadoszam}"></td>
 			</tr>
             {if ($setup.mijsz)}
-            <tr>
-                <td><label for="MIJSZMiotajogazikEdit">{t('Mióta jógázik')}:</label></td>
-                <td><input id="MIJSZMiotajogazikEdit" name="mijszmiotajogazik" type="text" size="20" maxlength="255" value="{$partner.mijszmiotajogazik}">
-                <td><label for="MIJSZMiotatanitEdit">{t('Mióta tanít')}:</label></td>
-                <td><input id="MIJSZMiotatanitEdit" name="mijszmiotatanit" type="text" size="20" maxlength="255" value="{$partner.mijszmiotatanit}">
-            </tr>
+                <tr>
+                    <td><label for="MIJSZExportTiltvaEdit">{t('MIJSZ export tiltva')}:</label></td>
+                    <td><input id="MIJSZExportTiltvaEdit" name="mijszexporttiltva" type="checkbox"{if ($partner.mijszexporttiltva)} checked="checked"{/if}></td>
+                </tr>
+                <tr>
+                    <td><label for="MIJSZMiotajogazikEdit">{t('Mióta jógázik')}:</label></td>
+                    <td><input id="MIJSZMiotajogazikEdit" name="mijszmiotajogazik" type="text" size="20" maxlength="255" value="{$partner.mijszmiotajogazik}">
+                    <td><label for="MIJSZMiotatanitEdit">{t('Mióta tanít')}:</label></td>
+                    <td><input id="MIJSZMiotatanitEdit" name="mijszmiotatanit" type="text" size="20" maxlength="255" value="{$partner.mijszmiotatanit}">
+                </tr>
+                <tr>
+                    <td><label for="MIJSZMembershipBesidesHUEdit">{t('Tagság MIJSZ-en kívül')}:</label></td>
+                    <td><input id="MIJSZMembershipBesidesHUEdit" name="mijszmembershipbesideshu" type="text" size="20" maxlength="255" value="{$partner.mijszmembershipbesideshu}">
+                    <td><label for="MIJSZBusinessEdit">{t('Business')}:</label></td>
+                    <td><input id="MIJSZBusinessEdit" name="mijszbusiness" type="text" size="20" maxlength="255" value="{$partner.mijszbusiness}">
+                </tr>
             {/if}
             <tr>
                 <td><label for="PartnertipusEdit">{t('Partner típus')}:</label></td>
