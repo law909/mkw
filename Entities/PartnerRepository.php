@@ -14,7 +14,8 @@ class PartnerRepository extends \mkwhelpers\Repository {
 
         $btch = array();
         if (\mkw\store::isMIJSZ()) {
-            $btch['mijszexport'] = 'MIJSZ oktató export';
+            $btch['mijszexportin'] = 'Oktató export IN';
+            $btch['mijszexportus'] = 'Oktató export US';
         }
 		$this->setBatches($btch);
 	}

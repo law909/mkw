@@ -1017,12 +1017,16 @@ class partnerController extends \mkwhelpers\MattableController {
             return \mkw\store::getExcelCoordinate($o, $sor);
         }
 
-        $filter = new \mkwhelpers\FilterDescriptor();
         $ids = $this->params->getStringRequestParam('ids');
+        $country = $this->params->getStringRequestParam('country');
+
+        $filter = new \mkwhelpers\FilterDescriptor();
         if ($ids) {
             $filter->addFilter('id', 'IN', explode(',', $ids));
         }
-        $filter->addFilter('mijszexporttiltva', '=', false);
+        if ($country === 'in') {
+            $filter->addFilter('mijszexporttiltva', '=', false);
+        }
 
         $partnerek = $this->getRepo()->getAll($filter);
 
@@ -1074,7 +1078,7 @@ class partnerController extends \mkwhelpers\MattableController {
                     ->setCellValue(x($o++, $sor), $partner->getIrszam())
                     ->setCellValue(x($o++, $sor), $partner->getVaros())
                     ->setCellValue(x($o++, $sor), $partner->getUtca())
-                    ->setCellValue(x($o++, $sor), $partner->getMobil())
+                    ->setCellValue(x($o++, $sor), $partner->getTelefon())
                     ->setCellValue(x($o++, $sor), $partner->getMijszbusiness())
                     ->setCellValue(x($o++, $sor), $partner->getHonlap());
 
@@ -1083,7 +1087,14 @@ class partnerController extends \mkwhelpers\MattableController {
         }
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('mijszpartner') . '.xlsx';
+        switch ($country) {
+            case 'in':
+                $filepath = uniqid('mijszpartner_in') . '.xlsx';
+                break;
+            case 'us':
+                $filepath = uniqid('mijszpartner_us') . '.xlsx';
+                break;
+        }
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
