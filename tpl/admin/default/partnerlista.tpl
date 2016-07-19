@@ -101,11 +101,12 @@
 <table id="mattable-table">
 <thead>
 	<tr>
-	<th><input class="js-maincheckbox" type="checkbox"></th>
-	<th>{t('Név')}</th>
-	<th>{t('Cím')}</th>
-	<th>{t('Elérhetőségek')}</th>
-	<th>{t('Címkék')}</th>
+        <th><input class="js-maincheckbox" type="checkbox"></th>
+        <th>{t('Név')}</th>
+        <th>{t('Cím')}</th>
+        <th>{t('Elérhetőségek')}</th>
+        <th>{t('Megjegyzés')}</th>
+    	<th>{t('Címkék')}</th>
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>

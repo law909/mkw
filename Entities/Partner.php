@@ -276,7 +276,7 @@ class Partner {
     /** @ORM\Column(type="boolean") */
     private $mijszexporttiltva = false;
 
-	public function __construct() {
+    public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();

@@ -41,6 +41,9 @@
         </table>
     </td>
     <td class="cell">
+        <span>{$_partner.megjegyzes}</span>
+    </td>
+    <td class="cell">
         {foreach $_partner.cimkek as $_cimke}
             {$_cimke.nev};
         {/foreach}

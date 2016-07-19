@@ -9,6 +9,7 @@
 		<ul>
 			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
 			<li><a href="#ElerhetosegTab">{t('Elérhetőségek')}</a></li>
+            <li><a href="#MegjegyzesTab">{t('Megjegyzés')}</a></li>
 			<li><a href="#KedvezmenyTab">{t('Kedvezmények')}</a></li>
             {if ($setup.mijsz)}
                 <li><a href="#MIJSZOklevelTab">{t('Oklevelek')}</a></li>
@@ -221,6 +222,10 @@
 			</tr>
 			</tbody></table>
 		</div>
+        <div id="MegjegyzesTab" class="mattkarb-page" data-visible="visible">
+            <label for="MegjegyzesEdit"></label>
+            <textarea id="MegjegyzesEdit" name="megjegyzes" cols=120 rows="10">{$partner.megjegyzes}</textarea>
+        </div>
 		<div id="KedvezmenyTab" class="mattkarb-page" data-visible="visible">
 			{foreach $partner.termekcsoportkedvezmenyek as $kd}
 				{include 'partnertermekcsoportkedvezmenykarb.tpl'}
