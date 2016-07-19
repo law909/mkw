@@ -1110,4 +1110,62 @@ class partnerController extends \mkwhelpers\MattableController {
         \unlink($filepath);
 
     }
+
+    public function megjegyzesExport() {
+        function x($o, $sor) {
+            return \mkw\store::getExcelCoordinate($o, $sor);
+        }
+
+        $ids = $this->params->getStringRequestParam('ids');
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        if ($ids) {
+            $filter->addFilter('id', 'IN', explode(',', $ids));
+        }
+
+        $partnerek = $this->getRepo()->getAll($filter, array('vezeteknev' => 'ASC', 'keresztnev' => 'ASC'));
+
+        $o = 0;
+        $excel = new \PHPExcel();
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue(x($o++, 1), 'First name')
+            ->setCellValue(x($o++, 1), 'Last name')
+            ->setCellValue(x($o++, 1), 'Email')
+            ->setCellValue(x($o++, 1), 'Phone')
+            ->setCellValue(x($o++, 1), 'Notes');
+
+        if ($partnerek) {
+
+            $sor = 2;
+            /** @var \Entities\Partner $partner */
+            foreach ($partnerek as $partner) {
+                $o = 0;
+                $excel->setActiveSheetIndex(0)
+                    ->setCellValue(x($o++, $sor), $partner->getKeresztnev())
+                    ->setCellValue(x($o++, $sor), $partner->getVezeteknev())
+                    ->setCellValue(x($o++, $sor), $partner->getEmail())
+                    ->setCellValue(x($o++, $sor), $partner->getTelefon())
+                    ->setCellValue(x($o++, $sor), $partner->getMegjegyzes());
+
+                $sor++;
+            }
+        }
+        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+
+        $filepath = uniqid('partnermegjegyzes') . '.xlsx';
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $fileSize);
+        header("Content-Disposition: attachment; filename=" . $filepath);
+
+        readfile($filepath);
+
+        \unlink($filepath);
+
+    }
 }

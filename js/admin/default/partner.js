@@ -329,6 +329,31 @@ $(document).ready(function(){
                         });
                     }
                     break;
+                case 'megjegyzesexport':
+                    cbs = $('.js-egyedcheckbox:checked');
+                    if (cbs.length) {
+                        var tomb = [],
+                            $exportform = $('#exportform');
+                        cbs.closest('tr').each(function(index, elem) {
+                            tomb.push($(elem).data('egyedid'));
+                        });
+                        $exportform.attr('action', '/admin/partner/megjegyzesexport');
+                        $('input[name="ids"]', $exportform).val(tomb);
+                        $exportform.submit();
+                    }
+                    else {
+                        dialogcenter.html('Válasszon ki legalább egy partnert!').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'OK': function() {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                    break;
             }
 
         });
