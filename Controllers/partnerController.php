@@ -1128,11 +1128,12 @@ class partnerController extends \mkwhelpers\MattableController {
         $o = 0;
         $excel = new \PHPExcel();
         $excel->setActiveSheetIndex(0)
-            ->setCellValue(x($o++, 1), 'First name')
-            ->setCellValue(x($o++, 1), 'Last name')
+            ->setCellValue(x($o++, 1), 'Vezetéknév')
+            ->setCellValue(x($o++, 1), 'Keresztnév')
+            ->setCellValue(x($o++, 1), 'Nyelv')
             ->setCellValue(x($o++, 1), 'Email')
-            ->setCellValue(x($o++, 1), 'Phone')
-            ->setCellValue(x($o++, 1), 'Notes');
+            ->setCellValue(x($o++, 1), 'Telefon')
+            ->setCellValue(x($o++, 1), 'Megjegyzés');
 
         if ($partnerek) {
 
@@ -1141,8 +1142,9 @@ class partnerController extends \mkwhelpers\MattableController {
             foreach ($partnerek as $partner) {
                 $o = 0;
                 $excel->setActiveSheetIndex(0)
-                    ->setCellValue(x($o++, $sor), $partner->getKeresztnev())
                     ->setCellValue(x($o++, $sor), $partner->getVezeteknev())
+                    ->setCellValue(x($o++, $sor), $partner->getKeresztnev())
+                    ->setCellValue(x($o++, $sor), $partner->getBizonylatnyelv())
                     ->setCellValue(x($o++, $sor), $partner->getEmail())
                     ->setCellValue(x($o++, $sor), $partner->getTelefon())
                     ->setCellValue(x($o++, $sor), $partner->getMegjegyzes());
