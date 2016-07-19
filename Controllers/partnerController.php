@@ -1028,7 +1028,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $filter->addFilter('mijszexporttiltva', '=', false);
         }
 
-        $partnerek = $this->getRepo()->getAll($filter);
+        $partnerek = $this->getRepo()->getAll($filter, array('keresztnev' => 'ASC', 'vezeteknev' => 'ASC'));
 
         $o = 0;
         $excel = new \PHPExcel();
