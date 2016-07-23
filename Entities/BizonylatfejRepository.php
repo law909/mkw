@@ -1026,4 +1026,22 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 
         return $ret;
     }
+
+    public function getAllFakeKifizetes($tol, $ig) {
+        $filter = new FilterDescriptor();
+        $filter
+            ->addFilter('rontott', '=', false)
+            ->addFilter('storno', '=', false)
+            ->addFilter('stornozott', '=', false)
+            ->addFilter('fakekintlevoseg', '=', true)
+            ->addFilter('fakekifizetve', '=', true)
+            ->addFilter('fakekifizetesdatum', '>=', $tol)
+            ->addFilter('fakekifizetesdatum', '<=', $ig);
+
+        $q = $this->_em->createQuery('SELECT _xx'
+            . ' FROM Entities\Bizonylatfej _xx'
+            . $this->getFilterString($filter));
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
+    }
 }

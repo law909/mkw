@@ -82,6 +82,32 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
         return $ret;
     }
 
+    public function addFakeKifizetes($mihez) {
+        if (\mkw\store::isFakeKintlevoseg()) {
+            $f = $this->getRepo('Entities\Bizonylatfej')->getAllFakeKifizetes($this->tolstr, $this->igstr);
+            /** @var \Entities\Bizonylatfej $k */
+            foreach ($f as $k) {
+                $mihez[] = array(
+                    'id' => 0,
+                    'bankbizonylatfej_id' => 0,
+                    'valutanem_id' => $k->getValutanemId(),
+                    'valutanemnev' => $k->getValutanemnev(),
+                    'datum' => $k->getFakekifizetesdatumStr(),
+                    'hivatkozottdatum' => $k->getEsedekessegStr(),
+                    'hivatkozottbizonylat' => $k->getId(),
+                    'uzletkoto_id' => $k->getUzletkotoId(),
+                    'uzletkotonev' => $k->getUzletkotonev(),
+                    'uzletkotojutalek' => $k->getUzletkotojutalek(),
+                    'partnernev' => $k->getPartnernev(),
+                    'brutto' => $k->getBrutto(),
+                    'jutalekosszeg' => \mkw\store::kerekit($k->getBrutto() * $k->getUzletkotojutalek() / 100, 0.01),
+                    'type' => 'Fake'
+                );
+            }
+        }
+        return $mihez;
+    }
+
     public function createLista() {
         $filter = $this->createFilter();
 
@@ -92,9 +118,11 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
 
         $mind = $btrepo->getAllHivatkozottJoin($filter,
             array('datum' => 'ASC'));
+        $mind = $this->addNegativSzallktg($mind);
+        $mind = $this->addFakeKifizetes($mind);
 
         $report = $this->createView('rep_jutalek.tpl');
-        $report->setVar('lista', $this->addNegativSzallktg($mind));
+        $report->setVar('lista', $mind);
         $report->setVar('tolstr', $this->tolstr);
         $report->setVar('igstr', $this->igstr);
         $report->setVar('cimkenevek', $cimkenevek);
