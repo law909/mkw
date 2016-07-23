@@ -72,6 +72,14 @@
                         <div class="matt-hseparator"></div>
                         {include "comp_nyelvselect.tpl"}
                     {/if}
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <label for="CsoportositasEdit">Csoportosítás:</label>
+                        <select id="CsoportositasEdit" name="csoportositas">
+                            <option value="1">termékenként</option>
+                            <option value="2">partnerenként/termékenként</option>
+                        </select>
+                    </div>
                 </div>
                 <div>
                     {include "comp_bizonylattipus.tpl"}

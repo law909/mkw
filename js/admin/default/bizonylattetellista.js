@@ -42,7 +42,8 @@ $(document).ready(function() {
                             bizonylatstatusz: $('select[name="bizonylatstatusz"] option:selected').val(),
                             bizonylatstatuszcsoport: $('select[name="bizonylatstatuszcsoport"] option:selected').val(),
                             bizonylattipus: biztipusfilter,
-                            partnercimkefilter: partnercimkefilter
+                            partnercimkefilter: partnercimkefilter,
+                            csoportositas: $('select[name="csoportositas"] option:selected').val()
                         },
                         success: function(d) {
                             $('#eredmeny').html(d);
