@@ -148,7 +148,10 @@
                     <tr><td><span class="lejartkiegyenlitetlen">FAKE kintlévőség</span></td></tr>
                 {/if}
                 {if ($setup.fakekintlevoseg && $_egyed.fakekifizetve)}
-                    <tr><td>FAKE kifizetve</td></tr>
+                    <tr>
+                        <td>FAKE kifizetve</td>
+                        <td>{$_egyed.fakekifizetesdatumstr}</td>
+                    </tr>
                 {/if}
                 <tr>
                     <td></td>

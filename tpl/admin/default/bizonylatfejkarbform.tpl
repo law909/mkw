@@ -28,10 +28,12 @@
                     <td><input id="FixEdit" type="checkbox" name="fix"{if ($egyed.fix)} checked{/if}></td>
                 {/if}
                 {if ($setup.fakekintlevoseg)}
-                    <td class="mattable-important"><label for="FakekintlevosegEdit">{t('Fake kintlévőség')}:</label></td>
+                    <td><label for="FakekintlevosegEdit">{t('Fake kintlévőség')}:</label></td>
                     <td><input id="FakekintlevosegEdit" type="checkbox" name="fakekintlevoseg"{if ($egyed.fakekintlevoseg)} checked{/if}></td>
-                    <td class="mattable-important"><label for="FakekifizetveEdit">{t('Fake kifizetve')}:</label></td>
+                    <td><label for="FakekifizetveEdit">{t('Fake kifizetve')}:</label></td>
                     <td><input id="FakekifizetveEdit" type="checkbox" name="fakekifizetve"{if ($egyed.fakekifizetve)} checked{/if}></td>
+                    <td><label for="FakeKifizetesdatumEdit">{t('Fake kifiz.dátum')}:</label></td>
+                    <td><input id="FakeKifizetesdatumEdit" name="fakekifizetesdatum" type="text" size="12" data-datum="{$egyed.fakekifizetesdatumstr}"></td>
                 {/if}
             </tr>
             {/if}

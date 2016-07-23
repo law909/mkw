@@ -256,7 +256,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         return $filter;
     }
 
-    protected function loadVars($t, $forKarb = false) {
+    protected function loadVars($t, $forKarb = false, $oper = false) {
         $tetelCtrl = new bizonylattetelController($this->params);
         $tetel = array();
         $x = array();
@@ -355,8 +355,16 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['lastmodstr'] = $t->getLastmodStr();
         $x['createdstr'] = $t->getCreatedStr();
         $x['kupon'] = $t->getKupon();
-        $x['fakekintlevoseg'] = $t->getFakekintlevoseg();
-        $x['fakekifizetve'] = $t->getFakekifizetve();
+        if ($oper === $this->inheritOperation) {
+            $x['fakekintlevoseg'] = false;
+            $x['fakekifizetve'] = false;
+            $x['fakekifizetesdatumstr'] = '';
+        }
+        else {
+            $x['fakekintlevoseg'] = $t->getFakekintlevoseg();
+            $x['fakekifizetve'] = $t->getFakekifizetve();
+            $x['fakekifizetesdatumstr'] = $t->getFakekifizetesdatumStr();
+        }
         $bsc = new bizonylatstatuszController($this->params);
         $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId());
         if ($forKarb) {
@@ -494,6 +502,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $obj->setFakekintlevoseg($this->params->getBoolRequestParam('fakekintlevoseg'));
         $obj->setFakekifizetve($this->params->getBoolRequestParam('fakekifizetve'));
+        $obj->setFakekifizetesdatum($this->params->getStringRequestParam('fakekifizetesdatum'));
 
         $obj->setPartnernev($this->params->getStringRequestParam('partnernev'));
         $obj->setPartneradoszam($this->params->getStringRequestParam('partneradoszam'));
@@ -909,7 +918,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         //       $this->setVars($view);
 
         $record = $this->getRepo()->findWithJoins($id);
-        $egyed = $this->loadVars($record, true);
+        $egyed = $this->loadVars($record, true, $oper);
 
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
         $bt->setTemplateVars($view);

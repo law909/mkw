@@ -512,7 +512,8 @@ var bizonylathelper = function($) {
                         hatidoedit = $('#HataridoEdit'),
                         fizmodedit = $('#FizmodEdit'),
                         alttab = $('#AltalanosTab'),
-                        dialogcenter = $('#dialogcenter');
+                        dialogcenter = $('#dialogcenter'),
+                        fakekifizetesdatumedit = $('#FakeKifizetesdatumEdit');
 
                 $('#EmailEdit').change(function() {
                     var pedit = $('#PartnerEdit'),
@@ -754,6 +755,9 @@ var bizonylathelper = function($) {
                 hatidoedit.datepicker($.datepicker.regional['hu']);
                 hatidoedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
                 hatidoedit.datepicker('setDate', hatidoedit.attr('data-datum'));
+                fakekifizetesdatumedit.datepicker($.datepicker.regional['hu']);
+                fakekifizetesdatumedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
+                fakekifizetesdatumedit.datepicker('setDate', fakekifizetesdatumedit.attr('data-datum'));
 
                 //valutanemChange(true);
 

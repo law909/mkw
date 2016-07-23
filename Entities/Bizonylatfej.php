@@ -460,6 +460,9 @@ class Bizonylatfej {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $fakekifizetve = false;
 
+    /** @ORM\Column(type="date",nullable=true) */
+    private $fakekifizetesdatum;
+
     public function __toString() {
         return (string)$this->id;
     }
@@ -2678,6 +2681,31 @@ class Bizonylatfej {
      */
     public function setFakekintlevoseg($fakekintlevoseg) {
         $this->fakekintlevoseg = $fakekintlevoseg;
+    }
+
+    public function getFakekifizetesdatum() {
+        return $this->fakekifizetesdatum;
+    }
+
+    public function getFakekifizetesdatumStr() {
+        if ($this->getFakekifizetesdatum()) {
+            return $this->getFakekifizetesdatum()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setFakekifizetesdatum($adat = '') {
+        if (is_a($adat, 'DateTime')) {
+            $this->fakekifizetesdatum = $adat;
+        }
+        else {
+            if (!$adat) {
+                $this->fakekifizetesdatum = null;
+            }
+            else {
+                $this->fakekifizetesdatum = new \DateTime(\mkw\store::convDate($adat));
+            }
+        }
     }
 
 }
