@@ -29,19 +29,6 @@ class generalDataLoader {
         $view->setVar('setup', $setup);
         $view->setVar('maintheme', \mkw\store::getTheme());
         $view->setVar('today', date(\mkw\store::$DateFormat));
-        if (\mkw\store::isBankpenztar() &&
-            ((\mkw\store::getRouteName() === 'adminview') || (\mkw\store::getRouteName() === 'adminview2'))) {
-            $view->setVar('lejartkintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem());
-            $view->setVar('kintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem());
-            if (\mkw\store::getTheme() === 'superzone') {
-                $spc = \mkw\store::getParameter(\mkw\consts::SpanyolCimke);
-                $partnerkodok = \mkw\store::getEm()->getRepository('Entities\Partner')->getByCimkek(array($spc));
-                $view->setVar('spanyollejartkintlevoseg',
-                    \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem($partnerkodok));
-                $view->setVar('spanyolkintlevoseg',
-                    \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem($partnerkodok));
-            }
-        }
         $view->setVar('uithemes', array(
             'black-tie',
             'blitzer',

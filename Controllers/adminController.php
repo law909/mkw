@@ -36,11 +36,20 @@ class adminController extends mkwhelpers\Controller {
                 $napijelentesdatum = date(\mkw\store::$DateFormat);
                 $igdatum = date(\mkw\store::$DateFormat);
                 $view->setVar('napijelenteslista', $lista->napiJelentes($napijelentesdatum, $igdatum));
+                $view->setVar('lejartkintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem());
+                $view->setVar('kintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem());
+                $partnerkodok = \mkw\store::getEm()->getRepository('Entities\Partner')->getByCimkek(array(\mkw\store::getParameter(\mkw\consts::SpanyolCimke)));
+                $view->setVar('spanyollejartkintlevoseg',
+                    \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem($partnerkodok));
+                $view->setVar('spanyolkintlevoseg',
+                    \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem($partnerkodok));
                 break;
             case 'mkwcansas':
                 $view->setVar('tjlista', $lista->teljesitmenyJelentes());
                 break;
             case 'kisszamlazo':
+                $view->setVar('lejartkintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem());
+                $view->setVar('kintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem());
                 break;
             default:
                 break;
