@@ -1132,7 +1132,7 @@ var bizonylathelper = function($) {
                                 if (adat.msg) {
                                     szoveg = szoveg + adat.msg + '<br>';
                                 }
-                                szoveg = szoveg + adat.msg;
+                                szoveg = szoveg + adat.qst;
                                 dialogcenter.html(szoveg).dialog({
                                     resizable: false,
                                     height: 140,
