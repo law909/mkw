@@ -371,6 +371,12 @@ class setupController extends \mkwhelpers\Controller {
     private function setObj($par, $value) {
         $en = $this->getEntityName();
         $p = \mkw\store::getEm()->getRepository($en)->find($par);
+        if ($value === false) {
+            $value = '0';
+        }
+        if ($value === true) {
+            $value = '1';
+        }
         if ($p) {
             $p->setErtek($value);
         }
