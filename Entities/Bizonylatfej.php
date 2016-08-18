@@ -631,6 +631,7 @@ class Bizonylatfej {
         $ret['keltstr'] = $this->getKeltStr();
         $ret['teljesitesstr'] = $this->getTeljesitesStr();
         $ret['esedekessegstr'] = $this->getEsedekessegStr();
+        $ret['hataridostr'] = $this->getHataridoStr();
         $ret['esedekesseg1str'] = $this->getEsedekesseg1Str();
         $ret['fizetendo1'] = $this->getFizetendo1();
         $ret['esedekesseg2str'] = $this->getEsedekesseg2Str();
