@@ -286,7 +286,7 @@ class megrendelesfejController extends bizonylatfejController {
             $filter->addFilter('bizonylatstatusz', '=', $backorder);
             $filter->addFilter('bizonylattipus', '=', 'megrendeles');
             $filter->addFilter('rontott', '=', false);
-            $fejek = $this->getRepo()->getWithTetelek($filter);
+            $fejek = $this->getRepo()->getWithTetelek($filter, array('hatarido' => 'ASC'));
             if ($fejek) {
                 /** @var \Entities\Bizonylatfej $fej */
                 foreach ($fejek as $fej) {
@@ -316,6 +316,7 @@ class megrendelesfejController extends bizonylatfejController {
                         $ret[] = array(
                             'id' => $fej->getId(),
                             'kelt' => $fej->getKeltStr(),
+                            'hatarido' => $fej->getHataridoStr(),
                             'partnernev' => $fej->getPartnernev(),
                             'printurl' => \mkw\store::getRouter()->generate('adminmegrendelesfejprint', false, array(), array(
                                 'id' => $fej->getId()
