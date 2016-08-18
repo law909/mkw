@@ -30,9 +30,9 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::Tulajeorinr);
         $view->setVar(\mkw\consts::Tulajeorinr, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::Tulajkisadozo);
-        $view->setVar(\mkw\consts::Tulajkisadozo, ($p ? $p->getErtek() : ''));
+        $view->setVar(\mkw\consts::Tulajkisadozo, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::Tulajegyenivallalkozo);
-        $view->setVar(\mkw\consts::Tulajegyenivallalkozo, ($p ? $p->getErtek() : ''));
+        $view->setVar(\mkw\consts::Tulajegyenivallalkozo, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::Tulajevnyilvszam);
         $view->setVar(\mkw\consts::Tulajevnyilvszam, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::Tulajevnev);
