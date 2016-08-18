@@ -32,7 +32,8 @@ var checkout = (function($) {
 			szallvarosgr = szallvarosinput.closest('.form-group'),
 			szallutcainput = $('input[name="szallutca"]'),
 			szallutcagr = szallutcainput.closest('.form-group'),
-            hataridoinput = $('input[name="hatarido"]');
+            hataridoinput = $('input[name="hatarido"]'),
+            hataridogr = hataridoinput.closest('.form-group');
 
         loadTetelList();
 
@@ -140,6 +141,17 @@ var checkout = (function($) {
             }
             else {
                 szamlautcagr.removeClass('has-error');
+            }
+
+            if (!hataridoinput.val()) {
+                hataridogr.addClass('has-error');
+                if (!hibas) {
+                    tofocus = hataridoinput;
+                }
+                hibas = true;
+            }
+            else {
+                hataridogr.removeClass('has-error');
             }
 
             if (hibas) {

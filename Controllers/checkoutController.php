@@ -453,7 +453,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                 }
 
                 $ok = ($szallnev && $szallirszam && $szallvaros && $szallutca &&
-                        $szamlanev && $szamlairszam && $szamlavaros && $szamlautca);
+                        $szamlanev && $szamlairszam && $szamlavaros && $szamlautca && $hatarido);
 
                 if (!$ok) {
                     $errorlogtext[] = '1alapadat';
