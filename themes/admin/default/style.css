@@ -221,3 +221,12 @@ table.termekkarton tr:nth-child(even) {
     width: 50%;
     min-height: 250px;
 }
+
+.setuplabel {
+    display: inline-block;
+    width: 160px;
+}
+
+.setuprow {
+    margin-bottom: 3px;
+}

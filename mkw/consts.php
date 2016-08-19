@@ -94,6 +94,7 @@ class consts {
 
     const MarkaCs = 'markacs';
     const KuponElotag = 'kuponelotag';
+    const VasarlasiUtalvanyTermek = 'vasarlasiutalvanytermek';
     const AdminRole = 'adminrole';
     const TermekfeltoltoRole = 'termekfeltoltorole';
 

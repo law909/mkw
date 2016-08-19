@@ -105,8 +105,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::SzallitasiKtg3Ertek, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::SzallitasiKtgTermek);
-        $fizmod = new termekController($this->params);
-        $view->setVar('szallitasiktgtermeklist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+        $termek = new termekController($this->params);
+        $view->setVar('szallitasiktgtermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::FoxpostSzallitasiMod);
         $szallmod = new szallitasimodController($this->params);
@@ -171,6 +171,10 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::FoxpostPassword, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::KuponElotag);
         $view->setVar(\mkw\consts::KuponElotag, ($p ? $p->getErtek() : 'MKW'));
+
+        $p = $repo->find(\mkw\consts::VasarlasiUtalvanyTermek);
+//        $termek = new termekController($this->params);
+        $view->setVar('vasarlasiutalvanytermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
 
         // alapertelmezes
         $p = $repo->find(\mkw\consts::Fizmod);
@@ -481,6 +485,11 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::MiniCRMSystemId, $this->params->getStringRequestParam('minicrmsystemid'));
         $this->setObj(\mkw\consts::MiniCRMAPIKey, $this->params->getStringRequestParam('minicrmapikey'));
         $this->setObj(\mkw\consts::KuponElotag, $this->params->getStringRequestParam('kuponelotag'));
+
+        $vut = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('vasarlasiutalvanytermek', 0));
+        if ($vut) {
+            $this->setObj(\mkw\consts::VasarlasiUtalvanyTermek, $vut->getId());
+        }
 
         // alapertelmezes
         $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
