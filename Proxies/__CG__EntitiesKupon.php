@@ -64,10 +64,10 @@ class Kupon extends \Entities\Kupon implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Kupon' . "\0" . 'id', '' . "\0" . 'Entities\\Kupon' . "\0" . 'created', '' . "\0" . 'Entities\\Kupon' . "\0" . 'tipus', '' . "\0" . 'Entities\\Kupon' . "\0" . 'lejart'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Kupon' . "\0" . 'id', '' . "\0" . 'Entities\\Kupon' . "\0" . 'created', '' . "\0" . 'Entities\\Kupon' . "\0" . 'tipus', '' . "\0" . 'Entities\\Kupon' . "\0" . 'lejart', '' . "\0" . 'Entities\\Kupon' . "\0" . 'osszeg'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Kupon' . "\0" . 'id', '' . "\0" . 'Entities\\Kupon' . "\0" . 'created', '' . "\0" . 'Entities\\Kupon' . "\0" . 'tipus', '' . "\0" . 'Entities\\Kupon' . "\0" . 'lejart'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Kupon' . "\0" . 'id', '' . "\0" . 'Entities\\Kupon' . "\0" . 'created', '' . "\0" . 'Entities\\Kupon' . "\0" . 'tipus', '' . "\0" . 'Entities\\Kupon' . "\0" . 'lejart', '' . "\0" . 'Entities\\Kupon' . "\0" . 'osszeg'];
     }
 
     /**
@@ -340,6 +340,28 @@ class Kupon extends \Entities\Kupon implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'doFelhasznalt', []);
 
         return parent::doFelhasznalt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOsszeg()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsszeg', []);
+
+        return parent::getOsszeg();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOsszeg($osszeg)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsszeg', [$osszeg]);
+
+        return parent::setOsszeg($osszeg);
     }
 
 }

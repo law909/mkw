@@ -30,6 +30,10 @@
                         {/foreach}
                     </select></td>
             </tr>
+            <tr>
+                <td><label for="">{t('Összeg')}:</label></td>
+                <td><input type="text" name="osszeg" value="{$egyed.osszeg}"></td>
+            </tr>
 			</tbody></table>
 		</div>
 	</div>

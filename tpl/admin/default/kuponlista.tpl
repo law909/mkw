@@ -38,6 +38,7 @@
 	<th><input id="maincheckbox" type="checkbox"></th>
     <th>{t('Létrehozva')}</th>
 	<th>{t('Id')}</th>
+    <th>{t('Típus')}</th>
     <th>{t('Állapot')}</th>
 	</tr>
 </thead>

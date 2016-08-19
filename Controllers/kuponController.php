@@ -26,12 +26,14 @@ class kuponController extends \mkwhelpers\MattableController {
         $x['tipus'] = $t->getTipus();
         $x['tipusstr'] = $t->getTipusStr();
         $x['createdstr'] = $t->getCreatedStr();
+        $x['osszeg'] = $t->getOsszeg();
         return $x;
     }
 
     protected function setFields($obj) {
         $obj->setLejart($this->params->getIntRequestParam('lejart'));
         $obj->setTipus($this->params->getIntRequestParam('tipus'));
+        $obj->setOsszeg($this->params->getNumRequestParam('osszeg'));
         return $obj;
     }
 

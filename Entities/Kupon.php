@@ -17,7 +17,8 @@ class Kupon {
     );
 
     private static $tipuslista = array(
-        1 => 'ingyen szállítás'
+        1 => 'ingyen szállítás',
+        2 => 'összeg'
     );
 
     /**
@@ -40,6 +41,9 @@ class Kupon {
      * @ORM\Column(type="integer")
      */
     private $lejart = 0;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $osszeg = 0;
 
 	public function getId() {
 		return $this->id;
@@ -133,4 +137,19 @@ class Kupon {
     public function doFelhasznalt() {
         $this->setLejart(1);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getOsszeg() {
+        return $this->osszeg;
+    }
+
+    /**
+     * @param mixed $osszeg
+     */
+    public function setOsszeg($osszeg) {
+        $this->osszeg = $osszeg;
+    }
+
 }

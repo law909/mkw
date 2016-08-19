@@ -5,8 +5,11 @@
         <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_egyed.id}</a>
         <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{t('Töröl')}"><span
                     class="ui-icon ui-icon-circle-minus"></span></a></span>
-        <div>{$_egyed.tipusstr}</div>
         <div>{$_egyed.id}</div>
+    </td>
+    <td class="cell">
+        <div>{$_egyed.tipusstr}</div>
+        <div>{$_egyed.osszeg}</div>
     </td>
     <td class="cell">
         {$_egyed.lejartstr}
