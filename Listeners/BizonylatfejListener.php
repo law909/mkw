@@ -115,8 +115,6 @@ class BizonylatfejListener {
 
     /**
      * @param \Entities\Bizonylatfej $bizfej
-     * @param \Entities\Szallitasimod|null $szallmod
-     * @param null $bruttoegysar
      */
     private function createSzallitasiKtg($bizfej) {
 
@@ -229,6 +227,74 @@ class BizonylatfejListener {
         }
     }
 
+    /**
+     * @param \Entities\Bizonylatfej $bizfej
+     * @param \Entities\Kupon $kupon
+     */
+    private function createVasarlasiUtalvany($bizfej, $kupon) {
+
+        if (!$kupon || !$kupon->isVasarlasiUtalvany() || !$kupon->isErvenyes()) {
+            return;
+        }
+
+        $bruttoegysar = $kupon->getOsszeg() * -1;
+
+        $termekid = \mkw\store::getParameter(\mkw\consts::VasarlasiUtalvanyTermek);
+        $termek = $this->em->getRepository('Entities\Termek')->find($termekid);
+
+        if ($termek && $bruttoegysar != 0) {
+
+            if ($bizfej->getPartner() && ($bizfej->getPartner()->getSzamlatipus() > 0)) {
+                $nullasafa = $this->em->getRepository('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+            }
+
+            foreach ($bizfej->getBizonylattetelek() as $btetel) {
+                if ($btetel->getTermekId() == $termekid) {
+                    $k = $btetel;
+                }
+            }
+            if ($k) {
+                $k->setMennyiseg(1);
+                if ($nullasafa) {
+                    $k->setAfa($nullasafa);
+                }
+                else {
+                    $k->setAfa($termek->getAfa());
+                }
+                $k->setBruttoegysar($bruttoegysar);
+                $k->setBruttoegysarhuf($bruttoegysar * $k->getArfolyam());
+                $k->calc();
+                $this->em->persist($k);
+                $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $k);
+            }
+            else {
+                $k = new \Entities\Bizonylattetel();
+                $bizfej->addBizonylattetel($k);
+                $k->setPersistentData();
+                $k->setArvaltoztat(0);
+                if ($termek) {
+                    $k->setTermek($termek);
+                }
+                $k->setMozgat();
+                $k->setFoglal();
+                $k->setMennyiseg(1);
+                if ($nullasafa) {
+                    $k->setAfa($nullasafa);
+                    $k->setNettoegysar($bruttoegysar);
+                    $k->setNettoegysarhuf($bruttoegysar * $k->getArfolyam());
+                }
+                else {
+                    $k->setAfa($termek->getAfa());
+                    $k->setBruttoegysar($bruttoegysar);
+                    $k->setBruttoegysarhuf($bruttoegysar * $k->getArfolyam());
+                }
+                $k->calc();
+                $this->em->persist($k);
+                $this->uow->computeChangeSet($this->bizonylattetelmd, $k);
+            }
+        }
+    }
+
     public function prePersist(LifecycleEventArgs $args) {
 
         $this->em = $args->getEntityManager();
@@ -285,6 +351,10 @@ class BizonylatfejListener {
                     }
                 }
 
+                /** @var \Entities\Kupon $kupon */
+                $kupon = $entity->getKuponObject();
+
+                $this->createVasarlasiUtalvany($entity, $kupon);
                 $this->createSzallitasiKtg($entity);
 
                 $entity->calcOsszesen();
@@ -302,8 +372,6 @@ class BizonylatfejListener {
                     $entity->setPartnerfeketelistaok($fok);
                 }
 
-                /** @var \Entities\Kupon $kupon */
-                $kupon = $entity->getKuponObject();
                 if ($kupon) {
                     $kupon->doFelhasznalt();
                     $this->uow->recomputeSingleEntityChangeSet($this->kuponmd, $kupon);

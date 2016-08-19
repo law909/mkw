@@ -18,7 +18,7 @@ class Kupon {
 
     private static $tipuslista = array(
         1 => 'ingyen szállítás',
-        2 => 'összeg'
+        2 => 'vásárlási utalvány'
     );
 
     /**
@@ -132,6 +132,10 @@ class Kupon {
 
     public function isIngyenSzallitas() {
         return $this->getTipus() === 1;
+    }
+
+    public function isVasarlasiUtalvany() {
+        return $this->getTipus() === 2;
     }
 
     public function doFelhasznalt() {
