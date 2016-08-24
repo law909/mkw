@@ -176,6 +176,17 @@ class Kupon extends \Entities\Kupon implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function toLista()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', []);
+
+        return parent::toLista();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {
@@ -334,6 +345,17 @@ class Kupon extends \Entities\Kupon implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function isVasarlasiUtalvany()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isVasarlasiUtalvany', []);
+
+        return parent::isVasarlasiUtalvany();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function doFelhasznalt()
     {
 
@@ -362,6 +384,17 @@ class Kupon extends \Entities\Kupon implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsszeg', [$osszeg]);
 
         return parent::setOsszeg($osszeg);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getReportfilename()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getReportfilename', []);
+
+        return parent::getReportfilename();
     }
 
 }

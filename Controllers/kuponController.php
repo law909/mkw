@@ -117,4 +117,14 @@ class kuponController extends \mkwhelpers\MattableController {
         return $ret;
     }
 
+    public function doPrint() {
+        $o = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+        if ($o) {
+            $view = $this->createView($o->getReportfilename());
+            $this->setVars($view);
+            $view->setVar('egyed', $o->toLista());
+            echo $view->getTemplateResult();
+        }
+    }
+
 }

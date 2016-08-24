@@ -393,6 +393,7 @@ $router->map('GET', '/admin/kupon/getlistbody', 'kuponController#getlistbody', '
 $router->map('GET', '/admin/kupon/getkarb', 'kuponController#getkarb', 'adminkupongetkarb');
 $router->map('GET', '/admin/kupon/viewkarb', 'kuponController#viewkarb', 'adminkuponviewkarb');
 $router->map('POST', '/admin/kupon/save', 'kuponController#save', 'adminkuponsave');
+$router->map('GET', '/admin/kupon/print', 'kuponController#doPrint', 'adminkuponprint');
 
 $router->map('GET', '/admin/sitemap/view', 'sitemapController#view', 'adminsitemapview');
 $router->map('GET', '/admin/sitemap/create', 'sitemapController#create', 'adminsitemapcreate');

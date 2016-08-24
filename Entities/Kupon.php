@@ -45,6 +45,16 @@ class Kupon {
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $osszeg = 0;
 
+    public function toLista() {
+        $ret = array();
+        $ret['id'] = $this->getId();
+        $ret['tipus'] = $this->getTipus();
+        $ret['tipusstr'] = $this->getTipusStr();
+        $ret['osszeg'] = $this->getOsszeg();
+        $ret['ervenyes'] = $this->isErvenyes();
+        return $ret;
+    }
+
 	public function getId() {
 		return $this->id;
 	}
@@ -154,6 +164,10 @@ class Kupon {
      */
     public function setOsszeg($osszeg) {
         $this->osszeg = $osszeg;
+    }
+
+    public function getReportfilename() {
+        return 'rep_kupon' . $this->getTipus() . '.tpl';
     }
 
 }

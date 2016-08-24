@@ -20,7 +20,16 @@ $(document).ready(function(){
 				fields:['#idfilter']
 			},
 			tablebody:{
-				url:'/admin/kupon/getlistbody'
+				url:'/admin/kupon/getlistbody',
+                onStyle: function() {
+				    $('.js-printkupon').button();
+                },
+                onDoEditLink: function() {
+                    $('.js-printkupon').each(function() {
+                        var $this = $(this);
+                        $this.attr('href', '/admin/kupon/print?id=' + $this.data('egyedid'));
+                    });
+                }
 			},
 			karb:mattkarbconfig
 		});
