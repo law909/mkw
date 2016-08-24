@@ -26,7 +26,7 @@ class TermekRepository extends \mkwhelpers\Repository {
         $filter->addFilter('fuggoben', '=', false);
     }
 
-    public function getAllForSelectList($filter, $order, $offset = 0, $elemcount = 0) {
+    public function getAllForSelectList($filter, $order = array(), $offset = 0, $elemcount = 0) {
         $q = $this->_em->createQuery('SELECT _xx.id,_xx.nev '
             . ' FROM Entities\Termek _xx'
             . $this->getFilterString($filter)
@@ -60,7 +60,7 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
+    public function getWithJoins($filter, $order = array(), $offset = 0, $elemcount = 0) {
         $q = $this->_em->createQuery('SELECT _xx,vtsz,afa,fa1,fa2,fa3'
             . ' FROM Entities\Termek _xx'
             . ' LEFT JOIN _xx.vtsz vtsz'
