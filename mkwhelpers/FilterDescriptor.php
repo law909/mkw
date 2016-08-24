@@ -12,6 +12,9 @@ class FilterDescriptor implements \Countable {
     }
 
     public function addFilter($field, $clause, $value) {
+        if (!$field || is_null($value)) {
+            return $this;
+        }
         $this->filter['fields'][] = $field;
         $this->filter['clauses'][] = $clause;
         $this->filter['values'][] = $value;
@@ -145,7 +148,9 @@ class FilterDescriptor implements \Countable {
             if (array_key_exists('sql', $filter)) {
                 $sql = $filter['sql'];
                 foreach ($sql as $cnt => $s) {
-                    $filterarr[] = '(' . $s . ')';
+                    if ($s) {
+                        $filterarr[] = '(' . $s . ')';
+                    }
                 }
             }
             $filterstring = implode(' AND ', $filterarr);
@@ -158,7 +163,9 @@ class FilterDescriptor implements \Countable {
             $filterarr = array();
             $sql = $filter['sql'];
             foreach ($sql as $cnt => $s) {
-                $filterarr[] = '(' . $s . ')';
+                if ($s) {
+                    $filterarr[] = '(' . $s . ')';
+                }
             }
             $filterstring = implode(' AND ', $filterarr);
             if ($filterstring != '') {
