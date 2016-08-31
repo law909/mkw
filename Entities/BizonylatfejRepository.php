@@ -1027,7 +1027,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $ret;
     }
 
-    public function getAllFakeKifizetes($tol, $ig) {
+    public function getAllFakeKifizetes($tol, $ig, $pkodok = null) {
         $filter = new FilterDescriptor();
         $filter
             ->addFilter('rontott', '=', false)
@@ -1037,6 +1037,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             ->addFilter('fakekifizetve', '=', true)
             ->addFilter('fakekifizetesdatum', '>=', $tol)
             ->addFilter('fakekifizetesdatum', '<=', $ig);
+        if ($pkodok) {
+            $filter->addFilter('partner_id', 'IN', $pkodok);
+        }
 
         $q = $this->_em->createQuery('SELECT _xx'
             . ' FROM Entities\Bizonylatfej _xx'

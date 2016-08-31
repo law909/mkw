@@ -7,6 +7,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
 
     private $tolstr;
     private $igstr;
+    private $partnerkodok;
 
     public function view() {
         $view = $this->createView('jutaleklista.tpl');
@@ -36,6 +37,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
             ->addFilter('irany', '=', 1);
 
         $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($this->params->getArrayRequestParam('cimkefilter'));
+        $this->partnerkodok = $partnerkodok;
         if ($partnerkodok) {
             $filter->addFilter('partner_id', 'IN', $partnerkodok);
         }
@@ -84,7 +86,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
 
     public function addFakeKifizetes($mihez) {
         if (\mkw\store::isFakeKintlevoseg()) {
-            $f = $this->getRepo('Entities\Bizonylatfej')->getAllFakeKifizetes($this->tolstr, $this->igstr);
+            $f = $this->getRepo('Entities\Bizonylatfej')->getAllFakeKifizetes($this->tolstr, $this->igstr, $this->partnerkodok);
             /** @var \Entities\Bizonylatfej $k */
             foreach ($f as $k) {
                 $mihez[] = array(
@@ -158,6 +160,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
         $mind = $btrepo->getAllHivatkozottJoin($filter);
 
         $mind = $this->addNegativSzallktg($mind);
+        $mind = $this->addFakeKifizetes($mind);
 
         $sor = 2;
         foreach ($mind as $item) {
