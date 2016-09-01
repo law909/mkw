@@ -56,6 +56,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
         $tetelek = $this->getRepo('Entities\Bizonylatfej')->getBizonylatTetelLista($raktarid, $partnerid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
             $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv, $bizstatusz, $bizstatuszcsoport, $bizonylattipusfilter, $partnercimkefilter, $csoportositas);
 
+        /*
         switch ($forgalomfilter) {
             case 1: // mozgott
                 foreach ($tetelek as $key => $tetel) {
@@ -72,6 +73,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
                 };
                 break;
         }
+        */
 
         return array(
             'ertektipus' => $ertektipus,

@@ -34,15 +34,6 @@
                     {include "comp_gyartoselect.tpl"}
                     <div class="matt-hseparator"></div>
                     <div>
-                        <label for="ForgalomEdit">Forgalom:</label>
-                        <select id="ForgalomEdit" name="forgalomfilter">
-                            <option value="0">mindegy</option>
-                            <option value="1">az időszakban volt</option>
-                            <option value="2">az időszakban nem volt</option>
-                        </select>
-                    </div>
-                    <div class="matt-hseparator"></div>
-                    <div>
                         <label for="ErtekEdit">Érték:</label>
                         <select id="ErtekEdit" name="ertektipus">
                             <option value="0">nincs</option>
