@@ -7,6 +7,11 @@
         {if ($ertektipus)}
         <th class="headercell textalignright">Érték</th>
         {/if}
+        {if ($keszletkell)}
+            {foreach $raktarlista as $raktar}
+                <th class="headercell">{$raktar}</th>
+            {/foreach}
+        {/if}
     </tr>
     </thead>
     <tbody>
@@ -21,6 +26,11 @@
             <td class="datacell textalignright">{bizformat($tetel.mennyiseg)}</td>
             {if ($ertektipus)}
             <td class="datacell textalignright">{bizformat($tetel.ertek)}</td>
+            {/if}
+            {if ($keszletkell)}
+                {foreach $tetel.keszletinfo as $kkey => $keszlet}
+                    <td class="datacell textalignright">{$keszlet}</td>
+                {/foreach}
             {/if}
         </tr>
     {/foreach}

@@ -71,6 +71,11 @@
                             <option value="2">partnerenként/termékenként</option>
                         </select>
                     </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <label for="KeszletkettEdit">{t('Készlet kell')}:</label>
+                        <input id="KeszletkellEdit" type="checkbox" name="keszletkell">
+                    </div>
                 </div>
                 <div>
                     {include "comp_bizonylattipus.tpl"}

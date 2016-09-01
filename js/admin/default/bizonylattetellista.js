@@ -43,7 +43,8 @@ $(document).ready(function() {
                             bizonylatstatuszcsoport: $('select[name="bizonylatstatuszcsoport"] option:selected').val(),
                             bizonylattipus: biztipusfilter,
                             partnercimkefilter: partnercimkefilter,
-                            csoportositas: $('select[name="csoportositas"] option:selected').val()
+                            csoportositas: $('select[name="csoportositas"] option:selected').val(),
+                            keszletkell: $('input[name="keszletkell"]').prop('checked')
                         },
                         success: function(d) {
                             $('#eredmeny').html(d);
