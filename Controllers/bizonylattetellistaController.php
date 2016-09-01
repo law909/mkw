@@ -3,6 +3,8 @@
 namespace Controllers;
 
 
+use mkwhelpers\FilterDescriptor;
+
 class bizonylattetellistaController extends \mkwhelpers\Controller {
 
     public function view() {
@@ -56,8 +58,11 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
         $tetelek = $this->getRepo('Entities\Bizonylatfej')->getBizonylatTetelLista($raktarid, $partnerid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
             $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv, $bizstatusz, $bizstatuszcsoport, $bizonylattipusfilter, $partnercimkefilter, $csoportositas);
 
+        $raktarfilter = new \mkwhelpers\FilterDescriptor();
+        $raktarfilter->addFilter('archiv', '=', false);
+
         if ($keszletkell) {
-            $raktarak = $this->getRepo('Entities\Raktar')->getAll();
+            $raktarak = $this->getRepo('Entities\Raktar')->getAll($raktarfilter);
             foreach ($tetelek as $key => $tetel) {
                 $termekid = $tetel['termekid'];
                 $tvid = $tetel['termekvaltozat_id'];
@@ -84,7 +89,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
             }
         }
 
-        $raktarak = $this->getRepo('Entities\Raktar')->getAll();
+        $raktarak = $this->getRepo('Entities\Raktar')->getAll($raktarfilter);
         $raktarlista = array();
         foreach ($raktarak as $raktar) {
             $raktarlista[] = $raktar->getNev();

@@ -64,10 +64,10 @@ class Raktar extends \Entities\Raktar implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'archiv', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'archiv', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek'];
     }
 
     /**
@@ -230,6 +230,28 @@ class Raktar extends \Entities\Raktar implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMozgat', [$val]);
 
         return parent::setMozgat($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getArchiv()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArchiv', []);
+
+        return parent::getArchiv();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setArchiv($archiv)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setArchiv', [$archiv]);
+
+        return parent::setArchiv($archiv);
     }
 
 }

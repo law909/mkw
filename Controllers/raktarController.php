@@ -12,12 +12,13 @@ class raktarController extends \mkwhelpers\JQGridController {
     }
 
     protected function loadCells($obj) {
-        return array($obj->getNev(), $obj->getMozgat());
+        return array($obj->getNev(), $obj->getMozgat(), $obj->getArchiv());
     }
 
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setMozgat($this->params->getBoolRequestParam('mozgat'));
+        $obj->setArchiv($this->params->getBoolRequestParam('archiv'));
         return $obj;
     }
 

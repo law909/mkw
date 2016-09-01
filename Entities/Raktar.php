@@ -17,6 +17,8 @@ class Raktar {
 	private $nev;
 	/** @ORM\Column(type="boolean",nullable=false) */
 	private $mozgat;
+    /** @ORM\Column(type="boolean",nullable=true) */
+    private $archiv;
 	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="raktar",cascade={"persist"}) */
 	private $bizonylatfejek;
 
@@ -39,4 +41,19 @@ class Raktar {
 	public function setMozgat($val) {
 		$this->mozgat=$val;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getArchiv() {
+        return $this->archiv;
+    }
+
+    /**
+     * @param mixed $archiv
+     */
+    public function setArchiv($archiv) {
+        $this->archiv = $archiv;
+    }
+
 }
