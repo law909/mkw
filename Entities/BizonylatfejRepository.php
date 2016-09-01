@@ -1038,7 +1038,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             ->addFilter('fakekifizetesdatum', '>=', $tol)
             ->addFilter('fakekifizetesdatum', '<=', $ig);
         if ($pkodok) {
-            $filter->addFilter('partner_id', 'IN', $pkodok);
+            $filter->addFilter('partner', 'IN', $pkodok);
         }
 
         $q = $this->_em->createQuery('SELECT _xx'
