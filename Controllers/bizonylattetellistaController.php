@@ -7,6 +7,15 @@ use mkwhelpers\FilterDescriptor;
 
 class bizonylattetellistaController extends \mkwhelpers\Controller {
 
+    private $tolstr;
+    private $igstr;
+    private $befdatumstr;
+    private $datummezo;
+    private $datumnev;
+    private $uknev;
+    private $partnernev;
+    private $cimkenevek;
+
     public function view() {
         $view = $this->createView('bizonylattetellista.tpl');
 
@@ -54,6 +63,37 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
         $partnercimkefilter = $this->params->getArrayRequestParam('partnercimkefilter');
         $csoportositas = $this->params->getIntRequestParam('csoportositas');
         $keszletkell = $this->params->getBoolRequestParam('keszletkell');
+
+        $this->tolstr = $datumtolstr;
+        $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->tolstr)));
+
+        $this->igstr = $datumigstr;
+        $this->igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->igstr)));
+
+        switch ($datumtipus) {
+            case 'kelt':
+                $this->datumnev = 'Kelt';
+                break;
+            case 'teljesites':
+                $this->datumnev = 'Teljesítés';
+                break;
+            case 'esedekesseg':
+                $this->datumnev = 'Esedékesség';
+                break;
+            default:
+                $this->datumnev = 'Teljesítés';
+        }
+
+        if ($partnerid) {
+            $partner = $this->getRepo('Entities\Partner')->find($partnerid);
+            if ($partner) {
+                $this->partnernev = $partner->getNev();
+            }
+        }
+        else {
+            $this->cimkenevek = $this->getRepo('Entities\Partnercimketorzs')->getCimkeNevek($partnercimkefilter);
+            $this->cimkenevek = implode(',', $this->cimkenevek);
+        }
 
         $tetelek = $this->getRepo('Entities\Bizonylatfej')->getBizonylatTetelLista($raktarid, $partnerid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
             $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv, $bizstatusz, $bizstatuszcsoport, $bizonylattipusfilter, $partnercimkefilter, $csoportositas);
@@ -235,5 +275,33 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
         readfile($filepath);
 
         \unlink($filepath);
+    }
+
+    public function doPrint() {
+        $csoportositas = $this->params->getIntRequestParam('csoportositas');
+        $keszletkell = $this->params->getBoolRequestParam('keszletkell');
+
+        $res = $this->getData();
+
+        switch ($csoportositas) {
+            case 1:
+                $view = $this->createView('rep_bizonylattetellistatetel.tpl');
+                break;
+            case 2:
+                $view = $this->createView('rep_bizonylattetellistatetelpartner.tpl');
+                break;
+        }
+
+        $view->setVar('datumnev', $this->datumnev);
+        $view->setVar('tolstr', $this->tolstr);
+        $view->setVar('igstr', $this->igstr);
+        $view->setVar('partnernev', $this->partnernev);
+        $view->setVar('cimkenevek', $this->cimkenevek);
+        $view->setVar('raktarlista', $res['raktarlista']);
+        $view->setVar('ertektipus', $res['ertektipus']);
+        $view->setVar('keszletkell', $keszletkell);
+        $view->setVar('tetelek', $res['tetelek']);
+        $view->printTemplateResult();
+
     }
 }

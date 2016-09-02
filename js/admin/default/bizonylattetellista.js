@@ -52,6 +52,7 @@ $(document).ready(function() {
                     })
                 })
                 .button();
+
             $('.js-exportbutton').on('click', function(e) {
                 var fak, fafilter, $ff, partnercimkefilter;
                 e.preventDefault();
@@ -69,6 +70,25 @@ $(document).ready(function() {
                 $ff.attr('action', $(this).attr('href'));
                 $ff.submit();
             }).button();
+
+            $('.js-print').on('click', function(e) {
+                var fak, fafilter, $ff, partnercimkefilter;
+                e.preventDefault();
+
+                fak = mkwcomp.termekfaFilter.getFilter('#termekfa');
+                if (fak.length > 0) {
+                    fafilter = fak;
+                }
+                $('#FaFilter').val(fafilter);
+
+                partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
+                $('#PartnerCimkeFilter').val(partnercimkefilter);
+
+                $ff = $('#bizonylattetel');
+                $ff.attr('action', $(this).attr('href'));
+                $ff.submit();
+            }).button();
+
             $('#cimkefiltercontainer').mattaccord({
                 header: '',
                 page: '.js-cimkefilterpage',

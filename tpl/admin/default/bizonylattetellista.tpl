@@ -94,6 +94,7 @@
                 <input id="PartnerCimkeFilter" type="hidden" name="partnercimkefilter[]">
                 <a href="#" class="js-refresh">Frissít</a>
                 <a href="/admin/bizonylattetellista/export" class="js-exportbutton">Export</a>
+                <a href="/admin/bizonylattetellista/print" class="js-print" title="Boldog Születésnapot Kívánok!">Nyomtat</a>
                 <div class="matt-hseparator"></div>
                 <div id="eredmeny"></div>
             </div>
