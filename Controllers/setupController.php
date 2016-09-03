@@ -116,6 +116,12 @@ class setupController extends \mkwhelpers\Controller {
         $fizmod = new afaController($this->params);
         $view->setVar('nullasafalist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::BelsoUzletkoto);
+        $uk = new uzletkotoController($this->params);
+        $fofilter = new \mkwhelpers\FilterDescriptor();
+        $fofilter->addFilter('belso', '=', true);
+        $view->setVar('belsouklist', $uk->getSelectList(($p ? $p->getErtek() : 0), $fofilter));
+
         $p = $repo->find(\mkw\consts::Miniimagesize);
         $view->setVar(\mkw\consts::Miniimagesize, ($p ? $p->getErtek() : 80));
         $p = $repo->find(\mkw\consts::Smallimagesize);
@@ -432,16 +438,26 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::SzallitasiKtg3Tol, $this->params->getStringRequestParam('szallitasiktg3tol'));
         $this->setObj(\mkw\consts::SzallitasiKtg3Ig, $this->params->getStringRequestParam('szallitasiktg3ig'));
         $this->setObj(\mkw\consts::SzallitasiKtg3Ertek, $this->params->getStringRequestParam('szallitasiktg3ertek'));
+
         $szkt = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('szallitasiktgtermek', 0));
         if ($szkt) {
             $this->setObj(\mkw\consts::SzallitasiKtgTermek, $szkt->getId());
         }
+
         $szm = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('foxpostszallmod', 0));
         if ($szm) {
             $this->setObj(\mkw\consts::FoxpostSzallitasiMod, $szm->getId());
         }
         else {
             $this->setObj(\mkw\consts::FoxpostSzallitasiMod, '');
+        }
+
+        $belsouk = \mkw\store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('belsouk', 0));
+        if ($belsouk) {
+            $this->setObj(\mkw\consts::BelsoUzletkoto, $belsouk->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::BelsoUzletkoto, '');
         }
 
         $this->setObj(\mkw\consts::Miniimagesize, $this->params->getIntRequestParam('miniimagesize'));

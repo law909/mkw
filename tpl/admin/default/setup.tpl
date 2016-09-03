@@ -173,6 +173,15 @@
                                 <input id="TeljesitmenyKezdoEvEdit" name="teljesitmenykezdoev" type="text" value="{$teljesitmenykezdoev}">
                             </div>
                         {/if}
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="BelsoUKEdit">{t('Belső üzletkötő')}:</label></span>
+                            <select id="BelsoUKEdit" name="belsouk">
+                                <option value="">{t('válasszon')}</option>
+                                {foreach $belsouklist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
                     </div>
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <div class="setuprow">
