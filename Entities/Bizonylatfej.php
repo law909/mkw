@@ -339,6 +339,22 @@ class Bizonylatfej {
     private $uzletkotojutalek;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Uzletkoto",inversedBy="belsobizonylatfejek")
+     * @ORM\JoinColumn(name="belsouzletkoto_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Uzletkoto
+     */
+    private $belsouzletkoto;
+
+    /** @ORM\Column(type="string",length=50,nullable=true) */
+    private $belsouzletkotonev;
+
+    /** @ORM\Column(type="string",length=100,nullable=true) */
+    private $belsouzletkotoemail;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $belsouzletkotojutalek;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Raktar",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="raktar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Raktar
@@ -691,6 +707,9 @@ class Bizonylatfej {
         $ret['uzletkotonev'] = $this->getUzletkotonev();
         $ret['uzletkotoemail'] = $this->getUzletkotoemail();
         $ret['uzletkotojutalek'] = $this->getUzletkotojutalek();
+        $ret['belsouzletkotonev'] = $this->getBelsouzletkotonev();
+        $ret['belsouzletkotoemail'] = $this->getBelsouzletkotoemail();
+        $ret['belsouzletkotojutalek'] = $this->getBelsouzletkotojutalek();
         $ret['stornotipus'] = $this->getStornotipus();
         $ret['storno'] = $this->getStorno();
         $ret['stornozott'] = $this->getStornozott();
@@ -1764,6 +1783,58 @@ class Bizonylatfej {
     }
 
     /**
+     * @return \Entities\Uzletkoto
+     */
+    public function getBelsouzletkoto() {
+        return $this->belsouzletkoto;
+    }
+
+    public function getBelsouzletkotonev() {
+        return $this->belsouzletkotonev;
+    }
+
+    public function getBelsouzletkotoemail() {
+        return $this->belsouzletkotoemail;
+    }
+
+    public function getBelsouzletkotoId() {
+        if ($this->belsouzletkoto) {
+            return $this->belsouzletkoto->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Uzletkoto $val
+     */
+    public function setBelsouzletkoto($val) {
+        if ($this->belsouzletkoto !== $val) {
+            if (!$val) {
+                $this->removeBelsozletkoto();
+            }
+            else {
+                $this->belsouzletkoto = $val;
+                if (!$this->duplication) {
+                    $this->belsouzletkotonev = $val->getNev();
+                    $this->belsouzletkotoemail = $val->getEmail();
+                    $this->belsouzletkotojutalek = $val->getJutalek();
+                }
+            }
+        }
+    }
+
+    public function removeBelsouzletkoto() {
+        if ($this->belsouzletkoto !== null) {
+            $this->belsouzletkoto = null;
+            if (!$this->duplication) {
+                $this->belsouzletkotonev = '';
+                $this->belsouzletkotoemail = '';
+                $this->belsouzletkotojutalek = 0;
+            }
+        }
+    }
+
+    /**
      * @return \Entities\Raktar
      */
     public function getRaktar() {
@@ -2708,5 +2779,20 @@ class Bizonylatfej {
             }
         }
     }
+
+    /**
+     * @return mixed
+     */
+    public function getBelsouzletkotojutalek() {
+        return $this->belsouzletkotojutalek;
+    }
+
+    /**
+     * @param mixed $belsouzletkotojutalek
+     */
+    public function setBelsouzletkotojutalek($belsouzletkotojutalek) {
+        $this->belsouzletkotojutalek = $belsouzletkotojutalek;
+    }
+
 
 }

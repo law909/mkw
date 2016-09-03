@@ -46,6 +46,8 @@ class Uzletkoto {
 	private $felhasznalo;
 	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="uzletkoto",cascade={"persist"}) */
 	private $bizonylatfejek;
+    /** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="belsouzletkoto",cascade={"persist"}) */
+    private $belsobizonylatfejek;
 	/** @ORM\Column(type="string",length=255,nullable=true) */
 	private $sessionid = '';
 	/**
@@ -90,6 +92,7 @@ class Uzletkoto {
 	public function __construct() {
 		$this->partnerek=new ArrayCollection();
 		$this->bizonylatfejek=new ArrayCollection();
+        $this->belsobizonylatfejek=new ArrayCollection();
         $this->uzletkotok = new ArrayCollection();
 	}
 

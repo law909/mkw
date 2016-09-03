@@ -50,4 +50,10 @@ class FizmodRepository extends \mkwhelpers\Repository {
         $filter->addFilter('tipus', '=', 'B');
         return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
     }
+
+    public function getAllKeszpenzes() {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('tipus', '=', 'P');
+        return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
+    }
 }

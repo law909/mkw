@@ -26,6 +26,13 @@
                 <form id="jutalek" action="" target="_blank">
                     {include "comp_idoszak.tpl" comptype="datum"}
                     <div class="matt-hseparator"></div>
+                    {include "comp_uzletkotoselect.tpl"}
+                    {if (haveJog(90))}
+                        <div class="matt-hseparator"></div>
+                        <label for="BelsoEdit">Belső üzletkötő elszámolás</label>
+                        <input id="BelsoEdit" type="checkbox" name="belso">
+                    {/if}
+                    <div class="matt-hseparator"></div>
                     {include "comp_partnercimkefilter.tpl"}
                     <div class="matt-hseparator"></div>
 

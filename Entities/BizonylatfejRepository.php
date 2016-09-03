@@ -1027,7 +1027,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $ret;
     }
 
-    public function getAllFakeKifizetes($tol, $ig, $pkodok = null) {
+    public function getAllFakeKifizetes($tol, $ig, $pkodok = null, $ukid = null, $belso = false) {
         $filter = new FilterDescriptor();
         $filter
             ->addFilter('rontott', '=', false)
@@ -1039,6 +1039,50 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             ->addFilter('fakekifizetesdatum', '<=', $ig);
         if ($pkodok) {
             $filter->addFilter('partner', 'IN', $pkodok);
+        }
+        if ($ukid) {
+            if ($belso) {
+                $filter->addFilter('belsouzletkoto', '=', $ukid);
+            }
+            else {
+                $filter->addFilter('uzletkoto', '=', $ukid);
+            }
+        }
+
+        $q = $this->_em->createQuery('SELECT _xx'
+            . ' FROM Entities\Bizonylatfej _xx'
+            . $this->getFilterString($filter));
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
+    }
+
+    public function getAllKeszpenzes($tol, $ig, $pkodok = null, $ukid = null, $belso = false) {
+        $fizmodok = $this->getRepo('Entities\Fizmod')->getAllKeszpenzes();
+        $fmids = array();
+        foreach ($fizmodok as $fm) {
+            $fmids[] = $fm->getId();
+        }
+
+        $filter = new FilterDescriptor();
+        $filter
+            ->addFilter('rontott', '=', false)
+            ->addFilter('storno', '=', false)
+            ->addFilter('stornozott', '=', false)
+            ->addFilter('kelt', '>=', $tol)
+            ->addFilter('kelt', '<=', $ig);
+        if ($pkodok) {
+            $filter->addFilter('partner', 'IN', $pkodok);
+        }
+        if ($ukid) {
+            if ($belso) {
+                $filter->addFilter('belsouzletkoto', '=', $ukid);
+            }
+            else {
+                $filter->addFilter('uzletkoto', '=', $ukid);
+            }
+        }
+        if ($fmids) {
+            $filter->addFilter('fizmod', 'IN', $fmids);
         }
 
         $q = $this->_em->createQuery('SELECT _xx'

@@ -146,6 +146,20 @@
                 <td><label for="UKJutalekEdit">{t('Jutalék')} %:</label></td>
                 <td><input id="UKJutalekEdit" name="uzletkotojutalek" type="number" step="any" size="5" value="{$egyed.uzletkotojutalek}"></td>
 			</tr>
+            {if (haveJog(90))}
+            <tr>
+                <td class="mattable-important"><label for="BelsoUzletkotoEdit">{t('Belső üzletkötő')}:</label></td>
+                <td><select id="BelsoUzletkotoEdit" name="belsouzletkoto" class="mattable-important">
+                        <option value="">{t('válasszon')}</option>
+                        {foreach $belsouzletkotolist as $_mk}
+                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                        {/foreach}
+                    </select>
+                </td>
+                <td><label for="BelsoUKJutalekEdit">{t('Jutalék')} %:</label></td>
+                <td><input id="BelsoUKJutalekEdit" name="belsouzletkotojutalek" type="number" step="any" size="5" value="{$egyed.belsouzletkotojutalek}"></td>
+            </tr>
+            {/if}
 			<tr>
 				<td class="mattable-important"><label for="KeltEdit">{t('Kelt')}:</label></td>
 				<td><input id="KeltEdit" name="kelt" type="text" size="12" data-datum="{$egyed.keltstr}" class="mattable-important" required="required"></td>

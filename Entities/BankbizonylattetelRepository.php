@@ -28,7 +28,7 @@ class BankbizonylattetelRepository extends \mkwhelpers\Repository {
         return $q->getSingleScalarResult() * 1 === 0;
     }
 
-    public function getAllHivatkozottJoin($filter = array(), $order = array()) {
+    public function getAllHivatkozottJoin($filter = array(), $order = array(), $belso = false) {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('bankbizonylatfej_id', 'bankbizonylatfej_id');
@@ -38,14 +38,23 @@ class BankbizonylattetelRepository extends \mkwhelpers\Repository {
         $rsm->addScalarResult('datum', 'datum');
         $rsm->addScalarResult('hivatkozottdatum', 'hivatkozottdatum');
         $rsm->addScalarResult('hivatkozottbizonylat', 'hivatkozottbizonylat');
-        $rsm->addScalarResult('uzletkoto_id', 'uzletkoto_id');
-        $rsm->addScalarResult('uzletkotonev', 'uzletkotonev');
-        $rsm->addScalarResult('uzletkotojutalek', 'uzletkotojutalek');
+        if ($belso) {
+            $rsm->addScalarResult('belsouzletkoto_id', 'uzletkoto_id');
+            $rsm->addScalarResult('belsouzletkotonev', 'uzletkotonev');
+            $rsm->addScalarResult('belsouzletkotojutalek', 'uzletkotojutalek');
+            $ukfields = 'bf.belsouzletkoto_id, bf.belsouzletkotonev, bf.belsouzletkotojutalek';
+        }
+        else {
+            $rsm->addScalarResult('uzletkoto_id', 'uzletkoto_id');
+            $rsm->addScalarResult('uzletkotonev', 'uzletkotonev');
+            $rsm->addScalarResult('uzletkotojutalek', 'uzletkotojutalek');
+            $ukfields = 'bf.uzletkoto_id, bf.uzletkotonev, bf.uzletkotojutalek';
+        }
         $rsm->addScalarResult('partnernev', 'partnernev');
 
         $q = $this->_em->createNativeQuery('SELECT _xx.id, _xx.bankbizonylatfej_id, _xx.brutto, _xx.valutanem_id, _xx.valutanemnev,'
             . '_xx.datum, _xx.hivatkozottdatum, _xx.hivatkozottbizonylat,'
-            . 'bf.uzletkoto_id, bf.uzletkotonev, bf.uzletkotojutalek, bf.partnernev '
+            . $ukfields . ', bf.partnernev '
             . ' FROM bankbizonylattetel _xx '
             . ' JOIN bizonylatfej bf ON (_xx.hivatkozottbizonylat=bf.id)'
             . $this->getFilterString($filter)

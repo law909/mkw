@@ -349,6 +349,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['uzletkotonev'] = $t->getUzletkotonev();
         $x['uzletkotoemail'] = $t->getUzletkotoemail();
         $x['uzletkotojutalek'] = $t->getUzletkotojutalek();
+        $x['belsouzletkoto'] = $t->getBelsouzletkotoId();
+        $x['belsouzletkotonev'] = $t->getBelsouzletkotonev();
+        $x['belsouzletkotoemail'] = $t->getBelsouzletkotoemail();
+        $x['belsouzletkotojutalek'] = $t->getBelsouzletkotojutalek();
         $x['bizonylatnyelv'] = $t->getBizonylatnyelv();
         $x['reportfile'] = $t->getReportfile();
         $x['regmode'] = $t->getRegmode();
@@ -490,6 +494,17 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         if ($this->params->getNumRequestParam('uzletkotojutalek') !== 0) {
             $obj->setUzletkotojutalek($this->params->getNumRequestParam('uzletkotojutalek'));
+        }
+        $ck = \mkw\store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('belsouzletkoto'));
+        if ($ck) {
+            $obj->setBelsouzletkoto($ck);
+        }
+        else {
+            $obj->removeBelsouzletkoto();
+        }
+
+        if ($this->params->getNumRequestParam('belsouzletkotojutalek') !== 0) {
+            $obj->setBelsouzletkotojutalek($this->params->getNumRequestParam('belsouzletkotojutalek'));
         }
         $obj->setKelt($this->params->getStringRequestParam('kelt'));
         $obj->setTeljesites($this->params->getStringRequestParam('teljesites'));
@@ -917,6 +932,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('quick', $quick);
         //       $this->setVars($view);
 
+        /** @var \Entities\Bizonylatfej $record */
         $record = $this->getRepo()->findWithJoins($id);
         $egyed = $this->loadVars($record, true, $oper);
 
@@ -981,6 +997,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $ukid = $record->getUzletkotoId();
         }
         $view->setVar('uzletkotolist', $uk->getSelectList($ukid));
+
+        if ($record && $record->getBelsouzletkotoId()) {
+            $ukid = $record->getBelsouzletkotoId();
+        }
+        $fofilter = new \mkwhelpers\FilterDescriptor();
+        $fofilter->addFilter('belso', '=', true);
+        $view->setVar('belsouzletkotolist', $uk->getSelectList($ukid, $fofilter));
 
         $view->setVar('esedekessegalap', \mkw\store::getParameter(\mkw\consts::Esedekessegalap, 1));
         $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList(($record ? $record->getReportfile() : ''),
