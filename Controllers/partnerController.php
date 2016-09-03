@@ -806,6 +806,10 @@ class partnerController extends \mkwhelpers\MattableController {
             $megrlist = $megrc->getFiokList();
             $view->setVar('megrendeleslist', $megrlist);
 
+            $szamlac = new szamlafejController($this->params);
+            $szamlalist = $szamlac->getFiokList();
+            $view->setVar('szamlalist', $szamlalist);
+
             $ptcsk = new partnertermekcsoportkedvezmenyController($this->params);
             $ptcsklist = $ptcsk->getFiokList();
             $view->setVar('discountlist', $ptcsklist);

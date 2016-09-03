@@ -14,6 +14,7 @@
             <li><a href="#discounts" data-toggle="pill">My discounts</a></li>
             {/if}
             <li><a href="#megrend" data-toggle="pill">My orders</a></li>
+            <li><a href="#szamla" data-toggle="pill">My invoices</a></li>
             <li><a href="#jelszo" data-toggle="pill">Change password</a></li>
         </ul>
         <div class="fioknav tab-content col-md-9">
@@ -218,6 +219,93 @@
                     </table>
                 {else}
                     You don't have any orders yet.
+                {/if}
+            </div>
+            <div class="tab-pane" id="szamla">
+                {if (count($szamlalist)>0)}
+                    <table class="acc-megrendeles">
+                        <thead class="acc-megrendeles">
+                        <td>Order no.</td>
+                        <td>Date</td>
+                        <td class="textalignright">Price</td>
+                        <td>Delivery note no.</td>
+                        <td></td>
+                        </thead>
+                        <tbody class="acc-megrendeles">
+                        {foreach $szamlalist as $szamla}
+                            <tr class="acc-megrendelesbordertop acc-megrendelestablerow js-accmegrendelesopen">
+                                <td>{$szamla.id}</td>
+                                <td>{$szamla.kelt}</td>
+                                <td class="textalignright">{number_format($szamla.brutto, 2, '.', ' ')} {$szamla.valutanemnev}</td>
+                                <td></td>
+                                <td><a href="#" class=""><img src="/themes/main/mkwcansas/img/i_down.png"></a></td>
+                            </tr>
+                            <tr class="notvisible acc-megrendelesborderbottom">
+                                <td colspan="6">
+                                    <table>
+                                        <tr>
+                                            <td><span class="acc-megrendelescaption">Billing address:</span></td>
+                                            <td>{$szamla.szamlanev|default} {$szamla.szamlairszam|default} {$szamla.szamlavaros|default} {$szamla.szamlautca}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="acc-megrendelescaption">VAT ID:</span></td>
+                                            <td>{$szamla.adoszam|default}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="acc-megrendelescaption">Delivery address:</span></td>
+                                            <td>{$szamla.szallnev|default} {$szamla.szallirszam|default} {$szamla.szallvaros|default} {$szamla.szallutca}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="acc-megrendelescaption">Shipping method:</span></td>
+                                            <td>{$szamla.szallitasimodnev|default}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="acc-megrendelescaption">Payment:</span></td>
+                                            <td>{$szamla.fizmodnev|default}</td>
+                                        </tr>
+                                    </table>
+                                    <table class="acc-megrendelestetellist">
+                                        <thead class="acc-megrendelestetellist">
+                                        <td></td>
+                                        <td>{t('Item')}</td>
+                                        <td><div class="textalignright">{t('Unit price')}</div></td>
+                                        <td><div class="textaligncenter">{t('Qty')}</div></td>
+                                        <td><div class="textalignright">{t('Price')}</div></td>
+                                        </thead>
+                                        <tbody>
+                                        {foreach $szamla.tetellista as $tetel}
+                                            <tr class="clickable" data-href="{$tetel.link}">
+                                                <td><div class="textaligncenter"><a href="{$tetel.link}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></a></div></td>
+                                                <td><div><a href="{$tetel.link}">{$tetel.caption}</a></div>
+                                                    <div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</div>
+                                                    {$tetel.cikkszam}</td>
+                                                <td><div class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$tetel.valutanemnev}</div></td>
+                                                <td>
+                                                    <div class="textaligncenter">
+                                                        <div>{number_format($tetel.mennyiseg,0,',','')}</div>
+                                                    </div>
+                                                </td>
+                                                <td><div class="textalignright">{number_format($tetel.brutto, 2, ',', ' ')} {$tetel.valutanemnev}</div></td>
+                                            </tr>
+                                        {/foreach}
+                                        </tbody>
+                                    </table>
+                                    <div class="textalignright bold"><b>Summary: {number_format($szamla.fizetendo, 2, ',', ' ')} {$tetel.valutanemnev}</b></div>
+                                    {if ($szamla.megjegyzes|default)}
+                                        <div class="acc-megrendelescaption">Comment from the shop:</div>
+                                        <div>{$szamla.megjegyzes}</div>
+                                    {/if}
+                                    {if ($szamla.webshopmessage|default)}
+                                        <div class="acc-megrendelescaption">Comment for the shop:</div>
+                                        <div>{$szamla.webshopmessage}</div>
+                                    {/if}
+                                </td>
+                            </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                {else}
+                    You don't have any invoices yet.
                 {/if}
             </div>
             <div class="tab-pane" id="jelszo">
