@@ -7,6 +7,9 @@
 {block "body"}
     <div class="row">
         <ul class="fioknav nav nav-pills nav-stacked col-md-3">
+            {if ($uzletkoto.loggedin && $uzletkoto.fo)}
+                <li><a href="#mindenmegrend" data-toggle="pill">All orders</a></li>
+            {/if}
             <li class="active"><a href="#adataim" data-toggle="pill">Contact details</a></li>
             <li><a href="#szamlaadatok" data-toggle="pill">Billing address</a></li>
             <li><a href="#szallitasiadatok" data-toggle="pill">Delivery address</a></li>
@@ -18,6 +21,103 @@
             <li><a href="#jelszo" data-toggle="pill">Change password</a></li>
         </ul>
         <div class="fioknav tab-content col-md-9">
+            {if ($uzletkoto.loggedin && $uzletkoto.fo)}
+                <div class="tab-pane" id="mindenmegrend">
+                    {if (count($mindenmegrendeleslist)>0)}
+                        <table class="acc-megrendeles">
+                            <thead class="acc-megrendeles">
+                            <td>Agent</td>
+                            <td>Customer</td>
+                            <td>Order no.</td>
+                            <td>Date</td>
+                            <td>Status</td>
+                            <td class="textalignright">Price</td>
+                            <td></td>
+                            </thead>
+                            <tbody class="acc-megrendeles">
+                            {foreach $mindenmegrendeleslist as $megr}
+                                <tr class="acc-megrendelesbordertop acc-megrendelestablerow js-accmegrendelesopen">
+                                    <td>{$megr.uzletkotonev}</td>
+                                    <td>{$megr.szamlanev}</td>
+                                    <td>{$megr.id}</td>
+                                    <td>{$megr.kelt}</td>
+                                    <td>{$megr.allapotnev|default:"ismeretlen"}</td>
+                                    <td class="textalignright acc-price">{number_format($megr.brutto, 2, '.', ' ')} {$megr.valutanemnev}</td>
+                                    <td><a href="#" class=""><img src="/themes/main/mkwcansas/img/i_down.png"></a></td>
+                                </tr>
+                                <tr class="notvisible acc-megrendelesborderbottom">
+                                    <td colspan="6">
+                                        <table>
+                                            <tr>
+                                                <td><span class="acc-megrendelescaption">Agent:</span></td>
+                                                <td>{$megr.uzletkotonev}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="acc-megrendelescaption">Billing address:</span></td>
+                                                <td>{$megr.szamlanev|default} {$megr.szamlairszam|default} {$megr.szamlavaros|default} {$megr.szamlautca}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="acc-megrendelescaption">VAT ID:</span></td>
+                                                <td>{$megr.adoszam|default}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="acc-megrendelescaption">Delivery address:</span></td>
+                                                <td>{$megr.szallnev|default} {$megr.szallirszam|default} {$megr.szallvaros|default} {$megr.szallutca}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="acc-megrendelescaption">Shipping method:</span></td>
+                                                <td>{$megr.szallitasimodnev|default}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="acc-megrendelescaption">Payment:</span></td>
+                                                <td>{$megr.fizmodnev|default}</td>
+                                            </tr>
+                                        </table>
+                                        <table class="acc-megrendelestetellist">
+                                            <thead class="acc-megrendelestetellist">
+                                            <td></td>
+                                            <td>{t('Item')}</td>
+                                            <td><div class="textalignright">{t('Unit price')}</div></td>
+                                            <td><div class="textaligncenter">{t('Qty')}</div></td>
+                                            <td><div class="textalignright">{t('Price')}</div></td>
+                                            </thead>
+                                            <tbody>
+                                            {foreach $megr.tetellista as $tetel}
+                                                <tr class="clickable" data-href="{$tetel.link}">
+                                                    <td><div class="textaligncenter"><a href="{$tetel.link}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></a></div></td>
+                                                    <td><div><a href="{$tetel.link}">{$tetel.caption}</a></div>
+                                                        <div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</div>
+                                                        {$tetel.cikkszam}</td>
+                                                    <td><div class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$tetel.valutanemnev}</div></td>
+                                                    <td>
+                                                        <div class="textaligncenter">
+                                                            <div>{number_format($tetel.mennyiseg,0,',','')}</div>
+                                                        </div>
+                                                    </td>
+                                                    <td><div class="textalignright">{number_format($tetel.brutto, 2, ',', ' ')} {$tetel.valutanemnev}</div></td>
+                                                </tr>
+                                            {/foreach}
+                                            </tbody>
+                                        </table>
+                                        <div class="textalignright bold"><b>Summary: {number_format($megr.fizetendo, 2, ',', ' ')} {$tetel.valutanemnev}</b></div>
+                                        {if ($megr.megjegyzes|default)}
+                                            <div class="acc-megrendelescaption">Comment from the shop:</div>
+                                            <div>{$megr.megjegyzes}</div>
+                                        {/if}
+                                        {if ($megr.webshopmessage|default)}
+                                            <div class="acc-megrendelescaption">Comment for the shop:</div>
+                                            <div>{$megr.webshopmessage}</div>
+                                        {/if}
+                                    </td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    {else}
+                        You and your agents don't have any orders yet.
+                    {/if}
+                </div>
+            {/if}
             <div class="tab-pane active" id="adataim">
                 <form id="FiokAdataim" class="form-horizontal" action="/fiok/ment/adataim" method="post">
                     <div>
@@ -149,8 +249,8 @@
                                 <td>{$megr.id}</td>
                                 <td>{$megr.kelt}</td>
                                 <td>{$megr.allapotnev|default:"ismeretlen"}</td>
-                                <td class="textalignright">{number_format($megr.brutto, 2, '.', ' ')} {$megr.valutanemnev}</td>
-                                <td></td>
+                                <td class="textalignright acc-price">{number_format($megr.brutto, 2, '.', ' ')} {$megr.valutanemnev}</td>
+                                <td>{$megr.fuvarlevelszam}</td>
                                 <td><a href="#" class=""><img src="/themes/main/mkwcansas/img/i_down.png"></a></td>
                             </tr>
                             <tr class="notvisible acc-megrendelesborderbottom">
@@ -225,7 +325,7 @@
                 {if (count($szamlalist)>0)}
                     <table class="acc-megrendeles">
                         <thead class="acc-megrendeles">
-                        <td>Order no.</td>
+                        <td>Invoice no.</td>
                         <td>Date</td>
                         <td class="textalignright">Price</td>
                         <td>Delivery note no.</td>
@@ -236,8 +336,8 @@
                             <tr class="acc-megrendelesbordertop acc-megrendelestablerow js-accmegrendelesopen">
                                 <td>{$szamla.id}</td>
                                 <td>{$szamla.kelt}</td>
-                                <td class="textalignright">{number_format($szamla.brutto, 2, '.', ' ')} {$szamla.valutanemnev}</td>
-                                <td></td>
+                                <td class="textalignright acc-price">{number_format($szamla.brutto, 2, '.', ' ')} {$szamla.valutanemnev}</td>
+                                <td>{$megr.fuvarlevelszam}</td>
                                 <td><a href="#" class=""><img src="/themes/main/mkwcansas/img/i_down.png"></a></td>
                             </tr>
                             <tr class="notvisible acc-megrendelesborderbottom">

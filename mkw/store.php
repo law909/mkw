@@ -396,11 +396,19 @@ class store {
                 $uk['nev'] = $uko->getNev();
                 $uk['email'] = $uko->getEmail();
                 $uk['jutalek'] = $uko->getJutalek();
-                $ukpfilter = array(
-                    'fields' => array('uzletkoto'),
-                    'clauses' => array('='),
-                    'values' => array($uko)
-                );
+                $uk['fo'] = $uko->getFo();
+                $ukpfilter = new \mkwhelpers\FilterDescriptor();
+                if ($uko->getFo()) {
+                    $uklista = $ukr->getByFoUzletkoto($uko->getId());
+                    $ukarr = array();
+                    foreach ($uklista as $u) {
+                        $ukarr[] = $u->getId();
+                    }
+                    $ukpfilter->addFilter('uzletkoto', 'IN', $ukarr);
+                }
+                else {
+                    $ukpfilter->addFilter('uzletkoto', '=', $uko);
+                }
                 $ukpartnerei = $pr->getAllForSelectList($ukpfilter, array('nev' => 'ASC'));
                 $v->setVar('ukpartnerlist', $ukpartnerei);
             }

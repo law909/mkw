@@ -806,6 +806,9 @@ class partnerController extends \mkwhelpers\MattableController {
             $megrlist = $megrc->getFiokList();
             $view->setVar('megrendeleslist', $megrlist);
 
+            $megrlist = $megrc->getFiokList(true);
+            $view->setVar('mindenmegrendeleslist', $megrlist);
+
             $szamlac = new szamlafejController($this->params);
             $szamlalist = $szamlac->getFiokList();
             $view->setVar('szamlalist', $szamlalist);

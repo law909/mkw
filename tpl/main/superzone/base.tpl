@@ -67,6 +67,9 @@
             <span>or <a href="{$showregisztraciolink}">create</a> a new one.</span>
             <a class="pull-right" href="{$dologoutlink}">Logout</a>
         </div>
+        {if ($uzletkoto.fo)}
+            <div>You are executive agent {$uzletkoto.nev}. You can watch all of your agent's customers's orders in "All orders" menu.</div>
+        {/if}
     </div>
     {/if}
     <div class="container content-back">

@@ -890,11 +890,33 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function getFiokList() {
+    public function getFiokList($forfouk = false) {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
-            ->addFilter('partner', '=', $this->getRepo('Entities\Partner')->getLoggedInUser())
             ->addFilter('bizonylattipus', '=', $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus));
+
+        if ($forfouk) {
+            $ukrepo = $this->getRepo('Entities\Uzletkoto');
+            $ukid = $ukrepo->getLoggedInUK();
+            if ($ukid) {
+                $uk = $ukrepo->find($ukid);
+            }
+            if ($uk && $uk->getFo()) {
+                $uklist = $ukrepo->getByFouzletkoto($ukid);
+                $ukarr = array();
+                foreach ($uklist as $uo) {
+                    $ukarr[] = $uo->getId();
+                }
+                $filter->addFilter('uzletkoto', 'IN', $ukarr);
+            }
+            else {
+                $filter->addSql('1=0');
+            }
+        }
+        else {
+            $filter->addFilter('partner', '=', $this->getRepo('Entities\Partner')->getLoggedInUser());
+        }
+
         $l = $this->getRepo()->getWithJoins($filter, array('kelt' => 'ASC'));
         $ret = array();
         foreach ($l as $it) {

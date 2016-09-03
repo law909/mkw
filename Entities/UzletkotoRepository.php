@@ -41,6 +41,13 @@ class UzletkotoRepository extends \mkwhelpers\Repository {
         return $q->getSingleScalarResult();
     }
 
+    public function getByFoUzletkoto($foid) {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('fouzletkoto', '=', $foid);
+
+        return $this->getAll($filter, array());
+    }
+
     public function findByIdSessionid($id, $sessionid) {
         $filter = new FilterDescriptor();
         $filter
