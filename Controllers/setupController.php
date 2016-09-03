@@ -177,6 +177,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::FoxpostPassword, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::KuponElotag);
         $view->setVar(\mkw\consts::KuponElotag, ($p ? $p->getErtek() : 'MKW'));
+        $p = $repo->find(\mkw\consts::Off);
+        $view->setVar(\mkw\consts::Off, ($p ? $p->getErtek() : 0));
 
         $p = $repo->find(\mkw\consts::VasarlasiUtalvanyTermek);
 //        $termek = new termekController($this->params);
@@ -501,6 +503,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::MiniCRMSystemId, $this->params->getStringRequestParam('minicrmsystemid'));
         $this->setObj(\mkw\consts::MiniCRMAPIKey, $this->params->getStringRequestParam('minicrmapikey'));
         $this->setObj(\mkw\consts::KuponElotag, $this->params->getStringRequestParam('kuponelotag'));
+        $this->setObj(\mkw\consts::Off, $this->params->getBoolRequestParam(\mkw\consts::Off));
 
         $vut = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('vasarlasiutalvanytermek', 0));
         if ($vut) {

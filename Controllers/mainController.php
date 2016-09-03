@@ -19,6 +19,12 @@ class mainController extends \mkwhelpers\Controller {
 		);
 	}
 
+	public function showOff() {
+        $this->view = $this->getTemplateFactory()->createMainView('off.tpl');
+        \mkw\store::fillTemplate($this->view);
+        $this->view->printTemplateResult(false);
+    }
+
 	public function show404($head = null) {
 		$this->view = $this->getTemplateFactory()->createMainView('404.tpl');
         \mkw\store::fillTemplate($this->view);

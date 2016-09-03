@@ -380,6 +380,12 @@
                     </table>
                 </div>
                 <div id="WebTab" class="mattkarb-page" data-visible="visible">
+                    <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="OffEdit">{t('Publikus felület kikapcsolva')}:</label></span>
+                            <input id="OffEdit" name="off" type="checkbox"{if ($off)} checked="checked"{/if}>
+                        </div>
+                    </div>
                     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <tbody>
                         <tr>

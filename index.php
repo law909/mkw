@@ -113,59 +113,62 @@ if (store::getSetupValue('rewrite301')) {
 
 $router = store::getRouter();
 if (file_exists('mainroute.php')) {
-	require_once 'mainroute.php';
+    require_once 'mainroute.php';
 }
 if ($ini['admin'] && file_exists('adminroute.php')) {
     require_once 'adminroute.php';
 }
 
 $match = $router->match();
-
-if ($match) {
-    store::setRouteName($match['name']);
-    if (substr($match['name'], 0, 5) === 'admin') {
-        store::setAdminMode();
-        if ((!in_array($match['name'], array('adminshowlogin', 'adminlogin', 'adminrlbexport')))) {
-            $linuser = store::getAdminSession()->pk;
-            if (!$linuser) {
-                Header('Location: ' . $router->generate('adminshowlogin'));
-            }
-        }
-    }
-    else {
-        store::setMainMode();
-        if (!$mainsess->referrer) {
-            if (array_key_exists('HTTP_REFERER', $_SERVER)) {
-                $mainsess->referrer = $_SERVER['HTTP_REFERER'];
-            }
-        }
-        $pc = new \Controllers\partnerController(null);
-        if ($pc->checkloggedin()) {
-            $prevuri = $_SERVER['REQUEST_URI'];
-            if (!$prevuri) {
-                $prevuri = '/';
-            }
-            if ($pc->autoLogout()) {
-                header('Location: ' . $prevuri);
-            }
-            else {
-                $pc->setUtolsoKlikk();
-            }
-        }
-        elseif (store::mustLogin() && !in_array($match['name'], array('showlogin', 'dologin', 'showfanta', 'dofanta'))) {
-            $mainsess->redirafterlogin = $_SERVER['REQUEST_URI'];
-            header('Location: ' . $router->generate('showlogin'));
-        }
-    }
+if (store::getParameter(\mkw\consts::Off) && substr($match['name'], 0, 5) !== 'admin') {
+    callTheController('mainController#showOff', array());
 }
-
-try {
-    if (!callTheController($match['target'], $match)) {
-        header('HTTP/1.1 404 Not found');
-        callTheController('mainController#show404', array());
+else {
+    if ($match) {
+        store::setRouteName($match['name']);
+        if (substr($match['name'], 0, 5) === 'admin') {
+            store::setAdminMode();
+            if ((!in_array($match['name'], array('adminshowlogin', 'adminlogin', 'adminrlbexport')))) {
+                $linuser = store::getAdminSession()->pk;
+                if (!$linuser) {
+                    Header('Location: ' . $router->generate('adminshowlogin'));
+                }
+            }
+        }
+        else {
+            store::setMainMode();
+            if (!$mainsess->referrer) {
+                if (array_key_exists('HTTP_REFERER', $_SERVER)) {
+                    $mainsess->referrer = $_SERVER['HTTP_REFERER'];
+                }
+            }
+            $pc = new \Controllers\partnerController(null);
+            if ($pc->checkloggedin()) {
+                $prevuri = $_SERVER['REQUEST_URI'];
+                if (!$prevuri) {
+                    $prevuri = '/';
+                }
+                if ($pc->autoLogout()) {
+                    header('Location: ' . $prevuri);
+                }
+                else {
+                    $pc->setUtolsoKlikk();
+                }
+            }
+            elseif (store::mustLogin() && !in_array($match['name'], array('showlogin', 'dologin', 'showfanta', 'dofanta'))) {
+                $mainsess->redirafterlogin = $_SERVER['REQUEST_URI'];
+                header('Location: ' . $router->generate('showlogin'));
+            }
+        }
     }
-}
-catch (\Doctrine\ORM\Query\QueryException $e) {
-    error_log($e->getMessage());
-    throw $e;
+
+    try {
+        if (!callTheController($match['target'], $match)) {
+            header('HTTP/1.1 404 Not found');
+            callTheController('mainController#show404', array());
+        }
+    } catch (\Doctrine\ORM\Query\QueryException $e) {
+        error_log($e->getMessage());
+        throw $e;
+    }
 }
