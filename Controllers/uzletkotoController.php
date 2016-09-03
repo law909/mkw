@@ -40,6 +40,9 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         $x['szallitasimodnev'] = $t->getPartnerszallitasimodNev();
         $x['bizonylatnyelv'] = $t->getPartnerbizonylatnyelv();
         $x['fizmodnev'] = $t->getPartnerfizmodNev();
+        $x['belso'] = $t->getBelso();
+        $x['fo'] = $t->getFo();
+        $x['fouzletkotonev'] = ($t->getFouzletkoto() ? $t->getFouzletkoto()->getNev() : '');
         return $x;
     }
 
@@ -62,6 +65,8 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         $obj->setPartnerszamlatipus($this->params->getIntRequestParam('partnerszamlatipus'));
         $obj->setPartnertermekarazonosito($this->params->getStringRequestParam('partnertermekarazonosito'));
         $obj->setPartnerbizonylatnyelv($this->params->getStringRequestParam('partnerbizonylatnyelv'));
+        $obj->setBelso($this->params->getBoolRequestParam('belso'));
+        $obj->setFo($this->params->getBoolRequestParam('fo'));
         $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('partnerfizmod', 0));
         if ($fizmod) {
             $obj->setPartnerfizmod($fizmod);
@@ -73,6 +78,10 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         $szallmod = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('partnerszallitasimod', 0));
         if ($szallmod) {
             $obj->setPartnerszallitasimod($szallmod);
+        }
+        $fouk = \mkw\store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('fouzletkoto', 0));
+        if ($fouk && $fouk->getFo()) {
+            $obj->setFouzletkoto($fouk);
         }
         return $obj;
     }
@@ -102,40 +111,13 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function getSelectList($selid = null) {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
+    public function getSelectList($selid = null, $filter = array()) {
+        $rec = $this->getRepo()->getAll($filter, array('nev' => 'ASC'));
         $res = array();
         foreach ($rec as $sor) {
             $res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
         }
         return $res;
-    }
-
-    protected function _getkarb($tplname) {
-        $id = $this->params->getRequestParam('id', 0);
-        $oper = $this->params->getRequestParam('oper', '');
-        $view = $this->createView($tplname);
-        $view->setVar('pagetitle', t('Üzletkötő'));
-        $view->setVar('oper', $oper);
-
-        $partnerrepo = $this->getRepo('\Entities\Partner');
-        /** @var \Entities\Uzletkoto $partner */
-        $partner = $this->getRepo()->findWithJoins($id);
-        // loadVars utan nem abc sorrendben adja vissza
-
-        $fizmod = new fizmodController($this->params);
-        $view->setVar('partnerfizmodlist', $fizmod->getSelectList(($partner ? $partner->getPartnerfizmodId() : 0)));
-        $valutanem = new valutanemController($this->params);
-        $view->setVar('partnervalutanemlist', $valutanem->getSelectList(($partner ? $partner->getPartnervalutanemId() : 0)));
-        $termekar = new termekarController($this->params);
-        $view->setVar('partnertermekarazonositolist', $termekar->getSelectList(($partner ? $partner->getPartnertermekarazonosito() : '')));
-        $szallmod = new szallitasimodController($this->params);
-        $view->setVar('partnerszallitasimodlist', $szallmod->getSelectList(($partner ? $partner->getPartnerszallitasimodId() : 0)));
-        $view->setVar('partnerszamlatipuslist', $partnerrepo->getSzamlatipusList(($partner ? $partner->getPartnerszamlatipus() : 0)));
-        $view->setVar('partnerbizonylatnyelvlist', \mkw\store::getLocaleSelectList($partner ? $partner->getPartnerbizonylatnyelv() : ''));
-
-        $view->setVar('uzletkoto', $this->loadVars($partner));
-        $view->printTemplateResult();
     }
 
     public function htmllist() {
@@ -146,6 +128,37 @@ class uzletkotoController extends \mkwhelpers\MattableController {
         }
         $ret .= '</select>';
         echo $ret;
+    }
+
+    protected function _getkarb($tplname) {
+        $id = $this->params->getRequestParam('id', 0);
+        $oper = $this->params->getRequestParam('oper', '');
+        $view = $this->createView($tplname);
+        $view->setVar('pagetitle', t('Üzletkötő'));
+        $view->setVar('oper', $oper);
+
+        $partnerrepo = $this->getRepo('\Entities\Partner');
+        /** @var \Entities\Uzletkoto $uk */
+        $uk = $this->getRepo()->findWithJoins($id);
+        // loadVars utan nem abc sorrendben adja vissza
+
+        $fizmod = new fizmodController($this->params);
+        $view->setVar('partnerfizmodlist', $fizmod->getSelectList(($uk ? $uk->getPartnerfizmodId() : 0)));
+        $valutanem = new valutanemController($this->params);
+        $view->setVar('partnervalutanemlist', $valutanem->getSelectList(($uk ? $uk->getPartnervalutanemId() : 0)));
+        $termekar = new termekarController($this->params);
+        $view->setVar('partnertermekarazonositolist', $termekar->getSelectList(($uk ? $uk->getPartnertermekarazonosito() : '')));
+        $szallmod = new szallitasimodController($this->params);
+        $view->setVar('partnerszallitasimodlist', $szallmod->getSelectList(($uk ? $uk->getPartnerszallitasimodId() : 0)));
+        $view->setVar('partnerszamlatipuslist', $partnerrepo->getSzamlatipusList(($uk ? $uk->getPartnerszamlatipus() : 0)));
+        $view->setVar('partnerbizonylatnyelvlist', \mkw\store::getLocaleSelectList($uk ? $uk->getPartnerbizonylatnyelv() : ''));
+
+        $fofilter = new \mkwhelpers\FilterDescriptor();
+        $fofilter->addFilter('fo', '=', true);
+        $view->setVar('fouzletkotolist', $this->getSelectList(($uk ? $uk->getFouzletkotoId(): 0), $fofilter));
+
+        $view->setVar('uzletkoto', $this->loadVars($uk));
+        $view->printTemplateResult();
     }
 
 }

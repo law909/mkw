@@ -70,9 +70,27 @@ class Uzletkoto {
     /** @ORM\Column(type="integer",nullable=false) */
     private $partnerszamlatipus = 0;
 
+    /** @ORM\Column(type="boolean", nullable=true) */
+    private $belso = false;
+
+    /** @ORM\Column(type="boolean", nullable=true) */
+    private $fo = false;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Uzletkoto",inversedBy="uzletkotok")
+     * @ORM\JoinColumn(name="fouzletkoto_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Uzletkoto
+     */
+    private $fouzletkoto;
+
+    /** @ORM\OneToMany(targetEntity="Uzletkoto", mappedBy="fouzletkoto",cascade={"persist"}) */
+    private $uzletkotok;
+
+
 	public function __construct() {
 		$this->partnerek=new ArrayCollection();
 		$this->bizonylatfejek=new ArrayCollection();
+        $this->uzletkotok = new ArrayCollection();
 	}
 
 	public function getCim() {
@@ -385,5 +403,67 @@ class Uzletkoto {
 	public function setPartnerfizmod(Fizmod $fizmod) {
 		$this->partnerfizmod = $fizmod;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getBelso() {
+        return $this->belso;
+    }
+
+    /**
+     * @param mixed $belso
+     */
+    public function setBelso($belso) {
+        $this->belso = $belso;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFo() {
+        return $this->fo;
+    }
+
+    /**
+     * @param mixed $fo
+     */
+    public function setFo($fo) {
+        $this->fo = $fo;
+    }
+
+    /**
+     * @return \Entities\Uzletkoto
+     */
+    public function getFouzletkoto() {
+        return $this->fouzletkoto;
+    }
+
+    public function getFouzletkotoId() {
+        if ($this->fouzletkoto) {
+            return $this->fouzletkoto->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Uzletkoto $val
+     */
+    public function setFouzletkoto($val) {
+        if ($this->fouzletkoto !== $val) {
+            if (!$val) {
+                $this->removeFouzletkoto();
+            }
+            else {
+                $this->fouzletkoto = $val;
+            }
+        }
+    }
+
+    public function removeFouzletkoto() {
+        if ($this->fouzletkoto !== null) {
+            $this->fouzletkoto = null;
+        }
+    }
 
 }

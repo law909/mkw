@@ -34,6 +34,24 @@
                     <td><label for="JutalekEdit">{t('Jutalék %')}:</label></td>
                     <td><input id="JutalekEdit" name="jutalek" type="number" step="any" value="{$uzletkoto.jutalek}"></td>
                 </tr>
+                <tr>
+                    <td><label for="BelsoEdit">{t('Belső')}:</label></td>
+                    <td><input id="BelsoEdit" name="belso" type="checkbox"{if ($uzletkoto.belso)} checked="checked"{/if}></td>
+                </tr>
+                <tr>
+                    <td><label for="FoEdit">{t('Vezető üzletkötő')}:</label></td>
+                    <td><input id="FoEdit" name="fo" type="checkbox"{if ($uzletkoto.fo)} checked="checked"{/if}></td>
+                </tr>
+                <tr>
+                    <td><label for="FoUkEdit">{t('Vezető üzletkötője')}:</label></td>
+                    <td><select id="FoUkEdit" name="fouzletkoto">
+                            <option value="">{t('válasszon')}</option>
+                            {foreach $fouzletkotolist as $_szt}
+                                <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>

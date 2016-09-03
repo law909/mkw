@@ -2,6 +2,9 @@
     <td class="cell">
         <a class="mattable-editlink" href="#" data-uzletkotoid="{$_uzletkoto.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_uzletkoto.nev}</a>
         <span class="jobbra"><a class="mattable-dellink" href="#" data-uzletkotoid="{$_uzletkoto.id}" data-oper="del" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
+        {if ($_uzletkoto.fo)}<div>Vezető</div>{/if}
+        {if ($_uzletkoto.belso)}<div>Belső</div>{/if}
+        {if ($_uzletkoto.fouzletkotonev)}<div>Vezető üzletkötője: {$_uzletkoto.fouzletkotonev}</div>{/if}
     </td>
     <td class="cell">{$_uzletkoto.cim}</td>
     <td class="cell">

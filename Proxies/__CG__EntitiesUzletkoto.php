@@ -64,10 +64,10 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'id', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'nev', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'irszam', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'varos', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'utca', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'telefon', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'mobil', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fax', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'email', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'honlap', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'pw', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'jutalek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'felhasznalo', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnervalutanem', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerfizmod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnertermekarazonosito', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerbizonylatnyelv', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszallitasimod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszamlatipus'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'id', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'nev', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'irszam', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'varos', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'utca', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'telefon', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'mobil', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fax', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'email', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'honlap', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'pw', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'jutalek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'felhasznalo', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnervalutanem', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerfizmod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnertermekarazonosito', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerbizonylatnyelv', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszallitasimod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszamlatipus', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'belso', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fo', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fouzletkoto', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'uzletkotok'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'id', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'nev', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'irszam', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'varos', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'utca', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'telefon', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'mobil', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fax', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'email', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'honlap', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'pw', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'jutalek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'felhasznalo', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnervalutanem', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerfizmod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnertermekarazonosito', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerbizonylatnyelv', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszallitasimod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszamlatipus'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'id', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'nev', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'irszam', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'varos', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'utca', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'telefon', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'mobil', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fax', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'email', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'honlap', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'pw', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'jutalek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'felhasznalo', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'sessionid', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnervalutanem', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerfizmod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnertermekarazonosito', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerbizonylatnyelv', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszallitasimod', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'partnerszamlatipus', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'belso', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fo', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'fouzletkoto', '' . "\0" . 'Entities\\Uzletkoto' . "\0" . 'uzletkotok'];
     }
 
     /**
@@ -758,6 +758,94 @@ class Uzletkoto extends \Entities\Uzletkoto implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerfizmod', [$fizmod]);
 
         return parent::setPartnerfizmod($fizmod);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelso()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelso', []);
+
+        return parent::getBelso();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelso($belso)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelso', [$belso]);
+
+        return parent::setBelso($belso);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFo()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFo', []);
+
+        return parent::getFo();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFo($fo)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFo', [$fo]);
+
+        return parent::setFo($fo);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFouzletkoto()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFouzletkoto', []);
+
+        return parent::getFouzletkoto();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFouzletkotoId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFouzletkotoId', []);
+
+        return parent::getFouzletkotoId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFouzletkoto($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFouzletkoto', [$val]);
+
+        return parent::setFouzletkoto($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeFouzletkoto()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeFouzletkoto', []);
+
+        return parent::removeFouzletkoto();
     }
 
 }
