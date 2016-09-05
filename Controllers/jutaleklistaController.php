@@ -180,8 +180,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
         /** @var \Entities\BankbizonylattetelRepository $btrepo */
         $btrepo = $this->getRepo('Entities\Bankbizonylattetel');
 
-        $mind = $btrepo->getAllHivatkozottJoin($filter,
-            array('datum' => 'ASC'));
+        $mind = $btrepo->getAllHivatkozottJoin($filter, array('datum' => 'ASC'), $this->belso);
         $mind = $this->addNegativSzallktg($mind);
         $mind = $this->addKeszpenzes($mind);
         $mind = $this->addFakeKifizetes($mind);
@@ -220,7 +219,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
         /** @var \Entities\BankbizonylattetelRepository $btrepo */
         $btrepo = $this->getRepo('Entities\Bankbizonylattetel');
 
-        $mind = $btrepo->getAllHivatkozottJoin($filter);
+        $mind = $btrepo->getAllHivatkozottJoin($filter, array('datum' => 'ASC'), $this->belso);
 
         $mind = $this->addNegativSzallktg($mind);
         $mind = $this->addKeszpenzes($mind);
