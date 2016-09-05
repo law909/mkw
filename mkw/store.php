@@ -400,7 +400,7 @@ class store {
                 $ukpfilter = new \mkwhelpers\FilterDescriptor();
                 if ($uko->getFo()) {
                     $uklista = $ukr->getByFoUzletkoto($uko->getId());
-                    $ukarr = array();
+                    $ukarr = array($uko->getId());
                     foreach ($uklista as $u) {
                         $ukarr[] = $u->getId();
                     }
