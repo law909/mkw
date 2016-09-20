@@ -11,11 +11,12 @@ class MunkakorController extends \mkwhelpers\JQGridController {
     }
 
     protected function loadCells($obj) {
-        return array($obj->getNev());
+        return array($obj->getNev(), $obj->getJog());
     }
 
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
+        $obj->setJog($this->params->getIntRequestParam('jog', 0));
         return $obj;
     }
 
