@@ -48,7 +48,6 @@ vendor/
 /composer.lock
 HowTo/
 Doctrine/
-js/ckeditor/
 js/tiny_mce/
 *.bat
 *.ini
