@@ -171,6 +171,18 @@ class Bizonylatfej {
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $fizetendo3;
 
+    /** @ORM\Column(type="date",nullable=true) */
+    private $esedekesseg4;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $fizetendo4;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $esedekesseg5;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $fizetendo5;
+
     /**
      * @ORM\ManyToOne(targetEntity="Fizmod",inversedBy="bizonylatfejek")
      * @ORM\JoinColumn(name="fizmod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -552,6 +564,10 @@ class Bizonylatfej {
             $this->setFizetendo2(0);
             $this->setEsedekesseg3();
             $this->setFizetendo3(0);
+            $this->setEsedekesseg4();
+            $this->setFizetendo4(0);
+            $this->setEsedekesseg5();
+            $this->setFizetendo5(0);
             $eddigi = 0;
             $fizmod = $this->getFizmod();
             $kelt = new \DateTimeImmutable(\mkw\store::convDate($this->getKeltStr()));
@@ -575,7 +591,32 @@ class Bizonylatfej {
             }
             if ($fizmod->getOsztotthaladek3()) {
                 $this->setEsedekesseg3($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek3() . 'D')));
-                $this->setFizetendo3($this->fizetendo - $eddigi);
+                if ($fizmod->getOsztottszazalek3() * 1 > 0) {
+                    $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek3() / 100, 2);
+                    $this->setFizetendo3($fiz);
+                    $eddigi = $eddigi + $fiz;
+                }
+                else {
+                    $this->setFizetendo3($this->fizetendo - $eddigi);
+                    $eddigi = $this->fizetendo;
+                }
+            }
+            if ($fizmod->getOsztotthaladek4()) {
+                $this->setEsedekesseg4($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek4() . 'D')));
+                if ($fizmod->getOsztottszazalek4() * 1 > 0) {
+                    $fiz = round($this->fizetendo * $fizmod->getOsztottszazalek4() / 100, 2);
+                    $this->setFizetendo4($fiz);
+                    $eddigi = $eddigi + $fiz;
+                }
+                else {
+                    $this->setFizetendo4($this->fizetendo - $eddigi);
+                    $eddigi = $this->fizetendo;
+                }
+
+            }
+            if ($fizmod->getOsztotthaladek5()) {
+                $this->setEsedekesseg5($kelt->add(new \DateInterval('P' . $fizmod->getOsztotthaladek5() . 'D')));
+                $this->setFizetendo5($this->fizetendo - $eddigi);
             }
         }
     }
@@ -654,6 +695,10 @@ class Bizonylatfej {
         $ret['fizetendo2'] = $this->getFizetendo2();
         $ret['esedekesseg3str'] = $this->getEsedekesseg3Str();
         $ret['fizetendo3'] = $this->getFizetendo3();
+        $ret['esedekesseg4str'] = $this->getEsedekesseg4Str();
+        $ret['fizetendo4'] = $this->getFizetendo4();
+        $ret['esedekesseg5str'] = $this->getEsedekesseg5Str();
+        $ret['fizetendo5'] = $this->getFizetendo5();
         $ret['tulajnev'] = $this->getTulajnev();
         $ret['tulajirszam'] = $this->getTulajirszam();
         $ret['tulajvaros'] = $this->getTulajvaros();
@@ -2420,6 +2465,72 @@ class Bizonylatfej {
 
     public function setFizetendo3($val) {
         $this->fizetendo3 = $val;
+    }
+
+    public function getEsedekesseg4() {
+        return $this->esedekesseg4;
+    }
+
+    public function getEsedekesseg4Str() {
+        if ($this->getEsedekesseg4()) {
+            return $this->getEsedekesseg4()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setEsedekesseg4($adat = '') {
+        if (is_a($adat, 'DateTime') || is_a($adat, 'DateTimeImmutable')) {
+            $this->esedekesseg4 = $adat;
+        }
+        else {
+            if ($adat != '') {
+                $this->esedekesseg4 = new \DateTime(\mkw\store::convDate($adat));
+            }
+            else {
+                $this->esedekesseg4 = null;
+            }
+        }
+    }
+
+    public function getFizetendo4() {
+        return $this->fizetendo4;
+    }
+
+    public function setFizetendo4($val) {
+        $this->fizetendo4 = $val;
+    }
+
+    public function getEsedekesseg5() {
+        return $this->esedekesseg5;
+    }
+
+    public function getEsedekesseg5Str() {
+        if ($this->getEsedekesseg5()) {
+            return $this->getEsedekesseg5()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setEsedekesseg5($adat = '') {
+        if (is_a($adat, 'DateTime') || is_a($adat, 'DateTimeImmutable')) {
+            $this->esedekesseg5 = $adat;
+        }
+        else {
+            if ($adat != '') {
+                $this->esedekesseg5 = new \DateTime(\mkw\store::convDate($adat));
+            }
+            else {
+                $this->esedekesseg5 = null;
+            }
+        }
+    }
+
+    public function getFizetendo5() {
+        return $this->fizetendo5;
+    }
+
+    public function setFizetendo5($val) {
+        $this->fizetendo5 = $val;
     }
 
     public function duplicateFrom($entityB) {

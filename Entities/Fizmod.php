@@ -41,6 +41,14 @@ class Fizmod {
     private $osztotthaladek3;
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $osztottszazalek3;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $osztotthaladek4;
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $osztottszazalek4;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $osztotthaladek5;
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $osztottszazalek5;
 
 	public function __construct() {
 		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
@@ -158,6 +166,63 @@ class Fizmod {
 	 */
 	public function setRugalmas($rugalmas) {
 		$this->rugalmas = $rugalmas;
+
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getOsztotthaladek4() {
+        return $this->osztotthaladek4;
+    }
+
+    /**
+     * @param mixed $osztotthaladek4
+     */
+    public function setOsztotthaladek4($osztotthaladek4) {
+        $this->osztotthaladek4 = $osztotthaladek4;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOsztottszazalek4() {
+        return $this->osztottszazalek4;
+    }
+
+    /**
+     * @param mixed $osztottszazalek4
+     */
+    public function setOsztottszazalek4($osztottszazalek4) {
+        $this->osztottszazalek4 = $osztottszazalek4;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOsztotthaladek5() {
+        return $this->osztotthaladek5;
+    }
+
+    /**
+     * @param mixed $osztotthaladek5
+     */
+    public function setOsztotthaladek5($osztotthaladek5) {
+        $this->osztotthaladek5 = $osztotthaladek5;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOsztottszazalek5() {
+        return $this->osztottszazalek5;
+    }
+
+    /**
+     * @param mixed $osztottszazalek5
+     */
+    public function setOsztottszazalek5($osztottszazalek5) {
+        $this->osztottszazalek5 = $osztottszazalek5;
+    }
 
 }

@@ -290,6 +290,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['fizetendo2'] = $t->getFizetendo2();
         $x['esedekesseg3str'] = $t->getEsedekesseg3Str();
         $x['fizetendo3'] = $t->getFizetendo3();
+        $x['esedekesseg4str'] = $t->getEsedekesseg4Str();
+        $x['fizetendo4'] = $t->getFizetendo4();
+        $x['esedekesseg5str'] = $t->getEsedekesseg5Str();
+        $x['fizetendo5'] = $t->getFizetendo5();
         $x['hataridostr'] = $t->getHataridoStr();
         $x['partner'] = $t->getPartnerId();
         $x['partnernev'] = $t->getPartnernev();
@@ -312,7 +316,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['szallitasimod'] = $t->getSzallitasimodId();
         $x['szallitasimodnev'] = $t->getSzallitasimodnev();
         $x['valutanem'] = $t->getValutanemId();
-        $x['valutanemnev'] = $t->getValutanemNev();
+        $x['valutanemnev'] = $t->getValutanemnev();
         $x['arfolyam'] = $t->getArfolyam();
         $x['bankszamla'] = $t->getBankszamlaId();
         $x['tulajbanknev'] = $t->getTulajbanknev();

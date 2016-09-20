@@ -64,10 +64,10 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'id', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'nev', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'tipus', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'haladek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'webes', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'rugalmas', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek3'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'id', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'nev', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'tipus', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'haladek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'webes', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'rugalmas', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek4', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek4', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek5', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek5'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'id', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'nev', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'tipus', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'haladek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'webes', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'rugalmas', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek3'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'id', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'nev', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'tipus', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'haladek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'webes', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'rugalmas', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek4', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek4', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek5', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek5'];
     }
 
     /**
@@ -472,6 +472,94 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRugalmas', [$rugalmas]);
 
         return parent::setRugalmas($rugalmas);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOsztotthaladek4()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztotthaladek4', []);
+
+        return parent::getOsztotthaladek4();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOsztotthaladek4($osztotthaladek4)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztotthaladek4', [$osztotthaladek4]);
+
+        return parent::setOsztotthaladek4($osztotthaladek4);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOsztottszazalek4()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztottszazalek4', []);
+
+        return parent::getOsztottszazalek4();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOsztottszazalek4($osztottszazalek4)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztottszazalek4', [$osztottszazalek4]);
+
+        return parent::setOsztottszazalek4($osztottszazalek4);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOsztotthaladek5()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztotthaladek5', []);
+
+        return parent::getOsztotthaladek5();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOsztotthaladek5($osztotthaladek5)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztotthaladek5', [$osztotthaladek5]);
+
+        return parent::setOsztotthaladek5($osztotthaladek5);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOsztottszazalek5()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOsztottszazalek5', []);
+
+        return parent::getOsztottszazalek5();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOsztottszazalek5($osztottszazalek5)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOsztottszazalek5', [$osztottszazalek5]);
+
+        return parent::setOsztottszazalek5($osztottszazalek5);
     }
 
 }

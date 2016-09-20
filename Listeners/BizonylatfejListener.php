@@ -60,6 +60,14 @@ class BizonylatfejListener {
                 $fszla->setBrutto($bizonylat->getFizetendo3());
                 $fszla->setHivatkozottdatum($bizonylat->getEsedekesseg3Str());
                 break;
+            case 4:
+                $fszla->setBrutto($bizonylat->getFizetendo4());
+                $fszla->setHivatkozottdatum($bizonylat->getEsedekesseg4Str());
+                break;
+            case 5:
+                $fszla->setBrutto($bizonylat->getFizetendo5());
+                $fszla->setHivatkozottdatum($bizonylat->getEsedekesseg5Str());
+                break;
         }
         $fszla->setBizonylatfej($bizonylat);
         $this->em->persist($fszla);
@@ -100,6 +108,14 @@ class BizonylatfejListener {
                     }
                     if ($bizonylat->getFizetendo3()) {
                         $this->createFSzla($bizonylat, 3);
+                        $volt = true;
+                    }
+                    if ($bizonylat->getFizetendo4()) {
+                        $this->createFSzla($bizonylat, 4);
+                        $volt = true;
+                    }
+                    if ($bizonylat->getFizetendo5()) {
+                        $this->createFSzla($bizonylat, 5);
                         $volt = true;
                     }
                     if (!$volt) {

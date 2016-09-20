@@ -67,6 +67,22 @@
                         <td><label for="Osztottszazalek3Edit">{t('Osztott százalék 3')}:</label></td>
                         <td><input id="Osztottszazalek3Edit" name="osztottszazalek3" type="number" step="any" value="{$egyed.osztottszazalek3}"> %</td>
                     </tr>
+                    <tr>
+                        <td><label for="Osztotthaladek4Edit">{t('Osztott haladék 4')}:</label></td>
+                        <td><input id="Osztotthaladek4Edit" name="osztotthaladek4" type="number" value="{$egyed.osztotthaladek4}"> nap</td>
+                    </tr>
+                    <tr>
+                        <td><label for="Osztottszazalek4Edit">{t('Osztott százalék 4')}:</label></td>
+                        <td><input id="Osztottszazalek4Edit" name="osztottszazalek4" type="number" step="any" value="{$egyed.osztottszazalek4}"> %</td>
+                    </tr>
+                    <tr>
+                        <td><label for="Osztotthaladek5Edit">{t('Osztott haladék 5')}:</label></td>
+                        <td><input id="Osztotthaladek5Edit" name="osztotthaladek5" type="number" value="{$egyed.osztotthaladek5}"> nap</td>
+                    </tr>
+                    <tr>
+                        <td><label for="Osztottszazalek5Edit">{t('Osztott százalék 5')}:</label></td>
+                        <td><input id="Osztottszazalek5Edit" name="osztottszazalek5" type="number" step="any" value="{$egyed.osztottszazalek5}"> %</td>
+                    </tr>
 			    </tbody>
 			</table>
 		</div>
