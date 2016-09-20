@@ -146,8 +146,11 @@ class store {
         return self::$setup;
     }
 
-    public static function getSetupValue($key) {
-        return self::$setup[$key];
+    public static function getSetupValue($key, $def = null) {
+        if (array_key_exists($key, self::$setup)) {
+            return self::$setup[$key];
+        }
+        return $def;
     }
 
     public static function setSetup($setup) {
