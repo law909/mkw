@@ -64,10 +64,10 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'migrid', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Afa' . "\0" . 'id', '' . "\0" . 'Entities\\Afa' . "\0" . 'nev', '' . "\0" . 'Entities\\Afa' . "\0" . 'ertek', '' . "\0" . 'Entities\\Afa' . "\0" . 'rlbkod', '' . "\0" . 'Entities\\Afa' . "\0" . 'migrid', '' . "\0" . 'Entities\\Afa' . "\0" . 'bizonylattetelek'];
     }
 
     /**
@@ -274,6 +274,28 @@ class Afa extends \Entities\Afa implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcNetto', [$brutto]);
 
         return parent::calcNetto($brutto);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMigrid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMigrid', []);
+
+        return parent::getMigrid();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMigrid($migrid)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMigrid', [$migrid]);
+
+        return parent::setMigrid($migrid);
     }
 
 }

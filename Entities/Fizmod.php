@@ -49,6 +49,8 @@ class Fizmod {
     private $osztotthaladek5;
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $osztottszazalek5;
+    /** @ORM\Column(type="integer") */
+    private $migrid;
 
 	public function __construct() {
 		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
@@ -223,6 +225,20 @@ class Fizmod {
      */
     public function setOsztottszazalek5($osztottszazalek5) {
         $this->osztottszazalek5 = $osztottszazalek5;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMigrid() {
+        return $this->migrid;
+    }
+
+    /**
+     * @param mixed $migrid
+     */
+    public function setMigrid($migrid) {
+        $this->migrid = $migrid;
     }
 
 }

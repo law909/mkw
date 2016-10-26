@@ -480,3 +480,4 @@ if (\mkw\store::getTheme() == 'superzone') {
 }
 
 $router->map('GET', '/admin/t/minicrm', 'adminController#minicrm', 'adminminicrm');
+$router->map('GET', '/admin/t/kerriiimport', 'importController#kerriiimport', 'adminkerriiimport');

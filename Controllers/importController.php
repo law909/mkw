@@ -2658,4 +2658,55 @@ class importController extends \mkwhelpers\Controller {
 //        \unlink('siikerpartnerek.csv');
     }
 
+    public function kerriiimport() {
+        $dbh = new \PDO(
+            str_replace('$', '=', \mkw\store::getConfigValue('kerrii.url')),
+            \mkw\store::getConfigValue('kerrii.username'),
+            \mkw\store::getConfigValue('kerrii.password'),
+            array(
+                \PDO::ATTR_EMULATE_PREPARES => false,
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES=latin1"
+            )
+        );
+        if ($dbh) {
+            $stmt = $dbh->prepare('SELECT * FROM afatorzs');
+            $stmt->execute();
+            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                if (!$this->getRepo('Entities\Afa')->findOneBy(array('migrid' => $r['kod']))) {
+                    $afa = new \Entities\Afa();
+                    $afa->setNev($r['afanev']);
+                    $afa->setErtek($r['afaertek']);
+                    $afa->setMigrid($r['kod']);
+                    \mkw\store::getEm()->persist($afa);
+                    \mkw\store::getEm()->flush();
+                }
+            }
+            $stmt = $dbh->prepare('SELECT * FROM fizmod');
+            $stmt->execute();
+            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                if (!$this->getRepo('Entities\Fizmod')->findOneBy(array('migrid' => $r['kod']))) {
+                    $fizmod = new \Entities\Fizmod();
+                    $fizmod->setNev($r['']);
+                    $fizmod->setHaladek($r['']);
+                    $fizmod->setTipus($r['']);
+                    $fizmod->setMigrid($r['kod']);
+                    \mkw\store::getEm()->persist($fizmod);
+                    \mkw\store::getEm()->flush();
+                }
+            }
+            $stmt = $dbh->prepare('SELECT * FROM vtsz');
+            $stmt->execute();
+            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                if (!$this->getRepo('Entities\Vtsz')->findOneBy(array('migrid' => $r['kod']))) {
+                    $vtsz = new \Entities\Vtsz();
+                    $vtsz->setNev($r['']);
+                    $vtsz->setSzam($r['']);
+                    $vtsz->setMigrid($r['kod']);
+                    \mkw\store::getEm()->persist($vtsz);
+                    \mkw\store::getEm()->flush();
+                }
+            }
+        }
+    }
 }

@@ -30,6 +30,8 @@ class Vtsz {
 	private $afa;
 	/** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="vtsz",cascade={"persist"}) */
 	private $bizonylattetelek;
+    /** @ORM\Column(type="integer") */
+    private $migrid;
 
 	public function getId() {
 		return $this->id;
@@ -65,4 +67,19 @@ class Vtsz {
 	public function setAfa($afa) {
 		$this->afa = $afa;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getMigrid() {
+        return $this->migrid;
+    }
+
+    /**
+     * @param mixed $migrid
+     */
+    public function setMigrid($migrid) {
+        $this->migrid = $migrid;
+    }
+
 }

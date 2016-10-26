@@ -19,6 +19,8 @@ class Afa {
 	private $ertek=0;
     /** @ORM\Column(type="integer") */
     private $rlbkod;
+    /** @ORM\Column(type="integer") */
+    private $migrid;
 	/** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="afa") */
 	private $bizonylattetelek;
 
@@ -57,4 +59,19 @@ class Afa {
 	public function calcNetto($brutto) {
 		return $brutto / (100 + $this->ertek) * 100;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getMigrid() {
+        return $this->migrid;
+    }
+
+    /**
+     * @param mixed $migrid
+     */
+    public function setMigrid($migrid) {
+        $this->migrid = $migrid;
+    }
+
 }
