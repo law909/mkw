@@ -681,7 +681,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $ret;
     }
 
-    public function getBizonylatTetelLista($raktarid, $partnerid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $fafilter, $nevfilter,
+    public function getBizonylatTetelLista($raktarid, $partnerid, $uzletkotoid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $fafilter, $nevfilter,
                                            $gyartoid, $locale, $bizstatusz, $bizstatuscsoport, $bizonylattipusfilter, $partnercimkefilter,
                                            $csoportositas) {
         switch ($datumtipus) {
@@ -803,6 +803,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         }
         if ($raktarid) {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
+        }
+        if ($uzletkotoid) {
+            $filter->addFilter('bf.uzletkoto_id', '=', $uzletkotoid);
         }
 
         $filter = $filter->merge($termekfilter);

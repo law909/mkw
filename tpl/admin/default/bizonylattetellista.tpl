@@ -31,6 +31,8 @@
                         </select>
                     </div>
                     <div class="matt-hseparator"></div>
+                    {include "comp_uzletkotoselect.tpl"}
+                    <div class="matt-hseparator"></div>
                     {include "comp_gyartoselect.tpl"}
                     <div class="matt-hseparator"></div>
                     <div>

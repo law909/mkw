@@ -28,6 +28,8 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
         $view->setVar('gyartolist', $partner->getSzallitoSelectList(0));
         $arsav = new termekarController($this->params);
         $view->setVar('arsavlist', $arsav->getSelectList());
+        $uk = new uzletkotoController($this->params);
+        $view->setVar('uklist', $uk->getSelectList());
 
         $view->setVar('nyelvlist', \mkw\store::getLocaleSelectList());
 
@@ -63,6 +65,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
         $partnercimkefilter = $this->params->getArrayRequestParam('partnercimkefilter');
         $csoportositas = $this->params->getIntRequestParam('csoportositas');
         $keszletkell = $this->params->getBoolRequestParam('keszletkell');
+        $uzletkotoid = $this->params->getIntRequestParam('uzletkoto');
 
         $this->tolstr = $datumtolstr;
         $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->tolstr)));
@@ -95,7 +98,14 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
             $this->cimkenevek = implode(',', $this->cimkenevek);
         }
 
-        $tetelek = $this->getRepo('Entities\Bizonylatfej')->getBizonylatTetelLista($raktarid, $partnerid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
+        if ($uzletkotoid) {
+            $uzletkoto = $this->getRepo('Entities\Uzletkoto')->find($uzletkotoid);
+            if ($uzletkoto) {
+                $this->uknev = $uzletkoto->getNev();
+            }
+        }
+
+        $tetelek = $this->getRepo('Entities\Bizonylatfej')->getBizonylatTetelLista($raktarid, $partnerid, $uzletkotoid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
             $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv, $bizstatusz, $bizstatuszcsoport, $bizonylattipusfilter, $partnercimkefilter, $csoportositas);
 
         $raktarfilter = new \mkwhelpers\FilterDescriptor();
