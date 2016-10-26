@@ -71,6 +71,7 @@
                         <select id="CsoportositasEdit" name="csoportositas">
                             <option value="1">termékenként</option>
                             <option value="2">partnerenként/termékenként</option>
+                            <option value="3">üzletkötőnként/partnerenként</option>
                         </select>
                     </div>
                     <div class="matt-hseparator"></div>

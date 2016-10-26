@@ -67,6 +67,10 @@ table td {
     padding: 6px 8px;
 }
 
+.pagebreakbefore {
+    page-break-before: always;
+}
+
 @media print {
 
     a {
@@ -93,6 +97,7 @@ table td {
 
     table {
         width: 100%;
+        page-break-inside: auto;
     }
 
     table th {
@@ -106,7 +111,10 @@ table td {
         border-top-color: #000;
     }
 
-    table tr {
+    tr {
         page-break-inside: avoid;
+        page-break-after: auto;
+        page-break-before: auto;
     }
+
 }

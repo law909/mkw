@@ -695,48 +695,77 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 break;
         }
         $plusparams = array();
-        switch ($ertektipus) {
-            case 0:
-                $ertekmezo1 = ', 0 AS ertek,';
-                $arsavsql = '';
-                break;
+        switch ($csoportositas) {
             case 1:
-                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*bt.nettoegysar)*-1 AS ertek,';
-                $arsavsql = '';
-                break;
             case 2:
-                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*bt.bruttoegysar)*-1 AS ertek,';
-                $arsavsql = '';
+                switch ($ertektipus) {
+                    case 0:
+                        $ertekmezo1 = ', 0 AS ertek,';
+                        $arsavsql = '';
+                        break;
+                    case 1:
+                        $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*bt.nettoegysar)*-1 AS ertek,';
+                        $arsavsql = '';
+                        break;
+                    case 2:
+                        $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*bt.bruttoegysar)*-1 AS ertek,';
+                        $arsavsql = '';
+                        break;
+                    case 3:
+                        $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*bt.nettoegysarhuf)*-1 AS ertek,';
+                        $arsavsql = '';
+                        break;
+                    case 4:
+                        $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*bt.bruttoegysarhuf)*-1 AS ertek,';
+                        $arsavsql = '';
+                        break;
+                    case 5:
+                        $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.netto)*-1 AS ertek,';
+                        $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (azonosito=:arsavnev) ';
+                        $plusparams['arsavnev'] = $arsav;
+                        break;
+                    case 6:
+                        $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.brutto)*-1 AS ertek,';
+                        $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (azonosito=:arsavnev) ';
+                        $plusparams['arsavnev'] = $arsav;
+                        break;
+                    case 7:
+                        $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*t.netto)*-1 AS ertek,';
+                        $arsavsql = '';
+                        break;
+                    case 8:
+                        $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*t.brutto)*-1 AS ertek,';
+                        $arsavsql = '';
+                        break;
+                    default:
+                        $ertekmezo1 = ', 0 AS ertek,';
+                        $arsavsql = '';
+                        break;
+                }
                 break;
             case 3:
-                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*bt.nettoegysarhuf)*-1 AS ertek,';
-                $arsavsql = '';
-                break;
-            case 4:
-                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*bt.bruttoegysarhuf)*-1 AS ertek,';
-                $arsavsql = '';
-                break;
-            case 5:
-                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.netto)*-1 AS ertek,';
-                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (azonosito=:arsavnev) ';
-                $plusparams['arsavnev'] = $arsav;
-                break;
-            case 6:
-                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.brutto)*-1 AS ertek,';
-                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (azonosito=:arsavnev) ';
-                $plusparams['arsavnev'] = $arsav;
-                break;
-            case 7:
-                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*t.netto)*-1 AS ertek,';
-                $arsavsql = '';
-                break;
-            case 8:
-                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*t.brutto)*-1 AS ertek,';
-                $arsavsql = '';
-                break;
-            default:
-                $ertekmezo1 = ', 0 AS ertek,';
-                $arsavsql = '';
+                switch ($ertektipus) {
+                    case 1:
+                        $ertekmezo1 = ',bt.netto AS ertek';
+                        $arsavsql = '';
+                        break;
+                    case 2:
+                        $ertekmezo1 = ',bt.brutto AS ertek';
+                        $arsavsql = '';
+                        break;
+                    case 3:
+                        $ertekmezo1 = ',bt.nettohuf AS ertek';
+                        $arsavsql = '';
+                        break;
+                    case 4:
+                        $ertekmezo1 = ',bt.bruttohuf AS ertek';
+                        $arsavsql = '';
+                        break;
+                    default:
+                        $ertekmezo1 = ', 0 AS ertek';
+                        $arsavsql = '';
+                        break;
+                }
                 break;
         }
 
@@ -866,6 +895,32 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                     . ' GROUP BY bf.partner_id,bt.termek_id,bt.termekvaltozat_id'
                     . ' ORDER BY bf.partnernev,bf.partner_id,t.cikkszam,' . $termeknevmezo . ',tv.ertek1,tv.ertek2'
                     , $rsm);
+                break;
+            case 3:
+                $rsm = new ResultSetMapping();
+                $rsm->addScalarResult('uzletkoto_id', 'uzletkoto_id');
+                $rsm->addScalarResult('uzletkotonev', 'uzletkotonev');
+                $rsm->addScalarResult('partner_id', 'partner_id');
+                $rsm->addScalarResult('partnernev', 'partnernev');
+                $rsm->addScalarResult('partnerirszam', 'partnerirszam');
+                $rsm->addScalarResult('partnervaros', 'partnervaros');
+                $rsm->addScalarResult('partnerutca', 'partnerutca');
+                $rsm->addScalarResult('ertek', 'ertek');
+
+                $q = $this->_em->createNativeQuery('SELECT bf.uzletkoto_id,bf.uzletkotonev,bf.partner_id,bf.partnernev,bf.partnerirszam,'
+                    . 'bf.partnervaros,bf.partnerutca,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
+                    . $ertekmezo1
+                    . ' FROM bizonylattetel bt '
+                    . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+                    . ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id)'
+                    . ' LEFT OUTER JOIN termekvaltozat tv ON (bt.termekvaltozat_id=tv.id)'
+                    . $arsavsql
+                    . $this->getFilterString($filter)
+                    . ' GROUP BY bf.uzletkoto_id,bf.partner_id'
+                    . ' ORDER BY bf.uzletkoto_id,bf.uzletkotonev,bf.partnernev,bf.partner_id'
+                    , $rsm);
+                break;
+
         }
         $q->setParameters(array_merge($this->getQueryParameters($filter), $plusparams));
         $res = $q->getScalarResult();

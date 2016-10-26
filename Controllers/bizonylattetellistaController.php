@@ -108,41 +108,48 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
         $tetelek = $this->getRepo('Entities\Bizonylatfej')->getBizonylatTetelLista($raktarid, $partnerid, $uzletkotoid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
             $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv, $bizstatusz, $bizstatuszcsoport, $bizonylattipusfilter, $partnercimkefilter, $csoportositas);
 
-        $raktarfilter = new \mkwhelpers\FilterDescriptor();
-        $raktarfilter->addFilter('archiv', '=', false);
+        switch ($csoportositas) {
+            case 1:
+            case 2:
+                $raktarfilter = new \mkwhelpers\FilterDescriptor();
+                $raktarfilter->addFilter('archiv', '=', false);
 
-        if ($keszletkell) {
-            $raktarak = $this->getRepo('Entities\Raktar')->getAll($raktarfilter);
-            foreach ($tetelek as $key => $tetel) {
-                $termekid = $tetel['termekid'];
-                $tvid = $tetel['termekvaltozat_id'];
-                if ($tvid) {
-                    $tv = $this->getRepo('Entities\TermekValtozat')->find($tvid);
-                    if ($tv) {
-                        foreach ($raktarak as $raktar) {
-                            $keszlet = $tv->getKeszlet(null, $raktar->getId());
-                            $tetelek[$key]['keszletinfo'][$raktar->getId()] = $keszlet;
+                if ($keszletkell) {
+                    $raktarak = $this->getRepo('Entities\Raktar')->getAll($raktarfilter);
+                    foreach ($tetelek as $key => $tetel) {
+                        $termekid = $tetel['termekid'];
+                        $tvid = $tetel['termekvaltozat_id'];
+                        if ($tvid) {
+                            $tv = $this->getRepo('Entities\TermekValtozat')->find($tvid);
+                            if ($tv) {
+                                foreach ($raktarak as $raktar) {
+                                    $keszlet = $tv->getKeszlet(null, $raktar->getId());
+                                    $tetelek[$key]['keszletinfo'][$raktar->getId()] = $keszlet;
+                                }
+                            }
                         }
-                    }
-                }
-                else {
-                    if ($termekid) {
-                        $tv = $this->getRepo('Entities\Termek')->find($tvid);
-                        if ($tv) {
-                            foreach ($raktarak as $raktar) {
-                                $keszlet = $tv->getKeszlet(null, $raktar->getId());
-                                $tetelek[$key]['keszletinfo'][$raktar->getId()] = $keszlet;
+                        else {
+                            if ($termekid) {
+                                $tv = $this->getRepo('Entities\Termek')->find($tvid);
+                                if ($tv) {
+                                    foreach ($raktarak as $raktar) {
+                                        $keszlet = $tv->getKeszlet(null, $raktar->getId());
+                                        $tetelek[$key]['keszletinfo'][$raktar->getId()] = $keszlet;
+                                    }
+                                }
                             }
                         }
                     }
                 }
-            }
-        }
 
-        $raktarak = $this->getRepo('Entities\Raktar')->getAll($raktarfilter);
-        $raktarlista = array();
-        foreach ($raktarak as $raktar) {
-            $raktarlista[] = $raktar->getNev();
+                $raktarak = $this->getRepo('Entities\Raktar')->getAll($raktarfilter);
+                $raktarlista = array();
+                foreach ($raktarak as $raktar) {
+                    $raktarlista[] = $raktar->getNev();
+                }
+                break;
+            default:
+                $raktarlista = array();
         }
 
         return array(
@@ -164,6 +171,9 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
                 break;
             case 2:
                 $view = $this->createView('bizonylattetellistatetelpartner.tpl');
+                break;
+            case 3:
+                $view = $this->createView('bizonylattetellistatetelukpartner.tpl');
                 break;
         }
 
@@ -267,6 +277,28 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
 
                     $sor++;
                 }
+                break;
+            case 3:
+                $res = $this->getData();
+                $mind = $res['tetelek'];
+
+                $excel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', t('Üzletkötő'))
+                    ->setCellValue('B1', t('Partner'))
+                    ->setCellValue('C1', t('Partner cím'))
+                    ->setCellValue('D1', t('Érték'));
+
+                $sor = 2;
+                foreach ($mind as $item) {
+                    $excel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $sor, $item['uzletkotonev'])
+                        ->setCellValue('B' . $sor, $item['partnernev'])
+                        ->setCellValue('C' . $sor, $item['partnerirszam'] . ' ' . $item['partnervaros'] . ' ' . $item['partnerutca'])
+                        ->setCellValue('D' . $sor, $item['ertek']);
+
+                    $sor++;
+                }
+                break;
 
         }
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
@@ -299,6 +331,9 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
                 break;
             case 2:
                 $view = $this->createView('rep_bizonylattetellistatetelpartner.tpl');
+                break;
+            case 3:
+                $view = $this->createView('rep_bizonylattetellistatetelukpartner.tpl');
                 break;
         }
 
