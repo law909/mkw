@@ -746,19 +746,19 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             case 3:
                 switch ($ertektipus) {
                     case 1:
-                        $ertekmezo1 = ',bt.netto AS ertek';
+                        $ertekmezo1 = ',SUM(bt.netto) AS ertek';
                         $arsavsql = '';
                         break;
                     case 2:
-                        $ertekmezo1 = ',bt.brutto AS ertek';
+                        $ertekmezo1 = ',SUM(bt.brutto) AS ertek';
                         $arsavsql = '';
                         break;
                     case 3:
-                        $ertekmezo1 = ',bt.nettohuf AS ertek';
+                        $ertekmezo1 = ',SUM(bt.nettohuf) AS ertek';
                         $arsavsql = '';
                         break;
                     case 4:
-                        $ertekmezo1 = ',bt.bruttohuf AS ertek';
+                        $ertekmezo1 = ',SUM(bt.bruttohuf) AS ertek';
                         $arsavsql = '';
                         break;
                     default:

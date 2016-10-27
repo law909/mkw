@@ -30,13 +30,13 @@
             <tr>
                 <td class="cell">{$tetel.cikkszam}</td>
                 <td class="cell">{$tetel.nev} {$tetel.ertek1} {$tetel.ertek2}</td>
-                <td class="cell textalignright">{bizformat($tetel.mennyiseg)}</td>
+                <td class="cell textalignright nowrap">{bizformat($tetel.mennyiseg)}</td>
                 {if ($ertektipus)}
-                    <td class="cell textalignright">{bizformat($tetel.ertek)}</td>
+                    <td class="cell textalignright nowrap">{bizformat($tetel.ertek)}</td>
                 {/if}
                 {if ($keszletkell)}
                     {foreach $tetel.keszletinfo as $kkey => $keszlet}
-                        <td class="cell textalignright">{$keszlet}</td>
+                        <td class="cell textalignright nowrap">{$keszlet}</td>
                     {/foreach}
                 {/if}
             </tr>
@@ -46,9 +46,9 @@
         <tr>
             <td class="cell">Összesen</td>
             <td class="cell"></td>
-            <td class="cell textalignright">{bizformat($snyito)}</td>
+            <td class="cell textalignright nowrap">{bizformat($snyito)}</td>
             {if ($ertektipus)}
-                <td class="cell textalignright">{bizformat($snyitoe)}</td>
+                <td class="cell textalignright nowrap">{bizformat($snyitoe)}</td>
             {/if}
             {if ($keszletkell)}
                 {foreach $raktarlista as $raktar}

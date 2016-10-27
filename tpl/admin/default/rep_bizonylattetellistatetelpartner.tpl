@@ -44,13 +44,13 @@
             <tr>
                 <td class="datacell">{$tetel.cikkszam}</td>
                 <td class="datacell">{$tetel.nev} {$tetel.ertek1} {$tetel.ertek2}</td>
-                <td class="datacell textalignright">{bizformat($tetel.mennyiseg)}</td>
+                <td class="datacell textalignright nowrap">{bizformat($tetel.mennyiseg)}</td>
                 {if ($ertektipus)}
-                    <td class="datacell textalignright">{bizformat($tetel.ertek)}</td>
+                    <td class="datacell textalignright nowrap">{bizformat($tetel.ertek)}</td>
                 {/if}
                 {if ($keszletkell)}
                     {foreach $tetel.keszletinfo as $kkey => $keszlet}
-                        <td class="datacell textalignright">{$keszlet}</td>
+                        <td class="datacell textalignright nowrap">{$keszlet}</td>
                     {/foreach}
                 {/if}
             </tr>
@@ -58,9 +58,9 @@
         {/while}
         <tr class="italic bold">
             <td colspan="2" class="cell">{$tetel.partnernev} összesen</td>
-            <td class="datacell textalignright">{bizformat($pmenny)}</td>
+            <td class="datacell textalignright nowrap">{bizformat($pmenny)}</td>
             {if ($ertektipus)}
-                <td class="datacell textalignright">{bizformat($pertek)}</td>
+                <td class="datacell textalignright nowrap">{bizformat($pertek)}</td>
             {/if}
         </tr>
     {/while}
@@ -69,9 +69,9 @@
     <tr>
         <td class="datacell">Összesen</td>
         <td class="datacell"></td>
-        <td class="datacell textalignright">{bizformat($snyito)}</td>
+        <td class="datacell textalignright nowrap">{bizformat($snyito)}</td>
         {if ($ertektipus)}
-            <td class="datacell textalignright">{bizformat($snyitoe)}</td>
+            <td class="datacell textalignright nowrap">{bizformat($snyitoe)}</td>
         {/if}
         {if ($keszletkell)}
             {foreach $raktarlista as $raktar}

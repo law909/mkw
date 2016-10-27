@@ -43,7 +43,7 @@
                     <td class="datacell">{$tetel.partnernev}</td>
                     <td class="datacell">{$tetel.partnerirszam} {$tetel.partnervaros} {$tetel.partnerutca}</td>
                     {if ($ertektipus)}
-                        <td class="datacell textalignright">{bizformat($tetel.ertek)}</td>
+                        <td class="datacell textalignright nowrap">{bizformat($tetel.ertek)}</td>
                     {/if}
                 </tr>
                 {$i = $i + 1}
@@ -53,7 +53,7 @@
             <tr class="italic bold">
                 <td colspan="2" class="cell">{$tetel.uzletkotonev} total</td>
                 {if ($ertektipus)}
-                    <td class="datacell textalignright">{bizformat($ukertek)}</td>
+                    <td class="datacell textalignright nowrap">{bizformat($ukertek)}</td>
                 {/if}
             </tr>
         </tfoot>

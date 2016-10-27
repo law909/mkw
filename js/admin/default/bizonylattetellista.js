@@ -21,7 +21,7 @@ $(document).ready(function() {
 
                     partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
 
-                    biztipusfilter = mkwcomp.bizonylattipusFilter.getFilter('input[name="bizonylattipus"]');
+                    biztipusfilter = mkwcomp.bizonylattipusFilter.getFilter('input[name="bizonylattipus[]"]');
 
                     $.ajax({
                         url: '/admin/bizonylattetellista/refresh',
@@ -32,6 +32,7 @@ $(document).ready(function() {
                             ig: $('input[name="ig"]').val(),
                             raktar: $('select[name="raktar"] option:selected').val(),
                             gyarto: $('select[name="gyarto"] option:selected').val(),
+                            uzletkoto: $('select[name="uzletkoto"] option:selected').val(),
                             partner: $('select[name="partner"] option:selected').val(),
                             forgalomfilter: $('select[name="forgalomfilter"] option:selected').val(),
                             ertektipus: $('select[name="ertektipus"] option:selected').val(),
