@@ -888,7 +888,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             }
             $view = $this->createView($tplname);
             $this->setVars($view);
-            $view->setVar('egyed', $o->toLista());
+            $x = $o->toLista();
+            $view->setVar('egyed', $x);
             $view->setVar('afaosszesito', $this->getRepo()->getAFAOsszesito($o));
             echo $view->getTemplateResult();
         }

@@ -313,6 +313,10 @@ class Bizonylattetel {
             if ($valt->getAdatTipus2()) {
                 $v[] = array('nev' => $valt->getAdatTipus2Nev(), 'ertek' => $valt->getErtek2());
             }
+            $ret['valtadattipus1id'] = $valt->getAdatTipus1Id();
+            $ret['valtertek1'] = $valt->getErtek1();
+            $ret['valtadattipus2id'] = $valt->getAdatTipus2Id();
+            $ret['valtertek2'] = $valt->getErtek2();
         }
         $ret['valtozatok'] = $v;
         return $ret;

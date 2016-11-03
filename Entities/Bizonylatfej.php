@@ -788,7 +788,66 @@ class Bizonylatfej {
         foreach ($this->bizonylattetelek as $tetel) {
             $tetellist[] = $tetel->toLista();
         }
-        $ret['tetellista'] = $tetellist;
+        switch (\mkw\store::getTheme()) {
+            case 'superzone':
+                $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);
+                $rendezendo = \mkw\store::getParameter(\mkw\consts::RendezendoValtozat);
+                $sorrend = explode(',', $s);
+                $a = $tetellist;
+                uasort($a, function($e, $f) use ($sorrend, $rendezendo) {
+                    if ($e['valtadattipus1id'] == $rendezendo) {
+                        $ertek = $e['valtertek1'];
+                        $eszin = $e['valtertek2'];
+                    }
+                    elseif ($e['valtadattipus2id'] == $rendezendo) {
+                        $ertek = $e['valtertek2'];
+                        $eszin = $e['valtertek1'];
+                    }
+                    else {
+                        $ertek = false;
+                        $eszin = false;
+                    }
+                    $ve = array_search($ertek, $sorrend);
+                    if ($ve === false) {
+                        $ve = 0;
+                    }
+                    $ve = str_pad($e['cikkszam'], 50, ' ',STR_PAD_RIGHT)
+                        . str_pad($e['termeknev'], 255, ' ',STR_PAD_RIGHT)
+                        . $eszin
+                        . str_pad((string)$ve, 6, '0', STR_PAD_LEFT);
+
+                    if ($f['valtadattipus1id'] == $rendezendo) {
+                        $ertek = $f['valtertek1'];
+                        $fszin = $f['valtertek2'];
+                    }
+                    elseif ($f['valtadattipus2id'] == $rendezendo) {
+                        $ertek = $f['valtertek2'];
+                        $fszin = $f['valtertek1'];
+                    }
+                    else {
+                        $ertek = false;
+                        $fszin = false;
+                    }
+                    $vf = array_search($ertek, $sorrend);
+                    if ($vf === false) {
+                        $vf = 0;
+                    }
+                    $vf = str_pad($f['cikkszam'], 50, ' ',STR_PAD_RIGHT)
+                        . str_pad($f['termeknev'], 255, ' ',STR_PAD_RIGHT)
+                        . $fszin
+                        . str_pad((string)$vf, 6, '0', STR_PAD_LEFT);
+
+                    if ($ve === $vf) {
+                        return 0;
+                    }
+                    return ($ve < $vf) ? -1 : 1;
+                });
+                $ret['tetellista'] = array_values($a);
+                break;
+            default:
+                $ret['tetellista'] = $tetellist;
+                break;
+        }
         return $ret;
     }
 
