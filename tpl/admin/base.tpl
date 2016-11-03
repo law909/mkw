@@ -51,6 +51,9 @@
                     {if (($maintheme != 'mkwcansas') && haveJog(20))}
                         <div><a class="menupont" href="/admin/szallitofej/viewlist">{t('Szállítólevelek')}</a></div>
                     {/if}
+                    {if (($maintheme == 'superzone') && haveJog(20))}
+                        <div><a class="menupont" href="/admin/autokiserofej/viewlist">{t('Gépjármű kísérők')}</a></div>
+                    {/if}
                 {/if}
                 {if (haveJog(15))}
                     <div><a class="menupont" href="/admin/szamlafej/viewlist">{t('Számlák')}</a></div>

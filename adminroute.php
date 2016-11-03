@@ -139,6 +139,16 @@ $router->map('POST', '/admin/szallitofej/ront', 'szallitofejController#ront', 'a
 $router->map('POST', '/admin/szallitofej/fejexport', 'szallitofejController#fejexport', 'adminszallitofejfejexport');
 $router->map('POST', '/admin/szallitofej/tetelexport', 'szallitofejController#tetelexport', 'adminszallitofejtetelexport');
 
+$router->map('GET', '/admin/autokiserofej/viewlist', 'autokiserofejController#viewlist', 'adminautokiserofejviewlist');
+$router->map('GET', '/admin/autokiserofej/getlistbody', 'autokiserofejController#getlistbody', 'adminautokiserofejgetlistbody');
+$router->map('GET', '/admin/autokiserofej/getkarb', 'autokiserofejController#getkarb', 'adminautokiserofejgetkarb');
+$router->map('GET', '/admin/autokiserofej/viewkarb', 'autokiserofejController#viewkarb', 'adminautokiserofejviewkarb');
+$router->map('POST', '/admin/autokiserofej/save', 'autokiserofejController#save', 'adminautokiserofejsave');
+$router->map('GET', '/admin/autokiserofej/print', 'autokiserofejController#doPrint', 'adminautokiserofejprint');
+$router->map('POST', '/admin/autokiserofej/ront', 'autokiserofejController#ront', 'adminautokiserofejront');
+$router->map('POST', '/admin/autokiserofej/fejexport', 'autokiserofejController#fejexport', 'adminautokiserofejfejexport');
+$router->map('POST', '/admin/autokiserofej/tetelexport', 'autokiserofejController#tetelexport', 'adminautokiserofejtetelexport');
+
 $router->map('GET', '/admin/szamlafej/viewlist', 'szamlafejController#viewlist', 'adminszamlafejviewlist');
 $router->map('GET', '/admin/szamlafej/getlistbody', 'szamlafejController#getlistbody', 'adminszamlafejgetlistbody');
 $router->map('GET', '/admin/szamlafej/getkarb', 'szamlafejController#getkarb', 'adminszamlafejgetkarb');
