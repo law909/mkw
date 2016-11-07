@@ -444,7 +444,7 @@ class importController extends \mkwhelpers\Controller {
             $escaped = ($char == '\\');
         }
         if ($str) {
-            return str_getcsv($str, chr(163), '"');
+            return str_getcsv($str, chr(197), '"');
         }
         return false;
     }
@@ -510,13 +510,13 @@ class importController extends \mkwhelpers\Controller {
                         $termekdb++;
                         if ($data[1]) {
                             if ($data[6]) {
-                                $katnev = $this->toutf(trim($data[6]));
+                                $katnev = trim($data[6]);
                             }
                             elseif ($data[5]) {
-                                $katnev = $this->toutf(trim($data[5]));
+                                $katnev = trim($data[5]);
                             }
                             elseif ($data[4]) {
-                                $katnev = $this->toutf(trim($data[4]));
+                                $katnev = trim($data[4]);
                             }
                             $parent = $this->createKategoria($katnev, $parentid);
                         }
@@ -537,27 +537,27 @@ class importController extends \mkwhelpers\Controller {
 
                                 if ($createuj) {
                                     if ($data[6]) {
-                                        $katnev = $this->toutf(trim($data[6]));
+                                        $katnev = trim($data[6]);
                                     }
                                     elseif ($data[5]) {
-                                        $katnev = $this->toutf(trim($data[5]));
+                                        $katnev = trim($data[5]);
                                     }
                                     elseif ($data[4]) {
-                                        $katnev = $this->toutf(trim($data[4]));
+                                        $katnev = trim($data[4]);
                                     }
                                     $urlkatnev = \mkw\store::urlize($katnev);
                                     \mkw\store::createDirectoryRecursively($path . $urlkatnev);
                                     $parent = $this->createKategoria($katnev, $parentid);
-                                    $termeknev = $this->toutf(trim($data[0]));
+                                    $termeknev = trim($data[0]);
 
-                                    $hosszuleiras = $this->toutf(trim($data[3]));
-                                    $rovidleiras = $this->toutf(trim($data[2]));
+                                    $hosszuleiras = trim($data[3]);
+                                    $rovidleiras = trim($data[2]);
 
                                     $idegenkod = 'DT' . $data[1];
 
                                     $termek = new \Entities\Termek();
                                     $termek->setFuggoben(true);
-                                    $termek->setMe($this->toutf(trim($data[9])));
+                                    $termek->setMe(trim($data[9]));
                                     $termek->setNev($termeknev);
                                     $termek->setLeiras($hosszuleiras);
                                     $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
@@ -600,7 +600,7 @@ class importController extends \mkwhelpers\Controller {
                             else {
                                 $termek = $termek[0];
                                 if ($editleiras) {
-                                    $hosszuleiras = $this->toutf(trim($data[3]));
+                                    $hosszuleiras = trim($data[3]);
                                     $termek->setLeiras($hosszuleiras);
                                     //$rovidleiras = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
                                     //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
