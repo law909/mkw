@@ -23,6 +23,30 @@ class importController extends \mkwhelpers\Controller {
         return ord($mit) - 97;
     }
 
+    private function parse_csv($csv_string, $delimiter = ",", $skip_empty_lines = true, $trim_fields = true) {
+        $a = array_map(
+            function ($line) use ($delimiter, $trim_fields) {
+                return array_map(
+                    function ($field) {
+                        return str_replace('!!Q!!', '"', utf8_decode(urldecode($field)));
+                    },
+                    $trim_fields ? array_map('trim', explode($delimiter, $line)) : explode($delimiter, $line)
+                );
+            },
+            preg_split(
+                $skip_empty_lines ? ($trim_fields ? '/( *\R)+/s' : '/\R+/s') : '/\R/s',
+                preg_replace_callback(
+                    '/"(.*?)"/s',
+                    function ($field) {
+                        return urlencode(utf8_encode($field[1]));
+                    },
+                    $enc = preg_replace('/(?<!")""/', '!!Q!!', $csv_string)
+                )
+            )
+        );
+        return $a[0];
+    }
+
     public function view() {
         $view = $this->createView('imports.tpl');
 
@@ -444,7 +468,7 @@ class importController extends \mkwhelpers\Controller {
             $escaped = ($char == '\\');
         }
         if ($str) {
-            return str_getcsv($str, chr(197), '"');
+            return $this->parse_csv($str, 'Ł');
         }
         return false;
     }
