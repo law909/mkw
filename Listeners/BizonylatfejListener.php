@@ -126,6 +126,12 @@ class BizonylatfejListener {
                     $this->createFSzla($bizonylat, 0);
                 }
             }
+            else {
+                foreach ($bizonylat->getFolyoszamlak() as $fsz) {
+                    $this->em->remove($fsz);
+                }
+                $bizonylat->clearFolyoszamlak();
+            }
         }
     }
 
