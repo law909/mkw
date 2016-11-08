@@ -38,11 +38,12 @@ var bizonylathelper = function($) {
         // quick
         $('.js-quickmennyiseginput').each(function() {
             var $this = $(this),
+                menny = $this.val() * 1,
                 id = $this.data('termektetelid');
-            netto = netto + $('input[name="qtetelnettoegysar_' + id + '"]').val() * $this.val() * 1;
-            brutto = brutto + $('input[name="qtetelbruttoegysar_' + id + '"]').val() * $this.val() * 1;
-            nettohuf = nettohuf + $('input[name="qtetelnettoegysarhuf_' + id + '"]').val() * $this.val() * 1;
-            bruttohuf = bruttohuf + $('input[name="qtetelbruttoegysarhuf_' + id + '"]').val() * $this.val() * 1;
+            netto = netto + $('#NettoegysarEdit' + id).val() * menny;
+            brutto = brutto + $('#BruttoegysarEdit' + id).val() * menny;
+            nettohuf = nettohuf + $('#NettoegysarHufEdit' + id).val() * menny;
+            bruttohuf = bruttohuf + $('#BruttoegysarHufEdit' + id).val() * menny;
         });
 
         $('.js-nettosum').text(accounting.formatNumber(tools.round(netto, -2), 2, ' '));

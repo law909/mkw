@@ -47,10 +47,10 @@
 <tr>
     <td><label for="NettoegysarEdit{$tetel.id}">{t('Egységár')}:</label></td>
     <td><input id="NettoegysarEdit{$tetel.id}" name="qtetelnettoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysar}" class="js-quicknettoegysarinput"></td>
-    <td><input name="qtetelbruttoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysar}" class="js-quickbruttoegysarinput"></td>
+    <td><input id="BruttoegysarEdit{$tetel.id}" name="qtetelbruttoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysar}" class="js-quickbruttoegysarinput"></td>
     {if ($showvalutanem)}
-    <td><input name="qtetelnettoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysarhuf}" readonly></td>
-    <td><input name="qtetelbruttoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysarhuf}" readonly></td>
+    <td><input id="NettoegysarHufEdit{$tetel.id}" name="qtetelnettoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysarhuf}" readonly></td>
+    <td><input id="BruttoegysarHufEdit{$tetel.id}" name="qtetelbruttoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysarhuf}" readonly></td>
     {/if}
 </tr>
 <tr>
