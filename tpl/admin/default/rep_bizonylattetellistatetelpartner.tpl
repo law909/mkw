@@ -19,6 +19,19 @@
             {/foreach}
         {/if}
     </tr>
+    <tr>
+        <th class="headercell">Item no.</th>
+        <th class="headercell">Name</th>
+        <th class="headercell textalignright">Quantity</th>
+        {if ($ertektipus)}
+            <th class="headercell textalignright">Value</th>
+        {/if}
+        {if ($keszletkell)}
+            {foreach $raktarlista as $raktar}
+                <th class="headercell">{$raktar}</th>
+            {/foreach}
+        {/if}
+    </tr>
     </thead>
     <tbody>
     {$snyito = 0}
@@ -57,7 +70,7 @@
             {$i = $i + 1}
         {/while}
         <tr class="italic bold">
-            <td colspan="2" class="cell">{$tetel.partnernev} összesen</td>
+            <td colspan="2" class="cell">{$tetel.partnernev} összesen / total</td>
             <td class="datacell textalignright nowrap">{bizformat($pmenny)}</td>
             {if ($ertektipus)}
                 <td class="datacell textalignright nowrap">{bizformat($pertek)}</td>
@@ -67,7 +80,7 @@
     </tbody>
     <tfoot>
     <tr>
-        <td class="datacell">Összesen</td>
+        <td class="datacell">Összesen / Total</td>
         <td class="datacell"></td>
         <td class="datacell textalignright nowrap">{bizformat($snyito)}</td>
         {if ($ertektipus)}

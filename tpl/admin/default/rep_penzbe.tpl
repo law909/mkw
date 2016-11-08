@@ -1,7 +1,7 @@
 {extends "../rep_base.tpl"}
 
 {block "body"}
-    <h4>Beérkezett pénz</h4>
+    <h4>Beérkezett pénz / Income</h4>
     <h5>{$tolstr} - {$igstr}</h5>
     <h5>{implode(', ', $cimkenevek)}</h5>
     <h5>{$bankszamlaszam}</h5>
@@ -9,8 +9,15 @@
         <thead>
         <tr>
             <th>Dátum</th>
+            <th>Bizonylat</th>
             <th>Partner név</th>
             <th class="textalignright">Összeg</th>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <th>Document no.</th>
+            <th>Partner name</th>
+            <th class="textalignright">Value</th>
         </tr>
         </thead>
         <tbody>
@@ -29,6 +36,10 @@
         <tr>
             <th>Valutanem</th>
             <th class="textalignright">Összeg</th>
+        </tr>
+        <tr>
+            <th>Currency</th>
+            <th class="textalignright">Value</th>
         </tr>
         </thead>
         <tbody>

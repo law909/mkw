@@ -20,6 +20,19 @@
                 {/foreach}
             {/if}
         </tr>
+        <tr>
+            <th>Item no.</th>
+            <th>Name</th>
+            <th class="textalignright">Quantity</th>
+            {if ($ertektipus)}
+                <th class="textalignright">Value</th>
+            {/if}
+            {if ($keszletkell)}
+                {foreach $raktarlista as $raktar}
+                    <th>{$raktar}</th>
+                {/foreach}
+            {/if}
+        </tr>
         </thead>
         <tbody>
         {$snyito = 0}
@@ -44,7 +57,7 @@
         </tbody>
         <tfoot>
         <tr>
-            <td class="cell">Összesen</td>
+            <td class="cell">Összesen / Total</td>
             <td class="cell"></td>
             <td class="cell textalignright nowrap">{bizformat($snyito)}</td>
             {if ($ertektipus)}
