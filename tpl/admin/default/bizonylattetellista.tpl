@@ -35,6 +35,8 @@
                     <div class="matt-hseparator"></div>
                     {include "comp_gyartoselect.tpl"}
                     <div class="matt-hseparator"></div>
+                    {include "comp_fizmodselect.tpl"}
+                    <div class="matt-hseparator"></div>
                     <div>
                         <label for="ErtekEdit">Érték:</label>
                         <select id="ErtekEdit" name="ertektipus">

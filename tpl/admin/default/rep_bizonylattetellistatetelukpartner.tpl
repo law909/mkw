@@ -11,7 +11,11 @@
     <div class="pagebreakbefore"></div>
     <h4 xmlns="http://www.w3.org/1999/html">Bizonylatétel lista</h4>
     <h5>{$datumnev} {$tolstr} - {$igstr}</h5>
-    <h5>{$cimkenevek}</h5>
+    {if ($partnernev)}<h5>{$partnernev}</h5>{/if}
+    {if ($raktarnev)}<h5>{$raktarnev}</h5>{/if}
+    {if ($uknev)}<h5>{$uknev}</h5>{/if}
+    {if ($fizmodnev)}<h5>{$fizmodnev}</h5>{/if}
+    {if ($cimkenevek)}<h5>{$cimkenevek}</h5>{/if}
     <table>
         <thead>
             <tr>

@@ -683,7 +683,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 
     public function getBizonylatTetelLista($raktarid, $partnerid, $uzletkotoid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $fafilter, $nevfilter,
                                            $gyartoid, $locale, $bizstatusz, $bizstatuscsoport, $bizonylattipusfilter, $partnercimkefilter,
-                                           $csoportositas) {
+                                           $csoportositas, $fizmodid) {
         switch ($datumtipus) {
             case 'kelt':
             case 'teljesites':
@@ -835,6 +835,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         }
         if ($uzletkotoid) {
             $filter->addFilter('bf.uzletkoto_id', '=', $uzletkotoid);
+        }
+        if ($fizmodid) {
+            $filter->addFilter('bf.fizmod_id', '=', $fizmodid);
         }
 
         $filter = $filter->merge($termekfilter);

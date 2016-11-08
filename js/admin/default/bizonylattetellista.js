@@ -34,6 +34,7 @@ $(document).ready(function() {
                             gyarto: $('select[name="gyarto"] option:selected').val(),
                             uzletkoto: $('select[name="uzletkoto"] option:selected').val(),
                             partner: $('select[name="partner"] option:selected').val(),
+                            fizmod: $('select[name="fizmod"] option:selected').val(),
                             forgalomfilter: $('select[name="forgalomfilter"] option:selected').val(),
                             ertektipus: $('select[name="ertektipus"] option:selected').val(),
                             arsav: $('select[name="arsav"] option:selected').val(),

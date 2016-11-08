@@ -15,6 +15,8 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
     private $uknev;
     private $partnernev;
     private $cimkenevek;
+    private $fizmodnev;
+    private $raktarnev;
 
     public function view() {
         $view = $this->createView('bizonylattetellista.tpl');
@@ -30,6 +32,9 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
         $view->setVar('arsavlist', $arsav->getSelectList());
         $uk = new uzletkotoController($this->params);
         $view->setVar('uklist', $uk->getSelectList());
+        $fm = new fizmodController($this->params);
+        $view->setVar('fizmodlist', $fm->getSelectList());
+
 
         $view->setVar('nyelvlist', \mkw\store::getLocaleSelectList());
 
@@ -58,6 +63,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
         $fafilter = $this->params->getArrayRequestParam('fafilter');
         $nevfilter = $this->params->getRequestParam('nevfilter', NULL);
         $gyartoid = $this->params->getIntRequestParam('gyarto');
+        $fizmodid = $this->params->getIntRequestParam('fizmod');
         $nyelv = \mkw\store::toLocale($this->params->getStringRequestParam('nyelv'));
         $bizstatusz = $this->params->getIntRequestParam('bizonylatstatusz');
         $bizstatuszcsoport = $this->params->getStringRequestParam('bizonylatstatuszcsoport');
@@ -105,8 +111,22 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
             }
         }
 
+        if ($raktarid) {
+            $raktar = $this->getRepo('Entities\Raktar')->find($raktarid);
+            if ($raktar) {
+                $this->raktarnev = $raktar->getNev();
+            }
+        }
+
+        if ($fizmodid) {
+            $fizmod = $this->getRepo('Entities\Fizmod')->find($fizmodid);
+            if ($fizmod) {
+                $this->fizmodnev = $fizmod->getNev();
+            }
+        }
+
         $tetelek = $this->getRepo('Entities\Bizonylatfej')->getBizonylatTetelLista($raktarid, $partnerid, $uzletkotoid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
-            $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv, $bizstatusz, $bizstatuszcsoport, $bizonylattipusfilter, $partnercimkefilter, $csoportositas);
+            $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv, $bizstatusz, $bizstatuszcsoport, $bizonylattipusfilter, $partnercimkefilter, $csoportositas, $fizmodid);
 
         switch ($csoportositas) {
             case 1:
@@ -341,6 +361,9 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
         $view->setVar('tolstr', $this->tolstr);
         $view->setVar('igstr', $this->igstr);
         $view->setVar('partnernev', $this->partnernev);
+        $view->setVar('fizmodnev', $this->fizmodnev);
+        $view->setVar('uknev', $this->uknev);
+        $view->setVar('raktarnev', $this->raktarnev);
         $view->setVar('cimkenevek', $this->cimkenevek);
         $view->setVar('raktarlista', $res['raktarlista']);
         $view->setVar('ertektipus', $res['ertektipus']);
