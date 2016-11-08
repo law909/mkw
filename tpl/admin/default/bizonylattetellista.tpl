@@ -16,7 +16,7 @@
         <form id="bizonylattetel" action="" target="_blank">
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <div class="matt-hseparator"></div>
-                {include "comp_idoszak.tpl" comptype="szamla"}
+                {include "comp_idoszak.tpl" comptype="hataridos"}
                 <div class="matt-hseparator"></div>
                 {include "comp_partnerselect.tpl"}
                 <div class="matt-hseparator"></div>

@@ -89,6 +89,9 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
             case 'esedekesseg':
                 $this->datumnev = 'Esedékesség';
                 break;
+            case 'hatarido':
+                $this->datumnev = 'Határidő';
+                break;
             default:
                 $this->datumnev = 'Teljesítés';
         }

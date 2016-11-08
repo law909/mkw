@@ -688,6 +688,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             case 'kelt':
             case 'teljesites':
             case 'esedekesseg':
+            case 'hatarido':
                 $datumtipus = 'bf.' . $datumtipus;
                 break;
             default:
