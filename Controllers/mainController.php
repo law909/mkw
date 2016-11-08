@@ -291,6 +291,7 @@ class mainController extends \mkwhelpers\Controller {
             foreach ($valtozatok as $valt) {
                 if ($valt->getElerheto() && $valt->getLathato()) {
                     if (($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) && ($valt->getErtek1() == $szin)) {
+                        $t['kepurllarge'] = $valt->getKepurlLarge();
                         $t['kepurlmedium'] = $valt->getKepurlMedium();
                         $vtt[] = array(
                             'id' => $valt->getId(),

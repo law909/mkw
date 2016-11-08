@@ -134,6 +134,18 @@ $(document).ready(function() {
 
     });
 
+    if ($.fn.magnificPopup) {
+        $('.js-lightbox').magnificPopup({
+            gallery: {
+                enabled: true
+            },
+            image: {
+                cursor: null
+            },
+            type: 'image'
+        });
+    }
+
     if (typeof cart !== 'undefined') {
         cart.initUI();
     }
