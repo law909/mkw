@@ -25,6 +25,8 @@ class termekkartonController extends \mkwhelpers\Controller {
         $view->setVar('raktarlista', $rc->getSelectList());
         $partner = new partnerController($this->params);
         $view->setVar('partnerlist', $partner->getSelectList());
+        $pcc = new partnercimkekatController($this->params);
+        $view->setVar('cimkekat', $pcc->getWithCimkek());
 
         $view->printTemplateResult(false);
 
@@ -37,6 +39,7 @@ class termekkartonController extends \mkwhelpers\Controller {
         $rontott = $this->params->getIntRequestParam('rontott');
         $raktarid = $this->params->getIntRequestParam('raktarid');
         $partnerid = $this->params->getIntRequestParam('partnerid');
+        $partnercimkefilter = $this->params->getArrayRequestParam('partnercimkefilter');
         $datumtipus = $this->params->getStringRequestParam('datumtipus');
         switch ($datumtipus) {
             case 'kelt':
@@ -88,10 +91,19 @@ class termekkartonController extends \mkwhelpers\Controller {
             $nyitofilter->addFilter('bf.raktar', '=', $raktarid);
             $filter->addFilter('bf.raktar', '=', $raktarid);
         }
+
+        $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($partnercimkefilter);
         if ($partnerid) {
             $nyitofilter->addFilter('bf.partner', '=', $partnerid);
             $filter->addFilter('bf.partner', '=', $partnerid);
         }
+        else {
+            if ($partnerkodok) {
+                $nyitofilter->addFilter('bf.partner', 'IN', $partnerkodok);
+                $filter->addFilter('bf.partner', 'IN', $partnerkodok);
+            }
+        }
+
         if ($datumtolstr) {
             $nyito = $this->getRepo('Entities\Termek')->calcKeszlet($nyitofilter);
             $nyito = $nyito[0];

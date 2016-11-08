@@ -42,6 +42,8 @@
                 {include "comp_arsavselect.tpl"}
                 {/if}
                 <div class="matt-hseparator"></div>
+                {include "comp_partnercimkefilter.tpl"}
+                <div class="matt-hseparator"></div>
                 <a href="#" class="js-refresh">Frissít</a>
                 <div class="matt-hseparator"></div>
                 <div id="eredmeny"></div>

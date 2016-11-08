@@ -932,7 +932,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return $res;
     }
 
-    public function getBizomanyosErtekesitesLista($partnerid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav) {
+    public function getBizomanyosErtekesitesLista($partnerid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $partnercimkefilter) {
         switch ($datumtipus) {
             case 'kelt':
             case 'teljesites':
@@ -991,6 +991,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 $ertekmezo2 = ', 0 AS ertek';
                 break;
         }
+
+        $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($partnercimkefilter);
+
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('termek_id', 'termek_id');
         $rsm->addScalarResult('termekvaltozat_id', 'termekvaltozat_id');
@@ -1011,6 +1014,11 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $filter->addFilter('bt.irany', '>', 0);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
+        }
+        else {
+            if ($partnerkodok) {
+                $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
+            }
         }
         if ($datumtol) {
             $filter->addFilter($datumtipus, '>=', $datumtol);
@@ -1051,6 +1059,11 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $filter->addFilter('bt.irany', '<', 0);
         if ($partnerid) {
             $filter->addFilter('bf.partner_id', '=', $partnerid);
+        }
+        else {
+            if ($partnerkodok) {
+                $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
+            }
         }
         if ($datumtol) {
             $filter->addFilter($datumtipus, '>=', $datumtol);

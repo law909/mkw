@@ -54,6 +54,8 @@
                     </select>
                 </div>
                 <div class="matt-hseparator"></div>
+                {include "comp_partnercimkefilter.tpl"}
+                <div class="matt-hseparator"></div>
                 <a href="#" class="js-refresh">Frissít</a>
                 <input name="termekid" type="hidden" value="{$termekid}">
                 <div class="matt-hseparator"></div>

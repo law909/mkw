@@ -7,11 +7,13 @@ $(document).ready(function() {
 		newWindowUrl:'/admin/viewkarb',
 		saveUrl:'/admin/save',
 		beforeShow:function() {
-            $('.js-grandoexport').button();
             mkwcomp.datumEdit.init('#TolEdit');
             mkwcomp.datumEdit.init('#IgEdit');
             $('.js-refresh')
                 .on('click', function() {
+
+                    var partnercimkefilter = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
+
                     $.ajax({
                         url: '/admin/termekkarton/refresh',
                         type: 'GET',
@@ -24,7 +26,8 @@ $(document).ready(function() {
                             mozgat: $('select[name="mozgat"] option:selected').val(),
                             rontott: $('select[name="rontott"] option:selected').val(),
                             raktarid: $('select[name="raktar"] option:selected').val(),
-                            partnerid: $('select[name="partner"] option:selected').val()
+                            partnerid: $('select[name="partner"] option:selected').val(),
+                            partnercimkefilter: partnercimkefilter
                         },
                         success: function(d) {
                             $('#eredmeny').html(d);
@@ -32,6 +35,15 @@ $(document).ready(function() {
                     })
                 })
                 .button();
+            $('#cimkefiltercontainer').mattaccord({
+                header: '',
+                page: '.js-cimkefilterpage',
+                closeUp: '.js-cimkefiltercloseupbutton'
+            });
+            $('.js-cimkefilter').on('click', function(e) {
+                e.preventDefault();
+                $(this).toggleClass('ui-state-hover');
+            });
 		},
 		onSubmit:function() {
 			$('#messagecenter')

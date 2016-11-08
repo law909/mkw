@@ -14,6 +14,8 @@ class bizomanyosertekesiteslistaController extends \mkwhelpers\Controller {
         $view->setVar('partnerlist', $partner->getSelectList());
         $arsav = new termekarController($this->params);
         $view->setVar('arsavlist', $arsav->getSelectList());
+        $pcc = new partnercimkekatController($this->params);
+        $view->setVar('cimkekat', $pcc->getWithCimkek());
 
         $view->printTemplateResult(false);
 
@@ -26,8 +28,10 @@ class bizomanyosertekesiteslistaController extends \mkwhelpers\Controller {
         $datumigstr = $this->params->getStringRequestParam('datumig');
         $ertektipus = $this->params->getIntRequestParam('ertektipus');
         $arsav = $this->params->getStringRequestParam('arsav');
+        $partnercimkefilter = $this->params->getArrayRequestParam('partnercimkefilter');
 
-        $tetelek = $this->getRepo('Entities\Bizonylatfej')->getBizomanyosErtekesitesLista($partnerid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus, $arsav);
+        $tetelek = $this->getRepo('Entities\Bizonylatfej')->getBizomanyosErtekesitesLista($partnerid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
+            $arsav, $partnercimkefilter);
 
         $view = $this->createView('bizomanyosertekesiteslistatetel.tpl');
         $view->setVar('ertektipus', $ertektipus);
