@@ -696,6 +696,19 @@
                             <a href="#" class="js-stopimport" data-href="{$stopkressgepimporturl}">Stop gép import</a>
                             <a href="#" class="js-stopimport" data-href="{$stopkresstartozekimporturl}">Stop tart. import</a>
                         </div>
+                        <div class="matt-hseparator"></div>
+                        <div>
+                            <label for="LegavenueEdit">Leg Avenue:</label>
+                            <select id="LegavenueEdit" name="gyartolegavenue">
+                                <option value="">{t('válasszon')}</option>
+                                {foreach $gyartolegavenuelist as $_gyarto}
+                                    <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                                {/foreach}
+                            </select>
+                            <label for="PathLegavenueEdit">Képek mappája:</label>
+                            <input id="PathLegavenueEdit" name="pathlegavenue" value="{$pathlegavenue}">
+                            <a href="#" class="js-stopimport" data-href="{$stoplegavenueimporturl}">Stop import</a>
+                        </div>
                     </div>
                 {/if}
                 <div id="IdTab" class="mattkarb-page" data-visible="visible">

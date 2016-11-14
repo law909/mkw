@@ -71,6 +71,7 @@
                 <a href="/admin/import/makszutov" class="js-makszutovimport">Makszutov</a>
                 <a href="/admin/import/silko" class="js-silkoimport">Silko&Co</a>
                 <a href="/admin/import/btech" class="js-btechimport">Btech</a>
+                <a href="/admin/import/legavenue" class="js-legavenueimport">Legavenue</a>
             </div>
 	<div class="matt-hseparator"></div>
             <div>

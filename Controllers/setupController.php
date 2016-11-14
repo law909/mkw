@@ -343,6 +343,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('gyartotutisportlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::GyartoKress);
         $view->setVar('gyartokresslist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::GyartoLegavenue);
+        $view->setVar('gyartolegavenuelist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::PathBtech);
         $view->setVar(\mkw\consts::PathBtech, ($p ? $p->getErtek() : ''));
@@ -360,6 +362,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::PathReintex, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::PathKress);
         $view->setVar(\mkw\consts::PathKress, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::PathLegavenue);
+        $view->setVar(\mkw\consts::PathLegavenue, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::MiniCRMHasznalatban);
         $view->setVar(\mkw\consts::MiniCRMHasznalatban, ($p ? $p->getErtek() : ''));
@@ -377,6 +381,7 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('stopbtechimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'btech')));
         $view->setVar('stopkressgepimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'kressgep')));
         $view->setVar('stopkresstartozekimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'kresstartozek')));
+        $view->setVar('stoplegavenueimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'legavenue')));
         $view->printTemplateResult();
     }
 
@@ -746,6 +751,14 @@ class setupController extends \mkwhelpers\Controller {
         else {
             $this->setObj(\mkw\consts::GyartoKress, '');
         }
+        $x = $this->params->getIntRequestParam('gyartolegavenue', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoLegavenue, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GyartoLegavenue, '');
+        }
 
         $this->setObj(\mkw\consts::PathBtech, $this->params->getStringRequestParam('pathbtech', ''));
         $this->setObj(\mkw\consts::PathDelton, $this->params->getStringRequestParam('pathdelton', ''));
@@ -755,8 +768,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::PathSilko, $this->params->getStringRequestParam('pathsilko', ''));
         $this->setObj(\mkw\consts::PathTutisport, $this->params->getStringRequestParam('pathtutisport', ''));
         $this->setObj(\mkw\consts::PathKress, $this->params->getStringRequestParam('pathkress', ''));
-
-
+        $this->setObj(\mkw\consts::PathLegavenue, $this->params->getStringRequestParam('pathlegavenue', ''));
 
         \mkw\store::getEm()->flush();
 
