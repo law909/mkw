@@ -491,6 +491,16 @@ class Bizonylatfej {
     /** @ORM\Column(type="date",nullable=true) */
     private $fakekifizetesdatum;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Partner")
+     * @ORM\JoinColumn(name="mijszpartner_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Partner
+     */
+    private $mijszpartner;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $mijszpartnernev;
+
     public function __toString() {
         return (string)$this->id;
     }
@@ -2964,5 +2974,52 @@ class Bizonylatfej {
         $this->belsouzletkotojutalek = $belsouzletkotojutalek;
     }
 
+    /**
+     * @return \Entities\Partner
+     */
+    public function getMIJSZPartner() {
+        return $this->mijszpartner;
+    }
+
+    public function getMIJSZPartnerId() {
+        if ($this->mijszpartner) {
+            return $this->mijszpartner->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Partner $val
+     */
+    public function setMIJSZPartner($val) {
+        if ($this->mijszpartner !== $val) {
+            if (!$val) {
+                $this->removeMIJSZPartner();
+            }
+            else {
+                $this->mijszpartner = $val;
+                if (!$this->duplication) {
+                    $this->setMIJSZPartnernev($val->getNev());
+                }
+            }
+        }
+    }
+
+    public function removeMIJSZPartner() {
+        if ($this->mijszpartner !== null) {
+            $this->mijszpartner = null;
+            if (!$this->duplication) {
+                $this->mijszpartnernev = '';
+            }
+        }
+    }
+
+    public function getMIJSZPartnernev() {
+        return $this->mijszpartnernev;
+    }
+
+    public function setMIJSZPartnernev($val) {
+        $this->mijszpartnernev = $val;
+    }
 
 }
