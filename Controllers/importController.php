@@ -2724,7 +2724,6 @@ class importController extends \mkwhelpers\Controller {
                         $o->setMit($szin);
                         \mkw\store::getEm()->persist($o);
                         \mkw\store::writelog($szin, 'legavenue_forditani.txt');
-                        \mkw\store::writelog($szin, 'legahiba.txt');
                     }
                     if (!$rep->find($meret)) {
                         $db++;
@@ -2732,7 +2731,6 @@ class importController extends \mkwhelpers\Controller {
                         $o->setMit($meret);
                         \mkw\store::getEm()->persist($o);
                         \mkw\store::writelog($meret, 'legavenue_forditani.txt');
-                        \mkw\store::writelog($meret, 'legahiba.txt');
                     }
                     if (($db % $batchsize) === 0) {
                         \mkw\store::getEm()->flush();
