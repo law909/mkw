@@ -2855,9 +2855,9 @@ class importController extends \mkwhelpers\Controller {
                                         }
                                         $valtozat = new \Entities\TermekValtozat();
                                         $valtozat->setAdatTipus1($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)));
-                                        $valtozat->setErtek1($this->getRepo('Entities\Szotar')->translate((string)$data->Color));
+                                        $valtozat->setErtek1($this->getRepo('Entities\Szotar')->translate(htmlspecialchars(strtolower((string)$data->Color))));
                                         $valtozat->setAdatTipus2($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)));
-                                        $valtozat->setErtek2($this->getRepo('Entities\Szotar')->translate((string)$data->Size));
+                                        $valtozat->setErtek2($this->getRepo('Entities\Szotar')->translate(htmlspecialchars(strtolower((string)$data->Size))));
                                         $valtozat->setIdegencikkszam($idegencikkszam);
                                         // kepek
                                         $imagelist = (array)$data->images;
@@ -2920,9 +2920,9 @@ class importController extends \mkwhelpers\Controller {
 
                                         $valtozat = new \Entities\TermekValtozat();
                                         $valtozat->setAdatTipus1($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)));
-                                        $valtozat->setErtek1($this->getRepo('Entities\Szotar')->translate((string)$data->Color));
+                                        $valtozat->setErtek1($this->getRepo('Entities\Szotar')->translate(htmlspecialchars(strtolower((string)$data->Color))));
                                         $valtozat->setAdatTipus2($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)));
-                                        $valtozat->setErtek2($this->getRepo('Entities\Szotar')->translate((string)$data->Size));
+                                        $valtozat->setErtek2($this->getRepo('Entities\Szotar')->translate(htmlspecialchars(strtolower((string)$data->Size))));
                                         $valtozat->setIdegencikkszam($idegencikkszam);
                                         $valtozat->setTermek($termek);
 
