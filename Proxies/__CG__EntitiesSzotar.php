@@ -176,6 +176,17 @@ class Szotar extends \Entities\Szotar implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
+
+        return parent::getId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getMit()
     {
         if ($this->__isInitialized__ === false) {

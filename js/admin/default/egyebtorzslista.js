@@ -1120,6 +1120,55 @@ $().ready(
             $(_mijszoklevelszint.pager + '_center').hide();
             $(_mijszoklevelszint.pager + '_right').hide();
 
+            // Szotar grid
+            var _szotar = {
+                grid: '#szotargrid',
+                pager: '#szotargridpager'
+            };
+            var szotargrid = $(_szotar.grid).jqGrid({
+                url: '/admin/szotar/jsonlist',
+                editurl: '/admin/szotar/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'mit', index: 'mit', label: 'Mit', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Mit:', elmsuffix: '*'}},
+                    {name: 'mire', index: 'mire', label: 'Mire', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        formoptions: {rowpos: 2, label: 'Mire:', elmsuffix: '*'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _szotar.pager,
+                sortname: 'mit',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Szótár'});
+            $(_szotar.grid).jqGrid('navGrid', _szotar.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_szotar.grid).jqGrid('navButtonAdd', _szotar.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    szotargrid[0].toggleToolbar();
+                }
+            });
+            $(_szotar.grid).jqGrid('navButtonAdd', _szotar.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    szotargrid[0].clearToolbar();
+                }
+            });
+            $(_szotar.grid).jqGrid('filterToolbar');
+            $(_szotar.pager + '_center').hide();
+            $(_szotar.pager + '_right').hide();
+
             // Altalanos
             $('.ui-search-toolbar').hide();
             $('.ui-jqgrid-titlebar').on('click', function(e) {

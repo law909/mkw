@@ -18,6 +18,13 @@ class Szotar {
     /**
      * @return mixed
      */
+    public function getId() {
+        return $this->mit;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getMit() {
         return $this->mit;
     }

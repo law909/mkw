@@ -50,6 +50,10 @@
                 <div id="jogcimgridpager"></div>
             </div>
         {/if}
+        <div class="egyebadat-grid">
+            <table id="szotargrid"></table>
+            <div id="szotargridpager"></div>
+        </div>
     </div>
     <div class="egyebadat-wrapper">
         <div class="egyebadat-grid">
