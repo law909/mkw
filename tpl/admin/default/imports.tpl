@@ -71,9 +71,13 @@
                 <a href="/admin/import/makszutov" class="js-makszutovimport">Makszutov</a>
                 <a href="/admin/import/silko" class="js-silkoimport">Silko&Co</a>
                 <a href="/admin/import/btech" class="js-btechimport">Btech</a>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <a href="/admin/import/legavenueszotar" class="js-legavenueszotarimport">Legavenue szótár</a>
                 <a href="/admin/import/legavenue" class="js-legavenueimport">Legavenue</a>
             </div>
-	<div class="matt-hseparator"></div>
+            <div class="matt-hseparator"></div>
             <div>
                 <a href="/admin/import/kressgep" class="js-kressgepimport">Kress gép</a>
                 <a href="/admin/import/kresstartozek" class="js-kresstartozekimport">Kress tartozék</a>

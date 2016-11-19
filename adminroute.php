@@ -418,6 +418,7 @@ $router->map('POST','/admin/import/delton', 'importController#deltonImport', 'ad
 //$router->map('POST','/admin/import/nomad', 'importController#nomadImport', 'adminnomadimport');
 $router->map('POST','/admin/import/reintex', 'importController#reintexImport', 'adminreinteximport');
 $router->map('POST','/admin/import/legavenue', 'importController#legavenueImport', 'adminlegavenueimport');
+$router->map('POST','/admin/import/legavenueszotar', 'importController#legavenueSzotar', 'adminlegavenueSzotar');
 $router->map('POST','/admin/import/tutisport', 'importController#tutisportImport', 'admintutisportimport');
 $router->map('POST','/admin/import/makszutov', 'importController#makszutovImport', 'adminmakszutovimport');
 $router->map('POST','/admin/import/silko', 'importController#silkoImport', 'adminsilkoimport');

@@ -747,7 +747,7 @@ class importController extends \mkwhelpers\Controller {
             \curl_exec($ch);
             fclose($fh);
 
-            $xml = simplexml_load_file(temppath . "nomad.xml");
+            $xml = simplexml_load_file("nomad.xml");
             if ($xml) {
                 $afa = \mkw\store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
                 $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
@@ -2685,158 +2685,393 @@ class importController extends \mkwhelpers\Controller {
 //        \unlink('siikerpartnerek.csv');
     }
 
-    public function legavenueImport() {
+    public function legavenueSzotar() {
         if (!$this->checkRunningImport(\mkw\consts::RunningLegavenueImport)) {
 
             $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 1);
 
-            $parentid = $this->params->getIntRequestParam('katid', 0);
-            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoLegavenue);
+            @\unlink('legavenue_forditani.txt');
+
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
             $dbig = $this->params->getIntRequestParam('dbig', 0);
-            $editleiras = $this->params->getBoolRequestParam('editleiras', false);
-            $createuj = $this->params->getBoolRequestParam('createuj', false);
-            $arszaz = $this->params->getNumRequestParam('arszaz', 100);
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-            //$urleleje = \mkw\store::changeDirSeparator();
-
-            //$path = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . $this->params->getStringRequestParam('path'));
-            $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
-            if ($mainpath) {
-                $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-            }
-            $path = $mainpath . $path;
-            $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-            $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-
-
             $ch = \curl_init('http://www.legavenueeurope.com/legavenue/xml_inventory');
-            $fh = fopen(temppath . 'legavenue.xml', 'w');
+            $fh = fopen('legavenue.xml', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_exec($ch);
             fclose($fh);
 
-            $xml = simplexml_load_file(temppath . "legavenue.xml");
+            $db = 0;
+            $xml = simplexml_load_file("legavenue.xml");
             if ($xml) {
-                $afa = \mkw\store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
-                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
-                $termekdb = 0;
-                while (($termekdb < $dbtol)) {
-                    $termekdb++;
-                }
-                while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
-                    $data = $products[$termekdb];
-                    $termekdb++;
-                    if ($data[6]) {
-                        $katnev = $this->toutf(trim($data[6]));
-                    }
-                    elseif ($data[5]) {
-                        $katnev = $this->toutf(trim($data[5]));
-                    }
-                    elseif ($data[4]) {
-                        $katnev = $this->toutf(trim($data[4]));
-                    }
-                    $parent = $this->createKategoria($katnev, $parentid);
+                $products = $xml;
+                $maxrow = count($products);
+                if (!$dbig) {
+                    $dbig = $maxrow;
                 }
 
-                $termekdb = 0;
-                while (($termekdb < $dbtol)) {
-                    $termekdb++;
-                }
-                while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
-                    $data = $products[$termekdb];
-                    $termekdb++;
-                    if ($data->sku) {
-                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data->catalog_first, 'idegencikkszam' => $data->sku));
-                        if (!$termek) {
+                $rep = $this->getRepo('Entities\Szotar');
 
-                            if ($createuj) {
-
-                                if ($data[6]) {
-                                    $katnev = $this->toutf(trim($data[6]));
-                                }
-                                elseif ($data[5]) {
-                                    $katnev = $this->toutf(trim($data[5]));
-                                }
-                                elseif ($data[4]) {
-                                    $katnev = $this->toutf(trim($data[4]));
-                                }
-                                $urlkatnev = \mkw\store::urlize($katnev);
-                                \mkw\store::createDirectoryRecursively($path . $urlkatnev);
-                                $parent = $this->createKategoria($katnev, $parentid);
-                                $termeknev = $this->toutf(trim($data[0]));
-
-                                $hosszuleiras = $this->toutf(trim($data[3]));
-                                $rovidleiras = $this->toutf(trim($data[2]));
-
-                                $termek = new \Entities\Termek();
-                                $termek->setFuggoben(true);
-                                $termek->setMe($this->toutf(trim($data[9])));
-                                $termek->setNev($termeknev);
-                                $termek->setLeiras($hosszuleiras);
-                                $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
-                                $termek->setCikkszam($data[1]);
-                                $termek->setIdegencikkszam($data[1]);
-                                $termek->setTermekfa1($parent);
-                                $termek->setVtsz($vtsz[0]);
-                                $termek->setHparany(3);
-                                if ($gyarto) {
-                                    $termek->setGyarto($gyarto);
-                                }
-                                // kepek
-
-                                $imgurl = trim($data[14]);
-                                if (!strpos($imgurl, 'http://')) {
-                                    $imgurl = 'http://' . $imgurl;
-                                }
-                                $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegenkod);
-                                $kepnev = \mkw\store::urlize($termeknev . '_' . $idegenkod);
-
-                                $extension = \mkw\store::getExtension($imgurl);
-                                $imgpath = $nameWithoutExt . '.' . $extension;
-
-                                $ch = \curl_init($imgurl);
-                                $ih = fopen($imgpath, 'w');
-                                \curl_setopt($ch, CURLOPT_FILE, $ih);
-                                \curl_exec($ch);
-                                fclose($ih);
-
-                                foreach ($this->settings['sizes'] as $k => $size) {
-                                    $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
-                                    $matches = explode('x', $size);
-                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
-                                }
-                                $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
-                                $termek->setKepleiras($termeknev);
-                            }
-                        }
-                        else {
-                            $termek = $termek[0];
-                            if ($editleiras) {
-                                $hosszuleiras = $this->toutf(trim($data[3]));
-                                $termek->setLeiras($hosszuleiras);
-                                //$rovidleiras = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
-                                //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
-                            }
-                        }
-                        //$termek->setNemkaphato(($data[6] * 1) == 0);
-                        if ($termek || $createuj) {
-//                        $termek->setAfa($afa[0]);
-                            $termek->setNetto($data[7] * 1 * $arszaz / 100);
-                            $termek->setBrutto(round($termek->getBrutto(), -1));
-                            \mkw\store::getEm()->persist($termek);
-                            \mkw\store::getEm()->flush();
-                        }
+                for ($row = $dbtol; $row < $dbig; ++$row) {
+                    $data = $products->Row[$row];
+                    $szin = strtolower((string)$data->Color);
+                    $meret = strtolower((string)$data->Size);
+                    if (!$rep->find($szin)) {
+                        $db++;
+                        $o = new \Entities\Szotar();
+                        $o->setMit($szin);
+                        \mkw\store::getEm()->persist($o);
+                        \mkw\store::writelog($szin, 'legavenue_forditani.txt');
+                        \mkw\store::writelog($szin, 'legahiba.txt');
+                    }
+                    if (!$rep->find($meret)) {
+                        $db++;
+                        $o = new \Entities\Szotar();
+                        $o->setMit($meret);
+                        \mkw\store::getEm()->persist($o);
+                        \mkw\store::writelog($meret, 'legavenue_forditani.txt');
+                        \mkw\store::writelog($meret, 'legahiba.txt');
+                    }
+                    if (($db % $batchsize) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
                     }
                 }
+                \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->clear();
             }
-            fclose($fh);
-            \unlink(temppath . 'legavenue.xml');
+            \unlink('legavenue.xml');
+
+            if ($db) {
+                echo json_encode(array('url' => '/legavenue_forditani.txt'));
+            }
 
             $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 0);
+        }
+        else {
+            echo json_encode(array('msg' => 'Már fut ilyen import.'));
+        }
+    }
+
+    public function legavenueImport() {
+        if (!$this->checkRunningImport(\mkw\consts::RunningLegavenueImport)) {
+
+            if (!$this->getRepo('Entities\Szotar')->isAllTranslated()) {
+
+                $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 1);
+
+                @\unlink('legavenue_fuggoben.txt');
+
+                $parentid = $this->params->getIntRequestParam('katid', 0);
+                $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoLegavenue);
+                $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+                $dbig = $this->params->getIntRequestParam('dbig', 0);
+                $editleiras = $this->params->getBoolRequestParam('editleiras', false);
+                $createuj = $this->params->getBoolRequestParam('createuj', false);
+                $arszaz = $this->params->getNumRequestParam('arszaz', 100);
+                $batchsize = $this->params->getNumRequestParam('batchsize', 20);
+
+                $urleleje = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathLegavenue));
+
+                $path = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathLegavenue));
+                $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
+                if ($mainpath) {
+                    $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+                }
+                $path = $mainpath . $path;
+                $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+                $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+
+                $ch = \curl_init('http://www.legavenueeurope.com/legavenue/xml_inventory');
+                $fh = fopen('legavenue.xml', 'w');
+                \curl_setopt($ch, CURLOPT_FILE, $fh);
+                \curl_exec($ch);
+                fclose($fh);
+
+                $xml = simplexml_load_file("legavenue.xml");
+                if ($xml) {
+                    $vtsz = $this->getRepo('Entities\Vtsz')->findBySzam('-');
+                    $gyarto = $this->getRepo('Entities\Partner')->find($gyartoid);
+
+                    $products = $xml;
+                    $maxrow = count($products);
+                    if (!$dbig) {
+                        $dbig = $maxrow;
+                    }
+
+                    for ($row = $dbtol; $row < $dbig; ++$row) {
+                        $data = $products->Row[$row];
+                        $parent = $this->createKategoria((string)$data->class, $parentid);
+                    }
+
+                    $termekdb = 0;
+
+                    for ($row = $dbtol; $row < $dbig; ++$row) {
+
+                        $termekdb++;
+
+                        $data = $products->Row[$row];
+
+                        $kaphato = $data->qty_on_hand * 1 > 0;
+                        $ar = $data->unit_price * 1 * 650;
+                        $ar = round($ar, -1);
+                        $idegencikkszam = (string)$data->sku;
+                        $style = (string)$data->Style;
+
+                        if ($idegencikkszam) {
+                            $termek = false;
+                            $valtozat = false;
+                            $valtozatok = $this->getRepo('Entities\TermekValtozat')->findBy(array('idegencikkszam' => $idegencikkszam));
+                            if ($valtozatok) {
+                                foreach ($valtozatok as $v) {
+                                    $termek = $v->getTermek();
+                                    if ($termek && $termek->getGyartoId() == $gyartoid) {
+                                        $valtozat = $v;
+                                        break;
+                                    }
+                                }
+                            }
+                            else {
+                                $termek = $this->getRepo('Entities\Termek')->findBy(array('idegencikkszam' => $idegencikkszam, 'gyarto' => $gyartoid));
+                            }
+                            if (!$termek) {
+
+                                if ($createuj) {
+
+                                    $katnev = (string)$data->class;
+                                    $urlkatnev = \mkw\store::urlize($katnev);
+                                    \mkw\store::createDirectoryRecursively($path . $urlkatnev);
+                                    $parent = $this->createKategoria($katnev, $parentid);
+
+                                    $termeknev = trim((string)$data->Short_Desc);
+                                    $rovidleiras = trim((string)$data->Short_Desc);
+
+                                    $termek = $this->getRepo('Entities\Termek')->findBy(array('cikkszam' => $style, 'gyarto' => $gyartoid));
+                                    if ($termek) {
+                                        if (is_array($termek)) {
+                                            $termek = $termek[0];
+                                        }
+                                        $valtozat = new \Entities\TermekValtozat();
+                                        $valtozat->setAdatTipus1($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)));
+                                        $valtozat->setErtek1($this->getRepo('Entities\Szotar')->translate((string)$data->Color));
+                                        $valtozat->setAdatTipus2($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)));
+                                        $valtozat->setErtek2($this->getRepo('Entities\Szotar')->translate((string)$data->Size));
+                                        $valtozat->setIdegencikkszam($idegencikkszam);
+                                        // kepek
+                                        $imagelist = (array)$data->images;
+                                        if (is_array($imagelist['image'])) {
+                                            $imagelist = $imagelist['image'];
+                                        }
+                                        $imgcnt = 0;
+                                        foreach ($imagelist as $imgurl) {
+                                            $imgcnt++;
+
+                                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
+                                            $kepnev = \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
+                                            if (count($imagelist) > 1) {
+                                                $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
+                                                $kepnev = $kepnev . '_' . $imgcnt;
+                                            }
+
+                                            $extension = \mkw\store::getExtension($imgurl);
+                                            $imgpath = $nameWithoutExt . '.' . $extension;
+
+                                            $ch = \curl_init($imgurl);
+                                            $ih = fopen($imgpath, 'w');
+                                            \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                            \curl_exec($ch);
+                                            fclose($ih);
+
+                                            foreach ($this->settings['sizes'] as $k => $size) {
+                                                $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                                $matches = explode('x', $size);
+                                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                            }
+                                            $kep = new \Entities\TermekKep();
+                                            $termek->addTermekKep($kep);
+                                            $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                            $kep->setLeiras($termeknev);
+                                            if ($imgcnt === 1) {
+                                                $valtozat->setKep($kep);
+                                            }
+                                            \mkw\store::getEm()->persist($kep);
+                                        }
+                                        $valtozat->setTermek($termek);
+                                        \mkw\store::getEm()->persist($valtozat);
+                                    }
+                                    else {
+                                        $termek = new \Entities\Termek();
+                                        $termek->setFuggoben(true);
+                                        $termek->setMe('db');
+                                        $termek->setNev($termeknev);
+                                        $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
+                                        $termek->setCikkszam($style);
+                                        $termek->setIdegencikkszam($idegencikkszam);
+                                        $termek->setTermekfa1($parent);
+                                        $termek->setVtsz($vtsz[0]);
+                                        $termek->setHparany(3);
+                                        if ($gyarto) {
+                                            $termek->setGyarto($gyarto);
+                                        }
+
+                                        $termek->setBrutto($ar);
+
+                                        $valtozat = new \Entities\TermekValtozat();
+                                        $valtozat->setAdatTipus1($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)));
+                                        $valtozat->setErtek1($this->getRepo('Entities\Szotar')->translate((string)$data->Color));
+                                        $valtozat->setAdatTipus2($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)));
+                                        $valtozat->setErtek2($this->getRepo('Entities\Szotar')->translate((string)$data->Size));
+                                        $valtozat->setIdegencikkszam($idegencikkszam);
+                                        $valtozat->setTermek($termek);
+
+                                        // kepek
+                                        $imagelist = (array)$data->images;
+                                        if (is_array($imagelist['image'])) {
+                                            $imagelist = $imagelist['image'];
+                                        }
+                                        $imgcnt = 0;
+                                        foreach ($imagelist as $imgurl) {
+                                            $imgcnt++;
+
+                                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
+                                            $kepnev = \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
+                                            if (count($imagelist) > 1) {
+                                                $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
+                                                $kepnev = $kepnev . '_' . $imgcnt;
+                                            }
+
+                                            $extension = \mkw\store::getExtension($imgurl);
+                                            $imgpath = $nameWithoutExt . '.' . $extension;
+
+                                            $ch = \curl_init($imgurl);
+                                            $ih = fopen($imgpath, 'w');
+                                            \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                            \curl_exec($ch);
+                                            fclose($ih);
+
+                                            foreach ($this->settings['sizes'] as $k => $size) {
+                                                $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                                $matches = explode('x', $size);
+                                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                            }
+                                            if (((count($imagelist) > 1) && ($imgcnt == 1)) || (count($imagelist) == 1)) {
+                                                $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                                $termek->setKepleiras($termeknev);
+                                                $valtozat->setTermekfokep(true);
+                                            }
+                                            else {
+                                                $kep = new \Entities\TermekKep();
+                                                $termek->addTermekKep($kep);
+                                                $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                                $kep->setLeiras($termeknev);
+                                                $valtozat->setKep($kep);
+                                                \mkw\store::getEm()->persist($kep);
+                                            }
+                                        }
+                                        \mkw\store::getEm()->persist($valtozat);
+                                        \mkw\store::getEm()->persist($termek);
+                                    }
+                                }
+                            }
+                            else {
+                                if (is_array($termek)) {
+                                    $termek = $termek[0];
+                                }
+                                if ($valtozat) {
+                                    if ($termek) {
+                                        //$valtozat->setBrutto($ar - $termek->getBrutto());
+                                    }
+                                    if (!$kaphato) {
+                                        if ($valtozat->getKeszlet() <= 0) {
+                                            $valtozat->setElerheto(false);
+                                        }
+                                    }
+                                    else {
+                                        $valtozat->setElerheto(true);
+                                    }
+                                    \mkw\store::getEm()->persist($valtozat);
+                                    if ($termek) {
+                                        $egysemkaphato = true;
+                                        foreach ($termek->getValtozatok() as $valt) {
+                                            if ($valt->getElerheto()) {
+                                                $egysemkaphato = false;
+                                            }
+                                        }
+                                        $termek->setNemkaphato($egysemkaphato);
+                                        \mkw\store::getEm()->persist($termek);
+                                    }
+                                }
+                                else {
+                                    if ($termek) {
+                                        if (!$kaphato) {
+                                            if ($termek->getKeszlet()) {
+                                                $termek->setNemkaphato(true);
+                                            }
+                                        }
+                                        else {
+                                            $termek->setNemkaphato(false);
+                                        }
+                                        //$termek->setBrutto($ar);
+                                        \mkw\store::getEm()->persist($termek);
+                                    }
+                                }
+                            }
+                        }
+                        if (($termekdb % $batchsize) === 0) {
+                            \mkw\store::getEm()->flush();
+                            \mkw\store::getEm()->clear();
+                            $vtsz = $this->getRepo('Entities\Vtsz')->findBySzam('-');
+                            $gyarto = $this->getRepo('Entities\Partner')->find($gyartoid);
+                        }
+                    }
+                    \mkw\store::getEm()->flush();
+                    \mkw\store::getEm()->clear();
+
+                    $lettfuggoben = false;
+                    if ($gyarto) {
+                        $idegenkodok = array();
+                        foreach ($products as $data) {
+                            $idegenkodok[] = (string)$data->sku;
+                        }
+                        if ($idegenkodok) {
+                            $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
+                            $termekdb = 0;
+                            foreach ($termekek as $t) {
+                                if ($t['idegencikkszam'] && !in_array($t['idegencikkszam'], $idegenkodok)) {
+                                    /** @var \Entities\Termek $termek */
+                                    $termek = $this->getRepo('Entities\Termek')->find($t['id']);
+                                    if ($termek && $termek->getKeszlet() <= 0) {
+                                        $termekdb++;
+                                        \mkw\store::writelog('idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'legavenue_fuggoben.txt');
+                                        $lettfuggoben = true;
+                                        $termek->setFuggoben(true);
+                                        $termek->setInaktiv(true);
+                                        \mkw\store::getEm()->persist($termek);
+                                        if (($termekdb % $batchsize) === 0) {
+                                            \mkw\store::getEm()->flush();
+                                            \mkw\store::getEm()->clear();
+                                        }
+                                    }
+                                }
+                            }
+                            \mkw\store::getEm()->flush();
+                            \mkw\store::getEm()->clear();
+                        }
+                    }
+                    if ($lettfuggoben) {
+                        echo json_encode(array('url' => '/legavenue_fuggoben.txt'));
+                    }
+                }
+                fclose($fh);
+                \unlink('legavenue.xml');
+
+                $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 0);
+            }
+            else {
+                echo json_encode(array('msg' => 'Nincs minden lefordítva a szótárban.'));
+            }
         }
         else {
             echo json_encode(array('msg' => 'Már fut ilyen import.'));
