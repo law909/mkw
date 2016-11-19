@@ -2716,8 +2716,8 @@ class importController extends \mkwhelpers\Controller {
 
                 for ($row = $dbtol; $row < $dbig; ++$row) {
                     $data = $products->Row[$row];
-                    $szin = strtolower((string)$data->Color);
-                    $meret = strtolower((string)$data->Size);
+                    $szin = htmlspecialchars(strtolower((string)$data->Color));
+                    $meret = htmlspecialchars(strtolower((string)$data->Size));
                     if (!$rep->find($szin)) {
                         $db++;
                         $o = new \Entities\Szotar();
