@@ -3017,15 +3017,17 @@ class importController extends \mkwhelpers\Controller {
                                 }
                             }
                         }
-                        if (($termekdb % $batchsize) === 0) {
+                        //if (($termekdb % $batchsize) === 0) {
+
                             \mkw\store::getEm()->flush();
                             \mkw\store::getEm()->clear();
                             $vtsz = $this->getRepo('Entities\Vtsz')->findBySzam('-');
                             $gyarto = $this->getRepo('Entities\Partner')->find($gyartoid);
-                        }
+                        //}
                     }
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
+                    $gyarto = $this->getRepo('Entities\Partner')->find($gyartoid);
 
                     $lettfuggoben = false;
                     if ($gyarto) {
@@ -3062,7 +3064,6 @@ class importController extends \mkwhelpers\Controller {
                         echo json_encode(array('url' => '/legavenue_fuggoben.txt'));
                     }
                 }
-                fclose($fh);
                 \unlink('legavenue.xml');
 
                 $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 0);
