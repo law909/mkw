@@ -80,6 +80,8 @@ class consts {
     const Hasonlotermekdb = 'hasonlotermekdb';
     const Hasonlotermekarkulonbseg = 'hasonlotermekarkulonbseg';
 
+    const SzallitasiFeltetelSablon = 'szallfeltsablon';
+
     const Arfilterstep = 'arfilterstep';
     const Fooldalhirdb = 'fooldalhirdb';
     const Termeklistatermekdb = 'termeklistatermekdb';

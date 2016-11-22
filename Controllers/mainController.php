@@ -192,6 +192,10 @@ class mainController extends \mkwhelpers\Controller {
                     foreach ($t as $k => $v) {
                         $this->view->setVar($k, $v);
                     }
+                    $statlap = $this->getRepo('Entities\Statlap')->find(\mkw\store::getParameter(\mkw\consts::SzallitasiFeltetelSablon, 0));
+                    if ($statlap) {
+                        $this->view->setVar('szallitasifeltetelsablon', $statlap->getSzoveg());
+                    }
                     $this->view->printTemplateResult(true);
                 }
                 else {

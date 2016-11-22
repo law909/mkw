@@ -147,4 +147,17 @@ class statlapController extends \mkwhelpers\MattableController {
         $mc->show404('HTTP/1.1 410 Gone');
     }
 
+    public function getSelectList($selid) {
+        $rec = $this->getRepo()->getAll(array(), array('oldalcim' => 'ASC'));
+        $res = array();
+        foreach ($rec as $sor) {
+            $res[] = array(
+                'id' => $sor->getId(),
+                'caption' => $sor->getOldalcim(),
+                'selected' => ($sor->getId() == $selid)
+            );
+        }
+        return $res;
+    }
+
 }

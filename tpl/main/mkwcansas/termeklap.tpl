@@ -170,6 +170,9 @@
                                 {if (count($termek.hasonlotermekek)!=0)}<li><a href="#hasonloTermekTab" data-toggle="tab">{t('Hasonló termékek')}</a></li>{/if}
                                 <!--li><a href="#ertekelesTab" data-toggle="tab">{t('Értékelések')}</a></li>
                                 <li><a href="#hasonlotermekTab" data-toggle="tab">{t('Hasonló termékek')}</a></li-->
+                                {if ($szallitasifeltetelsablon)}
+                                <li><a href="#szallitasTab" data-toggle="tab">{t('Szállítás és fizetés')}</a></li>
+                                {/if}
                             </ul>
                             <div class="tab-content keret">
                                 <div id="leirasTab" class="tab-pane active">
@@ -266,6 +269,11 @@
                                 <div id="hasonlotermekTab" class="tab-pane">
                                     <p>mindjart itt lesznek a hasonlo termekek</p>
                                 </div-->
+                                {if ($szallitasifeltetelsablon)}
+                                <div id="szallitasTab" class="tab-pane">
+                                    {$szallitasifeltetelsablon}
+                                </div>
+                                {/if}
                             </div>
                         </div>
                     </div>

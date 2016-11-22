@@ -182,6 +182,15 @@
                                 {/foreach}
                             </select>
                         </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="SzallitasiFeltetelSablonEdit">{t('Szállítási felt. sablon')}:</label></span>
+                            <select id="SzallitasiFeltetelSablonEdit" name="szallitasifeltetelsablon">
+                                <option value="">{t('válasszon')}</option>
+                                {foreach $szallitasifeltetelstatlaplist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
                     </div>
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <div class="setuprow">

@@ -85,6 +85,11 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::IngyenszallitasJelolo);
         $view->setVar(\mkw\consts::IngyenszallitasJelolo, ($p ? $p->getErtek() : ''));
 
+        $p = $repo->find(\mkw\consts::SzallitasiFeltetelSablon);
+        $szallstatlap = new statlapController($this->params);
+        $view->setVar('szallitasifeltetelstatlaplist', $szallstatlap->getSelectList(($p ? $p->getErtek() : 0)));
+
+
         $p = $repo->find(\mkw\consts::SzallitasiKtg1Tol);
         $view->setVar(\mkw\consts::SzallitasiKtg1Tol, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::SzallitasiKtg1Ig);
@@ -465,6 +470,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::BelsoUzletkoto, '');
+        }
+
+        $szallfeltsablon = \mkw\store::getEm()->getRepository('Entities\Statlap')->find($this->params->getIntRequestParam('szallitasifeltetelsablon', 0));
+        if ($szallfeltsablon) {
+            $this->setObj(\mkw\consts::SzallitasiFeltetelSablon, $szallfeltsablon->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::SzallitasiFeltetelSablon, '');
         }
 
         $this->setObj(\mkw\consts::Miniimagesize, $this->params->getIntRequestParam('miniimagesize'));
