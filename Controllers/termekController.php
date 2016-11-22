@@ -293,6 +293,7 @@ class termekController extends \mkwhelpers\MattableController {
 					$obj->addTermekKep($kep);
 					$kep->setUrl($this->params->getStringRequestParam('kepurl_' . $kepid));
 					$kep->setLeiras($this->params->getStringRequestParam('kepleiras_' . $kepid));
+                    $kep->setRejtett($this->params->getBoolRequestParam('keprejtett_' . $kepid));
 					$this->getEm()->persist($kep);
 				}
 				elseif ($oper == 'edit') {
@@ -300,6 +301,7 @@ class termekController extends \mkwhelpers\MattableController {
 					if ($kep) {
 						$kep->setUrl($this->params->getStringRequestParam('kepurl_' . $kepid));
 						$kep->setLeiras($this->params->getStringRequestParam('kepleiras_' . $kepid));
+                        $kep->setRejtett($this->params->getBoolRequestParam('keprejtett_' . $kepid));
 						$this->getEm()->persist($kep);
 					}
 				}

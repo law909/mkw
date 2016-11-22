@@ -546,7 +546,7 @@ class Termek {
         }
 
         $altomb = array();
-        foreach ($this->getTermekKepek() as $kep) {
+        foreach ($this->getTermekKepek(true) as $kep) {
             $egyed = array();
             $egyed['kepurl'] = $kep->getUrlLarge();
             $egyed['kozepeskepurl'] = $kep->getUrlMedium();
@@ -1196,7 +1196,16 @@ class Termek {
         return $ret;
     }
 
-    public function getTermekKepek() {
+    public function getTermekKepek($csaklathato = false) {
+        if ($csaklathato) {
+            $r = array();
+            foreach ($this->termekkepek as $kep) {
+                if (!$kep->getRejtett()) {
+                    $r[] = $kep;
+                }
+            }
+            return $r;
+        }
         return $this->termekkepek;
     }
 

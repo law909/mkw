@@ -17,6 +17,10 @@
                             <td><input id="KepLeirasEdit_{$kep.id}" name="kepleiras_{$kep.id}" type="text" size="70" value="{$kep.leiras}"></td>
                             <td><a class="js-kepdelbutton" href="#" data-id="{$kep.id}" title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></td>
                         </tr>
+                        <tr>
+                            <td><label for="KepRejtettEdit_{$kep.id}">{t('Rejtett')}:</label></td>
+                            <td><input id="KepRejtettEdit_{$kep.id}" name="keprejtett_{$kep.id}" type="checkbox"{if ($kep.rejtett)} checked="checked"{/if}></td>
+                        </tr>
                     </tbody>
                 </table>
             </td>

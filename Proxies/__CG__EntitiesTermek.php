@@ -1280,12 +1280,12 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getTermekKepek()
+    public function getTermekKepek($csaklathato = false)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekKepek', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekKepek', [$csaklathato]);
 
-        return parent::getTermekKepek();
+        return parent::getTermekKepek($csaklathato);
     }
 
     /**

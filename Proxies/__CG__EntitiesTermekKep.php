@@ -64,10 +64,10 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'url', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'valtozatok'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'url', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'valtozatok', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'rejtett'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'url', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'valtozatok'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'id', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'created', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'url', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'valtozatok', '' . "\0" . 'Entities\\TermekKep' . "\0" . 'rejtett'];
     }
 
     /**
@@ -340,6 +340,28 @@ class TermekKep extends \Entities\TermekKep implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRejtett()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRejtett', []);
+
+        return parent::getRejtett();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setRejtett($rejtett)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRejtett', [$rejtett]);
+
+        return parent::setRejtett($rejtett);
     }
 
 }

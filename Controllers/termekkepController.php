@@ -30,12 +30,14 @@ class termekkepController extends \mkwhelpers\MattableController {
         $x['urlmedium'] = $t->getUrlMedium();
         $x['urllarge'] = $t->getUrlLarge();
         $x['leiras'] = $t->getLeiras();
+        $x['rejtett'] = $t->getRejtett();
         return $x;
     }
 
     protected function setFields($obj) {
         $obj->setLeiras($this->params->getStringRequestParam('leiras'));
         $obj->setUrl($this->params->getStringRequestParam('url'));
+        $obj->setRejtett($this->params->getBoolRequestParam('rejtett'));
         return $obj;
     }
 

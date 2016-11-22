@@ -36,6 +36,8 @@ class TermekKep {
 	private $leiras;
 	/** @ORM\OneToMany(targetEntity="TermekValtozat",mappedBy="kep",cascade={"persist"}) */
 	private $valtozatok;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $rejtett = false;
 
 	public function getId() {
 		return $this->id;
@@ -141,6 +143,21 @@ class TermekKep {
 	}
 
 	public function getCreated() {
-		return $this->created;
-	}
+        return $this->created;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRejtett() {
+        return $this->rejtett;
+    }
+
+    /**
+     * @param mixed $rejtett
+     */
+    public function setRejtett($rejtett) {
+        $this->rejtett = $rejtett;
+    }
+
 }
