@@ -389,15 +389,20 @@ class Termek {
         $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['ingyenszallitas'] = (\mkw\store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
-        if ($this->szallitasiido) {
-            $x['szallitasiido'] = $this->szallitasiido;
+        if ($this->getKeszlet() > 0) {
+            $x['szallitasiido'] = 1;
         }
         else {
-            if ($this->gyarto && $this->gyarto->getSzallitasiido()) {
-                $x['szallitasiido'] = $this->gyarto->getSzallitasiido();
+            if ($this->szallitasiido) {
+                $x['szallitasiido'] = $this->szallitasiido;
             }
             else {
-                $x['szallitasiido'] = 0;
+                if ($this->gyarto && $this->gyarto->getSzallitasiido()) {
+                    $x['szallitasiido'] = $this->gyarto->getSzallitasiido();
+                }
+                else {
+                    $x['szallitasiido'] = 0;
+                }
             }
         }
 
@@ -533,15 +538,20 @@ class Termek {
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['ingyenszallitas'] = (\mkw\store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
         $x['husegpont'] = floor($x['bruttohuf'] * $this->getHparany() / 100);
-        if ($this->szallitasiido) {
-            $x['szallitasiido'] = $this->szallitasiido;
+        if ($this->getKeszlet() > 0) {
+            $x['szallitasiido'] = 1;
         }
         else {
-            if ($this->gyarto && $this->gyarto->getSzallitasiido()) {
-                $x['szallitasiido'] = $this->gyarto->getSzallitasiido();
+            if ($this->szallitasiido) {
+                $x['szallitasiido'] = $this->szallitasiido;
             }
             else {
-                $x['szallitasiido'] = 0;
+                if ($this->gyarto && $this->gyarto->getSzallitasiido()) {
+                    $x['szallitasiido'] = $this->gyarto->getSzallitasiido();
+                }
+                else {
+                    $x['szallitasiido'] = 0;
+                }
             }
         }
 
