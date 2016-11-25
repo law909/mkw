@@ -226,7 +226,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             }
         }
 
-        if (\mkw\store::isFakeKintlevoseg()) {
+        if (\mkw\store::isFakeKintlevoseg() && ($lejartfilter === 1 || $lejartfilter === 2)) {
             $ret = $this->getFakeData($ret);
         }
         return $ret;
