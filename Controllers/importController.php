@@ -374,11 +374,11 @@ class importController extends \mkwhelpers\Controller {
                                 if ($termek->getKeszlet() <= 0) {
                                     $termek->setNemkaphato(($data[$this->n('g')] * 1) == 0);
                                 }
-//                        $termek->setAfa($afa[0]);
-                                $termek->setNetto($data[$this->n('d')] * 1 * $arszaz / 100);
-                                $termek->setBrutto(round($termek->getBrutto(), -1));
+                                if (!$termek->getAkcios()) {
+                                    $termek->setNetto($data[$this->n('d')] * 1 * $arszaz / 100);
+                                    $termek->setBrutto(round($termek->getBrutto(), -1));
+                                }
                                 \mkw\store::getEm()->persist($termek);
-//                        \mkw\store::getEm()->flush();
                             }
                         }
                         else {
@@ -390,7 +390,6 @@ class importController extends \mkwhelpers\Controller {
                                     $termek->setLathato(false);
                                     \mkw\store::getEm()->persist($termek);
                                 }
-//                        \mkw\store::getEm()->flush();
                             }
                         }
                         if (($termekdb % $batchsize) === 0) {
@@ -644,15 +643,17 @@ class importController extends \mkwhelpers\Controller {
                                 else {
                                     $termek->setNemkaphato(false);
                                 }
-                                $kiskerar = $data[7] * 1;
-                                $nagykerar = $data[8] * 1;
-                                if (($kiskerar / $nagykerar * 100 < 115) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < 115)) {
-                                    $termek->setNetto($nagykerar * 115 / 100);
+                                if (!$termek->getAkcios()) {
+                                    $kiskerar = $data[7] * 1;
+                                    $nagykerar = $data[8] * 1;
+                                    if (($kiskerar / $nagykerar * 100 < 115) || ($kiskerar / ($nagykerar * $arszaz / 100) * 100 < 115)) {
+                                        $termek->setNetto($nagykerar * 115 / 100);
+                                    }
+                                    else {
+                                        $termek->setNetto($kiskerar * $arszaz / 100);
+                                    }
+                                    $termek->setBrutto(round($termek->getBrutto(), -1));
                                 }
-                                else {
-                                    $termek->setNetto($kiskerar * $arszaz / 100);
-                                }
-                                $termek->setBrutto(round($termek->getBrutto(), -1));
                                 \mkw\store::getEm()->persist($termek);
                                 // \mkw\store::getEm()->flush();
                             }
@@ -856,9 +857,10 @@ class importController extends \mkwhelpers\Controller {
                         }
                         //$termek->setNemkaphato(($data[6] * 1) == 0);
                         if ($termek || $createuj) {
-//                        $termek->setAfa($afa[0]);
-                            $termek->setNetto($data[7] * 1 * $arszaz / 100);
-                            $termek->setBrutto(round($termek->getBrutto(), -1));
+                            if (!$termek->getAkcios()) {
+                                $termek->setNetto($data[7] * 1 * $arszaz / 100);
+                                $termek->setBrutto(round($termek->getBrutto(), -1));
+                            }
                             \mkw\store::getEm()->persist($termek);
                             \mkw\store::getEm()->flush();
                         }
@@ -936,10 +938,10 @@ class importController extends \mkwhelpers\Controller {
                             }
                         }
                         if ($termek) {
-                            //$termek->setAfa($afa[0]);
-                            $termek->setBrutto(round($data[$this->n('i')] * 1 * $arszaz / 100, -1));
+                            if (!$termek->getAkcios()) {
+                                $termek->setBrutto(round($data[$this->n('i')] * 1 * $arszaz / 100, -1));
+                            }
                             \mkw\store::getEm()->persist($termek);
-//                        \mkw\store::getEm()->flush();
                         }
                     }
                     if (($termekdb % $batchsize) === 0) {
@@ -1030,10 +1032,10 @@ class importController extends \mkwhelpers\Controller {
                             }
                             if ($termek) {
                                 $termek->setCikkszam($data[$this->n('a')]);
-                                //$termek->setAfa($afa[0]);
-                                $termek->setBrutto(round($data[$this->n('e')] * 1 * $arszaz / 100, -1));
+                                if (!$termek->getAkcios()) {
+                                    $termek->setBrutto(round($data[$this->n('e')] * 1 * $arszaz / 100, -1));
+                                }
                                 \mkw\store::getEm()->persist($termek);
-//                            \mkw\store::getEm()->flush();
                             }
                         }
                         else {
@@ -1044,7 +1046,6 @@ class importController extends \mkwhelpers\Controller {
                                     $termek->setLathato(false);
                                     \mkw\store::getEm()->persist($termek);
                                 }
-//                            \mkw\store::getEm()->flush();
                             }
                         }
                     }
@@ -1245,9 +1246,11 @@ class importController extends \mkwhelpers\Controller {
                             }
                             if ($valtozat) {
                                 if ($termek) {
-                                    $ar = $data[$this->n('g')] * 1 * $arszaz / 100;
-                                    $ar = round($ar, -1);
-                                    $valtozat->setBrutto($ar - $termek->getBrutto());
+                                    if (!$termek->getAkcios()) {
+                                        $ar = $data[$this->n('g')] * 1 * $arszaz / 100;
+                                        $ar = round($ar, -1);
+                                        $valtozat->setBrutto($ar - $termek->getBrutto());
+                                    }
                                 }
                                 if (!$kaphato) {
                                     if ($valtozat->getKeszlet() <= 0) {
@@ -1282,7 +1285,9 @@ class importController extends \mkwhelpers\Controller {
                                     else {
                                         $termek->setNemkaphato(false);
                                     }
-                                    $termek->setBrutto(round($data[$this->n('g')] * 1 * $arszaz / 100, -1));
+                                    if (!$termek->getAkcios()) {
+                                        $termek->setBrutto(round($data[$this->n('g')] * 1 * $arszaz / 100, -1));
+                                    }
                                     \mkw\store::getEm()->persist($termek);
                                 }
                             }
@@ -1474,7 +1479,9 @@ class importController extends \mkwhelpers\Controller {
                     else {
                         $termek->setNemkaphato(false);
                     }
-                    $termek->setBrutto(round($sheet->getCell('E' . $row)->getValue() * 1 * $arszaz / 100, -1));
+                    if (!$termek->getAkcios()) {
+                        $termek->setBrutto(round($sheet->getCell('E' . $row)->getValue() * 1 * $arszaz / 100, -1));
+                    }
                     \mkw\store::getEm()->persist($termek);
                 }
 
@@ -1721,7 +1728,7 @@ class importController extends \mkwhelpers\Controller {
                                 else {
                                     $termek->setNemkaphato(false);
                                 }
-                                if ($ar) {
+                                if ($ar && !$termek->getAkcios()) {
                                     $termek->setBrutto($ar);
                                 }
                                 \mkw\store::getEm()->persist($termek);
@@ -1845,7 +1852,7 @@ class importController extends \mkwhelpers\Controller {
                             if (is_array($termek)) {
                                 $termek = $termek[0];
                             }
-                            if ($ar) {
+                            if ($ar && !$termek->getAkcios()) {
                                 $termek->setBrutto($ar);
                             }
                             \mkw\store::getEm()->persist($termek);
@@ -1922,7 +1929,7 @@ class importController extends \mkwhelpers\Controller {
                             if (is_array($termek)) {
                                 $termek = $termek[0];
                             }
-                            if ($ar) {
+                            if ($ar && !$termek->getAkcios()) {
                                 $termek->setBrutto($ar);
                             }
                             \mkw\store::getEm()->persist($termek);
@@ -2978,7 +2985,7 @@ class importController extends \mkwhelpers\Controller {
                                     $termek = $termek[0];
                                 }
                                 if ($valtozat) {
-                                    if ($termek) {
+                                    if ($termek && !$termek->getAkcios()) {
                                         //$valtozat->setBrutto($ar - $termek->getBrutto());
                                     }
                                     if (!$kaphato) {
@@ -3011,7 +3018,9 @@ class importController extends \mkwhelpers\Controller {
                                         else {
                                             $termek->setNemkaphato(false);
                                         }
-                                        //$termek->setBrutto($ar);
+                                        if (!$termek->getAkcios()) {
+                                            //$termek->setBrutto($ar);
+                                        }
                                         \mkw\store::getEm()->persist($termek);
                                     }
                                 }
