@@ -117,6 +117,9 @@ class Bankbizonylattetel {
     /** @ORM\Column(type="string",length=60,nullable=true) */
     private $partnerutca;
 
+    /** @ORM\Column(type="string",length=30,nullable=true) */
+    private $erbizonylatszam;
+
     public function __construct() {
         $this->folyoszamlak = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -550,6 +553,20 @@ class Bankbizonylattetel {
             }
             $this->hivatkozottdatum = new \DateTime(\mkw\store::convDate($adat));
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getErbizonylatszam() {
+        return $this->erbizonylatszam;
+    }
+
+    /**
+     * @param mixed $erbizonylatszam
+     */
+    public function setErbizonylatszam($erbizonylatszam) {
+        $this->erbizonylatszam = $erbizonylatszam;
     }
 
 }

@@ -11,6 +11,12 @@
                 <td><input id="DatumEdit{$tetel.id}" name="teteldatum_{$tetel.id}" type="text" size="12" data-datum="{$tetel.datumstr}" class="mattable-important" required="required"></td>
             </tr>
             <tr>
+                <td><label for="ErBizonylatEdit{$tetel.id}">{t('Eredeti bizonylat')}:</label></td>
+                <td>
+                    <input id="ErBizonylatEdit{$tetel.id}" name="tetelerbizonylatszam_{$tetel.id}" value="{$tetel.erbizonylatszam}">
+                </td>
+            </tr>
+            <tr>
                 <td class="mattable-important"><label for="PartnerEdit{$tetel.id}">{t('Partner')}:</label></td>
                 <td>
                     <select id="PartnerEdit{$tetel.id}" name="tetelpartner_{$tetel.id}" class="mattable-important" required="required" autofocus{if ($tetel.partnerafa)} data-afa="{$tetel.partnerafa}" data-afakulcs="{$tetel.partnerafakulcs}"{/if}>

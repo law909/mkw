@@ -44,6 +44,7 @@ class bankbizonylattetelController extends \mkwhelpers\MattableController {
         $x['hivatkozottbizonylat'] = $t->getHivatkozottbizonylat();
         $x['valutanem'] = $t->getValutanemId();
         $x['valutanemnev'] = $t->getValutanemnev();
+        $x['erbizonylatszam'] = $t->getErbizonylatszam();
 
         if ($forKarb) {
             $x['partnerlist'] = $partner->getSelectList($t->getPartnerId());

@@ -116,6 +116,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
                                     $tetel->setDatum($this->params->getStringRequestParam('teteldatum_' . $tetelid));
                                     $tetel->setHivatkozottbizonylat($this->params->getStringRequestParam('tetelhivatkozottbizonylat_' . $tetelid));
                                     $tetel->setHivatkozottdatum($this->params->getStringRequestParam('tetelhivatkozottdatum_' . $tetelid));
+                                    $tetel->setErbizonylatszam($this->params->getStringRequestParam('tetelerbizonylatszam_' . $tetelid));
 
                                     $tetel->setBrutto($this->params->getFloatRequestParam('tetelosszeg_' . $tetelid));
 
@@ -137,6 +138,7 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
                                         $tetel->setDatum($this->params->getStringRequestParam('teteldatum_' . $tetelid));
                                         $tetel->setHivatkozottbizonylat($this->params->getStringRequestParam('tetelhivatkozottbizonylat_' . $tetelid));
                                         $tetel->setHivatkozottdatum($this->params->getStringRequestParam('tetelhivatkozottdatum_' . $tetelid));
+                                        $tetel->setErbizonylatszam($this->params->getStringRequestParam('tetelerbizonylatszam_' . $tetelid));
 
                                         $tetel->setBrutto($this->params->getFloatRequestParam('tetelosszeg_' . $tetelid));
 
