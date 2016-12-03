@@ -108,6 +108,36 @@
                 </div>
 
             </div>
+            {if (count($akciostermekek)>0)}
+                <div class="blockHeader">
+                    <h2 class="main">{t('Akciós termékeink')}</h2>
+                </div>
+                <div id="akciostermekslider" class="royalSlider contentSlider rsDefaultInv termekSlider">
+                    {$lntcnt=count($akciostermekek)}
+                    {$step=3}
+                    {for $i=0 to $lntcnt-1 step $step}
+                        <div>
+                            {for $j=0 to $step-1}
+                                {if ($i+$j<$lntcnt)}
+                                    {$_termek=$akciostermekek[$i+$j]}
+                                    <div class="textaligncenter pull-left" style="width:{100/$step}%">
+                                        <div class="termekSliderTermekInner">
+                                            <a href="/termek/{$_termek.slug}">
+                                                <div class="termekSliderImageContainer">
+                                                    <img src="{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
+                                                </div>
+                                                <div>{$_termek.caption}</div>
+                                                <span class="akciosarszoveg akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} Ft</span>
+                                                <h5 class="main"><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {/if}
+                            {/for}
+                        </div>
+                    {/for}
+                </div>
+            {/if}
             {if (count($legujabbtermekek)>0)}
             <div class="blockHeader">
                 <h2 class="main">{t('Legújabb termékeink')}</h2>

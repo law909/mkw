@@ -26,6 +26,22 @@ class TermekRepository extends \mkwhelpers\Repository {
         $filter->addFilter('fuggoben', '=', false);
     }
 
+    public function getAkciosFilterSQL($date = null) {
+        if (!$date) {
+            $date = date(\mkw\store::$SQLDateFormat);
+        }
+        return '
+                        (
+                            (_xx.akciostart <> \'\' AND (_xx.akciostart IS NOT NULL)) OR (_xx.akciostop <> \'\' AND (_xx.akciostop IS NOT NULL))
+                        ) AND 
+                        (
+                            (_xx.akciostart <= \'' . $date . '\' AND _xx.akciostop >= \'' . $date . '\') OR
+                            (_xx.akciostart <= \'' . $date . '\' AND (_xx.akciostop = \'\' OR (_xx.akciostop IS NULL))) OR
+                            ((_xx.akciostart = \'\' OR (_xx.akciostart IS NULL)) AND _xx.akciostop >= \'' . $date . '\')
+                        )
+                ';
+    }
+
     public function getAllForSelectList($filter, $order = array(), $offset = 0, $elemcount = 0) {
         $q = $this->_em->createQuery('SELECT _xx.id,_xx.nev '
             . ' FROM Entities\Termek _xx'
@@ -306,6 +322,32 @@ class TermekRepository extends \mkwhelpers\Repository {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('ajanlott', '=', true);
+
+        $ids = $this->getIdsWithJoins($filter, array());
+        $r = array();
+        foreach ($ids as $id) {
+            $r[] = $id['id'];
+        }
+        if (count($r) > 0) {
+            shuffle($r);
+            $filter = new FilterDescriptor();
+            $rand = array_rand($r, min($db, count($r)));
+            $v = array();
+            foreach ((array)$rand as $kulcs) {
+                $v[] = $r[$kulcs];
+            }
+            $filter->addFilter('id', 'IN', $v);
+            return $this->getWithJoins($filter, array(), 0, $db);
+        }
+        else {
+            return array();
+        }
+    }
+
+    public function getAkciosTermekek($db) {
+        $filter = new FilterDescriptor();
+        $this->addAktivLathatoFilter($filter);
+        $filter->addSQL($this->getAkciosFilterSQL());
 
         $ids = $this->getIdsWithJoins($filter, array());
         $r = array();

@@ -438,6 +438,10 @@
                             <td><input name="kiemelttermekdb" type="number" value="{$kiemelttermekdb}"></td>
                         </tr>
                         <tr>
+                            <td><label>{t('Akciós termékek száma a főoldalon')}:</label></td>
+                            <td><input name="fooldalakciostermekdb" type="number" value="{$fooldalakciostermekdb}"></td>
+                        </tr>
+                        <tr>
                             <td><label>{t('Termékek száma a terméklistában')}:</label></td>
                             <td><input name="termeklistatermekdb" type="number" value="{$termeklistatermekdb}"></td>
                             <td><label>{t('Legnépszerűbb termékek száma a terméklapon')}:</label></td>

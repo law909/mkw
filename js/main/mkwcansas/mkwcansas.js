@@ -93,6 +93,12 @@ $(document).ready(function() {
                 delay: 4000
             }
         });
+        $('#akciostermekslider').royalSlider({
+            loopRewind: true,
+            keyboardNavEnabled: true,
+            autoHeight: true,
+            controlNavigation: 'bullets'
+        });
         $('#legnepszerubbtermekslider').royalSlider({
             loopRewind: true,
             keyboardNavEnabled: true,
@@ -293,7 +299,7 @@ $(document).ready(function() {
                     var d = JSON.parse(data);
 
                     changeTermekAdat(id, d);
-                    
+
                 })
                 .always(function() {
                     $('.js-kosarbavaltozat[data-id="' + id + '"]').attr('data-vid', $this.val());

@@ -962,6 +962,15 @@ class termekController extends \mkwhelpers\MattableController {
 		return $ret;
 	}
 
+    public function getAkciosLista($db) {
+        $termekek = $this->getRepo()->getAkciosTermekek($db);
+        $ret = array();
+        foreach ($termekek as $termek) {
+            $ret[] = $termek->toTermekLista();
+        }
+        return $ret;
+    }
+
     public function clearNepszeruseg() {
         $this->getRepo()->clearNepszeruseg();
     }

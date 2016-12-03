@@ -155,6 +155,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::Fooldalhirdb, ($p ? $p->getErtek() : 5));
         $p = $repo->find(\mkw\consts::Fooldalnepszerutermekdb);
         $view->setVar(\mkw\consts::Fooldalnepszerutermekdb, ($p ? $p->getErtek() : 6));
+        $p = $repo->find(\mkw\consts::Fooldalakciostermekdb);
+        $view->setVar(\mkw\consts::Fooldalakciostermekdb, ($p ? $p->getErtek() : 6));
         $p = $repo->find(\mkw\consts::Termeklistatermekdb);
         $view->setVar(\mkw\consts::Termeklistatermekdb, ($p ? $p->getErtek() : 30));
         $p = $repo->find(\mkw\consts::Termeklapnepszerutermekdb);
@@ -496,6 +498,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Fooldalajanlotttermekdb, $this->params->getIntRequestParam('fooldalajanlotttermekdb', 6));
         $this->setObj(\mkw\consts::Fooldalhirdb, $this->params->getIntRequestParam('fooldalhirdb', 1));
         $this->setObj(\mkw\consts::Fooldalnepszerutermekdb, $this->params->getIntRequestParam('fooldalnepszerutermekdb', 1));
+        $this->setObj(\mkw\consts::Fooldalakciostermekdb, $this->params->getIntRequestParam('fooldalakciostermekdb', 1));
         $this->setObj(\mkw\consts::Termeklapnepszerutermekdb, $this->params->getIntRequestParam('termeklapnepszerutermekdb', 1));
         $this->setObj(\mkw\consts::Termeklistatermekdb, $this->params->getIntRequestParam('termeklistatermekdb', 30));
 

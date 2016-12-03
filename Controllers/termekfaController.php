@@ -287,6 +287,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 $ret = array();
 
                 $tc = new termekController($this->params);
+                /** @var \Entities\TermekRepository $termekrepo */
                 $termekrepo = $tc->getRepo();
                 $tck = new termekcimkekatController($this->params);
 
@@ -308,8 +309,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 $szurostr = $this->params->getStringRequestParam('filter');
 
                 if ($caller === 'marka') {
-                    $markatc = new termekcimkeController($this->params);
-                    $marka = $markatc->getRepo()->findOneBySlug($this->params->getStringParam('slug'));
+                    $marka = $this->getRepo('Entities\Termekcimketorzs')->findOneBySlug($this->params->getStringParam('slug'));
                     if ($marka) {
                         $szuroarr = array($szurostr, $marka->getTermekFilter());
                         $szurostr = implode(',', $szuroarr);
@@ -350,17 +350,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 }
 
                 if ($this->params->getBoolRequestParam('csakakcios', false)) {
-                    $mastr = date(\mkw\store::$SQLDateFormat);
-                    $akciosfilter->addSql('
-                        (
-                            (_xx.akciostart <> \'\' AND (_xx.akciostart IS NOT NULL)) OR (_xx.akciostop <> \'\' AND (_xx.akciostop IS NOT NULL))
-                        ) AND 
-                        (
-                            (_xx.akciostart <= \'' . $mastr . '\' AND _xx.akciostop >= \'' . $mastr . '\') OR
-                            (_xx.akciostart <= \'' . $mastr . '\' AND (_xx.akciostop = \'\' OR (_xx.akciostop IS NULL))) OR
-                            ((_xx.akciostart = \'\' OR (_xx.akciostart IS NULL)) AND _xx.akciostop >= \'' . $mastr . '\')
-                        )
-                ');
+                    $akciosfilter->addSql($termekrepo->getAkciosFilterSQL());
                 }
                 $szurok = explode(',', $szurostr);
                 $szurotomb = array();
@@ -372,7 +362,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 }
                 $termekidfiltered = array();
                 if (count($szurotomb) > 0) {
-                    $res = $this->getEm()->getRepository('Entities\Termekcimketorzs')->getTermekIdsWithCimkeAnd($szurotomb);
+                    $res = $this->getRepo('Entities\Termekcimketorzs')->getTermekIdsWithCimkeAnd($szurotomb);
                     foreach ($res as $sor) {
                         $termekidfiltered[] = $sor['termek_id'];
                     }

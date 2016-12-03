@@ -75,6 +75,7 @@ class consts {
     const Statlapprior = 'statlapprior';
     const Fooldalajanlotttermekdb = 'fooldalajanlotttermekdb';
     const Fooldalnepszerutermekdb = 'fooldalnepszerutermekdb';
+    const Fooldalakciostermekdb = 'fooldalakciostermekdb';
     const Termeklapnepszerutermekdb = 'termeklapnepszerutermekdb';
     const Kiemelttermekdb = 'kiemelttermekdb';
     const Hasonlotermekdb = 'hasonlotermekdb';
