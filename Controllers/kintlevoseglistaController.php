@@ -332,7 +332,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
 
         $d = $q->getScalarResult();
         foreach($d as $sor) {
-            $sor['lejart'] = false;
+            $sor['lejart'] = true;
             $sor['lejartnap'] = 0;
             $ret[] = $sor;
         }

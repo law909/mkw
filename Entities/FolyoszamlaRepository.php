@@ -87,8 +87,36 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
         return $q->getScalarResult();
     }
 
+    public function getFakeKintlevosegByValutanem($partnerkodok = null) {
+        $filter = new FilterDescriptor();
+
+        if ($partnerkodok) {
+            $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
+        }
+
+        $filter
+            ->addFilter('bf.irany', '<', 0)
+            ->addFilter('bf.rontott', '=', false)
+            ->addFilter('bf.storno', '=', false)
+            ->addFilter('bf.stornozott', '=', false)
+            ->addFilter('bf.fakekintlevoseg', '=', true)
+            ->addFilter('bf.fakekifizetve', '=', false);
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('nev', 'nev');
+        $rsm->addScalarResult('egyenleg', 'egyenleg');
+        $q = $this->_em->createNativeQuery(
+            'SELECT bf.valutanemnev AS nev, SUM(bf.brutto) AS egyenleg'
+            . ' FROM bizonylatfej bf'
+            . $filter->getFilterString('', 'par')
+            . ' GROUP BY bf.valutanemnev'
+            , $rsm);
+        $q->setParameters($filter->getQueryParameters('par'));
+        return $q->getScalarResult();
+    }
+
     public function getKintlevosegByValutanem($partnerkodok = null) {
-        $pluszsql = '';
+        $pluszsql = ' WHERE (storno=0) AND (stornozott=0)';
         if ($partnerkodok) {
             $pluszsql = ' WHERE (f.partner_id IN (' . implode(',', $partnerkodok) . '))';
         }

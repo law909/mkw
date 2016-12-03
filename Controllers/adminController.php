@@ -36,13 +36,80 @@ class adminController extends mkwhelpers\Controller {
                 $napijelentesdatum = date(\mkw\store::$DateFormat);
                 $igdatum = date(\mkw\store::$DateFormat);
                 $view->setVar('napijelenteslista', $lista->napiJelentes($napijelentesdatum, $igdatum));
-                $view->setVar('lejartkintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem());
-                $view->setVar('kintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem());
+
+                $lejart = array();
+                $r = $this->getRepo('Entities\Folyoszamla')->getLejartKintlevosegByValutanem();
+                foreach ($r as $_r) {
+                    $lejart[$_r['nev']] = $_r;
+                }
+
+                if (\mkw\store::isFakeKintlevoseg()) {
+                    $fake = $this->getRepo('Entities\Folyoszamla')->getFakeKintlevosegByValutanem();
+                    foreach ($fake as $_r) {
+                        if (array_key_exists($_r['nev'], $lejart)) {
+                            $lejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
+                        }
+                        else {
+                            $lejart[$_r['nev']] = $_r;
+                        }
+                    }
+                }
+                $view->setVar('lejartkintlevoseg', $lejart);
+
+                $nemlejart = array();
+                $r = \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem();
+                foreach ($r as $_r) {
+                    $nemlejart[$_r['nev']] = $_r;
+                }
+                if (\mkw\store::isFakeKintlevoseg()) {
+                    foreach ($fake as $_r) {
+                        if (array_key_exists($_r['nev'], $nemlejart)) {
+                            $nemlejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
+                        }
+                        else {
+                            $nemlejart[$_r['nev']] = $_r;
+                        }
+                    }
+                }
+                $view->setVar('kintlevoseg', $nemlejart);
+
                 $partnerkodok = \mkw\store::getEm()->getRepository('Entities\Partner')->getByCimkek(array(\mkw\store::getParameter(\mkw\consts::SpanyolCimke)));
-                $view->setVar('spanyollejartkintlevoseg',
-                    \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem($partnerkodok));
-                $view->setVar('spanyolkintlevoseg',
-                    \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem($partnerkodok));
+
+                $lejart = array();
+                $r = $this->getRepo('Entities\Folyoszamla')->getLejartKintlevosegByValutanem($partnerkodok);
+                foreach ($r as $_r) {
+                    $lejart[$_r['nev']] = $_r;
+                }
+                if (\mkw\store::isFakeKintlevoseg()) {
+                    $fake = $this->getRepo('Entities\Folyoszamla')->getFakeKintlevosegByValutanem($partnerkodok);
+                    foreach ($fake as $_r) {
+                        if (array_key_exists($_r['nev'], $lejart)) {
+                            $lejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
+                        }
+                        else {
+                            $lejart[$_r['nev']] = $_r;
+                        }
+                    }
+                }
+                $view->setVar('spanyollejartkintlevoseg', $lejart);
+
+                $nemlejart = array();
+                $r = \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem($partnerkodok);
+                foreach ($r as $_r) {
+                    $nemlejart[$_r['nev']] = $_r;
+                }
+                if (\mkw\store::isFakeKintlevoseg()) {
+                    foreach ($fake as $_r) {
+                        if (array_key_exists($_r['nev'], $nemlejart)) {
+                            $nemlejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
+                        }
+                        else {
+                            $nemlejart[$_r['nev']] = $_r;
+                        }
+                    }
+                }
+                $view->setVar('spanyolkintlevoseg', $nemlejart);
+
                 break;
             case 'mkwcansas':
                 $view->setVar('tjlista', $lista->teljesitmenyJelentes());
