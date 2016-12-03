@@ -220,6 +220,17 @@ class Termekcimketorzs extends \Entities\Termekcimketorzs implements \Doctrine\O
     /**
      * {@inheritDoc}
      */
+    public function getKategoriaNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKategoriaNev', []);
+
+        return parent::getKategoriaNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setKategoria(\Entities\Cimkekat $kategoria)
     {
 
