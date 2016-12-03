@@ -50,6 +50,14 @@
                     <div class="matt-hseparator"></div>
                     {include "comp_uzletkotoselect.tpl"}
                     <div class="matt-hseparator"></div>
+                    <div>
+                        <label for="SorrendEdit">{t('Sorrend')}:</label>
+                        <select id="SorrendEdit" name="sorrend">
+                            <option value="1">kelt</option>
+                            <option value="2">esedékesség</option>
+                        </select>
+                    </div>
+                    <div class="matt-hseparator"></div>
                     {include "comp_partnercimkefilter.tpl"}
                     <div class="matt-hseparator"></div>
 

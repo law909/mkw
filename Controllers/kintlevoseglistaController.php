@@ -152,6 +152,19 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         $rsm->addScalarResult('tartozas', 'tartozas');
         $rsm->addScalarResult('valutanemnev', 'valutanemnev');
 
+        $sorrend = $this->params->getIntRequestParam('sorrend', 1);
+        switch ($sorrend) {
+            case 1:
+                $sorrend = 'ORDER BY nev, partner_id, kelt';
+                break;
+            case 2:
+                $sorrend = 'ORDER BY nev, partner_id, esedekesseg';
+                break;
+            default:
+                $sorrend = 'ORDER BY nev, partner_id, kelt';
+                break;
+        }
+
         $beffilter = $this->createBefdatumFilter();
         $filter = $this->createFilter();
         $secfilter = $this->createSecFilter();
@@ -185,7 +198,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             . ' GROUP BY f.partner_id, f.datum'
             . ' HAVING (tartozas <> 0)'
             . ')'
-            . ' ORDER BY nev, partner_id, kelt'
+            . $sorrend
             , $rsm);
         $q->setParameters(array_merge_recursive(
             $filter->getQueryParameters('par'),
