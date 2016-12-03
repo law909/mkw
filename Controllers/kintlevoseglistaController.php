@@ -183,7 +183,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             . ' LEFT OUTER JOIN bizonylatfej bf ON (f.hivatkozottbizonylat = bf.id)'
             . ' LEFT OUTER JOIN partner p ON (f.partner_id = p.id)'
             . $filter->getFilterString('', 'par')
-            . ' AND (f.hivatkozottbizonylat = f.bizonylatfej_id)'
+            . ' AND (f.hivatkozottbizonylat IS NOT NULL) AND (f.hivatkozottbizonylat = f.bizonylatfej_id) AND (f.irany > 0)'
             . ' GROUP BY f.partner_id , hivatkozottbizonylat, f.hivatkozottdatum, bf.kelt, bf.teljesites'
             . ' HAVING (tartozas <> 0))'
             . ' UNION'
@@ -194,7 +194,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             . ' LEFT OUTER JOIN partner p ON (f.partner_id = p.id)'
             . ' LEFT OUTER JOIN valutanem v ON (f.valutanem_id = v.id)'
             . $secfilter->getFilterString('', 'sec')
-            . ' AND (f.hivatkozottbizonylat IS NULL)'
+            . ' AND (f.hivatkozottbizonylat IS NULL) AND (f.irany < 0)'
             . ' GROUP BY f.partner_id, f.datum'
             . ' HAVING (tartozas <> 0)'
             . ')'

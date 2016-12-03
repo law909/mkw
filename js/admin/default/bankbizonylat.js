@@ -108,7 +108,8 @@ $(document).ready(function () {
                         type: 'POST',
                         url: '/admin/partner/getkiegyenlitetlenbiz',
                         data: {
-                            partner: $('select[name="tetelpartner_' + tid + '"]').val()
+                            partner: $('select[name="tetelpartner_' + tid + '"]').val(),
+                            irany: $('input[name="tetelirany_' + tid +'"]:checked').val()
                         },
                         success: function(d) {
                             var data = JSON.parse(d);

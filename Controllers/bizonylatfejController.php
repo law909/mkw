@@ -392,7 +392,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $x['tetelek'] = $tetel;
         }
         else {
-            $x['egyenleg'] = $t->getEgyenleg();
+            $x['egyenleg'] = $t->getEgyenleg() *-1 * $t->getIrany();
             if (\mkw\store::isOsztottFizmod()) {
                 $ma = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
                 $egyenlegek = array();
@@ -401,7 +401,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                     foreach ($egyenleglist as $e) {
                         $d = array();
                         $d['esedekesseg'] = $e['hivatkozottdatum']->format(\mkw\store::$DateFormat);
-                        $d['egyenleg'] = $e['egyenleg'];
+                        $d['egyenleg'] = $e['egyenleg'] *-1 * $t->getIrany();
                         $d['penzugyistatusz'] = \mkw\store::getPenzugyiStatusz($e['hivatkozottdatum'], $d['egyenleg']);
                         $egyenlegek[] = $d;
                     }

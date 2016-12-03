@@ -212,6 +212,16 @@ $router->map('POST', '/admin/bevetfej/ront', 'bevetfejController#ront', 'adminbe
 $router->map('POST', '/admin/bevetfej/fejexport', 'bevetfejController#fejexport', 'adminbevetfejfejexport');
 $router->map('POST', '/admin/bevetfej/tetelexport', 'bevetfejController#tetelexport', 'adminbevetfejtetelexport');
 
+$router->map('GET', '/admin/koltsegszamlafej/viewlist', 'koltsegszamlafejController#viewlist', 'adminkoltsegszamlafejviewlist');
+$router->map('GET', '/admin/koltsegszamlafej/getlistbody', 'koltsegszamlafejController#getlistbody', 'adminkoltsegszamlafejgetlistbody');
+$router->map('GET', '/admin/koltsegszamlafej/getkarb', 'koltsegszamlafejController#getkarb', 'adminkoltsegszamlafejgetkarb');
+$router->map('GET', '/admin/koltsegszamlafej/viewkarb', 'koltsegszamlafejController#viewkarb', 'adminkoltsegszamlafejviewkarb');
+$router->map('POST', '/admin/koltsegszamlafej/save', 'koltsegszamlafejController#save', 'adminkoltsegszamlafejsave');
+$router->map('GET', '/admin/koltsegszamlafej/print', 'koltsegszamlafejController#doPrint', 'adminkoltsegszamlafejprint');
+$router->map('POST', '/admin/koltsegszamlafej/ront', 'koltsegszamlafejController#ront', 'adminkoltsegszamlafejront');
+$router->map('POST', '/admin/koltsegszamlafej/fejexport', 'koltsegszamlafejController#fejexport', 'adminkoltsegszamlafejfejexport');
+$router->map('POST', '/admin/koltsegszamlafej/tetelexport', 'koltsegszamlafejController#tetelexport', 'adminkoltsegszamlafejtetelexport');
+
 $router->map('GET', '/admin/kivetfej/viewlist', 'kivetfejController#viewlist', 'adminkivetfejviewlist');
 $router->map('GET', '/admin/kivetfej/getlistbody', 'kivetfejController#getlistbody', 'adminkivetfejgetlistbody');
 $router->map('GET', '/admin/kivetfej/getkarb', 'kivetfejController#getkarb', 'adminkivetfejgetkarb');

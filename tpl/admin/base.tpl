@@ -36,6 +36,7 @@
             <div id="KereskedelemTab">
                 {if (!$setup.kisszamlazo)}
                     {if (haveJog(20))}
+                        <div><a class="menupont" href="/admin/koltsegszamlafej/viewlist">{t('Költségszámlák')}</a></div>
                         <div><a class="menupont" href="/admin/bevetfej/viewlist">{t('Bevételezések')}</a></div>
                         <div><a class="menupont" href="/admin/kivetfej/viewlist">{t('Kivétek')}</a></div>
                     {/if}

@@ -48,13 +48,21 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getSumByPartner($partnerid) {
+    public function getSumByPartner($partnerid, $irany) {
         $filter = new FilterDescriptor();
         $filter
             ->addFilter('partner', '=', $partnerid)
             ->addFilter('storno', '=', false)
             ->addFilter('stornozott', '=', false)
             ->addFilter('rontott', '=', false);
+        switch ($irany) {
+            case 1:
+                $filter->addSql('(((_xx.bizonylatfej IS NULL) AND (_xx.irany<0)) OR ((_xx.bizonylatfej IS NOT NULL) AND (_xx.bizonylatfej=_xx.hivatkozottbizonylat) AND (_xx.irany>0)))');
+                break;
+            case -1:
+                $filter->addSql('(((_xx.bizonylatfej IS NULL) AND (_xx.irany>0)) OR ((_xx.bizonylatfej IS NOT NULL) AND (_xx.bizonylatfej=_xx.hivatkozottbizonylat) AND (_xx.irany<0)))');
+                break;
+        }
 
         $q = $this->_em->createQuery('SELECT _xx.hivatkozottbizonylat,_xx.hivatkozottdatum,SUM(_xx.brutto * _xx.irany) AS egyenleg'
             . ' FROM Entities\Folyoszamla _xx'
@@ -68,7 +76,8 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
     }
 
     public function getLejartKintlevosegByValutanem($partnerkodok = null) {
-        $pluszsql = ' WHERE (storno=0) AND (stornozott=0)';
+        $pluszsql = ' WHERE (storno=0) AND (stornozott=0) AND '
+            . '(((bizonylatfej_id IS NULL) AND (irany<0)) OR ((bizonylatfej_id IS NOT NULL) AND (bizonylatfej_id=hivatkozottbizonylat) AND (irany>0)))';
         if ($partnerkodok) {
             $pluszsql .= ' AND (partner_id IN (' . implode(',', $partnerkodok) . '))';
         }
@@ -116,9 +125,10 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
     }
 
     public function getKintlevosegByValutanem($partnerkodok = null) {
-        $pluszsql = ' WHERE (storno=0) AND (stornozott=0)';
+        $pluszsql = ' WHERE (storno=0) AND (stornozott=0) AND '
+            . '(((bizonylatfej_id IS NULL) AND (irany<0)) OR ((bizonylatfej_id IS NOT NULL) AND (bizonylatfej_id=hivatkozottbizonylat) AND (irany>0)))';
         if ($partnerkodok) {
-            $pluszsql = ' WHERE (f.partner_id IN (' . implode(',', $partnerkodok) . '))';
+            $pluszsql .= ' AND (f.partner_id IN (' . implode(',', $partnerkodok) . '))';
         }
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('nev', 'nev');
