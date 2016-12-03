@@ -22,6 +22,13 @@ class exportController extends \mkwhelpers\Controller {
             '"warranty"',
             '"manufacturer"',
             '"photo_url_1"',
+            '"photo_url_2"',
+            '"photo_url_3"',
+            '"photo_url_4"',
+            '"photo_url_5"',
+            '"photo_url_6"',
+            '"photo_url_7"',
+            '"photo_url_8"',
             '"seller_category"',
             '"page_link"',
             '"availability_371"',
@@ -57,6 +64,13 @@ class exportController extends \mkwhelpers\Controller {
                 $leiras = $leiras . $cszoveg;
             }
 
+            $keptomb = array();
+            $kepek = $t->getTermekKepek(true);
+            /** @var \Entities\TermekKep $k */
+            foreach ($kepek as $k) {
+                $keptomb[] = \mkw\store::getFullUrl($k->getUrlLarge(), \mkw\store::getConfigValue('mainurl'));
+            }
+
             $leiras = str_replace("\n", '', $leiras);
             $leiras = str_replace("\r", '', $leiras);
             $leiras = str_replace("\n\r", '', $leiras);
@@ -71,6 +85,13 @@ class exportController extends \mkwhelpers\Controller {
                 '"1"',
                 '"' . ($cimke ? $cimke->getNev() : '') . '"',
                 '"' . \mkw\store::getFullUrl($t->getKepurlLarge(), \mkw\store::getConfigValue('mainurl')) . '"',
+                '"' . (array_key_exists(0, $keptomb) ? $keptomb[0] : '') . '"',
+                '"' . (array_key_exists(1, $keptomb) ? $keptomb[1] : '') . '"',
+                '"' . (array_key_exists(2, $keptomb) ? $keptomb[2] : '') . '"',
+                '"' . (array_key_exists(3, $keptomb) ? $keptomb[3] : '') . '"',
+                '"' . (array_key_exists(4, $keptomb) ? $keptomb[4] : '') . '"',
+                '"' . (array_key_exists(5, $keptomb) ? $keptomb[5] : '') . '"',
+                '"' . (array_key_exists(6, $keptomb) ? $keptomb[6] : '') . '"',
                 '"' . $t->getTermekfa1Nev() . '"',
                 '"' . \mkw\store::getFullUrl('/termek/' . $t->getSlug(), \mkw\store::getConfigValue('mainurl')) . '"',
                 '"-1"',
