@@ -230,6 +230,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                 $this->addAktivLathatoFilter($filter);
                 return $this->getWithJoins($filter, $order);
             case 'kisszamlazo':
+            case 'mijsz':
                 $this->addAktivLathatoFilter($filter);
                 return $this->getWithJoins($filter, $order);
             default :

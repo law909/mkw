@@ -77,6 +77,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $view->setVar('bizonylatrontottfilter', 1);
                 break;
             case 'kisszamlazo':
+            case 'mijsz':
+                $a = false;
+                break;
+            default:
                 $a = false;
                 break;
         }
@@ -662,6 +666,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
                                 $tetel->setHatarido($this->params->getStringRequestParam('tetelhatarido_' . $tetelid));
                                 $tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
+
+                                if (\mkw\store::isMIJSZ()) {
+                                    $tetel->setMIJSZEv($this->params->getIntRequestParam('tetelmijszev_' . $tetelid));
+                                    $mijszp = $this->getRepo('Entities\Partner')->find($this->params->getIntRequestParam('tetelmijszpartner_' . $tetelid));
+                                    if ($mijszp) {
+                                        $tetel->setMIJSZPartner($mijszp);
+                                    }
+                                }
+
                                 if ($oper == $this->stornoOperation) {
                                     $tetel->setStorno(true);
                                     $tetel->setStornoMozgat($this->params->getBoolRequestParam('tetelmozgat_' . $tetelid));
@@ -744,6 +757,14 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
                                     $tetel->setHatarido($this->params->getStringRequestParam('tetelhatarido_' . $tetelid));
                                     $tetel->setArfolyam($this->params->getFloatRequestParam('arfolyam'));
+
+                                    if (\mkw\store::isMIJSZ()) {
+                                        $tetel->setMIJSZEv($this->params->getIntRequestParam('tetelmijszev_' . $tetelid));
+                                        $mijszp = $this->getRepo('Entities\Partner')->find($this->params->getIntRequestParam('tetelmijszpartner_' . $tetelid));
+                                        if ($mijszp) {
+                                            $tetel->setMIJSZPartner($mijszp);
+                                        }
+                                    }
                                 }
                                 else {
                                     $tetel->setKedvezmeny($this->params->getFloatRequestParam('tetelkedvezmeny_' . $tetelid));

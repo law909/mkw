@@ -1394,6 +1394,7 @@ class Termek {
                 });
                 return new \Doctrine\Common\Collections\ArrayCollection($a);
             case 'kisszamlazo':
+            case 'mijsz':
                 return null;
             default :
                 throw new \Exception('ISMERETLEN THEME: ' . \mkw\store::getTheme());

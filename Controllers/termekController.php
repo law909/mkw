@@ -189,14 +189,14 @@ class termekController extends \mkwhelpers\MattableController {
      */
 	protected function setFields($obj) {
         $oldnemkaphato = $obj->getNemkaphato();
-		$afa = \mkw\store::getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afa'));
-		if ($afa) {
-			$obj->setAfa($afa);
-		}
 		$vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->find($this->params->getIntRequestParam('vtsz'));
 		if ($vtsz) {
 			$obj->setVtsz($vtsz);
 		}
+        $afa = \mkw\store::getEm()->getRepository('Entities\Afa')->find($this->params->getIntRequestParam('afa'));
+        if ($afa) {
+            $obj->setAfa($afa);
+        }
 		$valt = \mkw\store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozatadattipus'));
 		if ($valt) {
 			$obj->setValtozatadattipus($valt);

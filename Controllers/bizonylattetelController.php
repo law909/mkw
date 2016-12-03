@@ -18,6 +18,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$termek = new termekController($this->params);
 		$vtsz = new vtszController($this->params);
 		$afa = new afaController($this->params);
+		$mijszpartner = new partnerController($this->params);
 		$x = array();
 		if (!$t) {
 			$t = new \Entities\Bizonylattetel();
@@ -69,6 +70,16 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
         $x['mainurl'] = \mkw\store::getConfigValue('mainurl');
         $x['afanev'] = $t->getAfanev();
         $x['elolegtipus'] = $t->getElolegtipus();
+        if (\mkw\store::isMIJSZ()) {
+            $x['mijszev'] = $t->getMIJSZEv();
+            $x['mijszpartner'] = $t->getMIJSZPartnerId();
+            $x['mijszpartnernev'] = $t->getMIJSZPartnernev();
+        }
+        else {
+            $x['mijszev'] = 0;
+            $x['mijszpartner'] = 0;
+            $x['mijszpartnernev'] = '';
+        }
 		$term = $t->getTermek();
 		if ($term) {
             $eb = $term->getBruttoAr($t->getTermekvaltozat(), $t->getBizonylatfej()->getPartner());
@@ -92,6 +103,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 			$x['valtozatlist'] = $termek->getValtozatList($t->getTermekId(), $t->getTermekvaltozatId());
 			$x['vtszlist'] = $vtsz->getSelectList(($t->getVtsz() ? $t->getVtsz()->getId() : 0));
 			$x['afalist'] = $afa->getSelectList(($t->getAfa() ? $t->getAfa()->getId() : 0));
+			$x['mijszpartnerlist'] = $mijszpartner->getSelectList($t->getMIJSZPartnerId());
 		}
 		return $x;
 	}

@@ -17,6 +17,19 @@
                     </select>
                 </td>
             </tr>
+            {if ($setup.mijsz)}
+                <tr>
+                    <td><label for="MIJSZPartnerSelect{$tetel.id}">{t('Vontakozó partner')}:</label></td>
+                    <td><select id="MIJSZPartnerSelect{$tetel.id}" name="tetelmijszpartner_{$tetel.id}">
+                            <option value="">{t('válasszon')}</option>
+                            {foreach $tetel.mijszpartnerlist as $_vtsz}
+                                <option value="{$_vtsz.id}"{if ($_vtsz.selected)} selected="selected"{/if} data-afa="{$_vtsz.afa}">{$_vtsz.caption}</option>
+                            {/foreach}
+                        </select></td>
+                    <td><label for="MIJSZEvEdit{$tetel.id}">{t('Év')}:</label></td>
+                    <td><input id="MIJSZEvEdit{$tetel.id}" name="tetelmijszev_{$tetel.id}" type="number" value="{$tetel.mijszev}"></td>
+                </tr>
+            {/if}
             <tr>
                 <td class="mattable-important"><label for="TermekSelect{$tetel.id}">{t('Termék')}:</label></td>
                 <td colspan="5">

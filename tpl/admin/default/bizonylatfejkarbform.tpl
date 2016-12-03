@@ -126,7 +126,7 @@
 					</select>
 				</td>
 				<td class="mattable-important"><label for="SzallitasimodEdit">{t('Szállítási mód')}:</label></td>
-				<td><select id="SzallitasimodEdit" name="szallitasimod" class="mattable-important" required="required">
+				<td><select id="SzallitasimodEdit" name="szallitasimod" class="mattable-important"{if ($maintheme=='mkwcansas' || $maintheme=='superzone')} required="required"{/if}>
 					<option value="">{t('válasszon')}</option>
 					{foreach $szallitasimodlist as $_mk}
 					<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
