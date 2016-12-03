@@ -955,6 +955,7 @@ thead.acc-megrendelestetellist td {
 }
 .termekSliderImageContainer {
   min-height: 100px;
+  position: relative;
 }
 .o404TermekInner {
   padding: 15px;

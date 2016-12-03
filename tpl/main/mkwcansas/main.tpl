@@ -125,6 +125,7 @@
                                             <a href="/termek/{$_termek.slug}">
                                                 <div class="termekSliderImageContainer">
                                                     <img src="{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
+                                                    <div class="akciosplecsni"><span class="akciosplecsniszoveg">-{number_format(100 - ($_termek.bruttohuf / $_termek.eredetibruttohuf * 100),0,',',' ')} %</span></div>
                                                 </div>
                                                 <div>{$_termek.caption}</div>
                                                 <span class="akciosarszoveg akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} Ft</span>
