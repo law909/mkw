@@ -70,6 +70,13 @@ class Termekcimketorzs extends Cimketorzs {
         return '';
     }
 
+    public function getKategoriaNev() {
+        if ($this->kategoria) {
+            return $this->kategoria->getNev();
+        }
+        return '';
+    }
+
     public function setKategoria(Cimkekat $kategoria) {
         if ($this->kategoria !== $kategoria) {
             $this->kategoria = $kategoria;

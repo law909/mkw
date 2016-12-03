@@ -31,9 +31,32 @@ class exportController extends \mkwhelpers\Controller {
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
+        /** @var \Entities\Termek $t */
         foreach ($res as $t) {
             $cimke = $t->getCimkeByCategory(\mkw\store::getParameter(\mkw\consts::MarkaCs));
             $leiras = $t->getLeiras();
+            $valtozatok = $t->getValtozatok();
+            $vszoveg = '';
+            /** @var \Entities\TermekValtozat $v */
+            foreach ($valtozatok as $v) {
+                if ($v->getElerheto()) {
+                    $vszoveg = $vszoveg . '<br>' . $v->getNev() . ' ' . bizformat($t->getBruttoAr($v)) . ' Ft';
+                }
+            }
+            if ($vszoveg) {
+                $leiras = $leiras . '<br>Jelenleg elérhető termékváltozatok:' . $vszoveg;
+            }
+
+            $cimkek = $t->getCimkek();
+            $cszoveg = '';
+            /** @var \Entities\Termekcimketorzs $c */
+            foreach ($cimkek as $c) {
+                $cszoveg = $cszoveg . '<br>' . $c->getKategoriaNev() . ': ' . $c->getNev();
+            }
+            if ($cszoveg) {
+                $leiras = $leiras . $cszoveg;
+            }
+
             $leiras = str_replace("\n", '', $leiras);
             $leiras = str_replace("\r", '', $leiras);
             $leiras = str_replace("\n\r", '', $leiras);
