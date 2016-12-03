@@ -61,6 +61,7 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
             . $this->getFilterString($filter)
             . ' GROUP BY _xx.hivatkozottbizonylat,_xx.hivatkozottdatum'
             . ' HAVING egyenleg<>0'
+            . ' ORDER BY _xx.hivatkozottdatum'
         );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getResult();
