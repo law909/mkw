@@ -283,7 +283,17 @@ $().ready(
                         edittype: 'select',
                         editoptions: {size: 4, dataUrl: '/admin/afa/htmllist'},
                         editrules: {required: true},
-                        formoptions: {rowpos: 3, label: 'ÁFA kulcs:', elmsuffix: '*'}}],
+                        formoptions: {rowpos: 3, label: 'ÁFA kulcs:', elmsuffix: '*'}},
+                    {name: 'csk', index: 'csk', label: 'CSK szám:', width: 25, align: 'right',
+                        editable: true,
+                        edittype: 'select',
+                        editoptions: {size: 4, dataUrl: '/admin/csk/htmllist'},
+                        formoptions: {rowpos: 4, label: 'CSK szám:', elmsuffix: '*'}},
+                    {name: 'kt', index: 'kt', label: 'KT kód', width: 25, align: 'right',
+                        editable: true,
+                        edittype: 'select',
+                        editoptions: {size: 4, dataUrl: '/admin/csk/htmllist'},
+                        formoptions: {rowpos: 5, label: 'KT kód:', elmsuffix: '*'}}],
                 rowNum: 100000,
                 rowList: [10, 20, 30],
                 pager: _vtsz.pager,
@@ -1168,6 +1178,58 @@ $().ready(
             $(_szotar.grid).jqGrid('filterToolbar');
             $(_szotar.pager + '_center').hide();
             $(_szotar.pager + '_right').hide();
+
+            // CSK grid
+            var _csk = {
+                grid: '#cskgrid',
+                pager: '#cskgridpager'
+            };
+            var cskgrid = $(_csk.grid).jqGrid({
+                url: '/admin/csk/jsonlist',
+                editurl: '/admin/csk/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}},
+                    {name: 'ertek', index: 'ertek', label: 'Ár', width: 25, align: 'right',
+                        sorttype: 'float',
+                        formatter: 'number',
+                        editable: true,
+                        editoptions: {size: 10},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 2, label: 'Ár:', elmsuffix: '*'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _csk.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'CSK kódok'});
+            $(_csk.grid).jqGrid('navGrid', _csk.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_csk.grid).jqGrid('navButtonAdd', _csk.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    cskgrid[0].toggleToolbar();
+                }
+            });
+            $(_csk.grid).jqGrid('navButtonAdd', _csk.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    cskgrid[0].clearToolbar();
+                }
+            });
+            $(_csk.grid).jqGrid('filterToolbar');
+            $(_csk.pager + '_center').hide();
+            $(_csk.pager + '_right').hide();
 
             // Altalanos
             $('.ui-search-toolbar').hide();

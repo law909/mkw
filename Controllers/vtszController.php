@@ -13,10 +13,15 @@ class vtszController extends \mkwhelpers\JQGridController {
 
     protected function loadCells($sor) {
         $afa = $sor->getAfa();
+        $csk = $sor->getCsk();
+        $kt = $sor->getKt();
         return array(
             $sor->getSzam(),
             $sor->getNev(),
-            (isset($afa) ? $afa->getNev() : ''));
+            (isset($afa) ? $afa->getNev() : ''),
+            (isset($csk) ? $csk->getNev() : ''),
+            (isset($kt) ? $kt->getNev() : '')
+        );
     }
 
     protected function setFields($obj) {
@@ -24,6 +29,10 @@ class vtszController extends \mkwhelpers\JQGridController {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $afa = store::getEm()->getReference('Entities\Afa', $this->params->getIntRequestParam('afa', $obj->getAfa()));
         $obj->setAfa($afa);
+        $csk = store::getEm()->getReference('Entities\Csk', $this->params->getIntRequestParam('csk', $obj->getCsk()));
+        $obj->setCsk($csk);
+        $kt = store::getEm()->getReference('Entities\Csk', $this->params->getIntRequestParam('kt', $obj->getKt()));
+        $obj->setKt($kt);
         return $obj;
     }
 
@@ -50,7 +59,9 @@ class vtszController extends \mkwhelpers\JQGridController {
                 'id' => $sor->getId(),
                 'caption' => $sor->getSzam() . ' ' . $sor->getNev(),
                 'selected' => ($sor->getId() == $selid),
-                'afa' => $sor->getAfaId()
+                'afa' => $sor->getAfaId(),
+                'csk' => $sor->getCskId(),
+                'kt' => $sor->getKtId()
             );
         }
         return $res;

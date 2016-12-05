@@ -14,6 +14,9 @@ $router->map('POST', '/admin/arfolyam/download', 'arfolyamController#downloadArf
 $router->map('GET', '/admin/bankszamla/jsonlist', 'bankszamlaController#jsonlist', 'adminbankszamlajsonlist');
 $router->map('GET', '/admin/bankszamla/htmllist', 'bankszamlaController#htmllist', 'adminbankszamlahtmllist');
 $router->map('POST', '/admin/bankszamla/save', 'bankszamlaController#save', 'adminbankszamlasave');
+$router->map('GET', '/admin/csk/jsonlist', 'cskController#jsonlist', 'admincskjsonlist');
+$router->map('GET', '/admin/csk/htmllist', 'cskController#htmllist', 'admincskhtmllist');
+$router->map('POST', '/admin/csk/save', 'cskController#save', 'admincsksave');
 $router->map('GET', '/admin/felhasznalo/jsonlist', 'felhasznaloController#jsonlist', 'adminfelhasznalojsonlist');
 $router->map('POST', '/admin/felhasznalo/save', 'felhasznaloController#save', 'adminfelhasznalosave');
 $router->map('GET', '/admin/jelenlettipus/jsonlist', 'jelenlettipusController#jsonlist', 'adminjelenlettipusjsonlist');

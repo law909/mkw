@@ -88,6 +88,10 @@
             <table id="kapcsolatfelveteltemagrid"></table>
             <div id="kapcsolatfelveteltemagridpager"></div>
         </div>
+        <div class="egyebadat-grid">
+            <table id="cskgrid"></table>
+            <div id="cskgridpager"></div>
+        </div>
         {if ($setup.mijsz)}
         <div class="egyebadat-grid">
             <table id="mijszoklevelkibocsajtogrid"></table>

@@ -64,10 +64,10 @@ class Bankbizonylattetel extends \Entities\Bankbizonylattetel implements \Doctri
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'irany', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'datum', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'netto', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'afa', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'jogcim', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'jogcimnev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'folyoszamlak', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partner', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnerutca'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'irany', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'datum', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'netto', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'afa', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'jogcim', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'jogcimnev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'folyoszamlak', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partner', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'erbizonylatszam'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'irany', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'datum', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'netto', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'afa', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'jogcim', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'jogcimnev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'folyoszamlak', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partner', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnerutca'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'id', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'created', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'irany', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'datum', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'netto', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'afa', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'jogcim', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'jogcimnev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'folyoszamlak', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partner', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Bankbizonylattetel' . "\0" . 'erbizonylatszam'];
     }
 
     /**
@@ -846,6 +846,28 @@ class Bankbizonylattetel extends \Entities\Bankbizonylattetel implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHivatkozottdatum', [$adat]);
 
         return parent::setHivatkozottdatum($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getErbizonylatszam()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getErbizonylatszam', []);
+
+        return parent::getErbizonylatszam();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setErbizonylatszam($erbizonylatszam)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setErbizonylatszam', [$erbizonylatszam]);
+
+        return parent::setErbizonylatszam($erbizonylatszam);
     }
 
 }

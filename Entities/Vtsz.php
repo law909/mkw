@@ -32,6 +32,16 @@ class Vtsz {
 	private $bizonylattetelek;
     /** @ORM\Column(type="integer") */
     private $migrid;
+    /**
+     * @ORM\ManyToOne(targetEntity="Csk")
+     * @ORM\JoinColumn(name="csk_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $csk;
+    /**
+     * @ORM\ManyToOne(targetEntity="Csk")
+     * @ORM\JoinColumn(name="kt_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $kt;
 
 	public function getId() {
 		return $this->id;
@@ -80,6 +90,36 @@ class Vtsz {
      */
     public function setMigrid($migrid) {
         $this->migrid = $migrid;
+    }
+
+    public function getCsk() {
+        return $this->csk;
+    }
+
+    public function getCskId() {
+        if ($this->csk) {
+            return $this->csk->getId();
+        }
+        return '';
+    }
+
+    public function setCsk($csk) {
+        $this->csk = $csk;
+    }
+
+    public function getKt() {
+        return $this->kt;
+    }
+
+    public function getKtId() {
+        if ($this->kt) {
+            return $this->kt->getId();
+        }
+        return '';
+    }
+
+    public function setKt($kt) {
+        $this->kt = $kt;
     }
 
 }

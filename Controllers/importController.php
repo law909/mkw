@@ -3093,17 +3093,28 @@ class importController extends \mkwhelpers\Controller {
             \mkw\store::getConfigValue('kerrii.password'),
             array(
                 \PDO::ATTR_EMULATE_PREPARES => false,
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES=latin1"
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
             )
         );
         if ($dbh) {
+            $stmt = $dbh->prepare('SELECT * FROM csk');
+            $stmt->execute();
+            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                if (!$this->getRepo('Entities\Csk')->findOneBy(array('migrid' => $r['kod']))) {
+                    $csk = new \Entities\Csk();
+                    $csk->setNev($this->toutf($r['nev']));
+                    $csk->setErtek($r['netto']);
+                    $csk->setMigrid($r['kod']);
+                    \mkw\store::getEm()->persist($csk);
+                    \mkw\store::getEm()->flush();
+                }
+            }
             $stmt = $dbh->prepare('SELECT * FROM afatorzs');
             $stmt->execute();
             while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
                 if (!$this->getRepo('Entities\Afa')->findOneBy(array('migrid' => $r['kod']))) {
                     $afa = new \Entities\Afa();
-                    $afa->setNev($r['afanev']);
+                    $afa->setNev($this->toutf($r['afanev']));
                     $afa->setErtek($r['afaertek']);
                     $afa->setMigrid($r['kod']);
                     \mkw\store::getEm()->persist($afa);
@@ -3115,10 +3126,11 @@ class importController extends \mkwhelpers\Controller {
             while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
                 if (!$this->getRepo('Entities\Fizmod')->findOneBy(array('migrid' => $r['kod']))) {
                     $fizmod = new \Entities\Fizmod();
-                    $fizmod->setNev($r['']);
-                    $fizmod->setHaladek($r['']);
-                    $fizmod->setTipus($r['']);
+                    $fizmod->setNev($this->toutf($r['nev']));
+                    $fizmod->setHaladek($r['haladek']);
+                    $fizmod->setTipus($r['tipus']);
                     $fizmod->setMigrid($r['kod']);
+                    $fizmod->setRugalmas(false);
                     \mkw\store::getEm()->persist($fizmod);
                     \mkw\store::getEm()->flush();
                 }
@@ -3128,13 +3140,17 @@ class importController extends \mkwhelpers\Controller {
             while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
                 if (!$this->getRepo('Entities\Vtsz')->findOneBy(array('migrid' => $r['kod']))) {
                     $vtsz = new \Entities\Vtsz();
-                    $vtsz->setNev($r['']);
-                    $vtsz->setSzam($r['']);
+                    $vtsz->setNev($this->toutf($r['szoveg']));
+                    $vtsz->setSzam($this->toutf($r['szam']));
                     $vtsz->setMigrid($r['kod']);
+                    $vtsz->setAfa($this->getRepo('Entities\Afa')->findOneBy(array('migrid' => $r['afa'])));
+                    $vtsz->setCsk($this->getRepo('Entities\Csk')->findOneBy(array('migrid' => $r['csk'])));
+                    $vtsz->setKt($this->getRepo('Entities\Csk')->findOneBy(array('migrid' => $r['kt'])));
                     \mkw\store::getEm()->persist($vtsz);
                     \mkw\store::getEm()->flush();
                 }
             }
         }
+        echo 'kész';
     }
 }
