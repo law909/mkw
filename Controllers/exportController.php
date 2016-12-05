@@ -51,7 +51,7 @@ class exportController extends \mkwhelpers\Controller {
                 }
             }
             if ($vszoveg) {
-                $leiras = $leiras . '<br>Jelenleg elérhető termékváltozatok:' . $vszoveg;
+                $leiras = $leiras . '<p>Jelenleg elérhető termékváltozatok:' . $vszoveg . '</p>';
             }
 
             $cimkek = $t->getCimkek();
@@ -61,7 +61,7 @@ class exportController extends \mkwhelpers\Controller {
                 $cszoveg = $cszoveg . '<br>' . $c->getKategoriaNev() . ': ' . $c->getNev();
             }
             if ($cszoveg) {
-                $leiras = $leiras . $cszoveg;
+                $leiras = $leiras . '<p>' . $cszoveg . '</p>';
             }
 
             $keptomb = array();
