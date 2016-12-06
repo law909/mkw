@@ -19,7 +19,7 @@ class Afa {
 	private $ertek=0;
     /** @ORM\Column(type="integer", nullable=true) */
     private $rlbkod;
-    /** @ORM\Column(type="integer") */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $migrid;
 	/** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="afa") */
 	private $bizonylattetelek;

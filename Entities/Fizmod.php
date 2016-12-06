@@ -49,7 +49,7 @@ class Fizmod {
     private $osztotthaladek5;
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $osztottszazalek5;
-    /** @ORM\Column(type="integer") */
+    /** @ORM\Column(type="integer",nuallable=true) */
     private $migrid;
 
 	public function __construct() {

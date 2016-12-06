@@ -30,7 +30,7 @@ class Vtsz {
 	private $afa;
 	/** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="vtsz",cascade={"persist"}) */
 	private $bizonylattetelek;
-    /** @ORM\Column(type="integer") */
+    /** @ORM\Column(type="integer",nullable=true) */
     private $migrid;
     /**
      * @ORM\ManyToOne(targetEntity="Csk")

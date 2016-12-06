@@ -17,7 +17,7 @@ class Csk {
 	private $nev;
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
 	private $ertek=0;
-    /** @ORM\Column(type="integer") */
+    /** @ORM\Column(type="integer", nullable=true) */
     private $migrid;
 
 	public function getId() {
