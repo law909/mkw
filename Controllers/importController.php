@@ -3150,6 +3150,89 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->flush();
                 }
             }
+            $stmt = $dbh->prepare('SELECT * FROM bankszamla');
+            $stmt->execute();
+            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                if (!$this->getRepo('Entities\Bankszamla')->findOneBy(array('migrid' => $r['kod']))) {
+                    $bankszamla = new \Entities\Bankszamla();
+                    $bankszamla->setBanknev($r['banknev']);
+                    $bankszamla->setBankcim($r['bankcim']);
+                    $bankszamla->setSzamlaszam($r['szlaszam']);
+                    $bankszamla->setSwift($r['swift']);
+                    $bankszamla->setMigrid($r['kod']);
+                    \mkw\store::getEm()->persist($bankszamla);
+                    \mkw\store::getEm()->flush();
+                }
+            }
+            $stmt = $dbh->prepare('SELECT * FROM valutanem');
+            $stmt->execute();
+            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                if (!$this->getRepo('Entities\Valutanem')->findOneBy(array('migrid' => $r['kod']))) {
+                    $valu = new \Entities\Valutanem();
+                    $valu->setNev($r['nev']);
+                    $valu->setKerekit($r['kerekit']);
+                    $valu->setHivatalos($r['hivatalos']);
+                    $valu->setMincimlet($r['mincimlet']);
+                    $valu->setMigrid($r['kod']);
+                    $valu->setBankszamla($this->getRepo('Entities\Bankszamla')->findOneBy(array('migrid' => $r['defabankszla'])));
+                    \mkw\store::getEm()->persist($valu);
+                    \mkw\store::getEm()->flush();
+                }
+            }
+            $stmt = $dbh->prepare('SELECT * FROM bankszamla');
+            $stmt->execute();
+            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                $bankszamla = $this->getRepo('Entities\Bankszamla')->findOneBy(array('migrid' => $r['kod']));
+                if ($bankszamla) {
+                    $bankszamla->setValutanem($this->getRepo('Entities\Valutanem')->findOneBy(array('migrid' => $r['defavaluta'])));
+                    \mkw\store::getEm()->persist($bankszamla);
+                    \mkw\store::getEm()->flush();
+                }
+            }
+            $stmt = $dbh->prepare('SELECT * FROM partner');
+            $stmt->execute();
+            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                if (!$this->getRepo('Entities\Partner')->findOneBy(array('migrid' => $r['kod']))) {
+                    $partner = new \Entities\Partner();
+                    $partner->setNev($r['nev']);
+                    $partner->setMigrid($r['kod']);
+                    $partner->setAkcioshirlevelkell(false);
+                    $partner->setUjdonsaghirlevelkell(false);
+                    $partner->setSzallito(false);
+                    $partner->setSzamlatipus(1);
+                    $partner->setEzuzletkoto(false);
+                    $partner->setBanknev($r['banknev']);
+                    $partner->setAdoszam($r['adoszam']);
+                    $partner->setCjszam($r['cegjszam']);
+                    $partner->setMukengszam($r['mukengszam']);
+                    $partner->setJovengszam($r['jovengszam']);
+                    $partner->setEuadoszam($r['euadoszam']);
+                    $partner->setEmail($r['email']);
+                    $partner->setTelefon($r['telefon']);
+                    $partner->setMobil($r['mobil']);
+                    $partner->setFax($r['fax']);
+                    $partner->setHonlap($r['honlap']);
+                    $partner->setIban($r['szlaszam']);
+                    $partner->setValutanem($this->getRepo('Entities\Valutanem')->findOneBy(array('migrid' => $r['valutanem'])));
+                    $partner->setFizmod($this->getRepo('Entities\Fizmod')->findOneBy(array('migrid' => $r['fizmod'])));
+                    $partner->setFizhatido($r['fizhatido']);
+                    if ($r['alapar']) {
+                        $partner->setTermekarazonosito($r['alapar']);
+                    }
+                    $partner->setIrszam($r['irszam']);
+                    $partner->setVaros($r['varos']);
+                    $partner->setUtca($r['utca']);
+                    $partner->setValligszam($r['valligszam']);
+                    $partner->setLirszam($r['pirszam']);
+                    $partner->setLvaros($r['pvaros']);
+                    $partner->setLutca($r['putca']);
+                    $partner->setKtdatalany($r['ktdatalany']);
+                    $partner->setKtdatvallal($r['ktdatvallal']);
+                    $partner->setKtdszerzszam($r['ktdszerzszam']);
+                    \mkw\store::getEm()->persist($partner);
+                    \mkw\store::getEm()->flush();
+                }
+            }
         }
         echo 'kész';
     }

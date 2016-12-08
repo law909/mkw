@@ -90,6 +90,9 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['mijszmembershipbesideshu'] = $t->getMijszmembershipbesideshu();
         $x['mijszbusiness'] = $t->getMijszbusiness();
         $x['mijszexporttiltva'] = $t->getMijszexporttiltva();
+        $x['ktdatvallal'] = $t->getKtdatvallal();
+        $x['ktdatalany'] = $t->getKtdatalany();
+        $x['ktdszerzszam'] = $t->getKtdszerzszam();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             $x['afa'] = $afa->getId();
@@ -149,6 +152,9 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setTermekarazonosito($this->params->getStringRequestParam('termekarazonosito'));
             $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
             $obj->setEzuzletkoto($this->params->getBoolRequestParam('ezuzletkoto'));
+            $obj->setKtdatalany($this->params->getBoolRequestParam('ktdatalany'));
+            $obj->setKtdatvallal($this->params->getBoolRequestParam('ktdatvallal'));
+            $obj->setKtdszerzszam($this->params->getStringRequestParam('ktdszerzszam'));
 
             $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
             if ($fizmod) {

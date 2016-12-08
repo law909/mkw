@@ -165,6 +165,16 @@
 				<td><label for="UjdonsaghirlevelkellEdit">{t('Kér újdonság hírlevelet')}:</label></td>
 				<td><input id="UjdonsaghirlevelkellEdit" name="ujdonsaghirlevelkell" type="checkbox"{if ($partner.ujdonsaghirlevelkell==1)} checked="checked"{/if}></td>
 			</tr>
+            <tr>
+                <td><label for="KtdatalanyEdit">{t('KTD átalány')}:</label></td>
+                <td><input id="KtdatalanyEdit" name="ktdatalany" type="checkbox"{if ($partner.ktdatalany==1)} checked="checked"{/if}></td>
+                <td><label for="KtdatvallalEdit">{t('KTD átvállal')}:</label></td>
+                <td><input id="KtdatvallalEdit" name="ktdatvallal" type="checkbox"{if ($partner.ktdatvallal==1)} checked="checked"{/if}></td>
+            </tr>
+            <tr>
+                <td><label for="KtdszerzszamEdit">{t('KTD szerz.szám')}:</label></td>
+                <td><input id="KtdszerzszamEdit" name="ktdszerzszam" type="text" value="{$partner.ktdszerzszam}"></td>
+            </tr>
             {/if}
 			</tbody></table>
 				<div id="cimkekarbcontainer">

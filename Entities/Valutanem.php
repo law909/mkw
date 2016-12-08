@@ -36,6 +36,8 @@ class Valutanem {
 	private $termekarak;
 	/** @ORM\OneToMany(targetEntity="Partner", mappedBy="valutanem",cascade={"persist"}) */
 	private $partnerek;
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $migrid;
 
 	public function getId() {
 		return $this->id;
@@ -87,4 +89,19 @@ class Valutanem {
 	public function setBankszamla($bankszamla) {
 		$this->bankszamla = $bankszamla;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getMigrid() {
+        return $this->migrid;
+    }
+
+    /**
+     * @param mixed $migrid
+     */
+    public function setMigrid($migrid) {
+        $this->migrid = $migrid;
+    }
+
 }

@@ -491,6 +491,15 @@ class Bizonylatfej {
     /** @ORM\Column(type="date",nullable=true) */
     private $fakekifizetesdatum;
 
+    /** @ORM\Column(type="boolean") */
+    private $partnerktdatvallal;
+
+    /** @ORM\Column(type="boolean") */
+    private $partnerktdatalany;
+
+    /** @ORM\Column(type="string",length=20,nullable=true) */
+    private $partnerktdszerzszam;
+
     public function __toString() {
         return (string)$this->id;
     }
@@ -762,6 +771,9 @@ class Bizonylatfej {
         $ret['kupon'] = $this->getKupon();
         $ret['fakekintlevoseg'] = $this->getFakekintlevoseg();
         $ret['fakekifizetve'] = $this->getFakekifizetve();
+        $ret['partnerktdatalany'] = $this->getPartnerktdatalany();
+        $ret['partnerktdatvallal'] = $this->getPartnerktdatvallal();
+        $ret['partnerktdszerzszam'] = $this->getPartnerktdszerzszam();
         if (\mkw\store::getConfigValue('admin', false)) {
             $ret['printurl'] = \mkw\store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejprint', false, array(), array(
                 'id' => $this->getId()
@@ -1569,6 +1581,10 @@ class Bizonylatfej {
                     $this->setPartnerszamlatipus($val->getSzamlatipus());
                     $this->setBizonylatnyelv($val->getBizonylatnyelv());
 
+                    $this->setPartnerktdatalany($val->getKtdatalany());
+                    $this->setPartnerktdatvallal($val->getKtdatvallal());
+                    $this->setPartnerktdszerzszam($val->getKtdszerzszam());
+
                     $uk = $val->getUzletkoto();
                     if ($uk) {
                         $this->setUzletkoto($uk);
@@ -1625,6 +1641,9 @@ class Bizonylatfej {
                 $this->szallvaros = '';
                 $this->szallutca = '';
                 $this->bizonylatnyelv = '';
+                $this->partnerktdatalany = false;
+                $this->partnerktdatvallal = false;
+                $this->partnerktdszerzszam = '';
                 $this->removeUzletkoto();
                 $this->removeFizmod();
                 $this->removeValutanem();
@@ -2963,5 +2982,48 @@ class Bizonylatfej {
     public function setBelsouzletkotojutalek($belsouzletkotojutalek) {
         $this->belsouzletkotojutalek = $belsouzletkotojutalek;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPartnerktdatvallal() {
+        return $this->partnerktdatvallal;
+    }
+
+    /**
+     * @param mixed $partnerktdatvallal
+     */
+    public function setPartnerktdatvallal($partnerktdatvallal) {
+        $this->partnerktdatvallal = $partnerktdatvallal;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPartnerktdatalany() {
+        return $this->partnerktdatalany;
+    }
+
+    /**
+     * @param mixed $partnerktdatalany
+     */
+    public function setPartnerktdatalany($partnerktdatalany) {
+        $this->partnerktdatalany = $partnerktdatalany;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPartnerktdszerzszam() {
+        return $this->partnerktdszerzszam;
+    }
+
+    /**
+     * @param mixed $partnerktdszerzszam
+     */
+    public function setPartnerktdszerzszam($partnerktdszerzszam) {
+        $this->partnerktdszerzszam = $partnerktdszerzszam;
+    }
+
 
 }

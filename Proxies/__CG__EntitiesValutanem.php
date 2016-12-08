@@ -64,10 +64,10 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'id', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'nev', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kerekit', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'hivatalos', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'mincimlet', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'partnerek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'id', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'nev', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kerekit', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'hivatalos', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'mincimlet', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'migrid'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'id', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'nev', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kerekit', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'hivatalos', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'mincimlet', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'partnerek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'id', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'nev', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kerekit', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'hivatalos', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'mincimlet', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'kosarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'termekarak', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Valutanem' . "\0" . 'migrid'];
     }
 
     /**
@@ -307,6 +307,28 @@ class Valutanem extends \Entities\Valutanem implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankszamla', [$bankszamla]);
 
         return parent::setBankszamla($bankszamla);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMigrid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMigrid', []);
+
+        return parent::getMigrid();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMigrid($migrid)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMigrid', [$migrid]);
+
+        return parent::setMigrid($migrid);
     }
 
 }

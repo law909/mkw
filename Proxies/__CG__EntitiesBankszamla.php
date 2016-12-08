@@ -64,10 +64,10 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'banknev', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'swift', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'iban', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bizonylatfejek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'banknev', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'swift', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'iban', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'migrid'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'banknev', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'swift', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'iban', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bizonylatfejek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'banknev', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bankcim', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'swift', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'iban', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bankszamla' . "\0" . 'migrid'];
     }
 
     /**
@@ -318,6 +318,28 @@ class Bankszamla extends \Entities\Bankszamla implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', [$valutanem]);
 
         return parent::setValutanem($valutanem);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMigrid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMigrid', []);
+
+        return parent::getMigrid();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMigrid($migrid)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMigrid', [$migrid]);
+
+        return parent::setMigrid($migrid);
     }
 
 }

@@ -276,6 +276,18 @@ class Partner {
     /** @ORM\Column(type="boolean") */
     private $mijszexporttiltva = false;
 
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $migrid;
+
+    /** @ORM\Column(type="boolean") */
+    private $ktdatvallal;
+
+    /** @ORM\Column(type="boolean") */
+    private $ktdatalany;
+
+    /** @ORM\Column(type="string",length=20,nullable=true) */
+    private $ktdszerzszam;
+
     public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1140,4 +1152,62 @@ class Partner {
     public function setMijszexporttiltva($mijszexporttiltva) {
         $this->mijszexporttiltva = $mijszexporttiltva;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMigrid() {
+        return $this->migrid;
+    }
+
+    /**
+     * @param mixed $migrid
+     */
+    public function setMigrid($migrid) {
+        $this->migrid = $migrid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getKtdatvallal() {
+        return $this->ktdatvallal;
+    }
+
+    /**
+     * @param mixed $ktdatvallal
+     */
+    public function setKtdatvallal($ktdatvallal) {
+        $this->ktdatvallal = $ktdatvallal;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getKtdatalany() {
+        return $this->ktdatalany;
+    }
+
+    /**
+     * @param mixed $ktdatalany
+     */
+    public function setKtdatalany($ktdatalany) {
+        $this->ktdatalany = $ktdatalany;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getKtdszerzszam() {
+        return $this->ktdszerzszam;
+    }
+
+    /**
+     * @param mixed $ktdszerzszam
+     */
+    public function setKtdszerzszam($ktdszerzszam) {
+        $this->ktdszerzszam = $ktdszerzszam;
+    }
+
+
 }
