@@ -350,6 +350,7 @@ class mainController extends \mkwhelpers\Controller {
 		$masikselected = $this->params->getRequestParam('sel');
 		$ret = array();
 
+		/** @var \Entities\Termek $termek */
 		$termek = \mkw\store::getEm()->getRepository('Entities\Termek')->find($termekkod);
 
 		if ($masiktipusid) {
@@ -360,7 +361,26 @@ class mainController extends \mkwhelpers\Controller {
 			$t = array($tipusid);
 			$e = array($valtozatertek);
 		}
+		/** @var \Entities\TermekValtozat $termekvaltozat */
 		$termekvaltozat = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(), $t, $e);
+
+        if ($termekvaltozat->getKeszlet() > 0) {
+            $ret['szallitasiido'] = 1;
+        }
+        else {
+            if ($termek->getSzallitasiido()) {
+                $ret['szallitasiido'] = $termek->getSzallitasiido();
+            }
+            else {
+                if ($termek->getGyarto() && $termek->getGyarto()->getSzallitasiido()) {
+                    $ret['szallitasiido'] = $termek->getGyarto()->getSzallitasiido();
+                }
+                else {
+                    $ret['szallitasiido'] = 0;
+                }
+            }
+        }
+
         $ret['price'] = number_format($termek->getBruttoAr($termekvaltozat, \mkw\store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
         if ($termekvaltozat) {
             $ret['kepurlmedium'] = $termekvaltozat->getKepurlMedium();

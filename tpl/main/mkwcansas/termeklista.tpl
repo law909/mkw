@@ -155,7 +155,7 @@
                                         <a href="/termek/{$_termek.slug}" itemprop="url"><span class="termekcaption" itemprop="name">{$_termek.caption}</span></a>
                                         <p itemprop="description" class="textalignjustify">{$_termek.rovidleiras}</p>
                                         {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
-                                        <div><span class="bold">Szállítási idő: </span>max. {$_termek.szallitasiido} munkanap</div>
+                                            <div><span class="bold">Szállítási idő: </span>max. <span id="termekszallitasiido{$_termek.id}-{$_termek.valtozatid|default}">{$_termek.szallitasiido}</span> munkanap</div>
                                         {/if}
                                         <div class="termekjelzok">
                                             {foreach $_termek.cimkelistaban as $_jelzo}
