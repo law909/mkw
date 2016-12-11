@@ -280,10 +280,10 @@ class Partner {
     private $migrid;
 
     /** @ORM\Column(type="boolean") */
-    private $ktdatvallal;
+    private $ktdatvallal = false;
 
     /** @ORM\Column(type="boolean") */
-    private $ktdatalany;
+    private $ktdatalany = false;
 
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $ktdszerzszam;

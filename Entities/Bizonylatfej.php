@@ -492,10 +492,10 @@ class Bizonylatfej {
     private $fakekifizetesdatum;
 
     /** @ORM\Column(type="boolean") */
-    private $partnerktdatvallal;
+    private $partnerktdatvallal = false;
 
     /** @ORM\Column(type="boolean") */
-    private $partnerktdatalany;
+    private $partnerktdatalany = false;
 
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $partnerktdszerzszam;
