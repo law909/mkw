@@ -2760,6 +2760,16 @@ class importController extends \mkwhelpers\Controller {
         }
     }
 
+    public function legavenueRepair() {
+        $parentid = $this->params->getIntRequestParam('katid', 0);
+        $parent = $this->getRepo('Entities\TermekFa')->find($parentid);
+        $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoLegavenue);
+        if ($parent) {
+            $sql = 'UPDATE termek SET inaktiv=0, fuggoben=0 WHERE gyarto_id=' . $gyartoid . ' and termekfa1karkod not like \'' . $parent->getKarkod() . '%\'';
+
+        }
+
+    }
     public function legavenueImport() {
         if (!$this->checkRunningImport(\mkw\consts::RunningLegavenueImport)) {
 
