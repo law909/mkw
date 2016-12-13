@@ -1212,7 +1212,7 @@ class partnerController extends \mkwhelpers\MattableController {
             'latitude',
             'longitude'
         );
-        fputcsv($csv, $fej, ';', '');
+        fwrite($csv, implode(';', $fej) . "\n");
 
         $ids = $this->params->getStringRequestParam('ids');
 
@@ -1238,7 +1238,7 @@ class partnerController extends \mkwhelpers\MattableController {
                     '',
                     ''
                 );
-                fputcsv($csv, $sor, ';', '');
+                fwrite($csv, implode(';', $sor) . "\n");
             }
         }
 
