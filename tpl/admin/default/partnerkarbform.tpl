@@ -22,13 +22,13 @@
 			<table><tbody>
 			<tr>
 				<td><label for="NevEdit">{t('Név')}:</label></td>
-				<td colspan="3"><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$partner.nev}" required="required" autofocus></td>
+				<td colspan="3"><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$partner.nev|escape}" required="required" autofocus></td>
 			</tr>
 			<tr>
 				<td><label for="VezeteknevEdit">{t('Vezetéknév')}:</label></td>
-				<td><input id="VezeteknevEdit" name="vezeteknev" type="text" size="20" maxlength="255" value="{$partner.vezeteknev}">
+				<td><input id="VezeteknevEdit" name="vezeteknev" type="text" size="20" maxlength="255" value="{$partner.vezeteknev|escape}">
 				<td><label for="KeresztnevEdit">{t('Keresztnév')}:</label></td>
-				<td><input id="KeresztnevEdit" name="keresztnev" type="text" size="20" maxlength="255" value="{$partner.keresztnev}">
+				<td><input id="KeresztnevEdit" name="keresztnev" type="text" size="20" maxlength="255" value="{$partner.keresztnev|escape}">
 			</tr>
             {if (!$setup.mijsz)}
 			<tr>
@@ -43,7 +43,8 @@
 				<td colspan="3">
 					<input id="IrszamEdit" name="irszam" type="text" size="6" maxlength="10" value="{$partner.irszam}" placeholder="{t('ir.szám')}" required="required">
 					<input id="VarosEdit" name="varos" type="text" size="20" maxlength="40" value="{$partner.varos}" placeholder="{t('város')}" required="required">
-					<input id="UtcaEdit" name="utca" type="text" size="40" maxlength="60" value="{$partner.utca}" placeholder="{t('utca, házszám')}">
+					<input id="UtcaEdit" name="utca" type="text" size="40" maxlength="60" value="{$partner.utca}" placeholder="{t('utca')}">
+                    <input id="HazszamEdit" name="hazszam" type="text" size="20" maxlength="40" value="{$partner.hazszam}" placeholder="{t('házszám')}">
 				</td>
             </tr>
             <tr>
@@ -227,7 +228,8 @@
 				<td colspan="3">
 					<input id="SzallIrszamEdit" name="szallirszam" type="text" size="6" maxlength="10" value="{$partner.szallirszam}" placeholder="{t('ir.szám')}">
 					<input id="SzallVarosEdit" name="szallvaros" type="text" size="20" maxlength="40" value="{$partner.szallvaros}" placeholder="{t('város')}">
-					<input id="SzallUtcaEdit" name="szallutca" type="text" size="40" maxlength="60" value="{$partner.szallutca}" placeholder="{t('utca, házszám')}" autocomplete="off">
+					<input id="SzallUtcaEdit" name="szallutca" type="text" size="40" maxlength="60" value="{$partner.szallutca}" placeholder="{t('utca')}" autocomplete="off">
+                    <input id="SzallHazszamEdit" name="szallhazszam" type="text" size="20" maxlength="40" value="{$partner.szallhazszam}" placeholder="{t('házszám')}" autocomplete="off">
 				</td>
 			</tr>
 			</tbody></table>

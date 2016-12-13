@@ -19,9 +19,9 @@ class Bankszamla {
     private $bankcim;
     /** @ORM\Column(type="string",length=255,nullable=false) */
     private $szamlaszam;
-    /** @ORM\Column(type="string",length=20) */
+    /** @ORM\Column(type="string",length=20,nullable=true) */
     private $swift;
-    /** @ORM\Column(type="string",length=20) */
+    /** @ORM\Column(type="string",length=20,nullable=true) */
     private $iban;
     /**
      * @ORM\ManyToOne(targetEntity="Valutanem")

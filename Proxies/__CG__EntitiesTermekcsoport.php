@@ -64,10 +64,10 @@ class Termekcsoport extends \Entities\Termekcsoport implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'id', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'kedvezmenyek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'id', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'kedvezmenyek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'migrid'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'id', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'kedvezmenyek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'id', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'kedvezmenyek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'migrid'];
     }
 
     /**
@@ -219,6 +219,28 @@ class Termekcsoport extends \Entities\Termekcsoport implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMigrid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMigrid', []);
+
+        return parent::getMigrid();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMigrid($migrid)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMigrid', [$migrid]);
+
+        return parent::setMigrid($migrid);
     }
 
 }

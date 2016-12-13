@@ -39,12 +39,14 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['irszam'] = $t->getIrszam();
         $x['varos'] = $t->getVaros();
         $x['utca'] = $t->getUtca();
+        $x['hazszam'] = $t->getHazszam();
         $x['orszag'] = $t->getOrszag();
         $x['orszagnev'] = $t->getOrszagNev();
         $x['lcim'] = $t->getLCim();
         $x['lirszam'] = $t->getLirszam();
         $x['lvaros'] = $t->getLvaros();
         $x['lutca'] = $t->getLutca();
+        $x['lhazszam'] = $t->getLhazszam();
         $x['telefon'] = $t->getTelefon();
         $x['mobil'] = $t->getMobil();
         $x['fax'] = $t->getFax();
@@ -60,6 +62,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['szallirszam'] = $t->getSzallirszam();
         $x['szallvaros'] = $t->getSzallvaros();
         $x['szallutca'] = $t->getSzallutca();
+        $x['szallhazszam'] = $t->getSzallhazszam();
         $x['nem'] = $t->getNem();
         $x['szuletesiido'] = $t->getSzuletesiido();
         $x['szuletesiidostr'] = $t->getSzuletesiidoStr();
@@ -95,8 +98,10 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['ktdszerzszam'] = $t->getKtdszerzszam();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
-            $x['afa'] = $afa->getId();
-            $x['afakulcs'] = $afa->getErtek();
+            if ($afa) {
+                $x['afa'] = $afa->getId();
+                $x['afakulcs'] = $afa->getErtek();
+            }
         }
         $kedv = array();
         foreach ($t->getTermekcsoportkedvezmenyek() as $tar) {
@@ -138,6 +143,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setLirszam($this->params->getStringRequestParam('lirszam'));
             $obj->setLvaros($this->params->getStringRequestParam('lvaros'));
             $obj->setLutca($this->params->getStringRequestParam('lutca'));
+            $obj->setLhazszam($this->params->getStringRequestParam('lhazszam'));
             $obj->setMobil($this->params->getStringRequestParam('mobil'));
             $obj->setFax($this->params->getStringRequestParam('fax'));
             $obj->setHonlap($this->params->getStringRequestParam('honlap'));
@@ -254,6 +260,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setIrszam($this->params->getStringRequestParam('irszam'));
             $obj->setVaros($this->params->getStringRequestParam('varos'));
             $obj->setUtca($this->params->getStringRequestParam('utca'));
+            $obj->setHazszam($this->params->getStringRequestParam('hazszam'));
         }
 
         if ($subject === 'szallitasiadatok' || $subject === 'minden') {
@@ -261,6 +268,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
             $obj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
             $obj->setSzallutca($this->params->getStringRequestParam('szallutca'));
+            $obj->setSzallhazszam($this->params->getStringRequestParam('szallhazszam'));
         }
 
         if ($subject === 'jelszo') {
@@ -496,10 +504,12 @@ class partnerController extends \mkwhelpers\MattableController {
                 'irszam' => $partner->getIrszam(),
                 'varos' => $partner->getVaros(),
                 'utca' => $partner->getUtca(),
+                'hazszam' => $partner->getHazszam(),
                 'szallnev' => $partner->getSzallnev(),
                 'szallirszam' => $partner->getSzallirszam(),
                 'szallvaros' => $partner->getSzallvaros(),
                 'szallutca' => $partner->getSzallutca(),
+                'szallhazszam' => $partner->getSzallhazszam(),
                 'adoszam' => $partner->getAdoszam(),
                 'telefon' => $partner->getTelefon(),
                 'email' => $partner->getEmail(),
@@ -531,7 +541,8 @@ class partnerController extends \mkwhelpers\MattableController {
                 'fizhatido' => $sor->getFizhatido(),
                 'irszam' => $sor->getIrszam(),
                 'varos' => $sor->getVaros(),
-                'utca' => $sor->getUtca()
+                'utca' => $sor->getUtca(),
+                'hazszam' => $sor->getHazszam()
             );
         }
         return $res;
@@ -1182,6 +1193,10 @@ class partnerController extends \mkwhelpers\MattableController {
         readfile($filepath);
 
         \unlink($filepath);
+
+    }
+
+    public function roadrunnerExport() {
 
     }
 }

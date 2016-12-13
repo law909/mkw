@@ -88,6 +88,9 @@ class Partner {
 	/** @ORM\Column(type="string",length=60,nullable=true) */
 	private $utca = '';
 
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $hazszam = '';
+
 	/** @ORM\Column(type="string",length=10,nullable=true) */
 	private $lirszam = '';
 
@@ -97,7 +100,10 @@ class Partner {
 	/** @ORM\Column(type="string",length=60,nullable=true) */
 	private $lutca = '';
 
-	/** @ORM\Column(type="string",length=40,nullable=true) */
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $lhazszam = '';
+
+    /** @ORM\Column(type="string",length=40,nullable=true) */
 	private $telefon = '';
 
 	/** @ORM\Column(type="string",length=40,nullable=true) */
@@ -165,6 +171,9 @@ class Partner {
 
 	/** @ORM\Column(type="string",length=60,nullable=true) */
 	private $szallutca = '';
+
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $szallhazszam = '';
 
 	/** @ORM\Column(type="integer",nullable=true) */
 	private $nem;
@@ -288,6 +297,9 @@ class Partner {
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $ktdszerzszam;
 
+    /** @ORM\OneToMany(targetEntity="Kontakt", mappedBy="partner",cascade={"persist"}) */
+    private $kontaktok;
+
     public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -295,6 +307,7 @@ class Partner {
 		$this->termekertesitok = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->termekcsoportkedvezmenyek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->mijszoklevelek = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->kontaktok = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function getCim() {
@@ -302,11 +315,15 @@ class Partner {
 		if (($cim !== '') && ($this->varos !== '')) {
 			$cim.=' ';
 		}
-		$cim.=$this->varos;
+		$cim .= $this->varos;
 		if (($cim !== '') && ($this->utca !== '')) {
-			$cim.=', ';
+			$cim .= ', ';
 		}
-		$cim.=$this->utca;
+		$cim .= $this->utca;
+		if (($cim !== '') && ($this->hazszam !== '')) {
+		    $cim .= ' ';
+        }
+        $cim .= $this->hazszam;
 		return $cim;
 	}
 
@@ -320,6 +337,10 @@ class Partner {
 			$cim.=', ';
 		}
 		$cim.=$this->lutca;
+        if (($cim !== '') && ($this->lhazszam !== '')) {
+            $cim .= ' ';
+        }
+        $cim .= $this->lhazszam;
 		return $cim;
 	}
 
@@ -1209,5 +1230,53 @@ class Partner {
         $this->ktdszerzszam = $ktdszerzszam;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getKontaktok() {
+        return $this->kontaktok;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHazszam() {
+        return $this->hazszam;
+    }
+
+    /**
+     * @param mixed $hazszam
+     */
+    public function setHazszam($hazszam) {
+        $this->hazszam = $hazszam;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLhazszam() {
+        return $this->lhazszam;
+    }
+
+    /**
+     * @param mixed $lhazszam
+     */
+    public function setLhazszam($lhazszam) {
+        $this->lhazszam = $lhazszam;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzallhazszam() {
+        return $this->szallhazszam;
+    }
+
+    /**
+     * @param mixed $szallhazszam
+     */
+    public function setSzallhazszam($szallhazszam) {
+        $this->szallhazszam = $szallhazszam;
+    }
 
 }

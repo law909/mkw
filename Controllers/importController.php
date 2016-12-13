@@ -3097,8 +3097,27 @@ class importController extends \mkwhelpers\Controller {
     }
 
     public function kerriiimport() {
+
+        function getUtca($mibol) {
+            $p = strrpos($mibol, ' ');
+            if ($p !== false) {
+                return substr($mibol, 0, $p);
+            }
+            return $mibol;
+        }
+
+        function getHazszam($mibol) {
+            $p = strrpos($mibol, ' ');
+            if ($p !== false) {
+                return substr($mibol, $p + 1);
+            }
+            return $mibol;
+        }
+
+        $dsn = 'mysql:host=' . \mkw\store::getConfigValue('kerrii.host') . ';dbname=' . \mkw\store::getConfigValue('kerrii.dbname') . ';port='
+            . \mkw\store::getConfigValue('kerrii.port');
         $dbh = new \PDO(
-            str_replace('$', '=', \mkw\store::getConfigValue('kerrii.url')),
+            $dsn,
             \mkw\store::getConfigValue('kerrii.username'),
             \mkw\store::getConfigValue('kerrii.password'),
             array(
@@ -3119,6 +3138,7 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->flush();
                 }
             }
+
             $stmt = $dbh->prepare('SELECT * FROM afatorzs');
             $stmt->execute();
             while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
@@ -3131,6 +3151,7 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->flush();
                 }
             }
+
             $stmt = $dbh->prepare('SELECT * FROM fizmod');
             $stmt->execute();
             while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
@@ -3145,10 +3166,13 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->flush();
                 }
             }
+
+            $db = 0;
             $stmt = $dbh->prepare('SELECT * FROM vtsz');
             $stmt->execute();
             while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
                 if (!$this->getRepo('Entities\Vtsz')->findOneBy(array('migrid' => $r['kod']))) {
+                    $db++;
                     $vtsz = new \Entities\Vtsz();
                     $vtsz->setNev($this->toutf($r['szoveg']));
                     $vtsz->setSzam($this->toutf($r['szam']));
@@ -3157,16 +3181,22 @@ class importController extends \mkwhelpers\Controller {
                     $vtsz->setCsk($this->getRepo('Entities\Csk')->findOneBy(array('migrid' => $r['csk'])));
                     $vtsz->setKt($this->getRepo('Entities\Csk')->findOneBy(array('migrid' => $r['kt'])));
                     \mkw\store::getEm()->persist($vtsz);
-                    \mkw\store::getEm()->flush();
+                    if (($db % 20) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                    }
                 }
             }
+            \mkw\store::getEm()->flush();
+            \mkw\store::getEm()->clear();
+
             $stmt = $dbh->prepare('SELECT * FROM bankszamla');
             $stmt->execute();
             while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
                 if (!$this->getRepo('Entities\Bankszamla')->findOneBy(array('migrid' => $r['kod']))) {
                     $bankszamla = new \Entities\Bankszamla();
-                    $bankszamla->setBanknev($r['banknev']);
-                    $bankszamla->setBankcim($r['bankcim']);
+                    $bankszamla->setBanknev($this->toutf($r['banknev']));
+                    $bankszamla->setBankcim($this->toutf($r['bankcim']));
                     $bankszamla->setSzamlaszam($r['szlaszam']);
                     $bankszamla->setSwift($r['swift']);
                     $bankszamla->setMigrid($r['kod']);
@@ -3174,21 +3204,23 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->flush();
                 }
             }
+
             $stmt = $dbh->prepare('SELECT * FROM valutanem');
             $stmt->execute();
             while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
                 if (!$this->getRepo('Entities\Valutanem')->findOneBy(array('migrid' => $r['kod']))) {
                     $valu = new \Entities\Valutanem();
-                    $valu->setNev($r['nev']);
+                    $valu->setNev($this->toutf($r['nev']));
                     $valu->setKerekit($r['kerekit']);
                     $valu->setHivatalos($r['hivatalos']);
-                    $valu->setMincimlet($r['mincimlet']);
+                    $valu->setMincimlet(($r['mincimlet'] ? $r['mincimlet'] : 0));
                     $valu->setMigrid($r['kod']);
                     $valu->setBankszamla($this->getRepo('Entities\Bankszamla')->findOneBy(array('migrid' => $r['defabankszla'])));
                     \mkw\store::getEm()->persist($valu);
                     \mkw\store::getEm()->flush();
                 }
             }
+
             $stmt = $dbh->prepare('SELECT * FROM bankszamla');
             $stmt->execute();
             while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
@@ -3199,50 +3231,114 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->flush();
                 }
             }
+
+            $db = 0;
             $stmt = $dbh->prepare('SELECT * FROM partner');
             $stmt->execute();
             while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
                 if (!$this->getRepo('Entities\Partner')->findOneBy(array('migrid' => $r['kod']))) {
+                    $db++;
                     $partner = new \Entities\Partner();
-                    $partner->setNev($r['nev']);
+                    $partner->setNev($this->toutf($r['nev']));
                     $partner->setMigrid($r['kod']);
                     $partner->setAkcioshirlevelkell(false);
                     $partner->setUjdonsaghirlevelkell(false);
                     $partner->setSzallito(false);
-                    $partner->setSzamlatipus(1);
+                    $partner->setSzamlatipus(0);
                     $partner->setEzuzletkoto(false);
-                    $partner->setBanknev($r['banknev']);
+                    $partner->setBanknev($this->toutf($r['banknev']));
                     $partner->setAdoszam($r['adoszam']);
                     $partner->setCjszam($r['cegjszam']);
                     $partner->setMukengszam($r['mukengszam']);
                     $partner->setJovengszam($r['jovengszam']);
                     $partner->setEuadoszam($r['euadoszam']);
                     $partner->setEmail($r['email']);
-                    $partner->setTelefon($r['telefon']);
-                    $partner->setMobil($r['mobil']);
-                    $partner->setFax($r['fax']);
-                    $partner->setHonlap($r['honlap']);
+                    $partner->setTelefon($this->toutf($r['telefon']));
+                    $partner->setMobil($this->toutf($r['mobil']));
+                    $partner->setFax($this->toutf($r['fax']));
+                    $partner->setHonlap($this->toutf($r['honlap']));
                     $partner->setIban($r['szlaszam']);
-                    $partner->setValutanem($this->getRepo('Entities\Valutanem')->findOneBy(array('migrid' => $r['valutanem'])));
-                    $partner->setFizmod($this->getRepo('Entities\Fizmod')->findOneBy(array('migrid' => $r['fizmod'])));
+                    $valuta = $this->getRepo('Entities\Valutanem')->findOneBy(array('migrid' => $r['valutanem']));
+                    if ($valuta) {
+                        $partner->setValutanem($valuta);
+                    }
+                    $fizmod = $this->getRepo('Entities\Fizmod')->findOneBy(array('migrid' => $r['fizmod']));
+                    if ($fizmod) {
+                        $partner->setFizmod($fizmod);
+                    }
                     $partner->setFizhatido($r['fizhatido']);
                     if ($r['alapar']) {
                         $partner->setTermekarazonosito($r['alapar']);
                     }
-                    $partner->setIrszam($r['irszam']);
-                    $partner->setVaros($r['varos']);
-                    $partner->setUtca($r['utca']);
+                    $partner->setIrszam($this->toutf($r['irszam']));
+                    $partner->setVaros($this->toutf($r['varos']));
+                    $partner->setUtca(getUtca($this->toutf($r['utca'])));
+                    $partner->setHazszam(getHazszam($this->toutf($r['utca'])));
                     $partner->setValligszam($r['valligszam']);
-                    $partner->setLirszam($r['pirszam']);
-                    $partner->setLvaros($r['pvaros']);
-                    $partner->setLutca($r['putca']);
+                    $partner->setLirszam($this->toutf($r['pirszam']));
+                    $partner->setLvaros($this->toutf($r['pvaros']));
+                    $partner->setLutca(getUtca($this->toutf($r['putca'])));
+                    $partner->setLhazszam(getHazszam($this->toutf($r['putca'])));
                     $partner->setKtdatalany($r['ktdatalany']);
                     $partner->setKtdatvallal($r['ktdatvallal']);
                     $partner->setKtdszerzszam($r['ktdszerzszam']);
                     \mkw\store::getEm()->persist($partner);
-                    \mkw\store::getEm()->flush();
+                    if (($db % 20) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                    }
                 }
             }
+            \mkw\store::getEm()->flush();
+            \mkw\store::getEm()->clear();
+
+            $db = 0;
+            $stmt = $dbh->prepare('SELECT * FROM kontakt');
+            $stmt->execute();
+            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                if (!$this->getRepo('Entities\Kontakt')->findOneBy(array('migrid' => $r['kod']))) {
+                    $partner = $this->getRepo('Entities\Partner')->findOneBy(array('migrid' => $r['cegkod']));
+                    if ($partner) {
+                        $db++;
+                        $kontakt = new \Entities\Kontakt();
+                        $kontakt->setNev($this->toutf($r['nev']));
+                        $kontakt->setMigrid($r['kod']);
+                        $kontakt->setBeosztas($this->toutf($r['beosztas']));
+                        $kontakt->setTelefon($this->toutf($r['telefon']));
+                        $kontakt->setFax($this->toutf($r['fax']));
+                        $kontakt->setMobil($this->toutf($r['mobil']));
+                        $kontakt->setEmail($this->toutf($r['email']));
+                        $kontakt->setPartner($partner);
+                        \mkw\store::getEm()->persist($kontakt);
+                        if (($db % 20) === 0) {
+                            \mkw\store::getEm()->flush();
+                            \mkw\store::getEm()->clear();
+                        }
+                    }
+                }
+            }
+            \mkw\store::getEm()->flush();
+            \mkw\store::getEm()->clear();
+
+            $db = 0;
+            $stmt = $dbh->prepare('SELECT * FROM arkategoria');
+            $stmt->execute();
+            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                if (!$this->getRepo('Entities\Termekcsoport')->findOneBy(array('migrid' => $r['kod']))) {
+                    $db++;
+                    $tcs = new \Entities\Termekcsoport();
+                    $tcs->setNev($this->toutf($r['nev']));
+                    $tcs->setMigrid($r['kod']);
+                    \mkw\store::getEm()->persist($tcs);
+                    if (($db % 20) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                    }
+                }
+            }
+            \mkw\store::getEm()->flush();
+            \mkw\store::getEm()->clear();
+
         }
         echo 'kész';
     }

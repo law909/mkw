@@ -29,6 +29,9 @@ class Termekcsoport {
     /** @ORM\OneToMany(targetEntity="PartnerTermekcsoportKedvezmeny", mappedBy="termekcsoport",cascade={"persist"}) */
     private $kedvezmenyek;
 
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $migrid;
+
 
     /**
      * @return mixed
@@ -56,6 +59,20 @@ class Termekcsoport {
      */
     public function setNev($nev) {
         $this->nev = $nev;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMigrid() {
+        return $this->migrid;
+    }
+
+    /**
+     * @param mixed $migrid
+     */
+    public function setMigrid($migrid) {
+        $this->migrid = $migrid;
     }
 
 }

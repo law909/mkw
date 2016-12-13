@@ -19,7 +19,7 @@ class PartnerMIJSZOklevel {
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Partner",inversedBy="termekcsoportkedvezmenyek")
+     * @ORM\ManyToOne(targetEntity="Partner",inversedBy="mijszoklevelek")
      * @ORM\JoinColumn(name="partner_id",referencedColumnName="id",onDelete="cascade")
      */
     private $partner;
