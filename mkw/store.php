@@ -921,4 +921,23 @@ class store {
         }
         return $mit;
     }
+
+    public static function toiso($mit) {
+        if (is_array($mit)) {
+            return array_map(function($el) {
+                return mb_convert_encoding($el, 'ISO-8859-2', 'UTF8');
+            }, $mit);
+        }
+        return mb_convert_encoding($mit, 'ISO-8859-2', 'UTF8');
+    }
+
+    public static function toutf($mit) {
+        if (is_array($mit)) {
+            return array_map(function($el) {
+                return mb_convert_encoding($el, 'UTF8', 'ISO-8859-2');
+            }, $mit);
+        }
+        return mb_convert_encoding($mit, 'UTF8', 'ISO-8859-2');
+    }
+
 }

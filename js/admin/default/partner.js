@@ -354,6 +354,21 @@ $(document).ready(function(){
                         });
                     }
                     break;
+                case 'roadrecordexport':
+                    cbs = $('.js-egyedcheckbox:checked');
+                    if (cbs.length) {
+                        var tomb = [],
+                            $exportform = $('#exportform');
+                        cbs.closest('tr').each(function (index, elem) {
+                            tomb.push($(elem).data('egyedid'));
+                        });
+                    }
+                    $exportform.attr('action', '/admin/partner/roadrecordexport');
+                    if (tomb) {
+                        $('input[name="ids"]', $exportform).val(tomb);
+                    }
+                    $exportform.submit();
+                    break;
             }
 
         });

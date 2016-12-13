@@ -18,6 +18,7 @@ class PartnerRepository extends \mkwhelpers\Repository {
             $btch['mijszexportus'] = 'Oktató export US';
         }
         $btch['megjegyzesexport'] = 'Megjegyzés export';
+        $btch['roadrecordexport'] = 'Roadrecord export';
 		$this->setBatches($btch);
 	}
 

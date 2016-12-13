@@ -1196,7 +1196,62 @@ class partnerController extends \mkwhelpers\MattableController {
 
     }
 
-    public function roadrunnerExport() {
+    public function roadrecordExport() {
+        $filepath = uniqid('roadrecordpartner') . '.csv';
+        $csv = fopen($filepath, 'w');
 
+        $fej = array(
+            'partner',
+            'iranyitoszam',
+            'helyseg',
+            'Utca',
+            'hazszam',
+            'megjegyzes',
+            'magan',
+            'utazas celja',
+            'latitude',
+            'longitude'
+        );
+        fputcsv($csv, $fej, ';', '');
+
+        $ids = $this->params->getStringRequestParam('ids');
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        if ($ids) {
+            $filter->addFilter('id', 'IN', explode(',', $ids));
+        }
+
+        $partnerek = $this->getRepo()->getAll($filter, array('nev' => 'ASC'));
+        if ($partnerek) {
+
+            /** @var \Entities\Partner $partner */
+            foreach ($partnerek as $partner) {
+                $sor = array(
+                    \mkw\store::toiso($partner->getNev()),
+                    \mkw\store::toiso($partner->getIrszam()),
+                    \mkw\store::toiso($partner->getVaros()),
+                    \mkw\store::toiso($partner->getUtca()),
+                    \mkw\store::toiso($partner->getHazszam()),
+                    '',
+                    '',
+                    '',
+                    '',
+                    ''
+                );
+                fputcsv($csv, $sor, ';', '');
+            }
+        }
+
+        fclose($csv);
+
+        $filesize = filesize($filepath);
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $filesize);
+        header("Content-Disposition: attachment; filename=" . $filepath);
+
+        readfile($filepath);
+
+        \unlink($filepath);
     }
 }
