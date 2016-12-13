@@ -355,10 +355,10 @@ $(document).ready(function(){
                     }
                     break;
                 case 'roadrecordexport':
+                    var tomb = [],
+                        $exportform = $('#exportform');
                     cbs = $('.js-egyedcheckbox:checked');
                     if (cbs.length) {
-                        var tomb = [],
-                            $exportform = $('#exportform');
                         cbs.closest('tr').each(function (index, elem) {
                             tomb.push($(elem).data('egyedid'));
                         });
