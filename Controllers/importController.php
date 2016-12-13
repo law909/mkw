@@ -3247,16 +3247,16 @@ class importController extends \mkwhelpers\Controller {
                     $partner->setSzamlatipus(0);
                     $partner->setEzuzletkoto(false);
                     $partner->setBanknev($this->toutf($r['banknev']));
-                    $partner->setAdoszam($r['adoszam']);
-                    $partner->setCjszam($r['cegjszam']);
-                    $partner->setMukengszam($r['mukengszam']);
-                    $partner->setJovengszam($r['jovengszam']);
-                    $partner->setEuadoszam($r['euadoszam']);
-                    $partner->setEmail($r['email']);
-                    $partner->setTelefon($this->toutf($r['telefon']));
-                    $partner->setMobil($this->toutf($r['mobil']));
-                    $partner->setFax($this->toutf($r['fax']));
-                    $partner->setHonlap($this->toutf($r['honlap']));
+                    $partner->setAdoszam(\mkw\store::toutf($r['adoszam']));
+                    $partner->setCjszam(\mkw\store::toutf($r['cegjszam']));
+                    $partner->setMukengszam(\mkw\store::toutf($r['mukengszam']));
+                    $partner->setJovengszam(\mkw\store::toutf($r['jovengszam']));
+                    $partner->setEuadoszam(\mkw\store::toutf($r['euadoszam']));
+                    $partner->setEmail(\mkw\store::toutf($r['email']));
+                    $partner->setTelefon(\mkw\store::toutf($r['telefon']));
+                    $partner->setMobil(\mkw\store::toutf($r['mobil']));
+                    $partner->setFax(\mkw\store::toutf($r['fax']));
+                    $partner->setHonlap(\mkw\store::toutf($r['honlap']));
                     $partner->setIban($r['szlaszam']);
                     $valuta = $this->getRepo('Entities\Valutanem')->findOneBy(array('migrid' => $r['valutanem']));
                     if ($valuta) {
