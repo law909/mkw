@@ -672,7 +672,7 @@ class TermekRepository extends \mkwhelpers\Repository {
             }
         }
         if ($termek) {
-            foreach ($termek->getTermekKepek() as $kep) {
+            foreach ($termek->getTermekKepek(true) as $kep) {
                 if ($kep->getId() !== $kivet) {
                     $egyed = array();
                     $egyed['kepurl'] = $kep->getUrlLarge();
