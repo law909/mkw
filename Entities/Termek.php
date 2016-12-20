@@ -50,6 +50,23 @@ class Termek {
      */
     private $nev = '';
 
+    /**
+     * @ORM\Column(type="string",length=255,nullable=false)
+     */
+    private $nev2 = '';
+    /**
+     * @ORM\Column(type="string",length=255,nullable=false)
+     */
+    private $nev3 = '';
+    /**
+     * @ORM\Column(type="string",length=255,nullable=false)
+     */
+    private $nev4 = '';
+    /**
+     * @ORM\Column(type="string",length=255,nullable=false)
+     */
+    private $nev5 = '';
+
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $me = '';
 
@@ -205,6 +222,9 @@ class Termek {
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $suly = 0;
 
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $suruseg = 0;
+
     /** @ORM\Column(type="boolean",nullable=false) */
     private $osszehajthato = false;
 
@@ -282,6 +302,15 @@ class Termek {
 
     /** @ORM\Column(type="boolean") */
     private $kozvetitett = 0;
+
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $migrid;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $egyprodukcios = 1;
+
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $valutameszorzo;
 
     public function __toString() {
         return (string)$this->id . ' - ' . $this->nev;
@@ -1852,5 +1881,117 @@ class Termek {
 
     public function incNepszeruseg() {
         $this->nepszeruseg++;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMigrid() {
+        return $this->migrid;
+    }
+
+    /**
+     * @param mixed $migrid
+     */
+    public function setMigrid($migrid) {
+        $this->migrid = $migrid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNev2() {
+        return $this->nev2;
+    }
+
+    /**
+     * @param mixed $nev2
+     */
+    public function setNev2($nev2) {
+        $this->nev2 = $nev2;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNev3() {
+        return $this->nev3;
+    }
+
+    /**
+     * @param mixed $nev3
+     */
+    public function setNev3($nev3) {
+        $this->nev3 = $nev3;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNev4() {
+        return $this->nev4;
+    }
+
+    /**
+     * @param mixed $nev4
+     */
+    public function setNev4($nev4) {
+        $this->nev4 = $nev4;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNev5() {
+        return $this->nev5;
+    }
+
+    /**
+     * @param mixed $nev5
+     */
+    public function setNev5($nev5) {
+        $this->nev5 = $nev5;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSuruseg() {
+        return $this->suruseg;
+    }
+
+    /**
+     * @param mixed $suruseg
+     */
+    public function setSuruseg($suruseg) {
+        $this->suruseg = $suruseg;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEgyprodukcios() {
+        return $this->egyprodukcios;
+    }
+
+    /**
+     * @param mixed $egyprodukcios
+     */
+    public function setEgyprodukcios($egyprodukcios) {
+        $this->egyprodukcios = $egyprodukcios;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValutameszorzo() {
+        return $this->valutameszorzo;
+    }
+
+    /**
+     * @param mixed $valutameszorzo
+     */
+    public function setValutameszorzo($valutameszorzo) {
+        $this->valutameszorzo = $valutameszorzo;
     }
 }

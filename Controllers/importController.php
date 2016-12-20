@@ -3339,6 +3339,69 @@ class importController extends \mkwhelpers\Controller {
             \mkw\store::getEm()->flush();
             \mkw\store::getEm()->clear();
 
+            $stmt = $dbh->prepare('SELECT * FROM termekcsoport WHERE torolt=0 ORDER BY kod');
+            $stmt->execute();
+            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                if (!$this->getRepo('Entities\TermekFa')->find($r['kod'])) {
+                    $q = \mkw\store::getEm()->getConnection()->prepare('INSERT INTO termekfa '
+                        . '(id,parent_id,created,nev,sorrend,karkod,inaktiv) VALUES '
+                        . '('
+                        . $r['kod'] . ','
+                        . ($r['szulokod'] == '0' ? 'null' : $r['szulokod']) . ','
+                        . 'now(),'
+                        . '"' . $this->toutf($r['nev']) . '",'
+                        . '0,'
+                        . '"' . $r['karkod'] . '",'
+                        . '0'
+                        . ')'
+                    );
+                    $q->execute();
+                }
+            }
+            $this->getRepo('Entities\TermekFa')->regenerateKarkod();
+            $this->getRepo('Entities\TermekFa')->regenerateSlug();
+
+            $db = 0;
+            $stmt = $dbh->prepare('SELECT * FROM termek WHERE (hasznalt=1) AND (kod>0)');
+            $stmt->execute();
+            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                if (!$this->getRepo('Entities\Termek')->findOneBy(array('migrid' => $r['kod']))) {
+                    $db++;
+                    $t = new \Entities\Termek();
+                    $t->setCikkszam($this->toutf($r['cikkszam']));
+                    $t->setNev($this->toutf($r['nev']));
+                    $t->setNev2($this->toutf($r['nev2']));
+                    $t->setNev3($this->toutf($r['nev3']));
+                    $t->setNev4($this->toutf($r['nev4']));
+                    $t->setNev5($this->toutf($r['nev5']));
+                    $t->setMe($this->toutf($r['me']));
+                    $t->setKiszereles($r['gyujto']);
+                    $t->setVtsz($this->getRepo('Entities\Vtsz')->findOneBy(array('migrid' => $r['vtsz'])));
+                    $fa = $this->getRepo('Entities\TermekFa')->find($r['csoportkod']);
+                    if (!$fa) {
+                        $fa = $this->getRepo('Entities\TermekFa')->find(1);
+                    }
+                    $t->setTermekfa1($fa);
+                    $t->setSzelesseg($r['meretx']);
+                    $t->setHosszusag($r['merety']);
+                    $t->setSuly($r['suly']);
+                    $t->setSuruseg($r['anyagsuruseg']);
+                    $t->setValutameszorzo($r['valutameszorzo']);
+                    $arkat = $this->getRepo('Entities\Termekcsoport')->findOneBy(array('migrid' => $r['arkategoria']));
+                    if ($arkat) {
+                        $t->setTermekcsoport($arkat);
+                    }
+                    $t->setMigrid($r['kod']);
+                    \mkw\store::getEm()->persist($t);
+                    if (($db % 20) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                    }
+                }
+            }
+            \mkw\store::getEm()->flush();
+            \mkw\store::getEm()->clear();
+
         }
         echo 'kész';
     }
