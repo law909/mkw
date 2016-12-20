@@ -90,6 +90,21 @@ class PartnerRepository extends \mkwhelpers\Repository {
         return $q->getScalarResult();
     }
 
+    public function getBizonylatfejLista($keresett) {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('_xx.nev', 'LIKE', '%' . $keresett . '%');
+        $order = array('_xx.nev' => 'ASC');
+        $a = $this->alias;
+        $q = $this->_em->createQuery('SELECT ' . $a . '.id,' . $a . '.nev, ' . $a . '.irszam, ' . $a . '.varos, ' . $a . '.utca, ' . $a . '.hazszam,'
+            . $a . ' szamlatipus'
+            . ' FROM ' . $this->entityname . ' ' . $a
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order));
+        $q->setParameters($this->getQueryParameters($filter));
+        $res = $q->getScalarResult();
+        return $res;
+    }
+
     public function getByCimkek($cimkefilter) {
         $partnerkodok = array();
         if ($cimkefilter) {

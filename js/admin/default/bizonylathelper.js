@@ -2,16 +2,27 @@ var bizonylathelper = function($) {
 
     var nocalcarak = false;
 
+    function isPartnerAutocomplete() {
+        return $('#mattkarb-header').data('partnerautocomplete') == '1';
+    }
+
     function setDates() {
         var keltedit = $('#KeltEdit'),
-                esededit = $('#EsedekessegEdit'),
-                kelt = keltedit.datepicker('getDate');
+            esededit = $('#EsedekessegEdit'),
+            kelt = keltedit.datepicker('getDate'),
+            partner;
+        if (isPartnerAutocomplete()) {
+            partner = $('.js-partnerid').val();
+        }
+        else {
+            partner = $('#PartnerEdit option:selected').val();
+        }
         $.ajax({
             url: '/admin/bizonylatfej/calcesedekesseg',
             data: {
                 kelt: kelt.getFullYear() + '.' + (kelt.getMonth() + 1) + '.' + kelt.getDate(),
                 fizmod: $('#FizmodEdit option:selected').val(),
-                partner: $('#PartnerEdit option:selected').val()
+                partner: partner
             },
             success: function(data) {
                 var d = JSON.parse(data);
@@ -129,12 +140,20 @@ var bizonylathelper = function($) {
     }
 
     function setTermekAr(sorId) {
+        var partner;
+        if (isPartnerAutocomplete()) {
+            partner = $('.js-partnerid').val();
+        }
+        else {
+            partner = $('#PartnerEdit option:selected').val();
+        }
+
         $.ajax({
             async: false,
             url: '/admin/bizonylattetel/getar',
             data: {
                 valutanem: $('#ValutanemEdit').val(),
-                partner: $('#PartnerEdit').val(),
+                partner: partner,
                 termek: $('input[name="teteltermek_' + sorId + '"]').val(),
                 valtozat: $('select[name="tetelvaltozat_' + sorId + '"]').val()
             },
@@ -290,6 +309,29 @@ var bizonylathelper = function($) {
         nocalcarak = n;
     }
 
+    function partnerAutocompleteRenderer(ul, item) {
+        return $('<li>')
+            .append('<a>' + item.value + '</a>')
+            .appendTo( ul );
+    }
+
+    function partnerAutocompleteConfig() {
+        return {
+            minLength: 4,
+            autoFocus: true,
+            source: '/admin/bizonylatfej/getpartnerlist',
+            select: function(event, ui) {
+                var partner = ui.item,
+                    pi = $('input[name="partner"]');
+                if (partner) {
+                    pi.val(partner.id);
+                    $('.js-ujpartnercb').prop('checked', false);
+                    pi.change();
+                }
+            }
+        };
+    }
+
     function termekAutocompleteRenderer(ul, item) {
         if (item.nemlathato) {
             return $('<li>')
@@ -300,7 +342,7 @@ var bizonylathelper = function($) {
             return $('<li>')
                 .append('<a>' + item.label + '</a>')
                 .appendTo( ul );
-        };
+        }
     }
 
     function termekAutocompleteConfig() {
@@ -347,12 +389,19 @@ var bizonylathelper = function($) {
     }
 
     function quicksetTermekAr(sorId) {
+        var partner;
+        if (isPartnerAutocomplete()) {
+            partner = $('.js-partnerid').val();
+        }
+        else {
+            partner = $('#PartnerEdit option:selected').val();
+        }
         $.ajax({
             async: false,
             url: '/admin/bizonylattetel/getar',
             data: {
                 valutanem: $('#ValutanemEdit').val(),
-                partner: $('#PartnerEdit').val(),
+                partner: partner,
                 termek: $('input[name="qteteltermek_' + sorId + '"]').val(),
                 valtozat: $('select[name="qtetelvaltozat_' + sorId + '"]').val()
             },
@@ -517,9 +566,15 @@ var bizonylathelper = function($) {
                         fakekifizetesdatumedit = $('#FakeKifizetesdatumEdit');
 
                 $('#EmailEdit').change(function() {
-                    var pedit = $('#PartnerEdit'),
+                    var partner,
                         ee = $(this);
-                    if (pedit.val() == -1) {
+                    if (isPartnerAutocomplete()) {
+                        partner = $('.js-partnerid').val();
+                    }
+                    else {
+                        partner = $('#PartnerEdit option:selected').val();
+                    }
+                    if (partner == -1) {
                         $.ajax({
                             url: '/admin/partner/getdata',
                             type: 'GET',
@@ -530,14 +585,19 @@ var bizonylathelper = function($) {
                                 var d = JSON.parse(data);
                                 if (d.id) {
                                     setPartnerData(d);
-                                    pedit.val(d.id);
+                                    if (isPartnerAutocomplete()) {
+                                        $('.js-partnerid').val(d.id);
+                                    }
+                                    else {
+                                        $('#PartnerEdit').val(d.id);
+                                    }
                                 }
                             }
                         });
                     }
                 });
 
-                $('#PartnerEdit').change(function() {
+                $('.js-partnerid').change(function() {
                     var pe = $(this);
                     if (pe.val() > 0) {
                         $.ajax({
@@ -551,6 +611,19 @@ var bizonylathelper = function($) {
                                 setPartnerData(d);
                             }
                         });
+                    }
+                });
+
+                $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
+                    .autocomplete( "instance" )._renderItem = partnerAutocompleteRenderer;
+
+                $('.js-ujpartnercb').on('change', function() {
+                    if ($(this).prop('checked')) {
+                        $('input[name="partner"]').val(-1);
+                        $('#PartnerEdit').val('');
+                    }
+                    else {
+                        $(this).prop('checked', true);
                     }
                 });
                 $('#ValutanemEdit').change(function() {
@@ -770,7 +843,6 @@ var bizonylathelper = function($) {
             },
             beforeSerialize: function(f, o, quick) {
                 if (quick) {
-                    var partneredit = $('#PartnerEdit');
                     $('.js-quickmennyiseginput').each(function() {
                         if (!$(this).val()) {
                             $(this).parents('tr').remove();

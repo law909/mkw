@@ -483,6 +483,32 @@ class partnerController extends \mkwhelpers\MattableController {
         return $res;
     }
 
+    public function getBizonylatfejSelectList() {
+        $term = trim($this->params->getStringRequestParam('term'));
+        $ret = array();
+        if ($term) {
+            $r = \mkw\store::getEm()->getRepository('Entities\Partner');
+            $res = $r->getBizonylatfejLista($term);
+
+            $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+            $partnerafa = $afa->getId();
+            $partnerafakulcs = $afa->getErtek();
+
+            foreach ($res as $r) {
+                $x = array(
+                    'id' => $r['id'],
+                    'value' => $r['nev'] . ' ' . \mkw\store::implodeCim($r['irszam'], $r['varos'], $r['utca'], $r['hazszam'])
+                );
+                if ($r['szamlatipus'] > 0) {
+                    $x['afa'] = $partnerafa;
+                    $x['afakulcs'] = $partnerafakulcs;
+                }
+                $ret[] = $x;
+            }
+        }
+        echo json_encode($ret);
+    }
+
     public function getPartnerData() {
         $pid = $this->params->getIntRequestParam('partnerid');
         $email = $this->params->getStringRequestParam('email');

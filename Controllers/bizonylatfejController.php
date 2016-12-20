@@ -987,8 +987,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
         $bt->setTemplateVars($view);
 
-        $partner = new partnerController($this->params);
-        $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
+        if (!\mkw\store::isPartnerAutocomplete()) {
+            $partner = new partnerController($this->params);
+            $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
+        }
 
         $raktar = new raktarController($this->params);
         if (!$record || !$record->getRaktarId()) {

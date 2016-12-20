@@ -691,6 +691,24 @@ class store {
         return $ret;
     }
 
+    public static function implodeCim($irszam, $varos, $utca, $hazszam) {
+        $cim = $irszam;
+        if (($cim !== '') && ($varos !== '')) {
+            $cim.=' ';
+        }
+        $cim .= $varos;
+        if (($cim !== '') && ($utca !== '')) {
+            $cim .= ', ';
+        }
+        $cim .= $utca;
+        if (($cim !== '') && ($hazszam !== '')) {
+            $cim .= ' ';
+        }
+        $cim .= $hazszam;
+        return $cim;
+
+    }
+
     public static function getLocale($ny) {
         return self::$locales[$ny];
     }
@@ -796,6 +814,10 @@ class store {
 
     public static function isFakeKintlevoseg() {
         return self::getSetupValue('fakekintlevoseg');
+    }
+
+    public static function isPartnerAutocomplete() {
+        return self::getSetupValue('partnerautocomplete');
     }
 
     public static function isFoxpostSzallitasimod($szm) {

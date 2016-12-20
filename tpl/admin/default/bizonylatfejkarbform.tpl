@@ -1,4 +1,4 @@
-<div id="mattkarb-header">
+<div id="mattkarb-header" data-partnerautocomplete="{$setup.partnerautocomplete}">
 	<h3>{$pagetitle} - {$egyed.id}{if ($egyed.parentid|default)} ({$egyed.parentid}){/if}</h3>
 </div>
 <form id="mattkarb-form" method="post" action="{$formaction}">
@@ -39,14 +39,22 @@
             {/if}
 			<tr>
 				<td class="mattable-important"><label for="PartnerEdit">{t('Partner')}:</label></td>
-				<td colspan="7"><select id="PartnerEdit" name="partner" class="mattable-important" required="required" autofocus{if ($egyed.partnerafa)} data-afa="{$egyed.partnerafa}" data-afakulcs="{$egyed.partnerafakulcs}"{/if}>
-					<option value="">{t('válasszon')}</option>
-					<option value="-1">{t('Új felvitel')}</option>
-					{foreach $partnerlist as $_mk}
-					<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-					{/foreach}
-					</select>
-				</td>
+                {if ($setup.partnerautocomplete)}
+                    <td colspan="7">
+                        <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important" value="{$egyed.partnernev}" size=90 autofocus{if ($egyed.partnerafa)} data-afa="{$egyed.partnerafa}" data-afakulcs="{$egyed.partnerafakulcs}"{/if}>
+                        <input class="js-partnerid" name="partner" type="hidden" value="{$egyed.partner}">
+                        <input class="js-ujpartnercb" type="checkbox">Új</input>
+                    </td>
+                {else}
+                    <td colspan="7"><select id="PartnerEdit" name="partner" class="js-partnerid mattable-important" required="required" autofocus{if ($egyed.partnerafa)} data-afa="{$egyed.partnerafa}" data-afakulcs="{$egyed.partnerafakulcs}"{/if}>
+                        <option value="">{t('válasszon')}</option>
+                        <option value="-1">{t('Új felvitel')}</option>
+                        {foreach $partnerlist as $_mk}
+                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                        {/foreach}
+                        </select>
+                    </td>
+                {/if}
 			</tr>
             <tr>
                 <td><label>Név:</label></td>
