@@ -227,14 +227,15 @@ var bizonylathelper = function($) {
         calcArak(sorId);
     }
 
-    function checkKelt(kelt, biztipus) {
+    function checkKelt(kelt, biztipus, bizszam) {
         var retval = false;
         $.ajax({
             async: false,
             url: '/admin/bizonylatfej/checkkelt',
             data: {
                 kelt: kelt,
-                biztipus: biztipus
+                biztipus: biztipus,
+                bizszam: bizszam
             },
             success: function(data) {
                 var d = JSON.parse(data);
@@ -246,11 +247,11 @@ var bizonylathelper = function($) {
         return retval;
     }
 
-    function checkBizonylatFej(biztipus) {
+    function checkBizonylatFej(biztipus, bizszam) {
         var keltedit = $('#KeltEdit'),
                 dialogcenter = $('#dialogcenter'),
                 keltchanged = keltedit.attr('data-datum') != keltedit.val(),
-                keltok = (!keltchanged) || (keltchanged && checkKelt($('#KeltEdit').val(), biztipus)),
+                keltok = (!keltchanged) || (keltchanged && checkKelt($('#KeltEdit').val(), biztipus, bizszam)),
                 tetelok = ($('.js-termekid').length !== 0) && ($('.js-termekid[value=""]').length === 0) && ($('.js-termekid[value="0"]').length === 0),
                 ret = keltok && tetelok;
         if (!keltok) {
@@ -868,7 +869,7 @@ var bizonylathelper = function($) {
                             $('input[name="qtetelkedvezmeny_' + termeksorid + '"]').val() + '">');
                     });
                 }
-                return checkBizonylatFej(bizonylattipus);
+                return checkBizonylatFej(bizonylattipus, $('input[name="id"]').val());
             },
             onSubmit: function() {
                 $('#messagecenter')

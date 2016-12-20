@@ -833,6 +833,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $keltstr = \mkw\store::convDate($this->params->getStringRequestParam('kelt'));
         $kelt = strtotime($keltstr);
         $biztipid = $this->params->getStringRequestParam('biztipus');
+        $bizszam = $this->params->getStringRequestParam('bizszam');
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipid);
         if ($bt) {
             $filter = new \mkwhelpers\FilterDescriptor();
@@ -840,6 +841,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 ->addFilter('bizonylattipus', '=', $bt)
                 ->addFilter('kelt', '>', $keltstr)
                 ->addSql('(YEAR(_xx.kelt)=' . date('Y', $kelt) . ')');
+            if ($bizszam) {
+                $filter->addFilter('id', '<>', $bizszam);
+            }
             $db = $this->getRepo()->getCount($filter);
             if ($db == 0) {
                 $ret = array('response' => 'ok');
