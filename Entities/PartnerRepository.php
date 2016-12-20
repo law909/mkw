@@ -76,7 +76,7 @@ class PartnerRepository extends \mkwhelpers\Repository {
 
     public function getAllForSelectList($filter, $order, $offset = 0, $elemcount = 0) {
         $a = $this->alias;
-        $q = $this->_em->createQuery('SELECT ' . $a . '.id,' . $a . '.nev, ' . $a . '.irszam, ' . $a . '.varos, ' . $a . '.utca '
+        $q = $this->_em->createQuery('SELECT ' . $a . '.id,' . $a . '.nev, ' . $a . '.irszam, ' . $a . '.varos, ' . $a . '.utca, ' .$a . '.hazszam'
                 . ' FROM ' . $this->entityname . ' ' . $a
                 . $this->getFilterString($filter)
                 . $this->getOrderString($order));
