@@ -92,11 +92,11 @@ class PartnerRepository extends \mkwhelpers\Repository {
 
     public function getBizonylatfejLista($keresett) {
         $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('_xx.nev', 'LIKE', '%' . $keresett . '%');
+        $filter->addFilter(array('_xx.nev', '_xx.email'), 'LIKE', '%' . $keresett . '%');
         $order = array('_xx.nev' => 'ASC');
         $a = $this->alias;
         $q = $this->_em->createQuery('SELECT ' . $a . '.id,' . $a . '.nev, ' . $a . '.irszam, ' . $a . '.varos, ' . $a . '.utca, ' . $a . '.hazszam,'
-            . $a . ' szamlatipus'
+            . $a . '.szamlatipus, ' . $a . '.email'
             . ' FROM ' . $this->entityname . ' ' . $a
             . $this->getFilterString($filter)
             . $this->getOrderString($order));

@@ -497,7 +497,7 @@ class partnerController extends \mkwhelpers\MattableController {
             foreach ($res as $r) {
                 $x = array(
                     'id' => $r['id'],
-                    'value' => $r['nev'] . ' ' . \mkw\store::implodeCim($r['irszam'], $r['varos'], $r['utca'], $r['hazszam'])
+                    'value' => $r['nev'] . ' ' . \mkw\store::implodeCim($r['irszam'], $r['varos'], $r['utca'], $r['hazszam']) . ' (' . $r['email'] . ')'
                 );
                 if ($r['szamlatipus'] > 0) {
                     $x['afa'] = $partnerafa;
