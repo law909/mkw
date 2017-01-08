@@ -109,7 +109,7 @@ class TermekValtozat {
             $conn = \mkw\store::getEm()->getConnection();
             $stmt = $conn->prepare('INSERT INTO vonalkodseq (data) VALUES (1)');
             $stmt->execute();
-            $this->setVonalkod((string)$conn->lastInsertId());
+            $this->setVonalkod(\mkw\store::generateEAN13((string)$conn->lastInsertId()));
         }
     }
 
