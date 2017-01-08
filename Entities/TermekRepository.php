@@ -481,8 +481,10 @@ class TermekRepository extends \mkwhelpers\Repository {
         if ($termek->getTermekfa3Id() > 1) {
             $a[] = $termek->getTermekfa3();
         }
-        $filter->addFilter(array('termekfa1', 'termekfa2', 'termekfa3'), '=', $a)
-            ->addFilter('brutto', '>=', $termek->getBrutto() * (100 - $arszaz * 1) / 100)
+        if ($a) {
+            $filter->addFilter(array('termekfa1', 'termekfa2', 'termekfa3'), '=', $a);
+        }
+        $filter->addFilter('brutto', '>=', $termek->getBrutto() * (100 - $arszaz * 1) / 100)
             ->addFilter('brutto', '<=', $termek->getBrutto() * (100 + $arszaz * 1) / 100)
             ->addFilter('id', '<>', $termek->getId())
             ->addFilter('nemkaphato', '=', false);

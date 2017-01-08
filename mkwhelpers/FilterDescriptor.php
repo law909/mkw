@@ -114,14 +114,18 @@ class FilterDescriptor implements \Countable {
                                     $ize[] = ':' . $parampre . $fno . 'v' . $vcnt;
                                     $vcnt++;
                                 }
-                                $innerfilter[] = '(' . $alias . $v . ' ' . $felt . ' (' . implode(',', $ize) . '))';
+                                if ($ize) {
+                                    $innerfilter[] = '(' . $alias . $v . ' ' . $felt . ' (' . implode(',', $ize) . '))';
+                                }
                             }
                         }
                         else {
                             $innerfilter[] = '(' . $alias . $v . ' ' . $felt . ' :' . $parampre . $fno . ')';
                         }
                     }
-                    $filterarr[] = '(' . implode(' OR ', $innerfilter) . ')';
+                    if ($innerfilter) {
+                        $filterarr[] = '(' . implode(' OR ', $innerfilter) . ')';
+                    }
                 }
                 else { // egy mezoben szurunk
                     if (strpos($field, '.') === false) {
