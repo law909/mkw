@@ -43,14 +43,14 @@ class TermekValtozatRepository extends \mkwhelpers\Repository {
 
     public function getDistinctErtek1() {
         $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('ertek1', 'ertek1');
+        $rsm->addScalarResult('ertek1', 'ertek');
         $q = $this->_em->createNativeQuery('SELECT DISTINCT ertek1 FROM termekvaltozat', $rsm);
         return $q->getScalarResult();
     }
 
     public function getDistinctErtek2() {
         $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('ertek2', 'ertek1');
+        $rsm->addScalarResult('ertek2', 'ertek');
         $q = $this->_em->createNativeQuery('SELECT DISTINCT ertek2 FROM termekvaltozat', $rsm);
         return $q->getScalarResult();
     }

@@ -508,7 +508,7 @@ class exportController extends \mkwhelpers\Controller {
             \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek2());
 
         foreach ($ertek1 as $eee1) {
-            $e1 = $eee1['ertek1'];
+            $e1 = $eee1['ertek'];
 
             $kodsz = $kodszotarrepo->findOneBy(array('ertek' => $e1));
             if (!$kodsz) {
