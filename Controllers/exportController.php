@@ -1,6 +1,8 @@
 <?php
 namespace Controllers;
 
+use mkwhelpers\FilterDescriptor;
+
 class exportController extends \mkwhelpers\Controller {
 
     public function view() {
@@ -494,6 +496,93 @@ class exportController extends \mkwhelpers\Controller {
         }
         if ($mar) {
             \mkw\store::setParameter(\mkw\consts::RLBUtolsoSzamlaszam, $mar);
+        }
+    }
+
+    public function FCMotoExport() {
+
+        $kodszotarrepo = \mkw\store::getEm()->getRepository('Entities\TermekValtozatErtekKodszotar');
+
+        $ertek1 = array_merge(
+            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek1(),
+            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek2());
+
+        foreach ($ertek1 as $eee1) {
+            $e1 = $eee1['ertek1'];
+
+            $kodsz = $kodszotarrepo->findOneBy(array('ertek' => $e1));
+            if (!$kodsz) {
+                $kodsz = new \Entities\TermekValtozatErtekKodszotar();
+                $kodsz->setErtek($e1);
+                \mkw\store::getEm()->persist($kodsz);
+                \mkw\store::getEm()->flush();
+                $kodsz->setKod($kodsz->getId());
+                \mkw\store::getEm()->persist($kodsz);
+                \mkw\store::getEm()->flush();
+            }
+        }
+
+        header("Content-type: text/csv");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        header("Content-Disposition: attachment; filename=fcmoto.csv");
+
+        $sor = array(
+            'Article Number',
+            'Color Number',
+            'Article Name',
+            'Color',
+            'Size',
+            'Stock',
+            'EAN Code'
+        );
+        echo implode(";", $sor) . "\n";
+
+        $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
+
+        $filter = new FilterDescriptor();
+        $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', '0000100032%'); // Mugenrace
+
+        $res = $tr->getAllValtozatForExport($filter, \mkw\store::getParameter(\mkw\consts::Locale));
+        /** @var \Entities\Termek $t */
+        foreach ($res as $t) {
+
+            $valtozatok = $t->getValtozatok();
+            if ($valtozatok) {
+                /** @var \Entities\TermekValtozat $valt */
+                foreach ($valtozatok as $valt) {
+                    $keszlet = $valt->getKeszlet();
+                    if ($keszlet < 0) {
+                        $keszlet = 0;
+                    }
+                    $sor = array(
+                        '"' . $t->getCikkszam() . '"',
+                        '"' . $kodszotarrepo->translate($valt->getSzin()) . '"',
+                        '"' . $t->getNev() . '"',
+                        '"' . $valt->getSzin() . '"',
+                        '"' . $valt->getMeret() . '"',
+                        '"' . $keszlet . '"',
+                        '"' . $valt->getVonalkod() . '"'
+                    );
+                    echo implode(";", $sor) . "\n";
+                }
+            }
+            else {
+                $keszlet = $t->getKeszlet();
+                if ($keszlet < 0) {
+                    $keszlet = 0;
+                }
+                $sor = array(
+                    '"' . $t->getCikkszam() . '"',
+                    '""',
+                    '"' . $t->getNev() . '"',
+                    '""',
+                    '""',
+                    '"' . $keszlet . '"',
+                    '"' . $t->getVonalkod() . '"'
+                );
+                echo implode(";", $sor) . "\n";
+            }
         }
     }
 

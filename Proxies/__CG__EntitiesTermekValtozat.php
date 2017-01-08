@@ -727,4 +727,26 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
         return parent::setBeerkezesdatum($adat);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzin()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzin', []);
+
+        return parent::getSzin();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMeret()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMeret', []);
+
+        return parent::getMeret();
+    }
+
 }

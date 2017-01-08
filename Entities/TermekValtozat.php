@@ -450,4 +450,24 @@ class TermekValtozat {
             }
         }
     }
+
+    public function getSzin() {
+        if ($this->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+            return $this->getErtek1();
+        }
+        if ($this->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+            return $this->getErtek2();
+        }
+        return null;
+    }
+
+    public function getMeret() {
+        if ($this->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)) {
+            return $this->getErtek1();
+        }
+        if ($this->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)) {
+            return $this->getErtek2();
+        }
+        return null;
+    }
 }

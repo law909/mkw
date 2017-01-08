@@ -155,7 +155,7 @@ else {
                     $pc->setUtolsoKlikk();
                 }
             }
-            elseif (store::mustLogin() && !in_array($match['name'], array('showlogin', 'dologin', 'showfanta', 'dofanta'))) {
+            elseif (store::mustLogin() && !in_array($match['name'], array('showlogin', 'dologin', 'showfanta', 'dofanta', 'fcmotoexport'))) {
                 $mainsess->redirafterlogin = $_SERVER['REQUEST_URI'];
                 header('Location: ' . $router->generate('showlogin'));
             }

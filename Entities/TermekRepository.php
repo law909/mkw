@@ -60,18 +60,57 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getScalarResult();
     }
 
-    public function getAllForExport() {
+    public function getAllForExport($addedfilter = false, $locale = false) {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('termekexportbanszerepel', '=', true);
         $filter->addFilter('nemkaphato', '=', false);
+        if ($addedfilter) {
+            $filter = $filter->merge($addedfilter);
+        }
         $q = $this->_em->createQuery('SELECT _xx'
             . ' FROM Entities\Termek _xx'
             . $this->getFilterString($filter)
             . $this->getOrderString(array()));
         $q->setParameters($this->getQueryParameters($filter));
         if (\mkw\store::isMainMode()) {
-            \mkw\store::setTranslationHint($q, \mkw\store::getParameter(\mkw\consts::Locale));
+            if (!$locale) {
+                $locale = \mkw\store::getParameter(\mkw\consts::Locale);
+            }
+            \mkw\store::setTranslationHint($q, $locale);
+        }
+        else {
+            if ($locale) {
+                \mkw\store::setTranslationHint($q, $locale);
+            }
+        }
+        return $q->getResult();
+    }
+
+    public function getAllValtozatForExport($addedfilter = false, $locale = false) {
+        $filter = new FilterDescriptor();
+        $this->addAktivLathatoFilter($filter);
+        $filter->addFilter('termekexportbanszerepel', '=', true);
+        $filter->addFilter('nemkaphato', '=', false);
+        if ($addedfilter) {
+            $filter = $filter->merge($addedfilter);
+        }
+        $q = $this->_em->createQuery('SELECT _xx, v'
+            . ' FROM Entities\Termek _xx'
+            . ' LEFT JOIN _xx.valtozatok v WITH v.lathato=true AND v.elerheto=true'
+            . $this->getFilterString($filter)
+            . $this->getOrderString(array()));
+        $q->setParameters($this->getQueryParameters($filter));
+        if (\mkw\store::isMainMode()) {
+            if (!$locale) {
+                $locale = \mkw\store::getParameter(\mkw\consts::Locale);
+            }
+            \mkw\store::setTranslationHint($q, $locale);
+        }
+        else {
+            if ($locale) {
+                \mkw\store::setTranslationHint($q, $locale);
+            }
         }
         return $q->getResult();
     }

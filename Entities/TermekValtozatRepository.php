@@ -2,6 +2,8 @@
 namespace Entities;
 
 use mkwhelpers\FilterDescriptor;
+use Doctrine\ORM\Query\ResultSetMapping;
+
 
 class TermekValtozatRepository extends \mkwhelpers\Repository {
 
@@ -37,6 +39,20 @@ class TermekValtozatRepository extends \mkwhelpers\Repository {
         }
         $res = $this->getAll($filter, array());
         return $res[0];
+    }
+
+    public function getDistinctErtek1() {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('ertek1', 'ertek1');
+        $q = $this->_em->createNativeQuery('SELECT DISTINCT ertek1 FROM termekvaltozat', $rsm);
+        return $q->getScalarResult();
+    }
+
+    public function getDistinctErtek2() {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('ertek2', 'ertek1');
+        $q = $this->_em->createNativeQuery('SELECT DISTINCT ertek2 FROM termekvaltozat', $rsm);
+        return $q->getScalarResult();
     }
 
 }
