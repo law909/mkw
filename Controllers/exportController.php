@@ -551,7 +551,7 @@ class exportController extends \mkwhelpers\Controller {
             if ($valtozatok) {
                 /** @var \Entities\TermekValtozat $valt */
                 foreach ($valtozatok as $valt) {
-                    $keszlet = $valt->getKeszlet();
+                    $keszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
                     if ($keszlet < 0) {
                         $keszlet = 0;
                     }
@@ -568,7 +568,7 @@ class exportController extends \mkwhelpers\Controller {
                 }
             }
             else {
-                $keszlet = $t->getKeszlet();
+                $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg();
                 if ($keszlet < 0) {
                     $keszlet = 0;
                 }
