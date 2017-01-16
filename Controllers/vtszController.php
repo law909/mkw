@@ -30,9 +30,13 @@ class vtszController extends \mkwhelpers\JQGridController {
         $afa = store::getEm()->getReference('Entities\Afa', $this->params->getIntRequestParam('afa', $obj->getAfa()));
         $obj->setAfa($afa);
         $csk = store::getEm()->getReference('Entities\Csk', $this->params->getIntRequestParam('csk', $obj->getCsk()));
-        $obj->setCsk($csk);
+        if ($this->params->getIntRequestParam('csk', $obj->getCsk()) && csk) {
+            $obj->setCsk($csk);
+        }
         $kt = store::getEm()->getReference('Entities\Csk', $this->params->getIntRequestParam('kt', $obj->getKt()));
-        $obj->setKt($kt);
+        if ($this->params->getIntRequestParam('kt', $obj->getKt()) && $kt) {
+            $obj->setKt($kt);
+        }
         return $obj;
     }
 
