@@ -64,10 +64,10 @@ class TermekRecept extends \Entities\TermekRecept implements \Doctrine\ORM\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'id', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'created', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'altermek', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'kotelezo'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'id', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'created', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'altermek', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'kotelezo', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'tipus'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'id', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'created', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'altermek', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'kotelezo'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'id', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'created', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'altermek', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'kotelezo', '' . "\0" . 'Entities\\TermekRecept' . "\0" . 'tipus'];
     }
 
     /**
@@ -340,6 +340,50 @@ class TermekRecept extends \Entities\TermekRecept implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTipus()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipus', []);
+
+        return parent::getTipus();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTipusNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipusNev', []);
+
+        return parent::getTipusNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTipusId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipusId', []);
+
+        return parent::getTipusId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTipus($tipus)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTipus', [$tipus]);
+
+        return parent::setTipus($tipus);
     }
 
 }

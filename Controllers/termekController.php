@@ -402,12 +402,16 @@ class termekController extends \mkwhelpers\MattableController {
 				if (($this->params->getIntRequestParam('receptaltermek_' . $receptid) > 0)) {
 					$oper = $this->params->getStringRequestParam('receptoper_' . $receptid);
 					$altermek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('receptaltermek_' . $receptid));
+                    $recepttipus = $this->getEm()->getRepository('Entities\TermekReceptTipus')->find($this->params->getIntRequestParam('recepttipus_' . $receptid));
 					if ($oper == 'add') {
 						$recept = new TermekRecept();
 						$obj->addTermekRecept($recept);
 						if ($altermek) {
 							$recept->setAlTermek($altermek);
 						}
+						if ($recepttipus) {
+						    $recept->setTipus($recepttipus);
+                        }
 						$recept->setMennyiseg($this->params->getFloatRequestParam('receptmennyiseg_' . $receptid));
 						$recept->setKotelezo($this->params->getBoolRequestParam('receptkotelezo_' . $receptid));
 						$this->getEm()->persist($recept);
@@ -418,6 +422,9 @@ class termekController extends \mkwhelpers\MattableController {
 							if ($altermek) {
 								$recept->setAlTermek($altermek);
 							}
+                            if ($recepttipus) {
+                                $recept->setTipus($recepttipus);
+                            }
 							$recept->setMennyiseg($this->params->getFloatRequestParam('receptmennyiseg_' . $receptid));
 							$recept->setKotelezo($this->params->getBoolRequestParam('receptkotelezo_' . $receptid));
 							$this->getEm()->persist($recept);

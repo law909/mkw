@@ -40,6 +40,11 @@ class TermekRecept {
 	private $mennyiseg;
 	/** @ORM\Column(type="boolean") */
 	private $kotelezo=false;
+    /**
+     * @ORM\ManyToOne(targetEntity="TermekReceptTipus")
+     * @ORM\JoinColumn(name="termekrecepttipus_id",referencedColumnName="id",onDelete="cascade")
+     */
+    private $tipus;
 
 	public function getId() {
 		return $this->id;
@@ -116,4 +121,33 @@ class TermekRecept {
 	public function getCreated() {
 		return $this->created;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getTipus() {
+        return $this->tipus;
+    }
+
+    public function getTipusNev() {
+        if ($this->getTipus()) {
+            return $this->getTipus()->getNev();
+        }
+        return null;
+    }
+
+    public function getTipusId() {
+        if ($this->getTipus()) {
+            return $this->getTipus()->getId();
+        }
+        return null;
+    }
+
+    /**
+     * @param mixed $tipus
+     */
+    public function setTipus($tipus) {
+        $this->tipus = $tipus;
+    }
+
 }

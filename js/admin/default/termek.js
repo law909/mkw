@@ -272,7 +272,7 @@ $(document).ready(function () {
                         $('#recepttable_' + receptid).remove();
                     }
                     else {
-                        dialogcenter.html('Biztos, hogy törli az árat?').dialog({
+                        dialogcenter.html('Biztos, hogy törli a tételt?').dialog({
                             resizable: false,
                             height: 140,
                             modal: true,

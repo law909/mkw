@@ -9,6 +9,28 @@ $().ready(
                 clrtitle: 'Clear search',
                 clricon: 'ui-icon-home'
             };
+
+            function createNav(obj, grid) {
+                $(obj.grid).jqGrid('navGrid', obj.pager, {edit: true, add: true, del: true, search: false},
+                    {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                    {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                    {reloadAfterSubmit: true});
+                $(obj.grid).jqGrid('navButtonAdd', obj.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                    onClickButton: function() {
+                        grid[0].toggleToolbar();
+                    }
+                });
+                $(obj.grid).jqGrid('navButtonAdd', obj.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                    onClickButton: function() {
+                        grid[0].clearToolbar();
+                    }
+                });
+                $(obj.grid).jqGrid('filterToolbar');
+                $(obj.pager + '_center').hide();
+                $(obj.pager + '_right').hide();
+            }
+
+
             // AFA grid
             var _afa = {
                 grid: '#afagrid',
@@ -46,23 +68,7 @@ $().ready(
                 width: 320,
                 hiddengrid: true,
                 caption: 'ÁFA kulcsok'});
-            $(_afa.grid).jqGrid('navGrid', _afa.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-            $(_afa.grid).jqGrid('navButtonAdd', _afa.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-                onClickButton: function() {
-                    afagrid[0].toggleToolbar();
-                }
-            });
-            $(_afa.grid).jqGrid('navButtonAdd', _afa.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-                onClickButton: function() {
-                    afagrid[0].clearToolbar();
-                }
-            });
-            $(_afa.grid).jqGrid('filterToolbar');
-            $(_afa.pager + '_center').hide();
-            $(_afa.pager + '_right').hide();
+            createNav(_afa, afagrid);
 
             // Bankszamla grid
             var _bszla = {
@@ -112,23 +118,7 @@ $().ready(
                 width: 647,
                 hiddengrid: true,
                 caption: 'Bankszámlák'});
-            $(_bszla.grid).jqGrid('navGrid', _bszla.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-            $(_bszla.grid).jqGrid('navButtonAdd', _bszla.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-                onClickButton: function() {
-                    bankszamlagrid[0].toggleToolbar();
-                }
-            });
-            $(_bszla.grid).jqGrid('navButtonAdd', _bszla.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-                onClickButton: function() {
-                    bankszamlagrid[0].clearToolbar();
-                }
-            });
-            $(_bszla.grid).jqGrid('filterToolbar');
-            $(_bszla.pager + '_center').hide();
-            $(_bszla.pager + '_right').hide();
+            createNav(_bszla, bankszamlagrid);
 
             // Valutanem grid
             var _vn = {
@@ -179,23 +169,7 @@ $().ready(
                 width: 320,
                 hiddengrid: true,
                 caption: 'Valutanemek'});
-            $(_vn.grid).jqGrid('navGrid', _vn.pager, {edit: true, add: true, del: true, search: false},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
-            {reloadAfterSubmit: true});
-            $(_vn.grid).jqGrid('navButtonAdd', _vn.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
-                onClickButton: function() {
-                    valutanemgrid[0].toggleToolbar();
-                }
-            });
-            $(_vn.grid).jqGrid('navButtonAdd', _vn.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
-                onClickButton: function() {
-                    valutanemgrid[0].clearToolbar();
-                }
-            });
-            $(_vn.grid).jqGrid('filterToolbar');
-            $(_vn.pager + '_center').hide();
-            $(_vn.pager + '_right').hide();
+            createNav(_vn, valutanemgrid);
 
             // Arfolyam grid
             var _arf = {
@@ -1230,6 +1204,35 @@ $().ready(
             $(_csk.grid).jqGrid('filterToolbar');
             $(_csk.pager + '_center').hide();
             $(_csk.pager + '_right').hide();
+
+            // TermekReceptTipus grid
+            var _trt = {
+                grid: '#termekrecepttipusgrid',
+                pager: '#termekrecepttipusgridpager'
+            };
+            var trtgrid = $(_trt.grid).jqGrid({
+                url: '/admin/termekrecepttipus/jsonlist',
+                editurl: '/admin/termekrecepttipus/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _trt.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Termékrecept típusok'});
+            createNav(_trt, trtgrid);
 
             // Altalanos
             $('.ui-search-toolbar').hide();

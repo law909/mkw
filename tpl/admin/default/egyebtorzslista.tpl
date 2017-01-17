@@ -92,6 +92,12 @@
             <table id="cskgrid"></table>
             <div id="cskgridpager"></div>
         </div>
+        {if ($setup.receptura)}
+            <div class="egyebadat-grid">
+                <table id="termekrecepttipusgrid"></table>
+                <div id="termekrecepttipusgridpager"></div>
+            </div>
+        {/if}
         {if ($setup.mijsz)}
         <div class="egyebadat-grid">
             <table id="mijszoklevelkibocsajtogrid"></table>

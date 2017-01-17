@@ -64,6 +64,9 @@ $router->map('POST', '/admin/mijszoklevelszint/save', 'mijszoklevelszintControll
 $router->map('GET', '/admin/szotar/jsonlist', 'szotarController#jsonlist', 'adminszotarjsonlist');
 $router->map('GET', '/admin/szotar/htmllist', 'szotarController#htmllist', 'adminszotarhtmllist');
 $router->map('POST', '/admin/szotar/save', 'szotarController#save', 'adminszotarsave');
+$router->map('GET', '/admin/termekrecepttipus/jsonlist', 'termekrecepttipusController#jsonlist', 'admintermekrecepttipusjsonlist');
+$router->map('GET', '/admin/termekrecepttipus/htmllist', 'termekrecepttipusController#htmllist', 'admintermekrecepttipushtmllist');
+$router->map('POST', '/admin/termekrecepttipus/save', 'termekrecepttipusController#save', 'admintermekrecepttipussave');
 
 if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/jogcim/jsonlist', 'jogcimController#jsonlist', 'adminjogcimjsonlist');
@@ -271,6 +274,9 @@ $router->map('POST', '/admin/termekfatranslation/save', 'termekfatranslationCont
 
 $router->map('GET', '/admin/termekkep/getemptyrow', 'termekkepController#getemptyrow', 'admintermekkepgetemptyrow');
 $router->map('POST', '/admin/termekkep/del', 'termekkepController#del', 'admintermekkepdel');
+
+$router->map('GET', '/admin/termekrecept/getemptyrow', 'termekreceptController#getemptyrow', 'admintermekreceptgetemptyrow');
+$router->map('POST', '/admin/termekrecept/save', 'termekreceptController#save', 'admintermekreceptsave');
 
 $router->map('GET', '/admin/termekvaltozat/getemptyrow', 'termekvaltozatController#getemptyrow', 'admintermekvaltozatgetemptyrow');
 $router->map('POST', '/admin/termekvaltozat/generate', 'termekvaltozatController#generate', 'admintermekvaltozatgenerate');

@@ -3,6 +3,14 @@
         <input name="receptid[]" type="hidden" value="{$recept.id}">
         <input name="receptoper_{$recept.id}" type="hidden" value="{$recept.oper}">
         <tr>
+            <td><label for="TipusEdit{$recept.id}">{t('Típus')}:</label></td>
+            <td><select id="TipusEdit{$recept.id}" name="recepttipus_{$recept.id}" required="required">
+                    <option value="">{t('válasszon')}</option>
+                    {foreach $recept.tipuslist as $_tipus}
+                        <option value="{$_tipus.id}"{if ($_tipus.selected)} selected="selected"{/if}>{$_tipus.caption}</option>
+                    {/foreach}
+                </select>
+            </td>
             <td><label for="AltermekEdit{$recept.id}">{t('Termék/művelet')}:</label></td>
             <td><select id="AltermekEdit{$recept.id}" name="receptaltermek_{$recept.id}" required="required">
                     <option value="">{t('válasszon')}</option>
@@ -11,8 +19,8 @@
                     {/foreach}
                 </select>
             </td>
-            <td><label for="NormaEdit{$recept.id}">{t('Norma')}:</label></td>
-            <td><input id="NormaEdit{$recept.id}" class="mennyiseginput" name="receptmennyiseg_{$recept.id}" type="number" step="any" value="{$recept.mennyiseg}" maxlength="20" size="10" required="required"></td>
+            <td><label for="MennyisegEdit{$recept.id}">{t('Mennyiség')}:</label></td>
+            <td><input id="MennyisegEdit{$recept.id}" class="mennyiseginput" name="receptmennyiseg_{$recept.id}" type="number" step="any" value="{$recept.mennyiseg}" maxlength="20" size="10" required="required"></td>
             <td><label for="KotelezoEdit{$recept.id}">{t('Kötelező')}:</label></td>
             <td><input id="KotelezoEdit{$recept.id}" class="kotelezoinput" name="receptkotelezo_{$recept.id}" type="checkbox"{if ($recept.kotelezo)} checked="checked"{/if}></td>
             <td>
