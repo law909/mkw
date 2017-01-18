@@ -1660,8 +1660,8 @@ class Termek {
         }
     }
 
-    public function getBruttoAr($valtozat = null, $partner = null, $valutanem = null) {
-        $brutto = $this->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem);
+    public function getBruttoAr($valtozat = null, $partner = null, $valutanem = null, $arsavazon = null) {
+        $brutto = $this->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem, $arsavazon);
 
         $kdv = $this->getTermekcsoportKedvezmeny($partner);
         if ($kdv) {
@@ -1671,7 +1671,7 @@ class Termek {
         return $brutto;
     }
 
-    public function getKedvezmenynelkuliBruttoAr($valtozat = null, $partner = null, $valutanem = null) {
+    public function getKedvezmenynelkuliBruttoAr($valtozat = null, $partner = null, $valutanem = null, $arsavazon = null) {
         // Nincsenek ársávok
         if (!\mkw\store::isArsavok()) {
             $brutto = $this->getBrutto();
@@ -1685,12 +1685,14 @@ class Termek {
         }
         // Vannak ársávok
         else {
-            $arsavazon = false;
-            if ($partner) {
-                $arsavazon = $partner->getTermekarazonosito();
-                if (!$valutanem) {
-                    $valutanem = $partner->getValutanem();
+            if (!$arsavazon) {
+                $arsavazon = false;
+                if ($partner) {
+                    $arsavazon = $partner->getTermekarazonosito();
                 }
+            }
+            if ($partner && !$valutanem) {
+                $valutanem = $partner->getValutanem();
             }
             $brutto = 0;
             $arsav = \mkw\store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, $arsavazon);

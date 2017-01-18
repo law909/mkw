@@ -534,7 +534,9 @@ class exportController extends \mkwhelpers\Controller {
             'Color',
             'Size',
             'Stock',
-            'EAN Code'
+            'EAN Code',
+            'Description',
+            'Image URL'
         );
         echo implode(";", $sor) . "\n";
 
@@ -544,6 +546,9 @@ class exportController extends \mkwhelpers\Controller {
         $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', '0000100032%'); // Mugenrace
 
         $res = $tr->getAllValtozatForExport($filter, \mkw\store::getParameter(\mkw\consts::Locale));
+
+//        $eur = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(array('nev' => 'EUR'));
+
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
 
@@ -562,7 +567,10 @@ class exportController extends \mkwhelpers\Controller {
                         '"' . $valt->getSzin() . '"',
                         '"' . $valt->getMeret() . '"',
                         '"' . $keszlet . '"',
-                        '"' . $valt->getVonalkod() . '"'
+                        '"' . $valt->getVonalkod() . '"',
+                        '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
+                        '"' . \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"'
+                        //'"' . $t->getBruttoAr($valt, null, $eur, 'eurar') . '"'
                     );
                     echo implode(";", $sor) . "\n";
                 }
@@ -579,7 +587,10 @@ class exportController extends \mkwhelpers\Controller {
                     '""',
                     '""',
                     '"' . $keszlet . '"',
-                    '"' . $t->getVonalkod() . '"'
+                    '"' . $t->getVonalkod() . '"',
+                    '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
+                    '"' . \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"'
+                    //'"' . $t->getBruttoAr(null, null, $eur, 'eurar') . '"'
                 );
                 echo implode(";", $sor) . "\n";
             }
