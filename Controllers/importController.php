@@ -1,6 +1,7 @@
 <?php
 namespace Controllers;
 
+use Entities\TermekRecept;
 use Symfony\Component\DomCrawler\Crawler;
 
 class importController extends \mkwhelpers\Controller {
@@ -3645,7 +3646,83 @@ class importController extends \mkwhelpers\Controller {
 
              */
 
+            $db = 0;
+            $ttcsomagelem = $this->getRepo('Entities\TermekReceptTipus')->findOneBy(array('nev' => 'Csomagelem'));
+            $stmt = $dbh->prepare('SELECT * FROM termekcsomagelem WHERE kod>0');
+            $stmt->execute();
+            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                $termek = $this->getRepo('Entities\Termek')->findOneBy(array('migrid' => $r['termek']));
+                $elem = $this->getRepo('Entities\Termek')->findOneBy(array('migrid' => $r['elem']));
 
+                if ($termek && $elem) {
+                    $db++;
+                    $re = new TermekRecept();
+                    $re->setTermek($termek);
+                    $re->setAlTermek($elem);
+                    $re->setTipus($ttcsomagelem);
+                    $re->setMennyiseg(($r['mennyiseg'] * 1 == 0 ? 1 : $r['mennyiseg'] * 1));
+                    \mkw\store::getEm()->persist($re);
+                    if (($db % 20) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                        $ttcsomagelem = $this->getRepo('Entities\TermekReceptTipus')->findOneBy(array('nev' => 'Csomagelem'));
+                    }
+                }
+            }
+            \mkw\store::getEm()->flush();
+            \mkw\store::getEm()->clear();
+
+            $db = 0;
+            $ttcsomagelem = $this->getRepo('Entities\TermekReceptTipus')->findOneBy(array('nev' => 'Stanckés'));
+            $stmt = $dbh->prepare('SELECT * FROM termekkisegito WHERE kod>0');
+            $stmt->execute();
+            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                $termek = $this->getRepo('Entities\Termek')->findOneBy(array('migrid' => $r['termek']));
+                $elem = $this->getRepo('Entities\Termek')->findOneBy(array('migrid' => $r['elem']));
+
+                if ($termek && $elem) {
+                    $db++;
+                    $re = new TermekRecept();
+                    $re->setTermek($termek);
+                    $re->setAlTermek($elem);
+                    $re->setTipus($ttcsomagelem);
+                    $re->setMennyiseg(($r['mennyiseg'] * 1 == 0 ? 1 : $r['mennyiseg'] * 1));
+                    \mkw\store::getEm()->persist($re);
+                    if (($db % 20) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                        $ttcsomagelem = $this->getRepo('Entities\TermekReceptTipus')->findOneBy(array('nev' => 'Stanckés'));
+                    }
+                }
+            }
+            \mkw\store::getEm()->flush();
+            \mkw\store::getEm()->clear();
+
+            $db = 0;
+            $ttcsomagelem = $this->getRepo('Entities\TermekReceptTipus')->findOneBy(array('nev' => 'Klisé'));
+            $stmt = $dbh->prepare('SELECT * FROM termekkisegito2 WHERE kod>0');
+            $stmt->execute();
+            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                $termek = $this->getRepo('Entities\Termek')->findOneBy(array('migrid' => $r['termek']));
+                $elem = $this->getRepo('Entities\Termek')->findOneBy(array('migrid' => $r['elem']));
+
+                if ($termek && $elem) {
+                    $db++;
+                    $re = new TermekRecept();
+                    $re->setTermek($termek);
+                    $re->setAlTermek($elem);
+                    $re->setTipus($ttcsomagelem);
+                    $re->setMennyiseg(($r['mennyiseg'] * 1 == 0 ? 1 : $r['mennyiseg'] * 1));
+                    \mkw\store::getEm()->persist($re);
+                    if (($db % 20) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                        $ttcsomagelem = $this->getRepo('Entities\TermekReceptTipus')->findOneBy(array('nev' => 'Klisé'));
+                    }
+                }
+            }
+            \mkw\store::getEm()->flush();
+            \mkw\store::getEm()->clear();
         }
 
         echo 'kész';
