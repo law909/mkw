@@ -103,7 +103,9 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 			$x['valtozatlist'] = $termek->getValtozatList($t->getTermekId(), $t->getTermekvaltozatId());
 			$x['vtszlist'] = $vtsz->getSelectList(($t->getVtsz() ? $t->getVtsz()->getId() : 0));
 			$x['afalist'] = $afa->getSelectList(($t->getAfa() ? $t->getAfa()->getId() : 0));
-			$x['mijszpartnerlist'] = $mijszpartner->getSelectList($t->getMIJSZPartnerId());
+			if (\mkw\store::isMIJSZ()) {
+                $x['mijszpartnerlist'] = $mijszpartner->getSelectList($t->getMIJSZPartnerId());
+            }
 		}
 		return $x;
 	}
