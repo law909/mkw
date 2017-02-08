@@ -30,10 +30,10 @@ class KoltsegszamlafejController extends bizonylatfejController {
             }
             $egyed['tetelek'] = $ttk;
         }
-        $partner = new partnerController($this->params);
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('szallito', '=', true);
         if (!\mkw\store::isPartnerAutocomplete()) {
+            $partner = new partnerController($this->params);
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('szallito', '=', true);
             $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0), $filter));
         }
         return $egyed;

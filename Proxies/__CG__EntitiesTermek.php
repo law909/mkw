@@ -1863,23 +1863,23 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getBruttoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL)
+    public function getBruttoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL, $arsavazon = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoAr', [$valtozat, $partner, $valutanem]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoAr', [$valtozat, $partner, $valutanem, $arsavazon]);
 
-        return parent::getBruttoAr($valtozat, $partner, $valutanem);
+        return parent::getBruttoAr($valtozat, $partner, $valutanem, $arsavazon);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getKedvezmenynelkuliBruttoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL)
+    public function getKedvezmenynelkuliBruttoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL, $arsavazon = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmenynelkuliBruttoAr', [$valtozat, $partner, $valutanem]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmenynelkuliBruttoAr', [$valtozat, $partner, $valutanem, $arsavazon]);
 
-        return parent::getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem);
+        return parent::getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem, $arsavazon);
     }
 
     /**
