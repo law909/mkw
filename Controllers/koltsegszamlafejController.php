@@ -33,7 +33,9 @@ class KoltsegszamlafejController extends bizonylatfejController {
         $partner = new partnerController($this->params);
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('szallito', '=', true);
-        $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0), $filter));
+        if (!\mkw\store::isPartnerAutocomplete()) {
+            $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0), $filter));
+        }
         return $egyed;
     }
 
