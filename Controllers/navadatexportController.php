@@ -1,5 +1,7 @@
 <?php
 
+// http://njt.hu/cgi_bin/njt_doc.cgi?docid=170220.266028
+
 namespace Controllers;
 
 class navadatexportController extends \mkwhelpers\MattableController {
@@ -166,9 +168,13 @@ class navadatexportController extends \mkwhelpers\MattableController {
                 echo '</termek_szolgaltatas_tetelek>';
             }
 
+	    echo '<nem_kotelezo>';
             if ($f->getValutanemnev()) {
-                echo '<nem_kotelezo><penznem>' . substr($f->getValutanemnev(), 0, 100) . '</penznem></nem_kotelezo>';
+                echo '<penznem>' . substr($f->getValutanemnev(), 0, 100) . '</penznem>';
             }
+	    echo '<fiz_hatido>' . \mkw\store::DateToExcel($f->getEsedekesseg()) . '</fiz_hatido>';
+	    echo '<fiz_mod>' . substr($f->getFizmodnev(), 0, 100) . '</fiz_mod>';
+	    echo '</nem_kotelezo>';
 
             echo '<osszesites>';
             $ao = $bfrepo->getAFAOsszesito($f);
