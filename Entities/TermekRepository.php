@@ -89,7 +89,13 @@ class TermekRepository extends \mkwhelpers\Repository {
 
     public function getAllValtozatForExport($addedfilter = false, $locale = false) {
         $filter = new FilterDescriptor();
-        $this->addAktivLathatoFilter($filter);
+        if (\mkw\store::isSuperzone()) {
+            $filter->addFilter('inaktiv', '=', false);
+            $filter->addFilter('fuggoben', '=', false);
+        }
+        else {
+            $this->addAktivLathatoFilter($filter);
+        }
         $filter->addFilter('termekexportbanszerepel', '=', true);
         $filter->addFilter('nemkaphato', '=', false);
         if ($addedfilter) {

@@ -828,6 +828,19 @@ class store {
         return $i == self::getParameter(\mkw\consts::FoxpostSzallitasiMod);
     }
 
+    public static function isSuperzone() {
+        return self::getConfigValue('main.theme') == 'superzone';
+    }
+
+    public static function isMindentkapni() {
+        return self::getConfigValue('main.theme') == 'mkwcansas';
+    }
+
+    public static function isVarganyomda() {
+        return self::getConfigValue('main.theme') == 'varganyomda';
+    }
+
+
     public static function setAdminMode() {
         self::$adminmode = true;
         self::$mainmode = false;
