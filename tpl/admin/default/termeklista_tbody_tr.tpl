@@ -81,6 +81,7 @@
                 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="mozgat" class="js-flagcheckbox{if ($_termek.mozgat)} ui-state-hover{/if}">{t('Készletet mozgat')}</a></td></tr>
                 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="nemkaphato" class="js-flagcheckbox{if ($_termek.nemkaphato)} ui-state-hover{/if}">{t('Nem kapható')}</a></td></tr>
                 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="fuggoben" class="js-flagcheckbox{if ($_termek.fuggoben)} ui-state-hover{/if}">{t('Függőben')}</a></td></tr>
+                <tr><td><a href="#" data-id="{$_termek.id}" data-flag="webexportban" class="js-flagcheckbox{if ($_termek.termekexportbanszerepel)} ui-state-hover{/if}">{t('Exportokban szerepel')}</a></td></tr>
                 <tr><td>{t('Hűségpont arány')}: {$_termek.hparany}</td></tr>
                 <tr><td><a href="#" data-id="{$_termek.id}" class="js-keszletreszletezobutton">{t('Készlet')}: {$_termek.keszlet}</a></td></tr>
             </tbody>
