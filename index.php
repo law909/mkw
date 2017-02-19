@@ -12,13 +12,6 @@ $__translate = new Zend_Translate(
 	'locale' => 'hu_hu'
 		)
 );
-$__translate->addTranslation(
-    array(
-        'adapter' => 'array',
-        'content' => 'locales/en.php',
-        'locale' => 'en_us'
-    )
-);
 
 function t($msgid) {
 	global $__translate;
@@ -144,7 +137,16 @@ else {
         }
         else {
             store::setMainMode();
+
+            $__translate->addTranslation(
+                array(
+                    'adapter' => 'array',
+                    'content' => 'locales/en.php',
+                    'locale' => 'en_us'
+                )
+            );
             $__translate->setLocale(store::getLocale());
+
             if (!$mainsess->referrer) {
                 if (array_key_exists('HTTP_REFERER', $_SERVER)) {
                     $mainsess->referrer = $_SERVER['HTTP_REFERER'];
