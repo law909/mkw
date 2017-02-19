@@ -76,7 +76,7 @@
                         <div class="o404TermekInner">
                             <a href="{$_termek.link}">
                                 <div class="o404ImageContainer">
-                                    <img src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
+                                    <img src="{$imagepath}{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                 </div>
                                 <div>{$_termek.caption}</div>
                                 <h5 class="termeklista">
@@ -149,7 +149,7 @@
                                         {if ($_termek.akcios)}
                                             <div class="akciosplecsni"><span class="akciosplecsniszoveg">-{number_format(100 - ($_termek.bruttohuf / $_termek.eredetibruttohuf * 100),0,',',' ')} %</span></div>
                                         {/if}
-                                        <a href="/termek/{$_termek.slug}"><img id="termekkiskep{$_termek.id}-{$_termek.valtozatid|default}" itemprop="image" src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
+                                        <a href="/termek/{$_termek.slug}"><img id="termekkiskep{$_termek.id}-{$_termek.valtozatid|default}" itemprop="image" src="{$imagepath}{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
                                     </div>
                                     <div class="span5 termektext">
                                         <a href="/termek/{$_termek.slug}" itemprop="url"><span class="termekcaption" itemprop="name">{$_termek.caption} {$_termek.cikkszam}</span></a>
@@ -241,7 +241,7 @@
                                 <div class="gtermekinner"><div class="gtermekinnest">
                                     <div class="pull-left gtermekupper">
                                         <div class="gtermekleft pull-left">
-                                            <a href="/termek/{$_termek.slug}"><img itemprop="image" src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
+                                            <a href="/termek/{$_termek.slug}"><img itemprop="image" src="{$imagepath}{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
                                         </div>
                                         <div class="gtermekright pull-left">
                                         <a itemprop="url" href="/termek/{$_termek.slug}"><span class="gtermekcaption" itemprop="name">{$_termek.caption}</span></a>

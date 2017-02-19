@@ -350,6 +350,7 @@ class store {
         $v->setVar('feedtermektitle', self::getParameter('feedtermektitle', t('Termékeink')));
         $v->setVar('feedhirtitle', self::getParameter('feedhirtitle', t('Híreink')));
         $v->setVar('dev', self::getConfigValue('developer', false));
+        $v->setVar('imagepath', self::getConfigValue('main.imagepath', ''));
         $v->setVar('locale', self::getLocale());
         $v->setVar('jsversion', self::getJSVersion());
         $v->setVar('bootstrapjsversion', self::getBootstrapJSVersion());

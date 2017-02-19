@@ -44,8 +44,8 @@
                     <div class="span6">
                         <div class="textaligncenter"><h1 itemprop="name" class="termeknev">{$termek.caption}</h1></div>
                         <div class="termekimagecontainer textaligncenter">
-                            <a id="termekkeplink{$termek.id}" href="{$termek.kepurl}" class="js-lightbox" title="{$termek.caption}">
-                                <img id="termekkep{$termek.id}" itemprop="image" src="{$termek.kozepeskepurl}" alt="{$termek.caption}" title="{$termek.caption}">
+                            <a id="termekkeplink{$termek.id}" href="{$imagepath}{$termek.kepurl}" class="js-lightbox" title="{$termek.caption}">
+                                <img id="termekkep{$termek.id}" itemprop="image" src="{$imagepath}{$termek.kozepeskepurl}" alt="{$termek.caption}" title="{$termek.caption}">
                             </a>
                         </div>
                         {$kcnt=count($termek.kepek)}
@@ -57,8 +57,8 @@
                                 {for $j=0 to $step-1}
                                     {if ($i+$j<$kcnt)}
                                         {$_kep=$termek.kepek[$i+$j]}
-                                        <a href="{$_kep.kepurl}" class="js-lightbox" title="{$_kep.leiras}">
-                                            <img class="termeksmallimage" src="{$_kep.minikepurl}" alt="{$_kep.leiras}" title="{$_kep.leiras}">
+                                        <a href="{$imagepath}{$_kep.kepurl}" class="js-lightbox" title="{$_kep.leiras}">
+                                            <img class="termeksmallimage" src="{$imagepath}{$_kep.minikepurl}" alt="{$_kep.leiras}" title="{$_kep.leiras}">
                                         </a>
                                     {/if}
                                 {/for}
@@ -158,7 +158,7 @@
                                             <tr>
                                                 <td>{$_cimke.kategorianev}</td>
                                                 <td>{if ($_cimke.ismarka)}<a href="{$_cimke.termeklisturl}">{/if}
-                                                    {if ($_cimke.kiskepurl!='')}<img src="{$_cimke.kiskepurl}" alt="{$_cimke.caption}" title="{$_cimke.caption}"> {/if}
+                                                    {if ($_cimke.kiskepurl!='')}<img src="{$imagepath}{$_cimke.kiskepurl}" alt="{$_cimke.caption}" title="{$_cimke.caption}"> {/if}
                                                     {if (!$_cimke.dontshowcaption || $_cimke.kiskepurl=='')}{$_cimke.caption}{/if}
                                                     {if ($_cimke.ismarka)}</a>{/if}
                                                     {if ($_cimke.leiras)}<i class="icon-question-sign tooltipbtn hidden-phone js-tooltipbtn" title="{$_cimke.leiras}"></i>{/if}
@@ -182,7 +182,7 @@
                                             <div class="kapcsolodoTermekInner">
                                                 <a href="{$_kapcsolodo.link}">
                                                     <div class="kapcsolodoImageContainer">
-                                                        <img src="{$_kapcsolodo.minikepurl}" title="{$_kapcsolodo.caption}" alt="{$_kapcsolodo.caption}">
+                                                        <img src="{$imagepath}{$_kapcsolodo.minikepurl}" title="{$_kapcsolodo.caption}" alt="{$_kapcsolodo.caption}">
                                                     </div>
                                                     <div>{$_kapcsolodo.caption}</div>
                                                     <h5>
@@ -211,7 +211,7 @@
                                             <div class="kapcsolodoTermekInner">
                                                 <a href="{$_hasonlo.link}">
                                                     <div class="kapcsolodoImageContainer">
-                                                        <img src="{$_hasonlo.minikepurl}" title="{$_hasonlo.caption}" alt="{$_hasonlo.caption}">
+                                                        <img src="{$imagepath}{$_hasonlo.minikepurl}" title="{$_hasonlo.caption}" alt="{$_hasonlo.caption}">
                                                     </div>
                                                     <div>{$_hasonlo.caption}</div>
                                                     <h5>
@@ -254,7 +254,7 @@
                                     <div class="termekSliderTermekInner">
                                         <a href="/termek/{$_termek.slug}">
                                             <div class="termekSliderImageContainer">
-                                                <img src="{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
+                                                <img src="{$imagepath}{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                             </div>
                                             <div>{$_termek.caption}</div>
                                             <h5 class="main"><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
@@ -277,7 +277,7 @@
                     <div class="kapcsolodoTermekInner">
                         <a href="{$_nepszeru.link}">
                             <div class="kapcsolodoImageContainer">
-                                <img src="{$_nepszeru.minikepurl}" title="{$_nepszeru.caption}" alt="{$_nepszeru.caption}">
+                                <img src="{$imagepath}{$_nepszeru.minikepurl}" title="{$_nepszeru.caption}" alt="{$_nepszeru.caption}">
                             </div>
                             <div>{$_nepszeru.caption}</div>
                             <h5>
