@@ -19,7 +19,6 @@ $__translate->addTranslation(
         'locale' => 'en_us'
     )
 );
-$__translate->setLocale(store::getLocale());
 
 function t($msgid) {
 	global $__translate;
@@ -145,6 +144,7 @@ else {
         }
         else {
             store::setMainMode();
+            $__translate->setLocale(store::getLocale());
             if (!$mainsess->referrer) {
                 if (array_key_exists('HTTP_REFERER', $_SERVER)) {
                     $mainsess->referrer = $_SERVER['HTTP_REFERER'];
