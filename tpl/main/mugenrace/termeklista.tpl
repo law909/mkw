@@ -162,12 +162,6 @@
                                                 <span>{$_jelzo.caption}&nbsp;</span>
                                             {/foreach}
                                         </div>
-                                        <div class="termekjelzok">
-                                            {if ($_termek.ujtermek)}<img src="{$imagepath}{$ujtermekjelolourl}" title="Új termék" alt="Új termék">{/if}
-                                            {if ($_termek.akcios)}<img src="{$imagepath}{$akciosjelolourl}" title="Akciós termék" alt="Akciós termék">{/if}
-                                            {if ($_termek.top10)}<img src="{$imagepath}{$top10jelolourl}" title="Top 10 termék" alt="Top 10 termék">{/if}
-                                            {if ($_termek.ingyenszallitas)}<img src="{$imagepath}{$ingyenszallitasjelolourl}" title="Ingyenes szállítás" alt="Ingyenes szállítás">{/if}
-                                        </div>
                                     </div>
                                     <div class="span2">
                                         {$_kosarbaclass="js-kosarba"}
@@ -255,12 +249,6 @@
                                             {/foreach}
                                         </div>
                                         <div class="gtermekright pull-left">
-                                            <div>
-                                                {if ($_termek.ujtermek)}<img src="{$imagepath}{$ujtermekjelolourl}" title="Új termék" alt="Új termék">{/if}
-                                                {if ($_termek.akcios)}<img src="{$imagepath}{$akciosjelolourl}" title="Akciós termék" alt="Akciós termék">{/if}
-                                                {if ($_termek.top10)}<img src="{$imagepath}{$top10jelolourl}" title="Top 10 termék" alt="Top 10 termék">{/if}
-                                                {if ($_termek.ingyenszallitas)}<img src="{$imagepath}{$ingyenszallitasjelolourl}" title="Ingyenes szállítás" alt="Ingyenes szállítás">{/if}
-                                            </div>
                                             {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
                                             <div><span class="bold">Szállítási idő: </span>{$_termek.szallitasiido} munkanap</div>
                                             {/if}
