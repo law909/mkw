@@ -101,14 +101,14 @@
 					<table><tbody><tr>
 					<td class="lapozotalalat">
 						{if ($vt==1)}
-							<a href="#" class="termeklistview" data-vt="2" title="{t('Galéria')}"><img src="/themes/main/mkwcansas/img/i_grid.png" alt="Galéria"></a>
+							<a href="#" class="termeklistview" data-vt="2" title="{t('Galéria')}"><img src="/themes/main/mugenrace/img/i_grid.png" alt="Galéria"></a>
 						{else}
-							<img src="/themes/main/mkwcansas/img/i_grid.png" alt="Galéria">
+							<img src="/themes/main/mugenrace/img/i_grid.png" alt="Galéria">
 						{/if}
 						{if ($vt==2)}
-							<a href="#" class="termeklistview" data-vt="1" title="{t('Lista')}"><img src="/themes/main/mkwcansas/img/i_list.png" alt="Lista"></a>
+							<a href="#" class="termeklistview" data-vt="1" title="{t('Lista')}"><img src="/themes/main/mugenrace/img/i_list.png" alt="Lista"></a>
 						{else}
-							<img src="/themes/main/mkwcansas/img/i_list.png" alt="Lista">
+							<img src="/themes/main/mugenrace/img/i_list.png" alt="Lista">
 						{/if}
 						<select name="elemperpage" class="elemperpageedit">
 							{$elemszam = array(10, 20, 30, 40, $lapozo.elemcount)}
@@ -163,10 +163,10 @@
                                             {/foreach}
                                         </div>
                                         <div class="termekjelzok">
-                                            {if ($_termek.ujtermek)}<img src="{$ujtermekjelolourl}" title="Új termék" alt="Új termék">{/if}
-                                            {if ($_termek.akcios)}<img src="{$akciosjelolourl}" title="Akciós termék" alt="Akciós termék">{/if}
-                                            {if ($_termek.top10)}<img src="{$top10jelolourl}" title="Top 10 termék" alt="Top 10 termék">{/if}
-                                            {if ($_termek.ingyenszallitas)}<img src="{$ingyenszallitasjelolourl}" title="Ingyenes szállítás" alt="Ingyenes szállítás">{/if}
+                                            {if ($_termek.ujtermek)}<img src="{$imagepath}{$ujtermekjelolourl}" title="Új termék" alt="Új termék">{/if}
+                                            {if ($_termek.akcios)}<img src="{$imagepath}{$akciosjelolourl}" title="Akciós termék" alt="Akciós termék">{/if}
+                                            {if ($_termek.top10)}<img src="{$imagepath}{$top10jelolourl}" title="Top 10 termék" alt="Top 10 termék">{/if}
+                                            {if ($_termek.ingyenszallitas)}<img src="{$imagepath}{$ingyenszallitasjelolourl}" title="Ingyenes szállítás" alt="Ingyenes szállítás">{/if}
                                         </div>
                                     </div>
                                     <div class="span2">
@@ -256,10 +256,10 @@
                                         </div>
                                         <div class="gtermekright pull-left">
                                             <div>
-                                                {if ($_termek.ujtermek)}<img src="{$ujtermekjelolourl}" title="Új termék" alt="Új termék">{/if}
-                                                {if ($_termek.akcios)}<img src="{$akciosjelolourl}" title="Akciós termék" alt="Akciós termék">{/if}
-                                                {if ($_termek.top10)}<img src="{$top10jelolourl}" title="Top 10 termék" alt="Top 10 termék">{/if}
-                                                {if ($_termek.ingyenszallitas)}<img src="{$ingyenszallitasjelolourl}" title="Ingyenes szállítás" alt="Ingyenes szállítás">{/if}
+                                                {if ($_termek.ujtermek)}<img src="{$imagepath}{$ujtermekjelolourl}" title="Új termék" alt="Új termék">{/if}
+                                                {if ($_termek.akcios)}<img src="{$imagepath}{$akciosjelolourl}" title="Akciós termék" alt="Akciós termék">{/if}
+                                                {if ($_termek.top10)}<img src="{$imagepath}{$top10jelolourl}" title="Top 10 termék" alt="Top 10 termék">{/if}
+                                                {if ($_termek.ingyenszallitas)}<img src="{$imagepath}{$ingyenszallitasjelolourl}" title="Ingyenes szállítás" alt="Ingyenes szállítás">{/if}
                                             </div>
                                             {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
                                             <div><span class="bold">Szállítási idő: </span>{$_termek.szallitasiido} munkanap</div>

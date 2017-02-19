@@ -84,10 +84,10 @@
                                 </ul>
                             </div>
                             <div>
-                                {if ($termek.ujtermek)}<img src="{$ujtermekjelolourl}" title="{t('Új termék')}" alt="{t('Új termék')}">{/if}
-                                {if ($termek.akcios)}<img src="{$akciosjelolourl}" title="{t('Akciós termék')}" alt="{t('Akciós termék')}">{/if}
-                                {if ($termek.top10)}<img src="{$top10jelolourl}" title="{t('Top 10 termék')}" alt="{t('Top 10 termék')}">{/if}
-                                {if ($termek.ingyenszallitas)}<img src="{$ingyenszallitasjelolourl}" title="{t('Ingyenes szállítás')}" alt="{t('Ingyenes szállítás')}">{/if}
+                                {if ($termek.ujtermek)}<img src="{$imagepath}{$ujtermekjelolourl}" title="{t('Új termék')}" alt="{t('Új termék')}">{/if}
+                                {if ($termek.akcios)}<img src="{$imagepath}{$akciosjelolourl}" title="{t('Akciós termék')}" alt="{t('Akciós termék')}">{/if}
+                                {if ($termek.top10)}<img src="{$imagepath}{$top10jelolourl}" title="{t('Top 10 termék')}" alt="{t('Top 10 termék')}">{/if}
+                                {if ($termek.ingyenszallitas)}<img src="{$imagepath}{$ingyenszallitasjelolourl}" title="{t('Ingyenes szállítás')}" alt="{t('Ingyenes szállítás')}">{/if}
                             </div>
                             {$_kosarbaclass="js-kosarba"}
                             {if ($termek.valtozatok)}
