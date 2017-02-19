@@ -2483,10 +2483,10 @@ class importController extends \mkwhelpers\Controller {
                 }
                 elseif ($cell->getValue() && substr($fej[$col], 0, 4) == 'nev_') {
                     $nyelv = strtoupper(substr($fej[$col], 4));
-                    $nev[\mkw\store::getLocale($nyelv)] = $cell->getValue();
+                    $nev[\mkw\store::getLocaleName($nyelv)] = $cell->getValue();
                 }
                 elseif ($cell->getValue() && substr($fej[$col], 0, 3) == 'nev') {
-                    $nev[\mkw\store::getLocale('HU')] = $cell->getValue();
+                    $nev[\mkw\store::getLocaleName('HU')] = $cell->getValue();
                 }
                 elseif ($cell->getValue() && substr($fej[$col], 0, 6) == 'netto_') {
                     $n = explode('_', $fej[$col]);

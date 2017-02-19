@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         concat: {
-            lib: {
+            mkwlib: {
                 src: [
                     'js/main/mkwcansas/jquery-1.11.1.min.js',
                     'js/main/mkwcansas/mkwerrorlog.js',
@@ -23,7 +23,7 @@ module.exports = function(grunt) {
                 ],
                 dest: 'js/main/mkwcansas/mkwbootstrap.js'
             },
-            code: {
+            mkwcode: {
                 src: [
                     'js/main/mkwcansas/mkwmsg.js',
                     'js/main/mkwcansas/mkw.js',
@@ -35,7 +35,7 @@ module.exports = function(grunt) {
                 ],
                 dest: 'js/main/mkwcansas/mkwapp.js'
             },
-            css: {
+            mkwcss: {
                 src: [
                     'themes/main/mkwcansas/bootstrap.min.css',
                     'themes/main/mkwcansas/bootstrap-responsive.min.css',
@@ -43,13 +43,59 @@ module.exports = function(grunt) {
                     'themes/main/mkwcansas/magnific-popup.css'
                 ],
                 dest: 'themes/main/mkwcansas/mkw.css'
+            },
+            mugenracelib: {
+                src: [
+                    'js/main/mugenrace/jquery-1.11.1.min.js',
+                    'js/main/mugenrace/mgrerrorlog.js',
+                    'js/main/mugenrace/jquery-migrate-1.2.1.js',
+                    'js/main/mugenrace/jquery.magnific-popup.min.js',
+                    'js/main/mugenrace/jquery.slider.min.js',
+                    'js/main/mugenrace/jquery.royalslider.min.js',
+                    'js/main/mugenrace/jquery.debounce.min.js',
+                    'js/main/mugenrace/bootstrap-transition.js',
+                    'js/main/mugenrace/bootstrap-modal.js',
+                    'js/main/mugenrace/bootstrap-tab.js',
+                    'js/main/mugenrace/bootstrap-typeahead.js',
+                    'js/main/mugenrace/bootstrap-tooltip.js',
+                    'js/main/mugenrace/h5f.js',
+                    'js/main/mugenrace/matt-accordion.js'
+                ],
+                dest: 'js/main/mugenrace/mgrbootstrap.js'
+            },
+            mugenracecode: {
+                src: [
+                    'js/main/mugenrace/mgrmsg.js',
+                    'js/main/mugenrace/mgr.js',
+                    'js/main/mugenrace/checks.js',
+                    'js/main/mugenrace/checkout.js',
+                    'js/main/mugenrace/cart.js',
+                    'js/main/mugenrace/fiok.js',
+                    'js/main/mugenrace/mugenrace.js'
+                ],
+                dest: 'js/main/mugenrace/mgrapp.js'
+            },
+            mugenracecss: {
+                src: [
+                    'themes/main/mugenrace/bootstrap.min.css',
+                    'themes/main/mugenrace/bootstrap-responsive.min.css',
+                    'themes/main/mugenrace/jquery.slider.min.css',
+                    'themes/main/mugenrace/magnific-popup.css'
+                ],
+                dest: 'themes/main/mugenrace/mgr.css'
             }
+
         },
 
         less: {
-            production: {
+            mkw: {
                 files: {
                     'themes/main/mkwcansas/style.css': 'themes/main/mkwcansas/style.less'
+                }
+            },
+            mugenrace: {
+                files: {
+                    'themes/main/mugenrace/style.css': 'themes/main/mugenrace/style.less'
                 }
             }
         }

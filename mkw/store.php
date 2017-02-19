@@ -28,7 +28,7 @@ class store {
     private static $gdl;
     private static $sanitizer;
     private static $translationListener;
-    private static $locales = array('HU' => 'hu_hu', 'EN' => 'en_us', 'DE' => 'de_de');
+    private static $locales = array('hu' => 'hu_hu', 'en' => 'en_us', 'de' => 'de_de');
     private static $adminmode = false;
     private static $mainmode = false;
     private static $loggedinuser;
@@ -350,6 +350,7 @@ class store {
         $v->setVar('feedtermektitle', self::getParameter('feedtermektitle', t('Termékeink')));
         $v->setVar('feedhirtitle', self::getParameter('feedhirtitle', t('Híreink')));
         $v->setVar('dev', self::getConfigValue('developer', false));
+        $v->setVar('locale', self::getLocale());
         $v->setVar('jsversion', self::getJSVersion());
         $v->setVar('bootstrapjsversion', self::getBootstrapJSVersion());
         if ($needmenu) {
@@ -709,7 +710,18 @@ class store {
 
     }
 
-    public static function getLocale($ny) {
+    public static function getLocale() {
+        $l = self::getSetupValue('locale', false);
+        if ($l) {
+            $l = self::getLocaleName($l);
+        }
+        else {
+            $l = self::getParameter(\mkw\consts::Locale);
+        }
+        return $l;
+    }
+
+    public static function getLocaleName($ny) {
         return self::$locales[$ny];
     }
 
@@ -840,6 +852,9 @@ class store {
         return self::getConfigValue('main.theme') == 'varganyomda';
     }
 
+    public static function isMugenrace() {
+        return self::getConfigValue('main.theme') == 'mugenrace';
+    }
 
     public static function setAdminMode() {
         self::$adminmode = true;

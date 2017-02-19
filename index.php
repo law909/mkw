@@ -9,9 +9,17 @@ $__translate = new Zend_Translate(
 		array(
 	'adapter' => 'array',
 	'content' => 'locales/hu.php',
-	'locale' => 'hu'
+	'locale' => 'hu_hu'
 		)
 );
+$__translate->addTranslation(
+    array(
+        'adapter' => 'array',
+        'content' => 'locales/en.php',
+        'locale' => 'en_us'
+    )
+);
+$__translate->setLocale(store::getLocale());
 
 function t($msgid) {
 	global $__translate;

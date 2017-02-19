@@ -224,7 +224,7 @@
                                 </select>
                             </div>
                         {/if}
-                        {if ($maintheme === 'superzone' || $maintheme === "mkwcansas")}
+                        {if ($maintheme === 'superzone' || $maintheme === "mkwcansas" || $maintheme === "mugenrace")}
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="SzinEdit">{t('Szín')}:</label></span>
                                 <select id="SzinEdit" name="valtozattipusszin">

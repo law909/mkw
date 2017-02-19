@@ -35,13 +35,9 @@ nbproject/
 _notes/
 tpl/cache/
 tpl/templates_c/
-img/
 vendor/
 /vendor/
 /!docs/
-/img_bank/
-!/img/
-/img/16x/
 /tpl/configs/
 !/js/vendor/
 /config.php

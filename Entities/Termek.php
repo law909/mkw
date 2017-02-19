@@ -409,6 +409,7 @@ class Termek {
         $x['slug'] = $this->getSlug();
         $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
         $x['caption'] = $this->getNev();
+        $x['cikkszam'] = $this->getCikkszam();
         $x['rovidleiras'] = $this->getRovidLeiras();
         $x['akcios'] = $this->getAkcios();
         $x['akciotipus'] = $this->getAkcioTipus();
@@ -519,6 +520,7 @@ class Termek {
         $x['kepurl'] = $this->getKepurlLarge();
         $x['slug'] = $this->getSlug();
         $x['caption'] = $this->getNev();
+        $x['cikkszam'] = $this->getCikkszam();
         $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
         $x['rovidleiras'] = $this->getRovidLeiras();
         $x['akcios'] = $this->getAkcios();
@@ -656,6 +658,7 @@ class Termek {
         $x['kepurl'] = $this->getKepUrlLarge();
         $x['slug'] = $this->getSlug();
         $x['caption'] = $this->getNev();
+        $x['cikkszam'] = $this->getCikkszam();
         $x['rovidleiras'] = $this->getRovidLeiras();
         $x['akcios'] = $this->getAkcios();
         $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
@@ -1373,6 +1376,7 @@ class Termek {
     public function getValtozatok() {
         switch (\mkw\store::getTheme()) {
             case 'mkwcansas':
+            case 'mugenrace':
                 return $this->valtozatok;
             case 'superzone':
                 $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);

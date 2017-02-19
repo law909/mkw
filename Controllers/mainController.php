@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use mkwhelpers\FilterDescriptor;
+
 class mainController extends \mkwhelpers\Controller {
 
 	private $view;
@@ -48,15 +50,29 @@ class mainController extends \mkwhelpers\Controller {
         $tcc = new termekcimkeController($this->params);
 		$this->view->setVar('pagetitle', \mkw\store::getParameter(\mkw\consts::Oldalcim));
 		$this->view->setVar('seodescription', \mkw\store::getParameter(\mkw\consts::Seodescription));
-        if (\mkw\store::getTheme() == 'mkwcansas') {
-            $this->view->setVar('hirek', $hc->gethirlist());
-            $this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
-            $this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(\mkw\store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5)));
-            $this->view->setVar('legujabbtermekek', $tc->getLegujabbLista());
-            $this->view->setVar('korhintalista', $khc->getLista());
-            $this->view->setVar('topkategorialista', $tfc->getformenu(\mkw\store::getSetupValue('topkategoriamenunum'), 0));
-            $this->view->setVar('kiemeltmarkalista', $tcc->getKiemeltList());
-            $this->view->setVar('akciostermekek', $tc->getAkciosLista(\mkw\store::getParameter(\mkw\consts::Fooldalakciostermekdb, 6)));
+		switch (true) {
+
+            case \mkw\store::isMindentkapni():
+                $this->view->setVar('hirek', $hc->gethirlist());
+                $this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
+                $this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(\mkw\store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5)));
+                $this->view->setVar('legujabbtermekek', $tc->getLegujabbLista());
+                $this->view->setVar('korhintalista', $khc->getLista());
+                $this->view->setVar('topkategorialista', $tfc->getformenu(\mkw\store::getSetupValue('topkategoriamenunum'), 0));
+                $this->view->setVar('kiemeltmarkalista', $tcc->getKiemeltList());
+                $this->view->setVar('akciostermekek', $tc->getAkciosLista(\mkw\store::getParameter(\mkw\consts::Fooldalakciostermekdb, 6)));
+                break;
+
+            case \mkw\store::isMugenrace():
+                $this->view->setVar('hirek', $hc->gethirlist());
+                $this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
+                $this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(\mkw\store::getParameter(\mkw\consts::Fooldalnepszerutermekdb, 5)));
+                $this->view->setVar('legujabbtermekek', $tc->getLegujabbLista());
+                $this->view->setVar('korhintalista', $khc->getLista());
+                $this->view->setVar('topkategorialista', $tfc->getformenu(\mkw\store::getSetupValue('topkategoriamenunum'), 0));
+                $this->view->setVar('kiemeltmarkalista', $tcc->getKiemeltList());
+                $this->view->setVar('akciostermekek', $tc->getAkciosLista(\mkw\store::getParameter(\mkw\consts::Fooldalakciostermekdb, 6)));
+                break;
         }
 		$this->view->printTemplateResult(true);
 	}
@@ -177,11 +193,19 @@ class mainController extends \mkwhelpers\Controller {
 	}
 
 	public function termek() {
-        switch (\mkw\store::getTheme()) {
-            case 'mkwcansas':
+        switch (true) {
+
+            case \mkw\store::isMindentkapni():
+            case \mkw\store::isMugenrace():
                 $com = $this->params->getStringParam('slug');
                 $tc = new termekController($this->params);
-                $termek = $tc->getRepo()->findOneBySlug($com);
+                $filter = new FilterDescriptor();
+                $filter->addFilter('slug', '=', $com);
+                $termek = $tc->getRepo()->getWithJoins($filter);
+                if (is_array($termek)) {
+                    $termek = $termek[0];
+                }
+                //$termek = $tc->getRepo()->findOneBySlug($com);
                 if ($termek && !$termek->getInaktiv() && $termek->getLathato() && !$termek->getFuggoben()) {
                     $this->view = $this->getTemplateFactory()->createMainView('termeklap.tpl');
                     \mkw\store::fillTemplate($this->view);
@@ -203,7 +227,8 @@ class mainController extends \mkwhelpers\Controller {
                     \mkw\store::redirectTo404($com, $this->params);
                 }
                 break;
-            case 'superzone':
+
+            case \mkw\store::isSuperzone():
                 $com = $this->params->getStringParam('slug');
                 $tc = new termekController($this->params);
                 $termek = $tc->getRepo()->findOneBySlug($com);
