@@ -11,16 +11,16 @@
 {block "kozep"}
     <div id="mattkarb">
         <div id="mattkarb-header">
-            <h3>{t('Beérkezett pénz')}</h3>
+            <h3>{at('Beérkezett pénz')}</h3>
         </div>
         <div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
             {if ($setup.editstyle=='tab')}
                 <ul>
-                    <li><a href="#DefaTab">{t('Beérkezett pénz')}</a></li>
+                    <li><a href="#DefaTab">{at('Beérkezett pénz')}</a></li>
                 </ul>
             {/if}
             {if ($setup.editstyle=='dropdown')}
-                <div class="mattkarb-titlebar" data-caption="{t('Beérkezett pénz')}" data-refcontrol="#DefaTab"></div>
+                <div class="mattkarb-titlebar" data-caption="{at('Beérkezett pénz')}" data-refcontrol="#DefaTab"></div>
             {/if}
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="penzbe" action="" target="_blank">
@@ -34,7 +34,7 @@
                     <div class="matt-hseparator"></div>
 
                     <div>
-                        <a href="/admin/penzbelista/get" class="js-okbutton">OK</a>
+                        <a href="/admin/penzbelista/get" class="js-okbutton">{at('OK')}</a>
                     </div>
                 </form>
             </div>

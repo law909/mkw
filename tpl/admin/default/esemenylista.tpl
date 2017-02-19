@@ -10,17 +10,17 @@
 
 {block "kozep"}
 <div id="mattable-select" data-theme="{$theme}">
-<div id="mattable-header" data-title="{t('Frissítés')}" data-caption="{t('Események')}"></div>
+<div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Események')}"></div>
 <div id="mattable-filterwrapper">
-	<label for="bejegyzesfilter">{t('Szűrés')}</label>
+	<label for="bejegyzesfilter">{at('Szűrés')}</label>
 	<input id="bejegyzesfilter" name="bejegyzesfilter" type="text" size="30" maxlength="255">
-	<label for="dtfilter">{t('Dátum')}</label>
+	<label for="dtfilter">{at('Dátum')}</label>
 	<input id="dtfilter" name="dtfilter" type="text" size="12"> -
 	<input id="difilter" name="difilter" type="text" size="12">
 </div>
 <div class="mattable-pagerwrapper">
 	<div class="mattable-order">
-	<label for="cos1">{t('Rendezés')}</label>
+	<label for="cos1">{at('Rendezés')}</label>
 	<select id="cos1" class="mattable-orderselect">
 		{foreach $orderselect as $_os}
 		<option value="{$_os.id}"{if ($_os.selected)} selected="selected"{/if}>{$_os.caption}</option>
@@ -32,16 +32,16 @@
 <thead>
 	<tr>
 	<th><input class="js-maincheckbox" type="checkbox"></th>
-	<th>{t('Esemény')}</th>
-	<th>{t('Partner')}</th>
-	<th>{t('Esedékes')}</th>
+	<th>{at('Esemény')}</th>
+	<th>{at('Partner')}</th>
+	<th>{at('Esedékes')}</th>
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>
 </table>
 <div class="mattable-pagerwrapper ui-corner-bottom">
 	<div class="mattable-order">
-	<label for="cos1">{t('Rendezés')}</label>
+	<label for="cos1">{at('Rendezés')}</label>
 	<select id="cos1" class="mattable-orderselect">
 		{foreach $orderselect as $_os}
 		<option value="{$_os.id}"{if ($_os.selected)} selected="selected"{/if}>{$_os.caption}</option>

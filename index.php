@@ -5,17 +5,38 @@ date_default_timezone_set('Europe/Budapest');
 
 require_once('bootstrap.php');
 
-$__translate = new Zend_Translate(
+$__maintranslate = new Zend_Translate(
 		array(
 	'adapter' => 'array',
-	'content' => 'locales/hu.php',
+	'content' => 'locales/main/hu.php',
 	'locale' => 'hu_hu'
 		)
 );
 
+$__admintranslate = new Zend_Translate(
+    array(
+        'adapter' => 'array',
+        'content' => 'locales/admin/hu.php',
+        'locale' => 'hu_hu'
+    )
+);
+
 function t($msgid) {
-	global $__translate;
-	return $__translate->_($msgid);
+    global $__maintranslate;
+    $x = $__maintranslate->_($msgid);
+    if (\mkw\store::getSetupValue('translate') && $x === $msgid) {
+        store::writetranslation($msgid, 'transmain' . $__maintranslate->getLocale() . '.txt');
+    }
+    return $x;
+}
+
+function at($msgid) {
+	global $__admintranslate;
+	$x = $__admintranslate->_($msgid);
+	if (\mkw\store::getSetupValue('translate') && $x === $msgid) {
+	    store::writetranslation($msgid, 'transadmin' . $__admintranslate->getLocale() . '.txt');
+    }
+	return $x;
 }
 
 function haveJog($jog) {
@@ -128,6 +149,16 @@ else {
         store::setRouteName($match['name']);
         if (substr($match['name'], 0, 5) === 'admin') {
             store::setAdminMode();
+
+            $__admintranslate->addTranslation(
+                array(
+                    'adapter' => 'array',
+                    'content' => 'locales/admin/en.php',
+                    'locale' => 'en_us'
+                )
+            );
+            $__admintranslate->setLocale(store::getAdminLocale());
+
             if ((!in_array($match['name'], array('adminshowlogin', 'adminlogin', 'adminrlbexport')))) {
                 $linuser = store::getAdminSession()->pk;
                 if (!$linuser) {
@@ -138,14 +169,14 @@ else {
         else {
             store::setMainMode();
 
-            $__translate->addTranslation(
+            $__maintranslate->addTranslation(
                 array(
                     'adapter' => 'array',
-                    'content' => 'locales/en.php',
+                    'content' => 'locales/main/en.php',
                     'locale' => 'en_us'
                 )
             );
-            $__translate->setLocale(store::getLocale());
+            $__maintranslate->setLocale(store::getLocale());
 
             if (!$mainsess->referrer) {
                 if (array_key_exists('HTTP_REFERER', $_SERVER)) {

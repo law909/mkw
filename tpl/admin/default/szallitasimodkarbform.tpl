@@ -1,37 +1,37 @@
 <div id="mattkarb-header">
-	<h3>{t('Szállítási mód')}</h3>
+	<h3>{at('Szállítási mód')}</h3>
 </div>
 <form id="mattkarb-form" method="post" action="{$formaction}">
 	<div id="mattkarb-tabs">
 		<ul>
-			<li><a href="#AltalanosTab">{t('Általános adatok')}</a></li>
-            <li><a href="#HatarTab">{t('Összeghatárok')}</a></li>
+			<li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
+            <li><a href="#HatarTab">{at('Összeghatárok')}</a></li>
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table>
 				<tbody>
                     <tr>
-                        <td><label for="NevEdit">{t('Név')}:</label></td>
+                        <td><label for="NevEdit">{at('Név')}:</label></td>
                         <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}"></td>
                     </tr>
                     <tr>
-                        <td><label for="LeirasEdit">{t('Leírás')}:</label></td>
+                        <td><label for="LeirasEdit">{at('Leírás')}:</label></td>
                         <td><textarea id="LeirasEdit" name="leiras">{$egyed.leiras}</textarea></td>
                     </tr>
                     <tr>
-                        <td><label for="FizmodEdit">{t('Fizetési módok')}:</label></td>
+                        <td><label for="FizmodEdit">{at('Fizetési módok')}:</label></td>
                         <td><input id="FizmodEdit" name="fizmodok" type="text" size="80" maxlength="255" value="{$egyed.fizmodok}"></td>
                     </tr>
                     <tr>
-                        <td><label for="SorrendEdit">{t('Sorrend')}:</label></td>
+                        <td><label for="SorrendEdit">{at('Sorrend')}:</label></td>
                         <td><input id="SorrendEdit" name="sorrend" type="number" value="{$egyed.sorrend}"></td>
                     </tr>
                     <tr>
-                        <td><label for="WebesEdit">{t('Webes')}:</label></td>
+                        <td><label for="WebesEdit">{at('Webes')}:</label></td>
                         <td><input id="WebesEdit" name="webes" type="checkbox"{if ($egyed.webes)} checked="checked"{/if}></td>
                     </tr>
                     <tr>
-                        <td><label for="VanSzallktgEdit">{t('Van száll.költség')}:</label></td>
+                        <td><label for="VanSzallktgEdit">{at('Van száll.költség')}:</label></td>
                         <td><input id="VanSzallktgEdit" name="vanszallitasiktg" type="checkbox"{if ($egyed.vanszallitasiktg)} checked="checked"{/if}></td>
                     </tr>
 			    </tbody>
@@ -41,7 +41,7 @@
             {foreach $egyed.hatarok as $hatar}
                 {include 'szallitasimodhatarkarb.tpl'}
             {/foreach}
-            <a class="js-hatarnewbutton" href="#" title="{t('Új')}">
+            <a class="js-hatarnewbutton" href="#" title="{at('Új')}">
                 <span class="ui-icon ui-icon-circle-plus"></span>
             </a>
         </div>
@@ -49,7 +49,7 @@
 	<input name="oper" type="hidden" value="{$oper}">
 	<input name="id" type="hidden" value="{$egyed.id}">
 	<div class="mattkarb-footer">
-		<input id="mattkarb-okbutton" type="submit" value="{t('OK')}">
-		<a id="mattkarb-cancelbutton" href="#">{t('Mégsem')}</a>
+		<input id="mattkarb-okbutton" type="submit" value="{at('OK')}">
+		<a id="mattkarb-cancelbutton" href="#">{at('Mégsem')}</a>
 	</div>
 </form>

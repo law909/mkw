@@ -1,15 +1,15 @@
 <table>
     <thead>
     <tr>
-        <th class="headercell">Cikkszám</th>
-        <th class="headercell">Név</th>
-        <th class="headercell textalignright">Kiadás</th>
-        <th class="headercell textalignright">Visszavét</th>
-        <th class="headercell textalignright">Forgalom</th>
+        <th class="headercell">{at('Cikkszám')}</th>
+        <th class="headercell">{at('Név')}</th>
+        <th class="headercell textalignright">{at('Kiadás')}</th>
+        <th class="headercell textalignright">{at('Visszavét')}</th>
+        <th class="headercell textalignright">{at('Forgalom')}</th>
         {if ($ertektipus)}
-        <th class="headercell textalignright">Kiadás érték</th>
-        <th class="headercell textalignright">Visszavét érték</th>
-        <th class="headercell textalignright">Forgalom érték</th>
+        <th class="headercell textalignright">{at('Kiadás érték')}</th>
+        <th class="headercell textalignright">{at('Visszavét érték')}</th>
+        <th class="headercell textalignright">{at('Forgalom érték')}</th>
         {/if}
     </tr>
     </thead>
@@ -43,7 +43,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <td class="datacell">Összesen</td>
+            <td class="datacell">{at('Összesen')}</td>
             <td class="datacell"></td>
             <td class="datacell textalignright">{bizformat($ski)}</td>
             <td class="datacell textalignright">{bizformat($sbe)}</td>

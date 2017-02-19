@@ -9,11 +9,11 @@
 
 {block "kozep"}
 <div id="mattable-select" data-theme="{$theme}">
-<div id="mattable-header" data-title="{t('Frissítés')}" data-caption="{t('Sablonok')}"></div>
+<div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Sablonok')}"></div>
 <table id="mattable-table">
 <thead>
 	<tr>
-	<th>{t('Név')}</th>
+	<th>{at('Név')}</th>
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>

@@ -14,48 +14,48 @@
     <input type="hidden" name="country">
 </form>
 <div id="mattable-select" data-theme="{$theme}">
-<div id="mattable-header" data-title="{t('Frissítés')}" data-caption="{t('Partnerek')}"></div>
+<div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Partnerek')}"></div>
 <div id="mattable-filterwrapper">
 	<div class="matt-hseparator"></div>
 	<div>
-        <label for="nevfilter">Név:</label>
+        <label for="nevfilter">{at('Név')}:</label>
         <input id="nevfilter" name="nevfilter" type="text" maxlength="255">
-        <label for="emailfilter">Email:</label>
+        <label for="emailfilter">{at('Email')}:</label>
         <input id="emailfilter" name="emailfilter" type="text" maxlength="255">
 	</div>
 	<div class="matt-hseparator"></div>
     <div>
-        <label for="szallitasiirszamfilter">Szállítási cím:</label>
+        <label for="szallitasiirszamfilter">{at('Szállítási cím')}:</label>
         <input id="szallitasiirszamfilter" name="szallitasiirszamfilter" type="text" size="8">
         <input id="szallitasivarosfilter" name="szallitasivarosfilter" type="text">
         <input id="szallitasiutcafilter" name="szallitasiutcafilter" type="text">
     </div>
 	<div class="matt-hseparator"></div>
     <div>
-        <label for="szamlazasiirszamfilter">Számlázási cím:</label>
+        <label for="szamlazasiirszamfilter">{at('Számlázási cím')}:</label>
         <input id="szamlazasiirszamfilter" name="szamlazasiirszamfilter" type="text" size="8">
         <input id="szamlazasivarosfilter" name="szamlazasivarosfilter" type="text">
         <input id="szamlazasiutcafilter" name="szamlazasiutcafilter" type="text">
     </div>
 	<div class="matt-hseparator"></div>
     <div>
-        <label for="beszallitofilter">Beszállító:</label>
+        <label for="beszallitofilter">{at('Beszállító')}:</label>
         <select id="beszallitofilter" name="beszallitofilter">
-            <option value="9">Mindegy</option>
-            <option value="0">Nem</option>
-            <option value="1">Igen</option>
+            <option value="9">{at('Mindegy')}</option>
+            <option value="0">{at('Nem')}</option>
+            <option value="1">{at('Igen')}</option>
         </select>
-        <label for="partnertipusfilter">{t('Partner típus')}: </label>
+        <label for="partnertipusfilter">{at('Partner típus')}: </label>
         <select id="partnertipusfilter" name="partnertipusfilter">
-            <option value="">{t('válasszon')}</option>
+            <option value="">{at('válasszon')}</option>
             {foreach $partnertipuslist as $_gyarto}
                 <option
                     value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
             {/foreach}
         </select>
-        <label for="orszagfilter">{t('Ország')}: </label>
+        <label for="orszagfilter">{at('Ország')}: </label>
         <select id="orszagfilter" name="orszagfilter">
-            <option value="">{t('válasszon')}</option>
+            <option value="">{at('válasszon')}</option>
             {foreach $orszaglist as $_gyarto}
                 <option
                     value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
@@ -81,7 +81,7 @@
 </div>
 <div class="mattable-pagerwrapper">
 	<div class="mattable-order">
-	<label for="tos1">{t('Rendezés')}</label>
+	<label for="tos1">{at('Rendezés')}</label>
 	<select id="tos1" class="mattable-orderselect">
 		{foreach $orderselect as $_os}
 		<option value="{$_os.id}"{if ($_os.selected)} selected="selected"{/if}>{$_os.caption}</option>
@@ -90,30 +90,30 @@
 	</div>
 </div>
 <div class="mattable-batch">
-	{t('Csoportos művelet')} <select class="mattable-batchselect">
-	<option value="">{t('válasszon')}</option>
+	{at('Csoportos művelet')} <select class="mattable-batchselect">
+	<option value="">{at('válasszon')}</option>
 	{foreach $batchesselect as $_batch}
 	<option value="{$_batch.id}">{$_batch.caption}</option>
 	{/foreach}
 	</select>
-    <a href="#" class="mattable-batchbtn">Futtat</a>
+    <a href="#" class="mattable-batchbtn">{at('Futtat')}</a>
 </div>
 <table id="mattable-table">
 <thead>
 	<tr>
         <th><input class="js-maincheckbox" type="checkbox"></th>
-        <th>{t('Név')}</th>
-        <th>{t('Cím')}</th>
-        <th>{t('Elérhetőségek')}</th>
-        <th>{t('Megjegyzés')}</th>
-    	<th>{t('Címkék')}</th>
+        <th>{at('Név')}</th>
+        <th>{at('Cím')}</th>
+        <th>{at('Elérhetőségek')}</th>
+        <th>{at('Megjegyzés')}</th>
+    	<th>{at('Címkék')}</th>
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>
 </table>
 <div class="mattable-pagerwrapper ui-corner-bottom">
 	<div class="mattable-order">
-	<label for="tos2">{t('Rendezés')}</label>
+	<label for="tos2">{at('Rendezés')}</label>
 	<select id="tos2" class="mattable-orderselect">
 		{foreach $orderselect as $_os}
 		<option value="{$_os.id}"{if ($_os.selected)} selected="selected"{/if}>{$_os.caption}</option>

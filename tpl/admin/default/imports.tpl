@@ -11,17 +11,17 @@
 {block "kozep"}
 <div id="mattkarb">
 <div id="mattkarb-header">
-	<h3>{t('Termék importok')}</h3>
+	<h3>{at('Termék importok')}</h3>
 </div>
 <form id="mattkarb-form" action="" method="post">
 	<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
 		{if ($setup.editstyle=='tab')}
 		<ul>
-			<li><a href="#DefaTab">{t('Importok')}</a></li>
+			<li><a href="#DefaTab">{at('Importok')}</a></li>
 		</ul>
 		{/if}
 		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Exportok')}" data-refcontrol="#DefaTab"></div>
+		<div class="mattkarb-titlebar" data-caption="{at('Exportok')}" data-refcontrol="#DefaTab"></div>
 		{/if}
 		<div id="DefaTab" class="mattkarb-page" data-visible="visible">
             <div>

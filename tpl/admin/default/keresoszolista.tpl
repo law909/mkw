@@ -11,16 +11,16 @@
 {block "kozep"}
     <div id="mattkarb">
         <div id="mattkarb-header">
-            <h3>{t('Keresések')}</h3>
+            <h3>{at('Keresések')}</h3>
         </div>
         <div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
             {if ($setup.editstyle=='tab')}
                 <ul>
-                    <li><a href="#DefaTab">{t('Keresések')}</a></li>
+                    <li><a href="#DefaTab">{at('Keresések')}</a></li>
                 </ul>
             {/if}
             {if ($setup.editstyle=='dropdown')}
-                <div class="mattkarb-titlebar" data-caption="{t('Keresések')}" data-refcontrol="#DefaTab"></div>
+                <div class="mattkarb-titlebar" data-caption="{at('Keresések')}" data-refcontrol="#DefaTab"></div>
             {/if}
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="keresoszo" action="" target="_blank">

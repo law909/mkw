@@ -11,38 +11,38 @@
 {block "kozep"}
     <div id="mattkarb">
         <div id="mattkarb-header">
-            <h3>{t('Kintlevőség')}</h3>
+            <h3>{at('Kintlevőség')}</h3>
         </div>
         <div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
             {if ($setup.editstyle=='tab')}
                 <ul>
-                    <li><a href="#DefaTab">{t('Kintlevőség')}</a></li>
+                    <li><a href="#DefaTab">{at('Kintlevőség')}</a></li>
                 </ul>
             {/if}
             {if ($setup.editstyle=='dropdown')}
-                <div class="mattkarb-titlebar" data-caption="{t('Kintlevőség')}" data-refcontrol="#DefaTab"></div>
+                <div class="mattkarb-titlebar" data-caption="{at('Kintlevőség')}" data-refcontrol="#DefaTab"></div>
             {/if}
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="kintlevoseg" action="" target="_blank">
                     {include "comp_idoszak.tpl"}
                     <div class="matt-hseparator"></div>
                     <div>
-                        <label for="BefEdit">{t('A befizetéseket')}</label>
+                        <label for="BefEdit">{at('A befizetéseket')}</label>
                         <input id="BefEdit" name="befdatum" data-datum="{$toldatum}">
-                        <span>{t('-ig kell figyelembe venni.')}</span>
+                        <span>{at('-ig kell figyelembe venni.')}</span>
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
-                        <label for="LejartFilterEdit">{t('Lejárat')}:</label>
+                        <label for="LejartFilterEdit">{at('Lejárat')}:</label>
                         <select id="LejartFilterEdit" name="lejartfilter">
-                            <option value="1">mind</option>
-                            <option value="2">lejárt</option>
-                            <option value="3">nem lejárt</option>
+                            <option value="1">{at('mind')}</option>
+                            <option value="2">{at('lejárt')}</option>
+                            <option value="3">{at('nem lejárt')}</option>
                         </select>
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
-                        <label for="ReszletesSumCB">{t('Részletes összesítő kell')}</label>
+                        <label for="ReszletesSumCB">{at('Részletes összesítő kell')}</label>
                         <input id="ReszletesSumCB" name="reszletessum" type="checkbox">
                     </div>
                     <div class="matt-hseparator"></div>
@@ -51,10 +51,10 @@
                     {include "comp_uzletkotoselect.tpl"}
                     <div class="matt-hseparator"></div>
                     <div>
-                        <label for="SorrendEdit">{t('Sorrend')}:</label>
+                        <label for="SorrendEdit">{at('Sorrend')}:</label>
                         <select id="SorrendEdit" name="sorrend">
-                            <option value="1">kelt</option>
-                            <option value="2">esedékesség</option>
+                            <option value="1">{at('kelt')}</option>
+                            <option value="2">{at('esedékesség')}</option>
                         </select>
                     </div>
                     <div class="matt-hseparator"></div>
@@ -62,8 +62,8 @@
                     <div class="matt-hseparator"></div>
 
                     <div>
-                        <a href="/admin/kintlevoseglista/get" class="js-okbutton">OK</a>
-                        <a href="/admin/kintlevoseglista/export" class="js-exportbutton">Export</a>
+                        <a href="/admin/kintlevoseglista/get" class="js-okbutton">{at('OK')}</a>
+                        <a href="/admin/kintlevoseglista/export" class="js-exportbutton">{at('Export')}</a>
                     </div>
                 </form>
             </div>

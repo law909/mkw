@@ -11,16 +11,16 @@
 {block "kozep"}
 <div id="mattkarb">
 <div id="mattkarb-header">
-	<h3>{t('Készletérték')}</h3>
+	<h3>{at('Készletérték')}</h3>
 </div>
 <div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
     {if ($setup.editstyle=='tab')}
     <ul>
-        <li><a href="#DefaTab">{t('Készletérték')}</a></li>
+        <li><a href="#DefaTab">{at('Készletérték')}</a></li>
     </ul>
     {/if}
     {if ($setup.editstyle=='dropdown')}
-    <div class="mattkarb-titlebar" data-caption="{t('Készletérték')}" data-refcontrol="#DefaTab"></div>
+    <div class="mattkarb-titlebar" data-caption="{at('Készletérték')}" data-refcontrol="#DefaTab"></div>
     {/if}
     <div id="DefaTab" class="mattkarb-page" data-visible="visible">
         <form id="fifocalc">
@@ -28,21 +28,21 @@
             <label>Stornó bizonylatok kellenek</label><input name="storno" type="checkbox">
         </div>
         <div>
-        <a href="/admin/fifo/calc" class="js-fifocalc">FIFO számítás</a>
+        <a href="/admin/fifo/calc" class="js-fifocalc">{at('FIFO számítás')}</a>
         </div>
         </form>
         <form id="fifoexport" action="">
         <div>
-            <label>Számok Excel formátumban</label><input name="toexcel" type="checkbox" checked>
+            <label>{at('Számok Excel formátumban')}</label><input name="toexcel" type="checkbox" checked>
         </div>
         <div>
-            <label>Ékezetek ISO-8859-2-ben</label><input name="toiso" type="checkbox" checked>
+            <label>{at('Ékezetek ISO-8859-2-ben')}</label><input name="toiso" type="checkbox" checked>
         </div>
         <div>
-        <a href="/admin/fifo/alapadat" class="js-fifoalapadat">FIFO alapadatok</a>
+        <a href="/admin/fifo/alapadat" class="js-fifoalapadat">{at('FIFO alapadatok')}</a>
         </div>
         <div>
-        <a href="/admin/fifo/keszletertek" class="js-keszletertek">Készletérték</a>
+        <a href="/admin/fifo/keszletertek" class="js-keszletertek">{at('Készletérték')}</a>
         </div>
         </form>
     </div>

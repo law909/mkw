@@ -9,14 +9,14 @@
 
 {block "kozep"}
 <div id="mattable-select" data-theme="{$theme}">
-<div id="mattable-header" data-title="{t('Frissítés')}" data-caption="{t('Kosár')}"></div>
+<div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Kosár')}"></div>
 <div id="mattable-filterwrapper">
-	<label for="nevfilter">{t('Szűrés')}</label>
+	<label for="nevfilter">{at('Szűrés')}</label>
 	<input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
 </div>
 <div class="mattable-pagerwrapper">
 	<div class="mattable-order">
-	<label for="cos1">{t('Rendezés')}</label>
+	<label for="cos1">{at('Rendezés')}</label>
 	<select id="cos1" class="mattable-orderselect">
 		{foreach $orderselect as $_os}
 		<option value="{$_os.id}"{if ($_os.selected)} selected="selected"{/if}>{$_os.caption}</option>
@@ -25,8 +25,8 @@
 	</div>
 </div>
 <div class="mattable-batch">
-	{t('Csoportos művelet')} <select class="mattable-batchselect">
-	<option value="">{t('válasszon')}</option>
+	{at('Csoportos művelet')} <select class="mattable-batchselect">
+	<option value="">{at('válasszon')}</option>
 	{foreach $batchesselect as $_batch}
 	<option value="{$_batch.id}">{$_batch.caption}</option>
 	{/foreach}
@@ -36,18 +36,18 @@
 <thead>
 	<tr>
 	<th><input class="js-maincheckbox" type="checkbox"></th>
-    <th>{t('Létrehozva')}</th>
-	<th>{t('Session')}</th>
-	<th>{t('Partner')}</th>
-	<th>{t('Termék')}</th>
-	<th>{t('Mennyiség')}</th>
+    <th>{at('Létrehozva')}</th>
+	<th>{at('Session')}</th>
+	<th>{at('Partner')}</th>
+	<th>{at('Termék')}</th>
+	<th>{at('Mennyiség')}</th>
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>
 </table>
 <div class="mattable-pagerwrapper ui-corner-bottom">
 	<div class="mattable-order">
-	<label for="cos1">{t('Rendezés')}</label>
+	<label for="cos1">{at('Rendezés')}</label>
 	<select id="cos1" class="mattable-orderselect">
 		{foreach $orderselect as $_os}
 		<option value="{$_os.id}"{if ($_os.selected)} selected="selected"{/if}>{$_os.caption}</option>

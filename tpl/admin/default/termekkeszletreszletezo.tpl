@@ -1,8 +1,8 @@
 <table>
     <thead>
         <tr>
-            <th>Raktár</th>
-            <th>Készlet</th>
+            <th>{at('Raktár')}</th>
+            <th>{at('Készlet')}</th>
         </tr>
     </thead>
     <tbody>

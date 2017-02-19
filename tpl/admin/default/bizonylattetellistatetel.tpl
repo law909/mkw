@@ -1,11 +1,11 @@
 <table>
     <thead>
     <tr>
-        <th class="headercell">Cikkszám</th>
-        <th class="headercell">Név</th>
-        <th class="headercell textalignright">Mennyiség</th>
+        <th class="headercell">{at('Cikkszám')}</th>
+        <th class="headercell">{at('Név')}</th>
+        <th class="headercell textalignright">{at('Mennyiség')}</th>
         {if ($ertektipus)}
-        <th class="headercell textalignright">Érték</th>
+        <th class="headercell textalignright">{at('Érték')}</th>
         {/if}
         {if ($keszletkell)}
             {foreach $raktarlista as $raktar}
@@ -37,7 +37,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <td class="datacell">Összesen</td>
+            <td class="datacell">{at('Összesen')}</td>
             <td class="datacell"></td>
             <td class="datacell textalignright">{bizformat($snyito)}</td>
             {if ($ertektipus)}

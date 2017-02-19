@@ -11,43 +11,43 @@
 {block "kozep"}
     <div id="mattkarb">
         <div id="mattkarb-header">
-            <h3>{t('Készlet')}</h3>
+            <h3>{at('Készlet')}</h3>
         </div>
         <div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
             {if ($setup.editstyle=='tab')}
                 <ul>
-                    <li><a href="#DefaTab">{t('Készlet')}</a></li>
+                    <li><a href="#DefaTab">{at('Készlet')}</a></li>
                 </ul>
             {/if}
             {if ($setup.editstyle=='dropdown')}
-                <div class="mattkarb-titlebar" data-caption="{t('Készlet')}" data-refcontrol="#DefaTab"></div>
+                <div class="mattkarb-titlebar" data-caption="{at('Készlet')}" data-refcontrol="#DefaTab"></div>
             {/if}
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="keszlet" action="" target="_blank">
                     <div>
-                        <label for="DatumEdit">{t('Dátum')}:</label>
+                        <label for="DatumEdit">{at('Dátum')}:</label>
                         <input id="DatumEdit" name="datum" data-datum="{$datum}">
                     </div>
                     <div class="matt-hseparator"></div>
                     {include "comp_raktarselect.tpl"}
                     <div class="matt-hseparator"></div>
                     <div>
-                        <label for="KeszletEdit">{t('Készlet')}:</label>
+                        <label for="KeszletEdit">{at('Készlet')}:</label>
                         <select id="KeszletEdit" name="keszlet">
-                            <option value="1">minden</option>
-                            <option value="2">ami van</option>
-                            <option value="3">ami nincs</option>
-                            <option value="4">ami negatív</option>
+                            <option value="1">{at('minden')}</option>
+                            <option value="2">{at('ami van')}</option>
+                            <option value="3">{at('ami nincs')}</option>
+                            <option value="4">{at('ami negatív')}</option>
                         </select>
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
-                        <label for="NevEdit">{t('Termék')}:</label>
+                        <label for="NevEdit">{at('Termék')}:</label>
                         <input id="NevEdit" type="text" name="nevfilter">
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
-                        <label for="FoglalasEdit">{t('Foglalás számít')}:</label>
+                        <label for="FoglalasEdit">{at('Foglalás számít')}:</label>
                         <input id="FoglalasEdit" type="checkbox" name="foglalasszamit">
                     </div>
                     {if ($setup.multilang)}
@@ -59,8 +59,8 @@
                     <div class="matt-hseparator"></div>
                     <div>
                         <input type="hidden" name="fafilter">
-                        <a href="/admin/keszletlista/get" class="js-okbutton">OK</a>
-                        <a href="/admin/keszletlista/export" class="js-exportbutton">Export</a>
+                        <a href="/admin/keszletlista/get" class="js-okbutton">{at('OK')}</a>
+                        <a href="/admin/keszletlista/export" class="js-exportbutton">{at('Export')}</a>
                     </div>
                 </form>
             </div>

@@ -1,9 +1,9 @@
 <table>
     <thead>
     <tr>
-        <th class="headercell">Partner</th>
+        <th class="headercell">{at('Partner')}</th>
         {if ($ertektipus)}
-        <th class="headercell textalignright">Érték</th>
+        <th class="headercell textalignright">{at('Érték')}</th>
         {/if}
     </tr>
     </thead>
@@ -34,7 +34,7 @@
             {$i = $i + 1}
         {/while}
         <tr class="italic bold">
-            <td colspan="2" class="cell">{$tetel.uzletkotonev} összesen</td>
+            <td colspan="2" class="cell">{$tetel.uzletkotonev} {at('összesen')}</td>
             {if ($ertektipus)}
             <td class="datacell textalignright">{bizformat($ukertek)}</td>
             {/if}
@@ -43,7 +43,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <td class="datacell">Összesen</td>
+            <td class="datacell">{at('Összesen')}</td>
             <td class="datacell"></td>
             {if ($ertektipus)}
                 <td class="datacell textalignright">{bizformat($osszesen)}</td>

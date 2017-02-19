@@ -1,17 +1,17 @@
 <table>
     <thead>
     <tr>
-        <th class="headercell">Cikkszám</th>
-        <th class="headercell">Név</th>
-        <th class="headercell textalignright">Nyitó</th>
-        <th class="headercell textalignright">Be</th>
-        <th class="headercell textalignright">Ki</th>
-        <th class="headercell textalignright">Záró</th>
+        <th class="headercell">{at('Cikkszám')}</th>
+        <th class="headercell">{at('Név')}</th>
+        <th class="headercell textalignright">{at('Nyitó')}</th>
+        <th class="headercell textalignright">{at('Be')}</th>
+        <th class="headercell textalignright">{at('Ki')}</th>
+        <th class="headercell textalignright">{at('Záró')}</th>
         {if ($ertektipus)}
-        <th class="headercell textalignright">Nyitó érték</th>
-        <th class="headercell textalignright">Be érték</th>
-        <th class="headercell textalignright">Ki érték</th>
-        <th class="headercell textalignright">Záró érték</th>
+        <th class="headercell textalignright">{at('Nyitó érték')}</th>
+        <th class="headercell textalignright">{at('Be érték')}</th>
+        <th class="headercell textalignright">{at('Ki érték')}</th>
+        <th class="headercell textalignright">{at('Záró érték')}</th>
         {/if}
     </tr>
     </thead>
@@ -51,7 +51,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <td class="datacell">Összesen</td>
+            <td class="datacell">{at('Összesen')}</td>
             <td class="datacell"></td>
             <td class="datacell textalignright">{bizformat($snyito)}</td>
             <td class="datacell textalignright">{bizformat($sbe)}</td>

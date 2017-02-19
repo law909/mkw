@@ -2,21 +2,21 @@
     <thead>
         <tr>
             <th class="headercell"></th>
-            <th class="headercell">Biz.szám</th>
+            <th class="headercell">{at('Biz.szám')}</th>
             <th class="headercell"></th>
             {if ($maintheme != 'mkwcansas')}
-            <th class="headercell">Raktár</th>
+            <th class="headercell">{at('Raktár')}</th>
             {/if}
-            <th class="headercell">Kelt</th>
-            <th class="headercell">Teljesítés</th>
-            <th class="headercell">Partner</th>
-            <th class="headercell textalignright">Nettó egys.ár</th>
-            <th class="headercell textalignright">Bruttó egys.ár</th>
-            <th class="headercell textalignright">Mennyiség</th>
-            <th class="headercell textalignright">Nettó</th>
-            <th class="headercell textalignright">Bruttó</th>
-            <th>Készlet</th>
-            <th>Változat</th>
+            <th class="headercell">{at('Kelt')}</th>
+            <th class="headercell">{at('Teljesítés')}</th>
+            <th class="headercell">{at('Partner')}</th>
+            <th class="headercell textalignright">{at('Nettó egys.ár')}</th>
+            <th class="headercell textalignright">{at('Bruttó egys.ár')}</th>
+            <th class="headercell textalignright">{at('Mennyiség')}</th>
+            <th class="headercell textalignright">{at('Nettó')}</th>
+            <th class="headercell textalignright">{at('Bruttó')}</th>
+            <th>{at('Készlet')}</th>
+            <th>{at('Változat')}</th>
         </tr>
     </thead>
     <tbody>
@@ -43,17 +43,17 @@
                 <td class="datacell">S</td>
             {else}
                 {if ($tetel.fej.stornozott)}
-                    <td class="datacell">T</td>
+                    <td class="datacell">{at('T')}</td>
                 {else}
                     {if ($tetel.fej.rontott)}
-                        <td class="datacell">R</td>
+                        <td class="datacell">{at('R')}</td>
                     {else}
                         <td class="datacell"></td>
                     {/if}
                 {/if}
             {/if}
-            <td class="datacell"><a href="{$tetel.fej.printurl}" target="_blank" title="Nyomtatási kép">{$tetel.fej.id}</a></td>
-            <td class="datacell"><a href="{$tetel.fej.editurl}" target="_blank" title="Szerkesztés / nyomtatási kép">{$tetel.fej.bizonylatnev}</a></td>
+            <td class="datacell"><a href="{$tetel.fej.printurl}" target="_blank" title="{at('Nyomtatási kép')}">{$tetel.fej.id}</a></td>
+            <td class="datacell"><a href="{$tetel.fej.editurl}" target="_blank" title="{at('Szerkesztés / nyomtatási kép')}">{$tetel.fej.bizonylatnev}</a></td>
             {if ($maintheme != 'mkwcansas')}
             <td class="datacell">{$tetel.fej.raktarnev}</td>
             {/if}
@@ -73,7 +73,7 @@
     <tfoot>
         <tr>
             <td class="datacell"></td>
-            <td class="datacell">Összesen</td>
+            <td class="datacell">{at('Összesen')}</td>
             <td class="datacell"></td>
             {if ($maintheme != 'mkwcansas')}
             <td class="datacell"></td>
@@ -99,7 +99,7 @@
             <td class="datacell"></td>
             <td class="datacell"></td>
             <td class="datacell"></td>
-            <td class="bold textalignright">Nyitó:</td>
+            <td class="bold textalignright">{at('Nyitó')}:</td>
             <td class="datacell textalignright bold">{bizformat($nyito)}</td>
 
         </tr>
@@ -114,7 +114,7 @@
             <td class="datacell"></td>
             <td class="datacell"></td>
             <td class="datacell"></td>
-            <td class="bold textalignright">Be:</td>
+            <td class="bold textalignright">{at('Be')}:</td>
             <td class="datacell textalignright bold">{bizformat($besum)}</td>
 
         </tr>
@@ -129,7 +129,7 @@
             <td class="datacell"></td>
             <td class="datacell"></td>
             <td class="datacell"></td>
-            <td class="bold textalignright">Ki:</td>
+            <td class="bold textalignright">{at('Ki')}:</td>
             <td class="datacell textalignright bold">{bizformat($kisum)}</td>
 
         </tr>
@@ -144,7 +144,7 @@
             <td class="datacell"></td>
             <td class="datacell"></td>
             <td class="datacell"></td>
-            <td class="bold textalignright">Záró:</td>
+            <td class="bold textalignright">{at('Záró')}:</td>
             <td class="datacell textalignright bold">{bizformat($nyito + $besum - $kisum)}</td>
 
         </tr>

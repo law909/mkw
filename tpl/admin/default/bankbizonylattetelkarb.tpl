@@ -7,20 +7,20 @@
     <table>
         <tbody>
             <tr>
-                <td class="mattable-important"><label for="DatumEdit{$tetel.id}">{t('Dátum')}:</label></td>
+                <td class="mattable-important"><label for="DatumEdit{$tetel.id}">{at('Dátum')}:</label></td>
                 <td><input id="DatumEdit{$tetel.id}" name="teteldatum_{$tetel.id}" type="text" size="12" data-datum="{$tetel.datumstr}" class="mattable-important" required="required"></td>
             </tr>
             <tr>
-                <td><label for="ErBizonylatEdit{$tetel.id}">{t('Eredeti bizonylat')}:</label></td>
+                <td><label for="ErBizonylatEdit{$tetel.id}">{at('Eredeti bizonylat')}:</label></td>
                 <td>
                     <input id="ErBizonylatEdit{$tetel.id}" name="tetelerbizonylatszam_{$tetel.id}" value="{$tetel.erbizonylatszam}">
                 </td>
             </tr>
             <tr>
-                <td class="mattable-important"><label for="PartnerEdit{$tetel.id}">{t('Partner')}:</label></td>
+                <td class="mattable-important"><label for="PartnerEdit{$tetel.id}">{at('Partner')}:</label></td>
                 <td>
                     <select id="PartnerEdit{$tetel.id}" name="tetelpartner_{$tetel.id}" class="mattable-important" required="required" autofocus{if ($tetel.partnerafa)} data-afa="{$tetel.partnerafa}" data-afakulcs="{$tetel.partnerafakulcs}"{/if}>
-                        <option value="">{t('válasszon')}</option>
+                        <option value="">{at('válasszon')}</option>
                         {foreach $tetel.partnerlist as $_mk}
                             <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
                         {/foreach}
@@ -28,17 +28,17 @@
                 </td>
             </tr>
             <tr>
-                <td><label>{t('Irány')}:</label></td>
+                <td><label>{at('Irány')}:</label></td>
                 <td>
                     <input id="IranyEdit{$tetel.id}" type="radio" name="tetelirany_{$tetel.id}" value="1"{if ($tetel.irany >= 0)} checked="checked"{/if}>Be
                     <input id="IranyEdit{$tetel.id}" type="radio" name="tetelirany_{$tetel.id}" value="-1"{if ($tetel.irany < 0)} checked="checked"{/if}>Ki
                 </td>
             </tr>
             <tr>
-                <td class="mattable-important"><label for="JogcimEdit{$tetel.id}">{t('Jogcím')}:</label></td>
+                <td class="mattable-important"><label for="JogcimEdit{$tetel.id}">{at('Jogcím')}:</label></td>
                 <td>
                     <select id="JogcimEdit{$tetel.id}" name="teteljogcim_{$tetel.id}" class="mattable-important" required="required">
-                        <option value="">{t('válasszon')}</option>
+                        <option value="">{at('válasszon')}</option>
                         {foreach $tetel.jogcimlist as $_mk}
                             <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
                         {/foreach}
@@ -46,24 +46,24 @@
                 </td>
             </tr>
             <tr>
-                <td class="mattable-important"><label for="HivatkozottBizonylatEdit{$tetel.id}">{t('Hivatkozott bizonylat')}:</label></td>
+                <td class="mattable-important"><label for="HivatkozottBizonylatEdit{$tetel.id}">{at('Hivatkozott bizonylat')}:</label></td>
                 <td>
                     <input id="HivatkozottBizonylatEdit{$tetel.id}" name="tetelhivatkozottbizonylat_{$tetel.id}" value="{$tetel.hivatkozottbizonylat}">
-                    <a class="js-hivatkozottbizonylatbutton" data-id="{$tetel.id}">{t('Keresés')}</a>
+                    <a class="js-hivatkozottbizonylatbutton" data-id="{$tetel.id}">{at('Keresés')}</a>
                 </td>
             </tr>
             <tr>
-                <td><label for="EsedekessegEdit{$tetel.id}">{t('Esedékesség')}:</label></td>
+                <td><label for="EsedekessegEdit{$tetel.id}">{at('Esedékesség')}:</label></td>
                 <td><input id="EsedekessegEdit{$tetel.id}" name="tetelhivatkozottdatum_{$tetel.id}" value="{$tetel.hivatkozottdatumstr}" readonly></td>
             </tr>
             <tr>
-                <td><label for="OsszegEdit{$tetel.id}">{t('Összeg')}:</label></td>
+                <td><label for="OsszegEdit{$tetel.id}">{at('Összeg')}:</label></td>
                 <td><input id="OsszegEdit{$tetel.id}" name="tetelosszeg_{$tetel.id}" type="number" required="required" step="any" value="{$tetel.brutto}"></td>
             </tr>
         </tbody>
     </table>
-    <a class="js-teteldelbutton" href="#" data-id="{$tetel.id}"{if (($tetel.oper=='add')||($tetel.oper=='inherit'))} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+    <a class="js-teteldelbutton" href="#" data-id="{$tetel.id}"{if (($tetel.oper=='add')||($tetel.oper=='inherit'))} data-source="client"{/if} title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
 </div>
 {if ($tetel.oper=='add')}
-    <a class="js-tetelnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+    <a class="js-tetelnewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 {/if}

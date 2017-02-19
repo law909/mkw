@@ -11,16 +11,16 @@
 {block "kozep"}
     <div id="mattkarb">
         <div id="mattkarb-header">
-            <h3>{t('Jutalék elszámolás')}</h3>
+            <h3>{at('Jutalék elszámolás')}</h3>
         </div>
         <div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
             {if ($setup.editstyle=='tab')}
                 <ul>
-                    <li><a href="#DefaTab">{t('Jutalék elszámolás')}</a></li>
+                    <li><a href="#DefaTab">{at('Jutalék elszámolás')}</a></li>
                 </ul>
             {/if}
             {if ($setup.editstyle=='dropdown')}
-                <div class="mattkarb-titlebar" data-caption="{t('Jutalék elszámolás')}" data-refcontrol="#DefaTab"></div>
+                <div class="mattkarb-titlebar" data-caption="{at('Jutalék elszámolás')}" data-refcontrol="#DefaTab"></div>
             {/if}
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="jutalek" action="" target="_blank">
@@ -29,7 +29,7 @@
                     {include "comp_uzletkotoselect.tpl"}
                     {if (haveJog(90))}
                         <div class="matt-hseparator"></div>
-                        <label for="BelsoEdit">Belső üzletkötő elszámolás</label>
+                        <label for="BelsoEdit">{at('Belső üzletkötő elszámolás')}</label>
                         <input id="BelsoEdit" type="checkbox" name="belso">
                     {/if}
                     <div class="matt-hseparator"></div>
@@ -37,8 +37,8 @@
                     <div class="matt-hseparator"></div>
 
                     <div>
-                        <a href="/admin/jutaleklista/get" class="js-okbutton">OK</a>
-                        <a href="/admin/jutaleklista/export" class="js-exportbutton">Export</a>
+                        <a href="/admin/jutaleklista/get" class="js-okbutton">{at('OK')}</a>
+                        <a href="/admin/jutaleklista/export" class="js-exportbutton">{at('Export')}</a>
                     </div>
                 </form>
             </div>

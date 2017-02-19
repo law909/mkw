@@ -2,9 +2,9 @@
     <tbody>
     <thead>
         <tr>
-            <td>Bizonylat</td>
-            <td>Esedékesség</td>
-            <td>Egyenleg</td>
+            <td>{at('Bizonylat')}</td>
+            <td>{at('Esedékesség')}</td>
+            <td>{at('Egyenleg')}</td>
         </tr>
     </thead>
     {foreach $bizonylatok as $biz}

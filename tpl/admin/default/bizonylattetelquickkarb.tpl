@@ -6,7 +6,7 @@
 {/if}
 <table><tbody>
 <tr>
-    <td class="mattable-important"><label for="TermekSelect{$tetel.id}">{t('Termék')}:</label></td>
+    <td class="mattable-important"><label for="TermekSelect{$tetel.id}">{at('Termék')}:</label></td>
     <td colspan="5">
         <input id="TermekSelect{$tetel.id}" type="text" name="qteteltermeknev_{$tetel.id}" class="js-termekselect termekselect mattable-important" value="{$tetel.termeknev}" required="required">
         <input class="js-termekid" name="qteteltermek_{$tetel.id}" type="hidden">
@@ -16,23 +16,23 @@
 </tr>
 <tr class="js-termekpicturerow_{$tetel.id}">
 	<td><a class="js-toflyout" href="{$mainurl}{$tetel.kepurl}" target="_blank"><img src="{$mainurl}{$tetel.kiskepurl}"/></a></td>
-	<td colspan="5">{t('Link')}:<a class="js-termeklink" href="{$tetel.link}" target="_blank">{$tetel.link}</a></td>
+	<td colspan="5">{at('Link')}:<a class="js-termeklink" href="{$tetel.link}" target="_blank">{$tetel.link}</a></td>
 </tr>
 <tr>
-    <td><label for="CikkszamEdit{$tetel.id}">{t('Cikkszám')}:</label></td>
+    <td><label for="CikkszamEdit{$tetel.id}">{at('Cikkszám')}:</label></td>
     <td><input id="CikkszamEdit{$tetel.id}" name="qtetelcikkszam_{$tetel.id}" type="text" maxlength="50" value="{$tetel.cikkszam}"></td>
 </tr>
 <tr>
     <td></td>
-    <td>{t('Nettó')}</td>
-    <td>{t('Bruttó')}</td>
+    <td>{at('Nettó')}</td>
+    <td>{at('Bruttó')}</td>
     {if ($showvalutanem)}
-        <td class="hufprice">{t('Nettó HUF')}</td>
-        <td class="hufprice">{t('Bruttó HUF')}</td>
+        <td class="hufprice">{at('Nettó HUF')}</td>
+        <td class="hufprice">{at('Bruttó HUF')}</td>
     {/if}
 </tr>
 <tr>
-    <td><label for="ENettoegysarEdit{$tetel.id}">{t('Er.egységár')}:</label></td>
+    <td><label for="ENettoegysarEdit{$tetel.id}">{at('Er.egységár')}:</label></td>
     <td><input id="ENettoegysarEdit{$tetel.id}" name="qtetelenettoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.enettoegysar}" class="js-quickenettoegysarinput" readonly></td>
     <td><input name="qtetelebruttoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.ebruttoegysar}" class="js-quickebruttoegysarinput" readonly></td>
     {if ($showvalutanem)}
@@ -41,11 +41,11 @@
     {/if}
 </tr>
 <tr>
-    <td><label for="KedvezmenyEdit">{t('Kedvezmény %')}:</label></td>
+    <td><label for="KedvezmenyEdit">{at('Kedvezmény %')}:</label></td>
     <td><input id="KedvezmenyEdit" name="qtetelkedvezmeny_{$tetel.id}" type="text" value="{$tetel.kedvezmeny}" class="js-quickkedvezmeny"></td>
 </tr>
 <tr>
-    <td><label for="NettoegysarEdit{$tetel.id}">{t('Egységár')}:</label></td>
+    <td><label for="NettoegysarEdit{$tetel.id}">{at('Egységár')}:</label></td>
     <td><input id="NettoegysarEdit{$tetel.id}" name="qtetelnettoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysar}" class="js-quicknettoegysarinput"></td>
     <td><input id="BruttoegysarEdit{$tetel.id}" name="qtetelbruttoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysar}" class="js-quickbruttoegysarinput"></td>
     {if ($showvalutanem)}
@@ -57,8 +57,8 @@
     <table class="bizonylattetelvaltozattable">
         <thead>
             <tr>
-                <th>Változat</th>
-                <th>Mennyiség</th>
+                <th>{at('Változat')}</th>
+                <th>{at('Mennyiség')}</th>
             </tr>
         </thead>
         <tbody id="valtozattable_{$tetel.id}" data-id="{$tetel.id}">
@@ -67,8 +67,8 @@
 </tr>
 
 </tbody></table>
-<a class="js-teteldelbutton" href="#" data-id="{$tetel.id}"{if (($tetel.oper=='add')||($tetel.oper=='inherit'))} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+<a class="js-teteldelbutton" href="#" data-id="{$tetel.id}"{if (($tetel.oper=='add')||($tetel.oper=='inherit'))} data-source="client"{/if} title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
 </div>
 {if ($tetel.oper=='add')}
-<a class="js-quicktetelnewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+<a class="js-quicktetelnewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 {/if}

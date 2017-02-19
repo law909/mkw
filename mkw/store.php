@@ -102,6 +102,15 @@ class store {
         fclose($handle);
     }
 
+    public static function writetranslation($text, $fname = 'log.txt') {
+        $handle = fopen($fname, "a");
+        $log = "";
+        $log.= '\'' . $text . '\' => \'\',';
+        $log.="\n";
+        fwrite($handle, $log);
+        fclose($handle);
+    }
+
     public static function getMailer() {
         if (self::getConfigValue('mail.smtp', 0)) {
             return new mkwzendmailer();
@@ -709,6 +718,14 @@ class store {
         $cim .= $hazszam;
         return $cim;
 
+    }
+
+    public static function getAdminLocale() {
+        $l = self::getSetupValue('adminlocale', 'hu');
+        if ($l) {
+            $l = self::getLocaleName($l);
+        }
+        return $l;
     }
 
     public static function getLocale() {

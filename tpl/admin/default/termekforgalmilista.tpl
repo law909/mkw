@@ -11,7 +11,7 @@
 {block "kozep"}
     <div id="mattkarb">
         <div id="mattkarb-header">
-            <h3>{t('Termékforgalmi lista')}</h3>
+            <h3>{at('Termékforgalmi lista')}</h3>
         </div>
         <form id="termekforgalmi" action="" target="_blank">
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
@@ -21,9 +21,9 @@
                 {include "comp_partnerselect.tpl"}
                 <div class="matt-hseparator"></div>
                 <div>
-                    <label for="RaktarEdit">Raktár:</label>
+                    <label for="RaktarEdit">{at('Raktár')}:</label>
                     <select id="RaktarEdit" name="raktar">
-                        <option value="0">válasszon</option>
+                        <option value="0">{at('válasszon')}</option>
                         {foreach $raktarlista as $raktar}
                             <option value="{$raktar.id}">{$raktar.caption}</option>
                         {/foreach}
@@ -33,38 +33,38 @@
                 {include "comp_gyartoselect.tpl"}
                 <div class="matt-hseparator"></div>
                 <div>
-                    <label for="KeszletEdit">Készlet:</label>
+                    <label for="KeszletEdit">{at('Készlet')}:</label>
                     <select id="KeszletEdit" name="keszletfilter">
-                        <option value="0">mindegy</option>
-                        <option value="1">ami időszak végén van</option>
-                        <option value="2">ami időszak végén nincs</option>
-                        <option value="3">ami időszak végén negatív</option>
+                        <option value="0">{at('mindegy')}</option>
+                        <option value="1">{at('ami időszak végén van')}</option>
+                        <option value="2">{at('ami időszak végén nincs')}</option>
+                        <option value="3">{at('ami időszak végén negatív')}</option>
                     </select>
                 </div>
                 <div class="matt-hseparator"></div>
                 <div>
-                    <label for="ForgalomEdit">Forgalom:</label>
+                    <label for="ForgalomEdit">{at('Forgalom')}:</label>
                     <select id="ForgalomEdit" name="forgalomfilter">
-                        <option value="0">mindegy</option>
-                        <option value="1">ami az időszakban mozgott</option>
-                        <option value="2">ami az időszakban nem mozgott</option>
+                        <option value="0">{at('mindegy')}</option>
+                        <option value="1">{at('ami az időszakban mozgott')}</option>
+                        <option value="2">{at('ami az időszakban nem mozgott')}</option>
                     </select>
                 </div>
                 <div class="matt-hseparator"></div>
                 <div>
-                    <label for="ErtekEdit">Érték:</label>
+                    <label for="ErtekEdit">{at('Érték')}:</label>
                     <select id="ErtekEdit" name="ertektipus">
-                        <option value="0">nincs</option>
-                        <option value="1">bizonylaton szereplő nettó</option>
-                        <option value="2">bizonylaton szereplő bruttó</option>
-                        <option value="3">bizonylaton szereplő nettó HUF</option>
-                        <option value="4">bizonylaton szereplő bruttó HUF</option>
+                        <option value="0">{at('nincs')}</option>
+                        <option value="1">{at('bizonylaton szereplő nettó')}</option>
+                        <option value="2">{at('bizonylaton szereplő bruttó')}</option>
+                        <option value="3">{at('bizonylaton szereplő nettó HUF')}</option>
+                        <option value="4">{at('bizonylaton szereplő bruttó HUF')}</option>
                         {if ($setup.arsavok)}
-                        <option value="5">választott ársáv nettó</option>
-                        <option value="6">választott ársáv bruttó</option>
+                        <option value="5">{at('választott ársáv nettó')}</option>
+                        <option value="6">{at('választott ársáv bruttó')}</option>
                         {else}
-                        <option value="7">eladási ár nettó</option>
-                        <option value="8">eladási ár bruttó</option>
+                        <option value="7">{at('eladási ár nettó')}</option>
+                        <option value="8">{at('eladási ár bruttó')}</option>
                         {/if}
                     </select>
                 </div>
@@ -74,7 +74,7 @@
                 {/if}
                 <div class="matt-hseparator"></div>
                 <div>
-                    <label for="NevEdit">{t('Termék')}:</label>
+                    <label for="NevEdit">{at('Termék')}:</label>
                     <input id="NevEdit" type="text" name="nevfilter">
                 </div>
                 {if ($setup.multilang)}
@@ -88,8 +88,8 @@
                 <div class="matt-hseparator"></div>
                 <input id="FaFilter" type="hidden" name="fafilter[]">
                 <input id="PartnerCimkeFilter" type="hidden" name="partnercimkefilter[]">
-                <a href="#" class="js-refresh">Frissít</a>
-                <a href="/admin/termekforgalmilista/export" class="js-exportbutton">Export</a>
+                <a href="#" class="js-refresh">{at('Frissít')}</a>
+                <a href="/admin/termekforgalmilista/export" class="js-exportbutton">{at('Export')}</a>
                 <div class="matt-hseparator"></div>
                 <div id="eredmeny"></div>
             </div>

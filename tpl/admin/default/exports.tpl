@@ -11,25 +11,25 @@
 {block "kozep"}
 <div id="mattkarb">
 <div id="mattkarb-header">
-	<h3>{t('Termék exportok')}</h3>
+	<h3>{at('Termék exportok')}</h3>
 </div>
 <form id="mattkarb-form" action="" method="post">
 	<div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
 		{if ($setup.editstyle=='tab')}
 		<ul>
-			<li><a href="#DefaTab">{t('Exportok')}</a></li>
+			<li><a href="#DefaTab">{at('Exportok')}</a></li>
 		</ul>
 		{/if}
 		{if ($setup.editstyle=='dropdown')}
-		<div class="mattkarb-titlebar" data-caption="{t('Exportok')}" data-refcontrol="#DefaTab"></div>
+		<div class="mattkarb-titlebar" data-caption="{at('Exportok')}" data-refcontrol="#DefaTab"></div>
 		{/if}
 		<div id="DefaTab" class="mattkarb-page" data-visible="visible">
             <a href="/admin/export/grando" class="js-grandoexport">Grando export</a>
 		</div>
 	</div>
 	<div class="admin-form-footer">
-		<input id="mattkarb-okbutton" type="submit" value="{t('OK')}">
-		<a id="mattkarb-cancelbutton" href="#">{t('Mégsem')}</a>
+		<input id="mattkarb-okbutton" type="submit" value="{at('OK')}">
+		<a id="mattkarb-cancelbutton" href="#">{at('Mégsem')}</a>
 	</div>
 </form>
 </div>

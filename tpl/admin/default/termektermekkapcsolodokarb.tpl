@@ -12,11 +12,11 @@
             <input class="js-kapcsolodotermekid" name="kapcsolodoaltermek_{$kapcsolodo.id}" type="hidden" value="{$kapcsolodo.altermekid}">
         </td>
         <td>
-            <a class="js-kapcsolododelbutton" href="#" data-id="{$kapcsolodo.id}"{if ($kapcsolodo.oper=='add')} data-source="client"{/if} title="{t('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+            <a class="js-kapcsolododelbutton" href="#" data-id="{$kapcsolodo.id}"{if ($kapcsolodo.oper=='add')} data-source="client"{/if} title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
         </td>
     </tr>
 </tbody>
 </table>
 {if ($kapcsolodo.oper=='add')}
-    <a class="js-kapcsolodonewbutton" href="#" title="{t('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+    <a class="js-kapcsolodonewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 {/if}
