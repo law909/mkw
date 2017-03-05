@@ -101,5 +101,5 @@
         </table>
     </div>
     <div class="textaligncenter">A díjbekérő 1 eredeti példányban készült.</div>
-    <div class="keszult textaligncenter">Készült az MKW Webshop számlázó moduljával.</div>
+    <div class="keszult textaligncenter">Készült a Billy számlázó programmal.</div>
 {/block}

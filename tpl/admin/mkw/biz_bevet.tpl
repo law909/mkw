@@ -6,10 +6,39 @@
         <div class="biznev">{$egyed.bizonylatnev}</div>
         <div class="bizszam textalignright">{$egyed.id}</div>
     </div>
-    {include "biz_headboxki.tpl"}
+    <div class="headbox pull-left">
+        <div class="headboxborder border">
+            <div class="headboxinner">
+                <p class="bold">Vevő:</p>
+                <p class="nev bold">{$egyed.tulajnev}</p>
+                <p>{$egyed.tulajirszam} {$egyed.tulajvaros}</p>
+                <p>{$egyed.tulajutca}</p>
+                <p>Adószám: {$egyed.tulajadoszam}</p>
+                <p>Bankszámla: {$egyed.tulajbankszamlaszam}</p>
+            </div>
+        </div>
+    </div>
+    <div class="headbox pull-left">
+        <div class="headboxborder border">
+            <div class="headboxinner">
+                <p class="bold">Szállító:</p>
+                <p class="nev bold">{$egyed.szamlanev}</p>
+                <p>{$egyed.szamlairszam} {$egyed.szamlavaros}</p>
+                <p>{$egyed.szamlautca}</p>
+                {if ($egyed.partneradoszam)}
+                    <p>Adószám: {$egyed.partneradoszam}</p>
+                {/if}
+                {if ($egyed.partnereuadoszam)}
+                    <p>EU adószám: {$egyed.partnereuadoszam}</p>
+                {/if}
+            </div>
+        </div>
+    </div>
     <div class="row pull-left row-inner">
+        <p class="head2label pull-left">Fizetési mód: {$egyed.fizmodnev|default:"&nbsp;"}</p>
         <p class="head2label pull-left">Kelt: {$egyed.keltstr|default:"&nbsp;"}</p>
         <p class="head2label pull-left">Teljesítés: {$egyed.teljesitesstr|default:"&nbsp;"}</p>
+        <p class="head2label pull-left">Esedékesség: {$egyed.esedekessegstr|default:"&nbsp;"}</p>
     </div>
     <div class="row pull-left">
         <div class="border">
@@ -95,6 +124,5 @@
             </tbody>
         </table>
     </div>
-    <div class="textaligncenter">{if ($egyed.nyomtatva)}Másolat{else}Eredeti példány{/if}.</div>
-    <div class="keszult textaligncenter">Készült a Billy számlázó programmal.</div>
+    <div class="keszult textaligncenter">Készült az MKW Webshop számlázó moduljával.</div>
 {/block}

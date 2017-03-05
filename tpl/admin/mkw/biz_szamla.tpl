@@ -8,8 +8,10 @@
     </div>
     {include "biz_headboxki.tpl"}
     <div class="row pull-left row-inner">
+        <p class="head2label pull-left">Fizetési mód: {$egyed.fizmodnev|default:"&nbsp;"}</p>
         <p class="head2label pull-left">Kelt: {$egyed.keltstr|default:"&nbsp;"}</p>
         <p class="head2label pull-left">Teljesítés: {$egyed.teljesitesstr|default:"&nbsp;"}</p>
+        <p class="head2label pull-left">Esedékesség: {$egyed.esedekessegstr|default:"&nbsp;"}</p>
     </div>
     <div class="row pull-left">
         <div class="border">
@@ -71,6 +73,10 @@
             Átvevő:
         </div>
         <div class="line"></div>
+        <div class="pull-left">
+            <p>Köszönjük, hogy nálunk vásárolt!</p>
+            <p><br>A csomagolás termékdíj-kötelezettség az eladót terheli.</p>
+        </div>
         <table class="osszesitotable pull-right">
             <tbody>
                 <tr>
@@ -96,5 +102,5 @@
         </table>
     </div>
     <div class="textaligncenter">{if ($egyed.nyomtatva)}Másolat{else}Eredeti példány{/if}.</div>
-    <div class="keszult textaligncenter">Készült a Billy számlázó programmal.</div>
+    <div class="keszult textaligncenter">Készült az MKW Webshop számlázó moduljával.</div>
 {/block}
