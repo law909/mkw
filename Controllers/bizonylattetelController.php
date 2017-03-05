@@ -117,7 +117,21 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 	public function getemptyrow() {
         $biztipus = $this->params->getStringRequestParam('type');
 		$view = $this->createView('bizonylattetelkarb.tpl');
-		$view->setVar('tetel', $this->loadVars(null, true));
+		$tetel = $this->loadVars(null, true);
+		if (\mkw\store::isMIJSZ()) {
+            $mijszpartner = new partnerController($this->params);
+            $partnerid = $this->params->getIntRequestParam('partner');
+            $partner = $this->getRepo('Entities\Partner')->find($partnerid);
+            if ($partner) {
+                if (\mkw\store::isMIJSZ()) {
+                    $tetel['mijszpartnerlist'] = $mijszpartner->getSelectList($partnerid);
+                }
+                $tetel['mijszpartner'] = $partnerid;
+                $tetel['mijszpartnernev'] = $partner->getNev();
+            }
+            $tetel['mijszev'] = date('Y') * 1;
+        }
+		$view->setVar('tetel', $tetel);
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipus);
         $bt->setTemplateVars($view);
 		echo $view->getTemplateResult();

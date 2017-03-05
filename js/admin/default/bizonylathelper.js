@@ -655,10 +655,17 @@ var bizonylathelper = function($) {
                 .on('click', '.js-tetelnewbutton', function(e) {
                     var $this = $(this);
                     e.preventDefault();
+                    if (isPartnerAutocomplete()) {
+                        partner = $('.js-partnerid').val();
+                    }
+                    else {
+                        partner = $('#PartnerEdit option:selected').val();
+                    }
                     $.ajax({
                         url: '/admin/bizonylattetel/getemptyrow',
                         data: {
-                            type: bizonylattipus
+                            type: bizonylattipus,
+                            partner: partner
                         },
                         type: 'GET',
                         success: function(data) {
