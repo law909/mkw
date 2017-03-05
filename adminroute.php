@@ -272,6 +272,15 @@ $router->map('POST', '/admin/termektranslation/save', 'termektranslationControll
 $router->map('GET', '/admin/termekfatranslation/getemptyrow', 'termekfatranslationController#getemptyrow', 'admintermekfatranslationgetemptyrow');
 $router->map('POST', '/admin/termekfatranslation/save', 'termekfatranslationController#save', 'admintermekfatranslationsave');
 
+$router->map('GET', '/admin/statlaptranslation/getemptyrow', 'statlaptranslationController#getemptyrow', 'adminstatlaptranslationgetemptyrow');
+$router->map('POST', '/admin/statlaptranslation/save', 'statlaptranslationController#save', 'adminstatlaptranslationsave');
+
+$router->map('GET', '/admin/fizmodtranslation/getemptyrow', 'fizmodtranslationController#getemptyrow', 'adminfizmodtranslationgetemptyrow');
+$router->map('POST', '/admin/fizmodtranslation/save', 'fizmodtranslationController#save', 'adminfizmodtranslationsave');
+
+$router->map('GET', '/admin/szallitasimodtranslation/getemptyrow', 'szallitasimodtranslationController#getemptyrow', 'adminszallitasimodtranslationgetemptyrow');
+$router->map('POST', '/admin/szallitasimodtranslation/save', 'szallitasimodtranslationController#save', 'adminszallitasimodtranslationsave');
+
 $router->map('GET', '/admin/termekkep/getemptyrow', 'termekkepController#getemptyrow', 'admintermekkepgetemptyrow');
 $router->map('POST', '/admin/termekkep/del', 'termekkepController#del', 'admintermekkepdel');
 

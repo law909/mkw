@@ -44,9 +44,10 @@ class termekfaController extends \mkwhelpers\MattableController {
         $x['inaktiv'] = $t->getInaktiv();
         $x['idegenkod'] = $t->getIdegenkod();
         if (\mkw\store::isMultilang()) {
+            $translations = array();
             $translationsCtrl = new termekfatranslationController($this->params);
             foreach($t->getTranslations() as $tr) {
-                $translations[] = $translationsCtrl->loadVars($tr);
+                $translations[] = $translationsCtrl->loadVars($tr, true);
             }
             $x['translations'] = $translations;
         }
@@ -74,25 +75,42 @@ class termekfaController extends \mkwhelpers\MattableController {
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
         if (\mkw\store::isMultilang()) {
             $translationids = $this->params->getArrayRequestParam('translationid');
+            $_tf = \Entities\TermekFa::getTranslatedFields();
             foreach ($translationids as $translationid) {
-				$oper = $this->params->getStringRequestParam('translationoper_' . $translationid);
-				if ($oper == 'add') {
-					$translation = new \Entities\TermekFaTranslation();
-                    $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
-                    $translation->setField('nev');
-                    $translation->setContent($this->params->getStringRequestParam('translationnev_' . $translationid));
-					$obj->addTranslation($translation);
-					$this->getEm()->persist($translation);
-				}
-				elseif ($oper == 'edit') {
-					$translation = $this->getEm()->getRepository('Entities\TermekFaTranslation')->find($translationid);
-					if ($translation) {
-                        $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
-                        $translation->setField('nev');
-                        $translation->setContent($this->params->getStringRequestParam('translationnev_' . $translationid));
-						$this->getEm()->persist($translation);
-					}
-				}
+                $oper = $this->params->getStringRequestParam('translationoper_' . $translationid);
+                $loca = $this->params->getStringRequestParam('translationlocale_' . $translationid);
+                $mezo = $this->params->getStringRequestParam('translationfield_' . $translationid);
+                $mezotype = $_tf[$mezo]['type'];
+                switch ($mezotype) {
+                    case 1:
+                    case 3:
+                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
+                        break;
+                    case 2:
+                        $mezoertek = $this->params->getOriginalStringRequestParam('translationcontent_' . $translationid);
+                        break;
+                    default:
+                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
+                        break;
+                }
+                if ($oper === 'add') {
+                    $translation = new \Entities\TermekFaTranslation(
+                        $loca,
+                        $mezo,
+                        $mezoertek
+                    );
+                    $obj->addTranslation($translation);
+                    $this->getEm()->persist($translation);
+                }
+                elseif ($oper === 'edit') {
+                    $translation = $this->getEm()->getRepository('Entities\TermekFaTranslation')->find($translationid);
+                    if ($translation) {
+                        $translation->setLocale($loca);
+                        $translation->setField($mezo);
+                        $translation->setContent($mezoertek);
+                        $this->getEm()->persist($translation);
+                    }
+                }
             }
         }
 		$parent = $this->getRepo()->find($this->params->getIntRequestParam('parentid'));
@@ -145,7 +163,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		if (!$fa) {
 			$fatomb['parentid'] = $this->params->getIntRequestParam('parentid');
 		}
-		$view->setVar('fa', $fatomb);
+		$view->setVar('egyed', $fatomb);
 		$view->printTemplateResult();
 	}
 

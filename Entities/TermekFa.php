@@ -19,6 +19,13 @@ use mkw\store;
  */
 class TermekFa {
 
+    private static $translatedFields = array(
+        'nev' => array('caption' => 'Név', 'type' => 1),
+        'rovidleiras' => array('caption' => 'Rövid leírás', 'type' => 1),
+        'leiras' => array('caption' => 'Leírás', 'type' => 2),
+        'leiras2' => array('caption' => 'Leírás 2', 'type' => 2)
+    );
+
     private $gtnev;
     public $m1lchanged = false;
     public $m2lchanged = false;
@@ -73,13 +80,22 @@ class TermekFa {
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $karkod;
 
-    /** @ORM\Column(type="string",length=255,nullable=true) */
+    /**
+     * @Gedmo\Translatable
+     * @ORM\Column(type="string",length=255,nullable=true)
+     */
     private $rovidleiras = '';
 
-    /** @ORM\Column(type="text",nullable=true) */
+    /**
+     * @Gedmo\Translatable
+     * @ORM\Column(type="text",nullable=true)
+     */
     private $leiras;
 
-    /** @ORM\Column(type="text",nullable=true) */
+    /**
+     * @Gedmo\Translatable
+     * @ORM\Column(type="text",nullable=true)
+     */
     private $leiras2;
 
     /** @ORM\Column(type="boolean",nullable=true) */
@@ -139,6 +155,22 @@ class TermekFa {
 
     public function __toString() {
         return (string)$this->id . ' - ' . $this->nev;
+    }
+
+    public static function getTranslatedFields() {
+        return self::$translatedFields;
+    }
+
+    public static function getTranslatedFieldsSelectList($sel = null) {
+        $ret = array();
+        foreach(self::$translatedFields as $k => $v) {
+            $ret[] = array(
+                'id' => $k,
+                'caption' => $v['caption'],
+                'selected' => ($k === $sel)
+            );
+        }
+        return $ret;
     }
 
     public function __construct() {

@@ -12,8 +12,10 @@ class statlapController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t) {
+    protected function loadVars($t, $forKarb = false) {
         $x = array();
+        $translationsCtrl = new statlaptranslationController($this->params);
+        $translations = array();
         if (!$t) {
             $t = new \Entities\Statlap();
             $this->getEm()->detach($t);
@@ -24,6 +26,12 @@ class statlapController extends \mkwhelpers\MattableController {
         $x['szoveg'] = $t->getSzoveg();
         $x['seodescription'] = $t->getSeodescription();
         $x['oldurl'] = $t->getOldurl();
+        if (\mkw\store::isMultilang()) {
+            foreach($t->getTranslations() as $tr) {
+                $translations[] = $translationsCtrl->loadVars($tr, true);
+            }
+            $x['translations'] = $translations;
+        }
         return $x;
     }
 
@@ -32,6 +40,45 @@ class statlapController extends \mkwhelpers\MattableController {
         $obj->setSzoveg($this->params->getOriginalStringRequestParam('szoveg'));
         $obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
         $obj->setOldurl($this->params->getStringRequestParam('oldurl'));
+        if (\mkw\store::isMultilang()) {
+            $_tf = \Entities\Statlap::getTranslatedFields();
+            $translationids = $this->params->getArrayRequestParam('translationid');
+            foreach ($translationids as $translationid) {
+                $oper = $this->params->getStringRequestParam('translationoper_' . $translationid);
+                $mezo = $this->params->getStringRequestParam('translationfield_' . $translationid);
+                $mezotype = $_tf[$mezo]['type'];
+                switch ($mezotype) {
+                    case 1:
+                    case 3:
+                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
+                        break;
+                    case 2:
+                        $mezoertek = $this->params->getOriginalStringRequestParam('translationcontent_' . $translationid);
+                        break;
+                    default:
+                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
+                        break;
+                }
+                if ($oper === 'add') {
+                    $translation = new \Entities\StatlapTranslation(
+                        $this->params->getStringRequestParam('translationlocale_' . $translationid),
+                        $mezo,
+                        $mezoertek
+                    );
+                    $obj->addTranslation($translation);
+                    $this->getEm()->persist($translation);
+                }
+                elseif ($oper === 'edit') {
+                    $translation = $this->getEm()->getRepository('Entities\StatlapTranslation')->find($translationid);
+                    if ($translation) {
+                        $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
+                        $translation->setField($mezo);
+                        $translation->setContent($mezoertek);
+                        $this->getEm()->persist($translation);
+                    }
+                }
+            }
+        }
         return $obj;
     }
 

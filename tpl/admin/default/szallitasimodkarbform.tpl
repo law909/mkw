@@ -6,6 +6,9 @@
 		<ul>
 			<li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
             <li><a href="#HatarTab">{at('Összeghatárok')}</a></li>
+            {if ($setup.multilang)}
+                <li><a href="#TranslationTab">{at('Idegennyelvi adatok')}</a></li>
+            {/if}
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table>
@@ -45,6 +48,16 @@
                 <span class="ui-icon ui-icon-circle-plus"></span>
             </a>
         </div>
+        {if ($setup.multilang)}
+            <div id="TranslationTab" class="mattkarb-page" data-visible="visible">
+                {foreach $egyed.translations as $translation}
+                    {include 'translationkarb.tpl'}
+                {/foreach}
+                <a class="js-translationnewbutton" href="#" title="{at('Új')}">
+                    <span class="ui-icon ui-icon-circle-plus"></span>
+                </a>
+            </div>
+        {/if}
 	</div>
 	<input name="oper" type="hidden" value="{$oper}">
 	<input name="id" type="hidden" value="{$egyed.id}">

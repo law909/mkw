@@ -1,19 +1,30 @@
 <?php
 namespace Entities;
 
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\FizmodRepository")
  * @ORM\Table(name="fizmod",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
+ * @Gedmo\TranslationEntity(class="Entities\FizmodTranslation")
  */
 class Fizmod {
+
+    private static $translatedFields = array(
+        'nev' => array('caption' => 'Név', 'type' => 1),
+        'leiras' => array('caption' => 'Leírás', 'type' => 2)
+    );
+
 	/**
 	 * @ORM\Id @ORM\Column(type="integer")
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
-	/** @ORM\Column(type="string",length=255,nullable=false) */
+	/**
+     * @Gedmo\Translatable
+     * @ORM\Column(type="string",length=255,nullable=false)
+     */
 	private $nev;
 	/** @ORM\Column(type="string",length=1,nullable=false) */
 	private $tipus='B';
@@ -25,7 +36,10 @@ class Fizmod {
 	private $rugalmas = true;
 	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="fizmod",cascade={"persist"}) */
 	private $bizonylatfejek;
-	/** @ORM\Column(type="text",nullable=true) */
+	/**
+     * @Gedmo\Translatable
+     * @ORM\Column(type="text",nullable=true)
+     */
 	private $leiras;
 	/** @ORM\Column(type="integer") */
 	private $sorrend=0;
@@ -52,8 +66,32 @@ class Fizmod {
     /** @ORM\Column(type="integer",nullable=true) */
     private $migrid;
 
-	public function __construct() {
+    /** @Gedmo\Locale */
+    protected $locale;
+
+    /** @ORM\OneToMany(targetEntity="FizmodTranslation", mappedBy="object", cascade={"persist", "remove"}) */
+    private $translations;
+
+
+    public static function getTranslatedFields() {
+        return self::$translatedFields;
+    }
+
+    public static function getTranslatedFieldsSelectList($sel = null) {
+        $ret = array();
+        foreach(self::$translatedFields as $k => $v) {
+            $ret[] = array(
+                'id' => $k,
+                'caption' => $v['caption'],
+                'selected' => ($k === $sel)
+            );
+        }
+        return $ret;
+    }
+
+    public function __construct() {
 		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
+        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function getId() {
@@ -239,6 +277,29 @@ class Fizmod {
      */
     public function setMigrid($migrid) {
         $this->migrid = $migrid;
+    }
+
+    public function getTranslations() {
+        return $this->translations;
+    }
+
+    public function addTranslation(FizmodTranslation $t) {
+        if (!$this->translations->contains($t)) {
+            $this->translations[] = $t;
+            $t->setObject($this);
+        }
+    }
+
+    public function removeTranslation(FizmodTranslation $t) {
+        $this->translations->removeElement($t);
+    }
+
+    public function getLocale() {
+        return $this->locale;
+    }
+
+    public function setLocale($locale) {
+        $this->locale = $locale;
     }
 
 }

@@ -24,7 +24,14 @@ class termekfatranslationController extends \mkwhelpers\MattableController {
             $x['id'] = $t->getId();
         }
         $x['locale'] = $t->getLocale();
-        $x['nev'] = $t->getContent();
+        $x['content'] = $t->getContent();
+        $x['field'] = $t->getField();
+        $f =  \Entities\TermekFa::getTranslatedFields();
+        $x['type'] = $f[$t->getField()]['type'];
+        if ($forKarb) {
+            $x['fieldlist'] = \Entities\TermekFa::getTranslatedFieldsSelectList($t->getField());
+        }
+
         return $x;
     }
 
@@ -33,7 +40,7 @@ class termekfatranslationController extends \mkwhelpers\MattableController {
     }
 
     public function getemptyrow() {
-        $view = $this->createView('termekfatranslationkarb.tpl');
+        $view = $this->createView('translationkarb.tpl');
         $view->setVar('translation', $this->loadVars(null, true));
         $view->setVar('locale', '');
         echo $view->getTemplateResult();

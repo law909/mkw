@@ -23,6 +23,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Termek {
 
+    private static $translatedFields = array(
+        'nev' => array('caption' => 'Név', 'type' => 1),
+        'leiras' => array('caption' => 'Leírás', 'type' => 2),
+        'rovidleiras' => array('caption' => 'Rövid leírás', 'type' => 1),
+        'oldalcim' => array('caption' => 'Oldalcím', 'type' => 1)
+    );
+
     /**
      * @ORM\Id @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -107,16 +114,19 @@ class Termek {
     private $vonalkod = '';
 
     /**
+     * @Gedmo\Translatable
      * @ORM\Column(type="text",nullable=true)
      */
     private $leiras = '';
 
     /**
+     * @Gedmo\Translatable
      * @ORM\Column(type="string",length=255,nullable=true)
      */
     private $rovidleiras = '';
 
     /**
+     * @Gedmo\Translatable
      * @ORM\Column(type="string",length=255,nullable=true)
      */
     private $oldalcim = '';
@@ -314,6 +324,22 @@ class Termek {
 
     public function __toString() {
         return (string)$this->id . ' - ' . $this->nev;
+    }
+
+    public static function getTranslatedFields() {
+        return self::$translatedFields;
+    }
+
+    public static function getTranslatedFieldsSelectList($sel = null) {
+        $ret = array();
+        foreach(self::$translatedFields as $k => $v) {
+            $ret[] = array(
+                'id' => $k,
+                'caption' => $v['caption'],
+                'selected' => ($k === $sel)
+            );
+        }
+        return $ret;
     }
 
     /**

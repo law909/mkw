@@ -8,8 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="Entities\StatlapRepository")
  * @ORM\Table(name="statlap",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
+ * @Gedmo\TranslationEntity(class="Entities\StatlapTranslation")
  */
 class Statlap {
+
+    private static $translatedFields = array(
+        'oldalcim' => array('caption' => 'Oldalcím', 'type' => 1),
+        'szoveg' => array('caption' => 'Szöveg', 'type' => 2)
+    );
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -18,6 +24,7 @@ class Statlap {
     private $id;
 
     /**
+     * @Gedmo\Translatable
      * @ORM\Column(type="string",length=255,nullable=true)
      */
     private $oldalcim;
@@ -28,7 +35,10 @@ class Statlap {
      */
     private $slug;
 
-    /** @ORM\Column(type="text",nullable=true) */
+    /**
+     * @Gedmo\Translatable
+     * @ORM\Column(type="text",nullable=true)
+     */
     private $szoveg;
 
     /** @ORM\Column(type="text",nullable=true) */
@@ -48,6 +58,33 @@ class Statlap {
 
     /** @ORM\Column(type="string", length=255, nullable=true) */
     private $oldurl;
+
+    /** @Gedmo\Locale */
+    protected $locale;
+
+    /** @ORM\OneToMany(targetEntity="StatlapTranslation", mappedBy="object", cascade={"persist", "remove"}) */
+    private $translations;
+
+
+    public static function getTranslatedFields() {
+        return self::$translatedFields;
+    }
+
+    public static function getTranslatedFieldsSelectList($sel = null) {
+        $ret = array();
+        foreach(self::$translatedFields as $k => $v) {
+            $ret[] = array(
+                'id' => $k,
+                'caption' => $v['caption'],
+                'selected' => ($k === $sel)
+            );
+        }
+        return $ret;
+    }
+
+    public function __construct() {
+        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     public function getId() {
         return $this->id;
@@ -110,6 +147,29 @@ class Statlap {
 
     public function setOldurl($u) {
         $this->oldurl = $u;
+    }
+
+    public function getTranslations() {
+        return $this->translations;
+    }
+
+    public function addTranslation(StatlapTranslation $t) {
+        if (!$this->translations->contains($t)) {
+            $this->translations[] = $t;
+            $t->setObject($this);
+        }
+    }
+
+    public function removeTranslation(StatlapTranslation $t) {
+        $this->translations->removeElement($t);
+    }
+
+    public function getLocale() {
+        return $this->locale;
+    }
+
+    public function setLocale($locale) {
+        $this->locale = $locale;
     }
 
 }

@@ -4,17 +4,17 @@ namespace Controllers;
 
 use mkw\store;
 
-class termektranslationController extends \mkwhelpers\MattableController {
+class statlaptranslationController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
-        $this->setEntityName('Entities\TermekTranslation');
+        $this->setEntityName('Entities\StatlapTranslation');
         parent::__construct($params);
     }
 
     public function loadVars($t, $forKarb = false) {
         $x = array();
         if (!$t) {
-            $t = new \Entities\TermekTranslation('','','');
+            $t = new \Entities\StatlapTranslation('','','');
             $this->getEm()->detach($t);
             $x['oper'] = 'add';
             $x['id'] = store::createUID();
@@ -26,10 +26,10 @@ class termektranslationController extends \mkwhelpers\MattableController {
         $x['locale'] = $t->getLocale();
         $x['content'] = $t->getContent();
         $x['field'] = $t->getField();
-        $f =  \Entities\Termek::getTranslatedFields();
+        $f =  \Entities\Statlap::getTranslatedFields();
         $x['type'] = $f[$t->getField()]['type'];
         if ($forKarb) {
-            $x['fieldlist'] = \Entities\Termek::getTranslatedFieldsSelectList($t->getField());
+            $x['fieldlist'] = \Entities\Statlap::getTranslatedFieldsSelectList($t->getField());
         }
         return $x;
     }
@@ -41,6 +41,7 @@ class termektranslationController extends \mkwhelpers\MattableController {
     public function getemptyrow() {
         $view = $this->createView('translationkarb.tpl');
         $view->setVar('translation', $this->loadVars(null, true));
+        $view->setVar('locale', '');
         echo $view->getTemplateResult();
     }
 

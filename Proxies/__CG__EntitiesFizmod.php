@@ -64,10 +64,10 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'id', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'nev', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'tipus', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'haladek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'webes', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'rugalmas', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek4', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek4', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek5', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek5', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'migrid'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'id', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'nev', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'tipus', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'haladek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'webes', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'rugalmas', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek4', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek4', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek5', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek5', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'migrid', 'locale', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'translations'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'id', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'nev', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'tipus', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'haladek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'webes', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'rugalmas', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek4', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek4', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek5', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek5', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'migrid'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'id', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'nev', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'tipus', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'haladek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'webes', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'rugalmas', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek1', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek2', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek3', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek4', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek4', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztotthaladek5', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'osztottszazalek5', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'migrid', 'locale', '' . "\0" . 'Entities\\Fizmod' . "\0" . 'translations'];
     }
 
     /**
@@ -582,6 +582,61 @@ class Fizmod extends \Entities\Fizmod implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMigrid', [$migrid]);
 
         return parent::setMigrid($migrid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTranslations()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslations', []);
+
+        return parent::getTranslations();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addTranslation(\Entities\FizmodTranslation $t)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTranslation', [$t]);
+
+        return parent::addTranslation($t);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeTranslation(\Entities\FizmodTranslation $t)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTranslation', [$t]);
+
+        return parent::removeTranslation($t);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLocale()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocale', []);
+
+        return parent::getLocale();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLocale($locale)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLocale', [$locale]);
+
+        return parent::setLocale($locale);
     }
 
 }

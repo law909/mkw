@@ -143,7 +143,7 @@ class termekController extends \mkwhelpers\MattableController {
             }
             if (\mkw\store::isMultilang()) {
                 foreach($t->getTranslations() as $tr) {
-                    $translations[] = $translationsCtrl->loadVars($tr);
+                    $translations[] = $translationsCtrl->loadVars($tr, true);
                 }
                 $x['translations'] = $translations;
             }
@@ -347,24 +347,39 @@ class termekController extends \mkwhelpers\MattableController {
             }
         }
         if (\mkw\store::isMultilang()) {
+            $_tf = \Entities\Termek::getTranslatedFields();
             $translationids = $this->params->getArrayRequestParam('translationid');
             foreach ($translationids as $translationid) {
 				$oper = $this->params->getStringRequestParam('translationoper_' . $translationid);
-				if ($oper == 'add') {
+				$mezo = $this->params->getStringRequestParam('translationfield_' . $translationid);
+				$mezotype = $_tf[$mezo]['type'];
+				switch ($mezotype) {
+                    case 1:
+                    case 3:
+                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
+                        break;
+                    case 2:
+                        $mezoertek = $this->params->getOriginalStringRequestParam('translationcontent_' . $translationid);
+                        break;
+                    default:
+                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
+                        break;
+                }
+				if ($oper === 'add') {
 					$translation = new \Entities\TermekTranslation(
                         $this->params->getStringRequestParam('translationlocale_' . $translationid),
-                        'nev',
-                        $this->params->getStringRequestParam('translationnev_' . $translationid)
+                        $mezo,
+                        $mezoertek
                     );
 					$obj->addTranslation($translation);
 					$this->getEm()->persist($translation);
 				}
-				elseif ($oper == 'edit') {
+				elseif ($oper === 'edit') {
 					$translation = $this->getEm()->getRepository('Entities\TermekTranslation')->find($translationid);
 					if ($translation) {
                         $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
-                        $translation->setField('nev');
-                        $translation->setContent($this->params->getStringRequestParam('translationnev_' . $translationid));
+                        $translation->setField($mezo);
+                        $translation->setContent($mezoertek);
 						$this->getEm()->persist($translation);
 					}
 				}
@@ -814,7 +829,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$cimkek = $termek ? $termek->getAllCimkeId() : null;
 		$view->setVar('cimkekat', $tcc->getWithCimkek($cimkek));
 
-		$view->setVar('termek', $this->loadVars($termek, true));
+		$view->setVar('egyed', $this->loadVars($termek, true));
 
         $vtsz = new vtszController($this->params);
 		$view->setVar('vtszlist', $vtsz->getSelectList(($termek ? $termek->getVtszId() : 0)));

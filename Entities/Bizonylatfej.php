@@ -2,10 +2,13 @@
 namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM,
+    Doctrine\Common\Collections\ArrayCollection;
+
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylatfejRepository")
  * @ORM\Table(name="bizonylatfej",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
+ * @Gedmo\TranslationEntity(class="Entities\BizonylatfejTranslation")
  * */
 class Bizonylatfej {
 
@@ -190,7 +193,10 @@ class Bizonylatfej {
      */
     private $fizmod;
 
-    /** @ORM\Column(type="string",length=255,nullable=true) */
+    /**
+     * @Gedmo\Translatable
+     * @ORM\Column(type="string",length=255,nullable=true)
+     */
     private $fizmodnev;
 
     /**
@@ -200,7 +206,10 @@ class Bizonylatfej {
      */
     private $szallitasimod;
 
-    /** @ORM\Column(type="string",length=255,nullable=true) */
+    /**
+     * @Gedmo\Translatable
+     * @ORM\Column(type="string",length=255,nullable=true)
+     */
     private $szallitasimodnev;
 
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
@@ -500,6 +509,13 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $partnerktdszerzszam;
 
+    /** @Gedmo\Locale */
+    protected $locale;
+
+    /** @ORM\OneToMany(targetEntity="BizonylatfejTranslation", mappedBy="object", cascade={"persist", "remove"}) */
+    private $translations;
+
+
     public function __toString() {
         return (string)$this->id;
     }
@@ -634,6 +650,7 @@ class Bizonylatfej {
         $this->szulobizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->folyoszamlak = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->setPersistentData();
     }
 
@@ -3025,5 +3042,27 @@ class Bizonylatfej {
         $this->partnerktdszerzszam = $partnerktdszerzszam;
     }
 
+    public function getTranslations() {
+        return $this->translations;
+    }
+
+    public function addTranslation(BizonylatfejTranslation $t) {
+        if (!$this->translations->contains($t)) {
+            $this->translations[] = $t;
+            $t->setObject($this);
+        }
+    }
+
+    public function removeTranslation(BizonylatfejTranslation $t) {
+        $this->translations->removeElement($t);
+    }
+
+    public function getLocale() {
+        return $this->locale;
+    }
+
+    public function setLocale($locale) {
+        $this->locale = $locale;
+    }
 
 }

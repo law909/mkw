@@ -15,6 +15,8 @@ class fizmodController extends \mkwhelpers\MattableController {
 
     protected function loadVars($t, $forKarb = false) {
         $letezik = true;
+        $translationsCtrl = new fizmodtranslationController($this->params);
+        $translations = array();
         $x = array();
         if (!$t) {
             $letezik = false;
@@ -49,6 +51,12 @@ class fizmodController extends \mkwhelpers\MattableController {
                     $hatararr[] = $fhc->loadVars($hat, $forKarb);
                 }
                 $x['hatarok'] = $hatararr;
+            }
+            if (\mkw\store::isMultilang()) {
+                foreach($t->getTranslations() as $tr) {
+                    $translations[] = $translationsCtrl->loadVars($tr, true);
+                }
+                $x['translations'] = $translations;
             }
         }
         return $x;
@@ -96,6 +104,45 @@ class fizmodController extends \mkwhelpers\MattableController {
                         $hatar->setValutanem($valutanem);
                     }
                     $this->getEm()->persist($hatar);
+                }
+            }
+        }
+        if (\mkw\store::isMultilang()) {
+            $_tf = \Entities\Fizmod::getTranslatedFields();
+            $translationids = $this->params->getArrayRequestParam('translationid');
+            foreach ($translationids as $translationid) {
+                $oper = $this->params->getStringRequestParam('translationoper_' . $translationid);
+                $mezo = $this->params->getStringRequestParam('translationfield_' . $translationid);
+                $mezotype = $_tf[$mezo]['type'];
+                switch ($mezotype) {
+                    case 1:
+                    case 3:
+                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
+                        break;
+                    case 2:
+                        $mezoertek = $this->params->getOriginalStringRequestParam('translationcontent_' . $translationid);
+                        break;
+                    default:
+                        $mezoertek = $this->params->getStringRequestParam('translationcontent_' . $translationid);
+                        break;
+                }
+                if ($oper === 'add') {
+                    $translation = new \Entities\FizmodTranslation(
+                        $this->params->getStringRequestParam('translationlocale_' . $translationid),
+                        $mezo,
+                        $mezoertek
+                    );
+                    $obj->addTranslation($translation);
+                    $this->getEm()->persist($translation);
+                }
+                elseif ($oper === 'edit') {
+                    $translation = $this->getEm()->getRepository('Entities\FizmodTranslation')->find($translationid);
+                    if ($translation) {
+                        $translation->setLocale($this->params->getStringRequestParam('translationlocale_' . $translationid));
+                        $translation->setField($mezo);
+                        $translation->setContent($mezoertek);
+                        $this->getEm()->persist($translation);
+                    }
                 }
             }
         }

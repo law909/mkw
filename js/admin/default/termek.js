@@ -366,7 +366,7 @@ $(document).ready(function () {
                     e.preventDefault();
                     var translationgomb = $(this),
                         translationid = translationgomb.attr('data-id'),
-                        termekid = translationgomb.attr('data-termekid');
+                        egyedid = translationgomb.attr('data-egyedid');
                     if (translationgomb.attr('data-source') === 'client') {
                         $('#translationtable_' + translationid).remove();
                     }
@@ -382,7 +382,7 @@ $(document).ready(function () {
                                         type: 'POST',
                                         data: {
                                             id: translationid,
-                                            termekid: termekid,
+                                            egyedid: egyedid,
                                             oper: 'del'
                                         },
                                         success: function (data) {
