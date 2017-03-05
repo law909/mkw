@@ -173,7 +173,7 @@ class store {
     public static function getParameter($par, $default = null) {
         $p = self::getEm()->getRepository('Entities\Parameterek')->find($par);
         if ($p) {
-            return $p->getErtek();
+            return str_replace(chr(194) . chr(173), '', $p->getErtek());  // adoszam kotojelei ele text mezobe valamiert $C2 $AD-t ir
         }
         else {
             return $default;
