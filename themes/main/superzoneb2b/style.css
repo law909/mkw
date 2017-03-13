@@ -1,3 +1,5 @@
+
+
 table {
     margin-bottom: 0;
 }
@@ -324,7 +326,7 @@ fieldset[disabled] .btn-red.active {
 }
 
 .valtozatmenny {
-    width: 120px;
+    width: 126px;
 }
 
 .valtozatkeszlet {
@@ -466,5 +468,11 @@ thead.acc-megrendelestetellist td {
 @media (max-width: 991px) {
     .desktopright {
         float: none;
+    }
+}
+
+@media (min-width: 1600px) {
+    .container {
+        width: 1470px;
     }
 }

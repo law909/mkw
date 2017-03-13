@@ -98,6 +98,7 @@ class KosarRepository extends \mkwhelpers\Repository {
         if (count($res)) {
             return array(
                 'sum' => $res[0][1],
+                'bruttosum' => $res[0][1],
                 'nettosum' => $res[0][2],
                 'mennyisegsum' => $res[0][3],
                 'count' => $res[0][4]
@@ -299,23 +300,42 @@ class KosarRepository extends \mkwhelpers\Repository {
                     $k->setSessionid($sessionid);
                     $k->setPartner($partner);
                     $k->setValutanem($valutanem);
-                    if ($nullasafa) {
-                        $k->setAfa($nullasafa);
-                        $eredetinetto = $termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner);
-                        $k->setEnettoegysar($eredetinetto);
-                        $k->setEbruttoegysar($eredetinetto);
+                    if ($partner->getOrszagId() == \mkw\store::getParameter(\mkw\consts::Spanyolorszag)) {
+                        if ($nullasafa) {
+                            $k->setAfa($nullasafa);
+                            $eredetinetto = $termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner);
+                            $k->setEnettoegysar($eredetinetto);
+                            $k->setEbruttoegysar($eredetinetto);
+                        }
+                        else {
+                            $k->setEbruttoegysar($termek->getKedvezmenynelkuliBruttoAr($termekvaltozat, $partner));
+                            $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
+                        }
+
+                        if (!$kedvezmeny) {
+                            $kedvezmeny = $termek->getTermekcsoportKedvezmeny($partner);
+                        }
+                        $k->setKedvezmeny($kedvezmeny);
+
+                        $k->setBruttoegysar($k->getEbruttoegysar() * (100 - $kedvezmeny) / 100);
                     }
                     else {
-                        $k->setEbruttoegysar($termek->getKedvezmenynelkuliBruttoAr($termekvaltozat, $partner));
-                        $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
+                        if ($nullasafa) {
+                            $k->setAfa($nullasafa);
+                            $eredetinetto = $termek->getNettoArByArsav($termekvaltozat, null, null);
+                            $k->setEnettoegysar($eredetinetto);
+                            $k->setEbruttoegysar($eredetinetto);
+                            $k->setNettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
+                            $k->setBruttoegysar($k->getNettoegysar());
+                        }
+                        else {
+                            $k->setEnettoegysar($termek->getNettoArByArsav($termekvaltozat, null, null));
+                            $k->setEbruttoegysar($termek->getBruttoArByArsav($termekvaltozat, null, null));
+                            $k->setNettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
+                            $k->setBruttoegysar($termek->getKedvezmenynelkuliBruttoAr($termekvaltozat, $partner));
+                        }
+                        $k->setKedvezmeny(100 - ($k->getNettoegysar() / $k->getEnettoegysar() * 100));
                     }
-
-                    if (!$kedvezmeny) {
-                        $kedvezmeny = $termek->getTermekcsoportKedvezmeny($partner);
-                    }
-                    $k->setKedvezmeny($kedvezmeny);
-
-                    $k->setBruttoegysar($k->getEbruttoegysar() * (100 - $kedvezmeny) / 100);
 
                     if ($mennyiseg) {
                         $k->setMennyiseg($mennyiseg);

@@ -91,6 +91,12 @@ class Kosar {
         $ret['noedit'] = $termek->getId() == \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
 		$ret['id'] = $this->getId();
         if ($partner && $partner->getSzamlatipus()) {
+            $ret['nettoegysarhuf'] = $this->getNettoegysar() * 1;
+            $ret['nettoegysar'] = $this->getNettoegysar() * 1;
+            $ret['enettoegysarhuf'] = $this->getEnettoegysar() * 1;
+            $ret['enettoegysar'] = $this->getEnettoegysar() * 1;
+            $ret['nettohuf'] = $this->getNettoegysar() * $this->getMennyiseg() * 1;
+            $ret['netto'] = $this->getNettoegysar() * $this->getMennyiseg() * 1;
             $ret['bruttoegysarhuf'] = $this->getNettoegysar() * 1;
             $ret['bruttoegysar'] = $this->getNettoegysar() * 1;
 			$ret['ebruttoegysarhuf'] = $this->getEnettoegysar() * 1;
@@ -99,6 +105,12 @@ class Kosar {
             $ret['brutto'] = $this->getNettoegysar() * $this->getMennyiseg() * 1;
         }
         else {
+            $ret['nettoegysarhuf'] = $this->getNettoegysar() * 1;
+            $ret['nettoegysar'] = $this->getNettoegysar() * 1;
+            $ret['enettoegysarhuf'] = $this->getEnettoegysar() * 1;
+            $ret['enettoegysar'] = $this->getEnettoegysar() * 1;
+            $ret['nettohuf'] = $this->getNettoegysar() * $this->getMennyiseg() * 1;
+            $ret['netto'] = $this->getNettoegysar() * $this->getMennyiseg() * 1;
             $ret['bruttoegysarhuf'] = $this->getBruttoegysar() * 1;
             $ret['bruttoegysar'] = $this->getBruttoegysar() * 1;
 			$ret['ebruttoegysarhuf'] = $this->getEbruttoegysar() * 1;

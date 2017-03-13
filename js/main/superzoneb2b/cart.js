@@ -19,7 +19,11 @@ var cart = (function ($) {
                 //$('table').html(d.tetellist);
                 //mkw.initTooltips();
                 $('#ertek_' + $('input[name="id"]', f).val()).text(d.tetelertek);
+                $('#nettoertek_' + $('input[name="id"]', f).val()).text(d.tetelnettoertek);
+                $('#bruttoertek_' + $('input[name="id"]', f).val()).text(d.tetelbruttoertek);
                 $('#kosarsum').text(d.kosarertek);
+                $('#kosarnettosum').text(d.kosarnetto);
+                $('#kosarbruttosum').text(d.kosarbrutto);
                 $('#mennyisegsum').text(d.mennyisegsum);
             },
             complete: function () {
@@ -48,7 +52,11 @@ var cart = (function ($) {
                 //mkw.initTooltips();
                 $('#egysegar_' + $('input[name="id"]', f).val()).text(d.tetelegysegar);
                 $('#ertek_' + $('input[name="id"]', f).val()).text(d.tetelertek);
+                $('#nettoertek_' + $('input[name="id"]', f).val()).text(d.tetelnettoertek);
+                $('#bruttoertek_' + $('input[name="id"]', f).val()).text(d.tetelbruttoertek);
                 $('#kosarsum').text(d.kosarertek);
+                $('#kosarnettosum').text(d.kosarnetto);
+                $('#kosarbruttosum').text(d.kosarbrutto);
                 $('#mennyisegsum').text(d.mennyisegsum);
             },
             complete: function () {

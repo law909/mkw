@@ -106,29 +106,52 @@ class kosarController extends \mkwhelpers\MattableController {
     }
 
     public function getMiniData() {
-        $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
-        $megingyeneshez = 0;
-        $hatar = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg3Tol, 0);
-        $partner = \mkw\store::getLoggedInUser();
-        if ($partner && $partner->getSzamlatipus()) {
-            $osszeg = $m[0][3] * 1;
+        switch (true) {
+            case \mkw\store::isMindentkapni():
+                $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
+                $megingyeneshez = 0;
+                $hatar = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg3Tol, 0);
+                $partner = \mkw\store::getLoggedInUser();
+                if ($partner && $partner->getSzamlatipus()) {
+                    $osszeg = $m[0][3] * 1;
+                }
+                else {
+                    $osszeg = $m[0][2] * 1;
+                }
+                $valutanem = 'Ft';
+                if ($partner) {
+                    $valutanem = $partner->getValutanemnev();
+                }
+                if ($hatar && $osszeg && $osszeg < $hatar) {
+                    $megingyeneshez = $hatar - $osszeg;
+                }
+                return array(
+                    'termekdb' => $m[0][1],
+                    'osszeg' => $osszeg,
+                    'megingyeneshez' => $megingyeneshez,
+                    'valutanem' => $valutanem
+                );
+            case \mkw\store::isSuperzoneB2B():
+                $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
+                $partner = \mkw\store::getLoggedInUser();
+                $valutanem = '';
+                $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
+                $valutanemobj = $this->getRepo('Entities\Valutanem')->find($valutanemid);
+                if ($valutanemobj) {
+                    $valutanem = $valutanemobj->getNev();
+                }
+                if ($partner && $partner->getValutanem()) {
+                    $valutanem = $partner->getValutanemnev();
+                }
+                return array(
+                    'termekdb' => $m[0][1],
+                    'netto' => $m[0][3],
+                    'brutto' => $m[0][2],
+                    'valutanem' => $valutanem
+                );
+            default:
+                return false;
         }
-        else {
-            $osszeg = $m[0][2] * 1;
-        }
-        $valutanem = 'Ft';
-        if ($partner) {
-            $valutanem = $partner->getValutanemnev();
-        }
-        if ($hatar && $osszeg && $osszeg < $hatar) {
-            $megingyeneshez = $hatar - $osszeg;
-        }
-        return array(
-            'termekdb' => $m[0][1],
-            'osszeg' => $osszeg,
-            'megingyeneshez' => $megingyeneshez,
-            'valutanem' => $valutanem
-        );
     }
 
     public function get() {
@@ -149,6 +172,9 @@ class kosarController extends \mkwhelpers\MattableController {
         }
         $v->setVar('tetellista', $s);
         $v->setVar('valutanem', $valutanem);
+        if (\mkw\store::isSuperzoneB2B()) {
+            $v->setVar('spanyol', $partner->getOrszagId() == \mkw\store::getParameter(\mkw\consts::Spanyolorszag));
+        }
         $tc = new termekController($this->params);
         $v->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($tids));
         $v->printTemplateResult(false);
@@ -284,7 +310,7 @@ class kosarController extends \mkwhelpers\MattableController {
                         $sum = $m['nettosum'];
                     }
                     else {
-                        $sum = $m['sum'];
+                        $sum = $m['bruttosum'];
                     }
                     $mennyisegsum = $m['mennyisegsum'];
                 }
@@ -311,7 +337,11 @@ class kosarController extends \mkwhelpers\MattableController {
                 echo json_encode(array(
                     'tetelegysegar' => number_format($s['bruttoegysarhuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
                     'tetelertek' => number_format($s['bruttohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                    'tetelnettoertek' => number_format($s['nettohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                    'tetelbruttoertek' => number_format($s['bruttohuf'], $ker, ',', ' ') . ' ' . $valutanemnev,
                     'kosarertek' => number_format($sum, $ker, ',', ' ') . ' ' . $valutanemnev,
+                    'kosarnetto' => number_format($m['nettosum'], $ker, ',', ' ') . ' ' . $valutanemnev,
+                    'kosarbrutto' => number_format($m['bruttosum'], $ker, ',', ' ') . ' ' . $valutanemnev,
                     'mennyisegsum' => number_format($mennyisegsum, 0, ',', ' '),
                     'minikosar' => $v->getTemplateResult(),
                     'minikosaringyenes' => $v2->getTemplateResult(),
