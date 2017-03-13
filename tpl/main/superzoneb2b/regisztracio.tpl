@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/superzone/regisztracio.js"></script>
+    <script src="/js/main/superzoneb2b/regisztracio.js"></script>
 {/block}
 
 {block "body"}

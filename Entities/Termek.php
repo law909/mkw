@@ -1400,11 +1400,11 @@ class Termek {
     }
 
     public function getValtozatok() {
-        switch (\mkw\store::getTheme()) {
-            case 'mkwcansas':
-            case 'mugenrace':
+        switch (true) {
+            case \mkw\store::isMindentkapni():
+            case \mkw\store::isMugenrace():
                 return $this->valtozatok;
-            case 'superzone':
+            case \mkw\store::isSuperzoneB2B():
                 $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);
                 $rendezendo = \mkw\store::getParameter(\mkw\consts::RendezendoValtozat);
                 $sorrend = explode(',', $s);
@@ -1452,8 +1452,8 @@ class Termek {
                     return ($ve < $vf) ? -1 : 1;
                 });
                 return new \Doctrine\Common\Collections\ArrayCollection($a);
-            case 'kisszamlazo':
-            case 'mijsz':
+            case \mkw\store::isKisszamlazo():
+            case \mkw\store::isMIJSZ():
                 return null;
             default :
                 throw new \Exception('ISMERETLEN THEME: ' . \mkw\store::getTheme());

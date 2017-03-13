@@ -53,7 +53,7 @@
                             {if ($_valt.bejon)}
                                 <span class="arrival">{$_valt.beerkezesdatumstr}</span>
                             {else}
-                                <img src="{if ($_valt.keszlet <= 0)}/themes/main/superzone/nincs.jpg{else}/themes/main/superzone/van.jpg{/if}">
+                                <img src="{if ($_valt.keszlet <= 0)}/themes/main/superzoneb2b/nincs.jpg{else}/themes/main/superzoneb2b/van.jpg{/if}">
                             {/if}
                         </td>
                         <td class="valtozatmenny">

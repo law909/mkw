@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\TermekValtozat,
 	Entities\TermekRecept;
+use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
 class termekController extends \mkwhelpers\MattableController {
@@ -729,8 +730,8 @@ class termekController extends \mkwhelpers\MattableController {
 		if ($term) {
 			$r = \mkw\store::getEm()->getRepository('\Entities\Termek');
 			$res = $r->getBizonylattetelLista($term);
-            switch (\mkw\store::getTheme()) {
-                case 'mkwcansas':
+            switch (true) {
+                case \mkw\store::isMindentkapni():
                     foreach ($res as $r) {
                         $ret[] = array(
                             'value' => $r->getNev(),
@@ -752,7 +753,7 @@ class termekController extends \mkwhelpers\MattableController {
                         );
                     }
                     break;
-                case 'superzone':
+                case \mkw\store::isSuperzoneB2B():
                     foreach ($res as $r) {
                         $ret[] = array(
                             'value' => $r->getNev(),

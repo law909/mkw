@@ -838,10 +838,6 @@ class store {
         return self::getSetupValue('multivaluta');
     }
 
-    public static function isMIJSZ() {
-        return self::getSetupValue('mijsz');
-    }
-
     public static function isFakeKintlevoseg() {
         return self::getSetupValue('fakekintlevoseg');
     }
@@ -858,20 +854,28 @@ class store {
         return $i == self::getParameter(\mkw\consts::FoxpostSzallitasiMod);
     }
 
-    public static function isSuperzone() {
-        return self::getConfigValue('main.theme') == 'superzone';
+    public static function isSuperzoneB2B() {
+        return self::getTheme() === 'superzoneb2b';
     }
 
     public static function isMindentkapni() {
-        return self::getConfigValue('main.theme') == 'mkwcansas';
+        return self::getTheme() === 'mkwcansas';
     }
 
     public static function isVarganyomda() {
-        return self::getConfigValue('main.theme') == 'varganyomda';
+        return self::getTheme() === 'varganyomda';
     }
 
     public static function isMugenrace() {
-        return self::getConfigValue('main.theme') == 'mugenrace';
+        return self::getTheme() === 'mugenrace';
+    }
+
+    public static function isKisszamlazo() {
+        return self::getTheme() === 'kisszamlazo';
+    }
+
+    public static function isMIJSZ() {
+        return self::getTheme() === 'mijsz';
     }
 
     public static function setAdminMode() {

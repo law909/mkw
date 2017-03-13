@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use mkw\store;
+
 class checkoutController extends \mkwhelpers\MattableController {
 
 	public function __construct($params) {
@@ -162,8 +164,8 @@ class checkoutController extends \mkwhelpers\MattableController {
 
 	public function save() {
 
-        switch (\mkw\store::getTheme()) {
-            case 'mkwcansas':
+        switch (true) {
+            case \mkw\store::isMindentkapni():
                 $errorlogtext = array();
                 $errors = array();
 
@@ -429,7 +431,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                     Header('Location: ' . \mkw\store::getRouter()->generate('showcheckout'));
                 }
                 break;
-            case 'superzone':
+            case \mkw\store::isSuperzoneB2B():
                 $errorlogtext = array();
                 $errors = array();
 

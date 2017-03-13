@@ -59,8 +59,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('raktarlist', $raktar->getSelectList());
 
         $bsc = new bizonylatstatuszController($this->params);
-        switch (\mkw\store::getTheme()) {
-            case 'mkwcansas':
+        switch (true) {
+            case \mkw\store::isMindentkapni():
                 $a = date(\mkw\store::$DateFormat, strtotime('-1 week'));
                 if ($this->biztipus == 'megrendeles') {
                     $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
@@ -70,14 +70,14 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 }
                 $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
                 break;
-            case 'superzone':
+            case \mkw\store::isSuperzoneB2B():
                 $a = false;
                 $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
                 $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
                 $view->setVar('bizonylatrontottfilter', 1);
                 break;
-            case 'kisszamlazo':
-            case 'mijsz':
+            case \mkw\store::isKisszamlazo():
+            case \mkw\store::isMIJSZ():
                 $a = false;
                 break;
             default:
@@ -1204,7 +1204,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $filter->addFilter('id', 'IN', explode(',', $ids));
         }
 
-        if (\mkw\store::getTheme() === 'superzone') {
+        if (\mkw\store::isSuperzoneB2B()) {
             $fejek = $this->getRepo()->getWithTetelek($filter, array(), 0, 0, \mkw\store::getParameter(\mkw\consts::Locale));
         }
         else {

@@ -768,7 +768,7 @@ class partnerController extends \mkwhelpers\MattableController {
         }
         else {
             $view = $this->getLoginTpl();
-            \mkw\store::fillTemplate($view, (\mkw\store::getTheme() !== 'superzone'));
+            \mkw\store::fillTemplate($view, (!\mkw\store::isSuperzoneB2B()));
             $view->setVar('pagetitle', t('Bejelentkezés') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
             $view->setVar('sikertelen', \mkw\store::getMainSession()->loginerror);
             \mkw\store::getMainSession()->loginerror = false;

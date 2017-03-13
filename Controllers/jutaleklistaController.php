@@ -173,7 +173,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
     }
 
     private function updateDB() {
-        if (\mkw\store::getTheme() === 'superzone') {
+        if (\mkw\store::isSuperzoneB2B()) {
             $a = $this->getEm()->getConnection()->prepare('UPDATE bizonylatfej SET belsouzletkoto_id=9,belsouzletkotonev="Szász Balázs",belsouzletkotojutalek=1 '
                 . 'WHERE (partner_id IN (SELECT partner_id FROM partner_cimkek WHERE cimketorzs_id=20)) AND '
                 . '(bizonylattipus_id IN (\'egyeb\',\'keziszamla\',\'szamla\'))');

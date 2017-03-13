@@ -40,7 +40,7 @@ class b2bpartnerController extends partnerController {
                 $partner->setSzallitasimod($uk->getPartnerszallitasimod());
                 $partner->setSzamlatipus($uk->getPartnerszamlatipus());
                 $partner->setTermekarazonosito($uk->getPartnertermekarazonosito());
-                if (\mkw\store::getTheme() === 'superzone') {
+                if (\mkw\store::isSuperzoneB2B()) {
                     $spanyol = $this->getRepo('Entities\Partnercimketorzs')->find(\mkw\store::getParameter(\mkw\consts::SpanyolCimke));
                     if ($spanyol) {
                         $partner->addCimke($spanyol);

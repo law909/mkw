@@ -210,9 +210,9 @@ class termekfaController extends \mkwhelpers\MattableController {
 	}
 
     public function getformenu($menunum, $almenunum = 0) {
-        switch (\mkw\store::getTheme()) {
-            case 'mkwcansas':
-            case 'mugenrace':
+        switch (true) {
+            case \mkw\store::isMindentkapni():
+            case \mkw\store::isMugenrace():
                 $repo = $this->getRepo();
                 $f = $repo->getForMenu($menunum);
                 $t = array();
@@ -243,7 +243,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                     $t[] = $o;
                 }
         		return $t;
-            case 'superzone':
+            case \mkw\store::isSuperzoneB2B():
                 $repo = $this->getRepo();
                 $f = $repo->getForMenu($menunum);
                 $x = array();
@@ -831,7 +831,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                 }
                 return $ret;
 
-            case \mkw\store::isSuperzone():
+            case \mkw\store::isSuperzoneB2B():
                 $termekrepo = $this->getEm()->getRepository('Entities\Termek');
                 $order = array();
                 $kategoriafilter = new FilterDescriptor();

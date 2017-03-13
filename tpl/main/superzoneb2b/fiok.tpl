@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "script"}
-    <script src="/js/main/superzone/fiok.js"></script>
+    <script src="/js/main/superzoneb2b/fiok.js"></script>
 {/block}
 
 {block "body"}

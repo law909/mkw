@@ -134,7 +134,7 @@
 					</select>
 				</td>
 				<td class="mattable-important"><label for="SzallitasimodEdit">{at('Szállítási mód')}:</label></td>
-				<td><select id="SzallitasimodEdit" name="szallitasimod" class="mattable-important"{if ($maintheme=='mkwcansas' || $maintheme=='superzone')} required="required"{/if}>
+				<td><select id="SzallitasimodEdit" name="szallitasimod" class="mattable-important"{if ($maintheme=='mkwcansas' || $maintheme=='superzoneb2b')} required="required"{/if}>
 					<option value="">{at('válasszon')}</option>
 					{foreach $szallitasimodlist as $_mk}
 					<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>

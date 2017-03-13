@@ -817,8 +817,8 @@ class Bizonylatfej {
         foreach ($this->bizonylattetelek as $tetel) {
             $tetellist[] = $tetel->toLista();
         }
-        switch (\mkw\store::getTheme()) {
-            case 'superzone':
+        switch (true) {
+            case \mkw\store::isSuperzoneB2B():
                 $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);
                 $rendezendo = \mkw\store::getParameter(\mkw\consts::RendezendoValtozat);
                 $sorrend = explode(',', $s);

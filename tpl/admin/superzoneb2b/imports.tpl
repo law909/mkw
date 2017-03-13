@@ -5,7 +5,7 @@
 <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.mattkarb.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
-<script type="text/javascript" src="/js/admin/superzone/importsform.js"></script>
+<script type="text/javascript" src="/js/admin/superzoneb2b/importsform.js"></script>
 {/block}
 
 {block "kozep"}

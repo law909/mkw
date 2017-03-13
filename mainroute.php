@@ -1,6 +1,6 @@
 <?php
 
-if (\mkw\store::getTheme() === 'mkwcansas') {
+if (\mkw\store::isMindentkapni()) {
     $router->map('GET', '/ProductDetails', 'termekController#redirectOldUrl', 'termekredirectoldurl');
     $router->map('GET', '/', 'termekfaController#redirectOldUrl', 'termekfaredirectoldurl');
     $router->map('GET', '/Static', 'statlapController#redirectOldUrl', 'statlapredirectoldurl');
@@ -9,7 +9,7 @@ if (\mkw\store::getTheme() === 'mkwcansas') {
     $router->map('GET', '/MiddleTier/ReadImage', 'termekController#redirectRegikepUrl', 'termekredirectregikepurl');
 }
 
-if (\mkw\store::getTheme() === 'superzone') {
+if (\mkw\store::isSuperzoneB2B()) {
     $router->map('GET', '/termekm/[:slug]', 'mainController#termekm', 'showtermekm');
     $router->map('GET', '/fanta', 'fantaController#show', 'showfanta');
     $router->map('POST', '/fanta/do', 'fantaController#doit', 'dofanta');

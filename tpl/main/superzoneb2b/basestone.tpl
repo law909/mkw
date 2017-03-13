@@ -9,23 +9,23 @@
 		<title>{$pagetitle|default}</title>
 		<link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">
 		<link type="application/rss+xml" rel="alternate" title="{$feedtermektitle|default}" href="/feed/termek">
-        <link href="/themes/main/superzone/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/themes/main/superzone/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-		<link href="/themes/main/superzone/magnific-popup.css" rel="stylesheet">
-        <link href="/themes/main/superzone/style.css" rel="stylesheet">
+        <link href="/themes/main/superzoneb2b/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/themes/main/superzoneb2b/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+		<link href="/themes/main/superzoneb2b/magnific-popup.css" rel="stylesheet">
+        <link href="/themes/main/superzoneb2b/style.css" rel="stylesheet">
         {block "css"}{/block}
-        <script src="/js/main/superzone/jquery-1.11.3.min.js"></script>
-        <script src="/js/main/superzone/moment.min.js"></script>
-        <script src="/js/main/superzone/accounting.min.js"></script>
-        <script src="/js/main/superzone/bootstrap.min.js"></script>
-        <script src="/js/main/superzone/bootstrap-datetimepicker.min.js"></script>
-        <script src="/js/main/superzone/jquery.debounce.min.js"></script>
-		<script src="/js/main/superzone/jquery.magnific-popup.min.js"></script>
-		<script src="/js/main/superzone/superzmsg.js"></script>
-		<script src="/js/main/superzone/superz.js"></script>
-		<script src="/js/main/superzone/cart.js"></script>
+        <script src="/js/main/superzoneb2b/jquery-1.11.3.min.js"></script>
+        <script src="/js/main/superzoneb2b/moment.min.js"></script>
+        <script src="/js/main/superzoneb2b/accounting.min.js"></script>
+        <script src="/js/main/superzoneb2b/bootstrap.min.js"></script>
+        <script src="/js/main/superzoneb2b/bootstrap-datetimepicker.min.js"></script>
+        <script src="/js/main/superzoneb2b/jquery.debounce.min.js"></script>
+		<script src="/js/main/superzoneb2b/jquery.magnific-popup.min.js"></script>
+		<script src="/js/main/superzoneb2b/superzmsg.js"></script>
+		<script src="/js/main/superzoneb2b/superz.js"></script>
+		<script src="/js/main/superzoneb2b/cart.js"></script>
         {block "script"}{/block}
-		<script src="/js/main/superzone/superzone.js"></script>
+		<script src="/js/main/superzoneb2b/superzone.js"></script>
     </head>
 	<body {block "bodyclass"}{/block}>
         {block "stonebody"}

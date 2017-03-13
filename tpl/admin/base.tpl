@@ -40,7 +40,7 @@
                         <div><a class="menupont" href="/admin/bevetfej/viewlist">{t('Bevételezések')}</a></div>
                         <div><a class="menupont" href="/admin/kivetfej/viewlist">{t('Kivétek')}</a></div>
                     {/if}
-                    {if (($maintheme == 'superzone') && haveJog(20))}
+                    {if (($maintheme == 'superzoneb2b') && haveJog(20))}
                         <div><a class="menupont" href="/admin/egyebfej/viewlist">{t('Egyéb mozgások')}</a></div>
                     {/if}
                     {if (haveJog(20))}
@@ -52,7 +52,7 @@
                     {if (($maintheme != 'mkwcansas') && haveJog(20))}
                         <div><a class="menupont" href="/admin/szallitofej/viewlist">{t('Szállítólevelek')}</a></div>
                     {/if}
-                    {if (($maintheme == 'superzone') && haveJog(20))}
+                    {if (($maintheme == 'superzoneb2b') && haveJog(20))}
                         <div><a class="menupont" href="/admin/autokiserofej/viewlist">{t('Gépjármű kísérők')}</a></div>
                     {/if}
                 {elseif $setup.mijsz}

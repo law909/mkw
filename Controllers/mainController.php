@@ -228,7 +228,7 @@ class mainController extends \mkwhelpers\Controller {
                 }
                 break;
 
-            case \mkw\store::isSuperzone():
+            case \mkw\store::isSuperzoneB2B():
                 $com = $this->params->getStringParam('slug');
                 $tc = new termekController($this->params);
                 $termek = $tc->getRepo()->findOneBySlug($com);

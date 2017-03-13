@@ -28,7 +28,7 @@ class megrendelesfejController extends bizonylatfejController {
         if ($o) {
             $biztip = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
             if ($biztip) {
-                if (\mkw\store::getTheme() == 'superzone') {
+                if (\mkw\store::isSuperzoneB2B()) {
                     $view = $this->createView('biz_elolegbekero_eng.tpl');
                 }
                 else {

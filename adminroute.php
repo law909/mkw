@@ -517,7 +517,7 @@ $router->map('GET', '/admin/bizonylattetellista/print', 'bizonylattetellistaCont
 $router->map('GET', '/admin/bizomanyosertekesiteslista/view', 'bizomanyosertekesiteslistaController#view', 'adminbizomanyosertekesiteslistaview');
 $router->map('GET', '/admin/bizomanyosertekesiteslista/refresh', 'bizomanyosertekesiteslistaController#refresh', 'adminbizomanyosertekesiteslistarefresh');
 
-if (\mkw\store::getTheme() == 'superzone') {
+if (\mkw\store::isSuperzoneB2B()) {
     if (haveJog(99)) {
         $router->map('GET', '/admin/mese', 'fantaController#mese', 'adminmese');
     }

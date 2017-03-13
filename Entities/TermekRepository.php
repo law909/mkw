@@ -89,7 +89,7 @@ class TermekRepository extends \mkwhelpers\Repository {
 
     public function getAllValtozatForExport($addedfilter = false, $locale = false) {
         $filter = new FilterDescriptor();
-        if (\mkw\store::isSuperzone()) {
+        if (\mkw\store::isSuperzoneB2B()) {
             $filter->addFilter('inaktiv', '=', false);
             $filter->addFilter('fuggoben', '=', false);
         }

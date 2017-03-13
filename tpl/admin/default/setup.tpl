@@ -212,7 +212,7 @@
                                 {/foreach}
                             </select>
                         </div>
-                        {if ($maintheme === 'superzone')}
+                        {if ($maintheme === 'superzoneb2b')}
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="SpanyolCimkeEdit">{at('Spanyol címke')}:</label></span>
                                 <select id="SpanyolCimkeEdit" name="spanyolcimke">
@@ -224,7 +224,7 @@
                                 </select>
                             </div>
                         {/if}
-                        {if ($maintheme === 'superzone' || $maintheme === "mkwcansas" || $maintheme === "mugenrace")}
+                        {if ($maintheme === 'superzoneb2b' || $maintheme === "mkwcansas" || $maintheme === "mugenrace")}
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="SzinEdit">{at('Szín')}:</label></span>
                                 <select id="SzinEdit" name="valtozattipusszin">

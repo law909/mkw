@@ -5,9 +5,9 @@
 		<meta name="description" content="{$seodescription|default}">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <link href="/themes/main/superzone/style.css" rel="stylesheet">
-        <script src="/js/main/superzone/jquery-1.11.3.min.js"></script>
-        <script src="/js/main/superzone/fanta.js"></script>
+        <link href="/themes/main/superzoneb2b/style.css" rel="stylesheet">
+        <script src="/js/main/superzoneb2b/jquery-1.11.3.min.js"></script>
+        <script src="/js/main/superzoneb2b/fanta.js"></script>
     </head>
 	<body>
         <form>

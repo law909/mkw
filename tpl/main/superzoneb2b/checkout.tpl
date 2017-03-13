@@ -1,7 +1,7 @@
 {extends "basestone.tpl"}
 
 {block "script"}
-    <script src="/js/main/superzone/checkout.js"></script>
+    <script src="/js/main/superzoneb2b/checkout.js"></script>
 {/block}
 
 {block "bodyclass"}class="body"{/block}

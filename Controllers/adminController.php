@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use mkw\store;
 use mkwhelpers, Entities;
 
 class adminController extends mkwhelpers\Controller {
@@ -31,8 +32,8 @@ class adminController extends mkwhelpers\Controller {
         $view->setVar('teljesithetobackorderek', $megrend->getTeljesithetoBackorderLista());
 
         $lista = new listaController($this->params);
-        switch (\mkw\store::getTheme()) {
-            case 'superzone':
+        switch (true) {
+            case \mkw\store::isSuperzoneB2B():
                 $napijelentesdatum = date(\mkw\store::$DateFormat);
                 $igdatum = date(\mkw\store::$DateFormat);
                 $view->setVar('napijelenteslista', $lista->napiJelentes($napijelentesdatum, $igdatum));
@@ -111,10 +112,10 @@ class adminController extends mkwhelpers\Controller {
                 $view->setVar('spanyolkintlevoseg', $nemlejart);
 
                 break;
-            case 'mkwcansas':
+            case \mkw\store::isMindentkapni():
                 $view->setVar('tjlista', $lista->teljesitmenyJelentes());
                 break;
-            case 'kisszamlazo':
+            case \mkw\store::isKisszamlazo():
                 $view->setVar('lejartkintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem());
                 $view->setVar('kintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem());
                 break;
