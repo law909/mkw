@@ -22,37 +22,7 @@
 {block "kozep"}
 <div class="container whitebg">
 	<div class="row">
-        <div class="span4">
-            {if (count($topkategorialista)>0)}
-            <div class="blockHeader">
-            <h2 class="main">{t('Top')} {count($topkategorialista)} {t('kategória')}</h2>
-            </div>
-            {foreach $topkategorialista as $_topkategoria}
-                <div class="hirListBlock">
-                    <dl>
-                        <dd class="title"><a href="/termekfa/{$_topkategoria.slug}">{$_topkategoria.caption}</a></dd>
-                        <dd class="copy"><p>{$_topkategoria.rovidleiras}</p></dd>
-                    </dl>
-                </div>
-            {/foreach}
-            {/if}
-            {if (count($hirek)>0)}
-            <div class="blockHeader">
-            <h2 class="main">{t('Legfrissebb híreink')}</h2>
-            </div>
-            {foreach $hirek as $_hir}
-                <div class="hirListBlock">
-                    <div class="borderBottomColorOneExtraLight">
-                        <dl class="spg-additional">
-                            <dd class="title"><a href="/hir/{$_hir.slug}">{$_hir.cim}</a></dd>
-                            <dd class="copy"><p>{$_hir.lead}</p></dd>
-                        </dl>
-                    </div>
-                </div>
-            {/foreach}
-            {/if}
-        </div>
-        <div class="span8">
+        <div class="span12">
             {if (count($korhintalista)>0)}
             <div id="korhinta" class="royalSlider contentSlider rsDefaultInv">
                 {foreach $korhintalista as $_korhinta}

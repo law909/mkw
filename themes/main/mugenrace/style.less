@@ -23,7 +23,7 @@
 @logofontcolor: #e42721;
 @headernavvilagos: #a2a2a2;
 @headernavsotet: #000000;
-@headernavlinkcolor: #ff2020;
+@headernavlinkcolor: #fff;
 @termekcaptionfontcolor: #333;
 @termekpricefontcolor: #333;
 @termekpricefontsize: 18px;
@@ -115,7 +115,7 @@ h5 {
 }
 
 .whitebg {
-  background-color: #ddd;
+  background-color: #fff;
 }
 
 .bgtakaro {
@@ -167,10 +167,6 @@ table th.textaligncenter, table td.textaligncenter {
 
 body {
   font-size: @fontsize;
-}
-
-.bgimg {
-  background: url("/themes/main/mugenrace/img/background.jpg") no-repeat scroll center top rgba(0, 0, 0, 1);
 }
 
 a {
@@ -388,7 +384,7 @@ header a:hover, footer a:hover {
 }
 
 .headernav {
-  .gradient-background(@headernavvilagos, @headernavsotet);
+  background-color: @headernavsotet;
 }
 
 #navmain {
@@ -483,6 +479,7 @@ footer {
   margin-top: 20px;
   padding-top: 20px;
   color: @headerfontcolor;
+  background-color: #222;
 }
 
 footer h5 {
@@ -689,14 +686,11 @@ footer nav {
 }
 
 .gtermekupper {
-  height: 150px;
-  width: 100%;
   overflow-y: hidden;
 }
 
 .gtermekcenter {
   margin-top: 5px;
-  width: 100%;
 }
 
 .cartbtn {
@@ -1191,7 +1185,7 @@ select[name="foxpostcsoport"], select[name="foxpostterminal"] {
 /* margo 30px */
 @media (min-width: 1200px) {
   .spanmkw3 {
-    width: 435px;
+    width: 217.5px;
   }
 
   .gtermekleft {
@@ -1206,7 +1200,7 @@ select[name="foxpostcsoport"], select[name="foxpostterminal"] {
 /* margo 20px */
 @media (max-width: 979px) and (min-width: 768px) {
   .spanmkw3 {
-    width: 268.5px;
+    width: 134.25px;
   }
 
   .gtermekleft {

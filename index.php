@@ -157,7 +157,9 @@ else {
                     'locale' => 'en_us'
                 )
             );
-            $__admintranslate->setLocale(store::getAdminLocale());
+            if (store::getAdminLocale()) {
+                $__admintranslate->setLocale(store::getAdminLocale());
+            }
 
             if ((!in_array($match['name'], array('adminshowlogin', 'adminlogin', 'adminrlbexport')))) {
                 $linuser = store::getAdminSession()->pk;
@@ -176,7 +178,9 @@ else {
                     'locale' => 'en_us'
                 )
             );
-            $__maintranslate->setLocale(store::getLocale());
+            if (store::getLocale()) {
+                $__maintranslate->setLocale(store::getLocale());
+            }
 
             if (!$mainsess->referrer) {
                 if (array_key_exists('HTTP_REFERER', $_SERVER)) {

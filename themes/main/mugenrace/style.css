@@ -39,7 +39,7 @@ h5 {
   margin-top: 40px;
 }
 .whitebg {
-  background-color: #ddd;
+  background-color: #fff;
 }
 .bgtakaro {
   padding: 0 10px 10px 10px;
@@ -80,9 +80,6 @@ table td.textaligncenter {
 }
 body {
   font-size: 13px;
-}
-.bgimg {
-  background: url("/themes/main/mugenrace/img/background.jpg") no-repeat scroll center top #000000;
 }
 a {
   text-decoration: none;
@@ -344,11 +341,6 @@ footer a:hover {
 }
 .headernav {
   background-color: #000000;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#a2a2a2), to(#000000));
-  background-image: -webkit-linear-gradient(top, #a2a2a2, #000000);
-  background-image: -moz-linear-gradient(top, #a2a2a2, #000000);
-  background-image: -o-linear-gradient(top, #a2a2a2, #000000);
-  background-image: linear-gradient(to bottom, #a2a2a2, #000000);
 }
 #navmain {
   list-style: none outside none;
@@ -365,7 +357,7 @@ footer a:hover {
   text-decoration: none;
   font-weight: bold;
   font-size: 14px;
-  color: #ff2020;
+  color: #ffffff;
   -webkit-transition: background-color 0.2s linear;
   -moz-transition: background-color 0.2s linear;
   -o-transition: background-color 0.2s linear;
@@ -422,7 +414,7 @@ footer a:hover {
   border-radius: 2px;
 }
 #navmain .sub ul li a:hover {
-  background: #ff2020;
+  background: #ffffff;
   color: #333333;
 }
 #navmain .sub ul li.categorytitle {
@@ -430,12 +422,13 @@ footer a:hover {
   padding: 4px 3px 6px;
   font-size: 14px;
   font-weight: bold;
-  color: #ff2020;
+  color: #ffffff;
 }
 footer {
   margin-top: 20px;
   padding-top: 20px;
   color: #f7f7f7;
+  background-color: #222;
 }
 footer h5 {
   color: #e42721;
@@ -609,13 +602,10 @@ footer nav {
   width: 100%;
 }
 .gtermekupper {
-  height: 150px;
-  width: 100%;
   overflow-y: hidden;
 }
 .gtermekcenter {
   margin-top: 5px;
-  width: 100%;
 }
 .cartbtn {
   color: white;
@@ -1048,7 +1038,7 @@ select[name="foxpostterminal"] {
 /* margo 30px */
 @media (min-width: 1200px) {
   .spanmkw3 {
-    width: 435px;
+    width: 217.5px;
   }
   .gtermekleft {
     width: 150px;
@@ -1060,7 +1050,7 @@ select[name="foxpostterminal"] {
 /* margo 20px */
 @media (max-width: 979px) and (min-width: 768px) {
   .spanmkw3 {
-    width: 268.5px;
+    width: 134.25px;
   }
   .gtermekleft {
     width: 100px;
