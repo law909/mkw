@@ -330,5 +330,6 @@ return array(
     'utca, házszám' => 'street',
     'Jutalék %' => '',
     'Vezető üzletkötő' => '',
-    'Több címet is megadhat vesszővel elválasztva.' => ''
+    'Több címet is megadhat vesszővel elválasztva.' => '',
+    'Spanyolország' => 'Spain'
 );

@@ -223,6 +223,16 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="SpanyolOrszagEdit">{at('Spanyolország')}:</label></span>
+                                <select id="SpanyolOrszagEdit" name="spanyolorszag">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $spanyolorszaglist as $_spanyolo}
+                                        <option
+                                            value="{$_spanyolo.id}"{if ($_spanyolo.selected)} selected="selected"{/if}>{$_spanyolo.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         {/if}
                         {if ($maintheme === 'superzoneb2b' || $maintheme === "mkwcansas" || $maintheme === "mugenrace")}
                             <div class="setuprow">

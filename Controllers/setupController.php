@@ -239,6 +239,9 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('kiskercimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::SpanyolCimke);
         $view->setVar('spanyolcimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
+        $orszagc = new orszagController($this->params);
+        $p = $repo->find(\mkw\consts::Spanyolorszag);
+        $view->setVar('spanyolorszaglist', $orszagc->getSelectList(($p ? $p->getErtek() : 0)));
 
         $mkcs = new munkakorController($this->params);
         $p = $repo->find(\mkw\consts::AdminRole);
@@ -608,6 +611,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::SpanyolCimke, '');
+        }
+
+        $spanyolorszag = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('spanyolorszag', 0));
+        if ($spanyolorszag) {
+            $this->setObj(\mkw\consts::Spanyolorszag, $spanyolorszag->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::Spanyolorszag, '');
         }
 
         $sz = \mkw\store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozattipusszin', 0));
