@@ -197,7 +197,7 @@ class store {
     /* TODO ezen lehet h. csiszolni kell meg */
 
     public static function convDate($DateString) {
-        return str_replace('.', '-', $DateString);
+        return str_replace('.', '-', rtrim($DateString, '.-/ '));
     }
 
     public static function toDate($adat) {
