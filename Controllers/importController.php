@@ -1099,8 +1099,9 @@ class importController extends \mkwhelpers\Controller {
 
             @\unlink('makszutov_fuggoben.txt');
 
-            $ch = \curl_init('http://www.tavcso-mikroszkop.hu/partner-arlista?format=csv');
+            $ch = \curl_init('https://www.tavcso-mikroszkop.hu/partner-arlista?format=csv');
             $fh = fopen('makszutov.txt', 'w');
+            \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_exec($ch);
             fclose($fh);
