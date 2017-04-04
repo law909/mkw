@@ -2,7 +2,7 @@
 <tr>
     <th></th>
     <th>Item</th>
-    <th><div class="textalignright">Retail net.price</div></th>
+    <th><div class="textalignright">Retail gr.price</div></th>
     <th><div class="textaligncenter">Discount %</div></th>
     <th><div class="textalignright">Unit net.price</div></th>
     <th><div class="textaligncenter">Qty<i class="icon-question-sign cartheader-tooltipbtn hidden-phone js-tooltipbtn" title="A mennyiség módosításához adja meg a kívánt mennyiséget, majd nyomja meg az Enter-t"></i></div></th>
@@ -38,7 +38,7 @@
             </div>
             <div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}</div>
         </td>
-        <td><div class="textalignright">{number_format($tetel.enettoegysar, 2, ',', ' ')} {$valutanem}</div></td>
+        <td><div class="textalignright">{number_format($tetel.ebruttoegysar, 2, ',', ' ')} {$valutanem}</div></td>
         <td class="kosar-discounttd">
             <div class="textaligncenter">
                 {if ($uzletkoto.loggedin)}

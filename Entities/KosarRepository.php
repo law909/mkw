@@ -334,7 +334,7 @@ class KosarRepository extends \mkwhelpers\Repository {
                             $k->setNettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
                             $k->setBruttoegysar($termek->getKedvezmenynelkuliBruttoAr($termekvaltozat, $partner));
                         }
-                        $k->setKedvezmeny(100 - ($k->getNettoegysar() / $k->getEnettoegysar() * 100));
+                        $k->setKedvezmeny(100 - ($k->getNettoegysar() / $k->getEbruttoegysar() * 100));
                     }
 
                     if ($mennyiseg) {

@@ -320,7 +320,7 @@ class mainController extends \mkwhelpers\Controller {
             }
             else {
                 $t['ar'] = $termek->getKedvezmenynelkuliNettoAr(null, $partner, $valutanem);
-                $t['eredetiar'] = $termek->getNettoArByArsav(null, null, $valutanem);
+                $t['eredetiar'] = $termek->getBruttoArByArsav(null, null, $valutanem);
                 $t['kedvezmeny'] = 100 - ($t['ar'] / $t['eredetiar'] * 100);
             }
             $valtozatok = $termek->getValtozatok();
