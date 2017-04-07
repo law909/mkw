@@ -61,7 +61,7 @@
                     <td><label for="TermekcsoportEdit">{at('Termékcsoport')}:</label></td>
                     <td><select id="TermekcsoportEdit" name="termekcsoport">
                             <option value="">{at('válasszon')}</option>
-                            {foreach $egyedcsoportlist as $_tcs}
+                            {foreach $termekcsoportlist as $_tcs}
                                 <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
                             {/foreach}
                         </select></td>
