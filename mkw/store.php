@@ -370,6 +370,11 @@ class store {
         }
         $v->setVar('serverurl', self::getFullUrl());
         $v->setVar('logo', self::getParameter(\mkw\consts::Logo));
+        if (self::isMugenrace()) {
+            $v->setVar('mugenracelogo', self::getParameter(\mkw\consts::MugenraceLogo));
+            $v->setVar('mugenracefooldalkep', self::getParameter(\mkw\consts::MugenraceFooldalKep));
+            $v->setVar('mugenracefooldalszoveg', self::getParameter(\mkw\consts::MugenraceFooldalSzoveg));
+        }
         $v->setVar('globaltitle', self::getParameter('oldalcim'));
         $pr = self::getEm()->getRepository('Entities\Partner');
         $user = array();

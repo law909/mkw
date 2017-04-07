@@ -382,6 +382,13 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::MiniCRMAPIKey);
         $view->setVar(\mkw\consts::MiniCRMAPIKey, ($p ? $p->getErtek() : ''));
 
+        $p = $repo->find(\mkw\consts::MugenraceLogo);
+        $view->setVar(\mkw\consts::MugenraceLogo, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MugenraceFooldalKep);
+        $view->setVar(\mkw\consts::MugenraceFooldalKep, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MugenraceFooldalSzoveg);
+        $view->setVar(\mkw\consts::MugenraceFooldalSzoveg, ($p ? $p->getErtek() : ''));
+
         $view->setVar('stopkreativimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'kreativ')));
         $view->setVar('stopdeltonimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'delton')));
         $view->setVar('stopreinteximporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'reintex')));
@@ -796,6 +803,10 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::PathTutisport, $this->params->getStringRequestParam('pathtutisport', ''));
         $this->setObj(\mkw\consts::PathKress, $this->params->getStringRequestParam('pathkress', ''));
         $this->setObj(\mkw\consts::PathLegavenue, $this->params->getStringRequestParam('pathlegavenue', ''));
+
+        $this->setObj(\mkw\consts::MugenraceLogo, $this->params->getStringRequestParam('mugenracelogo'));
+        $this->setObj(\mkw\consts::MugenraceFooldalKep, $this->params->getStringRequestParam('mugenracefooldalkep'));
+        $this->setObj(\mkw\consts::MugenraceFooldalSzoveg, $this->params->getStringRequestParam('mugenracefooldalszoveg'));
 
         \mkw\store::getEm()->flush();
 

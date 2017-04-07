@@ -26,6 +26,9 @@
                     {if ($maintheme == 'mkwcansas')}
                         <li><a href="#ImportTab">{at('Import')}</a></li>
                     {/if}
+                    {if ($maintheme == 'superzoneb2b' || $maintheme == 'mugenrace')}
+                        <li><a href="#MugenraceTab">{at('Mugenrace')}</a></li>
+                    {/if}
                     <li><a href="#IdTab">{at('Azonosítók, kódok')}</a></li>
                     <li><a href="#EmailTab">{at('Email')}</a></li>
                     <li><a href="#FeedTab">{at('Feed beállítások')}</a></li>
@@ -733,6 +736,26 @@
                             <label for="PathLegavenueEdit">Képek mappája:</label>
                             <input id="PathLegavenueEdit" name="pathlegavenue" value="{$pathlegavenue}">
                             <a href="#" class="js-stopimport" data-href="{$stoplegavenueimporturl}">Stop import</a>
+                        </div>
+                    </div>
+                {/if}
+                {if ($maintheme == 'superzoneb2b' || $maintheme == 'mugenrace')}
+                    <div id="MugenraceTab" class="mattkarb-page" data-visible="visible">
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <label>{at('Mugenrace logo')}:</label>
+                                <input name="mugenracelogo" type="text" value="{$mugenracelogo}">
+                                <a class="js-kepbrowsebutton" data-name="mugenracelogo" href="#" title="{at('Browse')}">{at('...')}</a>
+                            </div>
+                            <div class="setuprow">
+                                <label>{at('Főoldali kép')}:</label>
+                                <input name="mugenracefooldalkep" type="text" value="{$mugenracefooldalkep}">
+                                <a class="js-kepbrowsebutton" data-name="mugenracefooldalkep" href="#" title="{at('Browse')}">{at('...')}</a>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="MugenraceFooldalSzovegEdit">{at('Főoldali szöveg')}:</label></span>
+                                <span><textarea id="MugenraceFooldalSzovegEdit" name="mugenracefooldalszoveg" cols="75">{$mugenracefooldalszoveg}</textarea></span>
+                            </div>
                         </div>
                     </div>
                 {/if}

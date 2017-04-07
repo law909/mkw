@@ -179,4 +179,8 @@ class consts {
     const MiniCRMHasznalatban = 'minicrmhasznalatban';
     const MiniCRMSystemId = 'minicrmsystemid';
     const MiniCRMAPIKey = 'minicrmapikey';
+
+    const MugenraceFooldalKep = 'mugenracefooldalkep';
+    const MugenraceFooldalSzoveg = 'mugenracefooldalszoveg';
+    const MugenraceLogo = 'mugenracelogo';
 }

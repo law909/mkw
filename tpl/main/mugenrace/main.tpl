@@ -36,9 +36,11 @@
                 {/foreach}
             </div>
             {/if}
-            <div>
-                <h1 class="main">{t('Üdvözöljük webáruházunkban!')}</h1>
-            </div>
+            {if ($mugenracefooldalkep)}
+                <div>
+                    <img src="{$imagepath}{$mugenracefooldalkep}">
+                </div>
+            {/if}
             {if (count($akciostermekek)>0)}
                 <div class="blockHeader">
                     <h2 class="main">{t('Akciós termékeink')}</h2>
@@ -127,6 +129,9 @@
                     </div>
                 {/for}
             </div>
+            {/if}
+            {if ($mugenracefooldalszoveg)}
+                <div>{$mugenracefooldalszoveg}</div>
             {/if}
         </div>
 	</div>
