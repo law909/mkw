@@ -53,6 +53,8 @@ module.exports = function(grunt) {
                     'js/main/mugenrace/jquery.slider.min.js',
                     'js/main/mugenrace/jquery.royalslider.min.js',
                     'js/main/mugenrace/jquery.debounce.min.js',
+                    'js/main/mugenrace/jquery.magnify.js',
+                    'js/main/mugenrace/jquery.magnify-mobile.js',
                     'js/main/mugenrace/bootstrap-transition.js',
                     'js/main/mugenrace/bootstrap-modal.js',
                     'js/main/mugenrace/bootstrap-tab.js',

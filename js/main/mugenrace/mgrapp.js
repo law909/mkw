@@ -1159,32 +1159,44 @@ var fiok = (function($) {
 $(document).ready(function() {
 
     var $termekertesitomodal = $('#termekertesitoModal'),
-            $termekertesitoform = $('#termekertesitoform');
+            $termekertesitoform = $('#termekertesitoform'),
+        $zoom;
 
     function changeTermekAdat(id, d) {
-        $('#termekprice' + id).text(d['price']);
-        if ('kepurllarge' in d) {
-            $('#termekkeplink' + id).attr('href', d['kepurllarge']);
+        var imgpath = '';
+        if ('imagepath' in d) {
+            imgpath = d['imagepath'];
         }
-        if ('kepurlmedium' in d) {
-            $('#termekkep' + id).attr('src', d['kepurlmedium']);
+
+        $zoom.destroy();
+
+        $('#termekprice' + id).text(d['price']);
+        $('#termekszallitasiido' + id).text(d['szallitasiido']);
+        if ('kepurllarge' in d) {
+            $('#termekkeplink' + id).attr('href', imgpath + d['kepurllarge']);
+            $('#termekkep' + id).attr('src', imgpath + d['kepurllarge']);
+        }
+        if ('kepurlorig' in d) {
+            $('#termekkep' + id).attr('data-magnify-src', imgpath + d['kepurlorig']);
         }
         if ('kepurlsmall' in d) {
-            $('#termekkiskep' + id).attr('src', d['kepurlsmall']);
+            $('#termekkiskep' + id).attr('src', imgpath + d['kepurlsmall']);
         }
         if ('kepek' in d) {
             $('.js-termekimageslider .js-lightbox').each(function(index, elem) {
                 if (index in d['kepek']) {
                     var $this = $(elem),
                         $img = $('img', $this);
-                    $this.attr('href', d['kepek'][index]['kepurl']);
+                    $this.attr('href', imgpath + d['kepek'][index]['kepurl']);
                     $this.attr('title', d['kepek'][index]['leiras']);
-                    $img.attr('src', d['kepek'][index]['minikepurl']);
+                    $img.attr('src', imgpath + d['kepek'][index]['minikepurl']);
                     $img.attr('alt', d['kepek'][index]['leiras']);
                     $img.attr('title', d['kepek'][index]['leiras']);
                 }
             });
         }
+
+        $zoom = $('.zoom').magnify();
     }
 
     if ($.fn.mattaccord) {
@@ -1746,6 +1758,8 @@ $(document).ready(function() {
         $('#ArSlider').val('0;0');
         mkw.lapozas(1);
     });
+
+    $zoom = $('.zoom').magnify();
 
     mkw.initTooltips();
     mkw.showhideFilterClear();
