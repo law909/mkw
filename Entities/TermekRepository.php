@@ -391,6 +391,12 @@ class TermekRepository extends \mkwhelpers\Repository {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('ajanlott', '=', true);
+        if (\mkw\store::isMugenrace()) {
+            $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
+            if ($karkod) {
+                $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
+            }
+        }
 
         $ids = $this->getIdsWithJoins($filter, array());
         $r = array();
@@ -417,6 +423,12 @@ class TermekRepository extends \mkwhelpers\Repository {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addSQL($this->getAkciosFilterSQL());
+        if (\mkw\store::isMugenrace()) {
+            $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
+            if ($karkod) {
+                $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
+            }
+        }
 
         $ids = $this->getIdsWithJoins($filter, array());
         $r = array();
@@ -443,6 +455,12 @@ class TermekRepository extends \mkwhelpers\Repository {
         $kiemeltfilter = new FilterDescriptor();
         $this->addAktivLathatoFilter($kiemeltfilter);
         $kiemeltfilter->addFilter('kiemelt', '=', true);
+        if (\mkw\store::isMugenrace()) {
+            $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
+            if ($karkod) {
+                $kiemeltfilter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
+            }
+        }
         $kiemeltret = $this->getIdsWithJoins($kiemeltfilter->merge($filter), array());
         $r = array();
         foreach ($kiemeltret as $kiemeltr) {
@@ -483,6 +501,12 @@ class TermekRepository extends \mkwhelpers\Repository {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
+        if (\mkw\store::isMugenrace()) {
+            $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
+            if ($karkod) {
+                $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
+            }
+        }
         $order = array('_xx.nepszeruseg' => 'DESC', 'RAND()' => 'ASC');
 
         return $this->getWithJoins($filter, $order, 0, $db);
@@ -492,6 +516,12 @@ class TermekRepository extends \mkwhelpers\Repository {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
+        if (\mkw\store::isMugenrace()) {
+            $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
+            if ($karkod) {
+                $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
+            }
+        }
         $order = array('_xx.id' => 'DESC');
 
         return $this->getWithJoins($filter, $order, 0, $db);
@@ -500,6 +530,12 @@ class TermekRepository extends \mkwhelpers\Repository {
     public function getHasonloTermekek($termek, $db, $arszaz) {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
+        if (\mkw\store::isMugenrace()) {
+            $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
+            if ($karkod) {
+                $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
+            }
+        }
         $a = array();
         if ($termek->getTermekfa1Id() > 1) {
             $a[] = $termek->getTermekfa1();
@@ -557,6 +593,12 @@ class TermekRepository extends \mkwhelpers\Repository {
             $filter = new FilterDescriptor();
             $this->addAktivLathatoFilter($filter);
             $filter->addFilter('nemkaphato', '=', 'false');
+            if (\mkw\store::isMugenrace()) {
+                $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
+                if ($karkod) {
+                    $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
+                }
+            }
 
             if ($rr) {
                 $filter->addFilter('id', 'IN', $rr);
@@ -621,6 +663,12 @@ class TermekRepository extends \mkwhelpers\Repository {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
+        if (\mkw\store::isMugenrace()) {
+            $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
+            if ($karkod) {
+                $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
+            }
+        }
 
         $q = $this->_em->createQuery('SELECT _xx.id'
             . ' FROM Entities\Termek _xx'
@@ -640,6 +688,12 @@ class TermekRepository extends \mkwhelpers\Repository {
         $filter = new FilterDescriptor();
         $this->addAktivLathatoFilter($filter);
         $filter->addFilter('nemkaphato', '=', false);
+        if (\mkw\store::isMugenrace()) {
+            $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
+            if ($karkod) {
+                $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
+            }
+        }
 
         $q = $this->_em->createQuery('SELECT _xx.megvasarlasdb'
             . ' FROM Entities\Termek _xx'

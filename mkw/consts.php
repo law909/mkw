@@ -183,4 +183,5 @@ class consts {
     const MugenraceFooldalKep = 'mugenracefooldalkep';
     const MugenraceFooldalSzoveg = 'mugenracefooldalszoveg';
     const MugenraceLogo = 'mugenracelogo';
+    const MugenraceKatId = 'mugenracekatid';
 }

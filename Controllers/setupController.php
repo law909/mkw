@@ -281,6 +281,22 @@ class setupController extends \mkwhelpers\Controller {
             ));
         }
 
+        $p = $repo->find(\mkw\consts::MugenraceKatId);
+        $inkid = $p ? $p->getErtek() : 0;
+        $mugenracekat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
+        if ($mugenracekat) {
+            $view->setVar('mugenracekat', array(
+                'caption' => $mugenracekat->getNev(),
+                'id' => $mugenracekat->getId()
+            ));
+        }
+        else {
+            $view->setVar('mugenracekat', array(
+                'caption' => '',
+                'id' => ''
+            ));
+        }
+
         $p = $repo->find(\mkw\consts::ValtozatTipusMeret);
         $meretcs = new termekvaltozatadattipusController($this->params);
         $view->setVar('valtozattipusmeretlist', $meretcs->getSelectList(($p ? $p->getErtek() : 0)));
@@ -699,6 +715,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::ImportNewKatId, 0);
+        }
+        $inkid = $this->params->getIntRequestParam('mugenracekatid');
+        if ($inkid) {
+            $mugenracekat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
+            $this->setObj(\mkw\consts::MugenraceKatId, $mugenracekat->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::MugenraceKatId, 0);
         }
         //feed
         $this->setObj(\mkw\consts::Feedhirdb, $this->params->getIntRequestParam('feedhirdb', 20));

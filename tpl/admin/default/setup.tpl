@@ -756,6 +756,12 @@
                                 <span class="setuplabel"><label for="MugenraceFooldalSzovegEdit">{at('Főoldali szöveg')}:</label></span>
                                 <span><textarea id="MugenraceFooldalSzovegEdit" name="mugenracefooldalszoveg" cols="75">{$mugenracefooldalszoveg}</textarea></span>
                             </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label>{at('Mugenrace kategória')}:</label></span>
+                                <span class="js-mugenracekatid">{$mugenracekat.caption|default:'nincs megadva'}</span>
+                                <input name="mugenracekatid" type="hidden" value="{$mugenracekat.id}">
+                            </div>
+
                         </div>
                     </div>
                 {/if}

@@ -146,4 +146,13 @@ class TermekFaRepository extends \mkwhelpers\Repository {
                 . ' ORDER BY id', $rsm);
         return $q->getScalarResult();
     }
+
+    public function getKarkod($id) {
+        $o = $this->find($id);
+        if ($o) {
+            return $o->getKarkod();
+        }
+        return false;
+    }
+
 }

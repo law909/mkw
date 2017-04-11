@@ -543,7 +543,10 @@ class exportController extends \mkwhelpers\Controller {
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
 
         $filter = new FilterDescriptor();
-        $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', '0000100032%'); // Mugenrace
+        $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
+        if ($karkod) {
+            $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
+        }
 
         $res = $tr->getAllValtozatForExport($filter, \mkw\store::getParameter(\mkw\consts::Locale));
 
@@ -641,7 +644,10 @@ class exportController extends \mkwhelpers\Controller {
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
 
         $filter = new FilterDescriptor();
-        $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', '0000100032%'); // Mugenrace
+        $karkod = $this->getRepo('Entities\TermekFa')->getKarkod(\mkw\store::getParameter(\mkw\consts::MugenraceKatId));
+        if ($karkod) {
+            $filter->addFilter(array('termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'), 'LIKE', $karkod . '%'); // Mugenrace
+        }
 
         $res = $tr->getAllValtozatForExport($filter, \mkw\store::getParameter(\mkw\consts::Locale));
 
