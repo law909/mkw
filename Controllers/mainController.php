@@ -418,8 +418,10 @@ class mainController extends \mkwhelpers\Controller {
             $ret['kepurlmedium'] = $termekvaltozat->getKepurlMedium();
             $ret['kepurllarge'] = $termekvaltozat->getKepurlLarge();
             $ret['kepurlsmall'] = $termekvaltozat->getKepurlSmall();
+            $ret['kepurlorig'] = $termekvaltozat->getKepurl();
         }
         $ret['kepek'] = \mkw\store::getEm()->getRepository('Entities\Termek')->getKepekKiveve($termek, $termekvaltozat);
+        $ret['imagepath'] = \mkw\store::getConfigValue('main.imagepath', '');
 
 		$valtozatok = $termek->getValtozatok();
 		foreach ($valtozatok as $valtozat) {

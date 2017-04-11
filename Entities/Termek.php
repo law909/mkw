@@ -577,6 +577,7 @@ class Termek {
         $x['id'] = $this->getId();
         $x['caption'] = $this->getNev();
         $x['slug'] = $this->getSlug();
+        $x['eredetikepurl'] = $this->getKepurl();
         $x['kepurl'] = $this->getKepurlLarge();
         $x['fullkepurl'] = \mkw\store::getFullUrl($this->getKepurlLarge());
         $x['kozepeskepurl'] = $this->getKepUrlMedium();

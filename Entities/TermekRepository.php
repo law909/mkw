@@ -803,6 +803,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                     $egyed['kozepeskepurl'] = $kep->getUrlMedium();
                     $egyed['kiskepurl'] = $kep->getUrlSmall();
                     $egyed['minikepurl'] = $kep->getUrlMini();
+                    $egyed['eredetikepurl'] = $kep->getUrl();
                     $egyed['leiras'] = $kep->getLeiras();
                     $altomb[] = $egyed;
                 }
@@ -813,6 +814,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                 $egyed['kozepeskepurl'] = $termek->getKepUrlMedium();
                 $egyed['kiskepurl'] = $termek->getKepUrlSmall();
                 $egyed['minikepurl'] = $termek->getKepurlMini();
+                $egyed['eredetikepurl'] = $termek->getKepurl();
                 $egyed['leiras'] = $termek->getNev();
                 $altomb[] = $egyed;
             }

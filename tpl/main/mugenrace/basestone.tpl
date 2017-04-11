@@ -18,6 +18,7 @@
         <link rel="stylesheet" href="/themes/main/mugenrace/royalslider/skins/default-inverted/rs-default-inverted.css">
         <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace/mgr.css">
         <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace/style.css">
+        <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace/magnify.css">
 		{block "css"}{/block}
         {if ($dev)}
         <script src="/js/main/mugenrace/jquery-1.11.1.min.js"></script>
@@ -30,6 +31,8 @@
 		<script src="/js/main/mugenrace/jquery.slider.min.js"></script>
         <script src="/js/main/mugenrace/jquery.royalslider.min.js"></script>
         <script src="/js/main/mugenrace/jquery.debounce.min.js"></script>
+        <script src="/js/main/mugenrace/jquery.magnify.js"></script>
+        <script src="/js/main/mugenrace/jquery.magnify-mobile.js"></script>
         <script src="/js/main/mugenrace/bootstrap-transition.js"></script>
 		<script src="/js/main/mugenrace/bootstrap-modal.js"></script>
 		<script src="/js/main/mugenrace/bootstrap-tab.js"></script>
