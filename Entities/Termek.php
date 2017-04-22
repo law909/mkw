@@ -445,19 +445,20 @@ class Termek {
         $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['ingyenszallitas'] = (\mkw\store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
-        if ($this->getKeszlet() > 0) {
-            $x['szallitasiido'] = 1;
+
+        $x['szallitasiido'] = 0;
+        if (!is_null($valtozat)) {
+            if ($valtozat->getKeszlet() > 0) {
+                $x['szallitasiido'] = 1;
+            }
         }
-        else {
+        if ($x['szallitasiido'] === 0) {
             if ($this->szallitasiido) {
                 $x['szallitasiido'] = $this->szallitasiido;
             }
             else {
                 if ($this->gyarto && $this->gyarto->getSzallitasiido()) {
                     $x['szallitasiido'] = $this->gyarto->getSzallitasiido();
-                }
-                else {
-                    $x['szallitasiido'] = 0;
                 }
             }
         }
@@ -530,6 +531,11 @@ class Termek {
                         $vtt[$valt->getAdatTipus2Id()]['value'][$valt->getErtek2()] = $valt->getErtek2();
                         $vtt[$valt->getAdatTipus2Id()]['selected'][$valt->getErtek2()] = $db === 1;
                     }
+                    if ($db === 1) {
+                        if ($valt->getKeszlet() > 0) {
+                            $x['szallitasiido'] = 1;
+                        }
+                    }
                 }
             }
             $x['mindenvaltozat'] = $vtt;
@@ -596,19 +602,20 @@ class Termek {
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['ingyenszallitas'] = (\mkw\store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
         $x['husegpont'] = floor($x['bruttohuf'] * $this->getHparany() / 100);
-        if ($this->getKeszlet() > 0) {
-            $x['szallitasiido'] = 1;
+
+        $x['szallitasiido'] = 0;
+        if (!is_null($valtozat)) {
+            if ($valtozat->getKeszlet() > 0) {
+                $x['szallitasiido'] = 1;
+            }
         }
-        else {
+        if ($x['szallitasiido'] === 0) {
             if ($this->szallitasiido) {
                 $x['szallitasiido'] = $this->szallitasiido;
             }
             else {
                 if ($this->gyarto && $this->gyarto->getSzallitasiido()) {
                     $x['szallitasiido'] = $this->gyarto->getSzallitasiido();
-                }
-                else {
-                    $x['szallitasiido'] = 0;
                 }
             }
         }
