@@ -114,6 +114,18 @@
 					<input id="EmailEdit" name="partneremail" value="{$egyed.partneremail}">
 				</td>
 			</tr>
+            {if ($maintheme === 'mkwcansas')}
+            <tr>
+                <td><label for="FoxpostTerminalEdit">{at('Foxpost terminál')}:</label></td>
+                <td colspan="7"><select id="FoxpostTerminalEdit" name="foxpostterminal">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $foxpostterminallist as $_mk}
+                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                        {/foreach}
+                    </select>
+                </td>
+            </tr>
+            {/if}
 			<tr>
 				<td><label for="RaktarEdit">{at('Raktár')}:</label></td>
 				<td colspan="7"><select id="RaktarEdit" name="raktar" required="required">

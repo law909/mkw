@@ -367,6 +367,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['lastmodstr'] = $t->getLastmodStr();
         $x['createdstr'] = $t->getCreatedStr();
         $x['kupon'] = $t->getKupon();
+        $x['foxpostterminalid'] = $t->getFoxpostterminalId();
         if ($oper === $this->inheritOperation) {
             $x['fakekintlevoseg'] = false;
             $x['fakekifizetve'] = false;
@@ -498,6 +499,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
         else {
             $obj->removeUzletkoto();
+        }
+        $ck = \mkw\store::getEm()->getRepository('Entities\FoxpostTerminal')->find($this->params->getIntRequestParam('foxpostterminal'));
+        if ($ck) {
+            $obj->setFoxpostterminal($ck);
+        }
+        else {
+            $obj->removeFoxpostterminal();
         }
 
         if ($this->params->getNumRequestParam('uzletkotojutalek') !== 0) {
@@ -1063,6 +1071,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList(($record ? $record->getReportfile() : ''),
             ($record ? $record->getBizonylattipusId() : $this->biztipus)));
         $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
+
+        $foxpostctrl = new foxpostController($this->params);
+        $view->setVar('foxpostterminallist', $foxpostctrl->getSelectList(($record ? $record->getFoxpostterminalId() : 0)));
 
         if (method_exists($this, 'onGetKarb')) {
             $egyed = $this->onGetKarb($view, $record, $egyed, $oper, $id, $stornotip);

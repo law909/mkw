@@ -5,7 +5,7 @@ namespace Controllers;
 class foxpostController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
-        $this->setEntityName('Entities\Bizonylatfej');
+        $this->setEntityName('Entities\FoxpostTerminal');
         $this->setListBodyRowVarName('_egyed');
         parent::__construct($params);
     }
@@ -128,6 +128,19 @@ class foxpostController extends \mkwhelpers\MattableController {
 		echo json_encode(array(
             'html' => $view->getTemplateResult()
         ));
+    }
+
+    public function getSelectList($selid) {
+        $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
+        $res = array();
+        foreach ($rec as $sor) {
+            $res[] = array(
+                'id' => $sor->getId(),
+                'caption' => $sor->getNev() . ' ' . $sor->getCim(),
+                'selected' => ($sor->getId() == $selid)
+            );
+        }
+        return $res;
     }
 
 }
