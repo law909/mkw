@@ -75,6 +75,8 @@ class Bizonylattipus {
     private $bizonylatfejek;
     /** @ORM\Column(type="string",length=200,nullable=true) */
     private $tplname;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showfoxpostterminaleditor = false;
 
     public function __construct() {
         $this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -102,6 +104,7 @@ class Bizonylattipus {
         $view->setVar('showcsomagbutton', $this->getShowcsomagbutton());
         $view->setVar('showfeketelistabutton', $this->getShowfeketelistabutton());
         $view->setVar('showkupon', $this->getShowkupon());
+        $view->setVar('showfoxpostterminaleditor', $this->getShowfoxpostterminaleditor());
     }
 
     public function getId() {
@@ -384,5 +387,18 @@ class Bizonylattipus {
         $this->showkupon = $showkupon;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getShowfoxpostterminaleditor() {
+        return $this->showfoxpostterminaleditor;
+    }
+
+    /**
+     * @param mixed $showfoxpostterminaleditor
+     */
+    public function setShowfoxpostterminaleditor($showfoxpostterminaleditor) {
+        $this->showfoxpostterminaleditor = $showfoxpostterminaleditor;
+    }
 
 }

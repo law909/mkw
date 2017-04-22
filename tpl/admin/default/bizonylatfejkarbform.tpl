@@ -114,7 +114,7 @@
 					<input id="EmailEdit" name="partneremail" value="{$egyed.partneremail}">
 				</td>
 			</tr>
-            {if ($maintheme === 'mkwcansas')}
+            {if ($showfoxpostterminaleditor)}
             <tr>
                 <td><label for="FoxpostTerminalEdit">{at('Foxpost terminál')}:</label></td>
                 <td colspan="7"><select id="FoxpostTerminalEdit" name="foxpostterminal">
