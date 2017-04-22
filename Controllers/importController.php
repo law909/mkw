@@ -2732,6 +2732,7 @@ class importController extends \mkwhelpers\Controller {
                         $o = new \Entities\Szotar();
                         $o->setMit($szin);
                         \mkw\store::getEm()->persist($o);
+                        \mkw\store::getEm()->flush();
                         \mkw\store::writelog($szin, 'legavenue_forditani.txt');
                     }
                     if (!$rep->find($meret)) {
@@ -2739,15 +2740,10 @@ class importController extends \mkwhelpers\Controller {
                         $o = new \Entities\Szotar();
                         $o->setMit($meret);
                         \mkw\store::getEm()->persist($o);
+                        \mkw\store::getEm()->flush();
                         \mkw\store::writelog($meret, 'legavenue_forditani.txt');
                     }
-                    if (($db % $batchsize) === 0) {
-                        \mkw\store::getEm()->flush();
-                        \mkw\store::getEm()->clear();
-                    }
                 }
-                \mkw\store::getEm()->flush();
-                \mkw\store::getEm()->clear();
             }
             \unlink('legavenue.xml');
 
