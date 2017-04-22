@@ -1163,6 +1163,7 @@ $(document).ready(function() {
 
     function changeTermekAdat(id, d) {
         $('#termekprice' + id).text(d['price']);
+        $('#termekszallitasiido' + id).text(d['szallitasiido']);
         if ('kepurllarge' in d) {
             $('#termekkeplink' + id).attr('href', d['kepurllarge']);
         }
