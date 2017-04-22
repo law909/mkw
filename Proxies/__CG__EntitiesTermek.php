@@ -1852,6 +1852,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getNettoArByArsav($valtozat = NULL, $arsavazon = NULL, $valutanem = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoArByArsav', [$valtozat, $arsavazon, $valutanem]);
+
+        return parent::getNettoArByArsav($valtozat, $arsavazon, $valutanem);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getKedvezmenynelkuliNettoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL)
     {
 
@@ -1869,6 +1880,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoAr', [$valtozat, $partner, $valutanem, $arsavazon]);
 
         return parent::getBruttoAr($valtozat, $partner, $valutanem, $arsavazon);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBruttoArByArsav($valtozat = NULL, $arsavazon = NULL, $valutanem = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoArByArsav', [$valtozat, $arsavazon, $valutanem]);
+
+        return parent::getBruttoArByArsav($valtozat, $arsavazon, $valutanem);
     }
 
     /**
