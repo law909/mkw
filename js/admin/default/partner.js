@@ -50,6 +50,36 @@ function varosAutocomplete(irszam,varos) {
 	});
 }
 
+function termekAutocompleteRenderer(ul, item) {
+    if (item.nemlathato) {
+        return $('<li>')
+            .append('<a class="nemelerhetovaltozat">' + item.label + '</a>')
+            .appendTo( ul );
+    }
+    else {
+        return $('<li>')
+            .append('<a>' + item.label + '</a>')
+            .appendTo( ul );
+    }
+}
+
+function termekAutocompleteConfig() {
+    return {
+        minLength: 4,
+        autoFocus: true,
+        source: '/admin/bizonylattetel/gettermeklist',
+        select: function(event, ui) {
+            var termek = ui.item;
+            if (termek) {
+                var $this = $(this),
+                    sorid = $this.attr('name').split('_')[1];
+                $this.siblings().val(termek.id);
+            }
+        }
+    };
+}
+
+
 $(document).ready(function(){
 	var dialogcenter = $('#dialogcenter');
 	var partner={
@@ -60,6 +90,7 @@ $(document).ready(function(){
 			beforeShow:function() {
 				var szuletesiidoedit=$('#SzuletesiidoEdit'),
                     termekcsoportkedvezmenytab = $('#KedvezmenyTab'),
+                    termekkedvezmenytab = $('#TermekKedvezmenyTab'),
                     mijszokleveltab = $('#MIJSZOklevelTab');
 
                 szuletesiidoedit.datepicker($.datepicker.regional['hu']);
@@ -146,6 +177,61 @@ $(document).ready(function(){
 							});
 						}
 					});
+				$('.js-termekcsoportkedvezmenynewbutton, .js-termekcsoportkedvezmenydelbutton').button();
+                termekkedvezmenytab.on('click', '.js-termekkedvezmenynewbutton', function(e) {
+                    var $this = $(this);
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/admin/partnertermekkedvezmeny/getemptyrow',
+                        type: 'GET',
+                        success: function(data) {
+                            var tbody = $('#TermekKedvezmenyTab');
+                            tbody.append(data);
+                            $('.js-termekkedvezmenynewbutton,.js-termekkedvezmenydelbutton').button();
+                            $('.js-termekkedvezmenytermekselect').autocomplete(termekAutocompleteConfig())
+                                .autocomplete( "instance" )._renderItem = termekAutocompleteRenderer;
+                            $this.remove();
+                        }
+                    });
+                })
+                    .on('click', '.js-termekkedvezmenydelbutton', function(e) {
+                        e.preventDefault();
+                        var argomb = $(this),
+                            arid = argomb.attr('data-id');
+                        if (argomb.attr('data-source') === 'client') {
+                            $('#termekkedvezmenytable_' + arid).remove();
+                        }
+                        else {
+                            dialogcenter.html('Biztos, hogy törli a kedvezményt?').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'Igen': function() {
+                                        $.ajax({
+                                            url: '/admin/partnertermekkedvezmeny/save',
+                                            type: 'POST',
+                                            data: {
+                                                id: arid,
+                                                oper: 'del'
+                                            },
+                                            success: function(data) {
+                                                $('#termekkedvezmenytable_' + data).remove();
+                                            }
+                                        });
+                                        $(this).dialog('close');
+                                    },
+                                    'Nem': function() {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                    });
+                $('.js-termekkedvezmenynewbutton, .js-termekkedvezmenydelbutton').button();
+                $('.js-termekkedvezmenytermekselect').autocomplete(termekAutocompleteConfig())
+                    .autocomplete( "instance" )._renderItem = termekAutocompleteRenderer;
+
                 mijszokleveltab.on('click', '.js-mijszoklevelnewbutton', function(e) {
                         var $this = $(this);
                         e.preventDefault();

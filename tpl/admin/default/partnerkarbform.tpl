@@ -10,7 +10,8 @@
 			<li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
 			<li><a href="#ElerhetosegTab">{at('Elérhetőségek')}</a></li>
             <li><a href="#MegjegyzesTab">{at('Megjegyzés')}</a></li>
-			<li><a href="#KedvezmenyTab">{at('Kedvezmények')}</a></li>
+			<li><a href="#KedvezmenyTab">{at('Termékkategória kedvezmények')}</a></li>
+            <li><a href="#TermekKedvezmenyTab">{at('Termék kedvezmények')}</a></li>
             {if ($setup.mijsz)}
                 <li><a href="#MIJSZOklevelTab">{at('Oklevelek')}</a></li>
             {/if}
@@ -246,6 +247,14 @@
 				<span class="ui-icon ui-icon-circle-plus"></span>
 			</a>
 		</div>
+        <div id="TermekKedvezmenyTab" class="mattkarb-page" data-visible="visible">
+            {foreach $partner.termekkedvezmenyek as $kd}
+                {include 'partnertermekkedvezmenykarb.tpl'}
+            {/foreach}
+            <a class="js-termekkedvezmenynewbutton" href="#" title="{at('Új')}">
+                <span class="ui-icon ui-icon-circle-plus"></span>
+            </a>
+        </div>
         {if ($setup.mijsz)}
             <div id="MIJSZOklevelTab" class="mattkarb-page" data-visible="visible">
                 {foreach $partner.mijszoklevelek as $mijszoklevel}

@@ -15,6 +15,7 @@ class partnerController extends \mkwhelpers\MattableController {
 
     protected function loadVars($t) {
         $kedvCtrl = new \Controllers\partnertermekcsoportkedvezmenyController($this->params);
+        $termekkedvCtrl = new \Controllers\partnertermekkedvezmenyController($this->params);
         $mijszokCtrl = new \Controllers\partnermijszoklevelController($this->params);
         $x = array();
         if (!$t) {
@@ -108,6 +109,11 @@ class partnerController extends \mkwhelpers\MattableController {
             $kedv[] = $kedvCtrl->loadVars($tar, true);
         }
         $x['termekcsoportkedvezmenyek'] = $kedv;
+        $kedv = array();
+        foreach ($t->getTermekkedvezmenyek() as $tar) {
+            $kedv[] = $termekkedvCtrl->loadVars($tar, true);
+        }
+        $x['termekkedvezmenyek'] = $kedv;
 
         if (\mkw\store::isMIJSZ()) {
             $okl = array();
@@ -294,6 +300,29 @@ class partnerController extends \mkwhelpers\MattableController {
                             $kedv->setPartner($obj);
                             $kedv->setTermekcsoport($termekcsoport);
                             $kedv->setKedvezmeny($this->params->getNumRequestParam('kedvezmeny_' . $kdid));
+                            $this->getEm()->persist($kedv);
+                        }
+                    }
+                }
+            }
+            $kdids = $this->params->getArrayRequestParam('termekkedvezmenyid');
+            foreach ($kdids as $kdid) {
+                $oper = $this->params->getStringRequestParam('termekkedvezmenyoper_' . $kdid);
+                $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termekkedvezmenytermek_' . $kdid));
+                if ($termek) {
+                    if ($oper === 'add') {
+                        $kedv = new \Entities\PartnerTermekKedvezmeny();
+                        $kedv->setPartner($obj);
+                        $kedv->setTermek($termek);
+                        $kedv->setKedvezmeny($this->params->getNumRequestParam('termekkedvezmeny_' . $kdid));
+                        $this->getEm()->persist($kedv);
+                    }
+                    elseif ($oper === 'edit') {
+                        $kedv = $this->getEm()->getRepository('Entities\PartnerTermekKedvezmeny')->find($kdid);
+                        if ($kedv) {
+                            $kedv->setPartner($obj);
+                            $kedv->setTermek($termek);
+                            $kedv->setKedvezmeny($this->params->getNumRequestParam('termekkedvezmeny_' . $kdid));
                             $this->getEm()->persist($kedv);
                         }
                     }

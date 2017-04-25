@@ -263,6 +263,9 @@ $router->map('POST', '/admin/termekar/save', 'termekarController#save', 'adminte
 $router->map('GET', '/admin/partnertermekcsoportkedvezmeny/getemptyrow', 'partnertermekcsoportkedvezmenyController#getemptyrow', 'adminpartnertermekcsoportkedvezmenygetemptyrow');
 $router->map('POST', '/admin/partnertermekcsoportkedvezmeny/save', 'partnertermekcsoportkedvezmenyController#save', 'adminpartnertermekcsoportkedvezmenysave');
 
+$router->map('GET', '/admin/partnertermekkedvezmeny/getemptyrow', 'partnertermekkedvezmenyController#getemptyrow', 'adminpartnertermekkedvezmenygetemptyrow');
+$router->map('POST', '/admin/partnertermekkedvezmeny/save', 'partnertermekkedvezmenyController#save', 'adminpartnertermekkedvezmenysave');
+
 $router->map('GET', '/admin/partnermijszoklevel/getemptyrow', 'partnermijszoklevelController#getemptyrow', 'adminpartnermijszoklevelgetemptyrow');
 $router->map('POST', '/admin/partnermijszoklevel/save', 'partnermijszoklevelController#save', 'adminpartnermijszoklevelsave');
 

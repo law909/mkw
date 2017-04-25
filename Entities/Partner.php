@@ -250,6 +250,9 @@ class Partner {
 	/** @ORM\OneToMany(targetEntity="PartnerTermekcsoportKedvezmeny", mappedBy="partner", cascade={"persist", "remove"}) */
 	private $termekcsoportkedvezmenyek;
 
+    /** @ORM\OneToMany(targetEntity="PartnerTermekKedvezmeny", mappedBy="partner", cascade={"persist", "remove"}) */
+    private $termekkedvezmenyek;
+
     /**
      * @ORM\ManyToOne(targetEntity="Partnertipus",inversedBy="partnerek")
      * @ORM\JoinColumn(name="partnertipus_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -306,6 +309,7 @@ class Partner {
 		$this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->termekertesitok = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->termekcsoportkedvezmenyek = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->termekkedvezmenyek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->mijszoklevelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->kontaktok = new \Doctrine\Common\Collections\ArrayCollection();
 	}
@@ -1035,6 +1039,13 @@ class Partner {
      */
     public function getTermekcsoportkedvezmenyek() {
         return $this->termekcsoportkedvezmenyek;
+    }
+
+    /**
+     * @return \Entities\PartnerTermekKedvezmeny
+     */
+    public function getTermekkedvezmenyek() {
+        return $this->termekkedvezmenyek;
     }
 
     public function getPartnertipus() {
