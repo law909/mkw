@@ -1641,6 +1641,20 @@ class Termek {
     }
 
     /**
+     * @param \Entities\Partner $partner
+     */
+    public function getTermekKedvezmeny($partner = null) {
+        $kedvezmeny = 0;
+        if ($partner) {
+            $kdv = \mkw\store::getEm()->getRepository('Entities\PartnerTermekKedvezmeny')->getByPartnerTermek($partner, $this);
+            if ($kdv) {
+                $kedvezmeny = $kdv->getKedvezmeny();
+            }
+        }
+        return $kedvezmeny * 1;
+    }
+
+    /**
      * @param \Entities\TermekValtozat $valtozat
      * @param \Entities\Partner $partner
      * @param \Entities\Valutanem $valutanem
@@ -1649,7 +1663,10 @@ class Termek {
     public function getNettoAr($valtozat = null, $partner = null, $valutanem = null) {
         $netto = $this->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem);
 
-        $kdv = $this->getTermekcsoportKedvezmeny($partner);
+        $kdv = $this->getTermekKedvezmeny($partner);
+        if (!$kdv) {
+            $kdv = $this->getTermekcsoportKedvezmeny($partner);
+        }
         if ($kdv) {
             $netto = $netto * (100 - $kdv) / 100;
         }
@@ -1721,7 +1738,10 @@ class Termek {
     public function getBruttoAr($valtozat = null, $partner = null, $valutanem = null, $arsavazon = null) {
         $brutto = $this->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem, $arsavazon);
 
-        $kdv = $this->getTermekcsoportKedvezmeny($partner);
+        $kdv = $this->getTermekKedvezmeny($partner);
+        if (!$kdv) {
+            $kdv = $this->getTermekcsoportKedvezmeny($partner);
+        }
         if ($kdv) {
             $brutto = $brutto * (100 - $kdv) / 100;
         }
