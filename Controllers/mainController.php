@@ -307,22 +307,15 @@ class mainController extends \mkwhelpers\Controller {
             else {
                 $t['valutanemnev'] = 'X';
             }
-            if ($partner->getOrszagId() == \mkw\store::getParameter(\mkw\consts::Spanyolorszag)) {
-                if ($partner && $partner->getSzamlatipus()) {
-                    $t['ar'] = $termek->getNettoAr(null, $partner);
-                    $t['eredetiar'] = $termek->getKedvezmenynelkuliNettoAr(null, $partner, $valutanem);
-                }
-                else {
-                    $t['ar'] = $termek->getBruttoAr(null, $partner);
-                    $t['eredetiar'] = $termek->getKedvezmenynelkuliBruttoAr(null, $partner, $valutanem);
-                }
-                $t['kedvezmeny'] = $termek->getTermekcsoportKedvezmeny($partner);
+            if ($partner && $partner->getSzamlatipus()) {
+                $t['ar'] = $termek->getNettoAr(null, $partner);
+                $t['eredetiar'] = $termek->getKedvezmenynelkuliNettoAr(null, $partner, $valutanem);
             }
             else {
-                $t['ar'] = $termek->getKedvezmenynelkuliNettoAr(null, $partner, $valutanem);
-                $t['eredetiar'] = $termek->getBruttoArByArsav(null, null, $valutanem);
-                $t['kedvezmeny'] = 100 - ($t['ar'] / $t['eredetiar'] * 100);
+                $t['ar'] = $termek->getBruttoAr(null, $partner);
+                $t['eredetiar'] = $termek->getKedvezmenynelkuliBruttoAr(null, $partner, $valutanem);
             }
+            $t['kedvezmeny'] = $termek->getTermekcsoportKedvezmeny($partner);
             $valtozatok = $termek->getValtozatok();
             $ma = new \DateTime();
             foreach ($valtozatok as $valt) {

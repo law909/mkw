@@ -172,9 +172,6 @@ class kosarController extends \mkwhelpers\MattableController {
         }
         $v->setVar('tetellista', $s);
         $v->setVar('valutanem', $valutanem);
-        if (\mkw\store::isSuperzoneB2B()) {
-            $v->setVar('spanyol', $partner->getOrszagId() == \mkw\store::getParameter(\mkw\consts::Spanyolorszag));
-        }
         $tc = new termekController($this->params);
         $v->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($tids));
         $v->printTemplateResult(false);

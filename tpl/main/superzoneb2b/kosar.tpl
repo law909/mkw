@@ -12,11 +12,7 @@
             </a>
         </div>
         <table class="table table-bordered">
-            {if ($spanyol)}
-                {include 'kosartetellistsp.tpl'}
-            {else}
-                {include 'kosartetellist.tpl'}
-            {/if}
+            {include 'kosartetellistsp.tpl'}
         </table>
         <div class="megrendelemcontainer">
             <a href="{$prevuri}" class="btn btn-default">Continue shopping</a>
