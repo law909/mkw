@@ -363,7 +363,24 @@ class mainController extends \mkwhelpers\Controller {
 		$valtozatid = $this->params->getIntRequestParam('vid');
 		$termek = \mkw\store::getEm()->getRepository('Entities\Termek')->find($termekid);
 		$valtozat = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->find($valtozatid);
-		$ret = array();
+        $ret = array();
+
+        if ($valtozat && $valtozat->getKeszlet() > 0) {
+            $ret['szallitasiido'] = 1;
+        }
+        else {
+            if ($termek->getSzallitasiido()) {
+                $ret['szallitasiido'] = $termek->getSzallitasiido();
+            }
+            else {
+                if ($termek->getGyarto() && $termek->getGyarto()->getSzallitasiido()) {
+                    $ret['szallitasiido'] = $termek->getGyarto()->getSzallitasiido();
+                }
+                else {
+                    $ret['szallitasiido'] = 0;
+                }
+            }
+        }
 		$ret['price'] = number_format($termek->getBruttoAr($valtozat, \mkw\store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
         $ret['kepurlmedium'] = $valtozat->getKepurlMedium();
         $ret['kepurllarge'] = $valtozat->getKepurlLarge();
