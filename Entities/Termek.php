@@ -1654,6 +1654,14 @@ class Termek {
         return $kedvezmeny * 1;
     }
 
+    public function getKedvezmeny($partner = null) {
+        $kedvezmeny = $this->getTermekKedvezmeny($partner);
+        if (!$kedvezmeny) {
+            $kedvezmeny = $this->getTermekcsoportKedvezmeny($partner);
+        }
+        return $kedvezmeny;
+    }
+
     /**
      * @param \Entities\TermekValtozat $valtozat
      * @param \Entities\Partner $partner
@@ -1663,10 +1671,7 @@ class Termek {
     public function getNettoAr($valtozat = null, $partner = null, $valutanem = null) {
         $netto = $this->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem);
 
-        $kdv = $this->getTermekKedvezmeny($partner);
-        if (!$kdv) {
-            $kdv = $this->getTermekcsoportKedvezmeny($partner);
-        }
+        $kdv = $this->getKedvezmeny($partner);
         if ($kdv) {
             $netto = $netto * (100 - $kdv) / 100;
         }
@@ -1738,10 +1743,7 @@ class Termek {
     public function getBruttoAr($valtozat = null, $partner = null, $valutanem = null, $arsavazon = null) {
         $brutto = $this->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem, $arsavazon);
 
-        $kdv = $this->getTermekKedvezmeny($partner);
-        if (!$kdv) {
-            $kdv = $this->getTermekcsoportKedvezmeny($partner);
-        }
+        $kdv = $this->getKedvezmeny($partner);
         if ($kdv) {
             $brutto = $brutto * (100 - $kdv) / 100;
         }
