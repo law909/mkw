@@ -160,7 +160,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
                 $r = array(
                     'netto' => $termek->getNettoAr($valtozat),
                     'brutto' => $termek->getBruttoAr($valtozat),
-                    'kedvezmeny' => $termek->getTermekcsoportKedvezmeny($partner),
+                    'kedvezmeny' => $termek->getKedvezmeny($partner),
                     'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem),
                     'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem)
                 );
@@ -190,7 +190,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
                 $r = array(
                     'netto' => $termek->getNettoAr($valtozat, $partner, $valutanem),
                     'brutto' => $termek->getBruttoAr($valtozat, $partner, $valutanem),
-                    'kedvezmeny' => $termek->getTermekcsoportKedvezmeny($partner),
+                    'kedvezmeny' => $termek->getKedvezmeny($partner),
                     'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem),
                     'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem)
                 );

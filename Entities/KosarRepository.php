@@ -220,7 +220,7 @@ class KosarRepository extends \mkwhelpers\Repository {
                         $k->setEnettoegysar($termek->getKedvezmenynelkuliNettoAr($termekvaltozat, $partner));
                     }
 
-                    $k->setKedvezmeny($termek->getTermekcsoportKedvezmeny($partner));
+                    $k->setKedvezmeny($termek->getKedvezmeny($partner));
                     if ($mennyiseg) {
                         $k->setMennyiseg($mennyiseg);
                     }
@@ -312,7 +312,7 @@ class KosarRepository extends \mkwhelpers\Repository {
                     }
 
                     if (!$kedvezmeny) {
-                        $kedvezmeny = $termek->getTermekcsoportKedvezmeny($partner);
+                        $kedvezmeny = $termek->getKedvezmeny($partner);
                     }
                     $k->setKedvezmeny($kedvezmeny);
 
