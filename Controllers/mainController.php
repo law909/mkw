@@ -315,7 +315,7 @@ class mainController extends \mkwhelpers\Controller {
                 $t['ar'] = $termek->getBruttoAr(null, $partner);
                 $t['eredetiar'] = $termek->getKedvezmenynelkuliBruttoAr(null, $partner, $valutanem);
             }
-            $t['kedvezmeny'] = $termek->getTermekcsoportKedvezmeny($partner);
+            $t['kedvezmeny'] = $termek->getKedvezmeny($partner);
             $valtozatok = $termek->getValtozatok();
             $ma = new \DateTime();
             foreach ($valtozatok as $valt) {
