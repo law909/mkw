@@ -49,6 +49,10 @@
                 <table id="jogcimgrid"></table>
                 <div id="jogcimgridpager"></div>
             </div>
+            <div class="egyebadat-grid">
+                <table id="penztargrid"></table>
+                <div id="penztargridpager"></div>
+            </div>
         {/if}
         <div class="egyebadat-grid">
             <table id="szotargrid"></table>

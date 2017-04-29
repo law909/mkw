@@ -1234,6 +1234,39 @@ $().ready(
                 caption: 'Termékrecept típusok'});
             createNav(_trt, trtgrid);
 
+            // Penztar grid
+            var _penztar = {
+                grid: '#penztargrid',
+                pager: '#penztargridpager'
+            };
+            var penztargrid = $(_penztar.grid).jqGrid({
+                url: '/admin/penztar/jsonlist',
+                editurl: '/admin/penztar/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Pénztár neve', width: 160,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 50},
+                        formoptions: {rowpos: 1, label: 'Pénztár neve:'}},
+                    {name: 'valutanem', index: 'valutanem', label: 'Valutanem', width: 60,
+                        editable: true,
+                        edittype: 'select',
+                        editoptions: {size: 4, dataUrl: '/admin/valutanem/htmllist'},
+                        formoptions: {rowpos: 2, label: 'Valutanem:'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _penztar.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Pénztárak'});
+            createNav(_penztar, penztargrid);
+
             // Altalanos
             $('.ui-search-toolbar').hide();
             $('.ui-jqgrid-titlebar').on('click', function(e) {
