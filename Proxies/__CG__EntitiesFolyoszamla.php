@@ -64,10 +64,10 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'datum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'irany', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'partner', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'netto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afa', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'brutto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afahuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'storno', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'rontott'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'datum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'penztarbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'penztarbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'irany', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'partner', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'netto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afa', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'brutto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afahuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'storno', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'rontott'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'datum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'irany', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'partner', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'netto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afa', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'brutto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afahuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'storno', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'rontott'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'id', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'datum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottdatum', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'hivatkozottbizonylat', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bankbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'penztarbizonylatfej', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'penztarbizonylattetel', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'irany', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'partner', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'uzletkoto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'netto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afa', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'brutto', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'nettohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'afahuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'bruttohuf', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'storno', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Folyoszamla' . "\0" . 'rontott'];
     }
 
     /**
@@ -846,6 +846,94 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHivatkozottdatum', [$adat]);
 
         return parent::setHivatkozottdatum($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPenztarbizonylatfej()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPenztarbizonylatfej', []);
+
+        return parent::getPenztarbizonylatfej();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPenztarbizonylatfejId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPenztarbizonylatfejId', []);
+
+        return parent::getPenztarbizonylatfejId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPenztarbizonylatfej($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPenztarbizonylatfej', [$val]);
+
+        return parent::setPenztarbizonylatfej($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removePaneztarbizonylatfej()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePaneztarbizonylatfej', []);
+
+        return parent::removePaneztarbizonylatfej();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPenztarbizonylattetel()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPenztarbizonylattetel', []);
+
+        return parent::getPenztarbizonylattetel();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPenztarbizonylattetelId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPenztarbizonylattetelId', []);
+
+        return parent::getPenztarbizonylattetelId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPenztarbizonylattetel($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPenztarbizonylattetel', [$val]);
+
+        return parent::setPenztarbizonylattetel($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removePenztarbizonylattetel()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removePenztarbizonylattetel', []);
+
+        return parent::removePenztarbizonylattetel();
     }
 
 }

@@ -53,6 +53,20 @@ class Folyoszamla {
     private $bankbizonylattetel;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Penztarbizonylatfej",inversedBy="folyoszamlak")
+     * @ORM\JoinColumn(name="penztarbizonylatfej_id", referencedColumnName="id",nullable=true,onDelete="cascade")
+     * @var \Entities\Penztarbizonylatfej
+     */
+    private $penztarbizonylatfej;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Penztarbizonylattetel",inversedBy="folyoszamlak")
+     * @ORM\JoinColumn(name="penztarbizonylattetel_id", referencedColumnName="id",nullable=true,onDelete="cascade")
+     * @var \Entities\Penztarbizonylattetel
+     */
+    private $penztarbizonylattetel;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Bizonylattipus")
      * @ORM\JoinColumn(name="bizonylattipus_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Bizonylattipus
@@ -593,6 +607,66 @@ class Folyoszamla {
                 $adat = date(\mkw\store::$DateFormat);
             }
             $this->hivatkozottdatum = new \DateTime(\mkw\store::convDate($adat));
+        }
+    }
+
+    /**
+     * @return Penztarbizonylatfej
+     */
+    public function getPenztarbizonylatfej() {
+        return $this->penztarbizonylatfej;
+    }
+
+    public function getPenztarbizonylatfejId() {
+        if ($this->penztarbizonylatfej) {
+            return $this->penztarbizonylatfej->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Penztarbizonylatfej $val
+     */
+    public function setPenztarbizonylatfej($val) {
+        if ($this->penztarbizonylatfej !== $val) {
+            $this->penztarbizonylatfej = $val;
+        }
+    }
+
+    public function removePaneztarbizonylatfej() {
+        if ($this->penztarbizonylatfej !== null) {
+            $val = $this->penztarbizonylatfej;
+            $this->penztarbizonylatfej = null;
+        }
+    }
+
+    /**
+     * @return Penztarbizonylattetel
+     */
+    public function getPenztarbizonylattetel() {
+        return $this->penztarbizonylattetel;
+    }
+
+    public function getPenztarbizonylattetelId() {
+        if ($this->penztarbizonylattetel) {
+            return $this->penztarbizonylattetel->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Penztarbizonylattetel $val
+     */
+    public function setPenztarbizonylattetel($val) {
+        if ($this->penztarbizonylattetel !== $val) {
+            $this->penztarbizonylattetel = $val;
+        }
+    }
+
+    public function removePenztarbizonylattetel() {
+        if ($this->penztarbizonylattetel !== null) {
+            $val = $this->penztarbizonylattetel;
+            $this->penztarbizonylattetel = null;
         }
     }
 

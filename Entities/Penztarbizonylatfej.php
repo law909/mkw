@@ -5,10 +5,10 @@ namespace Entities;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
-/** @ORM\Entity(repositoryClass="Entities\BankbizonylatfejRepository")
- * @ORM\Table(name="bankbizonylatfej",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
+/** @ORM\Entity(repositoryClass="Entities\PenztarbizonylatfejRepository")
+ * @ORM\Table(name="penztarbizonylatfej",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  * */
-class Bankbizonylatfej {
+class Penztarbizonylatfej {
 
     /**
      * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)
@@ -28,7 +28,7 @@ class Bankbizonylatfej {
     private $lastmod;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bizonylattipus", inversedBy="bankbizonylatfejek")
+     * @ORM\ManyToOne(targetEntity="Bizonylattipus", inversedBy="penztarbizonylatfejek")
      * @ORM\JoinColumn(name="bizonylattipus_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Bizonylattipus
      */
@@ -36,6 +36,16 @@ class Bankbizonylatfej {
 
     /** @ORM\Column(type="integer") */
     private $irany;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Penztar")
+     * @ORM\JoinColumn(name="penztar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Penztar
+     */
+    private $penztar;
+
+    /** @ORM\Column(type="string",length=50,nullable=true) */
+    private $penztarnev;
 
     /** @ORM\Column(type="boolean",nullable=false) */
     private $rontott = false;
@@ -68,24 +78,8 @@ class Bankbizonylatfej {
     /** @ORM\Column(type="string",length=6,nullable=true) */
     private $valutanemnev;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Bankszamla")
-     * @ORM\JoinColumn(name="bankszamla_id", referencedColumnName="id",nullable=true,onDelete="restrict")
-     * @var \Entities\Bankszamla
-     */
-    private $bankszamla;
-
-    /** @ORM\Column(type="string",length=50,nullable=true) */
-    private $tulajbanknev;
-
-    /** @ORM\Column(type="string",length=255,nullable=true) */
-    private $tulajbankszamlaszam;
-
-    /** @ORM\Column(type="string",length=20,nullable=true) */
-    private $tulajswift;
-
-    /** @ORM\Column(type="string",length=20,nullable=true) */
-    private $tulajiban;
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $arfolyam;
 
     /**
      * @ORM\ManyToOne(targetEntity="Partner")
@@ -118,10 +112,10 @@ class Bankbizonylatfej {
     /** @ORM\Column(type="string",length=60,nullable=true) */
     private $partnerutca;
 
-    /** @ORM\OneToMany(targetEntity="Bankbizonylattetel", mappedBy="bizonylatfej",cascade={"persist"}) */
+    /** @ORM\OneToMany(targetEntity="Penztarbizonylattetel", mappedBy="bizonylatfej",cascade={"persist"}) */
     private $bizonylattetelek;
 
-    /** @ORM\OneToMany(targetEntity="Folyoszamla", mappedBy="bankbizonylatfej",cascade={"persist"}) */
+    /** @ORM\OneToMany(targetEntity="Folyoszamla", mappedBy="penztarbizonylatfej",cascade={"persist"}) */
     private $folyoszamlak;
 
     public function getId() {
@@ -143,15 +137,14 @@ class Bankbizonylatfej {
         return $this->bizonylattetelek;
     }
 
-    public function addBizonylattetel(Bankbizonylattetel $val) {
+    public function addBizonylattetel(Penztarbizonylattetel $val) {
         if (!$this->bizonylattetelek->contains($val)) {
-            $val->setIrany($this->getIrany());
             $this->bizonylattetelek->add($val);
             $val->setBizonylatfej($this);
         }
     }
 
-    public function removeBizonylattetel(Bankbizonylattetel $val) {
+    public function removeBizonylattetel(Penztarbizonylattetel $val) {
         if ($this->bizonylattetelek->removeElement($val)) {
             $val->removeBizonylatfej();
             return true;
@@ -450,61 +443,43 @@ class Bankbizonylatfej {
     }
 
     /**
-     * @return \Entities\Bankszamla
+     * @return \Entities\Penztar
      */
-    public function getBankszamla() {
-        return $this->bankszamla;
+    public function getPenztar() {
+        return $this->penztar;
     }
 
-    public function getTulajbankszamlaszam() {
-        return $this->tulajbankszamlaszam;
-    }
-
-    public function getBankszamlaId() {
-        if ($this->bankszamla) {
-            return $this->bankszamla->getId();
+    public function getPenztarId() {
+        if ($this->penztar) {
+            return $this->penztar->getId();
         }
         return '';
     }
 
     /**
-     * @param \Entities\Bankszamla|null $val
+     * @param \Entities\Penztar|null $val
      */
-    public function setBankszamla($val = null) {
-        if ($this->bankszamla !== $val) {
+    public function setPenztar($val = null) {
+        if ($this->penztar !== $val) {
             if (!$val) {
-                $this->removeBankszamla();
+                $this->removePenztar();
             }
             else {
-                $this->bankszamla = $val;
-                $this->tulajbanknev = $val->getBanknev();
-                $this->tulajbankszamlaszam = $val->getSzamlaszam();
-                $this->tulajswift = $val->getSwift();
-                $this->tulajiban = $val->getIban();
+                $this->penztar = $val;
+                $this->penztarnev = $val->getNev();
             }
         }
     }
 
-    public function removeBankszamla() {
-        if ($this->bankszamla !== null) {
-            $this->bankszamla = null;
-            $this->tulajbanknev = '';
-            $this->tulajbankszamlaszam = '';
-            $this->tulajswift = '';
-            $this->tulajiban = '';
+    public function removePenztar() {
+        if ($this->penztar !== null) {
+            $this->penztar = null;
+            $this->penztarnev = '';
         }
     }
 
-    public function getTulajswift() {
-        return $this->tulajswift;
-    }
-
-    public function getTulajbanknev() {
-        return $this->tulajbanknev;
-    }
-
-    public function getTulajiban() {
-        return $this->tulajiban;
+    public function getPenztarnev() {
+        return $this->penztarnev;
     }
 
     public function getErbizonylatszam() {
@@ -551,5 +526,18 @@ class Bankbizonylatfej {
         }
     }
 
+    /**
+     * @return mixed
+     */
+    public function getArfolyam() {
+        return $this->arfolyam;
+    }
+
+    /**
+     * @param mixed $arfolyam
+     */
+    public function setArfolyam($arfolyam) {
+        $this->arfolyam = $arfolyam;
+    }
 
 }

@@ -87,6 +87,17 @@ if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/bankbizonylattetel/getemptyrow', 'bankbizonylattetelController#getemptyrow', 'adminbankbizonylattetelgetemptyrow');
     $router->map('POST', '/admin/bankbizonylattetel/save', 'bankbizonylattetelController#save', 'adminbankbizonylattetelsave');
 
+    $router->map('GET', '/admin/penztarbizonylatfej/viewlist', 'penztarbizonylatfejController#viewlist', 'adminpenztarbizonylatfejviewlist');
+    $router->map('GET', '/admin/penztarbizonylatfej/getlistbody', 'penztarbizonylatfejController#getlistbody', 'adminpenztarbizonylatfejgetlistbody');
+    $router->map('GET', '/admin/penztarbizonylatfej/getkarb', 'penztarbizonylatfejController#getkarb', 'adminpenztarbizonylatfejgetkarb');
+    $router->map('GET', '/admin/penztarbizonylatfej/viewkarb', 'penztarbizonylatfejController#viewkarb', 'adminpenztarbizonylatfejviewkarb');
+    $router->map('POST', '/admin/penztarbizonylatfej/save', 'penztarbizonylatfejController#save', 'adminpenztarbizonylatfejsave');
+    $router->map('GET', '/admin/penztarbizonylatfej/print', 'penztarbizonylatfejController#doPrint', 'adminpenztarbizonylatfejprint');
+    $router->map('POST', '/admin/penztarbizonylatfej/ront', 'penztarbizonylatfejController#ront', 'adminpenztarbizonylatfejront');
+
+    $router->map('GET', '/admin/penztarbizonylattetel/getemptyrow', 'penztarbizonylattetelController#getemptyrow', 'adminpenztarbizonylattetelgetemptyrow');
+    $router->map('POST', '/admin/penztarbizonylattetel/save', 'penztarbizonylattetelController#save', 'adminpenztarbizonylattetelsave');
+
     $router->map('GET', '/admin/kintlevoseglista/view', 'kintlevoseglistaController#view', 'adminkintlevoseglistaview');
     $router->map('GET', '/admin/kintlevoseglista/get', 'kintlevoseglistaController#createLista', 'adminkintlevoseglistaget');
     $router->map('GET', '/admin/kintlevoseglista/export', 'kintlevoseglistaController#exportLista', 'adminkintlevoseglistaexport');

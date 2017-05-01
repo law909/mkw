@@ -81,6 +81,7 @@
                 <div class="menu-titlebar" data-caption="{t('Bank, pénztár')}" data-refcontrol="#BankTab"></div>
                 <div id="BankTab">
                     <div><a class="menupont" href="/admin/bankbizonylatfej/viewlist">{t('Bank')}</a></div>
+                    <div><a class="menupont" href="/admin/penztarbizonylatfej/viewlist">{t('Házipénztár')}</a></div>
                 </div>
             {/if}
             {if (haveJog(20))}
