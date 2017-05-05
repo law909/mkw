@@ -2443,4 +2443,15 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
         return parent::setValutameszorzo($valutameszorzo);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function calcSzallitasiido($valtozat = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcSzallitasiido', [$valtozat]);
+
+        return parent::calcSzallitasiido($valtozat);
+    }
+
 }
