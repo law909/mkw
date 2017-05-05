@@ -446,22 +446,7 @@ class Termek {
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['ingyenszallitas'] = (\mkw\store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
 
-        $x['szallitasiido'] = 0;
-        if (!is_null($valtozat)) {
-            if ($valtozat->getKeszlet() > 0) {
-                $x['szallitasiido'] = 1;
-            }
-        }
-        if ($x['szallitasiido'] === 0) {
-            if ($this->szallitasiido) {
-                $x['szallitasiido'] = $this->szallitasiido;
-            }
-            else {
-                if ($this->gyarto && $this->gyarto->getSzallitasiido()) {
-                    $x['szallitasiido'] = $this->gyarto->getSzallitasiido();
-                }
-            }
-        }
+        $x['szallitasiido'] = $this->calcSzallitasiido($valtozat);
 
         $listaban = array();
         foreach ($this->getCimkek() as $cimke) {
@@ -603,22 +588,7 @@ class Termek {
         $x['ingyenszallitas'] = (\mkw\store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
         $x['husegpont'] = floor($x['bruttohuf'] * $this->getHparany() / 100);
 
-        $x['szallitasiido'] = 0;
-        if (!is_null($valtozat)) {
-            if ($valtozat->getKeszlet() > 0) {
-                $x['szallitasiido'] = 1;
-            }
-        }
-        if ($x['szallitasiido'] === 0) {
-            if ($this->szallitasiido) {
-                $x['szallitasiido'] = $this->szallitasiido;
-            }
-            else {
-                if ($this->gyarto && $this->gyarto->getSzallitasiido()) {
-                    $x['szallitasiido'] = $this->gyarto->getSzallitasiido();
-                }
-            }
-        }
+        $x['szallitasiido'] = $this->calcSzallitasiido($valtozat);
 
         $altomb = array();
         foreach ($this->getTermekKepek(true) as $kep) {
@@ -738,17 +708,7 @@ class Termek {
         $x['cikkszam'] = $this->getCikkszam();
         $x['rovidleiras'] = $this->getRovidLeiras();
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
-        if ($this->szallitasiido) {
-            $x['szallitasiido'] = $this->szallitasiido;
-        }
-        else {
-            if ($this->gyarto && $this->gyarto->getSzallitasiido()) {
-                $x['szallitasiido'] = $this->gyarto->getSzallitasiido();
-            }
-            else {
-                $x['szallitasiido'] = 0;
-            }
-        }
+        $x['szallitasiido'] = $this->calcSzallitasiido();
         return $x;
     }
 
@@ -2095,5 +2055,30 @@ class Termek {
      */
     public function setValutameszorzo($valutameszorzo) {
         $this->valutameszorzo = $valutameszorzo;
+    }
+
+    public function calcSzallitasiido($valtozat = null) {
+        $szallitasiido = 0;
+        if (!is_null($valtozat)) {
+            if ($valtozat->getKeszlet() > 0) {
+                $szallitasiido = 1;
+            }
+        }
+        else {
+            if ($this->getKeszlet() > 0) {
+                $szallitasiido = 1;
+            }
+        }
+        if ($szallitasiido === 0) {
+            if ($this->szallitasiido) {
+                $szallitasiido = $this->szallitasiido;
+            }
+            else {
+                if ($this->gyarto && $this->gyarto->getSzallitasiido()) {
+                    $szallitasiido = $this->gyarto->getSzallitasiido();
+                }
+            }
+        }
+        return $szallitasiido;
     }
 }

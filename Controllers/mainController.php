@@ -358,22 +358,7 @@ class mainController extends \mkwhelpers\Controller {
 		$valtozat = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->find($valtozatid);
         $ret = array();
 
-        if ($valtozat && $valtozat->getKeszlet() > 0) {
-            $ret['szallitasiido'] = 1;
-        }
-        else {
-            if ($termek->getSzallitasiido()) {
-                $ret['szallitasiido'] = $termek->getSzallitasiido();
-            }
-            else {
-                if ($termek->getGyarto() && $termek->getGyarto()->getSzallitasiido()) {
-                    $ret['szallitasiido'] = $termek->getGyarto()->getSzallitasiido();
-                }
-                else {
-                    $ret['szallitasiido'] = 0;
-                }
-            }
-        }
+        $ret['szallitasiido'] = $termek->calcSzallitasiido($valtozat);
 		$ret['price'] = number_format($termek->getBruttoAr($valtozat, \mkw\store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
         $ret['kepurlmedium'] = $valtozat->getKepurlMedium();
         $ret['kepurllarge'] = $valtozat->getKepurlLarge();
@@ -406,23 +391,7 @@ class mainController extends \mkwhelpers\Controller {
 		/** @var \Entities\TermekValtozat $termekvaltozat */
 		$termekvaltozat = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(), $t, $e);
 
-        if ($termekvaltozat->getKeszlet() > 0) {
-            $ret['szallitasiido'] = 1;
-        }
-        else {
-            if ($termek->getSzallitasiido()) {
-                $ret['szallitasiido'] = $termek->getSzallitasiido();
-            }
-            else {
-                if ($termek->getGyarto() && $termek->getGyarto()->getSzallitasiido()) {
-                    $ret['szallitasiido'] = $termek->getGyarto()->getSzallitasiido();
-                }
-                else {
-                    $ret['szallitasiido'] = 0;
-                }
-            }
-        }
-
+		$ret['szallitasiido'] = $termek->calcSzallitasiido($termekvaltozat);
         $ret['price'] = number_format($termek->getBruttoAr($termekvaltozat, \mkw\store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
         if ($termekvaltozat) {
             $ret['kepurlmedium'] = $termekvaltozat->getKepurlMedium();
