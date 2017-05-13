@@ -251,10 +251,12 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
                         ->setCellValue('E' . $sor, $item['mennyiseg'])
                         ->setCellValue('F' . $sor, $item['ertek']);
 
-                    $i = 5;
-                    foreach ($item['keszletinfo'] as $kkey => $keszlet) {
-                        $i++;
-                        $excel->setActiveSheetIndex(0)->setCellValue(x($i) . $sor, $keszlet);
+                    if (array_key_exists('keszletinfo', $item)) {
+                        $i = 5;
+                        foreach ($item['keszletinfo'] as $kkey => $keszlet) {
+                            $i++;
+                            $excel->setActiveSheetIndex(0)->setCellValue(x($i) . $sor, $keszlet);
+                        }
                     }
                     $sor++;
                 }
@@ -292,10 +294,12 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
                         ->setCellValue('G' . $sor, $item['mennyiseg'])
                         ->setCellValue('H' . $sor, $item['ertek']);
 
-                    $i = 7;
-                    foreach ($item['keszletinfo'] as $kkey => $keszlet) {
-                        $i++;
-                        $excel->setActiveSheetIndex(0)->setCellValue(x($i) . $sor, $keszlet);
+                    if (array_key_exists('keszletinfo', $item)) {
+                        $i = 7;
+                        foreach ($item['keszletinfo'] as $kkey => $keszlet) {
+                            $i++;
+                            $excel->setActiveSheetIndex(0)->setCellValue(x($i) . $sor, $keszlet);
+                        }
                     }
 
                     $sor++;

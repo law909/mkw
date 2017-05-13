@@ -843,9 +843,9 @@ class termekfaController extends \mkwhelpers\MattableController {
                 $keresofilter = new FilterDescriptor();
                 if ($this->params) {
                     $keresoszo = $this->params->getStringRequestParam('keresett');
-                }
-                if ($keresoszo) {
-                    $keresofilter->addFilter(array('_xx.nev', '_xx.oldalcim', '_xx.cikkszam', '_xx.leiras'), 'LIKE', '%' . $keresoszo . '%');
+                    if ($keresoszo) {
+                        $keresofilter->addFilter(array('_xx.nev', '_xx.oldalcim', '_xx.cikkszam', '_xx.leiras'), 'LIKE', '%' . $keresoszo . '%');
+                    }
                 }
                 $termekek = $termekrepo->getTermekLista($keresofilter->merge($kategoriafilter), array('_xx.cikkszam' => 'ASC'));
                 $t = array();

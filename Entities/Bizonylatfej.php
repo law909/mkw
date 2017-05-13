@@ -573,7 +573,7 @@ class Bizonylatfej {
 
     public function calcRugalmasFizmod() {
         $regifizmod = $this->getFizmod();
-        if ($regifizmod->getRugalmas()) {
+        if ($regifizmod && $regifizmod->getRugalmas()) {
             $fh = \mkw\store::getEm()->getRepository('Entities\FizmodHatar')->getByValutanemHatar($this->getValutanem(), $this->getFizetendo());
             if ($fh) {
                 $this->setFizmod($fh->getFizmod());
