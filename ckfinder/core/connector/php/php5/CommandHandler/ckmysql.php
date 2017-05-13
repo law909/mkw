@@ -3,22 +3,25 @@ if (!defined('IN_CKFINDER')) {exit;}
 
 class ckmysql {
 	private static $config;
-	private static $dbconn;
+	private static $pdo;
 
 	private static function connect() {
 		if (!self::$config) {
 			self::$config= parse_ini_file('../../../../config.ini');
 		}
-		self::$dbconn=mysql_connect(self::$config['db.host'],self::$config['db.username'],self::$config['db.password']);
-		mysql_select_db(self::$config['db.dbname']);
+        self::$pdo = new PDO(
+            'mysql:dbname=' . self::$config['db.dbname'] . ';host=' . self::$config['db.host'],
+            self::$config['db.username'],
+            self::$config['db.password']
+        );
 	}
 
 	private static function sql($q) {
-		mysql_query($q,self::$dbconn);
+	    self::$pdo->exec($q);
 	}
 
 	private static function disconnect() {
-		mysql_close(self::$dbconn);
+		self::$pdo = null;
 	}
 
 	public static function DeleteFiles($filepath) {
