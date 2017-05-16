@@ -1,6 +1,6 @@
 <table id="ImageEdit"><tbody>
 <tr>
-	<td><a class="js-toflyout" href="{$mainurl}{$egyed.kepurl}" target="_blank"><img class="js-termekfakep" src="{$mainurl}{$egyed.kepurlsmall}" alt="{$egyed.kepleiras}" title="{$egyed.kepleiras}"/></a></td>
+	<td>{if ($egyed.kepurl)}<a class="js-toflyout" href="{$mainurl}{$egyed.kepurl}" target="_blank"><img class="js-termekfakep" src="{$mainurl}{$egyed.kepurlsmall}" alt="{$egyed.kepleiras}" title="{$egyed.kepleiras}"/></a>{/if}</td>
 	<td>
 		<table><tbody>
 			<tr>

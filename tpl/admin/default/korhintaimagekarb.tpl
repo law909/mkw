@@ -1,6 +1,6 @@
 <table id="FoImageEdit" class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"><tbody>
 <tr class="imageupload">
-	<td><a class="js-toFlyout" href="{$mainurl}{$egyed.kepurl}" target="_blank"><img class="js-korhintakep" src="{$mainurl}{$egyed.kepurlsmall}" alt="{$egyed.kepleiras}" title="{$egyed.kepleiras}"/></a></td>
+	<td>{if ($egyed.kepurl)}<a class="js-toFlyout" href="{$mainurl}{$egyed.kepurl}" target="_blank"><img class="js-korhintakep" src="{$mainurl}{$egyed.kepurlsmall}" alt="{$egyed.kepleiras}" title="{$egyed.kepleiras}"/></a>{/if}</td>
 	<td>
 		<table><tbody>
 			<tr>

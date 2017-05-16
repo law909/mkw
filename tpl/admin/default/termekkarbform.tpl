@@ -317,8 +317,9 @@
                         <td colspan="3">
                             <ul id="ValtozatKepEdit_gen" class="valtozatkepedit js-valtozatkepedit">
                                 {foreach $keplist as $kep}
-                                    <li data-value="{$kep.id}" data-valtozatid="gen" class="ui-state-default"><img
-                                            src="{$mainurl}{$kep.url}"/></li>
+                                    <li data-value="{$kep.id}" data-valtozatid="gen" class="ui-state-default">
+                                        {if ($kep.url)}<img src="{$mainurl}{$kep.url}"/>{/if}
+                                    </li>
                                 {/foreach}
                             </ul>
                             <input id="ValtozatKepId_gen" name="valtozatkepid" form="valtozatgeneratorform"
