@@ -4,6 +4,7 @@ namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use mkw\store;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekRepository")
@@ -2058,26 +2059,33 @@ class Termek {
     }
 
     public function calcSzallitasiido($valtozat = null) {
-        $szallitasiido = 0;
-        if (!is_null($valtozat)) {
-            if ($valtozat->getKeszlet() > 0) {
-                $szallitasiido = 1;
-            }
-        }
-        else {
-            if ($this->getKeszlet() > 0) {
-                $szallitasiido = 1;
-            }
-        }
-        if ($szallitasiido === 0) {
-            if ($this->szallitasiido) {
-                $szallitasiido = $this->szallitasiido;
-            }
-            else {
-                if ($this->gyarto && $this->gyarto->getSzallitasiido()) {
-                    $szallitasiido = $this->gyarto->getSzallitasiido();
+        switch (true) {
+            case \mkw\store::isMindentkapni():
+                $szallitasiido = 0;
+                if (!is_null($valtozat)) {
+                    if ($valtozat->getKeszlet() > 0) {
+                        $szallitasiido = 1;
+                    }
                 }
-            }
+                else {
+                    if ($this->getKeszlet() > 0) {
+                        $szallitasiido = 1;
+                    }
+                }
+                if ($szallitasiido === 0) {
+                    if ($this->szallitasiido) {
+                        $szallitasiido = $this->szallitasiido;
+                    }
+                    else {
+                        if ($this->gyarto && $this->gyarto->getSzallitasiido()) {
+                            $szallitasiido = $this->gyarto->getSzallitasiido();
+                        }
+                    }
+                }
+                break;
+
+            default:
+                $szallitasiido = 0;
         }
         return $szallitasiido;
     }
