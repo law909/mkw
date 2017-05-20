@@ -172,6 +172,8 @@ class termekController extends \mkwhelpers\MattableController {
         $x['gyartonev'] = $t->getGyartoNev();
         $x['keszlet'] = $t->getKeszlet();
 		$x['termekcsoportnev'] = $t->getTermekcsoportNev();
+		$x['jogaalkalom'] = $t->getJogaalkalom();
+		$x['jogaervenzesseg'] = $t->getJogaervenyesseg();
         if (\mkw\store::getSetupValue('termekvaltozat')) {
             foreach ($t->getValtozatok() as $tvaltozat) {
                 $mozgasdb = $tvaltozat->getMozgasDb();
@@ -249,6 +251,8 @@ class termekController extends \mkwhelpers\MattableController {
         $obj->setFuggoben($this->params->getBoolRequestParam('fuggoben'));
         $obj->setSzallitasiido($this->params->getIntRequestParam('szallitasiido'));
         $obj->setKozvetitett($this->params->getBoolRequestParam('kozvetitett'));
+        $obj->setJogaalkalom($this->params->getIntRequestParam('jogaalkalom'));
+        $obj->setJogaervenyesseg($this->params->getIntRequestParam('jogaervenyesseg'));
 		$farepo = \mkw\store::getEm()->getRepository('Entities\TermekFa');
 		$fa = $farepo->find($this->params->getIntRequestParam('termekfa1'));
 		if ($fa) {

@@ -883,6 +883,10 @@ class store {
         return self::getTheme() === 'mijsz';
     }
 
+    public static function isDarshan() {
+        return self::getTheme() === 'darshan';
+    }
+
     public static function setAdminMode() {
         self::$adminmode = true;
         self::$mainmode = false;

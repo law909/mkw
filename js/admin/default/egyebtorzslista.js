@@ -1267,6 +1267,91 @@ $().ready(
                 caption: 'Pénztárak'});
             createNav(_penztar, penztargrid);
 
+            // Jogaterem grid
+            var _jogaterem = {
+                grid: '#jogateremgrid',
+                pager: '#jogateremgridpager'
+            };
+            var jogateremgrid = $(_jogaterem.grid).jqGrid({
+                url: '/admin/jogaterem/jsonlist',
+                editurl: '/admin/jogaterem/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}},
+                    {name: 'maxferohely', index: 'maxferohely', label: 'Max. férőhely', width: 25, align: 'right',
+                        editable: true,
+                        editoptions: {size: 2},
+                        editrules: {integer: true, required: false},
+                        formoptions: {rowpos: 2, label: 'Max. férőhely:'}},
+                    {name: 'inaktiv', index: 'inaktiv', label: 'Inaktív', width: 25, align: 'right',
+                        formatter: 'checkbox',
+                        editable: true,
+                        edittype: 'checkbox',
+                        editoptions: {value: '1:0'},
+                        formoptions: {rowpos: 3, label: 'Inaktív:'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _jogaterem.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Jógatermek'});
+            createNav(_jogaterem, jogateremgrid);
+
+            // Jogaoratipus grid
+            var _jogaoratipus = {
+                grid: '#jogaoratipusgrid',
+                pager: '#jogaoratipusgridpager'
+            };
+            var jogaoratipusgrid = $(_jogaoratipus.grid).jqGrid({
+                url: '/admin/jogaoratipus/jsonlist',
+                editurl: '/admin/jogaoratipus/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}},
+                    {name: 'szin', index: 'szin', label: 'Szín', width: 60,
+                        editable: true,
+                        editoptions: {size: 7, maxlength: 7},
+                        formoptions: {rowpos: 2, label: 'Szín:'}},
+                    {name: 'arnovelo', index: 'arnovelo', label: 'Árnövelő', width: 60, align: 'right',
+                        sorttype: 'float',
+                        formatter: 'number',
+                        editable: true,
+                        editoptions: {size: 10},
+                        formoptions: {rowpos: 3, label: 'Árnövelő:'}},
+                    {name: 'inaktiv', index: 'inaktiv', label: 'Inaktív', width: 25, align: 'right',
+                        formatter: 'checkbox',
+                        editable: true,
+                        edittype: 'checkbox',
+                        editoptions: {value: '1:0'},
+                        formoptions: {rowpos: 4, label: 'Inaktív:'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _jogaoratipus.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Jógaóra tipusok'});
+            createNav(_jogaoratipus, jogaoratipusgrid);
+
             // Altalanos
             $('.ui-search-toolbar').hide();
             $('.ui-jqgrid-titlebar').on('click', function(e) {

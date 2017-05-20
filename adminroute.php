@@ -70,6 +70,12 @@ $router->map('POST', '/admin/szotar/save', 'szotarController#save', 'adminszotar
 $router->map('GET', '/admin/termekrecepttipus/jsonlist', 'termekrecepttipusController#jsonlist', 'admintermekrecepttipusjsonlist');
 $router->map('GET', '/admin/termekrecepttipus/htmllist', 'termekrecepttipusController#htmllist', 'admintermekrecepttipushtmllist');
 $router->map('POST', '/admin/termekrecepttipus/save', 'termekrecepttipusController#save', 'admintermekrecepttipussave');
+$router->map('GET', '/admin/jogaterem/jsonlist', 'jogateremController#jsonlist', 'adminjogateremjsonlist');
+$router->map('GET', '/admin/jogaterem/htmllist', 'jogateremController#htmllist', 'adminjogateremhtmllist');
+$router->map('POST', '/admin/jogaterem/save', 'jogateremController#save', 'adminjogateremsave');
+$router->map('GET', '/admin/jogaoratipus/jsonlist', 'jogaoratipusController#jsonlist', 'adminjogaoratipusjsonlist');
+$router->map('GET', '/admin/jogaoratipus/htmllist', 'jogaoratipusController#htmllist', 'adminjogaoratipushtmllist');
+$router->map('POST', '/admin/jogaoratipus/save', 'jogaoratipusController#save', 'adminjogaoratipussave');
 
 if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/jogcim/jsonlist', 'jogcimController#jsonlist', 'adminjogcimjsonlist');

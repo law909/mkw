@@ -77,6 +77,13 @@
                     <div><a class="menupont" href="/admin/partnercimke/viewlist">{t('Partnercímkék')}</a></div>
                 {/if}
             </div>
+            {if ($maintheme === 'darshan')}
+                <div class="menu-titlebar" data-caption="{t('Jóga')}" data-refcontrol="#JogaTab"></div>
+                <div id="JogaTab">
+                    <div><a class="menupont" href="/admin/orarend/viewlist">{t('Órarend')}</a></div>
+                    <div><a class="menupont" href="/admin/naptar/viewlist">{t('Naptár')}</a></div>
+                </div>
+            {/if}
             {if (($setup.bankpenztar) && haveJog(20))}
                 <div class="menu-titlebar" data-caption="{t('Bank, pénztár')}" data-refcontrol="#BankTab"></div>
                 <div id="BankTab">

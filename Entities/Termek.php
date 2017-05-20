@@ -323,6 +323,12 @@ class Termek {
     /** @ORM\Column(type="integer", nullable=true) */
     private $valutameszorzo;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $jogaalkalom;
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $jogaervenyesseg;
+
     public function __toString() {
         return (string)$this->id . ' - ' . $this->nev;
     }
@@ -2089,4 +2095,33 @@ class Termek {
         }
         return $szallitasiido;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getJogaalkalom() {
+        return $this->jogaalkalom;
+    }
+
+    /**
+     * @param mixed $jogaalkalom
+     */
+    public function setJogaalkalom($jogaalkalom) {
+        $this->jogaalkalom = $jogaalkalom;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJogaervenyesseg() {
+        return $this->jogaervenyesseg;
+    }
+
+    /**
+     * @param mixed $jogaervenyesseg
+     */
+    public function setJogaervenyesseg($jogaervenyesseg) {
+        $this->jogaervenyesseg = $jogaervenyesseg;
+    }
+
 }
