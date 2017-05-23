@@ -173,7 +173,7 @@ class termekController extends \mkwhelpers\MattableController {
         $x['keszlet'] = $t->getKeszlet();
 		$x['termekcsoportnev'] = $t->getTermekcsoportNev();
 		$x['jogaalkalom'] = $t->getJogaalkalom();
-		$x['jogaervenzesseg'] = $t->getJogaervenyesseg();
+		$x['jogaervenyesseg'] = $t->getJogaervenyesseg();
         if (\mkw\store::getSetupValue('termekvaltozat')) {
             foreach ($t->getValtozatok() as $tvaltozat) {
                 $mozgasdb = $tvaltozat->getMozgasDb();

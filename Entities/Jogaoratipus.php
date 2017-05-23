@@ -22,7 +22,7 @@ class Jogaoratipus {
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
 	private $arnovelo;
     /** @ORM\Column(type="boolean", nullable=false) */
-    private $inaktiv = true;
+    private $inaktiv = false;
 
 	public function getId() {
 	    return $this->id;

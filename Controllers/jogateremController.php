@@ -50,7 +50,7 @@ class jogateremController extends \mkwhelpers\JQGridController {
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
                 'selected' => ($sor->getId() == $selid),
-                'maxresztvevo' => $sor->getMaxferohely()
+                'maxferohely' => $sor->getMaxferohely()
             );
         }
         return $res;

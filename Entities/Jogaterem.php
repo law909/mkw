@@ -18,7 +18,7 @@ class Jogaterem {
     /** @ORM\Column(type="integer",nullable=true) */
 	private $maxferohely = 0;
     /** @ORM\Column(type="boolean", nullable=false) */
-    private $inaktiv = true;
+    private $inaktiv = false;
 
 	public function getId() {
 	    return $this->id;

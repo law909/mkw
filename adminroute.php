@@ -544,6 +544,16 @@ $router->map('GET', '/admin/bizonylattetellista/print', 'bizonylattetellistaCont
 $router->map('GET', '/admin/bizomanyosertekesiteslista/view', 'bizomanyosertekesiteslistaController#view', 'adminbizomanyosertekesiteslistaview');
 $router->map('GET', '/admin/bizomanyosertekesiteslista/refresh', 'bizomanyosertekesiteslistaController#refresh', 'adminbizomanyosertekesiteslistarefresh');
 
+if (\mkw\store::isDarshan()) {
+    $router->map('GET', '/admin/orarend/viewlist', 'orarendController#viewlist', 'adminorarendviewlist');
+    $router->map('GET', '/admin/orarend/htmllist', 'orarendController#htmllist', 'adminorarendhtmllist');
+    $router->map('GET', '/admin/orarend/getlistbody', 'orarendController#getlistbody', 'adminorarendgetlistbody');
+    $router->map('GET', '/admin/orarend/getkarb', 'orarendController#getkarb', 'adminorarendgetkarb');
+    $router->map('GET', '/admin/orarend/viewkarb', 'orarendController#viewkarb', 'adminorarendviewkarb');
+    $router->map('POST', '/admin/orarend/save', 'orarendController#save', 'adminorarendsave');
+    $router->map('POST', '/admin/orarend/setflag', 'orarendController#setflag', 'adminorarendsetflag');
+}
+
 if (\mkw\store::isSuperzoneB2B()) {
     if (haveJog(99)) {
         $router->map('GET', '/admin/mese', 'fantaController#mese', 'adminmese');

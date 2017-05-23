@@ -35,10 +35,12 @@ class store {
     private static $loggedinuk;
     private static $loggedinukpartner;
     private static $routename;
+    private static $daynames = array('hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat', 'vasárnap');
     public static $DateFormat = 'Y.m.d';
     public static $LastDayDateFormat = 'Y.m.t';
     public static $SQLDateFormat = 'Y-m-d';
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
+    public static $TimeFormat = 'H:i';
 
     public static function getJSVersion() {
         switch(self::getTheme()) {
@@ -204,12 +206,32 @@ class store {
         return new \DateTime(\mkw\store::convDate($adat));
     }
 
+    public static function convTime($TimeString) {
+        return $TimeString;
+    }
+
     public static function DateToExcel($datum) {
         $dat = $datum;
         if (is_string($datum)) {
             $dat = self::toDate($datum);
         }
         return $dat->format('Y-m-d');
+    }
+
+    public static function getDayname($day) {
+        return self::$daynames[$day-1];
+    }
+
+    public static function getDaynameSelectList($sel = null) {
+        $ret = array();
+        foreach(self::$daynames as $k => $v) {
+            $ret[] = array(
+                'id' => $k + 1,
+                'caption' => $v,
+                'selected' => ($k + 1 === $sel)
+            );
+        }
+        return $ret;
     }
 
     public static function getExcelCoordinate($o, $sor) {
