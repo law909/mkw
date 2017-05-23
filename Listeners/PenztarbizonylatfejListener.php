@@ -25,6 +25,7 @@ class PenztarbizonylatfejListener {
 
         $bt = $entity->getBizonylattipus();
         $penztarid = $entity->getPenztarId();
+        $irany = $entity->getIrany();
         $szam = 0;
         if ($bt && is_null($entity->getId())) {
             $azon = $bt->getAzonosito();
@@ -43,10 +44,11 @@ class PenztarbizonylatfejListener {
             $kezdo = $bt->getKezdosorszam();
             $ev = $entity->getKelt()->format('Y');
             if (!$from) {
-                $q = $this->em->createQuery('SELECT COUNT(bf) FROM Entities\Penztarbizonylatfej bf WHERE (bf.bizonylattipus=:p) AND (bf.penztar=:pid)');
+                $q = $this->em->createQuery('SELECT COUNT(bf) FROM Entities\Penztarbizonylatfej bf WHERE (bf.bizonylattipus=:p) AND (bf.penztar=:pid) AND (bf.irany=:pir)');
                 $q->setParameters(array(
                     'p' => $bt,
-                    'pid' => $penztarid
+                    'pid' => $penztarid,
+                    'pir' => $irany
                 ));
                 if ($q->getSingleScalarResult() > 0) {
                     $kezdo = 1;
@@ -55,11 +57,12 @@ class PenztarbizonylatfejListener {
                     $kezdo = 1;
                 }
                 $szam = $kezdo;
-                $q = $this->em->createQuery('SELECT MAX(bf.id) FROM Entities\Penztarbizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2) AND (bf.penztar=:pid)');
+                $q = $this->em->createQuery('SELECT MAX(bf.id) FROM Entities\Penztarbizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2) AND (bf.penztar=:pid) AND (bf.irany=:pir)');
                 $q->setParameters(array(
                     'p1' => $bt,
                     'p2' => $ev,
-                    'pid' => $penztarid
+                    'pid' => $penztarid,
+                    'pir' => $irany
                 ));
                 $max = $q->getSingleScalarResult();
                 if ($max) {
@@ -71,11 +74,12 @@ class PenztarbizonylatfejListener {
             }
             else {
                 $szam = $from;
-                $q = $this->em->createQuery('SELECT MAX(bf.id) FROM Entities\Penztarbizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2) AND (bf.penztar=:pid)');
+                $q = $this->em->createQuery('SELECT MAX(bf.id) FROM Entities\Penztarbizonylatfej bf WHERE (bf.bizonylattipus=:p1) AND (YEAR(bf.kelt)=:p2) AND (bf.penztar=:pid) AND (bf.irany=:pir)');
                 $q->setParameters(array(
                     'p1' => $bt,
                     'p2' => $ev,
-                    'pid' => $penztarid
+                    'pid' => $penztarid,
+                    'pir' => $irany
                 ));
                 $max = $q->getSingleScalarResult();
                 if ($max) {
