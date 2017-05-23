@@ -46,10 +46,10 @@
                     {if (haveJog(20))}
                         <div><a class="menupont" href="/admin/megrendelesfej/viewlist">{t('Megrendelések')}</a></div>
                     {/if}
-                    {if (($maintheme != 'mkwcansas') && haveJog(20))}
+                    {if (($maintheme != 'mkwcansas' && $maintheme != 'darshan') && haveJog(20))}
                         <div><a class="menupont" href="/admin/csomagfej/viewlist">{t('Csomagok')}</a></div>
                     {/if}
-                    {if (($maintheme != 'mkwcansas') && haveJog(20))}
+                    {if (($maintheme != 'mkwcansas' && $maintheme != 'darshan') && haveJog(20))}
                         <div><a class="menupont" href="/admin/szallitofej/viewlist">{t('Szállítólevelek')}</a></div>
                     {/if}
                     {if (($maintheme == 'superzoneb2b') && haveJog(20))}
@@ -112,7 +112,7 @@
                 <div id="ReportTab">
                     <div><a class="menupont" href="/admin/navadatexport/view">{t('NAV adatexport')}</a></div>
                     {if ($setup.bankpenztar)}
-                        {if (!$setup.kisszamlazo)}
+                        {if (!$setup.kisszamlazo && $maintheme != 'darshan')}
                         <div><a class="menupont" href="/admin/jutaleklista/view">{t('Jutalék elszámolás')}</a></div>
                         <div><a class="menupont" href="/admin/penzbelista/view">{t('Beérkezett pénz')}</a></div>
                         {/if}
@@ -123,7 +123,9 @@
                         <div><a class="menupont" href="/admin/bizonylattetellista/view">{t('Bizonylattétel lista')}</a></div>
                         <div><a class="menupont" href="/admin/keszletlista/view">{t('Készlet')}</a></div>
                         <div><a class="menupont" href="/admin/fifo/view">{t('Készletérték')}</a></div>
+                        {if ($maintheme != 'darshan')}
                         <div><a class="menupont" href="/admin/bizomanyosertekesiteslista/view">{t('Bizományos értékesítés lista')}</a></div>
+                        {/if}
                     {/if}
                 </div>
                 {if (!$setup.kisszamlazo)}
