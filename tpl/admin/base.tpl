@@ -93,7 +93,7 @@
                 </div>
             {/if}
             {if (haveJog(20))}
-                {if (!$setup.kisszamlazo)}
+                {if (!$setup.kisszamlazo && $maintheme !== 'darshan')}
                 <div class="menu-titlebar" data-caption="{t('Webáruház')}" data-refcontrol="#WebTab"></div>
                 <div id="WebTab">
                     <div><a class="menupont" href="/admin/kosar/viewlist">{t('Kosár')}</a></div>
