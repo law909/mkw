@@ -1429,6 +1429,7 @@ class Termek {
                 return new \Doctrine\Common\Collections\ArrayCollection($a);
             case \mkw\store::isKisszamlazo():
             case \mkw\store::isMIJSZ():
+            case \mkw\store::isDarshan():
                 return null;
             default :
                 throw new \Exception('ISMERETLEN THEME: ' . \mkw\store::getTheme());
