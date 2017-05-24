@@ -3099,8 +3099,8 @@ class Bizonylatfej {
      * @param \Entities\Felhasznalo $val
      */
     public function setFelhasznalo($val) {
-        if (!($val instanceof \Entities\Felhasznalo)) {
-            $val = \mkw\store::getEm()->getRepository('Entities\Felhasznalo')->find($val);
+        if (!($val instanceof \Entities\Dolgozo)) {
+            $val = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($val);
         }
         if ($this->felhasznalo !== $val) {
             if (!$val) {
