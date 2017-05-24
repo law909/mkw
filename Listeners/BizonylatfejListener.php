@@ -91,7 +91,7 @@ class BizonylatfejListener {
             if ($fm) {
                 $fmt = $fm->getTipus();
             }
-            if ($fmt !== 'P') {
+            if ($fmt !== 'P' || \mkw\store::isKPFolyoszamla()) {
                 foreach ($bizonylat->getFolyoszamlak() as $fsz) {
                     $this->em->remove($fsz);
                 }

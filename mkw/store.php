@@ -873,6 +873,10 @@ class store {
         return self::getSetupValue('partnerautocomplete');
     }
 
+    public static function isKPFolyoszamla() {
+        return self::getSetupValue('kpfolyoszamla');
+    }
+
     public static function isFoxpostSzallitasimod($szm) {
         $i = $szm;
         if (is_a($szm, 'Entities\FoxpostTerminal')) {
