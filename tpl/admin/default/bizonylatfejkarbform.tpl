@@ -37,6 +37,18 @@
                 {/if}
             </tr>
             {/if}
+            {if ($showfelhasznalo)}
+                <tr>
+                    <td class="mattable-important"><label for="DolgozoEdit">{at('Dolgozó')}:</label></td>
+                    <td colspan="7"><select id="DolgozoEdit" name="felhasznalo" required="required">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $felhasznalolist as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+            {/if}
 			<tr>
 				<td class="mattable-important"><label for="PartnerEdit">{at('Partner')}:</label></td>
                 {if ($setup.partnerautocomplete)}

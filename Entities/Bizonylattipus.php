@@ -77,6 +77,8 @@ class Bizonylattipus {
     private $tplname;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showfoxpostterminaleditor = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showfelhasznalo = false;
 
     public function __construct() {
         $this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -105,6 +107,7 @@ class Bizonylattipus {
         $view->setVar('showfeketelistabutton', $this->getShowfeketelistabutton());
         $view->setVar('showkupon', $this->getShowkupon());
         $view->setVar('showfoxpostterminaleditor', $this->getShowfoxpostterminaleditor());
+        $view->setVar('showfelhasznalo', $this->getShowfelhasznalo());
     }
 
     public function getId() {
@@ -399,6 +402,20 @@ class Bizonylattipus {
      */
     public function setShowfoxpostterminaleditor($showfoxpostterminaleditor) {
         $this->showfoxpostterminaleditor = $showfoxpostterminaleditor;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShowfelhasznalo() {
+        return $this->showfelhasznalo;
+    }
+
+    /**
+     * @param mixed $showfelhasznalo
+     */
+    public function setShowfelhasznalo($showfelhasznalo) {
+        $this->showfelhasznalo = $showfelhasznalo;
     }
 
 }

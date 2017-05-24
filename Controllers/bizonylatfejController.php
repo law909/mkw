@@ -58,6 +58,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $raktar = new raktarController($this->params);
         $view->setVar('raktarlist', $raktar->getSelectList());
 
+        $felh = new dolgozoController($this->params);
+        $view->setVar('felhasznalolist', $felh->getSelectList());
+
         $bsc = new bizonylatstatuszController($this->params);
         switch (true) {
             case \mkw\store::isMindentkapni():
@@ -319,6 +322,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['fizmodnev'] = $t->getFizmodnev();
         $x['szallitasimod'] = $t->getSzallitasimodId();
         $x['szallitasimodnev'] = $t->getSzallitasimodnev();
+        $x['felhasznalo'] = $t->getFelhasznaloId();
+        $x['felhasznalonev'] = $t->getFelhasznalonev();
         $x['valutanem'] = $t->getValutanemId();
         $x['valutanemnev'] = $t->getValutanemnev();
         $x['arfolyam'] = $t->getArfolyam();
@@ -499,6 +504,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
         else {
             $obj->removeUzletkoto();
+        }
+        $ck = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('felhasznalo'));
+        if ($ck) {
+            $obj->setFelhasznalo($ck);
+        }
+        else {
+            $obj->removeFelhasznalo();
         }
         $ck = \mkw\store::getEm()->getRepository('Entities\FoxpostTerminal')->find($this->params->getIntRequestParam('foxpostterminal'));
         if ($ck) {
@@ -1074,6 +1086,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $foxpostctrl = new foxpostController($this->params);
         $view->setVar('foxpostterminallist', $foxpostctrl->getSelectList(($record ? $record->getFoxpostterminalId() : 0)));
+
+        $felh = new dolgozoController($this->params);
+        $view->setVar('felhasznalolist', $felh->getSelectList(($record ? $record->getFelhasznaloId() : 0)));
+
 
         if (method_exists($this, 'onGetKarb')) {
             $egyed = $this->onGetKarb($view, $record, $egyed, $oper, $id, $stornotip);

@@ -515,6 +515,17 @@ class Bizonylatfej {
     /** @ORM\OneToMany(targetEntity="BizonylatfejTranslation", mappedBy="object", cascade={"persist", "remove"}) */
     private $translations;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="felhasznalo_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Dolgozo
+     */
+    private $felhasznalo;
+
+    /** @ORM\Column(type="string",length=255) */
+    private $felhasznalonev;
+
+
 
     public function __toString() {
         return (string)$this->id;
@@ -3064,5 +3075,54 @@ class Bizonylatfej {
     public function setLocale($locale) {
         $this->locale = $locale;
     }
+
+    /**
+     * @return \Entities\Felhasznalo
+     */
+    public function getFelhasznalo() {
+        return $this->felhasznalo;
+    }
+
+    public function getFelhasznalonev() {
+        return $this->felhasznalonev;
+    }
+
+    public function getFelhasznaloId() {
+        $fm = $this->getFelhasznalo();
+        if ($fm) {
+            return $fm->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Felhasznalo $val
+     */
+    public function setFelhasznalo($val) {
+        if (!($val instanceof \Entities\Felhasznalo)) {
+            $val = \mkw\store::getEm()->getRepository('Entities\Felhasznalo')->find($val);
+        }
+        if ($this->felhasznalo !== $val) {
+            if (!$val) {
+                $this->removeFelhasznalo();
+            }
+            else {
+                $this->felhasznalo = $val;
+                if (!$this->duplication) {
+                    $this->felhasznalonev = $val->getNev();
+                }
+            }
+        }
+    }
+
+    public function removeFelhasznalo() {
+        if ($this->felhasznalo !== null) {
+            $this->felhasznalo = null;
+            if (!$this->duplication) {
+                $this->felhasznalonev = '';
+            }
+        }
+    }
+
 
 }

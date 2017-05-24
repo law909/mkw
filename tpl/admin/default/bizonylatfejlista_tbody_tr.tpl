@@ -61,6 +61,9 @@
             {/if}
         <table>
             <tbody>
+                {if ($showfelhasznalo)}
+                <tr><td>{$_egyed.felhasznalonev}</td></tr>
+                {/if}
                 <tr><td  colspan="2" class="mattable-important">
                         {$_egyed.partnernev}
                     </td></tr>
