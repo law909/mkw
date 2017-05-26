@@ -40,6 +40,13 @@
                 {/while}
                 </div>
             {/while}
+            <div>
+                <select id="ThemeSelect">
+                    {foreach $uithemes as $_uitheme}
+                        <option value="{$_uitheme}"{if ($uitheme==$_uitheme)} selected="selected"{/if}>{$_uitheme}</option>
+                    {/foreach}
+                </select>
+            </div>
         </div>
         <!--div id="menu" class="matt-container ui-widget ui-widget-content ui-corner-all">
             <div class="textaligncenter">{$loggedinuser.name}</div>
