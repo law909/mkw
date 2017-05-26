@@ -29,6 +29,8 @@ class generalDataLoader {
         $view->setVar('setup', $setup);
         $view->setVar('maintheme', \mkw\store::getTheme());
         $view->setVar('today', date(\mkw\store::$DateFormat));
+        $menuc = new \Controllers\menuController(null);
+        $view->setVar('menu', $menuc->getMenu());
         $view->setVar('uithemes', array(
             'black-tie',
             'blitzer',

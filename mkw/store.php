@@ -1005,6 +1005,10 @@ class store {
         return self::getAdminSession()->loggedinuser['jog'] >= $jog;
     }
 
+    public static function getJog() {
+        return self::getAdminSession()->loggedinuser['jog'];
+    }
+
     public static function translate($mit, $mire = null) {
         $sz = array(
             'en' => array(

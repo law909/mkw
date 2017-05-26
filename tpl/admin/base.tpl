@@ -24,12 +24,24 @@
 <div>
     {if ($userloggedin)}
         <div id="menu" class="matt-container ui-widget ui-widget-content ui-corner-all">
-            {if ($setup.gyartas==1)}
-                <div class="menu-titlebar" data-caption="{t('Gyártás')}" data-refcontrol="#GyartasTab"></div>
-                <div id="GyartasTab">
-                    <div><a class="menupont" href="/admin/nullaslista/viewlist">{t('Nullás lista')}</a></div>
+            <div class="textaligncenter">{$loggedinuser.name}</div>
+            {$tabcnt = 1}
+            {$cscikl = 0}
+            {$mdb = count($menu)}
+            {while ($cscikl < $mdb)}
+                {if ($menu[$cscikl]['mcsnev'])}
+                    <div class="menu-titlebar" data-caption="{t($menu[$cscikl]['mcsnev'])}" data-refcontrol="#Tab{$tabcnt}"></div>
+                {/if}
+                <div id="Tab{$tabcnt}">
+                {$mcs = $menu[$cscikl]['mcsid']}
+                {while ($cscikl < $mdb) && ($menu[$cscikl]['mcsid'] == $mcs)}
+                    <div><a class="menupont {$menu[$cscikl]['class']}" href="{$menu[$cscikl]['url']}">{t($menu[$cscikl]['nev'])}</a></div>
+                    {$cscikl = $cscikl + 1}
+                {/while}
                 </div>
-            {/if}
+            {/while}
+        </div>
+        <!--div id="menu" class="matt-container ui-widget ui-widget-content ui-corner-all">
             <div class="textaligncenter">{$loggedinuser.name}</div>
             <div><a class="menupont" href="/admin/logout">{t('Kijelentkezés')}</a></div>
             <div class="menu-titlebar" data-caption="{t('Kereskedelem')}" data-refcontrol="#KereskedelemTab"></div>
@@ -169,7 +181,7 @@
                 </select>
             </div>
             <div><a class="menupont" href="/admin/">{t('Főoldal')}</a></div>
-        </div>
+        </div-->
     {/if}
     <div id="kozep">
         {block "kozep"}
