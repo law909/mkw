@@ -84,12 +84,16 @@
                     <div><a class="menupont" href="/admin/naptar/viewlist">{t('Naptár')}</a></div>
                 </div>
             {/if}
-            {if (($setup.bankpenztar) && haveJog(20))}
+            {if (($setup.bankpenztar))}
                 <div class="menu-titlebar" data-caption="{t('Bank, pénztár')}" data-refcontrol="#BankTab"></div>
                 <div id="BankTab">
+                    {if (haveJog(15))}
                     <div><a class="menupont" href="/admin/bankbizonylatfej/viewlist">{t('Bank')}</a></div>
+                    {/if}
+                    {if (haveJog(15))}
                     <div><a class="menupont" href="/admin/penztarbizonylatfej/viewlist">{t('Házipénztár')}</a></div>
                     <div><a class="menupont" href="/admin/idoszakipenztarjelenteslista/view">{t('Időszaki pénztárjelentés')}</a></div>
+                    {/if}
                 </div>
             {/if}
             {if (haveJog(20))}
