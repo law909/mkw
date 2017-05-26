@@ -82,7 +82,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function getSelectList($selid) {
+    public function getSelectList($selid = null) {
         $rec = $this->getRepo()->getAllForSelectList(array(), array('nev' => 'ASC'));
         $res = array();
         foreach ($rec as $sor) {
