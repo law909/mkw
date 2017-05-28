@@ -73,22 +73,25 @@ class importController extends \mkwhelpers\Controller {
     public function createKategoria($nev, $parentid) {
         $me = \mkw\store::getEm()->getRepository('Entities\TermekFa')->findBy(array('nev' => $nev, 'parent' => $parentid));
 
-        if (!$me || $me[0]->getParentId() !== $parentid) {
-            $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
-            $me = new \Entities\TermekFa();
-            $me->setNev($nev);
-            $me->setParent($parent);
-            $me->setMenu1lathato(false);
-            $me->setMenu2lathato(false);
-            $me->setMenu3lathato(false);
-            $me->setMenu4lathato(false);
-            \mkw\store::getEm()->persist($me);
-            \mkw\store::getEm()->flush();
+        if ($nev) {
+            if (!$me || $me[0]->getParentId() !== $parentid) {
+                $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+                $me = new \Entities\TermekFa();
+                $me->setNev($nev);
+                $me->setParent($parent);
+                $me->setMenu1lathato(false);
+                $me->setMenu2lathato(false);
+                $me->setMenu3lathato(false);
+                $me->setMenu4lathato(false);
+                \mkw\store::getEm()->persist($me);
+                \mkw\store::getEm()->flush();
+            }
+            else {
+                $me = $me[0];
+            }
+            return $me;
         }
-        else {
-            $me = $me[0];
-        }
-        return $me;
+        return null;
     }
 
     public function getKategoriaByIdegenkod($ik) {
@@ -1280,9 +1283,7 @@ class importController extends \mkwhelpers\Controller {
                                         $termek->setLeiras($leiras);
                                     }
                                     if (!$kaphato) {
-                                        if ($termek->getKeszlet()) {
-                                            $termek->setNemkaphato(true);
-                                        }
+                                        $termek->setNemkaphato($termek->getKeszlet() <= 0);
                                     }
                                     else {
                                         $termek->setNemkaphato(false);
