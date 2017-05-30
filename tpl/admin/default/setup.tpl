@@ -22,6 +22,10 @@
                     <li><a href="#DefaTab">{at('Alapértelmezések')}</a></li>
                     <li><a href="#TulajTab">{at('Tulajdonos adatai')}</a></li>
                     <li><a href="#WebTab">{at('Web beállítások')}</a></li>
+                    {if ($setup.multishop)}
+                        <li><a href="#Web2Tab">{at('Web 2 beállítások')}</a></li>
+                        <li><a href="#Web3Tab">{at('Web 3 beállítások')}</a></li>
+                    {/if}
                     <li><a href="#SzallitasiKtgTab">{at('Szállítási költség')}</a></li>
                     {if ($maintheme == 'mkwcansas')}
                         <li><a href="#ImportTab">{at('Import')}</a></li>
@@ -618,6 +622,78 @@
                         </tbody>
                     </table>
                 </div>
+                {if ($setup.multishop)}
+                    <div id="Web2Tab" class="mattkarb-page" data-visible="visible">
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="Off2Edit">{at('Publikus felület kikapcsolva')}:</label></span>
+                                <input id="Off2Edit" name="off2" type="checkbox"{if ($off2)} checked="checked"{/if}>
+                            </div>
+                        </div>
+                        <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <tbody>
+                            <tr>
+                                <td><label>{at('Logo')}:</label></td>
+                                <td><input name="logo2" type="text" value="{$logo2}"></td>
+                                <td><a class="js-kepbrowsebutton" data-name="logo2" href="#" title="{at('Browse')}">{at('...')}</a></td>
+                            </tr>
+                            <tr>
+                                <td><label for="WS2PriceEdit">{at('Ársáv')}:</label></td>
+                                <td><select id="WS2PriceEdit" name="arsav2">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $arsav2list as $_arsav}
+                                        <option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
+                                    {/foreach}
+                                </select></td>
+                            </tr>
+                            <tr>
+                                <td><label for="WS2DiscountPriceEdit">{at('Akciós ársáv')}:</label></td>
+                                <td><select id="WS2DiscountPriceEdit" name="akciosarsav2">
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $akciosarsav2list as $_arsav}
+                                            <option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
+                                        {/foreach}
+                                    </select></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="Web3Tab" class="mattkarb-page" data-visible="visible">
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="Off3Edit">{at('Publikus felület kikapcsolva')}:</label></span>
+                                <input id="Off2Edit" name="off3" type="checkbox"{if ($off3)} checked="checked"{/if}>
+                            </div>
+                        </div>
+                        <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <tbody>
+                            <tr>
+                                <td><label>{at('Logo')}:</label></td>
+                                <td><input name="logo3" type="text" value="{$logo3}"></td>
+                                <td><a class="js-kepbrowsebutton" data-name="logo3" href="#" title="{at('Browse')}">{at('...')}</a></td>
+                            </tr>
+                            <tr>
+                                <td><label for="WS3PriceEdit">{at('Ársáv')}:</label></td>
+                                <td><select id="WS3PriceEdit" name="arsav3">
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $arsav3list as $_arsav}
+                                            <option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
+                                        {/foreach}
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <td><label for="WS3DiscountPriceEdit">{at('Akciós ársáv')}:</label></td>
+                                <td><select id="WS3DiscountPriceEdit" name="akciosarsav3">
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $akciosarsav3list as $_arsav}
+                                            <option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
+                                        {/foreach}
+                                    </select></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                {/if}
                 {if ($maintheme == 'mkwcansas')}
                     <div id="ImportTab" class="mattkarb-page" data-visible="visible">
                         <div>

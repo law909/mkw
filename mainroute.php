@@ -89,5 +89,6 @@ $router->map('GET', '/export/arukereso', 'exportController#ArukeresoExport', 'ar
 $router->map('GET', '/export/olcsobbat', 'exportController#OlcsobbatExport', 'olcsobbatexport');
 $router->map('GET', '/export/fcmoto', 'exportController#FCMotoExport', 'fcmotoexport');
 $router->map('GET', '/export/mugenrace', 'exportController#MugenraceExport', 'mugenraceexport');
+$router->map('GET', '/export/superzonehu', 'exportController#SuperzonehuExport', 'superzonehuexport');
 $router->map('GET', '/sitemap.xml', 'sitemapController#toBot', 'sitemap');
 

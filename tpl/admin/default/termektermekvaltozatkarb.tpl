@@ -17,6 +17,33 @@
                 <a class="js-valtozatdelbutton" href="#" data-id="{$valtozat.id}"{if ($valtozat.oper=='add')} data-source="client"{/if} title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
             </td>
         </tr>
+        {if ($setup.multishop)}
+            <tr>
+                <td class="mattable-cell">
+                    <label for="VElerheto2Edit{$valtozat.id}">{at('Elérhető 2')}:
+                        <input id="VElerheto2Edit{$valtozat.id}" name="valtozatelerheto2_{$valtozat.id}" type="checkbox"{if ($valtozat.elerheto2)} checked="checked"{/if}>
+                    </label>
+                </td>
+                <td class="mattable-cell">
+                    <label for="VLathato2Edit{$valtozat.id}">{at('Látható 2')}:
+                        <input id="VLathato2Edit{$valtozat.id}" name="valtozatlathato2_{$valtozat.id}" type="checkbox"{if ($valtozat.lathato2)} checked="checked"{/if}>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="mattable-cell">
+                    <label for="VElerheto3Edit{$valtozat.id}">{at('Elérhető 3')}:
+                        <input id="VElerheto3Edit{$valtozat.id}" name="valtozatelerheto3_{$valtozat.id}" type="checkbox"{if ($valtozat.elerheto3)} checked="checked"{/if}>
+                    </label>
+                </td>
+                <td class="mattable-cell">
+                    <label for="VLathato3Edit{$valtozat.id}">{at('Látható 3')}:
+                        <input id="VLathato3Edit{$valtozat.id}" name="valtozatlathato3_{$valtozat.id}" type="checkbox"{if ($valtozat.lathato3)} checked="checked"{/if}>
+                    </label>
+                </td>
+            </tr>
+
+        {/if}
         <tr>
             <td class="mattable-cell">
                 <label>{at('Készlet')}:</label>

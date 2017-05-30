@@ -701,4 +701,123 @@ class exportController extends \mkwhelpers\Controller {
         }
     }
 
+    public function SuperzonehuExport() {
+
+        $kodszotarrepo = \mkw\store::getEm()->getRepository('Entities\TermekValtozatErtekKodszotar');
+
+        $ertek1 = array_merge(
+            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek1(),
+            \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getDistinctErtek2());
+
+        foreach ($ertek1 as $eee1) {
+            $e1 = $eee1['ertek'];
+
+            $kodsz = $kodszotarrepo->findOneBy(array('ertek' => $e1));
+            if (!$kodsz) {
+                $kodsz = new \Entities\TermekValtozatErtekKodszotar();
+                $kodsz->setErtek($e1);
+                \mkw\store::getEm()->persist($kodsz);
+                \mkw\store::getEm()->flush();
+                $kodsz->setKod($kodsz->getId());
+                \mkw\store::getEm()->persist($kodsz);
+                \mkw\store::getEm()->flush();
+            }
+        }
+
+        header("Content-type: text/csv");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        header("Content-Disposition: attachment; filename=superzone.csv");
+
+        $sor = array(
+            'Category',
+            'Article Number',
+            'Article Name',
+            'Article Name EN',
+            'Article Name IT',
+            'Color',
+            'Size',
+            'Active',
+            'Visible',
+            'Stock',
+            'EAN Code',
+            'Description',
+            'Description EN',
+            'Description IT',
+            'Image URL',
+            'Price',
+            'Discount price'
+        );
+        echo implode(";", $sor) . "\n";
+
+        $huf = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(array('nev' => 'HUF'));
+
+        $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
+
+        $res = $tr->getSuperzonehuExport();
+
+//        $eur = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(array('nev' => 'EUR'));
+
+        /** @var \Entities\Termek $t */
+        foreach ($res as $t) {
+
+            $ford = $t->getTranslationsArray();
+
+            $valtozatok = $t->getValtozatok();
+            if ($valtozatok) {
+                /** @var \Entities\TermekValtozat $valt */
+                foreach ($valtozatok as $valt) {
+                    $keszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
+                    if ($keszlet < 0) {
+                        $keszlet = 0;
+                    }
+                    $sor = array(
+                        '"' . $t->getTermekfa1()->getTeljesNev() . '"',
+                        '"' . $t->getCikkszam() . '"',
+                        '"' . $t->getNev() . '"',
+                        '"' . $ford['en_us']['nev'] . '"',
+                        '"' . $ford['it_it']['nev'] . '"',
+                        '"' . $valt->getSzin() . '"',
+                        '"' . $valt->getMeret() . '"',
+                        '"' . $t->getInaktiv() . '"',
+                        '"' . $valt->getElerheto3() . '"',
+                        '"' . $keszlet . '"',
+                        '"' . $valt->getVonalkod() . '"',
+                        '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
+                        '"' . preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']) . '"',
+                        '"' . preg_replace("/(\t|\n|\r)+/", "", $ford['it_it']['leiras']) . '"',
+                        '"' . ($valt->getKepurl() ? \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) : '') . '"',
+                        '"' . $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price)) . '"',
+                        '"' . $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount)) . '"'
+                    );
+                    echo implode(";", $sor) . "\n";
+                }
+            }
+            else {
+                $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg();
+                if ($keszlet < 0) {
+                    $keszlet = 0;
+                }
+                $sor = array(
+                    '"' . $t->getTermekfa1()->getTeljesNev() . '"',
+                    '"' . $t->getCikkszam() . '"',
+                    '"' . $t->getNev() . '"',
+                    '"' . $ford['en_us']['nev'] . '"',
+                    '"' . $ford['it_it']['nev'] . '"',
+                    '""',
+                    '""',
+                    '"' . $t->getLathato3() . '"',
+                    '"' . $keszlet . '"',
+                    '"' . $t->getVonalkod() . '"',
+                    '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
+                    '"' . preg_replace("/(\t|\n|\r)+/", "", $ford['en_us']['leiras']) . '"',
+                    '"' . preg_replace("/(\t|\n|\r)+/", "", $ford['it_it']['leiras']) . '"',
+                    '"' . ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : '' ). '"',
+                    '"' . $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price)) . '"',
+                    '"' . $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount)) . '"'
+                );
+                echo implode(";", $sor) . "\n";
+            }
+        }
+    }
 }

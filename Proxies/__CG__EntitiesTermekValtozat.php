@@ -64,10 +64,10 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'keszletinfo', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'keszletinfo', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'keszletinfo', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'keszletinfo', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'id', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'created', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'lathato3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'elerheto3', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'termekfokep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek1', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'adattipus2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'ertek2', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kosarak', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'kep', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'cikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'idegencikkszam', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'vonalkod', '' . "\0" . 'Entities\\TermekValtozat' . "\0" . 'beerkezesdatum'];
     }
 
     /**
@@ -747,6 +747,94 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMeret', []);
 
         return parent::getMeret();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getElerheto2()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto2', []);
+
+        return parent::getElerheto2();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setElerheto2($elerheto2)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto2', [$elerheto2]);
+
+        return parent::setElerheto2($elerheto2);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getElerheto3()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getElerheto3', []);
+
+        return parent::getElerheto3();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setElerheto3($elerheto3)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setElerheto3', [$elerheto3]);
+
+        return parent::setElerheto3($elerheto3);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato2()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato2', []);
+
+        return parent::getLathato2();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato2($lathato2)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato2', [$lathato2]);
+
+        return parent::setLathato2($lathato2);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato3()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato3', []);
+
+        return parent::getLathato3();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato3($lathato3)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato3', [$lathato3]);
+
+        return parent::setLathato3($lathato3);
     }
 
 }

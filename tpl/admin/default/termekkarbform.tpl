@@ -249,6 +249,36 @@
                             </label>
                         </td>
                     </tr>
+                    {if ($setup.multishop)}
+                        <tr>
+                            <td class="mattable-cell">
+                                <label for="VElerheto2Edit">{at('Elérhető 2')}:
+                                    <input id="VElerheto2Edit" form="valtozatgeneratorform" name="valtozatelerheto2"
+                                           type="checkbox">
+                                </label>
+                            </td>
+                            <td class="mattable-cell">
+                                <label for="VLathato2Edit">{at('Látható 2')}:
+                                    <input id="VLathato2Edit" form="valtozatgeneratorform" name="valtozatlathato2"
+                                           type="checkbox">
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="mattable-cell">
+                                <label for="VElerheto3Edit">{at('Elérhető 3')}:
+                                    <input id="VElerheto3Edit" form="valtozatgeneratorform" name="valtozatelerheto3"
+                                           type="checkbox">
+                                </label>
+                            </td>
+                            <td class="mattable-cell">
+                                <label for="VLathato3Edit">{at('Látható 3')}:
+                                    <input id="VLathato3Edit" form="valtozatgeneratorform" name="valtozatlathato3"
+                                           type="checkbox">
+                                </label>
+                            </td>
+                        </tr>
+                    {/if}
                     <tr>
                         <td class="mattable-cell">
                             <select name="valtozatadattipus1" form="valtozatgeneratorform">
@@ -353,6 +383,12 @@
         <div id="WebTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
             <input id="LathatoCheck" name="lathato" type="checkbox"
                    {if ($egyed.lathato)}checked="checked"{/if}>{at('Weboldalon látható')}
+            {if ($setup.multishop)}
+                <input id="Lathato2Check" name="lathato2" type="checkbox"
+                       {if ($egyed.lathato2)}checked="checked"{/if}>{at('Weboldalon látható 2')}
+                <input id="Lathato3Check" name="lathato3" type="checkbox"
+                       {if ($egyed.lathato3)}checked="checked"{/if}>{at('Weboldalon látható 3')}
+            {/if}
             <input id="NemkaphatoCheck" name="nemkaphato" type="checkbox"
                    {if ($egyed.nemkaphato)}checked="checked"{/if}>{at('Nem kapható')}
             <input id="FuggobenCheck" name="fuggoben" type="checkbox"

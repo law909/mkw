@@ -204,7 +204,7 @@ else {
                 }
             }
             elseif (store::mustLogin() && !in_array($match['name'], array('showlogin', 'dologin', 'showfanta', 'dofanta', 'fcmotoexport',
-                    'mugenraceexport'))) {
+                    'mugenraceexport', 'superzonehuexport'))) {
                 $mainsess->redirafterlogin = $_SERVER['REQUEST_URI'];
                 header('Location: ' . $router->generate('showlogin'));
             }

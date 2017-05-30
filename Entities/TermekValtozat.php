@@ -46,7 +46,19 @@ class TermekValtozat {
 	private $lathato=true;
 
     /** @ORM\Column(type="boolean") */
+    private $lathato2=true;
+
+    /** @ORM\Column(type="boolean") */
+    private $lathato3=true;
+
+    /** @ORM\Column(type="boolean") */
 	private $elerheto=true;
+
+    /** @ORM\Column(type="boolean") */
+    private $elerheto2=true;
+
+    /** @ORM\Column(type="boolean") */
+    private $elerheto3=true;
 
     /** @ORM\Column(type="boolean") */
 	private $termekfokep=false;
@@ -470,4 +482,61 @@ class TermekValtozat {
         }
         return null;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getElerheto2() {
+        return $this->elerheto2;
+    }
+
+    /**
+     * @param mixed $elerheto2
+     */
+    public function setElerheto2($elerheto2) {
+        $this->elerheto2 = $elerheto2;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getElerheto3() {
+        return $this->elerheto3;
+    }
+
+    /**
+     * @param mixed $elerheto3
+     */
+    public function setElerheto3($elerheto3) {
+        $this->elerheto3 = $elerheto3;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato2() {
+        return $this->lathato2;
+    }
+
+    /**
+     * @param mixed $lathato2
+     */
+    public function setLathato2($lathato2) {
+        $this->lathato2 = $lathato2;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato3() {
+        return $this->lathato3;
+    }
+
+    /**
+     * @param mixed $lathato3
+     */
+    public function setLathato3($lathato3) {
+        $this->lathato3 = $lathato3;
+    }
+
 }

@@ -41,7 +41,11 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
         $x['adattipus2lista'] = $tvatc->getSelectList($t->getAdatTipus2Id());
         $x['ertek2'] = $t->getErtek2();
         $x['lathato'] = $t->getLathato();
+        $x['lathato2'] = $t->getLathato2();
+        $x['lathato3'] = $t->getLathato3();
         $x['elerheto'] = $t->getElerheto();
+        $x['elerheto2'] = $t->getElerheto2();
+        $x['elerheto3'] = $t->getElerheto3();
         $x['termekfokep'] = $t->getTermekfokep();
         $x['kepurl'] = $t->getKepurl();
         $x['kepleiras'] = $t->getKepleiras();
@@ -97,7 +101,11 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
         $cikkszam = $this->params->getStringRequestParam('valtozatcikkszamgen');
         $idegencikkszam = $this->params->getStringRequestParam('valtozatidegencikkszamgen');
         $elerheto = $this->params->getBoolRequestParam('valtozatelerheto', false);
+        $elerheto2 = $this->params->getBoolRequestParam('valtozatelerheto2', false);
+        $elerheto3 = $this->params->getBoolRequestParam('valtozatelerheto3', false);
         $lathato = $this->params->getBoolRequestParam('valtozatlathato', false);
+        $lathato2 = $this->params->getBoolRequestParam('valtozatlathato2', false);
+        $lathato3 = $this->params->getBoolRequestParam('valtozatlathato3', false);
         $termekfokep = $this->params->getBoolRequestParam('valtozattermekfokep', false);
         $kepid = $this->params->getIntRequestParam('valtozatkepid');
 
@@ -115,11 +123,17 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
                     $valtozat = new \Entities\TermekValtozat();
                     $termek->addValtozat($valtozat);
                     $valtozat->setLathato($lathato);
+                    $valtozat->setLathato2($lathato2);
+                    $valtozat->setLathato3($lathato3);
                     if ($termek->getNemkaphato()) {
                         $valtozat->setElerheto(false);
+                        $valtozat->setElerheto2(false);
+                        $valtozat->setElerheto3(false);
                     }
                     else {
                         $valtozat->setElerheto($elerheto);
+                        $valtozat->setElerheto2($elerheto2);
+                        $valtozat->setElerheto3($elerheto3);
                     }
                     //					$valtozat->setBrutto($brutto);
                     $valtozat->setNetto($netto);

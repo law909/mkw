@@ -28,7 +28,7 @@ class store {
     private static $gdl;
     private static $sanitizer;
     private static $translationListener;
-    private static $locales = array('hu' => 'hu_hu', 'en' => 'en_us', 'de' => 'de_de');
+    private static $locales = array('hu' => 'hu_hu', 'en' => 'en_us', 'de' => 'de_de', 'it' => 'it_it');
     private static $adminmode = false;
     private static $mainmode = false;
     private static $loggedinuser;
@@ -875,6 +875,10 @@ class store {
 
     public static function isKPFolyoszamla() {
         return self::getSetupValue('kpfolyoszamla');
+    }
+
+    public static function isMultiShop() {
+        return self::getSetupValue('multishop');
     }
 
     public static function isFoxpostSzallitasimod($szm) {

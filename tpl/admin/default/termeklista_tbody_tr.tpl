@@ -75,6 +75,10 @@
             <tbody>
                 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="inaktiv" class="js-flagcheckbox{if ($_termek.inaktiv)} ui-state-hover{/if}">{at('Inaktív')}</a></td></tr>
                 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="lathato" class="js-flagcheckbox{if ($_termek.lathato)} ui-state-hover{/if}">{at('Látható')}</a></td></tr>
+                {if ($setup.multishop)}
+                    <tr><td><a href="#" data-id="{$_termek.id}" data-flag="lathato2" class="js-flagcheckbox{if ($_termek.lathato2)} ui-state-hover{/if}">{at('Látható 2')}</a></td></tr>
+                    <tr><td><a href="#" data-id="{$_termek.id}" data-flag="lathato3" class="js-flagcheckbox{if ($_termek.lathato3)} ui-state-hover{/if}">{at('Látható 3')}</a></td></tr>
+                {/if}
                 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="ajanlott" class="js-flagcheckbox{if ($_termek.ajanlott)} ui-state-hover{/if}">{at('Ajánlott')}</a></td></tr>
                 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="kiemelt" class="js-flagcheckbox{if ($_termek.kiemelt)} ui-state-hover{/if}">{at('Kiemelt')}</a></td></tr>
                 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="hozzaszolas" class="js-flagcheckbox{if ($_termek.hozzaszolas)} ui-state-hover{/if}">{at('Hozzá lehet szólni')}</a></td></tr>

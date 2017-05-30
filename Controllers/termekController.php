@@ -55,6 +55,8 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['leiras'] = $t->getLeiras();
 		$x['seodescription'] = $t->getSeodescription();
 		$x['lathato'] = $t->getLathato();
+        $x['lathato2'] = $t->getLathato2();
+        $x['lathato3'] = $t->getLathato3();
 		$x['hozzaszolas'] = $t->getHozzaszolas();
 		$x['ajanlott'] = $t->getAjanlott();
 		$x['kiemelt'] = $t->getKiemelt();
@@ -232,6 +234,8 @@ class termekController extends \mkwhelpers\MattableController {
 		$obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
 		$obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
 		$obj->setLathato($this->params->getBoolRequestParam('lathato'));
+        $obj->setLathato2($this->params->getBoolRequestParam('lathato2'));
+        $obj->setLathato3($this->params->getBoolRequestParam('lathato3'));
 		$obj->setHozzaszolas($this->params->getBoolRequestParam('hozzaszolas'));
 		$obj->setAjanlott($this->params->getBoolRequestParam('ajanlott'));
 		$obj->setKiemelt($this->params->getBoolRequestParam('kiemelt'));
@@ -462,11 +466,17 @@ class termekController extends \mkwhelpers\MattableController {
 					$valtozat = new TermekValtozat();
 					$obj->addValtozat($valtozat);
 					$valtozat->setLathato($this->params->getBoolRequestParam('valtozatlathato_' . $valtozatid));
+                    $valtozat->setLathato2($this->params->getBoolRequestParam('valtozatlathato2_' . $valtozatid));
+                    $valtozat->setLathato3($this->params->getBoolRequestParam('valtozatlathato3_' . $valtozatid));
 					if ($obj->getNemkaphato()) {
 						$valtozat->setElerheto(false);
+                        $valtozat->setElerheto2(false);
+                        $valtozat->setElerheto3(false);
 					}
 					else {
 						$valtozat->setElerheto($this->params->getBoolRequestParam('valtozatelerheto_' . $valtozatid));
+                        $valtozat->setElerheto2($this->params->getBoolRequestParam('valtozatelerheto2_' . $valtozatid));
+                        $valtozat->setElerheto3($this->params->getBoolRequestParam('valtozatelerheto3_' . $valtozatid));
 					}
 //						$valtozat->setBrutto($this->params->getNumRequestParam('valtozatbrutto_'.$valtozatid));
 					$valtozat->setNetto($this->params->getNumRequestParam('valtozatnetto_' . $valtozatid));
@@ -508,11 +518,17 @@ class termekController extends \mkwhelpers\MattableController {
 					$valtozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($valtozatid);
 					if ($valtozat) {
 						$valtozat->setLathato($this->params->getBoolRequestParam('valtozatlathato_' . $valtozatid));
+                        $valtozat->setLathato2($this->params->getBoolRequestParam('valtozatlathato2_' . $valtozatid));
+                        $valtozat->setLathato3($this->params->getBoolRequestParam('valtozatlathato3_' . $valtozatid));
 						if ($obj->getNemkaphato()) {
 							$valtozat->setElerheto(false);
+                            $valtozat->setElerheto2(false);
+                            $valtozat->setElerheto3(false);
 						}
 						else {
 							$valtozat->setElerheto($this->params->getBoolRequestParam('valtozatelerheto_' . $valtozatid));
+                            $valtozat->setElerheto2($this->params->getBoolRequestParam('valtozatelerheto2_' . $valtozatid));
+                            $valtozat->setElerheto3($this->params->getBoolRequestParam('valtozatelerheto3_' . $valtozatid));
 						}
 //							$valtozat->setBrutto($this->params->getNumRequestParam('valtozatbrutto_'.$valtozatid));
 						$valtozat->setNetto($this->params->getNumRequestParam('valtozatnetto_' . $valtozatid));
@@ -591,6 +607,14 @@ class termekController extends \mkwhelpers\MattableController {
         $f = $this->params->getNumRequestParam('lathatofilter',9);
         if ($f != 9) {
             $filter->addFilter('lathato', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('lathato2filter',9);
+        if ($f != 9) {
+            $filter->addFilter('lathato2', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('lathato3filter',9);
+        if ($f != 9) {
+            $filter->addFilter('lathato3', '=', $f);
         }
         $f = $this->params->getNumRequestParam('nemkaphatofilter',9);
         if ($f != 9) {
@@ -872,6 +896,12 @@ class termekController extends \mkwhelpers\MattableController {
 				case 'lathato':
 					$obj->setLathato($kibe);
 					break;
+                case 'lathato2':
+                    $obj->setLathato2($kibe);
+                    break;
+                case 'lathato3':
+                    $obj->setLathato3($kibe);
+                    break;
 				case 'ajanlott':
 					$obj->setAjanlott($kibe);
 					break;

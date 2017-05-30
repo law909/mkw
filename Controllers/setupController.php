@@ -230,6 +230,15 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::ShowTermekArsav);
         $view->setVar('showtermekarsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
 
+        $p = $repo->find(\mkw\consts::Webshop2Price);
+        $view->setVar('arsav2list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::Webshop2Discount);
+        $view->setVar('akciosarsav2list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::Webshop3Price);
+        $view->setVar('arsav3list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::Webshop3Discount);
+        $view->setVar('akciosarsav3list', $arsav->getSelectList(($p ? $p->getErtek() : '')));
+
         $p = $repo->find(\mkw\consts::MarkaCs);
         $markacs = new termekcimkekatController($this->params);
         $view->setVar('markacslist', $markacs->getSelectList(($p ? $p->getErtek() : 0)));
@@ -611,6 +620,10 @@ class setupController extends \mkwhelpers\Controller {
 
         $this->setObj(\mkw\consts::Arsav, $this->params->getStringRequestParam('arsav'));
         $this->setObj(\mkw\consts::ShowTermekArsav, $this->params->getStringRequestParam('showtermekarsav'));
+        $this->setObj(\mkw\consts::Webshop2Price, $this->params->getStringRequestParam('arsav2'));
+        $this->setObj(\mkw\consts::Webshop2Discount, $this->params->getStringRequestParam('akciosarsav2'));
+        $this->setObj(\mkw\consts::Webshop3Price, $this->params->getStringRequestParam('arsav3'));
+        $this->setObj(\mkw\consts::Webshop3Discount, $this->params->getStringRequestParam('akciosarsav3'));
 
         $markacs = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('markacs', 0));
         if ($markacs) {

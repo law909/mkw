@@ -147,6 +147,12 @@ class Termek {
     private $lathato = 1;
 
     /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato2 = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato3 = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
     private $hozzaszolas = 1;
 
     /** @ORM\Column(type="boolean",nullable=false) */
@@ -1880,6 +1886,15 @@ class Termek {
         return $this->translations;
     }
 
+    public function getTranslationsArray() {
+        $r = array();
+        /** @var \Entities\TermekTranslation $tr */
+        foreach ($this->translations as $tr) {
+            $r[$tr->getLocale()][$tr->getField()] = $tr->getContent();
+        }
+        return $r;
+    }
+
     public function addTranslation(TermekTranslation $t) {
         if (!$this->translations->contains($t)) {
             $this->translations[] = $t;
@@ -2124,5 +2139,34 @@ class Termek {
     public function setJogaervenyesseg($jogaervenyesseg) {
         $this->jogaervenyesseg = $jogaervenyesseg;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato2() {
+        return $this->lathato2;
+    }
+
+    /**
+     * @param mixed $lathato2
+     */
+    public function setLathato2($lathato2) {
+        $this->lathato2 = $lathato2;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato3() {
+        return $this->lathato3;
+    }
+
+    /**
+     * @param mixed $lathato3
+     */
+    public function setLathato3($lathato3) {
+        $this->lathato3 = $lathato3;
+    }
+
 
 }

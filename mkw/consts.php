@@ -184,4 +184,9 @@ class consts {
     const MugenraceFooldalSzoveg = 'mugenracefooldalszoveg';
     const MugenraceLogo = 'mugenracelogo';
     const MugenraceKatId = 'mugenracekatid';
+
+    const Webshop2Price = 'Webshop2Price';
+    const Webshop2Discount = 'Webshop2Discount';
+    const Webshop3Price = 'Webshop3Price';
+    const Webshop3Discount = 'Webshop3Discount';
 }

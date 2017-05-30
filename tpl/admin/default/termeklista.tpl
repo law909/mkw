@@ -44,6 +44,18 @@
                         <option value="0">{at('Nem látható')}</option>
                     {/if}
                 </select>
+                {if ($setup.multishop)}
+                    <select id="lathato2filter" name="lathato2filter">
+                        <option value="9">{at('Mindegy 2')}</option>
+                        <option value="1">{at('Látható 2')}</option>
+                        <option value="0">{at('Nem látható 2')}</option>
+                    </select>
+                    <select id="lathato3filter" name="lathato3filter">
+                        <option value="9">{at('Mindegy 3')}</option>
+                        <option value="1">{at('Látható 3')}</option>
+                        <option value="0">{at('Nem látható 3')}</option>
+                    </select>
+                {/if}
                 <select id="nemkaphatofilter" name="nemkaphatofilter">
                     <option value="9">{at('Mindegy')}</option>
                     <option value="1">{at('Nem kapható')}</option>
