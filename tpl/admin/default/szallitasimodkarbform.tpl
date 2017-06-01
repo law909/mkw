@@ -22,6 +22,10 @@
                         <td><textarea id="LeirasEdit" name="leiras">{$egyed.leiras}</textarea></td>
                     </tr>
                     <tr>
+                        <td><label for="TerminaltipusEdit">{at('Terminál típus')}:</label></td>
+                        <td><input id="TerminaltipusEdit" name="terminaltipus" type="text" size="80" maxlength="20" value="{$egyed.terminaltipus}"></td>
+                    </tr>
+                    <tr>
                         <td><label for="FizmodEdit">{at('Fizetési módok')}:</label></td>
                         <td><input id="FizmodEdit" name="fizmodok" type="text" size="80" maxlength="255" value="{$egyed.fizmodok}"></td>
                     </tr>

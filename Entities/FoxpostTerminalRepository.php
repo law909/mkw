@@ -11,19 +11,32 @@ class FoxpostTerminalRepository extends \mkwhelpers\Repository {
         $this->setEntityname('Entities\FoxpostTerminal');
     }
 
-    public function getCsoportok() {
-        $q = $this->_em->createQuery('SELECT DISTINCT _xx.csoport'
+    public function getCsoportok($tipus = null) {
+        if ($tipus) {
+            $filter = new FilterDescriptor();
+            $filter->addFilter('tipus', '=', $tipus);
+            $filter->addFilter('inaktiv', '=', false);
+            $q = $this->_em->createQuery('SELECT DISTINCT _xx.csoport'
                 . ' FROM Entities\FoxpostTerminal _xx'
+                . $this->getFilterString($filter)
                 . ' ORDER BY _xx.csoport');
-        return $q->getScalarResult();
+            $q->setParameters($this->getQueryParameters($filter));
+            return $q->getScalarResult();
+        }
+        return null;
     }
 
-    public function getByCsoport($csoport = null) {
-        if ($csoport) {
+    public function getByCsoport($csoport = null, $tipus = null) {
+        if ($tipus) {
             $filter = new FilterDescriptor();
-            $filter->addFilter('csoport', '=', $csoport);
+            $filter->addFilter('tipus', '=', $tipus);
+            if ($csoport) {
+                $filter->addFilter('csoport', '=', $csoport);
+            }
+            $filter->addFilter('inaktiv', '=', false);
+            $rec = $this->getRepo('Entities\FoxpostTerminal')->getAll($filter);
+            return $rec;
         }
-        $rec = $this->getRepo('Entities\FoxpostTerminal')->getAll($filter);
-        return $rec;
+        return null;
     }
 }

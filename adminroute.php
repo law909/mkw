@@ -544,6 +544,8 @@ $router->map('GET', '/admin/bizonylattetellista/print', 'bizonylattetellistaCont
 $router->map('GET', '/admin/bizomanyosertekesiteslista/view', 'bizomanyosertekesiteslistaController#view', 'adminbizomanyosertekesiteslistaview');
 $router->map('GET', '/admin/bizomanyosertekesiteslista/refresh', 'bizomanyosertekesiteslistaController#refresh', 'adminbizomanyosertekesiteslistarefresh');
 
+$router->map('GET', '/admin/csomagterminal/gethtmllist', 'foxpostController#getHTMLList', 'admincsomagterminalgethtmllist');
+
 if (\mkw\store::isDarshan()) {
     $router->map('GET', '/admin/orarend/viewlist', 'orarendController#viewlist', 'adminorarendviewlist');
     $router->map('GET', '/admin/orarend/htmllist', 'orarendController#htmllist', 'adminorarendhtmllist');

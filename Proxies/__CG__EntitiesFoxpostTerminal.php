@@ -64,10 +64,10 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'id', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nev', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'cim', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'csoport', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'subgroup', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nyitva', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'findme', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolat', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolng', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'bizonylatfejek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'id', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'tipus', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nev', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'cim', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'csoport', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'subgroup', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nyitva', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'findme', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolat', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolng', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'inaktiv'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'id', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nev', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'cim', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'csoport', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'subgroup', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nyitva', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'findme', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolat', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolng', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'bizonylatfejek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'id', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'tipus', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nev', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'cim', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'csoport', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'subgroup', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'nyitva', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'findme', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolat', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'geolng', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\FoxpostTerminal' . "\0" . 'inaktiv'];
     }
 
     /**
@@ -373,6 +373,50 @@ class FoxpostTerminal extends \Entities\FoxpostTerminal implements \Doctrine\ORM
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setGeolng', [$adat]);
 
         return parent::setGeolng($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getInaktiv()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getInaktiv', []);
+
+        return parent::getInaktiv();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setInaktiv($inaktiv)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setInaktiv', [$inaktiv]);
+
+        return parent::setInaktiv($inaktiv);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTipus()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipus', []);
+
+        return parent::getTipus();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTipus($tipus)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTipus', [$tipus]);
+
+        return parent::setTipus($tipus);
     }
 
 }

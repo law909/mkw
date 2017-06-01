@@ -5,6 +5,7 @@
         <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
                     class="ui-icon ui-icon-circle-minus"></span></a></span>
         <div class="matt-hseparator"></div>
+        <div>{$_egyed.terminaltipus}</div>
         <div>{if ($_egyed.webes)}{at('Webes')}{else}{at('Nem webes')}{/if}</div>
         <div>{if ($_egyed.vanszallitasiktg)}{at('Van szállítási költség')}{else}{at('Nincs szállítási költség')}{/if}</div>
     </td>

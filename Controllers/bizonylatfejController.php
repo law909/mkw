@@ -1036,12 +1036,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $szallitasimod = new szallitasimodController($this->params);
         if (!$record || !$record->getSzallitasimodId()) {
-            $fmid = \mkw\store::getParameter(\mkw\consts::Szallitasimod);
+            $szallmodid = \mkw\store::getParameter(\mkw\consts::Szallitasimod);
         }
         else {
-            $fmid = $record->getSzallitasimodId();
+            $szallmodid = $record->getSzallitasimodId();
         }
-        $view->setVar('szallitasimodlist', $szallitasimod->getSelectList($fmid, true));
+        $view->setVar('szallitasimodlist', $szallitasimod->getSelectList($szallmodid, true));
 
         $valutanem = new valutanemController($this->params);
         if (!$record || !$record->getValutanemId()) {
@@ -1085,7 +1085,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
 
         $foxpostctrl = new foxpostController($this->params);
-        $view->setVar('foxpostterminallist', $foxpostctrl->getSelectList(($record ? $record->getFoxpostterminalId() : 0)));
+        $szallitasimodobj = $this->getRepo('Entities\Szallitasimod')->find($szallmodid);
+        $view->setVar('foxpostterminallist', $foxpostctrl->getSelectList(($record ? $record->getFoxpostterminalId() : 0), ($szallitasimodobj ? $szallitasimodobj->getTerminaltipus() : null)));
 
         $felh = new dolgozoController($this->params);
         $view->setVar('felhasznalolist', $felh->getSelectList(($record ? $record->getFelhasznaloId() : 0)));

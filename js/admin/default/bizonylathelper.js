@@ -806,6 +806,22 @@ var bizonylathelper = function($) {
                 })
                 .on('change', '.js-quickkedvezmeny', function(e) {
                     quickcalcKedvezmeny($(this).attr('name').split('_')[1]);
+                })
+                .on('change', '#SzallitasimodEdit', function(e) {
+                    $.ajax({
+                        url: '/admin/csomagterminal/gethtmllist',
+                        type: 'GET',
+                        data: {
+                            szmid: $('#SzallitasimodEdit option:selected').val()
+                        },
+                        success: function(data) {
+                            var d = JSON.parse(data);
+                            if (d) {
+                                $('#CsomagTerminalEdit').html(d.html);
+                            }
+                        }
+                    });
+
                 });
 
                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())

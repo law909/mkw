@@ -13,6 +13,9 @@ class FoxpostTerminal {
 	 */
 	private $id;
 
+    /** @ORM\Column(type="string",length=20,nullable=true) */
+    private $tipus;
+
 	/** @ORM\Column(type="string",length=70,nullable=true) */
 	private $nev;
 
@@ -39,6 +42,9 @@ class FoxpostTerminal {
 
     /** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="foxpostterminal",cascade={"persist"}) */
 	private $bizonylatfejek;
+
+	/** @ORM\Column(type="boolean",nullable=true) */
+	private $inaktiv = false;
 
 	public function __construct() {
 		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
@@ -114,6 +120,34 @@ class FoxpostTerminal {
 
     public function setGeolng($adat) {
         $this->geolng = $adat;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInaktiv() {
+        return $this->inaktiv;
+    }
+
+    /**
+     * @param mixed $inaktiv
+     */
+    public function setInaktiv($inaktiv) {
+        $this->inaktiv = $inaktiv;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTipus() {
+        return $this->tipus;
+    }
+
+    /**
+     * @param mixed $tipus
+     */
+    public function setTipus($tipus) {
+        $this->tipus = $tipus;
     }
 
 }

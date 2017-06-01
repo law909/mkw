@@ -80,7 +80,15 @@ class foxpostController extends \mkwhelpers\MattableController {
     }
 
     public function getCsoportok() {
-        $rec = $this->getRepo('Entities\FoxpostTerminal')->getCsoportok();
+        $szmid = $this->params->getIntRequestParam('szmid');
+        $szm = $this->getRepo('Entities\Szallitasimod')->find($szmid);
+        $tipus = null;
+
+        if ($szm) {
+            $tipus = $szm->getTerminaltipus();
+        }
+
+        $rec = $this->getRepo('Entities\FoxpostTerminal')->getCsoportok($tipus);
         $res = array();
         $vanvalasztott = false;
         foreach ($rec as $sor) {
@@ -105,7 +113,15 @@ class foxpostController extends \mkwhelpers\MattableController {
     }
 
     public function getTerminalok() {
-        $rec = $this->getRepo('Entities\FoxpostTerminal')->getByCsoport($this->params->getStringRequestParam('cs'));
+        $szmid = $this->params->getIntRequestParam('szmid');
+        $szm = $this->getRepo('Entities\Szallitasimod')->find($szmid);
+        $tipus = null;
+
+        if ($szm) {
+            $tipus = $szm->getTerminaltipus();
+        }
+
+        $rec = $this->getRepo('Entities\FoxpostTerminal')->getByCsoport($this->params->getStringRequestParam('cs'), $tipus);
         $res = array();
         $vanvalasztott = false;
         foreach ($rec as $sor) {
@@ -130,17 +146,44 @@ class foxpostController extends \mkwhelpers\MattableController {
         ));
     }
 
-    public function getSelectList($selid) {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
-        $res = array();
-        foreach ($rec as $sor) {
-            $res[] = array(
-                'id' => $sor->getId(),
-                'caption' => $sor->getNev() . ' ' . $sor->getCim(),
-                'selected' => ($sor->getId() == $selid)
-            );
+    public function getSelectList($selid, $tipus = null) {
+        if (!is_null($tipus)) {
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('inaktiv', '=', false);
+            $filter->addFilter('tipus', '=', $tipus);
+            $rec = $this->getRepo()->getAll($filter, array('nev' => 'ASC'));
+            $res = array();
+            foreach ($rec as $sor) {
+                $res[] = array(
+                    'id' => $sor->getId(),
+                    'caption' => $sor->getNev() . ' ' . $sor->getCim(),
+                    'selected' => ($sor->getId() == $selid)
+                );
+            }
+            return $res;
         }
-        return $res;
+        return null;
+    }
+
+    public function getHTMLList() {
+        $szmid = $this->params->getIntRequestParam('szmid');
+        $szm = $this->getRepo('Entities\Szallitasimod')->find($szmid);
+        $tipus = null;
+
+        if ($szm) {
+            $tipus = $szm->getTerminaltipus();
+        }
+
+        $res = $this->getSelectList(null, $tipus);
+
+        $view = \mkw\store::getTemplateFactory()->createView('csomagterminalselect.tpl');
+        $view->setVar('terminallist', $res);
+        $view->setVar('variable', $tipus . 'terminal');
+        $view->setVar('tagid', 'CsomagTerminalEdit');
+
+        echo json_encode(array(
+            'html' => $view->getTemplateResult()
+        ));
     }
 
 }

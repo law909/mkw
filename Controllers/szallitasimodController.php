@@ -30,6 +30,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         $x['fizmodok'] = $t->getFizmodok();
         $x['sorrend'] = $t->getSorrend();
         $x['vanszallitasiktg'] = $t->getVanszallitasiktg();
+        $x['terminaltipus'] = $t->getTerminaltipus();
 
         if ($forKarb) {
             if ($letezik) {
@@ -62,6 +63,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         $obj->setFizmodok($this->params->getStringRequestParam('fizmodok'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setVanszallitasiktg($this->params->getBoolRequestParam('vanszallitasiktg'));
+        $obj->setTerminaltipus($this->params->getStringRequestParam('terminaltipus'));
         $hatarids = $this->params->getArrayRequestParam('hatarid');
         foreach ($hatarids as $hatarid) {
             $oper = $this->params->getStringRequestParam('hataroper_' . $hatarid);
@@ -194,7 +196,8 @@ class szallitasimodController extends \mkwhelpers\MattableController {
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
                 'leiras' => $sor->getLeiras(),
-                'foxpost' => ($sor->getId() == $foxpostid)
+                'foxpost' => ($sor->getId() == $foxpostid),
+                'terminaltipus' => $sor->getTerminaltipus()
             );
             if ($selid) {
                 $r['selected'] = $sor->getId() == $selid;

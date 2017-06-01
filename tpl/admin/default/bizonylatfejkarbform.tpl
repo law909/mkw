@@ -128,8 +128,8 @@
 			</tr>
             {if ($showfoxpostterminaleditor)}
             <tr>
-                <td><label for="FoxpostTerminalEdit">{at('Foxpost terminál')}:</label></td>
-                <td colspan="7"><select id="FoxpostTerminalEdit" name="foxpostterminal">
+                <td><label for="CsomagTerminalEdit">{at('Foxpost terminál')}:</label></td>
+                <td colspan="7"><select id="CsomagTerminalEdit" name="foxpostterminal">
                         <option value="">{at('válasszon')}</option>
                         {foreach $foxpostterminallist as $_mk}
                             <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>

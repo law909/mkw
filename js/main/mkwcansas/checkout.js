@@ -53,9 +53,13 @@ var checkout = (function($, guid) {
 	}
 
     function loadFoxpostCsoportData(termis) {
-        if ($('input[name="szallitasimod"]:checked').hasClass('js-foxpostchk')) {
+        var $szallmodchk = $('input[name="szallitasimod"]:checked');
+        if ($szallmodchk.hasClass('js-foxpostchk')) {
             $.ajax({
                 url: '/checkout/getfoxpostcsoportlist',
+                data: {
+                    szmid: $szallmodchk.val()
+                },
                 success: function(data) {
                     var d = JSON.parse(data);
                     $('.js-foxpostterminalcontainer').html(d.html).show();
@@ -75,11 +79,13 @@ var checkout = (function($, guid) {
     }
 
     function loadFoxpostTerminalData() {
-        var cs = $('select[name="foxpostcsoport"]').val();
+        var cs = $('select[name="foxpostcsoport"]').val(),
+            $szallmodchk = $('input[name="szallitasimod"]:checked');
         $.ajax({
             url: '/checkout/getfoxpostterminallist',
             data: {
-                cs: cs
+                cs: cs,
+                szmid: $szallmodchk.val()
             },
             success: function(data) {
                 var d = JSON.parse(data);

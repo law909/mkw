@@ -54,6 +54,9 @@ class Szallitasimod {
     /** @ORM\OneToMany(targetEntity="SzallitasimodTranslation", mappedBy="object", cascade={"persist", "remove"}) */
     private $translations;
 
+    /** @ORM\Column(type="string",length=20) */
+    private $terminaltipus;
+
 
     public static function getTranslatedFields() {
         return self::$translatedFields;
@@ -156,4 +159,19 @@ class Szallitasimod {
     public function setLocale($locale) {
         $this->locale = $locale;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTerminaltipus() {
+        return $this->terminaltipus;
+    }
+
+    /**
+     * @param mixed $terminaltipus
+     */
+    public function setTerminaltipus($terminaltipus) {
+        $this->terminaltipus = $terminaltipus;
+    }
+
 }
