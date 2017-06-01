@@ -11,7 +11,7 @@
             <tr>
                 <td><label>{at('Irány')}:</label></td>
                 <td>
-                    <input id="IranyEdit" type="radio" name="irany" value="1"{if ($egyed.irany >= 0)} checked="checked"{/if} autofocus>{at('Befizetés')}
+                    <input id="IranyEdit" type="radio" name="irany" value="1"{if ($egyed.irany >= 0)} checked="checked"{/if} autofocus required="required">{at('Befizetés')}
                     <input id="IranyEdit" type="radio" name="irany" value="-1"{if ($egyed.irany < 0)} checked="checked"{/if}>{at('Kifizetés')}
                 </td>
             </tr>
@@ -21,7 +21,7 @@
 			</tr>
 			<tr>
                 <td><label for="PenztarEdit">{at('Pénztár')}:</label></td>
-                <td><select id="PenztarEdit" name="penztar">
+                <td><select id="PenztarEdit" name="penztar" required="required">
                         <option value="">{at('válasszon')}</option>
                         {foreach $penztarlist as $_mk}
                             <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
