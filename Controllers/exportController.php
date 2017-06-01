@@ -730,6 +730,7 @@ class exportController extends \mkwhelpers\Controller {
         header("Content-Disposition: attachment; filename=superzone.csv");
 
         $sor = array(
+            'Category ID',
             'Category',
             'Article Number',
             'Article Name',
@@ -772,6 +773,7 @@ class exportController extends \mkwhelpers\Controller {
                         $keszlet = 0;
                     }
                     $sor = array(
+                        '"' . $t->getTermekfa1Id() . '"',
                         '"' . $t->getTermekfa1()->getTeljesNev() . '"',
                         '"' . $t->getCikkszam() . '"',
                         '"' . $t->getNev() . '"',
@@ -799,6 +801,7 @@ class exportController extends \mkwhelpers\Controller {
                     $keszlet = 0;
                 }
                 $sor = array(
+                    '"' . $t->getTermekfa1Id() . '"',
                     '"' . $t->getTermekfa1()->getTeljesNev() . '"',
                     '"' . $t->getCikkszam() . '"',
                     '"' . $t->getNev() . '"',
