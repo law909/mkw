@@ -123,6 +123,11 @@ $(document).ready(function () {
                             });
                         }
                     });
+                })
+                .on('change', '#PenztarEdit', function(e) {
+                    var v = $('#PenztarEdit option:selected').data('valutanem');
+                    $('#ValutanemEdit').val(v);
+                    $('input[name="valutanem"]').val(v);
                 });
             dialogcenter.on('click', 'tr', function(e) {
                 e.preventDefault();

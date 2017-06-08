@@ -39,6 +39,13 @@ class Penztar {
         return $this->valutanem;
     }
 
+    public function getValutanemId() {
+        if ($this->valutanem) {
+            return $this->valutanem->getId();
+        }
+        return null;
+    }
+
     public function setValutanem($valutanem) {
         $this->valutanem = $valutanem;
     }

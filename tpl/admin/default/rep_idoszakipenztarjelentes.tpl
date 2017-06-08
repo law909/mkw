@@ -7,7 +7,6 @@
     <table>
         <thead>
         <tr>
-            <th>Sorszám</th>
             <th>Dátum</th>
             <th>Bizonylatszám</th>
             <th>Partner</th>
@@ -17,27 +16,30 @@
         </tr>
         </thead>
         <tbody>
-        {$sorszam = 0}
         {$be = 0}
         {$ki = 0}
         {$egyenleg = 0}
         {foreach $lista as $elem}
-            {$sorszam = $sorszam + 1}
             <tr>
-                <td class="cell">{$sorszam}</td>
                 <td class="cell nowrap">{$elem.kelt}</td>
                 <td class="cell">{$elem.id}</td>
                 <td class="cell">{$elem.partnernev}</td>
+                {if ($elem.kelt)}
                 {if ($elem.irany > 0)}
                     {$be = $be + $elem.brutto}
                     {$egyenleg = $egyenleg + $elem.brutto}
                     <td class="cell textalignright nowrap">{bizformat($elem.brutto)}</td>
-                    <td class="cell textalignright nowrap">0</td>
+                    <td class="cell textalignright nowrap">{bizformat(0)}</td>
                 {else}
                     {$ki = $ki + $elem.brutto}
                     {$egyenleg = $egyenleg - $elem.brutto}
-                    <td class="cell textalignright nowrap">0</td>
+                    <td class="cell textalignright nowrap">{bizformat(0)}</td>
                     <td class="cell textalignright nowrap">{bizformat($elem.brutto)}</td>
+                {/if}
+                {else}
+                    {$egyenleg = $egyenleg + $elem.brutto}
+                    <td class="cell textalignright nowrap">{bizformat(0)}</td>
+                    <td class="cell textalignright nowrap">{bizformat(0)}</td>
                 {/if}
                 <td class="cell textalignright nowrap">{bizformat($egyenleg)}</td>
             </tr>
@@ -45,7 +47,6 @@
         </tbody>
         <tfoot>
         <tr>
-            <td></td>
             <td></td>
             <td></td>
             <td>Total</td>

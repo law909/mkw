@@ -45,8 +45,9 @@ class penztarController extends \mkwhelpers\JQGridController {
     public function getSelectList($selid = null) {
         $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
         $res = array();
+        /** @var \Entities\Penztar $sor */
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
+            $res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid), 'valutanem' => $sor->getValutanemId());
         }
         return $res;
     }

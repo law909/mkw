@@ -35,7 +35,8 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
             ->addFilter($datummezo, '>=', $this->tolstr)
-            ->addFilter($datummezo, '<=', $this->igstr);
+            ->addFilter($datummezo, '<=', $this->igstr)
+            ->addFilter('rontott', '=', false);
 
         $pt = $this->getRepo('Entities\Penztar')->find($this->params->getIntRequestParam('penztar'));
         $this->penztarid = null;
@@ -58,7 +59,8 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
-            ->addFilter($datummezo, '<', $this->tolstr);
+            ->addFilter($datummezo, '<', $this->tolstr)
+            ->addFilter('rontott', '=', false);
 
         $pt = $this->getRepo('Entities\Penztar')->find($this->params->getIntRequestParam('penztar'));
         $this->penztarid = null;
@@ -80,9 +82,15 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
         /** @var \Entities\PenztarbizonylatfejRepository $repo */
         $repo = $this->getRepo('Entities\Penztarbizonylatfej');
 
-        $nyito = $repo->getWithJoins($nyitofilter, array('_xx.kelt' => 'ASC', '_xx.id' => 'ASC'));
+        $nyito = $repo->getSum($nyitofilter);
         $mind = $repo->getWithJoins($filter, array('_xx.kelt' => 'ASC', '_xx.id' => 'ASC'));
-        $adat = array();
+        $adat = array(array(
+            'kelt' => '',
+            'id' => 'Nyitó',
+            'partnernev' => '',
+            'brutto' => $nyito,
+            'irany' => ($nyito < 0 ? -1 : 1)
+        ));
         foreach ($mind as $elem) {
             $adat[] = array(
                 'kelt' => $elem->getKeltStr(),
@@ -112,13 +120,12 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
 
         $excel = new \PHPExcel();
         $excel->setActiveSheetIndex(0)
-            ->setCellValue('A1', 'Sorszám')
-            ->setCellValue('B1', 'Dátum')
-            ->setCellValue('C1', 'Bizonylatszám')
-            ->setCellValue('D1', 'Partner')
-            ->setCellValue('E1', 'Befizetés')
-            ->setCellValue('F1', 'Kifizetés')
-            ->setCellValue('G1', 'Egyenleg');
+            ->setCellValue('A1', 'Dátum')
+            ->setCellValue('B1', 'Bizonylatszám')
+            ->setCellValue('C1', 'Partner')
+            ->setCellValue('D1', 'Befizetés')
+            ->setCellValue('E1', 'Kifizetés')
+            ->setCellValue('F1', 'Egyenleg');
 
         $nyitofilter = $this->createNyitoFilter();
         $filter = $this->createFilter();
@@ -126,33 +133,43 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
         /** @var \Entities\PenztarbizonylatfejRepository $repo */
         $repo = $this->getRepo('Entities\Penztarbizonylatfej');
 
-        $nyito = $repo->getWithJoins($nyitofilter, array('_xx.kelt' => 'ASC', '_xx.id' => 'ASC'));
+        $nyito = $repo->getSum($nyitofilter);
         $mind = $repo->getWithJoins($filter, array('_xx.kelt' => 'ASC', '_xx.id' => 'ASC'));
 
         $sor = 2;
-        $sorszam = 0;
         $egyenleg = 0;
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue('B' . $sor, 'Nyitó');
+        if ($nyito > 0) {
+            $egyenleg = $egyenleg + $nyito;
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue('F' . $sor, $egyenleg);
+        }
+        else {
+            $egyenleg = $egyenleg - $nyito;
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue('F' . $sor, $egyenleg);
+        }
+        $sor++;
         /** @var \Entities\Penztarbizonylatfej $item */
         foreach ($mind as $item) {
-            $sorszam++;
             $excel->setActiveSheetIndex(0)
-                ->setCellValue('A' . $sor, $sorszam)
-                ->setCellValue('B' . $sor, $item->getKeltStr())
-                ->setCellValue('C' . $sor, $item->getId())
-                ->setCellValue('D' . $sor, $item->getPartnernev());
+                ->setCellValue('A' . $sor, $item->getKeltStr())
+                ->setCellValue('B' . $sor, $item->getId())
+                ->setCellValue('C' . $sor, $item->getPartnernev());
             if ($item->getIrany() > 0) {
                 $egyenleg = $egyenleg + $item->getBrutto();
                 $excel->setActiveSheetIndex(0)
-                    ->setCellValue('E' . $sor, $item->getBrutto())
-                    ->setCellValue('F' . $sor, 0)
-                    ->setCellValue('G' . $sor, $egyenleg);
+                    ->setCellValue('D' . $sor, $item->getBrutto())
+                    ->setCellValue('E' . $sor, 0)
+                    ->setCellValue('F' . $sor, $egyenleg);
             }
             else {
                 $egyenleg = $egyenleg - $item->getBrutto();
                 $excel->setActiveSheetIndex(0)
-                    ->setCellValue('E' . $sor, 0)
-                    ->setCellValue('F' . $sor, $item->getBrutto())
-                    ->setCellValue('G' . $sor, $egyenleg);
+                    ->setCellValue('D' . $sor, 0)
+                    ->setCellValue('E' . $sor, $item->getBrutto())
+                    ->setCellValue('F' . $sor, $egyenleg);
             }
             $sor++;
         }

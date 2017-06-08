@@ -11,8 +11,16 @@
             <tr>
                 <td><label>{at('Irány')}:</label></td>
                 <td>
+                    {if ($oper == 'add' || $oper == 'addreopen')}
                     <input id="IranyEdit" type="radio" name="irany" value="1"{if ($egyed.irany >= 0)} checked="checked"{/if} autofocus required="required">{at('Befizetés')}
                     <input id="IranyEdit" type="radio" name="irany" value="-1"{if ($egyed.irany < 0)} checked="checked"{/if}>{at('Kifizetés')}
+                    {else}
+                        {if ($egyed.irany<0)}
+                            {at('Kifizetés')}
+                            {else}
+                            {at('Befizetés')}
+                        {/if}
+                    {/if}
                 </td>
             </tr>
 			<tr>
@@ -26,7 +34,7 @@
                     <select id="PenztarEdit" name="penztar" required="required">
                         <option value="">{at('válasszon')}</option>
                         {foreach $penztarlist as $_mk}
-                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-valutanem="{$_mk.valutanem}">{$_mk.caption}</option>
                         {/foreach}
                     </select>
                     {else}
@@ -36,7 +44,8 @@
 			</tr>
             <tr>
                 <td><label for="ValutanemEdit">{at('Valutanem')}:</label></td>
-                <td><select id="ValutanemEdit" name="valutanem" required="required">
+                <td><input type="hidden" name="valutanem" value="{$egyed.valutanemid}">
+                    <select id="ValutanemEdit" name="valutanemselect" disabled="disabled">
                         <option value="">{at('válasszon')}</option>
                         {foreach $valutanemlist as $_mk}
                             <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>

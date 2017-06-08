@@ -224,6 +224,17 @@ class Penztar extends \Entities\Penztar implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getValutanemId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', []);
+
+        return parent::getValutanemId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setValutanem($valutanem)
     {
 

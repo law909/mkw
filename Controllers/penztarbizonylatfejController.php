@@ -31,6 +31,7 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         $x['afa'] = $t->getAfa();
         $x['brutto'] = $t->getBrutto();
         $x['valutanemnev'] = $t->getValutanemnev();
+        $x['valutanem'] = $t->getValutanemId();
         $x['arfolyam'] = $t->getArfolyam();
         $x['penztar'] = $t->getPenztar();
         $x['penztarnev'] = $t->getPenztarnev();

@@ -46,4 +46,12 @@ class PenztarbizonylatfejRepository extends \mkwhelpers\Repository {
         return $q->getSingleScalarResult();
     }
 
+    public function getSum($filter) {
+        $q = $this->_em->createQuery('SELECT SUM(_xx.irany * _xx.brutto)'
+            . ' FROM Entities\Penztarbizonylatfej _xx'
+            . $this->getFilterString($filter));
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getSingleScalarResult();
+    }
+
 }
