@@ -21,12 +21,17 @@
 			</tr>
 			<tr>
                 <td><label for="PenztarEdit">{at('Pénztár')}:</label></td>
-                <td><select id="PenztarEdit" name="penztar" required="required">
+                <td>
+                    {if ($oper == 'add' || $oper == 'addreopen')}
+                    <select id="PenztarEdit" name="penztar" required="required">
                         <option value="">{at('válasszon')}</option>
                         {foreach $penztarlist as $_mk}
                             <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
                         {/foreach}
                     </select>
+                    {else}
+                    {$egyed.penztarnev}
+                    {/if}
                 </td>
 			</tr>
             <tr>

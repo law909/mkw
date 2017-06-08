@@ -265,4 +265,17 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
+    public function ront() {
+        $id = $this->params->getStringRequestParam('id');
+        if ($id) {
+            $bf = $this->getRepo()->find($id);
+            if ($bf) {
+                $bf->setRontott(true);
+                $this->getEm()->persist($bf);
+                $this->getEm()->flush();
+            }
+        }
+    }
+
+
 }
