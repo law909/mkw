@@ -153,6 +153,26 @@ $(document).ready(function() {
                     }
                 })
             }).button();
+            $('.js-repairimport').on('click', function (e) {
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: $this.data('href'),
+                    type: 'POST',
+                    success: function() {
+                        dialogcenter.html('A termékek javítva.').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'OK': function() {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                })
+            }).button();
         },
         onSubmit: function() {
             pleaseWait('A mentés sikerült.');

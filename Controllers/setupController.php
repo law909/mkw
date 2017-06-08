@@ -424,6 +424,16 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('stopkressgepimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'kressgep')));
         $view->setVar('stopkresstartozekimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'kresstartozek')));
         $view->setVar('stoplegavenueimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'legavenue')));
+
+        $view->setVar('repairkreativimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'kreativ')));
+        $view->setVar('repairdeltonimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'delton')));
+        $view->setVar('repairreinteximporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'reintex')));
+        $view->setVar('repairtutisportimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'tutisport')));
+        $view->setVar('repairmaxutovimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'maxutov')));
+        $view->setVar('repairsilkoimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'silko')));
+        $view->setVar('repairbtechimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'btech')));
+        $view->setVar('repairkressimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'kress')));
+        $view->setVar('repairlegavenueimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'legavenue')));
         $view->printTemplateResult();
     }
 

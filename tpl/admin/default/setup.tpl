@@ -707,6 +707,7 @@
                             <label for="PathKreativEdit">Képek mappája:</label>
                             <input id="PathKreativEdit" name="pathkreativ" value="{$pathkreativ}">
                             <a href="#" class="js-stopimport" data-href="{$stopkreativimporturl}">Stop import</a>
+                            <a href="#" class="js-repairimport" data-href="{$repairkreativimporturl}">Javít</a>
                         </div>
                         <div class="matt-hseparator"></div>
                         <div>
@@ -720,6 +721,7 @@
                             <label for="PathDeltonEdit">Képek mappája:</label>
                             <input id="PathDeltonEdit" name="pathdelton" value="{$pathdelton}">
                             <a href="#" class="js-stopimport" data-href="{$stopdeltonimporturl}">Stop import</a>
+                            <a href="#" class="js-repairimport" data-href="{$repairdeltonimporturl}">Javít</a>
                         </div>
                         <div class="matt-hseparator"></div>
                         <div>
@@ -733,6 +735,7 @@
                             <label for="PathReintexEdit">Képek mappája:</label>
                             <input id="PathReintexEdit" name="pathreintex" value="{$pathreintex}">
                             <a href="#" class="js-stopimport" data-href="{$stopreinteximporturl}">Stop import</a>
+                            <a href="#" class="js-repairimport" data-href="{$repairreinteximporturl}">Javít</a>
                         </div>
                         <div class="matt-hseparator"></div>
                         <div>
@@ -746,6 +749,7 @@
                             <label for="PathTutisportEdit">Képek mappája:</label>
                             <input id="PathTutisportEdit" name="pathtutisport" value="{$pathtutisport}">
                             <a href="#" class="js-stopimport" data-href="{$stoptutisportimporturl}">Stop import</a>
+                            <a href="#" class="js-repairimport" data-href="{$repairtutisportimporturl}">Javít</a>
                         </div>
                         <div class="matt-hseparator"></div>
                         <div>
@@ -759,6 +763,7 @@
                             <label for="PathMaxutovEdit">Képek mappája:</label>
                             <input id="PathMaxutovEdit" name="pathmaxutov" value="{$pathmaxutov}">
                             <a href="#" class="js-stopimport" data-href="{$stopmaxutovimporturl}">Stop import</a>
+                            <a href="#" class="js-repairimport" data-href="{$repairmaxutovimporturl}">Javít</a>
                         </div>
                         <div class="matt-hseparator"></div>
                         <div>
@@ -772,6 +777,7 @@
                             <label for="PathSilkoEdit">Képek mappája:</label>
                             <input id="PathSilkoEdit" name="pathsilko" value="{$pathsilko}">
                             <a href="#" class="js-stopimport" data-href="{$stopsilkoimporturl}">Stop import</a>
+                            <a href="#" class="js-repairimport" data-href="{$repairsilkoimporturl}">Javít</a>
                         </div>
                         <div class="matt-hseparator"></div>
                         <div>
@@ -785,6 +791,7 @@
                             <label for="PathBtechEdit">Képek mappája:</label>
                             <input id="PathBtechEdit" name="pathbtech" value="{$pathbtech}">
                             <a href="#" class="js-stopimport" data-href="{$stopbtechimporturl}">Stop import</a>
+                            <a href="#" class="js-repairimport" data-href="{$repairbtechimporturl}">Javít</a>
                         </div>
                         <div class="matt-hseparator"></div>
                         <div>
@@ -799,6 +806,7 @@
                             <input id="PathKressEdit" name="pathkress" value="{$pathkress}">
                             <a href="#" class="js-stopimport" data-href="{$stopkressgepimporturl}">Stop gép import</a>
                             <a href="#" class="js-stopimport" data-href="{$stopkresstartozekimporturl}">Stop tart. import</a>
+                            <a href="#" class="js-repairimport" data-href="{$repairkressimporturl}">Javít</a>
                         </div>
                         <div class="matt-hseparator"></div>
                         <div>
@@ -812,6 +820,7 @@
                             <label for="PathLegavenueEdit">Képek mappája:</label>
                             <input id="PathLegavenueEdit" name="pathlegavenue" value="{$pathlegavenue}">
                             <a href="#" class="js-stopimport" data-href="{$stoplegavenueimporturl}">Stop import</a>
+                            <a href="#" class="js-repairimport" data-href="{$repairlegavenueimporturl}">Javít</a>
                         </div>
                     </div>
                 {/if}

@@ -70,6 +70,17 @@ class importController extends \mkwhelpers\Controller {
         $view->printTemplateResult(false);
     }
 
+    public function repairFuggoTermek($gyartoid) {
+        $parentid = \mkw\store::getParameter(\mkw\consts::ImportNewKatId);
+        $parent = $this->getRepo('Entities\TermekFa')->find($parentid);
+
+        $conn = \mkw\store::getEm()->getConnection();
+        if ($parent) {
+            $st2 = $conn->prepare('UPDATE termek SET inaktiv=0, fuggoben=0 WHERE gyarto_id=' . $gyartoid . ' and termekfa1karkod not like \'' . $parent->getKarkod() . '%\'');
+            $st2->execute();
+        }
+    }
+
     public function createKategoria($nev, $parentid) {
         $me = \mkw\store::getEm()->getRepository('Entities\TermekFa')->findBy(array('nev' => $nev, 'parent' => $parentid));
 
@@ -169,6 +180,7 @@ class importController extends \mkwhelpers\Controller {
                 $imp = \mkw\consts::RunningTutisportImport;
                 break;
             case 'maxutov':
+            case 'makszutov':
                 $imp = \mkw\consts::RunningMaxutovImport;
                 break;
             case 'silko':
@@ -193,6 +205,48 @@ class importController extends \mkwhelpers\Controller {
 
         if ($imp) {
             $this->setRunningImport($imp, 0);
+        }
+    }
+
+    public function repair() {
+        $impname = $this->params->getStringParam('impname');
+
+        switch ($impname) {
+            case 'kreativ':
+                $imp = \mkw\consts::GyartoKreativ;
+                break;
+            case 'delton':
+                $imp = \mkw\consts::GyartoDelton;
+                break;
+            case 'reintex':
+                $imp = \mkw\consts::GyartoReintex;
+                break;
+            case 'tutisport':
+                $imp = \mkw\consts::GyartoTutisport;
+                break;
+            case 'maxutov':
+            case 'makszutov':
+                $imp = \mkw\consts::GyartoMaxutov;
+                break;
+            case 'silko':
+                $imp = \mkw\consts::GyartoSilko;
+                break;
+            case 'btech':
+                $imp = \mkw\consts::GyartoBtech;
+                break;
+            case 'kress':
+                $imp = \mkw\consts::GyartoKress;
+                break;
+            case 'legavenue':
+                $imp = \mkw\consts::GyartoLegavenue;
+                break;
+            default:
+                $imp = false;
+                break;
+        }
+
+        if ($imp) {
+            $this->repairFuggoTermek(\mkw\store::getParameter($imp));
         }
     }
 
@@ -2759,16 +2813,6 @@ class importController extends \mkwhelpers\Controller {
         }
     }
 
-    public function legavenueRepair() {
-        $parentid = $this->params->getIntRequestParam('katid', 0);
-        $parent = $this->getRepo('Entities\TermekFa')->find($parentid);
-        $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoLegavenue);
-        if ($parent) {
-            $sql = 'UPDATE termek SET inaktiv=0, fuggoben=0 WHERE gyarto_id=' . $gyartoid . ' and termekfa1karkod not like \'' . $parent->getKarkod() . '%\'';
-
-        }
-
-    }
     public function legavenueImport() {
         if (!$this->checkRunningImport(\mkw\consts::RunningLegavenueImport)) {
 
