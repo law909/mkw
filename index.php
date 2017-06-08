@@ -169,6 +169,7 @@ else {
                 if (!$linuser) {
                     Header('Location: ' . $router->generate('adminshowlogin'));
                 }
+                \mkw\store::getBlameableListener()->setUserValue(\mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($linuser));
             }
         }
         else {

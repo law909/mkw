@@ -64,10 +64,10 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'netto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'afa', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbanknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbankszamlaszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajswift', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajiban', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'folyoszamlak'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'createdby', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'netto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'afa', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbanknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbankszamlaszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajswift', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajiban', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'folyoszamlak'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'netto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'afa', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbanknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbankszamlaszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajswift', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajiban', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'folyoszamlak'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'createdby', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'netto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'afa', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bankszamla', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbanknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajbankszamlaszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajswift', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'tulajiban', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Bankbizonylatfej' . "\0" . 'folyoszamlak'];
     }
 
     /**
@@ -923,6 +923,94 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRontott', [$adat]);
 
         return parent::setRontott($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedby()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedby', []);
+
+        return parent::getCreatedby();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedbyId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedbyId', []);
+
+        return parent::getCreatedbyId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedbyNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedbyNev', []);
+
+        return parent::getCreatedbyNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUpdatedby()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUpdatedby', []);
+
+        return parent::getUpdatedby();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUpdatedbyId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUpdatedbyId', []);
+
+        return parent::getUpdatedbyId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUpdatedbyNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUpdatedbyNev', []);
+
+        return parent::getUpdatedbyNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLastmodStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmodStr', []);
+
+        return parent::getLastmodStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedStr', []);
+
+        return parent::getCreatedStr();
     }
 
 }

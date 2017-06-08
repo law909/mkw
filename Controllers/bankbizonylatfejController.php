@@ -43,6 +43,10 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController {
         $x['partnerirszam'] = $t->getPartnerirszam();
         $x['partnervaros'] = $t->getPartnervaros();
         $x['partnerutca'] = $t->getPartnerutca();
+        $x['updatedby'] = $t->getUpdatedbyNev();
+        $x['createdby'] = $t->getCreatedbyNev();
+        $x['lastmodstr'] = $t->getLastmodStr();
+        $x['createdstr'] = $t->getCreatedStr();
 
         $x['nemrossz'] = !$t->getRontott();
 

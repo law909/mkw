@@ -28,6 +28,20 @@ class Penztarbizonylatfej {
     private $lastmod;
 
     /**
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="createdby", referencedColumnName="id")
+     */
+    private $createdby;
+
+    /**
+     * @Gedmo\Blameable(on="update")
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="updatedby", referencedColumnName="id")
+     */
+    private $updatedby;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Bizonylattipus", inversedBy="penztarbizonylatfejek")
      * @ORM\JoinColumn(name="bizonylattipus_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Bizonylattipus
@@ -538,6 +552,62 @@ class Penztarbizonylatfej {
      */
     public function setArfolyam($arfolyam) {
         $this->arfolyam = $arfolyam;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedby() {
+        return $this->createdby;
+    }
+
+    public function getCreatedbyId() {
+        if ($this->createdby) {
+            return $this->createdby->getId();
+        }
+        return null;
+    }
+
+    public function getCreatedbyNev() {
+        if ($this->createdby) {
+            return $this->createdby->getNev();
+        }
+        return null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedby() {
+        return $this->updatedby;
+    }
+
+    public function getUpdatedbyId() {
+        if ($this->updatedby) {
+            return $this->updatedby->getId();
+        }
+        return null;
+    }
+
+    public function getUpdatedbyNev() {
+        if ($this->updatedby) {
+            return $this->updatedby->getNev();
+        }
+        return null;
+    }
+
+    public function getCreatedStr() {
+        if ($this->getCreated()) {
+            return $this->getCreated()->format(\mkw\store::$DateTimeFormat);
+        }
+        return '';
+    }
+
+    public function getLastmodStr() {
+        if ($this->getLastmod()) {
+            return $this->getLastmod()->format(\mkw\store::$DateTimeFormat);
+        }
+        return '';
     }
 
 }

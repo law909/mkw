@@ -80,10 +80,8 @@
                         {at('IP')}: {$_egyed.ip} {at('Ref.')}: {$_egyed.referrer}
                     </td>
                 </tr>
-                <tr><td colspan="5">
-                    {at('Létrehozva')}: {$_egyed.createdstr} {at('Utoljára módosítva')}: {$_egyed.lastmodstr}
-                    </td>
-                </tr>
+                <tr><td>{at('Létrehozva')}:</td><td>{$_egyed.createdby} {$_egyed.createdstr}</td></tr>
+                <tr><td>{at('Módosítva')}:</td><td>{$_egyed.updatedby} {$_egyed.lastmodstr}</td></tr>
                 {if ($_egyed.partnerfeketelistas)}
                 <tr>
                     <td colspan="5">

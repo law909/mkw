@@ -41,6 +41,7 @@ class store {
     public static $SQLDateFormat = 'Y-m-d';
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
     public static $TimeFormat = 'H:i';
+    private static $blameableListener;
 
     public static function getJSVersion() {
         switch(self::getTheme()) {
@@ -1069,4 +1070,19 @@ class store {
         $code .= (10 - ($sum % 10)) % 10;
         return $code;
     }
+
+    /**
+     * @return mixed
+     */
+    public static function getBlameableListener() {
+        return self::$blameableListener;
+    }
+
+    /**
+     * @param mixed $blameableListener
+     */
+    public static function setBlameableListener($blameableListener) {
+        self::$blameableListener = $blameableListener;
+    }
+
 }

@@ -86,6 +86,11 @@ $timestampableListener = new Gedmo\Timestampable\TimestampableListener;
 $timestampableListener->setAnnotationReader($cachedAnnotationReader);
 $evm->addEventSubscriber($timestampableListener);
 
+$blameableListener = new \Gedmo\Blameable\BlameableListener();
+$blameableListener->setAnnotationReader($cachedAnnotationReader);
+\mkw\store::setBlameableListener($blameableListener);
+$evm->addEventSubscriber($blameableListener);
+
 if (mkw\store::isMultilang()) {
     $translatableListener = new Gedmo\Translatable\TranslatableListener();
     $translatableListener->setAnnotationReader($cachedAnnotationReader);

@@ -371,6 +371,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['regmode'] = $t->getRegmode();
         $x['lastmodstr'] = $t->getLastmodStr();
         $x['createdstr'] = $t->getCreatedStr();
+        $x['updatedby'] = $t->getUpdatedbyNev();
+        $x['createdby'] = $t->getCreatedbyNev();
         $x['kupon'] = $t->getKupon();
         $x['foxpostterminalid'] = $t->getFoxpostterminalId();
         if ($oper === $this->inheritOperation) {
