@@ -1388,19 +1388,71 @@ class importController extends \mkwhelpers\Controller {
                             $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
                             $termekdb = 0;
                             foreach ($termekek as $t) {
-                                if (!in_array($t['idegencikkszam'], $idegenkodok)) {
+                                if ($t['idegencikkszam'] === '') {
+                                    $termeketkikellvenni = true;
                                     /** @var \Entities\Termek $termek */
                                     $termek = $this->getRepo('Entities\Termek')->find($t['id']);
-                                    if ($termek && $termek->getKeszlet() <= 0) {
-                                        $termekdb++;
-                                        \mkw\store::writelog('idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'makszutov_fuggoben.txt');
-                                        $lettfuggoben = true;
-                                        $termek->setFuggoben(true);
-                                        $termek->setInaktiv(true);
-                                        \mkw\store::getEm()->persist($termek);
-                                        if (($termekdb % $batchsize) === 0) {
-                                            \mkw\store::getEm()->flush();
-                                            \mkw\store::getEm()->clear();
+                                    /** @var \Entities\TermekValtozat $valtozat */
+                                    foreach ($termek->getValtozatok() as $valtozat) {
+                                        if ($valtozat->getIdegencikkszam()) {
+                                            if (!in_array($valtozat->getIdegencikkszam(), $idegenkodok)) {
+                                                if ($valtozat->getKeszlet() > 0) {
+                                                    $termeketkikellvenni = false;
+                                                }
+                                                // a változat nincs készleten, nincs meg az id.cikkszám makszutovnál, a terméknek sincs id.cikkszáma
+                                                else {
+                                                    $termekdb++;
+                                                    \mkw\store::writelog('VÁLTOZAT idegen cikkszám: ' . $valtozat->getIdegencikkszam() . ' | saját cikkszám: ' . $valtozat->getCikkszam(), 'makszutov_fuggoben.txt');
+                                                    $lettfuggoben = true;
+                                                    $valtozat->setLathato(false);
+                                                    $valtozat->setElerheto(false);
+                                                    \mkw\store::getEm()->persist($valtozat);
+                                                    if (($termekdb % $batchsize) === 0) {
+                                                        \mkw\store::getEm()->flush();
+                                                        \mkw\store::getEm()->clear();
+                                                    }
+                                                }
+                                            }
+                                            // megvan az idegen cikkszám makszutovnál
+                                            else {
+                                                $termeketkikellvenni = false;
+                                            }
+                                        }
+                                        // nincs idegen cikkszám
+                                        else {
+                                            $termeketkikellvenni = false;
+                                        }
+                                    }
+                                    if ($termeketkikellvenni) {
+                                        if ($termek && $termek->getKeszlet() <= 0) {
+                                            $termekdb++;
+                                            \mkw\store::writelog('idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'makszutov_fuggoben.txt');
+                                            $lettfuggoben = true;
+                                            $termek->setFuggoben(true);
+                                            $termek->setInaktiv(true);
+                                            \mkw\store::getEm()->persist($termek);
+                                            if (($termekdb % $batchsize) === 0) {
+                                                \mkw\store::getEm()->flush();
+                                                \mkw\store::getEm()->clear();
+                                            }
+                                        }
+                                    }
+                                }
+                                else {
+                                    if (!in_array($t['idegencikkszam'], $idegenkodok)) {
+                                        /** @var \Entities\Termek $termek */
+                                        $termek = $this->getRepo('Entities\Termek')->find($t['id']);
+                                        if ($termek && $termek->getKeszlet() <= 0) {
+                                            $termekdb++;
+                                            \mkw\store::writelog('idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'makszutov_fuggoben.txt');
+                                            $lettfuggoben = true;
+                                            $termek->setFuggoben(true);
+                                            $termek->setInaktiv(true);
+                                            \mkw\store::getEm()->persist($termek);
+                                            if (($termekdb % $batchsize) === 0) {
+                                                \mkw\store::getEm()->flush();
+                                                \mkw\store::getEm()->clear();
+                                            }
                                         }
                                     }
                                 }
