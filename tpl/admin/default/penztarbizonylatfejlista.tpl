@@ -14,6 +14,8 @@
 <div id="mattable-filterwrapper">
 	<label for="idfilter">{at('Sorszám')}:</label>
 	<input id="idfilter" name="idfilter" type="text" size="20" maxlength="20">
+    <label for="vevonevfilter">{at('Vevőnév')}:</label>
+    <input id="vevonevfilter" name="vevonevfilter" type="text">
 	<div class="matt-hseparator"></div>
     <div>
         <label for="datumtipusfilter">{at('Dátum')}:</label>
@@ -54,6 +56,15 @@
             {foreach $penztarlist as $panztar}
                 <option value="{$penztar.id}"{if ($penztar.selected)} selected="selected"{/if}>{$penztar.caption}</option>
             {/foreach}
+        </select>
+    </div>
+    <div class="matt-hseparator"></div>
+    <div>
+        <label for="iranyfilter">{at('Irány')}:</label>
+        <select id="iranyfilter" name="iranyfilter">
+            <option value="0">{at('Mindegy')}</option>
+            <option value="1"{if ($iranyfilter === 1)} selected="selected"{/if}>{at('befizetés')}</option>
+            <option value="-1"{if ($iranyfilter === -1)} selected="selected"{/if}>{at('kifizetés')}</option>
         </select>
     </div>
 </div>

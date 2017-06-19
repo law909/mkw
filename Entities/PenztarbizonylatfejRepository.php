@@ -15,7 +15,9 @@ class PenztarbizonylatfejRepository extends \mkwhelpers\Repository {
             '3' => array('caption' => 'kelt szerint csökkenő', 'order' => array('_xx.kelt' => 'DESC','_xx.id' => 'DESC')),
             '4' => array('caption' => 'kelt szerint növekvő', 'order' => array('_xx.kelt' => 'DESC','_xx.id' => 'DESC')),
             '5' => array('caption' => 'er.biz.szám szerint csökkenő', 'order' => array('_xx.erbizonylatszam' => 'DESC')),
-            '6' => array('caption' => 'er.biz.szám szerint növekvő', 'order' => array('_xx.erbizonylatszam' => 'ASC'))
+            '6' => array('caption' => 'er.biz.szám szerint növekvő', 'order' => array('_xx.erbizonylatszam' => 'ASC')),
+            '7' => array('caption' => 'irány és biz.szám szerint csökkenő', 'order' => array('_xx.irany' => 'DESC', '_xx.id' => 'DESC')),
+            '8' => array('caption' => 'irány és biz.szám szerint növekvő', 'order' => array('_xx.irany' => 'DESC', '_xx.id' => 'ASC'))
         ));
     }
 

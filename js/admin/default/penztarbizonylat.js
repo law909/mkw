@@ -158,7 +158,9 @@ $(document).ready(function () {
                     '#bizonylatrontottfilter',
                     '#erbizonylatszamfilter',
                     '#valutanemfilter',
-                    '#penztarfilter'
+                    '#penztarfilter',
+                    '#vevonevfilter',
+                    '#iranyfilter'
                 ]
             },
             tablebody: {

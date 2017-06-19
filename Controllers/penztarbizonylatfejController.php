@@ -166,6 +166,11 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
             $filter->addFilter('id', 'LIKE', '%' . $this->params->getStringRequestParam('idfilter'));
         }
 
+        $f = $this->params->getStringRequestParam('vevonevfilter');
+        if ($f) {
+            $filter->addFilter('partnernev', 'LIKE', '%' . $f . '%');
+        }
+
         $v = $this->getRepo('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanemfilter'));
         if ($v) {
             $filter->addFilter('valutanem', '=', $v);
@@ -199,6 +204,15 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
                 $filter->addFilter('rontott', '=', true);
                 break;
         }
+        $f = $this->params->getIntRequestParam('iranyfilter');
+        switch ($f) {
+            case 1:
+                $filter->addFilter('irany', '=', 1);
+                break;
+            case -1:
+                $filter->addFilter('irany', '=', -1);
+                break;
+        }
 
         $this->initPager(
             $this->getRepo()->getCount($filter),
@@ -219,7 +233,7 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
 
         $this->setVars($view);
 
-        $view->setVar('pagetitle', t('Penztarbizonylat'));
+        $view->setVar('pagetitle', t('Pénztárbizonylat'));
         $view->printTemplateResult();
     }
 
@@ -228,8 +242,13 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
 
         $this->setVars($view);
 
-        $view->setVar('pagetitle', t('Penztarbizonylat'));
-        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
+        $view->setVar('pagetitle', t('Pénztárbizonylat'));
+        if (\mkw\store::isSuperzoneB2B()) {
+            $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl(7));
+        }
+        else {
+            $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
+        }
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         $view->printTemplateResult();
     }
@@ -239,7 +258,7 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
 
-        $view->setVar('pagetitle', t('Penztarbizonylat'));
+        $view->setVar('pagetitle', t('Pénztárbizonylat'));
         $view->setVar('oper', $oper);
         $view->setVar('formaction', '/admin/penztarbizonylatfej/save');
         $record = $this->getRepo()->findWithJoins($id);

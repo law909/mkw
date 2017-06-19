@@ -149,14 +149,14 @@ class Repository extends EntityRepository {
         return $batchtpl;
     }
 
-    public function getOrdersForTpl() {
+    public function getOrdersForTpl($rendezendo = 1) {
         $orders = $this->getOrders();
         $ordertpl = array();
         foreach ($orders as $oid => $odata) {
             $ordertpl[] = array(
                 'id' => $oid,
                 'caption' => $odata['caption'],
-                'selected' => $oid == 1
+                'selected' => $oid == $rendezendo
             );
         }
         return $ordertpl;
