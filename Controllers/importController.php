@@ -593,13 +593,13 @@ class importController extends \mkwhelpers\Controller {
                     while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = $this->fgetdeltoncsv($fh))) {
                         $termekdb++;
                         if ($data[1]) {
-                            if ($data[6]) {
+                            if ($data[6] && $data[6] !== '"') {
                                 $katnev = trim($data[6]);
                             }
-                            elseif ($data[5]) {
+                            elseif ($data[5] && $data[5] !== '"') {
                                 $katnev = trim($data[5]);
                             }
-                            elseif ($data[4]) {
+                            elseif ($data[4] && $data[4] !== '"') {
                                 $katnev = trim($data[4]);
                             }
                             $parent = $this->createKategoria($katnev, $parentid);
@@ -620,13 +620,13 @@ class importController extends \mkwhelpers\Controller {
                             if (!$termek) {
 
                                 if ($createuj) {
-                                    if ($data[6]) {
+                                    if ($data[6] && $data[6] !== '"') {
                                         $katnev = trim($data[6]);
                                     }
-                                    elseif ($data[5]) {
+                                    elseif ($data[5] && $data[5] !== '"') {
                                         $katnev = trim($data[5]);
                                     }
-                                    elseif ($data[4]) {
+                                    elseif ($data[4] && $data[4] !== '"') {
                                         $katnev = trim($data[4]);
                                     }
                                     $urlkatnev = \mkw\store::urlize($katnev);
