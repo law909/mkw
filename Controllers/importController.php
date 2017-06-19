@@ -682,12 +682,29 @@ class importController extends \mkwhelpers\Controller {
                                 }
                             }
                             else {
+                                /** @var \Entities\Termek $termek */
                                 $termek = $termek[0];
                                 if ($editleiras) {
                                     $hosszuleiras = trim($data[3]);
                                     $termek->setLeiras($hosszuleiras);
                                     //$rovidleiras = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
                                     //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
+                                }
+                                if ($termek->getTermekfa1Nev() === '"') {
+                                    if ($data[6] && $data[6] !== '"') {
+                                        $katnev = trim($data[6]);
+                                    }
+                                    elseif ($data[5] && $data[5] !== '"') {
+                                        $katnev = trim($data[5]);
+                                    }
+                                    elseif ($data[4] && $data[4] !== '"') {
+                                        $katnev = trim($data[4]);
+                                    }
+                                    $urlkatnev = \mkw\store::urlize($katnev);
+                                    \mkw\store::createDirectoryRecursively($path . $urlkatnev);
+                                    $parent = $this->createKategoria($katnev, $parentid);
+
+                                    $termek->setTermekfa1($parent);
                                 }
                             }
                             // $termek->setNemkaphato(($data[6] * 1) == 0);
