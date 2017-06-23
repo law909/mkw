@@ -32,7 +32,7 @@ class Menu {
     private $lathato;
     /** @ORM\Column(type="integer", nullable=true) */
     private $sorrend;
-    /** @ORM\Column(type="string",length=255,nullable=false) */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $class;
 
 
