@@ -207,6 +207,12 @@ class RendezvenyJelentkezes {
      */
     private $visszautalasbejegyzo;
 
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $minicrmprojectid;
+
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $minicrmcontactid;
+
     public function getId() {
         return $this->id;
     }
@@ -1115,6 +1121,34 @@ class RendezvenyJelentkezes {
      */
     public function setSzamlazvaosszeghuf($szamlazvaosszeghuf) {
         $this->szamlazvaosszeghuf = $szamlazvaosszeghuf;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMinicrmprojectid() {
+        return $this->minicrmprojectid;
+    }
+
+    /**
+     * @param mixed $minicrmprojectid
+     */
+    public function setMinicrmprojectid($minicrmprojectid) {
+        $this->minicrmprojectid = $minicrmprojectid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMinicrmcontactid() {
+        return $this->minicrmcontactid;
+    }
+
+    /**
+     * @param mixed $minicrmcontactid
+     */
+    public function setMinicrmcontactid($minicrmcontactid) {
+        $this->minicrmcontactid = $minicrmcontactid;
     }
 
 }

@@ -303,6 +303,12 @@ class Partner {
     /** @ORM\OneToMany(targetEntity="Kontakt", mappedBy="partner",cascade={"persist"}) */
     private $kontaktok;
 
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $minicrmprojectid;
+
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $minicrmcontactid;
+
     public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1289,5 +1295,34 @@ class Partner {
     public function setSzallhazszam($szallhazszam) {
         $this->szallhazszam = $szallhazszam;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMinicrmprojectid() {
+        return $this->minicrmprojectid;
+    }
+
+    /**
+     * @param mixed $minicrmprojectid
+     */
+    public function setMinicrmprojectid($minicrmprojectid) {
+        $this->minicrmprojectid = $minicrmprojectid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMinicrmcontactid() {
+        return $this->minicrmcontactid;
+    }
+
+    /**
+     * @param mixed $minicrmcontactid
+     */
+    public function setMinicrmcontactid($minicrmcontactid) {
+        $this->minicrmcontactid = $minicrmcontactid;
+    }
+
 
 }

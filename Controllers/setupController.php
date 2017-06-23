@@ -406,6 +406,11 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::MiniCRMSystemId, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::MiniCRMAPIKey);
         $view->setVar(\mkw\consts::MiniCRMAPIKey, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MiniCRMPartnertorzs);
+        $view->setVar(\mkw\consts::MiniCRMPartnertorzs, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MiniCRMRendezvenyJelentkezes);
+        $view->setVar(\mkw\consts::MiniCRMRendezvenyJelentkezes, ($p ? $p->getErtek() : ''));
+
 
         $p = $repo->find(\mkw\consts::MugenraceLogo);
         $view->setVar(\mkw\consts::MugenraceLogo, ($p ? $p->getErtek() : ''));
@@ -568,6 +573,8 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::MiniCRMHasznalatban, $this->params->getBoolRequestParam('minicrmhasznalatban'));
         $this->setObj(\mkw\consts::MiniCRMSystemId, $this->params->getStringRequestParam('minicrmsystemid'));
         $this->setObj(\mkw\consts::MiniCRMAPIKey, $this->params->getStringRequestParam('minicrmapikey'));
+        $this->setObj(\mkw\consts::MiniCRMPartnertorzs, $this->params->getIntRequestParam('minicrmpartnertorzs'));
+        $this->setObj(\mkw\consts::MiniCRMRendezvenyJelentkezes, $this->params->getIntRequestParam('minicrmrendezvenyjelentkezes'));
         $this->setObj(\mkw\consts::KuponElotag, $this->params->getStringRequestParam('kuponelotag'));
         $this->setObj(\mkw\consts::Off, $this->params->getBoolRequestParam(\mkw\consts::Off));
 

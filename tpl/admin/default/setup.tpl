@@ -34,6 +34,7 @@
                         <li><a href="#MugenraceTab">{at('Mugenrace')}</a></li>
                     {/if}
                     <li><a href="#IdTab">{at('Azonosítók, kódok')}</a></li>
+                    <li><a href="#MiniCRMTab">{at('MiniCRM')}</a></li>
                     <li><a href="#EmailTab">{at('Email')}</a></li>
                     <li><a href="#FeedTab">{at('Feed beállítások')}</a></li>
                     <li><a href="#SitemapTab">{at('Sitemap beállítások')}</a></li>
@@ -883,6 +884,32 @@
                         </tr>
                         </tbody>
                     </table>
+                </div>
+                <div id="MiniCRMTab" class="mattkarb-page" data-visible="visible">
+                    <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="MiniCRMHasznalatbanEdit"><label>{at('MiniCRM bekapcsolva')}:</label></span>
+                            <input id="MiniCRMHasznalatbanEdit" name="minicrmhasznalatban" type="checkbox"{if ($minicrmhasznalatban)} checked="checked"{/if}">
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="MiniCRMSystemIdEdit">{at('MiniCRM System Id')}:</label></span>
+                            <input id="MiniCRMSystemIdEdit" name="minicrmsystemid" type="text" value="{$minicrmsystemid}" autocomplete="off">
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="MiniCRMAPIKeyEdit">{at('MiniCRM API key')}:</label></span>
+                            <input id="MiniCRMAPIKeyEdit" name="minicrmapikey" type="text" value="{$minicrmapikey}" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="MiniCRMPartnertorzsEdit"><label>{at('Partnertörzs modul')}:</label></span>
+                            <input id="MiniCRMPartnertorzsEdit" name="minicrmpartnertorzs" type="text" value="{$minicrmpartnertorzs}">
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="MiniCRMRendezvenyJelentkezesEdit">{at('Rendezvény modul')}:</label></span>
+                            <input id="MiniCRMRendezvenyJelentkezesEdit" name="minicrmrendezvenyjelentkezes" type="text" value="{$minicrmrendezvenyjelentkezes}">
+                        </div>
+                    </div>
                 </div>
                 <div id="EmailTab" class="mattkarb-page" data-visible="visible">
                     <table>
