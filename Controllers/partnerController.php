@@ -1309,4 +1309,79 @@ class partnerController extends \mkwhelpers\MattableController {
 
         \unlink($filepath);
     }
+
+    public function miniCRMImport() {
+        if (\mkw\store::isMiniCRMOn()) {
+            require 'busvendor/MiniCRM/minicrm-api.phar';
+            $catid = \mkw\store::getParameter(\mkw\consts::MiniCRMPartnertorzs);
+            $minicrm = new \MiniCRM_Connection(\mkw\store::getParameter(\mkw\consts::MiniCRMSystemId), \mkw\store::getParameter(\mkw\consts::MiniCRMAPIKey));
+
+            echo '<pre>';
+
+            $num = 0;
+
+            $page = 0;
+            do {
+                $res = \MiniCRM_Project::FieldSearch($minicrm,
+                    array(
+                        'UpdatedSince' => '2015-01-01+12:00:00',
+                        'CategoryId' => $catid,
+                        'Page' => $page
+                    )
+                );
+                if ($res) {
+                    $tomb = $res['Results'];
+                    foreach($tomb as $adat) {
+                        $aid = $adat['Id'];
+                        $cid = $adat['ContactId'];
+
+                        //$adatlap = new \MiniCRM_Project($minicrm, $aid);
+                        $kontakt = new \MiniCRM_Contact($minicrm, $cid);
+                        $addrlist = \MiniCRM_Address::AddressList($minicrm, $cid);
+                        if ($addrlist['Count'] > 0) {
+                            $addr = new \MiniCRM_Address($minicrm, current(array_keys($addrlist['Results'])));
+                        }
+                        else {
+                            $addr = false;
+                        }
+
+                        $partner = $this->getRepo()->findOneBy(array('minicrmprojectid' => $aid, 'minicrmcontactid' => $cid));
+                        if (!$partner) {
+                            $p = new \Entities\Partner();
+                            $p->setNev($kontakt->LastName . ' ' . $kontakt->FirstName);
+                            $p->setVezeteknev($kontakt->LastName);
+                            $p->setKeresztnev($kontakt->FirstName);
+                            $p->setMobil($kontakt->Phone);
+                            $p->setEmail($kontakt->Email);
+                            $p->setHonlap($kontakt->Url);
+                            $p->setMinicrmcontactid($cid);
+                            $p->setMinicrmprojectid($aid);
+                            if ($kontakt->Neme === 'Férfi') {
+                                $p->setNem(1);
+                            }
+                            else {
+                                $p->setNem(2);
+                            }
+
+                            if ($addr) {
+                                $p->setIrszam($addr->PostalCode);
+                                $p->setVaros($addr->City);
+                                $p->setUtca($addr->Address);
+                            }
+
+                            $this->getEm()->persist($p);
+                            $this->getEm()->flush();
+                        }
+
+                        $num++;
+
+                    }
+                }
+                $page++;
+            } while ($res['Results']);
+
+            echo $num;
+            echo '</pre>';
+        }
+    }
 }

@@ -232,20 +232,52 @@ class adminController extends mkwhelpers\Controller {
         $minicrm = new \MiniCRM_Connection(\mkw\store::getParameter(\mkw\consts::MiniCRMSystemId), \mkw\store::getParameter(\mkw\consts::MiniCRMAPIKey));
 
         $adatlap = new \MiniCRM_Project($minicrm, 5);
+        $kontakt = new \MiniCRM_Contact($minicrm, $adatlap->ContactId);
+        $addrlist = \MiniCRM_Address::AddressList($minicrm, $adatlap->ContactId);
+        $addr = new \MiniCRM_Address($minicrm, current(array_keys($addrlist['Results'])));
+
         echo '<pre>';
         print_r($adatlap);
-        echo '</pre>';
-
-        $kontakt = new \MiniCRM_Contact($minicrm, $adatlap->ContactId);
-        echo '<pre>';
         print_r($kontakt);
+        print_r($addr);
         echo '</pre>';
-        echo $kontakt->Neme . '<br>';
 
-
-        $res = \MiniCRM_Project::FieldSearch($minicrm, array('UpdatedSince' => '2015-01-01+12:00:00', 'CategoryId' => 19));
         echo '<pre>';
-        print_r($res);
+        $num = 0;
+        $catid = \mkw\store::getParameter(\mkw\consts::MiniCRMPartnertorzs);
+        $page = 0;
+        do {
+            $res = \MiniCRM_Project::FieldSearch($minicrm,
+                array(
+                    'UpdatedSince' => '2015-01-01+12:00:00',
+                    'CategoryId' => $catid,
+                    'Page' => $page
+                )
+            );
+            if ($res) {
+                $tomb = $res['Results'];
+                foreach($tomb as $adat) {
+                    $aid = $adat['Id'];
+                    $cid = $adat['ContactId'];
+
+                    //$adatlap = new \MiniCRM_Project($minicrm, $aid);
+                    $kontakt = new \MiniCRM_Contact($minicrm, $cid);
+                    $addrlist = \MiniCRM_Address::AddressList($minicrm, $cid);
+                    if ($addrlist['Count'] > 0) {
+                        $addr = new \MiniCRM_Address($minicrm, current(array_keys($addrlist['Results'])));
+                    }
+                    else {
+                        $addr = false;
+                    }
+
+                    print_r($kontakt);
+
+                    $num++;
+
+                }
+            }
+            $page++;
+        } while ($res['Results']);
         echo '</pre>';
 
     }

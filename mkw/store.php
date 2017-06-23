@@ -918,6 +918,10 @@ class store {
         return self::getTheme() === 'darshan';
     }
 
+    public static function isMiniCRMOn() {
+        return self::getParameter(\mkw\consts::MiniCRMHasznalatban, false) == 1;
+    }
+
     public static function setAdminMode() {
         self::$adminmode = true;
         self::$mainmode = false;
