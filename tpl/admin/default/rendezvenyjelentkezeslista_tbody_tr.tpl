@@ -20,18 +20,27 @@
     <td class="cell">
         <table>
             <tbody>
-            {if ($_egyed.fizetve)}
+            {if ($_egyed.visszautalva)}
                 <tr>
                     <td>
-                        <span class="mattable-important">{at('Fizetve')}</span> ({$_egyed.fizetesdatum}): {bizformat($_egyed.fizetveosszeghuf)}<br>
-                        {$_egyed.fizmodnev}<br>
-                        {if ($_egyed.fizetvepenztarnev)}
-                            {$_egyed.fizetvepenztarnev}<br>
-                            {$_egyed.fizetvepenztarbizonylatszam}<br>
+                        <span class="mattable-important">{at('Visszautalva')}</span> ({$_egyed.visszautalasdatum})<br>
+                        {$_egyed.visszautalasfizmodnev}<br>
+                        {$_egyed.visszautalasosszeghuf}<br>
+                        {if ($_egyed.visszautalaspenztarnev)}
+                            {$_egyed.visszautalaspenztarnev}<br>
+                            {$_egyed.visszautalaspenztarbizonylatszam}<br>
                         {else}
-                            {$_egyed.fizetvebankszamlaszam}<br>
-                            {$_egyed.fizetvebankbizonylatszam}<br>
+                            {$_egyed.visszautalasbankszamlaszam}<br>
+                            {$_egyed.visszautalasbankbizonylatszam}<br>
                         {/if}
+                    </td>
+                </tr>
+            {/if}
+            {if ($_egyed.lemondva)}
+                <tr>
+                    <td>
+                        <span class="mattable-important">{at('Lemondva')}</span> ({$_egyed.lemondasdatum})<br>
+                        {at('Oka')}: {$_egyed.lemondasoka}<br>
                     </td>
                 </tr>
             {/if}
@@ -45,26 +54,17 @@
                     </td>
                 </tr>
             {/if}
-            {if ($_egyed.lemondva)}
+            {if ($_egyed.fizetve)}
                 <tr>
                     <td>
-                        <span class="mattable-important">{at('Lemondva')}</span> ({$_egyed.lemondasdatum})<br>
-                        {at('Oka')}: {$_egyed.lemondasoka}<br>
-                    </td>
-                </tr>
-            {/if}
-            {if ($_egyed.visszautalva)}
-                <tr>
-                    <td>
-                        <span class="mattable-important">{at('Visszautalva')}</span> ({$_egyed.visszautalasdatum})<br>
-                        {$_egyed.visszautalasfizmodnev}<br>
-                        {$_egyed.visszautalasosszeghuf}<br>
-                        {if ($_egyed.visszautalaspenztarnev)}
-                            {$_egyed.visszautalaspenztarnev}<br>
-                            {$_egyed.visszautalaspenztarbizonylatszam}<br>
+                        <span class="mattable-important">{at('Fizetve')}</span> ({$_egyed.fizetesdatum}): {bizformat($_egyed.fizetveosszeghuf)}<br>
+                        {$_egyed.fizmodnev}<br>
+                        {if ($_egyed.fizetvepenztarnev)}
+                            {$_egyed.fizetvepenztarnev}<br>
+                            {$_egyed.fizetvepenztarbizonylatszam}<br>
                         {else}
-                            {$_egyed.visszautalasbankszamlaszam}<br>
-                            {$_egyed.visszautalasbankbizonylatszam}<br>
+                            {$_egyed.fizetvebankszamlaszam}<br>
+                            {$_egyed.fizetvebankbizonylatszam}<br>
                         {/if}
                     </td>
                 </tr>
