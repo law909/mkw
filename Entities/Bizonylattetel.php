@@ -338,6 +338,7 @@ class Bizonylattetel {
     public function setPersistentData() {
         $bf = $this->bizonylatfej;
         if ($bf) {
+            $this->setIrany($bf->getIrany());
             $this->setValutanem($bf->getValutanem());
             $this->setArfolyam($bf->getArfolyam());
         }

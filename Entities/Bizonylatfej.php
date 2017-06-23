@@ -1423,6 +1423,9 @@ class Bizonylatfej {
      * @param \Entities\Szallitasimod $val
      */
     public function setSzallitasimod($val) {
+        if (!($val instanceof \Entities\Szallitasimod)) {
+            $val = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($val);
+        }
         if ($this->szallitasimod !== $val) {
             if (!$val) {
                 $this->removeSzallitasimod();
@@ -2021,6 +2024,9 @@ class Bizonylatfej {
      * @param \Entities\Raktar $val
      */
     public function setRaktar($val) {
+        if (!($val instanceof \Entities\Raktar)) {
+            $val = \mkw\store::getEm()->getRepository('Entities\Raktar')->find($val);
+        }
         if ($this->raktar !== $val) {
             if (!$val) {
                 $this->removeRaktar();

@@ -255,9 +255,13 @@ class termekController extends \mkwhelpers\MattableController {
         $obj->setFuggoben($this->params->getBoolRequestParam('fuggoben'));
         $obj->setSzallitasiido($this->params->getIntRequestParam('szallitasiido'));
         $obj->setKozvetitett($this->params->getBoolRequestParam('kozvetitett'));
-        $obj->setJogaalkalom($this->params->getIntRequestParam('jogaalkalom'));
-        $obj->setJogaervenyesseg($this->params->getIntRequestParam('jogaervenyesseg'));
-		$farepo = \mkw\store::getEm()->getRepository('Entities\TermekFa');
+
+        if (\mkw\store::isDarshan()) {
+            $obj->setJogaalkalom($this->params->getIntRequestParam('jogaalkalom'));
+            $obj->setJogaervenyesseg($this->params->getIntRequestParam('jogaervenyesseg'));
+        }
+
+        $farepo = \mkw\store::getEm()->getRepository('Entities\TermekFa');
 		$fa = $farepo->find($this->params->getIntRequestParam('termekfa1'));
 		if ($fa) {
 			$obj->setTermekfa1($fa);

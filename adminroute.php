@@ -555,6 +555,24 @@ if (\mkw\store::isDarshan()) {
     $router->map('GET', '/admin/orarend/viewkarb', 'orarendController#viewkarb', 'adminorarendviewkarb');
     $router->map('POST', '/admin/orarend/save', 'orarendController#save', 'adminorarendsave');
     $router->map('POST', '/admin/orarend/setflag', 'orarendController#setflag', 'adminorarendsetflag');
+
+    $router->map('GET', '/admin/rendezveny/viewlist', 'rendezvenyController#viewlist', 'adminrendezvenyviewlist');
+    $router->map('GET', '/admin/rendezveny/getlistbody', 'rendezvenyController#getlistbody', 'adminrendezvenygetlistbody');
+    $router->map('GET', '/admin/rendezveny/getkarb', 'rendezvenyController#getkarb', 'adminrendezvenygetkarb');
+    $router->map('GET', '/admin/rendezveny/viewkarb', 'rendezvenyController#viewkarb', 'adminrendezvenyviewkarb');
+    $router->map('POST', '/admin/rendezveny/save', 'rendezvenyController#save', 'adminrendezvenysave');
+
+    $router->map('GET', '/admin/rendezvenyjelentkezes/viewlist', 'rendezvenyjelentkezesController#viewlist', 'adminrendezvenyjelentkezesviewlist');
+    $router->map('GET', '/admin/rendezvenyjelentkezes/getlistbody', 'rendezvenyjelentkezesController#getlistbody', 'adminrendezvenyjelentkezesgetlistbody');
+    $router->map('GET', '/admin/rendezvenyjelentkezes/getkarb', 'rendezvenyjelentkezesController#getkarb', 'adminrendezvenyjelentkezesgetkarb');
+    $router->map('GET', '/admin/rendezvenyjelentkezes/viewkarb', 'rendezvenyjelentkezesController#viewkarb', 'adminrendezvenyjelentkezesviewkarb');
+    $router->map('POST', '/admin/rendezvenyjelentkezes/save', 'rendezvenyjelentkezesController#save', 'adminrendezvenyjelentkezessave');
+    $router->map('POST', '/admin/rendezvenyjelentkezes/fizet', 'rendezvenyjelentkezesController#fizet', 'adminrendezvenyjelentkezesfizet');
+    $router->map('POST', '/admin/rendezvenyjelentkezes/szamlaz', 'rendezvenyjelentkezesController#szamlaz', 'adminrendezvenyjelentkezesszamlaz');
+    $router->map('POST', '/admin/rendezvenyjelentkezes/lemond', 'rendezvenyjelentkezesController#lemond', 'adminrendezvenyjelentkezeslemond');
+    $router->map('POST', '/admin/rendezvenyjelentkezes/visszautal', 'rendezvenyjelentkezesController#visszautal', 'adminrendezvenyjelentkezesvisszautal');
+    $router->map('GET', '/admin/rendezvenyjelentkezes/getar', 'rendezvenyjelentkezesController#getar', 'adminrendezvenyjelentkezesgetar');
+    $router->map('GET', '/admin/rendezvenyjelentkezes/getfizetettosszeg', 'rendezvenyjelentkezesController#getfizetettosszeg', 'adminrendezvenyjelentkezesgetfizetettosszeg');
 }
 
 if (\mkw\store::isSuperzoneB2B()) {

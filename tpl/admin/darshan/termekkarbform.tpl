@@ -9,6 +9,7 @@
     <div id="mattkarb-tabs">
         <ul>
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
+            <li><a href="#JogaTab">{at('Jóga adatok')}</a></li>
             {if ($setup.arsavok)}
                 <li><a href="#ArsavTab">{at('Ársávok')}</a></li>
             {/if}
@@ -142,6 +143,20 @@
                 </tbody>
             </table>
             {/if}
+        </div>
+        <div id="JogaTab" class="mattkarb-page" data-visible="visible">
+            <table>
+                <tbody>
+                <tr>
+                    <td><label for="JogaalkalomEdit">{at('Bérlet alkalom')}:</label></td>
+                    <td><input id="JogaalkalomEdit" name="jogaalkalom"></td>
+                </tr>
+                <tr>
+                    <td><label for="JogaervenyessegEdit">{at('Bérlet érvényesség (hét)')}:</label></td>
+                    <td><input id="JogaervenyessegEdit" name="jogaervenyesseg"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
         {if ($setup.arsavok)}
             <div id="ArsavTab" class="mattkarb-page" data-visible="visible">
