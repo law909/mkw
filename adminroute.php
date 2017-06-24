@@ -581,6 +581,8 @@ if (\mkw\store::isSuperzoneB2B()) {
     }
 }
 
+$router->map('POST', '/admin/minicrmmail', 'adminController#replier', 'adminminicrmmail');
+
 $router->map('GET', '/admin/t/minicrm', 'adminController#minicrm', 'adminminicrm');
 $router->map('GET', '/admin/t/kerriiimport', 'importController#kerriiimport', 'adminkerriiimport');
 $router->map('GET', '/admin/t/genean13', 'adminController#genean13', 'admingenean13');

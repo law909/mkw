@@ -1332,49 +1332,50 @@ class partnerController extends \mkwhelpers\MattableController {
                 if ($res) {
                     $tomb = $res['Results'];
                     foreach($tomb as $adat) {
-                        $aid = $adat['Id'];
-                        $cid = $adat['ContactId'];
+                        if (!$adat['Deleted']) {
+                            $aid = $adat['Id'];
+                            $cid = $adat['ContactId'];
 
-                        //$adatlap = new \MiniCRM_Project($minicrm, $aid);
-                        $kontakt = new \MiniCRM_Contact($minicrm, $cid);
-                        $addrlist = \MiniCRM_Address::AddressList($minicrm, $cid);
-                        if ($addrlist['Count'] > 0) {
-                            $addr = new \MiniCRM_Address($minicrm, current(array_keys($addrlist['Results'])));
-                        }
-                        else {
-                            $addr = false;
-                        }
-
-                        $partner = $this->getRepo()->findOneBy(array('minicrmprojectid' => $aid, 'minicrmcontactid' => $cid));
-                        if (!$partner) {
-                            $p = new \Entities\Partner();
-                            $p->setNev($kontakt->LastName . ' ' . $kontakt->FirstName);
-                            $p->setVezeteknev($kontakt->LastName);
-                            $p->setKeresztnev($kontakt->FirstName);
-                            $p->setMobil($kontakt->Phone);
-                            $p->setEmail($kontakt->Email);
-                            $p->setHonlap($kontakt->Url);
-                            $p->setMinicrmcontactid($cid);
-                            $p->setMinicrmprojectid($aid);
-                            if ($kontakt->Neme === 'Férfi') {
-                                $p->setNem(1);
+                            //$adatlap = new \MiniCRM_Project($minicrm, $aid);
+                            $kontakt = new \MiniCRM_Contact($minicrm, $cid);
+                            $addrlist = \MiniCRM_Address::AddressList($minicrm, $cid);
+                            if ($addrlist['Count'] > 0) {
+                                $addr = new \MiniCRM_Address($minicrm, current(array_keys($addrlist['Results'])));
                             }
                             else {
-                                $p->setNem(2);
+                                $addr = false;
                             }
 
-                            if ($addr) {
-                                $p->setIrszam($addr->PostalCode);
-                                $p->setVaros($addr->City);
-                                $p->setUtca($addr->Address);
+                            $partner = $this->getRepo()->findOneBy(array('minicrmprojectid' => $aid, 'minicrmcontactid' => $cid));
+                            if (!$partner) {
+                                $p = new \Entities\Partner();
+                                $p->setNev($kontakt->LastName . ' ' . $kontakt->FirstName);
+                                $p->setVezeteknev($kontakt->LastName);
+                                $p->setKeresztnev($kontakt->FirstName);
+                                $p->setMobil($kontakt->Phone);
+                                $p->setEmail($kontakt->Email);
+                                $p->setHonlap($kontakt->Url);
+                                $p->setMinicrmcontactid($cid);
+                                $p->setMinicrmprojectid($aid);
+                                if ($kontakt->Neme === 'Férfi') {
+                                    $p->setNem(1);
+                                }
+                                else {
+                                    $p->setNem(2);
+                                }
+
+                                if ($addr) {
+                                    $p->setIrszam($addr->PostalCode);
+                                    $p->setVaros($addr->City);
+                                    $p->setUtca($addr->Address);
+                                }
+
+                                $this->getEm()->persist($p);
+                                $this->getEm()->flush();
                             }
 
-                            $this->getEm()->persist($p);
-                            $this->getEm()->flush();
+                            $num++;
                         }
-
-                        $num++;
-
                     }
                 }
                 $page++;

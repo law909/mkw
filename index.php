@@ -164,7 +164,7 @@ else {
                 $__admintranslate->setLocale(store::getAdminLocale());
             }
 
-            if ((!in_array($match['name'], array('adminshowlogin', 'adminlogin', 'adminrlbexport')))) {
+            if ((!in_array($match['name'], array('adminshowlogin', 'adminlogin', 'adminrlbexport', 'adminminicrmmail')))) {
                 $linuser = store::getAdminSession()->pk;
                 if (!$linuser) {
                     Header('Location: ' . $router->generate('adminshowlogin'));

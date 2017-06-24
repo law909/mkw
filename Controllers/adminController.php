@@ -231,7 +231,21 @@ class adminController extends mkwhelpers\Controller {
         require 'busvendor/MiniCRM/minicrm-api.phar';
         $minicrm = new \MiniCRM_Connection(\mkw\store::getParameter(\mkw\consts::MiniCRMSystemId), \mkw\store::getParameter(\mkw\consts::MiniCRMAPIKey));
 
-        $adatlap = new \MiniCRM_Project($minicrm, 5);
+        $res = \MiniCRM_Project::FieldSearch($minicrm,
+            array(
+                'UpdatedSince' => '2015-01-01+12:00:00',
+                'CategoryId' => 19,
+                'Page' => 0
+            )
+        );
+
+        echo '<pre>';
+        print_r($res);
+        echo '</pre>';
+
+
+
+        /**        $adatlap = new \MiniCRM_Project($minicrm, 800);
         $kontakt = new \MiniCRM_Contact($minicrm, $adatlap->ContactId);
         $addrlist = \MiniCRM_Address::AddressList($minicrm, $adatlap->ContactId);
         $addr = new \MiniCRM_Address($minicrm, current(array_keys($addrlist['Results'])));
@@ -241,45 +255,13 @@ class adminController extends mkwhelpers\Controller {
         print_r($kontakt);
         print_r($addr);
         echo '</pre>';
+ */
 
-        echo '<pre>';
-        $num = 0;
-        $catid = \mkw\store::getParameter(\mkw\consts::MiniCRMPartnertorzs);
-        $page = 0;
-        do {
-            $res = \MiniCRM_Project::FieldSearch($minicrm,
-                array(
-                    'UpdatedSince' => '2015-01-01+12:00:00',
-                    'CategoryId' => $catid,
-                    'Page' => $page
-                )
-            );
-            if ($res) {
-                $tomb = $res['Results'];
-                foreach($tomb as $adat) {
-                    $aid = $adat['Id'];
-                    $cid = $adat['ContactId'];
+    }
 
-                    //$adatlap = new \MiniCRM_Project($minicrm, $aid);
-                    $kontakt = new \MiniCRM_Contact($minicrm, $cid);
-                    $addrlist = \MiniCRM_Address::AddressList($minicrm, $cid);
-                    if ($addrlist['Count'] > 0) {
-                        $addr = new \MiniCRM_Address($minicrm, current(array_keys($addrlist['Results'])));
-                    }
-                    else {
-                        $addr = false;
-                    }
-
-                    print_r($kontakt);
-
-                    $num++;
-
-                }
-            }
-            $page++;
-        } while ($res['Results']);
-        echo '</pre>';
-
+    public function replier() {
+        \mkw\store::writelog(print_r($this->params, true), 'replier.txt');
+        header('HTTP/1.1 200 OK');
     }
 
     public function genean13() {
