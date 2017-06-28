@@ -74,8 +74,22 @@ var mkwcomp = (function($) {
             }
         }
 
+        function clear(sel) {
+            var $datumedit;
+            if (typeof sel === 'string') {
+                $datumedit = $(sel);
+            }
+            else {
+                $datumedit = sel;
+            }
+            if ($datumedit) {
+                $datumedit.datepicker('setDate', $datumedit.attr('data-datum'));
+            }
+        }
+
         return {
-            init: init
+            init: init,
+            clear: clear
         }
     }
 

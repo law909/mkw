@@ -17,7 +17,6 @@ class penztarbizonylattetelController extends \mkwhelpers\MattableController {
 
 	public function loadVars($t, $forKarb = false) {
         $oper = $this->params->getStringRequestParam('oper');
-        $partner = new partnerController($this->params);
 		$jogcim = new jogcimController($this->params);
 		$x = array();
 		if (!$t) {

@@ -67,6 +67,8 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
      */
     protected function setFields($obj) {
 
+        $quick = $this->params->getBoolRequestParam('quick');
+
         $obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
         $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
         $obj->setKelt($this->params->getStringRequestParam('kelt'));
@@ -96,31 +98,40 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         $obj->setBizonylattipus($bt);
         $obj->setIrany($this->params->getIntRequestParam('irany'));
 
-        $tetelids = $this->params->getArrayRequestParam('tetelid');
-        foreach ($tetelids as $tetelid) {
-            if (($this->params->getIntRequestParam('teteljogcim_' . $tetelid) > 0)) {
-                $oper = $this->params->getStringRequestParam('teteloper_' . $tetelid);
-                $jogcim = $this->getEm()->getRepository('Entities\Jogcim')->find($this->params->getIntRequestParam('teteljogcim_' . $tetelid));
+        if ($quick) {
+            if (($this->params->getIntRequestParam('teteljogcim') > 0)) {
+                $jogcim = $this->getEm()->getRepository('Entities\Jogcim')->find($this->params->getIntRequestParam('teteljogcim'));
                 if ($jogcim) {
-                    switch ($oper) {
-                        case $this->addOperation:
-                        case $this->inheritOperation:
-                            $tetel = new Penztarbizonylattetel();
-                            $obj->addBizonylattetel($tetel);
+                    $tetel = new Penztarbizonylattetel();
+                    $obj->addBizonylattetel($tetel);
 
-                            $tetel->setJogcim($jogcim);
-                            $tetel->setHivatkozottbizonylat($this->params->getStringRequestParam('tetelhivatkozottbizonylat_' . $tetelid));
-                            $tetel->setHivatkozottdatum($this->params->getStringRequestParam('tetelhivatkozottdatum_' . $tetelid));
-                            $tetel->setSzoveg($this->params->getStringRequestParam('tetelszoveg_' . $tetelid));
+                    $tetel->setJogcim($jogcim);
+                    $tetel->setHivatkozottbizonylat($this->params->getStringRequestParam('tetelhivatkozottbizonylat'));
+                    $tetel->setHivatkozottdatum($this->params->getStringRequestParam('tetelhivatkozottdatum'));
+                    $tetel->setSzoveg($this->params->getStringRequestParam('tetelszoveg'));
 
-                            $tetel->setBrutto($this->params->getFloatRequestParam('tetelosszeg_' . $tetelid));
+                    $tetel->setBrutto($this->params->getFloatRequestParam('tetelosszeg'));
 
-                            $this->getEm()->persist($tetel);
-                            break;
-                        case $this->editOperation:
-                            /** @var \Entities\Penztarbizonylattetel $tetel */
-                            $tetel = $this->getEm()->getRepository('Entities\Penztarbizonylattetel')->find($tetelid);
-                            if ($tetel) {
+                    $this->getEm()->persist($tetel);
+                }
+                else {
+                    \mkw\store::writelog(print_r($this->params->asArray(), true), 'nincsjogcim.log');
+                }
+            }
+        }
+        else {
+            $tetelids = $this->params->getArrayRequestParam('tetelid');
+            foreach ($tetelids as $tetelid) {
+                if (($this->params->getIntRequestParam('teteljogcim_' . $tetelid) > 0)) {
+                    $oper = $this->params->getStringRequestParam('teteloper_' . $tetelid);
+                    $jogcim = $this->getEm()->getRepository('Entities\Jogcim')->find($this->params->getIntRequestParam('teteljogcim_' . $tetelid));
+                    if ($jogcim) {
+                        switch ($oper) {
+                            case $this->addOperation:
+                            case $this->inheritOperation:
+                                $tetel = new Penztarbizonylattetel();
+                                $obj->addBizonylattetel($tetel);
+
                                 $tetel->setJogcim($jogcim);
                                 $tetel->setHivatkozottbizonylat($this->params->getStringRequestParam('tetelhivatkozottbizonylat_' . $tetelid));
                                 $tetel->setHivatkozottdatum($this->params->getStringRequestParam('tetelhivatkozottdatum_' . $tetelid));
@@ -129,16 +140,29 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
                                 $tetel->setBrutto($this->params->getFloatRequestParam('tetelosszeg_' . $tetelid));
 
                                 $this->getEm()->persist($tetel);
-                            }
-                            break;
+                                break;
+                            case $this->editOperation:
+                                /** @var \Entities\Penztarbizonylattetel $tetel */
+                                $tetel = $this->getEm()->getRepository('Entities\Penztarbizonylattetel')->find($tetelid);
+                                if ($tetel) {
+                                    $tetel->setJogcim($jogcim);
+                                    $tetel->setHivatkozottbizonylat($this->params->getStringRequestParam('tetelhivatkozottbizonylat_' . $tetelid));
+                                    $tetel->setHivatkozottdatum($this->params->getStringRequestParam('tetelhivatkozottdatum_' . $tetelid));
+                                    $tetel->setSzoveg($this->params->getStringRequestParam('tetelszoveg_' . $tetelid));
+
+                                    $tetel->setBrutto($this->params->getFloatRequestParam('tetelosszeg_' . $tetelid));
+
+                                    $this->getEm()->persist($tetel);
+                                }
+                                break;
+                        }
                     }
-                }
-                else {
-                    \mkw\store::writelog(print_r($this->params->asArray(), true), 'nincsjogcim.log');
+                    else {
+                        \mkw\store::writelog(print_r($this->params->asArray(), true), 'nincsjogcim.log');
+                    }
                 }
             }
         }
-
         return $obj;
     }
 

@@ -119,6 +119,18 @@ class adminController extends mkwhelpers\Controller {
                 $view->setVar('lejartkintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem());
                 $view->setVar('kintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem());
                 break;
+            case \mkw\store::isDarshan():
+                $partner = new partnerController($this->params);
+                $view->setVar('partnerlist', $partner->getSelectList());
+                $valutanem = new valutanemController($this->params);
+                $view->setVar('valutanemlist', $valutanem->getSelectList());
+                $penztar = new penztarController($this->params);
+                $view->setVar('penztarlist', $penztar->getSelectList());
+                $jogcim = new jogcimController($this->params);
+                $view->setVar('jogcimlist', $jogcim->getSelectList());
+                $view->setVar('keltstr', date(\mkw\store::$DateFormat));
+                $view->setVar('formaction', '/admin/penztarbizonylatfej/save');
+                break;
             default:
                 break;
         }
