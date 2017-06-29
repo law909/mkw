@@ -16,8 +16,10 @@
                     <input id="IranyEdit" type="radio" name="irany" value="-1"{if ($egyed.irany < 0)} checked="checked"{/if}>{at('Kifizetés')}
                     {else}
                         {if ($egyed.irany<0)}
+                            <input type="hidden" name="irany" value="-1">
                             {at('Kifizetés')}
                             {else}
+                            <input type="hidden" name="irany" value="1">
                             {at('Befizetés')}
                         {/if}
                     {/if}
