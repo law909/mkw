@@ -148,8 +148,8 @@ class megrendelesfejController extends bizonylatfejController {
         foreach($ids as $id) {
             $megrendfej = $this->getRepo()->find($id);
             if ($megrendfej && \mkw\store::isFoxpostSzallitasimod($megrendfej->getSzallitasimodId()) && !$megrendfej->getFoxpostBarcode()) {
-                $fpc = new \Controllers\foxpostController($this->params);
-                $fpres = $fpc->sendMegrendeles($megrendfej);
+                $fpc = new \Controllers\csomagterminalController($this->params);
+                $fpres = $fpc->sendMegrendelesToFoxpost($megrendfej);
                 if ($fpres) {
                     $megrendfej->setFoxpostBarcode($fpres['barcode']);
                     $megrendfej->setFuvarlevelszam($fpres['barcode']);

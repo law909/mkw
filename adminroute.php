@@ -491,7 +491,7 @@ $router->map('POST','/admin/import/vatera', 'importController#vateraImport', 'ad
 //$router->map('POST','/admin/import/szinvarimport', 'importController#szInvarImport', 'adminszinvarimport');
 //$router->map('POST','/admin/import/szpartnerimport', 'importController#szInvarPartnerImport', 'adminszinvarpartnerimport');
 $router->map('POST','/admin/import/szimport', 'importController#szImport', 'adminszimport');
-$router->map('POST','/admin/import/foxpostterminal', 'foxpostController#downloadTerminalList', 'adminfoxpostterminalimport');
+$router->map('POST','/admin/import/foxpostterminal', 'csomagterminalController#downloadFoxpostTerminalList', 'admincsomagterminalfoxpostimport');
 $router->map('GET','/admin/import/szpartnerimport', 'importController#szSIIKerPartnerImport', 'adminszsiikerpartnerimport');
 
 
@@ -545,7 +545,7 @@ $router->map('GET', '/admin/bizonylattetellista/print', 'bizonylattetellistaCont
 $router->map('GET', '/admin/bizomanyosertekesiteslista/view', 'bizomanyosertekesiteslistaController#view', 'adminbizomanyosertekesiteslistaview');
 $router->map('GET', '/admin/bizomanyosertekesiteslista/refresh', 'bizomanyosertekesiteslistaController#refresh', 'adminbizomanyosertekesiteslistarefresh');
 
-$router->map('GET', '/admin/csomagterminal/gethtmllist', 'foxpostController#getHTMLList', 'admincsomagterminalgethtmllist');
+$router->map('GET', '/admin/csomagterminal/gethtmllist', 'csomagterminalController#getHTMLList', 'admincsomagterminalgethtmllist');
 
 if (\mkw\store::isDarshan()) {
     $router->map('GET', '/admin/orarend/viewlist', 'orarendController#viewlist', 'adminorarendviewlist');

@@ -4,11 +4,11 @@ namespace Entities;
 
 use mkwhelpers\FilterDescriptor;
 
-class FoxpostTerminalRepository extends \mkwhelpers\Repository {
+class CsomagTerminalRepository extends \mkwhelpers\Repository {
 
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
         parent::__construct($em, $class);
-        $this->setEntityname('Entities\FoxpostTerminal');
+        $this->setEntityname('Entities\CsomagTerminal');
     }
 
     public function getCsoportok($tipus = null) {
@@ -17,7 +17,7 @@ class FoxpostTerminalRepository extends \mkwhelpers\Repository {
             $filter->addFilter('tipus', '=', $tipus);
             $filter->addFilter('inaktiv', '=', false);
             $q = $this->_em->createQuery('SELECT DISTINCT _xx.csoport'
-                . ' FROM Entities\FoxpostTerminal _xx'
+                . ' FROM Entities\CsomagTerminal _xx'
                 . $this->getFilterString($filter)
                 . ' ORDER BY _xx.csoport');
             $q->setParameters($this->getQueryParameters($filter));
@@ -34,7 +34,7 @@ class FoxpostTerminalRepository extends \mkwhelpers\Repository {
                 $filter->addFilter('csoport', '=', $csoport);
             }
             $filter->addFilter('inaktiv', '=', false);
-            $rec = $this->getRepo('Entities\FoxpostTerminal')->getAll($filter);
+            $rec = $this->getRepo('Entities\CsomagTerminal')->getAll($filter);
             return $rec;
         }
         return null;

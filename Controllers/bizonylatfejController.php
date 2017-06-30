@@ -374,7 +374,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['updatedby'] = $t->getUpdatedbyNev();
         $x['createdby'] = $t->getCreatedbyNev();
         $x['kupon'] = $t->getKupon();
-        $x['foxpostterminalid'] = $t->getFoxpostterminalId();
+        $x['csomagterminalid'] = $t->getCsomagterminalId();
         if ($oper === $this->inheritOperation) {
             $x['fakekintlevoseg'] = false;
             $x['fakekifizetve'] = false;
@@ -514,12 +514,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         else {
             $obj->removeFelhasznalo();
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\FoxpostTerminal')->find($this->params->getIntRequestParam('foxpostterminal'));
+        $ck = \mkw\store::getEm()->getRepository('Entities\CsomagTerminal')->find($this->params->getIntRequestParam('csomagterminal'));
         if ($ck) {
-            $obj->setFoxpostterminal($ck);
+            $obj->setCsomagterminal($ck);
         }
         else {
-            $obj->removeFoxpostterminal();
+            $obj->removeCsomagterminal();
         }
 
         if ($this->params->getNumRequestParam('uzletkotojutalek') !== 0) {
@@ -1086,9 +1086,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             ($record ? $record->getBizonylattipusId() : $this->biztipus)));
         $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
 
-        $foxpostctrl = new foxpostController($this->params);
+        $csomagctrl = new csomagterminalController($this->params);
         $szallitasimodobj = $this->getRepo('Entities\Szallitasimod')->find($szallmodid);
-        $view->setVar('foxpostterminallist', $foxpostctrl->getSelectList(($record ? $record->getFoxpostterminalId() : 0), ($szallitasimodobj ? $szallitasimodobj->getTerminaltipus() : null)));
+        $view->setVar('csomagterminallist', $csomagctrl->getSelectList(($record ? $record->getCsomagterminalId() : 0), ($szallitasimodobj ? $szallitasimodobj->getTerminaltipus() : null)));
 
         $felh = new dolgozoController($this->params);
         $view->setVar('felhasznalolist', $felh->getSelectList(($record ? $record->getFelhasznaloId() : 0)));

@@ -884,10 +884,18 @@ class store {
 
     public static function isFoxpostSzallitasimod($szm) {
         $i = $szm;
-        if (is_a($szm, 'Entities\FoxpostTerminal')) {
+        if (is_a($szm, 'Entities\Szallitasimod')) {
             $i = $szm->getId();
         }
         return $i == self::getParameter(\mkw\consts::FoxpostSzallitasiMod);
+    }
+
+    public static function isUtanvetFizmod($fm) {
+        $i = $fm;
+        if (is_a($fm, 'Entities\Fizmod')) {
+            $i = $fm->getId();
+        }
+        return $i == self::getParameter(\mkw\consts::UtanvetFizmod);
     }
 
     public static function isSuperzoneB2B() {

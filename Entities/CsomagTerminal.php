@@ -4,14 +4,18 @@ namespace Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="Entities\FoxpostTerminalRepository")
- * @ORM\Table(name="foxpostterminal",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
+ * @ORM\Entity(repositoryClass="Entities\CsomagTerminalRepository")
+ * @ORM\Table(name="csomagterminal",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
-class FoxpostTerminal {
+class CsomagTerminal {
 	/**
 	 * @ORM\Id @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
+
+    /** @ORM\Column(type="integer") */
+    private $idegenid;
 
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $tipus;
@@ -40,22 +44,18 @@ class FoxpostTerminal {
     /** @ORM\Column(type="decimal",precision=8,scale=6,nullable=true) */
     private $geolng;
 
-    /** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="foxpostterminal",cascade={"persist"}) */
+    /** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="csomagterminal",cascade={"persist"}) */
 	private $bizonylatfejek;
 
 	/** @ORM\Column(type="boolean",nullable=true) */
 	private $inaktiv = false;
 
 	public function __construct() {
-		$this->bizonylatfejek=new \Doctrine\Common\Collections\ArrayCollection();
+		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
     public function getId() {
         return $this->id;
-    }
-
-    public function setId($val) {
-        $this->id = $val;
     }
 
     public function getNev() {
@@ -148,6 +148,20 @@ class FoxpostTerminal {
      */
     public function setTipus($tipus) {
         $this->tipus = $tipus;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdegenid() {
+        return $this->idegenid;
+    }
+
+    /**
+     * @param mixed $idegenid
+     */
+    public function setIdegenid($idegenid) {
+        $this->idegenid = $idegenid;
     }
 
 }

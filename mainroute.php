@@ -71,8 +71,8 @@ $router->map('GET', '/checkout/getfizmodlist', 'checkoutController#getFizmodList
 $router->map('GET', '/checkout/gettetellist', 'checkoutController#getTetelList', 'checkoutgettetellist');
 $router->map('POST', '/checkout/ment', 'checkoutController#save', 'checkoutment');
 $router->map('GET', '/checkout/koszonjuk', 'checkoutController#thanks', 'checkoutkoszonjuk');
-$router->map('GET', '/checkout/getfoxpostcsoportlist', 'foxpostController#getCsoportok', 'checkoutgetfoxpostcsoportlist');
-$router->map('GET', '/checkout/getfoxpostterminallist', 'foxpostController#getTerminalok', 'checkoutgetfoxpostterminallist');
+$router->map('GET', '/checkout/getfoxpostcsoportlist', 'csomagterminalController#getCsoportok', 'checkoutgetfoxpostcsoportlist');
+$router->map('GET', '/checkout/getfoxpostterminallist', 'csomagterminalController#getTerminalok', 'checkoutgetfoxpostterminallist');
 
 $router->map('GET', '/irszam', 'irszamController#typeaheadList', 'irszamtypeahead');
 $router->map('GET', '/varos', 'irszamController#varosTypeaheadList', 'varostypeahead');

@@ -2,15 +2,15 @@
 
 namespace Controllers;
 
-class foxpostController extends \mkwhelpers\MattableController {
+class csomagterminalController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
-        $this->setEntityName('Entities\FoxpostTerminal');
+        $this->setEntityName('Entities\CsomagTerminal');
         $this->setListBodyRowVarName('_egyed');
         parent::__construct($params);
     }
 
-    public function initCurl($resource) {
+    public function initFoxpostCurl($resource) {
         $ch = curl_init(\mkw\store::getParameter(\mkw\consts::FoxpostApiURL) . $resource);
 
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -22,19 +22,19 @@ class foxpostController extends \mkwhelpers\MattableController {
         return $ch;
     }
 
-    public function downloadTerminalList() {
-        $ch = $this->initCurl('places');
+    public function downloadFoxpostTerminalList() {
+        $ch = $this->initFoxpostCurl('places');
         $res = curl_exec($ch);
         $res = json_decode($res);
         curl_close($ch);
         $db = 0;
         foreach ($res as $r) {
             $db++;
-            $terminal = $this->getRepo('Entities\FoxpostTerminal')->find($r->place_id);
+            $terminal = $this->getRepo('Entities\CsomagTerminal')->findOneBy(array('idegenid' => $r->place_id, 'tipus' => 'foxpost'));
             if (!$terminal) {
-                $terminal = new \Entities\FoxpostTerminal();
-                $terminal->setId($r->place_id);
+                $terminal = new \Entities\CsomagTerminal();
             }
+            $terminal->setIdegenid($r->place_id);
             $terminal->setNev($r->name);
             $terminal->setCim($r->address);
             $terminal->setCsoport($r->group);
@@ -42,6 +42,7 @@ class foxpostController extends \mkwhelpers\MattableController {
             $terminal->setNyitva($r->open);
             $terminal->setGeolat($r->geolat);
             $terminal->setGeolng($r->geolng);
+            $terminal->setTipus('foxpost');
             $this->getEm()->persist($terminal);
             if ($db % 20 === 0) {
                 $this->getEm()->flush();
@@ -50,19 +51,40 @@ class foxpostController extends \mkwhelpers\MattableController {
         }
         $this->getEm()->flush();
         $this->getEm()->clear();
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('tipus', '=', 'foxpost');
+        $terminalok = $this->getRepo('\Entities\CsomagTerminal')->getAll($filter);
+        /** @var \Entities\CsomagTerminal $terminal */
+        foreach ($terminalok as $terminal) {
+            $megvan = false;
+            foreach ($res as $r) {
+                $megvan = $megvan || ((int)$r->place_id === $terminal->getId());
+            }
+            if (!$megvan) {
+                $terminal->setInaktiv(!$megvan);
+                $this->getEm()->persist($terminal);
+            }
+        }
+        $this->getEm()->flush();
+        $this->getEm()->clear();
         return $res;
     }
 
-    public function sendMegrendeles($fej) {
+    /**
+     * @param \Entities\Bizonylatfej $fej
+     * @return mixed
+     */
+    public function sendMegrendelesToFoxpost($fej) {
         $ch = $this->initCurl('orders');
         $fields = array(
-            'place_id' => (int)$fej->getFoxpostterminalId(),
+            'place_id' => (int)$fej->getCsomagterminalId(),
             'name' => ( \mkw\store::getConfigValue('developer') ? 'teszt' : $fej->getPartnernev()),
             'phone' => $fej->getPartnertelefon(),
             'email' => $fej->getPartneremail(),
             'refcode' => $fej->getId()
         );
-        if ($fej->getFizmodId() == \mkw\store::getParameter(\mkw\consts::UtanvetFizmod)) {
+        if (\mkw\store::isUtanvetFizmod($fej->getFizmodId())) {
             $fields['cod_amount'] = (int)$fej->getBrutto() * 100;
             $fields['cod_currency'] = 'HUF';
         }
@@ -88,7 +110,7 @@ class foxpostController extends \mkwhelpers\MattableController {
             $tipus = $szm->getTerminaltipus();
         }
 
-        $rec = $this->getRepo('Entities\FoxpostTerminal')->getCsoportok($tipus);
+        $rec = $this->getRepo('Entities\CsomagTerminal')->getCsoportok($tipus);
         $res = array();
         $vanvalasztott = false;
         foreach ($rec as $sor) {
@@ -121,7 +143,7 @@ class foxpostController extends \mkwhelpers\MattableController {
             $tipus = $szm->getTerminaltipus();
         }
 
-        $rec = $this->getRepo('Entities\FoxpostTerminal')->getByCsoport($this->params->getStringRequestParam('cs'), $tipus);
+        $rec = $this->getRepo('Entities\CsomagTerminal')->getByCsoport($this->params->getStringRequestParam('cs'), $tipus);
         $res = array();
         $vanvalasztott = false;
         foreach ($rec as $sor) {
@@ -149,7 +171,6 @@ class foxpostController extends \mkwhelpers\MattableController {
     public function getSelectList($selid, $tipus = null) {
         if (!is_null($tipus)) {
             $filter = new \mkwhelpers\FilterDescriptor();
-            $filter->addFilter('inaktiv', '=', false);
             $filter->addFilter('tipus', '=', $tipus);
             $rec = $this->getRepo()->getAll($filter, array('nev' => 'ASC'));
             $res = array();
@@ -184,6 +205,10 @@ class foxpostController extends \mkwhelpers\MattableController {
         echo json_encode(array(
             'html' => $view->getTemplateResult()
         ));
+    }
+
+    public function oldconvert() {
+
     }
 
 }

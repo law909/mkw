@@ -466,11 +466,11 @@ class Bizonylatfej {
     private $partnerszamlatipus;
 
     /**
-     * @ORM\ManyToOne(targetEntity="FoxpostTerminal",inversedBy="bizonylatfejek")
-     * @ORM\JoinColumn(name="foxpostterminal_id", referencedColumnName="id",nullable=true,onDelete="restrict")
-     * @var \Entities\FoxpostTerminal
+     * @ORM\ManyToOne(targetEntity="CsomagTerminal",inversedBy="bizonylatfejek")
+     * @ORM\JoinColumn(name="csomagterminal_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\CsomagTerminal
      */
-    private $foxpostterminal;
+    private $csomagterminal;
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $traceurl;
@@ -831,12 +831,16 @@ class Bizonylatfej {
             }
         }
         $ret['foxpost'] = false;
-        if ($this->foxpostterminal) {
-            $ret['foxpost'] = true;
-            $ret['foxpostterminal']['nev'] = $this->foxpostterminal->getNev();
-            $ret['foxpostterminal']['cim'] = $this->foxpostterminal->getCim();
-            $ret['foxpostterminal']['findme'] = $this->foxpostterminal->getFindme();
-            $ret['foxpostterminal']['nyitva'] = $this->foxpostterminal->getNyitva();
+        if ($this->csomagterminal) {
+            switch($this->csomagterminal->getTipus()) {
+                case 'foxpost':
+                    $ret['foxpost'] = true;
+                    $ret['foxpostterminal']['nev'] = $this->csomagterminal->getNev();
+                    $ret['foxpostterminal']['cim'] = $this->csomagterminal->getCim();
+                    $ret['foxpostterminal']['findme'] = $this->csomagterminal->getFindme();
+                    $ret['foxpostterminal']['nyitva'] = $this->csomagterminal->getNyitva();
+                    break;
+            }
         }
         $tetellist = array();
         foreach ($this->bizonylattetelek as $tetel) {
@@ -2397,26 +2401,26 @@ class Bizonylatfej {
         $this->partnerszamlatipus = $val;
     }
 
-    public function getFoxpostterminal() {
-        return $this->foxpostterminal;
+    public function getCsomagterminal() {
+        return $this->csomagterminal;
     }
 
-    public function getFoxpostterminalId() {
-        if ($this->foxpostterminal) {
-            return $this->foxpostterminal->getId();
+    public function getCsomagterminalId() {
+        if ($this->csomagterminal) {
+            return $this->csomagterminal->getId();
         }
         return false;
     }
 
-    public function setFoxpostterminal($val) {
-        if ($this->foxpostterminal !== $val) {
-            $this->foxpostterminal = $val;
+    public function setCsomagterminal($val) {
+        if ($this->csomagterminal !== $val) {
+            $this->csomagterminal = $val;
         }
     }
 
-    public function removeFoxpostterminal() {
-        if ($this->foxpostterminal !== null) {
-            $this->foxpostterminal = null;
+    public function removeCsomagterminal() {
+        if ($this->csomagterminal !== null) {
+            $this->csomagterminal = null;
         }
     }
 
