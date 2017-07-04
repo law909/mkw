@@ -38,9 +38,49 @@ $(document).ready(
 		var msgcenter = $('#messagecenter').hide(),
             dialogcenter = $('#dialogcenter'),
             kipenztarform = $('#KipenztarForm'),
-            bepenztarform = $('#BepenztarForm');
+            bepenztarform = $('#BepenztarForm'),
+            eladasform = $('#EladasForm'),
+            koltsegform = $('#KoltsegForm');
 
-		$('.menupont').button();
+        function setPartnerData(d, form) {
+            $('input[name="partnervezeteknev"]', form).val(d.vezeteknev);
+            $('input[name="partnerkeresztnev"]', form).val(d.keresztnev);
+            $('input[name="partnerirszam"]', form).val(d.irszam);
+            $('input[name="partnervaros"]', form).val(d.varos);
+            $('input[name="partnerutca"]', form).val(d.utca);
+            $('input[name="partnertelefon"]', form).val(d.telefon);
+            $('input[name="partneremail"]', form).val(d.email);
+        }
+
+        function setTermekAr(form) {
+            var partner = $('select[name="partner"] option:selected', form).val();
+
+            $.ajax({
+                async: false,
+                url: '/admin/bizonylattetel/getar',
+                data: {
+                    partner: partner,
+                    termek: $('select[name="termek"] option:selected', form).val()
+                },
+                success: function(data) {
+                    var inp = $('input[name="egysegar"]', form),
+                        adat = JSON.parse(data);
+                    inp.val(adat.brutto);
+                    inp.change();
+                }
+            });
+        }
+
+        function calcErtek(form) {
+            var menny = $('input[name="mennyiseg"]', form).val() * 1,
+                ear = $('input[name="egysegar"]', form).val() * 1;
+            $('.js-ertek', form).text(menny * ear);
+            $('input[name="penz"]', form).val(menny * ear);
+        }
+
+
+
+        $('.menupont').button();
 		var menu=$('#menu');
 		$('#kozep').css('left',menu.outerWidth()+menu.offset().left*2+'px');
 		var menubar=$('.menu-titlebar');
@@ -97,14 +137,226 @@ $(document).ready(
 
         mkwcomp.datumEdit.init('#KiKeltEdit');
         mkwcomp.datumEdit.init('#BeKeltEdit');
-        $('.js-kihivatkozottbizonylatbutton, #KiOKButton, #KiCancelButton,'+
-            '.js-behivatkozottbizonylatbutton, #BeOKButton, #BeCancelButton').button();
+        mkwcomp.datumEdit.init('#ElKeltEdit');
+        mkwcomp.datumEdit.init('#ElPenzdatumEdit');
+        mkwcomp.datumEdit.init('#KtgKeltEdit');
+        mkwcomp.datumEdit.init('#KtgTeljesitesEdit');
+        mkwcomp.datumEdit.init('#KtgEsedekessegEdit');
+        mkwcomp.datumEdit.init('#KtgPenzdatumEdit');
 
+        $('.js-kihivatkozottbizonylatbutton, #KiOKButton, #KiCancelButton,' +
+            '.js-behivatkozottbizonylatbutton, #BeOKButton, #BeCancelButton,' +
+            '#ElOKButton, #ElCancelButton,' +
+            '#KtgOKButton, #KtgCancelButton').button();
+
+        function clearKoltsegform() {
+            mkwcomp.datumEdit.clear('#KtgKeltEdit');
+            mkwcomp.datumEdit.clear('#KtgTeljesitesEdit');
+            mkwcomp.datumEdit.clear('#KtgEsedekessegEdit');
+            mkwcomp.datumEdit.clear('#KtgPenzdatumEdit');
+            $('#KtgPartnerEdit')[0].selectedIndex = 0;
+            $('#KtgPartnervezeteknevEdit').val('');
+            $('#KtgPartnerkeresztnevEdit').val('');
+            $('#KtgPartnerirszamEdit').val('');
+            $('#KtgPartnervarosEdit').val('');
+            $('#KtgPartnerutcaEdit').val('');
+            $('#KtgPartneremailEdit').val('');
+            $('#KtgPartnertelefonEdit').val('');
+            $('#KtgDolgozoEdit')[0].selectedIndex = 0;
+            $('#KtgEgysarEdit').val('');
+            $('#KtgMennyisegEdit').val(1);
+            $('#KtgTermekEdit')[0].selectedIndex = 0;
+            $('#KtgFizmodEdit')[0].selectedIndex = 0;
+            $('#KtgPenztarEdit')[0].selectedIndex = 0;
+            $('#KtgMegjegyzesEdit').val('');
+            $('#KtgJogcimEdit')[0].selectedIndex = 0;
+            $('#KtgErtek').text('');
+            $('#KtgOsszegEdit').val('');
+        }
+
+        koltsegform.ajaxForm({
+            type: 'POST',
+            beforeSerialize: function(form, opt) {
+                $.blockUI({
+                    message: 'Kérem várjon...',
+                    css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+                return true;
+            },
+            success: function(data) {
+                clearKoltsegform();
+                msgcenter
+                    .html('A mentés sikerült.')
+                    .hide()
+                    .addClass('matt-messagecenter ui-widget ui-state-highlight')
+                    .one('click', messagecenterclick)
+                    .slideToggle('slow');
+            }
+        });
+
+        koltsegform
+            .on('change', '#KtgPenztarEdit', function(e) {
+                var v = $('#KtgPenztarEdit option:selected').data('valutanem');
+                $('input[name="valutanem"]', koltsegform).val(v);
+            })
+            .on('change', '#KtgPartnerEdit', function(e) {
+                var pe = $(this);
+                if (pe.val() > 0) {
+                    $.ajax({
+                        url: '/admin/partner/getdata',
+                        type: 'GET',
+                        data: {
+                            partnerid: pe.val()
+                        },
+                        success: function(data) {
+                            var d = JSON.parse(data);
+                            setPartnerData(d, koltsegform);
+                        }
+                    });
+                }
+            })
+            .on('change', '#KtgFizmodEdit', function(e) {
+                var tip = $('#KtgFizmodEdit option:selected').data('tipus');
+                if (tip === 'P') {
+                    $('#KtgPenztarEdit').prop('required', true);
+                    $('#KtgPenzdatumEdit').prop('required', true);
+                    $('#KtgJogcimEdit').prop('required', true);
+                    $('#KtgOsszegEdit').prop('required', true);
+                }
+                else {
+                    $('#KtgPenztarEdit').removeAttr('required');
+                    $('#KtgPenzdatumEdit').removeAttr('required');
+                    $('#KtgJogcimEdit').removeAttr('required');
+                    $('#KtgOsszegEdit').removeAttr('required');
+                }
+            })
+            .on('change', '#KtgTermekEdit', function(e) {
+                setTermekAr(koltsegform);
+            })
+            .on('change', '#KtgMennyisegEdit, #KtgEgysarEdit', function(e) {
+                calcErtek(koltsegform);
+            })
+            .on('click', '#KtgCancelButton', function(e) {
+                e.preventDefault();
+                clearKoltsegform();
+            });
+
+        function clearEladasform() {
+            mkwcomp.datumEdit.clear('#ElKeltEdit');
+            mkwcomp.datumEdit.clear('#ElPenzdatumEdit');
+            $('#ElPartnerEdit')[0].selectedIndex = 0;
+            $('#ElPartnervezeteknevEdit').val('');
+            $('#ElPartnerkeresztnevEdit').val('');
+            $('#ElPartnerirszamEdit').val('');
+            $('#ElPartnervarosEdit').val('');
+            $('#ElPartnerutcaEdit').val('');
+            $('#ElPartneremailEdit').val('');
+            $('#ElPartnertelefonEdit').val('');
+            $('#ElEgysarEdit').val('');
+            $('#ElMennyisegEdit').val(1);
+            $('#ElTermekEdit')[0].selectedIndex = 0;
+            $('#ElFizmodEdit')[0].selectedIndex = 0;
+            $('#ElPenztarEdit')[0].selectedIndex = 0;
+            $('#ElMegjegyzesEdit').val('');
+            $('#ElJogcimEdit')[0].selectedIndex = 0;
+            $('#ElErtek').text('');
+            $('#ElOsszegEdit').val('');
+        }
+
+        eladasform.ajaxForm({
+            type: 'POST',
+            beforeSerialize: function(form, opt) {
+                $.blockUI({
+                    message: 'Kérem várjon...',
+                    css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+                return true;
+            },
+            success: function(data) {
+                clearEladasform();
+                msgcenter
+                    .html('A mentés sikerült.')
+                    .hide()
+                    .addClass('matt-messagecenter ui-widget ui-state-highlight')
+                    .one('click', messagecenterclick)
+                    .slideToggle('slow');
+            }
+        });
+
+        eladasform
+            .on('change', '#ElPenztarEdit', function(e) {
+                var v = $('#ElPenztarEdit option:selected').data('valutanem');
+                $('input[name="valutanem"]', eladasform).val(v);
+            })
+            .on('change', '#ElPartnerEdit', function(e) {
+                var pe = $(this);
+                if (pe.val() > 0) {
+                    $.ajax({
+                        url: '/admin/partner/getdata',
+                        type: 'GET',
+                        data: {
+                            partnerid: pe.val()
+                        },
+                        success: function(data) {
+                            var d = JSON.parse(data);
+                            setPartnerData(d, eladasform);
+                        }
+                    });
+                }
+            })
+            .on('change', '#ElFizmodEdit', function(e) {
+                var tip = $('#ElFizmodEdit option:selected').data('tipus');
+                if (tip === 'P') {
+                    $('#ElPenztarEdit').prop('required', true);
+                    $('#ElPenzdatumEdit').prop('required', true);
+                    $('#ElJogcimEdit').prop('required', true);
+                    $('#ElOsszegEdit').prop('required', true);
+                }
+                else {
+                    $('#ElPenztarEdit').removeAttr('required');
+                    $('#ElPenzdatumEdit').removeAttr('required');
+                    $('#ElJogcimEdit').removeAttr('required');
+                    $('#ElOsszegEdit').removeAttr('required');
+                }
+            })
+            .on('change', '#ElTermekEdit', function(e) {
+                setTermekAr(eladasform);
+            })
+            .on('change', '#ElMennyisegEdit, #ElEgysarEdit', function(e) {
+                calcErtek(eladasform);
+            })
+            .on('click', '#ElCancelButton', function(e) {
+                e.preventDefault();
+                clearEladasform();
+            });
 
         function clearKipenztarform() {
             mkwcomp.datumEdit.clear('#KiKeltEdit');
             $('#KiPenztarEdit')[0].selectedIndex = 0;
             $('#KiPartnerEdit')[0].selectedIndex = 0;
+            $('#KiPartnervezeteknevEdit').val('');
+            $('#KiPartnerkeresztnevEdit').val('');
+            $('#KiPartnerirszamEdit').val('');
+            $('#KiPartnervarosEdit').val('');
+            $('#KiPartnerutcaEdit').val('');
+            $('#KiEmailEdit').val('');
+            $('#KiTelefonEdit').val('');
             $('#KiMegjegyzesEdit').val('');
             $('#KiSzovegEdit').val('');
             $('#KiJogcimEdit')[0].selectedIndex = 0;
@@ -179,6 +431,22 @@ $(document).ready(
                     }
                 });
             })
+            .on('change', '#KiPartnerEdit', function(e) {
+                var pe = $(this);
+                if (pe.val() > 0) {
+                    $.ajax({
+                        url: '/admin/partner/getdata',
+                        type: 'GET',
+                        data: {
+                            partnerid: pe.val()
+                        },
+                        success: function(data) {
+                            var d = JSON.parse(data);
+                            setPartnerData(d, kipenztarform);
+                        }
+                    });
+                }
+            })
             .on('click', '#KiCancelButton', function(e) {
                 e.preventDefault();
                 clearKipenztarform();
@@ -188,6 +456,13 @@ $(document).ready(
             mkwcomp.datumEdit.clear('#BeKeltEdit');
             $('#BePenztarEdit')[0].selectedIndex = 0;
             $('#BePartnerEdit')[0].selectedIndex = 0;
+            $('#BePartnervezeteknevEdit').val('');
+            $('#BePartnerkeresztnevEdit').val('');
+            $('#BePartnerirszamEdit').val('');
+            $('#BePartnervarosEdit').val('');
+            $('#BePartnerutcaEdit').val('');
+            $('#BeEmailEdit').val('');
+            $('#BeTelefonEdit').val('');
             $('#BeMegjegyzesEdit').val('');
             $('#BeSzovegEdit').val('');
             $('#BeJogcimEdit')[0].selectedIndex = 0;
@@ -260,6 +535,22 @@ $(document).ready(
                         });
                     }
                 });
+            })
+            .on('change', '#BePartnerEdit', function(e) {
+                var pe = $(this);
+                if (pe.val() > 0) {
+                    $.ajax({
+                        url: '/admin/partner/getdata',
+                        type: 'GET',
+                        data: {
+                            partnerid: pe.val()
+                        },
+                        success: function(data) {
+                            var d = JSON.parse(data);
+                            setPartnerData(d, bepenztarform);
+                        }
+                    });
+                }
             })
             .on('click', '#BeCancelButton', function(e) {
                 e.preventDefault();

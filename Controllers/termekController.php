@@ -694,7 +694,7 @@ class termekController extends \mkwhelpers\MattableController {
         echo json_encode($this->loadDataToView($egyedek, 'termeklista', $view));
 	}
 
-	public function getselectlist($selid) {
+	public function getselectlist($selid = null) {
 		// TODO sok termek eseten lassu lehet
 		$rec = $this->getRepo()->getAllForSelectList(array(), array('nev' => 'ASC'));
 		$res = array();

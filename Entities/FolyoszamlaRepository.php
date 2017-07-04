@@ -15,6 +15,7 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
     public function getSumByHivatkozottBizonylat($bizszam) {
         $filter = new FilterDescriptor();
         $filter->addFilter('hivatkozottbizonylat', '=', $bizszam);
+        $filter->addFilter('rontott', '=', false);
 
         $q = $this->_em->createQuery('SELECT SUM(_xx.brutto * _xx.irany)'
             . ' FROM Entities\Folyoszamla _xx'
@@ -26,6 +27,7 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
     public function getCountByHivatkozottBizonylat($bizszam) {
         $filter = new FilterDescriptor();
         $filter->addFilter('hivatkozottbizonylat', '=', $bizszam);
+        $filter->addFilter('rontott', '=', false);
         $filter->addSql('_xx.bizonylatfej IS NULL');
 
         $q = $this->_em->createQuery('SELECT COUNT(_xx)'
@@ -38,6 +40,7 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
     public function getSumByHivatkozottBizonylatDatum($bizszam) {
         $filter = new FilterDescriptor();
         $filter->addFilter('hivatkozottbizonylat', '=', $bizszam);
+        $filter->addFilter('rontott', '=', false);
 
         $q = $this->_em->createQuery('SELECT _xx.hivatkozottdatum,SUM(_xx.brutto * _xx.irany) AS egyenleg'
             . ' FROM Entities\Folyoszamla _xx'

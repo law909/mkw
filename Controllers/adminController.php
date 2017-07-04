@@ -128,8 +128,15 @@ class adminController extends mkwhelpers\Controller {
                 $view->setVar('penztarlist', $penztar->getSelectList());
                 $jogcim = new jogcimController($this->params);
                 $view->setVar('jogcimlist', $jogcim->getSelectList());
+                $fizmod = new fizmodController($this->params);
+                $view->setVar('fizmodlist', $fizmod->getSelectList());
+                $termek = new termekController($this->params);
+                $view->setVar('termeklist', $termek->getSelectList());
+                $felh = new dolgozoController($this->params);
+                $view->setVar('felhasznalolist', $felh->getSelectList());
                 $view->setVar('keltstr', date(\mkw\store::$DateFormat));
-                $view->setVar('formaction', '/admin/penztarbizonylatfej/save');
+                $view->setVar('penztarformaction', \mkw\store::getRouter()->generate('adminpenztarbizonylatfejsave'));
+                $view->setVar('eladasformaction', \mkw\store::getRouter()->generate('adminbizonylatfejquickadd'));
                 break;
             default:
                 break;

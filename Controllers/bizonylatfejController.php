@@ -1355,4 +1355,196 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         \unlink($filepath);
     }
 
+    public function quickAdd() {
+
+        $biztipus = $this->params->getStringRequestParam('biztipus');
+
+        $obj = new \Entities\Bizonylatfej();
+
+        $penzirany = 0;
+
+        switch ($biztipus) {
+            case 'szamla':
+                $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find('szamla'));
+                $penzirany = 1;
+                break;
+            case 'egyeb':
+                $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find('egyeb'));
+                $penzirany = 1;
+                break;
+            case 'koltsegszamla':
+                $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find('koltsegszamla'));
+                $penzirany = -1;
+                break;
+            case 'bevet':
+                $obj->setBizonylattipus($this->getRepo('Entities\Bizonylattipus')->find('bevet'));
+                $penzirany = -1;
+                break;
+        }
+
+        $obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
+
+        $partnerkod = $this->params->getIntRequestParam('partner');
+        if ($partnerkod > 0) {
+            /** @var \Entities\Partner $partnerobj */
+            $partnerobj = \mkw\store::getEm()->getRepository('Entities\Partner')->find($partnerkod);
+            if ($partnerobj) {
+
+                $partnerobj->setEmail($this->params->getStringRequestParam('partneremail'));
+                $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
+                $partnerobj->setVezeteknev($this->params->getStringRequestParam('partnervezeteknev'));
+                $partnerobj->setKeresztnev($this->params->getStringRequestParam('partnerkeresztnev'));
+                if ($partnerobj->getVezeteknev() || $partnerobj->getKeresztnev()) {
+                    $partnerobj->setNev($partnerobj->getVezeteknev() . ' ' . $partnerobj->getKeresztnev());
+                }
+                $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
+                $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
+                $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
+                $this->getEm()->persist($partnerobj);
+
+                $obj->setPartner($partnerobj);
+            }
+        }
+        else {
+            $partneremail = $this->params->getStringRequestParam('partneremail');
+            if ($partneremail) {
+                /** @var \Entities\Partner $partnerobj */
+                $partnerobj = $this->getRepo('Entities\Partner')->findOneBy(array('email' => $partneremail));
+                if (!$partnerobj) {
+                    $partnerobj = new \Entities\Partner();
+                }
+            }
+            else {
+                $partnerobj = new \Entities\Partner();
+            }
+            $partnerobj->setEmail($this->params->getStringRequestParam('partneremail'));
+            $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
+            $partnerobj->setVezeteknev($this->params->getStringRequestParam('partnervezeteknev'));
+            $partnerobj->setKeresztnev($this->params->getStringRequestParam('partnerkeresztnev'));
+            if ($partnerobj->getVezeteknev() || $partnerobj->getKeresztnev()) {
+                $partnerobj->setNev($partnerobj->getVezeteknev() . ' ' . $partnerobj->getKeresztnev());
+            }
+            $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
+            $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
+            $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
+            $this->getEm()->persist($partnerobj);
+
+            $obj->setPartner($partnerobj);
+        }
+
+        $ck = \mkw\store::getEm()->getRepository('Entities\Raktar')->find(\mkw\store::getParameter(\mkw\consts::Raktar));
+        if ($ck) {
+            $obj->setRaktar($ck);
+        }
+        /** @var \Entities\Fizmod $fizmod */
+        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find(\mkw\store::getParameter(\mkw\consts::Fizmod));
+        if ($fizmod) {
+            $obj->setFizmod($fizmod);
+        }
+        $ck = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find(\mkw\store::getParameter(\mkw\consts::Szallitasimod));
+        if ($ck) {
+            $obj->setSzallitasimod($ck);
+        }
+        $obj->setKelt($this->params->getStringRequestParam('kelt'));
+        if ($biztipus === 'bevet' || $biztipus === 'koltsegszamla') {
+            $obj->setTeljesites($this->params->getStringRequestParam('teljesites'));
+            $obj->setEsedekesseg($this->params->getStringRequestParam('esedekesseg'));
+            $obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
+            $dolgozo = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('felhasznalo'));
+            if ($dolgozo) {
+                $obj->setFelhasznalo($dolgozo);
+            }
+        }
+        else {
+            $obj->setTeljesites($this->params->getStringRequestParam('kelt'));
+            $obj->setEsedekesseg($this->params->getStringRequestParam('kelt'));
+        }
+
+        $ck = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+        if ($ck) {
+            $obj->setValutanem($ck);
+        }
+
+        $obj->setSzallitasikoltsegbrutto(0);
+
+        if (($this->params->getIntRequestParam('termek') > 0)) {
+
+            $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
+            if ($termek) {
+                $tetel = new Bizonylattetel();
+                $obj->addBizonylattetel($tetel);
+                $tetel->setPersistentData();
+                $tetel->setArvaltoztat(0);
+                if ($termek) {
+                    $tetel->setTermek($termek);
+                }
+
+                $tetel->setMennyiseg($this->params->getFloatRequestParam('mennyiseg'));
+                $tetel->setBruttoegysar($this->params->getFloatRequestParam('egysegar'));
+
+                $tetel->setNettoegysarhuf($tetel->getNettoegysar());
+                $tetel->setBruttoegysarhuf($tetel->getBruttoegysar());
+                $tetel->setEnettoegysarhuf($tetel->getEnettoegysar());
+                $tetel->setEbruttoegysarhuf($tetel->getEbruttoegysar());
+                $tetel->setNettohuf($tetel->getNetto());
+                $tetel->setBruttohuf($tetel->getBrutto());
+                $tetel->setAfaertekhuf($tetel->getAfaertek());
+
+                $tetel->calc();
+
+                $this->getEm()->persist($tetel);
+            }
+            else {
+                \mkw\store::writelog(print_r($this->params->asArray(), true), 'nincstermek.log');
+            }
+        }
+
+        $this->getEm()->persist($obj);
+        $this->getEm()->flush();
+
+        if ($fizmod->getTipus() === 'P') {
+            $pbfej = new \Entities\Penztarbizonylatfej();
+            $pbfej->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
+            $pbfej->setKelt($this->params->getStringRequestParam('penzdatum'));
+            $pbfej->setArfolyam(1);
+            $pbfej->setPartner($partnerobj);
+            $pbfej->setValutanem($obj->getValutanem());
+
+            $ck = \mkw\store::getEm()->getRepository('Entities\Penztar')->find($this->params->getIntRequestParam('penztar'));
+            if ($ck) {
+                $pbfej->setPenztar($ck);
+            }
+
+            $bt = $this->getRepo('Entities\Bizonylattipus')->find('penztar');
+            $pbfej->setBizonylattipus($bt);
+            $pbfej->setIrany($penzirany);
+
+            if (($this->params->getIntRequestParam('teteljogcim') > 0)) {
+                $jogcim = $this->getEm()->getRepository('Entities\Jogcim')->find($this->params->getIntRequestParam('teteljogcim'));
+                if ($jogcim) {
+                    $pbtetel = new \Entities\Penztarbizonylattetel();
+                    $pbfej->addBizonylattetel($pbtetel);
+
+                    $pbtetel->setJogcim($jogcim);
+                    $pbtetel->setHivatkozottbizonylat($obj->getId());
+                    $pbtetel->setHivatkozottdatum($obj->getKelt());
+                    if ($tetel) {
+                        $pbtetel->setSzoveg($tetel->getTermeknev() . ' ' . at('eladás'));
+                    }
+
+                    $pbtetel->setBrutto($this->params->getFloatRequestParam('penz'));
+
+                    $this->getEm()->persist($pbtetel);
+                }
+                else {
+                    \mkw\store::writelog(print_r($this->params->asArray(), true), 'nincsjogcim.log');
+                }
+            }
+            $this->getEm()->persist($pbfej);
+            $this->getEm()->flush();
+        }
+
+        echo $obj->getId();
+    }
+
 }

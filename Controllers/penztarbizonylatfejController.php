@@ -79,9 +79,52 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         }
         $obj->setArfolyam($arfolyam);
 
-        $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
-        if ($partner) {
-            $obj->setPartner($partner);
+        $partnerkod = $this->params->getIntRequestParam('partner');
+
+        if ($partnerkod == -1) {
+            $partneremail = $this->params->getStringRequestParam('partneremail');
+            if ($partneremail) {
+                $partnerobj = $this->getRepo('Entities\Partner')->findOneBy(array('email' => $partneremail));
+                if (!$partnerobj) {
+                    $partnerobj = new \Entities\Partner();
+                }
+            }
+            else {
+                $partnerobj = new \Entities\Partner();
+            }
+            $partnerobj->setEmail($this->params->getStringRequestParam('partneremail'));
+            $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
+            $partnerobj->setVezeteknev($this->params->getStringRequestParam('partnervezeteknev'));
+            $partnerobj->setKeresztnev($this->params->getStringRequestParam('partnerkeresztnev'));
+            if ($partnerobj->getVezeteknev() || $partnerobj->getKeresztnev()) {
+                $partnerobj->setNev($partnerobj->getVezeteknev() . ' ' . $partnerobj->getKeresztnev());
+            }
+            $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
+            $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
+            $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
+            $this->getEm()->persist($partnerobj);
+            $obj->setPartner($partnerobj);
+        }
+        else {
+            $partnerobj = \mkw\store::getEm()->getRepository('Entities\Partner')->find($partnerkod);
+            if ($partnerobj) {
+
+                if ($quick) {
+                    $partnerobj->setEmail($this->params->getStringRequestParam('partneremail'));
+                    $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
+                    $partnerobj->setVezeteknev($this->params->getStringRequestParam('partnervezeteknev'));
+                    $partnerobj->setKeresztnev($this->params->getStringRequestParam('partnerkeresztnev'));
+                    if ($partnerobj->getVezeteknev() || $partnerobj->getKeresztnev()) {
+                        $partnerobj->setNev($partnerobj->getVezeteknev() . ' ' . $partnerobj->getKeresztnev());
+                    }
+                    $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
+                    $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
+                    $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
+                    $this->getEm()->persist($partnerobj);
+                }
+
+                $obj->setPartner($partnerobj);
+            }
         }
 
         $valutanem = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
