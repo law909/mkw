@@ -1348,31 +1348,34 @@ class partnerController extends \mkwhelpers\MattableController {
 
                             $partner = $this->getRepo()->findOneBy(array('minicrmprojectid' => $aid, 'minicrmcontactid' => $cid));
                             if (!$partner) {
-                                $p = new \Entities\Partner();
-                                $p->setNev($kontakt->LastName . ' ' . $kontakt->FirstName);
-                                $p->setVezeteknev($kontakt->LastName);
-                                $p->setKeresztnev($kontakt->FirstName);
-                                $p->setMobil($kontakt->Phone);
-                                $p->setEmail($kontakt->Email);
-                                $p->setHonlap($kontakt->Url);
-                                $p->setMinicrmcontactid($cid);
-                                $p->setMinicrmprojectid($aid);
-                                if ($kontakt->Neme === 'Férfi') {
-                                    $p->setNem(1);
+                                $partner = $this->getRepo()->findOneBy(array('email' => $kontakt->Email));
+                                if (!$partner) {
+                                    $partner = new \Entities\Partner();
+                                    $partner->setEmail($kontakt->Email);
                                 }
-                                else {
-                                    $p->setNem(2);
-                                }
-
-                                if ($addr) {
-                                    $p->setIrszam($addr->PostalCode);
-                                    $p->setVaros($addr->City);
-                                    $p->setUtca($addr->Address);
-                                }
-
-                                $this->getEm()->persist($p);
-                                $this->getEm()->flush();
                             }
+                            $partner->setNev($kontakt->LastName . ' ' . $kontakt->FirstName);
+                            $partner->setVezeteknev($kontakt->LastName);
+                            $partner->setKeresztnev($kontakt->FirstName);
+                            $partner->setMobil($kontakt->Phone);
+                            $partner->setHonlap($kontakt->Url);
+                            $partner->setMinicrmcontactid($cid);
+                            $partner->setMinicrmprojectid($aid);
+                            if ($kontakt->Neme === 'Férfi') {
+                                $partner->setNem(1);
+                            }
+                            else {
+                                $partner->setNem(2);
+                            }
+
+                            if ($addr) {
+                                $partner->setIrszam($addr->PostalCode);
+                                $partner->setVaros($addr->City);
+                                $partner->setUtca($addr->Address);
+                            }
+
+                            $this->getEm()->persist($partner);
+                            $this->getEm()->flush();
 
                             $num++;
                         }
