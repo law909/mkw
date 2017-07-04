@@ -149,11 +149,11 @@
                 <tbody>
                 <tr>
                     <td><label for="JogaalkalomEdit">{at('Bérlet alkalom')}:</label></td>
-                    <td><input id="JogaalkalomEdit" name="jogaalkalom"></td>
+                    <td><input id="JogaalkalomEdit" name="jogaalkalom" value="{$egyed.jogaalkalom}"></td>
                 </tr>
                 <tr>
                     <td><label for="JogaervenyessegEdit">{at('Bérlet érvényesség (hét)')}:</label></td>
-                    <td><input id="JogaervenyessegEdit" name="jogaervenyesseg"></td>
+                    <td><input id="JogaervenyessegEdit" name="jogaervenyesseg" value="{$egyed.jogaervenyesseg}"></td>
                 </tr>
                 </tbody>
             </table>
