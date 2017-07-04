@@ -30,7 +30,7 @@
                                     <option value="">{at('válassz')}</option>
                                     <option value="-1">{at('Új felvitel')}</option>
                                     {foreach $partnerlist as $_mk}
-                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.nev} ({$_mk.email})</option>
                                     {/foreach}
                                 </select>
                             </td>
@@ -177,8 +177,8 @@
                                 <select id="KtgPartnerEdit" name="partner" class="mattable-important" required="required">
                                     <option value="">{at('válassz')}</option>
                                     <option value="-1">{at('Új felvitel')}</option>
-                                    {foreach $partnerlist as $_mk}
-                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                    {foreach $szallitolist as $_mk}
+                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.nev} ({$_mk.email})</option>
                                     {/foreach}
                                 </select>
                             </td>
@@ -331,7 +331,7 @@
                                         <option value="">{at('válassz')}</option>
                                         <option value="-1">{at('Új felvitel')}</option>
                                         {foreach $partnerlist as $_mk}
-                                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.nev} ({$_mk.email})</option>
                                         {/foreach}
                                     </select>
                                 </td>
@@ -434,7 +434,7 @@
                                     <option value="">{at('válassz')}</option>
                                     <option value="-1">{at('Új felvitel')}</option>
                                     {foreach $partnerlist as $_mk}
-                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.nev} ({$_mk.email})</option>
                                     {/foreach}
                                 </select>
                             </td>

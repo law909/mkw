@@ -506,6 +506,8 @@ class partnerController extends \mkwhelpers\MattableController {
             $res[] = array(
                 'id' => $sor['id'],
                 'caption' => $sor['nev'] . ' ' . $sor['irszam'] . ' ' . $sor['varos'] . ' ' . $sor['utca'],
+                'nev' => $sor['nev'],
+                'email' => $sor['email'],
                 'selected' => ($sor['id'] == $selid)
             );
         }

@@ -122,6 +122,9 @@ class adminController extends mkwhelpers\Controller {
             case \mkw\store::isDarshan():
                 $partner = new partnerController($this->params);
                 $view->setVar('partnerlist', $partner->getSelectList());
+                $szallitofilter = new \mkwhelpers\FilterDescriptor();
+                $szallitofilter->addFilter('szallito', '=', true);
+                $view->setVar('szallitolist', $partner->getSelectList(null, $szallitofilter));
                 $valutanem = new valutanemController($this->params);
                 $view->setVar('valutanemlist', $valutanem->getSelectList());
                 $penztar = new penztarController($this->params);
