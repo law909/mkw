@@ -1437,7 +1437,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $obj->setRaktar($ck);
         }
         /** @var \Entities\Fizmod $fizmod */
-        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find(\mkw\store::getParameter(\mkw\consts::Fizmod));
+        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
         if ($fizmod) {
             $obj->setFizmod($fizmod);
         }
@@ -1502,7 +1502,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $this->getEm()->persist($obj);
         $this->getEm()->flush();
 
-        if ($fizmod->getTipus() === 'P') {
+        if ($fizmod && $fizmod->getTipus() === 'P') {
             $pbfej = new \Entities\Penztarbizonylatfej();
             $pbfej->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
             $pbfej->setKelt($this->params->getStringRequestParam('penzdatum'));
