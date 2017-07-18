@@ -948,6 +948,10 @@ class store {
         return self::$mainmode;
     }
 
+    public static function getWebshopNum() {
+        return self::getSetupValue('webshopnum', 1);
+    }
+
     public static function setTranslationHint($q, $locale) {
         if (self::isMultilang() && $locale) {
             $q->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker');

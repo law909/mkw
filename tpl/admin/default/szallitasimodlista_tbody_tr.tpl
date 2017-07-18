@@ -6,7 +6,13 @@
                     class="ui-icon ui-icon-circle-minus"></span></a></span>
         <div class="matt-hseparator"></div>
         <div>{$_egyed.terminaltipus}</div>
-        <div>{if ($_egyed.webes)}{at('Webes')}{else}{at('Nem webes')}{/if}</div>
+        {if ($setup.multishop)}
+            <div>{if ($_egyed.webes)}{at('Webes')}{else}{at('Nem webes')}{/if}</div>
+            <div>{if ($_egyed.webes2)}{at('Webes 2')}{else}{at('Nem webes 2')}{/if}</div>
+            <div>{if ($_egyed.webes3)}{at('Webes 3')}{else}{at('Nem webes 3')}{/if}</div>
+        {else}
+            <div>{if ($_egyed.webes)}{at('Webes')}{else}{at('Nem webes')}{/if}</div>
+        {/if}
         <div>{if ($_egyed.vanszallitasiktg)}{at('Van szállítási költség')}{else}{at('Nincs szállítási költség')}{/if}</div>
     </td>
     <td class="cell">

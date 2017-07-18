@@ -15,28 +15,40 @@
 				<tbody>
                     <tr>
                         <td><label for="NevEdit">{at('Név')}:</label></td>
-                        <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}"></td>
+                        <td colspan="5"><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}"></td>
                     </tr>
                     <tr>
                         <td><label for="LeirasEdit">{at('Leírás')}:</label></td>
-                        <td><textarea id="LeirasEdit" name="leiras">{$egyed.leiras}</textarea></td>
+                        <td colspan="5"><textarea id="LeirasEdit" name="leiras">{$egyed.leiras}</textarea></td>
                     </tr>
                     <tr>
                         <td><label for="TerminaltipusEdit">{at('Terminál típus')}:</label></td>
-                        <td><input id="TerminaltipusEdit" name="terminaltipus" type="text" size="80" maxlength="20" value="{$egyed.terminaltipus}"></td>
+                        <td colspan="5"><input id="TerminaltipusEdit" name="terminaltipus" type="text" size="80" maxlength="20" value="{$egyed.terminaltipus}"></td>
                     </tr>
                     <tr>
                         <td><label for="FizmodEdit">{at('Fizetési módok')}:</label></td>
-                        <td><input id="FizmodEdit" name="fizmodok" type="text" size="80" maxlength="255" value="{$egyed.fizmodok}"></td>
+                        <td colspan="5"><input id="FizmodEdit" name="fizmodok" type="text" size="80" maxlength="255" value="{$egyed.fizmodok}"></td>
                     </tr>
                     <tr>
                         <td><label for="SorrendEdit">{at('Sorrend')}:</label></td>
-                        <td><input id="SorrendEdit" name="sorrend" type="number" value="{$egyed.sorrend}"></td>
+                        <td colspan="5"><input id="SorrendEdit" name="sorrend" type="number" value="{$egyed.sorrend}"></td>
                     </tr>
+                    {if ($setup.multishop)}
+                        <tr>
+                            <td><label for="WebesEdit">{at('Webes')}:</label></td>
+                            <td><input id="WebesEdit" name="webes" type="checkbox"{if ($egyed.webes)} checked="checked"{/if}></td>
+                            <td><label for="Webes2Edit">{at('Webes 2')}:</label></td>
+                            <td><input id="Webes2Edit" name="webes2" type="checkbox"{if ($egyed.webes2)} checked="checked"{/if}></td>
+                            <td><label for="Webes3Edit">{at('Webes 3')}:</label></td>
+                            <td><input id="Webes3Edit" name="webes3" type="checkbox"{if ($egyed.webes3)} checked="checked"{/if}></td>
+                        </tr>
+
+                    {else}
                     <tr>
                         <td><label for="WebesEdit">{at('Webes')}:</label></td>
                         <td><input id="WebesEdit" name="webes" type="checkbox"{if ($egyed.webes)} checked="checked"{/if}></td>
                     </tr>
+                    {/if}
                     <tr>
                         <td><label for="VanSzallktgEdit">{at('Van száll.költség')}:</label></td>
                         <td><input id="VanSzallktgEdit" name="vanszallitasiktg" type="checkbox"{if ($egyed.vanszallitasiktg)} checked="checked"{/if}></td>

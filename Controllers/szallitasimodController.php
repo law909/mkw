@@ -26,6 +26,8 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         $x['id'] = $t->getId();
         $x['nev'] = $t->getNev();
         $x['webes'] = $t->getWebes();
+        $x['webes2'] = $t->getWebes2();
+        $x['webes3'] = $t->getWebes3();
         $x['leiras'] = $t->getLeiras();
         $x['fizmodok'] = $t->getFizmodok();
         $x['sorrend'] = $t->getSorrend();
@@ -59,6 +61,8 @@ class szallitasimodController extends \mkwhelpers\MattableController {
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setWebes($this->params->getBoolRequestParam('webes'));
+        $obj->setWebes2($this->params->getBoolRequestParam('webes2'));
+        $obj->setWebes3($this->params->getBoolRequestParam('webes3'));
         $obj->setLeiras($this->params->getStringRequestParam('leiras'));
         $obj->setFizmodok($this->params->getStringRequestParam('fizmodok'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));

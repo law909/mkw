@@ -15,7 +15,20 @@ class SzallitasimodRepository extends \mkwhelpers\Repository {
 
     public function getAllWebes() {
         $filter = new FilterDescriptor();
-        $filter->addFilter('webes', '=', true);
+        switch (\mkw\store::getWebshopNum()) {
+            case 1:
+                $filter->addFilter('webes', '=', true);
+                break;
+            case 2:
+                $filter->addFilter('webes2', '=', true);
+                break;
+            case 3:
+                $filter->addFilter('webes3', '=', true);
+                break;
+            default:
+                $filter->addFilter('webes', '=', true);
+                break;
+        }
         return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
     }
 

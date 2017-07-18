@@ -27,9 +27,9 @@ class Szallitasimod {
 	 */
 	private $nev;
 	/** @ORM\Column(type="boolean") */
-	private $webes=true;
+	private $webes = true;
 	/** @ORM\Column(type="boolean") */
-	private $vanszallitasiktg=true;
+	private $vanszallitasiktg = true;
 	/**
      * @Gedmo\Translatable
 	 * @ORM\Column(type="text",nullable=true)
@@ -56,6 +56,10 @@ class Szallitasimod {
 
     /** @ORM\Column(type="string",length=20) */
     private $terminaltipus;
+    /** @ORM\Column(type="boolean") */
+    private $webes2 = false;
+    /** @ORM\Column(type="boolean") */
+    private $webes3 = false;
 
 
     public static function getTranslatedFields() {
@@ -172,6 +176,34 @@ class Szallitasimod {
      */
     public function setTerminaltipus($terminaltipus) {
         $this->terminaltipus = $terminaltipus;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWebes2() {
+        return $this->webes2;
+    }
+
+    /**
+     * @param mixed $webes2
+     */
+    public function setWebes2($webes2) {
+        $this->webes2 = $webes2;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWebes3() {
+        return $this->webes3;
+    }
+
+    /**
+     * @param mixed $webes3
+     */
+    public function setWebes3($webes3) {
+        $this->webes3 = $webes3;
     }
 
 }
