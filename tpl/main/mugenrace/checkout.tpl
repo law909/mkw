@@ -114,6 +114,16 @@
 						{/if}
 						<h5>{t('Szállítási adatok')}</h5>
                         <div class="controls chk-controloffset">
+                            <div class="span8 nomargin">
+                                <label class="span8 nomargin">{t('Ország')} *</label>
+                                <select name="orszag" class="js-chkrefresh" required="required">
+                                    {foreach $szallorszaglist as $f}
+                                        <option value="{$f.id}"{if ($f.selected)} checked{/if}>{$f.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="controls chk-controloffset">
                             <div class="span10 nomargin">
                                 <label class="span8 nomargin">{t('Szállítási név')}</label>
                                 <input name="szallnev" type="text" class="span8 js-chkrefresh" value="{$szallnev|default}" data-container=".js-chkszallitasiadatok">
@@ -233,6 +243,7 @@
 							<div class="col30percent chk-colleftborder chk-colmargin">
 								<div class="chk-colheader">{t('Szállítási adatok')}</div>
 								<div class="chk-coldatabottom js-chkszallnev"></div>
+                                <div><span class="js-chkorszag"></span></div>
 								<div><span class="js-chkszallirszam"></span>&nbsp;<span class="js-chkszallvaros"></span></div>
 								<div class="chk-coldatabottom js-chkszallutca"></div>
 							</div>

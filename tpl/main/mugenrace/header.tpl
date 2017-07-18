@@ -7,9 +7,16 @@
 				<div class="headerbutton firstheaderbutton">
 					<a rel="nofollow" href="{$showloginlink}" class="headerloginicon">{t('Jelentkezzen be')}</a>
 				</div>
-				<div class="headerbutton lastheaderbutton">
+				<div class="headerbutton">
 					<a rel="nofollow" href="{$showregisztraciolink}">{t('Hozza létre saját fiókját')}</a>
 				</div>
+                <div class="headerbutton lastheaderbutton">
+                    <select name="headerorszag" class="">
+                        {foreach $orszaglist as $f}
+                            <option value="{$f.id}"{if ($f.selected)} checked{/if}>{$f.caption}</option>
+                        {/foreach}
+                    </select>
+                </div>
 			</div>
 			{else}
 			<div class="span8">

@@ -16,7 +16,7 @@ var checkout = (function($, guid) {
 			checkoutpasswordcontainer,
 			vezeteknevinput, keresztnevinput, telefoninput, kapcsemailinput,
 			szamlanevinput, szamlairszaminput, szamlavarosinput, szamlautcainput, adoszaminput,
-			szallnevinput, szallirszaminput, szallvarosinput, szallutcainput,
+			szallnevinput, szallirszaminput, szallvarosinput, szallutcainput, orszagselect,
 			checkoutform,
 			webshopmessageinput, couriermessageinput,
 			szamlaeqszall,
@@ -123,6 +123,7 @@ var checkout = (function($, guid) {
 		$('.js-chkkeresztnev').text(keresztnevinput.val());
 		$('.js-chktelefon').text(telefoninput.val());
 		$('.js-chkkapcsemail').text(kapcsemailinput.val());
+		$('.js-chkorszag').text(orszagselect.text());
         $('.js-chkszallnev').text(szallnevinput.val());
         $('.js-chkszallirszam').text(szallirszaminput.val());
         $('.js-chkszallvaros').text(szallvarosinput.val());
@@ -187,6 +188,7 @@ var checkout = (function($, guid) {
 			szamlavarosinput = $('input[name="szamlavaros"]');
 			szamlautcainput = $('input[name="szamlautca"]');
 			adoszaminput = $('input[name="adoszam"]');
+			orszagselect = $('select[name="orszag"] option:selected');
 			szallnevinput = $('input[name="szallnev"]');
 			szallirszaminput = $('input[name="szallirszam"]');
 			szallvarosinput = $('input[name="szallvaros"]');

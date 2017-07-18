@@ -85,6 +85,7 @@ return array(
     'Szállítási adatok' => 'Delivery details',
     'Szállítási név' => 'Recipient\'s name',
     'szállítási név' => 'recipient\'s name',
+    'Ország' => 'Country',
     'Ir.szám' => 'Postal code',
     'Város' => 'City',
     'Utca' => 'Address',

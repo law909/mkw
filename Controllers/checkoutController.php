@@ -42,6 +42,7 @@ class checkoutController extends \mkwhelpers\MattableController {
             $user['varos'] = $u->getVaros();
             $user['utca'] = $u->getUtca();
             $user['adoszam'] = $u->getAdoszam();
+            $user['orszag'] = $u->getOrszagId();
             $user['szallnev'] = $u->getSzallnev();
             $user['szallirszam'] = $u->getSzallirszam();
             $user['szallvaros'] = $u->getSzallvaros();
@@ -63,6 +64,7 @@ class checkoutController extends \mkwhelpers\MattableController {
             $user['vezeteknev'] = '';
             $user['keresztnev'] = '';
             $user['telefon'] = '';
+            $user['orszag'] = 0;
             $user['irszam'] = '';
             $user['varos'] = '';
             $user['utca'] = '';
@@ -95,6 +97,7 @@ class checkoutController extends \mkwhelpers\MattableController {
         $view->setVar('szamlautca', $this->vv($p->getStringRequestParam('szamlautca'), $user['utca']));
         $view->setVar('adoszam', $this->vv($p->getStringRequestParam('adoszam'), $user['adoszam']));
         $view->setVar('szamlaeqszall', $this->vv($p->getBoolRequestParam('szamlaeqszall'), $user['szalladategyezik']));
+        $view->setVar('orszag', $this->vv($p->getIntRequestParam('orszag'), $user['orszag']));
         $view->setVar('szallnev', $this->vv($p->getStringRequestParam('szallnev'), $user['szallnev']));
         $view->setVar('szallirszam', $this->vv($p->getStringRequestParam('szallirszam'), $user['szallirszam']));
         $view->setVar('szallvaros', $this->vv($p->getStringRequestParam('szallvaros'), $user['szallvaros']));
@@ -106,6 +109,8 @@ class checkoutController extends \mkwhelpers\MattableController {
         $view->setVar('aszfready', $p->getBoolRequestParam('aszfready'));
         $view->setVar('akciohirlevel', $this->vv($p->getBoolRequestParam('akciohirlevel'), $user['akcioshirlevelkell']));
         $view->setVar('ujdonsaghirlevel', $this->vv($p->getBoolRequestParam('ujdonsaghirlevel'), $user['ujdonsaghirlevelkell']));
+        $oc = new orszagController($p);
+        $view->setVar('szallorszaglist', $oc->getSelectList($this->vv($p->getIntRequestParam('orszag'), $user['orszag'])));
         \mkw\store::getMainSession()->loginerror = false;
         \mkw\store::getMainSession()->checkoutErrors = false;
 		$view->printTemplateResult(false);

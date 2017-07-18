@@ -393,6 +393,8 @@ class store {
         }
         $v->setVar('serverurl', self::getFullUrl());
         $v->setVar('logo', self::getParameter(\mkw\consts::Logo));
+        $oc = new \Controllers\orszagController($p);
+        $v->setVar('orszaglist', $oc->getSelectList());
         if (self::isMugenrace()) {
             $v->setVar('mugenracelogo', self::getParameter(\mkw\consts::MugenraceLogo));
             $v->setVar('mugenracefooldalkep', self::getParameter(\mkw\consts::MugenraceFooldalKep));
