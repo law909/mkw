@@ -53,7 +53,7 @@
         <label for="penztarfilter">{at('Pénztár')}:</label>
         <select id="penztarfilter" name="penztarfilter">
             <option value="0">{at('válasszon')}</option>
-            {foreach $penztarlist as $panztar}
+            {foreach $penztarlist as $penztar}
                 <option value="{$penztar.id}"{if ($penztar.selected)} selected="selected"{/if}>{$penztar.caption}</option>
             {/foreach}
         </select>
