@@ -559,12 +559,9 @@ var bizonylathelper = function($) {
             beforeShow: function() {
                 var keltedit = $('#KeltEdit'),
                         teljesitesedit = $('#TeljesitesEdit'),
-                        esedekessegedit = $('#EsedekessegEdit'),
-                        hatidoedit = $('#HataridoEdit'),
                         fizmodedit = $('#FizmodEdit'),
                         alttab = $('#AltalanosTab'),
-                        dialogcenter = $('#dialogcenter'),
-                        fakekifizetesdatumedit = $('#FakeKifizetesdatumEdit');
+                        dialogcenter = $('#dialogcenter');
 
                 $('#EmailEdit').change(function() {
                     var partner,
@@ -834,28 +831,19 @@ var bizonylathelper = function($) {
                     $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + $this.data('egyedid') + '&source=' + bizonylattipus + '&oper=' + $this.data('oper'));
                 });
 
-                keltedit.datepicker($.datepicker.regional['hu']);
-                keltedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-                keltedit.datepicker('setDate', keltedit.attr('data-datum'));
+                mkwcomp.datumEdit.init('#KeltEdit');
                 keltedit.on('change', function(e) {
                     setDates();
                     valutanemChange();
                 });
-                teljesitesedit.datepicker($.datepicker.regional['hu']);
-                teljesitesedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-                teljesitesedit.datepicker('setDate', teljesitesedit.attr('data-datum'));
+                mkwcomp.datumEdit.init('#TeljesitesEdit');
                 teljesitesedit.on('change', function() {
                     getArfolyam();
                 });
-                esedekessegedit.datepicker($.datepicker.regional['hu']);
-                esedekessegedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-                esedekessegedit.datepicker('setDate', esedekessegedit.attr('data-datum'));
-                hatidoedit.datepicker($.datepicker.regional['hu']);
-                hatidoedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-                hatidoedit.datepicker('setDate', hatidoedit.attr('data-datum'));
-                fakekifizetesdatumedit.datepicker($.datepicker.regional['hu']);
-                fakekifizetesdatumedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-                fakekifizetesdatumedit.datepicker('setDate', fakekifizetesdatumedit.attr('data-datum'));
+                mkwcomp.datumEdit.init('#EsedekessegEdit');
+                mkwcomp.datumEdit.init('#HataridoEdit');
+                mkwcomp.datumEdit.init('#FakeKifizetesdatumEdit');
+                mkwcomp.datumEdit.init('#SZEPKartyaErvenyessegEdit');
 
                 //valutanemChange(true);
 

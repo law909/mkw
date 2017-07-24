@@ -378,8 +378,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['csomagterminalid'] = $t->getCsomagterminalId();
         $x['szepkartyaszam'] = $t->getSzepkartyaszam();
         $x['szepkartyanev'] = $t->getSzepkartyanev();
-        $x['szepkartyaervenyesseg'] = $t->getSzepkartyaervenyessegStr();
-        $x['szepkartyatipus'] = $t->getSzepkartyatipusNev();
+        $x['szepkartyaervenyessegstr'] = $t->getSzepkartyaervenyessegStr();
+        $x['szepkartyatipus'] = $t->getSzepkartyatipus();
+        $x['szepkartyatipusnev'] = $t->getSzepkartyatipusNev();
         if ($oper === $this->inheritOperation) {
             $x['fakekintlevoseg'] = false;
             $x['fakekifizetve'] = false;

@@ -166,6 +166,27 @@
 					</select>
 				</td>
             </tr>
+            {if ($maintheme === 'darshan')}
+                <tr class="szepkartya">
+                    <td><label for="SZEPKartyaTipusEdit">{at('Kártya típusa')}:</label></td>
+                    <td>
+                        <select id="SZEPKartyaTipusEdit" name="szepkartyatipus">
+                            <option value="">{at('válassz')}</option>
+                            <option value="1"{if ($egyed.szepkartyatipus == 1)} selected="selected"{/if}>{at('OTP')}</option>
+                            <option value="2"{if ($egyed.szepkartyatipus == 2)} selected="selected"{/if}>{at('MKB')}</option>
+                            <option value="3"{if ($egyed.szepkartyatipus == 3)} selected="selected"{/if}>{at('K&H')}</option>
+                        </select>
+                    </td>
+                    <td><label for="SZEPKartyaSzamEdit">{at('Kártya száma')}:</label></td>
+                    <td><input id="SZEPKartyaSzamEdit" name="szepkartyaszam" type="text" value="{$egyed.szepkartyaszam}"></td>
+                </tr>
+                <tr class="szepkartya">
+                    <td><label for="SZEPKartyaNevEdit">{at('Kártyára írt név')}:</label></td>
+                    <td><input id="SZEPKartyaNevEdit" name="szepkartyanev" type="text" value="{$egyed.szepkartyanev}"></td>
+                    <td><label for="SZEPKartyaErvenyessegEdit">{at('Kártya érvényessége')}:</label></td>
+                    <td><input id="SZEPKartyaErvenyessegEdit" name="szepkartyaervenyesseg" type="text" size="12" data-datum="{$egyed.szepkartyaervenyessegstr}"></td>
+                </tr>
+            {/if}
             <tr>
 				<td class="mattable-important"><label for="UzletkotoEdit">{at('Üzletkötő')}:</label></td>
 				<td><select id="UzletkotoEdit" name="uzletkoto" class="mattable-important">
