@@ -335,6 +335,9 @@ class Termek {
     /** @ORM\Column(type="integer",nullable=true) */
     private $jogaervenyesseg;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $eladhato = 1;
+
     public function __toString() {
         return (string)$this->id . ' - ' . $this->nev;
     }
@@ -2166,6 +2169,20 @@ class Termek {
      */
     public function setLathato3($lathato3) {
         $this->lathato3 = $lathato3;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEladhato() {
+        return $this->eladhato;
+    }
+
+    /**
+     * @param mixed $eladhato
+     */
+    public function setEladhato($eladhato) {
+        $this->eladhato = $eladhato;
     }
 
 

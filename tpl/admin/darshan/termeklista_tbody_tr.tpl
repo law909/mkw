@@ -51,6 +51,7 @@
             <tbody>
                 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="inaktiv" class="js-flagcheckbox{if ($_termek.inaktiv)} ui-state-hover{/if}">{at('Inaktív')}</a></td></tr>
                 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="mozgat" class="js-flagcheckbox{if ($_termek.mozgat)} ui-state-hover{/if}">{at('Készletet mozgat')}</a></td></tr>
+                <tr><td><a href="#" data-id="{$_termek.id}" data-flag="eladhato" class="js-flagcheckbox{if ($_termek.eladhato)} ui-state-hover{/if}">{at('Eladható')}</a></td></tr>
                 <tr><td><a href="#" data-id="{$_termek.id}" class="js-keszletreszletezobutton">{at('Készlet')}: {$_termek.keszlet}</a></td></tr>
             </tbody>
         </table>

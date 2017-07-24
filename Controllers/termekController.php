@@ -61,6 +61,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['ajanlott'] = $t->getAjanlott();
 		$x['kiemelt'] = $t->getKiemelt();
 		$x['inaktiv'] = $t->getInaktiv();
+		$x['eladhato'] = $t->getEladhato();
 		$x['mozgat'] = $t->getMozgat();
         $x['kozvetitett'] = $t->getKozvetitett();
 		$x['hparany'] = $t->getHparany();
@@ -240,6 +241,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$obj->setAjanlott($this->params->getBoolRequestParam('ajanlott'));
 		$obj->setKiemelt($this->params->getBoolRequestParam('kiemelt'));
 		$obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
+		$obj->setEladhato($this->params->getBoolRequestParam('eladhato'));
 		$obj->setMozgat($this->params->getBoolRequestParam('mozgat'));
 		$obj->setHparany($this->params->getFloatRequestParam('hparany'));
 		$obj->setSzelesseg($this->params->getFloatRequestParam('szelesseg'));
@@ -694,7 +696,7 @@ class termekController extends \mkwhelpers\MattableController {
         echo json_encode($this->loadDataToView($egyedek, 'termeklista', $view));
 	}
 
-	public function getselectlist($selid = null) {
+	public function getSelectList($selid = null) {
 		// TODO sok termek eseten lassu lehet
 		$rec = $this->getRepo()->getAllForSelectList(array(), array('nev' => 'ASC'));
 		$res = array();
@@ -707,6 +709,22 @@ class termekController extends \mkwhelpers\MattableController {
 		}
 		return $res;
 	}
+
+    public function getEladhatoSelectList($selid = null) {
+        // TODO sok termek eseten lassu lehet
+        $filter = new FilterDescriptor();
+        $filter->addFilter('eladhato', '=', true);
+        $rec = $this->getRepo()->getAllForSelectList($filter, array('nev' => 'ASC'));
+        $res = array();
+        foreach ($rec as $sor) {
+            $res[] = array(
+                'id' => $sor['id'],
+                'caption' => $sor['nev'],
+                'selected' => ($sor['id'] == $selid)
+            );
+        }
+        return $res;
+    }
 
 	public function htmllist() {
 		$rec = $this->getRepo()->getAllForSelectList(array(), array('nev' => 'asc'));
@@ -937,6 +955,9 @@ class termekController extends \mkwhelpers\MattableController {
                     break;
                 case 'termekexportbanszerepel':
                     $obj->setTermekexportbanszerepel($kibe);
+                    break;
+                case 'eladhato':
+                    $obj->setEladhato($kibe);
                     break;
 			}
 			$this->getEm()->persist($obj);

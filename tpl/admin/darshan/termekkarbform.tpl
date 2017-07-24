@@ -34,6 +34,8 @@
                    {if ($egyed.inaktiv)}checked="checked"{/if}>{at('Inaktív')}
             <input id="MozgatCheck" name="mozgat" type="checkbox"
                    {if ($egyed.mozgat)}checked="checked"{/if}>{at('Készletet mozgat')}
+            <input id="EladhatoCheck" name="eladhato" type="checkbox"
+                   {if ($egyed.eladhato)}checked="checked"{/if}>{at('Eladható')}
             <input id="KozvetitettCheck" name="kozvetitett" type="checkbox"
                    {if ($egyed.kozvetitett)}checked="checked"{/if}>{at('Közvetített szolgáltatás')}
             <table>

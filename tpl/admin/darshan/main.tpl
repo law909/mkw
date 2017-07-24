@@ -94,7 +94,7 @@
                             <td>
                                 <select id="ElTermekEdit" name="termek" class="mattable-important" required="required">
                                     <option value="">{at('válassz')}</option>
-                                    {foreach $termeklist as $_mk}
+                                    {foreach $eladhatotermeklist as $_mk}
                                         <option value="{$_mk.id}">{$_mk.caption}</option>
                                     {/foreach}
                                 </select>

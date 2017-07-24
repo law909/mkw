@@ -135,6 +135,7 @@ class adminController extends mkwhelpers\Controller {
                 $view->setVar('fizmodlist', $fizmod->getSelectList());
                 $termek = new termekController($this->params);
                 $view->setVar('termeklist', $termek->getSelectList());
+                $view->setVar('eladhatotermeklist', $termek->getEladhatoSelectList());
                 $felh = new dolgozoController($this->params);
                 $view->setVar('felhasznalolist', $felh->getSelectList());
                 $view->setVar('keltstr', date(\mkw\store::$DateFormat));
