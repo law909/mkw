@@ -59,6 +59,36 @@
                                 {/foreach}
                             </select>
                         </div>
+                        {if ($maintheme == 'darshan')}
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="SZEPFizmodEdit">{at('SZÉP kártya fiz.mód')}:</label></span>
+                                <select id="SZEPFizmodEdit" name="szepkartyafizmod">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $szepkartyafizmodlist as $_fizmod}
+                                        <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="SportkartyaFizmodEdit">{at('Sportkártya fiz.mód')}:</label></span>
+                                <select id="SportkartyaFizmodEdit" name="sportkartyafizmod">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $sportkartyafizmodlist as $_fizmod}
+                                        <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="AYCMFizmodEdit">{at('AYCM fiz.mód')}:</label></span>
+                                <select id="AYCMFizmodEdit" name="aycmfizmod">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $aycmfizmodlist as $_fizmod}
+                                        <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+
+                        {/if}
                         <div class="setuprow">
                             <span class="setuplabel"><label for="SzallmodEdit">{at('Szállítási mód')}:</label></span>
                             <select id="SzallmodEdit" name="szallitasimod">

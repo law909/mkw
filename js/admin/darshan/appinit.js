@@ -143,6 +143,7 @@ $(document).ready(
         mkwcomp.datumEdit.init('#KtgTeljesitesEdit');
         mkwcomp.datumEdit.init('#KtgEsedekessegEdit');
         mkwcomp.datumEdit.init('#KtgPenzdatumEdit');
+        mkwcomp.datumEdit.init('#SZEPKartyaErvenyessegEdit');
 
         $('.js-kihivatkozottbizonylatbutton, #KiOKButton, #KiCancelButton,' +
             '.js-behivatkozottbizonylatbutton, #BeOKButton, #BeCancelButton,' +
@@ -269,6 +270,10 @@ $(document).ready(
             $('#ElJogcimEdit')[0].selectedIndex = 0;
             $('#ElErtek').text('');
             $('#ElOsszegEdit').val('');
+            $('#SZEPKartyaTipusEdit').selectedIndex = 0;
+            $('#SZEPKartyaNevEdit').val('');
+            $('#SZEPKartyaSzamEdit').val('');
+            mkwcomp.datumEdit.clear('#SZEPKartyaErvenyessegEdit');
         }
 
         eladasform.ajaxForm({
@@ -321,7 +326,8 @@ $(document).ready(
                 }
             })
             .on('change', '#ElFizmodEdit', function(e) {
-                var tip = $('#ElFizmodEdit option:selected').data('tipus');
+                var tip = $('#ElFizmodEdit option:selected').data('tipus'),
+                    szep = $('#ElFizmodEdit option:selected').data('szepkartya');
                 if (tip === 'P') {
                     $('#ElPenztarEdit').prop('required', true);
                     $('#ElPenzdatumEdit').prop('required', true);
@@ -333,6 +339,12 @@ $(document).ready(
                     $('#ElPenzdatumEdit').removeAttr('required');
                     $('#ElJogcimEdit').removeAttr('required');
                     $('#ElOsszegEdit').removeAttr('required');
+                }
+                if (szep == 1) {
+                    $('tr.szepkartya').removeClass('hidden');
+                }
+                else {
+                    $('tr.szepkartya').addClass('hidden');
                 }
             })
             .on('change', '#ElTermekEdit', function(e) {

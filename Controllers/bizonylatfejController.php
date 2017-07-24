@@ -316,6 +316,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['partnerszamlatipus'] = $t->getPartnerSzamlatipus();
         $x['partnerfeketelistas'] = $t->getPartnerfeketelistas();
         $x['partnerfeketelistaok'] = $t->getPartnerfeketelistaok();
+        $x['partnerorszagnev'] = $t->getPartnerorszagnev();
         $x['raktar'] = $t->getRaktarId();
         $x['raktarnev'] = $t->getRaktarnev();
         $x['fizmod'] = $t->getFizmodId();
@@ -375,6 +376,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['createdby'] = $t->getCreatedbyNev();
         $x['kupon'] = $t->getKupon();
         $x['csomagterminalid'] = $t->getCsomagterminalId();
+        $x['szepkartyaszam'] = $t->getSzepkartyaszam();
+        $x['szepkartyanev'] = $t->getSzepkartyanev();
+        $x['szepkartyaervenyesseg'] = $t->getSzepkartyaervenyessegStr();
+        $x['szepkartyatipus'] = $t->getSzepkartyatipusNev();
         if ($oper === $this->inheritOperation) {
             $x['fakekintlevoseg'] = false;
             $x['fakekifizetve'] = false;
@@ -562,6 +567,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $obj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
         $obj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
         $obj->setSzallutca($this->params->getStringRequestParam('szallutca'));
+
+        $obj->setSzepkartyaszam($this->params->getStringRequestParam('szepkartyaszam'));
+        $obj->setSzepkartyanev($this->params->getStringRequestParam('szepkartyanev'));
+        $obj->setSzepkartyatipus($this->params->getIntRequestParam('szepkartyatipus'));
+        $obj->setSzepkartyaervenyesseg($this->params->getStringRequestParam('szepkartyaervenyesseg'));
 
         $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv'));
         $obj->setReportfile($this->params->getStringRequestParam('reportfile'));
@@ -1466,6 +1476,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
 
         $obj->setSzallitasikoltsegbrutto(0);
+
+        if ($fizmod->getId() == \mkw\store::getParameter(\mkw\consts::SZEPFizmod)) {
+            $obj->setSzepkartyaszam($this->params->getStringRequestParam('szepkartyaszam'));
+            $obj->setSzepkartyanev($this->params->getStringRequestParam('szepkartyanev'));
+            $obj->setSzepkartyatipus($this->params->getIntRequestParam('szepkartyatipus'));
+            $obj->setSzepkartyaervenyesseg($this->params->getStringRequestParam('szepkartyaervenyesseg'));
+        }
 
         if (($this->params->getIntRequestParam('termek') > 0)) {
 

@@ -306,6 +306,15 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $partnerstatszamjel;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Orszag")
+     * @ORM\JoinColumn(name="partnerorszag_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $partnerorszag;
+
+    /** @ORM\Column(type="string",length=255, nullable=true) */
+    private $partnerorszagnev;
+
     /** @ORM\Column(type="string",length=10,nullable=true) */
     private $partnerirszam;
 
@@ -539,7 +548,17 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=255, nullable=true) */
     private $felhasznalonev;
 
+    /** @ORM\Column(type="string",length=30, nullable=true) */
+    private $szepkartyaszam;
 
+    /** @ORM\Column(type="string",length=255, nullable=true) */
+    private $szepkartyanev;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $szepkartyaervenyesseg;
+
+    /** @ORM\Column(type="integer", nullable=true) */
+    private $szepkartyatipus;
 
     public function __toString() {
         return (string)$this->id;
@@ -3188,6 +3207,134 @@ class Bizonylatfej {
             return $this->updatedby->getNev();
         }
         return null;
+    }
+
+    public function getSzepkartyaervenyesseg() {
+        return $this->szepkartyaervenyesseg;
+    }
+
+    public function getSzepkartyaervenyessegStr() {
+        if ($this->getSzepkartyaervenyesseg()) {
+            return $this->getSzepkartyaervenyesseg()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setSzepkartyaervenyesseg($adat = '') {
+        if (is_a($adat, 'DateTime')) {
+            $this->szepkartyaervenyesseg = $adat;
+        }
+        else {
+            if ($adat == '') {
+                $adat = date(\mkw\store::$DateFormat);
+            }
+            $this->szepkartyaervenyesseg = new \DateTime(\mkw\store::convDate($adat));
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPartnerorszagnev() {
+        return $this->partnerorszagnev;
+    }
+
+    /**
+     * @param mixed $partnerorszagnev
+     */
+    public function setPartnerorszagnev($partnerorszagnev) {
+        $this->partnerorszagnev = $partnerorszagnev;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzepkartyaszam() {
+        return $this->szepkartyaszam;
+    }
+
+    /**
+     * @param mixed $szepkartyaszam
+     */
+    public function setSzepkartyaszam($szepkartyaszam) {
+        $this->szepkartyaszam = $szepkartyaszam;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzepkartyatipus() {
+        return $this->szepkartyatipus;
+    }
+
+    public function getSzepkartyatipusNev() {
+        $szp = array(1 => 'OTP', 2 => 'MKB', 3 => 'K&H');
+        return $szp[$this->szepkartyatipus];
+    }
+
+    /**
+     * @param mixed $szepkartyatipus
+     */
+    public function setSzepkartyatipus($szepkartyatipus) {
+        $this->szepkartyatipus = $szepkartyatipus;
+    }
+
+    /**
+     * @return \Entities\Orszag
+     */
+    public function getPartnerorszag() {
+        return $this->partnerorszag;
+    }
+
+    public function getPartnerorszagId() {
+        $fm = $this->getPartnerorszag();
+        if ($fm) {
+            return $fm->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Orszag $val
+     */
+    public function setPartnerorszag($val) {
+        if (!($val instanceof \Entities\Orszag)) {
+            $val = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($val);
+        }
+        if ($this->partnerorszag !== $val) {
+            if (!$val) {
+                $this->removePartnerorszag();
+            }
+            else {
+                $this->partnerorszag = $val;
+                if (!$this->duplication) {
+                    $this->partnerorszagnev = $val->getNev();
+                }
+            }
+        }
+    }
+
+    public function removePartnerorszag() {
+        if ($this->partnerorszag !== null) {
+            $this->partnerorszag = null;
+            if (!$this->duplication) {
+                $this->partnerorszagnev = '';
+            }
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzepkartyanev() {
+        return $this->szepkartyanev;
+    }
+
+    /**
+     * @param mixed $szepkartyanev
+     */
+    public function setSzepkartyanev($szepkartyanev) {
+        $this->szepkartyanev = $szepkartyanev;
     }
 
 }

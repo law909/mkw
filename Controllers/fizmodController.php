@@ -194,12 +194,17 @@ class fizmodController extends \mkwhelpers\MattableController {
     }
 
     public function getSelectList($selid = null, $szallmod = null, $exc = null) {
+        $szepfm = \mkw\store::getParameter(\mkw\consts::SZEPFizmod);
+        $sportfm = \mkw\store::getParameter(\mkw\consts::SportkartyaFizmod);
+        $aycmfm = \mkw\store::getParameter(\mkw\consts::AYCMFizmod);
+
         if (\mkw\store::isAdminMode()) {
             $rec = $this->getRepo()->getAllBySzallitasimod($szallmod, $exc);
         }
         else {
             $rec = $this->getRepo()->getAllWebesBySzallitasimod($szallmod, $exc);
         }
+
         $res = array();
         // mkwnál ki kell választani az elsőt
         $vanvalasztott = \mkw\store::getTheme() !== 'mkwcansas';
@@ -209,7 +214,10 @@ class fizmodController extends \mkwhelpers\MattableController {
                 'caption' => $sor->getNev(),
                 'fizhatido' => $sor->getHaladek(),
                 'leiras' => $sor->getLeiras(),
-                'bank' => ($sor->getTipus() == 'B' ? '1' : '0')
+                'bank' => ($sor->getTipus() == 'B' ? '1' : '0'),
+                'szepkartya' => $sor->getId() == $szepfm,
+                'sportkartya' => $sor->getId() == $sportfm,
+                'aycm' => $sor->getId() == $aycmfm
             );
             if ($selid) {
                 $r['selected'] = $sor->getId() == $selid;

@@ -64,10 +64,10 @@ class Szallitasimod extends \Entities\Szallitasimod implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'id', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'nev', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'vanszallitasiktg', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'fizmodok', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'hatarok', 'locale', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'translations', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'terminaltipus'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'id', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'nev', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'vanszallitasiktg', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'fizmodok', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'hatarok', 'locale', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'translations', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'terminaltipus', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes2', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes3'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'id', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'nev', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'vanszallitasiktg', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'fizmodok', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'hatarok', 'locale', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'translations', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'terminaltipus'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'id', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'nev', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'vanszallitasiktg', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'leiras', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'fizmodok', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'hatarok', 'locale', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'translations', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'terminaltipus', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes2', '' . "\0" . 'Entities\\Szallitasimod' . "\0" . 'webes3'];
     }
 
     /**
@@ -406,6 +406,50 @@ class Szallitasimod extends \Entities\Szallitasimod implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTerminaltipus', [$terminaltipus]);
 
         return parent::setTerminaltipus($terminaltipus);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWebes2()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWebes2', []);
+
+        return parent::getWebes2();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setWebes2($webes2)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWebes2', [$webes2]);
+
+        return parent::setWebes2($webes2);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWebes3()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWebes3', []);
+
+        return parent::getWebes3();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setWebes3($webes3)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setWebes3', [$webes3]);
+
+        return parent::setWebes3($webes3);
     }
 
 }

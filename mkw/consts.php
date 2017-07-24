@@ -191,4 +191,8 @@ class consts {
     const Webshop2Discount = 'Webshop2Discount';
     const Webshop3Price = 'Webshop3Price';
     const Webshop3Discount = 'Webshop3Discount';
+
+    const SZEPFizmod = 'szepkartyafizmod';
+    const SportkartyaFizmod = 'sportkartyafizmod';
+    const AYCMFizmod = 'aycmfizmod';
 }

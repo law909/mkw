@@ -61,10 +61,33 @@
                                 <select id="ElFizmodEdit" name="fizmod" class="mattable-important" required="required">
                                     <option value="">{at('válassz')}</option>
                                     {foreach $fizmodlist as $_mk}
-                                        <option value="{$_mk.id}" data-tipus="{if ($_mk.bank)}B{else}P{/if}">{$_mk.caption}</option>
+                                        <option value="{$_mk.id}"
+                                                data-tipus="{if ($_mk.bank)}B{else}P{/if}"
+                                                data-szepkartya="{$_mk.szepkartya}"
+                                                data-sportkartya="{$_mk.sportkartya}"
+                                                data-aycm="{$_mk.aycm}">{$_mk.caption}</option>
                                     {/foreach}
                                 </select>
                             </td>
+                        </tr>
+                        <tr class="szepkartya hidden">
+                            <td><label for="SZEPKartyaTipusEdit">{at('Kártya típusa')}:</label></td>
+                            <td>
+                                <select id="SZEPKartyaTipusEdit" name="szepkartyatipus">
+                                    <option value="">{at('válassz')}</option>
+                                    <option value="1">{at('OTP')}</option>
+                                    <option value="2">{at('MKB')}</option>
+                                    <option value="3">{at('K&H')}</option>
+                                </select>
+                            </td>
+                            <td><label for="SZEPKartyaSzamEdit">{at('Kártya száma')}:</label></td>
+                            <td><input id="SZEPKartyaSzamEdit" name="szepkartyaszam" type="text"></td>
+                        </tr>
+                        <tr class="szepkartya hidden">
+                            <td><label for="SZEPKartyaNevEdit">{at('Kártyára írt név')}:</label></td>
+                            <td><input id="SZEPKartyaNevEdit" name="szepkartyanev" type="text"></td>
+                            <td><label for="SZEPKartyaErvenyessegEdit">{at('Kártya érvényessége')}:</label></td>
+                            <td><input id="SZEPKartyaErvenyessegEdit" name="szepkartyaervenyesseg" type="text"></td>
                         </tr>
                         <tr>
                             <td><label for="ElTermekEdit" class="mattable-important">{at('MIT adsz el')}:</label></td>

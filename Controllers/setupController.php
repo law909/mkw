@@ -197,8 +197,13 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('fizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::UtanvetFizmod);
-//        $fizmod = new fizmodController($this->params);
         $view->setVar('utanvetfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::SZEPFizmod);
+        $view->setVar('szepkartyafizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::SportkartyaFizmod);
+        $view->setVar('sportkartyafizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::AYCMFizmod);
+        $view->setVar('aycmfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::Szallitasimod);
         $szallmod = new szallitasimodController($this->params);
@@ -595,6 +600,28 @@ class setupController extends \mkwhelpers\Controller {
         else {
             $this->setObj(\mkw\consts::UtanvetFizmod, '');
         }
+        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('szepkartyafizmod', 0));
+        if ($fizmod) {
+            $this->setObj(\mkw\consts::SZEPFizmod, $fizmod->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::SZEPFizmod, '');
+        }
+        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('sportkartyafizmod', 0));
+        if ($fizmod) {
+            $this->setObj(\mkw\consts::SportkartyaFizmod, $fizmod->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::SportkartyaFizmod, '');
+        }
+        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('aycmfizmod', 0));
+        if ($fizmod) {
+            $this->setObj(\mkw\consts::AYCMFizmod, $fizmod->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::AYCMFizmod, '');
+        }
+
         $szallmod = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod', 0));
         if ($szallmod) {
             $this->setObj(\mkw\consts::Szallitasimod, $szallmod->getId());
