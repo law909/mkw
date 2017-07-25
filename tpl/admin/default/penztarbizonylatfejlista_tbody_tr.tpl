@@ -12,6 +12,7 @@
         <table>
             <tbody>
                 <tr><td colspan="2" class="mattable-important">{$_egyed.partnernev}</td></tr>
+                <tr><td>{$_egyed.penztarnev}</td></tr>
                 {if ($showerbizonylatszam)}
                 <tr><td>{at('Er.biz.szám')}:</td><td>{$_egyed.erbizonylatszam}</td></tr>
                 {/if}
