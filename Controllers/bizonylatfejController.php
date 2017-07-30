@@ -1417,17 +1417,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             }
         }
         else {
-            $partneremail = $this->params->getStringRequestParam('partneremail');
-            if ($partneremail) {
-                /** @var \Entities\Partner $partnerobj */
-                $partnerobj = $this->getRepo('Entities\Partner')->findOneBy(array('email' => $partneremail));
-                if (!$partnerobj) {
-                    $partnerobj = new \Entities\Partner();
-                }
-            }
-            else {
-                $partnerobj = new \Entities\Partner();
-            }
+            $partnerobj = new \Entities\Partner();
             $partnerobj->setEmail($this->params->getStringRequestParam('partneremail'));
             $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
             $partnerobj->setVezeteknev($this->params->getStringRequestParam('partnervezeteknev'));
