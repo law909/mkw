@@ -51,7 +51,7 @@
                         </tr>
                         <tr>
                             <td class="mattable-important"><label for="ElPartneremailEdit" class="mattable-important" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Email')}:</label></td>
-                            <td><input id="ElPartneremailEdit" name="partneremail" required="required"></td>
+                            <td><input id="ElPartneremailEdit" name="partneremail"></td>
                             <td><label for="ElPartnertelefonEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Telefon')}:</label></td>
                             <td><input id="ElPartnertelefonEdit" name="partnertelefon"></td>
                         </tr>
@@ -223,7 +223,7 @@
                         </tr>
                         <tr>
                             <td class="mattable-important"><label for="KtgPartneremailEdit" class="mattable-important" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Email')}:</label></td>
-                            <td><input id="KtgPartneremailEdit" type="email" name="partneremail" required="required"></td>
+                            <td><input id="KtgPartneremailEdit" type="email" name="partneremail"></td>
                             <td><label for="KtgPartnertelefonEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Telefon')}:</label></td>
                             <td><input id="KtgPartnertelefonEdit" name="partnertelefon"></td>
                         </tr>
@@ -381,7 +381,7 @@
                             </tr>
                             <tr>
                                 <td class="mattable-important"><label for="KiEmailEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Email')}:</label></td>
-                                <td><input id="KiEmailEdit" name="partneremail" required="required"></td>
+                                <td><input id="KiEmailEdit" name="partneremail"></td>
                                 <td><label for="KiTelefonEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Telefon')}:</label></td>
                                 <td><input id="KiTelefonEdit" name="partnertelefon"></td>
                             </tr>
@@ -484,7 +484,7 @@
                         </tr>
                         <tr>
                             <td class="mattable-important"><label for="BeEmailEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Email')}:</label></td>
-                            <td><input id="BeEmailEdit" name="partneremail" required="required"></td>
+                            <td><input id="BeEmailEdit" name="partneremail"></td>
                             <td><label for="BeTelefonEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Telefon')}:</label></td>
                             <td><input id="BeTelefonEdit" name="partnertelefon"></td>
                         </tr>
