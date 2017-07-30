@@ -167,12 +167,14 @@ $(document).ready(
             $('#KtgEgysarEdit').val('');
             $('#KtgMennyisegEdit').val(1);
             $('#KtgTermekEdit')[0].selectedIndex = 0;
+            $('#KtgTermeknevEdit').val('');
             $('#KtgFizmodEdit')[0].selectedIndex = 0;
             $('#KtgPenztarEdit')[0].selectedIndex = 0;
             $('#KtgMegjegyzesEdit').val('');
             $('#KtgJogcimEdit')[0].selectedIndex = 0;
             $('#KtgErtek').text('');
             $('#KtgOsszegEdit').val('');
+            $('#KtgVanPenzmozgas').attr('checked', 'checked');
         }
 
         koltsegform.ajaxForm({
@@ -226,7 +228,7 @@ $(document).ready(
             })
             .on('change', '#KtgFizmodEdit', function(e) {
                 var tip = $('#KtgFizmodEdit option:selected').data('tipus');
-                if (tip === 'P') {
+                if (tip === 'P' && $('#KtgVanPenzmozgas').prop('checked')) {
                     $('#KtgPenztarEdit').prop('required', true);
                     $('#KtgPenzdatumEdit').prop('required', true);
                     $('#KtgJogcimEdit').prop('required', true);
@@ -239,7 +241,26 @@ $(document).ready(
                     $('#KtgOsszegEdit').removeAttr('required');
                 }
             })
+            .on('change', '#KtgVanPenzmozgas', function(e) {
+                var tip = $('#KtgFizmodEdit option:selected').data('tipus');
+                if (tip === 'P' && $('#KtgVanPenzmozgas').prop('checked')) {
+                    $('#KtgPenztarEdit').prop('required', true);
+                    $('#KtgPenzdatumEdit').prop('required', true);
+                    $('#KtgJogcimEdit').prop('required', true);
+                    $('#KtgOsszegEdit').prop('required', true);
+                }
+                else {
+                    $('#KtgPenztarEdit').removeAttr('required');
+                    $('#KtgPenzdatumEdit').removeAttr('required');
+                    $('#KtgJogcimEdit').removeAttr('required');
+                    $('#KtgOsszegEdit').removeAttr('required');
+                }
+            })
+            .on('change', '#KtgTeljesitesEdit', function(e) {
+                $('#KtgPenzdatumEdit').val($('#KtgTeljesitesEdit').val());
+            })
             .on('change', '#KtgTermekEdit', function(e) {
+                $('#KtgTermeknevEdit').val($('#KtgTermekEdit option:selected').text());
                 setTermekAr(koltsegform);
             })
             .on('change', '#KtgMennyisegEdit, #KtgEgysarEdit', function(e) {
@@ -273,6 +294,7 @@ $(document).ready(
             $('#SZEPKartyaTipusEdit').selectedIndex = 0;
             $('#SZEPKartyaNevEdit').val('');
             $('#SZEPKartyaSzamEdit').val('');
+            $('#ElVanPenzmozgas').attr('checked', 'checked');
             mkwcomp.datumEdit.clear('#SZEPKartyaErvenyessegEdit');
         }
 
@@ -328,7 +350,7 @@ $(document).ready(
             .on('change', '#ElFizmodEdit', function(e) {
                 var tip = $('#ElFizmodEdit option:selected').data('tipus'),
                     szep = $('#ElFizmodEdit option:selected').data('szepkartya');
-                if (tip === 'P') {
+                if (tip === 'P' && $('#ElVanPenzmozgas').prop('checked')) {
                     $('#ElPenztarEdit').prop('required', true);
                     $('#ElPenzdatumEdit').prop('required', true);
                     $('#ElJogcimEdit').prop('required', true);
@@ -346,6 +368,24 @@ $(document).ready(
                 else {
                     $('tr.szepkartya').addClass('hidden');
                 }
+            })
+            .on('change', '#ElVanPenzmozgas', function(e) {
+                var tip = $('#ElFizmodEdit option:selected').data('tipus');
+                if (tip === 'P' && $('#ElVanPenzmozgas').prop('checked')) {
+                    $('#ElPenztarEdit').prop('required', true);
+                    $('#ElPenzdatumEdit').prop('required', true);
+                    $('#ElJogcimEdit').prop('required', true);
+                    $('#ElOsszegEdit').prop('required', true);
+                }
+                else {
+                    $('#ElPenztarEdit').removeAttr('required');
+                    $('#ElPenzdatumEdit').removeAttr('required');
+                    $('#ElJogcimEdit').removeAttr('required');
+                    $('#ElOsszegEdit').removeAttr('required');
+                }
+            })
+            .on('change', '#ElKeltEdit', function(e) {
+                $('#ElPenzdatumEdit').val($('#ElKeltEdit').val());
             })
             .on('change', '#ElTermekEdit', function(e) {
                 setTermekAr(eladasform);

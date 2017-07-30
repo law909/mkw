@@ -115,7 +115,8 @@
                         </tbody>
                     </table>
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
-                        <span>Ha kapsz pénzt, add meg ezeket az adatokat is!</span>
+                        <input id="ElVanPenzmozgas" type="checkbox" name="vanpenzmozgas" checked="checked">
+                        <label for="ElVanPenzmozgas">Ha kapsz pénzt, kapcsold be a pipát és add meg ezeket az adatokat is!</label>
                         <table>
                             <tbody>
                             <tr>
@@ -180,7 +181,7 @@
                         </tr>
                         <tr>
                             <td class="mattable-important"><label for="KtgErbizonylatszamEdit" class="mattable-important" title="{at('Az eredeti számla számát írd ide')}">{at('Eredeti biz.szám')}:</label></td>
-                            <td><input id="KtgErbizonylatszamEdit" type="text" name="erbizonylatszam" required="required"></td>
+                            <td><input id="KtgErbizonylatszamEdit" type="text" name="erbizonylatszam"></td>
                         </tr>
                         <tr>
                             <td class="mattable-important"><label for="KtgKeltEdit" title="{at('Az eredeti bizonylat kelte')}">{at('Kelt')}:</label></td>
@@ -259,6 +260,10 @@
                             </td>
                         </tr>
                         <tr>
+                            <td><label for="KtgTermeknevEdit" class="mattable-important">{at('MIT vettél, szöveggel')}:</label></td>
+                            <td colspan="7"><input id="KtgTermeknevEdit" class="mattable-important" name="termeknev" type="text" size="60"></td>
+                        </tr>
+                        <tr>
                             <td><label for="KtgMennyisegEdit" class="mattable-important">{at('MENNYIT vettél')}:</label></td>
                             <td><input id="KtgMennyisegEdit" class="mattable-important" name="mennyiseg" type="number" step="any" value="1"></td>
                         </tr>
@@ -273,7 +278,8 @@
                         </tbody>
                     </table>
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
-                        <span>Ha készpénzzel fizetsz, add meg ezeket az adatokat is!</span>
+                        <input id="KtgVanPenzmozgas" type="checkbox" name="vanpenzmozgas" checked="checked">
+                        <label for="KtgVanPenzmozgas">Ha készpénzzel fizetsz, add meg ezeket az adatokat is!</label>
                         <table>
                             <tbody>
                             <tr>

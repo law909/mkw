@@ -1497,6 +1497,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                     $tetel->setTermek($termek);
                 }
 
+                $tetel->setTermeknev($this->params->getStringRequestParam('termeknev'));
+
                 $tetel->setMennyiseg($this->params->getFloatRequestParam('mennyiseg'));
                 $tetel->setBruttoegysar($this->params->getFloatRequestParam('egysegar'));
 
@@ -1520,7 +1522,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $this->getEm()->persist($obj);
         $this->getEm()->flush();
 
-        if ($fizmod && $fizmod->getTipus() === 'P') {
+        if ($fizmod && $fizmod->getTipus() === 'P' && $this->params->getBoolRequestParam('vanpenzmozgas')) {
             $pbfej = new \Entities\Penztarbizonylatfej();
             $pbfej->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
             $pbfej->setKelt($this->params->getStringRequestParam('penzdatum'));
