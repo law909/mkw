@@ -141,6 +141,10 @@ class adminController extends mkwhelpers\Controller {
                 $view->setVar('keltstr', date(\mkw\store::$DateFormat));
                 $view->setVar('penztarformaction', \mkw\store::getRouter()->generate('adminpenztarbizonylatfejsave'));
                 $view->setVar('eladasformaction', \mkw\store::getRouter()->generate('adminbizonylatfejquickadd'));
+
+                $kint = new kintlevoseglistaController($this->params);
+                $kintadat = $kint->getData(1, date(\mkw\store::$DateFormat), '1980-01-01', date(\mkw\store::$DateFormat), 'kelt');
+                $view->setVar('kintlevoseglista', $kintadat);
                 break;
             default:
                 break;

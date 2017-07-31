@@ -37,27 +37,23 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    protected function createBefdatumFilter() {
+    protected function createBefdatumFilter($befdatumfilter) {
         $filter = new FilterDescriptor();
 
-        $this->befdatumstr = $this->params->getStringRequestParam('befdatum');
-        $this->befdatumstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->befdatumstr)));
+        $this->befdatumstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($befdatumfilter)));
 
         $filter->addFilter('fa.datum', '<=', $this->befdatumstr);
         return $filter;
     }
 
-    protected function createFilter() {
+    protected function createFilter($tol, $ig, $datumtipus, $ukkod, $partnerkod, $cimkefilter) {
         $filter = new FilterDescriptor();
 
-        $this->tolstr = $this->params->getStringRequestParam('tol');
-        $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->tolstr)));
+        $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($tol)));
 
-        $this->igstr = $this->params->getStringRequestParam('ig');
-        $this->igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->igstr)));
+        $this->igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($ig)));
 
-        $mt = $this->params->getStringRequestParam('datumtipus');
-        switch ($mt) {
+        switch ($datumtipus) {
             case 'kelt':
                 $this->datummezo = 'bf.kelt';
                 $this->datumnev = 'Kelt';
@@ -75,7 +71,6 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
                 $this->datumnev = 'Teljesítés';
         }
 
-        $ukkod = $this->params->getIntRequestParam('uzletkoto');
         if ($ukkod) {
             $filter->addFilter('bf.uzletkoto_id', '=', $ukkod);
             $uk = $this->getRepo('Entities\Uzletkoto')->find($ukkod);
@@ -84,7 +79,6 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             }
         }
 
-        $partnerkod = $this->params->getIntRequestParam('partner');
         if ($partnerkod) {
             $filter->addFilter('f.partner_id', '=', $partnerkod);
             $partner = $this->getRepo('Entities\Partner')->find($partnerkod);
@@ -93,11 +87,11 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             }
         }
         else {
-            $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($this->params->getArrayRequestParam('cimkefilter'));
+            $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($cimkefilter);
             if ($partnerkodok) {
                 $filter->addFilter('f.partner_id', 'IN', $partnerkodok);
             }
-            $this->cimkenevek = $this->getRepo('Entities\Partnercimketorzs')->getCimkeNevek($this->params->getArrayRequestParam('cimkefilter'));
+            $this->cimkenevek = $this->getRepo('Entities\Partnercimketorzs')->getCimkeNevek($cimkefilter);
             $this->cimkenevek = implode(',', $this->cimkenevek);
         }
 
@@ -111,19 +105,18 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         return $filter;
     }
 
-    protected function createSecFilter() {
+    protected function createSecFilter($partnerkod, $cimkefilter) {
         $filter = new FilterDescriptor();
 
         $filter
             ->addFilter('f.rontott', '=', false)
             ->addFilter('f.datum', '<=', $this->befdatumstr);
 
-        $partnerkod = $this->params->getIntRequestParam('partner');
         if ($partnerkod) {
             $filter->addFilter('f.partner_id', '=', $partnerkod);
         }
         else {
-            $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($this->params->getArrayRequestParam('cimkefilter'));
+            $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($cimkefilter);
             if ($partnerkodok) {
                 $filter->addFilter('f.partner_id', 'IN', $partnerkodok);
             }
@@ -132,7 +125,17 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         return $filter;
     }
 
-    protected function getData() {
+    public function getData(
+        $sorrend = null,
+        $befdatum = null,
+        $tol = null,
+        $ig = null,
+        $datumtipus = null,
+        $uzletkoto = null,
+        $partner = null,
+        $cimkefilter = null,
+        $lejartfilter = null
+    ) {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('bizonylatfej_id', 'bizonylatfej_id');
         $rsm->addScalarResult('partner_id', 'partner_id');
@@ -152,7 +155,9 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         $rsm->addScalarResult('tartozas', 'tartozas');
         $rsm->addScalarResult('valutanemnev', 'valutanemnev');
 
-        $sorrend = $this->params->getIntRequestParam('sorrend', 1);
+        if (!$sorrend) {
+            $sorrend = $this->params->getIntRequestParam('sorrend', 1);
+        }
         switch ($sorrend) {
             case 1:
                 $sorrend = 'ORDER BY nev, partner_id, kelt';
@@ -165,9 +170,32 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
                 break;
         }
 
-        $beffilter = $this->createBefdatumFilter();
-        $filter = $this->createFilter();
-        $secfilter = $this->createSecFilter();
+        if (!$befdatum) {
+            $befdatum = $this->params->getStringRequestParam('befdatum');
+        }
+        $beffilter = $this->createBefdatumFilter($befdatum);
+
+        if (!$tol) {
+            $tol = $this->params->getStringRequestParam('tol');
+        }
+        if (!$ig) {
+            $ig = $this->params->getStringRequestParam('ig');
+        }
+        if (!$datumtipus) {
+            $datumtipus = $this->params->getStringRequestParam('datumtipus');
+        }
+        if (!$uzletkoto) {
+            $uzletkoto = $this->params->getIntRequestParam('uzletkoto');
+        }
+        if (!$partner) {
+            $partner = $this->params->getIntRequestParam('partner');
+        }
+        if (!$cimkefilter) {
+            $cimkefilter = $this->params->getArrayRequestParam('cimkefilter');
+        }
+        $filter = $this->createFilter($tol, $ig, $datumtipus, $uzletkoto, $partner, $cimkefilter);
+
+        $secfilter = $this->createSecFilter($partner, $cimkefilter);
 
         $q = $this->getEm()->createNativeQuery(
             '(SELECT f.bizonylatfej_id, bf.partner_id, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
@@ -206,7 +234,9 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             $secfilter->getQueryParameters('sec')
         ));
 
-        $lejartfilter = $this->params->getIntRequestParam('lejartfilter');
+        if (!$lejartfilter) {
+            $lejartfilter = $this->params->getIntRequestParam('lejartfilter');
+        }
 
         $d = $q->getScalarResult();
         $ret = array();
@@ -235,6 +265,9 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
                     if (!$sor['lejart']) {
                         $ret[] = $sor;
                     }
+                    break;
+                default:
+                    $ret[] = $sor;
                     break;
             }
         }
