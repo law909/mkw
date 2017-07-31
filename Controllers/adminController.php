@@ -144,7 +144,17 @@ class adminController extends mkwhelpers\Controller {
 
                 $kint = new kintlevoseglistaController($this->params);
                 $kintadat = $kint->getData(1, date(\mkw\store::$DateFormat), '1980-01-01', date(\mkw\store::$DateFormat), 'kelt');
-                $view->setVar('kintlevoseglista', $kintadat);
+                $kintadatnew = array();
+                foreach($kintadat as $key => $ka) {
+                    $bizfej = $this->getRepo('Entities\Bizonylatfej')->find($ka['bizonylatfej_id']);
+                    if ($bizfej) {
+                        $ka['printurl'] = \mkw\store::getRouter()->generate('admin' . $bizfej->getBizonylattipusId() . 'fejprint', false, array(), array(
+                            'id' => $bizfej->getId()
+                        ));
+                    }
+                    $kintadatnew[$key] = $ka;
+                }
+                $view->setVar('kintlevoseglista', $kintadatnew);
                 break;
             default:
                 break;

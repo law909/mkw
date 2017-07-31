@@ -40,7 +40,7 @@
                                 {while (($cikl < $cnt) && ($partnerid == $kintlevoseglista[$cikl].partner_id))}
                                     {$elem = $kintlevoseglista[$cikl]}
                                     <tr>
-                                        <td class="cell">{$elem.bizonylatfej_id}</td>
+                                        <td class="cell"><a href="{$elem.printurl}" target="_blank">{$elem.bizonylatfej_id}</a></td>
                                         <td class="cell">{$elem.kelt}</td>
                                         <td class="cell">{$elem.teljesites}</td>
                                         <td class="cell">{$elem.hivatkozottdatum}</td>
