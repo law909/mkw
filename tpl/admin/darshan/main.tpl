@@ -10,7 +10,7 @@
         {if (haveJog(15))}
             <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
                 <div class="ui-widget-header ui-corner-top">
-                    <div class="mainboxinner ui-corner-top">Kintlevőségek</div>
+                    <div class="mainboxinner ui-corner-top">Ezek az emberek tartoznak nekünk</div>
                 </div>
                 <div class="mainboxinner">
                     <div class="mainboxinner">
