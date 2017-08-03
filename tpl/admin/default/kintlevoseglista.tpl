@@ -50,6 +50,8 @@
                     <div class="matt-hseparator"></div>
                     {include "comp_uzletkotoselect.tpl"}
                     <div class="matt-hseparator"></div>
+                    {include "comp_fizmodselect.tpl"}
+                    <div class="matt-hseparator"></div>
                     <div>
                         <label for="SorrendEdit">{at('Sorrend')}:</label>
                         <select id="SorrendEdit" name="sorrend">

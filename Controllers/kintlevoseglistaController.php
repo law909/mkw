@@ -16,6 +16,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
     private $uknev;
     private $partnernev;
     private $cimkenevek;
+    private $fizmodnev;
 
     public function view() {
         $view = $this->createView('kintlevoseglista.tpl');
@@ -46,7 +47,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         return $filter;
     }
 
-    protected function createFilter($tol, $ig, $datumtipus, $ukkod, $partnerkod, $cimkefilter) {
+    protected function createFilter($tol, $ig, $datumtipus, $ukkod, $partnerkod, $cimkefilter, $fizmod) {
         $filter = new FilterDescriptor();
 
         $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($tol)));
@@ -95,6 +96,14 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             $this->cimkenevek = implode(',', $this->cimkenevek);
         }
 
+        if ($fizmod) {
+            $filter->addFilter('bf.fizmod_id', '=', $fizmod);
+            $fm = $this->getRepo('Entities\Fizmod')->find($fizmod);
+            if ($fm) {
+                $this->fizmodnev = $fm->getNev();
+            }
+        }
+
         $filter
             ->addFilter('f.irany', '>', 0)
             ->addFilter($this->datummezo, '>=', $this->tolstr)
@@ -134,7 +143,8 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         $uzletkoto = null,
         $partner = null,
         $cimkefilter = null,
-        $lejartfilter = null
+        $lejartfilter = null,
+        $fizmod = null
     ) {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('bizonylatfej_id', 'bizonylatfej_id');
@@ -193,7 +203,10 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         if (!$cimkefilter) {
             $cimkefilter = $this->params->getArrayRequestParam('cimkefilter');
         }
-        $filter = $this->createFilter($tol, $ig, $datumtipus, $uzletkoto, $partner, $cimkefilter);
+        if (!$fizmod) {
+            $fizmod = $this->params->getIntRequestParam('fizmod');
+        }
+        $filter = $this->createFilter($tol, $ig, $datumtipus, $uzletkoto, $partner, $cimkefilter, $fizmod);
 
         $secfilter = $this->createSecFilter($partner, $cimkefilter);
 
