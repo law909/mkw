@@ -43,4 +43,9 @@ class partnermijszoklevelController extends \mkwhelpers\MattableController {
         echo $view->getTemplateResult();
     }
 
+    public function getmainemptyrow() {
+        $view = $this->createMainView('okleveledit.tpl');
+        $view->setVar('mijszoklevel', $this->loadVars(null, true));
+        echo $view->getTemplateResult();
+    }
 }

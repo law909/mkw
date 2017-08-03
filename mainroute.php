@@ -22,9 +22,17 @@ if (\mkw\store::isB2B()) {
     $router->map('POST', '/changepartner', 'b2bpartnerController#changePartner', 'changepartner');
 }
 else {
-    $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');
-    $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
-    $router->map('POST', '/regisztracio/ment', 'partnerController#saveRegistration', 'saveregistration');
+    if (\mkw\store::isMIJSZ()) {
+        $router->map('POST', '/fiok/ment/[adataim||szamlaadatok|oklevelek|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');
+        $router->map('GET', '/partnermijszoklevel/getemptyrow', 'partnermijszoklevelController#getmainemptyrow', 'partnermijszoklevelgetmainemptyrow');
+        $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
+        $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'saveregistration');
+    }
+    else {
+        $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');
+        $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
+        $router->map('POST', '/regisztracio/ment', 'partnerController#saveRegistration', 'saveregistration');
+    }
 }
 
 $router->map('GET', '', 'mainController#view', 'home');

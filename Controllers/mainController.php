@@ -73,6 +73,10 @@ class mainController extends \mkwhelpers\Controller {
                 $this->view->setVar('kiemeltmarkalista', $tcc->getKiemeltList());
                 $this->view->setVar('akciostermekek', $tc->getAkciosLista(\mkw\store::getParameter(\mkw\consts::Fooldalakciostermekdb, 6)));
                 break;
+
+            case \mkw\store::isMIJSZ():
+
+                break;
         }
 		$this->view->printTemplateResult(true);
 	}

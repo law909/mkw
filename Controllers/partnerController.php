@@ -250,7 +250,41 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setTelefon($this->params->getStringRequestParam('telefon'));
             $obj->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));
             $obj->setUjdonsaghirlevelkell($this->params->getBoolRequestParam('ujdonsaghirlevelkell'));
+            if (\mkw\store::isMIJSZ()) {
+                $obj->setMijszmiotajogazik($this->params->getIntRequestParam('mijszmiotajogazik'));
+                $obj->setMijszmiotatanit($this->params->getIntRequestParam('mijszmiotatanit'));
+                $obj->setMijszmembershipbesideshu($this->params->getStringRequestParam('mijszmembershipbesideshu'));
+                $obj->setMijszbusiness($this->params->getStringRequestParam('mijszbusiness'));
+            }
+        }
 
+        if (\mkw\store::isMIJSZ() && ($subject === 'oklevelek' || $subject === 'minden')) {
+            $okids = $this->params->getArrayRequestParam('mijszoklevelid');
+            foreach ($okids as $okid) {
+                $oper = $this->params->getStringRequestParam('mijszokleveloper_' . $okid);
+                $kibo = $this->getEm()->getRepository('Entities\MIJSZOklevelkibocsajto')->find($this->params->getIntRequestParam('mijszokleveloklevelkibocsajto_' . $okid));
+                $szint = $this->getEm()->getRepository('Entities\MIJSZOklevelszint')->find($this->params->getIntRequestParam('mijszokleveloklevelszint_' . $okid));
+                if ($kibo && $szint) {
+                    if ($oper === 'add') {
+                        $kedv = new \Entities\PartnerMIJSZOklevel();
+                        $kedv->setPartner($obj);
+                        $kedv->setMIJSZOklevelkibocsajto($kibo);
+                        $kedv->setMIJSZOklevelszint($szint);
+                        $kedv->setOklevelev($this->params->getIntRequestParam('mijszokleveloklevelev_' . $okid));
+                        $this->getEm()->persist($kedv);
+                    }
+                    elseif ($oper === 'edit') {
+                        $kedv = $this->getEm()->getRepository('Entities\PartnerMIJSZOklevel')->find($okid);
+                        if ($kedv) {
+                            $kedv->setPartner($obj);
+                            $kedv->setMIJSZOklevelkibocsajto($kibo);
+                            $kedv->setMIJSZOklevelszint($szint);
+                            $kedv->setOklevelev($this->params->getIntRequestParam('mijszokleveloklevelev_' . $okid));
+                            $this->getEm()->persist($kedv);
+                        }
+                    }
+                }
+            }
         }
 
         if ($subject === 'bankiadatok' || $subject === 'minden') {
@@ -890,7 +924,6 @@ class partnerController extends \mkwhelpers\MattableController {
             $ptcsk = new partnertermekcsoportkedvezmenyController($this->params);
             $ptcsklist = $ptcsk->getFiokList();
             $view->setVar('discountlist', $ptcsklist);
-
             $view->printTemplateResult(true);
         }
         else {
