@@ -24,6 +24,7 @@ if (\mkw\store::isB2B()) {
 else {
     if (\mkw\store::isMIJSZ()) {
         $router->map('POST', '/fiok/ment/[adataim||szamlaadatok|oklevelek|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');
+        $router->map('POST', '/partnermijszoklevel/save', 'partnermijszoklevelController#save', 'partnermijszoklevelsave');
         $router->map('GET', '/partnermijszoklevel/getemptyrow', 'partnermijszoklevelController#getmainemptyrow', 'partnermijszoklevelgetmainemptyrow');
         $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
         $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'saveregistration');

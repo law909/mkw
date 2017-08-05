@@ -86,44 +86,33 @@ var fiok = (function($) {
                     url: '/partnermijszoklevel/getemptyrow',
                     type: 'GET',
                     success: function(data) {
-                        var tbody = $('#MIJSZOklevelTab');
-                        tbody.append(data);
-                        $('.js-mijszoklevelnewbutton,.js-mijszokleveldelbutton').button();
-                        $this.remove();
+                        var tbody = $('#FiokOklevelek fieldset div.form-actions');
+                        tbody.before(data);
                     }
                 });
             })
             .on('click', '.js-mijszokleveldelbutton', function(e) {
                 e.preventDefault();
-                var argomb = $(this),
-                    arid = argomb.attr('data-id');
-                if (argomb.attr('data-source') === 'client') {
-                    $('#mijszokleveltable_' + arid).remove();
+                var gomb = $(this),
+                    id = gomb.attr('data-id');
+                if (gomb.attr('data-source') === 'client') {
+                    gomb.parent().remove();
                 }
                 else {
-                    dialogcenter.html('Biztos, hogy törli az oklevelet?').dialog({
-                        resizable: false,
-                        height: 140,
-                        modal: true,
-                        buttons: {
-                            'Igen': function() {
+                    mkw.showDialog('Biztos, hogy törli az oklevelet?',{
+                            'onOk': function() {
                                 $.ajax({
-                                    url: '/admin/partnermijszoklevel/save',
+                                    url: '/partnermijszoklevel/save',
                                     type: 'POST',
                                     data: {
-                                        id: arid,
+                                        id: id,
                                         oper: 'del'
                                     },
                                     success: function(data) {
-                                        $('#mijszokleveltable_' + data).remove();
+                                        gomb.parent().remove();
                                     }
                                 });
-                                $(this).dialog('close');
-                            },
-                            'Nem': function() {
-                                $(this).dialog('close');
                             }
-                        }
                     });
                 }
             });

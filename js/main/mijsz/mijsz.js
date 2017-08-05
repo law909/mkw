@@ -607,8 +607,6 @@ $(document).ready(function() {
     mkw.initTooltips();
     mkw.showhideFilterClear();
 
-    cart.initUI();
-    checkout.initUI();
     fiok.initUI();
 
 });
