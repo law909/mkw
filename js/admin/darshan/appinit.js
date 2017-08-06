@@ -42,6 +42,44 @@ $(document).ready(
             eladasform = $('#EladasForm'),
             koltsegform = $('#KoltsegForm');
 
+        function checkKelt(kelt, biztipus, bizszam) {
+            var retval = false;
+            $.ajax({
+                async: false,
+                url: '/admin/bizonylatfej/checkkelt',
+                data: {
+                    kelt: kelt,
+                    biztipus: biztipus,
+                    bizszam: bizszam
+                },
+                success: function(data) {
+                    var d = JSON.parse(data);
+                    if (d.response == 'ok') {
+                        retval = true;
+                    }
+                }
+            });
+            return retval;
+        }
+
+        function checkBizonylatFej(biztipus, bizszam) {
+            var ret = checkKelt($('#ElKeltEdit').val(), biztipus, bizszam);
+            if (!ret) {
+                dialogcenter.html('Már van későbbi keltű bizonylat.').dialog({
+                    resizable: false,
+                    height: 140,
+                    modal: true,
+                    buttons: {
+                        'OK': function() {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            }
+            return ret;
+        }
+
+
         function setPartnerData(d, form) {
             $('input[name="partnervezeteknev"]', form).val(d.vezeteknev);
             $('input[name="partnerkeresztnev"]', form).val(d.keresztnev);
@@ -77,63 +115,6 @@ $(document).ready(
             $('.js-ertek', form).text(menny * ear);
             $('input[name="penz"]', form).val(menny * ear);
         }
-
-
-
-        $('.menupont').button();
-		var menu=$('#menu');
-		$('#kozep').css('left',menu.outerWidth()+menu.offset().left*2+'px');
-		var menubar=$('.menu-titlebar');
-		menubar.addClass('mattedit-titlebar ui-widget-header ui-helper-clearfix ui-corner-all');
-		menubar.each(function() {
-			$this=$(this);
-			var ref=$($this.attr('data-refcontrol'));
-			if (ref.attr('data-visible')=='hidden') {
-				$this.append('<a href="#" class="mattedit-titlebar-close">'+
-					'<span class="ui-icon ui-icon-circle-triangle-s"></span></a>'+
-					'<span class="ui-jqgrid-title">'+$this.attr('data-caption')+'</span>');
-				ref.hide();
-			}
-			else {
-				$this.append('<a href="#" class="mattedit-titlebar-close">'+
-					'<span class="ui-icon ui-icon-circle-triangle-n"></span></a>'+
-					'<span class="ui-jqgrid-title">'+$this.attr('data-caption')+'</span>');
-			}
-		});
-		menubar.on('click',function(e) {
-			e.preventDefault();
-			var ref=$($(this).attr('data-refcontrol'));
-			if (ref.attr('data-visible')=='hidden') {
-				ref.attr('data-visible','visible');
-				ref.slideDown(50);
-				$('> a > span',this).removeClass('ui-icon-circle-triangle-s').addClass('ui-icon-circle-triangle-n');
-			}
-			else {
-				ref.attr('data-visible','hidden');
-				ref.slideUp(50);
-				$('> a > span',this).removeClass('ui-icon-circle-triangle-n').addClass('ui-icon-circle-triangle-s');
-			}
-		});
-		$(document)
-				.ajaxStart(pleaseWait)
-				.ajaxStop($.unblockUI)
-				.ajaxError(function(e, xhr, settings, exception) {
-					alert('error in: ' + settings.url + ' \n'+'error:\n' + exception);
-				});
-		$('#ThemeSelect').change(function(e) {
-			$.ajax({url:'/admin/setuitheme',
-				data:{uitheme:this.options[this.selectedIndex].value},
-				success:function(data) {
-					window.location.reload();
-				}
-			});
-		});
-		$('.js-regeneratekarkod').on('click', function(e) {
-            e.preventDefault();
-			$.ajax({
-                url:'/admin/regeneratekarkod'
-			});
-		});
 
         mkwcomp.datumEdit.init('#KiKeltEdit');
         mkwcomp.datumEdit.init('#BeKeltEdit');
@@ -240,6 +221,7 @@ $(document).ready(
                     $('#KtgJogcimEdit').removeAttr('required');
                     $('#KtgOsszegEdit').removeAttr('required');
                 }
+                $('#KtgVanPenzmozgas').prop('checked', tip === 'P');
             })
             .on('change', '#KtgVanPenzmozgas', function(e) {
                 var tip = $('#KtgFizmodEdit option:selected').data('tipus');
@@ -301,6 +283,12 @@ $(document).ready(
         eladasform.ajaxForm({
             type: 'POST',
             beforeSerialize: function(form, opt) {
+                if ($('#ElSzamlaEdit:checked').val() === 'szamla') {
+                    if (!checkBizonylatFej($('#ElSzamlaEdit:checked').val())) {
+                        return false;
+                    }
+                }
+
                 $.blockUI({
                     message: 'Kérem várjon...',
                     css: {
@@ -368,6 +356,7 @@ $(document).ready(
                 else {
                     $('tr.szepkartya').addClass('hidden');
                 }
+                $('#ElVanPenzmozgas').prop('checked', tip === 'P');
             })
             .on('change', '#ElVanPenzmozgas', function(e) {
                 var tip = $('#ElFizmodEdit option:selected').data('tipus');
