@@ -57,12 +57,14 @@
             padding: 10px 0;
             margin-right: 1%;
             width: 40%;
+            text-align: center;
         }
         .dtttanar {
             float: left;
             padding: 10px 0;
             margin-right: 1%;
             width: 36%;
+            text-align: center;
         }
         .dttnagyterem, .dttkisterem {
             text-align: center;
