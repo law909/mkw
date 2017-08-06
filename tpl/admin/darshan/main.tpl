@@ -18,6 +18,7 @@
                             <thead>
                             <tr>
                                 <th>Bizonylatszám</th>
+                                <th>Fiz.mód</th>
                                 <th>Kelt</th>
                                 <th>Teljesítés</th>
                                 <th>Esedékesség</th>
@@ -41,6 +42,7 @@
                                     {$elem = $kintlevoseglista[$cikl]}
                                     <tr>
                                         <td class="cell"><a href="{$elem.printurl}" target="_blank">{$elem.bizonylatfej_id}</a></td>
+                                        <td class="cell">{$elem.fizmodnev}</td>
                                         <td class="cell">{$elem.kelt}</td>
                                         <td class="cell">{$elem.teljesites}</td>
                                         <td class="cell">{$elem.hivatkozottdatum}</td>

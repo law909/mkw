@@ -143,7 +143,7 @@ class adminController extends mkwhelpers\Controller {
                 $view->setVar('eladasformaction', \mkw\store::getRouter()->generate('adminbizonylatfejquickadd'));
 
                 $kint = new kintlevoseglistaController($this->params);
-                $kintadat = $kint->getData(1, date(\mkw\store::$DateFormat), '1980-01-01', date(\mkw\store::$DateFormat), 'kelt', 3);
+                $kintadat = $kint->getData(1, date(\mkw\store::$DateFormat), '1980-01-01', date(\mkw\store::$DateFormat), 'kelt');
                 $kintadatnew = array();
                 foreach($kintadat as $key => $ka) {
                     $bizfej = $this->getRepo('Entities\Bizonylatfej')->find($ka['bizonylatfej_id']);

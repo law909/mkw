@@ -96,7 +96,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             $this->cimkenevek = implode(',', $this->cimkenevek);
         }
 
-        if ($fizmod) {
+        if (false && $fizmod) {
             $filter->addFilter('bf.fizmod_id', '=', $fizmod);
             $fm = $this->getRepo('Entities\Fizmod')->find($fizmod);
             if ($fm) {
@@ -164,6 +164,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         $rsm->addScalarResult('brutto', 'brutto');
         $rsm->addScalarResult('tartozas', 'tartozas');
         $rsm->addScalarResult('valutanemnev', 'valutanemnev');
+        $rsm->addScalarResult('fizmodnev', 'fizmodnev');
 
         if (!$sorrend) {
             $sorrend = $this->params->getIntRequestParam('sorrend', 1);
@@ -211,7 +212,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         $secfilter = $this->createSecFilter($partner, $cimkefilter);
 
         $q = $this->getEm()->createNativeQuery(
-            '(SELECT f.bizonylatfej_id, bf.partner_id, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
+            '(SELECT f.bizonylatfej_id, bf.partner_id, bf.fizmodnev, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
             . ' p.varos, p.utca, bf.kelt, bf.teljesites, bf.esedekesseg, f.datum, f.hivatkozottdatum, SUM(f.brutto * f.irany) AS brutto,'
             . ' IFNULL('
             . '  (SELECT SUM(fa.brutto * fa.irany)'
@@ -228,12 +229,13 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             . ' GROUP BY f.partner_id , hivatkozottbizonylat, f.hivatkozottdatum, bf.kelt, bf.teljesites'
             . ' HAVING (tartozas <> 0))'
             . ' UNION'
-            . ' (SELECT f.bankbizonylatfej_id AS bizonylat, f.partner_id, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
+            . ' (SELECT f.bankbizonylatfej_id AS bizonylat, f.partner_id, fm.nev AS fizmodnev, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
             . ' p.varos, p.utca, f.datum AS kelt, f.datum AS teljesites, f.datum AS esedekesseg, f.datum, f.hivatkozottdatum, 0 AS brutto,'
             . ' SUM(f.brutto * f.irany) AS tartozas, v.nev AS valutanemnev '
             . ' FROM folyoszamla f'
             . ' LEFT OUTER JOIN partner p ON (f.partner_id = p.id)'
             . ' LEFT OUTER JOIN valutanem v ON (f.valutanem_id = v.id)'
+            . ' LEFT OUTER JOIN fizmod fm ON (f.fizmod_id = fm.id)'
             . $secfilter->getFilterString('', 'sec')
             . ' AND (f.hivatkozottbizonylat IS NULL) AND (f.irany < 0)'
             . ' GROUP BY f.partner_id, f.datum'
@@ -362,11 +364,12 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         $rsm->addScalarResult('brutto', 'brutto');
         $rsm->addScalarResult('tartozas', 'tartozas');
         $rsm->addScalarResult('valutanemnev', 'valutanemnev');
+        $rsm->addScalarResult('fizmodnev', 'fizmodnev');
 
         $filter = $this->createFakeFilter();
 
         $q = $this->getEm()->createNativeQuery(
-            'SELECT bf.id, bf.partner_id, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
+            'SELECT bf.id, bf.partner_id, bf.fizmodnev, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
             . ' p.varos, p.utca, bf.kelt, bf.teljesites, bf.esedekesseg, bf.esedekesseg AS datum, bf.esedekesseg AS hivatkozottdatum, bf.brutto,'
             . ' bf.brutto AS tartozas, bf.valutanemnev'
             . ' FROM bizonylatfej bf'
