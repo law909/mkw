@@ -6,6 +6,8 @@
     <style>
         body {
             font-family: 'Arial',Helvetica,Arial,Lucida,sans-serif;
+            font-size: 14px;
+            font-weight: 500;
         }
         .dtt {
             text-align: left;
