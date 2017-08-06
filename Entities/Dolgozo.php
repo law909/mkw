@@ -37,6 +37,9 @@ class Dolgozo {
     /** @ORM\Column(type="string",length=100,nullable=true) */
     private $email;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $url;
+
     /**
      * @ORM\ManyToOne(targetEntity="Munkakor",inversedBy="dolgozok")
      * @ORM\JoinColumn(name="munkakor_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -261,6 +264,20 @@ class Dolgozo {
      */
     public function setUitheme($uitheme) {
         $this->uitheme = $uitheme;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrl() {
+        return $this->url;
+    }
+
+    /**
+     * @param mixed $url
+     */
+    public function setUrl($url) {
+        $this->url = $url;
     }
 
 }

@@ -271,4 +271,18 @@ class Orarend {
         return $this->id;
     }
 
+    public function getDolgozoUrl() {
+        if ($this->dolgozo) {
+            return $this->dolgozo->getUrl();
+        }
+        return '';
+    }
+
+    public function getJogateremUrl() {
+        if ($this->jogaterem) {
+            return $this->jogaterem->getUrl();
+        }
+        return '';
+    }
+
 }

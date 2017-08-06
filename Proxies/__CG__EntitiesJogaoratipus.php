@@ -64,10 +64,10 @@ class Jogaoratipus extends \Entities\Jogaoratipus implements \Doctrine\ORM\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'id', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'leiras', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'szin', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'arnovelo', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'inaktiv'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'id', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'leiras', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'szin', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'arnovelo', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'url'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'id', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'leiras', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'szin', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'arnovelo', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'inaktiv'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'id', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'leiras', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'szin', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'arnovelo', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Jogaoratipus' . "\0" . 'url'];
     }
 
     /**
@@ -296,6 +296,28 @@ class Jogaoratipus extends \Entities\Jogaoratipus implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setArnovelo', [$arnovelo]);
 
         return parent::setArnovelo($arnovelo);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUrl()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrl', []);
+
+        return parent::getUrl();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setUrl($url)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUrl', [$url]);
+
+        return parent::setUrl($url);
     }
 
 }

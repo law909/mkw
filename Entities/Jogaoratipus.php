@@ -23,6 +23,8 @@ class Jogaoratipus {
 	private $arnovelo;
     /** @ORM\Column(type="boolean", nullable=false) */
     private $inaktiv = false;
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $url;
 
 	public function getId() {
 	    return $this->id;
@@ -92,5 +94,18 @@ class Jogaoratipus {
         $this->arnovelo = $arnovelo;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getUrl() {
+        return $this->url;
+    }
+
+    /**
+     * @param mixed $url
+     */
+    public function setUrl($url) {
+        $this->url = $url;
+    }
 
 }
