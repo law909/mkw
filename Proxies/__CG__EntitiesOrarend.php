@@ -242,6 +242,17 @@ class Orarend extends \Entities\Orarend implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getJogateremOrarendclass()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogateremOrarendclass', []);
+
+        return parent::getJogateremOrarendclass();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getJogateremId()
     {
 

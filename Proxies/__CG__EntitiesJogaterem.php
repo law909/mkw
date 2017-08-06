@@ -64,10 +64,10 @@ class Jogaterem extends \Entities\Jogaterem implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'id', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'nev', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'maxferohely', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'inaktiv'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'id', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'nev', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'maxferohely', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'orarendclass'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'id', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'nev', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'maxferohely', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'inaktiv'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'id', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'nev', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'maxferohely', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Jogaterem' . "\0" . 'orarendclass'];
     }
 
     /**
@@ -252,6 +252,28 @@ class Jogaterem extends \Entities\Jogaterem implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setInaktiv', [$inaktiv]);
 
         return parent::setInaktiv($inaktiv);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrarendclass()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrarendclass', []);
+
+        return parent::getOrarendclass();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOrarendclass($orarendclass)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrarendclass', [$orarendclass]);
+
+        return parent::setOrarendclass($orarendclass);
     }
 
 }

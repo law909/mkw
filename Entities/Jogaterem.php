@@ -19,6 +19,9 @@ class Jogaterem {
 	private $maxferohely = 0;
     /** @ORM\Column(type="boolean", nullable=false) */
     private $inaktiv = false;
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $orarendclass;
+
 
 	public function getId() {
 	    return $this->id;
@@ -60,5 +63,18 @@ class Jogaterem {
         $this->inaktiv = $inaktiv;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getOrarendclass() {
+        return $this->orarendclass;
+    }
+
+    /**
+     * @param mixed $orarendclass
+     */
+    public function setOrarendclass($orarendclass) {
+        $this->orarendclass = $orarendclass;
+    }
 
 }

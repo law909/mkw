@@ -36,6 +36,10 @@ else {
     }
 }
 
+if (\mkw\store::isDarshan()) {
+    $router->map('GET', '/orarend/wp', 'orarendController#exportToWordpress', 'orarendexporttowordpress');
+}
+
 $router->map('GET', '', 'mainController#view', 'home');
 $router->map('GET', '/404', 'mainController#show404', 'show404');
 $router->map('GET', '/login', 'partnerController#showLoginForm', 'showlogin');

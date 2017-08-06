@@ -196,4 +196,26 @@ class orarendController extends \mkwhelpers\MattableController {
         }
     }
 
+    public function exportToWordpress() {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('inaktiv', '=', false);
+	    $rec = $this->getRepo()->getWithJoins($filter, array('nap' => 'ASC', 'kezdet' => 'ASC', 'nev' => 'ASC'));
+	    $orarend = array();
+	    /** @var \Entities\Orarend $item */
+        foreach ($rec as $item) {
+            $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
+            $orarend[$item->getNap()]['orak'][] = array(
+                'kezdet' => $item->getKezdetStr(),
+                'veg' => $item->getVegStr(),
+                'oranev' => $item->getNev(),
+                'tanar' => $item->getDolgozoNev(),
+                'terem' => $item->getJogateremNev(),
+                'class' => $item->getJogateremOrarendclass()
+            );
+	    }
+        $view = $this->createView('orarendwordpress.tpl');
+        $view->setVar('orarend', $orarend);
+        $view->printTemplateResult();
+    }
+
 }

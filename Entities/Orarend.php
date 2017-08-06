@@ -106,6 +106,13 @@ class Orarend {
         return '';
     }
 
+    public function getJogateremOrarendclass() {
+        if ($this->jogaterem) {
+            return $this->jogaterem->getOrarendclass();
+        }
+        return '';
+    }
+
     public function getJogateremId() {
         if ($this->jogaterem) {
             return $this->jogaterem->getId();

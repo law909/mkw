@@ -16,7 +16,7 @@ class jogateremController extends \mkwhelpers\JQGridController {
      * @return array
      */
     protected function loadCells($sor) {
-        return array($sor->getNev(), $sor->getMaxferohely(), $sor->getInaktiv());
+        return array($sor->getNev(), $sor->getMaxferohely(), $sor->getInaktiv(), $sor->getOrarendclass());
     }
 
     /**
@@ -27,6 +27,7 @@ class jogateremController extends \mkwhelpers\JQGridController {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setMaxferohely($this->params->getFloatRequestParam('maxferohely', $obj->getMaxferohely()));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv', $obj->getInaktiv()));
+        $obj->setOrarendclass($this->params->getStringRequestParam('orarendclass', $obj->getOrarendclass()));
         return $obj;
     }
 
