@@ -608,6 +608,10 @@ $(document).ready(
                 e.preventDefault();
                 clearBepenztarform();
             });
-
+        dialogcenter.on('click', 'tr', function(e) {
+            e.preventDefault();
+            $('tr', dialogcenter).removeClass('ui-state-highlight js-selected');
+            $(this).addClass('ui-state-highlight js-selected');
+        })
 	}
 );
