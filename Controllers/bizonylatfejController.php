@@ -1522,7 +1522,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $this->getEm()->persist($obj);
         $this->getEm()->flush();
 
-        if ($fizmod && $fizmod->getTipus() === 'P' && $this->params->getBoolRequestParam('vanpenzmozgas')) {
+        if ($fizmod && $fizmod->getTipus() === 'P' && $this->params->getBoolRequestParam('vanpenzmozgas') && $this->params->getFloatRequestParam('penz')) {
             $pbfej = new \Entities\Penztarbizonylatfej();
             $pbfej->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
             $pbfej->setKelt($this->params->getStringRequestParam('penzdatum'));
