@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
 
     <style>
+        body {
+            font-family: 'Arial',Helvetica,Arial,Lucida,sans-serif;
+        }
         .dtt {
             text-align: left;
         }
