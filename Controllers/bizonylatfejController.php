@@ -1495,7 +1495,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                     $tetel->setTermek($termek);
                 }
 
-                $tetel->setTermeknev($this->params->getStringRequestParam('termeknev'));
+                if ($this->params->getStringRequestParam('termeknev')) {
+                    $tetel->setTermeknev($this->params->getStringRequestParam('termeknev'));
+                }
 
                 $tetel->setMennyiseg($this->params->getFloatRequestParam('mennyiseg'));
                 $tetel->setBruttoegysar($this->params->getFloatRequestParam('egysegar'));
