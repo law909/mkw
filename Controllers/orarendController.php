@@ -208,7 +208,7 @@ class orarendController extends \mkwhelpers\MattableController {
                 'kezdet' => $item->getKezdetStr(),
                 'veg' => $item->getVegStr(),
                 'oranev' => $item->getNev(),
-                'oraurl' => $item->getJogateremUrl(),
+                'oraurl' => $item->getJogaoratipusUrl(),
                 'tanar' => $item->getDolgozoNev(),
                 'tanarurl' => $item->getDolgozoUrl(),
                 'terem' => $item->getJogateremNev(),
