@@ -32,6 +32,10 @@
 				<td><label for="EmailEdit">{at('Email')}:</label></td>
 				<td><input id="EmailEdit" name="email" type="email" size="40" maxlength="100" value="{$egyed.email}" required></td>
 			</tr>
+            <tr>
+                <td><label for="UrlEdit">{at('URL')}:</label></td>
+                <td><input id="UrlEdit" name="url" type="text" size="40" maxlength="255" value="{$egyed.url}"></td>
+            </tr>
             {if (($egyed.id == $loggedinuser.id) || $loggedinuser.admin)}
             <tr>
 				<td><label for="Pass1Edit">{at('Jelszó 1')}:</label></td>

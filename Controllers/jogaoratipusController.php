@@ -16,7 +16,7 @@ class jogaoratipusController extends \mkwhelpers\JQGridController {
      * @return array
      */
     protected function loadCells($sor) {
-        return array($sor->getNev(), $sor->getLeiras(), $sor->getArnovelo(), $sor->getSzin(), $sor->getInaktiv());
+        return array($sor->getNev(), $sor->getArnovelo(), $sor->getSzin(), $sor->getInaktiv(), $sor->getUrl());
     }
 
     /**
@@ -25,10 +25,10 @@ class jogaoratipusController extends \mkwhelpers\JQGridController {
      */
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
-        $obj->setLeiras($this->params->getStringRequestParam('leiras', $obj->getLeiras()));
         $obj->setArnovelo($this->params->getNumRequestParam('arnovelo', $obj->getArnovelo()));
         $obj->setSzin($this->params->getStringRequestParam('szin', $obj->getSzin()));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv', $obj->getInaktiv()));
+        $obj->setUrl($this->params->getStringRequestParam('url', $obj->getUrl()));
         return $obj;
     }
 

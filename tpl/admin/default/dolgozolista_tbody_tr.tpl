@@ -22,6 +22,7 @@
                 <tr><td>{$_egyed.irszam} {$_egyed.varos}, {$_egyed.utca}</td></tr>
                 <tr><td>{$_egyed.telefon}</td></tr>
                 {if ($_egyed.email!=='')}<tr><td><a href="mailto:{$_egyed.email}" title="{at('Levélküldés')}">{$_egyed.email}</a></td></tr>{/if}
+                {if ($_egyed.url!=='')}<tr><td>{$_egyed.url}</td></tr>{/if}
             </tbody>
         </table>
     </td>
