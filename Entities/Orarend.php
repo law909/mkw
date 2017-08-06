@@ -278,9 +278,9 @@ class Orarend {
         return '';
     }
 
-    public function getJogateremUrl() {
-        if ($this->jogaterem) {
-            return $this->jogaterem->getUrl();
+    public function getJogaoratipusUrl() {
+        if ($this->jogaoratipus) {
+            return $this->jogaoratipus->getUrl();
         }
         return '';
     }

@@ -496,4 +496,26 @@ class Orarend extends \Entities\Orarend implements \Doctrine\ORM\Proxy\Proxy
         return parent::getId();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getDolgozoUrl()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDolgozoUrl', []);
+
+        return parent::getDolgozoUrl();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getJogaoratipusUrl()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogaoratipusUrl', []);
+
+        return parent::getJogaoratipusUrl();
+    }
+
 }
