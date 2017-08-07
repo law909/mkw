@@ -32,7 +32,7 @@
             border-radius: 3px;
             padding: 10px 0;
             margin-bottom: 2px;
-            color: white;
+            color: #669999;
             font-weight: bold;
             font-variant: small-caps;
             font-size: 20px;
@@ -64,21 +64,15 @@
             float: left;
             padding: 10px 0;
             margin-right: 1%;
-            width: 40%;
+            width: 45%;
             text-align: center;
         }
         .dtttanar {
             float: left;
             padding: 10px 0;
             margin-right: 1%;
-            width: 36%;
+            width: 40%;
             text-align: center;
-        }
-        .dttnagyterem, .dttkisterem {
-            text-align: center;
-            float: left;
-            padding: 10px 0;
-            width: 9%;
         }
         /* Responsive Styles Smartphone Portrait */
         @media all and (max-width: 479px) {
@@ -88,16 +82,12 @@
                 width: 14%;
             }
             .dttoranev {
-                width: 36%;
+                width: 46%;
                 font-size: 12px;
                 font-weight: bold;
             }
             .dtttanar {
-                width: 26%;
-                font-size: 12px;
-            }
-            .dttnagyterem, .dttkisterem {
-                width: 19%;
+                width: 35%;
                 font-size: 12px;
             }
             .dttrow {
@@ -112,16 +102,12 @@
                 width: 14%;
             }
             .dttoranev {
-                width: 36%;
+                width: 46%;
                 font-size: 12px;
                 font-weight: bold;
             }
             .dtttanar {
-                width: 26%;
-                font-size: 12px;
-            }
-            .dttnagyterem, .dttkisterem {
-                width: 19%;
+                width: 35%;
                 font-size: 12px;
             }
             .dttrow {
