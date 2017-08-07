@@ -87,7 +87,7 @@
                 font-weight: bold;
             }
             .dtttanar {
-                width: 35%;
+                width: 30%;
                 font-size: 12px;
             }
             .dttrow {
@@ -107,7 +107,7 @@
                 font-weight: bold;
             }
             .dtttanar {
-                width: 35%;
+                width: 30%;
                 font-size: 12px;
             }
             .dttrow {
