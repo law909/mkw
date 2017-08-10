@@ -477,7 +477,7 @@ $router->map('POST', '/admin/import/repair/[:impname]', 'importController#repair
 $router->map('GET', '/admin/import/view', 'importController#view', 'adminimportview');
 $router->map('POST','/admin/import/kreativ', 'importController#kreativpuzzleImport', 'adminkreativpuzzleimport');
 $router->map('POST','/admin/import/delton', 'importController#deltonImport', 'admindeltonimport');
-//$router->map('POST','/admin/import/nomad', 'importController#nomadImport', 'adminnomadimport');
+$router->map('POST','/admin/import/nomad', 'importController#nomadImport', 'adminnomadimport');
 $router->map('POST','/admin/import/reintex', 'importController#reintexImport', 'adminreinteximport');
 $router->map('POST','/admin/import/legavenue', 'importController#legavenueImport', 'adminlegavenueimport');
 $router->map('POST','/admin/import/legavenueszotar', 'importController#legavenueSzotar', 'adminlegavenueSzotar');

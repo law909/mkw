@@ -385,6 +385,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('gyartokresslist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::GyartoLegavenue);
         $view->setVar('gyartolegavenuelist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::GyartoNomad);
+        $view->setVar('gyartonomadlist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::PathBtech);
         $view->setVar(\mkw\consts::PathBtech, ($p ? $p->getErtek() : ''));
@@ -404,6 +406,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::PathKress, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::PathLegavenue);
         $view->setVar(\mkw\consts::PathLegavenue, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::PathNomad);
+        $view->setVar(\mkw\consts::PathNomad, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::MiniCRMHasznalatban);
         $view->setVar(\mkw\consts::MiniCRMHasznalatban, ($p ? $p->getErtek() : ''));
@@ -434,6 +438,7 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('stopkressgepimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'kressgep')));
         $view->setVar('stopkresstartozekimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'kresstartozek')));
         $view->setVar('stoplegavenueimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'legavenue')));
+        $view->setVar('stopnomadimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'nomad')));
 
         $view->setVar('repairkreativimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'kreativ')));
         $view->setVar('repairdeltonimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'delton')));
@@ -444,6 +449,7 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('repairbtechimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'btech')));
         $view->setVar('repairkressimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'kress')));
         $view->setVar('repairlegavenueimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'legavenue')));
+        $view->setVar('repairnomadimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'nomad')));
         $view->printTemplateResult();
     }
 
@@ -874,6 +880,14 @@ class setupController extends \mkwhelpers\Controller {
         else {
             $this->setObj(\mkw\consts::GyartoLegavenue, '');
         }
+        $x = $this->params->getIntRequestParam('gyartonomad', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoNomad, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GyartoNomad, '');
+        }
 
         $this->setObj(\mkw\consts::PathBtech, $this->params->getStringRequestParam('pathbtech', ''));
         $this->setObj(\mkw\consts::PathDelton, $this->params->getStringRequestParam('pathdelton', ''));
@@ -884,6 +898,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::PathTutisport, $this->params->getStringRequestParam('pathtutisport', ''));
         $this->setObj(\mkw\consts::PathKress, $this->params->getStringRequestParam('pathkress', ''));
         $this->setObj(\mkw\consts::PathLegavenue, $this->params->getStringRequestParam('pathlegavenue', ''));
+        $this->setObj(\mkw\consts::PathNomad, $this->params->getStringRequestParam('pathnomad', ''));
 
         $this->setObj(\mkw\consts::MugenraceLogo, $this->params->getStringRequestParam('mugenracelogo'));
         $this->setObj(\mkw\consts::MugenraceFooldalKep, $this->params->getStringRequestParam('mugenracefooldalkep'));

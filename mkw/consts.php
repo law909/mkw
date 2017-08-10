@@ -154,6 +154,7 @@ class consts {
     const GyartoBtech = 'gyartobtech';
     const GyartoKress = 'gyartokress';
     const GyartoLegavenue = 'gyartolegavenue';
+    const GyartoNomad = 'gyartonomad';
 
     const PathKreativ = 'pathkreativ';
     const PathDelton = 'pathdelton';
@@ -164,6 +165,7 @@ class consts {
     const PathBtech = 'pathbtech';
     const PathKress = 'pathkress';
     const PathLegavenue = 'pathlegavenue';
+    const PathNomad = 'pathnomad';
 
     const RunningKreativImport = 'runningkreativimport';
     const RunningDeltonImport = 'runningdeltonimport';
@@ -175,6 +177,7 @@ class consts {
     const RunningKressgepImport = 'runningkressgepimport';
     const RunningKresstartozekImport = 'runningkresstartozekimport';
     const RunningLegavenueImport = 'runninglegavenueimport';
+    const RunningNomadImport = 'runningnomadimport';
 
     const MiniCRMHasznalatban = 'minicrmhasznalatban';
     const MiniCRMSystemId = 'minicrmsystemid';

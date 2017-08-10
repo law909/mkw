@@ -792,9 +792,9 @@ class importController extends \mkwhelpers\Controller {
     }
 
     public function nomadImport() {
-        if (!$this->checkRunningImport()) {
+        if (!$this->checkRunningImport(\mkw\consts::RunningNomadImport)) {
 
-            $this->setRunningImport(0, 1);
+            $this->setRunningImport(\mkw\consts::RunningNomadImport, 1);
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = $this->params->getIntRequestParam('gyarto', 0);
@@ -831,116 +831,58 @@ class importController extends \mkwhelpers\Controller {
 
                 $products = $xml->products;
 
-                $termekdb = 0;
-                while (($termekdb < $dbtol)) {
-                    $termekdb++;
-                }
+                $termekdb = $dbtol;
+                $szulok = array();
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
                     $data = $products[$termekdb];
-                    $termekdb++;
-                    if ($data[6]) {
-                        $katnev = $this->toutf(trim($data[6]));
+                    if ($data->parent) {
+                        $szulok[$data->parent] = $data->parent;
                     }
-                    elseif ($data[5]) {
-                        $katnev = $this->toutf(trim($data[5]));
-                    }
-                    elseif ($data[4]) {
-                        $katnev = $this->toutf(trim($data[4]));
-                    }
-                    $parent = $this->createKategoria($katnev, $parentid);
                 }
-
-                $termekdb = 0;
-                while (($termekdb < $dbtol)) {
-                    $termekdb++;
-                }
+                $termekdb = $dbtol;
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
                     $data = $products[$termekdb];
-                    $termekdb++;
-                    if ($data->sku) {
-                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data->catalog_first, 'idegencikkszam' => $data->sku));
-                        if (!$termek) {
-
-                            if ($createuj) {
-
-                                if ($data[6]) {
-                                    $katnev = $this->toutf(trim($data[6]));
-                                }
-                                elseif ($data[5]) {
-                                    $katnev = $this->toutf(trim($data[5]));
-                                }
-                                elseif ($data[4]) {
-                                    $katnev = $this->toutf(trim($data[4]));
-                                }
-                                $urlkatnev = \mkw\store::urlize($katnev);
-                                \mkw\store::createDirectoryRecursively($path . $urlkatnev);
-                                $parent = $this->createKategoria($katnev, $parentid);
-                                $termeknev = $this->toutf(trim($data[0]));
-
-                                $hosszuleiras = $this->toutf(trim($data[3]));
-                                $rovidleiras = $this->toutf(trim($data[2]));
-
-                                $termek = new \Entities\Termek();
-                                $termek->setFuggoben(true);
-                                $termek->setMe($this->toutf(trim($data[9])));
-                                $termek->setNev($termeknev);
-                                $termek->setLeiras($hosszuleiras);
-                                $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
-                                $termek->setCikkszam($data[1]);
-                                $termek->setIdegencikkszam($data[1]);
-                                $termek->setTermekfa1($parent);
-                                $termek->setVtsz($vtsz[0]);
-                                $termek->setHparany(3);
-                                if ($gyarto) {
-                                    $termek->setGyarto($gyarto);
-                                }
-                                // kepek
-
-                                $imgurl = trim($data[14]);
-                                if (!strpos($imgurl, 'http://')) {
-                                    $imgurl = 'http://' . $imgurl;
-                                }
-                                $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegenkod);
-                                $kepnev = \mkw\store::urlize($termeknev . '_' . $idegenkod);
-
-                                $extension = \mkw\store::getExtension($imgurl);
-                                $imgpath = $nameWithoutExt . '.' . $extension;
-
-                                $ch = \curl_init($imgurl);
-                                $ih = fopen($imgpath, 'w');
-                                \curl_setopt($ch, CURLOPT_FILE, $ih);
-                                \curl_exec($ch);
-                                fclose($ih);
-
-                                foreach ($this->settings['sizes'] as $k => $size) {
-                                    $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
-                                    $matches = explode('x', $size);
-                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
-                                }
-                                $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
-                                $termek->setKepleiras($termeknev);
-                            }
-                        }
-                        else {
-                            $termek = $termek[0];
-                            if ($editleiras) {
-                                $hosszuleiras = $this->toutf(trim($data[3]));
-                                $termek->setLeiras($hosszuleiras);
-                                //$rovidleiras = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
-                                //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
-                            }
-                        }
-                        //$termek->setNemkaphato(($data[6] * 1) == 0);
-                        if ($termek || $createuj) {
-                            if (!$termek->getAkcios()) {
-                                $termek->setNetto($data[7] * 1 * $arszaz / 100);
-                                $termek->setBrutto(round($termek->getBrutto(), -1));
-                            }
-                            \mkw\store::getEm()->persist($termek);
-                            \mkw\store::getEm()->flush();
-                        }
+                    if ($data->category) {
+                        $parent = $this->createKategoria($data->category, $parentid);
                     }
                 }
+                $termekdb = $dbtol;
+                while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
+                    $data = $products[$termekdb];
+
+                    if ($data->parent || $data->child) {
+                        \mkw\store::writelog($data->sku . '->' . $data->parent . '->' . $data->child, 'nomad.log');
+                    }
+/**
+                    $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $data->sku, 'gyarto' => $gyartoid));
+                    if (!$termek) {
+                        if ($createuj) {
+                            $parent = $this->createKategoria($data->category, $parentid);
+                            $termek = new \Entities\Termek();
+                            $termek->setFuggoben(true);
+                            $termek->setMe('db');
+                            $termek->setNev($data->name);
+                            if ($data->catalog_first) {
+                                $termek->setCikkszam($data->catalog_first);
+                            }
+                            elseif ($data->catalog_second) {
+                                $termek->setCikkszam($data->catalog_second);
+                            }
+                            if ($gyarto) {
+                                $termek->setGyarto($gyarto);
+                            }
+                            $hosszuleiras = trim($data->long_description);
+                            $rovidleiras = trim($data->short_description);
+                            $termek->setLeiras($hosszuleiras);
+                            $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
+                            $termek->setTermekfa1($parent);
+                            $termek->setVtsz($vtsz[0]);
+                        }
+                    }
+ */
+                    $termekdb++;
+                }
+
             }
             fclose($fh);
             \unlink('nomad.xml');
