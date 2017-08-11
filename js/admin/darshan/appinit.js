@@ -16,27 +16,10 @@ function pleaseWait(msg) {
 	});
 }
 
-function messagecenterclick(e){
-	e.preventDefault();
-	$(this)
-		.slideToggle('slow',function(){
-			$(this).removeClass('matt-messagecenter ui-widget ui-state-highlight');
-		});
-}
-
-function messagecenterclickonerror(e){
-	e.preventDefault();
-	$(this)
-		.slideToggle('slow',function(){
-			$(this).removeClass('matt-messagecenter ui-widget ui-state-error');
-		});
-}
-
 $(document).ready(
 	function(){
 
-		var msgcenter = $('#messagecenter').hide(),
-            dialogcenter = $('#dialogcenter'),
+		var dialogcenter = $('#dialogcenter'),
             kipenztarform = $('#KipenztarForm'),
             bepenztarform = $('#BepenztarForm'),
             eladasform = $('#EladasForm'),
@@ -222,6 +205,7 @@ $(document).ready(
             $('#KtgErtek').text('');
             $('#KtgOsszegEdit').val('');
             $('#KtgVanPenzmozgas').attr('checked', 'checked');
+            $('#KtgSzamlaEdit[value="koltsegszamla"]').prop('checked', true);
         }
 
         koltsegform.ajaxForm({
@@ -243,12 +227,17 @@ $(document).ready(
             },
             success: function(data) {
                 clearKoltsegform();
-                msgcenter
-                    .html('A mentés sikerült.')
-                    .hide()
-                    .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                    .one('click', messagecenterclick)
-                    .slideToggle('slow');
+                dialogcenter.html('A mentés sikerült.');
+                dialogcenter.dialog({
+                    resizable: true,
+                    height: 340,
+                    modal: true,
+                    buttons: {
+                        'OK': function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
             }
         });
 
@@ -348,12 +337,33 @@ $(document).ready(
             $('#ElVanPenzmozgas').attr('checked', 'checked');
             $('#ElBankszamlaRow').hide();
             $('#ElPenztarRow').show();
+            $('#ElSzamlaEdit[value="egyeb"]').prop('checked', true);
+            $('#ElTeljesitesRow').hide();
+            $('#ElEsedekessegRow').hide();
+            $('#ElTeljesitesEdit').removeAttr('required');
+            $('#ElEsedekessegEdit').removeAttr('required');
             mkwcomp.datumEdit.clear('#SZEPKartyaErvenyessegEdit');
         }
 
         eladasform.ajaxForm({
             type: 'POST',
             beforeSerialize: function(form, opt) {
+                var fm = $('#ElFizmodEdit option:selected'),
+                    tip = fm.data('tipus');
+                if (tip === 'B' && !fm.data('szepkartya') && !fm.data('aycm') && !fm.data('sportkartya') && $('#ElSzamlaEdit:checked').val() !== 'szamla') {
+                    dialogcenter.html('Átutalás esetén kötelező számlát kiállítani!');
+                    dialogcenter.dialog({
+                        resizable: true,
+                        height: 340,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                    return false;
+                }
                 if ($('#ElSzamlaEdit:checked').val() === 'szamla') {
                     if (!checkBizonylatFej($('#ElSzamlaEdit:checked').val())) {
                         return false;
@@ -376,12 +386,17 @@ $(document).ready(
             },
             success: function(data) {
                 clearEladasform();
-                msgcenter
-                    .html('A mentés sikerült.')
-                    .hide()
-                    .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                    .one('click', messagecenterclick)
-                    .slideToggle('slow');
+                dialogcenter.html('A mentés sikerült.');
+                dialogcenter.dialog({
+                    resizable: true,
+                    height: 340,
+                    modal: true,
+                    buttons: {
+                        'OK': function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
             }
         });
 
@@ -490,12 +505,17 @@ $(document).ready(
             },
             success: function(data) {
                 clearKipenztarform();
-                msgcenter
-                    .html('A mentés sikerült.')
-                    .hide()
-                    .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                    .one('click', messagecenterclick)
-                    .slideToggle('slow');
+                dialogcenter.html('A mentés sikerült.');
+                dialogcenter.dialog({
+                    resizable: true,
+                    height: 340,
+                    modal: true,
+                    buttons: {
+                        'OK': function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
             }
         });
 
@@ -596,12 +616,17 @@ $(document).ready(
             },
             success: function(data) {
                 clearBepenztarform();
-                msgcenter
-                    .html('A mentés sikerült.')
-                    .hide()
-                    .addClass('matt-messagecenter ui-widget ui-state-highlight')
-                    .one('click', messagecenterclick)
-                    .slideToggle('slow');
+                dialogcenter.html('A mentés sikerült.');
+                dialogcenter.dialog({
+                    resizable: true,
+                    height: 340,
+                    modal: true,
+                    buttons: {
+                        'OK': function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
             }
         });
         bepenztarform
