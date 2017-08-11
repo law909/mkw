@@ -3,6 +3,10 @@
 {block "inhead"}
     <script type="text/javascript" src="/js/admin/default/jquery.form.js"></script>
     <script type="text/javascript" src="/js/admin/darshan/appinit.js"></script>
+    <script type="text/javascript" src="/js/admin/darshan/eladas.js"></script>
+    <script type="text/javascript" src="/js/admin/darshan/koltseg.js"></script>
+    <script type="text/javascript" src="/js/admin/darshan/bepenztar.js"></script>
+    <script type="text/javascript" src="/js/admin/darshan/kipenztar.js"></script>
 {/block}
 
 {block "kozep"}
