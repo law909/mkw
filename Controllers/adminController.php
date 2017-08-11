@@ -129,6 +129,8 @@ class adminController extends mkwhelpers\Controller {
                 $view->setVar('valutanemlist', $valutanem->getSelectList());
                 $penztar = new penztarController($this->params);
                 $view->setVar('penztarlist', $penztar->getSelectList());
+                $bankszamla = new bankszamlaController($this->params);
+                $view->setVar('bankszamlalist', $bankszamla->getSelectList());
                 $jogcim = new jogcimController($this->params);
                 $view->setVar('jogcimlist', $jogcim->getSelectList());
                 $fizmod = new fizmodController($this->params);

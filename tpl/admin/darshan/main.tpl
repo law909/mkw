@@ -81,8 +81,16 @@
                             <td><input id="ElSzamlaEdit" name="biztipus" type="radio" class="mattable-important" value="egyeb" required="required" checked="checked">Egyéb mozgás</td>
                         </tr>
                         <tr>
-                            <td class="mattable-important"><label for="ElKeltEdit">{at('Mikor')}:</label></td>
+                            <td class="mattable-important"><label for="ElKeltEdit">{at('Kelt')}:</label></td>
                             <td><input id="ElKeltEdit" name="kelt" type="text" size="12" data-datum="{$keltstr}" class="mattable-important" required="required"></td>
+                        </tr>
+                        <tr id="ElTeljesitesRow" class="hidden">
+                            <td class="mattable-important"><label for="ElTeljesitesEdit">{at('Teljesítés')}:</label></td>
+                            <td><input id="ElTeljesitesEdit" name="teljesites" type="text" size="12" data-datum="{$keltstr}" class="mattable-important"></td>
+                        </tr>
+                        <tr id="ElEsedekessegRow" class="hidden">
+                            <td class="mattable-important"><label for="ElEsedekessegEdit">{at('Esedékesség')}:</label></td>
+                            <td><input id="ElEsedekessegEdit" name="esedekesseg" type="text" size="12" data-datum="{$keltstr}" class="mattable-important"></td>
                         </tr>
                         <tr>
                             <td class="mattable-important"><label for="ElPartnerEdit">{at('Kinek')}:</label></td>
@@ -177,19 +185,30 @@
                     </table>
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <input id="ElVanPenzmozgas" type="checkbox" name="vanpenzmozgas" checked="checked">
-                        <label for="ElVanPenzmozgas">Ha kapsz pénzt, kapcsold be a pipát és add meg ezeket az adatokat is!</label>
+                        <label for="ElVanPenzmozgas">Ha kapsz pénzt VAGY beérkezett átutalást rögzítesz, kapcsold be a pipát és add meg ezeket az adatokat is!</label>
                         <table>
                             <tbody>
                             <tr>
                                 <td class="mattable-important"><label for="ElPenzdatumEdit">{at('Mikor kapod')}:</label></td>
                                 <td><input id="ElPenzdatumEdit" name="penzdatum" type="text" size="12" data-datum="{$keltstr}" class="mattable-important" required="required"></td>
                             </tr>
-                            <tr>
+                            <tr id="ElPenztarRow">
                                 <td><label for="ElPenztarEdit" class="mattable-important">{at('Hova teszed a pénzt')}:</label></td>
                                 <td>
                                     <select id="ElPenztarEdit" name="penztar" class="mattable-important">
                                         <option value="">{at('válassz')}</option>
                                         {foreach $penztarlist as $_mk}
+                                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-valutanem="{$_mk.valutanem}">{$_mk.caption}</option>
+                                        {/foreach}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr id="ElBankszamlaRow" class="hidden">
+                                <td><label for="ElBankszamlaEdit" class="mattable-important">{at('Hova érkezett pénz')}:</label></td>
+                                <td>
+                                    <select id="ElBankszamlaEdit" name="bankszamla" class="mattable-important">
+                                        <option value="">{at('válassz')}</option>
+                                        {foreach $bankszamlalist as $_mk}
                                             <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-valutanem="{$_mk.valutanem}">{$_mk.caption}</option>
                                         {/foreach}
                                     </select>

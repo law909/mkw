@@ -1522,48 +1522,91 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $this->getEm()->persist($obj);
         $this->getEm()->flush();
 
-        if ($fizmod && $fizmod->getTipus() === 'P' && $this->params->getBoolRequestParam('vanpenzmozgas') && $this->params->getFloatRequestParam('penz')) {
-            $pbfej = new \Entities\Penztarbizonylatfej();
-            $pbfej->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
-            $pbfej->setKelt($this->params->getStringRequestParam('penzdatum'));
-            $pbfej->setArfolyam(1);
-            $pbfej->setPartner($partnerobj);
-            $pbfej->setValutanem($obj->getValutanem());
+        if ($this->params->getBoolRequestParam('vanpenzmozgas') && $this->params->getFloatRequestParam('penz')) {
+            if ($fizmod) {
+                if ($fizmod->getTipus() === 'P') {
+                    $pbfej = new \Entities\Penztarbizonylatfej();
+                    $pbfej->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
+                    $pbfej->setKelt($this->params->getStringRequestParam('penzdatum'));
+                    $pbfej->setArfolyam(1);
+                    $pbfej->setPartner($partnerobj);
+                    $pbfej->setValutanem($obj->getValutanem());
 
-            $ck = \mkw\store::getEm()->getRepository('Entities\Penztar')->find($this->params->getIntRequestParam('penztar'));
-            if ($ck) {
-                $pbfej->setPenztar($ck);
-            }
-
-            $bt = $this->getRepo('Entities\Bizonylattipus')->find('penztar');
-            $pbfej->setBizonylattipus($bt);
-            $pbfej->setIrany($penzirany);
-
-            if (($this->params->getIntRequestParam('teteljogcim') > 0)) {
-                $jogcim = $this->getEm()->getRepository('Entities\Jogcim')->find($this->params->getIntRequestParam('teteljogcim'));
-                if ($jogcim) {
-                    $pbtetel = new \Entities\Penztarbizonylattetel();
-                    $pbfej->addBizonylattetel($pbtetel);
-
-                    $pbtetel->setJogcim($jogcim);
-                    $pbtetel->setHivatkozottbizonylat($obj->getId());
-                    $pbtetel->setHivatkozottdatum($obj->getKelt());
-                    if ($tetel) {
-                        $pbtetel->setSzoveg($tetel->getTermeknev() . ' ' . at('eladás'));
+                    $ck = \mkw\store::getEm()->getRepository('Entities\Penztar')->find($this->params->getIntRequestParam('penztar'));
+                    if ($ck) {
+                        $pbfej->setPenztar($ck);
                     }
 
-                    $pbtetel->setBrutto($this->params->getFloatRequestParam('penz'));
+                    $bt = $this->getRepo('Entities\Bizonylattipus')->find('penztar');
+                    $pbfej->setBizonylattipus($bt);
+                    $pbfej->setIrany($penzirany);
 
-                    $this->getEm()->persist($pbtetel);
+                    if (($this->params->getIntRequestParam('teteljogcim') > 0)) {
+                        $jogcim = $this->getEm()->getRepository('Entities\Jogcim')->find($this->params->getIntRequestParam('teteljogcim'));
+                        if ($jogcim) {
+                            $pbtetel = new \Entities\Penztarbizonylattetel();
+                            $pbfej->addBizonylattetel($pbtetel);
+
+                            $pbtetel->setJogcim($jogcim);
+                            $pbtetel->setHivatkozottbizonylat($obj->getId());
+                            $pbtetel->setHivatkozottdatum($obj->getKelt());
+                            if ($tetel) {
+                                $pbtetel->setSzoveg($tetel->getTermeknev() . ' ' . at('eladás'));
+                            }
+
+                            $pbtetel->setBrutto($this->params->getFloatRequestParam('penz'));
+
+                            $this->getEm()->persist($pbtetel);
+                        }
+                        else {
+                            \mkw\store::writelog(print_r($this->params->asArray(), true), 'nincsjogcim.log');
+                        }
+                    }
+                    $this->getEm()->persist($pbfej);
+                    $this->getEm()->flush();
                 }
-                else {
-                    \mkw\store::writelog(print_r($this->params->asArray(), true), 'nincsjogcim.log');
+                elseif ($fizmod->getTipus() === 'B' && !\mkw\store::isAYCMFizmod($fizmod) && !\mkw\store::isSportkartyaFizmod($fizmod) &&
+                    !\mkw\store::isSZEPFizmod($fizmod)) {
+                    $bbfej = new \Entities\Bankbizonylatfej();
+                    $bbfej->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
+                    $bbfej->setKelt($this->params->getStringRequestParam('penzdatum'));
+                    $bbfej->setValutanem($obj->getValutanem());
+
+                    $ck = \mkw\store::getEm()->getRepository('Entities\Bankszamla')->find($this->params->getIntRequestParam('bankszamla'));
+                    if ($ck) {
+                        $bbfej->setBankszamla($ck);
+                    }
+
+                    $bt = $this->getRepo('Entities\Bizonylattipus')->find('bank');
+                    $bbfej->setBizonylattipus($bt);
+
+                    if (($this->params->getIntRequestParam('teteljogcim') > 0)) {
+                        $jogcim = $this->getEm()->getRepository('Entities\Jogcim')->find($this->params->getIntRequestParam('teteljogcim'));
+                        if ($jogcim) {
+                            $bbtetel = new \Entities\Bankbizonylattetel();
+                            $bbfej->addBizonylattetel($bbtetel);
+
+                            $bbtetel->setDatum($this->params->getStringRequestParam('penzdatum'));
+                            $bbtetel->setPartner($partnerobj);
+                            $bbtetel->setJogcim($jogcim);
+                            $bbtetel->setIrany($penzirany);
+                            $bbtetel->setHivatkozottbizonylat($obj->getId());
+                            $bbtetel->setHivatkozottdatum($obj->getTeljesites());
+
+                            $bbtetel->setBrutto($this->params->getFloatRequestParam('penz'));
+
+                            $this->getEm()->persist($bbtetel);
+                        }
+                        else {
+                            \mkw\store::writelog(print_r($this->params->asArray(), true), 'nincsjogcim.log');
+                        }
+                    }
+                    $this->getEm()->persist($bbfej);
+                    $this->getEm()->flush();
+
                 }
             }
-            $this->getEm()->persist($pbfej);
-            $this->getEm()->flush();
         }
-
         echo $obj->getId();
     }
 

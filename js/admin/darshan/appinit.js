@@ -79,6 +79,70 @@ $(document).ready(
             return ret;
         }
 
+        function setElDates() {
+            var keltedit = $('#ElKeltEdit'),
+                esededit = $('#ElEsedekessegEdit'),
+                kelt = keltedit.datepicker('getDate'),
+                partner;
+            if ($('#ElSzamlaEdit:checked').val() === 'szamla') {
+                partner = $('#ElPartnerEdit option:selected').val();
+                $.ajax({
+                    url: '/admin/bizonylatfej/calcesedekesseg',
+                    data: {
+                        kelt: kelt.getFullYear() + '.' + (kelt.getMonth() + 1) + '.' + kelt.getDate(),
+                        fizmod: $('#ElFizmodEdit option:selected').val(),
+                        partner: partner
+                    },
+                    success: function (data) {
+                        var d = JSON.parse(data);
+                        esededit.datepicker('setDate', d.esedekesseg);
+                    }
+                });
+            }
+        }
+
+        function setElControls() {
+            var fm = $('#ElFizmodEdit option:selected'),
+                tip = fm.data('tipus'),
+                penztaredit = $('#ElPenztarEdit'),
+                penztarrow = $('#ElPenztarRow'),
+                bankszamlaedit = $('#ElBankszamlaEdit'),
+                bankszamlarow = $('#ElBankszamlaRow');
+            if (tip === 'P' || !fm.val()) {
+                penztarrow.show();
+                bankszamlarow.hide();
+                bankszamlaedit.removeAttr('required');
+                if ($('#ElVanPenzmozgas').prop('checked')) {
+                    penztaredit.prop('required', true);
+                    $('#ElPenzdatumEdit').prop('required', true);
+                    $('#ElJogcimEdit').prop('required', true);
+                    $('#ElOsszegEdit').prop('required', true);
+                }
+                else {
+                    penztaredit.removeAttr('required');
+                    $('#ElPenzdatumEdit').removeAttr('required');
+                    $('#ElJogcimEdit').removeAttr('required');
+                    $('#ElOsszegEdit').removeAttr('required');
+                }
+            }
+            if (tip === 'B' && !fm.data('szepkartya') && !fm.data('aycm') && !fm.data('sportkartya')) {
+                bankszamlarow.show();
+                penztarrow.hide();
+                penztaredit.removeAttr('required');
+                if ($('#ElVanPenzmozgas').prop('checked')) {
+                    bankszamlaedit.prop('required', true);
+                    $('#ElPenzdatumEdit').prop('required', true);
+                    $('#ElJogcimEdit').prop('required', true);
+                    $('#ElOsszegEdit').prop('required', true);
+                }
+                else {
+                    bankszamlaedit.removeAttr('required');
+                    $('#ElPenzdatumEdit').removeAttr('required');
+                    $('#ElJogcimEdit').removeAttr('required');
+                    $('#ElOsszegEdit').removeAttr('required');
+                }
+            }
+        }
 
         function setPartnerData(d, form) {
             $('input[name="partnervezeteknev"]', form).val(d.vezeteknev);
@@ -119,6 +183,8 @@ $(document).ready(
         mkwcomp.datumEdit.init('#KiKeltEdit');
         mkwcomp.datumEdit.init('#BeKeltEdit');
         mkwcomp.datumEdit.init('#ElKeltEdit');
+        mkwcomp.datumEdit.init('#ElTeljesitesEdit');
+        mkwcomp.datumEdit.init('#ElEsedekessegEdit');
         mkwcomp.datumEdit.init('#ElPenzdatumEdit');
         mkwcomp.datumEdit.init('#KtgKeltEdit');
         mkwcomp.datumEdit.init('#KtgTeljesitesEdit');
@@ -255,6 +321,8 @@ $(document).ready(
 
         function clearEladasform() {
             mkwcomp.datumEdit.clear('#ElKeltEdit');
+            mkwcomp.datumEdit.clear('#ElTeljesitesEdit');
+            mkwcomp.datumEdit.clear('#ElEsedekessegEdit');
             mkwcomp.datumEdit.clear('#ElPenzdatumEdit');
             $('#ElPartnerEdit')[0].selectedIndex = 0;
             $('#ElPartnervezeteknevEdit').val('');
@@ -269,6 +337,7 @@ $(document).ready(
             $('#ElTermekEdit')[0].selectedIndex = 0;
             $('#ElFizmodEdit')[0].selectedIndex = 0;
             $('#ElPenztarEdit')[0].selectedIndex = 0;
+            $('#ElBankszamlaEdit')[0].selectedIndex = 0;
             $('#ElMegjegyzesEdit').val('');
             $('#ElJogcimEdit')[0].selectedIndex = 0;
             $('#ElErtek').text('');
@@ -277,6 +346,8 @@ $(document).ready(
             $('#SZEPKartyaNevEdit').val('');
             $('#SZEPKartyaSzamEdit').val('');
             $('#ElVanPenzmozgas').attr('checked', 'checked');
+            $('#ElBankszamlaRow').hide();
+            $('#ElPenztarRow').show();
             mkwcomp.datumEdit.clear('#SZEPKartyaErvenyessegEdit');
         }
 
@@ -315,6 +386,20 @@ $(document).ready(
         });
 
         eladasform
+            .on('change', '#ElSzamlaEdit', function(e) {
+                if ($('#ElSzamlaEdit:checked').val() === 'szamla') {
+                    $('#ElTeljesitesRow').show();
+                    $('#ElEsedekessegRow').show();
+                    $('#ElTeljesitesEdit').prop('required', true);
+                    $('#ElEsedekessegEdit').prop('required', true);
+                }
+                else {
+                    $('#ElTeljesitesRow').hide();
+                    $('#ElEsedekessegRow').hide();
+                    $('#ElTeljesitesEdit').removeAttr('required');
+                    $('#ElEsedekessegEdit').removeAttr('required');
+                }
+            })
             .on('change', '#ElPenztarEdit', function(e) {
                 var v = $('#ElPenztarEdit option:selected').data('valutanem');
                 $('input[name="valutanem"]', eladasform).val(v);
@@ -331,25 +416,16 @@ $(document).ready(
                         success: function(data) {
                             var d = JSON.parse(data);
                             setPartnerData(d, eladasform);
+                            setElDates();
                         }
                     });
                 }
             })
             .on('change', '#ElFizmodEdit', function(e) {
-                var tip = $('#ElFizmodEdit option:selected').data('tipus'),
-                    szep = $('#ElFizmodEdit option:selected').data('szepkartya');
-                if (tip === 'P' && $('#ElVanPenzmozgas').prop('checked')) {
-                    $('#ElPenztarEdit').prop('required', true);
-                    $('#ElPenzdatumEdit').prop('required', true);
-                    $('#ElJogcimEdit').prop('required', true);
-                    $('#ElOsszegEdit').prop('required', true);
-                }
-                else {
-                    $('#ElPenztarEdit').removeAttr('required');
-                    $('#ElPenzdatumEdit').removeAttr('required');
-                    $('#ElJogcimEdit').removeAttr('required');
-                    $('#ElOsszegEdit').removeAttr('required');
-                }
+                var fm = $('#ElFizmodEdit option:selected'),
+                    szep = fm.data('szepkartya'),
+                    tip = fm.data('tipus');
+                setElControls();
                 if (szep == 1) {
                     $('tr.szepkartya').removeClass('hidden');
                 }
@@ -357,21 +433,10 @@ $(document).ready(
                     $('tr.szepkartya').addClass('hidden');
                 }
                 $('#ElVanPenzmozgas').prop('checked', tip === 'P');
+                setElDates();
             })
             .on('change', '#ElVanPenzmozgas', function(e) {
-                var tip = $('#ElFizmodEdit option:selected').data('tipus');
-                if (tip === 'P' && $('#ElVanPenzmozgas').prop('checked')) {
-                    $('#ElPenztarEdit').prop('required', true);
-                    $('#ElPenzdatumEdit').prop('required', true);
-                    $('#ElJogcimEdit').prop('required', true);
-                    $('#ElOsszegEdit').prop('required', true);
-                }
-                else {
-                    $('#ElPenztarEdit').removeAttr('required');
-                    $('#ElPenzdatumEdit').removeAttr('required');
-                    $('#ElJogcimEdit').removeAttr('required');
-                    $('#ElOsszegEdit').removeAttr('required');
-                }
+                setElControls();
             })
             .on('change', '#ElKeltEdit', function(e) {
                 $('#ElPenzdatumEdit').val($('#ElKeltEdit').val());

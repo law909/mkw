@@ -900,6 +900,30 @@ class store {
         return $i == self::getParameter(\mkw\consts::UtanvetFizmod);
     }
 
+    public static function isAYCMFizmod($fm) {
+        $i = $fm;
+        if (is_a($fm, 'Entities\Fizmod')) {
+            $i = $fm->getId();
+        }
+        return $i == self::getParameter(\mkw\consts::AYCMFizmod);
+    }
+
+    public static function isSZEPFizmod($fm) {
+        $i = $fm;
+        if (is_a($fm, 'Entities\Fizmod')) {
+            $i = $fm->getId();
+        }
+        return $i == self::getParameter(\mkw\consts::SZEPFizmod);
+    }
+
+    public static function isSportkartyaFizmod($fm) {
+        $i = $fm;
+        if (is_a($fm, 'Entities\Fizmod')) {
+            $i = $fm->getId();
+        }
+        return $i == self::getParameter(\mkw\consts::SportkartyaFizmod);
+    }
+
     public static function isSuperzoneB2B() {
         return self::getTheme() === 'superzoneb2b';
     }
