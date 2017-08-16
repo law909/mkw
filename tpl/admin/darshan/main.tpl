@@ -618,4 +618,18 @@
             </div>
         </div>
     </div>
+    <div class="clearboth">
+        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+            <div class="ui-widget-header ui-corner-top">
+                <div class="mainboxinner ui-corner-top">Címletező</div>
+            </div>
+            <div class="mainboxinner">
+                <label for="CimletezoEdit">Írd ide a címletezni kívánt összegeket vesszővel elválasztva:</label>
+                <input id="CimletezoEdit" type="text" name="osszegek">
+                <a id="CimletezoButton" href="#"><span>Címletez</span></a>
+                <table id="CimletezoEredmeny">
+                </table>
+            </div>
+        </div>
+    </div>
 {/block}

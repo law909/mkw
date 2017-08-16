@@ -574,6 +574,7 @@ if (\mkw\store::isDarshan()) {
     $router->map('POST', '/admin/rendezvenyjelentkezes/visszautal', 'rendezvenyjelentkezesController#visszautal', 'adminrendezvenyjelentkezesvisszautal');
     $router->map('GET', '/admin/rendezvenyjelentkezes/getar', 'rendezvenyjelentkezesController#getar', 'adminrendezvenyjelentkezesgetar');
     $router->map('GET', '/admin/rendezvenyjelentkezes/getfizetettosszeg', 'rendezvenyjelentkezesController#getfizetettosszeg', 'adminrendezvenyjelentkezesgetfizetettosszeg');
+    $router->map('GET', '/admin/cimletez', 'adminController#cimletez', 'admincimletez');
 }
 
 if (\mkw\store::isSuperzoneB2B()) {

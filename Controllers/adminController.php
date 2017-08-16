@@ -328,4 +328,10 @@ class adminController extends mkwhelpers\Controller {
         }
         echo 'kész';
     }
+
+    public function cimletez() {
+        $view = $this->createView('cimletezoeredmeny.tpl');
+        $view->setVar('cimletek', \mkw\store::cimletez($this->params->getStringRequestParam('osszegek')));
+        $view->printTemplateResult();
+    }
 }

@@ -1127,4 +1127,26 @@ class store {
         self::$blameableListener = $blameableListener;
     }
 
+    public static function cimletez($osszegek) {
+        $cimletek = array(20000,10000,5000,2000,1000,500,200,100,50,20,10,5);
+        $kiszamolt = array();
+        $ret = array();
+        $sum = 0;
+        foreach($cimletek as $e) {
+            $kiszamolt[$e] = 0;
+        }
+        $osszegtomb = explode(',', $osszegek);
+        foreach($osszegtomb as $osszeg) {
+            $maradek = self::kerekit(trim($osszeg) * 1, 5);
+            $sum += $maradek;
+            foreach($cimletek as $cimlet) {
+                $kiszamolt[$cimlet] += intdiv($maradek, $cimlet);
+                $maradek = $maradek % $cimlet;
+            }
+        }
+        $ret['cimletek'] = $kiszamolt;
+        $ret['osszesen'] = $sum;
+        return $ret;
+    }
+
 }

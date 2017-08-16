@@ -13,5 +13,19 @@ $(document).ready(
         bepenztar = bepenztar();
         bepenztar.init();
 
+        $('#CimletezoButton').button();
+        $('#CimletezoButton').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/cimletez',
+                data: {
+                    osszegek: $('#CimletezoEdit').val()
+                },
+                success: function(data) {
+                    $('#CimletezoEredmeny').html(data);
+                }
+            });
+
+        })
 	}
 );
