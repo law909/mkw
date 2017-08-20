@@ -115,6 +115,56 @@ $(document).ready(function(){
 						}
 					});
 				$('.js-hatarnewbutton,.js-hatardelbutton').button();
+
+                $('#OrszagTab').on('click', '.js-orszagnewbutton', function(e) {
+                    var $this = $(this);
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/admin/szallitasimodorszag/getemptyrow',
+                        type: 'GET',
+                        success: function(data) {
+                            var tbody = $('#OrszagTab');
+                            tbody.append(data);
+                            $('.js-orszagnewbutton,.js-orszagdelbutton').button();
+                            $this.remove();
+                        }
+                    });
+                })
+                    .on('click', '.js-orszagdelbutton', function(e) {
+                        e.preventDefault();
+                        var orszaggomb = $(this),
+                            orszagid = orszaggomb.attr('data-id');
+                        if (orszaggomb.attr('data-source') === 'client') {
+                            $('#orszagtable_' + orszagid).remove();
+                        }
+                        else {
+                            dialogcenter.html('Biztos, hogy törli a határértéket?').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'Igen': function() {
+                                        $.ajax({
+                                            url: '/admin/szallitasimodorszag/save',
+                                            type: 'POST',
+                                            data: {
+                                                id: orszagid,
+                                                oper: 'del'
+                                            },
+                                            success: function(data) {
+                                                $('#orszagtable_' + data).remove();
+                                            }
+                                        });
+                                        $(this).dialog('close');
+                                    },
+                                    'Nem': function() {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                    });
+                $('.js-orszagnewbutton,.js-orszagdelbutton').button();
 			}
 	};
 

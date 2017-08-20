@@ -32,4 +32,7 @@ class SzallitasimodRepository extends \mkwhelpers\Repository {
         return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
     }
 
+    public function get() {
+    }
+
 }

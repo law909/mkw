@@ -329,6 +329,8 @@ $router->map('POST', '/admin/szallitasimod/save', 'szallitasimodController#save'
 $router->map('GET', '/admin/szallitasimod/htmllist', 'szallitasimodController#htmllist', 'adminszallitasimodhtmllist');
 $router->map('GET', '/admin/szallitasimodhatar/getemptyrow', 'szallitasimodhatarController#getemptyrow', 'adminszallitasimodhatargetemptyrow');
 $router->map('POST', '/admin/szallitasimodhatar/save', 'szallitasimodhatarController#save', 'adminszallitasimodhatarsave');
+$router->map('GET', '/admin/szallitasimodorszag/getemptyrow', 'szallitasimodorszagController#getemptyrow', 'adminszallitasimodorszaggetemptyrow');
+$router->map('POST', '/admin/szallitasimodorszag/save', 'szallitasimodorszagController#save', 'adminszallitasimodorszagsave');
 
 $router->map('GET', '/admin/fizetesimod/viewlist', 'fizmodController#viewlist', 'adminfizetesimodviewlist');
 $router->map('GET', '/admin/fizetesimod/getlistbody', 'fizmodController#getlistbody', 'adminfizetesimodgetlistbody');

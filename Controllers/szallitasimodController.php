@@ -43,6 +43,14 @@ class szallitasimodController extends \mkwhelpers\MattableController {
                     $hatararr[] = $fhc->loadVars($hat, $forKarb);
                 }
                 $x['hatarok'] = $hatararr;
+
+                $fhc = new szallitasimodorszagController($this->params);
+                $h = $this->getRepo('Entities\SzallitasimodOrszag')->getBySzallitasimod($t);
+                $orszagarr = array();
+                foreach ($h as $hat) {
+                    $orszagarr[] = $fhc->loadVars($hat, $forKarb);
+                }
+                $x['orszagok'] = $orszagarr;
             }
             if (\mkw\store::isMultilang()) {
                 foreach($t->getTranslations() as $tr) {
@@ -94,6 +102,42 @@ class szallitasimodController extends \mkwhelpers\MattableController {
                         $hatar->setValutanem($valutanem);
                     }
                     $this->getEm()->persist($hatar);
+                }
+            }
+        }
+        $orszagids = $this->params->getArrayRequestParam('orszagid');
+        foreach ($orszagids as $orszagid) {
+            $oper = $this->params->getStringRequestParam('orszagoper_' . $orszagid);
+            $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('orszagvalutanem_' . $orszagid));
+            if (!$valutanem) {
+                $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+            }
+            $orszag = $this->getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('orszagorszag_' . $orszagid));
+            if ($oper === 'add') {
+                $orszagrec = new \Entities\SzallitasimodOrszag();
+                $orszagrec->setSzallitasimod($obj);
+                $orszagrec->setHatarertek($this->params->getNumRequestParam('orszagertek_' . $orszagid));
+                $orszagrec->setOsszeg($this->params->getNumRequestParam('orszagosszeg_' . $orszagid));
+                if ($valutanem) {
+                    $orszagrec->setValutanem($valutanem);
+                }
+                if ($orszag) {
+                    $orszagrec->setOrszag($orszag);
+                }
+                $this->getEm()->persist($orszagrec);
+            }
+            elseif ($oper === 'edit') {
+                $orszagrec = $this->getEm()->getRepository('Entities\SzallitasimodHatar')->find($orszagid);
+                if ($orszagrec) {
+                    $orszagrec->setHatarertek($this->params->getNumRequestParam('orszagertek_' . $orszagid));
+                    $orszagrec->setOsszeg($this->params->getNumRequestParam('orszagosszeg_' . $orszagid));
+                    if ($valutanem) {
+                        $orszagrec->setValutanem($valutanem);
+                    }
+                    if ($orszag) {
+                        $orszagrec->setOrszag($orszag);
+                    }
+                    $this->getEm()->persist($orszagrec);
                 }
             }
         }

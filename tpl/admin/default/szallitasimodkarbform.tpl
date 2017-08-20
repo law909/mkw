@@ -6,6 +6,7 @@
 		<ul>
 			<li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
             <li><a href="#HatarTab">{at('Összeghatárok')}</a></li>
+            <li><a href="#OrszagTab">{at('Összeghatárok országonként')}</a></li>
             {if ($setup.multilang)}
                 <li><a href="#TranslationTab">{at('Idegennyelvi adatok')}</a></li>
             {/if}
@@ -61,6 +62,14 @@
                 {include 'szallitasimodhatarkarb.tpl'}
             {/foreach}
             <a class="js-hatarnewbutton" href="#" title="{at('Új')}">
+                <span class="ui-icon ui-icon-circle-plus"></span>
+            </a>
+        </div>
+        <div id="OrszagTab" class="mattkarb-page" data-visible="visible">
+            {foreach $egyed.orszagok as $orszag}
+                {include 'szallitasimodorszagkarb.tpl'}
+            {/foreach}
+            <a class="js-orszagnewbutton" href="#" title="{at('Új')}">
                 <span class="ui-icon ui-icon-circle-plus"></span>
             </a>
         </div>

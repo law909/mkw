@@ -3,8 +3,8 @@
         <input name="hatarid[]" type="hidden" value="{$hatar.id}">
         <input name="hataroper_{$hatar.id}" type="hidden" value="{$hatar.oper}">
         <tr>
-            <td><label for="HatarValutaEdit{$ar.id}">{at('Valutanem')}:</label></td>
-            <td><select id="HatarValutaEdit{$ar.id}" name="hatarvalutanem_{$hatar.id}" required="required">
+            <td><label for="HatarValutaEdit{$hatar.id}">{at('Valutanem')}:</label></td>
+            <td><select id="HatarValutaEdit{$hatar.id}" name="hatarvalutanem_{$hatar.id}" required="required">
                     <option value="">{at('válasszon')}</option>
                     {foreach $hatar.valutanemlist as $_valuta}
                         <option value="{$_valuta.id}"{if ($_valuta.selected)} selected="selected"{/if}>{$_valuta.caption}</option>
