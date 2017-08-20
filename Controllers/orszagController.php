@@ -10,11 +10,19 @@ class orszagController extends \mkwhelpers\JQGridController {
     }
 
     protected function loadCells($sor) {
-        return array($sor->getNev());
+        $valuta = $sor->getValutanem();
+        return array($sor->getNev(), (isset($valuta) ? $valuta->getNev() : ''));
     }
 
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
+        $valutanem = $this->getRepo('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
+        if ($valutanem) {
+            $obj->setValutanem($valutanem);
+        }
+        else {
+            $obj->setValutanem(null);
+        }
         return $obj;
     }
 

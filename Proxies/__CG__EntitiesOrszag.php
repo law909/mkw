@@ -64,10 +64,10 @@ class Orszag extends \Entities\Orszag implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Orszag' . "\0" . 'valutanem'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Orszag' . "\0" . 'valutanem'];
     }
 
     /**
@@ -208,6 +208,50 @@ class Orszag extends \Entities\Orszag implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getValutanem()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanem', []);
+
+        return parent::getValutanem();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getValutanemNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemNev', []);
+
+        return parent::getValutanemNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getValutanemId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValutanemId', []);
+
+        return parent::getValutanemId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setValutanem($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', [$val]);
+
+        return parent::setValutanem($val);
     }
 
 }
