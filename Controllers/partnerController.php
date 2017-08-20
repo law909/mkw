@@ -694,6 +694,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $user->clearPasswordreminder();
             $this->getEm()->persist($user);
             \mkw\store::getMainSession()->pk = $user->getId();
+            \mkw\store::getMainSession()->orszag = $user->getOrszagId();
             if (\mkw\store::isB2B()) {
                 if ($user->getEzuzletkoto()) {
                     $uk = $this->getRepo('Entities\Uzletkoto')->find($user->getUzletkotoId());
@@ -896,6 +897,11 @@ class partnerController extends \mkwhelpers\MattableController {
             $this->logout();
         }
         Header('Location: ' . $prevuri);
+    }
+
+    public function setOrszag() {
+        $orszagkod = $this->params->getIntRequestParam('orszag');
+        \mkw\store::getMainSession()->orszag = $orszagkod;
     }
 
     public function showAccount() {

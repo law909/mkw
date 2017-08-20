@@ -32,7 +32,19 @@ class SzallitasimodRepository extends \mkwhelpers\Repository {
         return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
     }
 
-    public function get() {
+    public function getSzallitasiKoltseg($szallmod, $orszag, $valutanem, $ertek) {
+        $ktg = 0;
+        switch (\mkw\store::getSzallitasiKoltsegMode()) {
+            case 'normal':
+                $ktg = \mkw\store::getEm()->getRepository('Entities\SzallitasimodHatar')->getBySzallitasimodValutanemHatar($szallmod, $valutanem, $ertek);
+                $ktg = $ktg ? $ktg->getOsszeg() : 0;
+                break;
+            case 'orszagonkent':
+                $ktg = \mkw\store::getEm()->getRepository('Entities\SzallitasimodOrszag')->getBySzallitasimodOrszagValutanemHatar($szallmod, $orszag, $valutanem, $ertek);
+                $ktg = $ktg ? $ktg->getOsszeg() : 0;
+                break;
+        }
+        return $ktg;
     }
 
 }

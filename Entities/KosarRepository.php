@@ -432,9 +432,12 @@ class KosarRepository extends \mkwhelpers\Repository {
                 $cnt = $e['count'];
                 if ($cnt != 0) {
                     $partner = \mkw\store::getLoggedInUser();
-                    $ktg = $this->getRepo('Entities\SzallitasimodHatar')->getBySzallitasimodValutanemHatar($szallmod,
-                        \mkw\store::getPartnerValutanem($partner), $ertek);
-                    $this->add($termekid, null, $ktg ? $ktg->getOsszeg() : 0);
+                    $ktg = $this->getRepo('Entities\Szallitasimod')->getSzallitasiKoltseg(
+                        $szallmod,
+                        \mkw\store::getPartnerOrszag($partner),
+                        \mkw\store::getPartnerValutanem($partner),
+                        $ertek);
+                    $this->add($termekid, null, $ktg);
                 }
                 else {
                     $this->remove($termek);

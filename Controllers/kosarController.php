@@ -132,6 +132,7 @@ class kosarController extends \mkwhelpers\MattableController {
                     'valutanem' => $valutanem
                 );
             case \mkw\store::isSuperzoneB2B():
+            case \mkw\store::isMugenrace():
                 $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
                 $partner = \mkw\store::getLoggedInUser();
                 $valutanem = '';

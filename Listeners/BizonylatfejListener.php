@@ -174,8 +174,11 @@ class BizonylatfejListener {
                 }
 
                 if (!$bruttoegysar) {
-                    $ktg = $this->em->getRepository('Entities\SzallitasimodHatar')->getBySzallitasimodValutanemHatar($szallmod, $bizfej->getValutanem(), $ertek);
-                    $ktg = $ktg ? $ktg->getOsszeg() : 0;
+                    $ktg = $this->em->getRepository('Entities\Szallitasimod')->getSzallitasiKoltseg(
+                        $szallmod,
+                        $bizfej->getPartner()->getOrszag(),
+                        $bizfej->getValutanem(),
+                        $ertek);
                 }
                 else {
                     $ktg = $bruttoegysar;

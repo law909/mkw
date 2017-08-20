@@ -394,7 +394,7 @@ class store {
         $v->setVar('serverurl', self::getFullUrl());
         $v->setVar('logo', self::getParameter(\mkw\consts::Logo));
         $oc = new \Controllers\orszagController($p);
-        $v->setVar('orszaglist', $oc->getSelectList());
+        $v->setVar('orszaglist', $oc->getSelectList(\mkw\store::getMainSession()->orszag));
         if (self::isMugenrace()) {
             $v->setVar('mugenracelogo', self::getParameter(\mkw\consts::MugenraceLogo));
             $v->setVar('mugenracefooldalkep', self::getParameter(\mkw\consts::MugenraceFooldalKep));
@@ -956,6 +956,16 @@ class store {
         return self::getParameter(\mkw\consts::MiniCRMHasznalatban, false) == 1;
     }
 
+    public static function getSzallitasiKoltsegMode() {
+        $szm = self::getSetupValue('szallitasikoltsegmode');
+        switch ($szm) {
+            case 'orszagonkent':
+                return $szm;
+            default:
+                return 'normal';
+        }
+    }
+
     public static function setAdminMode() {
         self::$adminmode = true;
         self::$mainmode = false;
@@ -1017,9 +1027,25 @@ class store {
             $valutanem = $partner->getValutanem();
         }
         if (!$valutanem) {
+            $orszag = self::getEm()->getRepository('Entities\Orszag')->find(self::getMainSession()->orszag);
+            if ($orszag) {
+                $valutanem = $orszag->getValutanem();
+            }
+        }
+        if (!$valutanem) {
             $valutanem = self::getEm()->getRepository('Entities\Valutanem')->find(self::getParameter(\mkw\consts::Valutanem));
         }
         return $valutanem;
+    }
+
+    public static function getPartnerOrszag($partner) {
+        if ($partner) {
+            $orszag = $partner->getOrszag();
+        }
+        if (!$orszag) {
+            $orszag = self::getEm()->getRepository('Entities\Orszag')->find(self::getMainSession()->orszag);
+        }
+        return $orszag;
     }
 
     public static function getPenzugyiStatusz($esedekesseg, $egyenleg) {

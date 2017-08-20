@@ -285,6 +285,10 @@ footer a:hover {
   margin-right: 10px;
   background-color: #e42721;
 }
+.headerorszag {
+  position: relative;
+  top: 8px;
+}
 #minikosar {
   line-height: 40px;
 }

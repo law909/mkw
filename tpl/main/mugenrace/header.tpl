@@ -11,9 +11,9 @@
 					<a rel="nofollow" href="{$showregisztraciolink}">{t('Hozza létre saját fiókját')}</a>
 				</div>
                 <div class="headerbutton lastheaderbutton">
-                    <select name="headerorszag" class="">
+                    <select name="headerorszag" class="headerorszag">
                         {foreach $orszaglist as $f}
-                            <option value="{$f.id}"{if ($f.selected)} checked{/if}>{$f.caption}</option>
+                            <option value="{$f.id}"{if ($f.selected)} selected="selected"{/if}>{$f.caption}</option>
                         {/foreach}
                     </select>
                 </div>

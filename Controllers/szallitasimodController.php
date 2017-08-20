@@ -127,7 +127,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
                 $this->getEm()->persist($orszagrec);
             }
             elseif ($oper === 'edit') {
-                $orszagrec = $this->getEm()->getRepository('Entities\SzallitasimodHatar')->find($orszagid);
+                $orszagrec = $this->getEm()->getRepository('Entities\SzallitasimodOrszag')->find($orszagid);
                 if ($orszagrec) {
                     $orszagrec->setHatarertek($this->params->getNumRequestParam('orszagertek_' . $orszagid));
                     $orszagrec->setOsszeg($this->params->getNumRequestParam('orszagosszeg_' . $orszagid));

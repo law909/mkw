@@ -601,8 +601,20 @@ $(document).ready(function() {
         $('#ArSlider').val('0;0');
         mkw.lapozas(1);
     });
+    $('select[name="headerorszag"]').on('change', function(e) {
+        $.ajax({
+            url: '/setorszag',
+            type: 'POST',
+            data: {
+                orszag: $('select[name="headerorszag"] option:selected').val()
+            }
+        });
 
-    $zoom = $('.zoom').magnify();
+    });
+
+    if ($.fn.magnify) {
+        $zoom = $('.zoom').magnify();
+    }
 
     mkw.initTooltips();
     mkw.showhideFilterClear();

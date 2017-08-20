@@ -229,7 +229,19 @@ var checkout = (function($, guid) {
 				if (!szallnevinput.val() && vezeteknevinput.val() && keresztnevinput.val()) {
 					szallnevinput.val(vezeteknevinput.val() + ' ' + keresztnevinput.val());
 				}
-			});
+			})
+            .on('change', 'select[name="orszag"]', function() {
+                $.ajax({
+                    url: '/setorszag',
+                    type: 'POST',
+                    data: {
+                        orszag: $('select[name="orszag"] option:selected').val()
+                    },
+                    success: function() {
+                        loadTetelList();
+                    }
+                });
+            });
 
             $('input[name="regkell"]').change();
 

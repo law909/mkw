@@ -64,7 +64,7 @@ class checkoutController extends \mkwhelpers\MattableController {
             $user['vezeteknev'] = '';
             $user['keresztnev'] = '';
             $user['telefon'] = '';
-            $user['orszag'] = 0;
+            $user['orszag'] = \mkw\store::getMainSession()->orszag;
             $user['irszam'] = '';
             $user['varos'] = '';
             $user['utca'] = '';
