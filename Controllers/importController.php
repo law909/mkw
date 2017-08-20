@@ -198,6 +198,9 @@ class importController extends \mkwhelpers\Controller {
             case 'legavenue':
                 $imp = \mkw\consts::RunningLegavenueImport;
                 break;
+            case 'nomad':
+                $imp = \mkw\consts::RunningNomadImport;
+                break;
             default:
                 $imp = false;
                 break;
@@ -792,6 +795,27 @@ class importController extends \mkwhelpers\Controller {
     }
 
     public function nomadImport() {
+
+        function toArr($obj) {
+            return array(
+                'sku' => (string) $obj->sku,
+                'name' => (string) $obj->name,
+                'brand' => (string) $obj->brand,
+                'price' => (int) $obj->price,
+                'photo' => (string) $obj->photo,
+                'catalog_first' => (string) $obj->catalog_first,
+                'catalog_second' => (string) $obj->catalog_second,
+                'size' => (string) $obj->size,
+                'color' => (string) $obj->color,
+                'available' => (int) $obj->available,
+                'parent' => (string) $obj->parent,
+                'child' => (string) $obj->child,
+                'category' => (string) $obj->category,
+                'short_description' => (string) $obj->short_description,
+                'long_description' => (string) $obj->long_description
+            );
+        }
+
         if (!$this->checkRunningImport(\mkw\consts::RunningNomadImport)) {
 
             $this->setRunningImport(\mkw\consts::RunningNomadImport, 1);
@@ -829,65 +853,81 @@ class importController extends \mkwhelpers\Controller {
                 $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                 $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
-                $products = $xml->products;
+                $products = $xml->product;
+                if (!$dbig) {
+                    $dbig = count($products);
+                }
 
                 $termekdb = $dbtol;
                 $szulok = array();
+                $gyereklist = array();
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
-                    $data = $products[$termekdb];
-                    if ($data->parent) {
-                        $szulok[$data->parent] = $data->parent;
+                    $data = toArr($products[$termekdb]);
+                    if ($data['parent']) {
+                        $szulok[$data['parent']]['gyerekek'][] = $data;
+                        $gyereklist[$data['sku']] = $data['sku'];
                     }
+                    $termekdb++;
                 }
                 $termekdb = $dbtol;
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
-                    $data = $products[$termekdb];
-                    if ($data->category) {
-                        $parent = $this->createKategoria($data->category, $parentid);
+                    $data = toArr($products[$termekdb]);
+                    if (array_key_exists($data['sku'], $szulok)) {
+                        $szulok[$data['sku']]['szulo'] = $data;
                     }
+                    $termekdb++;
                 }
                 $termekdb = $dbtol;
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
-                    $data = $products[$termekdb];
+                    $data = toArr($products[$termekdb]);
+                    if ($data['category']) {
+                        $parent = $this->createKategoria($data['category'], $parentid);
+                    }
+                    $termekdb++;
+                }
 
-                    if ($data->parent || $data->child) {
-                        \mkw\store::writelog($data->sku . '->' . $data->parent . '->' . $data->child, 'nomad.log');
-                    }
-/**
-                    $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $data->sku, 'gyarto' => $gyartoid));
-                    if (!$termek) {
-                        if ($createuj) {
-                            $parent = $this->createKategoria($data->category, $parentid);
-                            $termek = new \Entities\Termek();
-                            $termek->setFuggoben(true);
-                            $termek->setMe('db');
-                            $termek->setNev($data->name);
-                            if ($data->catalog_first) {
-                                $termek->setCikkszam($data->catalog_first);
+                //\mkw\store::writelog(print_r($szulok, true), 'nomadtree.log');
+
+                $termekdb = $dbtol;
+                while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
+                    $data = toArr($products[$termekdb]);
+
+                    $szulogyerek = array_key_exists($data['sku'], $szulok) || array_key_exists($data['sku'], $gyereklist);
+                    if (!$szulogyerek) {
+                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $data['sku'], 'gyarto' => $gyartoid));
+
+                        if (!$termek) {
+                            if ($createuj) {
+                                $parent = $this->createKategoria($data['category'], $parentid);
+                                $termek = new \Entities\Termek();
+                                $termek->setFuggoben(true);
+                                $termek->setMe('db');
+                                $termek->setNev($data['name']);
+                                if ($data['catalog_first']) {
+                                    $termek->setCikkszam($data['catalog_first']);
+                                }
+                                elseif ($data['catalog_second']) {
+                                    $termek->setCikkszam($data['catalog_second']);
+                                }
+                                if ($gyarto) {
+                                    $termek->setGyarto($gyarto);
+                                }
+                                $hosszuleiras = trim($data['long_description']);
+                                $rovidleiras = trim($data['short_description']);
+                                $termek->setLeiras($hosszuleiras);
+                                $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
+                                $termek->setTermekfa1($parent);
+                                $termek->setVtsz($vtsz[0]);
                             }
-                            elseif ($data->catalog_second) {
-                                $termek->setCikkszam($data->catalog_second);
-                            }
-                            if ($gyarto) {
-                                $termek->setGyarto($gyarto);
-                            }
-                            $hosszuleiras = trim($data->long_description);
-                            $rovidleiras = trim($data->short_description);
-                            $termek->setLeiras($hosszuleiras);
-                            $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
-                            $termek->setTermekfa1($parent);
-                            $termek->setVtsz($vtsz[0]);
                         }
                     }
- */
                     $termekdb++;
                 }
 
             }
-            fclose($fh);
             \unlink('nomad.xml');
 
-            $this->setRunningImport(0, 0);
+            $this->setRunningImport(\mkw\consts::RunningNomadImport, 0);
         }
         else {
             echo json_encode(array('msg' => 'Már fut ilyen import.'));
