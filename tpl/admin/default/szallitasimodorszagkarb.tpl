@@ -29,6 +29,6 @@
         </tr>
     </tbody>
 </table>
-{if ($hatar.oper=='add')}
+{if ($orszag.oper=='add')}
     <a class="js-orszagnewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 {/if}
