@@ -556,7 +556,7 @@ var checkout = (function($, guid) {
 			checkoutpasswordcontainer,
 			vezeteknevinput, keresztnevinput, telefoninput, kapcsemailinput,
 			szamlanevinput, szamlairszaminput, szamlavarosinput, szamlautcainput, adoszaminput,
-			szallnevinput, szallirszaminput, szallvarosinput, szallutcainput,
+			szallnevinput, szallirszaminput, szallvarosinput, szallutcainput, orszagselect,
 			checkoutform,
 			webshopmessageinput, couriermessageinput,
 			szamlaeqszall,
@@ -663,6 +663,7 @@ var checkout = (function($, guid) {
 		$('.js-chkkeresztnev').text(keresztnevinput.val());
 		$('.js-chktelefon').text(telefoninput.val());
 		$('.js-chkkapcsemail').text(kapcsemailinput.val());
+		$('.js-chkorszag').text(orszagselect.text());
         $('.js-chkszallnev').text(szallnevinput.val());
         $('.js-chkszallirszam').text(szallirszaminput.val());
         $('.js-chkszallvaros').text(szallvarosinput.val());
@@ -727,6 +728,7 @@ var checkout = (function($, guid) {
 			szamlavarosinput = $('input[name="szamlavaros"]');
 			szamlautcainput = $('input[name="szamlautca"]');
 			adoszaminput = $('input[name="adoszam"]');
+			orszagselect = $('select[name="orszag"] option:selected');
 			szallnevinput = $('input[name="szallnev"]');
 			szallirszaminput = $('input[name="szallirszam"]');
 			szallvarosinput = $('input[name="szallvaros"]');
@@ -767,7 +769,19 @@ var checkout = (function($, guid) {
 				if (!szallnevinput.val() && vezeteknevinput.val() && keresztnevinput.val()) {
 					szallnevinput.val(vezeteknevinput.val() + ' ' + keresztnevinput.val());
 				}
-			});
+			})
+            .on('change', 'select[name="orszag"]', function() {
+                $.ajax({
+                    url: '/setorszag',
+                    type: 'POST',
+                    data: {
+                        orszag: $('select[name="orszag"] option:selected').val()
+                    },
+                    success: function() {
+                        loadTetelList();
+                    }
+                });
+            });
 
             $('input[name="regkell"]').change();
 
@@ -1758,8 +1772,20 @@ $(document).ready(function() {
         $('#ArSlider').val('0;0');
         mkw.lapozas(1);
     });
+    $('select[name="headerorszag"]').on('change', function(e) {
+        $.ajax({
+            url: '/setorszag',
+            type: 'POST',
+            data: {
+                orszag: $('select[name="headerorszag"] option:selected').val()
+            }
+        });
 
-    $zoom = $('.zoom').magnify();
+    });
+
+    if ($.fn.magnify) {
+        $zoom = $('.zoom').magnify();
+    }
 
     mkw.initTooltips();
     mkw.showhideFilterClear();
