@@ -396,7 +396,11 @@ class mainController extends \mkwhelpers\Controller {
 		$termekvaltozat = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->getByProperties($termek->getId(), $t, $e);
 
 		$ret['szallitasiido'] = $termek->calcSzallitasiido($termekvaltozat);
-        $ret['price'] = number_format($termek->getBruttoAr($termekvaltozat, \mkw\store::getLoggedInUser()), 0, ',', ' ') . ' Ft';
+        $ret['price'] = number_format($termek->getBruttoAr(
+            $termekvaltozat,
+            \mkw\store::getLoggedInUser(),
+            \mkw\store::getMainSession()->valutanem,
+            \mkw\store::getParameter(\mkw\consts::Webshop2Price)), 0, ',', ' ') . ' ' . \mkw\store::getMainSession()->valutanemnev;
         if ($termekvaltozat) {
             $ret['kepurlmedium'] = $termekvaltozat->getKepurlMedium();
             $ret['kepurllarge'] = $termekvaltozat->getKepurlLarge();

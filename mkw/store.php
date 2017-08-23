@@ -401,6 +401,7 @@ class store {
             $v->setVar('mugenracefooldalszoveg', self::getParameter(\mkw\consts::MugenraceFooldalSzoveg));
         }
         $v->setVar('globaltitle', self::getParameter('oldalcim'));
+        $v->setVar('valutanemnev', self::getMainSession()->valutanemnev);
         $pr = self::getEm()->getRepository('Entities\Partner');
         $user = array();
         $user['loggedin'] = $pr->checkloggedin();
@@ -1046,6 +1047,13 @@ class store {
             $orszag = self::getEm()->getRepository('Entities\Orszag')->find(self::getMainSession()->orszag);
         }
         return $orszag;
+    }
+
+    public static function getSysValutanem() {
+        if (self::getMainSession()->valutanem) {
+            return self::getMainSession()->valutanem;
+        }
+        return self::getParameter(\mkw\consts::Valutanem);
     }
 
     public static function getPenzugyiStatusz($esedekesseg, $egyenleg) {

@@ -29,7 +29,7 @@
                 </div>
 				<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</div>
 				{$tetel.cikkszam}</td>
-			<td><div class="textalignright">{number_format($tetel.bruttoegysarhuf,0,',',' ')} Ft</div></td>
+			<td><div class="textalignright">{number_format($tetel.bruttoegysarhuf,0,',',' ')} {$valutanemnev}</div></td>
 			<td>
 				<div class="textaligncenter">
 					<form class="kosarform" action="{$tetel.editlink}">
@@ -43,7 +43,7 @@
 					</form>
 				</div>
 			</td>
-			<td><div id="ertek_{$tetel.id}" class="textalignright">{number_format($tetel.bruttohuf,0,',',' ')} Ft</div></td>
+			<td><div id="ertek_{$tetel.id}" class="textalignright">{number_format($tetel.bruttohuf,0,',',' ')} {$valutanemnev}</div></td>
 			<td class="textaligncenter">{if (!$tetel.noedit)}<a class="btn js-kosardelbtn" href="/kosar/del?id={$tetel.id}" rel="nofollow"><i class="icon-remove-sign"></i>{t('Töröl')}</a>{/if}</td>
 		</tr>
 	{/foreach}
@@ -51,7 +51,7 @@
 <tfoot>
 	<tr>
 		<th colspan="4"><div class="textalignright">{t('Összesen')}:</div></th>
-		<th><div id="kosarsum" class="textalignright">{number_format($osszesen,0,',',' ')} Ft</div></th>
+		<th><div id="kosarsum" class="textalignright">{number_format($osszesen,0,',',' ')} {$valutanemnev}</div></th>
 		<th></th>
 	</tr>
 </tfoot>

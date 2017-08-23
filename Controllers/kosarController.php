@@ -132,7 +132,6 @@ class kosarController extends \mkwhelpers\MattableController {
                     'valutanem' => $valutanem
                 );
             case \mkw\store::isSuperzoneB2B():
-            case \mkw\store::isMugenrace():
                 $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
                 $partner = \mkw\store::getLoggedInUser();
                 $valutanem = '';
@@ -149,6 +148,14 @@ class kosarController extends \mkwhelpers\MattableController {
                     'netto' => $m[0][3],
                     'brutto' => $m[0][2],
                     'valutanem' => $valutanem
+                );
+            case \mkw\store::isMugenrace():
+                $m = $this->getRepo()->getMiniDataBySessionId(\Zend_Session::getId());
+                return array(
+                    'termekdb' => $m[0][1],
+                    'netto' => $m[0][3],
+                    'brutto' => $m[0][2],
+                    'valutanem' => \mkw\store::getMainSession()->valutanemnev
                 );
             default:
                 return false;

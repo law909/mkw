@@ -109,7 +109,7 @@
                                 {else}
                                     <link itemprop="availability" href="http://schema.org/InStock" content="Kapható">
                                 {/if}
-                                <span itemprop="price">{number_format($termek.bruttohuf,0,',',' ')} Ft</span>
+                                <span itemprop="price">{number_format($termek.bruttohuf,0,',',' ')} {$valutanemnev}</span>
                             </div>
                             {if ($termek.nemkaphato)}
                             <div class="textalignright">
@@ -180,7 +180,7 @@
                                                     </div>
                                                     <div>{$_kapcsolodo.caption}</div>
                                                     <h5>
-                                                        <span>{number_format($_kapcsolodo.bruttohuf,0,',',' ')} Ft</span>
+                                                        <span>{number_format($_kapcsolodo.bruttohuf,0,',',' ')} {$valutanemnev}</span>
                                                     </h5>
                                                     <a href="{$_kapcsolodo.link}" class="btn okbtn">{t('Részletek')}</a>
                                                 </a>
@@ -209,7 +209,7 @@
                                                     </div>
                                                     <div>{$_hasonlo.caption}</div>
                                                     <h5>
-                                                        <span>{number_format($_hasonlo.bruttohuf,0,',',' ')} Ft</span>
+                                                        <span>{number_format($_hasonlo.bruttohuf,0,',',' ')} {$valutanemnev}</span>
                                                     </h5>
                                                     <a href="{$_hasonlo.link}" class="btn okbtn">{t('Részletek')}</a>
                                                 </a>
@@ -251,7 +251,7 @@
                                                 <img src="{$imagepath}{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                             </div>
                                             <div>{$_termek.caption}</div>
-                                            <h5 class="main"><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h5>
+                                            <h5 class="main"><span>{number_format($_termek.bruttohuf,0,',',' ')} {$valutanemnev}</span></h5>
                                         </a>
                                     </div>
                                 </div>
@@ -275,7 +275,7 @@
                             </div>
                             <div>{$_nepszeru.caption}</div>
                             <h5>
-                                <span>{number_format($_nepszeru.bruttohuf,0,',',' ')} Ft</span>
+                                <span>{number_format($_nepszeru.bruttohuf,0,',',' ')} {$valutanemnev}</span>
                             </h5>
                         </a>
                     </div>

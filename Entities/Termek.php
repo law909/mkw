@@ -457,8 +457,16 @@ class Termek {
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
-        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
-        $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+        if (\mkw\store::isMugenrace()) {
+            $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
+            $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
+                \mkw\store::getParameter(\mkw\consts::Webshop2Price));
+            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+        }
+        else {
+            $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
+            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+        }
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['ingyenszallitas'] = (\mkw\store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
 
@@ -560,8 +568,16 @@ class Termek {
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
-        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
-        $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+        if (\mkw\store::isMugenrace()) {
+            $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
+            $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
+                \mkw\store::getParameter(\mkw\consts::Webshop2Price));
+            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+        }
+        else {
+            $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
+            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+        }
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
 
         $listaban = array();
@@ -598,8 +614,16 @@ class Termek {
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
-        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
-        $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+        if (\mkw\store::isMugenrace()) {
+            $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
+            $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
+                \mkw\store::getParameter(\mkw\consts::Webshop2Price));
+            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+        }
+        else {
+            $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
+            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+        }
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['ingyenszallitas'] = (\mkw\store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
         $x['husegpont'] = floor($x['bruttohuf'] * $this->getHparany() / 100);
@@ -681,8 +705,16 @@ class Termek {
         $x['cikkszam'] = $this->getCikkszam();
         $x['rovidleiras'] = $this->getRovidLeiras();
         $x['akcios'] = $this->getAkcios();
-        $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
-        $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+        if (\mkw\store::isMugenrace()) {
+            $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
+            $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
+                \mkw\store::getParameter(\mkw\consts::Webshop2Price));
+            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+        }
+        else {
+            $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
+            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
+        }
         $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
         return $x;
     }

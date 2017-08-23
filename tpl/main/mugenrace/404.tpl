@@ -23,7 +23,7 @@
                             </div>
                             <div>{$_termek.caption}</div>
                             <h5>
-                                <span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
+                                <span>{number_format($_termek.bruttohuf,0,',',' ')} {$valutanemnev}</span>
                             </h5>
                             <a href="{$_termek.link}" class="btn okbtn">{t('Részletek')}</a>
                         </a>

@@ -607,6 +607,9 @@ $(document).ready(function() {
             type: 'POST',
             data: {
                 orszag: $('select[name="headerorszag"] option:selected').val()
+            },
+            success: function() {
+                window.location.reload();
             }
         });
 

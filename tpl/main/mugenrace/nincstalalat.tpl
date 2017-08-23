@@ -26,7 +26,7 @@
 						</div>
 						<div class="row">
 							<div class="span4">
-								<h3 class="itemPrice"><span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span></h3>
+								<h3 class="itemPrice"><span>{number_format($_termek.bruttohuf,0,',',' ')} {$valutanemnev}</span></h3>
 							</div>
 						</div>
 					</div>
