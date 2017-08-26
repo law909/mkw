@@ -149,7 +149,7 @@ var checkout = (function($, guid) {
 		}
 		$('.js-chkszallitasimod').text($('input[name="szallitasimod"]:checked').data('caption'));
         $('.js-chkfoxpostterminal').text($('select[name="foxpostterminal"] option:selected').text());
-		$('.js-chkfizmod').text($('input[name="fizetesimod"]:checked').data('caption'));
+		$('.js-chkfizetesimod').text($('input[name="fizetesimod"]:checked').data('caption'));
 		$('.js-chkwebshopmessage').text(webshopmessageinput.val());
 		$('.js-chkcouriermessage').text(couriermessageinput.val());
 	}
