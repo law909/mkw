@@ -200,7 +200,7 @@
                                             {t('Elfogyott')}
                                         </a>
                                     {else}
-                                        <a href="/kosar/add?id={$_termek.id}" rel="nofollow" class="js-kosarba btn cartbtn pull-right" data-termek="{$_termek.id}">
+                                        <a href="/kosar/add?id={$_termek.id}" rel="nofollow" class="js-kosarbamindenvaltozat btn cartbtn pull-right" data-termek="{$_termek.id}">
                                             {t('Kosárba')}
                                         </a>
                                     {/if}

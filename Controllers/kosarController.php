@@ -325,6 +325,10 @@ class kosarController extends \mkwhelpers\MattableController {
                         $valutanemnev = $partner->getValutanemnev();
                         $valutanem = $partner->getValutanem();
                     }
+                    if (!$valutanem) {
+                        $valutanem = $this->getRepo('\Entities\Valutanem')->find(\mkw\store::getMainSession()->valutanem);
+                        $valutanemnev = \mkw\store::getMainSession()->valutanemnev;
+                    }
                 }
                 $ker = 0;
                 if (!$valutanem) {
@@ -392,6 +396,23 @@ class kosarController extends \mkwhelpers\MattableController {
     public function getHash() {
         $sorok = $this->getRepo()->getHash();
         echo json_encode($sorok);
+    }
+
+    public function recalcPrices() {
+        $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
+        /** @var \Entities\Kosar $sor */
+        foreach ($sorok as $sor) {
+            if (\mkw\store::isMugenrace()) {
+                $sor->setBruttoegysar($sor->getTermek()->getBruttoAr(
+                    $sor->getTermekvaltozat(),
+                    \mkw\store::getLoggedInUser(),
+                    \mkw\store::getMainSession()->valutanem,
+                    \mkw\store::getParameter(\mkw\consts::Webshop2Price)));
+                $sor->setValutanem($this->getRepo('\Entities\Valutanem')->find(\mkw\store::getMainSession()->valutanem));
+                $this->getEm()->persist($sor);
+            }
+        }
+        $this->getEm()->flush();
     }
 
 }

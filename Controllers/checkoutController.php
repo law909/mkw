@@ -154,7 +154,10 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$s = array();
         $partner = \mkw\store::getLoggedInUser();
         if ($partner) {
-            $view->setVar('valutanem', $partner->getValutanemnev());
+            $view->setVar('valutanemnev', $partner->getValutanemnev());
+        }
+        else {
+            $view->setVar('valutanemnev', \mkw\store::getMainSession()->valutanemnev);
         }
 		foreach ($sorok as $sor) {
 			$s[] = $sor->toLista($partner);

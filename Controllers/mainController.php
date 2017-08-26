@@ -501,4 +501,25 @@ class mainController extends \mkwhelpers\Controller {
 		}
 	}
 
+    public function setOrszag($orszagkod = null) {
+        if (!$orszagkod) {
+            $orszagkod = $this->params->getIntRequestParam('orszag');
+        }
+        /** @var \Entities\Orszag $orszag */
+        $orszag = $this->getEm()->getRepository('Entities\Orszag')->find($orszagkod);
+        if ($orszag && $orszag->getValutanem()) {
+            \mkw\store::getMainSession()->orszag = $orszagkod;
+            \mkw\store::getMainSession()->valutanem = $orszag->getValutanemId();
+            \mkw\store::getMainSession()->valutanemnev = $orszag->getValutanemNev();
+            $kc = new kosarController($this->params);
+            $kc->recalcPrices();
+        }
+    }
+
+    public function clearOrszag() {
+        \mkw\store::getMainSession()->orszag = null;
+        \mkw\store::getMainSession()->valutanem = null;
+        \mkw\store::getMainSession()->valutanemnev = null;
+    }
+
 }

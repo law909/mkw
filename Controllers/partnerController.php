@@ -694,7 +694,8 @@ class partnerController extends \mkwhelpers\MattableController {
             $user->clearPasswordreminder();
             $this->getEm()->persist($user);
             \mkw\store::getMainSession()->pk = $user->getId();
-            $this->setOrszag($user->getOrszagId());
+            $mc = new mainController($this->params);
+            $mc->setOrszag($user->getOrszagId());
             if (\mkw\store::isB2B()) {
                 if ($user->getEzuzletkoto()) {
                     $uk = $this->getRepo('Entities\Uzletkoto')->find($user->getUzletkotoId());
@@ -870,13 +871,15 @@ class partnerController extends \mkwhelpers\MattableController {
                 /** @var \Entities\Partner $partnerobj */
                 $partnerobj = \mkw\store::getEm()->getRepository('Entities\Partner')->find(\mkw\store::getMainSession()->pk);
                 if ($partnerobj) {
-                    $this->setOrszag($partnerobj->getOrszagId());
+                    $mc = new mainController($this->params);
+                    $mc->setOrszag($partnerobj->getOrszagId());
                 }
                 header('Location: ' . $route);
             }
             else {
                 \mkw\store::clearLoggedInUser();
-                $this->clearOrszag();
+                $mc = new mainController($this->params);
+                $mc->clearOrszag();
                 if ($checkout) {
                     \mkw\store::getMainSession()->loginerror = true;
                     header('Location: ' . \mkw\store::getRouter()->generate('showcheckout'));
@@ -901,28 +904,10 @@ class partnerController extends \mkwhelpers\MattableController {
         }
         if ($this->checkloggedin()) {
             $this->logout();
-            $this->clearOrszag();
+            $mc = new mainController($this->params);
+            $mc->clearOrszag();
         }
         Header('Location: ' . $prevuri);
-    }
-
-    public function setOrszag($orszagkod = null) {
-        if (!$orszagkod) {
-            $orszagkod = $this->params->getIntRequestParam('orszag');
-        }
-        /** @var \Entities\Orszag $orszag */
-        $orszag = $this->getEm()->getRepository('Entities\Orszag')->find($orszagkod);
-        if ($orszag && $orszag->getValutanem()) {
-            \mkw\store::getMainSession()->orszag = $orszagkod;
-            \mkw\store::getMainSession()->valutanem = $orszag->getValutanemId();
-            \mkw\store::getMainSession()->valutanemnev = $orszag->getValutanemNev();
-        }
-    }
-
-    public function clearOrszag() {
-        \mkw\store::getMainSession()->orszag = null;
-        \mkw\store::getMainSession()->valutanem = null;
-        \mkw\store::getMainSession()->valutanemnev = null;
     }
 
     public function showAccount() {

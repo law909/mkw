@@ -92,7 +92,7 @@ $router->map('GET', '/varos', 'irszamController#varosTypeaheadList', 'varostypea
 
 $router->map('POST', '/termekertesito/save', 'termekertesitoController#save', 'termekertesitosave');
 
-$router->map('POST', '/setorszag', 'partnerController#setOrszag', 'setorszag');
+$router->map('POST', '/setorszag', 'mainController#setOrszag', 'setorszag');
 
 $router->map('GET', '/export/grando', 'exportController#GrandoExport', 'grandoexport');
 $router->map('GET', '/export/shophunter', 'exportController#ShopHunterExport', 'shophunterexport');
