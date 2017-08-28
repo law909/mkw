@@ -1863,12 +1863,12 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getNettoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL)
+    public function getNettoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL, $arsavazon = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoAr', [$valtozat, $partner, $valutanem]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoAr', [$valtozat, $partner, $valutanem, $arsavazon]);
 
-        return parent::getNettoAr($valtozat, $partner, $valutanem);
+        return parent::getNettoAr($valtozat, $partner, $valutanem, $arsavazon);
     }
 
     /**
@@ -1885,12 +1885,12 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getKedvezmenynelkuliNettoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL)
+    public function getKedvezmenynelkuliNettoAr($valtozat = NULL, $partner = NULL, $valutanem = NULL, $arsavazon = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmenynelkuliNettoAr', [$valtozat, $partner, $valutanem]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmenynelkuliNettoAr', [$valtozat, $partner, $valutanem, $arsavazon]);
 
-        return parent::getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem);
+        return parent::getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem, $arsavazon);
     }
 
     /**

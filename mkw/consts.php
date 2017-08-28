@@ -140,6 +140,8 @@ class consts {
     const FoxpostUsername = 'foxpostusername';
     const FoxpostPassword = 'foxpostpassword';
 
+    const TOFSzallitasiMod = 'tofszallitasimod';
+
     const ValtozatSorrend = 'valtozatsorrend';
     const RendezendoValtozat = 'rendezendovaltozat';
 

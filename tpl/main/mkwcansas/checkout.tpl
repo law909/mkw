@@ -186,7 +186,7 @@
 								<div class="span8 controls js-chkszallmodlist">
 									{foreach $szallitasimodlist as $szallitasimod}
                                         <label class="radio">
-                                            <input type="radio" name="szallitasimod" class="js-chkrefresh{if ($szallitasimod.foxpost)} js-foxpostchk{/if}" value="{$szallitasimod.id}"{if ($szallitasimod.selected)} checked{/if} data-caption="{$szallitasimod.caption}">
+                                            <input type="radio" name="szallitasimod" class="js-chkrefresh{if ($szallitasimod.foxpost)} js-foxpostchk{/if}{if ($szallitasimod.tof)} js-tofchk{/if}" value="{$szallitasimod.id}"{if ($szallitasimod.selected)} checked{/if} data-caption="{$szallitasimod.caption}">
                                             {$szallitasimod.caption}
                                         </label>
                                         {if ($szallitasimod.leiras)}
@@ -195,7 +195,12 @@
                                         {if ($szallitasimod.foxpost)}
                                             <div class="js-foxpostterminalcontainer chk-foxpostcontainer"></div>
                                         {/if}
+                                        {if ($szallitasimod.tof)}
+                                            <div class="js-tofmapcontainer"></div>
+                                        {/if}
 									{/foreach}
+                                    <input type="hidden" class="js-tofnev">
+                                    <input type="hidden" class="js-tofid" name="tofid">
 								</div>
 						</div>
 						<div class="row chk-actionrow"><a href="#block4" class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkfizmoddgh">Tovább</a></div>
@@ -253,7 +258,7 @@
 							<div class="col30percent chk-colleftborder chk-colmargin">
 								<div class="chk-colheader">Szállítás és fizetés</div>
 								<div class="js-chkszallitasimod"></div>
-                                <div class="js-chkfoxpostterminal"></div>
+                                <div class="js-chkcsomagterminal"></div>
 								<div class="chk-coldatabottom js-chkfizetesimod"></div>
 								<div class="chk-coldatabottom folyoszoveg js-chkwebshopmessage"></div>
 								<div class="folyoszoveg js-chkcouriermessage"></div>

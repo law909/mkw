@@ -207,4 +207,27 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         ));
     }
 
+    public function getTerminalId() {
+        $tipus = $this->params->getStringRequestParam('tipus');
+        $id = $this->params->getStringRequestParam('id');
+        $obj = $this->getRepo()->findBy(array('tipus' => $tipus, 'idegenid' => $id));
+        if ($obj) {
+            $obj = $obj[0];
+        }
+        else {
+            $obj = new \Entities\CsomagTerminal();
+            $obj->setTipus($tipus);
+            $obj->setIdegenid($id);
+            $obj->setNev($this->params->getStringRequestParam('nev'));
+            $obj->setCim($this->params->getStringRequestParam('cim'));
+            $obj->setCsoport($this->params->getStringRequestParam('csoport'));
+            $obj->setNyitva($this->params->getStringRequestParam('nyitva'));
+            $obj->setFindme($this->params->getStringRequestParam('findme'));
+            $obj->setGeolat(str_replace(',', '.', $this->params->getStringRequestParam('geolat')));
+            $obj->setGeolng(str_replace(',', '.', $this->params->getStringRequestParam('geolng')));
+            $this->getEm()->persist($obj);
+            $this->getEm()->flush();
+        }
+        echo json_encode(array('id' => $obj->getId()));
+    }
 }

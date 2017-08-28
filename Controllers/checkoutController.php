@@ -208,6 +208,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                 $akciohirlevel = $this->params->getBoolRequestParam('akciohirlevel');
                 $ujdonsaghirlevel = $this->params->getBoolRequestParam('ujdonsaghirlevel');
                 $csomagterminalid = $this->params->getIntRequestParam('foxpostterminal');
+                $tofterminalid = $this->params->getIntRequestParam('tofid');
                 $kuponkod = $this->params->getStringRequestParam('kupon');
 
                 $ok = ($vezeteknev && $keresztnev && $telefon &&
@@ -223,6 +224,10 @@ class checkoutController extends \mkwhelpers\MattableController {
 
                 if (\mkw\store::isFoxpostSzallitasimod($szallitasimod)) {
                     $ok = $ok && $csomagterminalid;
+                }
+
+                if (\mkw\store::isTOFSzallitasimod($szallitasimod)) {
+                    $ok = $ok && $tofterminalid;
                 }
 
                 if (!$ok) {
@@ -387,7 +392,12 @@ class checkoutController extends \mkwhelpers\MattableController {
                             $megrendfej->setCsomagterminal($fpc);
                         }
                     }
-
+                    if (\mkw\store::isTOFSzallitasimod($szallitasimod)) {
+                        $fpc = $this->getRepo('Entities\CsomagTerminal')->find($tofterminalid);
+                        if ($fpc) {
+                            $megrendfej->setCsomagterminal($fpc);
+                        }
+                    }
 
                     $lasttermeknevek = array();
                     $lasttermekids = array();

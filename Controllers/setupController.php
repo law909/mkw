@@ -116,6 +116,8 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::FoxpostSzallitasiMod);
         $szallmod = new szallitasimodController($this->params);
         $view->setVar('foxpostszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
+        $p = $repo->find(\mkw\consts::TOFSzallitasiMod);
+        $view->setVar('tofszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
 
         $p = $repo->find(\mkw\consts::NullasAfa);
         $fizmod = new afaController($this->params);
@@ -525,6 +527,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::FoxpostSzallitasiMod, '');
+        }
+
+        $szm = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('tofszallmod', 0));
+        if ($szm) {
+            $this->setObj(\mkw\consts::TOFSzallitasiMod, $szm->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::TOFSzallitasiMod, '');
         }
 
         $belsouk = \mkw\store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('belsouk', 0));
