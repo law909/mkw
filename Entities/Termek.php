@@ -1714,7 +1714,7 @@ class Termek {
      * @param \Entities\Valutanem $valutanem
      * @return float
      */
-    public function getKedvezmenynelkuliNettoAr($valtozat = null, $partner = null, $valutanem = null) {
+    public function getKedvezmenynelkuliNettoAr($valtozat = null, $partner = null, $valutanem = null, $arsavazon = null) {
         if (!\mkw\store::isArsavok()) {
             $netto = $this->getNetto();
             if ($this->getAkcios()) {
@@ -1726,12 +1726,14 @@ class Termek {
             return $netto;
         }
         else {
-            $arsavazon = false;
-            if ($partner) {
-                $arsavazon = $partner->getTermekarazonosito();
-                if (!$valutanem) {
-                    $valutanem = $partner->getValutanem();
+            if (!$arsavazon) {
+                $arsavazon = false;
+                if ($partner) {
+                    $arsavazon = $partner->getTermekarazonosito();
                 }
+            }
+            if ($partner && !$valutanem) {
+                $valutanem = $partner->getValutanem();
             }
             $netto = 0;
             $arsav = \mkw\store::getEm()->getRepository('Entities\TermekAr')->getArsav($this, $valutanem, $arsavazon);
