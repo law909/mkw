@@ -54,13 +54,15 @@ class termekarController extends \mkwhelpers\MattableController {
     }
 
     public function getSelectList($selid = null) {
-        $rec = $this->getRepo()->getExistingAzonositok();
+        $rec = $this->getRepo()->getExistingArsavok();
         $res = array();
         foreach ($rec as $sor) {
             $res[] = array(
                 'id' => $sor['azonosito'],
                 'caption' => $sor['azonosito'],
-                'selected' => ($sor['azonosito'] == $selid)
+                'selected' => ($sor['azonosito'] == $selid),
+                'valutanemid' => $sor['valutanemid'],
+                'valutanem' => $sor['valutanem']
             );
         }
         return $res;

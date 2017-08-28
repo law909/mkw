@@ -11,6 +11,8 @@ class keszletlistaController extends \mkwhelpers\MattableController {
     private $raktarnev;
     private $nevfilter;
     private $foglalasstr;
+    private $arsavstr;
+    private $nettobruttostr;
 
     public function view() {
         $view = $this->createView('keszletlista.tpl');
@@ -21,6 +23,9 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         $view->setVar('raktarlist', $rc->getSelectList());
 
         $view->setVar('nyelvlist', \mkw\store::getLocaleSelectList());
+
+        $tac = new termekarController($this->params);
+        $view->setVar('arsavlist', $tac->getSelectList());
 
         $view->printTemplateResult();
     }
@@ -138,7 +143,50 @@ class keszletlistaController extends \mkwhelpers\MattableController {
             . ' ORDER BY t.cikkszam, ' . $termeknevmezo . ', _xx.ertek1, _xx.ertek2', $rsm);
 
         $q->setParameters(array_merge_recursive($filter->getQueryParameters('p'), $termekfilter->getQueryParameters('r')));
-        return $q->getScalarResult();
+        $d = $q->getScalarResult();
+
+        $nettobrutto = $this->params->getStringRequestParam('nettobrutto');
+        switch ($nettobrutto) {
+            case 'netto':
+                $this->nettobruttostr = t('Nettó');
+                break;
+            case 'brutto':
+                $this->nettobruttostr = t('Bruttó');
+                break;
+            default:
+                break;
+        }
+
+        $as = explode('_', $this->params->getStringRequestParam('arsav'));
+        $arsav = $as[0];
+        $valutanem = $as[1];
+        $valutaobj = $this->getRepo('Entities\Valutanem')->find($valutanem);
+        $this->arsavstr = $arsav;
+        if ($valutaobj) {
+            $this->arsavstr .= ' ' . $valutaobj->getNev();
+        }
+        $ret = array();
+        foreach ($d as $sor) {
+            if ($as) {
+                /** @var \Entities\Termek $t */
+                $t = $this->getRepo('Entities\Termek')->find($sor['termek_id']);
+                if ($t) {
+                    switch ($nettobrutto) {
+                        case 'netto':
+                            $sor['ar'] = $t->getNettoAr($sor['id'], null, $valutanem, $arsav);
+                            break;
+                        case 'brutto':
+                            $sor['ar'] = $t->getBruttoAr($sor['id'], null, $valutanem, $arsav);
+                            break;
+                        default:
+                            $sor['ar'] = 0;
+                            break;
+                    }
+                }
+            }
+            $ret[] = $sor;
+        }
+        return $ret;
     }
 
     public function createLista() {
@@ -149,6 +197,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         $report->setVar('raktar', $this->raktarnev);
         $report->setVar('nevfilter', $this->nevfilter);
         $report->setVar('foglalasstr', $this->foglalasstr);
+        $report->setVar('arsav', $this->arsavstr . ' ' . $this->nettobruttostr);
         $report->printTemplateResult();
 
     }
@@ -167,7 +216,8 @@ class keszletlistaController extends \mkwhelpers\MattableController {
             ->setCellValue('A1', t('Cikkszám'))
             ->setCellValue('B1', t('Termék'))
             ->setCellValue('C1', t('Változat'))
-            ->setCellValue('D1', t('Készlet'));
+            ->setCellValue('D1', t('Készlet'))
+            ->setCellValue('E1', t('Ár'));
 
         $mind = $this->getData();
 
@@ -177,7 +227,8 @@ class keszletlistaController extends \mkwhelpers\MattableController {
                 ->setCellValue('A' . $sor, $item['cikkszam'])
                 ->setCellValue('B' . $sor, $item['termeknev'])
                 ->setCellValue('C' . $sor, $item['ertek1'] . ' ' . $item['ertek2'])
-                ->setCellValue('D' . $sor, $item['keszlet']);
+                ->setCellValue('D' . $sor, $item['keszlet'])
+                ->setCellValue('E' . $sor, $item['ar']);
             $sor++;
         }
 
