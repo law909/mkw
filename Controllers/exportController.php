@@ -651,7 +651,7 @@ class exportController extends \mkwhelpers\Controller {
 
         $res = $tr->getAllValtozatForExport($filter, \mkw\store::getParameter(\mkw\consts::Locale));
 
-//        $eur = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(array('nev' => 'EUR'));
+        $eur = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(array('nev' => 'EUR'));
 
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
@@ -673,8 +673,8 @@ class exportController extends \mkwhelpers\Controller {
                         '"' . $keszlet . '"',
                         '"' . $valt->getVonalkod() . '"',
                         '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
-                        '"' . \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"'
-                        //'"' . $t->getBruttoAr($valt, null, $eur, 'eurar') . '"'
+                        '"' . \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"',
+                        '"' . $t->getBruttoAr($valt, null, $eur, 'eurar') . '"'
                     );
                     echo implode(";", $sor) . "\n";
                 }
@@ -693,8 +693,8 @@ class exportController extends \mkwhelpers\Controller {
                     '"' . $keszlet . '"',
                     '"' . $t->getVonalkod() . '"',
                     '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
-                    '"' . \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"'
-                    //'"' . $t->getBruttoAr(null, null, $eur, 'eurar') . '"'
+                    '"' . \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"',
+                    '"' . $t->getBruttoAr(null, null, $eur, 'eurar') . '"'
                 );
                 echo implode(";", $sor) . "\n";
             }
