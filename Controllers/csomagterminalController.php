@@ -207,8 +207,4 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         ));
     }
 
-    public function oldconvert() {
-
-    }
-
 }
