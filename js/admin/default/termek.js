@@ -397,6 +397,26 @@ $(document).ready(function () {
                             }
                         });
                     }
+                })
+                .on('change', '.js-fieldselect', function(e) {
+                    var $this = $(this),
+                        x = $('option:selected', $this).val(),
+                        editor;
+                    if (!$.browser.mobile) {
+                        if (x === 'leiras') {
+                            editor = $('.js-contenteditor_' + $this.data('id'));
+                            editor.addClass('js-ckeditor');
+                            editor.ckeditor();
+                        }
+                        else {
+                            editor = $('.js-contenteditor_' + $this.data('id'));
+                            if (editor && editor.hasClass('js-ckeditor')) {
+                                editor.removeClass('js-ckeditor');
+                                editor = editor.ckeditorGet();
+                                editor.destroy();
+                            }
+                        }
+                    }
                 });
             $('.js-translationnewbutton,.js-translationdelbutton').button();
             kapcsolodotab.on('click', '.js-kapcsolodonewbutton', function (e) {
@@ -689,6 +709,9 @@ $(document).ready(function () {
             if (!$.browser.mobile) {
                 CKFinder.setupCKEditor(null, '/ckfinder/');
                 $('#LeirasEdit').ckeditor();
+                $('.js-ckeditor').each(function() {
+                    $(this).ckeditor();
+                });
             }
         },
         beforeSerialize: function (form, opt) {
@@ -714,11 +737,18 @@ $(document).ready(function () {
             return true;
         },
         beforeHide: function () {
+            var editor;
             if (!$.browser.mobile) {
                 editor = $('#LeirasEdit').ckeditorGet();
                 if (editor) {
                     editor.destroy();
                 }
+                $('.js-ckeditor').each(function() {
+                    editor = $(this).ckeditorGet();
+                    if (editor) {
+                        editor.destroy();
+                    }
+                });
             }
         },
         onSubmit: function () {

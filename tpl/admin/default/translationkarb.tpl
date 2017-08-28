@@ -8,15 +8,15 @@
                     <tbody>
                         <tr>
                             <td><label for="TrLocaleEdit{$translation.id}">{at('Nyelv')}:</label></td>
-                            <td><select id="TrLocaleEdit{$translation.id}" name="translationlocale_{$translation.id}" value="{$translation.id}" required="required">
+                            <td><select id="TrLocaleEdit{$translation.id}" name="translationlocale_{$translation.id}" required="required">
                                     <option value="">{at('válasszon')}</option>
                                     {foreach $localelist as $_locale}
                                         <option value="{$_locale}"{if ($translation.locale == $_locale)} selected="selected"{/if}>{$_locale}</option>
                                     {/foreach}
                                 </select>
                             </td>
-                            <td><label for="TrLocaleEdit{$translation.id}">{at('Mező')}:</label></td>
-                            <td><select id="TrLocaleEdit{$translation.id}" name="translationfield_{$translation.id}" value="{$translation.id}" required="required">
+                            <td><label for="TrFieldEdit{$translation.id}">{at('Mező')}:</label></td>
+                            <td><select id="TrFieldEdit{$translation.id}" class="js-fieldselect" name="translationfield_{$translation.id}" data-id="{$translation.id}" required="required">
                                     <option value="">{at('válasszon')}</option>
                                     {foreach $translation.fieldlist as $_field}
                                         <option value="{$_field.id}"{if ($_field.selected)} selected="selected"{/if}>{$_field.caption}</option>
@@ -25,15 +25,7 @@
                             </td>
                             <td><label for="TrContentEdit{$translation.id}">{at('Érték')}:</label></td>
                             <td>
-                                {if ($translation.type == 1)}
-                                    <input id="TrContentEdit{$translation.id}" type="text" size="83" name="translationcontent_{$translation.id}" value="{$translation.content}">
-                                {elseif ($translation.type == 2)}
-                                    <textarea id="TrContentEdit{$translation.id}" name="translationcontent_{$translation.id}">{$translation.content}</textarea>
-                                {elseif ($translation.type == 3)}
-                                    <textarea id="TrContentEdit{$translation.id}" name="translationcontent_{$translation.id}">{$translation.content}</textarea>
-                                {else}
-                                    <input id="TrContentEdit{$translation.id}" type="text" size="83" name="translationcontent_{$translation.id}" value="{$translation.content}">
-                                {/if}
+                                <textarea id="TrContentEdit{$translation.id}" class="js-contenteditor_{$translation.id}{if ($translation.type == 2)} js-ckeditor{/if}" name="translationcontent_{$translation.id}">{$translation.content}</textarea>
                             </td>
                         </tr>
                     <tbody>
