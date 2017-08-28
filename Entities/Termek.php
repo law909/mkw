@@ -1677,8 +1677,8 @@ class Termek {
      * @param \Entities\Valutanem $valutanem
      * @return float
      */
-    public function getNettoAr($valtozat = null, $partner = null, $valutanem = null) {
-        $netto = $this->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem);
+    public function getNettoAr($valtozat = null, $partner = null, $valutanem = null, $arsavazon = null) {
+        $netto = $this->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem, $arsavazon);
 
         $kdv = $this->getKedvezmeny($partner);
         if ($kdv) {
