@@ -243,6 +243,9 @@ class importController extends \mkwhelpers\Controller {
             case 'legavenue':
                 $imp = \mkw\consts::GyartoLegavenue;
                 break;
+            case 'nomad':
+                $imp = \mkw\consts::GyartoNomad;
+                break;
             default:
                 $imp = false;
                 break;
@@ -821,7 +824,7 @@ class importController extends \mkwhelpers\Controller {
             $this->setRunningImport(\mkw\consts::RunningNomadImport, 1);
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
-            $gyartoid = $this->params->getIntRequestParam('gyarto', 0);
+            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoNomad);
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
             $dbig = $this->params->getIntRequestParam('dbig', 0);
             $editleiras = $this->params->getBoolRequestParam('editleiras', false);
@@ -829,9 +832,9 @@ class importController extends \mkwhelpers\Controller {
             $arszaz = $this->params->getNumRequestParam('arszaz', 100);
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-            //$urleleje = \mkw\store::changeDirSeparator();
+            $urleleje = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathNomad));
 
-            //$path = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . $this->params->getStringRequestParam('path'));
+            $path = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathNomad));
             $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
             if ($mainpath) {
                 $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
@@ -839,7 +842,6 @@ class importController extends \mkwhelpers\Controller {
             $path = $mainpath . $path;
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-
 
             $ch = \curl_init('http://www.nomadsport.eu/upload/stocks/nomadsport_6.xml');
             $fh = fopen('nomad.xml', 'w');
@@ -849,7 +851,6 @@ class importController extends \mkwhelpers\Controller {
 
             $xml = simplexml_load_file("nomad.xml");
             if ($xml) {
-                $afa = \mkw\store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
                 $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                 $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
@@ -881,7 +882,7 @@ class importController extends \mkwhelpers\Controller {
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
                     $data = toArr($products[$termekdb]);
                     if ($data['category']) {
-                        $parent = $this->createKategoria($data['category'], $parentid);
+                        $this->createKategoria($data['category'], $parentid);
                     }
                     $termekdb++;
                 }
@@ -898,8 +899,126 @@ class importController extends \mkwhelpers\Controller {
 
                         if (!$termek) {
                             if ($createuj) {
+
+                                \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - new', 'nomadimport.log');
+
+                                $urlkatnev = \mkw\store::urlize($data['category']);
+                                \mkw\store::createDirectoryRecursively($path . $urlkatnev);
+
                                 $parent = $this->createKategoria($data['category'], $parentid);
                                 $termek = new \Entities\Termek();
+                                $termek->setFuggoben(true);
+                                $termek->setMe('db');
+                                $termek->setNev($data['name']);
+                                $termek->setIdegencikkszam($data['sku']);
+                                if ($data['catalog_first']) {
+                                    $termek->setCikkszam($data['catalog_first']);
+                                }
+                                elseif ($data['catalog_second']) {
+                                    $termek->setCikkszam($data['catalog_second']);
+                                }
+                                if ($gyarto) {
+                                    $termek->setGyarto($gyarto);
+                                }
+                                $puri = new \mkwhelpers\HtmlPurifierSanitizer(array(
+                                    'HTML.Allowed' => 'p,ul,li,b,strong,br'
+                                ));
+                                $hosszuleiras = $puri->sanitize(trim($data['long_description']));
+
+                                $puri2 = \mkw\store::getSanitizer();
+                                $rovidleiras = $puri2->sanitize(trim($data['short_description']));
+                                $termek->setLeiras($hosszuleiras);
+                                $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
+                                $termek->setTermekfa1($parent);
+                                $termek->setVtsz($vtsz[0]);
+
+                                // kepek
+
+                                $imgurl = trim($data['photo']);
+                                $imgurl = str_replace('http://', 'http:/', $imgurl);
+                                $imgurl = str_replace('http:/', 'http://', $imgurl);
+                                $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+                                $kepnev = \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+
+                                $extension = \mkw\store::getExtension($imgurl);
+                                $imgpath = $nameWithoutExt . '.' . $extension;
+
+                                $ch = \curl_init($imgurl);
+                                $ih = fopen($imgpath, 'w');
+                                \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                \curl_exec($ch);
+                                fclose($ih);
+
+                                foreach ($this->settings['sizes'] as $k => $size) {
+                                    $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                    $matches = explode('x', $size);
+                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                }
+                                $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                $termek->setKepleiras($data['name']);
+                            }
+                        }
+                        else {
+                            /** @var \Entities\Termek $termek */
+                            \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - edit', 'nomadimport.log');
+                            $termek = $termek[0];
+                            if ($editleiras) {
+                                $puri = new \mkwhelpers\HtmlPurifierSanitizer(array(
+                                    'HTML.Allowed' => 'p,ul,li,b,strong,br'
+                                ));
+                                $hosszuleiras = $puri->sanitize(trim($data['long_description']));
+
+                                $puri2 = \mkw\store::getSanitizer();
+                                $rovidleiras = $puri2->sanitize(trim($data['short_description']));
+                                $termek->setLeiras($hosszuleiras);
+                                //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
+                            }
+                        }
+                        if ($termek) {
+                            if (!$data['available']) {
+                                if ($termek->getKeszlet() <= 0) {
+                                    $termek->setNemkaphato(true);
+                                }
+                            }
+                            else {
+                                $termek->setNemkaphato(false);
+                            }
+                            if (!$termek->getAkcios()) {
+                                $termek->setBrutto($data['price']);
+                            }
+                            \mkw\store::getEm()->persist($termek);
+                        }
+                    }
+                    if (($termekdb % $batchsize) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                    }
+                    $termekdb++;
+                }
+                \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->clear();
+
+                $termekdb = $dbtol;
+                while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
+                    $data = toArr($products[$termekdb]);
+
+                    $szulo = array_key_exists($data['sku'], $szulok);
+                    if ($szulo) {
+                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $data['sku'], 'gyarto' => $gyartoid));
+
+                        if (!$termek) {
+                            if ($createuj) {
+
+                                \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - new - parent', 'nomadimport.log');
+
+                                $urlkatnev = \mkw\store::urlize($data['category']);
+                                \mkw\store::createDirectoryRecursively($path . $urlkatnev);
+
+                                $parent = $this->createKategoria($data['category'], $parentid);
+                                $termek = new \Entities\Termek();
+                                $termek->setIdegencikkszam($data['sku']);
                                 $termek->setFuggoben(true);
                                 $termek->setMe('db');
                                 $termek->setNev($data['name']);
@@ -912,18 +1031,212 @@ class importController extends \mkwhelpers\Controller {
                                 if ($gyarto) {
                                     $termek->setGyarto($gyarto);
                                 }
-                                $hosszuleiras = trim($data['long_description']);
-                                $rovidleiras = trim($data['short_description']);
+                                $puri = new \mkwhelpers\HtmlPurifierSanitizer(array(
+                                    'HTML.Allowed' => 'p,ul,li,b,strong,br'
+                                ));
+                                $hosszuleiras = $puri->sanitize(trim($data['long_description']));
+
+                                $puri2 = \mkw\store::getSanitizer();
+                                $rovidleiras = $puri2->sanitize(trim($data['short_description']));
                                 $termek->setLeiras($hosszuleiras);
                                 $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
                                 $termek->setTermekfa1($parent);
                                 $termek->setVtsz($vtsz[0]);
+
+                                // kepek
+
+                                $imgurl = trim($data['photo']);
+                                $imgurl = str_replace('http://', 'http:/', $imgurl);
+                                $imgurl = str_replace('http:/', 'http://', $imgurl);
+                                $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+                                $kepnev = \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+
+                                $extension = \mkw\store::getExtension($imgurl);
+                                $imgpath = $nameWithoutExt . '.' . $extension;
+
+                                $ch = \curl_init($imgurl);
+                                $ih = fopen($imgpath, 'w');
+                                \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                \curl_exec($ch);
+                                fclose($ih);
+
+                                foreach ($this->settings['sizes'] as $k => $size) {
+                                    $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                    $matches = explode('x', $size);
+                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                }
+                                $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                $termek->setKepleiras($data['name']);
+
+                                $valtozat = new \Entities\TermekValtozat();
+                                $valtozat->setAdatTipus1($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)));
+                                $valtozat->setErtek1($data['color']);
+                                $valtozat->setAdatTipus2($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)));
+                                $valtozat->setErtek2($data['size']);
+                                $valtozat->setIdegencikkszam($data['sku']);
+                                if ($data['catalog_first']) {
+                                    $valtozat->setCikkszam($data['catalog_first']);
+                                }
+                                elseif ($data['catalog_second']) {
+                                    $valtozat->setCikkszam($data['catalog_second']);
+                                }
+                                $valtozat->setTermek($termek);
+                                \mkw\store::getEm()->persist($valtozat);
                             }
                         }
+                        else {
+                            /** @var \Entities\Termek $termek */
+                            \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - edit - parent', 'nomadimport.log');
+                            $termek = $termek[0];
+                            if ($editleiras) {
+                                $puri = new \mkwhelpers\HtmlPurifierSanitizer(array(
+                                    'HTML.Allowed' => 'p,ul,li,b,strong,br'
+                                ));
+                                $hosszuleiras = $puri->sanitize(trim($data['long_description']));
+
+                                $puri2 = \mkw\store::getSanitizer();
+                                $rovidleiras = $puri2->sanitize(trim($data['short_description']));
+                                $termek->setLeiras($hosszuleiras);
+                                //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
+                            }
+                        }
+                        if ($termek) {
+                            if (!$data['available']) {
+                                if ($termek->getKeszlet() <= 0) {
+                                    $termek->setNemkaphato(true);
+                                }
+                            }
+                            else {
+                                $termek->setNemkaphato(false);
+                            }
+                            if (!$termek->getAkcios()) {
+                                $termek->setBrutto($data['price']);
+                            }
+                            \mkw\store::getEm()->persist($termek);
+                        }
+                    }
+                    if (($termekdb % $batchsize) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                     }
                     $termekdb++;
                 }
+                \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->clear();
 
+                $termekdb = $dbtol;
+                while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
+                    $data = toArr($products[$termekdb]);
+
+                    $gyerek = array_key_exists($data['sku'], $gyereklist);
+                    if ($gyerek) {
+
+                        $termek = false;
+                        $valtozat = false;
+                        $valtozatok = $this->getRepo('Entities\TermekValtozat')->findBy(array('idegencikkszam' => $data['sku']));
+                        if ($valtozatok) {
+                            foreach ($valtozatok as $v) {
+                                $termek = $v->getTermek();
+                                if ($termek && $termek->getGyartoId() == $gyartoid) {
+                                    $valtozat = $v;
+                                    break;
+                                }
+                            }
+                        }
+                        else {
+                            $termek = $this->getRepo('Entities\Termek')->findBy(array('idegencikkszam' => $data['parent'], 'gyarto' => $gyartoid));
+                        }
+
+                        if (is_array($termek)) {
+                            $termek = $termek[0];
+                        }
+                        if ($termek) {
+                            if (!$valtozat) {
+                                if ($createuj) {
+
+                                    \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - new - child', 'nomadimport.log');
+
+                                    $urlkatnev = \mkw\store::urlize($data['category']);
+                                    \mkw\store::createDirectoryRecursively($path . $urlkatnev);
+
+                                    $valtozat = new \Entities\TermekValtozat();
+                                    $valtozat->setAdatTipus1($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)));
+                                    $valtozat->setErtek1($data['color']);
+                                    $valtozat->setAdatTipus2($this->getRepo('Entities\TermekValtozatAdatTipus')->find(\mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)));
+                                    $valtozat->setErtek2($data['size']);
+                                    $valtozat->setIdegencikkszam($data['sku']);
+                                    if ($data['catalog_first']) {
+                                        $valtozat->setCikkszam($data['catalog_first']);
+                                    }
+                                    elseif ($data['catalog_second']) {
+                                        $valtozat->setCikkszam($data['catalog_second']);
+                                    }
+                                    $valtozat->setTermek($termek);
+
+                                    // kepek
+
+                                    $imgurl = trim($data['photo']);
+                                    $imgurl = str_replace('http://', 'http:/', $imgurl);
+                                    $imgurl = str_replace('http:/', 'http://', $imgurl);
+                                    $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+                                    $kepnev = \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+
+                                    $extension = \mkw\store::getExtension($imgurl);
+                                    $imgpath = $nameWithoutExt . '.' . $extension;
+
+                                    $ch = \curl_init($imgurl);
+                                    $ih = fopen($imgpath, 'w');
+                                    \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                    \curl_exec($ch);
+                                    fclose($ih);
+
+                                    foreach ($this->settings['sizes'] as $k => $size) {
+                                        $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                        $matches = explode('x', $size);
+                                        \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                    }
+                                    if (!$termek->getKepurl()) {
+                                        $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                        $termek->setKepleiras($data['name']);
+                                        $valtozat->setTermekfokep(true);
+                                    }
+                                    else {
+                                        $tkep = new \Entities\TermekKep();
+                                        $termek->addTermekKep($tkep);
+                                        $tkep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                        $tkep->setLeiras($data['name']);
+                                        $valtozat->setKep($tkep);
+                                        \mkw\store::getEm()->persist($tkep);
+                                    }
+                                    \mkw\store::getEm()->persist($valtozat);
+                                }
+                            }
+                            else {
+                                if (!$data['available']) {
+                                    if ($valtozat->getKeszlet() <= 0) {
+                                        $valtozat->setElerheto(false);
+                                    }
+                                }
+                                else {
+                                    $valtozat->setElerheto(true);
+                                }
+                                \mkw\store::getEm()->persist($valtozat);
+                            }
+                        }
+                        else {
+                            \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - NO PARENT TERMEK - child', 'nomadimport.log');
+                        }
+                    }
+                    if (($termekdb % $batchsize) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                    }
+                    $termekdb++;
+                }
+                \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->clear();
             }
             \unlink('nomad.xml');
 
