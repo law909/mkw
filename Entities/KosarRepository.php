@@ -449,7 +449,7 @@ class KosarRepository extends \mkwhelpers\Repository {
         }
     }
 
-    public function createSzallitasiKtg($szallmod = null, $kuponkod = null) {
+    public function createSzallitasiKtg($szallmod = null, $fizmod = null, $kuponkod = null) {
         $szamol = true;
         if ($szallmod) {
             $szm = $this->getRepo('Entities\Szallitasimod')->find($szallmod);
@@ -473,6 +473,7 @@ class KosarRepository extends \mkwhelpers\Repository {
                     $partner = \mkw\store::getLoggedInUser();
                     $ktg = $this->getRepo('Entities\Szallitasimod')->getSzallitasiKoltseg(
                         $szallmod,
+                        $fizmod,
                         \mkw\store::getPartnerOrszag($partner),
                         \mkw\store::getPartnerValutanem($partner),
                         $ertek);
@@ -486,6 +487,36 @@ class KosarRepository extends \mkwhelpers\Repository {
                 $this->remove($termek);
             }
         }
+    }
+
+    public function calcSzallitasiKtg($szallmod = null, $fizmod = null, $kuponkod = null) {
+        $ktg = 0;
+        $szamol = true;
+        if ($szallmod) {
+            $szm = $this->getRepo('Entities\Szallitasimod')->find($szallmod);
+            $szamol = $szm->getVanszallitasiktg();
+        }
+
+        $kupon = $this->getRepo('Entities\Kupon')->find($kuponkod);
+        if ($kupon && $kupon->isErvenyes() && $kupon->isIngyenSzallitas()) {
+            $szamol = false;
+        }
+
+        if ($szamol) {
+            $e = $this->calcSumBySessionId(\Zend_Session::getId());
+            $ertek = $e['sum'];
+            $cnt = $e['count'];
+            if ($cnt != 0) {
+                $partner = \mkw\store::getLoggedInUser();
+                $ktg = $this->getRepo('Entities\Szallitasimod')->getSzallitasiKoltseg(
+                    $szallmod,
+                    $fizmod,
+                    \mkw\store::getPartnerOrszag($partner),
+                    \mkw\store::getPartnerValutanem($partner),
+                    $ertek);
+            }
+        }
+        return $ktg;
     }
 
     public function getHash() {

@@ -176,6 +176,7 @@ class BizonylatfejListener {
                 if (!$bruttoegysar) {
                     $ktg = $this->em->getRepository('Entities\Szallitasimod')->getSzallitasiKoltseg(
                         $szallmod,
+                        $bizfej->getFizmod(),
                         $bizfej->getPartner()->getOrszag(),
                         $bizfej->getValutanem(),
                         $ertek);

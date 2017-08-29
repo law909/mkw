@@ -586,13 +586,17 @@ var checkout = (function($, guid) {
 			success: function(data) {
                 var d = JSON.parse(data);
 				$('.js-chkfizmodlist').html(d.html);
+                loadTetelList();
 				refreshAttekintes();
 			}
 		});
-        loadTetelList();
 	}
 
-    function loadFoxpostCsoportData(termis) {
+    function loadCsomagterminalData(termis) {
+        $('.js-foxpostterminalcontainer').empty().hide();
+        $('.js-tofmapcontainer').empty().hide();
+        $('.js-tofnev').val('');
+        $('.js-tofid').val('');
         var $szallmodchk = $('input[name="szallitasimod"]:checked');
         if ($szallmodchk.hasClass('js-foxpostchk')) {
             $.ajax({
@@ -612,10 +616,14 @@ var checkout = (function($, guid) {
                 }
             })
         }
-        else {
-            $('.js-foxpostterminalcontainer').empty().hide();
-            refreshAttekintes();
-        }
+        else
+            if ($szallmodchk.hasClass('js-tofchk')) {
+                $('.js-tofmapcontainer').html('<iframe width="100%" height="471px" src="http://tofweb.hu/tofshops/ts_api_v2.php"></iframe>').show();
+                refreshAttekintes();
+            }
+            else {
+                refreshAttekintes();
+            }
     }
 
     function loadFoxpostTerminalData() {
@@ -651,6 +659,7 @@ var checkout = (function($, guid) {
             url: '/checkout/gettetellist',
 			data: {
 				szallitasimod: $('input[name="szallitasimod"]:checked').val(),
+                fizmod: $('input[name="fizetesimod"]:checked').val(),
                 kupon: $('input[name="kupon"]').val()
 			},
             success: function(data) {
@@ -665,6 +674,7 @@ var checkout = (function($, guid) {
     }
 
 	function refreshAttekintes() {
+        var $szallmodchk = $('input[name="szallitasimod"]:checked');
 		$('.js-chkvezeteknev').text(vezeteknevinput.val());
 		$('.js-chkkeresztnev').text(keresztnevinput.val());
 		$('.js-chktelefon').text(telefoninput.val());
@@ -688,8 +698,16 @@ var checkout = (function($, guid) {
             $('.js-chkszamlautca').text(szamlautcainput.val());
 		}
 		$('.js-chkszallitasimod').text($('input[name="szallitasimod"]:checked').data('caption'));
-        $('.js-chkfoxpostterminal').text($('select[name="foxpostterminal"] option:selected').text());
-		$('.js-chkfizmod').text($('input[name="fizetesimod"]:checked').data('caption'));
+        $('.js-chkcsomagterminal').text('');
+        if ($szallmodchk.hasClass('js-foxpostchk')) {
+            $('.js-chkcsomagterminal').text($('select[name="foxpostterminal"] option:selected').text());
+        }
+        else {
+            if ($szallmodchk.hasClass('js-tofchk')) {
+                $('.js-chkcsomagterminal').text($('.js-tofnev').val());
+            }
+        }
+		$('.js-chkfizetesimod').text($('input[name="fizetesimod"]:checked').data('caption'));
 		$('.js-chkwebshopmessage').text(webshopmessageinput.val());
 		$('.js-chkcouriermessage').text(couriermessageinput.val());
 	}
@@ -742,7 +760,7 @@ var checkout = (function($, guid) {
 			couriermessageinput = $('textarea[name="couriermessage"]');
 
 			loadFizmodList();
-            loadFoxpostCsoportData(true);
+            loadCsomagterminalData(true);
 
 			$checkout
             .on('change', 'select[name="foxpostcsoport"]', function() {
@@ -750,8 +768,11 @@ var checkout = (function($, guid) {
             })
 			.on('change', 'input[name="szallitasimod"]', function() {
 				loadFizmodList();
-                loadFoxpostCsoportData(true);
+                loadCsomagterminalData(true);
 			})
+            .on('change', 'input[name="fizetesimod"]', function() {
+                loadTetelList();
+            })
             .on('blur', 'input[name="kupon"]', function() {
                 loadTetelList();
             })
@@ -798,6 +819,32 @@ var checkout = (function($, guid) {
 				type: 'ajax',
                 closeBtnInside: false
 			});
+
+            window.addEventListener('message', function(e) {
+                // TOF csomagpont választó
+                if (e.origin === 'http://tofweb.hu') {
+                    $('.js-tofnev').val(e.data.name + ' - ' + e.data.county + ', ' + e.data.zip_code + ' ' + e.data.city + ', ' + e.data.street);
+                    $.ajax({
+                        url: '/checkout/getcsomagterminalid',
+                        data: {
+                            tipus: 'tofshop',
+                            id: e.data.tof_shop_id,
+                            nev: e.data.name,
+                            cim: e.data.county + ', ' + e.data.zip_code + ' ' + e.data.city + ', ' + e.data.street,
+                            csoport: e.data.city,
+                            nyitva: e.data.opening,
+                            findme: e.data.phone1,
+                            geolat: e.data.gis_y,
+                            geolng: e.data.gis_x
+                        },
+                        success: function(data) {
+                            var d = JSON.parse(data);
+                            $('.js-tofid').val(d.id);
+                            refreshAttekintes();
+                        }
+                    });
+                }
+            });
 
             checkoutform.on('submit', function(e) {
                 var hibas = false, tofocus = false, hibauzenet;

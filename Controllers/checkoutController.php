@@ -117,10 +117,23 @@ class checkoutController extends \mkwhelpers\MattableController {
 	}
 
 	public function getFizmodList() {
+	    $krepo = $this->getRepo('Entities\SzallitasimodFizmodNovelo');
 		$view = \mkw\store::getTemplateFactory()->createMainView('checkoutfizmodlist.tpl');
-		$szm = new fizmodController($this->params);
-		$szlist = $szm->getSelectList(null, $this->params->getIntRequestParam('szallitasimod'));
-		$view->setVar('fizmodlist', $szlist);
+		$fm = new fizmodController($this->params);
+		$szm = $this->params->getIntRequestParam('szallitasimod');
+		$szlist = $fm->getSelectList(null, $szm);
+		$adat = array();
+		foreach ($szlist as $szl) {
+		    $x = $krepo->getBySzallitasimodFizmod($szm, $szl['id']);
+		    if ($x) {
+		        if (is_array($x)) {
+		            $x = $x[0];
+                }
+                $szl['novelo'] = $x->getOsszeg();
+            }
+		    $adat[] = $szl;
+        }
+		$view->setVar('fizmodlist', $adat);
 		echo json_encode(array(
             'html' => $view->getTemplateResult()
         ));
@@ -146,7 +159,10 @@ class checkoutController extends \mkwhelpers\MattableController {
                 $kuponszoveg = 'ismeretlen kupon';
             }
         }
-        $this->getRepo('Entities\Kosar')->createSzallitasiKtg($this->params->getIntRequestParam('szallitasimod'), $kuponkod);
+        $this->getRepo('Entities\Kosar')->createSzallitasiKtg(
+            $this->params->getIntRequestParam('szallitasimod'),
+            $this->params->getIntRequestParam('fizmod'),
+            $kuponkod);
 		$view = \mkw\store::getTemplateFactory()->createMainView('checkouttetellist.tpl');
 
         $kr = $this->getRepo('Entities\Kosar');

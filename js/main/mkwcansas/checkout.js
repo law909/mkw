@@ -46,10 +46,10 @@ var checkout = (function($, guid) {
 			success: function(data) {
                 var d = JSON.parse(data);
 				$('.js-chkfizmodlist').html(d.html);
+                loadTetelList();
 				refreshAttekintes();
 			}
 		});
-        loadTetelList();
 	}
 
     function loadCsomagterminalData(termis) {
@@ -119,6 +119,7 @@ var checkout = (function($, guid) {
             url: '/checkout/gettetellist',
 			data: {
 				szallitasimod: $('input[name="szallitasimod"]:checked').val(),
+                fizmod: $('input[name="fizetesimod"]:checked').val(),
                 kupon: $('input[name="kupon"]').val()
 			},
             success: function(data) {
@@ -229,6 +230,9 @@ var checkout = (function($, guid) {
 				loadFizmodList();
                 loadCsomagterminalData(true);
 			})
+            .on('change', 'input[name="fizetesimod"]', function() {
+                loadTetelList();
+            })
             .on('blur', 'input[name="kupon"]', function() {
                 loadTetelList();
             })

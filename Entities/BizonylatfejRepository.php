@@ -185,7 +185,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
      * @param \Entities\Szallitasimod|null $szallmod
      * @param null $bruttoegysar
      */
-    public function createSzallitasiKtg($bizfej, $szallmod = null, $bruttoegysar = null) {
+/*    public function createSzallitasiKtg($bizfej, $szallmod = null, $bruttoegysar = null) {
         $szamol = true;
 
         if ($szallmod) {
@@ -272,7 +272,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $this->remove($bizfej->getId(), $termek);
         }
     }
-
+*/
     /**
      * @param \Entities\Bizonylatfej $o
      * @return array
