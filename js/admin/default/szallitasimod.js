@@ -165,6 +165,56 @@ $(document).ready(function(){
                         }
                     });
                 $('.js-orszagnewbutton,.js-orszagdelbutton').button();
+
+                $('#FizmodTab').on('click', '.js-fizmodnewbutton', function(e) {
+                    var $this = $(this);
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/admin/szallitasimodfizmodnovelo/getemptyrow',
+                        type: 'GET',
+                        success: function(data) {
+                            var tbody = $('#FizmodTab');
+                            tbody.append(data);
+                            $('.js-fizmodnewbutton,.js-fizmoddelbutton').button();
+                            $this.remove();
+                        }
+                    });
+                })
+                    .on('click', '.js-fizmoddelbutton', function(e) {
+                        e.preventDefault();
+                        var fizmodgomb = $(this),
+                            fizmodid = fizmodgomb.attr('data-id');
+                        if (fizmodgomb.attr('data-source') === 'client') {
+                            $('#fizmodtable_' + fizmodid).remove();
+                        }
+                        else {
+                            dialogcenter.html('Biztos, hogy törli a növelőt?').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'Igen': function() {
+                                        $.ajax({
+                                            url: '/admin/szallitasimodfizmodnovelo/save',
+                                            type: 'POST',
+                                            data: {
+                                                id: fizmodid,
+                                                oper: 'del'
+                                            },
+                                            success: function(data) {
+                                                $('#fizmodtable_' + data).remove();
+                                            }
+                                        });
+                                        $(this).dialog('close');
+                                    },
+                                    'Nem': function() {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                    });
+                $('.js-fizmodnewbutton,.js-fizmoddelbutton').button();
 			}
 	};
 

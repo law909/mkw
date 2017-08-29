@@ -7,6 +7,7 @@
 			<li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
             <li><a href="#HatarTab">{at('Összeghatárok')}</a></li>
             <li><a href="#OrszagTab">{at('Összeghatárok országonként')}</a></li>
+            <li><a href="#FizmodTab">{at('Fiz.mód növelők')}</a></li>
             {if ($setup.multilang)}
                 <li><a href="#TranslationTab">{at('Idegennyelvi adatok')}</a></li>
             {/if}
@@ -70,6 +71,14 @@
                 {include 'szallitasimodorszagkarb.tpl'}
             {/foreach}
             <a class="js-orszagnewbutton" href="#" title="{at('Új')}">
+                <span class="ui-icon ui-icon-circle-plus"></span>
+            </a>
+        </div>
+        <div id="FizmodTab" class="mattkarb-page" data-visible="visible">
+            {foreach $egyed.fizmodnovelok as $fizmod}
+                {include 'szallitasimodfizmodnovelokarb.tpl'}
+            {/foreach}
+            <a class="js-fizmodnewbutton" href="#" title="{at('Új')}">
                 <span class="ui-icon ui-icon-circle-plus"></span>
             </a>
         </div>

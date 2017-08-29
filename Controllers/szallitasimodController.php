@@ -51,6 +51,14 @@ class szallitasimodController extends \mkwhelpers\MattableController {
                     $orszagarr[] = $fhc->loadVars($hat, $forKarb);
                 }
                 $x['orszagok'] = $orszagarr;
+
+                $fhc = new szallitasimodfizmodnoveloController($this->params);
+                $h = $this->getRepo('Entities\SzallitasimodFizmodNovelo')->getBySzallitasimod($t);
+                $orszagarr = array();
+                foreach ($h as $hat) {
+                    $orszagarr[] = $fhc->loadVars($hat, $forKarb);
+                }
+                $x['fizmodnovelok'] = $orszagarr;
             }
             if (\mkw\store::isMultilang()) {
                 foreach($t->getTranslations() as $tr) {
@@ -138,6 +146,30 @@ class szallitasimodController extends \mkwhelpers\MattableController {
                         $orszagrec->setOrszag($orszag);
                     }
                     $this->getEm()->persist($orszagrec);
+                }
+            }
+        }
+        $fizmodids = $this->params->getArrayRequestParam('fizmodid');
+        foreach ($fizmodids as $fizmodid) {
+            $oper = $this->params->getStringRequestParam('fizmodoper_' . $fizmodid);
+            $fizmod = $this->getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmodfizmod_' . $fizmodid));
+            if ($oper === 'add') {
+                $fizmodrec = new \Entities\SzallitasimodFizmodNovelo();
+                $fizmodrec->setSzallitasimod($obj);
+                $fizmodrec->setOsszeg($this->params->getNumRequestParam('fizmodosszeg_' . $fizmodid));
+                if ($fizmod) {
+                    $fizmodrec->setFizmod($fizmod);
+                }
+                $this->getEm()->persist($fizmodrec);
+            }
+            elseif ($oper === 'edit') {
+                $fizmodrec = $this->getEm()->getRepository('Entities\SzallitasimodFizmodNovelo')->find($fizmodid);
+                if ($fizmodrec) {
+                    $fizmodrec->setOsszeg($this->params->getNumRequestParam('fizmodosszeg_' . $fizmodid));
+                    if ($fizmod) {
+                        $fizmodrec->setFizmod($fizmod);
+                    }
+                    $this->getEm()->persist($fizmodrec);
                 }
             }
         }
