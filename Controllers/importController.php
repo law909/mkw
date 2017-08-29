@@ -900,7 +900,7 @@ class importController extends \mkwhelpers\Controller {
                         if (!$termek) {
                             if ($createuj) {
 
-                                \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - new', 'nomadimport.log');
+//                                \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - new', 'nomadimport.log');
 
                                 $urlkatnev = \mkw\store::urlize($data['category']);
                                 \mkw\store::createDirectoryRecursively($path . $urlkatnev);
@@ -960,7 +960,7 @@ class importController extends \mkwhelpers\Controller {
                         }
                         else {
                             /** @var \Entities\Termek $termek */
-                            \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - edit', 'nomadimport.log');
+//                            \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - edit', 'nomadimport.log');
                             $termek = $termek[0];
                             if ($editleiras) {
                                 $puri = new \mkwhelpers\HtmlPurifierSanitizer(array(
@@ -1011,7 +1011,7 @@ class importController extends \mkwhelpers\Controller {
                         if (!$termek) {
                             if ($createuj) {
 
-                                \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - new - parent', 'nomadimport.log');
+//                                \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - new - parent', 'nomadimport.log');
 
                                 $urlkatnev = \mkw\store::urlize($data['category']);
                                 \mkw\store::createDirectoryRecursively($path . $urlkatnev);
@@ -1086,7 +1086,7 @@ class importController extends \mkwhelpers\Controller {
                         }
                         else {
                             /** @var \Entities\Termek $termek */
-                            \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - edit - parent', 'nomadimport.log');
+//                            \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - edit - parent', 'nomadimport.log');
                             $termek = $termek[0];
                             if ($editleiras) {
                                 $puri = new \mkwhelpers\HtmlPurifierSanitizer(array(
@@ -1156,7 +1156,7 @@ class importController extends \mkwhelpers\Controller {
                             if (!$valtozat) {
                                 if ($createuj) {
 
-                                    \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - new - child', 'nomadimport.log');
+//                                    \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - new - child', 'nomadimport.log');
 
                                     $urlkatnev = \mkw\store::urlize($data['category']);
                                     \mkw\store::createDirectoryRecursively($path . $urlkatnev);
