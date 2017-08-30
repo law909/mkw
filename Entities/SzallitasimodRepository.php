@@ -44,7 +44,7 @@ class SzallitasimodRepository extends \mkwhelpers\Repository {
                 $ktg = $ktg ? $ktg->getOsszeg() : 0;
                 break;
         }
-        if ($fizmod) {
+        if ($fizmod && $ktg > 0) {
             $n = \mkw\store::getEm()->getRepository('Entities\SzallitasimodFizmodNovelo')->getBySzallitasimodFizmod($szallmod, $fizmod);
             if ($n) {
                 if (is_array($n)) {
