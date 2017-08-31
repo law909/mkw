@@ -76,7 +76,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
      * @return mixed
      */
     public function sendMegrendelesToFoxpost($fej) {
-        $ch = $this->initCurl('orders');
+        $ch = $this->initFoxpostCurl('orders');
         $fields = array(
             'place_id' => (int)$fej->getCsomagterminalId(),
             'name' => ( \mkw\store::getConfigValue('developer') ? 'teszt' : $fej->getPartnernev()),
