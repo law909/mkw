@@ -819,6 +819,17 @@ class importController extends \mkwhelpers\Controller {
             );
         }
 
+        function keres($mit, $miben) {
+            $dbig = count($miben);
+            $termekdb = 0;
+            $megvan = false;
+            while (($dbig && ($termekdb < $dbig)) && !$megvan) {
+                $megvan = ((string) $miben[$termekdb]->sku) == $mit;
+                $termekdb++;
+            }
+            return $megvan;
+        }
+
         if (!$this->checkRunningImport(\mkw\consts::RunningNomadImport)) {
 
             $this->setRunningImport(\mkw\consts::RunningNomadImport, 1);
@@ -843,11 +854,14 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
+            @unlink('nomad_fuggoben.txt');
+
             $ch = \curl_init('http://www.nomadsport.eu/upload/stocks/nomadsport_6.xml');
             $fh = fopen('nomad.xml', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_exec($ch);
             fclose($fh);
+            \curl_close($ch);
 
             $xml = simplexml_load_file("nomad.xml");
             if ($xml) {
@@ -1059,6 +1073,7 @@ class importController extends \mkwhelpers\Controller {
                                 \curl_setopt($ch, CURLOPT_FILE, $ih);
                                 \curl_exec($ch);
                                 fclose($ih);
+                                \curl_close($ch);
 
                                 foreach ($this->settings['sizes'] as $k => $size) {
                                     $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
@@ -1191,6 +1206,7 @@ class importController extends \mkwhelpers\Controller {
                                     \curl_setopt($ch, CURLOPT_FILE, $ih);
                                     \curl_exec($ch);
                                     fclose($ih);
+                                    \curl_close($ch);
 
                                     foreach ($this->settings['sizes'] as $k => $size) {
                                         $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
@@ -1237,6 +1253,59 @@ class importController extends \mkwhelpers\Controller {
                 }
                 \mkw\store::getEm()->flush();
                 \mkw\store::getEm()->clear();
+
+                $szulok = null;
+                $gyereklist = null;
+
+                $lettfuggoben = false;
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                if ($gyarto) {
+                    $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
+                    $termekdb = 0;
+                    foreach ($termekek as $t) {
+                        /** @var \Entities\Termek $termek */
+                        $termek = $this->getRepo('Entities\Termek')->find($t['id']);
+                        if ($termek && !$termek->getFuggoben() && !$termek->getInaktiv()) {
+                            if (!keres($t['idegencikkszam'], $products)) {
+                                if ($termek->getKeszlet() <= 0) {
+                                      $lettfuggoben = true;
+                                    \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                    . ' ' . $termek->getNev(), 'nomad_fuggoben.txt');
+                                    $termek->setFuggoben(true);
+                                    $termek->setInaktiv(true);
+                                    \mkw\store::getEm()->persist($termek);
+                                }
+                            }
+                            $valtozatok = $termek->getValtozatok();
+                            /** @var \Entities\TermekValtozat $valtozat */
+                            foreach ($valtozatok as $valtozat) {
+                                if ($valtozat->getElerheto()) {
+                                    if (!keres($valtozat->getIdegencikkszam(), $products)) {
+                                        if ($valtozat->getKeszlet() <= 0) {
+                                            $lettfuggoben = true;
+                                            \mkw\store::writelog('változat cikkszám: ' . $valtozat->getCikkszam()
+                                                . ' szállítói cikkszám: ' . $valtozat->getIdegencikkszam() . ' ' . $valtozat->getNev()
+                                                . ' | termék: ' . $termek->getCikkszam(),
+                                                'nomad_fuggoben.txt');
+                                            $valtozat->setElerheto(false);
+                                            \mkw\store::getEm()->persist($valtozat);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (($termekdb % $batchsize) === 0) {
+                            \mkw\store::getEm()->flush();
+                            \mkw\store::getEm()->clear();
+                        }
+                        $termekdb++;
+                    }
+                    \mkw\store::getEm()->flush();
+                    \mkw\store::getEm()->clear();
+                }
+                if ($lettfuggoben) {
+                    echo json_encode(array('url' => '/nomad_fuggoben.txt'));
+                }
             }
             \unlink('nomad.xml');
 
