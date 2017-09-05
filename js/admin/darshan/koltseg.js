@@ -164,6 +164,7 @@ function koltseg() {
         $('#KtgOsszegEdit').val('');
         $('#KtgVanPenzmozgas').attr('checked', 'checked');
         $('#KtgSzamlaEdit[value="koltsegszamla"]').prop('checked', true);
+        setPenztarNemkotelezo();
     }
 
     function setPenztarKotelezo() {

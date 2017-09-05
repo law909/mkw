@@ -344,6 +344,7 @@ function eladas() {
         showPenztar();
         hideSzamlaDatumok();
         mkwcomp.datumEdit.clear('#SZEPKartyaErvenyessegEdit');
+        setElControls();
     }
 
     return {
