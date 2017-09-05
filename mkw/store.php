@@ -1191,4 +1191,12 @@ class store {
         return $ret;
     }
 
+    public static function getIds($mibol) {
+        $ret = array();
+        foreach ($mibol as $m) {
+            $ret[] = $m->getId();
+        }
+        return $ret;
+    }
+
 }

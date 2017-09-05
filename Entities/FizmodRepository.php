@@ -56,4 +56,23 @@ class FizmodRepository extends \mkwhelpers\Repository {
         $filter->addFilter('tipus', '=', 'P');
         return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
     }
+
+    public function getAllNormal() {
+        $fm = array();
+        if (\mkw\store::getParameter(\mkw\consts::SZEPFizmod)) {
+            $fm[] = \mkw\store::getParameter(\mkw\consts::SZEPFizmod);
+        }
+        if (\mkw\store::getParameter(\mkw\consts::SportkartyaFizmod)) {
+            $fm[] = \mkw\store::getParameter(\mkw\consts::SportkartyaFizmod);
+        }
+        if (\mkw\store::getParameter(\mkw\consts::AYCMFizmod)) {
+            $fm[] = \mkw\store::getParameter(\mkw\consts::AYCMFizmod);
+        }
+        $filter = new FilterDescriptor();
+        if ($fm) {
+            $filter->addSql('_xx.id NOT IN (' . implode(',', $fm) . ')');
+        }
+        return $this->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
+    }
+
 }

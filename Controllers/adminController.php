@@ -144,8 +144,11 @@ class adminController extends mkwhelpers\Controller {
                 $view->setVar('penztarformaction', \mkw\store::getRouter()->generate('adminpenztarbizonylatfejsave'));
                 $view->setVar('eladasformaction', \mkw\store::getRouter()->generate('adminbizonylatfejquickadd'));
 
+                $fmarr = \mkw\store::getIds($this->getRepo('Entities\Fizmod')->getAllNormal());
+                $fmfilter = new mkwhelpers\FilterDescriptor();
+                $fmfilter->addSql('bf.fizmod_id IN (' . implode(',', $fmarr) . ')');
                 $kint = new kintlevoseglistaController($this->params);
-                $kintadat = $kint->getData(1, date(\mkw\store::$DateFormat), '1980-01-01', date(\mkw\store::$DateFormat), 'kelt');
+                $kintadat = $kint->getData(1, date(\mkw\store::$DateFormat), '1980-01-01', date(\mkw\store::$DateFormat), 'kelt', null, null, null, null, $fmfilter);
                 $kintadatnew = array();
                 foreach($kintadat as $key => $ka) {
                     $bizfej = $this->getRepo('Entities\Bizonylatfej')->find($ka['bizonylatfej_id']);

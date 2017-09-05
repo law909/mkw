@@ -11,6 +11,7 @@
         <thead>
         <tr>
             <th>Bizonylatszám</th>
+            <th>Fizetési mód</th>
             <th>Kelt</th>
             <th>Teljesítés</th>
             <th>Esedékesség</th>
@@ -41,6 +42,7 @@
                 {$elem = $lista[$cikl]}
                 <tr>
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.bizonylatfej_id}</td>
+                    <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.fizmodnev}</td>
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.kelt}</td>
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.teljesites}</td>
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.hivatkozottdatum}</td>
@@ -65,14 +67,14 @@
             {if ($reszletessum)}
                 {foreach $pnemlejartsum as $k=>$pn}
                     <tr class="italic bold">
-                        <td colspan="6" class="cell">{$partner.nev} összesen nem lejárt</td>
+                        <td colspan="7" class="cell">{$partner.nev} összesen nem lejárt</td>
                         <td class="cell textalignright">{bizformat($pn)}</td>
                         <td class="cell">{$k}</td>
                     </tr>
                 {/foreach}
                 {foreach $plejartsum as $k=>$pn}
                     <tr class="italic bold">
-                        <td colspan="6" class="cell">{$partner.nev} összesen lejárt</td>
+                        <td colspan="7" class="cell">{$partner.nev} összesen lejárt</td>
                         <td class="cell textalignright">{bizformat($pn)}</td>
                         <td class="cell">{$k}</td>
                     </tr>
@@ -80,7 +82,7 @@
             {/if}
             {foreach $pbsum as $k=>$bs}
                 <tr class="italic bold">
-                    <td colspan="5" class="cell">{$partner.nev} összesen</td>
+                    <td colspan="6" class="cell">{$partner.nev} összesen</td>
                     <td class="textalignright">{bizformat($bs['brutto'])}</td>
                     <td class="textalignright">{bizformat($bs['tartozas'])}</td>
                     <td>{$k}</td>

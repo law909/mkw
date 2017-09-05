@@ -47,7 +47,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         return $filter;
     }
 
-    protected function createFilter($tol, $ig, $datumtipus, $ukkod, $partnerkod, $cimkefilter, $fizmod) {
+    protected function createFilter($tol, $ig, $datumtipus, $ukkod, $partnerkod, $cimkefilter, $fizmodfilter) {
         $filter = new FilterDescriptor();
 
         $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($tol)));
@@ -96,12 +96,8 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             $this->cimkenevek = implode(',', $this->cimkenevek);
         }
 
-        if (false && $fizmod) {
-            $filter->addFilter('bf.fizmod_id', '=', $fizmod);
-            $fm = $this->getRepo('Entities\Fizmod')->find($fizmod);
-            if ($fm) {
-                $this->fizmodnev = $fm->getNev();
-            }
+        if ($fizmodfilter && is_a($fizmodfilter, '\mkwhelpers\FilterDescriptor')) {
+            $filter = $filter->merge($fizmodfilter);
         }
 
         $filter
@@ -144,7 +140,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         $partner = null,
         $cimkefilter = null,
         $lejartfilter = null,
-        $fizmod = null
+        $fizmodfilter = null
     ) {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('bizonylatfej_id', 'bizonylatfej_id');
@@ -204,10 +200,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
         if (!$cimkefilter) {
             $cimkefilter = $this->params->getArrayRequestParam('cimkefilter');
         }
-        if (!$fizmod) {
-            $fizmod = $this->params->getIntRequestParam('fizmod');
-        }
-        $filter = $this->createFilter($tol, $ig, $datumtipus, $uzletkoto, $partner, $cimkefilter, $fizmod);
+        $filter = $this->createFilter($tol, $ig, $datumtipus, $uzletkoto, $partner, $cimkefilter, $fizmodfilter);
 
         $secfilter = $this->createSecFilter($partner, $cimkefilter);
 
