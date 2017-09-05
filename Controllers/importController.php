@@ -482,7 +482,6 @@ class importController extends \mkwhelpers\Controller {
                                 if ($termek && $termek->getKeszlet() <= 0) {
                                     $lettfuggoben = true;
                                     \mkw\store::writelog('cikkszám: ' . $termek->getCikkszam(), 'kreativ_fuggoben.txt');
-                                    $termek->setFuggoben(true);
                                     $termek->setInaktiv(true);
                                     \mkw\store::getEm()->persist($termek);
                                     \mkw\store::getEm()->flush();
@@ -767,7 +766,6 @@ class importController extends \mkwhelpers\Controller {
                                         $termekdb++;
                                         \mkw\store::writelog('cikkszám: ' . $termek->getCikkszam(), 'delton_fuggoben.txt');
                                         $lettfuggoben = true;
-                                        $termek->setFuggoben(true);
                                         $termek->setInaktiv(true);
                                         \mkw\store::getEm()->persist($termek);
                                         if (($termekdb % $batchsize) === 0) {
@@ -941,7 +939,7 @@ class importController extends \mkwhelpers\Controller {
 
                                 $puri2 = \mkw\store::getSanitizer();
                                 $rovidleiras = $puri2->sanitize(trim($data['short_description']));
-                                $termek->setLeiras($hosszuleiras);
+                                $termek->setLeiras('<p>' . $rovidleiras . '</p>' . $hosszuleiras);
                                 $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
                                 $termek->setTermekfa1($parent);
                                 $termek->setVtsz($vtsz[0]);
@@ -984,7 +982,7 @@ class importController extends \mkwhelpers\Controller {
 
                                 $puri2 = \mkw\store::getSanitizer();
                                 $rovidleiras = $puri2->sanitize(trim($data['short_description']));
-                                $termek->setLeiras($hosszuleiras);
+                                $termek->setLeiras('<p>' . $rovidleiras . '</p>' . $hosszuleiras);
                                 //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
                             }
                         }
@@ -1052,7 +1050,7 @@ class importController extends \mkwhelpers\Controller {
 
                                 $puri2 = \mkw\store::getSanitizer();
                                 $rovidleiras = $puri2->sanitize(trim($data['short_description']));
-                                $termek->setLeiras($hosszuleiras);
+                                $termek->setLeiras('<p>' . $rovidleiras . '</p>' . $hosszuleiras);
                                 $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
                                 $termek->setTermekfa1($parent);
                                 $termek->setVtsz($vtsz[0]);
@@ -1111,7 +1109,7 @@ class importController extends \mkwhelpers\Controller {
 
                                 $puri2 = \mkw\store::getSanitizer();
                                 $rovidleiras = $puri2->sanitize(trim($data['short_description']));
-                                $termek->setLeiras($hosszuleiras);
+                                $termek->setLeiras('<p>' . $rovidleiras . '</p>' . $hosszuleiras);
                                 //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
                             }
                         }
@@ -1229,7 +1227,7 @@ class importController extends \mkwhelpers\Controller {
                                     \mkw\store::getEm()->persist($valtozat);
                                 }
                             }
-                            else {
+                            if ($valtozat) {
                                 if (!$data['available']) {
                                     if ($valtozat->getKeszlet() <= 0) {
                                         $valtozat->setElerheto(false);
@@ -1268,10 +1266,9 @@ class importController extends \mkwhelpers\Controller {
                         if ($termek && !$termek->getFuggoben() && !$termek->getInaktiv()) {
                             if (!keres($t['idegencikkszam'], $products)) {
                                 if ($termek->getKeszlet() <= 0) {
-                                      $lettfuggoben = true;
+                                    $lettfuggoben = true;
                                     \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
                                     . ' ' . $termek->getNev(), 'nomad_fuggoben.txt');
-                                    $termek->setFuggoben(true);
                                     $termek->setInaktiv(true);
                                     \mkw\store::getEm()->persist($termek);
                                 }
@@ -1792,7 +1789,6 @@ class importController extends \mkwhelpers\Controller {
                                             $termekdb++;
                                             \mkw\store::writelog('idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'makszutov_fuggoben.txt');
                                             $lettfuggoben = true;
-                                            $termek->setFuggoben(true);
                                             $termek->setInaktiv(true);
                                             \mkw\store::getEm()->persist($termek);
                                             if (($termekdb % $batchsize) === 0) {
@@ -1810,7 +1806,6 @@ class importController extends \mkwhelpers\Controller {
                                             $termekdb++;
                                             \mkw\store::writelog('idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'makszutov_fuggoben.txt');
                                             $lettfuggoben = true;
-                                            $termek->setFuggoben(true);
                                             $termek->setInaktiv(true);
                                             \mkw\store::getEm()->persist($termek);
                                             if (($termekdb % $batchsize) === 0) {
@@ -2262,7 +2257,6 @@ class importController extends \mkwhelpers\Controller {
                         $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                         if ($termek && $termek->getKeszlet() <= 0) {
                             $termekdb++;
-                            $termek->setFuggoben(true);
                             $termek->setInaktiv(true);
                             \mkw\store::getEm()->persist($termek);
                             if (($termekdb % $batchsize) === 0) {
@@ -3541,7 +3535,6 @@ class importController extends \mkwhelpers\Controller {
                                         $termekdb++;
                                         \mkw\store::writelog('idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'legavenue_fuggoben.txt');
                                         $lettfuggoben = true;
-                                        $termek->setFuggoben(true);
                                         $termek->setInaktiv(true);
                                         \mkw\store::getEm()->persist($termek);
                                         if (($termekdb % $batchsize) === 0) {
