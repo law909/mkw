@@ -1094,6 +1094,12 @@ class importController extends \mkwhelpers\Controller {
                                     $valtozat->setCikkszam($data['catalog_second']);
                                 }
                                 $valtozat->setTermek($termek);
+                                if (!$data['available']) {
+                                    $valtozat->setElerheto(false);
+                                }
+                                else {
+                                    $valtozat->setElerheto(true);
+                                }
                                 \mkw\store::getEm()->persist($valtozat);
                             }
                         }
@@ -1112,20 +1118,24 @@ class importController extends \mkwhelpers\Controller {
                                 $termek->setLeiras('<p>' . $rovidleiras . '</p>' . $hosszuleiras);
                                 //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
                             }
-                        }
-                        if ($termek) {
-                            if (!$data['available']) {
-                                if ($termek->getKeszlet() <= 0) {
-                                    $termek->setNemkaphato(true);
+                            $valtozat = null;
+                            /** @var \Entities\TermekValtozat $v */
+                            foreach($termek->getValtozatok() as $v) {
+                                if ($v->getIdegencikkszam() == $data['sku']) {
+                                    $valtozat = $v;
                                 }
                             }
-                            else {
-                                $termek->setNemkaphato(false);
+                            if ($valtozat) {
+                                if (!$data['available']) {
+                                    if ($valtozat->getKeszlet() <= 0) {
+                                        $valtozat->setElerheto(false);
+                                    }
+                                }
+                                else {
+                                    $valtozat->setElerheto(true);
+                                }
+                                \mkw\store::getEm()->persist($valtozat);
                             }
-                            if (!$termek->getAkcios()) {
-                                $termek->setBrutto($data['price']);
-                            }
-                            \mkw\store::getEm()->persist($termek);
                         }
                     }
                     if (($termekdb % $batchsize) === 0) {
