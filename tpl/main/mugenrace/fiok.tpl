@@ -169,7 +169,7 @@
 											<tbody>
 											{foreach $megr.tetellista as $tetel}
 												<tr class="clickable" data-href="{$tetel.link}">
-													<td><div class="textaligncenter"><a href="{$tetel.link}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></a></div></td>
+													<td><div class="textaligncenter"><a href="{$tetel.link}"><img src="{$imagepath}{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></a></div></td>
 													<td><div><a href="{$tetel.link}">{$tetel.caption}</a></div>
 														<div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</div>
 														{$tetel.cikkszam}</td>
@@ -215,7 +215,7 @@
 					<div class="tab-pane" id="termekertesito">
 						{foreach $ertesitok as $ertesito}
 						<div class="row js-termekertesito">
-							<div class="span1"><a href="/termek/{$ertesito.termek.slug}"><img src="{$ertesito.termek.kiskepurl}" alt="{$ertesito.termek.caption}" title="{$ertesito.termek.caption}"></a></div>
+							<div class="span1"><a href="/termek/{$ertesito.termek.slug}"><img src="{$imagepath}{$ertesito.termek.kiskepurl}" alt="{$ertesito.termek.caption}" title="{$ertesito.termek.caption}"></a></div>
 							<div class="span4">
 								<a href="/termek/{$ertesito.termek.slug}">{$ertesito.termek.caption}</a>
 								<div>{t('Feliratkozás dátuma')}: {$ertesito.createdstr}</div>

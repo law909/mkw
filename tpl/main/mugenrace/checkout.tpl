@@ -6,7 +6,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="span12">
-				<a href="/"><img src="/themes/main/mugenrace/img/colorlogo.png" alt="Mugenrace webshop" title="Mugenrace webshop"></a>
+				<a href="/"><img src="{$imagepath}{$mugenracelogo}" alt="Mugenrace webshop" title="Mugenrace webshop"></a>
 			</div>
 		</div>
 	</div>

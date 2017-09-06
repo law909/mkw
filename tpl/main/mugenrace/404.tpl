@@ -19,7 +19,7 @@
                     <div class="o404TermekInner">
                         <a href="{$_termek.link}">
                             <div class="o404ImageContainer">
-                                <img src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
+                                <img src="{$imagepath}{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                             </div>
                             <div>{$_termek.caption}</div>
                             <h5>

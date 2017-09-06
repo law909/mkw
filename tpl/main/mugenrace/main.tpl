@@ -27,7 +27,7 @@
             <div id="korhinta" class="royalSlider contentSlider rsDefaultInv">
                 {foreach $korhintalista as $_korhinta}
                 <div>
-                    <a href="{$_korhinta.url}"><img class="rsImg" src="{$_korhinta.kepurl}" alt="{$_korhinta.kepleiras}"></a>
+                    <a href="{$_korhinta.url}"><img class="rsImg" src="{$imagepath}{$_korhinta.kepurl}" alt="{$_korhinta.kepleiras}"></a>
                     <a class="rsCaption" href="{$_korhinta.url}">
                         <h2 class="main">{$_korhinta.nev}</h2>
                         <p>{$_korhinta.szoveg}</p>
@@ -57,7 +57,7 @@
                                         <div class="termekSliderTermekInner">
                                             <a href="/termek/{$_termek.slug}">
                                                 <div class="termekSliderImageContainer">
-                                                    <img src="{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
+                                                    <img src="{$imagepath}{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                                     <div class="akciosplecsni"><span class="akciosplecsniszoveg">-{number_format(100 - ($_termek.bruttohuf / $_termek.eredetibruttohuf * 100),0,',',' ')} %</span></div>
                                                 </div>
                                                 <div>{$_termek.caption}</div>
@@ -88,7 +88,7 @@
                             <div class="termekSliderTermekInner">
                                 <a href="/termek/{$_termek.slug}">
                                     <div class="termekSliderImageContainer">
-                                        <img src="{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
+                                        <img src="{$imagepath}{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                     </div>
                                     <div>{$_termek.caption}</div>
                                     <h5 class="main"><span>{number_format($_termek.bruttohuf,0,',',' ')} {$valutanemnev}</span></h5>
@@ -117,7 +117,7 @@
                             <div class="termekSliderTermekInner">
                                 <a href="/termek/{$_termek.slug}">
                                     <div class="termekSliderImageContainer">
-                                        <img src="{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
+                                        <img src="{$imagepath}{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                     </div>
                                     <div>{$_termek.caption}</div>
                                     <h5 class="main"><span>{number_format($_termek.bruttohuf,0,',',' ')} {$valutanemnev}</span></h5>

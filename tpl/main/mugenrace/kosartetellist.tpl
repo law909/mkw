@@ -15,9 +15,9 @@
 		<tr class="clickable" data-href="{$tetel.link}">
 			<td><div class="textaligncenter">
                     {if ($tetel.noedit)}
-                    <img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}">
+                    <img src="{$imagepath}{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}">
                     {else}
-                    <a href="{$tetel.link}"><img src="{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></a>
+                    <a href="{$tetel.link}"><img src="{$imagepath}{$tetel.kiskepurl}" alt="{$tetel.caption}" title="{$tetel.caption}"></a>
                     {/if}
                 </div></td>
 			<td><div>

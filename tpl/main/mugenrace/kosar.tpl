@@ -44,7 +44,7 @@
                                 <div class="termekSliderTermekInner">
                                     <a href="/termek/{$_termek.slug}">
                                         <div class="termekSliderImageContainer">
-                                            <img src="{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
+                                            <img src="{$imagepath}{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                         </div>
                                         <div>{$_termek.caption}</div>
                                         <h5 class="main"><span>{number_format($_termek.bruttohuf,0,',',' ')} {$valutanemnev}</span></h5>
