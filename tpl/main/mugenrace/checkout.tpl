@@ -276,7 +276,7 @@
 										<input name="aszfready" type="checkbox">
                                         {if ($locale === 'hu')}
 										Tudomásul veszem és elfogadom az <a href="{$showaszflink}" target="empty" class="js-chkaszf">ÁSZF</a>-et<br>és a rendeléssel járó fizetési kötelezettséget
-                                        {elseif ($locale === 'en')}
+                                        {elseif ($locale === 'en_us')}
                                         I have read and agree to the terms of the agreement.
                                         {/if}
 									</label>

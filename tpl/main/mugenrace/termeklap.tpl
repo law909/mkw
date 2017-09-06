@@ -265,7 +265,7 @@
                 {/if}
             </div>
             <div class="span3">
-                <h4 class="textaligncenter">Legnépszerűbb termékeink</h4>
+                <h4 class="textaligncenter">{t('Legnépszerűbb termékeink')}</h4>
                 {foreach $legnepszerubbtermekek as $_nepszeru}
                 <div class="textaligncenter">
                     <div class="kapcsolodoTermekInner">

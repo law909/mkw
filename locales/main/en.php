@@ -10,7 +10,7 @@ return array(
     'termék' => 'product',
     'Kapcsolat' => 'Contact',
     'Méretcsere' => 'Swapping size',
-    'Vásárlói adatok védelme' => 'Privacy',
+    'Vásárlói adatok védelme' => 'Privacy policy',
     'Hasznos információk' => 'Useful informations',
     'Mérettáblázat' => 'Sizes',
     'Segítség a vásárláshoz' => 'Help for buying',
@@ -159,5 +159,11 @@ return array(
     'Ok' => 'OK',
     'OK' => 'OK',
     'Mégsem' => 'Cancel',
-    'Adja meg új jelszavát' => 'New password'
+    'Adja meg új jelszavát' => 'New password',
+    'Általános szerződési feltételek' => 'Terms & Conditions',
+    'Szállítási feltételek' => 'Shipping policy',
+    'Fizetési feltételek' => 'Payment policy',
+    'Legnépszerűbb termékeink' => 'Top list',
+    'Ehhez a termékhez vásárolták még' => 'Recommendations for You',
+    'jelszó' => 'password'
 );
