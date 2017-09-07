@@ -159,7 +159,7 @@ class Jelenletiiv {
 
     public function getBelepesStr() {
         if ($this->getBelepes()) {
-            return date(\mkw\store::$TimeFormat, $this->getBelepes());
+            return $this->getBelepes()->format(\mkw\store::$TimeFormat);
         }
         return '';
     }
@@ -188,7 +188,7 @@ class Jelenletiiv {
 
     public function getKilepesStr() {
         if ($this->getKilepes()) {
-            return date(\mkw\store::$TimeFormat, $this->getKilepes());
+            return $this->getKilepes()->format(\mkw\store::$TimeFormat);
         }
         return '';
     }

@@ -111,6 +111,9 @@ if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/penzbelista/view', 'penzbelistaController#view', 'adminpenzbelistaview');
     $router->map('GET', '/admin/penzbelista/get', 'penzbelistaController#createLista', 'adminpenzbelistaget');
 
+    $router->map('GET', '/admin/munkaidolista/view', 'munkaidolistaController#view', 'adminmunkaidolistaview');
+    $router->map('GET', '/admin/munkaidolista/get', 'munkaidolistaController#createLista', 'adminmunkaidolistaget');
+
     $router->map('GET', '/admin/jutaleklista/view', 'jutaleklistaController#view', 'adminjutaleklistaview');
     $router->map('GET', '/admin/jutaleklista/get', 'jutaleklistaController#createLista', 'adminjutaleklistaget');
     $router->map('GET', '/admin/jutaleklista/export', 'jutaleklistaController#exportLista', 'adminjutaleklistaexport');
