@@ -92,14 +92,20 @@ $(document).ready(function () {
                 .on('click', '.js-hivatkozottbizonylatbutton', function(e) {
                     e.preventDefault();
                     var $this = $(this),
-                        tid = $this.data('id');
+                        tid = $this.data('id'),
+                        irany;
+
+                    irany = $('input[name="irany"]:checked').val();
+                    if (!irany) {
+                        irany = $('input[name="irany"]').val();
+                    }
 
                     $.ajax({
                         type: 'POST',
                         url: '/admin/partner/getkiegyenlitetlenbiz',
                         data: {
                             partner: $('select[name="partner"]').val(),
-                            irany: $('input[name="irany"]:checked').val()
+                            irany: irany
                         },
                         success: function(d) {
                             var data = JSON.parse(d);
