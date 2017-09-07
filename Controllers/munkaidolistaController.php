@@ -65,7 +65,8 @@ class munkaidolistaController extends \mkwhelpers\MattableController {
                 'kilepes' => $m->getKilepesStr(),
                 'jelenlettipus' => $m->getJelenlettipusNev(),
                 'dolgozonev' => $m->getDolgozoNev(),
-                'ido' => $difi->h * 60 + $difi->i
+                'ido' => $difi->h * 60 + $difi->i,
+                'masip' => $m->getBeip() !== $m->getKiip()
             );
         }
         return $ret;

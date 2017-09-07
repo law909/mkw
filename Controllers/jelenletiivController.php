@@ -32,6 +32,8 @@ class jelenletiivController extends \mkwhelpers\MattableController {
         $x['kilepes'] = $t->getKilepes();
         $x['belepesstr'] = $t->getBelepesStr();
         $x['kilepesstr'] = $t->getKilepesStr();
+        $x['beip'] = $t->getBeip();
+        $x['kiip'] = $t->getKiip();
         return $x;
     }
 
@@ -155,6 +157,7 @@ class jelenletiivController extends \mkwhelpers\MattableController {
             $jelenlet->setDatum(date(\mkw\store::$SQLDateFormat));
             $jelenlet->setBelepes(date(\mkw\store::$TimeFormat));
             $jelenlet->setJelenlettipus($this->getRepo('Entities\Jelenlettipus')->find(\mkw\store::getParameter(\mkw\consts::MunkaJelenlet)));
+            $jelenlet->setBeip($_SERVER['REMOTE_ADDR']);
             $this->getEm()->persist($jelenlet);
             $this->getEm()->flush();
         }
@@ -172,6 +175,7 @@ class jelenletiivController extends \mkwhelpers\MattableController {
             }
             if ($jelenlet) {
                 $jelenlet->setKilepes(date(\mkw\store::$TimeFormat));
+                $jelenlet->setKiip($_SERVER['REMOTE_ADDR']);
                 $this->getEm()->persist($jelenlet);
                 $this->getEm()->flush();
             }

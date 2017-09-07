@@ -64,10 +64,10 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'id', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'datum', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'belepes', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'kilepes', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'munkaido', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'jelenlettipus'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'id', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'datum', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'belepes', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'kilepes', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'munkaido', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'jelenlettipus', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'beip', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'kiip'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'id', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'datum', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'belepes', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'kilepes', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'munkaido', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'jelenlettipus'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'id', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'datum', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'belepes', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'kilepes', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'munkaido', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'jelenlettipus', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'beip', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'kiip'];
     }
 
     /**
@@ -417,6 +417,50 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKilepesStr', []);
 
         return parent::getKilepesStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBeip()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBeip', []);
+
+        return parent::getBeip();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBeip($beip)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBeip', [$beip]);
+
+        return parent::setBeip($beip);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKiip()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKiip', []);
+
+        return parent::getKiip();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setKiip($kiip)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKiip', [$kiip]);
+
+        return parent::setKiip($kiip);
     }
 
 }

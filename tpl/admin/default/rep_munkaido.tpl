@@ -20,10 +20,10 @@
             {$sum = $sum + $elem.ido}
             <tr>
                 <td class="cell">{$elem.datum}</td>
-                <td class="cell">{$elem.belepes}</td>
-                <td class="cell">{$elem.kilepes}</td>
+                <td class="cell{if ($elem.masip)} red{/if}">{$elem.belepes}{if ($elem.masip)} x{/if}</td>
+                <td class="cell{if ($elem.masip)} red{/if}">{$elem.kilepes}{if ($elem.masip)} x{/if}</td>
                 <td class="cell">{$elem.jelenlettipus}</td>
-                <td class="cell textalignright">{$elem.ido}</td>
+                <td class="cell{if ($elem.masip)} red{/if} textalignright">{$elem.ido}</td>
             </tr>
         {/foreach}
         {$ora = intdiv($sum, 60)}

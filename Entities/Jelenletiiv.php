@@ -32,6 +32,10 @@ class Jelenletiiv {
 	 * @ORM\JoinColumn(name="jelenlettipus_id", referencedColumnName="id",nullable=true,onDelete="cascade")
 	 */
 	private $jelenlettipus;
+	/** @ORM\Column(type="string",length=50,nullable=true) */
+	private $beip;
+    /** @ORM\Column(type="string",length=50,nullable=true) */
+    private $kiip;
 
 
 	public function getId() {
@@ -192,4 +196,33 @@ class Jelenletiiv {
         }
         return '';
     }
+
+    /**
+     * @return mixed
+     */
+    public function getBeip() {
+        return $this->beip;
+    }
+
+    /**
+     * @param mixed $beip
+     */
+    public function setBeip($beip) {
+        $this->beip = $beip;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getKiip() {
+        return $this->kiip;
+    }
+
+    /**
+     * @param mixed $kiip
+     */
+    public function setKiip($kiip) {
+        $this->kiip = $kiip;
+    }
+
 }

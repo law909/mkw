@@ -71,6 +71,10 @@ table td {
     page-break-before: always;
 }
 
+.red {
+    color: red;
+}
+
 @media print {
 
     a {
