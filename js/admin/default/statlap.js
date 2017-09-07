@@ -62,7 +62,7 @@ $(document).ready(function(){
                             x = $('option:selected', $this).val(),
                             editor;
                         if (!$.browser.mobile) {
-                            if (x === 'leiras') {
+                            if (x === 'szoveg') {
                                 editor = $('.js-contenteditor_' + $this.data('id'));
                                 editor.addClass('js-ckeditor');
                                 editor.ckeditor();
