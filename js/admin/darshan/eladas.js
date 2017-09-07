@@ -115,7 +115,7 @@ function eladas() {
 
     function isKeszpenz() {
         var fm = $('#ElFizmodEdit option:selected');
-        return fm.data('tipus') === 'P';
+        return fm.data('tipus') === 'P' || fm.data('sportkartya') || fm.data('szepkartya');
     }
 
     function isAtutalas() {
