@@ -28,6 +28,10 @@ class jelenletiivController extends \mkwhelpers\MattableController {
         $x['dolgozonev'] = $t->getDolgozoNev();
         $x['jelenlettipus'] = $t->getJelenlettipusId();
         $x['jelenlettipusnev'] = $t->getJelenlettipusNev();
+        $x['belepes'] = $t->getBelepes();
+        $x['kilepes'] = $t->getKilepes();
+        $x['belepesstr'] = $t->getBelepesStr();
+        $x['kilepesstr'] = $t->getKilepesStr();
         return $x;
     }
 
@@ -128,5 +132,49 @@ class jelenletiivController extends \mkwhelpers\MattableController {
             }
         }
         $this->getEm()->flush();
+    }
+
+    public function isDolgozoJelen($dolgozoid) {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('datum', '=', \mkw\store::convDate(date(\mkw\store::$SQLDateFormat)));
+        $filter->addFilter('dolgozo', '=', $dolgozoid);
+        $filter->addSql('_xx.belepes IS NOT NULL');
+        $jelen = false;
+        $rec = $this->getRepo()->getAll($filter);
+        foreach ($rec as $item) {
+            $jelen = $jelen || ($item->getBelepes() && !$item->getKilepes());
+        }
+        return $jelen;
+    }
+
+    public function createBelepes() {
+        $dolgozo = $this->getRepo('Entities\Dolgozo')->find($this->params->getIntRequestParam('dolgozo'));
+        if ($dolgozo) {
+            $jelenlet = new \Entities\Jelenletiiv();
+            $jelenlet->setDolgozo($dolgozo);
+            $jelenlet->setDatum(date(\mkw\store::$SQLDateFormat));
+            $jelenlet->setBelepes(date(\mkw\store::$TimeFormat));
+            $jelenlet->setJelenlettipus($this->getRepo('Entities\Jelenlettipus')->find(\mkw\store::getParameter(\mkw\consts::MunkaJelenlet)));
+            $this->getEm()->persist($jelenlet);
+            $this->getEm()->flush();
+        }
+    }
+
+    public function createKilepes() {
+        $dolgozo = $this->getRepo('Entities\Dolgozo')->find($this->params->getIntRequestParam('dolgozo'));
+        if ($dolgozo) {
+            $jelenlet = null;
+            $jelenletek = $this->getRepo()->findBy(array('dolgozo' => $dolgozo, 'datum' => new \DateTime(\mkw\store::convDate(date(\mkw\store::$SQLDateFormat)))));
+            foreach ($jelenletek as $j) {
+                if ($j->getBelepes() && !$j->getKilepes()) {
+                    $jelenlet = $j;
+                }
+            }
+            if ($jelenlet) {
+                $jelenlet->setKilepes(date(\mkw\store::$TimeFormat));
+                $this->getEm()->persist($jelenlet);
+                $this->getEm()->flush();
+            }
+        }
     }
 }

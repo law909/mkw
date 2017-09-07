@@ -238,6 +238,15 @@
                                 {/foreach}
                             </select>
                         </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="MunkaJelenletEdit">{at('Munkaidő')}:</label></span>
+                            <select id="MunkaJelenletEdit" name="munkajelenlet">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $munkajelenletlist as $_fizmod}
+                                    <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
                     </div>
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <div class="setuprow">

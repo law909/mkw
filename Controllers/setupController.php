@@ -207,6 +207,10 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::AYCMFizmod);
         $view->setVar('aycmfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::MunkaJelenlet);
+        $c = new jelenlettipusController($this->params);
+        $view->setVar('munkajelenletlist', $c->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::Szallitasimod);
         $szallmod = new szallitasimodController($this->params);
         $view->setVar('szallitasimodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0)));
@@ -636,6 +640,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::AYCMFizmod, '');
+        }
+
+        $j = \mkw\store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->params->getIntRequestParam('munkajelenlet', 0));
+        if ($j) {
+            $this->setObj(\mkw\consts::MunkaJelenlet, $j->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::MunkaJelenlet, '');
         }
 
         $szallmod = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod', 0));

@@ -31,6 +31,8 @@ class generalDataLoader {
         $view->setVar('today', date(\mkw\store::$DateFormat));
         $menuc = new \Controllers\menuController(null);
         $view->setVar('menu', $menuc->getMenu());
+        $jelenc = new \Controllers\jelenletiivController(null);
+        $view->setVar('dolgozojelen', $jelenc->isDolgozoJelen(\mkw\store::getAdminSession()->pk));
         $view->setVar('uithemes', array(
             'black-tie',
             'blitzer',

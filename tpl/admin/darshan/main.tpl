@@ -11,7 +11,21 @@
 
 {block "kozep"}
     <div class="clearboth">
-        {if (haveJog(15))}
+        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+            <div class="ui-widget-header ui-corner-top">
+                <div class="mainboxinner ui-corner-top">Jelenléti ív</div>
+            </div>
+            <div class="mainboxinner">
+                {if ($dolgozojelen)}
+                    <a href="#" class="js-jelenlet" data-url="/admin/jelenki?dolgozo={$userloggedin}">Munka befejezés</a>
+                {else}
+                    <a href="#" class="js-jelenlet" data-url="/admin/jelenbe?dolgozo={$userloggedin}">Munka kezdés</a>
+                {/if}
+            </div>
+        </div>
+    </div>
+    <div class="clearboth">
+    {if (haveJog(15))}
             <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
                 <div class="ui-widget-header ui-corner-top">
                     <div class="mainboxinner ui-corner-top">Ezek az emberek tartoznak nekünk</div>

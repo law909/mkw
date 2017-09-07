@@ -200,4 +200,6 @@ class consts {
     const SZEPFizmod = 'szepkartyafizmod';
     const SportkartyaFizmod = 'sportkartyafizmod';
     const AYCMFizmod = 'aycmfizmod';
+
+    const MunkaJelenlet = 'munkajelenlet';
 }

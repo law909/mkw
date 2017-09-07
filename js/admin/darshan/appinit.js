@@ -26,6 +26,18 @@ $(document).ready(
                 }
             });
 
-        })
+        });
+
+        $('.js-jelenlet').button();
+        $('.js-jelenlet').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                method: 'POST',
+                url: $(this).data('url'),
+                success: function() {
+                    window.location.reload(true);
+                }
+            });
+        });
 	}
 );

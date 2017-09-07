@@ -64,10 +64,10 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'id', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'datum', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'munkaido', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'jelenlettipus'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'id', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'datum', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'belepes', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'kilepes', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'munkaido', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'jelenlettipus'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'id', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'datum', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'munkaido', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'jelenlettipus'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'id', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'datum', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'belepes', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'kilepes', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'munkaido', '' . "\0" . 'Entities\\Jelenletiiv' . "\0" . 'jelenlettipus'];
     }
 
     /**
@@ -351,6 +351,72 @@ class Jelenletiiv extends \Entities\Jelenletiiv implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeJelenlettipus', []);
 
         return parent::removeJelenlettipus();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelepes()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelepes', []);
+
+        return parent::getBelepes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelepes($belepes)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelepes', [$belepes]);
+
+        return parent::setBelepes($belepes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelepesStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelepesStr', []);
+
+        return parent::getBelepesStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKilepes()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKilepes', []);
+
+        return parent::getKilepes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setKilepes($kilepes)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKilepes', [$kilepes]);
+
+        return parent::setKilepes($kilepes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKilepesStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKilepesStr', []);
+
+        return parent::getKilepesStr();
     }
 
 }

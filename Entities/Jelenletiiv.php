@@ -16,18 +16,23 @@ class Jelenletiiv {
 	private $id;
 	/** @ORM\Column(type="date") */
 	private $datum;
+    /** @ORM\Column(type="time",nullable=true) */
+    private $belepes;
+    /** @ORM\Column(type="time",nullable=true) */
+    private $kilepes;
 	/**
 	 * @ORM\ManyToOne(targetEntity="Dolgozo",inversedBy="jelenletek")
 	 * @ORM\JoinColumn(name="dolgozo_id", referencedColumnName="id",nullable=true,onDelete="cascade")
 	 */
 	private $dolgozo;
-	/** @ORM\Column(type="integer") */
+	/** @ORM\Column(type="integer",nullable=true) */
 	private $munkaido;
 	/**
 	 * @ORM\ManyToOne(targetEntity="Jelenlettipus")
 	 * @ORM\JoinColumn(name="jelenlettipus_id", referencedColumnName="id",nullable=true,onDelete="cascade")
 	 */
 	private $jelenlettipus;
+
 
 	public function getId() {
 		return $this->id;
@@ -45,8 +50,15 @@ class Jelenletiiv {
 	}
 
 	public function setDatum($adat) {
-		if ($adat=='') $adat=date(store::$DateFormat);
-		$this->datum = new \DateTime(store::convDate($adat));
+        if (is_a($adat, 'DateTime')) {
+            $this->datum = $adat;
+        }
+        else {
+            if ($adat == '') {
+                $adat = date(store::$DateFormat);
+            }
+            $this->datum = new \DateTime(store::convDate($adat));
+        }
 	}
 
 	public function getDolgozo(){
@@ -122,4 +134,62 @@ class Jelenletiiv {
 //			$adat->removeJelenlet($this);
 		}
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getBelepes() {
+        return $this->belepes;
+    }
+
+    /**
+     * @param mixed $belepes
+     */
+    public function setBelepes($belepes) {
+        if (is_a($belepes, 'DateTime')) {
+            $this->belepes = $belepes;
+        }
+        else {
+            if ($belepes == '') {
+                $belepes = date(store::$TimeFormat);
+            }
+            $this->belepes = new \DateTime(store::convTime($belepes));
+        }
+    }
+
+    public function getBelepesStr() {
+        if ($this->getBelepes()) {
+            return date(\mkw\store::$TimeFormat, $this->getBelepes());
+        }
+        return '';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getKilepes() {
+        return $this->kilepes;
+    }
+
+    /**
+     * @param mixed $kilepes
+     */
+    public function setKilepes($kilepes) {
+        if (is_a($kilepes, 'DateTime')) {
+            $this->kilepes = $kilepes;
+        }
+        else {
+            if ($kilepes == '') {
+                $kilepes = date(store::$TimeFormat);
+            }
+            $this->kilepes = new \DateTime(store::convTime($kilepes));
+        }
+    }
+
+    public function getKilepesStr() {
+        if ($this->getKilepes()) {
+            return date(\mkw\store::$TimeFormat, $this->getKilepes());
+        }
+        return '';
+    }
 }
