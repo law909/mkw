@@ -165,5 +165,6 @@ return array(
     'Fizetési feltételek' => 'Payment policy',
     'Legnépszerűbb termékeink' => 'Top list',
     'Ehhez a termékhez vásárolták még' => 'Recommendations for You',
-    'jelszó' => 'password'
+    'jelszó' => 'password',
+    'a kosarában' => 'in your cart'
 );

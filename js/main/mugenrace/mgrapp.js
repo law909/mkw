@@ -1,20 +1,41 @@
 var mkwmsg = {
-	TermekErtesitoKoszonjuk: 'Köszönjük feliratkozását!<br>Azonnal értesíteni fogjuk, amint a termék kapható lesz.',
-	TermekErtesitoLeiratkozas: 'A leiratkozás folyamatban van.',
-	TermekKosarba: 'A terméket a kosarába tettük...',
-	TermekValtozatotValassz: 'Válassza ki a lenyíló listából, hogy pontosan milyen termékváltozatot szeretne!',
-	KosarMennyisegModositas: 'Módosítottuk a mennyiséget.',
-	KosarMennyisegNulla: 'Ha nem kíván vásárolni a termékből, a <b>"Töröl"</b> gombbal veheti ki a kosárból.',
-	ChkRegLogin: 'Válassza ki, hogy szeretne-e regisztrálni a vásárláshoz, vagy jelentkezzen be, ha már van nálunk fiókja.',
-	ChkASZF: 'Megrendelés előtt kérjük, fogadja el az <b>ÁSZF</b>-et.<br>Ehhez kattintson az <b>"Elolvastam és elfogadom az ÁSZF-et"</b> sor előtti négyzetre.',
-	ChkKosarValtozott: 'A kosár tartalma időközben megváltozott, kérem ellenőrizze.',
-	ChkKosarUres: 'Az Ön kosara üres.',
+	TermekErtesitoKoszonjuk: 'Thank you for your subscription!<br>We will inform you inmediately when the product will be available.',
+	TermekErtesitoLeiratkozas: 'Your subscription is ended.',
+	TermekKosarba: 'This product is in your cart...',
+	TermekValtozatotValassz: 'Please choose the color and size!',
+	KosarMennyisegModositas: 'We have modified quantity.',
+	KosarMennyisegNulla: 'Please remove this product from your cart with <b>Del</b> button!',
+	ChkRegLogin: 'Please choose if you want to register or log in!',
+	ChkASZF: 'Please agree with the terms of agreement.',
+	ChkKosarValtozott: 'Your cart has changed, please check.',
+	ChkKosarUres: 'Your cart is empty.',
+    ChkHiba: 'Please fill out missing data.',
+    ChkSzallmodHiba: 'Please choose your preferred delivery method.',
+    ChkSave: 'Saving your order. Please wait.',
+	FiokAdataitModositjuk: 'Saving changes...',
+	DialogFejlec: 'Information',
+	DialogOk: 'OK',
+    PassChange: ['Password change is ready.', 'The two passwords are not the same.', 'Wrong password.','You did not give new password.'],
+    PassReminderCreated: 'We have sent a link to your email.',
+    PassReminderRequiredEmail: 'Please give us your email address.'
+};
+var mkwmsghun = {
+    TermekErtesitoKoszonjuk: 'Köszönjük feliratkozását!<br>Azonnal értesíteni fogjuk, amint a termék kapható lesz.',
+    TermekErtesitoLeiratkozas: 'A leiratkozás folyamatban van.',
+    TermekKosarba: 'A terméket a kosarába tettük...',
+    TermekValtozatotValassz: 'Válassza ki a lenyíló listából, hogy pontosan milyen termékváltozatot szeretne!',
+    KosarMennyisegModositas: 'Módosítottuk a mennyiséget.',
+    KosarMennyisegNulla: 'Ha nem kíván vásárolni a termékből, a <b>"Töröl"</b> gombbal veheti ki a kosárból.',
+    ChkRegLogin: 'Válassza ki, hogy szeretne-e regisztrálni a vásárláshoz, vagy jelentkezzen be, ha már van nálunk fiókja.',
+    ChkASZF: 'Megrendelés előtt kérjük, fogadja el az <b>ÁSZF</b>-et.<br>Ehhez kattintson az <b>"Elolvastam és elfogadom az ÁSZF-et"</b> sor előtti négyzetre.',
+    ChkKosarValtozott: 'A kosár tartalma időközben megváltozott, kérem ellenőrizze.',
+    ChkKosarUres: 'Az Ön kosara üres.',
     ChkHiba: 'Kérjük, adja meg a hiányzó adatokat. Ezeket pirossal megjelöltük.',
     ChkSzallmodHiba: 'Kérjük adja meg a kívánt szállítási módot.',
     ChkSave: 'Megrendelésének mentése folyamatban. Kérem várjon.',
-	FiokAdataitModositjuk: 'Adatait módosítjuk...',
-	DialogFejlec: 'Értesítés',
-	DialogOk: 'OK',
+    FiokAdataitModositjuk: 'Adatait módosítjuk...',
+    DialogFejlec: 'Értesítés',
+    DialogOk: 'OK',
     PassChange: ['A jelszómódosítás sikerült.', 'A két jelszó nem egyezik.', 'Hibás jelszót adott meg.','Nem adott meg új jelszót.'],
     PassReminderCreated: 'Emailcímére elküldtünk egy jelszóemlékeztető linket.',
     PassReminderRequiredEmail: 'Adja meg azt az emailcímet, amellyel regisztrált.'
@@ -1464,6 +1485,40 @@ $(document).ready(function() {
                     });
         }
     });
+    // valaszthato valtozat van
+    $('.js-kosarbaszinvaltozat').on('click', function(e) {
+        var $this = $(this),
+            termekid = $this.attr('data-termek'),
+            valtozatid = $('.js-meretvaltozatedit[data-termek="' + termekid + '"] option:selected').val();
+
+        e.preventDefault();
+
+        if (!valtozatid) {
+            mkw.showDialog(mkwmsg.TermekValtozatotValassz);
+        }
+        else {
+            $.ajax({
+                type: 'POST',
+                url: $this.attr('href'),
+                data: {
+                    jax: 2,
+                    vid: valtozatid
+                },
+                beforeSend: function(x) {
+                    mkw.showMessage(mkwmsg.TermekKosarba);
+                }
+            })
+                .done(function(data) {
+                    $('.js-meretvaltozatedit[data-termek="' + termekid + '"]').selectedIndex = 0;
+                    var d = JSON.parse(data);
+                    $('#minikosar').html(d.minikosar);
+                    $('#minikosaringyenes').html(d.minikosaringyenes);
+                })
+                .always(function() {
+                    mkw.closeMessage();
+                });
+        }
+    });
 
     // valtozat
     $('.js-valtozatedit').on('change', function() {
@@ -1488,41 +1543,23 @@ $(document).ready(function() {
                     $('.js-kosarbavaltozat[data-id="' + id + '"]').attr('data-vid', $this.val());
                 });
     });
-    $('.js-mindenvaltozatedit').on('change', function() {
-        var $valtedit = $(this),
-                tipusid = $valtedit.data('tipusid'),
-                termek = $valtedit.data('termek'),
-                id = $valtedit.data('id'),
-                $masikedit = $('.js-mindenvaltozatedit[data-termek="' + termek + '"][data-tipusid!="' + tipusid + '"]');
-
+    $('.js-szinvaltozatedit').on('change', function() {
+        var $szinedit = $(this),
+                termek = $szinedit.data('termek');
+        $('#meret' + termek).remove();
         $.ajax({
-            url: '/valtozat',
+            url: '/getmeretszinhez',
             data: {
                 t: termek,
-                ti: tipusid,
-                v: $valtedit.val(),
-                sel: $masikedit.val(),
-                mti: $masikedit.data('tipusid')
+                sz: $szinedit.val(),
             }
         })
-                .done(function(data) {
-                    var d = JSON.parse(data),
-                            adat = d['adat'];
-                    sel = '';
-
-                    changeTermekAdat(id, d);
-
-                    $('option[value!=""]', $masikedit).remove();
-                    $.each(adat, function(i, v) {
-                        if (v['sel']) {
-                            sel = ' selected="selected"';
-                        }
-                        else {
-                            sel = '';
-                        }
-                        $masikedit.append('<option value="' + v['value'] + '"' + sel + '>' + v['value'] + '</option>');
-                    });
-                });
+        .done(function(data) {
+            if (data) {
+                var box = $szinedit.parents('.js-valtozatbox');
+                box.append(data);
+            }
+        });
     });
     var $regform = $('#Regform');
     if ($regform.length > 0) {
