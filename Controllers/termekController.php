@@ -756,6 +756,40 @@ class termekController extends \mkwhelpers\MattableController {
 		return $ret;
 	}
 
+	public function getMeretSzinhez() {
+	    $ret = array();
+	    $merettip = \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret);
+	    $termekid = $this->params->getIntRequestParam('t');
+	    $szin = $this->params->getStringRequestParam('sz');
+	    if ($termekid) {
+            $valtozatok = $this->getRepo('Entities\TermekValtozat')->getOtherProperties(
+                $termekid,
+                array(\mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)),
+                array($szin)
+            );
+            /** @var \Entities\TermekValtozat $valt */
+            foreach ($valtozatok as $valt) {
+                $caption = '';
+                if ($valt->getAdatTipus1Id() == $merettip) {
+                    $caption = $valt->getErtek1();
+                }
+                elseif ($valt->getAdatTipus2Id() == $merettip) {
+                    $caption = $valt->getErtek2();
+                }
+                $ret[] = array(
+                    'id' => $valt->getId(),
+                    'caption' => $caption,
+                    'selected' => false,
+                    'keszlet' => $valt->getKeszlet()
+                );
+            }
+        }
+        $v = $this->getTemplateFactory()->createMainView('meretselect.tpl');
+	    $v->setVar('meretek', $ret);
+	    $v->setVar('termekid', $termekid);
+        echo $v->getTemplateResult();
+    }
+
     public function getKapcsolodoSelectList() {
         $term = trim($this->params->getStringRequestParam('term'));
         $ret = array();

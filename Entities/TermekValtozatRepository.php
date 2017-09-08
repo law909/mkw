@@ -41,6 +41,19 @@ class TermekValtozatRepository extends \mkwhelpers\Repository {
         return $res[0];
     }
 
+    public function getOtherProperties($termekid, $adattipusok, $ertekek) {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('termek', '=', $termekid);
+
+        if (count($adattipusok) == 1) {
+            if ($ertekek[0]) {
+                $filter->addSql('((_xx.adattipus1=' . $adattipusok[0] . ') AND (_xx.ertek1=\'' . $ertekek[0] . '\')) OR '
+                    . '((_xx.adattipus2=' . $adattipusok[0] . ') AND (_xx.ertek2=\'' . $ertekek[0] . '\'))');
+            }
+        }
+        return $this->getAll($filter, array());
+    }
+
     public function getDistinctErtek1() {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('ertek1', 'ertek');

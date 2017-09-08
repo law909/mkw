@@ -837,4 +837,26 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
         return parent::setLathato3($lathato3);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getXElerheto()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getXElerheto', []);
+
+        return parent::getXElerheto();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getXLathato()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getXLathato', []);
+
+        return parent::getXLathato();
+    }
+
 }

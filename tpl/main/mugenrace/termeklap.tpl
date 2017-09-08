@@ -84,21 +84,21 @@
                                 </ul>
                             </div>
                             {$_kosarbaclass="js-kosarba"}
-                            {if ($termek.valtozatok)}
-                            {$_kosarbaclass="js-kosarbamindenvaltozat"}
+                            {if ($termek.szinek)}
+                            {$_kosarbaclass="js-kosarbaszinvaltozat"}
                             <div class="row">
-                                <div class="span2 kosarbacontainer">
-                                    {foreach $termek.valtozatok as $_valtozat}
-                                    <div class="bold">{t($_valtozat.name)}</div>
-                                    <div>
-                                        <select class="js-mindenvaltozatedit valtozatselect" data-id="{$termek.id}" data-termek="{$termek.id}" data-tipusid="{$_valtozat.tipusid}">
-                                            <option value="">{t('Válasszon')}</option>
-                                            {foreach $_valtozat.value as $_v}
-                                                <option value="{$_v}">{$_v}</option>
-                                            {/foreach}
-                                        </select>
+                                <div class="js-valtozatbox span2 kosarbacontainer">
+                                    <div class="pull-left gvaltozatcontainer">
+                                        <div class="pull-left gvaltozatnev termekvaltozat">{t('Szín')}:</div>
+                                        <div class="pull-left gvaltozatselect">
+                                            <select class="js-szinvaltozatedit valtozatselect" data-termek="{$termek.id}">
+                                                <option value="">{t('Válasszon')}</option>
+                                                {foreach $termek.szinek as $_v}
+                                                    <option value="{$_v}">{$_v}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
                                     </div>
-                                    {/foreach}
                                 </div>
                             </div>
                             {/if}

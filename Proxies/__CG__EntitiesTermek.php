@@ -2575,4 +2575,15 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
         return parent::setEladhato($eladhato);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getXLathato()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getXLathato', []);
+
+        return parent::getXLathato();
+    }
+
 }

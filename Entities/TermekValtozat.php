@@ -539,4 +539,29 @@ class TermekValtozat {
         $this->lathato3 = $lathato3;
     }
 
+    public function getXElerheto() {
+        switch (\mkw\store::getSetupValue('webshopnum', 1)) {
+            case 1:
+                return $this->getElerheto();
+            case 2:
+                return $this->getElerheto2();
+            case 3:
+                return $this->getElerheto3();
+            default:
+                return $this->getElerheto();
+        }
+    }
+
+    public function getXLathato() {
+        switch (\mkw\store::getSetupValue('webshopnum', 1)) {
+            case 1:
+                return $this->getLathato();
+            case 2:
+                return $this->getLathato2();
+            case 3:
+                return $this->getLathato3();
+            default:
+                return $this->getLathato();
+        }
+    }
 }

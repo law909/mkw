@@ -293,6 +293,40 @@ $(document).ready(function() {
                     });
         }
     });
+    // valaszthato valtozat van
+    $('.js-kosarbaszinvaltozat').on('click', function(e) {
+        var $this = $(this),
+            termekid = $this.attr('data-termek'),
+            valtozatid = $('.js-meretvaltozatedit[data-termek="' + termekid + '"] option:selected').val();
+
+        e.preventDefault();
+
+        if (!valtozatid) {
+            mkw.showDialog(mkwmsg.TermekValtozatotValassz);
+        }
+        else {
+            $.ajax({
+                type: 'POST',
+                url: $this.attr('href'),
+                data: {
+                    jax: 2,
+                    vid: valtozatid
+                },
+                beforeSend: function(x) {
+                    mkw.showMessage(mkwmsg.TermekKosarba);
+                }
+            })
+                .done(function(data) {
+                    $('.js-meretvaltozatedit[data-termek="' + termekid + '"]').selectedIndex = 0;
+                    var d = JSON.parse(data);
+                    $('#minikosar').html(d.minikosar);
+                    $('#minikosaringyenes').html(d.minikosaringyenes);
+                })
+                .always(function() {
+                    mkw.closeMessage();
+                });
+        }
+    });
 
     // valtozat
     $('.js-valtozatedit').on('change', function() {
@@ -317,41 +351,23 @@ $(document).ready(function() {
                     $('.js-kosarbavaltozat[data-id="' + id + '"]').attr('data-vid', $this.val());
                 });
     });
-    $('.js-mindenvaltozatedit').on('change', function() {
-        var $valtedit = $(this),
-                tipusid = $valtedit.data('tipusid'),
-                termek = $valtedit.data('termek'),
-                id = $valtedit.data('id'),
-                $masikedit = $('.js-mindenvaltozatedit[data-termek="' + termek + '"][data-tipusid!="' + tipusid + '"]');
-
+    $('.js-szinvaltozatedit').on('change', function() {
+        var $szinedit = $(this),
+                termek = $szinedit.data('termek');
+        $('#meret' + termek).remove();
         $.ajax({
-            url: '/valtozat',
+            url: '/getmeretszinhez',
             data: {
                 t: termek,
-                ti: tipusid,
-                v: $valtedit.val(),
-                sel: $masikedit.val(),
-                mti: $masikedit.data('tipusid')
+                sz: $szinedit.val(),
             }
         })
-                .done(function(data) {
-                    var d = JSON.parse(data),
-                            adat = d['adat'];
-                    sel = '';
-
-                    changeTermekAdat(id, d);
-
-                    $('option[value!=""]', $masikedit).remove();
-                    $.each(adat, function(i, v) {
-                        if (v['sel']) {
-                            sel = ' selected="selected"';
-                        }
-                        else {
-                            sel = '';
-                        }
-                        $masikedit.append('<option value="' + v['value'] + '"' + sel + '>' + v['value'] + '</option>');
-                    });
-                });
+        .done(function(data) {
+            if (data) {
+                var box = $szinedit.parents('.js-valtozatbox');
+                box.append(data);
+            }
+        });
     });
     var $regform = $('#Regform');
     if ($regform.length > 0) {

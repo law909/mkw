@@ -69,6 +69,7 @@ $router->map('GET', '/valtozatar', 'mainController#valtozatar', 'valtozatar');
 $router->map('GET', '/valtozat', 'mainController#valtozat', 'valtozat');
 $router->map('GET', '/kereses', 'mainController#kereses', 'kereses');
 $router->map('GET', '/markak', 'termekcimkeController#showMarkak', 'markak');
+$router->map('GET', '/getmeretszinhez', 'termekController#getMeretSzinhez', 'getmeretszinhez');
 
 $router->map('POST', '/kosar/add', 'kosarController#add', 'kosaradd');
 $router->map('POST', '/kosar/multiadd', 'kosarController#multiAdd', 'kosarmultiadd');

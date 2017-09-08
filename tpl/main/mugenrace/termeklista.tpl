@@ -149,37 +149,20 @@
                                     {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
                                     <div class="textaligncenter"><span class="bold">Szállítási idő: </span>{$_termek.szallitasiido} munkanap</div>
                                     {/if}
-                                    {if ($_termek.valtozatok|default)}
-                                        <div class="pull-left gvaltozatcontainer termekvaltozat">
-                                            {$_termek.valtozatok.fixname}: {$_termek.valtozatok.fixvalue}
-                                        </div>
-                                        {if ($_termek.valtozatok.name)}
-                                        <div class="pull-left gvaltozatcontainer">
-                                            <div class="pull-left gvaltozatnev termekvaltozat">{$_termek.valtozatok.name}:</div>
-                                            <div class="pull-left gvaltozatselect">
-                                                <select class="js-valtozatedit valtozatselect" data-id="{$_termek.id}-{$_termek.valtozatid}" data-termek="{$_termek.id}">
-                                                {foreach $_termek.valtozatok.data as $_data}
-                                                    <option value="{$_data.id}"{if ($_data.selected)} selected{/if}>{$_data.value}</option>
-                                                {/foreach}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        {/if}
-                                    {/if}
-                                    {if ($_termek.mindenvaltozat|default)}
-                                        {foreach $_termek.mindenvaltozat as $_valtozat}
+                                    {if ($_termek.szinek|default)}
+                                        <div class="js-valtozatbox">
                                             <div class="pull-left gvaltozatcontainer">
-                                                <div class="pull-left gvaltozatnev termekvaltozat">{$_valtozat.name}:</div>
+                                                <div class="pull-left gvaltozatnev termekvaltozat">{t('Szín')}:</div>
                                                 <div class="pull-left gvaltozatselect">
-                                                    <select class="js-mindenvaltozatedit valtozatselect" data-id="{$_termek.id}-{$_termek.valtozatid|default}" data-termek="{$_termek.id}" data-tipusid="{$_valtozat.tipusid}">
+                                                    <select class="js-szinvaltozatedit valtozatselect" data-termek="{$_termek.id}">
                                                         <option value="">{t('Válasszon')}</option>
-                                                        {foreach $_valtozat.value as $_v}
+                                                        {foreach $_termek.szinek as $_v}
                                                             <option value="{$_v}">{$_v}</option>
                                                         {/foreach}
                                                     </select>
                                                 </div>
                                             </div>
-                                        {/foreach}
+                                        </div>
                                     {/if}
                                 </div>
                                 <div>
@@ -200,7 +183,7 @@
                                             {t('Elfogyott')}
                                         </a>
                                     {else}
-                                        <a href="/kosar/add?id={$_termek.id}" rel="nofollow" class="js-kosarbamindenvaltozat btn cartbtn pull-right" data-termek="{$_termek.id}">
+                                        <a href="/kosar/add?id={$_termek.id}" rel="nofollow" class="js-kosarbaszinvaltozat btn cartbtn pull-right" data-termek="{$_termek.id}">
                                             {t('Kosárba')}
                                         </a>
                                     {/if}

@@ -504,7 +504,7 @@ class Termek {
             $adatt = array();
             $valtozatok = $this->getValtozatok();
             foreach ($valtozatok as $valt) {
-                if ($valt->getElerheto()) {
+                if ($valt->getXElerheto()) {
                     if ($this->getValtozatadattipusId() == $valt->getAdatTipus1Id() && $valt->getErtek1() == $ertek &&
                             $valt->getAdatTipus2Id()) {
                         $adatt[] = array('id' => $valt->getId(), 'value' => $valt->getErtek2(), 'selected' => $valt->getId() == $valtozat->getId());
@@ -518,36 +518,53 @@ class Termek {
             $x['valtozatok']['data'] = $adatt;
         }
         else {
-            $vtt = array();
-            $valtozatok = $this->getValtozatok();
-            $db = 0;
-            foreach ($valtozatok as $valt) {
-                if ($valt->getElerheto()) {
-                    $db++;
-                }
-            }
-            foreach ($valtozatok as $valt) {
-                if ($valt->getElerheto()) {
-                    if ($valt->getAdatTipus1Id() && $valt->getAdatTipus1Nev()) {
-                        $vtt[$valt->getAdatTipus1Id()]['tipusid'] = $valt->getAdatTipus1Id();
-                        $vtt[$valt->getAdatTipus1Id()]['name'] = $valt->getAdatTipus1Nev();
-                        $vtt[$valt->getAdatTipus1Id()]['value'][$valt->getErtek1()] = $valt->getErtek1();
-                        $vtt[$valt->getAdatTipus1Id()]['selected'][$valt->getErtek1()] = $db === 1;
-                    }
-                    if ($valt->getAdatTipus2Id() && $valt->getAdatTipus2Nev()) {
-                        $vtt[$valt->getAdatTipus2Id()]['tipusid'] = $valt->getAdatTipus2Id();
-                        $vtt[$valt->getAdatTipus2Id()]['name'] = $valt->getAdatTipus2Nev();
-                        $vtt[$valt->getAdatTipus2Id()]['value'][$valt->getErtek2()] = $valt->getErtek2();
-                        $vtt[$valt->getAdatTipus2Id()]['selected'][$valt->getErtek2()] = $db === 1;
-                    }
-                    if ($db === 1) {
-                        if ($valt->getKeszlet() > 0) {
-                            $x['szallitasiido'] = 1;
+            if (\mkw\store::isMugenrace()) {
+                $vtt = array();
+                $valtozatok = $this->getValtozatok();
+                foreach ($valtozatok as $valt) {
+                    if ($valt->getXElerheto()) {
+                        if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                            $vtt[$valt->getErtek1()] = $valt->getErtek1();
+                        }
+                        elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                            $vtt[$valt->getErtek2()] = $valt->getErtek2();
                         }
                     }
                 }
+                $x['szinek'] = $vtt;
             }
-            $x['mindenvaltozat'] = $vtt;
+            else {
+                $vtt = array();
+                $valtozatok = $this->getValtozatok();
+                $db = 0;
+                foreach ($valtozatok as $valt) {
+                    if ($valt->getXElerheto()) {
+                        $db++;
+                    }
+                }
+                foreach ($valtozatok as $valt) {
+                    if ($valt->getXElerheto()) {
+                        if ($valt->getAdatTipus1Id() && $valt->getAdatTipus1Nev()) {
+                            $vtt[$valt->getAdatTipus1Id()]['tipusid'] = $valt->getAdatTipus1Id();
+                            $vtt[$valt->getAdatTipus1Id()]['name'] = $valt->getAdatTipus1Nev();
+                            $vtt[$valt->getAdatTipus1Id()]['value'][$valt->getErtek1()] = $valt->getErtek1();
+                            $vtt[$valt->getAdatTipus1Id()]['selected'][$valt->getErtek1()] = $db === 1;
+                        }
+                        if ($valt->getAdatTipus2Id() && $valt->getAdatTipus2Nev()) {
+                            $vtt[$valt->getAdatTipus2Id()]['tipusid'] = $valt->getAdatTipus2Id();
+                            $vtt[$valt->getAdatTipus2Id()]['name'] = $valt->getAdatTipus2Nev();
+                            $vtt[$valt->getAdatTipus2Id()]['value'][$valt->getErtek2()] = $valt->getErtek2();
+                            $vtt[$valt->getAdatTipus2Id()]['selected'][$valt->getErtek2()] = $db === 1;
+                        }
+                        if ($db === 1) {
+                            if ($valt->getKeszlet() > 0) {
+                                $x['szallitasiido'] = 1;
+                            }
+                        }
+                    }
+                }
+                $x['mindenvaltozat'] = $vtt;
+            }
         }
         return $x;
     }
@@ -665,7 +682,7 @@ class Termek {
         $vtt = array();
         $valtozatok = $this->getValtozatok();
         foreach ($valtozatok as $valt) {
-            if ($valt->getElerheto()) {
+            if ($valt->getXElerheto()) {
                 if ($valt->getAdatTipus1Id() && $valt->getAdatTipus1Nev()) {
                     $vtt[$valt->getAdatTipus1Id()]['tipusid'] = $valt->getAdatTipus1Id();
                     $vtt[$valt->getAdatTipus1Id()]['name'] = $valt->getAdatTipus1Nev();
@@ -679,6 +696,22 @@ class Termek {
             }
         }
         $x['valtozatok'] = $vtt;
+
+        if (\mkw\store::isMugenrace()) {
+            $vtt = array();
+            $valtozatok = $this->getValtozatok();
+            foreach ($valtozatok as $valt) {
+                if ($valt->getXElerheto()) {
+                    if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                        $vtt[$valt->getErtek1()] = $valt->getErtek1();
+                    }
+                    elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                        $vtt[$valt->getErtek2()] = $valt->getErtek2();
+                    }
+                }
+            }
+            $x['szinek'] = $vtt;
+        }
 
         $hasontomb = array();
         $r = \mkw\store::getEm()->getRepository('Entities\Termek');
@@ -2219,5 +2252,17 @@ class Termek {
         $this->eladhato = $eladhato;
     }
 
+    public function getXLathato() {
+        switch (\mkw\store::getSetupValue('webshopnum', 1)) {
+            case 1:
+                return $this->getLathato();
+            case 2:
+                return $this->getLathato2();
+            case 3:
+                return $this->getLathato3();
+            default:
+                return $this->getLathato();
+        }
+    }
 
 }
