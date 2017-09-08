@@ -1,16 +1,18 @@
 {extends "../rep_base.tpl"}
 
 {block "body"}
-    <h4 xmlns="http://www.w3.org/1999/html">Kintlevőség</h4>
+    <h4 xmlns="http://www.w3.org/1999/html">Tartozás</h4>
     <h5>{$datumnev} {$tolstr} - {$igstr}</h5>
-    <h5>Befizetések {$befdatumstr}-ig</h5>
+    <h5>Kifizetések {$befdatumstr}-ig</h5>
     <h5>{$partnernev}</h5>
     <h5>{$cimkenevek}</h5>
+    <h5>{$dolgozonev}</h5>
     <h5>{$uknev}</h5>
     <table>
         <thead>
         <tr>
             <th>Bizonylatszám</th>
+            <th>Ki költött</th>
             <th>Fizetési mód</th>
             <th>Kelt</th>
             <th>Teljesítés</th>
@@ -34,7 +36,7 @@
             {$plejartsum = array()}
             {$pnemlejartsum = array()}
             <tr class="italic">
-                <td colspan="8" class="cell">
+                <td colspan="10" class="cell">
                     {$partner.nev} {$partner.irszam} {$partner.varos} {$partner.utca}
                 </td>
             </tr>
@@ -42,13 +44,14 @@
                 {$elem = $lista[$cikl]}
                 <tr>
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.bizonylatfej_id}</td>
+                    <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.felhasznalonev}</td>
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.fizmodnev}</td>
-                    <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.kelt}</td>
-                    <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.teljesites}</td>
+                    <td class="cell nowrap{if ($elem.lejart)} lejart{/if}">{$elem.kelt}</td>
+                    <td class="cell nowrap{if ($elem.lejart)} lejart{/if}">{$elem.teljesites}</td>
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.hivatkozottdatum}</td>
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.lejartnap} nap</td>
-                    <td class="cell textalignright nowrap{if ($elem.lejart)} lejart{/if}">{bizformat($elem.brutto)}</td>
-                    <td class="cell textalignright nowrap{if ($elem.lejart)} lejart{/if}">{bizformat($elem.tartozas)}</td>
+                    <td class="cell textalignright nowrap{if ($elem.lejart)} lejart{/if}">{bizformat($elem.brutto * -1)}</td>
+                    <td class="cell textalignright nowrap{if ($elem.lejart)} lejart{/if}">{bizformat($elem.tartozas * -1)}</td>
                     <td class="cell{if ($elem.lejart)} lejart{/if}">{$elem.valutanemnev}</td>
                 </tr>
                 {$bsum[$elem.valutanemnev]['brutto'] = $bsum[$elem.valutanemnev]['brutto'] + $elem.brutto}
@@ -67,24 +70,24 @@
             {if ($reszletessum)}
                 {foreach $pnemlejartsum as $k=>$pn}
                     <tr class="italic bold">
-                        <td colspan="7" class="cell">{$partner.nev} összesen nem lejárt</td>
-                        <td class="cell textalignright">{bizformat($pn)}</td>
+                        <td colspan="8" class="cell">{$partner.nev} összesen nem lejárt</td>
+                        <td class="cell nowrap textalignright">{bizformat($pn * -1)}</td>
                         <td class="cell">{$k}</td>
                     </tr>
                 {/foreach}
                 {foreach $plejartsum as $k=>$pn}
                     <tr class="italic bold">
-                        <td colspan="7" class="cell">{$partner.nev} összesen lejárt</td>
-                        <td class="cell textalignright">{bizformat($pn)}</td>
+                        <td colspan="8" class="cell">{$partner.nev} összesen lejárt</td>
+                        <td class="cell nowrap textalignright">{bizformat($pn * -1)}</td>
                         <td class="cell">{$k}</td>
                     </tr>
                 {/foreach}
             {/if}
             {foreach $pbsum as $k=>$bs}
                 <tr class="italic bold">
-                    <td colspan="6" class="cell">{$partner.nev} összesen</td>
-                    <td class="textalignright">{bizformat($bs['brutto'])}</td>
-                    <td class="textalignright">{bizformat($bs['tartozas'])}</td>
+                    <td colspan="7" class="cell">{$partner.nev} összesen</td>
+                    <td class="nowrap textalignright">{bizformat($bs['brutto'] * -1)}</td>
+                    <td class="nowrap textalignright">{bizformat($bs['tartozas'] * -1)}</td>
                     <td>{$k}</td>
                 </tr>
             {/foreach}
@@ -94,24 +97,24 @@
         {if ($reszletessum)}
             {foreach $nemlejartsum as $k=>$pn}
                 <tr>
-                    <td colspan="7">Összesen nem lejárt:</td>
-                    <td class="textalignright">{bizformat($pn)}</td>
+                    <td colspan="8">Összesen nem lejárt:</td>
+                    <td class="nowrap textalignright">{bizformat($pn) * -1}</td>
                     <td>{$k}</td>
                 </tr>
             {/foreach}
             {foreach $lejartsum as $k=>$pn}
                 <tr>
-                    <td colspan="7">Összesen lejárt:</td>
-                    <td class="textalignright">{bizformat($pn)}</td>
+                    <td colspan="8">Összesen lejárt:</td>
+                    <td class="nowrap textalignright">{bizformat($pn) * -1}</td>
                     <td>{$k}</td>
                 </tr>
             {/foreach}
         {/if}
         {foreach $bsum as $k=>$bs}
         <tr>
-            <td colspan="6">{$k} összesen:</td>
-            <td class="textalignright">{bizformat($bs['brutto'])}</td>
-            <td class="textalignright">{bizformat($bs['tartozas'])}</td>
+            <td colspan="7">{$k} összesen:</td>
+            <td class="nowrap textalignright">{bizformat($bs['brutto'] * -1)}</td>
+            <td class="nowrap textalignright">{bizformat($bs['tartozas'] * -1)}</td>
             <td>{$k}</td>
         </tr>
         {/foreach}

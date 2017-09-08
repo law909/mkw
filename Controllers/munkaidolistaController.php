@@ -40,7 +40,6 @@ class munkaidolistaController extends \mkwhelpers\MattableController {
         }
 
         $filter
-            ->addFilter('dolgozo', '=', $dolgozo)
             ->addFilter('datum', '>=', $this->tolstr)
             ->addFilter('datum', '<=', $this->igstr);
         return $filter;
@@ -57,15 +56,19 @@ class munkaidolistaController extends \mkwhelpers\MattableController {
         $ret = array();
         /** @var \Entities\Jelenletiiv $m */
         foreach ($mind as $m) {
-            /** @var \DateInterval $difi */
-            $difi = $m->getBelepes()->diff($m->getKilepes());
+            $kul = 0;
+            if ($m->getBelepes() && $m->getKilepes()) {
+                /** @var \DateInterval $difi */
+                $difi = $m->getBelepes()->diff($m->getKilepes());
+                $kul = $difi->h * 60 + $difi->i;
+            }
             $ret[] = array(
                 'datum' => $m->getDatumStr(),
                 'belepes' => $m->getBelepesStr(),
                 'kilepes' => $m->getKilepesStr(),
                 'jelenlettipus' => $m->getJelenlettipusNev(),
                 'dolgozonev' => $m->getDolgozoNev(),
-                'ido' => $difi->h * 60 + $difi->i,
+                'ido' => $kul,
                 'masip' => $m->getBeip() !== $m->getKiip()
             );
         }
