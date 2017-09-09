@@ -106,13 +106,13 @@ function koltseg() {
                 }
             })
             .on('change', '#KtgFizmodEdit', function(e) {
+                $('#KtgVanPenzmozgas').prop('checked', isKeszpenz());
                 if (isKeszpenz() && $('#KtgVanPenzmozgas').prop('checked')) {
                     setPenztarKotelezo();
                 }
                 else {
                     setPenztarNemkotelezo();
                 }
-                $('#KtgVanPenzmozgas').prop('checked', isKeszpenz());
             })
             .on('change', '#KtgVanPenzmozgas', function(e) {
                 if (isKeszpenz() && $('#KtgVanPenzmozgas').prop('checked')) {

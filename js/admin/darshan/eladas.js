@@ -133,7 +133,14 @@ function eladas() {
     }
 
     function setElControls() {
-        if (isKeszpenz() || !isFizmodSelected()) {
+        if (!isFizmodSelected()) {
+            bankszamlaedit.removeAttr('required');
+            penztaredit.removeAttr('required');
+            penzdatumedit.removeAttr('required');
+            jogcimedit.removeAttr('required');
+            osszegedit.removeAttr('required');
+        }
+        if (isKeszpenz()) {
             showPenztar();
             if (vanpenzmozgasedit.prop('checked')) {
                 penztaredit.prop('required', true);
@@ -169,7 +176,6 @@ function eladas() {
         penztarrow.show();
         bankszamlarow.hide();
         bankszamlaedit.removeAttr('required');
-
     }
 
     function showBankszamla() {
@@ -284,7 +290,6 @@ function eladas() {
                 }
             })
             .on('change', '#ElFizmodEdit', function(e) {
-                setElControls();
                 if (isSZEP()) {
                     $('tr.szepkartya').show();
                 }
@@ -292,6 +297,7 @@ function eladas() {
                     $('tr.szepkartya').hide();
                 }
                 vanpenzmozgasedit.prop('checked', isKeszpenz());
+                setElControls();
                 setElDates();
             })
             .on('change', '#ElVanPenzmozgas', function(e) {
@@ -336,9 +342,10 @@ function eladas() {
         $('#ElJogcimEdit')[0].selectedIndex = 0;
         $('#ElErtek').text('');
         $('#ElOsszegEdit').val('');
-        $('#SZEPKartyaTipusEdit').selectedIndex = 0;
+        $('#SZEPKartyaTipusEdit')[0].selectedIndex = 0;
         $('#SZEPKartyaNevEdit').val('');
         $('#SZEPKartyaSzamEdit').val('');
+        $('tr.szepkartya').hide();
         vanpenzmozgasedit.attr('checked', 'checked');
         $('#ElSzamlaEdit[value="egyeb"]').prop('checked', true);
         showPenztar();
