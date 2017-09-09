@@ -308,6 +308,19 @@ class Partner {
 
     /** @ORM\Column(type="integer", nullable=true) */
     private $minicrmcontactid;
+    /**
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="createdby", referencedColumnName="id")
+     */
+    private $createdby;
+
+    /**
+     * @Gedmo\Blameable(on="update")
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="updatedby", referencedColumnName="id")
+     */
+    private $updatedby;
 
     public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1324,5 +1337,46 @@ class Partner {
         $this->minicrmcontactid = $minicrmcontactid;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCreatedby() {
+        return $this->createdby;
+    }
+
+    public function getCreatedbyId() {
+        if ($this->createdby) {
+            return $this->createdby->getId();
+        }
+        return null;
+    }
+
+    public function getCreatedbyNev() {
+        if ($this->createdby) {
+            return $this->createdby->getNev();
+        }
+        return null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedby() {
+        return $this->updatedby;
+    }
+
+    public function getUpdatedbyId() {
+        if ($this->updatedby) {
+            return $this->updatedby->getId();
+        }
+        return null;
+    }
+
+    public function getUpdatedbyNev() {
+        if ($this->updatedby) {
+            return $this->updatedby->getNev();
+        }
+        return null;
+    }
 
 }
