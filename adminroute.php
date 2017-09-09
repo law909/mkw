@@ -559,6 +559,9 @@ $router->map('GET', '/admin/bizomanyosertekesiteslista/refresh', 'bizomanyoserte
 
 $router->map('GET', '/admin/csomagterminal/gethtmllist', 'csomagterminalController#getHTMLList', 'admincsomagterminalgethtmllist');
 
+$router->map('GET', '/admin/minicrm/view', 'minicrmController#view', 'adminminicrmview');
+$router->map('POST', '/admin/minicrm/partnerimport', 'minicrmController#partnerImport', 'adminminicrmpartnerimport');
+
 if (\mkw\store::isDarshan()) {
     $router->map('GET', '/admin/orarend/viewlist', 'orarendController#viewlist', 'adminorarendviewlist');
     $router->map('GET', '/admin/orarend/htmllist', 'orarendController#htmllist', 'adminorarendhtmllist');
@@ -601,4 +604,3 @@ $router->map('POST', '/admin/minicrmmail', 'adminController#replier', 'adminmini
 $router->map('GET', '/admin/t/minicrm', 'adminController#minicrm', 'adminminicrm');
 $router->map('GET', '/admin/t/kerriiimport', 'importController#kerriiimport', 'adminkerriiimport');
 $router->map('GET', '/admin/t/genean13', 'adminController#genean13', 'admingenean13');
-$router->map('GET', '/admin/t/minicrmpartnerimport', 'partnerController#miniCRMImport', 'adminminicrmimport');

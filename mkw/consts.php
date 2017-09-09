@@ -186,6 +186,7 @@ class consts {
     const MiniCRMAPIKey = 'minicrmapikey';
     const MiniCRMPartnertorzs = 'minicrmpartnertorzs';
     const MiniCRMRendezvenyJelentkezes = 'minicrmrendezvenyjelentkezes';
+    const MiniCRMLastPartnerImport = 'minicrmlastpartnerimport';
 
     const MugenraceFooldalKep = 'mugenracefooldalkep';
     const MugenraceFooldalSzoveg = 'mugenracefooldalszoveg';

@@ -40,6 +40,7 @@ class store {
     public static $LastDayDateFormat = 'Y.m.t';
     public static $SQLDateFormat = 'Y-m-d';
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
+    public static $MiniCRMDateTimeFormat = 'Y-m-d+H:i:s';
     public static $TimeFormat = 'H:i';
     private static $blameableListener;
 

@@ -735,9 +735,23 @@ class Partner {
 		return $this->lastmod;
 	}
 
+    public function getLastmodStr() {
+        if ($this->getLastmod()) {
+            return $this->getLastmod()->format(\mkw\store::$DateTimeFormat);
+        }
+        return '';
+    }
+
 	public function getCreated() {
 		return $this->created;
 	}
+
+    public function getCreatedStr() {
+        if ($this->getCreated()) {
+            return $this->getCreated()->format(\mkw\store::$DateTimeFormat);
+        }
+        return '';
+    }
 
 	public function getSzallnev() {
 		return $this->szallnev;
