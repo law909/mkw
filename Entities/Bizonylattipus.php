@@ -79,6 +79,8 @@ class Bizonylattipus {
     private $showfoxpostterminaleditor = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showfelhasznalo = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $checkkelt = true;
 
     public function __construct() {
         $this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -416,6 +418,20 @@ class Bizonylattipus {
      */
     public function setShowfelhasznalo($showfelhasznalo) {
         $this->showfelhasznalo = $showfelhasznalo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCheckkelt() {
+        return $this->checkkelt;
+    }
+
+    /**
+     * @param mixed $checkkelt
+     */
+    public function setCheckkelt($checkkelt) {
+        $this->checkkelt = $checkkelt;
     }
 
 }

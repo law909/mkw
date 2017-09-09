@@ -867,18 +867,24 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $kelt = strtotime($keltstr);
         $biztipid = $this->params->getStringRequestParam('biztipus');
         $bizszam = $this->params->getStringRequestParam('bizszam');
+        /** @var \Entities\Bizonylattipus $bt */
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipid);
         if ($bt) {
-            $filter = new \mkwhelpers\FilterDescriptor();
-            $filter
-                ->addFilter('bizonylattipus', '=', $bt)
-                ->addFilter('kelt', '>', $keltstr)
-                ->addSql('(YEAR(_xx.kelt)=' . date('Y', $kelt) . ')');
-            if ($bizszam) {
-                $filter->addFilter('id', '<>', $bizszam);
+            if ($bt->getCheckkelt()) {
+                $filter = new \mkwhelpers\FilterDescriptor();
+                $filter
+                    ->addFilter('bizonylattipus', '=', $bt)
+                    ->addFilter('kelt', '>', $keltstr)
+                    ->addSql('(YEAR(_xx.kelt)=' . date('Y', $kelt) . ')');
+                if ($bizszam) {
+                    $filter->addFilter('id', '<>', $bizszam);
+                }
+                $db = $this->getRepo()->getCount($filter);
+                if ($db == 0) {
+                    $ret = array('response' => 'ok');
+                }
             }
-            $db = $this->getRepo()->getCount($filter);
-            if ($db == 0) {
+            else {
                 $ret = array('response' => 'ok');
             }
         }
