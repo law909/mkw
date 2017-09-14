@@ -82,6 +82,13 @@ class minicrmController extends \mkwhelpers\Controller {
                                             $partner->setUtca($addr->Address);
                                         }
 
+                                        if (!$partner->getIrszam()) {
+                                            $partner->setIrszam('1011');
+                                        }
+                                        if (!$partner->getVaros()) {
+                                            $partner->setVaros('Budapest');
+                                        }
+
                                         $this->getEm()->persist($partner);
                                         $this->getEm()->flush();
 
