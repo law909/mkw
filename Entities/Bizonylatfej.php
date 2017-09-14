@@ -560,6 +560,9 @@ class Bizonylatfej {
     /** @ORM\Column(type="integer", nullable=true) */
     private $szepkartyatipus;
 
+    /** @ORM\Column(type="boolean") */
+    private $nincspenzmozgas = true;
+
     public function __toString() {
         return (string)$this->id;
     }
@@ -1410,6 +1413,7 @@ class Bizonylatfej {
                 $this->fizmod = $val;
                 if (!$this->duplication) {
                     $this->fizmodnev = $val->getNev();
+                    $this->setNincspenzmozgas($val->getNincspenzmozgas());
                 }
             }
         }
@@ -1420,6 +1424,7 @@ class Bizonylatfej {
             $this->fizmod = null;
             if (!$this->duplication) {
                 $this->fizmodnev = '';
+                $this->setNincspenzmozgas(false);
             }
         }
     }
@@ -3335,6 +3340,20 @@ class Bizonylatfej {
      */
     public function setSzepkartyanev($szepkartyanev) {
         $this->szepkartyanev = $szepkartyanev;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNincspenzmozgas() {
+        return $this->nincspenzmozgas;
+    }
+
+    /**
+     * @param mixed $nincspenzmozgas
+     */
+    public function setNincspenzmozgas($nincspenzmozgas) {
+        $this->nincspenzmozgas = $nincspenzmozgas;
     }
 
 }

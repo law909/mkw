@@ -79,7 +79,7 @@ class BizonylatfejListener {
      * @param \Entities\Bizonylatfej $bizonylat
      */
     private function createFolyoszamla($bizonylat) {
-        if (!$bizonylat->getPenztmozgat()) {
+        if (!$bizonylat->getPenztmozgat() || $bizonylat->getNincspenzmozgas()) {
             foreach ($bizonylat->getFolyoszamlak() as $fsz) {
                 $this->em->remove($fsz);
             }

@@ -41,6 +41,7 @@ class fizmodController extends \mkwhelpers\MattableController {
         $x['osztotthaladek5'] = $t->getOsztotthaladek5();
         $x['osztottszazalek5'] = $t->getOsztottszazalek5();
         $x['rugalmas'] = $t->getRugalmas();
+        $x['nincspenzmozgas'] = $t->getNincspenzmozgas();
 
         if ($forKarb) {
             if ($letezik) {
@@ -80,6 +81,7 @@ class fizmodController extends \mkwhelpers\MattableController {
         $obj->setOsztotthaladek5($this->params->getIntRequestParam('osztotthaladek5'));
         $obj->setOsztottszazalek5($this->params->getNumRequestParam('osztottszazalek5'));
         $obj->setRugalmas($this->params->getBoolRequestParam('rugalmas'));
+        $obj->setNincspenzmozgas($this->params->getBoolRequestParam('nincspenzmozgas'));
         $hatarids = $this->params->getArrayRequestParam('hatarid');
         foreach ($hatarids as $hatarid) {
             $oper = $this->params->getStringRequestParam('hataroper_' . $hatarid);
@@ -217,7 +219,8 @@ class fizmodController extends \mkwhelpers\MattableController {
                 'bank' => ($sor->getTipus() == 'B' ? '1' : '0'),
                 'szepkartya' => $sor->getId() == $szepfm,
                 'sportkartya' => $sor->getId() == $sportfm,
-                'aycm' => $sor->getId() == $aycmfm
+                'aycm' => $sor->getId() == $aycmfm,
+                'nincspenzmozgas' => $sor->getNincspenzmozgas()
             );
             if ($selid) {
                 $r['selected'] = $sor->getId() == $selid;

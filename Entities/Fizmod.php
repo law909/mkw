@@ -65,6 +65,8 @@ class Fizmod {
     private $osztottszazalek5;
     /** @ORM\Column(type="integer",nullable=true) */
     private $migrid;
+    /** @ORM\Column(type="boolean") */
+    private $nincspenzmozgas = false;
 
     /** @Gedmo\Locale */
     protected $locale;
@@ -300,6 +302,20 @@ class Fizmod {
 
     public function setLocale($locale) {
         $this->locale = $locale;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNincspenzmozgas() {
+        return $this->nincspenzmozgas;
+    }
+
+    /**
+     * @param mixed $nincspenzmozgas
+     */
+    public function setNincspenzmozgas($nincspenzmozgas) {
+        $this->nincspenzmozgas = $nincspenzmozgas;
     }
 
 }

@@ -7,6 +7,7 @@
         <div class="matt-hseparator"></div>
         <div>{if ($_egyed.webes)}{at('Webes')}{else}{at('Nem webes')}{/if}</div>
         <div>{if ($_egyed.rugalmas)}{at('Rugalmas')}{else}{at('Nem rugalmas')}{/if}</div>
+        <div>{if ($_egyed.nincspenzmozgas)}{at('Nincs pénzmozgás')}{else}{at('Van pénzmozgás')}{/if}</div>
         <div>{if ($_egyed.tipus == 'P')}{at('Pénztár')}{elseif ($_egyed.tipus == 'B')}{at('Bank')}{else}{at('Ismeretlen típus')}{/if}</div>
     </td>
     <td class="cell">
