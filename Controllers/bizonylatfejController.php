@@ -1418,6 +1418,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
                 $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
                 $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
+                if ($biztipus === 'koltsegszamla' || $biztipus === 'bevet') {
+                    $partnerobj->setSzallito(true);
+                }
                 $this->getEm()->persist($partnerobj);
 
                 $obj->setPartner($partnerobj);
@@ -1443,6 +1446,20 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
             $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
             $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
+
+            if (!$partnerobj->getEmail()) {
+                $partnerobj->setEmail(uniqid(\Behat\Transliterator\Transliterator::transliterate($partnerobj->getNev(), '_'), true) . '@mail.local');
+            }
+            if (!$partnerobj->getIrszam()) {
+                $partnerobj->setIrszam('1011');
+            }
+            if (!$partnerobj->getVaros()) {
+                $partnerobj->setVaros('Budapest');
+            }
+            if ($biztipus === 'koltsegszamla' || $biztipus === 'bevet') {
+                $partnerobj->setSzallito(true);
+            }
+
             $this->getEm()->persist($partnerobj);
 
             $obj->setPartner($partnerobj);
