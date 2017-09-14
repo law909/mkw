@@ -67,10 +67,11 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
                 break;
         }
 
-        $q = $this->_em->createQuery('SELECT _xx.hivatkozottbizonylat,_xx.hivatkozottdatum,SUM(_xx.brutto * _xx.irany) AS egyenleg'
+        $q = $this->_em->createQuery('SELECT _xx.hivatkozottbizonylat,_xx.hivatkozottdatum,SUM(_xx.brutto * _xx.irany) AS egyenleg, fm.nev AS fizmodnev'
             . ' FROM Entities\Folyoszamla _xx'
+            . ' LEFT JOIN _xx.fizmod fm'
             . $this->getFilterString($filter)
-            . ' GROUP BY _xx.hivatkozottbizonylat,_xx.hivatkozottdatum'
+            . ' GROUP BY _xx.hivatkozottbizonylat,_xx.hivatkozottdatum,fm.nev'
             . ' HAVING egyenleg<>0'
             . ' ORDER BY _xx.hivatkozottdatum'
         );

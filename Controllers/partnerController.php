@@ -1128,7 +1128,8 @@ class partnerController extends \mkwhelpers\MattableController {
             $adat[] = array(
                 'bizszam' => $biz['hivatkozottbizonylat'],
                 'datum' => $datum,
-                'egyenleg' => $biz['egyenleg'] * 1 * $irany
+                'egyenleg' => $biz['egyenleg'] * 1 * $irany,
+                'fizmod' => $biz['fizmodnev']
             );
         }
         $view = $this->createView('kiegyenlitetlenselect.tpl');
