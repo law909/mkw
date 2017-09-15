@@ -1940,6 +1940,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getEredetiNettoAr($valtozat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEredetiNettoAr', [$valtozat]);
+
+        return parent::getEredetiNettoAr($valtozat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getArValutanem($valtozat = NULL, $partner = NULL, $valutanem = NULL)
     {
 

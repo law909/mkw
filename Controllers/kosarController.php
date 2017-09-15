@@ -403,11 +403,20 @@ class kosarController extends \mkwhelpers\MattableController {
         /** @var \Entities\Kosar $sor */
         foreach ($sorok as $sor) {
             if (\mkw\store::isMugenrace()) {
-                $sor->setBruttoegysar($sor->getTermek()->getBruttoAr(
-                    $sor->getTermekvaltozat(),
-                    \mkw\store::getLoggedInUser(),
-                    \mkw\store::getMainSession()->valutanem,
-                    \mkw\store::getParameter(\mkw\consts::Webshop2Price)));
+                if ((\mkw\store::getMainSession()->valutanem && \mkw\store::getMainSession()->valutanem != \mkw\store::getParameter(\mkw\consts::Valutanem))) {
+                    $sor->setBruttoegysar($sor->getTermek()->getNettoAr(
+                        $sor->getTermekvaltozat(),
+                        \mkw\store::getLoggedInUser(),
+                        \mkw\store::getMainSession()->valutanem,
+                        \mkw\store::getParameter(\mkw\consts::Webshop2Price)));
+                }
+                else {
+                    $sor->setBruttoegysar($sor->getTermek()->getBruttoAr(
+                        $sor->getTermekvaltozat(),
+                        \mkw\store::getLoggedInUser(),
+                        \mkw\store::getMainSession()->valutanem,
+                        \mkw\store::getParameter(\mkw\consts::Webshop2Price)));
+                }
                 $sor->setValutanem($this->getRepo('\Entities\Valutanem')->find(\mkw\store::getMainSession()->valutanem));
                 $this->getEm()->persist($sor);
             }

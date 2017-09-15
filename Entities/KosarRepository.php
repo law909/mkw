@@ -143,19 +143,29 @@ class KosarRepository extends \mkwhelpers\Repository {
     public function add($termekid, $vid = null, $bruttoegysar = null, $mennyiseg = null) {
         $sessionid = \Zend_Session::getId();
 
-        $partnerid = null;
-        $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
-        if ($partner) {
-            $partnerid = $partner->getId();
-            if ($partner->getSzamlatipus() > 0) {
-                $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
-            }
-        }
 
         if (\mkw\store::isMindentkapni()) {
+            $partnerid = null;
+            $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
+            if ($partner) {
+                $partnerid = $partner->getId();
+                if ($partner->getSzamlatipus() > 0) {
+                    $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+                }
+            }
             $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
         }
         else {
+            $partnerid = null;
+            $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
+            if ($partner) {
+                $partnerid = $partner->getId();
+                if ($partner->getSzamlatipus() > 0 ||
+                    (\mkw\store::getMainSession()->valutanem && \mkw\store::getMainSession()->valutanem != \mkw\store::getParameter(\mkw\consts::Valutanem))
+                ) {
+                    $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
+                }
+            }
             $valutanemid = \mkw\store::getMainSession()->valutanem;
         }
 
@@ -283,7 +293,9 @@ class KosarRepository extends \mkwhelpers\Repository {
         $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
         if ($partner) {
             $partnerid = $partner->getId();
-            if ($partner->getSzamlatipus() > 0) {
+            if ($partner->getSzamlatipus() > 0 ||
+                (\mkw\store::getMainSession()->valutanem && \mkw\store::getMainSession()->valutanem != \mkw\store::getParameter(\mkw\consts::Valutanem))
+            ) {
                 $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             }
         }
