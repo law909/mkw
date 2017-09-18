@@ -91,6 +91,7 @@
                                         <img src="{$imagepath}{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                     </div>
                                     <div>{$_termek.caption}</div>
+                                    <div>{$_termek.cikkszam}</div>
                                     <h5 class="main"><span>{number_format($_termek.bruttohuf,0,',',' ')} {$valutanemnev}</span></h5>
                                 </a>
                             </div>
@@ -120,6 +121,7 @@
                                         <img src="{$imagepath}{$_termek.minikepurl}" title="{$_termek.caption}" alt="{$_termek.caption}">
                                     </div>
                                     <div>{$_termek.caption}</div>
+                                    <div>{$_termek.cikkszam}</div>
                                     <h5 class="main"><span>{number_format($_termek.bruttohuf,0,',',' ')} {$valutanemnev}</span></h5>
                                 </a>
                             </div>
