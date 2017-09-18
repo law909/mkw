@@ -10,6 +10,8 @@
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <input id="InaktivCheck" name="inaktiv" type="checkbox"
                    {if ($egyed.inaktiv)}checked="checked"{/if}>{at('Inaktív')}
+            <input id="AlkalmiCheck" name="alkalmi" type="checkbox"
+                   {if ($egyed.alkalmi)}checked="checked"{/if}>{at('Alkalmi')}
             <table>
                 <tbody>
                 <tr>

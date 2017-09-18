@@ -38,6 +38,7 @@ class orarendController extends \mkwhelpers\MattableController {
         $x['kezdet'] = $t->getKezdetStr();
 		$x['veg'] = $t->getVegStr();
 		$x['inaktiv'] = $t->getInaktiv();
+		$x['alkalmi'] = $t->getAlkalmi();
 		return $x;
 	}
 
@@ -73,6 +74,7 @@ class orarendController extends \mkwhelpers\MattableController {
 		$obj->setKezdet($this->params->getStringRequestParam('kezdet'));
         $obj->setVeg($this->params->getStringRequestParam('veg'));
 		$obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
+        $obj->setAlkalmi($this->params->getBoolRequestParam('alkalmi'));
 //		$obj->doStuffOnPrePersist();
 		return $obj;
 	}
@@ -91,6 +93,10 @@ class orarendController extends \mkwhelpers\MattableController {
         $f = $this->params->getNumRequestParam('inaktivfilter',9);
         if ($f != 9) {
             $filter->addFilter('inaktiv', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('alkalmifilter',9);
+        if ($f != 9) {
+            $filter->addFilter('alkalmi', '=', $f);
         }
         if (!is_null($this->params->getRequestParam('napfilter', null))) {
             $filter->addFilter('nap' , '=', $this->params->getIntRequestParam('napfilter'));
@@ -190,6 +196,9 @@ class orarendController extends \mkwhelpers\MattableController {
                 case 'inaktiv':
                     $obj->setInaktiv($kibe);
                     break;
+                case 'alkalmi':
+                    $obj->setAlkalmi($kibe);
+                    break;
             }
             $this->getEm()->persist($obj);
             $this->getEm()->flush();
@@ -216,6 +225,31 @@ class orarendController extends \mkwhelpers\MattableController {
             );
 	    }
         $view = $this->createView('orarendwordpress.tpl');
+        $view->setVar('orarend', $orarend);
+        $view->printTemplateResult();
+    }
+
+    public function print() {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('inaktiv', '=', false);
+        $filter->addFilter('alkalmi', '=', false);
+        $rec = $this->getRepo()->getWithJoins($filter, array('nap' => 'ASC', 'kezdet' => 'ASC', 'nev' => 'ASC'));
+        $orarend = array();
+        /** @var \Entities\Orarend $item */
+        foreach ($rec as $item) {
+            $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
+            $orarend[$item->getNap()]['orak'][] = array(
+                'kezdet' => $item->getKezdetStr(),
+                'veg' => $item->getVegStr(),
+                'oranev' => $item->getNev(),
+                'oraurl' => $item->getJogaoratipusUrl(),
+                'tanar' => $item->getDolgozoNev(),
+                'tanarurl' => $item->getDolgozoUrl(),
+                'terem' => $item->getJogateremNev(),
+                'class' => $item->getJogateremOrarendclass()
+            );
+        }
+        $view = $this->createView('orarendprint.tpl');
         $view->setVar('orarend', $orarend);
         $view->printTemplateResult();
     }

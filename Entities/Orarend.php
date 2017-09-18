@@ -73,6 +73,9 @@ class Orarend {
     /** @ORM\Column(type="boolean", nullable=false) */
     private $inaktiv = false;
 
+    /** @ORM\Column(type="boolean", nullable=false) */
+    private $alkalmi = false;
+
     public function getDolgozo() {
         return $this->dolgozo;
     }
@@ -283,6 +286,20 @@ class Orarend {
             return $this->jogaoratipus->getUrl();
         }
         return '';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAlkalmi() {
+        return $this->alkalmi;
+    }
+
+    /**
+     * @param mixed $alkalmi
+     */
+    public function setAlkalmi($alkalmi) {
+        $this->alkalmi = $alkalmi;
     }
 
 }
