@@ -175,6 +175,11 @@ else {
         else {
             store::setMainMode();
 
+            if (!\mkw\store::getMainSession()->orszag) {
+                $mc = new \Controllers\mainController(null);
+                $mc->setOrszag(\mkw\store::getParameter(\mkw\consts::Orszag));
+            }
+
             $__maintranslate->addTranslation(
                 array(
                     'adapter' => 'array',

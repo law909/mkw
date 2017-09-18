@@ -11,11 +11,21 @@ class orszagController extends \mkwhelpers\JQGridController {
 
     protected function loadCells($sor) {
         $valuta = $sor->getValutanem();
-        return array($sor->getNev(), (isset($valuta) ? $valuta->getNev() : ''));
+        return array(
+            $sor->getNev(),
+            (isset($valuta) ? $valuta->getNev() : ''),
+            $sor->getLathato(),
+            $sor->getLathato2(),
+            $sor->getLathato3()
+        );
     }
 
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
+        $obj->setLathato($this->params->getBoolRequestParam('lathato'));
+        $obj->setLathato2($this->params->getBoolRequestParam('lathato2'));
+        $obj->setLathato3($this->params->getBoolRequestParam('lathato3'));
+
         $valutanem = $this->getRepo('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem', 0));
         if ($valutanem) {
             $obj->setValutanem($valutanem);
@@ -37,8 +47,13 @@ class orszagController extends \mkwhelpers\JQGridController {
         echo json_encode($this->loadDataToView($rec));
     }
 
-    public function getSelectList($selid = null) {
-        $rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
+    public function getSelectList($selid = null, $mind = false) {
+        if ($mind) {
+            $rec = $this->getRepo()->getAll(array(),array('nev'=>'ASC'));
+        }
+        else {
+            $rec = $this->getRepo()->getAllLathato();
+        }
         $res = array();
         foreach ($rec as $sor) {
             $res[] = array(

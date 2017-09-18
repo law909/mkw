@@ -28,6 +28,7 @@ class consts {
     const TeljesitmenyKezdoEv = 'teljesitmenykezdoev';
     const BelsoUzletkoto = 'belsouzletkoto';
     const Off = 'off';
+    const Orszag = 'orszag';
 
     const Tulajnev = 'tulajnev';
     const Tulajirszam = 'tulajirszam';

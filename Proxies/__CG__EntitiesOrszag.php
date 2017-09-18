@@ -64,10 +64,10 @@ class Orszag extends \Entities\Orszag implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Orszag' . "\0" . 'valutanem'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Orszag' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato3'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Orszag' . "\0" . 'valutanem'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Orszag' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato3'];
     }
 
     /**
@@ -252,6 +252,72 @@ class Orszag extends \Entities\Orszag implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValutanem', [$val]);
 
         return parent::setValutanem($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato', []);
+
+        return parent::getLathato();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato($lathato)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato', [$lathato]);
+
+        return parent::setLathato($lathato);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato2()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato2', []);
+
+        return parent::getLathato2();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato2($lathato2)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato2', [$lathato2]);
+
+        return parent::setLathato2($lathato2);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato3()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato3', []);
+
+        return parent::getLathato3();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato3($lathato3)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato3', [$lathato3]);
+
+        return parent::setLathato3($lathato3);
     }
 
 }

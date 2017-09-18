@@ -42,6 +42,16 @@
                 <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="OrszagEdit">{at('Ország')}:</label></span>
+                            <select id="OrszagEdit" name="orszag">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $orszaglist as $_o}
+                                    <option
+                                        value="{$_o.id}"{if ($_o.selected)} selected="selected"{/if}>{$_o.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="FizmodEdit">{at('Fizetési mód')}:</label></span>
                             <select id="FizmodEdit" name="fizmod">
                                 <option value="">{at('válasszon')}</option>

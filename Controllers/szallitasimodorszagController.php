@@ -29,7 +29,7 @@ class szallitasimodorszagController extends \mkwhelpers\MattableController {
         $x['osszeg'] = $t->getOsszeg();
         if ($forKarb) {
             $x['valutanemlist'] = $valutanem->getSelectList(($t->getValutanem() ? $t->getValutanemId() : 0));
-            $x['orszaglist'] = $oc->getSelectList($t->getOrszag() ? $t->getOrszagId() : 0);
+            $x['orszaglist'] = $oc->getSelectList($t->getOrszag() ? $t->getOrszagId() : 0, true);
         }
         return $x;
     }

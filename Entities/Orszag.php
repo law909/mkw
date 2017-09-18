@@ -28,6 +28,14 @@ class Orszag {
      * @var \Entities\Valutanem
      */
     private $valutanem;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato2 = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato3 = 1;
 
     public function __construct() {
         $this->partnerek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -77,5 +85,48 @@ class Orszag {
         }
         $this->valutanem = $val;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato() {
+        return $this->lathato;
+    }
+
+    /**
+     * @param mixed $lathato
+     */
+    public function setLathato($lathato) {
+        $this->lathato = $lathato;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato2() {
+        return $this->lathato2;
+    }
+
+    /**
+     * @param mixed $lathato2
+     */
+    public function setLathato2($lathato2) {
+        $this->lathato2 = $lathato2;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato3() {
+        return $this->lathato3;
+    }
+
+    /**
+     * @param mixed $lathato3
+     */
+    public function setLathato3($lathato3) {
+        $this->lathato3 = $lathato3;
+    }
+
 
 }

@@ -261,7 +261,9 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('spanyolcimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
         $orszagc = new orszagController($this->params);
         $p = $repo->find(\mkw\consts::Spanyolorszag);
-        $view->setVar('spanyolorszaglist', $orszagc->getSelectList(($p ? $p->getErtek() : 0)));
+        $view->setVar('spanyolorszaglist', $orszagc->getSelectList(($p ? $p->getErtek() : 0), true));
+        $p = $repo->find(\mkw\consts::Orszag);
+        $view->setVar('orszaglist', $orszagc->getSelectList(($p ? $p->getErtek() : 0), true));
 
         $mkcs = new munkakorController($this->params);
         $p = $repo->find(\mkw\consts::AdminRole);
@@ -727,6 +729,13 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::Spanyolorszag, '');
+        }
+        $orszag = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('orszag', 0));
+        if ($orszag) {
+            $this->setObj(\mkw\consts::Orszag, $orszag->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::Orszag, '');
         }
 
         $sz = \mkw\store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozattipusszin', 0));

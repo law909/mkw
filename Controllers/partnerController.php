@@ -492,7 +492,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $tcc = new partnercimkekatController($this->params);
         $view->setVar('cimkekat', $tcc->getWithCimkek(null));
         $orszag = new orszagController($this->params);
-        $view->setVar('orszaglist', $orszag->getSelectList(0));
+        $view->setVar('orszaglist', $orszag->getSelectList(0, true));
         $partnertipus = new partnertipusController($this->params);
         $view->setVar('partnertipuslist', $partnertipus->getSelectList(0));
         $view->printTemplateResult();
@@ -523,7 +523,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $szallmod = new szallitasimodController($this->params);
         $view->setVar('szallitasimodlist', $szallmod->getSelectList(($partner ? $partner->getSzallitasimodId() : 0)));
         $orszag = new orszagController($this->params);
-        $view->setVar('orszaglist', $orszag->getSelectList(($partner ? $partner->getOrszagId() : 0)));
+        $view->setVar('orszaglist', $orszag->getSelectList(($partner ? $partner->getOrszagId() : 0), true));
         $partnertipus = new partnertipusController($this->params);
         $view->setVar('partnertipuslist', $partnertipus->getSelectList(($partner ? $partner->getPartnertipusId() : 0)));
 

@@ -508,7 +508,7 @@ class mainController extends \mkwhelpers\Controller {
         /** @var \Entities\Orszag $orszag */
         $orszag = $this->getEm()->getRepository('Entities\Orszag')->find($orszagkod);
         if ($orszag && $orszag->getValutanem()) {
-            \mkw\store::getMainSession()->orszag = $orszagkod;
+            \mkw\store::getMainSession()->orszag = (int) $orszagkod;
             \mkw\store::getMainSession()->valutanem = $orszag->getValutanemId();
             \mkw\store::getMainSession()->valutanemnev = $orszag->getValutanemNev();
             $kc = new kosarController($this->params);
