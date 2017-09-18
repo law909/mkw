@@ -32,6 +32,45 @@ function kipenztar() {
         $('#KiOsszegEdit').val('');
     }
 
+    function checkPenztarDatum(kelt, penztar) {
+        var retval = false;
+        $.ajax({
+            async: false,
+            url: '/admin/penztarbizonylatfej/checkdatum',
+            data: {
+                datum: kelt,
+                penztar: penztar
+            },
+            success: function(data) {
+                var d = JSON.parse(data);
+                if (d.response == 'ok') {
+                    retval = true;
+                }
+            }
+        });
+        return retval;
+    }
+
+    function checkPenztar() {
+        var keltedit = $('#KiKeltEdit'),
+            kelt = keltedit.datepicker('getDate');
+        kelt = kelt.getFullYear() + '.' + (kelt.getMonth() + 1) + '.' + kelt.getDate();
+        ret = checkPenztarDatum(kelt, $('#KiPenztarEdit option:selected').val());
+        if (!ret) {
+            dialogcenter.html('Az időszakra a pénztár le van zárva.').dialog({
+                resizable: false,
+                height: 140,
+                modal: true,
+                buttons: {
+                    'OK': function() {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+        return ret;
+    }
+
     function init() {
         mkwcomp.datumEdit.init('#KiKeltEdit');
         $('.js-kihivatkozottbizonylatbutton, #KiOKButton, #KiCancelButton').button();
@@ -39,6 +78,10 @@ function kipenztar() {
         kipenztarform.ajaxForm({
             type: 'POST',
             beforeSerialize: function(form, opt) {
+                if (!checkPenztar()) {
+                    return false;
+                }
+
                 $.blockUI({
                     message: 'Kérem várjon...',
                     css: {

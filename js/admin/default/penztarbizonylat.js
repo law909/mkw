@@ -4,11 +4,57 @@ $(document).ready(function () {
 
     }
 
+    function checkPenztarDatum(kelt, penztar) {
+        var retval = false;
+        $.ajax({
+            async: false,
+            url: '/admin/penztarbizonylatfej/checkdatum',
+            data: {
+                datum: kelt,
+                penztar: penztar
+            },
+            success: function(data) {
+                var d = JSON.parse(data);
+                if (d.response == 'ok') {
+                    retval = true;
+                }
+            }
+        });
+        return retval;
+    }
+
+    function checkPenztar() {
+        var dialogcenter = $('#dialogcenter'),
+            keltedit = $('#KeltEdit'),
+            kelt = keltedit.datepicker('getDate');
+        kelt = kelt.getFullYear() + '.' + (kelt.getMonth() + 1) + '.' + kelt.getDate();
+        ret = checkPenztarDatum(kelt, $('#PenztarEdit option:selected').val());
+        if (!ret) {
+            dialogcenter.html('Az időszakra a pénztár le van zárva.').dialog({
+                resizable: false,
+                height: 140,
+                modal: true,
+                buttons: {
+                    'OK': function() {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+        return ret;
+    }
+
     var penztarbizonylat = {
         container: '#mattkarb',
         viewUrl: '/admin/penztarbizonylatfej/getkarb',
         newWindowUrl: '/admin/penztarbizonylatfej/viewkarb',
         saveUrl: '/admin/penztarbizonylatfej/save',
+        beforeSerialize: function(form, opt) {
+            if (!checkPenztar()) {
+                return false;
+            }
+            return true;
+        },
         beforeShow: function () {
             var dialogcenter = $('#dialogcenter');
             mkwcomp.datumEdit.init('#KeltEdit');

@@ -52,6 +52,45 @@ function eladas() {
         $('input[name="penz"]', eladasform).val(menny * ear);
     }
 
+    function checkPenztarDatum(kelt, penztar) {
+        var retval = false;
+        $.ajax({
+            async: false,
+            url: '/admin/penztarbizonylatfej/checkdatum',
+            data: {
+                datum: kelt,
+                penztar: penztar
+            },
+            success: function(data) {
+                var d = JSON.parse(data);
+                if (d.response == 'ok') {
+                    retval = true;
+                }
+            }
+        });
+        return retval;
+    }
+
+    function checkPenztar() {
+        var keltedit = $('#ElPenzdatumEdit'),
+            kelt = keltedit.datepicker('getDate');
+        kelt = kelt.getFullYear() + '.' + (kelt.getMonth() + 1) + '.' + kelt.getDate();
+        ret = checkPenztarDatum(kelt, $('#ElPenztarEdit option:selected').val());
+        if (!ret) {
+            dialogcenter.html('Az időszakra a pénztár le van zárva.').dialog({
+                resizable: false,
+                height: 140,
+                modal: true,
+                buttons: {
+                    'OK': function() {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+        return ret;
+    }
+
     function checkKelt(kelt, biztipus, bizszam) {
         var retval = false;
         $.ajax({
@@ -225,6 +264,12 @@ function eladas() {
                 }
                 if (getBiztipus() === 'szamla') {
                     if (!checkBizonylatFej(getBiztipus())) {
+                        return false;
+                    }
+                }
+
+                if ($('#ElVanPenzmozgas:checked').length) {
+                    if (!checkPenztar()) {
                         return false;
                     }
                 }

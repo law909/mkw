@@ -100,6 +100,7 @@ if (\mkw\store::isBankpenztar()) {
     $router->map('POST', '/admin/penztarbizonylatfej/save', 'penztarbizonylatfejController#save', 'adminpenztarbizonylatfejsave');
     $router->map('GET', '/admin/penztarbizonylatfej/print', 'penztarbizonylatfejController#doPrint', 'adminpenztarbizonylatfejprint');
     $router->map('POST', '/admin/penztarbizonylatfej/ront', 'penztarbizonylatfejController#ront', 'adminpenztarbizonylatfejront');
+    $router->map('GET', '/admin/penztarbizonylatfej/checkdatum', 'penztarbizonylatfejController#checkZartIdoszak', 'adminpenztarbizonylatfejcheckzartidoszak');
 
     $router->map('GET', '/admin/penztarbizonylattetel/getemptyrow', 'penztarbizonylattetelController#getemptyrow', 'adminpenztarbizonylattetelgetemptyrow');
     $router->map('POST', '/admin/penztarbizonylattetel/save', 'penztarbizonylattetelController#save', 'adminpenztarbizonylattetelsave');
@@ -125,6 +126,9 @@ if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/idoszakipenztarjelenteslista/view', 'idoszakipenztarjelenteslistaController#view', 'adminidoszakipenztarjelenteslistaview');
     $router->map('GET', '/admin/idoszakipenztarjelenteslista/get', 'idoszakipenztarjelenteslistaController#createLista', 'adminidoszakipenztarjelenteslistaget');
     $router->map('GET', '/admin/idoszakipenztarjelenteslista/export', 'idoszakipenztarjelenteslistaController#exportLista', 'adminidoszakipenztarjelenteslistaexport');
+
+    $router->map('GET', '/admin/penztarzaras/view', 'penztarbizonylatfejController#zarasView', 'adminpenztarzarasview');
+    $router->map('POST', '/admin/penztarzaras/zar', 'penztarbizonylatfejController#zar', 'adminpenztarzaraszar');
 }
 
 $router->map('GET', '/admin/getsmallurl', 'adminController#getSmallUrl', 'admingetsmallurl');

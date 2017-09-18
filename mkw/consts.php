@@ -202,5 +202,7 @@ class consts {
     const SportkartyaFizmod = 'sportkartyafizmod';
     const AYCMFizmod = 'aycmfizmod';
 
+    const PenztarZarva = 'penztarzarva';
+
     const MunkaJelenlet = 'munkajelenlet';
 }

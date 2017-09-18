@@ -39,6 +39,45 @@ function koltseg() {
         $('input[name="penz"]', koltsegform).val(menny * ear);
     }
 
+    function checkPenztarDatum(kelt, penztar) {
+        var retval = false;
+        $.ajax({
+            async: false,
+            url: '/admin/penztarbizonylatfej/checkdatum',
+            data: {
+                datum: kelt,
+                penztar: penztar
+            },
+            success: function(data) {
+                var d = JSON.parse(data);
+                if (d.response == 'ok') {
+                    retval = true;
+                }
+            }
+        });
+        return retval;
+    }
+
+    function checkPenztar() {
+        var keltedit = $('#KtgPenzdatumEdit'),
+            kelt = keltedit.datepicker('getDate');
+        kelt = kelt.getFullYear() + '.' + (kelt.getMonth() + 1) + '.' + kelt.getDate();
+        ret = checkPenztarDatum(kelt, $('#KtgPenztarEdit option:selected').val());
+        if (!ret) {
+            dialogcenter.html('Az időszakra a pénztár le van zárva.').dialog({
+                resizable: false,
+                height: 140,
+                modal: true,
+                buttons: {
+                    'OK': function() {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+        return ret;
+    }
+
     function isKeszpenz() {
         var fm = $('#KtgFizmodEdit option:selected');
         return fm.data('tipus') === 'P';
@@ -54,6 +93,12 @@ function koltseg() {
         koltsegform.ajaxForm({
             type: 'POST',
             beforeSerialize: function(form, opt) {
+                if ($('#KtgVanPenzmozgas:checked').length) {
+                    if (!checkPenztar()) {
+                        return false;
+                    }
+                }
+
                 $.blockUI({
                     message: 'Kérem várjon...',
                     css: {
