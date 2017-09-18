@@ -1479,8 +1479,8 @@ class Termek {
     public function getValtozatok() {
         switch (true) {
             case \mkw\store::isMindentkapni():
-            case \mkw\store::isMugenrace():
                 return $this->valtozatok;
+            case \mkw\store::isMugenrace():
             case \mkw\store::isSuperzoneB2B():
                 $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);
                 $rendezendo = \mkw\store::getParameter(\mkw\consts::RendezendoValtozat);

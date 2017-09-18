@@ -784,6 +784,30 @@ class termekController extends \mkwhelpers\MattableController {
                 );
             }
         }
+
+        $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);
+        $sorrend = explode(',', $s);
+        uasort($ret, function($e, $f) use ($sorrend) {
+            $ertek = $e['caption'];
+            $ve = array_search($ertek, $sorrend);
+            if ($ve === false) {
+                $ve = 0;
+            }
+            $ve = str_pad((string)$ve, 6, '0', STR_PAD_LEFT);
+
+            $ertek = $f['caption'];
+            $vf = array_search($ertek, $sorrend);
+            if ($vf === false) {
+                $vf = 0;
+            }
+            $vf = str_pad((string)$vf, 6, '0', STR_PAD_LEFT);
+
+            if ($ve === $vf) {
+                return 0;
+            }
+            return ($ve < $vf) ? -1 : 1;
+        });
+
         $v = $this->getTemplateFactory()->createMainView('meretselect.tpl');
 	    $v->setVar('meretek', $ret);
 	    $v->setVar('termekid', $termekid);

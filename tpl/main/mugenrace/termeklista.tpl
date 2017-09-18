@@ -145,6 +145,9 @@
                                 <div class="textaligncenter">
                                     <a itemprop="url" href="/termek/{$_termek.slug}"><span class="gtermekcaption" itemprop="name">{$_termek.caption}</span></a>
                                 </div>
+                                    <div class="textaligncenter">
+                                        <a href="/termek/{$_termek.slug}">{$_termek.cikkszam}</a>
+                                    </div>
                                 <div>
                                     {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
                                     <div class="textaligncenter"><span class="bold">Szállítási idő: </span>{$_termek.szallitasiido} munkanap</div>

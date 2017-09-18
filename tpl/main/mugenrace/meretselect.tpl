@@ -4,7 +4,7 @@
         <select class="js-meretvaltozatedit valtozatselect" data-termek="{$termekid}">
             <option value="">{t('Válasszon')}</option>
             {foreach $meretek as $_v}
-                <option value="{$_v.id}"{if ($_v.keszlet <= 0)} disabled="disabled"{/if}>{$_v.caption}</option>
+                <option value="{$_v.id}"{if ($_v.keszlet <= 0)} disabled="disabled" class="piros"{/if}>{$_v.caption}</option>
             {/foreach}
         </select>
     </div>
