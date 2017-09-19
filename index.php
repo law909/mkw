@@ -177,7 +177,10 @@ else {
 
             if (!\mkw\store::getMainSession()->orszag) {
                 $mc = new \Controllers\mainController(null);
-                $mc->setOrszag(\mkw\store::getParameter(\mkw\consts::Orszag));
+                $orszag = \mkw\store::getParameter(\mkw\consts::Orszag);
+                if ($orszag) {
+                    $mc->setOrszag($orszag);
+                }
             }
 
             $__maintranslate->addTranslation(
