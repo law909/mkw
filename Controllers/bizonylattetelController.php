@@ -107,12 +107,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
                 $x['mijszpartnerlist'] = $mijszpartner->getSelectList($t->getMIJSZPartnerId());
             }
             if (!\mkw\store::isTermekAutocomplete()) {
-                if ($t->getIrany() < 0) {
-                    $x['termeklist'] = $termek->getEladhatoSelectList();
-                }
-                else {
-                    $x['termeklist'] = $termek->getSelectList();
-                }
+			    $x['termeklist'] = $termek->getSelectList();
             }
 		}
 		return $x;
