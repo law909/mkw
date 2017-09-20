@@ -140,12 +140,17 @@ var bizonylathelper = function($) {
     }
 
     function setTermekAr(sorId) {
-        var partner;
+        var partner, termekedit;
         if (isPartnerAutocomplete()) {
             partner = $('.js-partnerid').val();
         }
         else {
             partner = $('#PartnerEdit option:selected').val();
+        }
+
+        termekedit = $('input[name="teteltermek_' + sorId + '"]');
+        if (!termekedit.length) {
+            termekedit = $('select[name="teteltermek_' + sorId + '"] option:selected');
         }
 
         $.ajax({
@@ -154,7 +159,7 @@ var bizonylathelper = function($) {
             data: {
                 valutanem: $('#ValutanemEdit').val(),
                 partner: partner,
-                termek: $('input[name="teteltermek_' + sorId + '"]').val(),
+                termek: termekedit.val(),
                 valtozat: $('select[name="tetelvaltozat_' + sorId + '"]').val()
             },
             success: function(data) {
@@ -819,6 +824,49 @@ var bizonylathelper = function($) {
                         }
                     });
 
+                })
+                .on('change', '.js-termekselectreal', function(e) {
+                    var $this = $(this),
+                        sorid = $this.attr('name').split('_')[1],
+                        vtsz = $('select[name="tetelvtsz_' + sorid + '"]'),
+                        afa = $('select[name="tetelafa_' + sorid + '"]'),
+                        selvaltozat = $('select[name="tetelvaltozat_' + sorid + '"]').val(),
+                        valtozatplace = $('#ValtozatPlaceholder' + sorid),
+                        partneredit = $('#PartnerEdit');
+                    $.ajax({
+                        method: 'GET',
+                        url: '/admin/bizonylattetel/gettermeklist',
+                        data: {
+                            id: $('option:selected', $this).val()
+                        },
+                        success: function(data) {
+                            var termek = JSON.parse(data);
+                            if (termek) {
+                                if (partneredit.data('afa')) {
+                                    termek.afa = partneredit.data('afa');
+                                    termek.afakulcs = partneredit.data('afakulcs');
+                                }
+                                setNoCalcArak(true);
+                                valtozatplace.empty();
+                                $('input[name="tetelnev_' + sorid + '"]').val(termek.value);
+                                $('input[name="tetelcikkszam_' + sorid + '"]').val(termek.cikkszam);
+                                $('input[name="tetelme_' + sorid + '"]').val(termek.me);
+                                if (!$('input[name="tetelmennyiseg_' + sorid + '"]').val() && termek.defaultmennyiseg) {
+                                    $('input[name="tetelmennyiseg_' + sorid + '"]').val(termek.defaultmennyiseg);
+                                }
+                                vtsz.val(termek.vtsz);
+                                vtsz.change();
+                                afa.val(termek.afa);
+                                afa.change();
+                                kepsor = $('.js-termekpicturerow_' + sorid);
+                                $('.js-toflyout', kepsor).attr('href', termek.mainurl + termek.kepurl);
+                                $('.js-toflyout img', kepsor).attr('src', termek.mainurl + termek.kiskepurl);
+                                $('.js-termeklink', kepsor).attr('href', termek.link).html(termek.link);
+                                $('.js-kartonlink', kepsor).attr('href', termek.kartonurl);
+                                loadValtozatList(termek.id, sorid, selvaltozat, valtozatplace);
+                            }
+                        }
+                    });
                 });
 
                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())

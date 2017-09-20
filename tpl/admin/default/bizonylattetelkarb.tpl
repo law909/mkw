@@ -32,6 +32,7 @@
             {/if}
             <tr>
                 <td class="mattable-important"><label for="TermekSelect{$tetel.id}">{at('Termék')}:</label></td>
+                {if ($setup.termekautocomplete)}
                 <td colspan="5">
                     {if ($tetel.oper === 'add')}
                     <input id="TermekSelect{$tetel.id}" type="text" name="teteltermeknev_{$tetel.id}" class="js-termekselect termekselect mattable-important" value="{$tetel.termeknev}" required="required">
@@ -40,6 +41,16 @@
                     {/if}
                     <input class="js-termekid" name="teteltermek_{$tetel.id}" type="hidden" value="{$tetel.termek}">
                 </td>
+                {else}
+                    <td colspan="5">
+                        <select class="js-termekselectreal js-termekid" name="teteltermek_{$tetel.id}">
+                            <option value="">{t('válasszon')}</option>
+                            {foreach $tetel.termeklist as $_termekadat}
+                                <option value="{$_termekadat.id}"{if ($_termekadat.id == $tetel.termek)} selected="selected"{/if}>{$_termekadat.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                {/if}
             </tr>
             <tr class="js-termekpicturerow_{$tetel.id}">
                 <td>{if ($tetel.kepurl)}<a class="js-toflyout" href="{$mainurl}{$tetel.kepurl}" target="_blank"><img src="{$mainurl}{$tetel.kiskepurl}"/></a>{/if}</td>

@@ -833,81 +833,107 @@ class termekController extends \mkwhelpers\MattableController {
     }
 
 	public function getBizonylattetelSelectList() {
-		$term = trim($this->params->getStringRequestParam('term'));
-		$ret = array();
-		if ($term) {
-			$r = \mkw\store::getEm()->getRepository('\Entities\Termek');
-			$res = $r->getBizonylattetelLista($term);
-            switch (true) {
-                case \mkw\store::isMindentkapni():
-                    foreach ($res as $r) {
-                        $ret[] = array(
-                            'value' => $r->getNev(),
-                            'id' => $r->getId(),
-                            'me' => $r->getMe(),
-                            'cikkszam' => $r->getCikkszam(),
-                            'vtsz' => $r->getVtszId(),
-                            'afa' => $r->getAfaId(),
-                            'afakulcs' => $r->getAfa()->getErtek(),
-                            'kozepeskepurl' => $r->getKepUrlMedium(),
-                            'kiskepurl' => $r->getKepUrlSmall(),
-                            'kepurl' => $r->getKepUrlLarge(),
-                            'slug' => $r->getSlug(),
-                            'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
-                            'mainurl' => \mkw\store::getConfigValue('mainurl'),
-                            'nemlathato' => (!$r->getLathato()||$r->getInaktiv()||$r->getNemkaphato()),
-                            'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
-                            'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
-                        );
-                    }
-                    break;
-                case \mkw\store::isSuperzoneB2B():
-                    foreach ($res as $r) {
-                        $ret[] = array(
-                            'value' => $r->getNev(),
-                            'label' => $r->getCikkszam() . ' ' . $r->getNev(),
-                            'id' => $r->getId(),
-                            'me' => $r->getMe(),
-                            'cikkszam' => $r->getCikkszam(),
-                            'vtsz' => $r->getVtszId(),
-                            'afa' => $r->getAfaId(),
-                            'afakulcs' => $r->getAfa()->getErtek(),
-                            'kozepeskepurl' => $r->getKepUrlMedium(),
-                            'kiskepurl' => $r->getKepUrlSmall(),
-                            'kepurl' => $r->getKepUrlLarge(),
-                            'slug' => $r->getSlug(),
-                            'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
-                            'mainurl' => \mkw\store::getConfigValue('mainurl'),
-                            'nemlathato' => (!$r->getLathato()||$r->getInaktiv()||$r->getNemkaphato()),
-                            'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
-                            'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
-                        );
-                    }
-                    break;
-                default:
-                    foreach ($res as $r) {
-                        $ret[] = array(
-                            'value' => $r->getNev(),
-                            'id' => $r->getId(),
-                            'me' => $r->getMe(),
-                            'cikkszam' => $r->getCikkszam(),
-                            'vtsz' => $r->getVtszId(),
-                            'afa' => $r->getAfaId(),
-                            'afakulcs' => $r->getAfa()->getErtek(),
-                            'kozepeskepurl' => $r->getKepUrlMedium(),
-                            'kiskepurl' => $r->getKepUrlSmall(),
-                            'kepurl' => $r->getKepUrlLarge(),
-                            'slug' => $r->getSlug(),
-                            'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
-                            'mainurl' => \mkw\store::getConfigValue('mainurl'),
-                            'nemlathato' => (!$r->getLathato() || $r->getInaktiv() || $r->getNemkaphato()),
-                            'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
-                            'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
-                        );
-                    }
-                    break;
+        $ret = array();
+	    if (!\mkw\store::isTermekAutocomplete()) {
+            $termekid = $this->params->getIntRequestParam('id');
+            $termek = \mkw\store::getEm()->getRepository('\Entities\Termek')->find($termekid);
+            if ($termek) {
+                $ret = array(
+                    'value' => $termek->getNev(),
+                    'id' => $termek->getId(),
+                    'me' => $termek->getMe(),
+                    'cikkszam' => $termek->getCikkszam(),
+                    'vtsz' => $termek->getVtszId(),
+                    'afa' => $termek->getAfaId(),
+                    'afakulcs' => $termek->getAfa()->getErtek(),
+                    'kozepeskepurl' => $termek->getKepUrlMedium(),
+                    'kiskepurl' => $termek->getKepUrlSmall(),
+                    'kepurl' => $termek->getKepUrlLarge(),
+                    'slug' => $termek->getSlug(),
+                    'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), array('slug' => $termek->getSlug())),
+                    'mainurl' => \mkw\store::getConfigValue('mainurl'),
+                    'nemlathato' => (!$termek->getLathato() || $termek->getInaktiv() || $termek->getNemkaphato()),
+                    'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
+                    'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $termek->getId()))
+                );
             }
-		}
+        }
+        else {
+            $term = trim($this->params->getStringRequestParam('term'));
+            if ($term) {
+                $r = \mkw\store::getEm()->getRepository('\Entities\Termek');
+                $res = $r->getBizonylattetelLista($term);
+                switch (true) {
+                    case \mkw\store::isMindentkapni():
+                        foreach ($res as $r) {
+                            $ret[] = array(
+                                'value' => $r->getNev(),
+                                'id' => $r->getId(),
+                                'me' => $r->getMe(),
+                                'cikkszam' => $r->getCikkszam(),
+                                'vtsz' => $r->getVtszId(),
+                                'afa' => $r->getAfaId(),
+                                'afakulcs' => $r->getAfa()->getErtek(),
+                                'kozepeskepurl' => $r->getKepUrlMedium(),
+                                'kiskepurl' => $r->getKepUrlSmall(),
+                                'kepurl' => $r->getKepUrlLarge(),
+                                'slug' => $r->getSlug(),
+                                'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
+                                'mainurl' => \mkw\store::getConfigValue('mainurl'),
+                                'nemlathato' => (!$r->getLathato() || $r->getInaktiv() || $r->getNemkaphato()),
+                                'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
+                                'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
+                            );
+                        }
+                        break;
+                    case \mkw\store::isSuperzoneB2B():
+                        foreach ($res as $r) {
+                            $ret[] = array(
+                                'value' => $r->getNev(),
+                                'label' => $r->getCikkszam() . ' ' . $r->getNev(),
+                                'id' => $r->getId(),
+                                'me' => $r->getMe(),
+                                'cikkszam' => $r->getCikkszam(),
+                                'vtsz' => $r->getVtszId(),
+                                'afa' => $r->getAfaId(),
+                                'afakulcs' => $r->getAfa()->getErtek(),
+                                'kozepeskepurl' => $r->getKepUrlMedium(),
+                                'kiskepurl' => $r->getKepUrlSmall(),
+                                'kepurl' => $r->getKepUrlLarge(),
+                                'slug' => $r->getSlug(),
+                                'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
+                                'mainurl' => \mkw\store::getConfigValue('mainurl'),
+                                'nemlathato' => (!$r->getLathato() || $r->getInaktiv() || $r->getNemkaphato()),
+                                'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
+                                'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
+                            );
+                        }
+                        break;
+                    default:
+                        foreach ($res as $r) {
+                            $ret[] = array(
+                                'value' => $r->getNev(),
+                                'id' => $r->getId(),
+                                'me' => $r->getMe(),
+                                'cikkszam' => $r->getCikkszam(),
+                                'vtsz' => $r->getVtszId(),
+                                'afa' => $r->getAfaId(),
+                                'afakulcs' => $r->getAfa()->getErtek(),
+                                'kozepeskepurl' => $r->getKepUrlMedium(),
+                                'kiskepurl' => $r->getKepUrlSmall(),
+                                'kepurl' => $r->getKepUrlLarge(),
+                                'slug' => $r->getSlug(),
+                                'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), array('slug' => $r->getSlug())),
+                                'mainurl' => \mkw\store::getConfigValue('mainurl'),
+                                'nemlathato' => (!$r->getLathato() || $r->getInaktiv() || $r->getNemkaphato()),
+                                'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
+                                'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
+                            );
+                        }
+                        break;
+                }
+            }
+        }
 		echo json_encode($ret);
 	}
 

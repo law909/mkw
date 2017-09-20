@@ -106,6 +106,14 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 			if (\mkw\store::isMIJSZ()) {
                 $x['mijszpartnerlist'] = $mijszpartner->getSelectList($t->getMIJSZPartnerId());
             }
+            if (!\mkw\store::isTermekAutocomplete()) {
+                if ($t->getIrany() < 0) {
+                    $x['termeklist'] = $termek->getEladhatoSelectList();
+                }
+                else {
+                    $x['termeklist'] = $termek->getSelectList();
+                }
+            }
 		}
 		return $x;
 	}
@@ -132,6 +140,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
             $tetel['mijszev'] = date('Y') * 1;
         }
 		$view->setVar('tetel', $tetel);
+        /** @var \Entities\Bizonylattipus $bt */
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipus);
         $bt->setTemplateVars($view);
 		echo $view->getTemplateResult();

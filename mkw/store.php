@@ -879,6 +879,10 @@ class store {
         return self::getSetupValue('partnerautocomplete');
     }
 
+    public static function isTermekAutocomplete() {
+        return self::getSetupValue('termekautocomplete', true);
+    }
+
     public static function isKPFolyoszamla() {
         return self::getSetupValue('kpfolyoszamla');
     }
