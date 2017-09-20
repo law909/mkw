@@ -302,4 +302,8 @@ class Orarend {
         $this->alkalmi = $alkalmi;
     }
 
+    public function isDelelottKezdodik() {
+        $noon = '12:00:00';
+        return $this->getKezdetStr() <= $noon;
+    }
 }

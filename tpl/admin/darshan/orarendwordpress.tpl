@@ -44,7 +44,7 @@
             background-color: #fff9f7;
             width: 100%;
         }
-        .dttkisidopont, .dttnagyidopont {
+        .dttidopont {
             text-align: center;
             float: left;
             padding: 10px 0;
@@ -53,11 +53,9 @@
             border-radius: 3px;
             color: white;
             font-weight: bold;
-        }
-        .dttnagyidopont {
             background-color: #669999;
         }
-        .dttkisidopont {
+        .delelott {
             background-color: #A5C663;
         }
         .dttoranev {
@@ -76,7 +74,7 @@
         }
         /* Responsive Styles Smartphone Portrait */
         @media all and (max-width: 479px) {
-            .dttkisidopont, .dttnagyidopont {
+            .dttidopont {
                 margin: 0 1%;
                 padding: 2px;
                 width: 14%;
@@ -96,7 +94,7 @@
         }
         /* Responsive Styles Smartphone Landscape */
         @media all and (max-width: 980px) {
-            .dttkisidopont, .dttnagyidopont {
+            .dttidopont {
                 margin: 0 1%;
                 padding: 2px;
                 width: 14%;
@@ -125,7 +123,7 @@
         <div class="dttnapnev">{$nap['napnev']}</div>
         {foreach $nap['orak'] as $ora}
         <div class="dttora">
-            <div class="dtt{$ora['class']}idopont">{$ora['kezdet']}-{$ora['veg']}</div>
+            <div class="dttidopont{if ($ora['delelott'])} delelott{/if}">{$ora['kezdet']}-{$ora['veg']}</div>
             <div class="dttoranev"><a href="{if ($ora['oraurl'])}http://jogadarshan.hu/{$ora['oraurl']}{/if}" target="_parent">{$ora['oranev']}</a></div>
             <div class="dtttanar"><a href="{if ($ora['tanarurl'])}http://jogadarshan.hu/{$ora['tanarurl']}{/if}" target="_parent">{$ora['tanar']}</a></div>
         </div>

@@ -540,4 +540,15 @@ class Orarend extends \Entities\Orarend implements \Doctrine\ORM\Proxy\Proxy
         return parent::setAlkalmi($alkalmi);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function isDelelottKezdodik()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isDelelottKezdodik', []);
+
+        return parent::isDelelottKezdodik();
+    }
+
 }

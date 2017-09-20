@@ -221,7 +221,8 @@ class orarendController extends \mkwhelpers\MattableController {
                 'tanar' => $item->getDolgozoNev(),
                 'tanarurl' => $item->getDolgozoUrl(),
                 'terem' => $item->getJogateremNev(),
-                'class' => $item->getJogateremOrarendclass()
+                'class' => $item->getJogateremOrarendclass(),
+                'delelott' => $item->isDelelottKezdodik()
             );
 	    }
         $view = $this->createView('orarendwordpress.tpl');
@@ -246,7 +247,8 @@ class orarendController extends \mkwhelpers\MattableController {
                 'tanar' => $item->getDolgozoNev(),
                 'tanarurl' => $item->getDolgozoUrl(),
                 'terem' => $item->getJogateremNev(),
-                'class' => $item->getJogateremOrarendclass()
+                'class' => $item->getJogateremOrarendclass(),
+                'delelott' => $item->isDelelottKezdodik()
             );
         }
         $view = $this->createView('orarendprint.tpl');
