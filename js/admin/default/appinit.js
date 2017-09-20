@@ -93,6 +93,9 @@ $(document).ready(
                 url:'/admin/regeneratekarkod'
 			});
 		});
+        $('.js-orarendprint').each(function() {
+            $(this).attr('target', '_blank');
+        });
 
         var $arfdatumedit = $('#ArfolyamDatumEdit');
         if ($arfdatumedit) {
