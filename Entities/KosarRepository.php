@@ -144,29 +144,19 @@ class KosarRepository extends \mkwhelpers\Repository {
         $sessionid = \Zend_Session::getId();
 
 
-        if (\mkw\store::isMindentkapni()) {
-            $partnerid = null;
-            $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
-            if ($partner) {
-                $partnerid = $partner->getId();
-                if ($partner->getSzamlatipus() > 0) {
-                    $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
-                }
+        $partnerid = null;
+        $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
+        if ($partner) {
+            $partnerid = $partner->getId();
+            if ($partner->getSzamlatipus() > 0) {
+                $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             }
-            $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
+        }
+        if (\mkw\store::isMugenrace()) {
+            $valutanemid = \mkw\store::getMainSession()->valutanem;
         }
         else {
-            $partnerid = null;
-            $partner = $this->getRepo('Entities\Partner')->getLoggedInUser();
-            if ($partner) {
-                $partnerid = $partner->getId();
-                if ($partner->getSzamlatipus() > 0 ||
-                    (\mkw\store::getMainSession()->valutanem && \mkw\store::getMainSession()->valutanem != \mkw\store::getParameter(\mkw\consts::Valutanem))
-                ) {
-                    $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
-                }
-            }
-            $valutanemid = \mkw\store::getMainSession()->valutanem;
+            $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
         }
 
         $k = $this->getTetelsor($sessionid, $partnerid, $termekid, $vid, $valutanemid);

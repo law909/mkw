@@ -45,7 +45,7 @@
 									<label class="radio">
 										<input name="regkell" id="regkell" type="radio" value="2"{if ($regkell==2)}checked="checked"{/if}>
 										{t('Vásárlás regisztrációval')}
-									</label>
+	•								</label>
 								</div>
 								<div class="row chk-actionrow span"><a href="#block2" class="btn okbtn pull-right js-chkopenbtn" data-datagroupheader=".js-chkszallitasiadatokgh">{t('Tovább')}</a></div>
 							</div>

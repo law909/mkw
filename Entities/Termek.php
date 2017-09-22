@@ -459,16 +459,9 @@ class Termek {
         $x['akciostop'] = $this->getAkciostopStr();
         if (\mkw\store::isMugenrace()) {
             $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
-            if (\mkw\store::getMainSession()->valutanem && \mkw\store::getMainSession()->valutanem != \mkw\store::getParameter(\mkw\consts::Valutanem)) {
-                $x['bruttohuf'] = $this->getNettoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
-                    \mkw\store::getParameter(\mkw\consts::Webshop2Price));
-                $x['eredetibruttohuf'] = $this->getEredetiNettoAr($valtozat);
-            }
-            else {
-                $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
-                    \mkw\store::getParameter(\mkw\consts::Webshop2Price));
-                $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
-            }
+            $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
+                \mkw\store::getParameter(\mkw\consts::Webshop2Price));
+            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
         }
         else {
             $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
@@ -594,16 +587,9 @@ class Termek {
         $x['akciostop'] = $this->getAkciostopStr();
         if (\mkw\store::isMugenrace()) {
             $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
-            if (\mkw\store::getMainSession()->valutanem && \mkw\store::getMainSession()->valutanem != \mkw\store::getParameter(\mkw\consts::Valutanem)) {
-                $x['bruttohuf'] = $this->getNettoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
-                    \mkw\store::getParameter(\mkw\consts::Webshop2Price));
-                $x['eredetibruttohuf'] = $this->getEredetiNettoAr($valtozat);
-            }
-            else {
-                $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
-                    \mkw\store::getParameter(\mkw\consts::Webshop2Price));
-                $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
-            }
+            $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
+                \mkw\store::getParameter(\mkw\consts::Webshop2Price));
+            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
         }
         else {
             $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
@@ -647,16 +633,9 @@ class Termek {
         $x['akciostop'] = $this->getAkciostopStr();
         if (\mkw\store::isMugenrace()) {
             $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
-            if (\mkw\store::getMainSession()->valutanem && \mkw\store::getMainSession()->valutanem != \mkw\store::getParameter(\mkw\consts::Valutanem)) {
-                $x['bruttohuf'] = $this->getNettoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
-                    \mkw\store::getParameter(\mkw\consts::Webshop2Price));
-                $x['eredetibruttohuf'] = $this->getEredetiNettoAr($valtozat);
-            }
-            else {
-                $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
-                    \mkw\store::getParameter(\mkw\consts::Webshop2Price));
-                $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
-            }
+            $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
+                \mkw\store::getParameter(\mkw\consts::Webshop2Price));
+            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
         }
         else {
             $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
@@ -761,16 +740,9 @@ class Termek {
         $x['akcios'] = $this->getAkcios();
         if (\mkw\store::isMugenrace()) {
             $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
-            if (\mkw\store::getMainSession()->valutanem && \mkw\store::getMainSession()->valutanem != \mkw\store::getParameter(\mkw\consts::Valutanem)) {
-                $x['bruttohuf'] = $this->getNettoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
-                    \mkw\store::getParameter(\mkw\consts::Webshop2Price));
-                $x['eredetibruttohuf'] = $this->getEredetiNettoAr($valtozat);
-            }
-            else {
-                $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
-                    \mkw\store::getParameter(\mkw\consts::Webshop2Price));
-                $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
-            }
+            $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
+                \mkw\store::getParameter(\mkw\consts::Webshop2Price));
+            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr($valtozat);
         }
         else {
             $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
