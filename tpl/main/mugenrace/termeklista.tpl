@@ -31,12 +31,6 @@
                 {t('Szűrőfeltételek törlése')}
             </div>
 			<form id="szuroform">
-				<div class="szurokontener">
-					<div class="szurofej closeupbutton" data-refcontrol="#ArSzuro">{t('Ár')} <i class="icon-chevron-up"></i></div>
-					<div id="ArSzuro" class="szurodoboz">
-						<input id="ArSlider" type="slider" name="ar" value="{$minarfilter};{$maxarfilter}" data-maxar="{$maxar}" data-step="{$arfilterstep}">
-					</div>
-				</div>
 				{foreach $szurok as $_szuro}
 				<div class="szurokontener">
 					<div class="szurofej closeupbutton" data-refcontrol="#SzuroFej{$_szuro.id}">{$_szuro.caption} <i class="icon-chevron-up"></i></div>
