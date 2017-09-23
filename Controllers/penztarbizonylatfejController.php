@@ -35,6 +35,7 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         $x['arfolyam'] = $t->getArfolyam();
         $x['penztar'] = $t->getPenztar();
         $x['penztarnev'] = $t->getPenztarnev();
+        $x['penztarid'] = $t->getPenztarId();
         $x['partnernev'] = $t->getPartnernev();
         $x['partnerkeresztnev'] = $t->getPartnerkeresztnev();
         $x['partnervezeteknev'] = $t->getPartnervezeteknev();

@@ -40,6 +40,7 @@
                         {/foreach}
                     </select>
                     {else}
+                        <input type="hidden" name="penztar" value="{$egyed.penztarid}">
                     {$egyed.penztarnev}
                     {/if}
                 </td>

@@ -26,9 +26,13 @@ $(document).ready(function () {
     function checkPenztar() {
         var dialogcenter = $('#dialogcenter'),
             keltedit = $('#KeltEdit'),
-            kelt = keltedit.datepicker('getDate');
+            kelt = keltedit.datepicker('getDate'),
+            penztar = $('#PenztarEdit option:selected');
         kelt = kelt.getFullYear() + '.' + (kelt.getMonth() + 1) + '.' + kelt.getDate();
-        ret = checkPenztarDatum(kelt, $('#PenztarEdit option:selected').val());
+        if (!penztar.length) {
+            penztar = $('input[name="penztar"]');
+        }
+        ret = checkPenztarDatum(kelt, penztar.val());
         if (!ret) {
             dialogcenter.html('Az időszakra a pénztár le van zárva.').dialog({
                 resizable: false,
