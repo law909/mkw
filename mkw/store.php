@@ -169,6 +169,9 @@ class store {
 
     public static function setSetup($setup) {
         self::$setup = $setup;
+        if (!array_key_exists('termekautocomplete', self::$setup)) {
+            self::$setup['termekautocomplete'] = true;
+        }
     }
 
     public static function getIntParameter($par, $default = null) {
