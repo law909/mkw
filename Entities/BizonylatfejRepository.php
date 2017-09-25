@@ -181,104 +181,12 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
     }
 
     /**
-     * @param \Entities\Bizonylatfej $bizfej
-     * @param \Entities\Szallitasimod|null $szallmod
-     * @param null $bruttoegysar
-     */
-/*    public function createSzallitasiKtg($bizfej, $szallmod = null, $bruttoegysar = null) {
-        $szamol = true;
-
-        if ($szallmod) {
-            $szm = $this->getRepo('Entities\Szallitasimod')->find($szallmod);
-            $szamol = $szm->getVanszallitasiktg();
-        }
-        $termekid = \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
-        $termek = $this->getRepo('Entities\Termek')->find($termekid);
-
-        if ($szamol) {
-
-            $ertek = 0;
-            $cnt = 0;
-            foreach ($bizfej->getBizonylattetelek() as $btetel) {
-                if ($btetel->getTermekId() != $termekid) {
-                    $cnt++;
-                    $ertek = $ertek + $btetel->getBrutto();
-                }
-            }
-            if ($cnt != 0) {
-                if ($bizfej->getPartner() && ($bizfej->getPartner()->getSzamlatipus() > 0)) {
-                    $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
-                }
-
-                if (!$bruttoegysar) {
-                    $ktg = $this->getRepo('Entities\SzallitasimodHatar')->getBySzallitasimodValutanemHatar($szallmod, $bizfej->getValutanem(), $ertek);
-                    $ktg = $ktg ? $ktg->getOsszeg() : 0;
-                }
-                else {
-                    $ktg = $bruttoegysar;
-                }
-                $ktg = $ktg * 1;
-
-                if ($ktg) {
-                    $k = $this->getTetelsor($bizfej->getId(), $termekid);
-                    if ($k) {
-                        $k->setMennyiseg(1);
-                        if ($nullasafa) {
-                            $k->setAfa($nullasafa);
-                        }
-                        else {
-                            $k->setAfa($termek->getAfa());
-                        }
-                        $k->setBruttoegysar($ktg);
-                        $k->setBruttoegysarhuf($ktg);
-                        $k->calc();
-                        $this->_em->persist($k);
-                    }
-                    else {
-                        $tetel = new \Entities\Bizonylattetel();
-                        $bizfej->addBizonylattetel($tetel);
-                        $tetel->setPersistentData();
-                        $tetel->setArvaltoztat(0);
-                        if ($termek) {
-                            $tetel->setTermek($termek);
-                        }
-                        $tetel->setMozgat();
-                        $tetel->setFoglal();
-                        $tetel->setMennyiseg(1);
-                        if ($nullasafa) {
-                            $tetel->setAfa($nullasafa);
-                            $tetel->setNettoegysar($ktg);
-                            $tetel->setNettoegysarhuf($ktg);
-                        }
-                        else {
-                            $tetel->setAfa($termek->getAfa());
-                            $tetel->setBruttoegysar($ktg);
-                            $tetel->setBruttoegysarhuf($ktg);
-                        }
-                        $tetel->calc();
-                        $this->_em->persist($tetel);
-                    }
-                    $this->_em->flush();
-                }
-                else {
-                    $this->remove($bizfej->getId(), $termek);
-                }
-            }
-            else {
-                $this->remove($bizfej->getId(), $termek);
-            }
-        }
-        else {
-            $this->remove($bizfej->getId(), $termek);
-        }
-    }
-*/
-    /**
      * @param \Entities\Bizonylatfej $o
      * @return array
      */
     public function getAFAOsszesito($o) {
         $ret = array();
+        /** @var \Entities\Bizonylattetel $tetel */
         foreach ($o->getBizonylattetelek() as $tetel) {
             $a = $tetel->getAfa();
             if (!array_key_exists($tetel->getAfaId(), $ret)) {
@@ -286,6 +194,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                     'netto' => 0,
                     'afa' => 0,
                     'brutto' => 0,
+                    'nettohuf' => 0,
+                    'afahuf' => 0,
+                    'bruttohuf' => 0,
                     'afakulcs' => $tetel->getAfakulcs(),
                     'caption' => $tetel->getAfanev(),
                     'rlbkod' => ($a ? $a->getRLBkod() : 0)
@@ -294,6 +205,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
             $ret[$tetel->getAfaId()]['netto'] += $tetel->getNetto();
             $ret[$tetel->getAfaId()]['afa'] += $tetel->getAfaertek();
             $ret[$tetel->getAfaId()]['brutto'] += $tetel->getBrutto();
+            $ret[$tetel->getAfaId()]['nettohuf'] += $tetel->getNettohuf();
+            $ret[$tetel->getAfaId()]['afahuf'] += $tetel->getAfaertekhuf();
+            $ret[$tetel->getAfaId()]['bruttohuf'] += $tetel->getBruttohuf();
         }
         return $ret;
     }

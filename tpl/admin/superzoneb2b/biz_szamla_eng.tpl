@@ -186,6 +186,12 @@
                     <td class="textalignright">{bizformat($a.afa)}</td>
                     <td class="textalignright">{bizformat($a.brutto)}</td>
                 </tr>
+                <tr>
+                    <td>{$a.caption} HUF</td>
+                    <td class="textalignright">{bizformat($a.nettohuf)}</td>
+                    <td class="textalignright">{bizformat($a.afahuf)}</td>
+                    <td class="textalignright">{bizformat($a.bruttohuf)}</td>
+                </tr>
             {/foreach}
             <tr>
                 <td class="topline" colspan="5"></td>
@@ -196,6 +202,12 @@
                 <td class="textalignright">{bizformat($egyed.afa)}</td>
                 <td class="textalignright">{bizformat($egyed.brutto)}</td>
             </tr>
+            <tr>
+                <td>Összesen HUF / Total HUF</td>
+                <td class="textalignright">{bizformat($egyed.nettohuf)}</td>
+                <td class="textalignright">{bizformat($egyed.afahuf)}</td>
+                <td class="textalignright">{bizformat($egyed.bruttohuf)}</td>
+            </tr>
         </tbody>
     </table>
     <div class="clear toppadding10">
@@ -205,13 +217,18 @@
         <div class="textalignright osszesen bold">
             Fizetendő végösszeg / Total value to pay: {bizformat($egyed.fizetendo)} {$egyed.valutanemnev}
         </div>
+        <div class="textalignright">
+            Árfolyam / Exchange rate: {bizformat($egyed.arfolyam)}
+        </div>
     </div>
     <div class="topmargin">
         {if ($egyed.partnerszamlatipus == 1)}
         <p>EU közösségen belüli értékesítés / EU intra-community sale</p>
         {/if}
+        {if ($egyed.afa == 0)}
         <p>ÁFA körön kívül eső, az ÁFÁ-t a vevő fizeti.</p>
+        {/if}
         <p class="keszult">Jelen számla megfelel a 47/2007 (XII.29) PM rendeletben előírtaknak.</p>
-        <p class="keszult">Készült az MKW Webshop számlázó moduljával.</p>
+        <p class="keszult">Készült a Billy számlázó moduljával.</p>
     </div>
 {/block}
