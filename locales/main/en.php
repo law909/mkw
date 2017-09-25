@@ -137,7 +137,7 @@ return array(
     'Ön sajnos még nem vásárolt tőlünk' => 'You don\'t have any orders',
     'Feliratkozás dátuma' => 'Subscription date',
     'Leiratkozás' => 'Unsubscribe',
-    'Nincs termékértesítője' => 'You don\'t have any',
+    'Nincs termékértesítője' => 'You don\'t have any advice notes',
     'Régi jelszó' => 'Old password',
     'régi jelszó' => 'old password',
     'Új jelszó' => 'New password',
@@ -167,5 +167,10 @@ return array(
     'Legnépszerűbb termékeink' => 'Top list',
     'Ehhez a termékhez vásárolták még' => 'Recommendations for You',
     'jelszó' => 'password',
-    'a kosarában' => 'in your cart'
+    'a kosarában' => 'in your cart',
+    'Módosítsa adatait' => 'Update your info',
+    'Vagy' => 'Or',
+    'Vásárolok' => 'Shop',
+    'vásároljon' => 'shop',
+    'tovább webáruházunkból' => 'from our webshop',
 );

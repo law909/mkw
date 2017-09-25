@@ -680,6 +680,10 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $partner->setSzallirszam($szallirszam);
                     $partner->setSzallvaros($szallvaros);
                     $partner->setSzallutca($szallutca);
+                    $orszag = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('orszag', 0));
+                    if ($orszag) {
+                        $partner->setOrszag($orszag);
+                    }
                     if ($szamlaeqszall) {
                         $partner->setNev($szallnev);
                         $partner->setIrszam($szallirszam);

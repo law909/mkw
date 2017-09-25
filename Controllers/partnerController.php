@@ -301,6 +301,10 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setVaros($this->params->getStringRequestParam('varos'));
             $obj->setUtca($this->params->getStringRequestParam('utca'));
             $obj->setHazszam($this->params->getStringRequestParam('hazszam'));
+            $orszag = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('orszag', 0));
+            if ($orszag) {
+                $obj->setOrszag($orszag);
+            }
         }
 
         if ($subject === 'szallitasiadatok' || $subject === 'minden') {

@@ -118,7 +118,7 @@
                                 <label class="span8 nomargin">{t('Ország')} *</label>
                                 <select name="orszag" class="js-chkrefresh" required="required">
                                     {foreach $szallorszaglist as $f}
-                                        <option value="{$f.id}"{if ($f.selected)} selected="selected"{/if}>{$f.caption}</option>
+                                        <option value="{$f.id}"{if ($orszag == $f.id)} selected="selected"{/if}>{$f.caption}</option>
                                     {/foreach}
                                 </select>
                             </div>

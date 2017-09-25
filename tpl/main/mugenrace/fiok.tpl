@@ -6,7 +6,7 @@
 		<div class="span10 offset1">
 			<div class="form-header">
 				<h2>{t('Módosítsa adatait')}</h2>
-				<h4>Vagy <a href="/" title="Vásárolok">vásároljon</a> tovább webáruházunkból</h4>
+				<h4>{t('Vagy')} <a href="/" title="{t('Vásárolok')}">{t('vásároljon')}</a> {t('tovább webáruházunkból')}</h4>
 			</div>
 			<div id="adatmodositasTabbable" class="tabbable tabs-left">
 				<ul class="nav nav-tabs">
@@ -223,7 +223,7 @@
 							<div class="span1"><a href="#" class="js-termekertesitodel" data-id="{$ertesito.id}">{t('Leiratkozás')}</a></div>
 						</div>
 						{foreachelse}
-							<h3>Nincs termékértesítője</h3>
+							<h3>{t('Nincs termékértesítője')}</h3>
 						{/foreach}
 					</div>
 					<div class="tab-pane" id="jelszo">
