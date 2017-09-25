@@ -46,17 +46,20 @@
     <div class="headermid container whitebg">
         <div class="row">
             <div class="span12">
-            <div class="pull-left">
-                <a href="/"><img src="{$imagepath}{$mugenracelogo}" alt="Mugenrace webshop" title="Mugenrace webshop"></a>
-            </div>
-            <div class="pull-left">
-                <form id="searchform" name="searchbox" method="get" action="/kereses" autocomplete="off">
-                <div class="searchinputbox">
-                    <input id="searchinput" class="siteSearch" type="text" title="{t('Keressen a termékeink között!')}" placeholder="{t('Keressen a termékeink között!')}" accesskey="k" value="" maxlength="300" name="keresett">
-                    <input id="searchbutton" type="submit" value="">
+                <div class="span2">
+                    <a href="/"><img src="{$imagepath}{$mugenracelogo}" class="headerlogo" alt="Mugenrace webshop" title="Mugenrace webshop"></a>
                 </div>
-                </form>
-            </div>
+                <div class="span2">
+                    <form id="searchform" name="searchbox" method="get" action="/kereses" autocomplete="off">
+                    <div class="searchinputbox">
+                        <input id="searchinput" class="siteSearch span2" type="text" title="{t('Keressen a termékeink között!')}" placeholder="{t('Keressen a termékeink között!')}" accesskey="k" value="" maxlength="300" name="keresett">
+                        <input id="searchbutton" type="submit" value="">
+                    </div>
+                    </form>
+                </div>
+                <div class="span7 fejleckep">
+                    <img src="{$imagepath}{$mugenracefejleckep}">
+                </div>
             </div>
         </div>
     </div>

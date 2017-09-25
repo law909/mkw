@@ -362,8 +362,8 @@ header a:hover, footer a:hover {
 
 #searchinput {
   border-color: @headernavsotet;
-  padding-right: 28px;
   .border-radius(@smallradius);
+  padding: 4px 2px;
 }
 
 #searchinput:focus {
@@ -1224,6 +1224,16 @@ select[name="foxpostcsoport"], select[name="foxpostterminal"] {
 }
 
 @media (max-width: 767px) {
+  .fejleckep {
+    display: none;
+  }
+
+  .headerlogo {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+
   #navmain li {
     float: initial;
     text-align: center;

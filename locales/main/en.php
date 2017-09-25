@@ -26,6 +26,7 @@ return array(
     'Szűrőfeltételek törlése' => 'Clear filters',
     'munkanap' => 'working day',
     'Válasszon' => 'Choose',
+    'válasszon' => 'choose',
     'Kosárba' => 'Add',
     'Előző' => 'Previous',
     'Következő' => 'Next',

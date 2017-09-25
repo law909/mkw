@@ -404,6 +404,8 @@ class store {
             $v->setVar('mugenracelogo', self::getParameter(\mkw\consts::MugenraceLogo));
             $v->setVar('mugenracefooldalkep', self::getParameter(\mkw\consts::MugenraceFooldalKep));
             $v->setVar('mugenracefooldalszoveg', self::getParameter(\mkw\consts::MugenraceFooldalSzoveg));
+            $v->setVar('mugenracefejleckep', self::getParameter(\mkw\consts::MugenraceFejlecKep));
+            $v->setVar('mugenracefooterlogo', self::getParameter(\mkw\consts::MugenraceFooterLogo));
         }
         $v->setVar('globaltitle', self::getParameter('oldalcim'));
         $v->setVar('valutanemnev', self::getMainSession()->valutanemnev);

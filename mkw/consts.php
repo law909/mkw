@@ -190,8 +190,10 @@ class consts {
     const MiniCRMLastPartnerImport = 'minicrmlastpartnerimport';
 
     const MugenraceFooldalKep = 'mugenracefooldalkep';
+    const MugenraceFejlecKep = 'mugenracefejleckep';
     const MugenraceFooldalSzoveg = 'mugenracefooldalszoveg';
     const MugenraceLogo = 'mugenracelogo';
+    const MugenraceFooterLogo = 'mugenracefooterlogo';
     const MugenraceKatId = 'mugenracekatid';
 
     const Webshop2Price = 'Webshop2Price';

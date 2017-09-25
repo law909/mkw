@@ -431,8 +431,12 @@ class setupController extends \mkwhelpers\Controller {
 
         $p = $repo->find(\mkw\consts::MugenraceLogo);
         $view->setVar(\mkw\consts::MugenraceLogo, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MugenraceFooterLogo);
+        $view->setVar(\mkw\consts::MugenraceFooterLogo, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::MugenraceFooldalKep);
         $view->setVar(\mkw\consts::MugenraceFooldalKep, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::MugenraceFejlecKep);
+        $view->setVar(\mkw\consts::MugenraceFejlecKep, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::MugenraceFooldalSzoveg);
         $view->setVar(\mkw\consts::MugenraceFooldalSzoveg, ($p ? $p->getErtek() : ''));
 
@@ -932,7 +936,9 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::PathNomad, $this->params->getStringRequestParam('pathnomad', ''));
 
         $this->setObj(\mkw\consts::MugenraceLogo, $this->params->getStringRequestParam('mugenracelogo'));
+        $this->setObj(\mkw\consts::MugenraceFooterLogo, $this->params->getStringRequestParam('mugenracefooterlogo'));
         $this->setObj(\mkw\consts::MugenraceFooldalKep, $this->params->getStringRequestParam('mugenracefooldalkep'));
+        $this->setObj(\mkw\consts::MugenraceFejlecKep, $this->params->getStringRequestParam('mugenracefejleckep'));
         $this->setObj(\mkw\consts::MugenraceFooldalSzoveg, $this->params->getStringRequestParam('mugenracefooldalszoveg'));
 
         \mkw\store::getEm()->flush();

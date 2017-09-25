@@ -1,31 +1,31 @@
 <div class="container">
 	<div class="row">
 		<div class="span3">
-			<a href="/"><img src="/themes/main/mugenrace/img/mugenracelogo.jpg" alt="Mugenrace Webshop" title="Mugenrace Webshop"></a>
+			<a href="/"><img src="{$imagepath}{$mugenracefooterlogo}" alt="Mugenrace Webshop" title="Mugenrace Webshop"></a>
 		</div>
 		<nav class="span3">
 			<h5>{t('Hasznos információk')}</h5>
 			<ul>
-				<li><a href="/statlap/merettablazat-ruhanemukhoz">{t('Mérettáblázat')}</a></li>
-				<li><a href="/statlap/aszf">{t('Általános szerződési feltételek')}</a></li>
+				<li><a href="/statlap/sizes">{t('Mérettáblázat')}</a></li>
+				<li><a href="/statlap/terms-amp-conditions">{t('Általános szerződési feltételek')}</a></li>
 			</ul>
 		</nav>
 		<nav class="span3">
 			<h5>{t('Segítség a vásárláshoz')}</h5>
 			<ul>
-				<li><a href="/statlap/gy-i-k-leggyakoribb-kerdesek">{t('Gy.I.K. - Gyakori kérdések')}</a></li>
-				<li><a href="/statlap/szallitasi-feltetelek-es-tudnivalok">{t('Szállítási feltételek')}</a></li>
-				<li><a href="/statlap/fizetesi-feltetelek">{t('Fizetési feltételek')}</a></li>
+				<li><a href="/statlap/faq-frequently-asked-questions">{t('Gy.I.K. - Gyakori kérdések')}</a></li>
+				<li><a href="/statlap/shipping-policy">{t('Szállítási feltételek')}</a></li>
+				<li><a href="/statlap/payment-policy">{t('Fizetési feltételek')}</a></li>
 				<li><a href="/hirek">{t('Legfrissebb híreink')}</a></li>
 			</ul>
 		</nav>
 		<nav class="span3">
 			<h5>{t('Egyéb információk')}</h5>
 			<ul>
-				<li><a href="/kapcsolat">{t('Kapcsolat')}</a></li>
+				<li><a href="kapcsolat">{t('Kapcsolat')}</a></li>
 				<li><a href="/fiok">{t('Fiókom')}</a></li>
-				<li><a href="/statlap/gy-i-k-leggyakoribb-kerdesek#meretcsere">{t('Méretcsere')}</a></li>
-				<li><a href="/statlap/vasarloi-adatok-kezelese">{t('Vásárlói adatok védelme')}</a></li>
+				<li><a href="/statlap/swapping-size">{t('Méretcsere')}</a></li>
+				<li><a href="/statlap/privacy-policy">{t('Vásárlói adatok védelme')}</a></li>
 			</ul>
 		</nav>
 	</div>

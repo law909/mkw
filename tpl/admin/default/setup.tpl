@@ -906,9 +906,19 @@
                                 <a class="js-kepbrowsebutton" data-name="mugenracelogo" href="#" title="{at('Browse')}">{at('...')}</a>
                             </div>
                             <div class="setuprow">
+                                <label>{at('Mugenrace lábléc logo')}:</label>
+                                <input name="mugenracefooterlogo" type="text" value="{$mugenracefooterlogo}">
+                                <a class="js-kepbrowsebutton" data-name="mugenracefooterlogo" href="#" title="{at('Browse')}">{at('...')}</a>
+                            </div>
+                            <div class="setuprow">
                                 <label>{at('Főoldali kép')}:</label>
                                 <input name="mugenracefooldalkep" type="text" value="{$mugenracefooldalkep}">
                                 <a class="js-kepbrowsebutton" data-name="mugenracefooldalkep" href="#" title="{at('Browse')}">{at('...')}</a>
+                            </div>
+                            <div class="setuprow">
+                                <label>{at('Fejléc kép')}:</label>
+                                <input name="mugenracefejleckep" type="text" value="{$mugenracefejleckep}">
+                                <a class="js-kepbrowsebutton" data-name="mugenracefejleckep" href="#" title="{at('Browse')}">{at('...')}</a>
                             </div>
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="MugenraceFooldalSzovegEdit">{at('Főoldali szöveg')}:</label></span>
