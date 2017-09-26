@@ -21,6 +21,8 @@ class Afa {
     private $rlbkod;
     /** @ORM\Column(type="integer", nullable=true) */
     private $migrid;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $emagid;
 	/** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="afa") */
 	private $bizonylattetelek;
 
@@ -72,6 +74,20 @@ class Afa {
      */
     public function setMigrid($migrid) {
         $this->migrid = $migrid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmagid() {
+        return $this->emagid;
+    }
+
+    /**
+     * @param mixed $emagid
+     */
+    public function setEmagid($emagid) {
+        $this->emagid = $emagid;
     }
 
 }

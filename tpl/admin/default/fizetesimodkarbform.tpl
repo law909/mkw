@@ -39,6 +39,10 @@
                         <td><input id="SorrendEdit" name="sorrend" type="number" value="{$egyed.sorrend}"></td>
                     </tr>
                     <tr>
+                        <td><label for="EmagidEdit">{at('eMAG id')}:</label></td>
+                        <td><input id="EmagidEdit" name="emagid" type="number" value="{$egyed.emagid}"></td>
+                    </tr>
+                    <tr>
                         <td><label for="WebesEdit">{at('Webes')}:</label></td>
                         <td><input id="WebesEdit" name="webes" type="checkbox"{if ($egyed.webes)} checked="checked"{/if}></td>
                     </tr>

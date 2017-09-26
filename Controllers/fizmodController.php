@@ -42,6 +42,7 @@ class fizmodController extends \mkwhelpers\MattableController {
         $x['osztottszazalek5'] = $t->getOsztottszazalek5();
         $x['rugalmas'] = $t->getRugalmas();
         $x['nincspenzmozgas'] = $t->getNincspenzmozgas();
+        $x['emagid'] = $t->getEmagid();
 
         if ($forKarb) {
             if ($letezik) {
@@ -63,6 +64,10 @@ class fizmodController extends \mkwhelpers\MattableController {
         return $x;
     }
 
+    /**
+     * @param \Entities\Fizmod $obj
+     * @return mixed
+     */
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setTipus($this->params->getStringRequestParam('tipus'));
@@ -82,6 +87,7 @@ class fizmodController extends \mkwhelpers\MattableController {
         $obj->setOsztottszazalek5($this->params->getNumRequestParam('osztottszazalek5'));
         $obj->setRugalmas($this->params->getBoolRequestParam('rugalmas'));
         $obj->setNincspenzmozgas($this->params->getBoolRequestParam('nincspenzmozgas'));
+        $obj->setEmagid($this->params->getIntRequestParam('emagid'));
         $hatarids = $this->params->getArrayRequestParam('hatarid');
         foreach ($hatarids as $hatarid) {
             $oper = $this->params->getStringRequestParam('hataroper_' . $hatarid);

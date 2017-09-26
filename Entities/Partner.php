@@ -322,6 +322,9 @@ class Partner {
      */
     private $updatedby;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $emagid;
+
     public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1391,6 +1394,20 @@ class Partner {
             return $this->updatedby->getNev();
         }
         return null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmagid() {
+        return $this->emagid;
+    }
+
+    /**
+     * @param mixed $emagid
+     */
+    public function setEmagid($emagid) {
+        $this->emagid = $emagid;
     }
 
 }

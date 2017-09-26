@@ -189,6 +189,11 @@ class consts {
     const MiniCRMRendezvenyJelentkezes = 'minicrmrendezvenyjelentkezes';
     const MiniCRMLastPartnerImport = 'minicrmlastpartnerimport';
 
+    const EmagAPIUrl = 'emagapiurl';
+    const EmagUsername = 'emagusername';
+    const EmagUsercode = 'emagusercode';
+    const EmagPassword = 'emagpassword';
+
     const MugenraceFooldalKep = 'mugenracefooldalkep';
     const MugenraceFejlecKep = 'mugenracefejleckep';
     const MugenraceFooldalSzoveg = 'mugenracefooldalszoveg';

@@ -11,14 +11,23 @@ class afaController extends \mkwhelpers\JQGridController {
         parent::__construct($params);
     }
 
+    /**
+     * @param \Entities\Afa $sor
+     * @return mixed
+     */
     protected function loadCells($sor) {
-        return array($sor->getNev(), $sor->getErtek(), $sor->getRLBkod());
+        return array($sor->getNev(), $sor->getErtek(), $sor->getRLBkod(), $sor->getEmagid());
     }
 
+    /**
+     * @param \Entities\Afa $obj
+     * @return mixed
+     */
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setErtek($this->params->getIntRequestParam('ertek', $obj->getErtek()));
         $obj->setRLBkod($this->params->getIntRequestParam('rlbkod', $obj->getRLBkod()));
+        $obj->setEmagid($this->params->getIntRequestParam('emagid', $obj->getEmagid()));
         return $obj;
     }
 

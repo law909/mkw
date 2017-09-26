@@ -64,10 +64,10 @@ class TermekFa extends \Entities\TermekFa implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'gtnev', 'm1lchanged', 'm2lchanged', 'm3lchanged', 'm4lchanged', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'id', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'created', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'children', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'parent', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'sorrend', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'slug', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'karkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu1lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu2lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu3lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu4lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'seodescription', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepurl', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek1', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek3', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'translations', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'locale'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'gtnev', 'm1lchanged', 'm2lchanged', 'm3lchanged', 'm4lchanged', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'id', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'created', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'children', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'parent', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'sorrend', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'slug', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'karkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu1lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu2lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu3lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu4lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'seodescription', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepurl', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek1', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek3', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'translations', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'emagid', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'locale'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'gtnev', 'm1lchanged', 'm2lchanged', 'm3lchanged', 'm4lchanged', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'id', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'created', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'children', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'parent', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'sorrend', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'slug', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'karkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu1lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu2lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu3lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu4lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'seodescription', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepurl', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek1', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek3', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'translations', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'locale'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'gtnev', 'm1lchanged', 'm2lchanged', 'm3lchanged', 'm4lchanged', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'id', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'created', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'children', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'parent', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'nev', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'sorrend', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'slug', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'karkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'rovidleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'leiras2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu1lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu2lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu3lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'menu4lathato', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'oldalcim', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'seodescription', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepurl', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek1', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek2', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'termekek3', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'translations', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'emagid', '' . "\0" . 'Entities\\TermekFa' . "\0" . 'locale'];
     }
 
     /**
@@ -901,6 +901,28 @@ class TermekFa extends \Entities\TermekFa implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTranslation', [$t]);
 
         return parent::removeTranslation($t);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEmagid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmagid', []);
+
+        return parent::getEmagid();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEmagid($emagid)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmagid', [$emagid]);
+
+        return parent::setEmagid($emagid);
     }
 
 }

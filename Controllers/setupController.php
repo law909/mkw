@@ -184,6 +184,14 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::FoxpostUsername, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::FoxpostPassword);
         $view->setVar(\mkw\consts::FoxpostPassword, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::EmagAPIUrl);
+        $view->setVar(\mkw\consts::EmagAPIUrl, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::EmagUsername);
+        $view->setVar(\mkw\consts::EmagUsername, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::EmagUsercode);
+        $view->setVar(\mkw\consts::EmagUsercode, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::EmagPassword);
+        $view->setVar(\mkw\consts::EmagPassword, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::KuponElotag);
         $view->setVar(\mkw\consts::KuponElotag, ($p ? $p->getErtek() : 'MKW'));
         $p = $repo->find(\mkw\consts::Off);
@@ -601,6 +609,10 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::FoxpostApiURL, $this->params->getStringRequestParam('foxpostapiurl'));
         $this->setObj(\mkw\consts::FoxpostUsername, $this->params->getStringRequestParam('foxpostusername'));
         $this->setObj(\mkw\consts::FoxpostPassword, $this->params->getStringRequestParam('foxpostpassword'));
+        $this->setObj(\mkw\consts::EmagAPIUrl, $this->params->getStringRequestParam('emagapiurl'));
+        $this->setObj(\mkw\consts::EmagUsername, $this->params->getStringRequestParam('emagusername'));
+        $this->setObj(\mkw\consts::EmagUsercode, $this->params->getStringRequestParam('emagusercode'));
+        $this->setObj(\mkw\consts::EmagPassword, $this->params->getStringRequestParam('emagpassword'));
         $this->setObj(\mkw\consts::MiniCRMHasznalatban, $this->params->getBoolRequestParam('minicrmhasznalatban'));
         $this->setObj(\mkw\consts::MiniCRMSystemId, $this->params->getStringRequestParam('minicrmsystemid'));
         $this->setObj(\mkw\consts::MiniCRMAPIKey, $this->params->getStringRequestParam('minicrmapikey'));

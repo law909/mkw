@@ -956,6 +956,16 @@
                             <td><label>{at('Password')}:</label></td>
                             <td><input name="foxpostpassword" type="password" value="{$foxpostpassword}" autocomplete="off"></td>
                         </tr>
+                        <tr>
+                            <td><label>{at('eMAG API URL')}:</label></td>
+                            <td><input name="emagapiurl" type="text" value="{$emagapiurl}"></td>
+                            <td><label>{at('Username')}:</label></td>
+                            <td><input name="emagusername" type="text" value="{$emagusername}" autocomplete="off"></td>
+                            <td><label>{at('Usercode')}:</label></td>
+                            <td><input name="emagusercode" type="text" value="{$emagusercode}" autocomplete="off"></td>
+                            <td><label>{at('Password')}:</label></td>
+                            <td><input name="emagpassword" type="password" value="{$emagpassword}" autocomplete="off"></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

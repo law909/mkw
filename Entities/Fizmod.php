@@ -67,6 +67,8 @@ class Fizmod {
     private $migrid;
     /** @ORM\Column(type="boolean") */
     private $nincspenzmozgas = false;
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $emagid;
 
     /** @Gedmo\Locale */
     protected $locale;
@@ -316,6 +318,20 @@ class Fizmod {
      */
     public function setNincspenzmozgas($nincspenzmozgas) {
         $this->nincspenzmozgas = $nincspenzmozgas;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmagid() {
+        return $this->emagid;
+    }
+
+    /**
+     * @param mixed $emagid
+     */
+    public function setEmagid($emagid) {
+        $this->emagid = $emagid;
     }
 
 }

@@ -563,6 +563,9 @@ class Bizonylatfej {
     /** @ORM\Column(type="boolean") */
     private $nincspenzmozgas = true;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $emagid;
+
     public function __toString() {
         return (string)$this->id;
     }
@@ -3354,6 +3357,20 @@ class Bizonylatfej {
      */
     public function setNincspenzmozgas($nincspenzmozgas) {
         $this->nincspenzmozgas = $nincspenzmozgas;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmagid() {
+        return $this->emagid;
+    }
+
+    /**
+     * @param mixed $emagid
+     */
+    public function setEmagid($emagid) {
+        $this->emagid = $emagid;
     }
 
 }

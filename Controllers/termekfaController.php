@@ -16,6 +16,11 @@ class termekfaController extends \mkwhelpers\MattableController {
 		parent::__construct($params);
 	}
 
+    /**
+     * @param \Entities\TermekFa $t
+     * @param bool $forKarb
+     * @return array
+     */
 	protected function loadVars($t, $forKarb = false) {
 		$x = array();
 		if (!$t) {
@@ -43,6 +48,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$x['parentnev'] = $t->getParentNev();
         $x['inaktiv'] = $t->getInaktiv();
         $x['idegenkod'] = $t->getIdegenkod();
+        $x['emagid'] = $t->getEmagid();
         if (\mkw\store::isMultilang()) {
             $translations = array();
             $translationsCtrl = new termekfatranslationController($this->params);
@@ -54,6 +60,10 @@ class termekfaController extends \mkwhelpers\MattableController {
 		return $x;
 	}
 
+    /**
+     * @param \Entities\TermekFa $obj
+     * @return mixed
+     */
 	protected function setFields($obj) {
 		$obj->setNev($this->params->getStringRequestParam('nev'));
 		$obj->setOldalcim($this->params->getStringRequestParam('oldalcim'));
@@ -73,6 +83,7 @@ class termekfaController extends \mkwhelpers\MattableController {
 		$obj->setKepleiras($this->params->getStringRequestParam('kepleiras'));
 		$obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
+        $obj->setEmagid($this->params->getIntRequestParam('emagid'));
         if (\mkw\store::isMultilang()) {
             $translationids = $this->params->getArrayRequestParam('translationid');
             $_tf = \Entities\TermekFa::getTranslatedFields();

@@ -148,6 +148,9 @@ class TermekFa {
     /** @ORM\OneToMany(targetEntity="TermekFaTranslation", mappedBy="object", cascade={"persist", "remove"}) */
     private $translations;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $emagid;
+
     /**
      * @Gedmo\Locale
      */
@@ -553,6 +556,20 @@ class TermekFa {
 
     public function removeTranslation(TermekFaTranslation $t) {
         $this->translations->removeElement($t);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmagid() {
+        return $this->emagid;
+    }
+
+    /**
+     * @param mixed $emagid
+     */
+    public function setEmagid($emagid) {
+        $this->emagid = $emagid;
     }
 
 }

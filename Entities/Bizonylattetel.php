@@ -284,6 +284,9 @@ class Bizonylattetel {
     /** @ORM\Column(type="integer",nullable=true) */
     private $mijszev;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $emagid;
+
     public function __construct() {
         $this->szulobizonylattetelek = new ArrayCollection();
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1443,6 +1446,20 @@ class Bizonylattetel {
      */
     public function setMIJSZEv($mijszev) {
         $this->mijszev = $mijszev;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmagid() {
+        return $this->emagid;
+    }
+
+    /**
+     * @param mixed $emagid
+     */
+    public function setEmagid($emagid) {
+        $this->emagid = $emagid;
     }
 
 }

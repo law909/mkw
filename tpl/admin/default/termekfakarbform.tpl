@@ -19,6 +19,10 @@
 				<td><label for="SorrendEdit">{at('Sorrend')}:</label></td>
 				<td><input id="SorrendEdit" name="sorrend" type="number" size="10" maxlength="10" value="{$egyed.sorrend}"></td>
 			</tr>
+            <tr>
+                <td><label for="EmagidEdit">{at('eMAG id')}:</label></td>
+                <td><input id="EmagidEdit" name="emagid" type="number" size="10" maxlength="10" value="{$egyed.emagid}"></td>
+            </tr>
 			</tbody></table>
 			{include 'termekfaimagekarb.tpl'}
 		</div>
