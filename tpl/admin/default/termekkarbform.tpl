@@ -401,6 +401,10 @@
                    {if ($egyed.hozzaszolas)}checked="checked"{/if}>{at('Hozzá lehet szólni')}
             <input id="TermekExportbanSzerepel" name="termekexportbanszerepel" type="checkbox"
                    {if ($egyed.termekexportbanszerepel)}checked="checked"{/if}>{at('Termékexportokban szerepel')}
+            {if ($setup.emag)}
+            <input id="EmagtiltvaCheck" name="emagtiltva" type="checkbox"
+                   {if ($egyed.emagtiltva)}checked="checked"{/if}>{at('eMAG tiltva')}
+            {/if}
             <table>
                 <tbody>
                 <tr>

@@ -896,6 +896,10 @@ class store {
         return self::getSetupValue('multishop');
     }
 
+    public static function isEmag() {
+        return self::getSetupValue('emag');
+    }
+
     public static function isFoxpostSzallitasimod($szm) {
         $i = $szm;
         if (is_a($szm, 'Entities\Szallitasimod')) {

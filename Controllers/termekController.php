@@ -62,6 +62,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['kiemelt'] = $t->getKiemelt();
 		$x['inaktiv'] = $t->getInaktiv();
 		$x['eladhato'] = $t->getEladhato();
+		$x['emagtiltva'] = $t->getEmagtiltva();
 		$x['mozgat'] = $t->getMozgat();
         $x['kozvetitett'] = $t->getKozvetitett();
 		$x['hparany'] = $t->getHparany();
@@ -242,6 +243,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$obj->setKiemelt($this->params->getBoolRequestParam('kiemelt'));
 		$obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
 		$obj->setEladhato($this->params->getBoolRequestParam('eladhato'));
+		$obj->setEmagtiltva($this->params->getBoolRequestParam('emagtiltva'));
 		$obj->setMozgat($this->params->getBoolRequestParam('mozgat'));
 		$obj->setHparany($this->params->getFloatRequestParam('hparany'));
 		$obj->setSzelesseg($this->params->getFloatRequestParam('szelesseg'));
@@ -1042,6 +1044,9 @@ class termekController extends \mkwhelpers\MattableController {
                     break;
                 case 'eladhato':
                     $obj->setEladhato($kibe);
+                    break;
+                case 'emagtiltva':
+                    $obj->setEmagtiltva($kibe);
                     break;
 			}
 			$this->getEm()->persist($obj);

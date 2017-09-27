@@ -338,6 +338,9 @@ class Termek {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $eladhato = 1;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $emagtiltva = 0;
+
     public function __toString() {
         return (string)$this->id . ' - ' . $this->nev;
     }
@@ -2278,6 +2281,20 @@ class Termek {
             default:
                 return $this->getLathato();
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmagtiltva() {
+        return $this->emagtiltva;
+    }
+
+    /**
+     * @param mixed $emagtiltva
+     */
+    public function setEmagtiltva($emagtiltva) {
+        $this->emagtiltva = $emagtiltva;
     }
 
 }
