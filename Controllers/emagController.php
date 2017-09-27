@@ -10,8 +10,8 @@ class emagController extends \mkwhelpers\Controller {
 
     protected function sendRequest($resource, $action, $data) {
         $requestData = array(
-            'code' => 'usercode',
-            'username' => 'username',
+            'code' => \mkw\store::getParameter(\mkw\consts::EmagUsercode),
+            'username' => \mkw\store::getParameter(\mkw\consts::EmagUsername),
             'data' => $data,
             'hash' => $this->calcHash($data));
         $ch = curl_init();
@@ -35,7 +35,11 @@ class emagController extends \mkwhelpers\Controller {
             'currentPage' => 1,
             'itemsPerPage' => 10
         );
-        return $this->sendRequest('vat', 'read', $params);
+        $r = $this->sendRequest('vat', 'read', $params);
+        if ($this->checkResult($r)) {
+            return $r['results'];
+        }
+        return false;
     }
 
     public function countCategories() {
@@ -47,25 +51,83 @@ class emagController extends \mkwhelpers\Controller {
     }
 
     public function getCategories() {
-        $perpage = 100;
         $count = $this->countCategories();
         $cats = array();
         if ($count !== false) {
-            $szor = ($count % $perpage) + 1;
-            for ($i = 1; $i <= $szor; $i++) {
+            $szor = $count['noOfPages'];
+            for ($i = 0; $i < $szor; $i++) {
                 $r = $this->sendRequest(
                     'category',
                     'read',
                     array(
                         'currentPage' => $i,
-                        'itemsPerPage' => $perpage
+                        'itemsPerPage' => $count['itemsPerPage']
                     )
                 );
                 if ($this->checkResult($r)) {
-                    $cats[] = $r['results'];
+                    foreach ($r['results'] as $elem) {
+                        $cats[] = $elem;
+                    }
+                }
+                else {
+                    \mkw\store::writelog('ERROR: ' . print_r($r['messages'], true), 'emag.txt');
                 }
             }
         }
         return $cats;
+    }
+
+    public function printVAT() {
+        $t = $this->getVAT();
+        if ($t) {
+            echo '<table><thead><tr><td>Id</td><td>VAT Rate</td></tr></thead><tbody>';
+            foreach ($t as $vat) {
+                echo '<tr>';
+                echo '<td>' . $vat['vat_id'] . '</td>';
+                echo '<td>' . $vat['vat_rate'] . '</td>';
+                echo '</tr>';
+            }
+            echo '</tbody></table>';
+        }
+    }
+
+    public function printCategories() {
+        function x($o) {
+            return \mkw\store::getExcelCoordinate($o, '');
+        }
+        $excel = new \PHPExcel();
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'Id')
+            ->setCellValue('B1', 'Parent Id')
+            ->setCellValue('C1', 'Name')
+            ->setCellValue('D1', 'Allowed');
+
+        $t = $this->getCategories();
+        $sor = 2;
+        foreach ($t as $elem) {
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue(x(0) . $sor, $elem['id'])
+                ->setCellValue(x(1) . $sor, $elem['parent_id'])
+                ->setCellValue(x(2) . $sor, $elem['name'])
+                ->setCellValue(x(3) . $sor, $elem['is_allowed']);
+
+            $sor++;
+        }
+        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+
+        $filepath = uniqid('emag_categories_') . '.xlsx';
+        $writer->save($filepath);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header("Cache-Control: private");
+        header("Content-Type: application/stream");
+        header("Content-Length: " . $fileSize);
+        header("Content-Disposition: attachment; filename=" . $filepath);
+
+        readfile($filepath);
+
+        \unlink($filepath);
     }
 }

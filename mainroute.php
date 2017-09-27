@@ -110,3 +110,5 @@ $router->map('GET', '/export/mugenrace', 'exportController#MugenraceExport', 'mu
 $router->map('GET', '/export/superzonehu', 'exportController#SuperzonehuExport', 'superzonehuexport');
 $router->map('GET', '/sitemap.xml', 'sitemapController#toBot', 'sitemap');
 
+$router->map('GET', '/t/emag/printvat', 'emagController#printVat', 'printvat');
+$router->map('GET', '/t/emag/printcat', 'emagController#printCategories', 'printcat');
