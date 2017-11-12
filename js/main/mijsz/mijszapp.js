@@ -1016,6 +1016,46 @@ var fiok = (function($) {
                 }
             });
         }
+        var mijszpunetab = $('#FiokPune');
+        if (mijszpunetab.length >0) {
+            mijszpunetab.on('click', '.js-mijszpunenewbutton', function(e) {
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/partnermijszpune/getemptyrow',
+                    type: 'GET',
+                    success: function(data) {
+                        var tbody = $('#FiokPune fieldset div.form-actions');
+                        tbody.before(data);
+                    }
+                });
+            })
+                .on('click', '.js-mijszpunedelbutton', function(e) {
+                    e.preventDefault();
+                    var gomb = $(this),
+                        id = gomb.attr('data-id');
+                    if (gomb.attr('data-source') === 'client') {
+                        gomb.parent().remove();
+                    }
+                    else {
+                        mkw.showDialog('Biztos, hogy törli a látogatást?',{
+                            'onOk': function() {
+                                $.ajax({
+                                    url: '/partnermijszpune/save',
+                                    type: 'POST',
+                                    data: {
+                                        id: id,
+                                        oper: 'del'
+                                    },
+                                    success: function(data) {
+                                        gomb.parent().remove();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+        }
     }
 
 	return {
