@@ -279,6 +279,9 @@ class Partner {
     /** @ORM\OneToMany(targetEntity="PartnerMIJSZOklevel", mappedBy="partner", cascade={"persist", "remove"}) */
     private $mijszoklevelek;
 
+    /** @ORM\OneToMany(targetEntity="PartnerMIJSZPune", mappedBy="partner", cascade={"persist", "remove"}) */
+    private $mijszpune;
+
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $mijszmembershipbesideshu;
 
@@ -334,6 +337,7 @@ class Partner {
         $this->termekkedvezmenyek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->mijszoklevelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->kontaktok = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->mijszpune = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function getCim() {
@@ -1177,6 +1181,13 @@ class Partner {
      */
     public function getMijszoklevelek() {
         return $this->mijszoklevelek;
+    }
+
+    /**
+     * @return \Entities\PartnerMIJSZPune
+     */
+    public function getMijszpune() {
+        return $this->mijszpune;
     }
 
     /**

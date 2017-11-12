@@ -287,6 +287,29 @@ class partnerController extends \mkwhelpers\MattableController {
             }
         }
 
+        if (\mkw\store::isMIJSZ() && ($subject === 'pune' || $subject === 'minden')) {
+            $okids = $this->params->getArrayRequestParam('mijszpuneid');
+            foreach ($okids as $okid) {
+                $oper = $this->params->getStringRequestParam('mijszpuneoper_' . $okid);
+                if ($oper === 'add') {
+                    $kedv = new \Entities\PartnerMIJSZPune();
+                    $kedv->setPartner($obj);
+                    $kedv->setEv($this->params->getIntRequestParam('mijszpuneev_' . $okid));
+                    $kedv->setHonap($this->params->getIntRequestParam('mijszpunehonap_' . $okid));
+                    $this->getEm()->persist($kedv);
+                }
+                elseif ($oper === 'edit') {
+                    $kedv = $this->getEm()->getRepository('Entities\PartnerMIJSZPune')->find($okid);
+                    if ($kedv) {
+                        $kedv->setPartner($obj);
+                        $kedv->setEv($this->params->getIntRequestParam('mijszpuneev_' . $okid));
+                        $kedv->setHonap($this->params->getIntRequestParam('mijszpunehonap_' . $okid));
+                        $this->getEm()->persist($kedv);
+                    }
+                }
+            }
+        }
+
         if ($subject === 'bankiadatok' || $subject === 'minden') {
             $obj->setBanknev($this->params->getStringRequestParam('banknev'));
             $obj->setBankcim($this->params->getStringRequestParam('bankcim'));

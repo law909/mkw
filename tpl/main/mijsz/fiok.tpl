@@ -12,6 +12,7 @@
 					<li class="active"><a href="#adataim" data-toggle="tab">{t('Adataim')}</a></li>
 					<li><a href="#szamlaadatok" data-toggle="tab">{t('Számlázási adatok')}</a></li>
                     <li><a href="#oklevelek" data-toggle="tab">{t('Oklevelek')}</a></li>
+                    <li><a href="#pune" data-toggle="tab">{t('Pune látogatások')}</a></li>
 					<li><a href="#jelszo" data-toggle="tab">{t('Jelszó módosítása')}</a></li>
 				</ul>
 				<div class="tab-content">
@@ -38,13 +39,13 @@
 									</div>
 								</div>
                                 <div class="control-group">
-                                    <label class="control-label" for="MiotaJogazikEdit">{t('Mióta jógázol (év)')}:</label>
+                                    <label class="control-label" for="MiotaJogazikEdit">{t('Mióta jógázol Iyengar metódus szerint (év)')}:</label>
                                     <div class="controls">
                                         <input id="MiotaJogazikEdit" name="mijszmiotajogazik" type="text" class="input-large" value="{$user.mijszmiotajogazik}">
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label" for="MiotaTanitEdit">{t('Mióta tanítasz (év)')}:</label>
+                                    <label class="control-label" for="MiotaTanitEdit">{t('Mióta tanítasz Iyengar metódusban (év)')}:</label>
                                     <div class="controls">
                                         <input id="MiotaTanitEdit" name="mijszmiotatanit" type="text" class="input-large" value="{$user.mijszmiotatanit}">
                                     </div>
@@ -62,7 +63,7 @@
                                     </div>
                                 </div>
 								<div class="form-actions">
-									<button type="submit" class="btn okbtn">{t('Adatok módosítása')}</button>
+									<button type="submit" class="btn okbtn">{t('Mentés')}</button>
 								</div>
 							</fieldset>
 						</form>
@@ -91,7 +92,7 @@
 									</div>
 								</div>
 								<div class="form-actions">
-									<button type="submit" class="btn okbtn">{t('Adatok módosítása')}</button>
+									<button type="submit" class="btn okbtn">{t('Mentés')}</button>
 								</div>
 							</fieldset>
 						</form>
@@ -104,7 +105,20 @@
                                 {/foreach}
                                 <div class="form-actions">
                                     <a class="js-mijszoklevelnewbutton btn graybtn" href="#">{t("Új oklevél")}</a>
-                                    <button type="submit" class="btn okbtn">{t('Adatok módosítása')}</button>
+                                    <button type="submit" class="btn okbtn">{t('Mentés')}</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="pune">
+                        <form id="FiokPune" class="form-horizontal" action="/fiok/ment/pune" method="post">
+                            <fieldset>
+                                {foreach $user.mijszpune as $mijszpune}
+                                    {include "puneedit.tpl"}
+                                {/foreach}
+                                <div class="form-actions">
+                                    <a class="js-mijszpunenewbutton btn graybtn" href="#">{t("Új látogatás")}</a>
+                                    <button type="submit" class="btn okbtn">{t('Mentés')}</button>
                                 </div>
                             </fieldset>
                         </form>
@@ -134,7 +148,7 @@
                                     </div>
                                 </div>
 								<div class="form-actions">
-									<button type="submit" class="btn okbtn">{t('Adatok módosítása')}</button>
+									<button type="submit" class="btn okbtn">{t('Mentés')}</button>
 								</div>
 							</fieldset>
 						</form>
