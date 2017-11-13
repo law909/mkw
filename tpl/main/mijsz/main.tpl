@@ -15,8 +15,7 @@
             Köszönjük közreműködésedet!<br>
             A Szövetség elnöksége
         </div>
-        <br><br><br><br>
-        <div class="span12">
+        <div class="span12 mijszengmain">
             With this application you can change your data in Hungarian Iyengar Yoga Association's member registry. Please click on you name in the left corner.<br>
             If you have any technical problem with this application, please contact <a href="mailto:balint.lovey@gmail.com">balint.lovey@gmail.com</a>.<br><br>
             Thank You!<br>
