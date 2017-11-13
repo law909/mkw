@@ -17,6 +17,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $kedvCtrl = new \Controllers\partnertermekcsoportkedvezmenyController($this->params);
         $termekkedvCtrl = new \Controllers\partnertermekkedvezmenyController($this->params);
         $mijszokCtrl = new \Controllers\partnermijszoklevelController($this->params);
+        $mijszpuneCtrl = new \Controllers\partnermijszpuneController($this->params);
         $x = array();
         if (!$t) {
             $t = new \Entities\Partner();
@@ -121,6 +122,11 @@ class partnerController extends \mkwhelpers\MattableController {
                 $okl[] = $mijszokCtrl->loadVars($tar, true);
             }
             $x['mijszoklevelek'] = $okl;
+            $pune = array();
+            foreach ($t->getMijszpune() as $tar) {
+                $pune[] = $mijszpuneCtrl->loadVars($tar, true);
+            }
+            $x['mijszpune'] = $pune;
         }
         return $x;
     }
