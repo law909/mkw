@@ -57,9 +57,15 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label" for="BusinessEdit">{t('Business')}:</label>
+                                    <label class="control-label" for="BusinessEdit">{t('Stúdiód neve')}:</label>
                                     <div class="controls">
-                                        <input id="BusinessEdit" name="mijszbusiness" type="text" class="input-large" value="{$user.mijszbusiness}" title="{t('Írd be a weboldaladat vagy a stúdiód weboldalát')}">
+                                        <input id="BusinessEdit" name="mijszbusiness" type="text" class="input-large" value="{$user.mijszbusiness}" title="{t('Írd be a stúdiód nevét, ha van')}">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="WeboldalEdit">{t('Weboldal')}:</label>
+                                    <div class="controls">
+                                        <input id="WeboldalEdit" name="honlap" type="text" class="input-large" value="{$user.honlap}" title="{t('Írd be a weboldaladat vagy a stúdiód weboldalát')}">
                                     </div>
                                 </div>
 								<div class="form-actions">

@@ -767,12 +767,18 @@ class store {
     }
 
     public static function getLocale() {
-        $l = self::getSetupValue('locale', false);
-        if ($l) {
-            $l = self::getLocaleName($l);
+        $luser = self::getLoggedInUser();
+        if (self::isMIJSZ() && $luser) {
+            $l = $luser->getBizonylatnyelv();
         }
         else {
-            $l = self::getParameter(\mkw\consts::Locale);
+            $l = self::getSetupValue('locale', false);
+            if ($l) {
+                $l = self::getLocaleName($l);
+            }
+            else {
+                $l = self::getParameter(\mkw\consts::Locale);
+            }
         }
         return $l;
     }

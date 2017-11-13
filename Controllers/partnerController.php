@@ -261,6 +261,7 @@ class partnerController extends \mkwhelpers\MattableController {
                 $obj->setMijszmiotatanit($this->params->getIntRequestParam('mijszmiotatanit'));
                 $obj->setMijszmembershipbesideshu($this->params->getStringRequestParam('mijszmembershipbesideshu'));
                 $obj->setMijszbusiness($this->params->getStringRequestParam('mijszbusiness'));
+                $obj->setHonlap($this->params->getStringRequestParam('honlap'));
             }
         }
 
