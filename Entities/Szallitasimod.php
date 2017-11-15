@@ -54,7 +54,7 @@ class Szallitasimod {
     /** @ORM\OneToMany(targetEntity="SzallitasimodTranslation", mappedBy="object", cascade={"persist", "remove"}) */
     private $translations;
 
-    /** @ORM\Column(type="string",length=20) */
+    /** @ORM\Column(type="string",length=20,nullable=true) */
     private $terminaltipus;
     /** @ORM\Column(type="boolean") */
     private $webes2 = false;
