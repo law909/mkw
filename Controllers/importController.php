@@ -899,7 +899,7 @@ class importController extends \mkwhelpers\Controller {
                     $termekdb++;
                 }
 
-                //\mkw\store::writelog(print_r($szulok, true), 'nomadtree.log');
+//                \mkw\store::writelog(print_r($szulok, true), 'nomadtree.log');
 
                 $termekdb = $dbtol;
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
@@ -1274,15 +1274,6 @@ class importController extends \mkwhelpers\Controller {
                         /** @var \Entities\Termek $termek */
                         $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                         if ($termek && !$termek->getFuggoben() && !$termek->getInaktiv()) {
-                            if (!keres($t['idegencikkszam'], $products)) {
-                                if ($termek->getKeszlet() <= 0) {
-                                    $lettfuggoben = true;
-                                    \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
-                                    . ' ' . $termek->getNev(), 'nomad_fuggoben.txt');
-                                    $termek->setInaktiv(true);
-                                    \mkw\store::getEm()->persist($termek);
-                                }
-                            }
                             $valtozatok = $termek->getValtozatok();
                             /** @var \Entities\TermekValtozat $valtozat */
                             foreach ($valtozatok as $valtozat) {
@@ -1297,6 +1288,25 @@ class importController extends \mkwhelpers\Controller {
                                             $valtozat->setElerheto(false);
                                             \mkw\store::getEm()->persist($valtozat);
                                         }
+                                    }
+                                }
+                            }
+                            if (!keres($t['idegencikkszam'], $products)) {
+                                if ($termek->getKeszlet() <= 0) {
+                                    $nincselerhetovaltozat = true;
+                                    $vkvk = $termek->getValtozatok();
+                                    /** @var \Entities\TermekValtozat $valtozat */
+                                    foreach ($vkvk as $valtozat) {
+                                        if ($valtozat->getElerheto()) {
+                                            $nincselerhetovaltozat = false;
+                                        }
+                                    }
+                                    if ($nincselerhetovaltozat) {
+                                        $lettfuggoben = true;
+                                        \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                            . ' ' . $termek->getNev(), 'nomad_fuggoben.txt');
+                                        $termek->setInaktiv(true);
+                                        \mkw\store::getEm()->persist($termek);
                                     }
                                 }
                             }
