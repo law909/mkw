@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @Doctrine\ORM\Mapping\Entity(repositoryClass="PartnerMIJSZOralatogatasRepository")
- * @Doctrine\ORM\Mapping\Table(name="partnermijszoklevel",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
+ * @Doctrine\ORM\Mapping\Table(name="partnermijszoralatogatas",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class PartnerMIJSZOralatogatas {
 
@@ -30,7 +30,7 @@ class PartnerMIJSZOralatogatas {
      */
     private $tanar;
 
-    /** @ORM\Column(type="string",length="255",nullable=true) */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $helyszin;
 
     /** @ORM\Column(type="date",nullable=true) */
