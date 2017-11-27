@@ -3545,15 +3545,14 @@ class importController extends \mkwhelpers\Controller {
                             $idegenkodok[] = (string)$data->sku;
                         }
                         if ($idegenkodok) {
-                            $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
+                            $termekek = $this->getRepo('Entities\Termek')->getWithValtozatokForImport($gyarto);
                             $termekdb = 0;
-                            foreach ($termekek as $t) {
-                                if ($t['idegencikkszam'] && !in_array($t['idegencikkszam'], $idegenkodok)) {
-                                    /** @var \Entities\Termek $termek */
-                                    $termek = $this->getRepo('Entities\Termek')->find($t['id']);
-                                    if ($termek && $termek->getKeszlet() <= 0) {
+                            /** @var \Entities\Termek $termek */
+                            foreach ($termekek as $termek) {
+                                if ($termek->getIdegencikkszam() && !in_array($termek->getIdegencikkszam(), $idegenkodok)) {
+                                    if ($termek->getKeszlet() <= 0) {
                                         $termekdb++;
-                                        \mkw\store::writelog('idegen cikkszám: ' . $t['idegencikkszam'] . ' | saját cikkszám: ' . $termek->getCikkszam(), 'legavenue_fuggoben.txt');
+                                        \mkw\store::writelog('idegen cikkszám: ' . $termek->getIdegencikkszam() . ' | saját cikkszám: ' . $termek->getCikkszam(), 'legavenue_fuggoben.txt');
                                         $lettfuggoben = true;
                                         $termek->setInaktiv(true);
                                         \mkw\store::getEm()->persist($termek);
@@ -3563,10 +3562,53 @@ class importController extends \mkwhelpers\Controller {
                                         }
                                     }
                                 }
+                                $valtozatok = $termek->getValtozatok();
+                                /** @var \Entities\TermekValtozat $valtozat */
+                                foreach ($valtozatok as $valtozat) {
+                                    if ($valtozat->getIdegencikkszam() && !in_array($valtozat->getIdegencikkszam(), $idegenkodok)) {
+                                        if ($valtozat->getKeszlet() <= 0) {
+                                            $termekdb++;
+                                            \mkw\store::writelog('változat idegen cikkszám: ' . $valtozat->getIdegencikkszam() . ' | saját cikkszám: ' . $valtozat->getCikkszam(), 'legavenue_fuggoben.txt');
+                                            $lettfuggoben = true;
+                                            $valtozat->setElerheto(false);
+                                            \mkw\store::getEm()->persist($valtozat);
+                                            if (($termekdb % $batchsize) === 0) {
+                                                \mkw\store::getEm()->flush();
+                                                \mkw\store::getEm()->clear();
+                                            }
+                                        }
+                                    }
+                                }
                             }
                             \mkw\store::getEm()->flush();
                             \mkw\store::getEm()->clear();
                         }
+                        $termekek = $this->getRepo('Entities\Termek')->getWithValtozatokForImport($gyarto);
+                        $termekdb = 0;
+                        /** @var \Entities\Termek $termek */
+                        foreach ($termekek as $termek) {
+                            $vanelerheto = false;
+                            $valtozatok = $termek->getValtozatok();
+                            /** @var \Entities\TermekValtozat $valtozat */
+                            foreach ($valtozatok as $valtozat) {
+                                if ($valtozat->getElerheto()) {
+                                    $vanelerheto = true;
+                                }
+                            }
+                            if (!$vanelerheto) {
+                                $termekdb++;
+                                \mkw\store::writelog('NINCS ELÉRHETŐ VÁLTOZAT: idegen cikkszám: ' . $termek->getIdegencikkszam() . ' | saját cikkszám: ' . $termek->getCikkszam(), 'legavenue_fuggoben.txt');
+                                $lettfuggoben = true;
+                                $termek->setNemkaphato(true);
+                                \mkw\store::getEm()->persist($termek);
+                                if (($termekdb % $batchsize) === 0) {
+                                    \mkw\store::getEm()->flush();
+                                    \mkw\store::getEm()->clear();
+                                }
+                            }
+                        }
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
                     }
                     if ($lettfuggoben) {
                         echo json_encode(array('url' => '/legavenue_fuggoben.txt'));

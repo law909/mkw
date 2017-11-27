@@ -775,6 +775,17 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getScalarResult();
     }
 
+    public function getWithValtozatokForImport($gyarto) {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('gyarto', '=', $gyarto);
+        $q = $this->_em->createQuery('SELECT _xx, v'
+            . ' FROM Entities\Termek _xx'
+            . ' LEFT JOIN _xx.valtozatok v '
+            . $this->getFilterString($filter));
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
+    }
+
     public function getKarton($filter, $order) {
         $q = $this->_em->createQuery('SELECT bt,bf '
             . 'FROM Entities\Bizonylattetel bt '
