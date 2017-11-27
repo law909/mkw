@@ -3588,14 +3588,16 @@ class importController extends \mkwhelpers\Controller {
                         /** @var \Entities\Termek $termek */
                         foreach ($termekek as $termek) {
                             $vanelerheto = false;
+                            $vanvaltozat = false;
                             $valtozatok = $termek->getValtozatok();
                             /** @var \Entities\TermekValtozat $valtozat */
                             foreach ($valtozatok as $valtozat) {
+                                $vanvaltozat = true;
                                 if ($valtozat->getElerheto()) {
                                     $vanelerheto = true;
                                 }
                             }
-                            if (!$vanelerheto) {
+                            if ($vanvaltozat && !$vanelerheto) {
                                 $termekdb++;
                                 \mkw\store::writelog('NINCS ELÉRHETŐ VÁLTOZAT: idegen cikkszám: ' . $termek->getIdegencikkszam() . ' | saját cikkszám: ' . $termek->getCikkszam(), 'legavenue_fuggoben.txt');
                                 $lettfuggoben = true;
