@@ -391,19 +391,24 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
     }
 
     public function checkZartIdoszak() {
-        $res = array('response' => 'error');
-        $penztarid = $this->params->getIntRequestParam('penztar');
-        if ($this->getRepo('Entities\Penztar')->find($penztarid)) {
-            $datum = date_create_from_format(\mkw\store::$JavascriptDateFormat, $this->params->getStringRequestParam('datum'));
-            $zart = date_create_from_format(\mkw\store::$SQLDateFormat, \mkw\store::getParameter(\mkw\consts::PenztarZarva . $penztarid));
-            if ($datum && $zart) {
-                $diff = $datum->diff($zart);
-                if ($diff && $diff->days > 0 && $diff->invert === 1) {
+        if (\mkw\store::getAdminSession()->loggedinuser['jog'] == 999) {
+            $res = array('response' => 'ok');
+        }
+        else {
+            $res = array('response' => 'error');
+            $penztarid = $this->params->getIntRequestParam('penztar');
+            if ($this->getRepo('Entities\Penztar')->find($penztarid)) {
+                $datum = date_create_from_format(\mkw\store::$JavascriptDateFormat, $this->params->getStringRequestParam('datum'));
+                $zart = date_create_from_format(\mkw\store::$SQLDateFormat, \mkw\store::getParameter(\mkw\consts::PenztarZarva . $penztarid));
+                if ($datum && $zart) {
+                    $diff = $datum->diff($zart);
+                    if ($diff && $diff->days > 0 && $diff->invert === 1) {
+                        $res['response'] = 'ok';
+                    }
+                }
+                elseif (!$zart) {
                     $res['response'] = 'ok';
                 }
-            }
-            elseif (!$zart) {
-                $res['response'] = 'ok';
             }
         }
         echo json_encode($res);
