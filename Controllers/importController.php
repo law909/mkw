@@ -3556,10 +3556,6 @@ class importController extends \mkwhelpers\Controller {
                                         $lettfuggoben = true;
                                         $termek->setInaktiv(true);
                                         \mkw\store::getEm()->persist($termek);
-                                        if (($termekdb % $batchsize) === 0) {
-                                            \mkw\store::getEm()->flush();
-                                            \mkw\store::getEm()->clear();
-                                        }
                                     }
                                 }
                                 $valtozatok = $termek->getValtozatok();
@@ -3572,16 +3568,17 @@ class importController extends \mkwhelpers\Controller {
                                             $lettfuggoben = true;
                                             $valtozat->setElerheto(false);
                                             \mkw\store::getEm()->persist($valtozat);
-                                            if (($termekdb % $batchsize) === 0) {
-                                                \mkw\store::getEm()->flush();
-                                                \mkw\store::getEm()->clear();
-                                            }
                                         }
                                     }
                                 }
+                                if ($termekdb >= $batchsize) {
+                                    $termekdb = 0;
+                                    \mkw\store::getEm()->flush();
+//                                    \mkw\store::getEm()->clear();
+                                }
                             }
                             \mkw\store::getEm()->flush();
-                            \mkw\store::getEm()->clear();
+//                            \mkw\store::getEm()->clear();
                         }
                         $termekek = $this->getRepo('Entities\Termek')->getWithValtozatokForImport($gyarto);
                         $termekdb = 0;
@@ -3605,7 +3602,7 @@ class importController extends \mkwhelpers\Controller {
                                 \mkw\store::getEm()->persist($termek);
                                 if (($termekdb % $batchsize) === 0) {
                                     \mkw\store::getEm()->flush();
-                                    \mkw\store::getEm()->clear();
+//                                    \mkw\store::getEm()->clear();
                                 }
                             }
                         }

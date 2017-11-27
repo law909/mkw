@@ -37,7 +37,7 @@ class TermekValtozat {
 	private $lastmod;
 
     /**
-	 * @ORM\ManyToOne(targetEntity="Termek",inversedBy="valtozatok")
+	 * @ORM\ManyToOne(targetEntity="Termek",inversedBy="valtozatok",cascade={"persist"})
 	 * @ORM\JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
 	 */
 	private $termek;
