@@ -1310,12 +1310,12 @@ class importController extends \mkwhelpers\Controller {
                                     }
                                 }
                             }
+                            $termekdb++;
                         }
                         if (($termekdb % $batchsize) === 0) {
                             \mkw\store::getEm()->flush();
                             \mkw\store::getEm()->clear();
                         }
-                        $termekdb++;
                     }
                     \mkw\store::getEm()->flush();
                     \mkw\store::getEm()->clear();
