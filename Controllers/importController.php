@@ -3511,7 +3511,7 @@ class importController extends \mkwhelpers\Controller {
                                 else {
                                     if ($termek) {
                                         if (!$kaphato) {
-                                            if ($termek->getKeszlet()) {
+                                            if ($termek->getKeszlet() <= 0) {
                                                 $termek->setNemkaphato(true);
                                             }
                                         }
