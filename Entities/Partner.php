@@ -324,6 +324,11 @@ class Partner {
      * @ORM\JoinColumn(name="updatedby", referencedColumnName="id")
      */
     private $updatedby;
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $munkahelyneve;
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $foglalkozas;
+
 
     /** @ORM\Column(type="integer",nullable=true) */
     private $emagid;
@@ -1420,5 +1425,34 @@ class Partner {
     public function setEmagid($emagid) {
         $this->emagid = $emagid;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMunkahelyneve() {
+        return $this->munkahelyneve;
+    }
+
+    /**
+     * @param mixed $munkahelyneve
+     */
+    public function setMunkahelyneve($munkahelyneve) {
+        $this->munkahelyneve = $munkahelyneve;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFoglalkozas() {
+        return $this->foglalkozas;
+    }
+
+    /**
+     * @param mixed $foglalkozas
+     */
+    public function setFoglalkozas($foglalkozas) {
+        $this->foglalkozas = $foglalkozas;
+    }
+
 
 }

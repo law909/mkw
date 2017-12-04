@@ -98,6 +98,8 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['ktdatvallal'] = $t->getKtdatvallal();
         $x['ktdatalany'] = $t->getKtdatalany();
         $x['ktdszerzszam'] = $t->getKtdszerzszam();
+        $x['munkahelyneve'] = $t->getMunkahelyneve();
+        $x['foglalkozas'] = $t->getFoglalkozas();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             if ($afa) {
@@ -173,6 +175,8 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setKtdatalany($this->params->getBoolRequestParam('ktdatalany'));
             $obj->setKtdatvallal($this->params->getBoolRequestParam('ktdatvallal'));
             $obj->setKtdszerzszam($this->params->getStringRequestParam('ktdszerzszam'));
+            $obj->setMunkahelyneve($this->params->getStringRequestParam('munkahelyneve'));
+            $obj->setFoglalkozas($this->params->getStringRequestParam('foglalkozas'));
 
             $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
             if ($fizmod) {
@@ -263,6 +267,8 @@ class partnerController extends \mkwhelpers\MattableController {
                 $obj->setMijszbusiness($this->params->getStringRequestParam('mijszbusiness'));
                 $obj->setHonlap($this->params->getStringRequestParam('honlap'));
             }
+            $obj->setMunkahelyneve($this->params->getStringRequestParam('munkahelyneve'));
+            $obj->setFoglalkozas($this->params->getStringRequestParam('foglalkozas'));
         }
 
         if (\mkw\store::isMIJSZ() && ($subject === 'oklevelek' || $subject === 'minden')) {

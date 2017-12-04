@@ -51,7 +51,7 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label" for="MemberBesidesHuEdit">{t('Tagságod MIJSZ-en kívül')}:</label>
+                                    <label class="control-label" for="MemberBesidesHuEdit">{t('Más Iyengar Szövetségbeli tagságod')}:</label>
                                     <div class="controls">
                                         <input id="MemberBesidesHuEdit" name="mijszmembershipbesideshu" type="text" class="input-large" value="{$user.mijszmembershipbesideshu}" title="{t('Írd be vesszővel elválasztva a szövetségek nevét')}">
                                     </div>
@@ -66,6 +66,18 @@
                                     <label class="control-label" for="WeboldalEdit">{t('Weboldal')}:</label>
                                     <div class="controls">
                                         <input id="WeboldalEdit" name="honlap" type="text" class="input-large" value="{$user.honlap}" title="{t('Írd be a weboldaladat vagy a stúdiód weboldalát')}">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="MunkahelyneveEdit">{t('Munkahelyed')}:</label>
+                                    <div class="controls">
+                                        <input id="MunkahelyneveEdit" name="munkahelyneve" type="text" class="input-large" value="{$user.munkahelyneve}" title="{t('Írd be a munkahelyed nevét, ha van')}">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="FoglalkozasEdit">{t('Foglalkozás')}:</label>
+                                    <div class="controls">
+                                        <input id="FoglalkozasEdit" name="foglalkozas" type="text" class="input-large" value="{$user.foglalkozas}" title="{t('Írd be a foglalkozásodat')}">
                                     </div>
                                 </div>
 								<div class="form-actions">
@@ -143,14 +155,14 @@
                                     <label class="control-label">{t('Új jelszó')}:</label>
                                     <div class="controls">
                                         <div class="chk-relative pull-left">
-                                            <input id="Jelszo1Edit" name="jelszo1" type="password" class="span" required placeholder="{t('jelszó')} 1 *" data-errormsg1="{t('Adjon meg jelszót')}." data-errormsg2="{t('A két jelszó nem egyezik.')}.">
+                                            <input id="Jelszo1Edit" name="jelszo1" type="password" class="span" required placeholder="{t('jelszó')} *" data-errormsg1="{t('Adjon meg jelszót')}." data-errormsg2="{t('A két jelszó nem egyezik.')}.">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <div class="controls chk-relative pull-left">
                                         <i class="span inputiconhack"></i>
-                                        <input id="Jelszo2Edit" name="jelszo2" type="password" class="span" required placeholder="{t('jelszó')} 2 *">
+                                        <input id="Jelszo2Edit" name="jelszo2" type="password" class="span" required placeholder="{t('jelszó megismétlése')} *">
                                     </div>
                                 </div>
 								<div class="form-actions">

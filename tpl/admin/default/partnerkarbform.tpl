@@ -83,6 +83,12 @@
                 </tr>
             {/if}
             <tr>
+                <td><label for="MunkahelyneveEdit">{at('Munkahely')}:</label></td>
+                <td><input id="MunkahelyneveEdit" name="munkahelyneve" type="text" size="13" maxlength="13" value="{$partner.munkahelyneve}"></td>
+                <td><label for="FoglalkozasEdit">{at('Foglalkozás')}:</label></td>
+                <td><input id="FoglalkozasEdit" name="foglalkozas" type="text" size="13" maxlength="30" value="{$partner.foglalkozas}"></td>
+            </tr>
+            <tr>
                 <td><label for="PartnertipusEdit">{at('Partner típus')}:</label></td>
                 <td><select id="PartnertipusEdit" name="partnertipus">
                         <option value="">{at('válasszon')}</option>

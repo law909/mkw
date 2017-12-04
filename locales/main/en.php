@@ -185,8 +185,13 @@ return array(
     'Mióta tanítasz Iyengar metódusban (év)' => 'Year when you started teaching Iyengar yoga',
     'Mióta jógázol Iyengar metódus szerint (év)' => 'Year when you started practicing Iyengar yoga',
     'Stúdiód neve' => 'Your studio\'s name',
-    'Tagságod MIJSZ-en kívül' => 'Membership beside HIYA (MIJSZ)',
+    'Más Iyengar Szövetségbeli tagságod' => 'Membership beside HIYA (MIJSZ)',
     'Írd be vesszővel elválasztva a szövetségek nevét' => 'Fill in the associations name',
     'Írd be a stúdiód nevét, ha van' => 'Fill in your studio\'s name',
-    'Írd be a weboldaladat vagy a stúdiód weboldalát' => 'Fill in your or your studio\'s home page'
+    'Írd be a weboldaladat vagy a stúdiód weboldalát' => 'Fill in your or your studio\'s home page',
+    'jelszó megismétlése' => 'retype your password',
+    'Munkahelyed' => 'Workplace',
+    'Írd be a munkahelyed nevét, ha van' => 'Fill in your workplace',
+    'Foglalkozás' => 'Profession',
+    'Írd be a foglalkozásodat' => 'Fill in your profession'
 );
