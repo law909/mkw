@@ -18,6 +18,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $termekkedvCtrl = new \Controllers\partnertermekkedvezmenyController($this->params);
         $mijszokCtrl = new \Controllers\partnermijszoklevelController($this->params);
         $mijszpuneCtrl = new \Controllers\partnermijszpuneController($this->params);
+        $mijszoralatogatasCtrl = new \Controllers\partnermijszoralatogatasController($this->params);
         $x = array();
         if (!$t) {
             $t = new \Entities\Partner();
@@ -129,6 +130,11 @@ class partnerController extends \mkwhelpers\MattableController {
                 $pune[] = $mijszpuneCtrl->loadVars($tar, true);
             }
             $x['mijszpune'] = $pune;
+            $oralatogatas = array();
+            foreach ($t->getMijszoralatogatas() as $tar) {
+                $oralatogatas[] = $mijszoralatogatasCtrl->loadVars($tar, true);
+            }
+            $x['mijszoralatogatas'] = $oralatogatas;
         }
         return $x;
     }
@@ -318,6 +324,40 @@ class partnerController extends \mkwhelpers\MattableController {
                         $kedv->setEv($this->params->getIntRequestParam('mijszpuneev_' . $okid));
                         $kedv->setHonap($this->params->getIntRequestParam('mijszpunehonap_' . $okid));
                         $this->getEm()->persist($kedv);
+                    }
+                }
+            }
+        }
+
+        if (\mkw\store::isMIJSZ() && ($subject === 'oralatogatasok' || $subject === 'minden')) {
+            $okids = $this->params->getArrayRequestParam('mijszoralatogatasid');
+            foreach ($okids as $okid) {
+                $oper = $this->params->getStringRequestParam('mijszoralatogatasoper_' . $okid);
+                $tanar = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('mijszoralatogatastanar_' . $okid));
+                if ($tanar || $this->params->getStringRequestParam('mijszoralatogatastanaregyeb_' . $okid)) {
+                    if ($oper === 'add') {
+                        $kedv = new \Entities\PartnerMIJSZOralatogatas();
+                        $kedv->setPartner($obj);
+                        $kedv->setTanar($tanar);
+                        $kedv->setTanaregyeb($this->params->getStringRequestParam('mijszoralatogatastanaregyeb_' . $okid));
+                        $kedv->setHelyszin($this->params->getStringRequestParam('mijszoralatogatashelyszin_' . $okid));
+                        $kedv->setMikor($this->params->getStringRequestParam('mijszoralatogatasmikor_' . $okid));
+                        $kedv->setOraszam($this->params->getIntRequestParam('mijszoralatogatasoraszam_' . $okid));
+                        $kedv->setEv($this->params->getIntRequestParam('mijszoralatogatasev_' . $okid));
+                        $this->getEm()->persist($kedv);
+                    }
+                    elseif ($oper === 'edit') {
+                        $kedv = $this->getEm()->getRepository('Entities\PartnerMIJSZOralatogatas')->find($okid);
+                        if ($kedv) {
+                            $kedv->setPartner($obj);
+                            $kedv->setTanar($tanar);
+                            $kedv->setTanaregyeb($this->params->getStringRequestParam('mijszoralatogatastanaregyeb_' . $okid));
+                            $kedv->setHelyszin($this->params->getStringRequestParam('mijszoralatogatashelyszin_' . $okid));
+                            $kedv->setMikor($this->params->getStringRequestParam('mijszoralatogatasmikor_' . $okid));
+                            $kedv->setOraszam($this->params->getIntRequestParam('mijszoralatogatasoraszam_' . $okid));
+                            $kedv->setEv($this->params->getIntRequestParam('mijszoralatogatasev_' . $okid));
+                            $this->getEm()->persist($kedv);
+                        }
                     }
                 }
             }

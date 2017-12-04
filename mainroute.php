@@ -23,11 +23,13 @@ if (\mkw\store::isB2B()) {
 }
 else {
     if (\mkw\store::isMIJSZ()) {
-        $router->map('POST', '/fiok/ment/[adataim||szamlaadatok|oklevelek|jelszo|pune:subject]', 'partnerController#saveAccount', 'saveaccount');
+        $router->map('POST', '/fiok/ment/[adataim||szamlaadatok|oklevelek|jelszo|pune|oralatogatasok:subject]', 'partnerController#saveAccount', 'saveaccount');
         $router->map('POST', '/partnermijszoklevel/save', 'partnermijszoklevelController#save', 'partnermijszoklevelsave');
         $router->map('GET', '/partnermijszoklevel/getemptyrow', 'partnermijszoklevelController#getmainemptyrow', 'partnermijszoklevelgetmainemptyrow');
         $router->map('POST', '/partnermijszpune/save', 'partnermijszpuneController#save', 'partnermijszpunesave');
         $router->map('GET', '/partnermijszpune/getemptyrow', 'partnermijszpuneController#getmainemptyrow', 'partnermijszpunegetmainemptyrow');
+        $router->map('POST', '/partnermijszoralatogatas/save', 'partnermijszoralatogatasController#save', 'partnermijsyoralatogatassave');
+        $router->map('GET', '/partnermijszoralatogatas/getemptyrow', 'partnermijszoralatogatasController#getmainemptyrow', 'partnermijszoralatogatasgetmainemptyrow');
         $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
         $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'saveregistration');
     }

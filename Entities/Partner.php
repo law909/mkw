@@ -328,6 +328,10 @@ class Partner {
     private $munkahelyneve;
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $foglalkozas;
+    /** @ORM\OneToMany(targetEntity="PartnerMIJSZOralatogatas", mappedBy="partner", cascade={"persist", "remove"}) */
+    private $mijszoralatogatas;
+    /** @ORM\OneToMany(targetEntity="PartnerMIJSZOralatogatas", mappedBy="tanar", cascade={"persist", "remove"}) */
+    private $mijszoralatogatastanar;
 
 
     /** @ORM\Column(type="integer",nullable=true) */
@@ -343,6 +347,8 @@ class Partner {
         $this->mijszoklevelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->kontaktok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->mijszpune = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->mijszoralatogatas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->mijszoralatogatastanar = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function getCim() {
@@ -1193,6 +1199,20 @@ class Partner {
      */
     public function getMijszpune() {
         return $this->mijszpune;
+    }
+
+    /**
+     * @return \Entities\PartnerMIJSZOralatogatas
+     */
+    public function getMijszoralatogatas() {
+        return $this->mijszoralatogatas;
+    }
+
+    /**
+     * @return \Entities\PartnerMIJSZOralatogatas
+     */
+    public function getMijszoralatogatastanar() {
+        return $this->mijszoralatogatastanar;
     }
 
     /**

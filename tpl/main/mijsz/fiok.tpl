@@ -12,6 +12,7 @@
 					<li class="active"><a href="#adataim" data-toggle="tab">{t('Adataim')}</a></li>
 					<li><a href="#szamlaadatok" data-toggle="tab">{t('Számlázási adatok')}</a></li>
                     <li><a href="#oklevelek" data-toggle="tab">{t('Oklevelek')}</a></li>
+                    <li><a href="#oralatogatasok" data-toggle="tab">{t('Óralátogatások')}</a></li>
                     <li><a href="#pune" data-toggle="tab">{t('Pune látogatások')}</a></li>
 					<li><a href="#jelszo" data-toggle="tab">{t('Jelszó módosítása')}</a></li>
 				</ul>
@@ -123,6 +124,19 @@
                                 {/foreach}
                                 <div class="form-actions">
                                     <a class="js-mijszoklevelnewbutton btn graybtn" href="#">{t("Új oklevél")}</a>
+                                    <button type="submit" class="btn okbtn">{t('Mentés')}</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="oralatogatasok">
+                        <form id="FiokOralatogatasok" class="form-horizontal" action="/fiok/ment/oralatogatasok" method="post">
+                            <fieldset>
+                                {foreach $user.mijszoralatogatas as $mijszoralatogatas}
+                                    {include "oralatogatasedit.tpl"}
+                                {/foreach}
+                                <div class="form-actions">
+                                    <a class="js-mijszoralatogatasnewbutton btn graybtn" href="#">{t("Új óralátogatás")}</a>
                                     <button type="submit" class="btn okbtn">{t('Mentés')}</button>
                                 </div>
                             </fieldset>

@@ -1038,6 +1038,14 @@ select[name="foxpostterminal"] {
 .mijszengmain {
   margin-top: 40px;
 }
+.mijszoralatogatasdoboz {
+  border-color: #e8e8e8;
+  border-style: solid;
+  padding: 5px;
+  border-radius: 4px;
+  border-width: thin;
+  margin-bottom: 5px;
+}
 /* margo 30px */
 @media (min-width: 1200px) {
   .spanmkw3 {

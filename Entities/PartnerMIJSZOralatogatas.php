@@ -19,31 +19,31 @@ class PartnerMIJSZOralatogatas {
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Partner",inversedBy="mijszoklevelek")
+     * @ORM\ManyToOne(targetEntity="Partner",inversedBy="mijszoralatogatas")
      * @ORM\JoinColumn(name="partner_id",referencedColumnName="id",onDelete="cascade")
      */
     private $partner;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Partner",inversedBy="mijszoralatogatas")
-     * @ORM\JoinColumn(name="partner_id",referencedColumnName="id",onDelete="cascade")
+     * @ORM\ManyToOne(targetEntity="Partner",inversedBy="mijszoralatogatastanar")
+     * @ORM\JoinColumn(name="tanar_id",referencedColumnName="id",onDelete="cascade")
      */
     private $tanar;
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $tanaregyeb;
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $ev;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
     private $helyszin;
 
-    /** @ORM\Column(type="date",nullable=true) */
-    private $datum;
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $mikor;
 
     /** @ORM\Column(type="integer",nullable=true) */
     private $oraszam = 0;
-
-    /** @ORM\Column(type="integer",nullable=false) */
-    private $havigyakorisag;
-
-    /** @ORM\Column(type="integer",nullable=false) */
-    private $oratipus = 0; // gyakorló óra, workshop
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -71,9 +71,6 @@ class PartnerMIJSZOralatogatas {
      */
     private $updatedby;
 
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $igazolt = false;
-
 
     public function toLista() {
         $r = array();
@@ -81,12 +78,11 @@ class PartnerMIJSZOralatogatas {
         $r['lastmodstr'] = $this->getLastmodStr();
         $r['createdstr'] = $this->getCreatedStr();
         $r['partnernev'] = $this->getPartnerNev();
-        $r['datum'] = $this->getDatumStr();
-        $r['datumstr'] = $this->getDatumStr();
-        $r['igazolt'] = $this->getIgazolt();
-        $r['helyszin'] = $this->getHelyszin();
+        $r['tanarnev'] = $this->getTanarNev();
+        $r['tanaregyeb'] = $this->getTanaregyeb();
+        $r['mikor'] = $this->getMikor();
         $r['oraszam'] = $this->getOraszam();
-        $r['havigyakorisag'] = $this->getHavigyakorisag();
+        $r['ev'] = $this->getEv();
         return $r;
     }
 
@@ -223,29 +219,6 @@ class PartnerMIJSZOralatogatas {
         $this->lastmod = null;
     }
 
-    public function getDatum() {
-        return $this->datum;
-    }
-
-    public function getDatumStr() {
-        if ($this->getDatum()) {
-            return $this->getDatum()->format(\mkw\store::$DateFormat);
-        }
-        return '';
-    }
-
-    public function setDatum($adat = '') {
-        if (is_a($adat, 'DateTime')) {
-            $this->datum = $adat;
-        }
-        else {
-            if ($adat == '') {
-                $adat = date(\mkw\store::$DateFormat);
-            }
-            $this->datum = new \DateTime(\mkw\store::convDate($adat));
-        }
-    }
-
     /**
      * @return mixed
      */
@@ -277,43 +250,43 @@ class PartnerMIJSZOralatogatas {
     /**
      * @return mixed
      */
-    public function getHavigyakorisag() {
-        return $this->havigyakorisag;
+    public function getMikor() {
+        return $this->mikor;
     }
 
     /**
-     * @param mixed $havigyakorisag
+     * @param mixed $mikor
      */
-    public function setHavigyakorisag($havigyakorisag) {
-        $this->havigyakorisag = $havigyakorisag;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getOratipus() {
-        return $this->oratipus;
-    }
-
-    /**
-     * @param mixed $oratipus
-     */
-    public function setOratipus($oratipus) {
-        $this->oratipus = $oratipus;
+    public function setMikor($mikor) {
+        $this->mikor = $mikor;
     }
 
     /**
      * @return mixed
      */
-    public function getIgazolt() {
-        return $this->igazolt;
+    public function getEv() {
+        return $this->ev;
     }
 
     /**
-     * @param mixed $igazolt
+     * @param mixed $ev
      */
-    public function setIgazolt($igazolt) {
-        $this->igazolt = $igazolt;
+    public function setEv($ev) {
+        $this->ev = $ev;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTanaregyeb() {
+        return $this->tanaregyeb;
+    }
+
+    /**
+     * @param mixed $tanaregyeb
+     */
+    public function setTanaregyeb($tanaregyeb) {
+        $this->tanaregyeb = $tanaregyeb;
     }
 
 }

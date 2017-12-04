@@ -193,5 +193,13 @@ return array(
     'Munkahelyed' => 'Workplace',
     'Írd be a munkahelyed nevét, ha van' => 'Fill in your workplace',
     'Foglalkozás' => 'Profession',
-    'Írd be a foglalkozásodat' => 'Fill in your profession'
+    'Írd be a foglalkozásodat' => 'Fill in your profession',
+    'Melyik évben' => 'In year',
+    'Tanár' => 'Teacher',
+    'Helyszín' => 'Location',
+    'Mikor vagy milyen rendszeresen' => 'When or how regularly',
+    'Hány órát (60 perc) töltöttél ott' => 'How many hours (60 mins) you were there',
+    'Új óralátogatás' => 'New attendance',
+    'Óralátogatások' => 'Attendances',
+    'egyéb' => 'other'
 );
