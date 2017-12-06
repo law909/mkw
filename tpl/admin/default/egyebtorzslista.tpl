@@ -111,6 +111,10 @@
             <table id="mijszoklevelszintgrid"></table>
             <div id="mijszoklevelszintgridpager"></div>
         </div>
+        <div class="egyebadat-grid">
+            <table id="mijszgyakorlasszintgrid"></table>
+            <div id="mijszgyakorlasszintgridpager"></div>
+        </div>
         {/if}
         {if ($maintheme === 'darshan')}
             <div class="egyebadat-grid">

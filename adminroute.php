@@ -64,6 +64,9 @@ $router->map('POST', '/admin/mijszoklevelkibocsajto/save', 'mijszoklevelkibocsaj
 $router->map('GET', '/admin/mijszoklevelszint/jsonlist', 'mijszoklevelszintController#jsonlist', 'adminmijszoklevelszintjsonlist');
 $router->map('GET', '/admin/mijszoklevelszint/htmllist', 'mijszoklevelszintController#htmllist', 'adminmijszoklevelszinthtmllist');
 $router->map('POST', '/admin/mijszoklevelszint/save', 'mijszoklevelszintController#save', 'adminmijszoklevelszintsave');
+$router->map('GET', '/admin/mijszgyakorlasszint/jsonlist', 'mijszgyakorlasszintController#jsonlist', 'adminmijszgyakorlasszintjsonlist');
+$router->map('GET', '/admin/mijszgyakorlasszint/htmllist', 'mijszgyakorlasszintController#htmllist', 'adminmijszgyakorlasszinthtmllist');
+$router->map('POST', '/admin/mijszgyakorlasszint/save', 'mijszgyakorlasszintController#save', 'adminmijszgyakorlasszintsave');
 $router->map('GET', '/admin/szotar/jsonlist', 'szotarController#jsonlist', 'adminszotarjsonlist');
 $router->map('GET', '/admin/szotar/htmllist', 'szotarController#htmllist', 'adminszotarhtmllist');
 $router->map('POST', '/admin/szotar/save', 'szotarController#save', 'adminszotarsave');

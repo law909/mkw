@@ -1395,6 +1395,51 @@ $().ready(
                 caption: 'Jógaóra tipusok'});
             createNav(_jogaoratipus, jogaoratipusgrid);
 
+            // mijszgyakorlasszint grid
+            var _mijszgyakorlasszint = {
+                grid: '#mijszgyakorlasszintgrid',
+                pager: '#mijszgyakorlasszintgridpager'
+            };
+            var mijszgyakorlasszintgrid = $(_mijszgyakorlasszint.grid).jqGrid({
+                url: '/admin/mijszgyakorlasszint/jsonlist',
+                editurl: '/admin/mijszgyakorlasszint/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _mijszgyakorlasszint.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Gyakorlás szintek'});
+            $(_mijszgyakorlasszint.grid).jqGrid('navGrid', _mijszgyakorlasszint.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_mijszgyakorlasszint.grid).jqGrid('navButtonAdd', _mijszgyakorlasszint.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    mijszgyakorlasszintgrid[0].toggleToolbar();
+                }
+            });
+            $(_mijszgyakorlasszint.grid).jqGrid('navButtonAdd', _mijszgyakorlasszint.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    mijszgyakorlasszintgrid[0].clearToolbar();
+                }
+            });
+            $(_mijszgyakorlasszint.grid).jqGrid('filterToolbar');
+            $(_mijszgyakorlasszint.pager + '_center').hide();
+            $(_mijszgyakorlasszint.pager + '_right').hide();
+
             // Altalanos
             $('.ui-search-toolbar').hide();
             $('.ui-jqgrid-titlebar').on('click', function(e) {

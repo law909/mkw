@@ -13,6 +13,7 @@
 					<li><a href="#szamlaadatok" data-toggle="tab">{t('Számlázási adatok')}</a></li>
                     <li><a href="#oklevelek" data-toggle="tab">{t('Oklevelek')}</a></li>
                     <li><a href="#oralatogatasok" data-toggle="tab">{t('Óralátogatások')}</a></li>
+                    <li><a href="#tanitas" data-toggle="tab">{t('Tanítások')}</a></li>
                     <li><a href="#pune" data-toggle="tab">{t('Pune látogatások')}</a></li>
 					<li><a href="#jelszo" data-toggle="tab">{t('Jelszó módosítása')}</a></li>
 				</ul>
@@ -137,6 +138,19 @@
                                 {/foreach}
                                 <div class="form-actions">
                                     <a class="js-mijszoralatogatasnewbutton btn graybtn" href="#">{t("Új óralátogatás")}</a>
+                                    <button type="submit" class="btn okbtn">{t('Mentés')}</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="tanitas">
+                        <form id="FiokTanitas" class="form-horizontal" action="/fiok/ment/tanitas" method="post">
+                            <fieldset>
+                                {foreach $user.mijsztanitas as $mijsztanitas}
+                                    {include "tanitasedit.tpl"}
+                                {/foreach}
+                                <div class="form-actions">
+                                    <a class="js-mijsztanitasnewbutton btn graybtn" href="#">{t("Új tanítás")}</a>
                                     <button type="submit" class="btn okbtn">{t('Mentés')}</button>
                                 </div>
                             </fieldset>

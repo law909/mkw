@@ -1056,6 +1056,86 @@ var fiok = (function($) {
                     }
                 });
         }
+        var mijszoralatogatastab = $('#FiokOralatogatasok');
+        if (mijszoralatogatastab.length >0) {
+            mijszoralatogatastab.on('click', '.js-mijszoralatogatasnewbutton', function(e) {
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/partnermijszoralatogatas/getemptyrow',
+                    type: 'GET',
+                    success: function(data) {
+                        var tbody = $('#FiokOralatogatasok fieldset div.form-actions');
+                        tbody.before(data);
+                    }
+                });
+            })
+                .on('click', '.js-mijszoralatogatasdelbutton', function(e) {
+                    e.preventDefault();
+                    var gomb = $(this),
+                        id = gomb.attr('data-id');
+                    if (gomb.attr('data-source') === 'client') {
+                        gomb.parent().parent().parent().remove();
+                    }
+                    else {
+                        mkw.showDialog('Biztos, hogy törli a látogatást?',{
+                            'onOk': function() {
+                                $.ajax({
+                                    url: '/partnermijszoralatogatas/save',
+                                    type: 'POST',
+                                    data: {
+                                        id: id,
+                                        oper: 'del'
+                                    },
+                                    success: function(data) {
+                                        gomb.parent().parent().parent().remove();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+        }
+        var mijsztanitastab = $('#FiokTanitas');
+        if (mijsztanitastab.length >0) {
+            mijsztanitastab.on('click', '.js-mijsztanitasnewbutton', function(e) {
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/partnermijsztanitas/getemptyrow',
+                    type: 'GET',
+                    success: function(data) {
+                        var tbody = $('#FiokTanitas fieldset div.form-actions');
+                        tbody.before(data);
+                    }
+                });
+            })
+                .on('click', '.js-mijsztanitasdelbutton', function(e) {
+                    e.preventDefault();
+                    var gomb = $(this),
+                        id = gomb.attr('data-id');
+                    if (gomb.attr('data-source') === 'client') {
+                        gomb.parent().parent().parent().remove();
+                    }
+                    else {
+                        mkw.showDialog('Biztos, hogy törli a tanítást?',{
+                            'onOk': function() {
+                                $.ajax({
+                                    url: '/partnermijsztanitas/save',
+                                    type: 'POST',
+                                    data: {
+                                        id: id,
+                                        oper: 'del'
+                                    },
+                                    success: function(data) {
+                                        gomb.parent().parent().parent().remove();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+        }
     }
 
 	return {

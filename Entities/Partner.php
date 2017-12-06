@@ -332,6 +332,8 @@ class Partner {
     private $mijszoralatogatas;
     /** @ORM\OneToMany(targetEntity="PartnerMIJSZOralatogatas", mappedBy="tanar", cascade={"persist", "remove"}) */
     private $mijszoralatogatastanar;
+    /** @ORM\OneToMany(targetEntity="PartnerMIJSZTanitas", mappedBy="partner", cascade={"persist", "remove"}) */
+    private $mijsztanitas;
 
 
     /** @ORM\Column(type="integer",nullable=true) */
@@ -349,6 +351,7 @@ class Partner {
         $this->mijszpune = new \Doctrine\Common\Collections\ArrayCollection();
         $this->mijszoralatogatas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->mijszoralatogatastanar = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->mijsztanitas = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function getCim() {
@@ -1213,6 +1216,13 @@ class Partner {
      */
     public function getMijszoralatogatastanar() {
         return $this->mijszoralatogatastanar;
+    }
+
+    /**
+     * @return \Entities\PartnerMIJSZTanitas
+     */
+    public function getMijsztanitas() {
+        return $this->mijsztanitas;
     }
 
     /**

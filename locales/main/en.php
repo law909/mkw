@@ -201,5 +201,17 @@ return array(
     'Hány órát (60 perc) töltöttél ott' => 'How many hours (60 mins) you were there',
     'Új óralátogatás' => 'New attendance',
     'Óralátogatások' => 'Attendances',
-    'egyéb' => 'other'
+    'egyéb' => 'other',
+    'Tanítások' => 'Teachings',
+    'Új tanítás' => 'New teaching',
+    'Milyen rendszeresen' => 'How often',
+    'Melyik nap' => 'On which day',
+    'Óra szintje' => 'Level of class',
+    'hétfő' => 'monday',
+    'kedd' => 'tuesday',
+    'szerda' => 'wednesday',
+    'csütörtök' => 'thursday',
+    'péntek' => 'friday',
+    'szombat' => 'saturday',
+    'vasárnap' => 'sunday'
 );
