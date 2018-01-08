@@ -315,6 +315,58 @@ var bizonylathelper = function($) {
         nocalcarak = n;
     }
 
+    function irszamAutocomplete(irszam,varos) {
+        $(irszam).autocomplete({
+            minLength: 2,
+            source: function(req,resp) {
+                $.ajax({
+                    url: '/admin/irszam',
+                    type: 'GET',
+                    data: {
+                        term: req.term,
+                        tip: 1
+                    },
+                    success: function(data) {
+                        var d=JSON.parse(data);
+                        resp(d);
+                    },
+                    error: function() {
+                        resp();
+                    }
+                });
+            },
+            select: function(event,ui) {
+                $(varos).val(ui.item.nev);
+            }
+        });
+    }
+
+    function varosAutocomplete(irszam,varos) {
+        $(varos).autocomplete({
+            minLength: 4,
+            source: function(req,resp) {
+                $.ajax({
+                    url: '/admin/varos',
+                    type: 'GET',
+                    data: {
+                        term: req.term,
+                        tip: 1
+                    },
+                    success: function(data) {
+                        var d=JSON.parse(data);
+                        resp(d);
+                    },
+                    error: function() {
+                        resp();
+                    }
+                });
+            },
+            select: function(event,ui) {
+                $(irszam).val(ui.item.szam);
+            }
+        });
+    }
+
     function partnerAutocompleteRenderer(ul, item) {
         return $('<li>')
             .append('<a>' + item.value + '</a>')
@@ -619,6 +671,12 @@ var bizonylathelper = function($) {
 
                 $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
                     .autocomplete( "instance" )._renderItem = partnerAutocompleteRenderer;
+
+                irszamAutocomplete('input[name="partnerirszam"]','input[name="partnervaros"]');
+                varosAutocomplete('input[name="partnerirszam"]','input[name="partnervaros"]');
+
+                irszamAutocomplete('input[name="szallirszam"]','input[name="szallvaros"]');
+                varosAutocomplete('input[name="szallirszam"]','input[name="szallvaros"]');
 
                 $('.js-ujpartnercb').on('change', function() {
                     if ($(this).prop('checked')) {
