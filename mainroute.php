@@ -50,6 +50,12 @@ if (\mkw\store::isDarshan()) {
     $router->map('GET', '/orarend/print', 'orarendController#print', 'orarendprint');
 }
 
+if (\mkw\store::isMugenrace()) {
+    $router->map('GET', '/pr', 'partnerController#showPubRegistration', 'pubregistration');
+    $router->map('GET', '/prthx', 'partnerController#showPubRegistrationThx', 'pubregistrationthx');
+    $router->map('POST', '/prsave', 'partnerController#savePubRegistration', 'savepubregistration');
+}
+
 $router->map('GET', '', 'mainController#view', 'home');
 $router->map('GET', '/404', 'mainController#show404', 'show404');
 $router->map('GET', '/login', 'partnerController#showLoginForm', 'showlogin');

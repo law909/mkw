@@ -5,12 +5,8 @@
     <meta name="description" content="{$seodescription|default}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <!--link type="text/css" rel="stylesheet" href="/themes/main/mijsz/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="/themes/main/mijsz/bootstrap-responsive.min.css">
-    <link type="text/css" rel="stylesheet" href="/themes/main/mijsz/jquery.slider.min.css">
-    <link type="text/css" rel="stylesheet" href="/themes/main/mijsz/magnific-popup.css"-->
-    <link type="text/css" rel="stylesheet" href="/themes/main/mijsz/mijsz.css">
-    <link type="text/css" rel="stylesheet" href="/themes/main/mijsz/style.css">
+    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace/mgr.css">
+    <link type="text/css" rel="stylesheet" href="/themes/main/mugenrace/style.css">
 </head>
 <body>
 <div class="container whitebg">
@@ -60,48 +56,6 @@
                                 <input name="varos" type="text" class="input-medium" placeholder="{t('város')}" value="{$user.varos}">
                                 <input name="utca" type="text" class="input-large" placeholder="{t('utca')}" value="{$user.utca}">
                                 <input name="hazszam" type="text" class="input-mini" placeholder="{t('házszám')}" value="{$user.hazszam}">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="MiotaJogazikEdit">{t('Mióta jógázol Iyengar metódus szerint (év)')}:</label>
-                            <div class="controls">
-                                <input id="MiotaJogazikEdit" name="mijszmiotajogazik" type="text" class="input-large" value="{$user.mijszmiotajogazik}">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="MiotaTanitEdit">{t('Mióta tanítasz Iyengar metódusban (év)')}:</label>
-                            <div class="controls">
-                                <input id="MiotaTanitEdit" name="mijszmiotatanit" type="text" class="input-large" value="{$user.mijszmiotatanit}">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="MemberBesidesHuEdit">{t('Más Iyengar Szövetségbeli tagságod')}:</label>
-                            <div class="controls">
-                                <input id="MemberBesidesHuEdit" name="mijszmembershipbesideshu" type="text" class="input-large" value="{$user.mijszmembershipbesideshu}" title="{t('Írd be vesszővel elválasztva a szövetségek nevét')}">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="BusinessEdit">{t('Stúdiód neve')}:</label>
-                            <div class="controls">
-                                <input id="BusinessEdit" name="mijszbusiness" type="text" class="input-large" value="{$user.mijszbusiness}" title="{t('Írd be a stúdiód nevét, ha van')}">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="WeboldalEdit">{t('Weboldal')}:</label>
-                            <div class="controls">
-                                <input id="WeboldalEdit" name="honlap" type="text" class="input-large" value="{$user.honlap}" title="{t('Írd be a weboldaladat vagy a stúdiód weboldalát')}">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="MunkahelyneveEdit">{t('Munkahelyed')}:</label>
-                            <div class="controls">
-                                <input id="MunkahelyneveEdit" name="munkahelyneve" type="text" class="input-large" value="{$user.munkahelyneve}" title="{t('Írd be a munkahelyed nevét, ha van')}">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="FoglalkozasEdit">{t('Foglalkozás')}:</label>
-                            <div class="controls">
-                                <input id="FoglalkozasEdit" name="foglalkozas" type="text" class="input-large" value="{$user.foglalkozas}" title="{t('Írd be a foglalkozásodat')}">
                             </div>
                         </div>
                         <div class="form-actions">
