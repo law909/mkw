@@ -34,6 +34,9 @@ else {
         $router->map('GET', '/partnermijsztanitas/getemptyrow', 'partnermijsztanitasController#getmainemptyrow', 'partnermijsztanitasgetmainemptyrow');
         $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
         $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'saveregistration');
+        $router->map('GET', '/pr', 'partnerController#showPubRegistration', 'pubregistration');
+        $router->map('GET', '/prthx', 'partnerController#showPubRegistrationThx', 'pubregistrationthx');
+        $router->map('POST', '/prsave', 'partnerController#savePubRegistration', 'savepubregistration');
     }
     else {
         $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');

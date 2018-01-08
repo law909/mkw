@@ -267,11 +267,17 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('kiskercimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::SpanyolCimke);
         $view->setVar('spanyolcimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::FelvetelAlattCimke);
+        $view->setVar('felvetelalattcimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
         $orszagc = new orszagController($this->params);
         $p = $repo->find(\mkw\consts::Spanyolorszag);
         $view->setVar('spanyolorszaglist', $orszagc->getSelectList(($p ? $p->getErtek() : 0), true));
         $p = $repo->find(\mkw\consts::Orszag);
         $view->setVar('orszaglist', $orszagc->getSelectList(($p ? $p->getErtek() : 0), true));
+
+        $p = $repo->find(\mkw\consts::FelvetelAlattTipus);
+        $partnertipusc = new partnertipusController($this->params);
+        $view->setVar('felvetelalattpartnertipuslist', $partnertipusc->getSelectList(($p ? $p->getErtek() : 0)));
 
         $mkcs = new munkakorController($this->params);
         $p = $repo->find(\mkw\consts::AdminRole);
@@ -729,6 +735,22 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::KiskerCimke, '');
+        }
+
+        $felvetelalattcimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('felvetelalattcimke', 0));
+        if ($felvetelalattcimke) {
+            $this->setObj(\mkw\consts::FelvetelAlattCimke, $felvetelalattcimke->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::FelvetelAlattCimke, '');
+        }
+
+        $felvetelalattpartnertipus = \mkw\store::getEm()->getRepository('Entities\Partnertipus')->find($this->params->getIntRequestParam('felvetelalattpartnertipus', 0));
+        if ($felvetelalattpartnertipus) {
+            $this->setObj(\mkw\consts::FelvetelAlattTipus, $felvetelalattpartnertipus->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::FelvetelAlattTipus, '');
         }
 
         $spanyolcimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('spanyolcimke', 0));

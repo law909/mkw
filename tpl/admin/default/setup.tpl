@@ -259,25 +259,58 @@
                         </div>
                     </div>
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="MarkaCsEdit">{at('Márka csoport')}:</label></span>
-                            <select id="MarkaCsEdit" name="markacs">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $markacslist as $_markacs}
-                                    <option value="{$_markacs.id}"{if ($_markacs.selected)} selected="selected"{/if}>{$_markacs.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="KiskerCimkeEdit">{at('Kisker címke')}:</label></span>
-                            <select id="KiskerCimkeEdit" name="kiskercimke">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $kiskercimkelist as $_kiskercimke}
-                                    <option
-                                        value="{$_kiskercimke.id}"{if ($_kiskercimke.selected)} selected="selected"{/if}>{$_kiskercimke.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
+                        {if ($maintheme === 'mijsz')}
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="FelvetelalattCimkeEdit">{at('Felvétel alatt címke')}:</label></span>
+                                <select id="FelvetelalattCimkeEdit" name="felvetelalattcimke">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $felvetelalattcimkelist as $_felvetelalattcimke}
+                                        <option
+                                            value="{$_felvetelalattcimke.id}"{if ($_felvetelalattcimke.selected)} selected="selected"{/if}>{$_felvetelalattcimke.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="FelvetelalattTipusEdit">{at('Felvétel alatt típus')}:</label></span>
+                                <select id="FelvetelalattTipusEdit" name="felvetelalattpartnertipus">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $felvetelalattpartnertipuslist as $_felvetelalattpartnertipus}
+                                        <option
+                                            value="{$_felvetelalattpartnertipus.id}"{if ($_felvetelalattpartnertipus.selected)} selected="selected"{/if}>{$_felvetelalattpartnertipus.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        {else}
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="MarkaCsEdit">{at('Márka csoport')}:</label></span>
+                                <select id="MarkaCsEdit" name="markacs">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $markacslist as $_markacs}
+                                        <option value="{$_markacs.id}"{if ($_markacs.selected)} selected="selected"{/if}>{$_markacs.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="KiskerCimkeEdit">{at('Kisker címke')}:</label></span>
+                                <select id="KiskerCimkeEdit" name="kiskercimke">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $kiskercimkelist as $_kiskercimke}
+                                        <option
+                                            value="{$_kiskercimke.id}"{if ($_kiskercimke.selected)} selected="selected"{/if}>{$_kiskercimke.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="FelvetelalattCimkeEdit">{at('Felvétel alatt címke')}:</label></span>
+                                <select id="FelvetelalattCimkeEdit" name="felvetelalattcimke">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $felvetelalattcimkelist as $_felvetelalattcimke}
+                                        <option
+                                            value="{$_felvetelalattcimke.id}"{if ($_felvetelalattcimke.selected)} selected="selected"{/if}>{$_felvetelalattcimke.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        {/if}
                         {if ($maintheme === 'superzoneb2b')}
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="SpanyolCimkeEdit">{at('Spanyol címke')}:</label></span>

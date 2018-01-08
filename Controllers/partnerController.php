@@ -262,7 +262,7 @@ class partnerController extends \mkwhelpers\MattableController {
             }
         }
 
-        if ($subject === 'adataim' || $subject === 'minden') {
+        if ($subject === 'adataim' || $subject === 'pubreg' || $subject === 'minden') {
             $obj->setVezeteknev($this->params->getStringRequestParam('vezeteknev'));
             $obj->setKeresztnev($this->params->getStringRequestParam('keresztnev'));
             if (\mkw\store::getTheme() === 'mkwcansas' && $subject !== 'minden') {
@@ -281,6 +281,17 @@ class partnerController extends \mkwhelpers\MattableController {
             }
             $obj->setMunkahelyneve($this->params->getStringRequestParam('munkahelyneve'));
             $obj->setFoglalkozas($this->params->getStringRequestParam('foglalkozas'));
+        }
+
+        if ($subject === 'pubreg') {
+            $cimke = $this->getEm()->getRepository('Entities\Partnercimketorzs')->find(\mkw\store::getParameter(\mkw\consts::FelvetelAlattCimke));
+            if ($cimke) {
+                $obj->addCimke($cimke);
+            }
+            $ptipus = $this->getEm()->getRepository('Entities\Partnertipus')->find(\mkw\store::getParameter(\mkw\consts::FelvetelAlattTipus));
+            if ($ptipus) {
+                $obj->setPartnertipus($ptipus);
+            }
         }
 
         if (\mkw\store::isMIJSZ() && ($subject === 'oklevelek' || $subject === 'minden')) {
@@ -408,7 +419,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setSwift($this->params->getStringRequestParam('swift'));
         }
 
-        if ($subject === 'szamlaadatok' || $subject === 'minden') {
+        if ($subject === 'szamlaadatok' || $subject === 'pubreg' || $subject === 'minden') {
             $obj->setNev($this->params->getStringRequestParam('nev'));
             $obj->setAdoszam($this->params->getStringRequestParam('adoszam'));
             $obj->setIrszam($this->params->getStringRequestParam('irszam'));
@@ -785,6 +796,18 @@ class partnerController extends \mkwhelpers\MattableController {
         return $view;
     }
 
+    public function showPubRegistration() {
+        $view = $this->getTemplateFactory()->createMainView('pubregistration.tpl');
+        \mkw\store::fillTemplate($view);
+        $view->printTemplateResult(true);
+    }
+
+    public function showPubRegistrationThx() {
+        $view = $this->getTemplateFactory()->createMainView('pubregistrationthx.tpl');
+        \mkw\store::fillTemplate($view);
+        $view->printTemplateResult(true);
+    }
+
     public function login($puser, $pass = null) {
         $ok = false;
         if ($puser instanceof \Entities\Partner) {
@@ -1155,6 +1178,22 @@ class partnerController extends \mkwhelpers\MattableController {
         }
         else {
             header('Location: ' . \mkw\store::getRouter()->generate('showlogin'));
+        }
+    }
+
+    public function savePubRegistration() {
+        $user = new \Entities\Partner();
+        $subject = 'pubreg';
+
+        $hiba = $this->checkPartnerData($subject);
+        if (!$hiba['hibas']) {
+            $user = $this->setFields($user, 'edit', $subject);
+            $this->getEm()->persist($user);
+            $this->getEm()->flush();
+            Header('Location: ' . \mkw\store::getRouter()->generate('pubregistrationthx'));
+        }
+        else {
+            echo $hiba['hibak'];
         }
     }
 

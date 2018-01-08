@@ -23,6 +23,8 @@ class consts {
     const Locale = 'locale';
     const NullasAfa = 'nullasafa';
     const KiskerCimke = 'kiskercimke';
+    const FelvetelAlattCimke = 'felvetelalattcimke';
+    const FelvetelAlattTipus = 'felvetelalatttipus';
     const SpanyolCimke = 'spanyolcimke';
     const Spanyolorszag = 'spanyolorszag';
     const TeljesitmenyKezdoEv = 'teljesitmenykezdoev';
