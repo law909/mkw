@@ -611,3 +611,4 @@ $router->map('POST', '/admin/minicrmmail', 'adminController#replier', 'adminmini
 $router->map('GET', '/admin/t/minicrm', 'adminController#minicrm', 'adminminicrm');
 $router->map('GET', '/admin/t/kerriiimport', 'importController#kerriiimport', 'adminkerriiimport');
 $router->map('GET', '/admin/t/genean13', 'adminController#genean13', 'admingenean13');
+$router->map('GET', '/admin/t/emailtemplateconvert', 'emailtemplateController#convertToCKEditor', 'adminemailtemplateconverttockeditor');

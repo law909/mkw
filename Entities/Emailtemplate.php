@@ -49,12 +49,16 @@ class Emailtemplate {
     }
 
     public function getHTMLSzoveg() {
+        $szoveg = $this->getSzoveg();
+        if (\mkw\store::isEmailTemplateCKEditor()) {
+            $szoveg = str_replace(']', '}', str_replace('[', '{', $szoveg));
+        }
         return
             '<html>'.
             '<head>'.
             '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">'.
             '</head>'.
-            '<body>' . $this->getSzoveg() . '</body>'.
+            '<body>' . $szoveg . '</body>'.
             '</html>';
     }
 
@@ -69,6 +73,11 @@ class Emailtemplate {
 
     public function setTargy($t) {
         $this->targy = $t;
+    }
+
+    public function convertForCKEditor() {
+        $this->szoveg = str_replace('$$', '{$', $this->szoveg);
+        $this->setSzoveg(str_replace('}', ']', str_replace('{', '[', $this->getSzoveg())));
     }
 
 }

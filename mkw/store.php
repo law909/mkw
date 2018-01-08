@@ -858,6 +858,10 @@ class store {
         return self::getSetupValue('masterpass');
     }
 
+    public static function isEmailTemplateCKEditor() {
+        return self::getSetupValue('emailtemplateckeditor');
+    }
+
     public static function mustLogin() {
         return self::getSetupValue('mustlogin');
     }

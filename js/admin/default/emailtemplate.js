@@ -5,17 +5,20 @@ $(document).ready(function() {
         newWindowUrl: '/admin/emailtemplate/viewkarb',
         saveUrl: '/admin/emailtemplate/save',
         beforeShow: function() {
+            var edit = $('#LeirasEdit');
             if (!$.browser.mobile) {
-//				CKFinder.setupCKEditor( null, '/ckfinder/' );
-//				$('#LeirasEdit').ckeditor();
+                CKFinder.setupCKEditor(null, '/ckfinder/');
+                edit.ckeditor();
             }
         },
         beforeHide: function() {
+            var edit = $('#LeirasEdit'),
+                editor;
             if (!$.browser.mobile) {
-//				editor = $('#LeirasEdit').ckeditorGet();
-//				if (editor) {
-//					editor.destroy();
-//				}
+                editor = edit.ckeditorGet();
+                if (editor) {
+                    editor.destroy();
+                }
             }
         },
         onSubmit: function() {

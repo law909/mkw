@@ -89,4 +89,15 @@ class emailtemplateController extends \mkwhelpers\MattableController {
         return $res;
     }
 
+    public function convertToCKEditor() {
+        $rec = $this->getRepo()->getAll();
+        /** @var \Entities\Emailtemplate $sor */
+        foreach ($rec as $sor) {
+            $sor->convertForCKEditor();
+            $this->getEm()->persist($sor);
+            $this->getEm()->flush();
+        }
+        echo 'OK';
+    }
+
 }
