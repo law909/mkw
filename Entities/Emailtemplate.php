@@ -76,7 +76,6 @@ class Emailtemplate {
     }
 
     public function convertForCKEditor() {
-        $this->szoveg = str_replace('$$', '{$', $this->szoveg);
         $this->setSzoveg(str_replace('}', ']', str_replace('{', '[', $this->getSzoveg())));
     }
 
