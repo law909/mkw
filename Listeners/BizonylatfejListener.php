@@ -11,6 +11,7 @@ class BizonylatfejListener {
     private $uow;
     private $bizonylatfejmd;
     private $bizonylatfejtranslationmd;
+    private $penztarbizonylatfejmd;
     private $bizonylattetelmd;
     private $bizonylatteteltranslationmd;
     private $folyoszamlamd;
@@ -254,6 +255,20 @@ class BizonylatfejListener {
         }
     }
 
+    private function rontPenztarBizonylat($bizfej) {
+        /** @var \Entities\PenztarbizonylatfejRepository $prep */
+        $pfrep = $this->em->getRepository('Entities\Penztarbizonylatfej');
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('pt.hivatkozottbizonylat', '=', $bizfej->getId());
+        $pbizek = $pfrep->getAllByHivatkozottBizonylat($filter);
+        /** @var \Entities\Penztarbizonylatfej $pbiz */
+        foreach ($pbizek as $pbiz) {
+            $pbiz->setRontott(true);
+            $this->em->persist($pbiz);
+            $this->uow->computeChangeSet($this->penztarbizonylatfejmd, $pbiz);
+        }
+    }
+
     /**
      * @param \Entities\Bizonylatfej $bizfej
      * @param \Entities\Kupon $kupon
@@ -387,6 +402,7 @@ class BizonylatfejListener {
         $this->bizonylatfejtranslationmd = $this->em->getClassMetadata('Entities\BizonylatfejTranslation');
         $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bizonylattetel');
         $this->bizonylatteteltranslationmd = $this->em->getClassMetadata('Entities\BizonylattetelTranslation');
+        $this->penztarbizonylatfejmd = $this->em->getClassMetadata('Entities\Penztarbizonylatfej');
         $this->folyoszamlamd = $this->em->getClassMetadata('Entities\Folyoszamla');
 
         $entity = $args->getEntity();
@@ -404,6 +420,7 @@ class BizonylatfejListener {
         $this->bizonylatfejtranslationmd = $this->em->getClassMetadata('Entities\BizonylatfejTranslation');
         $this->bizonylattetelmd = $this->em->getClassMetadata('Entities\Bizonylattetel');
         $this->bizonylatteteltranslationmd = $this->em->getClassMetadata('Entities\BizonylattetelTranslation');
+        $this->penztarbizonylatfejmd = $this->em->getClassMetadata('Entities\Penztarbizonylatfej');
         $this->folyoszamlamd = $this->em->getClassMetadata('Entities\Folyoszamla');
         $this->kuponmd = $this->em->getClassMetadata('Entities\Kupon');
 
@@ -466,6 +483,13 @@ class BizonylatfejListener {
                 $this->addSzallmodTranslations($entity);
 
                 $this->createFolyoszamla($entity);
+
+                if ($entity->getStorno() || $entity->getRontott()) {
+                    $this->rontPenztarBizonylat($entity);
+                }
+                else {
+
+                }
                 $this->uow->recomputeSingleEntityChangeSet($this->bizonylatfejmd, $entity);
             }
         }
