@@ -109,6 +109,7 @@
 										<input id="SzamlazasiCimEdit" name="irszam" type="text" class="input-mini" placeholder="{t('ir.szám')}" value="{$user.irszam}">
 										<input name="varos" type="text" class="input-medium" placeholder="{t('város')}" value="{$user.varos}">
 										<input name="utca" type="text" class="input-large" placeholder="{t('utca')}" value="{$user.utca}">
+                                        <input name="hazszam" type="text" class="input-mini" placeholder="{t('házszám')}" value="{$user.hazszam}">
 									</div>
 								</div>
 								<div class="form-actions">

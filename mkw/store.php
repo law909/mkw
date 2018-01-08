@@ -413,6 +413,7 @@ class store {
         $user = array();
         $user['loggedin'] = $pr->checkloggedin();
         if ($user['loggedin']) {
+            /** @var \Entities\Partner $u */
             $u = $pr->getLoggedInUser();
             $user['nev'] = $u->getNev();
             $user['email'] = $u->getEmail();
@@ -422,11 +423,13 @@ class store {
             $user['irszam'] = $u->getIrszam();
             $user['varos'] = $u->getVaros();
             $user['utca'] = $u->getUtca();
+            $user['hazszam'] = $u->getHazszam();
             $user['adoszam'] = $u->getAdoszam();
             $user['szallnev'] = $u->getSzallnev();
             $user['szallirszam'] = $u->getSzallirszam();
             $user['szallvaros'] = $u->getSzallvaros();
             $user['szallutca'] = $u->getSzallutca();
+            $user['szallhazszam'] = $u->getSzallhazszam();
             $user['szalladategyezik'] = !$u->getNev() &&
                     !$u->getIrszam() &&
                     !$u->getVaros() &&

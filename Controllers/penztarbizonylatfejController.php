@@ -44,6 +44,7 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
         $x['partnerirszam'] = $t->getPartnerirszam();
         $x['partnervaros'] = $t->getPartnervaros();
         $x['partnerutca'] = $t->getPartnerutca();
+        $x['partnerhazszam'] = $t->getPartnerhazszam();
         $x['updatedby'] = $t->getUpdatedbyNev();
         $x['createdby'] = $t->getCreatedbyNev();
         $x['lastmodstr'] = $t->getLastmodStr();
@@ -103,6 +104,7 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
             $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
             $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
             $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
+            $partnerobj->setHazszam($this->params->getStringRequestParam('partnerhazszam'));
             $this->getEm()->persist($partnerobj);
             $obj->setPartner($partnerobj);
         }
@@ -121,6 +123,7 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController {
                     $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
                     $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
                     $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
+                    $partnerobj->setHazszam($this->params->getStringRequestParam('partnerhazszam'));
                     $this->getEm()->persist($partnerobj);
                 }
 

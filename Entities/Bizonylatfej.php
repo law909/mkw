@@ -324,6 +324,9 @@ class Bizonylatfej {
     /** @ORM\Column(type="string",length=60,nullable=true) */
     private $partnerutca;
 
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $partnerhazszam = '';
+
     /** @ORM\Column(type="string",length=10,nullable=true) */
     private $partnerlirszam;
 
@@ -332,6 +335,9 @@ class Bizonylatfej {
 
     /** @ORM\Column(type="string",length=60,nullable=true) */
     private $partnerlutca;
+
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $partnerlhazszam = '';
 
     /** @ORM\Column(type="string",length=100,nullable=true) */
     private $partneremail = '';
@@ -440,6 +446,9 @@ class Bizonylatfej {
 
     /** @ORM\Column(type="string",length=60,nullable=true) */
     private $szallutca = '';
+
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $szallhazszam = '';
 
     /** @ORM\Column(type="string",length=32,nullable=true) */
     private $ip;
@@ -807,11 +816,13 @@ class Bizonylatfej {
         $ret['szamlairszam'] = $this->getPartnerirszam();
         $ret['szamlavaros'] = $this->getPartnervaros();
         $ret['szamlautca'] = $this->getPartnerutca();
+        $ret['szamlahazszam'] = $this->getPartnerhazszam();
         $ret['telefon'] = $this->getPartnertelefon();
         $ret['szallnev'] = $this->getSzallnev();
         $ret['szallirszam'] = $this->getSzallirszam();
         $ret['szallvaros'] = $this->getSzallvaros();
         $ret['szallutca'] = $this->getSzallutca();
+        $ret['szallhazszam'] = $this->getSzallhazszam();
         $ret['adoszam'] = $this->getPartneradoszam();
         $ret['euadoszam'] = $this->getPartnereuadoszam();
         $ret['partneradoszam'] = $this->getPartneradoszam();
@@ -1648,11 +1659,13 @@ class Bizonylatfej {
                     $this->setPartnerutca($val->getUtca());
                     $this->setPartnervalligszam($val->getValligszam());
                     $this->setPartnervaros($val->getVaros());
+                    $this->setPartnerhazszam($val->getHazszam());
 
                     $this->setSzallnev($val->getSzallnev());
                     $this->setSzallirszam($val->getSzallirszam());
                     $this->setSzallvaros($val->getSzallvaros());
                     $this->setSzallutca($val->getSzallutca());
+                    $this->setSzallhazszam($val->getSzallhazszam());
 
                     $this->setPartnerszamlatipus($val->getSzamlatipus());
                     $this->setBizonylatnyelv($val->getBizonylatnyelv());
@@ -1709,6 +1722,7 @@ class Bizonylatfej {
                 $this->partnerutca = '';
                 $this->partnervalligszam = '';
                 $this->partnervaros = '';
+                $this->partnerhazszam = '';
                 $this->partnerszamlatipus = 0;
                 $this->partnerfeketelistas = false;
                 $this->partnerfeketelistaok = '';
@@ -1716,6 +1730,7 @@ class Bizonylatfej {
                 $this->szallirszam = '';
                 $this->szallvaros = '';
                 $this->szallutca = '';
+                $this->szallhazszam = '';
                 $this->bizonylatnyelv = '';
                 $this->partnerktdatalany = false;
                 $this->partnerktdatvallal = false;
@@ -3371,6 +3386,48 @@ class Bizonylatfej {
      */
     public function setEmagid($emagid) {
         $this->emagid = $emagid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPartnerhazszam() {
+        return $this->partnerhazszam;
+    }
+
+    /**
+     * @param mixed $partnerhazszam
+     */
+    public function setPartnerhazszam($partnerhazszam) {
+        $this->partnerhazszam = $partnerhazszam;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPartnerlhazszam() {
+        return $this->partnerlhazszam;
+    }
+
+    /**
+     * @param mixed $partnerlhazszam
+     */
+    public function setPartnerlhazszam($partnerlhazszam) {
+        $this->partnerlhazszam = $partnerlhazszam;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzallhazszam() {
+        return $this->szallhazszam;
+    }
+
+    /**
+     * @param mixed $szallhazszam
+     */
+    public function setSzallhazszam($szallhazszam) {
+        $this->szallhazszam = $szallhazszam;
     }
 
 }

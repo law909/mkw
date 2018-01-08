@@ -595,11 +595,13 @@ var bizonylathelper = function($) {
         $('input[name="partnerirszam"]').val(d.irszam);
         $('input[name="partnervaros"]').val(d.varos);
         $('input[name="partnerutca"]').val(d.utca);
+        $('input[name="partnerhazszam"]').val(d.hazszam);
         $('input[name="partneradoszam"]').val(d.adoszam);
         $('input[name="szallnev"]').val(d.szallnev);
         $('input[name="szallirszam"]').val(d.szallirszam);
         $('input[name="szallvaros"]').val(d.szallvaros);
         $('input[name="szallutca"]').val(d.szallutca);
+        $('input[name="szallhazszam"]').val(d.szallhazszam);
         $('input[name="partnertelefon"]').val(d.telefon);
         $('input[name="partneremail"]').val(d.email);
         $('#PartnerEdit').data('afa', d.afa).data('afakulcs', d.afakulcs);

@@ -68,7 +68,7 @@
                         {$_egyed.partnernev}
                     </td></tr>
                 <tr><td colspan="2">
-                        {$_egyed.partnerirszam} {$_egyed.partnervaros}, {$_egyed.partnerutca}
+                        {$_egyed.partnerirszam} {$_egyed.partnervaros}, {$_egyed.partnerutca} {$_egyed.partnerhazszam}
                     </td></tr>
                 <tr><td colspan="2">
                         <a href="mailto:{$_egyed.partneremail}">{$_egyed.partneremail}</a>

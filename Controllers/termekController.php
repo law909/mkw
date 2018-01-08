@@ -740,21 +740,23 @@ class termekController extends \mkwhelpers\MattableController {
 
 	public function getValtozatList($termekid, $sel, $raktarid = null) {
 		$ret = array();
-		$termek = $this->getRepo()->findWithJoins($termekid);
-		if ($termek) {
-			$valtozatok = $termek->getValtozatok();
-            if ($valtozatok) {
-                foreach ($valtozatok as $valt) {
-                    $ret[] = array(
-                        'id' => $valt->getId(),
-                        'caption' => $valt->getNev(),
-                        'selected' => $sel == $valt->getId(),
-                        'elerheto' => $valt->getElerheto(),
-                        'keszlet' => $valt->getKeszlet(null, $raktarid) * 1
-                    );
+		if ($termekid) {
+            $termek = $this->getRepo()->findWithJoins($termekid);
+            if ($termek) {
+                $valtozatok = $termek->getValtozatok();
+                if ($valtozatok) {
+                    foreach ($valtozatok as $valt) {
+                        $ret[] = array(
+                            'id' => $valt->getId(),
+                            'caption' => $valt->getNev(),
+                            'selected' => $sel == $valt->getId(),
+                            'elerheto' => $valt->getElerheto(),
+                            'keszlet' => $valt->getKeszlet(null, $raktarid) * 1
+                        );
+                    }
                 }
             }
-		}
+        }
 		return $ret;
 	}
 

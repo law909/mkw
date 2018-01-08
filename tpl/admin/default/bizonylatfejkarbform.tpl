@@ -88,6 +88,7 @@
 					<input name="partnerirszam" value="{$egyed.partnerirszam}" size="6" maxlength="10">
 					<input name="partnervaros" value="{$egyed.partnervaros}" size="20" maxlength="40">
 					<input name="partnerutca" value="{$egyed.partnerutca}" size="40" maxlength="60">
+                    <input name="partnerhazszam" value="{$egyed.partnerhazszam}" size="40" maxlength="40">
 				</td>
 			</tr>
 			<tr>
@@ -113,6 +114,7 @@
 					<input id="SzallirszamEdit" name="szallirszam" value="{$egyed.szallirszam}" size="6" maxlength="10">
 					<input name="szallvaros" value="{$egyed.szallvaros}" size="20" maxlength="40">
 					<input name="szallutca" value="{$egyed.szallutca}" size="40" maxlength="60">
+                    <input name="szallhazszam" value="{$egyed.szallhazszam}" size="40" maxlength="40">
 				</td>
 			</tr>
             {/if}

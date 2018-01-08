@@ -265,4 +265,15 @@ class Emailtemplate extends \Entities\Emailtemplate implements \Doctrine\ORM\Pro
         return parent::setTargy($t);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function convertForCKEditor()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'convertForCKEditor', []);
+
+        return parent::convertForCKEditor();
+    }
+
 }

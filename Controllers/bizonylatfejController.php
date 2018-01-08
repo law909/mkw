@@ -309,6 +309,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['partnerirszam'] = $t->getPartnerirszam();
         $x['partnervaros'] = $t->getPartnervaros();
         $x['partnerutca'] = $t->getPartnerutca();
+        $x['partnerhazszam'] = $t->getPartnerhazszam();
         $x['partnertelefon'] = $t->getPartnertelefon();
         $x['partneremail'] = $t->getPartneremail();
         $x['partneradoszam'] = $t->getPartneradoszam();
@@ -346,6 +347,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['szallirszam'] = $t->getSzallirszam();
         $x['szallvaros'] = $t->getSzallvaros();
         $x['szallutca'] = $t->getSzallutca();
+        $x['szallhazszam'] = $t->getSzallhazszam();
         $x['webshopmessage'] = $t->getWebshopmessage();
         $x['couriermessage'] = $t->getCouriermessage();
         $x['ip'] = $t->getIp();
@@ -454,6 +456,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
             $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
             $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
+            $partnerobj->setHazszam($this->params->getStringRequestParam('partnerhazszam'));
             $ck = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
             if ($ck) {
                 $partnerobj->setFizmod($ck);
@@ -462,6 +465,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $partnerobj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
             $partnerobj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
             $partnerobj->setSzallutca($this->params->getStringRequestParam('szallutca'));
+            $partnerobj->setSzallhazszam($this->params->getStringRequestParam('szallhazszam'));
             $ck = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod'));
             if ($ck) {
                 $partnerobj->setSzallitasimod($ck);
@@ -562,6 +566,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $obj->setPartnerirszam($this->params->getStringRequestParam('partnerirszam'));
         $obj->setPartnervaros($this->params->getStringRequestParam('partnervaros'));
         $obj->setPartnerutca($this->params->getStringRequestParam('partnerutca'));
+        $obj->setPartnerhazszam($this->params->getStringRequestParam('partnerhazszam'));
         $obj->setPartnertelefon($this->params->getStringRequestParam('partnertelefon'));
         $obj->setPartneremail($this->params->getStringRequestParam('partneremail'));
 
@@ -569,6 +574,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $obj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
         $obj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
         $obj->setSzallutca($this->params->getStringRequestParam('szallutca'));
+        $obj->setSzallhazszam($this->params->getStringRequestParam('szallhazszam'));
 
         $obj->setSzepkartyaszam($this->params->getStringRequestParam('szepkartyaszam'));
         $obj->setSzepkartyanev($this->params->getStringRequestParam('szepkartyanev'));
@@ -1418,6 +1424,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
                 $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
                 $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
+                $partnerobj->setHazszam($this->params->getStringRequestParam('partnerhazszam'));
                 if ($biztipus === 'koltsegszamla' || $biztipus === 'bevet') {
                     $partnerobj->setSzallito(true);
                 }
@@ -1446,6 +1453,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
             $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
             $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
+            $partnerobj->setHazszam($this->params->getStringRequestParam('partnerhazszam'));
 
             if (!$partnerobj->getEmail()) {
                 $partnerobj->setEmail(uniqid(\Behat\Transliterator\Transliterator::transliterate($partnerobj->getNev(), '_'), true) . '@mail.local');

@@ -79,6 +79,7 @@
 										<input id="SzamlazasiCimEdit" name="irszam" type="text" class="input-mini" placeholder="{t('ir.szám')}" value="{$user.irszam}">
 										<input name="varos" type="text" class="input-medium" placeholder="{t('város')}" value="{$user.varos}">
 										<input name="utca" type="text" class="input-large" placeholder="{t('utca')}" value="{$user.utca}">
+                                        <input name="hazszam" type="text" class="input-mini" placeholder="{t('házszám')}" value="{$user.hazszam}">
 									</div>
 								</div>
 								<div class="form-actions">
@@ -105,6 +106,7 @@
 										<input id="SzallitasiCimEdit" name="szallirszam" type="text" class="input-mini" placeholder="{t('ir.szám')}" value="{$user.szallirszam}">
 										<input name="szallvaros" type="text" class="input-medium" placeholder="{t('város')}" value="{$user.szallvaros}">
 										<input name="szallutca" type="text" class="input-large" placeholder="{t('utca')}" value="{$user.szallutca}">
+                                        <input name="szallhazszam" type="text" class="input-mini" placeholder="{t('házszám')}" value="{$user.szallhazszam}">
 									</div>
 								</div>
 								<div class="form-actions">
@@ -139,7 +141,7 @@
 										<table>
 											<tr>
 												<td><span class="acc-megrendelescaption">{t('Számlázási cím')}:</span></td>
-												<td>{$megr.szamlanev|default} {$megr.szamlairszam|default} {$megr.szamlavaros|default} {$megr.szamlautca}</td>
+												<td>{$megr.szamlanev|default} {$megr.szamlairszam|default} {$megr.szamlavaros|default} {$megr.szamlautca} {$megr.szamlahazszam}</td>
 											</tr>
 											<tr>
 												<td><span class="acc-megrendelescaption">{t('Adószám')}:</span></td>
@@ -147,7 +149,7 @@
 											</tr>
 											<tr>
 												<td><span class="acc-megrendelescaption">{t('Szállítási cím')}:</span></td>
-												<td>{$megr.szallnev|default} {$megr.szallirszam|default} {$megr.szallvaros|default} {$megr.szallutca}</td>
+												<td>{$megr.szallnev|default} {$megr.szallirszam|default} {$megr.szallvaros|default} {$megr.szallutca} {$megr.szallhazszam}</td>
 											</tr>
 											<tr>
 												<td><span class="acc-megrendelescaption">{t('Szállítási mód')}:</span></td>

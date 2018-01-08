@@ -117,6 +117,9 @@ class Bankbizonylattetel {
     /** @ORM\Column(type="string",length=60,nullable=true) */
     private $partnerutca;
 
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $partnerhazszam;
+
     /** @ORM\Column(type="string",length=30,nullable=true) */
     private $erbizonylatszam;
 
@@ -296,6 +299,7 @@ class Bankbizonylattetel {
                 $this->setPartnerirszam($val->getIrszam());
                 $this->setPartnerutca($val->getUtca());
                 $this->setPartnervaros($val->getVaros());
+                $this->setPartnerhazszam($val->getHazszam());
 
                 $v = $val->getValutanem();
                 if ($v) {
@@ -320,6 +324,7 @@ class Bankbizonylattetel {
             $this->partnerirszam = '';
             $this->partnerutca = '';
             $this->partnervaros = '';
+            $this->partnerhazszam = '';
         }
     }
 
@@ -567,6 +572,20 @@ class Bankbizonylattetel {
      */
     public function setErbizonylatszam($erbizonylatszam) {
         $this->erbizonylatszam = $erbizonylatszam;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPartnerhazszam() {
+        return $this->partnerhazszam;
+    }
+
+    /**
+     * @param mixed $partnerhazszam
+     */
+    public function setPartnerhazszam($partnerhazszam) {
+        $this->partnerhazszam = $partnerhazszam;
     }
 
 }

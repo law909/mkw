@@ -790,6 +790,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 $rsm->addScalarResult('partnerirszam', 'partnerirszam');
                 $rsm->addScalarResult('partnervaros', 'partnervaros');
                 $rsm->addScalarResult('partnerutca', 'partnerutca');
+                $rsm->addScalarResult('partnerhazszam', 'partnerhazszam');
                 $rsm->addScalarResult('termek_id', 'termek_id');
                 $rsm->addScalarResult('termekvaltozat_id', 'termekvaltozat_id');
                 $rsm->addScalarResult('mennyiseg', 'mennyiseg');
@@ -799,7 +800,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 $rsm->addScalarResult('ertek1', 'ertek1');
                 $rsm->addScalarResult('ertek2', 'ertek2');
 
-                $q = $this->_em->createNativeQuery('SELECT bf.partner_id,bf.partnernev,bf.partnerirszam,bf.partnervaros,bf.partnerutca,'
+                $q = $this->_em->createNativeQuery('SELECT bf.partner_id,bf.partnernev,bf.partnerirszam,bf.partnervaros,bf.partnerutca,bf.partnerhazszam,'
                     . ' bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
                     . $ertekmezo1
                     . ' t.cikkszam,' . $termeknevmezo . ' AS nev,tv.ertek1,tv.ertek2 '
@@ -823,10 +824,11 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 $rsm->addScalarResult('partnerirszam', 'partnerirszam');
                 $rsm->addScalarResult('partnervaros', 'partnervaros');
                 $rsm->addScalarResult('partnerutca', 'partnerutca');
+                $rsm->addScalarResult('partnerhazszam', 'partnerhazszam');
                 $rsm->addScalarResult('ertek', 'ertek');
 
                 $q = $this->_em->createNativeQuery('SELECT bf.uzletkoto_id,bf.uzletkotonev,bf.partner_id,bf.partnernev,bf.partnerirszam,'
-                    . 'bf.partnervaros,bf.partnerutca,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
+                    . 'bf.partnervaros,bf.partnerutca,bf.partnerhazszam,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
                     . $ertekmezo1
                     . ' FROM bizonylattetel bt '
                     . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'

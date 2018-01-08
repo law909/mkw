@@ -54,7 +54,7 @@
                                             </tr>
                                             <tr>
                                                 <td><span class="acc-megrendelescaption">Billing address:</span></td>
-                                                <td>{$megr.szamlanev|default} {$megr.szamlairszam|default} {$megr.szamlavaros|default} {$megr.szamlautca}</td>
+                                                <td>{$megr.szamlanev|default} {$megr.szamlairszam|default} {$megr.szamlavaros|default} {$megr.szamlautca} {$megr.szamlahazszam}</td>
                                             </tr>
                                             <tr>
                                                 <td><span class="acc-megrendelescaption">VAT ID:</span></td>
@@ -62,7 +62,7 @@
                                             </tr>
                                             <tr>
                                                 <td><span class="acc-megrendelescaption">Delivery address:</span></td>
-                                                <td>{$megr.szallnev|default} {$megr.szallirszam|default} {$megr.szallvaros|default} {$megr.szallutca}</td>
+                                                <td>{$megr.szallnev|default} {$megr.szallirszam|default} {$megr.szallvaros|default} {$megr.szallutca} {$megr.szallhazszam}</td>
                                             </tr>
                                             <tr>
                                                 <td><span class="acc-megrendelescaption">Shipping method:</span></td>
@@ -179,6 +179,12 @@
                             <input id="SzamlazasiUtcaEdit" name="utca" type="text" class="form-control" value="{$user.utca}">
                         </div>
                     </div>
+                    <div>
+                        <label class="control-label" for="SzamlazasiHazszamEdit">{t('Street number')}:</label>
+                        <div class="controls">
+                            <input id="SzamlazasiUtcaEdit" name="hazszam" type="text" class="form-control" value="{$user.hazszam}">
+                        </div>
+                    </div>
                     <button type="submit" class="btn okbtn">Save</button>
                 </form>
             </div>
@@ -209,6 +215,12 @@
                         <label class="control-label" for="SzallitasiUtcaEdit">{t('Street')}:</label>
                         <div class="controls">
                             <input id="SzallitasiUtcaEdit" name="szallutca" type="text" class="form-control" value="{$user.szallutca}">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="control-label" for="SzallitasiHazszamEdit">{t('Street number')}:</label>
+                        <div class="controls">
+                            <input id="SzallitasiHazszamEdit" name="szallhazszam" type="text" class="form-control" value="{$user.szallhazszam}">
                         </div>
                     </div>
                     <button type="submit" class="btn okbtn">Save</button>
@@ -258,7 +270,7 @@
                                     <table>
                                         <tr>
                                             <td><span class="acc-megrendelescaption">Billing address:</span></td>
-                                            <td>{$megr.szamlanev|default} {$megr.szamlairszam|default} {$megr.szamlavaros|default} {$megr.szamlautca}</td>
+                                            <td>{$megr.szamlanev|default} {$megr.szamlairszam|default} {$megr.szamlavaros|default} {$megr.szamlautca} {$megr.szamlahazszam}</td>
                                         </tr>
                                         <tr>
                                             <td><span class="acc-megrendelescaption">VAT ID:</span></td>
@@ -266,7 +278,7 @@
                                         </tr>
                                         <tr>
                                             <td><span class="acc-megrendelescaption">Delivery address:</span></td>
-                                            <td>{$megr.szallnev|default} {$megr.szallirszam|default} {$megr.szallvaros|default} {$megr.szallutca}</td>
+                                            <td>{$megr.szallnev|default} {$megr.szallirszam|default} {$megr.szallvaros|default} {$megr.szallutca} {$megr.szallhazszam}</td>
                                         </tr>
                                         <tr>
                                             <td><span class="acc-megrendelescaption">Shipping method:</span></td>
@@ -345,7 +357,7 @@
                                     <table>
                                         <tr>
                                             <td><span class="acc-megrendelescaption">Billing address:</span></td>
-                                            <td>{$szamla.szamlanev|default} {$szamla.szamlairszam|default} {$szamla.szamlavaros|default} {$szamla.szamlautca}</td>
+                                            <td>{$szamla.szamlanev|default} {$szamla.szamlairszam|default} {$szamla.szamlavaros|default} {$szamla.szamlautca} {$szamla.szamlahazszam}</td>
                                         </tr>
                                         <tr>
                                             <td><span class="acc-megrendelescaption">VAT ID:</span></td>
@@ -353,7 +365,7 @@
                                         </tr>
                                         <tr>
                                             <td><span class="acc-megrendelescaption">Delivery address:</span></td>
-                                            <td>{$szamla.szallnev|default} {$szamla.szallirszam|default} {$szamla.szallvaros|default} {$szamla.szallutca}</td>
+                                            <td>{$szamla.szallnev|default} {$szamla.szallirszam|default} {$szamla.szallvaros|default} {$szamla.szallutca} {$szamla.szallhazszam}</td>
                                         </tr>
                                         <tr>
                                             <td><span class="acc-megrendelescaption">Shipping method:</span></td>
