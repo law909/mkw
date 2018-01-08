@@ -10,7 +10,7 @@ class ckmysql {
 			self::$config= parse_ini_file('../../../../config.ini');
 		}
         self::$pdo = new PDO(
-            'mysql:dbname=' . self::$config['db.dbname'] . ';host=' . self::$config['db.host'],
+            'mysql:dbname=' . self::$config['db.dbname'] . ';host=' . self::$config['db.host'] . ';port=' . self::$config['db.port'],
             self::$config['db.username'],
             self::$config['db.password']
         );
