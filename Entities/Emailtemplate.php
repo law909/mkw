@@ -49,10 +49,7 @@ class Emailtemplate {
     }
 
     public function getHTMLSzoveg() {
-        $szoveg = $this->getSzoveg();
-        if (\mkw\store::isEmailTemplateCKEditor()) {
-            $szoveg = str_replace(']', '}', str_replace('[', '{', $szoveg));
-        }
+        $szoveg = str_replace(']', '}', str_replace('[', '{', $this->getSzoveg()));
         return
             '<html>'.
             '<head>'.
