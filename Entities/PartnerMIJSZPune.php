@@ -30,6 +30,16 @@ class PartnerMIJSZPune {
     /** @ORM\Column(type="integer",nullable=true) */
     private $honap = 0;
 
+    /** @ORM\Column(type="date",nullable=true) */
+    private $tol;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $ig;
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $napszam = 0;
+
+
     public function toLista() {
         $r = array();
         $r['id'] = $this->getId();
@@ -101,4 +111,77 @@ class PartnerMIJSZPune {
         $this->honap = $honap;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getNapszam() {
+        return $this->napszam;
+    }
+
+    /**
+     * @param mixed $napszam
+     */
+    public function setNapszam($napszam) {
+        $this->napszam = $napszam;
+    }
+
+    public function getTol() {
+        return $this->tol;
+    }
+
+    public function getTolStr() {
+        if ($this->getTol()) {
+            return $this->getTol()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function getTolEngStr() {
+        if ($this->getTol()) {
+            return $this->getTol()->format(\mkw\store::$EngDateFormat);
+        }
+        return '';
+    }
+
+    public function setTol($adat = '') {
+        if (is_a($adat, 'DateTime')) {
+            $this->tol = $adat;
+        }
+        else {
+            if ($adat == '') {
+                $adat = date(\mkw\store::$DateFormat);
+            }
+            $this->tol = new \DateTime(\mkw\store::convDate($adat));
+        }
+    }
+
+    public function getIg() {
+        return $this->ig;
+    }
+
+    public function getIgStr() {
+        if ($this->getIg()) {
+            return $this->getIg()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function getIgEngStr() {
+        if ($this->getIg()) {
+            return $this->getIg()->format(\mkw\store::$EngDateFormat);
+        }
+        return '';
+    }
+
+    public function setIg($adat = '') {
+        if (is_a($adat, 'DateTime')) {
+            $this->ig = $adat;
+        }
+        else {
+            if ($adat == '') {
+                $adat = date(\mkw\store::$DateFormat);
+            }
+            $this->ig = new \DateTime(\mkw\store::convDate($adat));
+        }
+    }
 }

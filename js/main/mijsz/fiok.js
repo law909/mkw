@@ -63,7 +63,16 @@ var fiok = (function($) {
 
 		}
 
-		var $fiokszamlaadatok = $('#FiokSzamlaAdatok');
+        $('.js-idoszakedit').datetimepicker({
+            format: 'YYYY.MM.DD'
+        });
+
+		$('.js-idoszakedit').each(function (index, elem) {
+		    var e = $(elem);
+		    e.data('DateTimePicker').date(e.data('date'));
+        });
+
+        var $fiokszamlaadatok = $('#FiokSzamlaAdatok');
 		if ($fiokszamlaadatok.length > 0) {
 			mkw.irszamTypeahead('input[name="irszam"]', 'input[name="varos"]');
 			mkw.varosTypeahead('input[name="irszam"]', 'input[name="varos"]');
@@ -128,6 +137,9 @@ var fiok = (function($) {
                     success: function(data) {
                         var tbody = $('#FiokPune fieldset div.form-actions');
                         tbody.before(data);
+                        $('.js-idoszakedit').datetimepicker({
+                            format: 'YYYY.MM.DD'
+                        });
                     }
                 });
             })

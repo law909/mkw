@@ -12,7 +12,7 @@
     <div class="control-group">
         <label class="control-label" for="MIJSZOralatogatasTanarEdit{$mijszoralatogatas.id}">{t('Tanár')}:</label>
         <div class="controls">
-            <select id="MIJSZOralatogatasTanarEdit{$mijsz.id}" name="mijszoralatogatastanar_{$mijszoralatogatas.id}">
+            <select id="MIJSZOralatogatasTanarEdit{$mijszoralatogatas.id}" name="mijszoralatogatastanar_{$mijszoralatogatas.id}">
                 <option value="">{t('válasszon')}</option>
                 {foreach $mijszoralatogatas.mijszoralatogatastanarlist as $_valuta}
                     <option value="{$_valuta.id}"{if ($_valuta.selected)} selected="selected"{/if}>{$_valuta.caption}</option>

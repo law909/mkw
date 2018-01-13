@@ -7,8 +7,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         {block "meta"}{/block}
 		<title>{$pagetitle|default}</title>
-		<!--link type="text/css" rel="stylesheet" href="/themes/main/mijsz/bootstrap.min.css">
-		<link type="text/css" rel="stylesheet" href="/themes/main/mijsz/bootstrap-responsive.min.css">
+		<link type="text/css" rel="stylesheet" href="/themes/main/mijsz/bootstrap.min.css">
+        <link href="/themes/main/mijsz/bootstrap-datetimepicker.min.css" rel="stylesheet">
+        <link href="/themes/main/mijsz/bootstrap-theme.css" rel="stylesheet">
+		<!--link type="text/css" rel="stylesheet" href="/themes/main/mijsz/bootstrap-responsive.min.css">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mijsz/jquery.slider.min.css">
 		<link type="text/css" rel="stylesheet" href="/themes/main/mijsz/magnific-popup.css"-->
         <link rel="stylesheet" href="/themes/main/mijsz/royalslider/royalslider.css">
@@ -30,6 +32,9 @@
         <script src="/js/main/mijsz/jquery.debounce.min.js"></script>
         <script src="/js/main/mijsz/jquery.magnify.js"></script>
         <script src="/js/main/mijsz/jquery.magnify-mobile.js"></script>
+        <script src="/js/main/mijsz/moment.min.js"></script>
+        <script src="/js/main/mijsz/bootstrap.min.js"></script>
+        <script src="/js/main/mijsz/bootstrap-datetimepicker.min.js"></script>
         <script src="/js/main/mijsz/bootstrap-transition.js"></script>
 		<script src="/js/main/mijsz/bootstrap-modal.js"></script>
 		<script src="/js/main/mijsz/bootstrap-tab.js"></script>

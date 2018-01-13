@@ -203,8 +203,8 @@ return array(
     'Új óralátogatás' => 'New attendance',
     'Óralátogatások' => 'Attendances',
     'egyéb' => 'other',
-    'Tanítások' => 'Teachings',
-    'Új tanítás' => 'New teaching',
+    'Oktatott órák' => 'Teachings',
+    'Új óra' => 'New class',
     'Milyen rendszeresen' => 'How often',
     'Melyik nap' => 'On which day',
     'Óra szintje' => 'Level of class',
@@ -214,5 +214,7 @@ return array(
     'csütörtök' => 'thursday',
     'péntek' => 'friday',
     'szombat' => 'saturday',
-    'vasárnap' => 'sunday'
+    'vasárnap' => 'sunday',
+    'Pontos dátum' => 'Date interval',
+    'Napok száma' => 'Number of days'
 );

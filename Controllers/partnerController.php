@@ -332,6 +332,9 @@ class partnerController extends \mkwhelpers\MattableController {
                     $kedv->setPartner($obj);
                     $kedv->setEv($this->params->getIntRequestParam('mijszpuneev_' . $okid));
                     $kedv->setHonap($this->params->getIntRequestParam('mijszpunehonap_' . $okid));
+                    $kedv->setTol($this->params->getStringRequestParam('mijszpunetol_' . $okid));
+                    $kedv->setIg($this->params->getStringRequestParam('mijszpuneig_' . $okid));
+                    $kedv->setNapszam($this->params->getIntRequestParam('mijszpunenapszam_' . $okid));
                     $this->getEm()->persist($kedv);
                 }
                 elseif ($oper === 'edit') {
@@ -340,6 +343,9 @@ class partnerController extends \mkwhelpers\MattableController {
                         $kedv->setPartner($obj);
                         $kedv->setEv($this->params->getIntRequestParam('mijszpuneev_' . $okid));
                         $kedv->setHonap($this->params->getIntRequestParam('mijszpunehonap_' . $okid));
+                        $kedv->setTol($this->params->getStringRequestParam('mijszpunetol_' . $okid));
+                        $kedv->setIg($this->params->getStringRequestParam('mijszpuneig_' . $okid));
+                        $kedv->setNapszam($this->params->getIntRequestParam('mijszpunenapszam_' . $okid));
                         $this->getEm()->persist($kedv);
                     }
                 }

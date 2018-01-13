@@ -64,10 +64,10 @@ class PartnerMIJSZPune extends \Entities\PartnerMIJSZPune implements \Doctrine\O
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'id', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'partner', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'ev', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'honap'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'id', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'partner', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'ev', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'honap', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'tol', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'ig', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'napszam'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'id', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'partner', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'ev', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'honap'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'id', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'partner', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'ev', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'honap', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'tol', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'ig', '' . "\0" . 'Entities\\PartnerMIJSZPune' . "\0" . 'napszam'];
     }
 
     /**
@@ -285,6 +285,94 @@ class PartnerMIJSZPune extends \Entities\PartnerMIJSZPune implements \Doctrine\O
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHonap', [$honap]);
 
         return parent::setHonap($honap);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNapszam()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNapszam', []);
+
+        return parent::getNapszam();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setNapszam($napszam)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNapszam', [$napszam]);
+
+        return parent::setNapszam($napszam);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTol()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTol', []);
+
+        return parent::getTol();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTolStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTolStr', []);
+
+        return parent::getTolStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTol($adat = '')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTol', [$adat]);
+
+        return parent::setTol($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIg()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIg', []);
+
+        return parent::getIg();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIgStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIgStr', []);
+
+        return parent::getIgStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setIg($adat = '')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIg', [$adat]);
+
+        return parent::setIg($adat);
     }
 
 }

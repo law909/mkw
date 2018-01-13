@@ -29,6 +29,11 @@ class partnermijszpuneController extends \mkwhelpers\MattableController {
         }
         $x['ev'] = $t->getEv();
         $x['honap'] = $t->getHonap();
+        $x['napszam'] = $t->getNapszam();
+        $x['tol'] = $t->getTol();
+        $x['tolstr'] = $t->getTolStr();
+        $x['ig'] = $t->getIg();
+        $x['igstr'] = $t->getIgStr();
         return $x;
     }
 

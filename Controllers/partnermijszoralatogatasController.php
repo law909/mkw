@@ -31,7 +31,12 @@ class partnermijszoralatogatasController extends \mkwhelpers\MattableController 
         $x['helyszin'] = $t->getHelyszin();
         $x['mikor'] = $t->getMikor();
         $x['oraszam'] = $t->getOraszam();
-        $x['ev'] = $t->getEv();
+        if ($x['oper'] === 'add') {
+            $x['ev'] = date('Y') * 1 - 1;
+        }
+        else {
+            $x['ev'] = $t->getEv();
+        }
         $x['tanaregyeb'] = $t->getTanaregyeb();
         if ($forKarb) {
             $filter = new \mkwhelpers\FilterDescriptor();

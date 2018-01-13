@@ -37,6 +37,7 @@ class store {
     private static $routename;
     private static $daynames = array('hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat', 'vasárnap');
     public static $DateFormat = 'Y.m.d';
+    public static $EngDateFormat = 'm/d/Y';
     public static $LastDayDateFormat = 'Y.m.t';
     public static $SQLDateFormat = 'Y-m-d';
     public static $JavascriptDateFormat = 'Y.n.d';

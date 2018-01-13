@@ -97,6 +97,8 @@ module.exports = function(grunt) {
                     'js/main/mijsz/jquery.debounce.min.js',
                     'js/main/mijsz/jquery.magnify.js',
                     'js/main/mijsz/jquery.magnify-mobile.js',
+                    'js/main/mijsz/bootstrap.min.js',
+                    'js/main/mijsz/bootstrap-datetimepicker.min.js',
                     'js/main/mijsz/bootstrap-transition.js',
                     'js/main/mijsz/bootstrap-modal.js',
                     'js/main/mijsz/bootstrap-tab.js',
@@ -120,6 +122,7 @@ module.exports = function(grunt) {
             mijszcss: {
                 src: [
                     'themes/main/mijsz/bootstrap.min.css',
+                    'themes/main/mijsz/bootstrap-datetimepicker.min.css',
                     'themes/main/mijsz/bootstrap-responsive.min.css',
                     'themes/main/mijsz/jquery.slider.min.css',
                     'themes/main/mijsz/magnific-popup.css'
