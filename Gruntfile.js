@@ -98,6 +98,7 @@ module.exports = function(grunt) {
                     'js/main/mijsz/jquery.magnify.js',
                     'js/main/mijsz/jquery.magnify-mobile.js',
                     'js/main/mijsz/bootstrap.min.js',
+                    'js/main/mijsz/moment.min.js',
                     'js/main/mijsz/bootstrap-datetimepicker.min.js',
                     'js/main/mijsz/bootstrap-transition.js',
                     'js/main/mijsz/bootstrap-modal.js',
