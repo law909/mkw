@@ -37,7 +37,7 @@
         </style>
 		{block "inhead"}
 		{/block}
-		<title>{$egyed.id|default} - {t('MKW Admin')}</title>
+		<title>{$egyed.id|default} - {$egyed.szamlanev} - {if ($egyed.nyomtatva)}másolat{else}eredeti{/if}</title>
 	</head>
 	<body>
         <div class="container">
