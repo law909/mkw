@@ -15,7 +15,7 @@
         <p class="bottommargin">Vevő / Customer</p>
         <p class="nev bold">{$egyed.szamlanev}</p>
         <p>{$egyed.szamlairszam} {$egyed.szamlavaros}</p>
-        <p>{$egyed.szamlautca}</p>
+        <p>{$egyed.szamlautca} {$egyed.szamlahazszam}</p>
         {if ($egyed.partneradoszam)}
             <p>Adószám / Tax number: {$egyed.partneradoszam}</p>
         {/if}
