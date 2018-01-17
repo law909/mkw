@@ -53,7 +53,7 @@
                                 {$pbsum = array()}
                                 <tr class="italic">
                                     <td colspan="8" class="cell">
-                                        {$partner.nev} {$partner.irszam} {$partner.varos} {$partner.utca}
+                                        {$partner.nev} {$partner.irszam} {$partner.varos} {$partner.utca}  {$partner.hazszam}
                                     </td>
                                 </tr>
                                 {while (($cikl < $cnt) && ($partnerid == $kintlevoseglista[$cikl].partner_id))}

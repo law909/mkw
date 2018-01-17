@@ -144,7 +144,7 @@ class adminController extends mkwhelpers\Controller {
                 $view->setVar('penztarformaction', \mkw\store::getRouter()->generate('adminpenztarbizonylatfejsave'));
                 $view->setVar('eladasformaction', \mkw\store::getRouter()->generate('adminbizonylatfejquickadd'));
 
-                $fmarr = \mkw\store::getIds($this->getRepo('Entities\Fizmod')->getAllNormal());
+                $fmarr = \mkw\store::getIds($this->getRepo('Entities\Fizmod')->getAllKeszpenzes());
                 $fmfilter = new mkwhelpers\FilterDescriptor();
                 $fmfilter->addSql('bf.fizmod_id IN (' . implode(',', $fmarr) . ')');
                 $kint = new kintlevoseglistaController($this->params);
