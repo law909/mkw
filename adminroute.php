@@ -571,6 +571,7 @@ $router->map('POST', '/admin/minicrm/partnerimport', 'minicrmController#partnerI
 
 if (haveJog(90)) {
     $router->map('GET', '/admin/bizvissza', 'bizonylatfejController#setNyomtatvaVissza', 'adminbizvissza');
+    $router->map('GET', '/admin/bizpartnerjavit', 'bizonylatfejController#repairPartnerAdat', 'adminbizpartnerjavit');
 }
 
 if (\mkw\store::isDarshan()) {

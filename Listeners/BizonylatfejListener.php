@@ -442,55 +442,58 @@ class BizonylatfejListener {
         foreach ($entities as $entity) {
             if ($entity instanceof \Entities\Bizonylatfej) {
 
-                /** @var \Entities\Bizonylattetel $tetel */
-                foreach ($entity->getBizonylattetelek() as $tetel) {
-                    if (!$tetel->getStorno() && !$tetel->getStornozott()) {
-                        $tetel->setMozgat();
-                        if (\mkw\store::isFoglalas()) {
-                            $tetel->setFoglal();
+                if (!$entity->isSimpleedit()) {
+
+                    /** @var \Entities\Bizonylattetel $tetel */
+                    foreach ($entity->getBizonylattetelek() as $tetel) {
+                        if (!$tetel->getStorno() && !$tetel->getStornozott()) {
+                            $tetel->setMozgat();
+                            if (\mkw\store::isFoglalas()) {
+                                $tetel->setFoglal();
+                            }
+                            $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $tetel);
                         }
-                        $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $tetel);
                     }
+
+                    /** @var \Entities\Kupon $kupon */
+                    $kupon = $entity->getKuponObject();
+
+                    $this->createVasarlasiUtalvany($entity, $kupon);
+                    $this->createSzallitasiKtg($entity);
+
+                    $entity->calcOsszesen();
+                    $entity->calcRugalmasFizmod();
+                    $entity->calcOsztottFizetendo();
+
+                    $feketelistarepo = $this->em->getRepository('Entities\Feketelista');
+                    $fok = $feketelistarepo->getFeketelistaOk($entity->getPartneremail(), $entity->getIp());
+                    if ($fok === false) {
+                        $entity->setPartnerfeketelistas(false);
+                        $entity->setPartnerfeketelistaok(null);
+                    }
+                    else {
+                        $entity->setPartnerfeketelistas(true);
+                        $entity->setPartnerfeketelistaok($fok);
+                    }
+
+                    if ($kupon) {
+                        $kupon->doFelhasznalt();
+                        $this->uow->recomputeSingleEntityChangeSet($this->kuponmd, $kupon);
+                    }
+
+                    $this->addFizmodTranslations($entity);
+                    $this->addSzallmodTranslations($entity);
+
+                    $this->createFolyoszamla($entity);
+
+                    if ($entity->getStorno() || $entity->getRontott()) {
+                        $this->rontPenztarBizonylat($entity);
+                    }
+                    else {
+
+                    }
+                    $this->uow->recomputeSingleEntityChangeSet($this->bizonylatfejmd, $entity);
                 }
-
-                /** @var \Entities\Kupon $kupon */
-                $kupon = $entity->getKuponObject();
-
-                $this->createVasarlasiUtalvany($entity, $kupon);
-                $this->createSzallitasiKtg($entity);
-
-                $entity->calcOsszesen();
-                $entity->calcRugalmasFizmod();
-                $entity->calcOsztottFizetendo();
-
-                $feketelistarepo = $this->em->getRepository('Entities\Feketelista');
-                $fok = $feketelistarepo->getFeketelistaOk($entity->getPartneremail(), $entity->getIp());
-                if ($fok === false) {
-                    $entity->setPartnerfeketelistas(false);
-                    $entity->setPartnerfeketelistaok(null);
-                }
-                else {
-                    $entity->setPartnerfeketelistas(true);
-                    $entity->setPartnerfeketelistaok($fok);
-                }
-
-                if ($kupon) {
-                    $kupon->doFelhasznalt();
-                    $this->uow->recomputeSingleEntityChangeSet($this->kuponmd, $kupon);
-                }
-
-                $this->addFizmodTranslations($entity);
-                $this->addSzallmodTranslations($entity);
-
-                $this->createFolyoszamla($entity);
-
-                if ($entity->getStorno() || $entity->getRontott()) {
-                    $this->rontPenztarBizonylat($entity);
-                }
-                else {
-
-                }
-                $this->uow->recomputeSingleEntityChangeSet($this->bizonylatfejmd, $entity);
             }
         }
     }

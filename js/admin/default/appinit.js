@@ -96,6 +96,12 @@ $(document).ready(
         $('.js-orarendprint').each(function() {
             $(this).attr('target', '_blank');
         });
+        $('.js-bizpartnerjavit').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url:'/admin/bizpartnerjavit'
+            });
+        });
 
         var $arfdatumedit = $('#ArfolyamDatumEdit');
         if ($arfdatumedit) {

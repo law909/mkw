@@ -334,6 +334,17 @@ class PartnerMIJSZPune extends \Entities\PartnerMIJSZPune implements \Doctrine\O
     /**
      * {@inheritDoc}
      */
+    public function getTolEngStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTolEngStr', []);
+
+        return parent::getTolEngStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setTol($adat = '')
     {
 
@@ -362,6 +373,17 @@ class PartnerMIJSZPune extends \Entities\PartnerMIJSZPune implements \Doctrine\O
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIgStr', []);
 
         return parent::getIgStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIgEngStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIgEngStr', []);
+
+        return parent::getIgEngStr();
     }
 
     /**

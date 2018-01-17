@@ -1142,6 +1142,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $statusz = $this->getRepo('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('statusz'));
             if ($statusz) {
                 $bf->setKellszallitasikoltsegetszamolni(false);
+                $bf->setSimpleedit(true);
                 $bf->setBizonylatstatusz($statusz);
                 $this->getEm()->persist($bf);
                 $this->getEm()->flush();
@@ -1160,9 +1161,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         if ($printed === null) {
             $printed = $this->params->getBoolRequestParam('printed');
         }
+        /** @var \Entities\Bizonylatfej $bf */
         $bf = $this->getRepo()->find($id);
         if ($bf) {
             $bf->setKellszallitasikoltsegetszamolni(false);
+            $bf->setSimpleedit(true);
             $bf->setNyomtatva($printed);
             $this->getEm()->persist($bf);
             $this->getEm()->flush();
@@ -1658,5 +1661,24 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
     public function setNyomtatvaVissza() {
         $this->setNyomtatva($this->params->getStringRequestParam('b'), false);
+    }
+
+    public function repairPartnerAdat() {
+        $mind = $this->getRepo()->getAll();
+        $db = 0;
+        /** @var \Entities\Bizonylatfej $bf */
+        foreach ($mind as $bf) {
+            $db++;
+            $partner = $bf->getPartner();
+            $bf->setPartnerLeiroadat($partner);
+            $bf->setKellszallitasikoltsegetszamolni(false);
+            $bf->setSimpleedit(true);
+            $this->getEm()->persist($bf);
+            if ($db % 20 == 0) {
+                $this->getEm()->flush();
+            }
+        }
+        $this->getEm()->persist($bf);
+        $this->getEm()->flush();
     }
 }

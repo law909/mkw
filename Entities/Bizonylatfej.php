@@ -15,6 +15,7 @@ class Bizonylatfej {
     private $duplication;
     private $kellszallitasikoltsegetszamolni = true;
     private $szallitasikoltsegbrutto;
+    private $simpleedit = false;
 
     /**
      * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)
@@ -1631,6 +1632,46 @@ class Bizonylatfej {
     /**
      * @param \Entities\Partner $val
      */
+    public function setPartnerLeiroadat($val) {
+        $this->setPartnernev($val->getNev());
+        $this->setPartnervezeteknev($val->getVezeteknev());
+        $this->setPartnerkeresztnev($val->getKeresztnev());
+        $this->setPartneradoszam($val->getAdoszam());
+        $this->setPartnercjszam($val->getCjszam());
+        $this->setPartnereuadoszam($val->getEuadoszam());
+        $this->setPartnerfvmszam($val->getFvmszam());
+        $this->setPartnerirszam($val->getIrszam());
+        $this->setPartnerjovengszam($val->getJovengszam());
+        $this->setPartnerlirszam($val->getLirszam());
+        $this->setPartnerlutca($val->getLutca());
+        $this->setPartnerlvaros($val->getLvaros());
+        $this->setPartnertelefon($val->getTelefon());
+        $this->setPartneremail($val->getEmail());
+        $this->setPartnermukengszam($val->getMukengszam());
+        $this->setPartnerostermszam($val->getOstermszam());
+        $this->setPartnerstatszamjel($val->getStatszamjel());
+        $this->setPartnerutca($val->getUtca());
+        $this->setPartnervalligszam($val->getValligszam());
+        $this->setPartnervaros($val->getVaros());
+        $this->setPartnerhazszam($val->getHazszam());
+
+        $this->setSzallnev($val->getSzallnev());
+        $this->setSzallirszam($val->getSzallirszam());
+        $this->setSzallvaros($val->getSzallvaros());
+        $this->setSzallutca($val->getSzallutca());
+        $this->setSzallhazszam($val->getSzallhazszam());
+
+        $this->setPartnerszamlatipus($val->getSzamlatipus());
+        $this->setBizonylatnyelv($val->getBizonylatnyelv());
+
+        $this->setPartnerktdatalany($val->getKtdatalany());
+        $this->setPartnerktdatvallal($val->getKtdatvallal());
+        $this->setPartnerktdszerzszam($val->getKtdszerzszam());
+    }
+
+    /**
+     * @param \Entities\Partner $val
+     */
     public function setPartner($val) {
         if ($this->partner !== $val) {
             if (!$val) {
@@ -1639,40 +1680,8 @@ class Bizonylatfej {
             else {
                 $this->partner = $val;
                 if (!$this->duplication) {
-                    $this->setPartnernev($val->getNev());
-                    $this->setPartnervezeteknev($val->getVezeteknev());
-                    $this->setPartnerkeresztnev($val->getKeresztnev());
-                    $this->setPartneradoszam($val->getAdoszam());
-                    $this->setPartnercjszam($val->getCjszam());
-                    $this->setPartnereuadoszam($val->getEuadoszam());
-                    $this->setPartnerfvmszam($val->getFvmszam());
-                    $this->setPartnerirszam($val->getIrszam());
-                    $this->setPartnerjovengszam($val->getJovengszam());
-                    $this->setPartnerlirszam($val->getLirszam());
-                    $this->setPartnerlutca($val->getLutca());
-                    $this->setPartnerlvaros($val->getLvaros());
-                    $this->setPartnertelefon($val->getTelefon());
-                    $this->setPartneremail($val->getEmail());
-                    $this->setPartnermukengszam($val->getMukengszam());
-                    $this->setPartnerostermszam($val->getOstermszam());
-                    $this->setPartnerstatszamjel($val->getStatszamjel());
-                    $this->setPartnerutca($val->getUtca());
-                    $this->setPartnervalligszam($val->getValligszam());
-                    $this->setPartnervaros($val->getVaros());
-                    $this->setPartnerhazszam($val->getHazszam());
 
-                    $this->setSzallnev($val->getSzallnev());
-                    $this->setSzallirszam($val->getSzallirszam());
-                    $this->setSzallvaros($val->getSzallvaros());
-                    $this->setSzallutca($val->getSzallutca());
-                    $this->setSzallhazszam($val->getSzallhazszam());
-
-                    $this->setPartnerszamlatipus($val->getSzamlatipus());
-                    $this->setBizonylatnyelv($val->getBizonylatnyelv());
-
-                    $this->setPartnerktdatalany($val->getKtdatalany());
-                    $this->setPartnerktdatvallal($val->getKtdatvallal());
-                    $this->setPartnerktdszerzszam($val->getKtdszerzszam());
+                    $this->setPartnerLeiroadat($val);
 
                     $uk = $val->getUzletkoto();
                     if ($uk) {
@@ -3428,6 +3437,20 @@ class Bizonylatfej {
      */
     public function setSzallhazszam($szallhazszam) {
         $this->szallhazszam = $szallhazszam;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSimpleedit() {
+        return $this->simpleedit;
+    }
+
+    /**
+     * @param bool $simpleedit
+     */
+    public function setSimpleedit($simpleedit) {
+        $this->simpleedit = $simpleedit;
     }
 
 }
