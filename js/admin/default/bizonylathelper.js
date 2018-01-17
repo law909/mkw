@@ -1039,7 +1039,9 @@ var bizonylathelper = function($) {
                         '#erbizonylatszamfilter',
                         '#uzletkotofilter',
                         '#feketelistafilter',
-                        '#referrerfilter'
+                        '#referrerfilter',
+                        '#osszegtolfilter',
+                        '#osszegigfilter'
                     ],
                     onClear:function() {
                         $('.js-cimkefilter').removeClass('ui-state-hover');

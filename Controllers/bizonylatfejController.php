@@ -163,6 +163,14 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $filter->addFilter($mezo, '<=', $ig);
             }
         }
+        $osszegtol = $this->params->getNumRequestParam('osszegtolfilter');
+        if ($osszegtol) {
+            $filter->addFilter('brutto', '>=', $osszegtol);
+        }
+        $osszegig = $this->params->getNumRequestParam('osszegigfilter');
+        if ($osszegig) {
+            $filter->addFilter('brutto', '<=', $osszegig);
+        }
         $f = $this->params->getIntRequestParam('bizonylatstatuszfilter');
         if ($f) {
             $bs = $this->getRepo('Entities\Bizonylatstatusz')->findOneById($f);

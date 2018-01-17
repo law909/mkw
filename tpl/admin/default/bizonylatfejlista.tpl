@@ -48,6 +48,12 @@
         <input id="datumtolfilter" name="datumtolfilter" type="text" size="12" data-datum="{$datumtolfilter|default}">
         <input id="datumigfilter" name="datumigfilter" type="text" size="12">
     </div>
+    <div class="matt-hseparator"></div>
+    <div>
+        <label for="osszegtolfilter">{at('Összeg')}:</label>
+        <input id="osszegtolfilter" name="osszegtolfilter" type="number">
+        <input id="osszegigfilter" name="osszegigfilter" type="number">
+    </div>
 	<div class="matt-hseparator"></div>
     <div>
         {if ($showbizonylatstatuszeditor)}
