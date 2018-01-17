@@ -600,7 +600,12 @@ class Bizonylattetel {
             else {
                 $this->termek = $val;
                 if (!$this->duplication) {
-                    $this->setTermeknev($val->getNev());
+                    if ($val->getKiirtnev()) {
+                        $this->setTermeknev($val->getKiirtnev());
+                    }
+                    else {
+                        $this->setTermeknev($val->getNev());
+                    }
                     $this->setCikkszam($val->getCikkszam());
                     $this->setHosszusag($val->getHosszusag());
                     $this->setEhparany($val->getHparany());

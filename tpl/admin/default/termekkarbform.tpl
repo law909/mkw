@@ -72,6 +72,11 @@
                                            value="{$egyed.nev}" required autofocus></td>
                 </tr>
                 <tr>
+                    <td><label for="KiirtNevEdit">{at('Bizonylaton szereplő név')}:</label></td>
+                    <td colspan="3"><input id="KiirtNevEdit" name="kiirtnev" type="text" size="83" maxlength="255"
+                                           value="{$egyed.kiirtnev}"></td>
+                </tr>
+                <tr>
                     <td><label for="CikkszamEdit">{at('Cikkszám')}:</label></td>
                     <td><input id="CikkszamEdit" name="cikkszam" type="text" size="30" maxlength="30"
                                value="{$egyed.cikkszam}"></td>

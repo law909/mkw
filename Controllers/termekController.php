@@ -44,6 +44,11 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['vtsznev'] = $t->getVtszNev();
 		$x['afanev'] = $t->getAfaNev();
 		$x['nev'] = $t->getNev();
+        $x['nev2'] = $t->getNev2();
+        $x['nev3'] = $t->getNev3();
+        $x['nev4'] = $t->getNev4();
+        $x['nev5'] = $t->getNev5();
+		$x['kiirtnev'] = $t->getKiirtnev();
 		$x['slug'] = $t->getSlug();
 		$x['me'] = $t->getMe();
 		$x['cikkszam'] = $t->getCikkszam();
@@ -226,6 +231,11 @@ class termekController extends \mkwhelpers\MattableController {
             $obj->setTermekcsoport(null);
         }
 		$obj->setNev($this->params->getStringRequestParam('nev'));
+        $obj->setNev2($this->params->getStringRequestParam('nev2'));
+        $obj->setNev3($this->params->getStringRequestParam('nev3'));
+        $obj->setNev4($this->params->getStringRequestParam('nev4'));
+        $obj->setNev5($this->params->getStringRequestParam('nev5'));
+        $obj->setKiirtnev($this->params->getStringRequestParam('kiirtnev'));
 		$obj->setMe($this->params->getStringRequestParam('me'));
 		$obj->setCikkszam($this->params->getStringRequestParam('cikkszam'));
 		$obj->setIdegencikkszam($this->params->getStringRequestParam('idegencikkszam'));
@@ -840,6 +850,7 @@ class termekController extends \mkwhelpers\MattableController {
         $ret = array();
 	    if (!\mkw\store::isTermekAutocomplete()) {
             $termekid = $this->params->getIntRequestParam('id');
+            /** @var \Entities\Termek $termek */
             $termek = \mkw\store::getEm()->getRepository('\Entities\Termek')->find($termekid);
             if ($termek) {
                 $ret = array(
@@ -860,6 +871,9 @@ class termekController extends \mkwhelpers\MattableController {
                     'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
                     'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $termek->getId()))
                 );
+                if ($termek->getKiirtnev()) {
+                    $ret['value'] = $termek->getKiirtnev();
+                }
             }
         }
         else {
@@ -888,6 +902,9 @@ class termekController extends \mkwhelpers\MattableController {
                                 'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
                                 'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
                             );
+                            if ($r->getKiirtnev()) {
+                                $ret['value'] = $r->getKiirtnev();
+                            }
                         }
                         break;
                     case \mkw\store::isSuperzoneB2B():
@@ -911,6 +928,9 @@ class termekController extends \mkwhelpers\MattableController {
                                 'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
                                 'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
                             );
+                            if ($r->getKiirtnev()) {
+                                $ret['value'] = $r->getKiirtnev();
+                            }
                         }
                         break;
                     default:
@@ -933,6 +953,9 @@ class termekController extends \mkwhelpers\MattableController {
                                 'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
                                 'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, array(), array('id' => $r->getId()))
                             );
+                            if ($r->getKiirtnev()) {
+                                $ret['value'] = $r->getKiirtnev();
+                            }
                         }
                         break;
                 }

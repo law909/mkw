@@ -75,6 +75,12 @@ class Termek {
      */
     private $nev5 = '';
 
+    /**
+     * @Gedmo\Translatable
+     * @ORM\Column(type="string",length=255,nullable=false)
+     */
+    private $kiirtnev = '';
+
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $me = '';
 
@@ -2295,6 +2301,20 @@ class Termek {
      */
     public function setEmagtiltva($emagtiltva) {
         $this->emagtiltva = $emagtiltva;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getKiirtnev() {
+        return $this->kiirtnev;
+    }
+
+    /**
+     * @param mixed $kiirtnev
+     */
+    public function setKiirtnev($kiirtnev) {
+        $this->kiirtnev = $kiirtnev;
     }
 
 }
