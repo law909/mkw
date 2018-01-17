@@ -45,6 +45,9 @@
                 {if ($showmesebutton && havejog(99))}
                     <a class="js-mese" href="#" title="{at('Mese')}" data-href="/admin/mese?b={$_egyed.id}"><span class="ui-icon ui-icon-image"></span></a>
                 {/if}
+                {if (havejog(90))}
+                    <a class="js-vissza" href="#" data-href="/admin/bizvissza?b={$_egyed.id}">V</a>
+                {/if}
                 {if ($showfeketelistabutton)}
                     <a class="js-feketelista" href="#" data-email="{$_egyed.partneremail}" data-ip="{$_egyed.ip}" title="{at('Feketelista')}" target="_blank"><span class="ui-icon ui-icon-alert"></span></a>
                 {/if}

@@ -569,6 +569,10 @@ $router->map('GET', '/admin/csomagterminal/gethtmllist', 'csomagterminalControll
 $router->map('GET', '/admin/minicrm/view', 'minicrmController#view', 'adminminicrmview');
 $router->map('POST', '/admin/minicrm/partnerimport', 'minicrmController#partnerImport', 'adminminicrmpartnerimport');
 
+if (haveJog(90)) {
+    $router->map('GET', '/admin/bizvissza', 'bizonylatfejController#setNyomtatvaVissza', 'adminbizvissza');
+}
+
 if (\mkw\store::isDarshan()) {
     $router->map('GET', '/admin/orarend/viewlist', 'orarendController#viewlist', 'adminorarendviewlist');
     $router->map('GET', '/admin/orarend/htmllist', 'orarendController#htmllist', 'adminorarendhtmllist');

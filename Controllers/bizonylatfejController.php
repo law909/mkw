@@ -1153,11 +1153,17 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
     }
 
-    public function setNyomtatva() {
-        $bf = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+    public function setNyomtatva($id = null, $printed = null) {
+        if ($id === null) {
+            $id = $this->params->getStringRequestParam('id');
+        }
+        if ($printed === null) {
+            $printed = $this->params->getBoolRequestParam('printed');
+        }
+        $bf = $this->getRepo()->find($id);
         if ($bf) {
             $bf->setKellszallitasikoltsegetszamolni(false);
-            $bf->setNyomtatva($this->params->getBoolRequestParam('printed'));
+            $bf->setNyomtatva($printed);
             $this->getEm()->persist($bf);
             $this->getEm()->flush();
         }
@@ -1650,4 +1656,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         echo $obj->getId();
     }
 
+    public function setNyomtatvaVissza() {
+        $this->setNyomtatva($this->params->getStringRequestParam('b'), false);
+    }
 }
