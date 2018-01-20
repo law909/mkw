@@ -338,6 +338,12 @@
 				<td><label for="cjszamEdit">{at('Cégjegyzékszám')}:</label></td>
 				<td><input id="cjszamEdit" name="cjszam" type="text" size="20" maxlength="20" value="{$partner.cjszam}"></td>
 			</tr>
+            <tr>
+                <td><label for="MiniCRMProjectIdEdit">{at('MiniCRM project ID')}:</label></td>
+                <td><input id="MiniCRMProjectIdEdit" name="minicrmprojectid" type="text" size="20" maxlength="20" value="{$partner.minicrmprojectid}"></td>
+                <td><label for="MiniCRMContactIdEdit">{at('MiniCRM contact ID')}:</label></td>
+                <td><input id="MiniCRMContactIdEdit" name="minicrmcontactid" type="text" size="20" maxlength="20" value="{$partner.minicrmcontactid}"></td>
+            </tr>
 			</tbody></table>
 		</div>
 	</div>

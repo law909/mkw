@@ -102,6 +102,8 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['ktdszerzszam'] = $t->getKtdszerzszam();
         $x['munkahelyneve'] = $t->getMunkahelyneve();
         $x['foglalkozas'] = $t->getFoglalkozas();
+        $x['minicrmprojectid'] = $t->getMinicrmprojectid();
+        $x['minicrmcontactid'] = $t->getMinicrmcontactid();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             if ($afa) {
@@ -189,6 +191,8 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setKtdszerzszam($this->params->getStringRequestParam('ktdszerzszam'));
             $obj->setMunkahelyneve($this->params->getStringRequestParam('munkahelyneve'));
             $obj->setFoglalkozas($this->params->getStringRequestParam('foglalkozas'));
+            $obj->setMinicrmprojectid($this->params->getStringRequestParam('minicrmprojectid'));
+            $obj->setMinicrmcontactid($this->params->getStringRequestParam('minicrmcontactid'));
 
             $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
             if ($fizmod) {
