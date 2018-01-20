@@ -15,7 +15,7 @@
             <select id="MIJSZOralatogatasTanarEdit{$mijszoralatogatas.id}" name="mijszoralatogatastanar_{$mijszoralatogatas.id}">
                 <option value="">{t('válasszon')}</option>
                 {foreach $mijszoralatogatas.mijszoralatogatastanarlist as $_valuta}
-                    <option value="{$_valuta.id}"{if ($_valuta.selected)} selected="selected"{/if}>{$_valuta.caption}</option>
+                    <option value="{$_valuta.id}"{if ($_valuta.selected)} selected="selected"{/if}>{$_valuta.nevvaros}</option>
                 {/foreach}
             </select>
             <input type="text" name="mijszoralatogatastanaregyeb_{$mijszoralatogatas.id}" value="{$mijszoralatogatas.tanaregyeb}" placeholder="{t('egyéb')}">
