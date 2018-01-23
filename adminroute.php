@@ -208,6 +208,16 @@ $router->map('GET', '/admin/szamlafej/storno', 'szamlafejController#storno', 'ad
 $router->map('POST', '/admin/szamlafej/fejexport', 'szamlafejController#fejexport', 'adminszamlafejfejexport');
 $router->map('POST', '/admin/szamlafej/tetelexport', 'szamlafejController#tetelexport', 'adminszamlafejtetelexport');
 
+$router->map('GET', '/admin/esetiszamlafej/viewlist', 'esetiszamlafejController#viewlist', 'adminesetiszamlafejviewlist');
+$router->map('GET', '/admin/esetiszamlafej/getlistbody', 'esetiszamlafejController#getlistbody', 'adminesetiszamlafejgetlistbody');
+$router->map('GET', '/admin/esetiszamlafej/getkarb', 'esetiszamlafejController#getkarb', 'adminesetiszamlafejgetkarb');
+$router->map('GET', '/admin/esetiszamlafej/viewkarb', 'esetiszamlafejController#viewkarb', 'adminesetiszamlafejviewkarb');
+$router->map('POST', '/admin/esetiszamlafej/save', 'esetiszamlafejController#save', 'adminesetiszamlafejsave');
+$router->map('GET', '/admin/esetiszamlafej/print', 'esetiszamlafejController#doPrint', 'adminesetiszamlafejprint');
+$router->map('GET', '/admin/esetiszamlafej/storno', 'esetiszamlafejController#storno', 'adminesetiszamlafejstorno');
+$router->map('POST', '/admin/esetiszamlafej/fejexport', 'esetiszamlafejController#fejexport', 'adminesetiszamlafejfejexport');
+$router->map('POST', '/admin/esetiszamlafej/tetelexport', 'esetiszamlafejController#tetelexport', 'adminesetiszamlafejtetelexport');
+
 $router->map('GET', '/admin/egyebfej/viewlist', 'egyebmozgasfejController#viewlist', 'adminegyebfejviewlist');
 $router->map('GET', '/admin/egyebfej/getlistbody', 'egyebmozgasfejController#getlistbody', 'adminegyebfejgetlistbody');
 $router->map('GET', '/admin/egyebfej/getkarb', 'egyebmozgasfejController#getkarb', 'adminegyebfejgetkarb');
