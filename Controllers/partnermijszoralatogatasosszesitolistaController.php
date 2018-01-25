@@ -8,7 +8,7 @@ class partnermijszoralatogatasosszesitolistaController extends \mkwhelpers\Contr
     public function view() {
         $view = $this->createView('partnermijszoralatogatasosszesitolista.tpl');
 
-        $view->setVar('pagetitle', t('Termékforgalmi lista'));
+        $view->setVar('pagetitle', t('Óralátogatás összesítő lista'));
         $view->setVar('ev', date('Y') * 1 - 1);
 
         $view->printTemplateResult(false);
