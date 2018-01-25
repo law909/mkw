@@ -37,7 +37,7 @@
     <div class="control-group">
         <label for="oralatogatasoraszamEdit{$mijszoralatogatas.id}" class="control-label">{t('Hány órát (60 perc) töltöttél ott')}:</label>
         <div class="controls">
-            <input class="input-mini" id="oralatogatasoraszamEdit{$mijszoralatogatas.id}" type="number" name="mijszoralatogatasoraszam_{$mijszoralatogatas.id}" value="{$mijszoralatogatas.oraszam}" required="required">
+            <input class="input-mini" id="oralatogatasoraszamEdit{$mijszoralatogatas.id}" type="number" name="mijszoralatogatasoraszam_{$mijszoralatogatas.id}" value="{$mijszoralatogatas.oraszam}" required="required" title="{t('Az évi összes órák száma.')}">
         </div>
     </div>
     <div class="control-group">
