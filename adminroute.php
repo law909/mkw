@@ -566,6 +566,10 @@ $router->map('GET', '/admin/termekforgalmilista/view', 'termekforgalmilistaContr
 $router->map('GET', '/admin/termekforgalmilista/refresh', 'termekforgalmilistaController#refresh', 'admintermekforgalmilistarefresh');
 $router->map('GET', '/admin/termekforgalmilista/export', 'termekforgalmilistaController#export', 'admintermekforgalmilistaexport');
 
+$router->map('GET', '/admin/partnermijszoralatogatasosszesitolista/view', 'partnermijszoralatogatasosszesitolistaController#view', 'adminpartnermijszoralatogatasosszesitolistaview');
+$router->map('GET', '/admin/partnermijszoralatogatasosszesitolista/refresh', 'partnermijszoralatogatasosszesitolistaController#refresh', 'adminpartnermijszoralatogatasosszesitolistarefresh');
+$router->map('GET', '/admin/partnermijszoralatogatasosszesitolista/export', 'partnermijszoralatogatasosszesitolistaController#export', 'adminpartnermijszoralatogatasosszesitolistaexport');
+
 $router->map('GET', '/admin/bizonylattetellista/view', 'bizonylattetellistaController#view', 'adminbizonylattetellistaview');
 $router->map('GET', '/admin/bizonylattetellista/refresh', 'bizonylattetellistaController#refresh', 'adminbizonylattetellistarefresh');
 $router->map('GET', '/admin/bizonylattetellista/export', 'bizonylattetellistaController#export', 'adminbizonylattetellistaexport');

@@ -36,4 +36,28 @@ class PartnerMIJSZOralatogatasRepository extends \mkwhelpers\Repository {
         return $kdv;
     }
 
+    public function getReszletezes($ev) {
+        $filter = new FilterDescriptor();
+        $filter->addSql('(p.partnertipus_id=1) AND ((o.ev=' . $ev . ') OR (o.ev IS NULL))');
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('nev', 'nev');
+        $rsm->addScalarResult('email', 'email');
+        $rsm->addScalarResult('tanar', 'tanar');
+        $rsm->addScalarResult('tanaregyeb', 'tanaregyeb');
+        $rsm->addScalarResult('helyszin', 'helyszin');
+        $rsm->addScalarResult('mikor', 'mikor');
+        $rsm->addScalarResult('oraszam', 'oraszam');
+
+        $q = $this->_em->createNativeQuery('SELECT p.nev,p.email,t.nev as tanar,tanaregyeb,helyszin,mikor,oraszam'
+            . ' FROM partner p'
+            . ' LEFT OUTER JOIN partnermijszoralatogatas o ON (p.id=o.partner_id)'
+            . ' LEFT OUTER JOIN partner t ON (o.tanar_id=t.id)'
+            . $this->getFilterString($filter)
+            . ' ORDER BY p.nev', $rsm);
+
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getScalarResult();
+    }
+
 }
