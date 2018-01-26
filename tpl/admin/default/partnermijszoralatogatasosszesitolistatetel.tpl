@@ -11,6 +11,7 @@
     </tr>
     </thead>
     <tbody>
+    {$bck = false}
     {$cnt = count($tetelek)}
     {$i = 0}
     {while $i < $cnt}
@@ -20,7 +21,7 @@
         {while ($partnerid == $tetelek[$i].id) && ($i < $cnt)}
             {$tetel = $tetelek[$i]}
             {$sum = $sum + $tetel.oraszam}
-            <tr>
+            <tr{if ($bck)} class="whitebackground"{/if}>
                 <td class="datacell">{$tetel.nev}</td>
                 <td class="datacell">{$tetel.email}</td>
                 <td class="datacell">{$tetel.tanar}</td>
@@ -32,12 +33,13 @@
             {$i = $i + 1}
         {/while}
         {if ($sum)}
-            <tr class="italic bold">
+            <tr class="italic bold{if ($bck)} whitebackground{/if}">
                 <td colspan="5" class="cell"></td>
                 <td class="datacell">{$tetel.nev} összesen</td>
                 <td class="datacell textalignright nowrap">{$sum}</td>
             </tr>
         {/if}
+        {$bck = !$bck}
     {/while}
     </tbody>
 </table>

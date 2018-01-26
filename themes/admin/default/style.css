@@ -218,6 +218,10 @@ table.termekkarton tr:nth-child(even) {
     background: #ddd;
 }
 
+.whitebackground {
+    background: white;
+}
+
 .termekforgalmibal {
     width: 50%;
     min-height: 250px;
