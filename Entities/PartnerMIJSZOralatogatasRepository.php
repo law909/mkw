@@ -41,6 +41,7 @@ class PartnerMIJSZOralatogatasRepository extends \mkwhelpers\Repository {
         $filter->addSql('(p.partnertipus_id=1) AND ((o.ev=' . $ev . ') OR (o.ev IS NULL))');
 
         $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('nev', 'nev');
         $rsm->addScalarResult('email', 'email');
         $rsm->addScalarResult('tanar', 'tanar');
@@ -49,7 +50,7 @@ class PartnerMIJSZOralatogatasRepository extends \mkwhelpers\Repository {
         $rsm->addScalarResult('mikor', 'mikor');
         $rsm->addScalarResult('oraszam', 'oraszam');
 
-        $q = $this->_em->createNativeQuery('SELECT p.nev,p.email,t.nev as tanar,tanaregyeb,helyszin,mikor,oraszam'
+        $q = $this->_em->createNativeQuery('SELECT p.id,p.nev,p.email,t.nev as tanar,tanaregyeb,helyszin,mikor,oraszam'
             . ' FROM partner p'
             . ' LEFT OUTER JOIN partnermijszoralatogatas o ON (p.id=o.partner_id)'
             . ' LEFT OUTER JOIN partner t ON (o.tanar_id=t.id)'
