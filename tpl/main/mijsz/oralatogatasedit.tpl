@@ -37,12 +37,12 @@
     <div class="control-group">
         <label for="oralatogatasoraszamEdit{$mijszoralatogatas.id}" class="control-label">{t('Hány órát (60 perc) töltöttél ott')}:</label>
         <div class="controls">
-            <input class="input-mini" id="oralatogatasoraszamEdit{$mijszoralatogatas.id}" type="number" name="mijszoralatogatasoraszam_{$mijszoralatogatas.id}" value="{$mijszoralatogatas.oraszam}" required="required" title="{t('Az évi összes órák száma.')}">
+            <input class="input-mini" id="oralatogatasoraszamEdit{$mijszoralatogatas.id}" type="number" step="0.1" name="mijszoralatogatasoraszam_{$mijszoralatogatas.id}" value="{$mijszoralatogatas.oraszam}" required="required" title="{t('Az évi összes órák száma.')}">
         </div>
     </div>
-    <div class="control-group">
+    <!--div class="control-group">
         <div class="controls">
         <a class="js-mijszoralatogatasdelbutton btn btn-warning" href="#" data-id="{$mijszoralatogatas.id}"{if ($mijszoralatogatas.oper=='add')} data-source="client"{/if} title="{t('Töröl')}">{t('Töröl')}</a>
         </div>
-    </div>
+    </div-->
 </div>

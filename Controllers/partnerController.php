@@ -347,7 +347,7 @@ class partnerController extends \mkwhelpers\MattableController {
                         $kedv->setTanaregyeb($this->params->getStringRequestParam('mijszoralatogatastanaregyeb_' . $okid));
                         $kedv->setHelyszin($this->params->getStringRequestParam('mijszoralatogatashelyszin_' . $okid));
                         $kedv->setMikor($this->params->getStringRequestParam('mijszoralatogatasmikor_' . $okid));
-                        $kedv->setOraszam($this->params->getIntRequestParam('mijszoralatogatasoraszam_' . $okid));
+                        $kedv->setOraszam($this->params->getNumRequestParam('mijszoralatogatasoraszam_' . $okid));
                         $kedv->setEv($this->params->getIntRequestParam('mijszoralatogatasev_' . $okid));
                         $this->getEm()->persist($kedv);
                     }
@@ -359,7 +359,7 @@ class partnerController extends \mkwhelpers\MattableController {
                             $kedv->setTanaregyeb($this->params->getStringRequestParam('mijszoralatogatastanaregyeb_' . $okid));
                             $kedv->setHelyszin($this->params->getStringRequestParam('mijszoralatogatashelyszin_' . $okid));
                             $kedv->setMikor($this->params->getStringRequestParam('mijszoralatogatasmikor_' . $okid));
-                            $kedv->setOraszam($this->params->getIntRequestParam('mijszoralatogatasoraszam_' . $okid));
+                            $kedv->setOraszam($this->params->getNumRequestParam('mijszoralatogatasoraszam_' . $okid));
                             $kedv->setEv($this->params->getIntRequestParam('mijszoralatogatasev_' . $okid));
                             $this->getEm()->persist($kedv);
                         }

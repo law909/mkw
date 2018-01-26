@@ -42,7 +42,7 @@ class PartnerMIJSZOralatogatas {
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $mikor;
 
-    /** @ORM\Column(type="integer",nullable=true) */
+    /** @ORM\Column(type="decimal",precision=14,scale=1,nullable=true) */
     private $oraszam = 0;
 
     /**
