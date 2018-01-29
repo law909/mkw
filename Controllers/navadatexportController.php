@@ -193,7 +193,7 @@ class navadatexportController extends \mkwhelpers\MattableController {
                 '<bruttoarossz>' . \mkw\store::toXMLNum($f->getBrutto()) . '</bruttoarossz>' .
                 '</vegosszeg>');
             fwrite($handle, '</osszesites>');
-            fwrite($handle, "</szamla>\n");
+            fwrite($handle, "</szamla>");
 
             $f->setFix(true);
             $this->getEm()->persist($f);
