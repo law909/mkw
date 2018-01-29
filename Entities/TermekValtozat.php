@@ -150,8 +150,8 @@ class TermekValtozat {
         }
 
         $q = \mkw\store::getEm()->createNativeQuery('SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
-            . 'FROM bizonylattetel bt'
-            . 'LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . ' FROM bizonylattetel bt'
+            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
             . $filter->getFilterString()
             , $rsm);
 
