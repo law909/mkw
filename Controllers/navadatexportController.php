@@ -195,15 +195,15 @@ class navadatexportController extends \mkwhelpers\MattableController {
             fwrite($handle, '</osszesites>');
             fwrite($handle, "</szamla>");
 
-            $f->setFix(true);
-            $this->getEm()->persist($f);
+//            $f->setFix(true);
+//            $this->getEm()->persist($f);
             $db++;
 
             if ($db % 20) {
-                $this->getEm()->flush();
+//                $this->getEm()->flush();
             }
         }
-        $this->getEm()->flush();
+//        $this->getEm()->flush();
         fwrite($handle, '</szamlak>');
         fclose($handle);
 
