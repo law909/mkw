@@ -3,6 +3,7 @@ namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Query\ResultSetMapping;
 use mkwhelpers\FilterDescriptor;
 
 /**
