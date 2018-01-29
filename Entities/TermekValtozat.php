@@ -142,7 +142,7 @@ class TermekValtozat {
         }
 
         $filter = new FilterDescriptor();
-        $filter->addFilter('bt.valtozat_id', '=', $this->getId());
+        $filter->addFilter('bt.termekvaltozat_id', '=', $this->getId());
         $filter->addFilter('bt.mozgat', '=', 1);
         $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
         $filter->addFilter('bf.teljesites', '<=', $datum);
