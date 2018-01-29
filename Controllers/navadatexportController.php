@@ -49,10 +49,9 @@ class navadatexportController extends \mkwhelpers\MattableController {
     }
 
     public function createLista() {
-        header("Content-type: text/xml");
-        header("Pragma: no-cache");
-        header("Expires: 0");
-        header("Content-Disposition: attachment; filename=navexport.xml");
+        $filepath = 'navexport.xml';
+
+        $handle = fopen($filepath, "wb");
 
         $filter = $this->createFilter();
 
@@ -60,146 +59,163 @@ class navadatexportController extends \mkwhelpers\MattableController {
         $bfrepo = $this->getRepo('Entities\Bizonylatfej');
 
         $fej = $bfrepo->getAll($filter, array('id' => 'ASC'));
+        $db = 0;
 
-        echo '<?xml version="1.0" encoding="UTF-8"?>' .
+        fwrite($handle, '<?xml version="1.0" encoding="UTF-8"?>' .
         '<szamlak xmlns="http://schemas.nav.gov.hu/2013/szamla">' .
         '<export_datuma>' . \mkw\store::DateToExcel(date(\mkw\store::$DateFormat)) . '</export_datuma>' .
         '<export_szla_db>' . str_pad(count($fej), 1, '0',STR_PAD_LEFT) . '</export_szla_db>' .
         '<kezdo_ido>' . \mkw\store::DateToExcel($fej[0]->getKelt()) . '</kezdo_ido>' .
         '<zaro_ido>' . \mkw\store::DateToExcel($fej[count($fej)-1]->getKelt()) . '</zaro_ido>' .
         '<kezdo_szla_szam>' . $fej[0]->getId() . '</kezdo_szla_szam>' .
-        '<zaro_szla_szam>' . $fej[count($fej)-1]->getId() . '</zaro_szla_szam>';
+        '<zaro_szla_szam>' . $fej[count($fej)-1]->getId() . '</zaro_szla_szam>');
 
         /** @var \Entities\Bizonylatfej $f */
         foreach($fej as $f) {
-            echo '<szamla><fejlec>';
-            echo '<szlasorszam>' . substr($f->getId(), 0, 100) . '</szlasorszam>';
-            echo '<szlatipus>';
+            fwrite($handle, '<szamla><fejlec>');
+            fwrite($handle, '<szlasorszam>' . substr($f->getId(), 0, 100) . '</szlasorszam>');
+            fwrite($handle, '<szlatipus>');
             switch ($f->getStornotipus()) {
                 case 0:
-                    echo '1';
+                    fwrite($handle, '1');
                     break;
                 case 1:
-                    echo '6';
+                    fwrite($handle, '6');
                     break;
                 case 2:
-                    echo '4';
+                    fwrite($handle, '4');
                     break;
                 default:
-                    echo '1';
+                    fwrite($handle, '1');
                     break;
             }
-            echo '</szlatipus>';
-            echo '<szladatum>' . \mkw\store::DateToExcel($f->getKelt()) . '</szladatum>';
-            echo '<teljdatum>' . \mkw\store::DateToExcel($f->getTeljesites()) . '</teljdatum>';
-            echo '</fejlec>';
+            fwrite($handle, '</szlatipus>');
+            fwrite($handle, '<szladatum>' . \mkw\store::DateToExcel($f->getKelt()) . '</szladatum>');
+            fwrite($handle, '<teljdatum>' . \mkw\store::DateToExcel($f->getTeljesites()) . '</teljdatum>');
+            fwrite($handle, '</fejlec>');
 
-            echo '<szamlakibocsato>';
+            fwrite($handle, '<szamlakibocsato>');
             if ($f->getTulajadoszam()) {
-                echo '<adoszam>' . substr($f->getTulajadoszam(), 0, 20) . '</adoszam>';
+                fwrite($handle, '<adoszam>' . substr($f->getTulajadoszam(), 0, 20) . '</adoszam>');
             }
             if ($f->getTulajeuadoszam()) {
-                echo '<kozadoszam>' . substr($f->getTulajeuadoszam(), 0, 20) . '</kozadoszam>';
+                fwrite($handle, '<kozadoszam>' . substr($f->getTulajeuadoszam(), 0, 20) . '</kozadoszam>');
             }
-            echo '<kisadozo>' . \mkw\store::toBoolStr($f->getTulajkisadozo()) . '</kisadozo>';
-            echo '<nev>' . substr($f->getTulajnev(), 0, 100) . '</nev>';
-            echo '<cim><iranyitoszam>' . substr($f->getTulajirszam(), 0, 10) . '</iranyitoszam>' .
+            fwrite($handle, '<kisadozo>' . \mkw\store::toBoolStr($f->getTulajkisadozo()) . '</kisadozo>');
+            fwrite($handle, '<nev>' . substr($f->getTulajnev(), 0, 100) . '</nev>');
+            fwrite($handle, '<cim><iranyitoszam>' . substr($f->getTulajirszam(), 0, 10) . '</iranyitoszam>' .
                 '<telepules>' . substr($f->getTulajvaros(), 0, 100) . '</telepules>' .
-                '<kozterulet_neve>' . substr($f->getTulajutca(), 0, 100) . '</kozterulet_neve></cim>';
+                '<kozterulet_neve>' . substr($f->getTulajutca(), 0, 100) . '</kozterulet_neve></cim>');
 
-            echo '<egyeni_vallalkozo>' . \mkw\store::toBoolStr($f->getTulajegyenivallalkozo()) . '</egyeni_vallalkozo>';
+            fwrite($handle, '<egyeni_vallalkozo>' . \mkw\store::toBoolStr($f->getTulajegyenivallalkozo()) . '</egyeni_vallalkozo>');
             if ($f->getTulajegyenivallalkozo()) {
                 if ($f->getTulajevnyilvszam()) {
-                    echo '<ev_nyilv_tart_szam>' . substr($f->getTulajevnyilvszam(), 0, 100) . '</ev_nyilv_tart_szam>';
+                    fwrite($handle, '<ev_nyilv_tart_szam>' . substr($f->getTulajevnyilvszam(), 0, 100) . '</ev_nyilv_tart_szam>');
                 }
                 if ($f->getTulajevnev()) {
-                    echo '<ev_neve>' . substr($f->getTulajevnev(), 0, 100) . '</ev_neve>';
+                    fwrite($handle, '<ev_neve>' . substr($f->getTulajevnev(), 0, 100) . '</ev_neve>');
                 }
             }
-            echo '</szamlakibocsato>';
+            fwrite($handle, '</szamlakibocsato>');
 
-            echo '<vevo>';
+            fwrite($handle, '<vevo>');
             if ($f->getPartneradoszam()) {
-                echo '<adoszam>' . substr($f->getPartneradoszam(), 0, 20) . '</adoszam>';
+                fwrite($handle, '<adoszam>' . substr($f->getPartneradoszam(), 0, 20) . '</adoszam>');
             }
             if ($f->getPartnereuadoszam()) {
-                echo '<kozadoszam>' . substr($f->getPartnereuadoszam(), 0, 20) . '</kozadoszam>';
+                fwrite($handle, '<kozadoszam>' . substr($f->getPartnereuadoszam(), 0, 20) . '</kozadoszam>');
             }
             if ($f->getPartnernev()) {
-                echo '<nev>' . substr($f->getPartnernev(), 0, 100) . '</nev>';
+                fwrite($handle, '<nev>' . substr($f->getPartnernev(), 0, 100) . '</nev>');
             }
             else {
-                echo '<nev>' . substr($f->getPartnervezeteknev() . ' ' . $f->getPartnerkeresztnev(), 0, 100) . '</nev>';
+                fwrite($handle, '<nev>' . substr($f->getPartnervezeteknev() . ' ' . $f->getPartnerkeresztnev(), 0, 100) . '</nev>');
             }
-            echo '<cim><iranyitoszam>' . substr($f->getPartnerirszam(), 0, 10) . '</iranyitoszam>' .
+            fwrite($handle, '<cim><iranyitoszam>' . substr($f->getPartnerirszam(), 0, 10) . '</iranyitoszam>' .
                 '<telepules>' . substr($f->getPartnervaros(), 0, 100) . '</telepules>' .
                 '<kozterulet_neve>' . substr($f->getPartnerutca(), 0, 100) . '</kozterulet_neve>' .
-            '</cim>';
-            echo '</vevo>';
+            '</cim>');
+            fwrite($handle, '</vevo>');
 
             $bts = $f->getBizonylattetelek();
             /** @var \Entities\Bizonylattetel $bt */
             foreach($bts as $bt) {
-                echo '<termek_szolgaltatas_tetelek><termeknev>' . substr($bt->getTermeknev(), 0, 100) . '</termeknev>';
+                fwrite($handle, '<termek_szolgaltatas_tetelek><termeknev>' . substr($bt->getTermeknev(), 0, 100) . '</termeknev>');
                 switch ($bt->getElolegtipus()) {
                     case 'eloleg':
-                        echo '<eloleg>1</eloleg>';
+                        fwrite($handle, '<eloleg>1</eloleg>');
                         break;
                     case 'veg':
-                        echo '<eloleg>2</eloleg>';
+                        fwrite($handle, '<eloleg>2</eloleg>');
                         break;
                 }
                 if ($bt->getVtszszam()) {
-                    echo '<besorszam>' . substr($bt->getVtszszam(), 0, 100) . '</besorszam>';
+                    fwrite($handle, '<besorszam>' . substr($bt->getVtszszam(), 0, 100) . '</besorszam>');
                 }
-                echo '<menny>' . \mkw\store::toXMLNum($bt->getMennyiseg()) . '</menny>';
+                fwrite($handle, '<menny>' . \mkw\store::toXMLNum($bt->getMennyiseg()) . '</menny>');
                 if ($bt->getME()) {
-                    echo '<mertekegys>' . substr($bt->getME(), 0, 100) . '</mertekegys>';
+                    fwrite($handle, '<mertekegys>' . substr($bt->getME(), 0, 100) . '</mertekegys>');
                 }
                 else {
-                    echo '<mertekegys>ismeretlen</mertekegys>';
+                    fwrite($handle, '<mertekegys>ismeretlen</mertekegys>');
                 }
-                echo '<kozv_szolgaltatas>' . \mkw\store::toBoolStr($bt->getKozvetitett()) . '</kozv_szolgaltatas>' .
+                fwrite($handle, '<kozv_szolgaltatas>' . \mkw\store::toBoolStr($bt->getKozvetitett()) . '</kozv_szolgaltatas>' .
                     '<nettoar>' . \mkw\store::toXMLNum($bt->getNetto()) . '</nettoar>' .
                     '<nettoegysar>' . \mkw\store::toXMLNum($bt->getNettoegysar()) . '</nettoegysar>' .
                     '<adokulcs>' . $bt->getAfakulcs() . '</adokulcs>' .
                     '<adoertek>' . \mkw\store::toXMLNum($bt->getAfaertek()) . '</adoertek>' .
-                    '<bruttoar>' . \mkw\store::toXMLNum($bt->getBrutto()) . '</bruttoar>';
-                echo '</termek_szolgaltatas_tetelek>';
+                    '<bruttoar>' . \mkw\store::toXMLNum($bt->getBrutto()) . '</bruttoar>');
+                fwrite($handle, '</termek_szolgaltatas_tetelek>');
             }
 
-	    echo '<nem_kotelezo>';
+    	    fwrite($handle, '<nem_kotelezo>');
             if ($f->getValutanemnev()) {
-                echo '<penznem>' . substr($f->getValutanemnev(), 0, 100) . '</penznem>';
+                fwrite($handle, '<penznem>' . substr($f->getValutanemnev(), 0, 100) . '</penznem>');
             }
-	    echo '<fiz_hatido>' . \mkw\store::DateToExcel($f->getEsedekesseg()) . '</fiz_hatido>';
-	    echo '<fiz_mod>' . substr($f->getFizmodnev(), 0, 100) . '</fiz_mod>';
-	    echo '</nem_kotelezo>';
+            fwrite($handle, '<fiz_hatido>' . \mkw\store::DateToExcel($f->getEsedekesseg()) . '</fiz_hatido>');
+            fwrite($handle, '<fiz_mod>' . substr($f->getFizmodnev(), 0, 100) . '</fiz_mod>');
+            fwrite($handle, '</nem_kotelezo>');
 
-            echo '<osszesites>';
+            fwrite($handle, '<osszesites>');
             $ao = $bfrepo->getAFAOsszesito($f);
             foreach ($ao as $a) {
-                echo '<afarovat>' .
+                fwrite($handle, '<afarovat>' .
                     '<nettoar>' . \mkw\store::toXMLNum($a['netto']) . '</nettoar>' .
                     '<adokulcs>' . $a['afakulcs'] . '</adokulcs>' .
                     '<adoertek>' . \mkw\store::toXMLNum($a['afa']) . '</adoertek>' .
                     '<bruttoar>' . \mkw\store::toXMLNum($a['brutto']) . '</bruttoar>' .
-                    '</afarovat>';
+                    '</afarovat>');
             }
 
-            echo '<vegosszeg>' .
+            fwrite($handle, '<vegosszeg>' .
                 '<nettoarossz>' . \mkw\store::toXMLNum($f->getNetto()) . '</nettoarossz>' .
                 '<afaertekossz>' . \mkw\store::toXMLNum($f->getAfa()) . '</afaertekossz>' .
                 '<bruttoarossz>' . \mkw\store::toXMLNum($f->getBrutto()) . '</bruttoarossz>' .
-                '</vegosszeg>';
-            echo '</osszesites>';
-            echo "</szamla>\n";
+                '</vegosszeg>');
+            fwrite($handle, '</osszesites>');
+            fwrite($handle, "</szamla>\n");
 
             $f->setFix(true);
             $this->getEm()->persist($f);
-            $this->getEm()->flush();
+            $db++;
+
+            if ($db % 20) {
+                $this->getEm()->flush();
+            }
         }
-        echo '</szamlak>';
+        $this->getEm()->flush();
+        fwrite($handle, '</szamlak>');
+        fclose($handle);
+
+        $fileSize = filesize($filepath);
+
+        // Output headers.
+        header('Cache-Control: private');
+        header('Content-Type: application/stream');
+        header('Content-Length: ' . $fileSize);
+        header('Content-Disposition: attachment; filename=' . $filepath);
+
+        readfile($filepath);
 
     }
 
