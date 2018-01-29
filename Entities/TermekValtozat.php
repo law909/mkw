@@ -149,7 +149,7 @@ class TermekValtozat {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
 
-        $q = $this->getEm()->createNativeQuery('SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
+        $q = \mkw\store::getEm()->createNativeQuery('SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
             . 'FROM bizonylattetel bt'
             . 'LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
             . $filter->getFilterString()
