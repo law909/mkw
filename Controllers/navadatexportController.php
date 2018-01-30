@@ -71,7 +71,7 @@ class navadatexportController extends \mkwhelpers\MattableController {
         '<zaro_szla_szam>' . $fej[count($fej)-1]->getId() . '</zaro_szla_szam>');
 
         fclose($handle);
-        fopen($filepath, "ab");
+        $handle = fopen($filepath, "ab");
 
         /** @var \Entities\Bizonylatfej $f */
         foreach ($fej as $f) {
@@ -207,7 +207,7 @@ class navadatexportController extends \mkwhelpers\MattableController {
 //                $this->getEm()->flush();
             }
             fclose($handle);
-            fopen($filepath, "ab");
+            $handle = fopen($filepath, "ab");
         }
 //        $this->getEm()->flush();
         fwrite($handle, '</szamlak>');
