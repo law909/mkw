@@ -58,7 +58,7 @@ class navadatexportController extends \mkwhelpers\MattableController {
         /** @var \Entities\BizonylatfejRepository $bfrepo */
         $bfrepo = $this->getRepo('Entities\Bizonylatfej');
 
-        $fej = $bfrepo->getAll($filter, array('id' => 'ASC'));
+        $fej = $bfrepo->getWithTetelek($filter, array('id' => 'ASC'));
         $db = 0;
 
         fwrite($handle, '<?xml version="1.0" encoding="UTF-8"?>' .
@@ -70,8 +70,12 @@ class navadatexportController extends \mkwhelpers\MattableController {
         '<kezdo_szla_szam>' . $fej[0]->getId() . '</kezdo_szla_szam>' .
         '<zaro_szla_szam>' . $fej[count($fej)-1]->getId() . '</zaro_szla_szam>');
 
+        fclose($handle);
+        fopen($filepath, "ab");
+
         /** @var \Entities\Bizonylatfej $f */
-        foreach($fej as $f) {
+        foreach ($fej as $f) {
+
             fwrite($handle, '<szamla><fejlec>');
             fwrite($handle, '<szlasorszam>' . substr($f->getId(), 0, 100) . '</szlasorszam>');
             fwrite($handle, '<szlatipus>');
@@ -202,6 +206,8 @@ class navadatexportController extends \mkwhelpers\MattableController {
             if ($db % 20) {
 //                $this->getEm()->flush();
             }
+            fclose($handle);
+            fopen($filepath, "ab");
         }
 //        $this->getEm()->flush();
         fwrite($handle, '</szamlak>');
