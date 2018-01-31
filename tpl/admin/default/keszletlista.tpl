@@ -13,15 +13,10 @@
         <div id="mattkarb-header">
             <h3>{at('Készlet')}</h3>
         </div>
-        <div{if ($setup.editstyle=='tab')} id="mattkarb-tabs"{/if}>
-            {if ($setup.editstyle=='tab')}
-                <ul>
-                    <li><a href="#DefaTab">{at('Készlet')}</a></li>
-                </ul>
-            {/if}
-            {if ($setup.editstyle=='dropdown')}
-                <div class="mattkarb-titlebar" data-caption="{at('Készlet')}" data-refcontrol="#DefaTab"></div>
-            {/if}
+        <div id="mattkarb-tabs">
+            <ul>
+                <li><a href="#DefaTab">{at('Készlet')}</a></li>
+            </ul>
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="keszlet" action="" target="_blank">
                     <div>

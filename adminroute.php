@@ -556,6 +556,9 @@ $router->map('GET', '/admin/keszletlista/view', 'keszletlistaController#view', '
 $router->map('GET', '/admin/keszletlista/get', 'keszletlistaController#createLista', 'adminkeszletlistaget');
 $router->map('GET', '/admin/keszletlista/export', 'keszletlistaController#exportLista', 'adminkeszletlistaexport');
 
+$router->map('GET', '/admin/leltar/view', 'leltarController#view', 'adminleltarview');
+$router->map('GET', '/admin/leltar/export', 'leltarController#exportLista', 'adminleltarexport');
+
 $router->map('GET', '/admin/keresoszolista/view', 'keresoszolistaController#view', 'adminkeresoszolistaview');
 $router->map('GET', '/admin/keresoszolista/get', 'keresoszolistaController#createLista', 'adminkeresoszolistaget');
 
