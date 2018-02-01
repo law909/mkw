@@ -807,6 +807,10 @@ class Bizonylatfej {
         $ret['tulajbankszamlaszam'] = $this->getTulajbankszamlaszam();
         $ret['tulajiban'] = $this->getTulajiban();
         $ret['tulajswift'] = $this->getTulajswift();
+        $ret['tulajkisadozo'] = $this->getTulajkisadozo();
+        $ret['tulajegyenivallalkozo'] = $this->getTulajegyenivallalkozo();
+        $ret['tulajevnyilvszam'] = $this->getTulajevnyilvszam();
+        $ret['tulajevnev'] = $this->getTulajevnev();
         $ret['partneremail'] = $this->getPartneremail();
         $ret['partnertelefon'] = $this->getPartnertelefon();
         $ret['partnerkeresztnev'] = $this->getPartnerkeresztnev();

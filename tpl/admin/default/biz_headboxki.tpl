@@ -2,7 +2,10 @@
     <div class="headboxborder border">
         <div class="headboxinner">
             <p class="bold">Szállító:</p>
-            <p class="nev bold">{$egyed.tulajnev}</p>
+            <p class="nev bold">{$egyed.tulajnev}{if ($egyed.tulajegyenivallalkozo)} ({$egyed.tulajevnyilvszam}){/if}</p>
+            {if ($egyed.tulajkisadozo)}
+                <p>Kisadózó</p>
+            {/if}
             <p>{$egyed.tulajirszam} {$egyed.tulajvaros}</p>
             <p>{$egyed.tulajutca}</p>
             <p>Adószám: {$egyed.tulajadoszam}</p>

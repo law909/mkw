@@ -966,7 +966,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 }
             }
             $view = $this->createView($tplname);
-            $this->setVars($view);
+            $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+            $bt->setTemplateVars($view);
+//            $this->setVars($view);
             $x = $o->toLista();
             $view->setVar('egyed', $x);
             $view->setVar('afaosszesito', $this->getRepo()->getAFAOsszesito($o));
