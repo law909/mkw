@@ -391,6 +391,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['szepkartyaervenyessegstr'] = $t->getSzepkartyaervenyessegStr();
         $x['szepkartyatipus'] = $t->getSzepkartyatipus();
         $x['szepkartyatipusnev'] = $t->getSzepkartyatipusNev();
+        $x['szepkartyakifizetve'] = $t->getSzepkartyakifizetve();
         $x['nincspenzmozgas'] = $t->getNincspenzmozgas();
         if ($oper === $this->inheritOperation) {
             $x['fakekintlevoseg'] = false;

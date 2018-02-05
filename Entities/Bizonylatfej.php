@@ -571,6 +571,9 @@ class Bizonylatfej {
     private $szepkartyatipus;
 
     /** @ORM\Column(type="boolean") */
+    private $szepkartyakifizetve = false;
+
+    /** @ORM\Column(type="boolean") */
     private $nincspenzmozgas = true;
 
     /** @ORM\Column(type="integer",nullable=true) */
@@ -766,6 +769,8 @@ class Bizonylatfej {
         $ret['id'] = $this->getId();
         $ret['lastmodstr'] = $this->getLastmodStr();
         $ret['createdstr'] = $this->getCreatedStr();
+        $ret['updatedby'] = $this->getUpdatedbyNev();
+        $ret['createdby'] = $this->getCreatedbyNev();
         $ret['editprinted'] = $this->getBizonylattipus() ? $this->getBizonylattipus()->getEditprinted() : false;
         $ret['bizonylatnev'] = $this->getBizonylatnev();
         $ret['nyomtatva'] = $this->getNyomtatva();
@@ -857,6 +862,11 @@ class Bizonylatfej {
         $ret['partnerktdatalany'] = $this->getPartnerktdatalany();
         $ret['partnerktdatvallal'] = $this->getPartnerktdatvallal();
         $ret['partnerktdszerzszam'] = $this->getPartnerktdszerzszam();
+        $ret['szepkartyanev'] = $this->getSzepkartyanev();
+        $ret['szepkartyaszam'] = $this->getSzepkartyaszam();
+        $ret['szepkartyaervenyesseg'] = $this->getSzepkartyaervenyessegStr();
+        $ret['szepkartyatipus'] = $this->getSzepkartyatipusNev();
+        $ret['szepkartyakifizetve'] = $this->getSzepkartyakifizetve();
         if (\mkw\store::getConfigValue('admin', false)) {
             $ret['printurl'] = \mkw\store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejprint', false, array(), array(
                 'id' => $this->getId()
@@ -3455,6 +3465,20 @@ class Bizonylatfej {
      */
     public function setSimpleedit($simpleedit) {
         $this->simpleedit = $simpleedit;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzepkartyakifizetve() {
+        return $this->szepkartyakifizetve;
+    }
+
+    /**
+     * @param mixed $szepkartyakifizetve
+     */
+    public function setSzepkartyakifizetve($szepkartyakifizetve) {
+        $this->szepkartyakifizetve = $szepkartyakifizetve;
     }
 
 }
