@@ -42,8 +42,8 @@
                 <div>
                     <select name="mozgat">
                         <option value="0">{at('minden')}</option>
-                        <option value="1" selected="selected">{at('csak ami mozgat')}</option>
-                        <option value="2">{at('csak ami NEM mozgat')}</option>
+                        <option value="1"{if ($keszletetmozgat)} selected="selected"{/if}>{at('csak ami mozgat')}</option>
+                        <option value="2"{if (!$keszletetmozgat)} selected="selected"{/if}>{at('csak ami NEM mozgat')}</option>
                     </select>
                 </div>
                 <div class="matt-hseparator"></div>

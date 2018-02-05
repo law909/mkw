@@ -8,6 +8,7 @@ class termekkartonController extends \mkwhelpers\Controller {
 
     public function view() {
         $termekid = $this->params->getIntRequestParam('id');
+        /** @var \Entities\Termek $termek */
         $termek = $this->getRepo('Entities\Termek')->find($termekid);
 
         $view = $this->createView('termekkarton.tpl');
@@ -17,6 +18,7 @@ class termekkartonController extends \mkwhelpers\Controller {
         $view->setVar('termekid', $termekid);
         $view->setVar('termeknev', $termek->getNev());
         $view->setVar('cikkszam', $termek->getCikkszam());
+        $view->setVar('keszletetmozgat', $termek->getMozgat());
         if ($termek) {
             $tc = new termekController($this->params);
             $view->setVar('valtozatlista', $tc->getValtozatList($termekid, null));
