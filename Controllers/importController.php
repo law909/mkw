@@ -1554,7 +1554,8 @@ class importController extends \mkwhelpers\Controller {
 
             @\unlink('makszutov_fuggoben.txt');
 
-            $ch = \curl_init('https://www.tavcso-mikroszkop.hu/partner-arlista?format=csv');
+//            $ch = \curl_init('https://www.tavcso-mikroszkop.hu/partner-arlista?format=csv');
+            $ch = \curl_init('https://www.tavcso-mikroszkop.hu/dealer-prices.csv?username=quixoft&password=$H$9FHZxcbwkGLAgAmXDgLhf7A/4vk/5R1');
             $fh = fopen('makszutov.txt', 'w');
             \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             \curl_setopt($ch, CURLOPT_FILE, $fh);
