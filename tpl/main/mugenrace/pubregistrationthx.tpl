@@ -13,7 +13,7 @@
 	<div class="row">
 		<div class="span10 offset1">
 			<div class="form-header">
-				<h2>{t('Köszönjük a regisztrációt!')}</h2>
+				<h2>Köszönjük a regisztrációt!</h2>
 			</div>
             <div>
                 <a href="\pr" class="btn okbtn">Regisztrálok</a>

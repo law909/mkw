@@ -13,53 +13,53 @@
 	<div class="row">
 		<div class="span10 offset1">
 			<div class="form-header">
-				<h2>{t('Regisztráció')}</h2>
+				<h2>Regisztráció</h2>
 			</div>
 			<div id="adatmodositasTabbable">
                 <form id="FiokAdataim" class="form-horizontal" action="/prsave" method="post">
                     <fieldset>
                         <div class="control-group">
-                            <label class="control-label" for="VezeteknevEdit">{t('Név')}*:</label>
+                            <label class="control-label" for="VezeteknevEdit">Név*:</label>
                             <div class="controls">
-                                <input id="VezeteknevEdit" name="vezeteknev" type="text" class="input-medium" placeholder="{t('vezetéknév')}" value="{$user.vezeteknev}" required>
-                                <input id="KeresztnevEdit" name="keresztnev" type="text" class="input-medium" placeholder="{t('keresztnév')}" value="{$user.keresztnev}" required>
+                                <input id="VezeteknevEdit" name="vezeteknev" type="text" class="input-medium" placeholder="vezetéknév" value="{$user.vezeteknev}" required>
+                                <input id="KeresztnevEdit" name="keresztnev" type="text" class="input-medium" placeholder="keresztnév" value="{$user.keresztnev}" required>
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label" for="EmailEdit">{t('Email')}*:</label>
+                            <label class="control-label" for="EmailEdit">Email*:</label>
                             <div class="controls">
                                 <input id="EmailEdit" name="email" type="email" class="input-large" value="{$user.email}" required>
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label" for="TelefonEdit">{t('Telefon')}:</label>
+                            <label class="control-label" for="TelefonEdit">Telefon:</label>
                             <div class="controls">
                                 <input id="TelefonEdit" name="telefon" type="text" class="input-large" value="{$user.telefon}">
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label" for="SzamlazasiNevEdit">{t('Név')}:</label>
+                            <label class="control-label" for="SzamlazasiNevEdit">Név:</label>
                             <div class="controls">
-                                <input id="SzamlazasiNevEdit" name="nev" type="text" class="input-xlarge" placeholder="{t('számlázási név')}" value="{$user.nev}">
+                                <input id="SzamlazasiNevEdit" name="nev" type="text" class="input-xlarge" placeholder="számlázási név" value="{$user.nev}">
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label" for="SzamlazasiAdoszamEdit">{t('Adószám')}:</label>
+                            <label class="control-label" for="SzamlazasiAdoszamEdit">Adószám:</label>
                             <div class="controls">
-                                <input id="SzamlazasiAdoszamEdit" name="adoszam" type="text" class="input-medium" placeholder="{t('adószám')}" value="{$user.adoszam}">
+                                <input id="SzamlazasiAdoszamEdit" name="adoszam" type="text" class="input-medium" placeholder="adószám" value="{$user.adoszam}">
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label" for="SzamlazasiCimEdit">{t('Számlázási cím')}:</label>
+                            <label class="control-label" for="SzamlazasiCimEdit">Számlázási cím:</label>
                             <div class="controls">
-                                <input id="SzamlazasiCimEdit" name="irszam" type="text" class="input-mini" placeholder="{t('ir.szám')}" value="{$user.irszam}">
-                                <input name="varos" type="text" class="input-medium" placeholder="{t('város')}" value="{$user.varos}">
-                                <input name="utca" type="text" class="input-large" placeholder="{t('utca')}" value="{$user.utca}">
-                                <input name="hazszam" type="text" class="input-mini" placeholder="{t('házszám')}" value="{$user.hazszam}">
+                                <input id="SzamlazasiCimEdit" name="irszam" type="text" class="input-mini" placeholder="ir.szám" value="{$user.irszam}">
+                                <input name="varos" type="text" class="input-medium" placeholder="város" value="{$user.varos}">
+                                <input name="utca" type="text" class="input-large" placeholder="utca" value="{$user.utca}">
+                                <input name="hazszam" type="text" class="input-mini" placeholder="házszám" value="{$user.hazszam}">
                             </div>
                         </div>
                         <div class="form-actions">
-                            <button type="submit" class="btn okbtn">{t('Mentés')}</button>
+                            <button type="submit" class="btn okbtn">Mentés</button>
                         </div>
                     </fieldset>
                 </form>
