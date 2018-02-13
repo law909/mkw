@@ -957,7 +957,7 @@ var bizonylathelper = function($) {
 
                 calcOsszesen();
 
-                if (!$.browser.mobile) {
+                if (!$.browser.mobile && $.fn.flyout) {
                     $('.js-toflyout').flyout();
                 }
             },
@@ -1524,7 +1524,8 @@ var bizonylathelper = function($) {
     }
 
     return {
-        createMattable: createMattable
+        createMattable: createMattable,
+        getMattKarbConfig: getMattKarbConfig
     };
 
 }(jQuery);

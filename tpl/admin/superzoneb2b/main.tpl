@@ -2,6 +2,10 @@
 
 {block "inhead"}
     <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
+    <script type="text/javascript" src="/js/admin/default/jquery.form.js"></script>
+    <script type="text/javascript" src="/js/admin/default/jquery.mattkarb.js"></script>
+    <script type="text/javascript" src="/js/admin/default/bizonylathelper.js"></script>
+    <script type="text/javascript" src="/js/admin/superzoneb2b/appinit.js"></script>
 {/block}
 
 {block "kozep"}
@@ -173,4 +177,9 @@
         </div>
         {/if}
     </div>
+    <div class="clearboth">
+    <div id="mattkarb" class="mainbox balra">
+    </div>
+    </div>
+
 {/block}
