@@ -17,7 +17,7 @@
     <div class="control-group">
         <label class="control-label" for="MIJSZtanitasNapEdit{$mijsztanitas.id}">{t('Melyik nap')}:</label>
         <div class="controls">
-            <select id="MIJSZtanitasNapEdit{$mijsz.id}" name="mijsztanitasnap_{$mijsztanitas.id}">
+            <select id="MIJSZtanitasNapEdit{$mijsztanitas.id}" name="mijsztanitasnap_{$mijsztanitas.id}">
                 <option value="">{t('válasszon')}</option>
                 {foreach $mijsztanitas.mijsztanitasnaplist as $_valuta}
                     <option value="{$_valuta.id}"{if ($_valuta.selected)} selected="selected"{/if}>{t($_valuta.caption)}</option>
@@ -29,7 +29,7 @@
     <div class="control-group">
         <label class="control-label" for="MIJSZtanitasSzintEdit{$mijsztanitas.id}">{t('Óra szintje')}:</label>
         <div class="controls">
-            <select id="MIJSZtanitasSzintEdit{$mijsz.id}" name="mijsztanitasszint_{$mijsztanitas.id}">
+            <select id="MIJSZtanitasSzintEdit{$mijsztanitas.id}" name="mijsztanitasszint_{$mijsztanitas.id}">
                 <option value="">{t('válasszon')}</option>
                 {foreach $mijsztanitas.mijsztanitasszintlist as $_valuta}
                     <option value="{$_valuta.id}"{if ($_valuta.selected)} selected="selected"{/if}>{$_valuta.caption}</option>
