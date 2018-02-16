@@ -15,6 +15,7 @@
                     <li><a href="#oralatogatasok" data-toggle="tab">{t('Óralátogatások')}</a></li>
                     <li><a href="#tanitas" data-toggle="tab">{t('Oktatott órák')}</a></li>
                     <li><a href="#pune" data-toggle="tab">{t('Pune látogatások')}</a></li>
+                    <li><a href="#szamla" data-toggle="pill">My invoices</a></li>
 					<li><a href="#jelszo" data-toggle="tab">{t('Jelszó módosítása')}</a></li>
 				</ul>
 				<div class="tab-content">
@@ -169,6 +170,75 @@
                                 </div>
                             </fieldset>
                         </form>
+                    </div>
+                    <div class="tab-pane" id="szamla">
+                        {if (count($szamlalist)>0)}
+                            <table class="acc-megrendeles">
+                                <thead class="acc-megrendeles">
+                                <td>{t('Számlaszám')}</td>
+                                <td>{t('Kelt')}</td>
+                                <td class="textalignright">{t('Érték')}</td>
+                                <td></td>
+                                <td></td>
+                                </thead>
+                                <tbody class="acc-megrendeles">
+                                {foreach $szamlalist as $szamla}
+                                    <tr class="acc-megrendelesbordertop acc-megrendelestablerow js-accmegrendelesopen">
+                                        <td>{$szamla.id}</td>
+                                        <td>{$szamla.kelt}</td>
+                                        <td class="textalignright acc-price">{number_format($szamla.brutto, 2, '.', ' ')} {$szamla.valutanemnev}</td>
+                                        <td><a href="/szamlaprint?id={$szamla.id}" target="_blank">{t('Nyomtat')}</a></td>
+                                        <td><a href="#" class="js-accmegrendelesopen"><img src="/themes/main/mkwcansas/img/i_down.png"></a></td>
+                                    </tr>
+                                    <tr class="notvisible acc-megrendelesborderbottom">
+                                        <td colspan="5">
+                                            <table>
+                                                <tr>
+                                                    <td><span class="acc-megrendelescaption">{t('Számlázási cím')}:</span></td>
+                                                    <td>{$szamla.szamlanev|default} {$szamla.szamlairszam|default} {$szamla.szamlavaros|default} {$szamla.szamlautca} {$szamla.szamlahazszam}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="acc-megrendelescaption">{t('Adószám')}:</span></td>
+                                                    <td>{$szamla.adoszam|default}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="acc-megrendelescaption">{t('Fizetési mód')}:</span></td>
+                                                    <td>{$szamla.fizmodnev|default}</td>
+                                                </tr>
+                                            </table>
+                                            <table class="acc-megrendelestetellist">
+                                                <thead class="acc-megrendelestetellist">
+                                                <td>{t('Item')}</td>
+                                                <td><div class="textalignright">{t('Egységár')}</div></td>
+                                                <td><div class="textaligncenter">{t('Mennyiség')}</div></td>
+                                                <td><div class="textalignright">{t('Érték')}</div></td>
+                                                </thead>
+                                                <tbody>
+                                                {foreach $szamla.tetellista as $tetel}
+                                                    <tr class="clickable" data-href="{$tetel.link}">
+                                                        <td><div>{$tetel.caption}</div>
+                                                            <div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</div>
+                                                            {$tetel.cikkszam}</td>
+                                                        <td><div class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$tetel.valutanemnev}</div></td>
+                                                        <td>
+                                                            <div class="textaligncenter">
+                                                                <div>{number_format($tetel.mennyiseg,0,',','')}</div>
+                                                            </div>
+                                                        </td>
+                                                        <td><div class="textalignright">{number_format($tetel.brutto, 2, ',', ' ')} {$tetel.valutanemnev}</div></td>
+                                                    </tr>
+                                                {/foreach}
+                                                </tbody>
+                                            </table>
+                                            <div class="textalignright bold"><b>{t('Összesen')}: {number_format($szamla.fizetendo, 2, ',', ' ')} {$tetel.valutanemnev}</b></div>
+                                        </td>
+                                    </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        {else}
+                            {t('Még nincs számlája')}.
+                        {/if}
                     </div>
 					<div class="tab-pane" id="jelszo">
 						<form id="JelszoChangeForm" class="form-horizontal" action="/fiok/ment/jelszo" method="post">

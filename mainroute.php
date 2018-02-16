@@ -112,6 +112,8 @@ $router->map('POST', '/termekertesito/save', 'termekertesitoController#save', 't
 
 $router->map('POST', '/setorszag', 'mainController#setOrszag', 'setorszag');
 
+$router->map('GET', '/szamlaprint', 'szamlafejController#doPrint', 'szamlaprint');
+
 $router->map('GET', '/export/grando', 'exportController#GrandoExport', 'grandoexport');
 $router->map('GET', '/export/shophunter', 'exportController#ShopHunterExport', 'shophunterexport');
 $router->map('GET', '/export/arfurkesz', 'exportController#ArfurkeszExport', 'arfurkeszexport');

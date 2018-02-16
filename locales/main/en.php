@@ -216,5 +216,9 @@ return array(
     'szombat' => 'saturday',
     'vasárnap' => 'sunday',
     'Pontos dátum' => 'Date interval',
-    'Napok száma' => 'Number of days'
+    'Napok száma' => 'Number of days',
+    'Számlaszám' => 'Invoice no.',
+    'Kelt' => 'Date',
+    'Még nincs számlája' => 'You don\'t have any invoices yet',
+    'Nyomtat' => 'Print'
 );

@@ -249,6 +249,12 @@ var fiok = (function($) {
                     }
                 });
         }
+
+        $('.js-accmegrendelesopen').on('click', function() {
+            $(this).next('tr').toggleClass('notvisible');
+            return true;
+        });
+
     }
 
 	return {
