@@ -1004,7 +1004,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $filter->addFilter('partner', '=', $this->getRepo('Entities\Partner')->getLoggedInUser());
         }
 
-        $l = $this->getRepo()->getWithJoins($filter, array('kelt' => 'ASC'));
+        $l = $this->getRepo()->getWithJoins($filter, array('kelt' => 'DESC'));
         $ret = array();
         foreach ($l as $it) {
             $ret[] = $it->toLista();
