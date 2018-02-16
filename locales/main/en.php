@@ -220,5 +220,6 @@ return array(
     'Számlaszám' => 'Invoice no.',
     'Kelt' => 'Date',
     'Még nincs számlája' => 'You don\'t have any invoices yet',
-    'Nyomtat' => 'Print'
+    'Nyomtat' => 'Print',
+    'Számláim' => 'My invoices'
 );

@@ -15,7 +15,7 @@
                     <li><a href="#oralatogatasok" data-toggle="tab">{t('Óralátogatások')}</a></li>
                     <li><a href="#tanitas" data-toggle="tab">{t('Oktatott órák')}</a></li>
                     <li><a href="#pune" data-toggle="tab">{t('Pune látogatások')}</a></li>
-                    <li><a href="#szamla" data-toggle="pill">My invoices</a></li>
+                    <li><a href="#szamla" data-toggle="pill">{t('Számláim')}</a></li>
 					<li><a href="#jelszo" data-toggle="tab">{t('Jelszó módosítása')}</a></li>
 				</ul>
 				<div class="tab-content">
