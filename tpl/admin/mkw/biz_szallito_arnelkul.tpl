@@ -45,5 +45,4 @@
         </div>
         <div class="line"></div>
     </div>
-    <div class="keszult textaligncenter">Készült az MKW Webshop számlázó moduljával.</div>
 {/block}

@@ -53,6 +53,12 @@
         <div class="container">
         {block "body"}
         {/block}
+            <div class="clear topmargin">
+                {if ($egyed.printrendelet)}
+                    <p class="keszult">Jelen számla megfelel a 47/2007 (XII.29) PM rendeletben előírtaknak.</p>
+                {/if}
+                <p class="keszult">Készült a(z) {if ($egyed.programnev)}{$egyed.programnev} programmal{else}MKW Webshop számlázó moduljával{/if}.</p>
+            </div>
         </div>
 	</body>
 </html>

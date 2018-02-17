@@ -43,6 +43,12 @@
         <div class="container">
         {block "body"}
         {/block}
+        <div class="keszult textaligncenter">
+            {if ($egyed.printrendelet)}
+                <p>Jelen számla megfelel a 47/2007 (XII.29) PM rendeletben előírtaknak.</p>
+            {/if}
+            <p>Készült a(z) {if ($egyed.programnev)}{$egyed.programnev}{else}Billy számlázó{/if} programmal.</p>
+        </div>
         </div>
 	</body>
 </html>

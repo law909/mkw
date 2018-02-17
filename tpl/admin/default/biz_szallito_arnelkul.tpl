@@ -45,5 +45,4 @@
         </div>
         <div class="line"></div>
     </div>
-    <div class="keszult textaligncenter">Készült a Billy számlázó programmal.</div>
 {/block}

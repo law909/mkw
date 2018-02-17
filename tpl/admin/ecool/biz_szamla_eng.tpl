@@ -228,7 +228,5 @@
         {if ($egyed.afa == 0)}
         <p>ÁFA körön kívül eső, az ÁFÁ-t a vevő fizeti.</p>
         {/if}
-        <p class="keszult">Jelen számla megfelel a 47/2007 (XII.29) PM rendeletben előírtaknak.</p>
-        <p class="keszult">Készült a Billy számlázó moduljával.</p>
     </div>
 {/block}

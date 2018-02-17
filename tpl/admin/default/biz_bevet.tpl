@@ -124,5 +124,4 @@
             </tbody>
         </table>
     </div>
-    <div class="keszult textaligncenter">Készült a Billy számlázó programmal.</div>
 {/block}

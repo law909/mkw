@@ -43,6 +43,7 @@
         <div class="container">
         {block "body"}
         {/block}
+            <div class="keszult textaligncenter">Készült a(z) {if ($egyed.programnev)}{$egyed.programnev} programmal{else}MKW Webshop számlázó moduljával{/if}.</div>
         </div>
 	</body>
 </html>

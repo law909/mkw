@@ -496,6 +496,10 @@
                             <td><label for="TulajcrcEdit">{at('CRC')}:</label></td>
                             <td><input id="TulajcrcEdit" name="tulajcrc" type="password" value=""></td>
                         </tr>
+                        <tr>
+                            <td><label for="TulajprogramnevEdit">{at('Szoftver hivatalos neve')}:</label></td>
+                            <td><input id="TulajprogramnevEdit" name="programnev" type="text" value="{$programnev}"></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

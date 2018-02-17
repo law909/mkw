@@ -135,7 +135,4 @@
             Fizetendő végösszeg: {bizformat($egyed.fizetendo)} {$egyed.valutanemnev}
         </div>
     </div>
-    <div class="topmargin">
-        <p class="keszult">Készült az MKW Webshop számlázó moduljával.</p>
-    </div>
 {/block}

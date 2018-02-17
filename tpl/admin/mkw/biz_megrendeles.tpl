@@ -95,5 +95,4 @@
             </tbody>
         </table>
     </div>
-    <div class="keszult textaligncenter">Készült az MKW Webshop számlázó moduljával.</div>
 {/block}

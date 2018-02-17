@@ -37,6 +37,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::Tulajevnyilvszam, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::Tulajevnev);
         $view->setVar(\mkw\consts::Tulajevnev, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::ProgramNev);
+        $view->setVar(\mkw\consts::ProgramNev, ($p ? $p->getErtek() : ''));
 
 //        $p = $repo->find(\mkw\consts::Tulajcrc);
 //        $view->setVar(\mkw\consts::Tulajcrc, ($p ? $p->getErtek() : ''));
@@ -512,6 +514,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Tulajegyenivallalkozo, $this->params->getBoolRequestParam(\mkw\consts::Tulajegyenivallalkozo));
         $this->setObj(\mkw\consts::Tulajevnev, $this->params->getStringRequestParam(\mkw\consts::Tulajevnev));
         $this->setObj(\mkw\consts::Tulajevnyilvszam, $this->params->getStringRequestParam(\mkw\consts::Tulajevnyilvszam));
+        $this->setObj(\mkw\consts::ProgramNev, $this->params->getStringRequestParam(\mkw\consts::ProgramNev));
 
         if ($this->params->getStringRequestParam('tulajcrc')) {
             $this->setObj(\mkw\consts::Tulajcrc, md5($this->params->getStringRequestParam('tulajcrc') . \mkw\store::getAdminSalt()));

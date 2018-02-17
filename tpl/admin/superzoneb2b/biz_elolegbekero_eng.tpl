@@ -155,6 +155,5 @@
     <div class="topmargin">
         <p>Átutaláskor kérjük, a közleményben tüntesse fel a díjbekérő számát: {$egyed.id}</p>
         <p>At transfer of amount, please indicate the number of voucher in comment: {$egyed.id}</p>
-        <p class="keszult">Készült az MKW Webshop számlázó moduljával.</p>
     </div>
 {/block}

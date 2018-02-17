@@ -579,6 +579,9 @@ class Bizonylatfej {
     /** @ORM\Column(type="integer",nullable=true) */
     private $emagid;
 
+    /** @ORM\Column(type="string", length=100,nullable=true) */
+    private $programnev;
+
     public function __toString() {
         return (string)$this->id;
     }
@@ -773,6 +776,7 @@ class Bizonylatfej {
         $ret['createdby'] = $this->getCreatedbyNev();
         $ret['editprinted'] = $this->getBizonylattipus() ? $this->getBizonylattipus()->getEditprinted() : false;
         $ret['bizonylatnev'] = $this->getBizonylatnev();
+        $ret['programnev'] = $this->getProgramnev();
         $ret['nyomtatva'] = $this->getNyomtatva();
         $ret['raktarnev'] = $this->getRaktarnev();
         $ret['kelt'] = $this->getKeltStr();
@@ -976,6 +980,7 @@ class Bizonylatfej {
         $this->setTulajegyenivallalkozo(\mkw\store::getParameter(\mkw\consts::Tulajegyenivallalkozo, false));
         $this->setTulajevnev(\mkw\store::getParameter(\mkw\consts::Tulajevnev));
         $this->setTulajevnyilvszam(\mkw\store::getParameter(\mkw\consts::Tulajevnyilvszam));
+        $this->setProgramnev(\mkw\store::getParameter(\mkw\consts::ProgramNev));
     }
 
     public function calcEsedekesseg() {
@@ -3479,6 +3484,20 @@ class Bizonylatfej {
      */
     public function setSzepkartyakifizetve($szepkartyakifizetve) {
         $this->szepkartyakifizetve = $szepkartyakifizetve;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProgramnev() {
+        return $this->programnev;
+    }
+
+    /**
+     * @param mixed $programnev
+     */
+    public function setProgramnev($programnev) {
+        $this->programnev = $programnev;
     }
 
 }

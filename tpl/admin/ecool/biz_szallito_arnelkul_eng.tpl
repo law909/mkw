@@ -89,7 +89,4 @@
     <div class="halfwidth pull-left topmargin10">
         <p>Összes mennyiség / Total quantity: {bizformat($summennyiseg)}</p>
     </div>
-    <div class="clear topmargin">
-        <p class="keszult">Készült az MKW Webshop számlázó moduljával.</p>
-    </div>
 {/block}
