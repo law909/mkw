@@ -581,6 +581,9 @@ $router->map('GET', '/admin/bizonylattetellista/refresh', 'bizonylattetellistaCo
 $router->map('GET', '/admin/bizonylattetellista/export', 'bizonylattetellistaController#export', 'adminbizonylattetellistaexport');
 $router->map('GET', '/admin/bizonylattetellista/print', 'bizonylattetellistaController#doPrint', 'adminbizonylattetellistaprint');
 
+$router->map('GET', '/admin/teljesitmenyjelentes/view', 'teljesitmenyjelentesController#view', 'adminteljesitmenyjelentesview');
+$router->map('GET', '/admin/teljesitmenyjelentes/refresh', 'teljesitmenyjelentesController#refresh', 'adminteljesitmenyjelentesrefresh');
+
 $router->map('GET', '/admin/bizomanyosertekesiteslista/view', 'bizomanyosertekesiteslistaController#view', 'adminbizomanyosertekesiteslistaview');
 $router->map('GET', '/admin/bizomanyosertekesiteslista/refresh', 'bizomanyosertekesiteslistaController#refresh', 'adminbizomanyosertekesiteslistarefresh');
 

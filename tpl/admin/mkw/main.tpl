@@ -5,20 +5,6 @@
 <div>
     <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
         <div class="ui-widget-header ui-corner-top">
-            <div class="mainboxinner ui-corner-top">Teljesítmény jelentés</div>
-        </div>
-        <div class="mainboxinner">
-            <div class="mainboxinner">
-                {include "tpl/admin/default/comp_idoszak.tpl" comptype="datum" datumtipus="teljesites"}
-                <button class="js-teljesitmenyjelentes ui-widget ui-button ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Frissít</span></button>
-                {include "teljesitmenyjelentesbody.tpl"}
-            </div>
-        </div>
-    </div>
-</div>
-<div>
-    <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
-        <div class="ui-widget-header ui-corner-top">
             <div class="mainboxinner ui-corner-top">Nem kapható termékek, amikre van feliratkozó</div>
         </div>
         <div class="mainboxinner">

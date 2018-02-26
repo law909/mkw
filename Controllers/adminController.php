@@ -113,7 +113,6 @@ class adminController extends mkwhelpers\Controller {
 
                 break;
             case \mkw\store::isMindentkapni():
-                $view->setVar('tjlista', $lista->teljesitmenyJelentes());
                 break;
             case \mkw\store::isKisszamlazo():
                 $view->setVar('lejartkintlevoseg', \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getLejartKintlevosegByValutanem());

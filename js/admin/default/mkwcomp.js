@@ -87,9 +87,18 @@ var mkwcomp = (function($) {
             }
         }
 
+        function getDate(sel) {
+            var d = $(sel).datepicker('getDate');
+            if (d) {
+                return d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + d.getDate();
+            }
+            return '';
+        }
+
         return {
             init: init,
-            clear: clear
+            clear: clear,
+            getDate: getDate
         }
     }
 
