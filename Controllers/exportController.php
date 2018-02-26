@@ -66,6 +66,12 @@ class exportController extends \mkwhelpers\Controller {
                 $leiras = $leiras . '<p>' . $cszoveg . '</p>';
             }
 
+            $szallitasiido = $t->calcSzallitasiido();
+
+            if ($szallitasiido) {
+                $leiras = $leiras . '<p><b>Szállítási határidő ' . $szallitasiido. ' munkanap. Foxpost szállítási módnál ez 1-2 munkanappal meghosszabbodhat.</b></p>';
+            }
+
             $keptomb = array();
             $kepek = $t->getTermekKepek(true);
             /** @var \Entities\TermekKep $k */
