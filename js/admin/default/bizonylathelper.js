@@ -1041,7 +1041,8 @@ var bizonylathelper = function($) {
                         '#feketelistafilter',
                         '#referrerfilter',
                         '#osszegtolfilter',
-                        '#osszegigfilter'
+                        '#osszegigfilter',
+                        '#megjegyzesfilter'
                     ],
                     onClear:function() {
                         $('.js-cimkefilter').removeClass('ui-state-hover');

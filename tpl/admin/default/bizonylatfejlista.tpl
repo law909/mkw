@@ -149,6 +149,11 @@
     </div>
     {/if}
     <div class="matt-hseparator"></div>
+    <div>
+        <label for="megjegyzesfilter">{at('Megjegyzés')}:</label>
+        <input id="megjegyzesfilter" name="megjegyzesfilter" type="text">
+    </div>
+    <div class="matt-hseparator"></div>
     {include "comp_partnercimkefilter.tpl"}
 </div>
 <div class="mattable-pagerwrapper">

@@ -268,6 +268,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 break;
         }
 
+        $f = $this->params->getStringRequestParam('megjegyzesfilter');
+        if ($f) {
+            $filter->addFilter('megjegyzes', 'LIKE', '%' . $f . '%');
+        }
+
         return $filter;
     }
 
