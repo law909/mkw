@@ -49,7 +49,18 @@ class exportController extends \mkwhelpers\Controller {
             /** @var \Entities\TermekValtozat $v */
             foreach ($valtozatok as $v) {
                 if ($v->getElerheto()) {
+
+                    $szallszoveg = false;
+                    $szallitasiido = $t->calcSzallitasiido($v);
+
+                    if ($szallitasiido) {
+                        $szallszoveg = '<b>Szállítási határidő ' . $szallitasiido. ' munkanap.</b>';
+                    }
                     $vszoveg = $vszoveg . '<br>' . $v->getNev() . ' ' . bizformat($t->getBruttoAr($v)) . ' Ft';
+
+                    if ($szallszoveg) {
+                        $vszoveg = $vszoveg . ' ' . $szallszoveg;
+                    }
                 }
             }
             if ($vszoveg) {
@@ -66,11 +77,7 @@ class exportController extends \mkwhelpers\Controller {
                 $leiras = $leiras . '<p>' . $cszoveg . '</p>';
             }
 
-            $szallitasiido = $t->calcSzallitasiido();
-
-            if ($szallitasiido) {
-                $leiras = $leiras . '<p><b>Szállítási határidő ' . $szallitasiido. ' munkanap. Foxpost szállítási módnál ez 1-2 munkanappal meghosszabbodhat.</b></p>';
-            }
+            $leiras = $leiras . '<p><b>A szállítási határidő Foxpost szállítási módnál 1-2 munkanappal meghosszabbodhat.</b></p>';
 
             $keptomb = array();
             $kepek = $t->getTermekKepek(true);
