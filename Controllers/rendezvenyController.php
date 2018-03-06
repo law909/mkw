@@ -26,6 +26,15 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $x['kezdodatum'] = $t->getKezdodatumStr();
         $x['jogateremnev'] = $t->getJogateremNev();
         $x['rendezvenyallapotnev'] = $t->getRendezvenyallapotNev();
+        $x['todoplakat'] = $t->getTodoplakat();
+        $x['todofbevent'] = $t->getTodofbevent();
+        $x['todofbhirdetes'] = $t->getTodofbhirdetes();
+        $x['todofotobe'] = $t->getTodofotobe();
+        $x['todoleirasbe'] = $t->getTodoleirasbe();
+        $x['todonaptar'] = $t->getTodonaptar();
+        $x['todourlap'] = $t->getTodourlap();
+        $x['todowebposzt'] = $t->getTodowebposzt();
+        $x['todowebslider'] = $t->getTodowebslider();
         return $x;
     }
 
@@ -144,6 +153,47 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $jtcs = new jogateremController($this->params);
         $view->setVar('jogateremlist', $jtcs->getSelectList(($record ? $record->getJogateremId() : 0)));
         return $view->getTemplateResult();
+    }
+
+    public function setflag() {
+        $id = $this->params->getIntRequestParam('id');
+        $kibe = $this->params->getBoolRequestParam('kibe');
+        $flag = $this->params->getStringRequestParam('flag');
+        /** @var \Entities\Rendezveny $obj */
+        $obj = $this->getRepo()->find($id);
+        if ($obj) {
+            switch ($flag) {
+                case 'todonaptar':
+                    $obj->setTodonaptar($kibe);
+                    break;
+                case 'todowebposzt':
+                    $obj->setTodowebposzt($kibe);
+                    break;
+                case 'todowebslider':
+                    $obj->setTodowebslider($kibe);
+                    break;
+                case 'todourlap':
+                    $obj->setTodourlap($kibe);
+                    break;
+                case 'todofbevent':
+                    $obj->setTodofbevent($kibe);
+                    break;
+                case 'todofbhirdetes':
+                    $obj->setTodofbhirdetes($kibe);
+                    break;
+                case 'todoplakat':
+                    $obj->setTodoplakat($kibe);
+                    break;
+                case 'todofotobe':
+                    $obj->setTodofotobe($kibe);
+                    break;
+                case 'todoleirasbe':
+                    $obj->setTodoleirasbe($kibe);
+                    break;
+            }
+            $this->getEm()->persist($obj);
+            $this->getEm()->flush();
+        }
     }
 
 }

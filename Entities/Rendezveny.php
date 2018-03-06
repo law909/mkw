@@ -78,6 +78,33 @@ class Rendezveny {
      */
     private $jogaterem;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $todonaptar = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $todowebposzt = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $todourlap = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $todowebslider = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $todofbevent = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $todofbhirdetes = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $todoplakat = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $todofotobe = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $todoleirasbe = false;
+
     public function getId() {
         return $this->id;
     }
@@ -300,6 +327,132 @@ class Rendezveny {
 
     public function setJogaterem($ra) {
         $this->jogaterem = $ra;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTodonaptar() {
+        return $this->todonaptar;
+    }
+
+    /**
+     * @param mixed $todonaptar
+     */
+    public function setTodonaptar($todonaptar) {
+        $this->todonaptar = $todonaptar;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTodowebposzt() {
+        return $this->todowebposzt;
+    }
+
+    /**
+     * @param mixed $todowebposzt
+     */
+    public function setTodowebposzt($todowebposzt) {
+        $this->todowebposzt = $todowebposzt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTodourlap() {
+        return $this->todourlap;
+    }
+
+    /**
+     * @param mixed $todourlap
+     */
+    public function setTodourlap($todourlap) {
+        $this->todourlap = $todourlap;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTodowebslider() {
+        return $this->todowebslider;
+    }
+
+    /**
+     * @param mixed $todowebslider
+     */
+    public function setTodowebslider($todowebslider) {
+        $this->todowebslider = $todowebslider;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTodofbevent() {
+        return $this->todofbevent;
+    }
+
+    /**
+     * @param mixed $todofbevent
+     */
+    public function setTodofbevent($todofbevent) {
+        $this->todofbevent = $todofbevent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTodofbhirdetes() {
+        return $this->todofbhirdetes;
+    }
+
+    /**
+     * @param mixed $todofbhirdetes
+     */
+    public function setTodofbhirdetes($todofbhirdetes) {
+        $this->todofbhirdetes = $todofbhirdetes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTodoplakat() {
+        return $this->todoplakat;
+    }
+
+    /**
+     * @param mixed $todoplakat
+     */
+    public function setTodoplakat($todoplakat) {
+        $this->todoplakat = $todoplakat;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTodofotobe() {
+        return $this->todofotobe;
+    }
+
+    /**
+     * @param mixed $todofotobe
+     */
+    public function setTodofotobe($todofotobe) {
+        $this->todofotobe = $todofotobe;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTodoleirasbe() {
+        return $this->todoleirasbe;
+    }
+
+    /**
+     * @param mixed $todoleirasbe
+     */
+    public function setTodoleirasbe($todoleirasbe) {
+        $this->todoleirasbe = $todoleirasbe;
     }
 
 }

@@ -77,6 +77,7 @@
 	<th>{at('Név')}</th>
 	<th>{at('Tanár')}</th>
     <th>{at('Állapot')}</th>
+    <th>{at('Todo')}</th>
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>

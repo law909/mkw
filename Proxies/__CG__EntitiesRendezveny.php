@@ -64,10 +64,10 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todonaptar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebposzt', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todourlap', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebslider', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbevent', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbhirdetes', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoplakat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofotobe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoleirasbe'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todonaptar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebposzt', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todourlap', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebslider', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbevent', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbhirdetes', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoplakat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofotobe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoleirasbe'];
     }
 
     /**
@@ -571,6 +571,204 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJogaterem', [$ra]);
 
         return parent::setJogaterem($ra);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTodonaptar()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTodonaptar', []);
+
+        return parent::getTodonaptar();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTodonaptar($todonaptar)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTodonaptar', [$todonaptar]);
+
+        return parent::setTodonaptar($todonaptar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTodowebposzt()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTodowebposzt', []);
+
+        return parent::getTodowebposzt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTodowebposzt($todowebposzt)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTodowebposzt', [$todowebposzt]);
+
+        return parent::setTodowebposzt($todowebposzt);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTodourlap()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTodourlap', []);
+
+        return parent::getTodourlap();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTodourlap($todourlap)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTodourlap', [$todourlap]);
+
+        return parent::setTodourlap($todourlap);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTodowebslider()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTodowebslider', []);
+
+        return parent::getTodowebslider();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTodowebslider($todowebslider)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTodowebslider', [$todowebslider]);
+
+        return parent::setTodowebslider($todowebslider);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTodofbevent()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTodofbevent', []);
+
+        return parent::getTodofbevent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTodofbevent($todofbevent)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTodofbevent', [$todofbevent]);
+
+        return parent::setTodofbevent($todofbevent);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTodofbhirdetes()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTodofbhirdetes', []);
+
+        return parent::getTodofbhirdetes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTodofbhirdetes($todofbhirdetes)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTodofbhirdetes', [$todofbhirdetes]);
+
+        return parent::setTodofbhirdetes($todofbhirdetes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTodoplakat()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTodoplakat', []);
+
+        return parent::getTodoplakat();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTodoplakat($todoplakat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTodoplakat', [$todoplakat]);
+
+        return parent::setTodoplakat($todoplakat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTodofotobe()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTodofotobe', []);
+
+        return parent::getTodofotobe();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTodofotobe($todofotobe)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTodofotobe', [$todofotobe]);
+
+        return parent::setTodofotobe($todofotobe);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTodoleirasbe()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTodoleirasbe', []);
+
+        return parent::getTodoleirasbe();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTodoleirasbe($todoleirasbe)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTodoleirasbe', [$todoleirasbe]);
+
+        return parent::setTodoleirasbe($todoleirasbe);
     }
 
 }
