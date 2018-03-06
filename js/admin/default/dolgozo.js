@@ -38,8 +38,9 @@ $(document).ready(function() {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
     }
-
-    if ($.fn.mattkarb) {
-        $('#mattkarb').mattkarb($.extend({}, dolgozo, {independent: true}));
+    else {
+        if ($.fn.mattkarb) {
+            $('#mattkarb').mattkarb($.extend({}, dolgozo, {independent: true}));
+        }
     }
 });

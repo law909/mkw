@@ -11,6 +11,17 @@
             <table>
                 <tbody>
                 <tr>
+                    <td><label for="AllapotEdit">{at('Rendezvény állapota')}:</label></td>
+                    <td><select id="AllapotEdit" name="rendezvenyallapot">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $rendezvenyallapotlist as $_tanar}
+                                <option
+                                    value="{$_tanar.id}"{if ($_tanar.selected)} selected="selected"{/if}>{$_tanar.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td><label for="NevEdit">{at('Név')}:</label></td>
                     <td colspan="3"><input id="NevEdit" name="nev" type="text" size="83" maxlength="255"
                                            value="{$egyed.nev}" required autofocus></td>
@@ -24,6 +35,17 @@
                     <td><select id="TanarEdit" name="tanar">
                             <option value="">{at('válasszon')}</option>
                             {foreach $tanarlist as $_tanar}
+                                <option
+                                    value="{$_tanar.id}"{if ($_tanar.selected)} selected="selected"{/if}>{$_tanar.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="JogateremEdit">{at('Rendezvény helye')}:</label></td>
+                    <td><select id="JogateremEdit" name="jogaterem">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $jogateremlist as $_tanar}
                                 <option
                                     value="{$_tanar.id}"{if ($_tanar.selected)} selected="selected"{/if}>{$_tanar.caption}</option>
                             {/foreach}

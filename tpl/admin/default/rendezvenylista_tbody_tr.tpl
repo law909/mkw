@@ -7,10 +7,14 @@
             <tbody>
                 <tr><td>{$_egyed.kezdodatum}</td></tr>
                 <tr><td>{$_egyed.termeknev}</td></tr>
+                <tr><td>{$_egyed.jogateremnev}</td></tr>
             </tbody>
         </table>
     </td>
     <td class="cell">
         {$_egyed.tanarnev}
+    </td>
+    <td class="cell">
+        {$_egyed.rendezvenyallapotnev}
     </td>
 </tr>

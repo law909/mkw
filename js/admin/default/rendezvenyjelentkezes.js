@@ -396,8 +396,9 @@ $(document).ready(function() {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
     }
-
-    if ($.fn.mattkarb) {
-        $('#mattkarb').mattkarb($.extend({}, rendezvenyjel, {independent: true}));
+    else {
+        if ($.fn.mattkarb) {
+            $('#mattkarb').mattkarb($.extend({}, rendezvenyjel, {independent: true}));
+        }
     }
 });

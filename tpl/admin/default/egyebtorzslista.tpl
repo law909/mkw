@@ -125,6 +125,10 @@
                 <table id="jogaoratipusgrid"></table>
                 <div id="jogaoratipusgridpager"></div>
             </div>
+            <div class="egyebadat-grid">
+                <table id="rendezvenyallapotgrid"></table>
+                <div id="rendezvenyallapotgridpager"></div>
+            </div>
         {/if}
 
     </div>

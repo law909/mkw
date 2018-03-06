@@ -1395,6 +1395,41 @@ $().ready(
                 caption: 'Jógaóra tipusok'});
             createNav(_jogaoratipus, jogaoratipusgrid);
 
+            // Rendezvenyallapot grid
+            var _rendezvenyallapot = {
+                grid: '#rendezvenyallapotgrid',
+                pager: '#rendezvenyallapotgridpager'
+            };
+            var rendezvenyallapotgrid = $(_rendezvenyallapot.grid).jqGrid({
+                url: '/admin/rendezvenyallapot/jsonlist',
+                editurl: '/admin/rendezvenyallapot/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160, fixed: true,
+                        editable: true,
+                        editoptions: {size: 25, maxlength: 255},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}},
+                    {name: 'sorrend', index: 'sorrend', label: 'Sorrend', width: 25, align: 'right',
+                        editable: true,
+                        editoptions: {},
+                        editrules: {integer: true},
+                        formoptions: {rowpos: 2, label: 'Sorrend:'}}
+                ],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _rendezvenyallapot.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Rendezvény állapotok'});
+            createNav(_rendezvenyallapot, rendezvenyallapotgrid);
+
             // mijszgyakorlasszint grid
             var _mijszgyakorlasszint = {
                 grid: '#mijszgyakorlasszintgrid',

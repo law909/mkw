@@ -64,10 +64,10 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem'];
     }
 
     /**
@@ -483,6 +483,94 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearCreated', []);
 
         return parent::clearCreated();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRendezvenyallapot()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRendezvenyallapot', []);
+
+        return parent::getRendezvenyallapot();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRendezvenyallapotNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRendezvenyallapotNev', []);
+
+        return parent::getRendezvenyallapotNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRendezvenyallapotId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRendezvenyallapotId', []);
+
+        return parent::getRendezvenyallapotId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setRendezvenyallapot($ra)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRendezvenyallapot', [$ra]);
+
+        return parent::setRendezvenyallapot($ra);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getJogaterem()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogaterem', []);
+
+        return parent::getJogaterem();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getJogateremNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogateremNev', []);
+
+        return parent::getJogateremNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getJogateremId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogateremId', []);
+
+        return parent::getJogateremId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setJogaterem($ra)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJogaterem', [$ra]);
+
+        return parent::setJogaterem($ra);
     }
 
 }

@@ -66,6 +66,18 @@ class Rendezveny {
      */
     private $termek;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Rendezvenyallapot")
+     * @ORM\JoinColumn(name="rendezvenyallapot_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $rendezvenyallapot;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Jogaterem")
+     * @ORM\JoinColumn(name="jogaterem_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $jogaterem;
+
     public function getId() {
         return $this->id;
     }
@@ -108,7 +120,7 @@ class Rendezveny {
         if ($adat != '') {
             $this->kezdodatum = new \DateTime(\mkw\store::convDate($adat));
         }
-        else{
+        else {
             $this->kezdodatum = null;
         }
     }
@@ -244,6 +256,50 @@ class Rendezveny {
 
     public function clearCreated() {
         $this->created = null;
+    }
+
+    public function getRendezvenyallapot() {
+        return $this->rendezvenyallapot;
+    }
+
+    public function getRendezvenyallapotNev() {
+        if ($this->rendezvenyallapot) {
+            return $this->rendezvenyallapot->getNev();
+        }
+        return '';
+    }
+
+    public function getRendezvenyallapotId() {
+        if ($this->rendezvenyallapot) {
+            return $this->rendezvenyallapot->getId();
+        }
+        return '';
+    }
+
+    public function setRendezvenyallapot($ra) {
+        $this->rendezvenyallapot = $ra;
+    }
+
+    public function getJogaterem() {
+        return $this->jogaterem;
+    }
+
+    public function getJogateremNev() {
+        if ($this->jogaterem) {
+            return $this->jogaterem->getNev();
+        }
+        return '';
+    }
+
+    public function getJogateremId() {
+        if ($this->jogaterem) {
+            return $this->jogaterem->getId();
+        }
+        return '';
+    }
+
+    public function setJogaterem($ra) {
+        $this->jogaterem = $ra;
     }
 
 }

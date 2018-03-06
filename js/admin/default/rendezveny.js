@@ -1,14 +1,12 @@
 $(document).ready(function() {
+
     var rendezveny = {
         container: '#mattkarb',
         viewUrl: '/admin/rendezveny/getkarb',
         newWindowUrl: '/admin/rendezveny/viewkarb',
         saveUrl: '/admin/rendezveny/save',
         beforeShow: function() {
-            var kezdodatumedit = $('#KezdodatumEdit');
-            kezdodatumedit.datepicker($.datepicker.regional['hu']);
-            kezdodatumedit.datepicker('option', 'dateFormat', 'yy.mm.dd');
-            kezdodatumedit.datepicker('setDate', kezdodatumedit.attr('data-datum'));
+            mkwcomp.datumEdit.init('#KezdodatumEdit');
         },
         onSubmit: function() {
             $('#messagecenter')
@@ -23,7 +21,7 @@ $(document).ready(function() {
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
             filter: {
-                fields: ['#nevfilter']
+                fields: ['#nevfilter', '#tanarfilter', '#teremfilter', '#allapotfilter', '#TolEdit', '#IgEdit']
             },
             tablebody: {
                 url: '/admin/rendezveny/getlistbody'
@@ -34,8 +32,13 @@ $(document).ready(function() {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
     }
-
-    if ($.fn.mattkarb) {
-        $('#mattkarb').mattkarb($.extend({}, rendezveny, {independent: true}));
+    else {
+        if ($.fn.mattkarb) {
+            $('#mattkarb').mattkarb($.extend({}, rendezveny, {independent: true}));
+        }
     }
+
+    mkwcomp.datumEdit.init('#TolEdit');
+    mkwcomp.datumEdit.init('#IgEdit');
+
 });

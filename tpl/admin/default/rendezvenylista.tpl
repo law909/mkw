@@ -11,8 +11,46 @@
 <div id="mattable-select" data-theme="{$theme}">
 <div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Rendezvények')}"></div>
 <div id="mattable-filterwrapper">
-	<label for="nevfilter">{at('Szűrés')}</label>
-	<input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
+    <div class="matt-hseparator"></div>
+    <div>
+        <label for="nevfilter">{at('Szűrés')}</label>
+        <input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
+    </div>
+    <div class="matt-hseparator"></div>
+    {include "comp_idoszak.tpl" comptype="datum"}
+    <div class="matt-hseparator"></div>
+    <div>
+        <label for="tanarfilter">{at('Tanár')}: </label>
+        <select id="tanarfilter" name="tanarfilter">
+            <option value="">{at('válasszon')}</option>
+            {foreach $tanarlist as $_gyarto}
+                <option
+                    value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+            {/foreach}
+        </select>
+    </div>
+    <div class="matt-hseparator"></div>
+    <div>
+        <label for="teremfilter">{at('Hely')}: </label>
+        <select id="teremfilter" name="jogateremfilter">
+            <option value="">{at('válasszon')}</option>
+            {foreach $jogateremlist as $_gyarto}
+                <option
+                    value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+            {/foreach}
+        </select>
+    </div>
+    <div class="matt-hseparator"></div>
+    <div>
+        <label for="allapotfilter">{at('Állapot')}: </label>
+        <select id="allapotfilter" name="rendezvenyallapotfilter">
+            <option value="">{at('válasszon')}</option>
+            {foreach $rendezvenyallapotlist as $_gyarto}
+                <option
+                    value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+            {/foreach}
+        </select>
+    </div>
 </div>
 <div class="mattable-pagerwrapper">
 	<div class="mattable-order">
@@ -38,6 +76,7 @@
 	<th><input class="js-maincheckbox" type="checkbox"></th>
 	<th>{at('Név')}</th>
 	<th>{at('Tanár')}</th>
+    <th>{at('Állapot')}</th>
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>

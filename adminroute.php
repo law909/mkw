@@ -79,6 +79,9 @@ $router->map('POST', '/admin/jogaterem/save', 'jogateremController#save', 'admin
 $router->map('GET', '/admin/jogaoratipus/jsonlist', 'jogaoratipusController#jsonlist', 'adminjogaoratipusjsonlist');
 $router->map('GET', '/admin/jogaoratipus/htmllist', 'jogaoratipusController#htmllist', 'adminjogaoratipushtmllist');
 $router->map('POST', '/admin/jogaoratipus/save', 'jogaoratipusController#save', 'adminjogaoratipussave');
+$router->map('GET', '/admin/rendezvenyallapot/jsonlist', 'rendezvenyallapotController#jsonlist', 'adminrendezvenyallapotjsonlist');
+$router->map('GET', '/admin/rendezvenyallapot/htmllist', 'rendezvenyallapotController#htmllist', 'adminrendezvenyallapothtmllist');
+$router->map('POST', '/admin/rendezvenyallapot/save', 'rendezvenyallapotController#save', 'adminrendezvenyallapotsave');
 
 if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/jogcim/jsonlist', 'jogcimController#jsonlist', 'adminjogcimjsonlist');
