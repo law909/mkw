@@ -34,7 +34,7 @@
 			</tr>
 			</tbody></table>
 		</div>
-		<div id="WebTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
+		<div id="WebTab" class="mattkarb-page">
 			<input id="Menu1LathatoCheck" name="menu1lathato" type="checkbox"{if ($cimke.menu1lathato)}checked="checked"{/if}>{at('Menü 1')}</input>
 			<input id="Menu2LathatoCheck" name="menu2lathato" type="checkbox"{if ($cimke.menu2lathato)}checked="checked"{/if}>{at('Menü 2')}</input>
 			<input id="Menu3LathatoCheck" name="menu3lathato" type="checkbox"{if ($cimke.menu3lathato)}checked="checked"{/if}>{at('Menü 3')}</input>

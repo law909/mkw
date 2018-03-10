@@ -105,7 +105,7 @@ class Rendezveny {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $todoleirasbe = false;
 
-    /** @ORM\OneToMany(targetEntity="RendezvenyDok", mappedBy="rendezveny", cascade={"persist"}) */
+    /** @ORM\OneToMany(targetEntity="RendezvenyDok", mappedBy="rendezveny", cascade={"persist", "remove"}) */
     private $rendezvenydokok;
 
     public function __construct() {

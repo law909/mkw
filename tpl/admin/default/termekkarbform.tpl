@@ -28,6 +28,7 @@
             {/if}
             <li><a href="#WebTab">{at('Webes adatok')}</a></li>
             <li><a href="#CsomagolasTab">{at('Csomagolási adatok')}</a></li>
+            <li><a href="#DokTab">{at('Dokumentumok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <input id="InaktivCheck" name="inaktiv" type="checkbox"
@@ -474,6 +475,12 @@
                 </tr>
                 </tbody>
             </table>
+        </div>
+        <div id="DokTab" class="mattkarb-page" data-visible="visible">
+            {foreach $egyed.dokok as $dok}
+                {include 'dokumentumtarkarb.tpl'}
+            {/foreach}
+            <a class="js-doknewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

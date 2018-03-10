@@ -18,6 +18,7 @@
 			<li><a href="#LoginTab">{at('Bejelentkezés')}</a></li>
 			<li><a href="#BankTab">{at('Banki adatok')}</a></li>
 			<li><a href="#EgyebAzonositoTab">{at('Egyéb azonosító adatok')}</a></li>
+            <li><a href="#DokTab">{at('Dokumentumok')}</a></li>
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
@@ -346,6 +347,12 @@
             </tr>
 			</tbody></table>
 		</div>
+        <div id="DokTab" class="mattkarb-page" data-visible="visible">
+            {foreach $partner.dokok as $dok}
+                {include 'dokumentumtarkarb.tpl'}
+            {/foreach}
+            <a class="js-doknewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+        </div>
 	</div>
 	<input name="oper" type="hidden" value="{$oper}">
 	<input name="id" type="hidden" value="{$partner.id}">

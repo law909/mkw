@@ -2,10 +2,10 @@
 
 namespace Controllers;
 
-class rendezvenydokController extends \mkwhelpers\MattableController {
+class partnerdokController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
-        $this->setEntityName('Entities\RendezvenyDok');
+        $this->setEntityName('Entities\PartnerDok');
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
 //		$this->setListBodyRowTplName('?howto?lista_tbody_tr.tpl');
@@ -16,7 +16,7 @@ class rendezvenydokController extends \mkwhelpers\MattableController {
     public function loadVars($t) {
         $x = array();
         if (!$t) {
-            $t = new \Entities\RendezvenyDok();
+            $t = new \Entities\PartnerDok();
             $this->getEm()->detach($t);
             $x['oper'] = 'add';
             $x['id'] = \mkw\store::createUID();
@@ -44,8 +44,8 @@ class rendezvenydokController extends \mkwhelpers\MattableController {
         echo $view->getTemplateResult();
     }
 
-    public function getSelectList($rendezveny, $selid) {
-        $dokok = $this->getRepo()->getByRendezveny($rendezveny);
+    public function getSelectList($partner, $selid) {
+        $dokok = $this->getRepo()->getByPartner($partner);
         $doklista = array();
         foreach ($dokok as $dok) {
             $doklista[] = array('id' => $dok->getId(), 'caption' => $dok->getUrl(), 'selected' => $dok->getId() == $selid, 'url' => $dok->getUrl(), 'path' => $dok->getPath());

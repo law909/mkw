@@ -13,13 +13,14 @@ class partnerController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t) {
+    protected function loadVars($t, $forKarb = false) {
         $kedvCtrl = new \Controllers\partnertermekcsoportkedvezmenyController($this->params);
         $termekkedvCtrl = new \Controllers\partnertermekkedvezmenyController($this->params);
         $mijszokCtrl = new \Controllers\partnermijszoklevelController($this->params);
         $mijszpuneCtrl = new \Controllers\partnermijszpuneController($this->params);
         $mijszoralatogatasCtrl = new \Controllers\partnermijszoralatogatasController($this->params);
         $mijsztanitasCtrl = new \Controllers\partnermijsztanitasController($this->params);
+        $dokCtrl = new partnerdokController($this->params);
         $x = array();
         if (!$t) {
             $t = new \Entities\Partner();
@@ -111,16 +112,24 @@ class partnerController extends \mkwhelpers\MattableController {
                 $x['afakulcs'] = $afa->getErtek();
             }
         }
-        $kedv = array();
-        foreach ($t->getTermekcsoportkedvezmenyek() as $tar) {
-            $kedv[] = $kedvCtrl->loadVars($tar, true);
+        if ($forKarb) {
+            $kedv = array();
+            foreach ($t->getTermekcsoportkedvezmenyek() as $tar) {
+                $kedv[] = $kedvCtrl->loadVars($tar, true);
+            }
+            $x['termekcsoportkedvezmenyek'] = $kedv;
+            $kedv = array();
+            foreach ($t->getTermekkedvezmenyek() as $tar) {
+                $kedv[] = $termekkedvCtrl->loadVars($tar, true);
+            }
+            $x['termekkedvezmenyek'] = $kedv;
+
+            $dok = array();
+            foreach ($t->getPartnerDokok() as $kepje) {
+                $dok[] = $dokCtrl->loadVars($kepje);
+            }
+            $x['dokok'] = $dok;
         }
-        $x['termekcsoportkedvezmenyek'] = $kedv;
-        $kedv = array();
-        foreach ($t->getTermekkedvezmenyek() as $tar) {
-            $kedv[] = $termekkedvCtrl->loadVars($tar, true);
-        }
-        $x['termekkedvezmenyek'] = $kedv;
 
         if (\mkw\store::isMIJSZ()) {
             $okl = array();
@@ -240,6 +249,31 @@ class partnerController extends \mkwhelpers\MattableController {
                 $cimke = $this->getEm()->getRepository('Entities\Partnercimketorzs')->find($cimkekod);
                 if ($cimke) {
                     $obj->addCimke($cimke);
+                }
+            }
+
+            $dokids = $this->params->getArrayRequestParam('dokid');
+            foreach ($dokids as $dokid) {
+                if (($this->params->getStringRequestParam('dokurl_' . $dokid, '') !== '') ||
+                    ($this->params->getStringRequestParam('dokpath_' . $dokid, '') !== '')) {
+                    $dokoper = $this->params->getStringRequestParam('dokoper_' . $dokid);
+                    if ($dokoper === 'add') {
+                        $dok = new \Entities\PartnerDok();
+                        $obj->addPartnerDok($dok);
+                        $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
+                        $dok->setPath($this->params->getStringRequestParam('dokpath_' . $dokid));
+                        $dok->setLeiras($this->params->getStringRequestParam('dokleiras_' . $dokid));
+                        $this->getEm()->persist($dok);
+                    }
+                    elseif ($dokoper === 'edit') {
+                        $dok = \mkw\store::getEm()->getRepository('Entities\PartnerDok')->find($dokid);
+                        if ($dok) {
+                            $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
+                            $dok->setPath($this->params->getStringRequestParam('dokpath_' . $dokid));
+                            $dok->setLeiras($this->params->getStringRequestParam('dokleiras_' . $dokid));
+                            $this->getEm()->persist($dok);
+                        }
+                    }
                 }
             }
         }
@@ -646,7 +680,7 @@ class partnerController extends \mkwhelpers\MattableController {
 
         $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList($partner ? $partner->getBizonylatnyelv() : ''));
 
-        $view->setVar('partner', $this->loadVars($partner));
+        $view->setVar('partner', $this->loadVars($partner, true));
         $view->printTemplateResult();
     }
 

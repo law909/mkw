@@ -69,7 +69,7 @@
         </div>
         <div id="DokTab" class="mattkarb-page" data-visible="visible">
             {foreach $egyed.dokok as $dok}
-                {include 'rendezvenydokkarb.tpl'}
+                {include 'dokumentumtarkarb.tpl'}
             {/foreach}
             <a class="js-doknewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
         </div>

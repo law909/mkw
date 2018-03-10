@@ -347,6 +347,9 @@ class Termek {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $emagtiltva = 0;
 
+    /** @ORM\OneToMany(targetEntity="TermekDok", mappedBy="termek", cascade={"persist", "remove"}) */
+    private $termekdokok;
+
     public function __toString() {
         return (string)$this->id . ' - ' . $this->nev;
     }
@@ -404,6 +407,7 @@ class Termek {
         $this->termekertesitok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekarak = new \Doctrine\Common\Collections\ArrayCollection();
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->termekdokok = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getUjTermek($min) {
@@ -2315,6 +2319,23 @@ class Termek {
      */
     public function setKiirtnev($kiirtnev) {
         $this->kiirtnev = $kiirtnev;
+    }
+
+    public function getTermekDokok() {
+        return $this->termekdokok;
+    }
+
+    public function addTermekDok(TermekDok $dok) {
+        $this->termekdokok->add($dok);
+        $dok->setTermek($this);
+    }
+
+    public function removeTermekDok(TermekDok $dok) {
+        if ($this->termekdokok->removeElement($dok)) {
+            $dok->removeTermek($this);
+            return true;
+        }
+        return false;
     }
 
 }

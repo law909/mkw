@@ -74,8 +74,8 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         foreach ($dokids as $dokid) {
             if (($this->params->getStringRequestParam('dokurl_' . $dokid, '') !== '') ||
                 ($this->params->getStringRequestParam('dokpath_' . $dokid, '') !== '')) {
-                $oper = $this->params->getStringRequestParam('dokoper_' . $dokid);
-                if ($oper === 'add') {
+                $dokoper = $this->params->getStringRequestParam('dokoper_' . $dokid);
+                if ($dokoper === 'add') {
                     $dok = new \Entities\RendezvenyDok();
                     $obj->addRendezvenyDok($dok);
                     $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
@@ -83,7 +83,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
                     $dok->setLeiras($this->params->getStringRequestParam('dokleiras_' . $dokid));
                     $this->getEm()->persist($dok);
                 }
-                elseif ($oper === 'edit') {
+                elseif ($dokoper === 'edit') {
                     $dok = \mkw\store::getEm()->getRepository('Entities\RendezvenyDok')->find($dokid);
                     if ($dok) {
                         $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
@@ -189,8 +189,6 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $view->setVar('rendezvenyallapotlist', $rcs->getSelectList(($record ? $record->getRendezvenyallapotId() : 0)));
         $jtcs = new jogateremController($this->params);
         $view->setVar('jogateremlist', $jtcs->getSelectList(($record ? $record->getJogateremId() : 0)));
-        $dok = new rendezvenydokController($this->params);
-        $view->setVar('doklist', $dok->getSelectList($record, null));
         return $view->getTemplateResult();
     }
 

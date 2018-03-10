@@ -334,7 +334,8 @@ class Partner {
     private $mijszoralatogatastanar;
     /** @ORM\OneToMany(targetEntity="PartnerMIJSZTanitas", mappedBy="partner", cascade={"persist", "remove"}) */
     private $mijsztanitas;
-
+    /** @ORM\OneToMany(targetEntity="PartnerDok", mappedBy="partner", cascade={"persist", "remove"}) */
+    private $partnerdokok;
 
     /** @ORM\Column(type="integer",nullable=true) */
     private $emagid;
@@ -352,6 +353,7 @@ class Partner {
         $this->mijszoralatogatas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->mijszoralatogatastanar = new \Doctrine\Common\Collections\ArrayCollection();
         $this->mijsztanitas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->partnerdokok = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function getCim() {
@@ -1484,5 +1486,21 @@ class Partner {
         $this->foglalkozas = $foglalkozas;
     }
 
+    public function getPartnerDokok() {
+        return $this->partnerdokok;
+    }
+
+    public function addPartnerDok(PartnerDok $dok) {
+        $this->partnerdokok->add($dok);
+        $dok->setPartner($this);
+    }
+
+    public function removePartnerDok(PartnerDok $dok) {
+        if ($this->partnerdokok->removeElement($dok)) {
+            $dok->removePartner($this);
+            return true;
+        }
+        return false;
+    }
 
 }

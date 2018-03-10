@@ -28,6 +28,7 @@ class termekController extends \mkwhelpers\MattableController {
         $valtozatCtrl = new termekvaltozatController($this->params);
         $kapcsolodoCtrl = new termekkapcsolodoController($this->params);
         $translationsCtrl = new termektranslationController($this->params);
+        $dokCtrl = new termekdokController($this->params);
         $ar = array();
         $kep = array();
         $recept = array();
@@ -35,6 +36,7 @@ class termekController extends \mkwhelpers\MattableController {
         $lvaltozat = array();
         $kapcsolodo = array();
         $translations = array();
+        $dok = array();
 		$x = array();
 		if (!$t) {
 			$t = new \Entities\Termek();
@@ -122,6 +124,11 @@ class termekController extends \mkwhelpers\MattableController {
 			}
 			//$kep[]=$kepCtrl->loadVars(null);
 			$x['kepek'] = $kep;
+
+            foreach ($t->getTermekDokok() as $kepje) {
+                $dok[] = $dokCtrl->loadVars($kepje);
+            }
+            $x['dokok'] = $dok;
 
             if (\mkw\store::getSetupValue('kapcsolodotermekek')) {
                 foreach ($t->getTermekKapcsolodok() as $tkapcsolodo) {
@@ -334,6 +341,32 @@ class termekController extends \mkwhelpers\MattableController {
 				}
 			}
 		}
+
+        $dokids = $this->params->getArrayRequestParam('dokid');
+        foreach ($dokids as $dokid) {
+            if (($this->params->getStringRequestParam('dokurl_' . $dokid, '') !== '') ||
+                ($this->params->getStringRequestParam('dokpath_' . $dokid, '') !== '')) {
+                $dokoper = $this->params->getStringRequestParam('dokoper_' . $dokid);
+                if ($dokoper === 'add') {
+                    $dok = new \Entities\TermekDok();
+                    $obj->addTermekDok($dok);
+                    $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
+                    $dok->setPath($this->params->getStringRequestParam('dokpath_' . $dokid));
+                    $dok->setLeiras($this->params->getStringRequestParam('dokleiras_' . $dokid));
+                    $this->getEm()->persist($dok);
+                }
+                elseif ($dokoper === 'edit') {
+                    $dok = \mkw\store::getEm()->getRepository('Entities\TermekDok')->find($dokid);
+                    if ($dok) {
+                        $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
+                        $dok->setPath($this->params->getStringRequestParam('dokpath_' . $dokid));
+                        $dok->setLeiras($this->params->getStringRequestParam('dokleiras_' . $dokid));
+                        $this->getEm()->persist($dok);
+                    }
+                }
+            }
+        }
+
         if (\mkw\store::isArsavok()) {
             $arids = $this->params->getArrayRequestParam('arid');
             foreach ($arids as $arid) {
