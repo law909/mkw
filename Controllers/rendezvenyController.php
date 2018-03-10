@@ -13,7 +13,9 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         parent::__construct($params);
     }
 
-    protected function loadVars($t) {
+    protected function loadVars($t, $forKarb = false) {
+        $dokCtrl = new rendezvenydokController($this->params);
+        $dok = array();
         $x = array();
         if (!$t) {
             $t = new \Entities\Rendezveny();
@@ -35,9 +37,20 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $x['todourlap'] = $t->getTodourlap();
         $x['todowebposzt'] = $t->getTodowebposzt();
         $x['todowebslider'] = $t->getTodowebslider();
+        if ($forKarb) {
+            foreach ($t->getRendezvenyDokok() as $kepje) {
+                $dok[] = $dokCtrl->loadVars($kepje);
+            }
+            $x['dokok'] = $dok;
+        }
         return $x;
     }
 
+    /**
+     * @param \Entities\Rendezveny $obj
+     * @param $oper
+     * @return mixed
+     */
     protected function setFields($obj, $oper) {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setKezdodatum($this->params->getStringRequestParam('kezdodatum'));
@@ -56,6 +69,30 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $ck = \mkw\store::getEm()->getRepository('Entities\Jogaterem')->find($this->params->getIntRequestParam('jogaterem', 0));
         if ($ck) {
             $obj->setJogaterem($ck);
+        }
+        $dokids = $this->params->getArrayRequestParam('dokid');
+        foreach ($dokids as $dokid) {
+            if (($this->params->getStringRequestParam('dokurl_' . $dokid, '') !== '') ||
+                ($this->params->getStringRequestParam('dokpath_' . $dokid, '') !== '')) {
+                $oper = $this->params->getStringRequestParam('dokoper_' . $dokid);
+                if ($oper === 'add') {
+                    $dok = new \Entities\RendezvenyDok();
+                    $obj->addRendezvenyDok($dok);
+                    $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
+                    $dok->setPath($this->params->getStringRequestParam('dokpath_' . $dokid));
+                    $dok->setLeiras($this->params->getStringRequestParam('dokleiras_' . $dokid));
+                    $this->getEm()->persist($dok);
+                }
+                elseif ($oper === 'edit') {
+                    $dok = \mkw\store::getEm()->getRepository('Entities\RendezvenyDok')->find($dokid);
+                    if ($dok) {
+                        $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
+                        $dok->setPath($this->params->getStringRequestParam('dokpath_' . $dokid));
+                        $dok->setLeiras($this->params->getStringRequestParam('dokleiras_' . $dokid));
+                        $this->getEm()->persist($dok);
+                    }
+                }
+            }
         }
         return $obj;
     }
@@ -143,7 +180,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $view->setVar('formaction', '/admin/rendezveny/save');
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->findWithJoins($id);
-        $view->setVar('egyed', $this->loadVars($record));
+        $view->setVar('egyed', $this->loadVars($record, true));
         $tanar = new dolgozoController($this->params);
         $view->setVar('tanarlist', $tanar->getSelectList(($record ? $record->getTanarId() : 0)));
         $termek = new termekController($this->params);
@@ -152,6 +189,8 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $view->setVar('rendezvenyallapotlist', $rcs->getSelectList(($record ? $record->getRendezvenyallapotId() : 0)));
         $jtcs = new jogateremController($this->params);
         $view->setVar('jogateremlist', $jtcs->getSelectList(($record ? $record->getJogateremId() : 0)));
+        $dok = new rendezvenydokController($this->params);
+        $view->setVar('doklist', $dok->getSelectList($record, null));
         return $view->getTemplateResult();
     }
 

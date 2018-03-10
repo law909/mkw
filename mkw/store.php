@@ -557,6 +557,15 @@ class store {
         return $url . $rag . $slug;
     }
 
+    public static function addHttp($url) {
+        if  ($url && $ret = parse_url($url)) {
+            if (!isset($ret['scheme'])) {
+                $url = 'http://' . $url;
+            }
+        }
+        return $url;
+    }
+
     public static function calcSzallitasiKoltseg($ertek) {
         $ktg = 0;
         $h = \mkw\store::getParameter(\mkw\consts::SzallitasiKtg1Ig);

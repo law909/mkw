@@ -342,6 +342,9 @@ $router->map('POST', '/admin/termekkep/del', 'termekkepController#del', 'adminte
 $router->map('GET', '/admin/termekrecept/getemptyrow', 'termekreceptController#getemptyrow', 'admintermekreceptgetemptyrow');
 $router->map('POST', '/admin/termekrecept/save', 'termekreceptController#save', 'admintermekreceptsave');
 
+$router->map('GET', '/admin/termekdok/getemptyrow', 'termekdokController#getemptyrow', 'admintermekdokgetemptyrow');
+$router->map('POST', '/admin/termekdok/del', 'termekdokController#del', 'admintermekdokdel');
+
 $router->map('GET', '/admin/termekvaltozat/getemptyrow', 'termekvaltozatController#getemptyrow', 'admintermekvaltozatgetemptyrow');
 $router->map('POST', '/admin/termekvaltozat/generate', 'termekvaltozatController#generate', 'admintermekvaltozatgenerate');
 $router->map('POST', '/admin/termekvaltozat/save', 'termekvaltozatController#save', 'admintermekvaltozatsave');
@@ -615,6 +618,9 @@ if (\mkw\store::isDarshan()) {
     $router->map('GET', '/admin/rendezveny/viewkarb', 'rendezvenyController#viewkarb', 'adminrendezvenyviewkarb');
     $router->map('POST', '/admin/rendezveny/save', 'rendezvenyController#save', 'adminrendezvenysave');
     $router->map('POST', '/admin/rendezveny/setflag', 'rendezvenyController#setflag', 'adminrendezvenysetflag');
+
+    $router->map('GET', '/admin/rendezvenydok/getemptyrow', 'rendezvenydokController#getemptyrow', 'adminrendezvenydokgetemptyrow');
+    $router->map('POST', '/admin/rendezvenydok/del', 'rendezvenydokController#del', 'adminrendezvenydokdel');
 
     $router->map('GET', '/admin/rendezvenyjelentkezes/viewlist', 'rendezvenyjelentkezesController#viewlist', 'adminrendezvenyjelentkezesviewlist');
     $router->map('GET', '/admin/rendezvenyjelentkezes/getlistbody', 'rendezvenyjelentkezesController#getlistbody', 'adminrendezvenyjelentkezesgetlistbody');

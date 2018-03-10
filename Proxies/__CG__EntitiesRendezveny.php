@@ -64,10 +64,10 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todonaptar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebposzt', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todourlap', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebslider', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbevent', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbhirdetes', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoplakat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofotobe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoleirasbe'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todonaptar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebposzt', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todourlap', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebslider', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbevent', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbhirdetes', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoplakat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofotobe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoleirasbe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenydokok'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todonaptar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebposzt', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todourlap', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebslider', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbevent', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbhirdetes', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoplakat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofotobe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoleirasbe'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todonaptar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebposzt', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todourlap', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebslider', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbevent', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbhirdetes', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoplakat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofotobe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoleirasbe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenydokok'];
     }
 
     /**
@@ -769,6 +769,39 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTodoleirasbe', [$todoleirasbe]);
 
         return parent::setTodoleirasbe($todoleirasbe);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRendezvenyDokok()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRendezvenyDokok', []);
+
+        return parent::getRendezvenyDokok();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addRendezvenyDok(\Entities\RendezvenyDok $dok)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addRendezvenyDok', [$dok]);
+
+        return parent::addRendezvenyDok($dok);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeRendezvenyDok(\Entities\RendezvenyDok $dok)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeRendezvenyDok', [$dok]);
+
+        return parent::removeRendezvenyDok($dok);
     }
 
 }

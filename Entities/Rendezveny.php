@@ -105,6 +105,13 @@ class Rendezveny {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $todoleirasbe = false;
 
+    /** @ORM\OneToMany(targetEntity="RendezvenyDok", mappedBy="rendezveny", cascade={"persist"}) */
+    private $rendezvenydokok;
+
+    public function __construct() {
+        $this->rendezvenydokok = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     public function getId() {
         return $this->id;
     }
@@ -453,6 +460,23 @@ class Rendezveny {
      */
     public function setTodoleirasbe($todoleirasbe) {
         $this->todoleirasbe = $todoleirasbe;
+    }
+
+    public function getRendezvenyDokok() {
+        return $this->rendezvenydokok;
+    }
+
+    public function addRendezvenyDok(RendezvenyDok $dok) {
+        $this->rendezvenydokok->add($dok);
+        $dok->setRendezveny($this);
+    }
+
+    public function removeRendezvenyDok(RendezvenyDok $dok) {
+        if ($this->rendezvenydokok->removeElement($dok)) {
+            $dok->removeRendezveny($this);
+            return true;
+        }
+        return false;
     }
 
 }
