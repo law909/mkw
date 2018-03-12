@@ -1,7 +1,8 @@
 function jogareszvetel() {
 
     var dialogcenter = $('#dialogcenter'),
-        form = $('#JogareszvetelForm');
+        form = $('#JogareszvetelForm'),
+        reszveteldb = 0;
 
     function getEmptyRow() {
         $.ajax({
@@ -9,8 +10,10 @@ function jogareszvetel() {
             url: '/admin/jogareszvetel/getemptyrow',
             success: function(d) {
                 var data = JSON.parse(d);
+                reszveteldb = reszveteldb + 1;
                 $('.js-jrreszvetelnewbutton').before(data.html);
                 $('.js-jrreszveteldelbutton').button();
+                $('.js-counter' + data.id).text(reszveteldb);
                 $('#JRPartnerEdit_' + data.id).focus();
             }
         });
@@ -52,6 +55,7 @@ function jogareszvetel() {
         $('#JRJogateremEdit')[0].selectedIndex = 0;
         $('#JRJogaoratipusEdit')[0].selectedIndex = 0;
         $('#JRTanarEdit')[0].selectedIndex = 0;
+        reszveteldb = 0;
     }
 
     function init() {
@@ -121,6 +125,7 @@ function jogareszvetel() {
                     buttons: {
                         'Igen': function () {
                             $('#jogareszveteltable_' + id).remove();
+                            reszveteldb = reszveteldb - 1;
                             $(this).dialog('close');
                         },
                         'Nem': function () {

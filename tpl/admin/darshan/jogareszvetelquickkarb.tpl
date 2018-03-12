@@ -7,6 +7,10 @@
                 <table>
                     <tbody>
                     <tr>
+                        <td class="js-counter{$egyed.id}"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
                         <td class="mattable-important"><label for="JRUresTeremEdit_{$egyed.id}" class="mattable-important">{at('Üres terem')}:</label></td>
                         <td><input id="JRUresTeremEdit_{$egyed.id}" name="uresterem_{$egyed.id}" type="checkbox"></td>
                     </tr>
