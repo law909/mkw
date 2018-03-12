@@ -6,11 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Entity(repositoryClass="Entities\ReszvetelRepository")
- * @ORM\Table(name="reszvetel",
+ * @ORM\Entity(repositoryClass="Entities\JogaReszvetelRepository")
+ * @ORM\Table(name="jogareszvetel",
  * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
-class Reszvetel {
+class JogaReszvetel {
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -60,21 +60,14 @@ class Reszvetel {
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $partnerkeresztnev = '';
 
+    /** @ORM\Column(type="string",length=100,nullable=true) */
+    private $partneremail = '';
+
     /**
-     * @ORM\ManyToOne(targetEntity="Partner",inversedBy="reszvetelek_tanar")
-     * @ORM\JoinColumn(name="tanar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
-     * @var \Entities\Partner
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="tanar_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $tanar;
-
-    /** @ORM\Column(type="string",length=255,nullable=true) */
-    private $tanarnev;
-
-    /** @ORM\Column(type="string",length=255,nullable=true) */
-    private $tanarvezeteknev = '';
-
-    /** @ORM\Column(type="string",length=255,nullable=true) */
-    private $tanarkeresztnev = '';
 
     /**
      * @ORM\ManyToOne(targetEntity="Jogaterem")
@@ -89,17 +82,25 @@ class Reszvetel {
     private $jogaoratipus;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Fizmod")
+     * @ORM\JoinColumn(name="fizmod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Fizmod
+     */
+    private $fizmod;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Penztar")
+     * @ORM\JoinColumn(name="penztar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Penztar
+     */
+    private $penztar;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Termek",inversedBy="reszvetelek")
      * @ORM\JoinColumn(name="termek_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Termek
      */
     private $termek;
-
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="string",length=255,nullable=false)
-     */
-    private $termeknev;
 
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $nettoegysar;
@@ -110,10 +111,17 @@ class Reszvetel {
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $jutalek;
 
-    /** @ORM\Column(type="time",nullable=false) */
+    /** @ORM\Column(type="date",nullable=false) */
     private $datum;
 
-     public function getLastmod() {
+    /** @ORM\Column(type="boolean",nullable=true) */
+    private $uresterem = false;
+
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getLastmod() {
         return $this->lastmod;
     }
 
@@ -212,6 +220,7 @@ class Reszvetel {
                 $this->setPartnernev($val->getNev());
                 $this->setPartnervezeteknev($val->getVezeteknev());
                 $this->setPartnerkeresztnev($val->getKeresztnev());
+                $this->setPartneremail($val->getEmail());
             }
         }
     }
@@ -222,6 +231,7 @@ class Reszvetel {
             $this->partnernev = '';
             $this->partnervezeteknev = '';
             $this->partnerkeresztnev = '';
+            $this->partneremail = '';
         }
     }
 
@@ -250,7 +260,7 @@ class Reszvetel {
     }
 
     /**
-     * @return \Entities\Partner
+     * @return \Entities\Dolgozo
      */
     public function getTanar() {
         return $this->tanar;
@@ -264,7 +274,7 @@ class Reszvetel {
     }
 
     /**
-     * @param \Entities\Partner $val
+     * @param \Entities\Dolgozo $val
      */
     public function setTanar($val) {
         if ($this->tanar !== $val) {
@@ -273,9 +283,6 @@ class Reszvetel {
             }
             else {
                 $this->tanar = $val;
-                $this->setTanarnev($val->getNev());
-                $this->setTanarvezeteknev($val->getVezeteknev());
-                $this->setTanarkeresztnev($val->getKeresztnev());
             }
         }
     }
@@ -283,34 +290,14 @@ class Reszvetel {
     public function removeTanar() {
         if ($this->tanar !== null) {
             $this->tanar = null;
-            $this->tanarnev = '';
-            $this->tanarvezeteknev = '';
-            $this->tanarkeresztnev = '';
         }
     }
 
     public function getTanarnev() {
-        return $this->tanarnev;
-    }
-
-    public function setTanarnev($val) {
-        $this->tanarnev = $val;
-    }
-
-    public function getTanarvezeteknev() {
-        return $this->tanarvezeteknev;
-    }
-
-    public function setTanarvezeteknev($val) {
-        $this->tanarvezeteknev = $val;
-    }
-
-    public function getTanarkeresztnev() {
-        return $this->tanarkeresztnev;
-    }
-
-    public function setTanarkeresztnev($val) {
-        $this->tanarkeresztnev = $val;
+        if ($this->tanar) {
+            return $this->tanar->getNev();
+        }
+        return '';
     }
 
     public function getJogaterem() {
@@ -362,16 +349,6 @@ class Reszvetel {
 
     public function setJogaoratipus($jogaoratipus) {
         $this->jogaoratipus = $jogaoratipus;
-        if (!$this->nev) {
-            $this->setNev($this->getJogaoratipusNev());
-        }
-    }
-
-    public function getJogaoratipusUrl() {
-        if ($this->jogaoratipus) {
-            return $this->jogaoratipus->getUrl();
-        }
-        return '';
     }
 
     public function getTermek() {
@@ -395,9 +372,6 @@ class Reszvetel {
             }
             else {
                 $this->termek = $val;
-                $this->setTermeknev($val->getNev());
-                $this->setNettoegysar($val->getNettoAr());
-                $this->setBruttoegysar($val->getBruttoAr());
             }
         }
     }
@@ -405,18 +379,16 @@ class Reszvetel {
     public function removeTermek() {
         if ($this->termek !== null) {
             $this->termek = null;
-            $this->termeknev = '';
             $this->setNettoegysar(0);
             $this->setBruttoegysar(0);
         }
     }
 
     public function getTermeknev() {
-        return $this->termeknev;
-    }
-
-    public function setTermeknev($val) {
-        $this->termeknev = $val;
+        if ($this->termek) {
+            return $this->termek->getNev();
+        }
+        return '';
     }
 
     public function getNettoegysar() {
@@ -449,4 +421,156 @@ class Reszvetel {
         $this->jutalek = $jutalek;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPartneremail() {
+        return $this->partneremail;
+    }
+
+    /**
+     * @param mixed $partneremail
+     */
+    public function setPartneremail($partneremail) {
+        $this->partneremail = $partneremail;
+    }
+
+    /**
+     * @return \Entities\Fizmod
+     */
+    public function getFizmod() {
+        return $this->fizmod;
+    }
+
+    public function getFizmodnev() {
+        $fm = $this->getFizmod();
+        if ($fm) {
+            return $fm->getNev();
+        }
+        return '';
+    }
+
+    public function getFizmodId() {
+        $fm = $this->getFizmod();
+        if ($fm) {
+            return $fm->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Fizmod $val
+     */
+    public function setFizmod($val) {
+        if (!($val instanceof \Entities\Fizmod)) {
+            $val = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($val);
+        }
+        if ($this->fizmod !== $val) {
+            if (!$val) {
+                $this->removeFizmod();
+            }
+            else {
+                $this->fizmod = $val;
+            }
+        }
+    }
+
+    public function removeFizmod() {
+        if ($this->fizmod !== null) {
+            $this->fizmod = null;
+        }
+    }
+
+    /**
+     * @return \Entities\Penztar
+     */
+    public function getPenztar() {
+        return $this->penztar;
+    }
+
+    public function getPenztarId() {
+        if ($this->penztar) {
+            return $this->penztar->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Penztar|null $val
+     */
+    public function setPenztar($val = null) {
+        if ($this->penztar !== $val) {
+            if (!$val) {
+                $this->removePenztar();
+            }
+            else {
+                $this->penztar = $val;
+            }
+        }
+    }
+
+    public function removePenztar() {
+        if ($this->penztar !== null) {
+            $this->penztar = null;
+        }
+    }
+
+    public function getPenztarnev() {
+        if ($this->penztar) {
+            return $this->penztar->getNev();
+        }
+        return '';
+    }
+
+    public function getDatum() {
+        return $this->datum;
+    }
+
+    public function getDatumStr() {
+        if ($this->getDatum()) {
+            return $this->getDatum()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setDatum($adat = '') {
+        if (is_a($adat, 'DateTime')) {
+            $this->datum = $adat;
+        }
+        else {
+            if ($adat == '') {
+                $adat = date(\mkw\store::$DateFormat);
+            }
+            $this->datum = new \DateTime(\mkw\store::convDate($adat));
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUresterem() {
+        return $this->uresterem;
+    }
+
+    /**
+     * @param mixed $uresterem
+     */
+    public function setUresterem($uresterem) {
+        $this->uresterem = $uresterem;
+    }
+
+    public function calcJutalek() {
+        if ($this->getUresterem()) {
+            $this->setJutalek(\mkw\store::getParameter(\mkw\consts::JogaUresTeremJutalek, 3000));
+        }
+        else {
+            if (\mkw\store::isAYCMFizmod($this->getFizmodId())) {
+                $this->setJutalek(\mkw\store::getParameter(\mkw\consts::JogaAYCMJutalek, 500));
+            }
+            else {
+                $jutalekszaz = \mkw\store::getParameter(\mkw\consts::JogaJutalek, 47);
+                $this->setJutalek($this->getBruttoegysar() * $jutalekszaz / 100);
+            }
+        }
+    }
 }

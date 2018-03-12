@@ -139,9 +139,19 @@ class adminController extends mkwhelpers\Controller {
                 $view->setVar('eladhatotermeklist', $termek->getEladhatoSelectList());
                 $felh = new dolgozoController($this->params);
                 $view->setVar('felhasznalolist', $felh->getSelectList());
+                $view->setVar('tanarlist', $felh->getSelectList());
+                $terem = new jogateremController($this->params);
+                $view->setVar('jogateremlist', $terem->getSelectList());
+                $ot = new jogaoratipusController($this->params);
+                $view->setVar('jogaoratipuslist', $ot->getSelectList());
+                $rendezveny = new rendezvenyController($this->params);
+                $view->setVar('rendezvenylist', $rendezveny->getSelectList());
+                $view->setVar('datumstr', date(\mkw\store::$DateFormat));
+
                 $view->setVar('keltstr', date(\mkw\store::$DateFormat));
                 $view->setVar('penztarformaction', \mkw\store::getRouter()->generate('adminpenztarbizonylatfejsave'));
                 $view->setVar('eladasformaction', \mkw\store::getRouter()->generate('adminbizonylatfejquickadd'));
+                $view->setVar('jogareszvetelformaction', \mkw\store::getRouter()->generate('adminjogareszvetelquicksave'));
 
                 $fmarr = \mkw\store::getIds($this->getRepo('Entities\Fizmod')->getAllKeszpenzes());
                 $fmfilter = new mkwhelpers\FilterDescriptor();

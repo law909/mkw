@@ -345,6 +345,11 @@ $router->map('POST', '/admin/termekrecept/save', 'termekreceptController#save', 
 $router->map('GET', '/admin/termekdok/getemptyrow', 'termekdokController#getemptyrow', 'admintermekdokgetemptyrow');
 $router->map('POST', '/admin/termekdok/del', 'termekdokController#del', 'admintermekdokdel');
 
+$router->map('GET', '/admin/jogareszvetel/getemptyrow', 'jogareszvetelController#getemptyrow', 'adminjogareszvetelgetemptyrow');
+$router->map('POST', '/admin/jogareszvetel/del', 'jogareszvetelController#del', 'adminjogareszveteldel');
+$router->map('POST', '/admin/jogareszvetel/quicksave', 'jogareszvetelController#quicksave', 'adminjogareszvetelquicksave');
+$router->map('GET', '/admin/jogareszvetel/getar', 'jogareszvetelController#getar', 'adminjogareszvetelgetar');
+
 $router->map('GET', '/admin/termekvaltozat/getemptyrow', 'termekvaltozatController#getemptyrow', 'admintermekvaltozatgetemptyrow');
 $router->map('POST', '/admin/termekvaltozat/generate', 'termekvaltozatController#generate', 'admintermekvaltozatgenerate');
 $router->map('POST', '/admin/termekvaltozat/save', 'termekvaltozatController#save', 'admintermekvaltozatsave');

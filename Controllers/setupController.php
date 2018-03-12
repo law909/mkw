@@ -198,6 +198,12 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::KuponElotag, ($p ? $p->getErtek() : 'MKW'));
         $p = $repo->find(\mkw\consts::Off);
         $view->setVar(\mkw\consts::Off, ($p ? $p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::JogaUresTeremJutalek);
+        $view->setVar(\mkw\consts::JogaUresTeremJutalek, ($p ? $p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::JogaJutalek);
+        $view->setVar(\mkw\consts::JogaJutalek, ($p ? $p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::JogaAYCMJutalek);
+        $view->setVar(\mkw\consts::JogaAYCMJutalek, ($p ? $p->getErtek() : 0));
 
         $p = $repo->find(\mkw\consts::VasarlasiUtalvanyTermek);
 //        $termek = new termekController($this->params);
@@ -629,6 +635,9 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::MiniCRMRendezvenyJelentkezes, $this->params->getIntRequestParam('minicrmrendezvenyjelentkezes'));
         $this->setObj(\mkw\consts::KuponElotag, $this->params->getStringRequestParam('kuponelotag'));
         $this->setObj(\mkw\consts::Off, $this->params->getBoolRequestParam(\mkw\consts::Off));
+        $this->setObj(\mkw\consts::JogaAYCMJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaAYCMJutalek));
+        $this->setObj(\mkw\consts::JogaJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaJutalek));
+        $this->setObj(\mkw\consts::JogaUresTeremJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaUresTeremJutalek));
 
         $vut = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('vasarlasiutalvanytermek', 0));
         if ($vut) {

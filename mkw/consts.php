@@ -216,4 +216,8 @@ class consts {
     const PenztarZarva = 'penztarzarva';
 
     const MunkaJelenlet = 'munkajelenlet';
+
+    const JogaJutalek = 'jogajutalek';
+    const JogaUresTeremJutalek = 'jogauresteremjutalek';
+    const JogaAYCMJutalek = 'jogaaycmjutalek';
 }

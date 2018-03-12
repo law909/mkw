@@ -13,6 +13,9 @@ $(document).ready(
         bepenztar = bepenztar();
         bepenztar.init();
 
+        reszvetel = jogareszvetel();
+        reszvetel.init();
+
         $('#CimletezoButton').button();
         $('#CimletezoButton').on('click', function(e) {
             e.preventDefault();

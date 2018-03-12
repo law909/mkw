@@ -258,6 +258,22 @@
                             </select>
                         </div>
                     </div>
+                    {if ($maintheme === 'darshan')}
+                    <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="JogaJutalekEdit">{at('Jutalék százalék')}:</label></span>
+                            <span><input id="JogaJutalekEdit" name="jogajutalek" type="text" value="{$jogajutalek}">
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="JogaUresTeremJutalekEdit">{at('Üres terem jutalék')}:</label></span>
+                            <span><input id="JogaUresTeremJutalekEdit" name="jogauresteremjutalek" type="text" value="{$jogaureteremjutalek}">
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="JogaAYCMJutalekEdit">{at('AYCM jutalék')}:</label></span>
+                            <span><input id="JogaAYCMJutalekEdit" name="jogaaycmjutalek" type="text" value="{$jogaaycmjutalek}">
+                        </div>
+                    </div>
+                    {/if}
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         {if ($maintheme === 'mijsz')}
                             <div class="setuprow">

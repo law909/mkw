@@ -7,6 +7,7 @@
     <script type="text/javascript" src="/js/admin/darshan/koltseg.js"></script>
     <script type="text/javascript" src="/js/admin/darshan/bepenztar.js"></script>
     <script type="text/javascript" src="/js/admin/darshan/kipenztar.js"></script>
+    <script type="text/javascript" src="/js/admin/darshan/jogareszvetel.js"></script>
 {/block}
 
 {block "kozep"}
@@ -84,6 +85,46 @@
                 </div>
             </div>
         {/if}
+    </div>
+    <div class="clearboth">
+        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+            <div class="ui-widget-header ui-corner-top">
+                <div class="mainboxinner ui-corner-top">Óra látogatások</div>
+            </div>
+            <div class="mainboxinner">
+                <form id="JogareszvetelForm" method="post" action="{$jogareszvetelformaction}">
+                    <div>
+                        <label for="JRDatumEdit">{at('Dátum')}:</label>
+                        <input id="JRDatumEdit" name="datum" type="text" size="12" data-datum="{$datumstr}" class="mattable-important" required="required">
+                        <label for="JRJogateremEdit">{at('Terem')}:</label>
+                        <select id="JRJogateremEdit" name="jogaterem" class="mattable-important" required="required">
+                            <option value="">{at('válassz')}</option>
+                            {foreach $jogateremlist as $e}
+                                <option value="{$e.id}"{if ($e.selected)} selected="selected"{/if}>{$e.caption}</option>
+                            {/foreach}
+                        </select>
+                        <label for="JRJogaoratipusEdit">{at('Óra típus')}:</label>
+                        <select id="JRJogaoratipusEdit" name="jogaoratipus" class="mattable-important" required="required">
+                            <option value="">{at('válassz')}</option>
+                            {foreach $jogaoratipuslist as $e}
+                                <option value="{$e.id}"{if ($e.selected)} selected="selected"{/if}>{$e.caption}</option>
+                            {/foreach}
+                        </select>
+                        <label for="JRTanarEdit">{at('Tanár')}:</label>
+                        <select id="JRTanarEdit" name="tanar" class="mattable-important" required="required">
+                            <option value="">{at('válassz')}</option>
+                            {foreach $tanarlist as $e}
+                                <option value="{$e.id}"{if ($e.selected)} selected="selected"{/if}>{$e.caption}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <a class="js-jrreszvetelnewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+                    <div class="matt-hseparator"></div>
+                    <input id="JROKButton" type="submit" value="OK">
+                    <a id="JRCancelButton" href="#"><span>Mégsem</span></a>
+                </form>
+            </div>
+        </div>
     </div>
     <div class="clearboth">
         <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
