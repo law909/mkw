@@ -1,0 +1,24 @@
+<table>
+    <thead>
+    <tr>
+        <th class="headercell">{at('Tanár')}</th>
+        <th class="headercell textalignright">{at('Jutalék')}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {$sum = 0}
+    {foreach $tetelek as $tetel}
+        {$sum = $sum + $tetel.jutalek}
+        <tr>
+            <td class="datacell">{$tetel.nev}</td>
+            <td class="datacell textalignright">{bizformat($tetel.jutalek)}</td>
+        </tr>
+    {/foreach}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="datacell">{at('Összesen')}</td>
+            <td class="datacell textalignright">{bizformat($sum)}</td>
+        </tr>
+    </tfoot>
+</table>

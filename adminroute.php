@@ -594,6 +594,11 @@ $router->map('GET', '/admin/bizonylattetellista/refresh', 'bizonylattetellistaCo
 $router->map('GET', '/admin/bizonylattetellista/export', 'bizonylattetellistaController#export', 'adminbizonylattetellistaexport');
 $router->map('GET', '/admin/bizonylattetellista/print', 'bizonylattetellistaController#doPrint', 'adminbizonylattetellistaprint');
 
+$router->map('GET', '/admin/tanarelszamolas/view', 'tanarelszamolasController#view', 'admintanarelszamolasview');
+$router->map('GET', '/admin/tanarelszamolas/refresh', 'tanarelszamolasController#refresh', 'admintanarelszamolasrefresh');
+$router->map('GET', '/admin/tanarelszamolas/export', 'tanarelszamolasController#export', 'admintanarelszamolasexport');
+$router->map('GET', '/admin/tanarelszamolas/print', 'tanarelszamolasController#doPrint', 'admintanarelszamolasprint');
+
 $router->map('GET', '/admin/teljesitmenyjelentes/view', 'teljesitmenyjelentesController#view', 'adminteljesitmenyjelentesview');
 $router->map('GET', '/admin/teljesitmenyjelentes/refresh', 'teljesitmenyjelentesController#refresh', 'adminteljesitmenyjelentesrefresh');
 

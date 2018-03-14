@@ -46,4 +46,15 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository {
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }
+
+    public function getTanarOsszesito($filter) {
+        $q = $this->_em->createQuery('SELECT SUM(_xx.jutalek) AS jutalek,ta.nev,ta.id '
+            . ' FROM Entities\JogaReszvetel _xx'
+            . ' LEFT JOIN _xx.tanar ta'
+            . $this->getFilterString($filter)
+            . ' GROUP BY ta.id'
+            . ' ORDER BY ta.nev');
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
+    }
 }
