@@ -11,6 +11,112 @@ class exportController extends \mkwhelpers\Controller {
         $view->printTemplateResult(false);
     }
 
+    public function VateraExport() {
+        header("Content-type: text/csv");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        header("Content-Disposition: attachment; filename=vateramkw.csv");
+
+        $sor = array(
+            '"title"',
+            '"seller_product_id"',
+            '"status"',
+            '"price"',
+            '"warranty"',
+            '"manufacturer"',
+            '"photo_url_1"',
+            '"photo_url_2"',
+            '"photo_url_3"',
+            '"photo_url_4"',
+            '"photo_url_5"',
+            '"photo_url_6"',
+            '"photo_url_7"',
+            '"photo_url_8"',
+            '"seller_category"',
+            '"page_link"',
+            '"availability_371"',
+            '"description"'
+        );
+        echo implode(';', $sor) . "\n";
+
+        $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
+        $res = $tr->getAllForExport();
+        /** @var \Entities\Termek $t */
+        foreach ($res as $t) {
+            $cimke = $t->getCimkeByCategory(\mkw\store::getParameter(\mkw\consts::MarkaCs));
+            $leiras = $t->getLeiras();
+            $valtozatok = $t->getValtozatok();
+            $vszoveg = '';
+            /** @var \Entities\TermekValtozat $v */
+            foreach ($valtozatok as $v) {
+                if ($v->getElerheto()) {
+
+                    $szallszoveg = false;
+                    $szallitasiido = $t->calcSzallitasiido($v);
+
+                    if ($szallitasiido) {
+                        $szallszoveg = '<b>Szállítási határidő ' . $szallitasiido. ' munkanap.</b>';
+                    }
+                    $vszoveg = $vszoveg . '<br>' . $v->getNev() . ' ' . bizformat($t->getBruttoAr($v)) . ' Ft';
+
+                    if ($szallszoveg) {
+                        $vszoveg = $vszoveg . ' ' . $szallszoveg;
+                    }
+                }
+            }
+            if ($vszoveg) {
+                $leiras = $leiras . '<p>Jelenleg elérhető termékváltozatok:' . $vszoveg . '</p>';
+            }
+
+            $cimkek = $t->getCimkek();
+            $cszoveg = '';
+            /** @var \Entities\Termekcimketorzs $c */
+            foreach ($cimkek as $c) {
+                $cszoveg = $cszoveg . '<br>' . $c->getKategoriaNev() . ': ' . $c->getNev();
+            }
+            if ($cszoveg) {
+                $leiras = $leiras . '<p>' . $cszoveg . '</p>';
+            }
+
+            $leiras = $leiras . '<p><b>A szállítási határidő Foxpost szállítási módnál 1-2 munkanappal meghosszabbodhat.</b></p>';
+
+            $keptomb = array();
+            $kepek = $t->getTermekKepek(true);
+            /** @var \Entities\TermekKep $k */
+            foreach ($kepek as $k) {
+                $keptomb[] = \mkw\store::getFullUrl($k->getUrlLarge(), \mkw\store::getConfigValue('mainurl'));
+            }
+
+            $leiras = str_replace("\n", '', $leiras);
+            $leiras = str_replace("\r", '', $leiras);
+            $leiras = str_replace("\n\r", '', $leiras);
+            $leiras = str_replace('"', '""', $leiras);
+
+//        $cimke = false;
+            $sor = array(
+                '"' . $t->getNev() . '"',
+                '"' . $t->getCikkszam() . '"',
+                '"1"',
+                '"' . number_format($t->getBruttoAr(), 0, ',', '') . '"', //number_format($tetel.bruttoegysarhuf,0,',',' ')
+                '"1"',
+                '"' . ($cimke ? $cimke->getNev() : '') . '"',
+                '"' . \mkw\store::getFullUrl($t->getKepurlLarge(), \mkw\store::getConfigValue('mainurl')) . '"',
+                '"' . (array_key_exists(0, $keptomb) ? $keptomb[0] : '') . '"',
+                '"' . (array_key_exists(1, $keptomb) ? $keptomb[1] : '') . '"',
+                '"' . (array_key_exists(2, $keptomb) ? $keptomb[2] : '') . '"',
+                '"' . (array_key_exists(3, $keptomb) ? $keptomb[3] : '') . '"',
+                '"' . (array_key_exists(4, $keptomb) ? $keptomb[4] : '') . '"',
+                '"' . (array_key_exists(5, $keptomb) ? $keptomb[5] : '') . '"',
+                '"' . (array_key_exists(6, $keptomb) ? $keptomb[6] : '') . '"',
+                '"' . $t->getTermekfa1Nev() . '"',
+                '"' . \mkw\store::getFullUrl('/termek/' . $t->getSlug(), \mkw\store::getConfigValue('mainurl')) . '"',
+                '"-1"',
+                '"' . $leiras . '"'
+            );
+            echo implode(';', $sor) . "\n";
+        }
+    }
+
     public function GrandoExport() {
         header("Content-type: text/csv");
         header("Pragma: no-cache");
