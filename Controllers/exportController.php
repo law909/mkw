@@ -11,11 +11,16 @@ class exportController extends \mkwhelpers\Controller {
         $view->printTemplateResult(false);
     }
 
-    public function VateraExport() {
+    public function VateraHeadExport() {
         header("Content-type: text/csv");
         header("Pragma: no-cache");
         header("Expires: 0");
         header("Content-Disposition: attachment; filename=vateramkw.csv");
+    }
+
+    public function VateraExport() {
+
+        $this->VateraHeadExport();
 
         $sor = array(
             '"title"',

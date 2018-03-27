@@ -116,6 +116,7 @@ $router->map('GET', '/szamlaprint', 'szamlafejController#doPrint', 'szamlaprint'
 
 $router->map('GET', '/export/grando', 'exportController#GrandoExport', 'grandoexport');
 $router->map('GET', '/export/vatera', 'exportController#VateraExport', 'vateraexport');
+$router->map('HEAD', '/export/vatera', 'exportController#VateraHeadExport', 'vateraheadexport');
 $router->map('GET', '/export/shophunter', 'exportController#ShopHunterExport', 'shophunterexport');
 $router->map('GET', '/export/arfurkesz', 'exportController#ArfurkeszExport', 'arfurkeszexport');
 $router->map('GET', '/export/armutato', 'exportController#ArmutatoExport', 'armutatoexport');
