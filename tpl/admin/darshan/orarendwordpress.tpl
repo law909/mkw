@@ -124,8 +124,8 @@
         {foreach $nap['orak'] as $ora}
         <div class="dttora">
             <div class="dttidopont{if ($ora['delelott'])} delelott{/if}">{$ora['kezdet']}-{$ora['veg']}</div>
-            <div class="dttoranev"><a href="{if ($ora['oraurl'])}http://jogadarshan.hu/{$ora['oraurl']}{/if}" target="_parent">{$ora['oranev']}</a></div>
-            <div class="dtttanar"><a href="{if ($ora['tanarurl'])}http://jogadarshan.hu/{$ora['tanarurl']}{/if}" target="_parent">{$ora['tanar']}</a></div>
+            <div class="dttoranev"><a href="{if ($ora['oraurl'])}http://jogadarshan.hu/{$ora['oraurl']}{/if}" target="_parent">{if ($ora['elmarad'])}ELMARAD! {/if}{$ora['oranev']}</a></div>
+            <div class="dtttanar"><a href="{if ($ora['tanarurl'])}http://jogadarshan.hu/{$ora['tanarurl']}{/if}" target="_parent">{$ora['tanar']}{if ($ora['helyettesito'])} HELYETTESÍT: {$ora['helyettesito']}{/if}</a></div>
         </div>
         {/foreach}
     </div>

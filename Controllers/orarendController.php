@@ -22,7 +22,6 @@ class orarendController extends \mkwhelpers\MattableController {
      * @return array
      */
 	protected function loadVars($t, $forKarb = false) {
-        $dolgozoCtrl = new dolgozoController($this->params);
 		$x = array();
 		if (!$t) {
 			$t = new \Entities\Orarend();
@@ -31,6 +30,7 @@ class orarendController extends \mkwhelpers\MattableController {
 		$x['id'] = $t->getId();
 		$x['nev'] = $t->getNev();
 		$x['dolgozonev'] = $t->getDolgozoNev();
+        $x['helyettesitonev'] = $t->getHelyettesitoNev();
 		$x['jogateremnev'] = $t->getJogateremNev();
 		$x['jogaoratipusnev'] = $t->getJogaoratipusNev();
 		$x['maxferohely'] = $t->getMaxferohely();
@@ -39,6 +39,7 @@ class orarendController extends \mkwhelpers\MattableController {
 		$x['veg'] = $t->getVegStr();
 		$x['inaktiv'] = $t->getInaktiv();
 		$x['alkalmi'] = $t->getAlkalmi();
+		$x['elmarad'] = $t->getElmarad();
 		return $x;
 	}
 
@@ -53,6 +54,13 @@ class orarendController extends \mkwhelpers\MattableController {
 		}
 		else {
 		    $obj->setDolgozo(null);
+        }
+        $helyettesito = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('helyettesito'));
+        if ($helyettesito) {
+            $obj->setHelyettesito($helyettesito);
+        }
+        else {
+            $obj->setHelyettesito(null);
         }
         $jogaterem = \mkw\store::getEm()->getRepository('Entities\Jogaterem')->find($this->params->getIntRequestParam('jogaterem'));
         if ($jogaterem) {
@@ -75,6 +83,7 @@ class orarendController extends \mkwhelpers\MattableController {
         $obj->setVeg($this->params->getStringRequestParam('veg'));
 		$obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
         $obj->setAlkalmi($this->params->getBoolRequestParam('alkalmi'));
+        $obj->setElmarad($this->params->getBoolRequestParam('elmarad'));
 //		$obj->doStuffOnPrePersist();
 		return $obj;
 	}
@@ -97,6 +106,10 @@ class orarendController extends \mkwhelpers\MattableController {
         $f = $this->params->getNumRequestParam('alkalmifilter',9);
         if ($f != 9) {
             $filter->addFilter('alkalmi', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('elmaradfilter',9);
+        if ($f != 9) {
+            $filter->addFilter('elmarad', '=', $f);
         }
         if (!is_null($this->params->getRequestParam('napfilter', null))) {
             $filter->addFilter('nap' , '=', $this->params->getIntRequestParam('napfilter'));
@@ -173,6 +186,7 @@ class orarendController extends \mkwhelpers\MattableController {
 
         $dc = new dolgozoController($this->params);
 		$view->setVar('dolgozolist', $dc->getSelectList(($ora ? $ora->getDolgozoId() : 0)));
+        $view->setVar('helyettesitolist', $dc->getSelectList(($ora ? $ora->getHelyettesitoId() : 0)));
 
 		$jtc = new jogateremController($this->params);
 		$view->setVar('jogateremlist', $jtc->getSelectList(($ora ? $ora->getJogateremId() : 0)));
@@ -199,6 +213,9 @@ class orarendController extends \mkwhelpers\MattableController {
                 case 'alkalmi':
                     $obj->setAlkalmi($kibe);
                     break;
+                case 'elmarad':
+                    $obj->setElmarad($kibe);
+                    break;
             }
             $this->getEm()->persist($obj);
             $this->getEm()->flush();
@@ -220,9 +237,12 @@ class orarendController extends \mkwhelpers\MattableController {
                 'oraurl' => $item->getJogaoratipusUrl(),
                 'tanar' => $item->getDolgozoNev(),
                 'tanarurl' => $item->getDolgozoUrl(),
+                'helyettesito' => $item->getHelyettesitoNev(),
+                'helyettesitourl' => $item->getHelyettesitoUrl(),
                 'terem' => $item->getJogateremNev(),
                 'class' => $item->getJogateremOrarendclass(),
-                'delelott' => $item->isDelelottKezdodik()
+                'delelott' => $item->isDelelottKezdodik(),
+                'elmarad' => $item->getElmarad()
             );
 	    }
         $view = $this->createView('orarendwordpress.tpl');

@@ -13,7 +13,7 @@
                                     <td>{$_orarend.napnev}</td>
                                 </tr>
                                 <tr>
-                                    <td>{$_orarend.dolgozonev}</td>
+                                    <td>{$_orarend.dolgozonev}{if ($_orarend.helyettesitonev)} (helyettesit: {$_orarend.helyettesitonev}){/if}</td>
                                 </tr>
                                 <tr>
                                     <td>{$_orarend.jogateremnev}</td>
@@ -33,6 +33,7 @@
             <tbody>
                 <tr><td><a href="#" data-id="{$_orarend.id}" data-flag="inaktiv" class="js-flagcheckbox{if ($_orarend.inaktiv)} ui-state-hover{/if}">{at('Inaktív')}</a></td></tr>
                 <tr><td><a href="#" data-id="{$_orarend.id}" data-flag="alkalmi" class="js-flagcheckbox{if ($_orarend.alkalmi)} ui-state-hover{/if}">{at('Alkalmi')}</a></td></tr>
+                <tr><td><a href="#" data-id="{$_orarend.id}" data-flag="elmarad" class="js-flagcheckbox{if ($_orarend.elmarad)} ui-state-hover{/if}">{at('Elmarad')}</a></td></tr>
             </tbody>
         </table>
     </td>

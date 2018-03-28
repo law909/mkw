@@ -72,6 +72,16 @@
                     <option value="1">{at('Inaktív')}</option>
                     <option value="9">{at('Mindegy')}</option>
                 </select>
+                <select id="alkalmifilter" name="alkalmifilter">
+                    <option value="9">{at('Mindegy')}</option>
+                    <option value="0">{at('Nem alkalmi')}</option>
+                    <option value="1">{at('Alkalmi')}</option>
+                </select>
+                <select id="elmaradfilter" name="elmaradfilter">
+                    <option value="9">{at('Mindegy')}</option>
+                    <option value="0">{at('Nem marad el')}</option>
+                    <option value="1">{at('Elmarad')}</option>
+                </select>
             </div>
         </div>
         <div class="mattable-pagerwrapper">

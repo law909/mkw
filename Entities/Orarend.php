@@ -41,6 +41,12 @@ class Orarend {
     private $dolgozo;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="helyettesito_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $helyettesito;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Jogaterem")
      * @ORM\JoinColumn(name="jogaterem_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
@@ -76,6 +82,9 @@ class Orarend {
     /** @ORM\Column(type="boolean", nullable=false) */
     private $alkalmi = false;
 
+    /** @ORM\Column(type="boolean", nullable=false) */
+    private $elmarad = false;
+
     public function getDolgozo() {
         return $this->dolgozo;
     }
@@ -96,6 +105,28 @@ class Orarend {
 
     public function setDolgozo($dolgozo) {
         $this->dolgozo = $dolgozo;
+    }
+
+    public function getHelyettesito() {
+        return $this->helyettesito;
+    }
+
+    public function getHelyettesitoNev() {
+        if ($this->helyettesito) {
+            return $this->helyettesito->getNev();
+        }
+        return '';
+    }
+
+    public function getHelyettesitoId() {
+        if ($this->helyettesito) {
+            return $this->helyettesito->getId();
+        }
+        return '';
+    }
+
+    public function setHelyettesito($helyettesito) {
+        $this->helyettesito = $helyettesito;
     }
 
     public function getJogaterem() {
@@ -281,6 +312,13 @@ class Orarend {
         return '';
     }
 
+    public function getHelyettesitoUrl() {
+        if ($this->helyettesito) {
+            return $this->helyettesito->getUrl();
+        }
+        return '';
+    }
+
     public function getJogaoratipusUrl() {
         if ($this->jogaoratipus) {
             return $this->jogaoratipus->getUrl();
@@ -305,5 +343,19 @@ class Orarend {
     public function isDelelottKezdodik() {
         $noon = '12:00:00';
         return $this->getKezdetStr() <= $noon;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getElmarad() {
+        return $this->elmarad;
+    }
+
+    /**
+     * @param mixed $elmarad
+     */
+    public function setElmarad($elmarad) {
+        $this->elmarad = $elmarad;
     }
 }
