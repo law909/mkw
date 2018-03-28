@@ -197,7 +197,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
     public function getKeszletByRaktar() {
         $valtozatid = $this->params->getIntRequestParam('valtozatid');
         $valtozat = $this->getRepo()->find($valtozatid);
-        $raktarak = $this->getRepo('Entities\Raktar')->getAll();
+        $raktarak = $this->getRepo('Entities\Raktar')->getAllActive();
         if ($valtozat) {
             $klist = array();
             foreach($raktarak as $raktar) {

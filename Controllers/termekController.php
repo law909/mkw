@@ -1295,7 +1295,8 @@ class termekController extends \mkwhelpers\MattableController {
     public function getKeszletByRaktar() {
         $termekid = $this->params->getIntRequestParam('termekid');
         $termek = $this->getRepo()->find($termekid);
-        $raktarak = $this->getRepo('Entities\Raktar')->getAll();
+
+        $raktarak = $this->getRepo('Entities\Raktar')->getAllActive();
         if ($termek) {
             $klist = array();
             foreach($raktarak as $raktar) {

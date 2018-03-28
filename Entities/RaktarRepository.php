@@ -7,4 +7,10 @@ class RaktarRepository extends \mkwhelpers\Repository {
 		parent::__construct($em,$class);
 		$this->setEntityname('Entities\Raktar');
 	}
+
+	public function getAllActive() {
+	    $filter = new \mkwhelpers\FilterDescriptor();
+	    $filter->addFilter('archiv', '<>', 1);
+	    return $this->getAll($filter);
+    }
 }
