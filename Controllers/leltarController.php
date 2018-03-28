@@ -65,7 +65,7 @@ class leltarController extends \mkwhelpers\Controller {
     protected function getData() {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('termek_id', 'termek_id');
-        $rsm->addScalarResult('termekvaltozat_id', 'termekvaltozat_id');
+        $rsm->addScalarResult('id', 'termekvaltozat_id');
         $rsm->addScalarResult('termeknev', 'termeknev');
         $rsm->addScalarResult('keszlet', 'keszlet');
         $rsm->addScalarResult('ertek1', 'ertek1');
@@ -161,22 +161,26 @@ class leltarController extends \mkwhelpers\Controller {
 
         $excel = new \PHPExcel();
         $excel->setActiveSheetIndex(0)
-            ->setCellValue('A1', t('Cikkszám'))
-            ->setCellValue('B1', t('Termék'))
-            ->setCellValue('C1', t('Változat'))
-            ->setCellValue('D1', t('Ár'))
-            ->setCellValue('E1', t('Készlet'));
+            ->setCellValue('A1', t('Termék ID'))
+            ->setCellValue('B1', t('Változat ID'))
+            ->setCellValue('C1', t('Cikkszám'))
+            ->setCellValue('D1', t('Termék'))
+            ->setCellValue('E1', t('Változat'))
+            ->setCellValue('F1', t('Ár'))
+            ->setCellValue('G1', t('Készlet'));
 
         $mind = $this->getData();
 
         $sor = 2;
         foreach ($mind as $item) {
             $excel->setActiveSheetIndex(0)
-                ->setCellValue('A' . $sor, $item['cikkszam'])
-                ->setCellValue('B' . $sor, $item['termeknev'])
-                ->setCellValue('C' . $sor, $item['ertek1'] . ' ' . $item['ertek2'])
-                ->setCellValue('D' . $sor, $item['ar'])
-                ->setCellValue('E' . $sor, $item['keszlet']);
+                ->setCellValue('A' . $sor, $item['termek_id'])
+                ->setCellValue('B' . $sor, $item['termekvaltozat_id'])
+                ->setCellValue('C' . $sor, $item['cikkszam'])
+                ->setCellValue('D' . $sor, $item['termeknev'])
+                ->setCellValue('E' . $sor, $item['ertek1'] . ' ' . $item['ertek2'])
+                ->setCellValue('F' . $sor, $item['ar'])
+                ->setCellValue('G' . $sor, $item['keszlet']);
             $sor++;
         }
 
