@@ -826,6 +826,7 @@ class Bizonylatfej {
         $ret['partnervezeteknev'] = $this->getPartnervezeteknev();
         $ret['partnerfeketelistas'] = $this->getPartnerfeketelistas();
         $ret['partnerfeketelistaok'] = $this->getPartnerfeketelistaok();
+        $ret['partnerorszag'] = $this->getPartnerorszagnev();
         $ret['szamlanev'] = $this->getPartnernev();
         $ret['szamlairszam'] = $this->getPartnerirszam();
         $ret['szamlavaros'] = $this->getPartnervaros();

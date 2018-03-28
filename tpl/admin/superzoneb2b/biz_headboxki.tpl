@@ -15,6 +15,9 @@
         <p class="nev bold">{$egyed.szamlanev}</p>
         <p>{$egyed.szamlairszam} {$egyed.szamlavaros}</p>
         <p>{$egyed.szamlautca} {$egyed.szamlahazszam}</p>
+        {if ($egyed.partnerorszag)}
+            <p>{$egyed.partnerorszag}</p>
+        {/if}
         {if ($egyed.partneradoszam)}
             <p>Adószám: {$egyed.partneradoszam}</p>
         {/if}
