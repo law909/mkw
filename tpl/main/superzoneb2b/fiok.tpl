@@ -185,6 +185,17 @@
                             <input id="SzamlazasiUtcaEdit" name="hazszam" type="text" class="form-control" value="{$user.hazszam}">
                         </div>
                     </div>
+                    <div>
+                        <label class="control-label" for="OrszagEdit">{t('Ország')}:</label>
+                        <div class="controls">
+                            <select id="OrszagEdit" name="orszag">
+                                <option value="0">{t('válasszon')}</option>
+                                {foreach $orszaglist as $orszag}
+                                    <option value="{$orszag.id}"{if ($orszag.selected)} selected="selected"{/if}>{$orszag.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
                     <button type="submit" class="btn okbtn">Save</button>
                 </form>
             </div>

@@ -82,6 +82,17 @@
                                         <input name="hazszam" type="text" class="input-mini" placeholder="{t('házszám')}" value="{$user.hazszam}">
 									</div>
 								</div>
+                                <div class="control-group">
+                                    <label class="control-label" for="OrszagEdit">{t('Ország')}:</label>
+                                    <div class="controls">
+                                        <select id="OrszagEdit" name="orszag">
+                                            <option value="0">{t('válasszon')}</option>
+                                            {foreach $orszaglist as $orszag}
+                                                <option value="{$orszag.id}"{if ($orszag.selected)} selected="selected"{/if}>{$orszag.caption}</option>
+                                            {/foreach}
+                                        </select>
+                                    </div>
+                                </div>
 								<div class="form-actions">
 									<button type="submit" class="btn okbtn">{t('Adatok módosítása')}</button>
 								</div>

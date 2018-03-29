@@ -1075,6 +1075,7 @@ class partnerController extends \mkwhelpers\MattableController {
     }
 
     public function showAccount() {
+        /** @var \Entities\Partner $user */
         $user = $this->getRepo()->getLoggedInUser();
         if ($user) {
             $view = $this->getFiokTpl();
@@ -1096,6 +1097,9 @@ class partnerController extends \mkwhelpers\MattableController {
             $szamlac = new szamlafejController($this->params);
             $szamlalist = $szamlac->getFiokList();
             $view->setVar('szamlalist', $szamlalist);
+
+            $orszagc = new orszagController($this->params);
+            $view->setVar('orszaglist', $orszagc->getSelectList($user->getOrszagId()));
 
             $ptcsk = new partnertermekcsoportkedvezmenyController($this->params);
             $ptcsklist = $ptcsk->getFiokList();
