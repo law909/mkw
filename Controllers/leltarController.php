@@ -167,7 +167,8 @@ class leltarController extends \mkwhelpers\Controller {
             ->setCellValue('D1', t('Termék'))
             ->setCellValue('E1', t('Változat'))
             ->setCellValue('F1', t('Ár'))
-            ->setCellValue('G1', t('Készlet'));
+            ->setCellValue('G1', t('Készlet'))
+            ->setCellValue('H1', t('Tény készlet'));
 
         $mind = $this->getData();
 
@@ -180,7 +181,8 @@ class leltarController extends \mkwhelpers\Controller {
                 ->setCellValue('D' . $sor, $item['termeknev'])
                 ->setCellValue('E' . $sor, $item['ertek1'] . ' ' . $item['ertek2'])
                 ->setCellValue('F' . $sor, $item['ar'])
-                ->setCellValue('G' . $sor, $item['keszlet']);
+                ->setCellValue('G' . $sor, $item['keszlet'])
+                ->setCellValue('H' . $sor, $item['keszlet']);
             $sor++;
         }
 
