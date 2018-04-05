@@ -6,6 +6,7 @@
     <meta property="og:description" content="{$termek.rovidleiras}"/>
     <meta property="og:image" content="{$termek.fullkepurl}"/>
     <meta property="og:type" content="product"/>
+    <meta name='itemId' content='{$termek.id}'>
 {/block}
 
 {block "script"}
