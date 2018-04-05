@@ -65,6 +65,16 @@
             })();
         </script>
         {/if}
+        <script>
+            (function(g,r,a,v,i,t,y){
+                g[a]=g[a]||[],y=r.createElement(v),
+                    g=r.getElementsByTagName(v)[0];y.async=1;
+                y.src='//'+i+'/js/'+t+'/gr_reco5.min.js';
+                g.parentNode.insertBefore(y,g);y=r.createElement(v),y.async=1;
+                y.src='//'+i+'/grrec-'+t+'-war/JSServlet4?cc=1';
+                g.parentNode.insertBefore(y,g);
+            })(window, document, '_gravity','script', 'mindentkapnihu.yusp.com', 'mindentkapnihu');
+        </script>
 	</head>
 	<body class="bgimg">
         {block "body"}
