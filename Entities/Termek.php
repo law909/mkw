@@ -768,6 +768,7 @@ class Termek {
     public function toKosar($valtozat) {
         $x = array();
         $x['id'] = $this->getId();
+        $x['termekid'] = $this->getId();
         $x['kozepeskepurl'] = $this->getKepUrlMedium();
         $x['kiskepurl'] = $this->getKepUrlSmall();
         $x['minikepurl'] = $this->getKepurlMini();

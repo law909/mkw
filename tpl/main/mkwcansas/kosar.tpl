@@ -1,5 +1,11 @@
 {extends "base.tpl"}
 
+{block "meta"}
+{foreach $tetellista as $tetel}
+    <meta property="itemInCart" content="{$tetel.termekid}">
+{/foreach}
+{/block}
+
 {block "kozep"}
 <div class="container whitebg">
 	<div class="row">
