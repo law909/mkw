@@ -417,6 +417,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 
                     $lasttermeknevek = array();
                     $lasttermekids = array();
+                    $lasttermekadat = array();
         //			$kosartetelek = $this->getRepo('Entities\Kosar')->getDataBySessionId(\Zend_Session::getId());
                     foreach ($kosartetelek as $kt) {
                         $t = new \Entities\Bizonylattetel();
@@ -435,6 +436,11 @@ class checkoutController extends \mkwhelpers\MattableController {
                         $t->calc();
                         $lasttermeknevek[] = $t->getTermeknev();
                         $lasttermekids[] = $t->getTermekId();
+                        $lasttermekadat[] = array(
+                            'id' => $t->getTermekId(),
+                            'unitprice' => $t->getBruttoegysar(),
+                            'qty' => $t->getMennyiseg()
+                        );
                         $this->getEm()->persist($t);
                     }
                     $this->getEm()->persist($megrendfej);
@@ -446,6 +452,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                     \mkw\store::getMainSession()->lasttermekids = $lasttermekids;
                     \mkw\store::getMainSession()->lastszallmod = $szallitasimod;
                     \mkw\store::getMainSession()->lastfizmod = $fizetesimod;
+                    \mkw\store::getMainSession()->lasttermekadat = $lasttermekadat;
                     $kc = new kosarController($this->params);
                     $kc->clear();
 
@@ -1047,6 +1054,7 @@ class checkoutController extends \mkwhelpers\MattableController {
         \mkw\store::fillTemplate($view);
         $mrszam = \mkw\store::getMainSession()->lastmegrendeles;
 		$view->setVar('megrendelesszam', $mrszam);
+		$view->setVar('megrendelesadat', \mkw\store::getMainSession()->lasttermekadat);
 //itt kell hozza vasarolt termeket keresni session->lasttermekids-re
 
         $aktsapikey = \mkw\store::getParameter(\mkw\consts::AKTrustedShopApiKey);
@@ -1079,6 +1087,7 @@ class checkoutController extends \mkwhelpers\MattableController {
         \mkw\store::getMainSession()->lasttermekids = array();
         \mkw\store::getMainSession()->lastszallmod = 0;
         \mkw\store::getMainSession()->lastfizmod = 0;
+        \mkw\store::getMainSession()->lasttermekadat = array();
 
 		$view->printTemplateResult(false);
 	}
