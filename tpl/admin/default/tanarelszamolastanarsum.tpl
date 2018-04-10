@@ -3,6 +3,7 @@
     <tr>
         <th class="headercell">{at('Tanár')}</th>
         <th class="headercell textalignright">{at('Jutalék')}</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -12,6 +13,7 @@
         <tr>
             <td class="datacell">{$tetel.nev}</td>
             <td class="datacell textalignright">{bizformat($tetel.jutalek)}</td>
+            <td class="datacell"><a href="\admin\tanarelszamolas\reszletezo?id={$tetel.id}&tol={$tol}&ig={$ig}" target="_blank">{at('Részletezés')}</a></td>
         </tr>
     {/foreach}
     </tbody>
