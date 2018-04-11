@@ -6,7 +6,7 @@
         var _gravity = _gravity || [];
         // one buy event for each product bought
         {foreach $megrendelesadat as $ma}
-        _gravity.push({type: "event", eventType: "BUY", itemId: "{$ma.id}", unitPrice: "{$ma.unitprice}", quantity: "{$ma.qty}", orderId: "{$megrendelesszam}"});
+        _gravity.push( { type: "event", eventType: "BUY", itemId: "{$ma.id}", unitPrice: "{$ma.unitprice}", quantity: "{$ma.qty}", orderId: "{$megrendelesszam}" } );
         {/foreach}
     </script>
 {/block}
