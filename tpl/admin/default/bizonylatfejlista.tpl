@@ -38,15 +38,15 @@
 	<div class="matt-hseparator"></div>
     <div>
         <label for="datumtipusfilter">{at('Dátum')}:</label>
-        <select id="datumtipusfilter" name="datumtipusfilter"{if (haveJog(20))} disabled="disabled"{/if}>
+        <select id="datumtipusfilter" name="datumtipusfilter"{if (!haveJog(20))} disabled="disabled"{/if}>
             <option value="1">{at('kelt')}</option>
             <option value="2">{at('teljesítés')}</option>
             {if ($showesedekesseg)}
             <option value="3">{at('esedékesség')}</option>
             {/if}
         </select>
-        <input id="datumtolfilter" name="datumtolfilter" type="text" size="12" data-datum="{$datumtolfilter|default}"{if (haveJog(20))} disabled="disabled"{/if}>
-        <input id="datumigfilter" name="datumigfilter" type="text" size="12"{if (haveJog(20))} disabled="disabled"{/if}>
+        <input id="datumtolfilter" name="datumtolfilter" type="text" size="12" data-datum="{$datumtolfilter|default}"{if (!haveJog(20))} disabled="disabled"{/if}>
+        <input id="datumigfilter" name="datumigfilter" type="text" size="12"{if (!haveJog(20))} disabled="disabled"{/if}>
     </div>
     <div class="matt-hseparator"></div>
     <div>
