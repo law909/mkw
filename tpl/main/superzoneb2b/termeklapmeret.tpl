@@ -69,7 +69,9 @@
                 </table>
             </form>
             <div>
+                {if ($termek.ar > 0)}
                 <a href="/kosar/multiadd" class="btn btn-large btn-primary desktopright js-kosarbabtn" data-termekid="{$termek.id}">Add to cart</a>
+                {/if}
             </div>
         </div>
     </div>

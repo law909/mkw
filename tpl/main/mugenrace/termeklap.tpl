@@ -118,11 +118,13 @@
                                 </a>
                             </div>
                             {else}
-                            <div class="textalignright">
-                                <a href="/kosar/add?id={$termek.id}" rel="nofollow" class="{$_kosarbaclass} btn btn-large cartbtn" data-termek="{$termek.id}" data-id="{$termek.id}">
-                                    {t('Kosárba')}
-                                </a>
-                            </div>
+                                {if ($termek.bruttohuf > 0)}
+                                <div class="textalignright">
+                                    <a href="/kosar/add?id={$termek.id}" rel="nofollow" class="{$_kosarbaclass} btn btn-large cartbtn" data-termek="{$termek.id}" data-id="{$termek.id}">
+                                        {t('Kosárba')}
+                                    </a>
+                                </div>
+                                {/if}
                             {/if}
                             </div>
                         </div>

@@ -180,9 +180,11 @@
                                             {t('Elfogyott')}
                                         </a>
                                     {else}
+                                        {if ($_termek.bruttohuf > 0)}
                                         <a href="/kosar/add?id={$_termek.id}" rel="nofollow" class="js-kosarbaszinvaltozat btn cartbtn pull-right" data-termek="{$_termek.id}">
                                             {t('Kosárba')}
                                         </a>
+                                        {/if}
                                     {/if}
                                     </div>
                                 </div>
