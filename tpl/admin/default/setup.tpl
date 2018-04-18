@@ -1065,7 +1065,7 @@
                         </tr>
                         <tr>
                             <td><label>{at('Bizonylat státuszváltás értesítő')}:</label></td>
-                            <td><input name="emailstatuszvaltas" type="text" value="{$emailbcc}" title="Vesszővel elválasztva" size="60"></td>
+                            <td><input name="emailstatuszvaltas" type="text" value="{$emailstatuszvaltas}" title="Vesszővel elválasztva" size="60"></td>
                         </tr>
                         </tbody>
                     </table>
