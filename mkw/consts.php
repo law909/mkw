@@ -48,6 +48,7 @@ class consts {
     const EmailFrom = 'emailfrom';
     const EmailReplyTo = 'emailreplyto';
     const EmailBcc = 'emailbcc';
+    const EmailStatuszValtas = 'emailstatuszvaltas';
 
     const Oldalcim = 'oldalcim';
     const Seodescription = 'seodescription';

@@ -49,6 +49,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::EmailReplyTo, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::EmailBcc);
         $view->setVar(\mkw\consts::EmailBcc, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::EmailStatuszValtas);
+        $view->setVar(\mkw\consts::EmailStatuszValtas, ($p ? $p->getErtek() : ''));
 
         // web
         $p = $repo->find(\mkw\consts::Oldalcim);
@@ -529,6 +531,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::EmailFrom, $this->params->getOriginalStringRequestParam('emailfrom'));
         $this->setObj(\mkw\consts::EmailReplyTo, $this->params->getOriginalStringRequestParam('emailreplyto'));
         $this->setObj(\mkw\consts::EmailBcc, $this->params->getStringRequestParam('emailbcc'));
+        $this->setObj(\mkw\consts::EmailStatuszValtas, $this->params->getStringRequestParam('emailstatuszvaltas'));
 
         // web
         $this->setObj(\mkw\consts::Logo, $this->params->getStringRequestParam('logo'));

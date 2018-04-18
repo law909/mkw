@@ -78,7 +78,16 @@ class mkwzendmailer {
         return explode(',', $bcc);
     }
 
-    public function send() {
+    protected function getStatuszValtasArray() {
+        $bcc = \mkw\store::getParameter(\mkw\consts::EmailStatuszValtas);
+        if (!$bcc) {
+            $bcc = \mkw\store::getParameter(\mkw\consts::EmailBcc);
+        }
+        return explode(',', $bcc);
+    }
+
+    public function send($statusvaltas = false) {
+
         $this->mailer = new \Zend_Mail('UTF-8');
         $this->mailer->setBodyHtml($this->message);
         $this->mailer->setSubject($this->subject);
@@ -87,8 +96,20 @@ class mkwzendmailer {
         $fromdata = explode(';', $from);
         $this->mailer->setFrom($fromdata[0], $fromdata[1]);
 
+        if (!$this->replyto) {
+            $this->mailer->setReplyTo(\mkw\store::getParameter(\mkw\consts::EmailReplyTo));
+        }
+        else {
+            $this->mailer->setReplyTo($this->replyto);
+        }
+
         if (!$this->to) {
-            $bcc = $this->getBccArray();
+            if ($statusvaltas) {
+                $bcc = $this->getStatuszValtasArray();
+            }
+            else {
+                $bcc = $this->getBccArray();
+            }
             foreach($bcc as $cim) {
                 if ($cim) {
                     $this->mailer->addTo($cim);
@@ -102,19 +123,18 @@ class mkwzendmailer {
                 }
             }
         }
-        $bcc = $this->getBccArray();
+        if ($statusvaltas) {
+            $bcc = $this->getStatuszValtasArray();
+        }
+        else {
+            $bcc = $this->getBccArray();
+        }
         foreach($bcc as $_bcc) {
             if ($_bcc) {
                 $this->mailer->addBcc($_bcc);
             }
         }
 
-        if (!$this->replyto) {
-            $this->mailer->setReplyTo(\mkw\store::getParameter(\mkw\consts::EmailReplyTo));
-        }
-        else {
-            $this->mailer->setReplyTo($this->replyto);
-        }
         try {
             if ($this->mailer->getRecipients()) {
                 $this->mailer->send();

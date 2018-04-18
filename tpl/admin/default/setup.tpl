@@ -1063,6 +1063,10 @@
                             <td><label>{at('Bcc')}:</label></td>
                             <td><input name="emailbcc" type="text" value="{$emailbcc}" title="Vesszővel elválasztva" size="60"></td>
                         </tr>
+                        <tr>
+                            <td><label>{at('Bizonylat státuszváltás értesítő')}:</label></td>
+                            <td><input name="emailstatuszvaltas" type="text" value="{$emailbcc}" title="Vesszővel elválasztva" size="60"></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
