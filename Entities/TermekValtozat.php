@@ -19,6 +19,7 @@ use mkwhelpers\FilterDescriptor;
 class TermekValtozat {
 
     private $keszletinfo;
+    private $foglalasinfo;
 
 	/**
 	 * @ORM\Id @ORM\Column(type="integer")
@@ -178,6 +179,44 @@ class TermekValtozat {
         return $this->keszletinfo;
     }
 
+    protected function calcFoglalasInfo($kivevebiz = null, $datum = null, $raktarid = null) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('mennyiseg', 'mennyiseg');
+        $rsm->addScalarResult('mozgasdb', 'mozgasdb');
+
+        if (!$datum) {
+            $datum = new \DateTime();
+        }
+
+        $filter = new FilterDescriptor();
+        $filter->addFilter('bt.termekvaltozat_id', '=', $this->getId());
+        $filter->addFilter('bt.foglal', '=', 1);
+        $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
+        $filter->addFilter('bf.teljesites', '<=', $datum);
+        $filter->addFilter('bf.bizonylattipus_id', '=', 'megrendeles');
+        if ($kivevebiz) {
+            $filter->addFilter('bf.id', '<>', $kivevebiz);
+        }
+        if ($raktarid) {
+            $filter->addFilter('bf.raktar_id', '=', $raktarid);
+        }
+
+        $q = \mkw\store::getEm()->createNativeQuery('SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
+            . ' FROM bizonylattetel bt'
+            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . $filter->getFilterString()
+            , $rsm);
+
+        $q->setParameters($filter->getQueryParameters());
+        $d = $q->getScalarResult();
+
+        $k = $d[0]['mennyiseg'] * -1;
+        $db = $d[0]['mozgasdb'];
+
+        $this->foglalasinfo = array('foglalas' => $k, 'mozgasdb' => $db);
+        return $this->foglalasinfo;
+    }
+
     public function getMozgasDb($datum = null, $raktarid = null) {
         if (!$this->keszletinfo) {
             $this->calcKeszletInfo($datum, $raktarid);
@@ -200,16 +239,27 @@ class TermekValtozat {
                 $kivevebiz = $kivevebiz->getId();
             }
             $k = 0;
+            if (!$this->foglalasinfo) {
+                $this->calcFoglalasInfo($kivevebiz);
+            }
+            return $this->foglalasinfo['foglalas'];
+
+            /** @var \Entities\Bizonylattetel $bt */
+            /*
             foreach($this->bizonylattetelek as $bt) {
-                $nemkivetel = true;
-                if ($kivevebiz) {
-                    $nemkivetel = $bt->getBizonylatfejId() != $kivevebiz;
-                }
-                if ($bt->getFoglal() && ($nemkivetel)) {
-                    $k += ($bt->getMennyiseg() * $bt->getIrany());
+                $bf = $bt->getBizonylatfej();
+                if ($bf->getBizonylattipusId() === 'megrendeles') {
+                    $nemkivetel = true;
+                    if ($kivevebiz) {
+                        $nemkivetel = $bt->getBizonylatfejId() != $kivevebiz;
+                    }
+                    if ($bt->getFoglal() && ($nemkivetel)) {
+                        $k += ($bt->getMennyiseg() * $bt->getIrany());
+                    }
                 }
             }
             return -1 * $k;
+            */
         }
         return 0;
     }

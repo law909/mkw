@@ -438,13 +438,17 @@ class Termek {
                 $kivevebiz = $kivevebiz->getId();
             }
             $k = 0;
+            /** @var \Entities\Bizonylattetel $bt */
             foreach($this->bizonylattetelek as $bt) {
-                $nemkivetel = true;
-                if ($kivevebiz) {
-                    $nemkivetel = $bt->getBizonylatfejId() != $kivevebiz;
-                }
-                if ($bt->getFoglal() && !$bt->getRontott() && ($nemkivetel)) {
-                    $k += ($bt->getMennyiseg() * $bt->getIrany());
+                $bf = $bt->getBizonylatfej();
+                if ($bf->getBizonylattipusId() === 'megrendeles') {
+                    $nemkivetel = true;
+                    if ($kivevebiz) {
+                        $nemkivetel = $bt->getBizonylatfejId() != $kivevebiz;
+                    }
+                    if ($bt->getFoglal() && !$bt->getRontott() && ($nemkivetel)) {
+                        $k += ($bt->getMennyiseg() * $bt->getIrany());
+                    }
                 }
             }
             return -1 * $k;
