@@ -346,4 +346,25 @@ class adminController extends mkwhelpers\Controller {
         $view->setVar('cimletek', \mkw\store::cimletez($this->params->getStringRequestParam('osszegek')));
         $view->printTemplateResult();
     }
+
+    public function repairFoglalas() {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('foglal', '=', 1);
+        $r = $this->getRepo('Entities\Bizonylatstatusz')->getAll($filter);
+        $statuszok = array();
+        foreach ($r as $bs) {
+            $statuszok[] = $bs->getId();
+        }
+
+        $filter->clear();
+        $filter->addSql('_xx.bizonylatstatusz NOT IN (' . implode(',', $statuszok) . ')');
+        $filter->addFilter('bizonylattipus', '=', 'megrendeles');
+        $r = $this->getRepo('Entities\Bizonylatfej')->getAll($filter);
+        foreach ($r as $bf) {
+            $q = \mkw\store::getEm()->createQuery('UPDATE Entities\Bizonylattetel bt SET bt.foglal=0 WHERE bt.bizonylatfej=\'' . $bf->getId() . '\'');
+            $q->Execute();
+        }
+        echo 'kész';
+    }
+
 }
