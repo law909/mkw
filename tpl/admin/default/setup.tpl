@@ -948,6 +948,20 @@
                             <a href="#" class="js-stopimport" data-href="{$stopnomadimporturl}">Stop import</a>
                             <a href="#" class="js-repairimport" data-href="{$repairnomadimporturl}">Javít</a>
                         </div>
+                        <div class="matt-hseparator"></div>
+                        <div>
+                            <label for="NikaEdit">Nika:</label>
+                            <select id="NikaEdit" name="gyartonika">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $gyartonikalist as $_gyarto}
+                                    <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                                {/foreach}
+                            </select>
+                            <label for="PathNikaEdit">Képek mappája:</label>
+                            <input id="PathNikaEdit" name="pathnika" value="{$pathnomad}">
+                            <a href="#" class="js-stopimport" data-href="{$stopnikaimporturl}">Stop import</a>
+                            <a href="#" class="js-repairimport" data-href="{$repairnikaimporturl}">Javít</a>
+                        </div>
                     </div>
                 {/if}
                 {if ($maintheme == 'superzoneb2b' || $maintheme == 'mugenrace')}
