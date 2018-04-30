@@ -445,6 +445,21 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::PathNika);
         $view->setVar(\mkw\consts::PathNika, ($p ? $p->getErtek() : ''));
 
+        $p = $repo->find(\mkw\consts::UrlKreativ);
+        $view->setVar(\mkw\consts::UrlKreativ, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UrlKreativImages);
+        $view->setVar(\mkw\consts::UrlKreativImages, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UrlDelton);
+        $view->setVar(\mkw\consts::UrlDelton, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UrlNomad);
+        $view->setVar(\mkw\consts::UrlNomad, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UrlNika);
+        $view->setVar(\mkw\consts::UrlNika, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UrlMaxutov);
+        $view->setVar(\mkw\consts::UrlMaxutov, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UrlLegavenue);
+        $view->setVar(\mkw\consts::UrlLegavenue, ($p ? $p->getErtek() : ''));
+
         $p = $repo->find(\mkw\consts::MiniCRMHasznalatban);
         $view->setVar(\mkw\consts::MiniCRMHasznalatban, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::MiniCRMSystemId);
@@ -998,6 +1013,14 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::PathLegavenue, $this->params->getStringRequestParam('pathlegavenue', ''));
         $this->setObj(\mkw\consts::PathNomad, $this->params->getStringRequestParam('pathnomad', ''));
         $this->setObj(\mkw\consts::PathNika, $this->params->getStringRequestParam('pathnika', ''));
+
+        $this->setObj(\mkw\consts::UrlKreativ, $this->params->getStringRequestParam('urlkreativ', ''));
+        $this->setObj(\mkw\consts::UrlKreativImages, $this->params->getStringRequestParam('urlkreativimages', ''));
+        $this->setObj(\mkw\consts::UrlDelton, $this->params->getStringRequestParam('urldelton', ''));
+        $this->setObj(\mkw\consts::UrlNomad, $this->params->getStringRequestParam('urlnomad', ''));
+        $this->setObj(\mkw\consts::UrlNika, $this->params->getStringRequestParam('urlnika', ''));
+        $this->setObj(\mkw\consts::UrlMaxutov, $this->params->getStringRequestParam('urlmaxutov', ''));
+        $this->setObj(\mkw\consts::UrlLegavenue, $this->params->getStringRequestParam('urllegavenue', ''));
 
         $this->setObj(\mkw\consts::MugenraceLogo, $this->params->getStringRequestParam('mugenracelogo'));
         $this->setObj(\mkw\consts::MugenraceFooterLogo, $this->params->getStringRequestParam('mugenracefooterlogo'));

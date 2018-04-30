@@ -818,6 +818,10 @@
                             </select>
                             <label for="PathKreativEdit">Képek mappája:</label>
                             <input id="PathKreativEdit" name="pathkreativ" value="{$pathkreativ}">
+                            <label for="UrlKreativEdit">URL:</label>
+                            <input id="UrlKreativEdit" name="urlkreativ" value="{$urlkreativ}">
+                            <label for="UrlKreativImagesEdit">Képek URL:</label>
+                            <input id="UrlKreativImagesEdit" name="urlkreativimages" value="{$urlkreativimages}">
                             <a href="#" class="js-stopimport" data-href="{$stopkreativimporturl}">Stop import</a>
                             <a href="#" class="js-repairimport" data-href="{$repairkreativimporturl}">Javít</a>
                         </div>
@@ -832,6 +836,8 @@
                             </select>
                             <label for="PathDeltonEdit">Képek mappája:</label>
                             <input id="PathDeltonEdit" name="pathdelton" value="{$pathdelton}">
+                            <label for="UrlDeltonEdit">URL:</label>
+                            <input id="UrlDeltonEdit" name="urldelton" value="{$urldelton}">
                             <a href="#" class="js-stopimport" data-href="{$stopdeltonimporturl}">Stop import</a>
                             <a href="#" class="js-repairimport" data-href="{$repairdeltonimporturl}">Javít</a>
                         </div>
@@ -874,6 +880,8 @@
                             </select>
                             <label for="PathMaxutovEdit">Képek mappája:</label>
                             <input id="PathMaxutovEdit" name="pathmaxutov" value="{$pathmaxutov}">
+                            <label for="UrlMaxutovEdit">URL:</label>
+                            <input id="UrlMaxutovEdit" name="urlmaxutov" value="{$urlmaxutov}">
                             <a href="#" class="js-stopimport" data-href="{$stopmaxutovimporturl}">Stop import</a>
                             <a href="#" class="js-repairimport" data-href="{$repairmaxutovimporturl}">Javít</a>
                         </div>
@@ -931,6 +939,8 @@
                             </select>
                             <label for="PathLegavenueEdit">Képek mappája:</label>
                             <input id="PathLegavenueEdit" name="pathlegavenue" value="{$pathlegavenue}">
+                            <label for="UrlLegavenueEdit">URL:</label>
+                            <input id="UrlLegavenueEdit" name="urllegavenue" value="{$urllegavenue}">
                             <a href="#" class="js-stopimport" data-href="{$stoplegavenueimporturl}">Stop import</a>
                             <a href="#" class="js-repairimport" data-href="{$repairlegavenueimporturl}">Javít</a>
                         </div>
@@ -945,6 +955,8 @@
                             </select>
                             <label for="PathNomadEdit">Képek mappája:</label>
                             <input id="PathNomadEdit" name="pathnomad" value="{$pathnomad}">
+                            <label for="UrlNomadEdit">URL:</label>
+                            <input id="UrlNomadEdit" name="urlnomad" value="{$urlnomad}">
                             <a href="#" class="js-stopimport" data-href="{$stopnomadimporturl}">Stop import</a>
                             <a href="#" class="js-repairimport" data-href="{$repairnomadimporturl}">Javít</a>
                         </div>
@@ -958,7 +970,9 @@
                                 {/foreach}
                             </select>
                             <label for="PathNikaEdit">Képek mappája:</label>
-                            <input id="PathNikaEdit" name="pathnika" value="{$pathnomad}">
+                            <input id="PathNikaEdit" name="pathnika" value="{$pathnika}">
+                            <label for="UrlNikaEdit">URL:</label>
+                            <input id="UrlNikaEdit" name="urlnika" value="{$urlnika}">
                             <a href="#" class="js-stopimport" data-href="{$stopnikaimporturl}">Stop import</a>
                             <a href="#" class="js-repairimport" data-href="{$repairnikaimporturl}">Javít</a>
                         </div>

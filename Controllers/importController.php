@@ -138,6 +138,19 @@ class importController extends \mkwhelpers\Controller {
         return $res[0];
     }
 
+    public function createAfa($afa) {
+        $res = \mkw\store::getEm()->getRepository('Entities\Afa')->findByErtek($afa);
+        if (!$res) {
+            $res = new \Entities\Afa();
+            $res->setErtek($afa);
+            $res->setNev($afa);
+            \mkw\store::getEm()->persist($res);
+            \mkw\store::getEm()->flush();
+            return $res;
+        }
+        return $res[0];
+    }
+
     private function createPartnerCimke($ckat, $nev) {
         if (!$nev) {
             return null;
@@ -1345,8 +1358,8 @@ class importController extends \mkwhelpers\Controller {
                 'number' => (string) $obj->number,
                 'name' => (string) $obj->name,
                 'manufacturerName' => (string) $obj->manufacturerName,
-                'available' => (string) $obj->available,
-                'storageCondition' => (string) $obj->storageCondition,
+                'available' => (int) $obj->available,
+                'storageCondition' => (int) $obj->storageCondition,
                 'unitType' => (string) $obj->unitType,
                 'cbsNumber' => (string) $obj->cbsNumber,
                 'mainGroupCode' => (string) $obj->mainGroupCode,
@@ -1374,7 +1387,7 @@ class importController extends \mkwhelpers\Controller {
             $termekdb = 0;
             $megvan = false;
             while (($dbig && ($termekdb < $dbig)) && !$megvan) {
-                $megvan = ((string) $miben[$termekdb]->sku) == $mit;
+                $megvan = ((string) $miben[$termekdb]->number) == $mit;
                 $termekdb++;
             }
             return $megvan;
@@ -1406,16 +1419,17 @@ class importController extends \mkwhelpers\Controller {
 
             @unlink('nika_fuggoben.txt');
 
+            /**
             $ch = \curl_init('http://fototechnika.dyndns.org:21643/mindennap/011544/products.xml');
             $fh = fopen('nikaproducts.xml', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_exec($ch);
             fclose($fh);
             \curl_close($ch);
+             */
 
             $xml = simplexml_load_file("nikaproducts.xml");
             if ($xml) {
-                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                 $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
                 $products = $xml->product;
@@ -1444,6 +1458,10 @@ class importController extends \mkwhelpers\Controller {
                             $this->createKategoria($_t['productGroupName'], $parentid);
                         }
                     }
+                    if ($_t['cbsNumber'] && $_t['taxRate']) {
+                        $afa = $this->createAfa($_t['taxRate']);
+                        $this->createVtsz($_t['cbsNumber'], $afa);
+                    }
                 }
 
                 foreach ($termekek as $data) {
@@ -1458,6 +1476,8 @@ class importController extends \mkwhelpers\Controller {
                             $urlkatnev = \mkw\store::urlize($data['mainGroupName'] . '-' . $data['productGroupName']);
                             \mkw\store::createDirectoryRecursively($path . $urlkatnev);
 
+                            $afa = $this->createAfa($data['taxRate']);
+                            $vtsz = $this->createVtsz($data['cbsNumber'], $afa);
                             $parent = $this->createKategoria($data['mainGroupName'], $parentid);
                             $termek = new \Entities\Termek();
                             $termek->setFuggoben(true);
@@ -1479,7 +1499,7 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setLeiras('<p>' . $rovidleiras . '</p>' . $hosszuleiras);
                             $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
                             $termek->setTermekfa1($parent);
-                            $termek->setVtsz($vtsz[0]);
+                            $termek->setVtsz($vtsz);
                             $termek->setHosszusag($data['sizeX']);
                             $termek->setSzelesseg($data['sizeY']);
                             $termek->setMagassag($data['sizeZ']);
@@ -1531,7 +1551,7 @@ class importController extends \mkwhelpers\Controller {
                         }
                     }
                     if ($termek) {
-                        if (!$data['available']) {
+                        if ($data['available'] !== 2 && $data['storageCondition'] !== 2) {
                             if ($termek->getKeszlet() <= 0) {
                                 $termek->setNemkaphato(true);
                             }
@@ -1540,14 +1560,13 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setNemkaphato(false);
                         }
                         if (!$termek->getAkcios()) {
-                            $termek->setBrutto($data['priceMembership']);
+                            $termek->setBrutto($data['priceMembership'] * 1 * $arszaz / 100);
                         }
                         \mkw\store::getEm()->persist($termek);
                     }
                     if (($termekdb % $batchsize) === 0) {
                         \mkw\store::getEm()->flush();
                         \mkw\store::getEm()->clear();
-                        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                         $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                     }
                     $termekdb++;
@@ -1564,24 +1583,7 @@ class importController extends \mkwhelpers\Controller {
                         /** @var \Entities\Termek $termek */
                         $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                         if ($termek && !$termek->getFuggoben() && !$termek->getInaktiv()) {
-                            $valtozatok = $termek->getValtozatok();
-                            /** @var \Entities\TermekValtozat $valtozat */
-                            foreach ($valtozatok as $valtozat) {
-                                if ($valtozat->getElerheto()) {
-                                    if (!keres($valtozat->getIdegencikkszam(), $products)) {
-                                        if ($valtozat->getKeszlet() <= 0) {
-                                            $lettfuggoben = true;
-                                            \mkw\store::writelog('változat cikkszám: ' . $valtozat->getCikkszam()
-                                                . ' szállítói cikkszám: ' . $valtozat->getIdegencikkszam() . ' ' . $valtozat->getNev()
-                                                . ' | termék: ' . $termek->getCikkszam(),
-                                                'nika_fuggoben.txt');
-                                            $valtozat->setElerheto(false);
-                                            \mkw\store::getEm()->persist($valtozat);
-                                        }
-                                    }
-                                }
-                            }
-                            if (!keres($t['idegencikkszam'], $products)) {
+                            if (!keres($t['idegenkod'], $products)) {
                                 if ($termek->getKeszlet() <= 0) {
                                     $nincselerhetovaltozat = true;
                                     $vkvk = $termek->getValtozatok();
@@ -1614,7 +1616,7 @@ class importController extends \mkwhelpers\Controller {
                     echo json_encode(array('url' => '/nika_fuggoben.txt'));
                 }
             }
-            \unlink('nikaproducts.xml');
+            //\unlink('nikaproducts.xml');
 
             $this->setRunningImport(\mkw\consts::RunningNikaImport, 0);
         }

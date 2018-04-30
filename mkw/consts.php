@@ -176,6 +176,14 @@ class consts {
     const PathNomad = 'pathnomad';
     const PathNika = 'pathnika';
 
+    const UrlKreativ = 'urlkreativ';
+    const UrlKreativImages = 'urlkreativimages';
+    const UrlDelton = 'urldelton';
+    const UrlNomad = 'urlnomad';
+    const UrlNika = 'urlnika';
+    const UrlMaxutov = 'urlmaxutov';
+    const UrlLegavenue = 'urllegavenue';
+
     const RunningKreativImport = 'runningkreativimport';
     const RunningDeltonImport = 'runningdeltonimport';
     const RunningReintexImport = 'runningreinteximport';

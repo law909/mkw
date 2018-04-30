@@ -72,6 +72,7 @@
                 <a href="/admin/import/silko" class="js-silkoimport">Silko&Co</a>
                 <a href="/admin/import/btech" class="js-btechimport">Btech</a>
                 <a href="/admin/import/nomad" class="js-nomadimport">Nomád</a>
+                <a href="/admin/import/nika" class="js-nikaimport">Nika</a>
             </div>
             <div class="matt-hseparator"></div>
             <div>
