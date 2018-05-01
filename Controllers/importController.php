@@ -304,13 +304,13 @@ class importController extends \mkwhelpers\Controller {
 
             @unlink('kreativ_fuggoben.txt');
 
-            $ch = \curl_init(\mkw\store::getSetupValue(\mkw\consts::UrlKreativ));
+            $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlKreativ));
             $fh = fopen('kreativpuzzlestock.txt', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_exec($ch);
             fclose($fh);
 
-            $ch = \curl_init(\mkw\store::getSetupValue(\mkw\consts::UrlKreativImages));
+            $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlKreativImages));
             $fh = fopen('kreativpuzzleimages.txt', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_exec($ch);
@@ -587,7 +587,7 @@ class importController extends \mkwhelpers\Controller {
 
             if ($deltondownload) {
                 \unlink('delton.txt');
-                $ch = \curl_init(\mkw\store::getSetupValue(\mkw\consts::UrlDelton));
+                $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlDelton));
                 $fh = fopen('delton.txt', 'w');
                 \curl_setopt($ch, CURLOPT_FILE, $fh);
                 \curl_exec($ch);
@@ -873,7 +873,7 @@ class importController extends \mkwhelpers\Controller {
 
             @unlink('nomad_fuggoben.txt');
 
-            $ch = \curl_init(\mkw\store::getSetupValue(\mkw\consts::UrlNomad));
+            $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlNomad));
             $fh = fopen('nomad.xml', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_exec($ch);
@@ -1425,7 +1425,7 @@ class importController extends \mkwhelpers\Controller {
 
             @unlink('nikaimport.txt');
 
-            $ch = \curl_init(\mkw\store::getSetupValue(\mkw\consts::UrlNika));
+            $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlNika));
             $fh = fopen('nikaproducts.xml', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_exec($ch);
@@ -1886,7 +1886,7 @@ class importController extends \mkwhelpers\Controller {
 
             @\unlink('makszutov_fuggoben.txt');
 
-            $ch = \curl_init(\mkw\store::getSetupValue(\mkw\consts::UrlMaxutov));
+            $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlMaxutov));
             $fh = fopen('makszutov.txt', 'w');
             \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             \curl_setopt($ch, CURLOPT_FILE, $fh);
@@ -3539,7 +3539,7 @@ class importController extends \mkwhelpers\Controller {
             $dbig = $this->params->getIntRequestParam('dbig', 0);
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
-            $ch = \curl_init('http://www.legavenueeurope.com/legavenue/xml_inventory');
+            $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlLegavenue));
             $fh = fopen('legavenue.xml', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_exec($ch);
@@ -3621,7 +3621,7 @@ class importController extends \mkwhelpers\Controller {
                 $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
                 $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-                $ch = \curl_init('http://www.legavenueeurope.com/legavenue/xml_inventory');
+                $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlLegavenue));
                 $fh = fopen('legavenue.xml', 'w');
                 \curl_setopt($ch, CURLOPT_FILE, $fh);
                 \curl_exec($ch);
