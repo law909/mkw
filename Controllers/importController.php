@@ -214,6 +214,9 @@ class importController extends \mkwhelpers\Controller {
             case 'nomad':
                 $imp = \mkw\consts::RunningNomadImport;
                 break;
+            case 'nika':
+                $imp = \mkw\consts::RunningNikaImport;
+                break;
             default:
                 $imp = false;
                 break;
@@ -259,6 +262,9 @@ class importController extends \mkwhelpers\Controller {
             case 'nomad':
                 $imp = \mkw\consts::GyartoNomad;
                 break;
+            case 'nika':
+                $imp = \mkw\consts::GyartoNika;
+                break;
             default:
                 $imp = false;
                 break;
@@ -298,13 +304,13 @@ class importController extends \mkwhelpers\Controller {
 
             @unlink('kreativ_fuggoben.txt');
 
-            $ch = \curl_init('http://kreativpuzzle.hu/lawstocklist/');
+            $ch = \curl_init(\mkw\store::getSetupValue(\mkw\consts::UrlKreativ));
             $fh = fopen('kreativpuzzlestock.txt', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_exec($ch);
             fclose($fh);
 
-            $ch = \curl_init('http://kreativpuzzle.hu/lawstocklist/images.php');
+            $ch = \curl_init(\mkw\store::getSetupValue(\mkw\consts::UrlKreativImages));
             $fh = fopen('kreativpuzzleimages.txt', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_exec($ch);
@@ -581,7 +587,7 @@ class importController extends \mkwhelpers\Controller {
 
             if ($deltondownload) {
                 \unlink('delton.txt');
-                $ch = \curl_init('http://delton.hu/csv.php?verzio=2&jelszo=ORJ194');
+                $ch = \curl_init(\mkw\store::getSetupValue(\mkw\consts::UrlDelton));
                 $fh = fopen('delton.txt', 'w');
                 \curl_setopt($ch, CURLOPT_FILE, $fh);
                 \curl_exec($ch);
@@ -867,7 +873,7 @@ class importController extends \mkwhelpers\Controller {
 
             @unlink('nomad_fuggoben.txt');
 
-            $ch = \curl_init('http://www.nomadsport.eu/upload/stocks/nomadsport_6.xml');
+            $ch = \curl_init(\mkw\store::getSetupValue(\mkw\consts::UrlNomad));
             $fh = fopen('nomad.xml', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_exec($ch);
@@ -1352,7 +1358,7 @@ class importController extends \mkwhelpers\Controller {
             $xmlkepek = (array) $obj->images;
             $kepek = array();
             foreach ($xmlkepek as $xk) {
-                $kepek[] = $xk['image_url'];
+                $kepek[] = $xk;
             }
             return array(
                 'number' => (string) $obj->number,
@@ -1417,16 +1423,14 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            @unlink('nika_fuggoben.txt');
+            @unlink('nikaimport.txt');
 
-            /**
-            $ch = \curl_init('http://fototechnika.dyndns.org:21643/mindennap/011544/products.xml');
+            $ch = \curl_init(\mkw\store::getSetupValue(\mkw\consts::UrlNika));
             $fh = fopen('nikaproducts.xml', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_exec($ch);
             fclose($fh);
             \curl_close($ch);
-             */
 
             $xml = simplexml_load_file("nikaproducts.xml");
             if ($xml) {
@@ -1464,6 +1468,8 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
 
+                $lettfuggoben = false;
+
                 foreach ($termekek as $data) {
 
                     $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegenkod' => $data['number'], 'gyarto' => $gyartoid));
@@ -1471,14 +1477,22 @@ class importController extends \mkwhelpers\Controller {
                     if (!$termek) {
                         if ($createuj) {
 
-//                                \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - new', 'nomadimport.log');
-
                             $urlkatnev = \mkw\store::urlize($data['mainGroupName'] . '-' . $data['productGroupName']);
                             \mkw\store::createDirectoryRecursively($path . $urlkatnev);
 
                             $afa = $this->createAfa($data['taxRate']);
                             $vtsz = $this->createVtsz($data['cbsNumber'], $afa);
-                            $parent = $this->createKategoria($data['mainGroupName'], $parentid);
+                            if ($data['mainGroupName']) {
+                                $parent = $this->createKategoria($data['mainGroupName'], $parentid);
+                            }
+                            if ($data['productGroupName']) {
+                                if ($parent) {
+                                    $parent = $this->createKategoria($data['productGroupName'], $parent->getId());
+                                }
+                                else {
+                                    $parent = $this->createKategoria($data['productGroupName'], $parentid);
+                                }
+                            }
                             $termek = new \Entities\Termek();
                             $termek->setFuggoben(true);
                             $termek->setMe($data['unitType']);
@@ -1496,7 +1510,7 @@ class importController extends \mkwhelpers\Controller {
 
                             $puri2 = \mkw\store::getSanitizer();
                             $rovidleiras = $puri2->sanitize(trim($data['shortDescription']));
-                            $termek->setLeiras('<p>' . $rovidleiras . '</p>' . $hosszuleiras);
+                            $termek->setLeiras('<p>' . $hosszuleiras . '</p>');
                             $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
                             $termek->setTermekfa1($parent);
                             $termek->setVtsz($vtsz);
@@ -1513,31 +1527,58 @@ class importController extends \mkwhelpers\Controller {
                                 $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($data['name'] . '_' . $data['number']);
                                 $kepnev = \mkw\store::urlize($data['name'] . '_' . $data['number']);
 
-                                $extension = \mkw\store::getExtension($imgurl);
-                                $imgpath = $nameWithoutExt . '.' . $extension;
+                                $parsedpath = parse_url($imgurl, PHP_URL_PATH);
+                                $extension = \mkw\store::getExtension($parsedpath);
+                                if ($extension) {
+                                    $imgpath = $nameWithoutExt . '.' . $extension;
+                                }
+                                else {
+                                    $imgpath = $nameWithoutExt;
+                                }
 
-                                $ch = \curl_init($imgurl);
                                 $ih = fopen($imgpath, 'w');
-                                \curl_setopt($ch, CURLOPT_FILE, $ih);
-                                \curl_exec($ch);
-                                fclose($ih);
-
-                                foreach ($this->settings['sizes'] as $k => $size) {
-                                    $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
-                                    $matches = explode('x', $size);
-                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                if ($ih) {
+                                    $ch = \curl_init($imgurl);
+                                    \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                    $curlretval = \curl_exec($ch);
+                                    fclose($ih);
+                                    if (($curlretval !== false) && (!\curl_errno($ch))) {
+                                        switch ($http_code = \curl_getinfo($ch, CURLINFO_HTTP_CODE)) {
+                                            case 200:
+                                                foreach ($this->settings['sizes'] as $k => $size) {
+                                                    $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                                    $matches = explode('x', $size);
+                                                    \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                                }
+                                                if ($elso) {
+                                                    $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                                    $termek->setKepleiras($data['name']);
+                                                }
+                                                $elso = false;
+                                                break;
+                                            default:
+                                                $lettfuggoben = true;
+                                                \mkw\store::writelog('ELÉRHETETLEN KÉP: ' . $http_code . ' : termék cikkszám: ' . $termek->getCikkszam() . ' ' . $termek->getNev()
+                                                    . ': ' . $imgurl, 'nikaimport.txt');
+                                                break;
+                                        }
+                                    }
+                                    else {
+                                        $lettfuggoben = true;
+                                        \mkw\store::writelog('ELÉRHETETLEN KÉP termék cikkszám: ' . $termek->getCikkszam() . ' ' . $termek->getNev()
+                                            . ': ' . $imgurl, 'nikaimport.txt');
+                                    }
                                 }
-                                if ($elso) {
-                                    $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
-                                    $termek->setKepleiras($data['name']);
+                                else {
+                                    $lettfuggoben = true;
+                                    \mkw\store::writelog('HIBÁS KÉP NÉV termék cikkszám: ' . $termek->getCikkszam() . ' ' . $termek->getNev()
+                                        . ': ' . $imgurl, 'nikaimport.txt');
                                 }
-                                $elso = false;
                             }
                         }
                     }
                     else {
                         /** @var \Entities\Termek $termek */
-//                            \mkw\store::writelog($data['sku'] . '|' . $data['name'] . ' - edit', 'nomadimport.log');
                         $termek = $termek[0];
                         if ($editleiras) {
                             $puri = new \mkwhelpers\HtmlPurifierSanitizer(array(
@@ -1547,11 +1588,11 @@ class importController extends \mkwhelpers\Controller {
 
                             $puri2 = \mkw\store::getSanitizer();
                             $rovidleiras = $puri2->sanitize(trim($data['shortDescription']));
-                            $termek->setLeiras('<p>' . $rovidleiras . '</p>' . $hosszuleiras);
+                            $termek->setLeiras('<p>' . $hosszuleiras . '</p>');
                         }
                     }
                     if ($termek) {
-                        if ($data['available'] !== 2 && $data['storageCondition'] !== 2) {
+                        if ($data['available'] == 2 && $data['storageCondition'] == 2) {
                             if ($termek->getKeszlet() <= 0) {
                                 $termek->setNemkaphato(true);
                             }
@@ -1560,7 +1601,7 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setNemkaphato(false);
                         }
                         if (!$termek->getAkcios()) {
-                            $termek->setBrutto($data['priceMembership'] * 1 * $arszaz / 100);
+                            $termek->setBrutto(round($data['priceMembership'] * 1 * $arszaz / 100, -1));
                         }
                         \mkw\store::getEm()->persist($termek);
                     }
@@ -1574,7 +1615,6 @@ class importController extends \mkwhelpers\Controller {
                 \mkw\store::getEm()->flush();
                 \mkw\store::getEm()->clear();
 
-                $lettfuggoben = false;
                 $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                 if ($gyarto) {
                     $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
@@ -1595,8 +1635,8 @@ class importController extends \mkwhelpers\Controller {
                                     }
                                     if ($nincselerhetovaltozat) {
                                         $lettfuggoben = true;
-                                        \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
-                                            . ' ' . $termek->getNev(), 'nika_fuggoben.txt');
+                                        \mkw\store::writelog('FÜGGŐBEN termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                            . ' ' . $termek->getNev(), 'nikaimport.txt');
                                         $termek->setInaktiv(true);
                                         \mkw\store::getEm()->persist($termek);
                                     }
@@ -1613,10 +1653,10 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->clear();
                 }
                 if ($lettfuggoben) {
-                    echo json_encode(array('url' => '/nika_fuggoben.txt'));
+                    echo json_encode(array('url' => '/nikaimport.txt'));
                 }
             }
-            //\unlink('nikaproducts.xml');
+            \unlink('nikaproducts.xml');
 
             $this->setRunningImport(\mkw\consts::RunningNikaImport, 0);
         }
@@ -1846,8 +1886,7 @@ class importController extends \mkwhelpers\Controller {
 
             @\unlink('makszutov_fuggoben.txt');
 
-//            $ch = \curl_init('https://www.tavcso-mikroszkop.hu/partner-arlista?format=csv');
-            $ch = \curl_init('https://www.tavcso-mikroszkop.hu/dealer-prices.csv?username=quixoft&password=$H$9FHZxcbwkGLAgAmXDgLhf7A/4vk/5R1');
+            $ch = \curl_init(\mkw\store::getSetupValue(\mkw\consts::UrlMaxutov));
             $fh = fopen('makszutov.txt', 'w');
             \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             \curl_setopt($ch, CURLOPT_FILE, $fh);
