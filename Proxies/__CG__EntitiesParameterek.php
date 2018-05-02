@@ -64,10 +64,10 @@ class Parameterek extends \Entities\Parameterek implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'id', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'ertek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'id', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'ertek', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'specialchars'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'id', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'ertek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'id', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'ertek', '' . "\0" . 'Entities\\Parameterek' . "\0" . 'specialchars'];
     }
 
     /**
@@ -219,6 +219,28 @@ class Parameterek extends \Entities\Parameterek implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setErtek', [$ertek]);
 
         return parent::setErtek($ertek);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSpecialchars()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSpecialchars', []);
+
+        return parent::getSpecialchars();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSpecialchars($specialchars)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSpecialchars', [$specialchars]);
+
+        return parent::setSpecialchars($specialchars);
     }
 
 }

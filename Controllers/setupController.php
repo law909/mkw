@@ -510,8 +510,9 @@ class setupController extends \mkwhelpers\Controller {
         $view->printTemplateResult();
     }
 
-    private function setObj($par, $value) {
+    private function setObj($par, $value, $specialchars = false) {
         $en = $this->getEntityName();
+        /** @var \Entities\Parameterek $p */
         $p = \mkw\store::getEm()->getRepository($en)->find($par);
         if ($value === false) {
             $value = '0';
@@ -521,11 +522,13 @@ class setupController extends \mkwhelpers\Controller {
         }
         if ($p) {
             $p->setErtek($value);
+            $p->setSpecialchars($specialchars);
         }
         else {
             $p = new $en();
             $p->setId($par);
             $p->setErtek($value);
+            $p->setSpecialchars($specialchars);
         }
         \mkw\store::getEm()->persist($p);
     }
@@ -645,10 +648,10 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Hirekseodescription, $this->params->getStringRequestParam('hirekseodescription'));
         $this->setObj(\mkw\consts::GAFollow, $this->params->getStringRequestParam('gafollow'));
         $this->setObj(\mkw\consts::FBAppId, $this->params->getStringRequestParam('fbappid'));
-        $this->setObj(\mkw\consts::FoxpostApiURL, $this->params->getStringRequestParam('foxpostapiurl'));
+        $this->setObj(\mkw\consts::FoxpostApiURL, $this->params->getStringRequestParam('foxpostapiurl'), true);
         $this->setObj(\mkw\consts::FoxpostUsername, $this->params->getStringRequestParam('foxpostusername'));
         $this->setObj(\mkw\consts::FoxpostPassword, $this->params->getStringRequestParam('foxpostpassword'));
-        $this->setObj(\mkw\consts::EmagAPIUrl, $this->params->getStringRequestParam('emagapiurl'));
+        $this->setObj(\mkw\consts::EmagAPIUrl, $this->params->getStringRequestParam('emagapiurl'), true);
         $this->setObj(\mkw\consts::EmagUsername, $this->params->getStringRequestParam('emagusername'));
         $this->setObj(\mkw\consts::EmagUsercode, $this->params->getStringRequestParam('emagusercode'));
         $this->setObj(\mkw\consts::EmagPassword, $this->params->getStringRequestParam('emagpassword'));
@@ -1014,13 +1017,13 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::PathNomad, $this->params->getStringRequestParam('pathnomad', ''));
         $this->setObj(\mkw\consts::PathNika, $this->params->getStringRequestParam('pathnika', ''));
 
-        $this->setObj(\mkw\consts::UrlKreativ, $this->params->getStringRequestParam('urlkreativ', ''));
-        $this->setObj(\mkw\consts::UrlKreativImages, $this->params->getStringRequestParam('urlkreativimages', ''));
-        $this->setObj(\mkw\consts::UrlDelton, $this->params->getStringRequestParam('urldelton', ''));
-        $this->setObj(\mkw\consts::UrlNomad, $this->params->getStringRequestParam('urlnomad', ''));
-        $this->setObj(\mkw\consts::UrlNika, $this->params->getStringRequestParam('urlnika', ''));
-        $this->setObj(\mkw\consts::UrlMaxutov, $this->params->getStringRequestParam('urlmaxutov', ''));
-        $this->setObj(\mkw\consts::UrlLegavenue, $this->params->getStringRequestParam('urllegavenue', ''));
+        $this->setObj(\mkw\consts::UrlKreativ, $this->params->getStringRequestParam('urlkreativ', ''), true);
+        $this->setObj(\mkw\consts::UrlKreativImages, $this->params->getStringRequestParam('urlkreativimages', ''), true);
+        $this->setObj(\mkw\consts::UrlDelton, $this->params->getStringRequestParam('urldelton', ''), true);
+        $this->setObj(\mkw\consts::UrlNomad, $this->params->getStringRequestParam('urlnomad', ''), true);
+        $this->setObj(\mkw\consts::UrlNika, $this->params->getStringRequestParam('urlnika', ''), true);
+        $this->setObj(\mkw\consts::UrlMaxutov, $this->params->getStringRequestParam('urlmaxutov', ''), true);
+        $this->setObj(\mkw\consts::UrlLegavenue, $this->params->getStringRequestParam('urllegavenue', ''), true);
 
         $this->setObj(\mkw\consts::MugenraceLogo, $this->params->getStringRequestParam('mugenracelogo'));
         $this->setObj(\mkw\consts::MugenraceFooterLogo, $this->params->getStringRequestParam('mugenracefooterlogo'));

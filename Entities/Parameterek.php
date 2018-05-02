@@ -14,6 +14,9 @@ class Parameterek {
 	private $id;
 	/** @ORM\Column(type="text",nullable=true) */
 	private $ertek;
+    /** @ORM\Column(type="boolean") */
+    private $specialchars = false;
+
 
 	public function getId()
 	{
@@ -27,6 +30,9 @@ class Parameterek {
 
 	public function getErtek()
 	{
+	    if ($this->specialchars) {
+	        return htmlspecialchars_decode($this->ertek);
+        }
 	    return $this->ertek;
 	}
 
@@ -34,4 +40,19 @@ class Parameterek {
 	{
 	    $this->ertek = $ertek;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getSpecialchars() {
+        return $this->specialchars;
+    }
+
+    /**
+     * @param mixed $specialchars
+     */
+    public function setSpecialchars($specialchars) {
+        $this->specialchars = $specialchars;
+    }
+
 }

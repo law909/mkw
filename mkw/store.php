@@ -189,15 +189,18 @@ class store {
         }
     }
 
-    public static function setParameter($par, $ertek) {
+    public static function setParameter($par, $ertek, $specialchars = false) {
+        /** @var \Entities\Parameterek $p */
         $p = self::getEm()->getRepository('Entities\Parameterek')->find($par);
         if ($p) {
             $p->setErtek($ertek);
+            $p->setSpecialchars($specialchars);
         }
         else {
             $p = new \Entities\Parameterek();
             $p->setId($par);
             $p->setErtek($ertek);
+            $p->setSpecialchars($specialchars);
         }
         self::getEm()->persist($p);
         self::getEm()->flush();
