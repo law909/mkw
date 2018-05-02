@@ -1482,6 +1482,7 @@ class importController extends \mkwhelpers\Controller {
 
                             $afa = $this->createAfa($data['taxRate']);
                             $vtsz = $this->createVtsz($data['cbsNumber'], $afa);
+                            $parent = null;
                             if ($data['mainGroupName']) {
                                 $parent = $this->createKategoria($data['mainGroupName'], $parentid);
                             }
