@@ -1601,7 +1601,8 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setNemkaphato(false);
                         }
                         if (!$termek->getAkcios()) {
-                            $termek->setBrutto(round($data['priceMembership'] * 1 * $arszaz / 100, -1));
+                            $termek->setNetto($data['priceMembership'] * 1);
+                            $termek->setBrutto(round($termek->getBrutto() * $arszaz / 100, -1));
                         }
                         \mkw\store::getEm()->persist($termek);
                     }
