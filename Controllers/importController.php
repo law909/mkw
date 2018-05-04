@@ -1497,7 +1497,12 @@ class importController extends \mkwhelpers\Controller {
                             $termek = new \Entities\Termek();
                             $termek->setFuggoben(true);
                             $termek->setMe($data['unitType']);
-                            $termek->setNev($data['name']);
+                            if ($data['manufacturerName']) {
+                                $termek->setNev($data['manufacturerName'] . ' ' . $data['name']);
+                            }
+                            else {
+                                $termek->setNev($data['name']);
+                            }
                             $termek->setIdegenkod($data['number']);
                             $termek->setIdegencikkszam($data['manufacturerNumber']);
                             $termek->setCikkszam($data['manufacturerNumber']);
