@@ -56,6 +56,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController {
         $x['idegencikkszam'] = $t->getIdegencikkszam();
         $x['vonalkod'] = $t->getVonalkod();
         $x['keszlet'] = $t->getKeszlet();
+        $x['foglaltmennyiseg'] = $t->getFoglaltMennyiseg();
         $x['beerkezesdatum'] = $t->getBeerkezesdatum();
         $x['beerkezesdatumstr'] = $t->getBeerkezesdatumStr();
         return $x;
