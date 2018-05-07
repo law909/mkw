@@ -42,6 +42,11 @@
                 <label>Hosszú leírás módosítása létező terméknél is:</label>
                 <input name="editleiras" type="checkbox">
             </div>
+    <div class="matt-hseparator"></div>
+            <div>
+                <label>Név módosítása létező terméknél is:</label>
+                <input name="editnev" type="checkbox">
+            </div>
 	<div class="matt-hseparator"></div>
             <div>
                 <label>Nem található termék felvitele újként:</label>

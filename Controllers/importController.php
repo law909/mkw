@@ -1408,6 +1408,7 @@ class importController extends \mkwhelpers\Controller {
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
             $dbig = $this->params->getIntRequestParam('dbig', 0);
             $editleiras = $this->params->getBoolRequestParam('editleiras', false);
+            $editnev = $this->params->getBoolRequestParam('editnev', false);
             $createuj = $this->params->getBoolRequestParam('createuj', false);
             $arszaz = $this->params->getNumRequestParam('arszaz', 100);
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
@@ -1595,6 +1596,14 @@ class importController extends \mkwhelpers\Controller {
                             $puri2 = \mkw\store::getSanitizer();
                             $rovidleiras = $puri2->sanitize(trim($data['shortDescription']));
                             $termek->setLeiras('<p>' . $hosszuleiras . '</p>');
+                        }
+                        if ($editnev) {
+                            if ($data['manufacturerName']) {
+                                $termek->setNev($data['manufacturerName'] . ' ' . $data['name']);
+                            }
+                            else {
+                                $termek->setNev($data['name']);
+                            }
                         }
                     }
                     if ($termek) {
