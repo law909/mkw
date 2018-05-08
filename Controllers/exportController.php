@@ -872,7 +872,9 @@ class exportController extends \mkwhelpers\Controller {
             'Description IT',
             'Image URL',
             'Price',
-            'Discount price'
+            'Discount price',
+            'Article ID',
+            'Variant ID'
         );
         echo implode(";", $sor) . "\n";
 
@@ -915,7 +917,9 @@ class exportController extends \mkwhelpers\Controller {
                         '"' . preg_replace("/(\t|\n|\r)+/", "", $ford['it_it']['leiras']) . '"',
                         '"' . ($valt->getKepurl() ? \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) : '') . '"',
                         '"' . $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price)) . '"',
-                        '"' . $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount)) . '"'
+                        '"' . $t->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount)) . '"',
+                        '"' . $t->getId() . '"',
+                        '"' . $valt->getId() . '"'
                     );
                     echo implode(";", $sor) . "\n";
                 }
@@ -942,7 +946,9 @@ class exportController extends \mkwhelpers\Controller {
                     '"' . preg_replace("/(\t|\n|\r)+/", "", $ford['it_it']['leiras']) . '"',
                     '"' . ($t->getKepurl() ? \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) : '' ). '"',
                     '"' . $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price)) . '"',
-                    '"' . $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount)) . '"'
+                    '"' . $t->getBruttoAr(null, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount)) . '"',
+                    '"' . $t->getId() . '"',
+                    '""'
                 );
                 echo implode(";", $sor) . "\n";
             }
