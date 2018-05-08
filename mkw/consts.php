@@ -131,6 +131,7 @@ class consts {
     const MegrendelesFilterStatuszCsoport = 'megrendelesfilterstatuszcsoport';
 
     const RLBUtolsoSzamlaszam = 'rlbutolsoszamlaszam';
+    const RLBCSVUtolsoSzamlaszam = 'rlbcsvutolsoszamlaszam';
 
     const AKTrustedShopApiKey = 'aktrustedshopapikey';
 
