@@ -442,18 +442,18 @@ class BizonylatfejListener {
         foreach ($entities as $entity) {
             if ($entity instanceof \Entities\Bizonylatfej) {
 
-                if (!$entity->isSimpleedit()) {
-
-                    /** @var \Entities\Bizonylattetel $tetel */
-                    foreach ($entity->getBizonylattetelek() as $tetel) {
-                        if (!$tetel->getStorno() && !$tetel->getStornozott()) {
-                            $tetel->setMozgat();
-                            if (\mkw\store::isFoglalas()) {
-                                $tetel->setFoglal();
-                            }
-                            $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $tetel);
+                /** @var \Entities\Bizonylattetel $tetel */
+                foreach ($entity->getBizonylattetelek() as $tetel) {
+                    if (!$tetel->getStorno() && !$tetel->getStornozott()) {
+                        $tetel->setMozgat();
+                        if (\mkw\store::isFoglalas()) {
+                            $tetel->setFoglal();
                         }
+                        $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $tetel);
                     }
+                }
+
+                if (!$entity->isSimpleedit()) {
 
                     /** @var \Entities\Kupon $kupon */
                     $kupon = $entity->getKuponObject();
