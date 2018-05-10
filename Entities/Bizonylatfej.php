@@ -762,7 +762,7 @@ class Bizonylatfej {
                 }
                 $mailer->setSubject($subject->getTemplateResult());
                 $mailer->setMessage($body->getTemplateResult());
-                if ($bf->getBizonylatstatuszId() == \mkw\store::getSetupValue(\mkw\consts::BizonylatStatuszFuggoben)) {
+                if ($bf->getBizonylatstatuszId() == \mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)) {
                     $mailer->send();
                 }
                 else {
