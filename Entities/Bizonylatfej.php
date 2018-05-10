@@ -747,7 +747,7 @@ class Bizonylatfej {
             $tpldata = $bf->toLista();
             $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
             $subject->setVar('rendeles', $tpldata);
-            $body = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
+            $body = \mkw\store::getTemplateFactory()->createMainView('string:' . html_entity_decode($emailtpl->getHTMLSzoveg()));
             $body->setVar('rendeles', $tpldata);
             if (\mkw\store::getConfigValue('developer')) {
                 \mkw\store::writelog($subject->getTemplateResult(), 'bizstatuszemail.html');
