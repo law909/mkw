@@ -74,12 +74,18 @@
                             <option value="1">{at('termékenként')}</option>
                             <option value="2">{at('partnerenként/termékenként')}</option>
                             <option value="3">{at('üzletkötőnként/partnerenként')}</option>
+                            <option value="4">{at('bizonylatonként')}</option>
                         </select>
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
-                        <label for="KeszletkettEdit">{at('Készlet kell')}:</label>
+                        <label for="KeszletkellEdit">{at('Készlet kell')}:</label>
                         <input id="KeszletkellEdit" type="checkbox" name="keszletkell">
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <label for="CsakfoglalasEdit">{at('Csak foglalás')}:</label>
+                        <input id="CsakfoglalasEdit" type="checkbox" name="csakfoglalas">
                     </div>
                 </div>
                 <div>

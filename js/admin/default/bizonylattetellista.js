@@ -46,7 +46,8 @@ $(document).ready(function() {
                             bizonylattipus: biztipusfilter,
                             partnercimkefilter: partnercimkefilter,
                             csoportositas: $('select[name="csoportositas"] option:selected').val(),
-                            keszletkell: $('input[name="keszletkell"]').prop('checked')
+                            keszletkell: $('input[name="keszletkell"]').prop('checked'),
+                            csakfoglalas: $('input[name="csakfoglalas"]').prop('checked')
                         },
                         success: function(d) {
                             $('#eredmeny').html(d);

@@ -72,6 +72,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
         $csoportositas = $this->params->getIntRequestParam('csoportositas');
         $keszletkell = $this->params->getBoolRequestParam('keszletkell');
         $uzletkotoid = $this->params->getIntRequestParam('uzletkoto');
+        $csakfoglalas = $this->params->getBoolRequestParam('csakfoglalas');
 
         $this->tolstr = $datumtolstr;
         $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->tolstr)));
@@ -129,7 +130,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
         }
 
         $tetelek = $this->getRepo('Entities\Bizonylatfej')->getBizonylatTetelLista($raktarid, $partnerid, $uzletkotoid, $datumtipus, $datumtolstr, $datumigstr, $ertektipus,
-            $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv, $bizstatusz, $bizstatuszcsoport, $bizonylattipusfilter, $partnercimkefilter, $csoportositas, $fizmodid);
+            $arsav, $fafilter, $nevfilter, $gyartoid, $nyelv, $bizstatusz, $bizstatuszcsoport, $bizonylattipusfilter, $partnercimkefilter, $csoportositas, $fizmodid, $csakfoglalas);
 
         switch ($csoportositas) {
             case 1:
@@ -197,6 +198,9 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
                 break;
             case 3:
                 $view = $this->createView('bizonylattetellistatetelukpartner.tpl');
+                break;
+            case 4:
+                $view = $this->createView('bizonylattetellistatetelbizonylat.tpl');
                 break;
         }
 

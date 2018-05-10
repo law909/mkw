@@ -597,7 +597,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 
     public function getBizonylatTetelLista($raktarid, $partnerid, $uzletkotoid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $fafilter, $nevfilter,
                                            $gyartoid, $locale, $bizstatusz, $bizstatuscsoport, $bizonylattipusfilter, $partnercimkefilter,
-                                           $csoportositas, $fizmodid) {
+                                           $csoportositas, $fizmodid, $csakfoglalas) {
         switch ($datumtipus) {
             case 'kelt':
             case 'teljesites':
@@ -722,6 +722,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('bf.rontott', '=', false);
+        if ($csakfoglalas) {
+            $filter->addFilter('bt.foglal', '=', true);
+        }
         if ($bizstatuszObj) {
             $filter->addFilter('bf.bizonylatstatusz_id', '=', $bizstatuszObj);
         }
@@ -838,6 +841,36 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                     . $this->getFilterString($filter)
                     . ' GROUP BY bf.uzletkoto_id,bf.partner_id'
                     . ' ORDER BY bf.uzletkoto_id,bf.uzletkotonev,bf.partnernev,bf.partner_id'
+                    , $rsm);
+                break;
+            case 4:
+                $rsm = new ResultSetMapping();
+                $rsm->addScalarResult('id', 'id');
+                $rsm->addScalarResult('kelt', 'kelt');
+                $rsm->addScalarResult('teljesites', 'teljesites');
+                $rsm->addScalarResult('partner_id', 'partner_id');
+                $rsm->addScalarResult('partnernev', 'partnernev');
+                $rsm->addScalarResult('partnerirszam', 'partnerirszam');
+                $rsm->addScalarResult('partnervaros', 'partnervaros');
+                $rsm->addScalarResult('partnerutca', 'partnerutca');
+                $rsm->addScalarResult('partnerhazszam', 'partnerhazszam');
+                $rsm->addScalarResult('mennyiseg', 'mennyiseg');
+                $rsm->addScalarResult('cikkszam', 'cikkszam');
+                $rsm->addScalarResult('nev', 'nev');
+                $rsm->addScalarResult('ertek1', 'ertek1');
+                $rsm->addScalarResult('ertek2', 'ertek2');
+                $rsm->addScalarResult('statusznev', 'statusznev');
+
+                $q = $this->_em->createNativeQuery('SELECT bf.id,bf.kelt,bf.teljesites,bf.partner_id,bf.partnernev,bf.partnerirszam,'
+                    . 'bf.partnervaros,bf.partnerutca,bf.partnerhazszam,bt.mennyiseg, '
+                    . ' t.cikkszam,' . $termeknevmezo . ' AS nev,tv.ertek1,tv.ertek2,bs.nev AS statusznev '
+                    . ' FROM bizonylattetel bt '
+                    . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+                    . ' LEFT OUTER JOIN bizonylatstatusz bs ON (bf.bizonylatstatusz_id=bs.id)'
+                    . ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id)'
+                    . ' LEFT OUTER JOIN termekvaltozat tv ON (bt.termekvaltozat_id=tv.id)'
+                    . $this->getFilterString($filter)
+                    . ' ORDER BY bf.id,t.cikkszam'
                     , $rsm);
                 break;
 
