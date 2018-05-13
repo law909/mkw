@@ -669,6 +669,7 @@ class exportController extends \mkwhelpers\Controller {
           end;
          */
         $sor = array(
+            'konyvel',
             'kelt',
             'datum',
             'fizhat',
@@ -683,23 +684,56 @@ class exportController extends \mkwhelpers\Controller {
             'afakod1',
             'netto1',
             'afa1',
+            'onyilt1',
+            'onyilsz1',
             'afakod2',
             'netto2',
             'afa2',
+            'onyilt2',
+            'onyilsz2',
             'afakod3',
             'netto3',
             'afa3',
+            'onyilt3',
+            'onyilsz3',
             'afakod4',
             'netto4',
-            'afa4'
+            'afa4',
+            'onyilt4',
+            'onyilsz4',
+            'kiegy',
+            'penzkod',
+            'kiegybiz',
+            'kiegydat',
+            'afadat',
+            'adoszam',
+            'kadoszam',
+            'okod',
+            'dnetto1',
+            'dafa1',
+            'dnetto2',
+            'dafa2',
+            'dnetto3',
+            'dafa3',
+            'dnetto4',
+            'dafa4',
+            'devnem',
+            'arfolyam',
+            'ebizszam',
+            'ekelt',
+            'etelj',
+            'enetto',
+            'eafa'
         );
         echo implode(';', $sor) . "\n";
 
+        /** @var \Entities\Bizonylatfej $bizonylat */
         foreach ($r as $bizonylat) {
             $mar = $bizonylat->getId();
             $fm = $bizonylat->getFizmod();
             $aossz = $bizrepo->getAFAOsszesito($bizonylat);
             $sor = array(
+                0,
                 $bizonylat->getKeltStr(),
                 $bizonylat->getTeljesitesStr(),
                 $bizonylat->getEsedekessegStr(),
@@ -718,6 +752,8 @@ class exportController extends \mkwhelpers\Controller {
                 $sor[] = $ao['rlbkod'];
                 $sor[] = $ao['netto'];
                 $sor[] = $ao['afa'];
+                $sor[] = 0;
+                $sor[] = 0;
                 $i++;
                 if ($i > 4) {
                     break;
@@ -727,7 +763,32 @@ class exportController extends \mkwhelpers\Controller {
                 $sor[] = 0;
                 $sor[] = 0;
                 $sor[] = 0;
+                $sor[] = 0;
+                $sor[] = 0;
             }
+            $sor[] = 0;
+            $sor[] = '';
+            $sor[] = '';
+            $sor[] = '';
+            $sor[] = $bizonylat->getTeljesitesStr();
+            $sor[] = $bizonylat->getPartneradoszam();
+            $sor[] = '';
+            $sor[] = '';
+            $sor[] = 0;
+            $sor[] = 0;
+            $sor[] = 0;
+            $sor[] = 0;
+            $sor[] = 0;
+            $sor[] = 0;
+            $sor[] = 0;
+            $sor[] = 0;
+            $sor[] = '';
+            $sor[] = 0;
+            $sor[] = '';
+            $sor[] = '';
+            $sor[] = '';
+            $sor[] = 0;
+            $sor[] = 0;
             echo implode(';', $sor) . "\n";
         }
         if ($mar) {
