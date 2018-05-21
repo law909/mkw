@@ -452,6 +452,60 @@ class exportController extends \mkwhelpers\Controller {
         }
     }
 
+    public function YuspExport() {
+        header("Content-type: text/csv");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        $sor = array(
+            'Id',
+            'Terméknév',
+            'Termékleírás',
+            'BruttóÁr',
+            'Fotólink',
+            'Terméklink',
+            'SzállításiIdő',
+            'SzállításiKöltség'
+        );
+        echo implode('|', $sor) . "\n";
+
+        $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
+        $res = $tr->getAllForExport();
+        foreach ($res as $t) {
+
+            if ($t->getSzallitasiido()) {
+                $szallitasiido = $t->getSzallitasiido();
+            }
+            else {
+                $gyarto = $t->getGyarto();
+                if ($gyarto && $gyarto->getSzallitasiido()) {
+                    $szallitasiido = $gyarto->getSzallitasiido();
+                }
+                else {
+                    $szallitasiido = 0;
+                }
+            }
+
+            $leiras = $t->getLeiras();
+            $leiras = str_replace("\n", '', $leiras);
+            $leiras = str_replace("\r", '', $leiras);
+            $leiras = str_replace("\n\r", '', $leiras);
+            $leiras = str_replace('"', '""', $leiras);
+
+            $sor = array(
+                '"' . $t->getId() . '"',
+                '"' . $t->getNev() . '"',
+                '"' . $leiras . '"',
+                '"' . number_format($t->getBruttoAr(), 0, ',', '') . '"', //number_format($tetel.bruttoegysarhuf,0,',',' ')
+                '"' . \mkw\store::getFullUrl($t->getKepurlLarge(), \mkw\store::getConfigValue('mainurl')) . '"',
+                '"' . \mkw\store::getFullUrl('/termek/' . $t->getSlug(), \mkw\store::getConfigValue('mainurl')) . '"',
+                '"' . ($szallitasiido ? 'max. ' . $szallitasiido . ' munkanap' : '') . '"',
+                '"0"'
+            );
+            echo implode('|', $sor) . "\n";
+        }
+    }
+
     public function ArukeresoExport() {
         header("Content-type: text/csv");
         header("Pragma: no-cache");
