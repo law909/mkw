@@ -40,6 +40,8 @@ class store {
     public static $EngDateFormat = 'm/d/Y';
     public static $LastDayDateFormat = 'Y.m.t';
     public static $SQLDateFormat = 'Y-m-d';
+    public static $PerDateFormat = 'Y/m/d';
+    public static $DBFDateFormat = 'Ymd';
     public static $JavascriptDateFormat = 'Y.n.d';
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
     public static $MiniCRMDateTimeFormat = 'Y-m-d+H:i:s';
