@@ -33,6 +33,9 @@
                     {if ($maintheme == 'superzoneb2b' || $maintheme == 'mugenrace')}
                         <li><a href="#MugenraceTab">{at('Mugenrace')}</a></li>
                     {/if}
+                    {if ($setup.barion)}
+                        <li><a href="#BarionTab">{at('Barion')}</a></li>
+                    {/if}
                     <li><a href="#IdTab">{at('Azonosítók, kódok')}</a></li>
                     <li><a href="#MiniCRMTab">{at('MiniCRM')}</a></li>
                     <li><a href="#EmailTab">{at('Email')}</a></li>
@@ -1014,6 +1017,42 @@
                         </div>
                     </div>
                 {/if}
+                {if ($setup.barion)}
+                <div id="BarionTab" class="mattkarb-page" data-visible="visible">
+                    <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="BarionPOSkeyEdit">{at('POS key')}:</label></span>
+                            <input id="BarionPOSkeyEdit" name="barionposkey" value="{$barionposkey}">
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="BarionAPIVersionEdit">{at('API verzió')}:</label></span>
+                            <input id="BarionAPIVersionEdit" name="barionapiversion" value="{$barionapiversion}">
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="BarionPayeeEmailEdit">{at('Barionos fogadó email')}:</label></span>
+                            <input id="BarionPayeeEmailEdit" name="barionpayeeemail" value="{$barionpayeeemail}">
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="BarionEnvironmentEdit">{at('Barion környezet')}:</label></span>
+                            <select id="BarionEnvironmentEdit" name="barionenvironment">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $barionenvironmentlist as $_fizmod}
+                                    <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="BarionFizmodEdit">{at('Barion fizetési mód')}:</label></span>
+                            <select id="BarionFizmodEdit" name="barionfizmod">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $barionfizmodlist as $_fizmod}
+                                    <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                </div>
+                {/if}
+
                 <div id="IdTab" class="mattkarb-page" data-visible="visible">
                     <table>
                         <tbody>

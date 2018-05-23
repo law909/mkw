@@ -36,6 +36,7 @@ class store {
     private static $loggedinukpartner;
     private static $routename;
     private static $daynames = array('hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat', 'vasárnap');
+    private static $BarionEnvironment = array('teszt', 'éles');
     public static $DateFormat = 'Y.m.d';
     public static $EngDateFormat = 'm/d/Y';
     public static $LastDayDateFormat = 'Y.m.t';
@@ -237,6 +238,18 @@ class store {
     public static function getDaynameSelectList($sel = null) {
         $ret = array();
         foreach(self::$daynames as $k => $v) {
+            $ret[] = array(
+                'id' => $k + 1,
+                'caption' => $v,
+                'selected' => ($k + 1 === $sel)
+            );
+        }
+        return $ret;
+    }
+
+    public static function getBarionEnvironmentSelectList($sel = null) {
+        $ret = array();
+        foreach(self::$BarionEnvironment as $k => $v) {
             $ret[] = array(
                 'id' => $k + 1,
                 'caption' => $v,

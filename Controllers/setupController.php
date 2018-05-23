@@ -206,6 +206,14 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::JogaJutalek, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::JogaAYCMJutalek);
         $view->setVar(\mkw\consts::JogaAYCMJutalek, ($p ? $p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::BarionAPIVersion);
+        $view->setVar(\mkw\consts::BarionAPIVersion, ($p ? $p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::BarionPOSKey);
+        $view->setVar(\mkw\consts::BarionPOSKey, ($p ? $p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::BarionPayeeEmail);
+        $view->setVar(\mkw\consts::BarionPayeeEmail, ($p ? $p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::BarionEnvironment);
+        $view->setVar('barionenvironmentlist', \mkw\store::getBarionEnvironmentSelectList($p ? $p->getErtek() * 1 : 0));
 
         $p = $repo->find(\mkw\consts::VasarlasiUtalvanyTermek);
 //        $termek = new termekController($this->params);
@@ -224,6 +232,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('sportkartyafizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::AYCMFizmod);
         $view->setVar('aycmfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::BarionFizmod);
+        $view->setVar('barionfizmodlist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::MunkaJelenlet);
         $c = new jelenlettipusController($this->params);
@@ -665,6 +675,10 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::JogaAYCMJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaAYCMJutalek));
         $this->setObj(\mkw\consts::JogaJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaJutalek));
         $this->setObj(\mkw\consts::JogaUresTeremJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaUresTeremJutalek));
+        $this->setObj(\mkw\consts::BarionEnvironment, $this->params->getNumRequestParam(\mkw\consts::BarionEnvironment));
+        $this->setObj(\mkw\consts::BarionPayeeEmail, $this->params->getStringRequestParam(\mkw\consts::BarionPayeeEmail));
+        $this->setObj(\mkw\consts::BarionPOSKey, $this->params->getStringRequestParam(\mkw\consts::BarionPOSKey));
+        $this->setObj(\mkw\consts::BarionAPIVersion, $this->params->getStringRequestParam(\mkw\consts::BarionAPIVersion));
 
         $vut = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('vasarlasiutalvanytermek', 0));
         if ($vut) {
@@ -703,6 +717,13 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::AYCMFizmod, '');
+        }
+        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('barionfizmod', 0));
+        if ($fizmod) {
+            $this->setObj(\mkw\consts::BarionFizmod, $fizmod->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::BarionFizmod, '');
         }
 
         $j = \mkw\store::getEm()->getRepository('Entities\Jelenlettipus')->find($this->params->getIntRequestParam('munkajelenlet', 0));

@@ -233,4 +233,10 @@ class consts {
     const JogaJutalek = 'jogajutalek';
     const JogaUresTeremJutalek = 'jogauresteremjutalek';
     const JogaAYCMJutalek = 'jogaaycmjutalek';
+
+    const BarionPOSKey = 'barionposkey';
+    const BarionAPIVersion = 'barionapiversion';
+    const BarionEnvironment = 'barionenvironment';
+    const BarionPayeeEmail = 'barionpayeeemail';
+    const BarionFizmod = 'barionfizmod';
 }

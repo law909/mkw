@@ -64,3 +64,6 @@ superzonesetup.ini
 /makszutov.txt
 /delton.txt
 *.xlsx
+/busvendor/Barion/examples/
+/busvendor/Barion/changelog.md
+/busvendor/Barion/readme.md
