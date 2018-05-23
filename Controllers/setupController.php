@@ -314,6 +314,10 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('bizonylatstatuszbackorderlist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::MegrendelesFilterStatuszCsoport);
         $view->setVar('megrendelesfilterstatuszcsoportlist', $bsf->getCsoportSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::BarionFizetesrevarStatusz);
+        $view->setVar('barionfizetesrevarstatuszlist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::BarionFizetveStatusz);
+        $view->setVar('barionfizetvestatuszlist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::Esedekessegalap);
         $view->setVar(\mkw\consts::Esedekessegalap, ($p ? $p->getErtek() : '1'));
@@ -896,6 +900,20 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::BizonylatStatuszBackorder, '');
         }
         $this->setObj(\mkw\consts::MegrendelesFilterStatuszCsoport, $this->params->getStringRequestParam('megrendelesfilterstatuszcsoport'));
+        $bsf = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('barionfizetesrevarstatusz', 0));
+        if ($bsf) {
+            $this->setObj(\mkw\consts::BarionFizetesrevarStatusz, $bsf->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::BarionFizetesrevarStatusz, '');
+        }
+        $bsf = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('barionfizetvestatusz', 0));
+        if ($bsf) {
+            $this->setObj(\mkw\consts::BarionFizetveStatusz, $bsf->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::BarionFizetveStatusz, '');
+        }
 
         $this->setObj(\mkw\consts::Esedekessegalap, $this->params->getIntRequestParam('esedekessegalap', 1));
         $this->setObj(\mkw\consts::Locale, $this->params->getStringRequestParam('locale'));

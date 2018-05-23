@@ -239,4 +239,6 @@ class consts {
     const BarionEnvironment = 'barionenvironment';
     const BarionPayeeEmail = 'barionpayeeemail';
     const BarionFizmod = 'barionfizmod';
+    const BarionFizetveStatusz = 'barionfizetvestatusz';
+    const BarionFizetesrevarStatusz = 'barionfizetesrevarstatusz';
 }

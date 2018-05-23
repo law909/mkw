@@ -1050,6 +1050,24 @@
                                 {/foreach}
                             </select>
                         </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="BarionStatuszFizetesrevarEdit">{at('"Fizetésre vár" biz.státusz')}:</label></span>
+                            <select id="BarionStatuszFizetesrevarEdit" name="barionfizetesrevarstatusz">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $barionfizetesrevarstatuszlist as $_role}
+                                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="BarionStatuszFizetveEdit">{at('"Fizetve" biz.státusz')}:</label></span>
+                            <select id="BarionStatuszFizetveEdit" name="barionfizetvestatusz">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $barionfizetvestatuszlist as $_role}
+                                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
                 </div>
                 {/if}
 
