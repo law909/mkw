@@ -31,17 +31,17 @@
                     <div class="matt-hseparator"></div>
                     <label>{at('Mező körbe')}:</label>
                     <select name="szovegkorul">
-                        <option value="1">Nincs</option>
-                        <option value="2" selected="selected">Idézőjel a szövegek körül</option>
+                        <option value="1" selected="selected">Nincs</option>
+                        <option value="2">Idézőjel a szövegek körül</option>
                         <option value="3">Idézőjel minden mező körül</option>
                     </select>
                     <div class="matt-hseparator"></div>
                     <label>{at('Dátum')}:</label>
                     <select name="datum">
-                        <option value="1">Ponttal elválasztva</option>
+                        <option value="1" selected="selected">Ponttal elválasztva</option>
                         <option value="2">Kötőjellel elválasztva</option>
                         <option value="3">Perrel elválasztva</option>
-                        <option value="4" selected="selected">Nincs elválasztva</option>
+                        <option value="4">Nincs elválasztva</option>
                     </select>
                     <div class="matt-hseparator"></div>
 

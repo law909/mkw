@@ -173,7 +173,7 @@ class rlbexportController extends \mkwhelpers\MattableController {
             'enetto',
             'eafa'
         );
-        echo implode($elvalaszto, $sor) . "\n";
+        echo implode($elvalaszto, $sor) . "\r\n";
 
         /** @var \Entities\Bizonylatfej $bizonylat */
         foreach ($r as $bizonylat) {
@@ -237,7 +237,7 @@ class rlbexportController extends \mkwhelpers\MattableController {
             $sor[] = $this->korbeir('');
             $sor[] = $this->korbeir(0);
             $sor[] = $this->korbeir(0);
-            echo implode($elvalaszto, $sor) . "\n";
+            echo implode($elvalaszto, $sor) . "\r\n";
         }
         if ($mar) {
             \mkw\store::setParameter(\mkw\consts::RLBCSVUtolsoSzamlaszam, $mar);
