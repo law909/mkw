@@ -481,6 +481,7 @@ $router->map('POST', '/admin/partner/megjegyzesexport', 'partnerController#megje
 $router->map('POST', '/admin/partner/roadrecordexport', 'partnerController#roadrecordExport', 'adminroadrecordexport');
 $router->map('GET', '/admin/partnerdok/getemptyrow', 'partnerdokController#getemptyrow', 'adminpartnerdokgetemptyrow');
 $router->map('POST', '/admin/partnerdok/del', 'partnerdokController#del', 'adminpartnerdokdel');
+$router->map('POST', '/admin/partner/anonym/do', 'partnerController#doAnonym', 'adminpartnerdoanonym');
 
 $router->map('GET', '/admin/termekfa/getkarb', 'termekfaController#getkarb', 'admintermekfagetkarb');
 $router->map('GET', '/admin/termekfa/jsonlist', 'termekfaController#jsonlist', 'admintermekfajsonlist');

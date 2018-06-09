@@ -532,6 +532,17 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     /**
      * {@inheritDoc}
      */
+    public function setPartnerLeiroadat($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerLeiroadat', [$val]);
+
+        return parent::setPartnerLeiroadat($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setPartner($val)
     {
 

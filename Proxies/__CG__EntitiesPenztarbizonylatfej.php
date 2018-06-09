@@ -532,6 +532,17 @@ class Penztarbizonylatfej extends \Entities\Penztarbizonylatfej implements \Doct
     /**
      * {@inheritDoc}
      */
+    public function setPartnerLeiroadat($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerLeiroadat', [$val]);
+
+        return parent::setPartnerLeiroadat($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setPartner($val)
     {
 

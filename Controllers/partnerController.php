@@ -105,6 +105,8 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['foglalkozas'] = $t->getFoglalkozas();
         $x['minicrmprojectid'] = $t->getMinicrmprojectid();
         $x['minicrmcontactid'] = $t->getMinicrmcontactid();
+        $x['anonymizalnikell'] = $t->getAnonymizalnikell();
+        $x['anonym'] = $t->getAnonym();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             if ($afa) {
@@ -1542,4 +1544,8 @@ class partnerController extends \mkwhelpers\MattableController {
         \unlink($filepath);
     }
 
+    public function doAnonym() {
+        $partnerid = $this->params->getIntRequestParam('id');
+        $this->getRepo()->doAnonym($partnerid);
+    }
 }

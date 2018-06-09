@@ -289,6 +289,16 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         return false;
     }
 
+    public function getMaxSzamlaDatum($datumtipus, $filter) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('datum', 'datum');
+        $q = $this->_em->createNativeQuery('SELECT MAX(' . $datumtipus . ') AS datum'
+            . ' FROM bizonylatfej _xx'
+            . $this->getFilterString($filter), $rsm);
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getScalarResult();
+    }
+
     public function getTermekForgalmiLista($raktarid, $partnerid, $datumtipus, $datumtol, $datumig, $ertektipus, $arsav, $fafilter, $nevfilter,
         $gyartoid, $locale, $partnercimkefilter) {
         switch ($datumtipus) {

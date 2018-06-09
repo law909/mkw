@@ -102,7 +102,7 @@ class Bankbizonylatfej {
     private $tulajiban;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Partner")
+     * @ORM\ManyToOne(targetEntity="Partner",inversedBy="bankbizonylatfejek")
      * @ORM\JoinColumn(name="partner_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Partner
      */
@@ -354,6 +354,17 @@ class Bankbizonylatfej {
         return '';
     }
 
+    public function setPartnerLeiroadat($val) {
+        $this->setPartnernev($val->getNev());
+        $this->setPartnervezeteknev($val->getVezeteknev());
+        $this->setPartnerkeresztnev($val->getKeresztnev());
+        $this->setPartneradoszam($val->getAdoszam());
+        $this->setPartnereuadoszam($val->getEuadoszam());
+        $this->setPartnerirszam($val->getIrszam());
+        $this->setPartnerutca($val->getUtca());
+        $this->setPartnervaros($val->getVaros());
+    }
+
     /**
      * @param \Entities\Partner $val
      */
@@ -364,14 +375,7 @@ class Bankbizonylatfej {
             }
             else {
                 $this->partner = $val;
-                $this->setPartnernev($val->getNev());
-                $this->setPartnervezeteknev($val->getVezeteknev());
-                $this->setPartnerkeresztnev($val->getKeresztnev());
-                $this->setPartneradoszam($val->getAdoszam());
-                $this->setPartnereuadoszam($val->getEuadoszam());
-                $this->setPartnerirszam($val->getIrszam());
-                $this->setPartnerutca($val->getUtca());
-                $this->setPartnervaros($val->getVaros());
+                $this->setPartnerLeiroadat($val);
 
                 $v = $val->getValutanem();
                 if ($v) {

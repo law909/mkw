@@ -154,6 +154,15 @@ class Partner {
 	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="partner",cascade={"persist"}) */
 	private $bizonylatfejek;
 
+    /** @ORM\OneToMany(targetEntity="Bankbizonylatfej", mappedBy="partner",cascade={"persist"}) */
+    private $bankbizonylatfejek;
+
+    /** @ORM\OneToMany(targetEntity="Bankbizonylattetel", mappedBy="partner",cascade={"persist"}) */
+    private $bankbizonylattetelek;
+
+    /** @ORM\OneToMany(targetEntity="Penztarbizonylatfej", mappedBy="partner",cascade={"persist"}) */
+    private $penztarbizonylatfejek;
+
 	/** @ORM\OneToMany(targetEntity="Kosar", mappedBy="partner",cascade={"persist"}) */
 	private $kosarak;
 
@@ -336,13 +345,23 @@ class Partner {
     private $mijsztanitas;
     /** @ORM\OneToMany(targetEntity="PartnerDok", mappedBy="partner", cascade={"persist", "remove"}) */
     private $partnerdokok;
-
     /** @ORM\Column(type="integer",nullable=true) */
     private $emagid;
+    /** @ORM\Column(type="boolean") */
+    private $anonymizalnikell = false;
+    /** @ORM\Column(type="date",nullable=true) */
+    private $anonymkeresdatum;
+    /** @ORM\Column(type="boolean") */
+    private $anonym = false;
+    /** @ORM\Column(type="date",nullable=true) */
+    private $anonymdatum;
 
     public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->bankbizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->bankbizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->penztarbizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->termekertesitok = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->termekcsoportkedvezmenyek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -355,6 +374,55 @@ class Partner {
         $this->mijsztanitas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->partnerdokok = new \Doctrine\Common\Collections\ArrayCollection();
 	}
+
+	public function doAnonym() {
+        $this->vezeteknev = \mkw\store::generateRandomStr(strlen($this->vezeteknev));
+        $this->keresztnev = \mkw\store::generateRandomStr(strlen($this->keresztnev));
+        $this->nev = implode(' ', array($this->vezeteknev, $this->keresztnev));
+        $this->adoszam = \mkw\store::generateRandomStr(strlen($this->adoszam), '1234567890');
+        $this->euadoszam = \mkw\store::generateRandomStr(strlen($this->euadoszam), '1234567890');
+        $this->mukengszam = \mkw\store::generateRandomStr(strlen($this->mukengszam));
+        $this->jovengszam = \mkw\store::generateRandomStr(strlen($this->jovengszam));
+        $this->ostermszam = \mkw\store::generateRandomStr(strlen($this->ostermszam));
+        $this->valligszam = \mkw\store::generateRandomStr(strlen($this->valligszam));
+        $this->fvmszam = \mkw\store::generateRandomStr(strlen($this->fvmszam));
+        $this->cjszam = \mkw\store::generateRandomStr(strlen($this->cjszam));
+        $this->statszamjel = \mkw\store::generateRandomStr(strlen($this->statszamjel));
+        $this->irszam = \mkw\store::generateRandomStr(strlen($this->irszam), '1234567890');
+        $this->varos = \mkw\store::generateRandomStr(strlen($this->varos));
+        $this->utca = \mkw\store::generateRandomStr(strlen($this->utca));
+        $this->hazszam = \mkw\store::generateRandomStr(strlen($this->hazszam), '1234567890');
+        $this->clearGDPRData();
+    }
+
+    public function clearGDPRData() {
+        $this->lirszam = '';
+        $this->lvaros = '';
+        $this->lutca = '';
+        $this->lhazszam = '';
+        $this->telefon = '';
+        $this->mobil = '';
+        $this->fax = '';
+        $this->email = uniqid($this->vezeteknev . '.' . $this->keresztnev, true) . '@mail.local';
+        $this->honlap = '';
+        $this->szallnev = '';
+        $this->szallirszam = '';
+        $this->szallvaros = '';
+        $this->szallutca = '';
+        $this->szallhazszam = '';
+        $this->nem = null;
+        $this->szuletesiido = null;
+        $this->ip = '';
+        $this->referrer = '';
+        $this->banknev = '';
+        $this->bankcim = '';
+        $this->iban = '';
+        $this->swift = '';
+        $this->minicrmprojectid = 0;
+        $this->minicrmcontactid = 0;
+        $this->munkahelyneve = '';
+        $this->foglalkozas = '';
+    }
 
 	public function getCim() {
 		$cim = $this->irszam;
@@ -1501,6 +1569,108 @@ class Partner {
             return true;
         }
         return false;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnonymizalnikell() {
+        return $this->anonymizalnikell;
+    }
+
+    /**
+     * @param mixed $anonymizalnikell
+     */
+    public function setAnonymizalnikell($anonymizalnikell) {
+        $this->anonymizalnikell = $anonymizalnikell;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnonymkeresdatum() {
+        return $this->anonymkeresdatum;
+    }
+
+    public function getAnonymkeresdatumStr() {
+        if ($this->getAnonymkeresdatum()) {
+            return $this->getAnonymkeresdatum()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    /**
+     * @param mixed $anonymkeresdatum
+     */
+    public function setAnonymkeresdatum($anonymkeresdatum = '') {
+        if ($anonymkeresdatum != '') {
+            $this->anonymkeresdatum = new \DateTime(\mkw\store::convDate($anonymkeresdatum));
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnonym() {
+        return $this->anonym;
+    }
+
+    /**
+     * @param mixed $anonym
+     */
+    public function setAnonym($anonym) {
+        $this->anonym = $anonym;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnonymdatum() {
+        return $this->anonymdatum;
+    }
+
+    public function getAnonymdatumStr() {
+        if ($this->getAnonymdatum()) {
+            return $this->getAnonymdatum()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    /**
+     * @param mixed $anonymdatum
+     */
+    public function setAnonymdatum($anonymdatum = '') {
+        if ($anonymdatum != '') {
+            $this->anonymdatum = new \DateTime(\mkw\store::convDate($anonymdatum));
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBizonylatfejek() {
+        return $this->bizonylatfejek;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBankbizonylatfejek() {
+        return $this->bankbizonylatfejek;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBankbizonylattetelek() {
+        return $this->bankbizonylattetelek;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPenztarbizonylatfejek() {
+        return $this->penztarbizonylatfejek;
     }
 
 }

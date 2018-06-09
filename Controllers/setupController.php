@@ -215,6 +215,12 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::BarionEnvironment);
         $view->setVar('barionenvironmentlist', \mkw\store::getBarionEnvironmentSelectList($p ? $p->getErtek() * 1 : 0));
 
+        $p = $repo->find(\mkw\consts::SzamlaOrzesAlap);
+        $view->setVar(\mkw\consts::SzamlaOrzesAlap, ($p ? $p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::SzamlaOrzesEv);
+        $view->setVar(\mkw\consts::SzamlaOrzesEv, ($p ? $p->getErtek() : 0));
+
+
         $p = $repo->find(\mkw\consts::VasarlasiUtalvanyTermek);
 //        $termek = new termekController($this->params);
         $view->setVar('vasarlasiutalvanytermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
@@ -683,6 +689,9 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::BarionPayeeEmail, $this->params->getStringRequestParam(\mkw\consts::BarionPayeeEmail));
         $this->setObj(\mkw\consts::BarionPOSKey, $this->params->getStringRequestParam(\mkw\consts::BarionPOSKey));
         $this->setObj(\mkw\consts::BarionAPIVersion, $this->params->getStringRequestParam(\mkw\consts::BarionAPIVersion));
+
+        $this->setObj(\mkw\consts::SzamlaOrzesAlap, $this->params->getIntRequestParam(\mkw\consts::SzamlaOrzesAlap));
+        $this->setObj(\mkw\consts::SzamlaOrzesEv, $this->params->getIntRequestParam(\mkw\consts::SzamlaOrzesEv));
 
         $vut = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('vasarlasiutalvanytermek', 0));
         if ($vut) {

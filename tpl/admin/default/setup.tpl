@@ -197,6 +197,14 @@
                             </div>
                         {/if}
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="SzamlaOrzesAlapEdit">{at('Számlák megőrzése')}:</label></span>
+                            <select id="SzamlaOrzesAlapEdit" name="szamlaorzesalap">
+                                <option value="1"{if ($szamlaorzesalap=='1')} selected="selected"{/if}>{at('kelt')}</option>
+                                <option value="2"{if ($szamlaorzesalap=='2')} selected="selected"{/if}>{at('teljesítés')}</option>
+                            </select>
+                            <span> {at('évének utolsó napja +')} </span><input name="szamlaorzesev" type="number" value="{$szamlaorzesev}"><span> {at('év')}</span>
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="EsedAlapEdit">{at('Esedékesség alapja')}:</label></span>
                             <select id="EsedAlapEdit" name="esedekessegalap">
                                 <option value="1"{if ($esedekessegalap=='1')} selected="selected"{/if}>{at('kelt')}</option>

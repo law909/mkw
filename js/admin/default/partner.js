@@ -412,7 +412,40 @@ $(document).ready(function(){
 				}
 			},
 			tablebody:{
-				url:'/admin/partner/getlistbody'
+				url:'/admin/partner/getlistbody',
+                onStyle: function() {
+                    $('.js-anonym').button();
+                },
+                onDoEditLink: function() {
+                    $('#mattable-table').on('.js-anonym', 'click', function(e) {
+                        var $this = $(this);
+                        e.preventDefault();
+                        dialogcenter.html('Biztos, hogy anonymizálja a partnert?').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'Igen': function() {
+                                    $.ajax({
+                                        url: '/admin/partner/anonym/check',
+                                        type: 'POST',
+                                        data: {
+                                            id: $this.data('partnerid')
+                                        },
+                                        success: function(data) {
+                                            $('#mijszokleveltable_' + data).remove();
+                                        }
+                                    });
+                                    $(this).dialog('close');
+                                },
+                                'Nem': function() {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    });
+
+                }
 			},
 			karb:partner
 		});
@@ -513,7 +546,42 @@ $(document).ready(function(){
                     $exportform.submit();
                     break;
             }
-
+        });
+        $('#mattable-body').on('click', '.js-anonym', function(e) {
+            var $this = $(this);
+            e.preventDefault();
+            dialogcenter.html('Biztos, hogy anonymizálja a partnert? A folyamat NEM fordítható vissza.').dialog({
+                resizable: false,
+                height: 140,
+                modal: true,
+                buttons: {
+                    'Igen': function() {
+                        $.ajax({
+                            url: '/admin/partner/anonym/do',
+                            type: 'POST',
+                            data: {
+                                id: $this.data('partnerid')
+                            },
+                            success: function(data) {
+                                dialogcenter.html('Az anonymizálás kész.').dialog({
+                                    resizable: false,
+                                    height: 140,
+                                    modal: true,
+                                    buttons: {
+                                        'OK': function () {
+                                            $(this).dialog('close');
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                        $(this).dialog('close');
+                    },
+                    'Nem': function() {
+                        $(this).dialog('close');
+                    }
+                }
+            });
         });
         $('#cimkefiltercontainer').mattaccord({
             header: '#cimkefiltercontainerhead',

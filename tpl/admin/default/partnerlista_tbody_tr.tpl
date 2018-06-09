@@ -3,6 +3,9 @@
     <td class="cell">
         <div>
             <a class="mattable-editlink" href="#" data-partnerid="{$_partner.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_partner.nev}</a>
+            {if (!$_partner.anonym && !$_partner.anonymizalnikell)}
+            <a class="js-anonym" href="#" data-partnerid="{$_partner.id}" data-oper="edit" title="{at('Anonymizál')}">{at('Anonym')}</a>
+            {/if}
             <span class="jobbra"><a class="mattable-dellink" href="#" data-partnerid="{$_partner.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
         </div>
         <table class="fullwidth">

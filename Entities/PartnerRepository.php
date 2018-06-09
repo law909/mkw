@@ -195,4 +195,82 @@ class PartnerRepository extends \mkwhelpers\Repository {
 		return null;
 	}
 
+	public function checkAnonym($partnerid) {
+        $res = 0;
+        $partner = $this->find($partnerid);
+        if ($partner) {
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('bizonylattipus_id', null, array('szamla', 'esetiszamla'));
+            $filter->addFilter('partner_id', '=', $partnerid);
+            switch (\mkw\store::getParameter(\mkw\consts::SzamlaOrzesAlap, 1)) {
+                case 1:
+                    $maxdatum = $this->getRepo('\Entities\Bizonylatfej')->getMaxSzamlaDatum('kelt', $filter);
+                    break;
+                case 2:
+                    $maxdatum = $this->getRepo('\Entities\Bizonylatfej')->getMaxSzamlaDatum('teljesites', $filter);
+                    break;
+            }
+            if (is_array($maxdatum) && $maxdatum[0]['datum']) {
+                $ev = date("Y", strtotime($maxdatum[0]['datum'])) + \mkw\store::getIntParameter(\mkw\consts::SzamlaOrzesEv, 7);
+                $datum = $ev . '-12-31';
+                $most = date('Y-m-d');
+                if ($datum >= $most) {
+                    $res = 0;
+                }
+                else {
+                    $res = 1;
+                }
+            }
+            else {
+                $res = 1;
+            }
+        }
+        return $res;
+    }
+
+    public function doAnonym($partnerid) {
+	    $res = $this->checkAnonym($partnerid);
+	    /** @var \Entities\Partner $partner */
+        $partner = $this->find($partnerid);
+        if ($partner) {
+            if ($res) {
+                $partner->doAnonym();
+                $partner->setAnonym(true);
+                $partner->setAnonymdatum(date(\mkw\store::$SQLDateFormat));
+                $this->_em->persist($partner);
+                $this->_em->flush();
+                /** @var \Entities\Bizonylatfej $bf */
+                foreach ($partner->getBizonylatfejek() as $bf) {
+                    $bf->setPartnerLeiroadat($partner);
+                    $this->_em->persist($bf);
+                    $this->_em->flush();
+                }
+                /** @var \Entities\Bankbizonylatfej $bbf */
+                foreach ($partner->getBankbizonylatfejek() as $bbf) {
+                    $bbf->setPartnerLeiroadat($partner);
+                    $this->_em->persist($bbf);
+                    $this->_em->flush();
+                }
+                /** @var \Entities\Penztarbizonylatfej $pbf */
+                foreach ($partner->getPenztarbizonylatfejek() as $pbf) {
+                    $pbf->setPartnerLeiroadat($partner);
+                    $this->_em->persist($pbf);
+                    $this->_em->flush();
+                }
+                /** @var \Entities\Bankbizonylattetel $bbt */
+                foreach ($partner->getBankbizonylattetelek() as $bbt) {
+                    $bbt->setPartnerLeiroadat($partner);
+                    $this->_em->persist($bbt);
+                    $this->_em->flush();
+                }
+            }
+            else {
+                $partner->clearGDPRData();
+                $partner->setAnonymizalnikell(true);
+                $partner->setAnonymkeresdatum(date(\mkw\store::$SQLDateFormat));
+                $this->_em->persist($partner);
+                $this->_em->flush();
+            }
+        }
+    }
 }

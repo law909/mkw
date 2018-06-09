@@ -1255,4 +1255,12 @@ class store {
         return $ret;
     }
 
+    public static function generateRandomStr($length, $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') {
+        $charactersLength = strlen($chars);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $chars[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
 }
