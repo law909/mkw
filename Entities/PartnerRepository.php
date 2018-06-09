@@ -241,6 +241,7 @@ class PartnerRepository extends \mkwhelpers\Repository {
                 $this->_em->flush();
                 /** @var \Entities\Bizonylatfej $bf */
                 foreach ($partner->getBizonylatfejek() as $bf) {
+                    $bf->setSimpleedit(true);
                     $bf->setPartnerLeiroadat($partner);
                     $this->_em->persist($bf);
                     $this->_em->flush();
