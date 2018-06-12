@@ -52,6 +52,9 @@ class barionController extends \mkwhelpers\Controller {
         $res = array('result' => false);
         $bc = $this->createClient();
         $state = $bc->GetPaymentState($biz->getBarionpaymentid());
+
+        \mkw\store::writelog(print_r($state, true));
+
         if ($state && $state->RequestSuccessful && $state->PaymentId === $biz->getBarionpaymentid() && $state->OrderNumber === $biz->getId()) {
             $res = array(
                 'result' => true,
@@ -65,7 +68,7 @@ class barionController extends \mkwhelpers\Controller {
         header('HTTP/1.1 200 OK');
         $paymentid = $this->params->getStringRequestParam('PaymentId');
         /** @var \Entities\Bizonylatfej $megrendeles */
-        $megrendeles = $this->getRepo('\Entities\Bizonylatfej')->findOneBy(array('paymentid' => $paymentid));
+        $megrendeles = $this->getRepo('\Entities\Bizonylatfej')->findOneBy(array('barionpaymentid' => $paymentid));
         if ($megrendeles && $paymentid === $megrendeles->getBarionpaymentid()) {
             $state = $this->getPaymentState($megrendeles);
             if ($state['result']) {
