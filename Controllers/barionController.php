@@ -67,15 +67,21 @@ class barionController extends \mkwhelpers\Controller {
     public function callback() {
         header('HTTP/1.1 200 OK');
         $paymentid = $this->params->getStringRequestParam('PaymentId');
+
+        \mkw\store::writelog(print_r('PAYMENTID ' . $paymentid, true));
+
         /** @var \Entities\Bizonylatfej $megrendeles */
         $megrendeles = $this->getRepo('\Entities\Bizonylatfej')->findOneBy(array('barionpaymentid' => $paymentid));
         if ($megrendeles && $paymentid === $megrendeles->getBarionpaymentid()) {
             $state = $this->getPaymentState($megrendeles);
             if ($state['result']) {
+                $megrendeles->setSimpleedit(true);
                 $megrendeles->setBarionpaymentstatus($state['status']);
                 if ($state['status'] === \PaymentStatus::Succeeded) {
                     $megrendeles->setBizonylatstatusz($this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BarionFizetveStatusz)));
                 }
+                $this->getEm()->persist($megrendeles);
+                $this->getEm()->flush();
             }
         }
     }
