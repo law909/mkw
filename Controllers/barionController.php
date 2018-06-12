@@ -28,6 +28,8 @@ class barionController extends \mkwhelpers\Controller {
         $bc = $this->createClient();
         $payment = $bc->PreparePayment($biz->toBarionModel());
 
+        \mkw\store::writelog(print_r($payment, true));
+
         if ($payment->RequestSuccessful) {
             if ($payment->PaymentRequestId === $biz->getId()) {
                 $biz->setBarionpaymentid($payment->PaymentId);
