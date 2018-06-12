@@ -1076,6 +1076,7 @@
                                 {/foreach}
                             </select>
                         </div>
+                    </div>
                 </div>
                 {/if}
 
