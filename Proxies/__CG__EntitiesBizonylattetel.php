@@ -176,6 +176,17 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function toBarionModel()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toBarionModel', []);
+
+        return parent::toBarionModel();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function toLista()
     {
 
@@ -615,6 +626,17 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', []);
 
         return parent::removeTermek();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFullTermeknev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFullTermeknev', []);
+
+        return parent::getFullTermeknev();
     }
 
     /**
