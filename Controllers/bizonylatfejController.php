@@ -403,6 +403,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['szepkartyatipusnev'] = $t->getSzepkartyatipusNev();
         $x['szepkartyakifizetve'] = $t->getSzepkartyakifizetve();
         $x['nincspenzmozgas'] = $t->getNincspenzmozgas();
+        $x['barionpaymentstatus'] = $t->getBarionpaymentstatus();
+        $x['isbarion'] = \mkw\store::isBarionFizmod($t->getFizmod());
         if ($oper === $this->inheritOperation) {
             $x['fakekintlevoseg'] = false;
             $x['fakekifizetve'] = false;

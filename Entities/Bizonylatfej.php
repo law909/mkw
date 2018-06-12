@@ -917,6 +917,7 @@ class Bizonylatfej {
         $ret['szepkartyaervenyesseg'] = $this->getSzepkartyaervenyessegStr();
         $ret['szepkartyatipus'] = $this->getSzepkartyatipusNev();
         $ret['szepkartyakifizetve'] = $this->getSzepkartyakifizetve();
+        $ret['barionpaymentstatus'] = $this->getBarionpaymentstatus();
         if (\mkw\store::getConfigValue('admin', false)) {
             $ret['printurl'] = \mkw\store::getRouter()->generate('admin' . $this->getBizonylattipusId() . 'fejprint', false, array(), array(
                 'id' => $this->getId()
