@@ -292,6 +292,25 @@ class Bizonylattetel {
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    public function toBarionModel() {
+        require_once "busvendor/Barion/library/BarionClient.php";
+
+        $item = new \ItemModel();
+        $item->Name = $this->getFullTermeknev();
+        if ($this->getTermek() && $this->getTermek()->getRovidleiras()) {
+            $item->Description = $this->getTermek()->getRovidleiras();
+        }
+        else {
+            $item->Description = $this->getFullTermeknev();
+        }
+        $item->SKU = $this->getCikkszam();
+        $item->Quantity = $this->getMennyiseg();
+        $item->Unit = $this->getME();
+        $item->UnitPrice = $this->getBruttoegysar();
+        $item->ItemTotal = $this->getBrutto();
+        return $item;
+    }
+
     public function toLista() {
         $ret = array();
         $termek = $this->getTermek();
@@ -665,6 +684,13 @@ class Bizonylattetel {
                 //$this->setFoglal();
             }
         }
+    }
+
+    public function getFullTermeknev() {
+        if ($this->getTermekvaltozat()) {
+            $valtnev = $this->getTermekvaltozat()->getNev();
+        }
+        return implode(' ', array($this->getTermeknev(), $valtnev));
     }
 
     public function getTermeknev() {

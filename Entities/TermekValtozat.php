@@ -509,7 +509,7 @@ class TermekValtozat {
 	}
 
 	public function getNev() {
-		return $this->getErtek1().' - '.$this->getErtek2();
+		return implode(' - ', array($this->getErtek1(), $this->getErtek2()));
 	}
 
     public function getVonalkod() {

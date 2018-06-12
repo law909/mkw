@@ -582,6 +582,12 @@ class Bizonylatfej {
     /** @ORM\Column(type="string", length=100,nullable=true) */
     private $programnev;
 
+    /** @ORM\Column(type="string", length=100,nullable=true) */
+    private $barionpaymentid;
+
+    /** @ORM\Column(type="string", length=100,nullable=true) */
+    private $barionpaymentstatus;
+
     public function __toString() {
         return (string)$this->id;
     }
@@ -770,6 +776,40 @@ class Bizonylatfej {
                 }
             }
         }
+    }
+
+    public function toBarionModel() {
+        require_once "busvendor/Barion/library/BarionClient.php";
+
+        $trans = new \PaymentTransactionModel();
+        $trans->Payee = \mkw\store::getParameter(\mkw\consts::BarionPayeeEmail);
+        $trans->POSTransactionId = $this->getId();
+        $trans->Total = $this->getBrutto();
+        /** @var \Entities\Bizonylattetel $bt */
+        foreach ($this->bizonylattetelek as $bt) {
+            $trans->AddItem($bt->toBarionModel());
+        }
+        $ppr = new \PreparePaymentRequestModel();
+        $ppr->GuestCheckout = true;
+        $ppr->PaymentType = \PaymentType::Immediate;
+        $ppr->FundingSources = array(\FundingSourceType::All);
+        $ppr->PaymentRequestId = $this->getId();
+        $ppr->PayerHint = $this->getPartneremail();
+        switch ($this->getBizonylatnyelv()) {
+            case 'en_us':
+                $ppr->Locale = \UILocale::EN;
+                break;
+            case 'hu_hu':
+            default:
+                $ppr->Locale = \UILocale::HU;
+                break;
+
+        }
+        $ppr->OrderNumber = $this->getId();
+        $ppr->Currency = $this->getValutanemnev();
+        $ppr->AddTransaction($trans);
+
+        return $ppr;
     }
 
     public function toLista() {
@@ -3450,6 +3490,13 @@ class Bizonylatfej {
         $this->partnerlhazszam = $partnerlhazszam;
     }
 
+    public function getSzallitasiCim() {
+        $a = array($this->szallirszam, $this->szallvaros);
+        $cim = implode(' ', $a);
+        $a = array($cim, $this->szallutca);
+        return implode(', ', $a);
+    }
+
     /**
      * @return mixed
      */
@@ -3504,6 +3551,34 @@ class Bizonylatfej {
      */
     public function setProgramnev($programnev) {
         $this->programnev = $programnev;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBarionpaymentid() {
+        return $this->barionpaymentid;
+    }
+
+    /**
+     * @param mixed $barionpaymentid
+     */
+    public function setBarionpaymentid($barionpaymentid) {
+        $this->barionpaymentid = $barionpaymentid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBarionpaymentstatus() {
+        return $this->barionpaymentstatus;
+    }
+
+    /**
+     * @param mixed $barionpaymentstatus
+     */
+    public function setBarionpaymentstatus($barionpaymentstatus) {
+        $this->barionpaymentstatus = $barionpaymentstatus;
     }
 
 }

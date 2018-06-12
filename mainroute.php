@@ -101,6 +101,7 @@ $router->map('GET', '/checkout/getfizmodlist', 'checkoutController#getFizmodList
 $router->map('GET', '/checkout/gettetellist', 'checkoutController#getTetelList', 'checkoutgettetellist');
 $router->map('POST', '/checkout/ment', 'checkoutController#save', 'checkoutment');
 $router->map('GET', '/checkout/koszonjuk', 'checkoutController#thanks', 'checkoutkoszonjuk');
+$router->map('GET', '/checkout/barionerror', 'checkoutController#barionError', 'checkoutbarionerror');
 $router->map('GET', '/checkout/getfoxpostcsoportlist', 'csomagterminalController#getCsoportok', 'checkoutgetfoxpostcsoportlist');
 $router->map('GET', '/checkout/getfoxpostterminallist', 'csomagterminalController#getTerminalok', 'checkoutgetfoxpostterminallist');
 $router->map('GET', '/checkout/getcsomagterminalid', 'csomagterminalController#getTerminalId', 'checkoutgetcsomagterminalid');
@@ -132,3 +133,5 @@ $router->map('GET', '/sitemap.xml', 'sitemapController#toBot', 'sitemap');
 
 $router->map('GET', '/t/emag/printvat', 'emagController#printVat', 'printvat');
 $router->map('GET', '/t/emag/printcat', 'emagController#printCategories', 'printcat');
+
+$router->map('POST', '/barion', 'barionController#callback', 'barioncallback');

@@ -973,6 +973,14 @@ class store {
         return $i == self::getParameter(\mkw\consts::AYCMFizmod);
     }
 
+    public static function isBarionFizmod($fm) {
+        $i = $fm;
+        if (is_a($fm, 'Entities\Fizmod')) {
+            $i = $fm->getId();
+        }
+        return $i == self::getParameter(\mkw\consts::BarionFizmod);
+    }
+
     public static function isSZEPFizmod($fm) {
         $i = $fm;
         if (is_a($fm, 'Entities\Fizmod')) {

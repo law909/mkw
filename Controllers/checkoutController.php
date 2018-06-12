@@ -400,7 +400,12 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $megrendfej->setBankszamla($valutanem->getBankszamla());
                     $megrendfej->setWebshopmessage($webshopmessage);
                     $megrendfej->setCouriermessage($couriermessage);
-                    $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+                    if (\mkw\store::isBarionFizmod($fizetesimod)) {
+                        $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BarionFizetesrevarStatusz));
+                    }
+                    else {
+                        $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+                    }
                     $megrendfej->setBizonylatstatusz($bizstatusz);
                     if (\mkw\store::isFoxpostSzallitasimod($szallitasimod)) {
                         $fpc = $this->getRepo('Entities\CsomagTerminal')->find($csomagterminalid);
@@ -461,6 +466,10 @@ class checkoutController extends \mkwhelpers\MattableController {
                     }
                     if ($fizetesimod == \mkw\store::getParameter(\mkw\consts::OTPayFizmod)) {
                         Header('Location: ' . \mkw\store::getRouter()->generate('showcheckoutfizetes'));
+                    }
+                    elseif (\mkw\store::isBarionFizmod($fizetesimod)) {
+                        $bc = new barionController($this->params);
+                        $bc->startPayment($megrendfej);
                     }
                     else {
                         Header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
@@ -710,7 +719,7 @@ class checkoutController extends \mkwhelpers\MattableController {
 
                     $nullasafa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
                     $biztetelcontroller = new bizonylattetelController($this->params);
-                    $valutanem =
+                    //$valutanem =
 
                     $biztipus = $this->getRepo('Entities\Bizonylattipus')->find('megrendeles');
                     $megrendfej = new \Entities\Bizonylatfej();
@@ -765,7 +774,12 @@ class checkoutController extends \mkwhelpers\MattableController {
                     if ($valutanem) {
                         $megrendfej->setBankszamla($valutanem->getBankszamla());
                     }
-                    $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+                    if (\mkw\store::isBarionFizmod($fizetesimod)) {
+                        $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BarionFizetesrevarStatusz));
+                    }
+                    else {
+                        $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+                    }
                     $megrendfej->setBizonylatstatusz($bizstatusz);
 
                     $lasttermeknevek = array();
@@ -814,10 +828,22 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $kc = new kosarController($this->params);
                     $kc->clear();
 
-                    if ($bizstatusz) {
-                        $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
+                    if (\mkw\store::isBarionFizmod($fizetesimod)) {
+                        $bc = new barionController($this->params);
+                        $paymentres = $bc->startPayment($megrendfej);
+                        if ($paymentres['result']) {
+                            Header('Location: ' . $paymentres['redirecturl']);
+                        }
+                        else {
+                            Header('Location: ' . \mkw\store::getRouter()->generate('checkoutbarionerror', false, array(), array('mr' => $megrendfej->getId())));
+                        }
                     }
-                    Header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
+                    else {
+                        if ($bizstatusz) {
+                            $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
+                        }
+                        Header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
+                    }
                 }
                 else {
                     \mkw\store::getMainSession()->params = $this->params;
@@ -1049,7 +1075,6 @@ class checkoutController extends \mkwhelpers\MattableController {
     }
 
 	public function thanks() {
-        $mrszam = \mkw\store::getMainSession()->lastmegrendeles;
 		$view = \mkw\store::getTemplateFactory()->createMainView('checkoutkoszonjuk.tpl');
         \mkw\store::fillTemplate($view);
         $mrszam = \mkw\store::getMainSession()->lastmegrendeles;
@@ -1091,4 +1116,13 @@ class checkoutController extends \mkwhelpers\MattableController {
 
 		$view->printTemplateResult(false);
 	}
+
+	public function barionError() {
+	    $mrszam = $this->params->getStringRequestParam('mr');
+        $view = \mkw\store::getTemplateFactory()->createMainView('checkoutbarionerror.tpl');
+        \mkw\store::fillTemplate($view);
+        $view->setVar('megrendelesszam', $mrszam);
+
+        $view->printTemplateResult(false);
+    }
 }
