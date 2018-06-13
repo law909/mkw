@@ -29,6 +29,13 @@
 			</ul>
 		</nav>
 	</div>
+    <div class="row">
+        <div class="span12">
+            <a href="https://www.barion.com/en/about-secure-online-payment" target="_blank" class="pull-right barionbanner">
+                <img src="/themes/main/mugenrace/img/barion-card-payment-banner-2016-432x50px.png" title="Secure and comfortable online payment is provided by Barion Payment Inc, license number: H-EN-I-1064/2013 Your card details are not disclosed to our shop.">
+            </a>
+        </div>
+    </div>
 	<div class="row">
             <div class="span12">
                 <div class="copyright">

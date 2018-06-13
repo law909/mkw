@@ -73,7 +73,7 @@ class fizmodController extends \mkwhelpers\MattableController {
         $obj->setTipus($this->params->getStringRequestParam('tipus'));
         $obj->setHaladek($this->params->getIntRequestParam('haladek'));
         $obj->setWebes($this->params->getBoolRequestParam('webes'));
-        $obj->setLeiras($this->params->getStringRequestParam('leiras'));
+        $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setOsztotthaladek1($this->params->getIntRequestParam('osztotthaladek1'));
         $obj->setOsztottszazalek1($this->params->getNumRequestParam('osztottszazalek1'));

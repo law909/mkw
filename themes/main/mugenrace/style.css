@@ -1039,6 +1039,9 @@ select[name="foxpostterminal"] {
   width: 100%;
   max-width: 100%;
 }
+.barionbanner {
+  margin-top: 10px;
+}
 /* margo 30px */
 @media (min-width: 1200px) {
   .spanmkw3 {
