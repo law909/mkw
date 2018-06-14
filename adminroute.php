@@ -521,6 +521,7 @@ $router->map('POST','/admin/import/kreativ', 'importController#kreativpuzzleImpo
 $router->map('POST','/admin/import/delton', 'importController#deltonImport', 'admindeltonimport');
 $router->map('POST','/admin/import/nomad', 'importController#nomadImport', 'adminnomadimport');
 $router->map('POST','/admin/import/nika', 'importController#nikaImport', 'adminnikaimport');
+$router->map('POST','/admin/import/haffner24', 'importController#haffner24Import', 'adminhaffner24import');
 $router->map('POST','/admin/import/reintex', 'importController#reintexImport', 'adminreinteximport');
 $router->map('POST','/admin/import/legavenue', 'importController#legavenueImport', 'adminlegavenueimport');
 $router->map('POST','/admin/import/legavenueszotar', 'importController#legavenueSzotar', 'adminlegavenueSzotar');

@@ -78,6 +78,7 @@
                 <a href="/admin/import/btech" class="js-btechimport">Btech</a>
                 <a href="/admin/import/nomad" class="js-nomadimport">Nomád</a>
                 <a href="/admin/import/nika" class="js-nikaimport">Nika</a>
+                <a href="/admin/import/haffner24" class="js-haffner24import">Haffner24</a>
             </div>
             <div class="matt-hseparator"></div>
             <div>

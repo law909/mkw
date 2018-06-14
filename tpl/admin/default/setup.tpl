@@ -820,6 +820,11 @@
                 {if ($maintheme == 'mkwcansas')}
                     <div id="ImportTab" class="mattkarb-page" data-visible="visible">
                         <div>
+                            <label>{at('Vízjel')}:</label>
+                            <input name="watermark" type="text" value="{$watermark}">
+                            <a class="js-kepbrowsebutton" data-name="watermark" href="#" title="{at('Browse')}">{at('...')}</a>
+                        </div>
+                        <div>
                             <label for="KreativEdit">Kreatív puzzle:</label>
                             <select id="KreativEdit" name="gyartokreativ">
                                 <option value="">{at('válasszon')}</option>
@@ -986,6 +991,22 @@
                             <input id="UrlNikaEdit" name="urlnika" value="{$urlnika}">
                             <a href="#" class="js-stopimport" data-href="{$stopnikaimporturl}">Stop import</a>
                             <a href="#" class="js-repairimport" data-href="{$repairnikaimporturl}">Javít</a>
+                        </div>
+                        <div class="matt-hseparator"></div>
+                        <div>
+                            <label for="Haffner24Edit">Haffner24:</label>
+                            <select id="Haffner24Edit" name="gyartohaffner24">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $gyartohaffner24list as $_gyarto}
+                                    <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                                {/foreach}
+                            </select>
+                            <label for="PathHaffner24Edit">Képek mappája:</label>
+                            <input id="PathHaffner24Edit" name="pathhaffner24" value="{$pathhaffner24}">
+                            <label for="UrlHaffner24Edit">URL:</label>
+                            <input id="UrlHaffner24Edit" name="urlhaffner24" value="{$urlhaffner24}">
+                            <a href="#" class="js-stopimport" data-href="{$stophaffner24importurl}">Stop import</a>
+                            <a href="#" class="js-repairimport" data-href="{$repairhaffner24importurl}">Javít</a>
                         </div>
                     </div>
                 {/if}

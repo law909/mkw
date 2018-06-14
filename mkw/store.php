@@ -1271,4 +1271,40 @@ class store {
         }
         return $randomString;
     }
+
+    public static function watermark($img, $dest, $ext) {
+        $watermark = imagecreatefrompng(ltrim(self::getParameter(\mkw\consts::Watermark), '/'));
+        if ($watermark) {
+            $watermark_width = imagesx($watermark);
+            $watermark_height = imagesy($watermark);
+            switch (strtolower($ext)) {
+                case 'jpg':
+                case 'jpeg':
+                    $image = imagecreatefromjpeg($img);
+                    break;
+                case 'png':
+                    $image = imagecreatefrompng($img);
+                    break;
+            }
+            if ($image) {
+                $size = getimagesize($img);
+                $dest_x = $size[0] - $watermark_width - 5;
+                $dest_y = $size[1] - $watermark_height - 5;
+                imagecopymerge($image, $watermark, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height, 40);
+
+                switch (strtolower($ext)) {
+                    case 'jpg':
+                    case 'jpeg':
+                        imagejpeg($image, $dest, 100);
+                        break;
+                    case 'png':
+                        imagepng($image, $dest, 100);
+                        break;
+                }
+                imagedestroy($image);
+            }
+            imagedestroy($watermark);
+        }
+    }
+
 }

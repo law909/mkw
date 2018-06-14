@@ -217,6 +217,9 @@ class importController extends \mkwhelpers\Controller {
             case 'nika':
                 $imp = \mkw\consts::RunningNikaImport;
                 break;
+            case 'haffner24':
+                $imp = \mkw\consts::RunningHaffner24Import;
+                break;
             default:
                 $imp = false;
                 break;
@@ -264,6 +267,9 @@ class importController extends \mkwhelpers\Controller {
                 break;
             case 'nika':
                 $imp = \mkw\consts::GyartoNika;
+                break;
+            case 'haffner24':
+                $imp = \mkw\consts::GyartoHaffner24;
                 break;
             default:
                 $imp = false;
@@ -1675,6 +1681,312 @@ class importController extends \mkwhelpers\Controller {
             \unlink('nikaproducts.xml');
 
             $this->setRunningImport(\mkw\consts::RunningNikaImport, 0);
+        }
+        else {
+            echo json_encode(array('msg' => 'Már fut ilyen import.'));
+        }
+    }
+
+    public function haffner24Import() {
+
+        function toArr($obj) {
+            $x = (array) $obj->categories;
+            if (is_array($x['cat'])) {
+                $x = $x['cat'][0];
+            }
+            else {
+                $x = $x['cat'];
+            }
+            $desc = (string) $obj->description;
+            $desc = str_replace(array('&lt,', '&gt,'), array('&lt;', '&gt;'), $desc);
+            $desc = html_entity_decode($desc);
+            return array(
+                'sku' => (string) $obj->sku,
+                'name' => (string) $obj->name,
+                'id' => (int) $obj->id,
+                'taxrate' => (int) $obj->tax_rate,
+                'manufacturer' => (string) $obj->manufacturer,
+                'category' => $x,
+                'description' => $desc,
+                'shortdescription' => (string) $obj->short_description,
+                'price' => (float) $obj->basic_price,
+                'discountprice' => (float) $obj->discount_price,
+                'compatibledevices' => (string) $obj->compatibledevices,
+                'stock' => (int) $obj->stock,
+                'emailnotify' => (int) $obj->email_notify,
+                'available' => (int) $obj->available,
+                'prodtype' => (string) $obj->prod_type,
+                'prodstart' => (string) $obj->prod_start,
+                'imageurl' => (string) $obj->image_url
+            );
+        }
+
+        function keres($mit, $miben) {
+            $dbig = count($miben);
+            $termekdb = 0;
+            $megvan = false;
+            while (($dbig && ($termekdb < $dbig)) && !$megvan) {
+                $megvan = ((string) $miben[$termekdb]->id) == $mit;
+                if ($megvan) {
+                    $ret = $miben[$termekdb];
+                }
+                $termekdb++;
+            }
+            if (!$megvan) {
+                return false;
+            }
+            return $ret;
+        }
+
+        if (!$this->checkRunningImport(\mkw\consts::RunningHaffner24Import)) {
+
+            $this->setRunningImport(\mkw\consts::RunningHaffner24Import, 1);
+
+            $parentid = $this->params->getIntRequestParam('katid', 0);
+            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoHaffner24);
+            $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+            $dbig = $this->params->getIntRequestParam('dbig', 0);
+            $editleiras = $this->params->getBoolRequestParam('editleiras', false);
+            $editnev = $this->params->getBoolRequestParam('editnev', false);
+            $createuj = $this->params->getBoolRequestParam('createuj', false);
+            $arszaz = $this->params->getNumRequestParam('arszaz', 100);
+            $batchsize = $this->params->getNumRequestParam('batchsize', 20);
+
+            $urleleje = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathHaffner24));
+
+            $path = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathHaffner24));
+            $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
+            if ($mainpath) {
+                $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+            }
+            $path = $mainpath . $path;
+            $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+            $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+
+            @unlink('haffner24import.txt');
+
+            $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlHaffner24));
+            $fh = fopen('haffner24products.xml', 'w');
+            \curl_setopt($ch, CURLOPT_FILE, $fh);
+            \curl_exec($ch);
+            fclose($fh);
+            \curl_close($ch);
+
+            $xml = simplexml_load_file("haffner24products.xml");
+            if ($xml) {
+                $products = $xml->product;
+                unset($xml);
+
+                if (!$dbig) {
+                    $dbig = count($products);
+                }
+
+                $termekdb = $dbtol;
+                $termekek = array();
+                while ((($dbig && ($termekdb < $dbig)) || (!$dbig))) {
+                    $data = toArr($products[$termekdb]);
+                    if (($data['stock'] > 0) || (($data['stock'] <= 0) && ($data['emailnotify'] == 1))) {
+                        $termekek[$data['id']] = $data;
+                    }
+                    $termekdb++;
+                }
+
+                foreach ($termekek as $_t) {
+                    $elsokategoria = explode('|', $_t['category']);
+                    $kategoriak = explode('>', $elsokategoria[0]);
+                    $parent = null;
+                    $pid = $parentid;
+                    foreach ($kategoriak as $kat) {
+                        $kat = trim($kat);
+                        $parent = $this->createKategoria($kat, $pid);
+                        $pid = $parent->getId();
+                    }
+                }
+
+                $this->getEm()->clear();
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+
+                $lettfuggoben = false;
+
+                foreach ($termekek as $data) {
+
+                    $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegenkod' => $data['id'], 'gyarto' => $gyartoid));
+
+                    if (!$termek) {
+                        if ($createuj && (($data['stock'] > 0) || (($data['stock'] <= 0) && ($data['emailnotify'] == 1)))) {
+
+                            $elsokategoria = explode('|', $data['category']);
+                            $kategoriak = explode('>', $elsokategoria[0]);
+
+                            $urlkatnev = \mkw\store::urlize(implode('-', $kategoriak));
+                            \mkw\store::createDirectoryRecursively($path . $urlkatnev);
+
+                            $parent = null;
+                            $pid = $parentid;
+                            foreach ($kategoriak as $kat) {
+                                $kat = trim($kat);
+                                $parent = $this->createKategoria($kat, $pid);
+                                $pid = $parent->getId();
+                            }
+
+                            $afa = $this->createAfa($data['taxrate']);
+                            $vtsz = $this->createVtsz('-', $afa);
+
+                            $termek = new \Entities\Termek();
+                            $termek->setFuggoben(true);
+                            $termek->setMe('db');
+                            $termek->setNev($data['name']);
+                            $termek->setIdegenkod($data['id']);
+                            $termek->setIdegencikkszam($data['sku']);
+                            $termek->setCikkszam($data['sku']);
+                            if ($gyarto) {
+                                $termek->setGyarto($gyarto);
+                            }
+                            $puri = new \mkwhelpers\HtmlPurifierSanitizer(array(
+                                'HTML.Allowed' => 'p,ul,li,b,strong,br'
+                            ));
+                            $hosszuleiras = $puri->sanitize(trim($data['description']));
+
+                            $puri2 = \mkw\store::getSanitizer();
+                            $rovidleiras = $puri2->sanitize(trim($data['shortdescription']));
+                            $termek->setLeiras('<p>' . $hosszuleiras . '</p>');
+                            $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
+                            $termek->setTermekfa1($parent);
+                            $termek->setVtsz($vtsz);
+
+                            // kepek
+
+                            $imgurl = $data['imageurl'];
+                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+                            $kepnev = \mkw\store::urlize($data['name'] . '_' . $data['sku']);
+
+                            $parsedpath = parse_url($imgurl, PHP_URL_PATH);
+                            $extension = \mkw\store::getExtension($parsedpath);
+                            if ($extension) {
+                                $imgpath = $nameWithoutExt . '.' . $extension;
+                            }
+                            else {
+                                $imgpath = $nameWithoutExt;
+                            }
+
+                            $ih = fopen($imgpath, 'w');
+                            if ($ih) {
+                                $ch = \curl_init($imgurl);
+                                \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                $curlretval = \curl_exec($ch);
+                                fclose($ih);
+                                if (($curlretval !== false) && (!\curl_errno($ch))) {
+                                    switch ($http_code = \curl_getinfo($ch, CURLINFO_HTTP_CODE)) {
+                                        case 200:
+                                            \mkw\store::watermark($imgpath, $imgpath, $extension);
+                                            foreach ($this->settings['sizes'] as $k => $size) {
+                                                $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                                $matches = explode('x', $size);
+                                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                            }
+                                            $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                            $termek->setKepleiras($data['name']);
+                                            break;
+                                        default:
+                                            $lettfuggoben = true;
+                                            \mkw\store::writelog('ELÉRHETETLEN KÉP: ' . $http_code . ' : termék cikkszám: ' . $termek->getCikkszam() . ' ' . $termek->getNev()
+                                                . ': ' . $imgurl, 'haffner24import.txt');
+                                            break;
+                                    }
+                                }
+                                else {
+                                    $lettfuggoben = true;
+                                    \mkw\store::writelog('ELÉRHETETLEN KÉP termék cikkszám: ' . $termek->getCikkszam() . ' ' . $termek->getNev()
+                                        . ': ' . $imgurl, 'haffner24import.txt');
+                                }
+                            }
+                            else {
+                                $lettfuggoben = true;
+                                \mkw\store::writelog('HIBÁS KÉP NÉV termék cikkszám: ' . $termek->getCikkszam() . ' ' . $termek->getNev()
+                                    . ': ' . $imgurl, 'haffner24import.txt');
+                            }
+                        }
+                    }
+                    else {
+                        /** @var \Entities\Termek $termek */
+                        $termek = $termek[0];
+                        if ($editleiras) {
+                            $puri = new \mkwhelpers\HtmlPurifierSanitizer(array(
+                                'HTML.Allowed' => 'p,ul,li,b,strong,br'
+                            ));
+                            $hosszuleiras = $puri->sanitize(trim($data['description']));
+
+                            $puri2 = \mkw\store::getSanitizer();
+                            $rovidleiras = $puri2->sanitize(trim($data['shortdescription']));
+                            $termek->setLeiras('<p>' . $hosszuleiras . '</p>');
+                        }
+                        if ($editnev) {
+                            $termek->setNev($data['name']);
+                        }
+                    }
+                    if ($termek) {
+                        if ($data['stock'] == 0) {
+                            if ($termek->getKeszlet() <= 0) {
+                                $termek->setNemkaphato(true);
+                            }
+                        }
+                        else {
+                            $termek->setNemkaphato(false);
+                        }
+                        if (!$termek->getAkcios()) {
+                            $termek->setNetto($data['price'] * 1);
+                            $termek->setBrutto(round($termek->getBrutto() * $arszaz / 100, -1));
+                        }
+                        \mkw\store::getEm()->persist($termek);
+                    }
+                    if (($termekdb % $batchsize) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                    }
+                    $termekdb++;
+                }
+                \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->clear();
+
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                if ($gyarto) {
+                    $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
+                    $termekdb = 0;
+                    foreach ($termekek as $t) {
+                        /** @var \Entities\Termek $termek */
+                        $termek = $this->getRepo('Entities\Termek')->find($t['id']);
+                        if ($termek && !$termek->getFuggoben() && !$termek->getInaktiv()) {
+                            $talalat = keres($t['idegenkod'], $products);
+                            if ($talalat) {
+                                $talalat = toArr($talalat);
+                            }
+                            if (!$talalat || (($talalat['stock'] == 0) && ($talalat['emailnotify'] == 0))) {
+                                if ($termek->getKeszlet() <= 0) {
+                                    $lettfuggoben = true;
+                                    \mkw\store::writelog('FÜGGŐBEN termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                        . ' ' . $termek->getNev(), 'haffner24import.txt');
+                                    $termek->setInaktiv(true);
+                                    \mkw\store::getEm()->persist($termek);
+                                }
+                            }
+                            $termekdb++;
+                        }
+                        if (($termekdb % $batchsize) === 0) {
+                            \mkw\store::getEm()->flush();
+                            \mkw\store::getEm()->clear();
+                        }
+                    }
+                    \mkw\store::getEm()->flush();
+                    \mkw\store::getEm()->clear();
+                }
+                if ($lettfuggoben) {
+                    echo json_encode(array('url' => '/haffner24import.txt'));
+                }
+            }
+            \unlink('haffner24products.xml');
+
+            $this->setRunningImport(\mkw\consts::RunningHaffner24Import, 0);
         }
         else {
             echo json_encode(array('msg' => 'Már fut ilyen import.'));
