@@ -91,22 +91,6 @@
                 <br><b>A munkát bízza ránk</b>: Ön kiválasztja, mi becsomagoljuk és házhoz szállítjuk az Önnek legalkalmasabb időpontban.
                 <br><br>Webáruházunk programja kívül-belül megújult ugyan, de az elveink, lelkesedésünk és vásárlóink iránti elkötelezettségünk továbbra sem változott. Örömünkre szolgál, hogy immáron 7. éve segíthetünk minden kedves régi és új megrendelőnknek.
                 <br><br>
-                <div>
-                    <!-- AddThis Button BEGIN -->
-                    <div class="addthis_toolbox addthis_default_style ">
-                    <a class="addthis_button_facebook_like" style="cursor:pointer"></a>
-                    <a class="addthis_button_facebook" style="cursor:pointer"></a>
-                    <g:plusone size="small"></g:plusone>
-                    <a class="addthis_button_twitter" style="cursor:pointer"></a>
-                    <a class="addthis_button_email" style="cursor:pointer"></a>
-                    <a class="addthis_button_pinterest_pinit" style="cursor:pointer"></a>
-                    </div>
-                    <script type="text/javascript">var addthis_config = { "data_track_clickback":true };</script>
-                    <script type="text/javascript">var addthis_config = { "data_track_addressbar":true };</script>
-                    <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=quixoft"></script>
-                    <!-- AddThis Button END -->
-                </div>
-
             </div>
             {if (count($akciostermekek)>0)}
                 <div class="blockHeader">
@@ -197,20 +181,6 @@
                 {/for}
             </div>
             {/if}
-            <!-- AddThis Trending Content BEGIN -->
-            <div id="addthis_trendingcontent2"></div>
-            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=quixoft"></script>
-            <script type="text/javascript">
-            addthis.box("#addthis_trendingcontent2", {
-                feed_title : "Legtöbbet megosztott tartalom",
-                feed_type : "shared",
-                feed_period : "year",
-                num_links : 5,
-                remove : "| Mindent Kapni Webáruház - Sok jó dolog egy helyen!",
-                height : "auto",
-                width : "auto"});
-            </script>
-            <!-- AddThis Trending Content END -->
         </div>
 	</div>
 </div>
