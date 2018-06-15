@@ -83,6 +83,14 @@
                 </select>
             </div>
             <div class="matt-hseparator"></div>
+            <div>
+                <select id="akciosfilter" name="akciosfilter">
+                    <option value="9">{at('Mindegy')}</option>
+                    <option value="1">{at('Akciós')}</option>
+                    <option value="0">{at('Nem akciós')}</option>
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
             <div id="termekfa" class="mattable-filterwrapper ui-widget-content"></div>
             <div class="matt-hseparator"></div>
             <div id="cimkefiltercontainer">

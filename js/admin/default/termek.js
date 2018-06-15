@@ -828,7 +828,7 @@ $(document).ready(function () {
                 }
             },
             filter: {
-                fields: ['#gyartofilter', '#nevfilter', '#kepurlfilter', '#lathatofilter', '#nemkaphatofilter', '#fuggobenfilter', '#inaktivfilter', '#ajanlottfilter', '#kiemeltfilter'],
+                fields: ['#gyartofilter', '#nevfilter', '#kepurlfilter', '#lathatofilter', '#nemkaphatofilter', '#fuggobenfilter', '#inaktivfilter', '#ajanlottfilter', '#kiemeltfilter', '#akciosfilter'],
                 onClear: function () {
                     $('.js-cimkefilter').removeClass('ui-state-hover');
                     mkwcomp.termekfaFilter.clearChecks('#termekfa');

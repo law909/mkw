@@ -52,6 +52,7 @@ $doctrinedriver = $config->newDefaultAnnotationDriver(array(__DIR__.'/Entities')
 $driverchain->addDriver($doctrinedriver, 'Entities');
 
 $config->addCustomStringFunction('YEAR', 'mkwhelpers\year');
+$config->addCustomStringFunction('NOW', 'mkwhelpers\now');
 $config->addCustomStringFunction('IF', 'mkwhelpers\ifelse');
 $config->addCustomStringFunction('RAND', 'mkwhelpers\rand');
 

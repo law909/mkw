@@ -687,6 +687,18 @@ class termekController extends \mkwhelpers\MattableController {
         if ($f != 9) {
             $filter->addFilter('kiemelt', '=', $f);
         }
+        switch ($this->params->getNumRequestParam('akciosfilter', 9)) {
+            case 1:
+                $filter->addSql('(((_xx.akciostart IS NOT NULL) AND (_xx.akciostart <> \'\')) OR ((_xx.akciostop IS NOT NULL) AND (_xx.akciostart <> \'\')))' .
+	                ' AND ' .
+                    '((_xx.akciostart <= NOW()) AND (_xx.akciostop >= NOW()) OR ((_xx.akciostart <= NOW()) AND ((_xx.akciostop IS NULL) OR (_xx.akciostop = \'\'))) OR ((_xx.akciostart IS NULL) OR (_xx.akciostart = \'\')) AND (_xx.akciostop <= NOW()))'
+                );
+                break;
+            case 0:
+                $filter->addSql('(((_xx.akciostart IS NULL) OR (_xx.akciostart=\'\')) AND ((_xx.akciostop IS NULL) OR (_xx.akciostart=\'\'))) OR (_xx.akciostart>=NOW()) OR (_xx.akciostop<=NOW())'
+                );
+                break;
+        }
 
 		$fv = $this->params->getArrayRequestParam('cimkefilter');
 		if (!empty($fv)) {
