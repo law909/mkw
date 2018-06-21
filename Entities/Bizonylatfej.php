@@ -784,7 +784,7 @@ class Bizonylatfej {
         $trans = new \PaymentTransactionModel();
         $trans->Payee = \mkw\store::getParameter(\mkw\consts::BarionPayeeEmail);
         $trans->POSTransactionId = $this->getId();
-        $trans->Total = $this->getBrutto();
+        $trans->Total = number_format($this->getBrutto(), 2, '.', '');
         /** @var \Entities\Bizonylattetel $bt */
         foreach ($this->bizonylattetelek as $bt) {
             $trans->AddItem($bt->toBarionModel());

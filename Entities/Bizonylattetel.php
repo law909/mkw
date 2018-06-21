@@ -306,8 +306,8 @@ class Bizonylattetel {
         $item->SKU = $this->getCikkszam();
         $item->Quantity = $this->getMennyiseg();
         $item->Unit = $this->getME();
-        $item->UnitPrice = $this->getBruttoegysar();
-        $item->ItemTotal = $this->getBrutto();
+        $item->UnitPrice = number_format($this->getBruttoegysar(), 2, '.', '');
+        $item->ItemTotal = number_format($this->getBrutto(), 2, '.', '');
         return $item;
     }
 
