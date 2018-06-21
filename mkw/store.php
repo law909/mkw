@@ -1273,7 +1273,11 @@ class store {
     }
 
     public static function watermark($img, $dest, $ext) {
-        $watermark = imagecreatefrompng(ltrim(self::getParameter(\mkw\consts::Watermark), '/'));
+        $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
+        if ($mainpath) {
+            $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        }
+        $watermark = imagecreatefrompng($mainpath . ltrim(self::getParameter(\mkw\consts::Watermark), DIRECTORY_SEPARATOR));
         if ($watermark) {
             $watermark_width = imagesx($watermark);
             $watermark_height = imagesy($watermark);

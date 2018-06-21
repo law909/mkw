@@ -26,8 +26,10 @@ class barionController extends \mkwhelpers\Controller {
     public function startPayment($biz) {
         $res = array('result' => false);
         $bc = $this->createClient();
+        $x = $biz->toBarionModel();
         $payment = $bc->PreparePayment($biz->toBarionModel());
 
+        \mkw\store::writelog(print_r($x, true));
         \mkw\store::writelog(print_r($payment, true));
 
         if ($payment->RequestSuccessful) {
