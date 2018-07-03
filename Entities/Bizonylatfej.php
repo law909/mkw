@@ -800,10 +800,22 @@ class Bizonylatfej {
                 $ppr->Locale = \UILocale::EN;
                 break;
             case 'hu_hu':
-            default:
                 $ppr->Locale = \UILocale::HU;
                 break;
-
+            default:
+                $partner = $this->getPartner();
+                if (!\mkw\store::getIntParameter(\mkw\consts::Magyarorszag)) {
+                    $ppr->Locale = \UILocale::HU;
+                }
+                else {
+                    if ($partner->getOrszagId() === \mkw\store::getIntParameter(\mkw\consts::Magyarorszag)) {
+                        $ppr->Locale = \UILocale::HU;
+                    }
+                    else {
+                        $ppr->Locale = \UILocale::EN;
+                    }
+                }
+                break;
         }
         $ppr->OrderNumber = $this->getId();
         $ppr->Currency = $this->getValutanemnev();

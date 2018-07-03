@@ -302,6 +302,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('spanyolorszaglist', $orszagc->getSelectList(($p ? $p->getErtek() : 0), true));
         $p = $repo->find(\mkw\consts::Orszag);
         $view->setVar('orszaglist', $orszagc->getSelectList(($p ? $p->getErtek() : 0), true));
+        $p = $repo->find(\mkw\consts::Magyarorszag);
+        $view->setVar('magyarorszaglist', $orszagc->getSelectList(($p ? $p->getErtek() : 0), true));
 
         $p = $repo->find(\mkw\consts::FelvetelAlattTipus);
         $partnertipusc = new partnertipusController($this->params);
@@ -858,6 +860,13 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::Orszag, '');
+        }
+        $magyarorszag = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('magyarorszag', 0));
+        if ($magyarorszag) {
+            $this->setObj(\mkw\consts::Magyarorszag, $magyarorszag->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::Magyarorszag, '');
         }
 
         $sz = \mkw\store::getEm()->getRepository('Entities\TermekValtozatAdatTipus')->find($this->params->getIntRequestParam('valtozattipusszin', 0));

@@ -31,6 +31,7 @@ class consts {
     const BelsoUzletkoto = 'belsouzletkoto';
     const Off = 'off';
     const Orszag = 'orszag';
+    const Magyarorszag = 'magyarorszag';
     const Watermark = 'watermark';
 
     const Tulajnev = 'tulajnev';

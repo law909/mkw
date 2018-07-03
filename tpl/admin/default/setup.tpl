@@ -55,6 +55,16 @@
                             </select>
                         </div>
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="MagyarOrszagEdit">{at('Magyarország')}:</label></span>
+                            <select id="MagyarOrszagEdit" name="magyarorszag">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $magyarorszaglist as $_o}
+                                    <option
+                                        value="{$_o.id}"{if ($_o.selected)} selected="selected"{/if}>{$_o.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="FizmodEdit">{at('Fizetési mód')}:</label></span>
                             <select id="FizmodEdit" name="fizmod">
                                 <option value="">{at('válasszon')}</option>
