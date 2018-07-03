@@ -461,18 +461,26 @@ class checkoutController extends \mkwhelpers\MattableController {
                     $kc = new kosarController($this->params);
                     $kc->clear();
 
-                    if ($bizstatusz) {
-                        $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
-                    }
                     if ($fizetesimod == \mkw\store::getParameter(\mkw\consts::OTPayFizmod)) {
                         Header('Location: ' . \mkw\store::getRouter()->generate('showcheckoutfizetes'));
                     }
-                    elseif (\mkw\store::isBarionFizmod($fizetesimod)) {
-                        $bc = new barionController($this->params);
-                        $bc->startPayment($megrendfej);
-                    }
                     else {
-                        Header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
+                        if (\mkw\store::isBarionFizmod($fizetesimod)) {
+                            $bc = new barionController($this->params);
+                            $paymentres = $bc->startPayment($megrendfej);
+                            if ($paymentres['result']) {
+                                Header('Location: ' . $paymentres['redirecturl']);
+                            }
+                            else {
+                                Header('Location: ' . \mkw\store::getRouter()->generate('checkoutbarionerror', false, array(), array('mr' => $megrendfej->getId())));
+                            }
+                        }
+                        else {
+                            if ($bizstatusz) {
+                                $megrendfej->sendStatuszEmail($bizstatusz->getEmailtemplate());
+                            }
+                            Header('Location: ' . \mkw\store::getRouter()->generate('checkoutkoszonjuk'));
+                        }
                     }
                 }
                 else {
