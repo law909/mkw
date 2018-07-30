@@ -17,6 +17,9 @@
             {$_egyed.id}
         {/if}
             <a class="js-printbizonylat" href="#" data-egyedid="{$_egyed.id}" data-oper="print" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}" title="{at('Nyomtat')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
+            {if ($_egyed.bizonylattipusid=='szamla')}
+                <a class="js-nav" href="#" data-egyedid="{$_egyed.id}" title="{at('NAV XML')}" target="_blank">NAV</a>
+            {/if}
             {if ($_egyed.nemrossz)}
                 {if ($_egyed.bizonylattipusid=='megrendeles')}
                     <a class="js-printelolegbekero" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{at('Előleg bekérő')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>

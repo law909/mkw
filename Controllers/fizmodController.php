@@ -26,6 +26,7 @@ class fizmodController extends \mkwhelpers\MattableController {
         $x['id'] = $t->getId();
         $x['nev'] = $t->getNev();
         $x['tipus'] = $t->getTipus();
+        $x['navtipus'] = $t->getNavtipus();
         $x['haladek'] = $t->getHaladek();
         $x['webes'] = $t->getWebes();
         $x['leiras'] = $t->getLeiras();
@@ -71,6 +72,7 @@ class fizmodController extends \mkwhelpers\MattableController {
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setTipus($this->params->getStringRequestParam('tipus'));
+        $obj->setNavtipus($this->params->getStringRequestParam('navtipus'));
         $obj->setHaladek($this->params->getIntRequestParam('haladek'));
         $obj->setWebes($this->params->getBoolRequestParam('webes'));
         $obj->setLeiras($this->params->getOriginalStringRequestParam('leiras'));

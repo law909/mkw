@@ -31,6 +31,19 @@
                         </td>
                     </tr>
                     <tr>
+                        <td><label for="NAVTipusEdit">{at('NAV típus')}:</label></td>
+                        <td>
+                            <select id="NAVTipusEdit" name="navtipus">
+                                <option value="">{at('válasszon')}</option>
+                                <option value="TRANSFER"{if ($egyed.tipus == 'TRANSFER')} selected="selected"{/if}>{at('TRANSFER')}</option>
+                                <option value="CASH"{if ($egyed.tipus == 'CASH')} selected="selected"{/if}>{at('CASH')}</option>
+                                <option value="CARD"{if ($egyed.tipus == 'CARD')} selected="selected"{/if}>{at('CARD')}</option>
+                                <option value="VOUCHER"{if ($egyed.tipus == 'VOUCHER')} selected="selected"{/if}>{at('VOUCHER')}</option>
+                                <option value="OTHER"{if ($egyed.tipus == 'OTHER')} selected="selected"{/if}>{at('OTHER')}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td><label for="HaladekEdit">{at('Haladék')}:</label></td>
                         <td><input id="HaladekEdit" name="haladek" type="number" value="{$egyed.haladek}"> {at('nap')}</td>
                     </tr>

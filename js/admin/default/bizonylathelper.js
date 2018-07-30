@@ -932,7 +932,7 @@ var bizonylathelper = function($) {
                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
                     .autocomplete( "instance" )._renderItem = termekAutocompleteRenderer;
 
-                $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder').button();
+                $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder,.js-nav').button();
 
                 $('.js-inheritbizonylat').each(function() {
                     var $this = $(this);
@@ -1062,7 +1062,7 @@ var bizonylathelper = function($) {
                     onStyle: function() {
                         $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, ' +
                             '.js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno, .js-backorder, .js-mese, '+
-                            '.js-feketelista, .js-vissza').button();
+                            '.js-feketelista, .js-vissza, .js-nav').button();
                     },
                     onDoEditLink: function() {
                         $('.js-inheritbizonylat').each(function() {
@@ -1084,6 +1084,10 @@ var bizonylathelper = function($) {
                         $('.js-printelolegbekero').each(function() {
                             var $this = $(this);
                             $this.attr('href', '/admin/' + bizonylattipus + 'fej/printelolegbekero?id=' + $this.data('egyedid'));
+                        });
+                        $('.js-nav').each(function() {
+                            var $this = $(this);
+                            $this.attr('href', '/admin/' + bizonylattipus + 'fej/navonline?id=' + $this.data('egyedid'));
                         });
                     }
                 },

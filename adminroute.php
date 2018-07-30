@@ -210,6 +210,7 @@ $router->map('GET', '/admin/szamlafej/print', 'szamlafejController#doPrint', 'ad
 $router->map('GET', '/admin/szamlafej/storno', 'szamlafejController#storno', 'adminszamlafejstorno');
 $router->map('POST', '/admin/szamlafej/fejexport', 'szamlafejController#fejexport', 'adminszamlafejfejexport');
 $router->map('POST', '/admin/szamlafej/tetelexport', 'szamlafejController#tetelexport', 'adminszamlafejtetelexport');
+$router->map('GET', '/admin/szamlafej/navonline', 'szamlafejController#navonline', 'adminszamlafejnavonline');
 
 $router->map('GET', '/admin/esetiszamlafej/viewlist', 'esetiszamlafejController#viewlist', 'adminesetiszamlafejviewlist');
 $router->map('GET', '/admin/esetiszamlafej/getlistbody', 'esetiszamlafejController#getlistbody', 'adminesetiszamlafejgetlistbody');

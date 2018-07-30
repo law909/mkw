@@ -35,6 +35,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::Tulajegyenivallalkozo, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::Tulajevnyilvszam);
         $view->setVar(\mkw\consts::Tulajevnyilvszam, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Tulajjovengszam);
+        $view->setVar(\mkw\consts::Tulajjovengszam, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::Tulajevnev);
         $view->setVar(\mkw\consts::Tulajevnev, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::ProgramNev);
@@ -578,6 +580,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Tulajegyenivallalkozo, $this->params->getBoolRequestParam(\mkw\consts::Tulajegyenivallalkozo));
         $this->setObj(\mkw\consts::Tulajevnev, $this->params->getStringRequestParam(\mkw\consts::Tulajevnev));
         $this->setObj(\mkw\consts::Tulajevnyilvszam, $this->params->getStringRequestParam(\mkw\consts::Tulajevnyilvszam));
+        $this->setObj(\mkw\consts::Tulajjovengszam, $this->params->getStringRequestParam(\mkw\consts::Tulajjovengszam));
         $this->setObj(\mkw\consts::ProgramNev, $this->params->getStringRequestParam(\mkw\consts::ProgramNev));
 
         if ($this->params->getStringRequestParam('tulajcrc')) {

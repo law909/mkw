@@ -19,6 +19,11 @@ class Orszag {
      */
     private $nev;
 
+    /**
+     * @ORM\Column(type="string",length=5)
+     */
+    private $iso3166;
+
     /** @ORM\OneToMany(targetEntity="Partner", mappedBy="szallitasimod",cascade={"persist"}) */
     private $partnerek;
 
@@ -126,6 +131,20 @@ class Orszag {
      */
     public function setLathato3($lathato3) {
         $this->lathato3 = $lathato3;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIso3166() {
+        return $this->iso3166;
+    }
+
+    /**
+     * @param mixed $iso3166
+     */
+    public function setIso3166($iso3166) {
+        $this->iso3166 = $iso3166;
     }
 
 

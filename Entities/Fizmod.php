@@ -34,6 +34,8 @@ class Fizmod {
 	private $webes=true;
 	/** @ORM\Column(type="boolean") */
 	private $rugalmas = true;
+    /** @ORM\Column(type="string",length=20,nullable=false) */
+    private $navtipus;
 	/** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="fizmod",cascade={"persist"}) */
 	private $bizonylatfejek;
 	/**
@@ -332,6 +334,20 @@ class Fizmod {
      */
     public function setEmagid($emagid) {
         $this->emagid = $emagid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNavtipus() {
+        return $this->navtipus;
+    }
+
+    /**
+     * @param mixed $navtipus
+     */
+    public function setNavtipus($navtipus) {
+        $this->navtipus = $navtipus;
     }
 
 }

@@ -45,6 +45,7 @@ class consts {
     const Tulajegyenivallalkozo = 'tulajegyenivallalkozo';
     const Tulajevnev = 'tulajevnev';
     const Tulajevnyilvszam = 'tulajevnyilvszam';
+    const Tulajjovengszam = 'tulajjovengszam';
     const ProgramNev = 'programnev';
 
     const EmailFrom = 'emailfrom';

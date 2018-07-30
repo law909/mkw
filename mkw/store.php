@@ -41,6 +41,7 @@ class store {
     public static $EngDateFormat = 'm/d/Y';
     public static $LastDayDateFormat = 'Y.m.t';
     public static $SQLDateFormat = 'Y-m-d';
+    public static $sqlDateTimeFormat = 'Y-m-d\TH:i:s';
     public static $PerDateFormat = 'Y/m/d';
     public static $DBFDateFormat = 'Ymd';
     public static $JavascriptDateFormat = 'Y.n.d';
@@ -1311,4 +1312,11 @@ class store {
         }
     }
 
+    public static function CData($s) {
+        return '<![CDATA[' . $s . ']]>';
+    }
+
+    public static function NAVNum($num) {
+        return number_format($num, 2, '.', '');
+    }
 }

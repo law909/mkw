@@ -64,10 +64,10 @@ class Orszag extends \Entities\Orszag implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Orszag' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato3'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'iso3166', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Orszag' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato3'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Orszag' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato3'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Orszag' . "\0" . 'id', '' . "\0" . 'Entities\\Orszag' . "\0" . 'nev', '' . "\0" . 'Entities\\Orszag' . "\0" . 'iso3166', '' . "\0" . 'Entities\\Orszag' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Orszag' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Orszag' . "\0" . 'lathato3'];
     }
 
     /**
@@ -318,6 +318,28 @@ class Orszag extends \Entities\Orszag implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato3', [$lathato3]);
 
         return parent::setLathato3($lathato3);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIso3166()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIso3166', []);
+
+        return parent::getIso3166();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setIso3166($iso3166)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIso3166', [$iso3166]);
+
+        return parent::setIso3166($iso3166);
     }
 
 }
