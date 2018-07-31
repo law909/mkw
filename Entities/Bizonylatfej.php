@@ -1197,8 +1197,6 @@ class Bizonylatfej {
         $result = $result . '</invoiceExchange>';
         $result = $result . '</Invoice>';
 
-return $result;
-
         $b64 = base64_encode($result);
 
         $result = '<invoiceOperations>';
