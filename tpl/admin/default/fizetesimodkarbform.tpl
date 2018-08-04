@@ -35,11 +35,11 @@
                         <td>
                             <select id="NAVTipusEdit" name="navtipus">
                                 <option value="">{at('válasszon')}</option>
-                                <option value="TRANSFER"{if ($egyed.tipus == 'TRANSFER')} selected="selected"{/if}>{at('TRANSFER')}</option>
-                                <option value="CASH"{if ($egyed.tipus == 'CASH')} selected="selected"{/if}>{at('CASH')}</option>
-                                <option value="CARD"{if ($egyed.tipus == 'CARD')} selected="selected"{/if}>{at('CARD')}</option>
-                                <option value="VOUCHER"{if ($egyed.tipus == 'VOUCHER')} selected="selected"{/if}>{at('VOUCHER')}</option>
-                                <option value="OTHER"{if ($egyed.tipus == 'OTHER')} selected="selected"{/if}>{at('OTHER')}</option>
+                                <option value="TRANSFER"{if ($egyed.navtipus == 'TRANSFER')} selected="selected"{/if}>{at('TRANSFER')}</option>
+                                <option value="CASH"{if ($egyed.navtipus == 'CASH')} selected="selected"{/if}>{at('CASH')}</option>
+                                <option value="CARD"{if ($egyed.navtipus == 'CARD')} selected="selected"{/if}>{at('CARD')}</option>
+                                <option value="VOUCHER"{if ($egyed.navtipus == 'VOUCHER')} selected="selected"{/if}>{at('VOUCHER')}</option>
+                                <option value="OTHER"{if ($egyed.navtipus == 'OTHER')} selected="selected"{/if}>{at('OTHER')}</option>
                             </select>
                         </td>
                     </tr>
