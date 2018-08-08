@@ -38,6 +38,11 @@
 	</div>
 	<div class="row">
             <div class="span12">
+                <div>
+                <a href="https://www.barion.com/en/about-secure-online-payment" target="_blank" class="pull-right barionbanner">
+                    <img src="/themes/main/mkwcansas/img/barion-card-payment-banner-2016-432x50px.png" title="A kényelmes és biztonságos online fizetést a Barion Payment Zrt. biztosítja, MNB engedély száma: H-EN-I-1064/2013 Bankkártya adatai áruházunkhoz nem jutnak el.">
+                </a>
+                </div>
                 <div class="copyright">
                     Az oldalainkon szereplő márkanevek a tulajdonosok védjegyei, itt csak a termékek bemutatására szerepelnek.
                     <br>A webáruház lapjain látható képek csak illusztrációk, a valós termék ezektől némileg eltérhet.
