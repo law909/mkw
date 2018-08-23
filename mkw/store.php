@@ -555,7 +555,12 @@ class store {
             if (array_key_exists('SCRIPT_URI', $_SERVER)) {
                 $uri = parse_url($_SERVER['SCRIPT_URI']);
                 if (!array_key_exists('scheme', $uri) || !$uri['scheme']) {
-                    $uri['scheme'] = 'http';
+                    if (self::isSSL()) {
+                        $uri['scheme'] = 'https';
+                    }
+                    else {
+                        $uri['scheme'] = 'http';
+                    }
                 }
                 if (!array_key_exists('host', $uri) || !$uri['host']) {
                     $uri['host'] = '';
@@ -566,6 +571,9 @@ class store {
                     'scheme' => 'http',
                     'host' => $_SERVER['HTTP_HOST']
                 );
+                if (self::isSSL()) {
+                    $uri['scheme'] = 'https';
+                }
             }
             $url = $uri['scheme'] . '://' . $uri['host'];
         }
@@ -940,6 +948,10 @@ class store {
 
     public static function isEmag() {
         return self::getSetupValue('emag');
+    }
+
+    public static function isSSL() {
+        return self::getSetupValue('ssl');
     }
 
     public static function isFoxpostSzallitasimod($szm) {
