@@ -110,6 +110,9 @@ class TermekValtozat {
     /** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="termekvaltozat",cascade={"persist"}) */
     private $bizonylattetelek;
 
+    /** @ORM\OneToMany(targetEntity="Leltartetel", mappedBy="termekvaltozat",cascade={"persist"}) */
+    private $leltartetelek;
+
 	/** @ORM\Column(type="string",length=255,nullable=true) */
 	private $vonalkod;
 
@@ -129,8 +132,9 @@ class TermekValtozat {
     }
 
     public function __construct() {
-		$this->kosarak=new \Doctrine\Common\Collections\ArrayCollection();
+		$this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->leltartetelek = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
     protected function calcKeszletInfo($datum = null, $raktarid = null) {

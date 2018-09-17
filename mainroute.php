@@ -135,3 +135,5 @@ $router->map('GET', '/t/emag/printvat', 'emagController#printVat', 'printvat');
 $router->map('GET', '/t/emag/printcat', 'emagController#printCategories', 'printcat');
 
 $router->map('POST', '/barion', 'barionController#callback', 'barioncallback');
+
+$router->map('POST', '/a2a', 'a2aController#processCmd', 'a2aprocesscmd');

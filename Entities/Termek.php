@@ -266,6 +266,9 @@ class Termek {
     /** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="termek",cascade={"persist"}) */
     private $bizonylattetelek;
 
+    /** @ORM\OneToMany(targetEntity="Leltartetel", mappedBy="termek",cascade={"persist"}) */
+    private $leltartetelek;
+
     /** @ORM\OneToMany(targetEntity="Kosar", mappedBy="termek",cascade={"persist"}) */
     private $kosarak;
 
@@ -401,6 +404,7 @@ class Termek {
         $this->termekreceptek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->altermekreceptek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->leltartetelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekkapcsolodok = new \Doctrine\Common\Collections\ArrayCollection();
         $this->altermekkapcsolodok = new \Doctrine\Common\Collections\ArrayCollection();
@@ -454,6 +458,74 @@ class Termek {
             return -1 * $k;
         }
         return 0;
+    }
+
+    public function toA2a() {
+        $x = array();
+        $huf = \mkw\store::getEm()->getRepository('Entities\Valutanem')->findOneBy(array('nev' => 'HUF'));
+        $ford = $this->getTranslationsArray();
+        $x['id'] = $this->getId();
+        $x['kepurl'] = \mkw\store::getFullUrl($this->getKepurlLarge());
+        $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, array('slug' => $this->getSlug()));
+        $x['nev'] = $this->getNev();
+        $x['nev_en'] = $ford['en_us']['nev'];
+        $x['nev_it'] = $ford['it_it']['nev'];
+        $x['cikkszam'] = $this->getCikkszam();
+        $x['rovidleiras'] = $this->getRovidLeiras();
+        $x['leiras'] = $this->getLeiras();
+        $x['leiras_en'] = $ford['en_us']['leiras'];
+        $x['leiras_it'] = $ford['it_it']['leiras'];
+        $x['termekfaid'] = $this->getTermekfa1Id();
+        $x['termekfanev'] = $this->getTermekfa1()->getTeljesNev();
+        $vtt = array();
+        $valtozatok = $this->getValtozatok();
+        if ($valtozatok) {
+            foreach ($valtozatok as $valt) {
+                if ($valt->getXElerheto()) {
+                    $valtadat = array();
+                    $valtadat['id'] = $valt->getId();
+                    $valtadat['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
+                    $valtadat['elerheto'] = $valt->getElerheto3();
+                    $valtadat['vonalkod'] = $valt->getVonalkod();
+                    $keszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg();
+                    if ($keszlet < 0) {
+                        $keszlet = 0;
+                    }
+                    $valtadat['keszlet'] = $keszlet;
+                    $valtadat['ar'] = $this->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Price));
+                    $valtadat['diszkontar'] = $this->getBruttoAr($valt, null, $huf, \mkw\store::getParameter(\mkw\consts::Webshop3Discount));
+                    if ($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                        $valtadat['color'] = $valt->getErtek1();
+                        $valtadat['size'] = $valt->getErtek2();
+                    }
+                    elseif ($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                        $valtadat['color'] = $valt->getErtek2();
+                        $valtadat['size'] = $valt->getErtek1();
+                    }
+                    $vtt[] = $valtadat;
+                }
+            }
+            $x['valtozatok'] = $vtt;
+        }
+        else {
+            $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
+            $x['bruttohuf'] = $this->getBruttoAr(null, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
+                \mkw\store::getParameter(\mkw\consts::Webshop3Price));
+            $x['eredetibruttohuf'] = $this->getEredetiBruttoAr(null);
+        }
+        $altomb = array();
+        foreach ($this->getTermekKepek(true) as $kep) {
+            $egyed = array();
+            $egyed['kepurl'] = \mkw\store::getFullUrl($kep->getUrlLarge());
+            $egyed['kozepeskepurl'] = \mkw\store::getFullUrl($kep->getUrlMedium());
+            $egyed['kiskepurl'] = \mkw\store::getFullUrl($kep->getUrlSmall());
+            $egyed['minikepurl'] = \mkw\store::getFullUrl($kep->getUrlMini());
+            $egyed['leiras'] = $kep->getLeiras();
+            $altomb[] = $egyed;
+        }
+        $x['kepek'] = $altomb;
+        $x['inaktiv'] = $this->getInaktiv();
+        return $x;
     }
 
     public function toTermekLista($valtozat = null, $ujtermekid = null, $top10min = null) {

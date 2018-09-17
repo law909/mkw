@@ -214,7 +214,7 @@ else {
             }
             elseif (store::mustLogin() && !in_array($match['name'], array('showlogin', 'dologin', 'showfanta', 'dofanta', 'fcmotoexport',
                     'mugenraceexport', 'superzonehuexport', 'pubregistration', 'savepubregistration', 'pubregistrationthx',
-                    'createpassreminder', 'showpassreminder', 'savepassreminder', 'szamlaprint'))) {
+                    'createpassreminder', 'showpassreminder', 'savepassreminder', 'szamlaprint', 'a2aprocesscmd'))) {
                 $mainsess->redirafterlogin = $_SERVER['REQUEST_URI'];
                 header('Location: ' . $router->generate('showlogin'));
             }
