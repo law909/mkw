@@ -815,8 +815,8 @@ class exportController extends \mkwhelpers\Controller {
             'Stock',
             'EAN Code',
             'Description',
-            'Image URL',
-            'Price'
+            'Image URL'
+//            'Price'
         );
         echo implode(";", $sor) . "\n";
 
@@ -852,8 +852,8 @@ class exportController extends \mkwhelpers\Controller {
                         '"' . $keszlet . '"',
                         '"' . (string)$valt->getVonalkod() . '"',
                         '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
-                        '"' . \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"',
-                        '"' . $t->getNettoAr($valt, null, $eur, 'eurar') . '"'
+                        '"' . \mkw\store::getFullUrl($valt->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"'
+//                        '"' . $t->getNettoAr($valt, null, $eur, 'eurar') . '"'
                     );
                     echo implode(";", $sor) . "\n";
                 }
@@ -872,8 +872,8 @@ class exportController extends \mkwhelpers\Controller {
                     '"' . $keszlet . '"',
                     '"' . (string)$t->getVonalkod() . '"',
                     '"' . preg_replace("/(\t|\n|\r)+/", "", $t->getLeiras()) . '"',
-                    '"' . \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"',
-                    '"' . $t->getNettoAr(null, null, $eur, 'eurar') . '"'
+                    '"' . \mkw\store::getFullUrl($t->getKepurl(), \mkw\store::getConfigValue('mainurl')) . '"'
+//                    '"' . $t->getNettoAr(null, null, $eur, 'eurar') . '"'
                 );
                 echo implode(";", $sor) . "\n";
             }
