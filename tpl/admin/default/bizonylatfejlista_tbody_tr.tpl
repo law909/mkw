@@ -119,7 +119,7 @@
                 <tr><td></td><td>{at('Fix')}</td></tr>
                 {/if}
                 <tr><td></td><td>{$_egyed.raktarnev}</td></tr>
-                <tr><td></td><td>{$_egyed.fizmodnev}{if ($_egyed.isbarion)} ({$_egyed.barionpaymentstatus}){/if}</td></tr>
+                <tr><td></td><td>{$_egyed.fizmodnev}{if ($_egyed.isbarion)} <span class="guestpartner">({$_egyed.barionpaymentstatus})</span>{/if}</td></tr>
                 <tr><td></td><td>{$_egyed.szallitasimodnev}</td></tr>
                 {if ($_egyed.uzletkotonev)}
                 <tr><td></td><td>{$_egyed.uzletkotonev} ({number_format($_egyed.uzletkotojutalek, 2, '.', ' ')} %)</td></tr>
