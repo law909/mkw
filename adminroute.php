@@ -445,6 +445,17 @@ $router->map('GET', '/admin/feketelista/viewkarb', 'feketelistaController#viewka
 $router->map('POST', '/admin/feketelista/save', 'feketelistaController#save', 'adminfeketelistasave');
 $router->map('POST', '/admin/feketelista/add', 'feketelistaController#add', 'adminfeketelistaadd');
 
+$router->map('GET', '/admin/leltarfej/viewlist', 'leltarfejController#viewlist', 'adminleltarfejviewlist');
+$router->map('GET', '/admin/leltarfej/getlistbody', 'leltarfejController#getlistbody', 'adminleltarfejgetlistbody');
+$router->map('GET', '/admin/leltarfej/getkarb', 'leltarfejController#getkarb', 'adminleltarfejgetkarb');
+$router->map('GET', '/admin/leltarfej/viewkarb', 'leltarfejController#viewkarb', 'adminleltarfejviewkarb');
+$router->map('POST', '/admin/leltarfej/save', 'leltarfejController#save', 'adminleltarfejsave');
+$router->map('GET', '/admin/leltarfej/viewexport', 'leltarfejController#viewExport', 'adminleltarfejviewexport');
+$router->map('GET', '/admin/leltarfej/export', 'leltarfejController#export', 'adminleltarfejexport');
+$router->map('GET', '/admin/leltarfej/viewimport', 'leltarfejController#viewImport', 'adminleltarfejviewimport');
+$router->map('POST', '/admin/leltarfej/import', 'leltarfejController#import', 'adminleltarfejimport');
+$router->map('POST', '/admin/leltarfej/zar', 'leltarfejController#zar', 'adminleltarfejzar');
+
 $router->map('GET', '/admin/termekcimke/viewlist', 'termekcimkeController#viewlist', 'admintermekcimkeviewlist');
 $router->map('GET', '/admin/termekcimke/getlistbody', 'termekcimkeController#getlistbody', 'admintermekcimkegetlistbody');
 $router->map('GET', '/admin/termekcimke/getkarb', 'termekcimkeController#getkarb', 'admintermekcimkegetkarb');
@@ -574,9 +585,6 @@ $router->map('POST', '/admin/teljesitmenyjelentes', 'adminController#printTeljes
 $router->map('GET', '/admin/keszletlista/view', 'keszletlistaController#view', 'adminkeszletlistaview');
 $router->map('GET', '/admin/keszletlista/get', 'keszletlistaController#createLista', 'adminkeszletlistaget');
 $router->map('GET', '/admin/keszletlista/export', 'keszletlistaController#exportLista', 'adminkeszletlistaexport');
-
-$router->map('GET', '/admin/leltar/view', 'leltarController#view', 'adminleltarview');
-$router->map('GET', '/admin/leltar/export', 'leltarController#exportLista', 'adminleltarexport');
 
 $router->map('GET', '/admin/szepkartyakifizetes/view', 'szepkartyakifizetesController#view', 'adminszepkartyakifizetesview');
 $router->map('POST', '/admin/szepkartyakifizetes/kifizet', 'szepkartyakifizetesController#kifizet', 'adminszepkartyakifizeteskifizet');

@@ -12,16 +12,16 @@ $classLoader->register();
 $classLoader = new \Doctrine\Common\ClassLoader('Proxies', __DIR__);
 $classLoader->register();
 
-$classLoader = new \Doctrine\Common\ClassLoader('Listeners');
+$classLoader = new \Doctrine\Common\ClassLoader('Listeners', __DIR__);
 $classLoader->register();
 
-$classLoader=new \Doctrine\Common\ClassLoader('mkwhelpers');
+$classLoader=new \Doctrine\Common\ClassLoader('mkwhelpers', __DIR__);
 $classLoader->register();
 
-$classLoader=new \Doctrine\Common\ClassLoader('mkw');
+$classLoader=new \Doctrine\Common\ClassLoader('mkw', __DIR__);
 $classLoader->register();
 
-$classLoader=new \Doctrine\Common\ClassLoader('Controllers');
+$classLoader=new \Doctrine\Common\ClassLoader('Controllers', __DIR__);
 $classLoader->register();
 
 mkw\store::setConfig($ini);

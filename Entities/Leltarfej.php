@@ -16,6 +16,9 @@ class Leltarfej {
      */
     private $id;
 
+    /** @ORM\Column(type="string",length=255,nullable=false) */
+    private $nev;
+
     /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime",nullable=true)
@@ -52,13 +55,13 @@ class Leltarfej {
     /** @ORM\Column(type="date",nullable=false) */
     private $nyitas;
 
-    /** @ORM\Column(type="date",nullable=false) */
+    /** @ORM\Column(type="date",nullable=true) */
     private $zaras;
 
     /** @ORM\Column(type="boolean",nullable=false) */
     private $zarva = false;
 
-    /** @ORM\OneToMany(targetEntity="Leltartetel", mappedBy="bizonylatfej",cascade={"persist"}) */
+    /** @ORM\OneToMany(targetEntity="Leltartetel", mappedBy="leltarfej",cascade={"persist"}) */
     private $leltartetelek;
 
     public function __toString() {
@@ -66,7 +69,7 @@ class Leltarfej {
     }
 
     public function __construct() {
-        $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->leltartetelek = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getId() {
@@ -76,6 +79,7 @@ class Leltarfej {
     public function toLista() {
         $ret = array();
         $ret['id'] = $this->getId();
+        $ret['nev'] = $this->getNev();
         $ret['lastmodstr'] = $this->getLastmodStr();
         $ret['createdstr'] = $this->getCreatedStr();
         $ret['updatedby'] = $this->getUpdatedbyNev();
@@ -287,5 +291,18 @@ class Leltarfej {
         $this->leltartetelek->clear();
     }
 
+    /**
+     * @return mixed
+     */
+    public function getNev() {
+        return $this->nev;
+    }
+
+    /**
+     * @param mixed $nev
+     */
+    public function setNev($nev) {
+        $this->nev = $nev;
+    }
 
 }

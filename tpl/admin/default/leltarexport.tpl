@@ -5,18 +5,19 @@
     <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.mattkarb.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
-    <script type="text/javascript" src="/js/admin/default/leltar.js"></script>
+    <script type="text/javascript" src="/js/admin/default/leltarexport.js"></script>
 {/block}
 
 {block "kozep"}
     <div id="mattkarb">
         <div id="mattkarb-header">
-            <h3>{at('Leltár')}</h3>
+            <h3>{at('Leltár felvételi ív')}</h3>
+            <div>{$leltarfej.nev} {$leltarfej.nyitasstr}</div>
+            <div>{$leltarfej.raktarnev}</div>
         </div>
         <form id="leltariv" action="" target="_blank">
+            <input type="hidden" name="leltarid" value="{$leltarfej.id}">
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
-                {include "comp_raktarselect.tpl"}
-                <div class="matt-hseparator"></div>
                 <div>
                     <label for="KeszletEdit">{at('Készlet')}:</label>
                     <select id="KeszletEdit" name="keszlet">
@@ -48,7 +49,7 @@
                 <div class="matt-hseparator"></div>
                 {include "comp_termekfa.tpl"}
                 <div class="matt-hseparator"></div>
-                <a href="/admin/leltar/export" class="js-exportbutton">{at('Export')}</a>
+                <a href="/admin/leltarfej/export" class="js-exportbutton">{at('Export')}</a>
                 <input type="hidden" name="fafilter">
             </div>
             <div class="admin-form-footer">
