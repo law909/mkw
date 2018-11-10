@@ -85,6 +85,9 @@ class mkwphpmailer {
     public function send($statusvaltas = false) {
 
         $this->mailer = new PHPMailer();
+
+        $this->mailer->SMTPDebug = 2;
+
         $this->mailer->isSMTP();
         $this->mailer->Host = \mkw\store::getConfigValue('mail.host');
         $this->mailer->Port = \mkw\store::getConfigValue('mail.port');
