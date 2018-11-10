@@ -85,6 +85,7 @@ class mkwphpmailer {
     public function send($statusvaltas = false) {
 
         $this->mailer = new PHPMailer();
+        $this->mailer->CharSet = 'UTF-8';
 
         $this->mailer->SMTPDebug = 2;
 
