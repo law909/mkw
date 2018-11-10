@@ -190,4 +190,24 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
         $view->setVar('tetelek', $res['tetelek']);
         $view->printTemplateResult();
     }
+
+    public function sendEmail() {
+
+        $tanarid = $this->params->getIntRequestParam('id');
+        /** @var \Entities\Dolgozo $tanar */
+        $tanar = $this->getRepo('\Entities\Dolgozo')->find($tanarid);
+        if ($tanar) {
+            $tanaremail = $tanar->getEmail();
+        }
+
+        if ($tanaremail) {
+            $filepath = $this->reszletezoExport();
+
+            $mailer = \mkw\store::getMailer();
+
+            $mailer->setAttachment($filepath);
+            $mailer->addTo($tanaremail);
+
+        }
+    }
 }

@@ -9,6 +9,7 @@
         "doctrine/orm": "2.5.*",
         "gedmo/doctrine-extensions": "2.4.*",
         "symfony/css-selector": "3.*",
-        "symfony/dom-crawler": "3.*"
+        "symfony/dom-crawler": "3.*",
+        "phpmailer/phpmailer": "~6.0"
 	}
 }

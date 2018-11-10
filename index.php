@@ -87,7 +87,7 @@ if ($ini['developer']) {
 
 $mainsess = store::getMainSession();
 
-if ($ini['mail.smtp'] == 1) {
+if (($ini['mail.mailer'] !== 'phpmailer') && ($ini['mail.smpt'] == 1)) {
     $mailparams = array(
         'name' => $ini['mail.name'],
         'port' => $ini['mail.port'],

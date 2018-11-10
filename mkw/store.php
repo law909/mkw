@@ -122,7 +122,10 @@ class store {
     }
 
     public static function getMailer() {
-        if (self::getConfigValue('mail.smtp', 0)) {
+        if (self::getConfigValue('mail.mailer') === 'phpmailer') {
+            return new mkwphpmailer();
+        }
+        elseif (self::getConfigValue('mail.smtp', 0)) {
             return new mkwzendmailer();
         }
         return new mkwmailer();
