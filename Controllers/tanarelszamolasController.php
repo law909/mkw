@@ -194,10 +194,13 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
     public function sendEmail() {
 
         $tanarid = $this->params->getIntRequestParam('id');
+        $tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('tol'))));
+        $igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('ig'))));
         /** @var \Entities\Dolgozo $tanar */
         $tanar = $this->getRepo('\Entities\Dolgozo')->find($tanarid);
         if ($tanar) {
             $tanaremail = $tanar->getEmail();
+            $tanarnev = $tanar->getNev();
         }
 
         if ($tanaremail) {
@@ -207,6 +210,10 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
 
             $mailer->setAttachment($filepath);
             $mailer->addTo($tanaremail);
+            $mailer->setSubject('TESZT elszámolás');
+            $mailer->setMessage('Köszi a munkádat.');
+
+            $mailer->send();
 
         }
     }

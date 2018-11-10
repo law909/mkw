@@ -12,7 +12,7 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository {
         ));
     }
 
-    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
+    public function getWithJoins($filter, $order = array(), $offset = 0, $elemcount = 0) {
         $q = $this->_em->createQuery('SELECT _xx,jt,jot,f,p,ta,pa '
             . ' FROM Entities\JogaReszvetel _xx'
             . ' LEFT JOIN _xx.jogaterem jt'
