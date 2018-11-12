@@ -223,6 +223,8 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
 
             $mailer->send();
 
+            \unlink($filepath);
+
         }
     }
 }
