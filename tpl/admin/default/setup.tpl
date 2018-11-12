@@ -287,7 +287,7 @@
                         </div>
                         <div class="setuprow">
                             <span class="setuplabel"><label for="JogaUresTeremJutalekEdit">{at('Üres terem jutalék')}:</label></span>
-                            <span><input id="JogaUresTeremJutalekEdit" name="jogauresteremjutalek" type="text" value="{$jogaureteremjutalek}">
+                            <span><input id="JogaUresTeremJutalekEdit" name="jogauresteremjutalek" type="text" value="{$jogauresteremjutalek}">
                         </div>
                         <div class="setuprow">
                             <span class="setuplabel"><label for="JogaAYCMJutalekEdit">{at('AYCM jutalék')}:</label></span>
