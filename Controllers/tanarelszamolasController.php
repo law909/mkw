@@ -208,7 +208,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
 
             $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
             $subject->setVar('tol', $tolstr);
-            $subject->setVar(('ig', $igstr));
+            $subject->setVar('ig', $igstr);
             $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
             $body->setVar('tol', $tolstr);
             $body->setVar('ig', $igstr);
