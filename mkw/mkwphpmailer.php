@@ -87,7 +87,7 @@ class mkwphpmailer {
         $this->mailer = new PHPMailer();
         $this->mailer->CharSet = 'UTF-8';
 
-        $this->mailer->SMTPDebug = 2;
+        //$this->mailer->SMTPDebug = 2;
 
         $this->mailer->isSMTP();
         $this->mailer->Host = \mkw\store::getConfigValue('mail.host');
