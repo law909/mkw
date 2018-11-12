@@ -202,16 +202,24 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
             $tanaremail = $tanar->getEmail();
             $tanarnev = $tanar->getNev();
         }
-
-        if ($tanaremail) {
+        $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaTanarelszamolasSablon));
+        if ($tanaremail && $emailtpl) {
             $filepath = $this->reszletezoExport();
+
+            $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+            $subject->setVar('tol', $tolstr);
+            $subject->setVar(('ig', $igstr));
+            $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+            $body->setVar('tol', $tolstr);
+            $body->setVar('ig', $igstr);
+            $body->setVar('nev', $tanarnev);
 
             $mailer = \mkw\store::getMailer();
 
             $mailer->setAttachment($filepath);
             $mailer->addTo($tanaremail);
-            $mailer->setSubject('TESZT elszámolás');
-            $mailer->setMessage('Köszi a munkádat.');
+            $mailer->setSubject($subject->getTemplateResult());
+            $mailer->setMessage($body->getTemplateResult());
 
             $mailer->send();
 

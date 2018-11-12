@@ -210,6 +210,10 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::JogaJutalek, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::JogaAYCMJutalek);
         $view->setVar(\mkw\consts::JogaAYCMJutalek, ($p ? $p->getErtek() : 0));
+        $p = $repo->find(\mkw\consts::JogaTanarelszamolasSablon);
+        $tanarelszsablon = new emailtemplateController($this->params);
+        $view->setVar('tanarelszamolassablonlist', $tanarelszsablon->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::BarionAPIVersion);
         $view->setVar(\mkw\consts::BarionAPIVersion, ($p ? $p->getErtek() : 0));
         $p = $repo->find(\mkw\consts::BarionPOSKey);
@@ -701,6 +705,14 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::JogaAYCMJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaAYCMJutalek));
         $this->setObj(\mkw\consts::JogaJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaJutalek));
         $this->setObj(\mkw\consts::JogaUresTeremJutalek, $this->params->getNumRequestParam(\mkw\consts::JogaUresTeremJutalek));
+        $tanarelszsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('tanarelszamolassablon', 0));
+        if ($tanarelszsablon) {
+            $this->setObj(\mkw\consts::JogaTanarelszamolasSablon, $tanarelszsablon->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::JogaTanarelszamolasSablon, '');
+        }
+
         $this->setObj(\mkw\consts::BarionEnvironment, $this->params->getNumRequestParam(\mkw\consts::BarionEnvironment));
         $this->setObj(\mkw\consts::BarionPayeeEmail, $this->params->getStringRequestParam(\mkw\consts::BarionPayeeEmail));
         $this->setObj(\mkw\consts::BarionPOSKey, $this->params->getStringRequestParam(\mkw\consts::BarionPOSKey));

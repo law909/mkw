@@ -240,6 +240,7 @@ class consts {
     const JogaJutalek = 'jogajutalek';
     const JogaUresTeremJutalek = 'jogauresteremjutalek';
     const JogaAYCMJutalek = 'jogaaycmjutalek';
+    const JogaTanarelszamolasSablon = 'jogatanarelszamolassablon';
 
     const BarionPOSKey = 'barionposkey';
     const BarionAPIVersion = 'barionapiversion';

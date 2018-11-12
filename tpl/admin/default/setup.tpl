@@ -293,6 +293,15 @@
                             <span class="setuplabel"><label for="JogaAYCMJutalekEdit">{at('AYCM jutalék')}:</label></span>
                             <span><input id="JogaAYCMJutalekEdit" name="jogaaycmjutalek" type="text" value="{$jogaaycmjutalek}">
                         </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="TanarelszmolasSablonEdit">{at('Tanár elszámolás sablon')}:</label></span>
+                            <select id="TanarelszmolasSablonEdit" name="tanarelszamolassablon">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $tanarelszamolassablonlist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
                     </div>
                     {/if}
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
