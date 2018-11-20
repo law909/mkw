@@ -1062,7 +1062,7 @@ var bizonylathelper = function($) {
                     onStyle: function() {
                         $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, ' +
                             '.js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno, .js-backorder, .js-mese, '+
-                            '.js-feketelista, .js-vissza, .js-nav').button();
+                            '.js-feketelista, .js-vissza, .js-nav, .js-pdf, .js-emailpdf').button();
                     },
                     onDoEditLink: function() {
                         $('.js-inheritbizonylat').each(function() {
@@ -1072,6 +1072,10 @@ var bizonylathelper = function($) {
                         $('.js-printbizonylat').each(function() {
                             var $this = $(this);
                             $this.attr('href', '/admin/' + bizonylattipus + 'fej/print?id=' + $this.data('egyedid'));
+                        });
+                        $('.js-pdf').each(function() {
+                            var $this = $(this);
+                            $this.attr('href', '/admin/' + bizonylattipus + 'fej/pdf?id=' + $this.data('egyedid'));
                         });
                         $('.js-stornobizonylat1').each(function() {
                             var $this = $(this);
@@ -1476,7 +1480,62 @@ var bizonylathelper = function($) {
                     }
                 });
             })
-            .on('click', '.js-printbizonylat', function(e) {
+            .on('click', '.js-emailpdf', function(e) {
+                var $this = $(this),
+                    $dia = $('#emailpdfdialog');
+                e.preventDefault();
+                $dia.dialog({
+                    title: 'Küldés emailben',
+                    resizable: true,
+                    height: 140,
+                    modal: true,
+                    buttons: {
+                        'OK': function() {
+                            var dial = $(this);
+                            $.ajax({
+                                url: '/admin/' + bizonylattipus + 'fej/emailpdf',
+                                type: 'POST',
+                                data: {
+                                    id: $this.data('egyedid')
+                                },
+                                success: function() {
+                                    dial.dialog('close');
+                                    if ($this.data('kellkerdezni') == 1) {
+                                        dialogcenter.html('Sikerült a küldés?').dialog({
+                                            resizable: false,
+                                            height: 140,
+                                            modal: true,
+                                            buttons: {
+                                                'Igen': function () {
+                                                    $.ajax({
+                                                        url: '/admin/bizonylatfej/setnyomtatva',
+                                                        type: 'POST',
+                                                        data: {
+                                                            id: $this.data('egyedid'),
+                                                            printed: true
+                                                        },
+                                                        success: function() {
+                                                            $('.mattable-tablerefresh').click();
+                                                        }
+                                                    });
+                                                    $(this).dialog('close');
+                                                },
+                                                'Nem': function () {
+                                                    $(this).dialog('close');
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        },
+                        'Mégsem': function() {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            })
+            .on('click', '.js-printbizonylat, .js-pdf', function(e) {
                     var $this = $(this);
                     e.preventDefault();
                     window.open($this.attr('href'));

@@ -270,6 +270,15 @@
                             </select>
                         </div>
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="SzamlalevelSablonEdit">{at('Számlalevél sablon')}:</label></span>
+                            <select id="SzamlalevelSablonEdit" name="szamlalevelsablon">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $szamlalevelsablonlist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="MunkaJelenletEdit">{at('Munkaidő')}:</label></span>
                             <select id="MunkaJelenletEdit" name="munkajelenlet">
                                 <option value="">{at('válasszon')}</option>
@@ -1204,6 +1213,10 @@
                         <tr>
                             <td><label>{at('Bizonylat státuszváltás értesítő')}:</label></td>
                             <td><input name="emailstatuszvaltas" type="text" value="{$emailstatuszvaltas}" title="Vesszővel elválasztva" size="60"></td>
+                        </tr>
+                        <tr>
+                            <td><label>{at('Könyvelő email')}:</label></td>
+                            <td><input name="konyveloemail" type="text" value="{$konyveloemail}" size="60"></td>
                         </tr>
                         </tbody>
                     </table>

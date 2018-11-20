@@ -207,6 +207,9 @@
     <label>{at('Oka')}:</label>
     <textarea name="feketelistaok"></textarea>
 </div>
+<div id="emailpdfdialog" class="hidden">
+{at('A bizonylat ezután nyomtatott státuszú lesz. Biztos, hogy elküldi emailben?')}
+</div>
 <div id="mattkarb">
 </div>
 {/block}

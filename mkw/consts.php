@@ -91,6 +91,8 @@ class consts {
     const Hasonlotermekarkulonbseg = 'hasonlotermekarkulonbseg';
 
     const SzallitasiFeltetelSablon = 'szallfeltsablon';
+    const SzamlalevelSablon = 'szamlalevelsablon';
+    const KonyveloEmail = 'konyveloemail';
 
     const Arfilterstep = 'arfilterstep';
     const Fooldalhirdb = 'fooldalhirdb';

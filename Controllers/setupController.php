@@ -53,6 +53,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::EmailBcc, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::EmailStatuszValtas);
         $view->setVar(\mkw\consts::EmailStatuszValtas, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::KonyveloEmail);
+        $view->setVar(\mkw\consts::KonyveloEmail, ($p ? $p->getErtek() : ''));
 
         // web
         $p = $repo->find(\mkw\consts::Oldalcim);
@@ -96,6 +98,10 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::SzallitasiFeltetelSablon);
         $szallstatlap = new statlapController($this->params);
         $view->setVar('szallitasifeltetelstatlaplist', $szallstatlap->getSelectList(($p ? $p->getErtek() : 0)));
+
+        $p = $repo->find(\mkw\consts::SzamlalevelSablon);
+        $szamlalevelsablon = new emailtemplateController($this->params);
+        $view->setVar('szamlalevelsablonlist', $szamlalevelsablon->getSelectList(($p ? $p->getErtek() : 0)));
 
 
         $p = $repo->find(\mkw\consts::SzallitasiKtg1Tol);
@@ -595,6 +601,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::EmailReplyTo, $this->params->getOriginalStringRequestParam('emailreplyto'));
         $this->setObj(\mkw\consts::EmailBcc, $this->params->getStringRequestParam('emailbcc'));
         $this->setObj(\mkw\consts::EmailStatuszValtas, $this->params->getStringRequestParam('emailstatuszvaltas'));
+        $this->setObj(\mkw\consts::KonyveloEmail, $this->params->getOriginalStringRequestParam('konyveloemail'));
 
         // web
         $this->setObj(\mkw\consts::Logo, $this->params->getStringRequestParam('logo'));
@@ -711,6 +718,13 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::JogaTanarelszamolasSablon, '');
+        }
+        $szamlalevelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('szamlalevelsablon', 0));
+        if ($szamlalevelsablon) {
+            $this->setObj(\mkw\consts::SzamlalevelSablon, $szamlalevelsablon->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::SzamlalevelSablon, '');
         }
 
         $this->setObj(\mkw\consts::BarionEnvironment, $this->params->getNumRequestParam(\mkw\consts::BarionEnvironment));

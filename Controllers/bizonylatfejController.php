@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Bizonylattetel;
+use mikehaertl\wkhtmlto\Pdf;
 
 class bizonylatfejController extends \mkwhelpers\MattableController {
 
@@ -966,8 +967,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         echo json_encode($ki);
     }
 
-    public function doPrint() {
-        $o = $this->getRepo()->findForPrint($this->params->getStringRequestParam('id'));
+    protected function getBizonylatHTML($id) {
+        $o = $this->getRepo()->findForPrint($id);
         if ($o) {
             if ($o->getReportfile()) {
                 $tplname = $o->getReportfile();
@@ -981,11 +982,60 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $view = $this->createView($tplname);
             $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
             $bt->setTemplateVars($view);
-//            $this->setVars($view);
             $x = $o->toLista();
             $view->setVar('egyed', $x);
             $view->setVar('afaosszesito', $this->getRepo()->getAFAOsszesito($o));
-            echo $view->getTemplateResult();
+            return $view->getTemplateResult();
+        }
+    }
+
+    public function doPrint() {
+        echo $this->getBizonylatHTML($this->params->getStringRequestParam('id'));
+    }
+
+    public function doPDF() {
+        if (\mkw\store::isPDF()) {
+            $id = $this->params->getStringRequestParam('id');
+            $html = $this->getBizonylatHTML($id);
+            $pdf = new Pdf($html);
+            $pdf->setOptions(array('encoding' => 'UTF-8'));
+            $pdf->send(\mkw\store::urlize($id) . '.pdf');
+        }
+    }
+
+    public function sendPDF() {
+        if (\mkw\store::isPDF()) {
+            $id = $this->params->getStringRequestParam('id');
+            /** @var \Entities\Bizonylatfej $o */
+            $o = $this->getRepo()->find($id);
+            if ($o) {
+                $email = $o->getPartneremail();
+                if ($email) {
+                    $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::SzamlalevelSablon));
+                    $html = $this->getBizonylatHTML($id);
+                    $pdf = new Pdf($html);
+                    $pdf->setOptions(array('encoding' => 'UTF-8'));
+                    if ($email && $emailtpl) {
+                        $filepath = \mkw\store::urlize($id) . '.pdf';
+                        $pdf->saveAs($filepath);
+
+                        $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                        $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                        $body->setVar('szamla', $o->toLista());
+
+                        $mailer = \mkw\store::getMailer();
+
+                        $mailer->setAttachment($filepath);
+                        $mailer->addTo($email);
+                        $mailer->setSubject($subject->getTemplateResult());
+                        $mailer->setMessage($body->getTemplateResult());
+
+                        $mailer->send();
+
+                        \unlink($filepath);
+                    }
+                }
+            }
         }
     }
 

@@ -953,6 +953,10 @@ class store {
         return self::getSetupValue('emag');
     }
 
+    public static function isPDF() {
+        return self::getSetupValue('pdf');
+    }
+
     public static function isSSL() {
         return self::getSetupValue('ssl');
     }

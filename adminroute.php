@@ -207,6 +207,8 @@ $router->map('GET', '/admin/szamlafej/getkarb', 'szamlafejController#getkarb', '
 $router->map('GET', '/admin/szamlafej/viewkarb', 'szamlafejController#viewkarb', 'adminszamlafejviewkarb');
 $router->map('POST', '/admin/szamlafej/save', 'szamlafejController#save', 'adminszamlafejsave');
 $router->map('GET', '/admin/szamlafej/print', 'szamlafejController#doPrint', 'adminszamlafejprint');
+$router->map('GET', '/admin/szamlafej/pdf', 'szamlafejController#doPDF', 'adminszamlafejpdf');
+$router->map('POST', '/admin/szamlafej/emailpdf', 'szamlafejController#sendPDF', 'adminszamlafejemailpdf');
 $router->map('GET', '/admin/szamlafej/storno', 'szamlafejController#storno', 'adminszamlafejstorno');
 $router->map('POST', '/admin/szamlafej/fejexport', 'szamlafejController#fejexport', 'adminszamlafejfejexport');
 $router->map('POST', '/admin/szamlafej/tetelexport', 'szamlafejController#tetelexport', 'adminszamlafejtetelexport');
