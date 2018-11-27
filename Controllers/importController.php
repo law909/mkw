@@ -2021,7 +2021,7 @@ class importController extends \mkwhelpers\Controller {
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlReintex));
-            $fh = fopen('reintex.txt', 'w');
+            $fh = fopen('reintex.csv', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
