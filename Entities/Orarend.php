@@ -67,6 +67,9 @@ class Orarend {
     /** @ORM\Column(type="integer",nullable=true) */
     private $maxferohely = 0;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $atlagresztvevoszam = 0;
+
     /** @ORM\Column(type="integer",nullable=false) */
     private $nap = 0;
 
@@ -357,5 +360,19 @@ class Orarend {
      */
     public function setElmarad($elmarad) {
         $this->elmarad = $elmarad;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAtlagresztvevoszam() {
+        return $this->atlagresztvevoszam;
+    }
+
+    /**
+     * @param mixed $atlagresztvevoszam
+     */
+    public function setAtlagresztvevoszam($atlagresztvevoszam) {
+        $this->atlagresztvevoszam = $atlagresztvevoszam;
     }
 }

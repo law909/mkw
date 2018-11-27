@@ -21,6 +21,9 @@
                                 <tr>
                                     <td>{$_orarend.kezdet} - {$_orarend.veg}</td>
                                 </tr>
+                                <tr>
+                                    <td>Átl.résztvevő: {$_orarend.atlagresztvevoszam}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </td>

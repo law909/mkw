@@ -40,6 +40,7 @@ class orarendController extends \mkwhelpers\MattableController {
 		$x['inaktiv'] = $t->getInaktiv();
 		$x['alkalmi'] = $t->getAlkalmi();
 		$x['elmarad'] = $t->getElmarad();
+		$x['atlagresztvevoszam'] = $t->getAtlagresztvevoszam();
 		return $x;
 	}
 
@@ -84,6 +85,7 @@ class orarendController extends \mkwhelpers\MattableController {
 		$obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
         $obj->setAlkalmi($this->params->getBoolRequestParam('alkalmi'));
         $obj->setElmarad($this->params->getBoolRequestParam('elmarad'));
+        $obj->setAtlagresztvevoszam($this->params->getIntRequestParam('atlagresztvevoszam'));
 //		$obj->doStuffOnPrePersist();
 		return $obj;
 	}
@@ -250,7 +252,7 @@ class orarendController extends \mkwhelpers\MattableController {
         $view->printTemplateResult();
     }
 
-    public function print() {
+    public function doPrint() {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('inaktiv', '=', false);
         $filter->addFilter('alkalmi', '=', false);
@@ -268,7 +270,8 @@ class orarendController extends \mkwhelpers\MattableController {
                 'tanarurl' => $item->getDolgozoUrl(),
                 'terem' => $item->getJogateremNev(),
                 'class' => $item->getJogateremOrarendclass(),
-                'delelott' => $item->isDelelottKezdodik()
+                'delelott' => $item->isDelelottKezdodik(),
+                'atlagresztvevoszam' => $item->getAtlagresztvevoszam()
             );
         }
         $view = $this->createView('orarendprint.tpl');
