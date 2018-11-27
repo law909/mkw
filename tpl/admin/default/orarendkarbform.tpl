@@ -80,7 +80,7 @@
                 <tr>
                     <td><label for="AtlagresztvevoszamEdit">{at('Átlagos résztvevőszám')}:</label></td>
                     <td><input id="AtlagresztvevoszamEdit" name="atlagresztvevoszam" type="number" size="5" maxlength="5" step="any"
-                               value="{$egyed.maxferohely}"></td>
+                               value="{$egyed.atlagresztvevoszam}"></td>
                 </tr>
                 </tbody>
             </table>
