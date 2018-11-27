@@ -92,6 +92,7 @@ class consts {
 
     const SzallitasiFeltetelSablon = 'szallfeltsablon';
     const SzamlalevelSablon = 'szamlalevelsablon';
+    const KonyvelolevelSablon = 'konyvelolevelsablon';
     const KonyveloEmail = 'konyveloemail';
 
     const Arfilterstep = 'arfilterstep';
@@ -137,6 +138,8 @@ class consts {
 
     const RLBUtolsoSzamlaszam = 'rlbutolsoszamlaszam';
     const RLBCSVUtolsoSzamlaszam = 'rlbcsvutolsoszamlaszam';
+    const PDFUtolsoSzamlaszam = 'pdfutolsoszamlaszam';
+    const PDFUtolsoEsetiSzamlaszam = 'pdfutolsoesetiszamlaszam';
 
     const AKTrustedShopApiKey = 'aktrustedshopapikey';
 

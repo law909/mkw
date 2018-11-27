@@ -2,12 +2,24 @@
 
 namespace Controllers;
 
+use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 use mikehaertl\wkhtmlto\Pdf;
 
 class bizonylatfejController extends \mkwhelpers\MattableController {
 
     protected $biztipus;
+
+    public static function factory($biztip, $params) {
+        switch ($biztip) {
+            case 'szamla':
+                return new szamlafejController($params);
+            case 'esetiszamla':
+                return new esetiszamlafejController($params);
+            default:
+                return new bizonylatfejController($params);
+        }
+    }
 
     public function __construct($params) {
         $this->setEntityName('Entities\Bizonylatfej');
@@ -967,7 +979,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         echo json_encode($ki);
     }
 
-    protected function getBizonylatHTML($id) {
+    public function getBizonylatHTML($id) {
         $o = $this->getRepo()->findForPrint($id);
         if ($o) {
             if ($o->getReportfile()) {

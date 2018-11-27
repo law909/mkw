@@ -568,6 +568,10 @@ $router->map('GET', '/admin/rlbexport', 'exportController#RLBExport', 'adminrlbe
 $router->map('GET', '/admin/rlbcsvexport/view', 'rlbexportController#view', 'adminrlbcsvexportview');
 $router->map('GET', '/admin/rlbcsvexport/export', 'rlbexportController#RLBCSVExport', 'adminrlbcsvexport');
 
+$router->map('GET', '/admin/pdfszamlaexport/view', 'pdfszamlaexportController#view', 'adminpdfszamlaexportview');
+$router->map('POST', '/admin/pdfszamlaexport/sendemail', 'pdfszamlaexportController#sendEmail', 'adminpdfszamlasendemail');
+$router->map('GET', '/admin/pdfszamlaexport/download', 'pdfszamlaexportController#download', 'adminpdfszamladownload');
+
 $router->map('GET', '/admin/fifoteszt', 'fifoController#teszt', 'adminfifoteszt');
 $router->map('GET', '/admin/fifo/view', 'fifoController#view', 'adminfifoview');
 $router->map('POST', '/admin/fifo/calc', 'fifoController#calculate', 'adminfifocalc');

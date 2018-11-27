@@ -1100,6 +1100,10 @@ class store {
         return self::getConfigValue('path.template.default');
     }
 
+    public static function getTmpPath() {
+        return self::getConfigValue('path.tmp');
+    }
+
     public static function kerekit($mit, $mire) {
         if ($mire == 0) {
             return $mit;

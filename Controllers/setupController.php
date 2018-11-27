@@ -103,6 +103,9 @@ class setupController extends \mkwhelpers\Controller {
         $szamlalevelsablon = new emailtemplateController($this->params);
         $view->setVar('szamlalevelsablonlist', $szamlalevelsablon->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::KonyvelolevelSablon);
+        $konyvelolevelsablon = new emailtemplateController($this->params);
+        $view->setVar('konyvelolevelsablonlist', $konyvelolevelsablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::SzallitasiKtg1Tol);
         $view->setVar(\mkw\consts::SzallitasiKtg1Tol, ($p ? $p->getErtek() : ''));
@@ -725,6 +728,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::SzamlalevelSablon, '');
+        }
+
+        $konyvelolevelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('konyvelolevelsablon', 0));
+        if ($konyvelolevelsablon) {
+            $this->setObj(\mkw\consts::KonyvelolevelSablon, $konyvelolevelsablon->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::KonyvelolevelSablon, '');
         }
 
         $this->setObj(\mkw\consts::BarionEnvironment, $this->params->getNumRequestParam(\mkw\consts::BarionEnvironment));
