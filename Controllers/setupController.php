@@ -504,6 +504,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::UrlLegavenue, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::UrlHaffner24);
         $view->setVar(\mkw\consts::UrlHaffner24, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UrlReintex);
+        $view->setVar(\mkw\consts::UrlReintex, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::MiniCRMHasznalatban);
         $view->setVar(\mkw\consts::MiniCRMHasznalatban, ($p ? $p->getErtek() : ''));
@@ -1142,6 +1144,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::UrlMaxutov, $this->params->getStringRequestParam('urlmaxutov', ''), true);
         $this->setObj(\mkw\consts::UrlLegavenue, $this->params->getStringRequestParam('urllegavenue', ''), true);
         $this->setObj(\mkw\consts::UrlHaffner24, $this->params->getStringRequestParam('urlhaffner24', ''), true);
+        $this->setObj(\mkw\consts::UrlReintex, $this->params->getStringRequestParam('urlreintex', ''), true);
 
         $this->setObj(\mkw\consts::MugenraceLogo, $this->params->getStringRequestParam('mugenracelogo'));
         $this->setObj(\mkw\consts::MugenraceFooterLogo, $this->params->getStringRequestParam('mugenracefooterlogo'));

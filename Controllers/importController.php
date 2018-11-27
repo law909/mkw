@@ -1993,7 +1993,47 @@ class importController extends \mkwhelpers\Controller {
         }
     }
 
-    public function reintexImport() {
+    public function  reintexImport() {
+        if (!$this->checkRunningImport(\mkw\consts::RunningReintexImport)) {
+
+            $this->setRunningImport(\mkw\consts::RunningReintexImport, 1);
+            $this->setRunningImport(\mkw\consts::RunningReintexImport, 0);
+
+            $parentid = $this->params->getIntRequestParam('katid', 0);
+            $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoReintex);
+            $dbtol = $this->params->getIntRequestParam('dbtol', 0);
+            $dbig = $this->params->getIntRequestParam('dbig', 0);
+            $editleiras = $this->params->getBoolRequestParam('editleiras', false);
+            $editnev = $this->params->getBoolRequestParam('editnev', false);
+            $createuj = $this->params->getBoolRequestParam('createuj', false);
+            $arszaz = $this->params->getNumRequestParam('arszaz', 100);
+            $batchsize = $this->params->getNumRequestParam('batchsize', 20);
+
+            $urleleje = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathReintex));
+
+            $path = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathReintex));
+            $mainpath = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('mainpath'));
+            if ($mainpath) {
+                $mainpath = rtrim($mainpath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+            }
+            $path = $mainpath . $path;
+            $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+            $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+
+            $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlReintex));
+            $fh = fopen('reintex.txt', 'w');
+            \curl_setopt($ch, CURLOPT_FILE, $fh);
+            \curl_exec($ch);
+            fclose($fh);
+            \curl_close($ch);
+
+        }
+        else {
+            echo json_encode(array('msg' => 'Már fut ilyen import.'));
+        }
+    }
+
+    public function reintexOLDImport() {
 
         if (!$this->checkRunningImport(\mkw\consts::RunningReintexImport)) {
 

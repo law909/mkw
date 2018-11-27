@@ -195,6 +195,7 @@ class consts {
     const UrlMaxutov = 'urlmaxutov';
     const UrlLegavenue = 'urllegavenue';
     const UrlHaffner24 = 'urlhaffner24';
+    const UrlReintex = 'urlreintex';
 
     const RunningKreativImport = 'runningkreativimport';
     const RunningDeltonImport = 'runningdeltonimport';

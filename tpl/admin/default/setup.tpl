@@ -909,6 +909,8 @@
                             </select>
                             <label for="PathReintexEdit">Képek mappája:</label>
                             <input id="PathReintexEdit" name="pathreintex" value="{$pathreintex}">
+                            <label for="UrlReintexEdit">URL:</label>
+                            <input id="UrlReintexEdit" name="urlreintex" value="{$urlreintex}">
                             <a href="#" class="js-stopimport" data-href="{$stopreinteximporturl}">Stop import</a>
                             <a href="#" class="js-repairimport" data-href="{$repairreinteximporturl}">Javít</a>
                         </div>
