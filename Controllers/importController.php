@@ -313,12 +313,14 @@ class importController extends \mkwhelpers\Controller {
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlKreativ));
             $fh = fopen('kreativpuzzlestock.txt', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
+            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
             fclose($fh);
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlKreativImages));
             $fh = fopen('kreativpuzzleimages.txt', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
+            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
             fclose($fh);
 
@@ -427,6 +429,7 @@ class importController extends \mkwhelpers\Controller {
                                             $ch = \curl_init($imgurl);
                                             $ih = fopen($imgpath, 'w');
                                             \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                                             \curl_exec($ch);
                                             fclose($ih);
 
@@ -596,6 +599,7 @@ class importController extends \mkwhelpers\Controller {
                 $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlDelton));
                 $fh = fopen('delton.txt', 'w');
                 \curl_setopt($ch, CURLOPT_FILE, $fh);
+                \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                 \curl_exec($ch);
                 fclose($fh);
             }
@@ -699,6 +703,7 @@ class importController extends \mkwhelpers\Controller {
                                     $ch = \curl_init($imgurl);
                                     $ih = fopen($imgpath, 'w');
                                     \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                    \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                                     \curl_exec($ch);
                                     fclose($ih);
 
@@ -882,6 +887,7 @@ class importController extends \mkwhelpers\Controller {
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlNomad));
             $fh = fopen('nomad.xml', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
+            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
             fclose($fh);
             \curl_close($ch);
@@ -983,6 +989,7 @@ class importController extends \mkwhelpers\Controller {
                                 $ch = \curl_init($imgurl);
                                 $ih = fopen($imgpath, 'w');
                                 \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                                 \curl_exec($ch);
                                 fclose($ih);
 
@@ -1094,6 +1101,7 @@ class importController extends \mkwhelpers\Controller {
                                 $ch = \curl_init($imgurl);
                                 $ih = fopen($imgpath, 'w');
                                 \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                                 \curl_exec($ch);
                                 fclose($ih);
                                 \curl_close($ch);
@@ -1237,6 +1245,7 @@ class importController extends \mkwhelpers\Controller {
                                     $ch = \curl_init($imgurl);
                                     $ih = fopen($imgpath, 'w');
                                     \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                    \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                                     \curl_exec($ch);
                                     fclose($ih);
                                     \curl_close($ch);
@@ -1435,6 +1444,7 @@ class importController extends \mkwhelpers\Controller {
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlNika));
             $fh = fopen('nikaproducts.xml', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
+            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
             fclose($fh);
             \curl_close($ch);
@@ -1553,6 +1563,7 @@ class importController extends \mkwhelpers\Controller {
                                 if ($ih) {
                                     $ch = \curl_init($imgurl);
                                     \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                    \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                                     $curlretval = \curl_exec($ch);
                                     fclose($ih);
                                     if (($curlretval !== false) && (!\curl_errno($ch))) {
@@ -1768,6 +1779,7 @@ class importController extends \mkwhelpers\Controller {
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlHaffner24));
             $fh = fopen('haffner24products.xml', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
+            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
             fclose($fh);
             \curl_close($ch);
@@ -1873,6 +1885,7 @@ class importController extends \mkwhelpers\Controller {
                             if ($ih) {
                                 $ch = \curl_init($imgurl);
                                 \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                                 $curlretval = \curl_exec($ch);
                                 fclose($ih);
                                 if (($curlretval !== false) && (!\curl_errno($ch))) {
@@ -2259,6 +2272,7 @@ class importController extends \mkwhelpers\Controller {
             $fh = fopen('makszutov.txt', 'w');
             \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             \curl_setopt($ch, CURLOPT_FILE, $fh);
+            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
             fclose($fh);
 
@@ -2315,6 +2329,7 @@ class importController extends \mkwhelpers\Controller {
                         if ($data[$this->n('j')]) {
                             $ch = \curl_init($data[$this->n('j')]);
                             \curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                             $le = \curl_exec($ch);
 
                             $puri = new \mkwhelpers\HtmlPurifierSanitizer(array(
@@ -2375,6 +2390,7 @@ class importController extends \mkwhelpers\Controller {
                                     $ch = \curl_init($imgurl);
                                     $ih = fopen($imgpath, 'w');
                                     \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                    \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                                     \curl_exec($ch);
                                     fclose($ih);
 
@@ -2790,16 +2806,17 @@ class importController extends \mkwhelpers\Controller {
                         $link = $sheet->getCell('D' . $row)->getValue();
 
                         if ($link) {
-                            $ch = curl_init();
-                            curl_setopt($ch, CURLOPT_URL, $link);
-                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                            curl_setopt($ch, CURLOPT_USERAGENT, 'MKW Webshop Import');
-                            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-                            curl_setopt($ch, CURLOPT_TIMEOUT, 20);
-                            $termekpage = curl_exec($ch);
-                            $curlerror = curl_error($ch);
-                            $curlerrno = curl_errno($ch);
-                            curl_close($ch);
+                            $ch = \curl_init();
+                            \curl_setopt($ch, CURLOPT_URL, $link);
+                            \curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                            \curl_setopt($ch, CURLOPT_USERAGENT, 'MKW Webshop Import');
+                            \curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+                            \curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+                            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                            $termekpage = \curl_exec($ch);
+                            $curlerror = \curl_error($ch);
+                            $curlerrno = \curl_errno($ch);
+                            \curl_close($ch);
                         }
                         else {
                             $volthiba = true;
@@ -2895,6 +2912,7 @@ class importController extends \mkwhelpers\Controller {
                                         $ch = \curl_init($imgurl);
                                         $ih = fopen($imgpath, 'w');
                                         \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                        \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                                         \curl_exec($ch);
                                         fclose($ih);
 
@@ -3911,6 +3929,7 @@ class importController extends \mkwhelpers\Controller {
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlLegavenue));
             $fh = fopen('legavenue.xml', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
+            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
             fclose($fh);
 
@@ -3993,6 +4012,7 @@ class importController extends \mkwhelpers\Controller {
                 $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlLegavenue));
                 $fh = fopen('legavenue.xml', 'w');
                 \curl_setopt($ch, CURLOPT_FILE, $fh);
+                \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                 \curl_exec($ch);
                 fclose($fh);
 
@@ -4087,6 +4107,7 @@ class importController extends \mkwhelpers\Controller {
                                             $ch = \curl_init($imgurl);
                                             $ih = fopen($imgpath, 'w');
                                             \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                                             \curl_exec($ch);
                                             fclose($ih);
 
@@ -4154,6 +4175,7 @@ class importController extends \mkwhelpers\Controller {
                                             $ch = \curl_init($imgurl);
                                             $ih = fopen($imgpath, 'w');
                                             \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                                             \curl_exec($ch);
                                             fclose($ih);
 
