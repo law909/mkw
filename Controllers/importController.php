@@ -2023,6 +2023,7 @@ class importController extends \mkwhelpers\Controller {
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlReintex));
             $fh = fopen('reintex.txt', 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
+            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
             fclose($fh);
             \curl_close($ch);
