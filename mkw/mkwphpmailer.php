@@ -15,7 +15,7 @@ class mkwphpmailer {
 
     protected function clear() {
         $this->to = array();
-        unset($this->subject, $this->message, $this->headers, $this->replyto);
+        unset($this->subject, $this->message, $this->headers, $this->replyto, $this->attachment);
     }
 
     public function setTo($to) {
