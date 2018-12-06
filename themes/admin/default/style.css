@@ -109,6 +109,14 @@ img {
 	color: red;
 }
 
+.barionstatus {
+    color: red;
+}
+
+.kupon {
+    color: blue;
+}
+
 .referrer {
     max-width: 500px;
     overflow-x: hidden;

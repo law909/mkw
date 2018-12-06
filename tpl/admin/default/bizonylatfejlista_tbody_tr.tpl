@@ -123,7 +123,7 @@
                 <tr><td></td><td>{at('Fix')}</td></tr>
                 {/if}
                 <tr><td></td><td>{$_egyed.raktarnev}</td></tr>
-                <tr><td></td><td>{$_egyed.fizmodnev}{if ($_egyed.isbarion)} <span class="guestpartner">({$_egyed.barionpaymentstatus})</span>{/if}</td></tr>
+                <tr><td></td><td>{$_egyed.fizmodnev}{if ($_egyed.isbarion)} <span class="barionstatus">({$_egyed.barionpaymentstatus})</span>{/if}</td></tr>
                 <tr><td></td><td>{$_egyed.szallitasimodnev}</td></tr>
                 {if ($_egyed.uzletkotonev)}
                 <tr><td></td><td>{$_egyed.uzletkotonev} ({number_format($_egyed.uzletkotojutalek, 2, '.', ' ')} %)</td></tr>
@@ -138,7 +138,7 @@
                     <tr><td>{at('Fuvarlevél')}:</td><td class="fuvarlevel">{$_egyed.fuvarlevelszam}</td></tr>
                 {/if}
                 {if ($showkupon)}
-                    <tr><td>{at('Kupon')}:</td><td>{$_egyed.kupon}</td></tr>
+                    <tr><td>{at('Kupon')}:</td><td class="kupon">{$_egyed.kupon}</td></tr>
                 {/if}
                 <tr><td>{at('Kelt')}:</td><td>{$_egyed.keltstr}</td></tr>
                 {if ($showteljesites)}
