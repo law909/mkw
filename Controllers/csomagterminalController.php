@@ -25,9 +25,6 @@ class csomagterminalController extends \mkwhelpers\MattableController {
     public function downloadFoxpostTerminalList() {
         $ch = $this->initFoxpostCurl('places');
         $res = curl_exec($ch);
-
-        echo $res;
-
         $res = json_decode($res);
         curl_close($ch);
         $db = 0;
