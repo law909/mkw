@@ -26,7 +26,6 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         $ch = $this->initFoxpostCurl('places');
         $res = curl_exec($ch);
         $res = json_decode($res);
-        \mkw\store::writelog(print_r($res, true), 'foxpost.log');
         curl_close($ch);
         $db = 0;
         foreach ($res as $r) {
@@ -61,9 +60,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         foreach ($terminalok as $terminal) {
             $megvan = false;
             foreach ($res as $r) {
-                \mkw\store::writelog(print_r($terminal->getId(), true), 'foxpost.log');
-                \mkw\store::writelog(print_r((int)$r->place_id, true), 'foxpost.log');
-                $megvan = $megvan || ((int)$r->place_id == $terminal->getId());
+                $megvan = $megvan || ((int)$r->place_id === $terminal->getIdegenid());
             }
             if (!$megvan) {
                 $terminal->setInaktiv(!$megvan);
