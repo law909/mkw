@@ -45,6 +45,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
             $terminal->setNyitva($r->open);
             $terminal->setGeolat($r->geolat);
             $terminal->setGeolng($r->geolng);
+            $terminal->setInaktiv(false);
             $terminal->setTipus('foxpost');
             $this->getEm()->persist($terminal);
             if ($db % 20 === 0) {
