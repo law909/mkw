@@ -51,14 +51,14 @@ class store {
     private static $blameableListener;
 
     public static function getJSVersion() {
-        switch(self::getTheme()) {
+        switch (self::getTheme()) {
             case 'mkwcansas':
                 return 31;
         }
     }
 
     public static function getBootstrapJSVersion() {
-        switch(self::getTheme()) {
+        switch (self::getTheme()) {
             case 'mkwcansas':
                 return 6;
         }
@@ -104,10 +104,10 @@ class store {
         $handle = fopen($fname, "a");
         $log = "";
         $separator = " ## ";
-        $log.=date('Y.m.d. H:i:s') . $separator;
-        $log.=self::getClientIp() . $separator;
-        $log.=$text;
-        $log.="\n";
+        $log .= date('Y.m.d. H:i:s') . $separator;
+        $log .= self::getClientIp() . $separator;
+        $log .= $text;
+        $log .= "\n";
         fwrite($handle, $log);
         fclose($handle);
     }
@@ -115,8 +115,8 @@ class store {
     public static function writetranslation($text, $fname = 'log.txt') {
         $handle = fopen($fname, "a");
         $log = "";
-        $log.= '\'' . $text . '\' => \'\',';
-        $log.="\n";
+        $log .= '\'' . $text . '\' => \'\',';
+        $log .= "\n";
         fwrite($handle, $log);
         fclose($handle);
     }
@@ -130,6 +130,7 @@ class store {
         }
         return new mkwmailer();
     }
+
     /**
      * @return \Doctrine\ORM\EntityManager
      */
@@ -236,12 +237,12 @@ class store {
     }
 
     public static function getDayname($day) {
-        return self::$daynames[$day-1];
+        return self::$daynames[$day - 1];
     }
 
     public static function getDaynameSelectList($sel = null) {
         $ret = array();
-        foreach(self::$daynames as $k => $v) {
+        foreach (self::$daynames as $k => $v) {
             $ret[] = array(
                 'id' => $k + 1,
                 'caption' => $v,
@@ -253,7 +254,7 @@ class store {
 
     public static function getBarionEnvironmentSelectList($sel = null) {
         $ret = array();
-        foreach(self::$BarionEnvironment as $k => $v) {
+        foreach (self::$BarionEnvironment as $k => $v) {
             $ret[] = array(
                 'id' => $k + 1,
                 'caption' => $v,
@@ -287,19 +288,19 @@ class store {
 
     public static function createGUID() {
         return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-                // 32 bits for "time_low"
-                mt_rand(0, 0xffff), mt_rand(0, 0xffff),
-                // 16 bits for "time_mid"
-                mt_rand(0, 0xffff),
-                // 16 bits for "time_hi_and_version",
-                // four most significant bits holds version number 4
-                mt_rand(0, 0x0fff) | 0x4000,
-                // 16 bits, 8 bits for "clk_seq_hi_res",
-                // 8 bits for "clk_seq_low",
-                // two most significant bits holds zero and one for variant DCE1.1
-                mt_rand(0, 0x3fff) | 0x8000,
-                // 48 bits for "node"
-                mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+            // 32 bits for "time_low"
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+            // 16 bits for "time_mid"
+            mt_rand(0, 0xffff),
+            // 16 bits for "time_hi_and_version",
+            // four most significant bits holds version number 4
+            mt_rand(0, 0x0fff) | 0x4000,
+            // 16 bits, 8 bits for "clk_seq_hi_res",
+            // 8 bits for "clk_seq_low",
+            // two most significant bits holds zero and one for variant DCE1.1
+            mt_rand(0, 0x3fff) | 0x8000,
+            // 48 bits for "node"
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
         );
     }
 
@@ -454,10 +455,10 @@ class store {
             $user['szallutca'] = $u->getSzallutca();
             $user['szallhazszam'] = $u->getSzallhazszam();
             $user['szalladategyezik'] = !$u->getNev() &&
-                    !$u->getIrszam() &&
-                    !$u->getVaros() &&
-                    !$u->getUtca() &&
-                    !$u->getNev();
+                !$u->getIrszam() &&
+                !$u->getVaros() &&
+                !$u->getUtca() &&
+                !$u->getNev();
         }
         else {
             $user['szalladategyezik'] = true;
@@ -588,7 +589,7 @@ class store {
     }
 
     public static function addHttp($url) {
-        if  ($url && $ret = parse_url($url)) {
+        if ($url && $ret = parse_url($url)) {
             if (!isset($ret['scheme'])) {
                 $url = 'http://' . $url;
             }
@@ -629,8 +630,8 @@ class store {
     private static function Szazas($szam) {
         $szamok = array('nulla', 'egy', 'kettő', 'három', 'négy', 'öt',
             'hat', 'hét', 'nyolc', 'kilenc', 'tíz', 'száz', 'ezer', 'millió', 'mínusz ');
-        $szamok2 = array('X','tíz', 'húsz', 'harminc', 'negyven', 'ötven', 'hatvan', 'hetven', 'nyolcvan', 'kilencven');
-        $szamok3 = array('Y','tizen', 'huszon');
+        $szamok2 = array('X', 'tíz', 'húsz', 'harminc', 'negyven', 'ötven', 'hatvan', 'hetven', 'nyolcvan', 'kilencven');
+        $szamok3 = array('Y', 'tizen', 'huszon');
         $tt_txt = '';
         if ($szam >= 100) {
             $tt_txt = $tt_txt . $szamok[floor($szam / 100)] . $szamok[11];
@@ -734,8 +735,10 @@ class store {
         if (DIRECTORY_SEPARATOR === "\\") {
             $dir = str_replace("/", "\\", $dir);
         }
-        else if (DIRECTORY_SEPARATOR === "/") {
-            $dir = str_replace("\\", "/", $dir);
+        else {
+            if (DIRECTORY_SEPARATOR === "/") {
+                $dir = str_replace("\\", "/", $dir);
+            }
         }
         return $dir;
     }
@@ -758,13 +761,13 @@ class store {
      * @param string $fileName
      * @return string
      */
-    public static function getExtension( $fileName ) {
-        $dotPos = strrpos( $fileName, '.' );
+    public static function getExtension($fileName) {
+        $dotPos = strrpos($fileName, '.');
         if (false === $dotPos) {
             return "";
         }
 
-        return substr( $fileName, strrpos( $fileName, '.' ) +1 ) ;
+        return substr($fileName, strrpos($fileName, '.') + 1);
     }
 
     public static function explodeCim($cim) {
@@ -786,7 +789,7 @@ class store {
     public static function implodeCim($irszam, $varos, $utca, $hazszam) {
         $cim = $irszam;
         if (($cim !== '') && ($varos !== '')) {
-            $cim.=' ';
+            $cim .= ' ';
         }
         $cim .= $varos;
         if (($cim !== '') && ($utca !== '')) {
@@ -845,7 +848,7 @@ class store {
     public static function getLocaleSelectList($sel = null) {
         $val = array_values(self::$locales);
         $ret = array();
-        foreach($val as $v) {
+        foreach ($val as $v) {
             $ret[] = array(
                 'id' => $v,
                 'caption' => $v,
@@ -883,6 +886,10 @@ class store {
 
     public static function getTheme() {
         return self::getConfigValue('main.theme');
+    }
+
+    public static function isDeveloper() {
+        return self::getConfigValue('developer');
     }
 
     public static function isMultilang() {
@@ -975,6 +982,14 @@ class store {
             $i = $szm->getId();
         }
         return $i == self::getParameter(\mkw\consts::TOFSzallitasiMod);
+    }
+
+    public static function isGLSSzallitasimod($szm) {
+        $i = $szm;
+        if (is_a($szm, 'Entities\Szallitasimod')) {
+            $i = $szm->getId();
+        }
+        return $i == self::getParameter(\mkw\consts::GLSSzallitasiMod);
     }
 
     public static function isUtanvetFizmod($fm) {
@@ -1212,7 +1227,7 @@ class store {
 
     public static function toiso($mit) {
         if (is_array($mit)) {
-            return array_map(function($el) {
+            return array_map(function ($el) {
                 return mb_convert_encoding($el, 'ISO-8859-2', 'UTF8');
             }, $mit);
         }
@@ -1221,7 +1236,7 @@ class store {
 
     public static function toutf($mit) {
         if (is_array($mit)) {
-            return array_map(function($el) {
+            return array_map(function ($el) {
                 return mb_convert_encoding($el, 'UTF8', 'ISO-8859-2');
             }, $mit);
         }
@@ -1258,18 +1273,18 @@ class store {
     }
 
     public static function cimletez($osszegek) {
-        $cimletek = array(20000,10000,5000,2000,1000,500,200,100,50,20,10,5);
+        $cimletek = array(20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5);
         $kiszamolt = array();
         $ret = array();
         $sum = 0;
-        foreach($cimletek as $e) {
+        foreach ($cimletek as $e) {
             $kiszamolt[$e] = 0;
         }
         $osszegtomb = explode(',', $osszegek);
-        foreach($osszegtomb as $osszeg) {
+        foreach ($osszegtomb as $osszeg) {
             $maradek = self::kerekit(trim($osszeg) * 1, 5);
             $sum += $maradek;
-            foreach($cimletek as $cimlet) {
+            foreach ($cimletek as $cimlet) {
                 $kiszamolt[$cimlet] += intdiv($maradek, $cimlet);
                 $maradek = $maradek % $cimlet;
             }
@@ -1342,4 +1357,18 @@ class store {
     public static function NAVNum($num) {
         return number_format($num, 2, '.', '');
     }
+
+    public static function strpos_array($haystack, $needles) {
+        foreach ($needles as $word) {
+            if (strpos($haystack, $word) !== false) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static function n($mit) {
+        return ord($mit) - 97;
+    }
+
 }

@@ -961,6 +961,7 @@ class Bizonylatfej {
             }
         }
         $ret['foxpost'] = false;
+        $ret['gls'] = false;
         if ($this->csomagterminal) {
             switch($this->csomagterminal->getTipus()) {
                 case 'foxpost':
@@ -3052,6 +3053,13 @@ class Bizonylatfej {
     public function getCsomagterminalId() {
         if ($this->csomagterminal) {
             return $this->csomagterminal->getId();
+        }
+        return false;
+    }
+
+    public function getCsomagterminalIdegenId() {
+        if ($this->csomagterminal) {
+            return $this->csomagterminal->getIdegenid();
         }
         return false;
     }

@@ -131,6 +131,15 @@
                             </select>
                         </div>
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="GLSSzallmodEdit">{at('GLS száll.mód')}:</label></span>
+                            <select id="GLSSzallmodEdit" name="glsszallmod">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $glsszallmodlist as $_foxpost}
+                                    <option value="{$_foxpost.id}"{if ($_foxpost.selected)} selected="selected"{/if}>{$_foxpost.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="TOFSzallmodEdit">{at('TOF száll.mód')}:</label></span>
                             <select id="TOFSzallmodEdit" name="tofszallmod">
                                 <option value="">{at('válasszon')}</option>
@@ -900,6 +909,7 @@
                         </div>
                         <div class="matt-hseparator"></div>
                         <div>
+                            <div>
                             <label for="ReintexEdit">Reintex:</label>
                             <select id="ReintexEdit" name="gyartoreintex">
                                 <option value="">{at('válasszon')}</option>
@@ -913,6 +923,11 @@
                             <input id="UrlReintexEdit" name="urlreintex" value="{$urlreintex}">
                             <a href="#" class="js-stopimport" data-href="{$stopreinteximporturl}">Stop import</a>
                             <a href="#" class="js-repairimport" data-href="{$repairreinteximporturl}">Javít</a>
+                            </div>
+                            <div>
+                            <label for="ExcludeReintex">Kihagyandó cikkszámok:</label>
+                            <input id="'ExcludeReintex" name="excludereintex" value="{$excludereintex}" size="80" title="Vesszővel elválasztva">
+                            </div>
                         </div>
                         <div class="matt-hseparator"></div>
                         <div>
@@ -1152,6 +1167,10 @@
                             <td><input name="gafollow" type="text" value="{$gafollow}"></td>
                         </tr>
                         <tr>
+                            <td><label>{at('Google Maps API kulcs')}:</label></td>
+                            <td><input name="gmapsapikey" type="text" value="{$gmapsapikey}"></td>
+                        </tr>
+                        <tr>
                             <td><label>{at('Facebook app-id')}:</label></td>
                             <td><input name="fbappid" type="text" value="{$fbappid}"></td>
                         </tr>
@@ -1176,6 +1195,10 @@
                             <td><input name="emagusercode" type="text" value="{$emagusercode}" autocomplete="off"></td>
                             <td><label>{at('Password')}:</label></td>
                             <td><input name="emagpassword" type="password" value="{$emagpassword}" autocomplete="off"></td>
+                        </tr>
+                        <tr>
+                            <td><label>{at('GLS csomagpont URL')}:</label></td>
+                            <td><input name="glsterminalurl" type="text" value="{$glsterminalurl}"></td>
                         </tr>
                         </tbody>
                     </table>

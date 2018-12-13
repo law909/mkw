@@ -1,4 +1,5 @@
 <?php
+
 namespace Controllers;
 
 use Entities\TermekRecept;
@@ -167,7 +168,7 @@ class importController extends \mkwhelpers\Controller {
     }
 
     private function checkRunningImport($imp) {
-        return (boolean) \mkw\store::getParameter($imp);
+        return (boolean)\mkw\store::getParameter($imp);
     }
 
     private function setRunningImport($imp, $onoff) {
@@ -829,21 +830,21 @@ class importController extends \mkwhelpers\Controller {
 
         function toArr($obj) {
             return array(
-                'sku' => (string) $obj->sku,
-                'name' => (string) $obj->name,
-                'brand' => (string) $obj->brand,
-                'price' => (int) $obj->price,
-                'photo' => (string) $obj->photo,
-                'catalog_first' => (string) $obj->catalog_first,
-                'catalog_second' => (string) $obj->catalog_second,
-                'size' => (string) $obj->size,
-                'color' => (string) $obj->color,
-                'available' => (int) $obj->available,
-                'parent' => (string) $obj->parent,
-                'child' => (string) $obj->child,
-                'category' => (string) $obj->category,
-                'short_description' => (string) $obj->short_description,
-                'long_description' => (string) $obj->long_description
+                'sku' => (string)$obj->sku,
+                'name' => (string)$obj->name,
+                'brand' => (string)$obj->brand,
+                'price' => (int)$obj->price,
+                'photo' => (string)$obj->photo,
+                'catalog_first' => (string)$obj->catalog_first,
+                'catalog_second' => (string)$obj->catalog_second,
+                'size' => (string)$obj->size,
+                'color' => (string)$obj->color,
+                'available' => (int)$obj->available,
+                'parent' => (string)$obj->parent,
+                'child' => (string)$obj->child,
+                'category' => (string)$obj->category,
+                'short_description' => (string)$obj->short_description,
+                'long_description' => (string)$obj->long_description
             );
         }
 
@@ -852,7 +853,7 @@ class importController extends \mkwhelpers\Controller {
             $termekdb = 0;
             $megvan = false;
             while (($dbig && ($termekdb < $dbig)) && !$megvan) {
-                $megvan = ((string) $miben[$termekdb]->sku) == $mit;
+                $megvan = ((string)$miben[$termekdb]->sku) == $mit;
                 $termekdb++;
             }
             return $megvan;
@@ -1153,7 +1154,7 @@ class importController extends \mkwhelpers\Controller {
                             }
                             $valtozat = null;
                             /** @var \Entities\TermekValtozat $v */
-                            foreach($termek->getValtozatok() as $v) {
+                            foreach ($termek->getValtozatok() as $v) {
                                 if ($v->getIdegencikkszam() == $data['sku']) {
                                     $valtozat = $v;
                                 }
@@ -1370,35 +1371,35 @@ class importController extends \mkwhelpers\Controller {
     public function nikaImport() {
 
         function toArr($obj) {
-            $xmlkepek = (array) $obj->images;
+            $xmlkepek = (array)$obj->images;
             $kepek = array();
             foreach ($xmlkepek as $xk) {
                 $kepek[] = $xk;
             }
             return array(
-                'number' => (string) $obj->number,
-                'name' => (string) $obj->name,
-                'manufacturerName' => (string) $obj->manufacturerName,
-                'available' => (int) $obj->available,
-                'storageCondition' => (int) $obj->storageCondition,
-                'unitType' => (string) $obj->unitType,
-                'cbsNumber' => (string) $obj->cbsNumber,
-                'mainGroupCode' => (string) $obj->mainGroupCode,
-                'mainGroupName' => (string) $obj->mainGroupName,
-                'productGroupCode' => (string) $obj->productGroupCode,
-                'productGroupName' => (string) $obj->productGroupName,
-                'descriptionShort' => (string) $obj->descriptionShort,
-                'description' => (string) $obj->description,
-                'weight' => (string) $obj->weight,
-                'sizeX' => (string) $obj->sizeX,
-                'sizeY' => (string) $obj->sizeY,
-                'sizeZ' => (string) $obj->sizeZ,
-                'taxRate' => (string) $obj->taxRate,
-                'manufacturerNumber' => (string) $obj->manufacturerNumber,
-                'stockFree' => (string) $obj->stockFree,
-                'stockAvailableDate' => (string) $obj->stockAvailableDate,
-                'stockOuterType' => (string) $obj->stockOuterType,
-                'priceMembership' => (string) $obj->prices->priceMembership,
+                'number' => (string)$obj->number,
+                'name' => (string)$obj->name,
+                'manufacturerName' => (string)$obj->manufacturerName,
+                'available' => (int)$obj->available,
+                'storageCondition' => (int)$obj->storageCondition,
+                'unitType' => (string)$obj->unitType,
+                'cbsNumber' => (string)$obj->cbsNumber,
+                'mainGroupCode' => (string)$obj->mainGroupCode,
+                'mainGroupName' => (string)$obj->mainGroupName,
+                'productGroupCode' => (string)$obj->productGroupCode,
+                'productGroupName' => (string)$obj->productGroupName,
+                'descriptionShort' => (string)$obj->descriptionShort,
+                'description' => (string)$obj->description,
+                'weight' => (string)$obj->weight,
+                'sizeX' => (string)$obj->sizeX,
+                'sizeY' => (string)$obj->sizeY,
+                'sizeZ' => (string)$obj->sizeZ,
+                'taxRate' => (string)$obj->taxRate,
+                'manufacturerNumber' => (string)$obj->manufacturerNumber,
+                'stockFree' => (string)$obj->stockFree,
+                'stockAvailableDate' => (string)$obj->stockAvailableDate,
+                'stockOuterType' => (string)$obj->stockOuterType,
+                'priceMembership' => (string)$obj->prices->priceMembership,
                 'images' => $kepek
             );
         }
@@ -1408,7 +1409,7 @@ class importController extends \mkwhelpers\Controller {
             $termekdb = 0;
             $megvan = false;
             while (($dbig && ($termekdb < $dbig)) && !$megvan) {
-                $megvan = ((string) $miben[$termekdb]->number) == $mit;
+                $megvan = ((string)$miben[$termekdb]->number) == $mit;
                 $termekdb++;
             }
             return $megvan;
@@ -1701,34 +1702,34 @@ class importController extends \mkwhelpers\Controller {
     public function haffner24Import() {
 
         function toArr($obj) {
-            $x = (array) $obj->categories;
+            $x = (array)$obj->categories;
             if (is_array($x['cat'])) {
                 $x = $x['cat'][0];
             }
             else {
                 $x = $x['cat'];
             }
-            $desc = (string) $obj->description;
+            $desc = (string)$obj->description;
             $desc = str_replace(array('&lt,', '&gt,'), array('&lt;', '&gt;'), $desc);
             $desc = html_entity_decode($desc);
             return array(
-                'sku' => (string) $obj->sku,
-                'name' => (string) $obj->name,
-                'id' => (int) $obj->id,
-                'taxrate' => (int) $obj->tax_rate,
-                'manufacturer' => (string) $obj->manufacturer,
+                'sku' => (string)$obj->sku,
+                'name' => (string)$obj->name,
+                'id' => (int)$obj->id,
+                'taxrate' => (int)$obj->tax_rate,
+                'manufacturer' => (string)$obj->manufacturer,
                 'category' => $x,
                 'description' => $desc,
-                'shortdescription' => (string) $obj->short_description,
-                'price' => (float) $obj->basic_price,
-                'discountprice' => (float) $obj->discount_price,
-                'compatibledevices' => (string) $obj->compatibledevices,
-                'stock' => (int) $obj->stock,
-                'emailnotify' => (int) $obj->email_notify,
-                'available' => (int) $obj->available,
-                'prodtype' => (string) $obj->prod_type,
-                'prodstart' => (string) $obj->prod_start,
-                'imageurl' => (string) $obj->image_url
+                'shortdescription' => (string)$obj->short_description,
+                'price' => (float)$obj->basic_price,
+                'discountprice' => (float)$obj->discount_price,
+                'compatibledevices' => (string)$obj->compatibledevices,
+                'stock' => (int)$obj->stock,
+                'emailnotify' => (int)$obj->email_notify,
+                'available' => (int)$obj->available,
+                'prodtype' => (string)$obj->prod_type,
+                'prodstart' => (string)$obj->prod_start,
+                'imageurl' => (string)$obj->image_url
             );
         }
 
@@ -1737,7 +1738,7 @@ class importController extends \mkwhelpers\Controller {
             $termekdb = 0;
             $megvan = false;
             while (($dbig && ($termekdb < $dbig)) && !$megvan) {
-                $megvan = ((string) $miben[$termekdb]->id) == $mit;
+                $megvan = ((string)$miben[$termekdb]->id) == $mit;
                 if ($megvan) {
                     $ret = $miben[$termekdb];
                 }
@@ -2006,11 +2007,16 @@ class importController extends \mkwhelpers\Controller {
         }
     }
 
-    public function  reintexImport() {
+    public function reintexImport() {
+
+        echo json_encode(array('msg' => 'Fejlesztés alatt.'));
+        return false;
+
         if (!$this->checkRunningImport(\mkw\consts::RunningReintexImport)) {
 
             $this->setRunningImport(\mkw\consts::RunningReintexImport, 1);
-            $this->setRunningImport(\mkw\consts::RunningReintexImport, 0);
+
+            $sep = ';';
 
             $parentid = $this->params->getIntRequestParam('katid', 0);
             $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoReintex);
@@ -2033,14 +2039,121 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlReintex));
-            $fh = fopen('reintex.csv', 'w');
-            \curl_setopt($ch, CURLOPT_FILE, $fh);
-            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-            \curl_exec($ch);
-            fclose($fh);
-            \curl_close($ch);
+            if (\mkw\store::isDeveloper()) {
+                move_uploaded_file($_FILES['toimport']['tmp_name'], 'reintex.csv');
+            }
+            else {
+                $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlReintex));
+                $fh = fopen('reintex.csv', 'w');
+                \curl_setopt($ch, CURLOPT_FILE, $fh);
+                \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                \curl_exec($ch);
+                fclose($fh);
+                \curl_close($ch);
+            }
+            $fh = fopen('reintex.csv', 'r');
+            if ($fh) {
+                $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+                $termekdb = 0;
+                $termekek = array();
+                $szulogyerekek = array();
+                $cikkszamok = array();
+                fgetcsv($fh, 0, $sep, '"');
+                while ($data = fgetcsv($fh, 0, $sep, '"')) {
+                    if (!\mkw\store::strpos_array($data[$this->n('a')], explode(',', \mkw\store::getParameter(\mkw\consts::ExcludeReintex)))) {
+                        if (!$data[$this->n('u')]) {
+                            $termekek[] = $data;
+                        }
+                    }
+                }
+                rewind($fh);
+                fgetcsv($fh, 0, $sep, '"');
+                while ($data = fgetcsv($fh, 0, $sep, '"')) {
+                    if (!\mkw\store::strpos_array($data[$this->n('a')], explode(',', \mkw\store::getParameter(\mkw\consts::ExcludeReintex)))) {
+                        if ($data[$this->n('u')] === 'unas') {
+                            $szulogyerekek[$data[$this->n('a')]][] = $data;
+                        }
+                    }
+                }
+                rewind($fh);
+                fgetcsv($fh, 0, $sep, '"');
+                while ($data = fgetcsv($fh, 0, $sep, '"')) {
+                    if (!\mkw\store::strpos_array($data[$this->n('a')], explode(',', \mkw\store::getParameter(\mkw\consts::ExcludeReintex)))) {
+                        if (($data[$this->n('u')] !== 'unas') && $data[$this->n('u')]) {
+                            $szulogyerekek[$data[$this->n('u')]][] = $data;
+                        }
+                    }
+                }
+                rewind($fh);
+                fgetcsv($fh, 0, $sep, '"');
+                while ($data = fgetcsv($fh, 0, $sep, '"')) {
+                    $cikkszamok[] = $data[$this->n('a')];
+                    $kats = explode('|', $data[$this->n('k')]);
+                    $kid = $parentid;
+                    foreach ($kats as $kat) {
+                        $kid = $this->createKategoria($this->toutf($kat), $kid);
+                    }
+                }
+                \mkw\store::writelog(print_r($termekek, true), 'reintex.log');
+                \mkw\store::writelog(print_r($szulogyerekek, true), 'reintexszulo.log');
+                while (false) {
+                    $termekdb++;
+                    if ($data[$this->n('a')]) {
+                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data[$this->n('a')], 'gyarto' => $gyartoid));
+                        if (!$termek) {
 
+                            if ($createuj) {
+
+                                $termeknev = mb_convert_encoding($data[$this->n('b')], 'UTF8', 'ISO-8859-2');
+
+                                $termek = new \Entities\Termek();
+                                $termek->setFuggoben(true);
+                                $termek->setMe($data[$this->n('h')]);
+                                $termek->setNev($termeknev);
+                                $leiras = mb_convert_encoding(trim($data[$this->n('d')]), 'UTF8', 'ISO-8859-2');
+                                $termek->setRovidleiras(mb_substr($leiras, 0, 100, 'UTF8') . '...');
+                                $termek->setLeiras($leiras);
+                                $termek->setCikkszam($data[$this->n('a')]);
+                                $termek->setTermekfa1($parent);
+                                $termek->setVtsz($vtsz[0]);
+                                $termek->setHparany(3);
+                                if ($gyarto) {
+                                    $termek->setGyarto($gyarto);
+                                }
+                            }
+                        }
+                        else {
+                            $termek = $termek[0];
+                            if ($editleiras) {
+                                //$hosszuleiras = mb_convert_encoding(trim($data[3]), 'UTF8', 'ISO-8859-2');
+                                //$termek->setLeiras($hosszuleiras);
+                                //$rovidleiras = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
+                                //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
+                            }
+                        }
+                        if ($termek) {
+                            if (!$termek->getAkcios()) {
+                                $termek->setBrutto(round($data[$this->n('i')] * 1 * $arszaz / 100, -1));
+                            }
+                            \mkw\store::getEm()->persist($termek);
+                        }
+                    }
+                    if (($termekdb % $batchsize) === 0) {
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                        $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+                    }
+                }
+                \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->clear();
+                fclose($fh);
+                \unlink('reintex.csv');
+            }
+            $this->setRunningImport(\mkw\consts::RunningReintexImport, 0);
         }
         else {
             echo json_encode(array('msg' => 'Már fut ilyen import.'));
@@ -4251,10 +4364,10 @@ class importController extends \mkwhelpers\Controller {
                         }
                         //if (($termekdb % $batchsize) === 0) {
 
-                            \mkw\store::getEm()->flush();
-                            \mkw\store::getEm()->clear();
-                            $vtsz = $this->getRepo('Entities\Vtsz')->findBySzam('-');
-                            $gyarto = $this->getRepo('Entities\Partner')->find($gyartoid);
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                        $vtsz = $this->getRepo('Entities\Vtsz')->findBySzam('-');
+                        $gyarto = $this->getRepo('Entities\Partner')->find($gyartoid);
                         //}
                     }
                     \mkw\store::getEm()->flush();
@@ -4382,520 +4495,519 @@ class importController extends \mkwhelpers\Controller {
 
 
             /**
-
-
-
-            $stmt = $dbh->prepare('SELECT * FROM csk');
-            $stmt->execute();
-            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
-                if (!$this->getRepo('Entities\Csk')->findOneBy(array('migrid' => $r['kod']))) {
-                    $csk = new \Entities\Csk();
-                    $csk->setNev($this->toutf($r['nev']));
-                    $csk->setErtek($r['netto']);
-                    $csk->setMigrid($r['kod']);
-                    \mkw\store::getEm()->persist($csk);
-                    \mkw\store::getEm()->flush();
-                }
-            }
-
-            $stmt = $dbh->prepare('SELECT * FROM afatorzs');
-            $stmt->execute();
-            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
-                if (!$this->getRepo('Entities\Afa')->findOneBy(array('migrid' => $r['kod']))) {
-                    $afa = new \Entities\Afa();
-                    $afa->setNev($this->toutf($r['afanev']));
-                    $afa->setErtek($r['afaertek']);
-                    $afa->setMigrid($r['kod']);
-                    \mkw\store::getEm()->persist($afa);
-                    \mkw\store::getEm()->flush();
-                }
-            }
-
-            $stmt = $dbh->prepare('SELECT * FROM fizmod');
-            $stmt->execute();
-            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
-                if (!$this->getRepo('Entities\Fizmod')->findOneBy(array('migrid' => $r['kod']))) {
-                    $fizmod = new \Entities\Fizmod();
-                    $fizmod->setNev($this->toutf($r['nev']));
-                    $fizmod->setHaladek($r['haladek']);
-                    $fizmod->setTipus($r['tipus']);
-                    $fizmod->setMigrid($r['kod']);
-                    $fizmod->setRugalmas(false);
-                    \mkw\store::getEm()->persist($fizmod);
-                    \mkw\store::getEm()->flush();
-                }
-            }
-
-            $db = 0;
-            $stmt = $dbh->prepare('SELECT * FROM vtsz');
-            $stmt->execute();
-            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
-                if (!$this->getRepo('Entities\Vtsz')->findOneBy(array('migrid' => $r['kod']))) {
-                    $db++;
-                    $vtsz = new \Entities\Vtsz();
-                    $vtsz->setNev($this->toutf($r['szoveg']));
-                    $vtsz->setSzam($this->toutf($r['szam']));
-                    $vtsz->setMigrid($r['kod']);
-                    $vtsz->setAfa($this->getRepo('Entities\Afa')->findOneBy(array('migrid' => $r['afa'])));
-                    $vtsz->setCsk($this->getRepo('Entities\Csk')->findOneBy(array('migrid' => $r['csk'])));
-                    $vtsz->setKt($this->getRepo('Entities\Csk')->findOneBy(array('migrid' => $r['kt'])));
-                    \mkw\store::getEm()->persist($vtsz);
-                    if (($db % 20) === 0) {
-                        \mkw\store::getEm()->flush();
-                        \mkw\store::getEm()->clear();
-                    }
-                }
-            }
-            \mkw\store::getEm()->flush();
-            \mkw\store::getEm()->clear();
-
-            $stmt = $dbh->prepare('SELECT * FROM bankszamla');
-            $stmt->execute();
-            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
-                if (!$this->getRepo('Entities\Bankszamla')->findOneBy(array('migrid' => $r['kod']))) {
-                    $bankszamla = new \Entities\Bankszamla();
-                    $bankszamla->setBanknev($this->toutf($r['banknev']));
-                    $bankszamla->setBankcim($this->toutf($r['bankcim']));
-                    $bankszamla->setSzamlaszam($r['szlaszam']);
-                    $bankszamla->setSwift($r['swift']);
-                    $bankszamla->setMigrid($r['kod']);
-                    \mkw\store::getEm()->persist($bankszamla);
-                    \mkw\store::getEm()->flush();
-                }
-            }
-
-            $stmt = $dbh->prepare('SELECT * FROM valutanem');
-            $stmt->execute();
-            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
-                if (!$this->getRepo('Entities\Valutanem')->findOneBy(array('migrid' => $r['kod']))) {
-                    $valu = new \Entities\Valutanem();
-                    $valu->setNev($this->toutf($r['nev']));
-                    $valu->setKerekit($r['kerekit']);
-                    $valu->setHivatalos($r['hivatalos']);
-                    $valu->setMincimlet(($r['mincimlet'] ? $r['mincimlet'] : 0));
-                    $valu->setMigrid($r['kod']);
-                    $valu->setBankszamla($this->getRepo('Entities\Bankszamla')->findOneBy(array('migrid' => $r['defabankszla'])));
-                    \mkw\store::getEm()->persist($valu);
-                    \mkw\store::getEm()->flush();
-                }
-            }
-
-            $stmt = $dbh->prepare('SELECT * FROM bankszamla');
-            $stmt->execute();
-            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
-                $bankszamla = $this->getRepo('Entities\Bankszamla')->findOneBy(array('migrid' => $r['kod']));
-                if ($bankszamla) {
-                    $bankszamla->setValutanem($this->getRepo('Entities\Valutanem')->findOneBy(array('migrid' => $r['defavaluta'])));
-                    \mkw\store::getEm()->persist($bankszamla);
-                    \mkw\store::getEm()->flush();
-                }
-            }
-
-            $db = 0;
-            $stmt = $dbh->prepare('SELECT * FROM partner');
-            $stmt->execute();
-            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
-                if (!$this->getRepo('Entities\Partner')->findOneBy(array('migrid' => $r['kod']))) {
-                    $db++;
-                    $partner = new \Entities\Partner();
-                    $partner->setNev($this->toutf($r['nev']));
-                    $partner->setMigrid($r['kod']);
-                    $partner->setAkcioshirlevelkell(false);
-                    $partner->setUjdonsaghirlevelkell(false);
-                    $partner->setSzallito(false);
-                    $partner->setSzamlatipus(0);
-                    $partner->setEzuzletkoto(false);
-                    $partner->setBanknev($this->toutf($r['banknev']));
-                    $partner->setAdoszam(\mkw\store::toutf($r['adoszam']));
-                    $partner->setCjszam(\mkw\store::toutf($r['cegjszam']));
-                    $partner->setMukengszam(\mkw\store::toutf($r['mukengszam']));
-                    $partner->setJovengszam(\mkw\store::toutf($r['jovengszam']));
-                    $partner->setEuadoszam(\mkw\store::toutf($r['euadoszam']));
-                    $partner->setEmail(\mkw\store::toutf($r['email']));
-                    $partner->setTelefon(\mkw\store::toutf($r['telefon']));
-                    $partner->setMobil(\mkw\store::toutf($r['mobil']));
-                    $partner->setFax(\mkw\store::toutf($r['fax']));
-                    $partner->setHonlap(\mkw\store::toutf($r['honlap']));
-                    $partner->setIban($r['szlaszam']);
-                    $valuta = $this->getRepo('Entities\Valutanem')->findOneBy(array('migrid' => $r['valutanem']));
-                    if ($valuta) {
-                        $partner->setValutanem($valuta);
-                    }
-                    $fizmod = $this->getRepo('Entities\Fizmod')->findOneBy(array('migrid' => $r['fizmod']));
-                    if ($fizmod) {
-                        $partner->setFizmod($fizmod);
-                    }
-                    $partner->setFizhatido($r['fizhatido']);
-                    if ($r['alapar']) {
-                        $partner->setTermekarazonosito($r['alapar']);
-                    }
-                    $partner->setIrszam($this->toutf($r['irszam']));
-                    $partner->setVaros($this->toutf($r['varos']));
-                    $partner->setUtca(getUtca($this->toutf($r['utca'])));
-                    $partner->setHazszam(getHazszam($this->toutf($r['utca'])));
-                    $partner->setValligszam($r['valligszam']);
-                    $partner->setLirszam($this->toutf($r['pirszam']));
-                    $partner->setLvaros($this->toutf($r['pvaros']));
-                    $partner->setLutca(getUtca($this->toutf($r['putca'])));
-                    $partner->setLhazszam(getHazszam($this->toutf($r['putca'])));
-                    $partner->setKtdatalany($r['ktdatalany']);
-                    $partner->setKtdatvallal($r['ktdatvallal']);
-                    $partner->setKtdszerzszam($r['ktdszerzszam']);
-                    \mkw\store::getEm()->persist($partner);
-                    if (($db % 20) === 0) {
-                        \mkw\store::getEm()->flush();
-                        \mkw\store::getEm()->clear();
-                    }
-                }
-            }
-            \mkw\store::getEm()->flush();
-            \mkw\store::getEm()->clear();
-
-            $db = 0;
-            $stmt = $dbh->prepare('SELECT * FROM kontakt');
-            $stmt->execute();
-            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
-                if (!$this->getRepo('Entities\Kontakt')->findOneBy(array('migrid' => $r['kod']))) {
-                    $partner = $this->getRepo('Entities\Partner')->findOneBy(array('migrid' => $r['cegkod']));
-                    if ($partner) {
-                        $db++;
-                        $kontakt = new \Entities\Kontakt();
-                        $kontakt->setNev($this->toutf($r['nev']));
-                        $kontakt->setMigrid($r['kod']);
-                        $kontakt->setBeosztas($this->toutf($r['beosztas']));
-                        $kontakt->setTelefon($this->toutf($r['telefon']));
-                        $kontakt->setFax($this->toutf($r['fax']));
-                        $kontakt->setMobil($this->toutf($r['mobil']));
-                        $kontakt->setEmail($this->toutf($r['email']));
-                        $kontakt->setPartner($partner);
-                        \mkw\store::getEm()->persist($kontakt);
-                        if (($db % 20) === 0) {
-                            \mkw\store::getEm()->flush();
-                            \mkw\store::getEm()->clear();
-                        }
-                    }
-                }
-            }
-            \mkw\store::getEm()->flush();
-            \mkw\store::getEm()->clear();
-
-            $db = 0;
-            $stmt = $dbh->prepare('SELECT * FROM arkategoria');
-            $stmt->execute();
-            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
-                if (!$this->getRepo('Entities\Termekcsoport')->findOneBy(array('migrid' => $r['kod']))) {
-                    $db++;
-                    $tcs = new \Entities\Termekcsoport();
-                    $tcs->setNev($this->toutf($r['nev']));
-                    $tcs->setMigrid($r['kod']);
-                    \mkw\store::getEm()->persist($tcs);
-                    if (($db % 20) === 0) {
-                        \mkw\store::getEm()->flush();
-                        \mkw\store::getEm()->clear();
-                    }
-                }
-            }
-            \mkw\store::getEm()->flush();
-            \mkw\store::getEm()->clear();
-
-            $stmt = $dbh->prepare('SELECT * FROM termekcsoport WHERE torolt=0 ORDER BY kod');
-            $stmt->execute();
-            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
-                if (!$this->getRepo('Entities\TermekFa')->find($r['kod'])) {
-                    $q = \mkw\store::getEm()->getConnection()->prepare('INSERT INTO termekfa '
-                        . '(id,parent_id,created,nev,sorrend,karkod,inaktiv) VALUES '
-                        . '('
-                        . $r['kod'] . ','
-                        . ($r['szulokod'] == '0' ? 'null' : $r['szulokod']) . ','
-                        . 'now(),'
-                        . '"' . $this->toutf($r['nev']) . '",'
-                        . '0,'
-                        . '"' . $r['karkod'] . '",'
-                        . '0'
-                        . ')'
-                    );
-                    $q->execute();
-                }
-            }
-            $this->getRepo('Entities\TermekFa')->regenerateKarkod();
-            $this->getRepo('Entities\TermekFa')->regenerateSlug();
-
-            $db = 0;
-            $stmt = $dbh->prepare('SELECT * FROM termek WHERE (hasznalt=1) AND (kod>0)');
-            $stmt->execute();
-            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
-                if (!$this->getRepo('Entities\Termek')->findOneBy(array('migrid' => $r['kod']))) {
-                    $db++;
-                    $t = new \Entities\Termek();
-                    $t->setCikkszam($this->toutf($r['cikkszam']));
-                    $t->setNev($this->toutf($r['nev']));
-                    $t->setNev2($this->toutf($r['nev2']));
-                    $t->setNev3($this->toutf($r['nev3']));
-                    $t->setNev4($this->toutf($r['nev4']));
-                    $t->setNev5($this->toutf($r['nev5']));
-                    $t->setMe($this->toutf($r['me']));
-                    $t->setKiszereles($r['gyujto']);
-                    $t->setVtsz($this->getRepo('Entities\Vtsz')->findOneBy(array('migrid' => $r['vtsz'])));
-                    $fa = $this->getRepo('Entities\TermekFa')->find($r['csoportkod']);
-                    if (!$fa) {
-                        $fa = $this->getRepo('Entities\TermekFa')->find(1);
-                    }
-                    $t->setTermekfa1($fa);
-                    $t->setSzelesseg($r['meretx']);
-                    $t->setHosszusag($r['merety']);
-                    $t->setSuly($r['suly']);
-                    $t->setSuruseg($r['anyagsuruseg']);
-                    $t->setValutameszorzo($r['valutameszorzo']);
-                    $arkat = $this->getRepo('Entities\Termekcsoport')->findOneBy(array('migrid' => $r['arkategoria']));
-                    if ($arkat) {
-                        $t->setTermekcsoport($arkat);
-                    }
-                    $t->setMigrid($r['kod']);
-                    \mkw\store::getEm()->persist($t);
-                    if (($db % 20) === 0) {
-                        \mkw\store::getEm()->flush();
-                        \mkw\store::getEm()->clear();
-                    }
-                }
-            }
-            \mkw\store::getEm()->flush();
-            \mkw\store::getEm()->clear();
-
-            function createptszar($r, $szam) {
-                $mennysz = 'menny' . $szam;
-                if ($szam == 1) {
-                    $nettosz = 'netto';
-                    $bruttosz = 'brutto';
-                    $nettovsz = 'nettov';
-                    $bruttovsz = 'bruttov';
-                }
-                else {
-                    $nettosz = 'netto' . $szam;
-                    $bruttosz = 'brutto' . $szam;
-                    $nettovsz = 'nettov' . $szam;
-                    $bruttovsz = 'bruttov' . $szam;
-                }
-                if (($r[$nettosz] * 1 > 0) || ($r[$nettovsz] * 1 > 0)) {
-                    $ret = new \Entities\PartnerTermekSzerzodesAr();
-                    $ret->setMennyiseg($r[$mennysz] * 1);
-                    if ($r[$nettosz] * 1 > 0) {
-                        $ret->setNetto($r[$nettosz] * 1);
-                        $ret->setBrutto($r[$bruttosz] * 1);
-                    }
-                    else {
-                        $ret->setNetto($r[$nettovsz] * 1);
-                        $ret->setBrutto($r[$bruttovsz] * 1);
-                    }
-                    return $ret;
-                }
-                return false;
-            }
-
-            $db = 0;
-            $stmt = $dbh->prepare('SELECT * FROM partnerszerzodes WHERE kod>0');
-            $stmt->execute();
-            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
-
-                $partner = $this->getRepo('Entities\Partner')->findOneBy(array('migrid' => $r['partner']));
-                $termek = $this->getRepo('Entities\Termek')->findOneBy(array('migrid' => $r['termek']));
-
-                if ($partner && $termek) {
-
-                    $eur = $this->getRepo('Entities\Valutanem')->findOneBy(array('nev' => 'EUR'));
-                    $huf = $this->getRepo('Entities\Valutanem')->findOneBy(array('nev' => 'HUF'));
-
-                    $szerz = $this->getRepo('Entities\PartnerTermekSzerzodes')->findOneBy(array('termek' => $termek, 'partner' => $partner));
-
-                    if (!$szerz) {
-                        $szerz = new \Entities\PartnerTermekSzerzodes();
-                        $szerz->setTermek($termek);
-                        $szerz->setPartner($partner);
-                        if ($r['ervenyestol']) {
-                            $szerz->setErvenyestol(new \DateTime(\mkw\store::convDate($r['ervenyestol'])));
-                        }
-                        if ($r['ervenyesig']) {
-                            $szerz->setErvenyesig(new \DateTime(\mkw\store::convDate($r['ervenyesig'])));
-                        }
-                        if ($r['netto'] * 1 > 0) {
-                            $szerz->setValutanem($huf);
-                        }
-                        else {
-                            $szerz->setValutanem($eur);
-                        }
-                        \mkw\store::getEm()->persist($szerz);
-
-                        $ptszar = createptszar($r, 1);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptszar($r, 2);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptszar($r, 3);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptszar($r, 4);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptszar($r, 5);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptszar($r, 6);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptszar($r, 7);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptszar($r, 8);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptszar($r, 9);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptszar($r, 10);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                    }
-                    \mkw\store::getEm()->flush();
-                    \mkw\store::getEm()->clear();
-                }
-            }
-
-            function createptcsszar($r, $szam) {
-                $mennysz = 'menny' . $szam;
-                if ($szam == 1) {
-                    $nettosz = 'netto';
-                    $bruttosz = 'brutto';
-                    $nettovsz = 'nettov';
-                    $bruttovsz = 'bruttov';
-                }
-                else {
-                    $nettosz = 'netto' . $szam;
-                    $bruttosz = 'brutto' . $szam;
-                    $nettovsz = 'nettov' . $szam;
-                    $bruttovsz = 'bruttov' . $szam;
-                }
-                if (($r[$nettosz] * 1 > 0) || ($r[$nettovsz] * 1 > 0)) {
-                    $ret = new \Entities\PartnerTermekcsoportSzerzodesAr();
-                    $ret->setMennyiseg($r[$mennysz] * 1);
-                    if ($r[$nettosz] * 1 > 0) {
-                        $ret->setNetto($r[$nettosz] * 1);
-                        $ret->setBrutto($r[$bruttosz] * 1);
-                    }
-                    else {
-                        $ret->setNetto($r[$nettovsz] * 1);
-                        $ret->setBrutto($r[$bruttovsz] * 1);
-                    }
-                    return $ret;
-                }
-                return false;
-            }
-
-            $db = 0;
-            $stmt = $dbh->prepare('SELECT * FROM partnerszerzodes2 WHERE kod>0');
-            $stmt->execute();
-            while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
-
-                $partner = $this->getRepo('Entities\Partner')->findOneBy(array('migrid' => $r['partner']));
-                $termekcs = $this->getRepo('Entities\Termekcsoport')->findOneBy(array('migrid' => $r['arkategoria']));
-
-                if ($partner && $termekcs) {
-
-                    $eur = $this->getRepo('Entities\Valutanem')->findOneBy(array('nev' => 'EUR'));
-                    $huf = $this->getRepo('Entities\Valutanem')->findOneBy(array('nev' => 'HUF'));
-
-                    $szerz = $this->getRepo('Entities\PartnerTermekcsoportSzerzodes')->findOneBy(array('termekcsoport' => $termekcs, 'partner' => $partner));
-
-                    if (!$szerz) {
-                        $szerz = new \Entities\PartnerTermekcsoportSzerzodes();
-                        $szerz->setTermekcsoport($termekcs);
-                        $szerz->setPartner($partner);
-                        if ($r['ervenyestol']) {
-                            $szerz->setErvenyestol(new \DateTime(\mkw\store::convDate($r['ervenyestol'])));
-                        }
-                        if ($r['netto'] * 1 > 0) {
-                            $szerz->setValutanem($huf);
-                        }
-                        else {
-                            $szerz->setValutanem($eur);
-                        }
-                        \mkw\store::getEm()->persist($szerz);
-
-                        $ptszar = createptcsszar($r, 1);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekcsoportszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptcsszar($r, 2);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekcsoportszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptcsszar($r, 3);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekcsoportszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptcsszar($r, 4);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekcsoportszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptcsszar($r, 5);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekcsoportszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptcsszar($r, 6);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekcsoportszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptcsszar($r, 7);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekcsoportszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptcsszar($r, 8);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekcsoportszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptcsszar($r, 9);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekcsoportszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                        $ptszar = createptcsszar($r, 10);
-                        if ($ptszar) {
-                            $ptszar->setPartnertermekcsoportszerzodes($szerz);
-                            \mkw\store::getEm()->persist($ptszar);
-                        }
-                    }
-                    \mkw\store::getEm()->flush();
-                    \mkw\store::getEm()->clear();
-                }
-            }
-
+             *
+             *
+             *
+             * $stmt = $dbh->prepare('SELECT * FROM csk');
+             * $stmt->execute();
+             * while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+             * if (!$this->getRepo('Entities\Csk')->findOneBy(array('migrid' => $r['kod']))) {
+             * $csk = new \Entities\Csk();
+             * $csk->setNev($this->toutf($r['nev']));
+             * $csk->setErtek($r['netto']);
+             * $csk->setMigrid($r['kod']);
+             * \mkw\store::getEm()->persist($csk);
+             * \mkw\store::getEm()->flush();
+             * }
+             * }
+             *
+             * $stmt = $dbh->prepare('SELECT * FROM afatorzs');
+             * $stmt->execute();
+             * while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+             * if (!$this->getRepo('Entities\Afa')->findOneBy(array('migrid' => $r['kod']))) {
+             * $afa = new \Entities\Afa();
+             * $afa->setNev($this->toutf($r['afanev']));
+             * $afa->setErtek($r['afaertek']);
+             * $afa->setMigrid($r['kod']);
+             * \mkw\store::getEm()->persist($afa);
+             * \mkw\store::getEm()->flush();
+             * }
+             * }
+             *
+             * $stmt = $dbh->prepare('SELECT * FROM fizmod');
+             * $stmt->execute();
+             * while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+             * if (!$this->getRepo('Entities\Fizmod')->findOneBy(array('migrid' => $r['kod']))) {
+             * $fizmod = new \Entities\Fizmod();
+             * $fizmod->setNev($this->toutf($r['nev']));
+             * $fizmod->setHaladek($r['haladek']);
+             * $fizmod->setTipus($r['tipus']);
+             * $fizmod->setMigrid($r['kod']);
+             * $fizmod->setRugalmas(false);
+             * \mkw\store::getEm()->persist($fizmod);
+             * \mkw\store::getEm()->flush();
+             * }
+             * }
+             *
+             * $db = 0;
+             * $stmt = $dbh->prepare('SELECT * FROM vtsz');
+             * $stmt->execute();
+             * while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+             * if (!$this->getRepo('Entities\Vtsz')->findOneBy(array('migrid' => $r['kod']))) {
+             * $db++;
+             * $vtsz = new \Entities\Vtsz();
+             * $vtsz->setNev($this->toutf($r['szoveg']));
+             * $vtsz->setSzam($this->toutf($r['szam']));
+             * $vtsz->setMigrid($r['kod']);
+             * $vtsz->setAfa($this->getRepo('Entities\Afa')->findOneBy(array('migrid' => $r['afa'])));
+             * $vtsz->setCsk($this->getRepo('Entities\Csk')->findOneBy(array('migrid' => $r['csk'])));
+             * $vtsz->setKt($this->getRepo('Entities\Csk')->findOneBy(array('migrid' => $r['kt'])));
+             * \mkw\store::getEm()->persist($vtsz);
+             * if (($db % 20) === 0) {
+             * \mkw\store::getEm()->flush();
+             * \mkw\store::getEm()->clear();
+             * }
+             * }
+             * }
+             * \mkw\store::getEm()->flush();
+             * \mkw\store::getEm()->clear();
+             *
+             * $stmt = $dbh->prepare('SELECT * FROM bankszamla');
+             * $stmt->execute();
+             * while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+             * if (!$this->getRepo('Entities\Bankszamla')->findOneBy(array('migrid' => $r['kod']))) {
+             * $bankszamla = new \Entities\Bankszamla();
+             * $bankszamla->setBanknev($this->toutf($r['banknev']));
+             * $bankszamla->setBankcim($this->toutf($r['bankcim']));
+             * $bankszamla->setSzamlaszam($r['szlaszam']);
+             * $bankszamla->setSwift($r['swift']);
+             * $bankszamla->setMigrid($r['kod']);
+             * \mkw\store::getEm()->persist($bankszamla);
+             * \mkw\store::getEm()->flush();
+             * }
+             * }
+             *
+             * $stmt = $dbh->prepare('SELECT * FROM valutanem');
+             * $stmt->execute();
+             * while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+             * if (!$this->getRepo('Entities\Valutanem')->findOneBy(array('migrid' => $r['kod']))) {
+             * $valu = new \Entities\Valutanem();
+             * $valu->setNev($this->toutf($r['nev']));
+             * $valu->setKerekit($r['kerekit']);
+             * $valu->setHivatalos($r['hivatalos']);
+             * $valu->setMincimlet(($r['mincimlet'] ? $r['mincimlet'] : 0));
+             * $valu->setMigrid($r['kod']);
+             * $valu->setBankszamla($this->getRepo('Entities\Bankszamla')->findOneBy(array('migrid' => $r['defabankszla'])));
+             * \mkw\store::getEm()->persist($valu);
+             * \mkw\store::getEm()->flush();
+             * }
+             * }
+             *
+             * $stmt = $dbh->prepare('SELECT * FROM bankszamla');
+             * $stmt->execute();
+             * while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+             * $bankszamla = $this->getRepo('Entities\Bankszamla')->findOneBy(array('migrid' => $r['kod']));
+             * if ($bankszamla) {
+             * $bankszamla->setValutanem($this->getRepo('Entities\Valutanem')->findOneBy(array('migrid' => $r['defavaluta'])));
+             * \mkw\store::getEm()->persist($bankszamla);
+             * \mkw\store::getEm()->flush();
+             * }
+             * }
+             *
+             * $db = 0;
+             * $stmt = $dbh->prepare('SELECT * FROM partner');
+             * $stmt->execute();
+             * while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+             * if (!$this->getRepo('Entities\Partner')->findOneBy(array('migrid' => $r['kod']))) {
+             * $db++;
+             * $partner = new \Entities\Partner();
+             * $partner->setNev($this->toutf($r['nev']));
+             * $partner->setMigrid($r['kod']);
+             * $partner->setAkcioshirlevelkell(false);
+             * $partner->setUjdonsaghirlevelkell(false);
+             * $partner->setSzallito(false);
+             * $partner->setSzamlatipus(0);
+             * $partner->setEzuzletkoto(false);
+             * $partner->setBanknev($this->toutf($r['banknev']));
+             * $partner->setAdoszam(\mkw\store::toutf($r['adoszam']));
+             * $partner->setCjszam(\mkw\store::toutf($r['cegjszam']));
+             * $partner->setMukengszam(\mkw\store::toutf($r['mukengszam']));
+             * $partner->setJovengszam(\mkw\store::toutf($r['jovengszam']));
+             * $partner->setEuadoszam(\mkw\store::toutf($r['euadoszam']));
+             * $partner->setEmail(\mkw\store::toutf($r['email']));
+             * $partner->setTelefon(\mkw\store::toutf($r['telefon']));
+             * $partner->setMobil(\mkw\store::toutf($r['mobil']));
+             * $partner->setFax(\mkw\store::toutf($r['fax']));
+             * $partner->setHonlap(\mkw\store::toutf($r['honlap']));
+             * $partner->setIban($r['szlaszam']);
+             * $valuta = $this->getRepo('Entities\Valutanem')->findOneBy(array('migrid' => $r['valutanem']));
+             * if ($valuta) {
+             * $partner->setValutanem($valuta);
+             * }
+             * $fizmod = $this->getRepo('Entities\Fizmod')->findOneBy(array('migrid' => $r['fizmod']));
+             * if ($fizmod) {
+             * $partner->setFizmod($fizmod);
+             * }
+             * $partner->setFizhatido($r['fizhatido']);
+             * if ($r['alapar']) {
+             * $partner->setTermekarazonosito($r['alapar']);
+             * }
+             * $partner->setIrszam($this->toutf($r['irszam']));
+             * $partner->setVaros($this->toutf($r['varos']));
+             * $partner->setUtca(getUtca($this->toutf($r['utca'])));
+             * $partner->setHazszam(getHazszam($this->toutf($r['utca'])));
+             * $partner->setValligszam($r['valligszam']);
+             * $partner->setLirszam($this->toutf($r['pirszam']));
+             * $partner->setLvaros($this->toutf($r['pvaros']));
+             * $partner->setLutca(getUtca($this->toutf($r['putca'])));
+             * $partner->setLhazszam(getHazszam($this->toutf($r['putca'])));
+             * $partner->setKtdatalany($r['ktdatalany']);
+             * $partner->setKtdatvallal($r['ktdatvallal']);
+             * $partner->setKtdszerzszam($r['ktdszerzszam']);
+             * \mkw\store::getEm()->persist($partner);
+             * if (($db % 20) === 0) {
+             * \mkw\store::getEm()->flush();
+             * \mkw\store::getEm()->clear();
+             * }
+             * }
+             * }
+             * \mkw\store::getEm()->flush();
+             * \mkw\store::getEm()->clear();
+             *
+             * $db = 0;
+             * $stmt = $dbh->prepare('SELECT * FROM kontakt');
+             * $stmt->execute();
+             * while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+             * if (!$this->getRepo('Entities\Kontakt')->findOneBy(array('migrid' => $r['kod']))) {
+             * $partner = $this->getRepo('Entities\Partner')->findOneBy(array('migrid' => $r['cegkod']));
+             * if ($partner) {
+             * $db++;
+             * $kontakt = new \Entities\Kontakt();
+             * $kontakt->setNev($this->toutf($r['nev']));
+             * $kontakt->setMigrid($r['kod']);
+             * $kontakt->setBeosztas($this->toutf($r['beosztas']));
+             * $kontakt->setTelefon($this->toutf($r['telefon']));
+             * $kontakt->setFax($this->toutf($r['fax']));
+             * $kontakt->setMobil($this->toutf($r['mobil']));
+             * $kontakt->setEmail($this->toutf($r['email']));
+             * $kontakt->setPartner($partner);
+             * \mkw\store::getEm()->persist($kontakt);
+             * if (($db % 20) === 0) {
+             * \mkw\store::getEm()->flush();
+             * \mkw\store::getEm()->clear();
+             * }
+             * }
+             * }
+             * }
+             * \mkw\store::getEm()->flush();
+             * \mkw\store::getEm()->clear();
+             *
+             * $db = 0;
+             * $stmt = $dbh->prepare('SELECT * FROM arkategoria');
+             * $stmt->execute();
+             * while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+             * if (!$this->getRepo('Entities\Termekcsoport')->findOneBy(array('migrid' => $r['kod']))) {
+             * $db++;
+             * $tcs = new \Entities\Termekcsoport();
+             * $tcs->setNev($this->toutf($r['nev']));
+             * $tcs->setMigrid($r['kod']);
+             * \mkw\store::getEm()->persist($tcs);
+             * if (($db % 20) === 0) {
+             * \mkw\store::getEm()->flush();
+             * \mkw\store::getEm()->clear();
+             * }
+             * }
+             * }
+             * \mkw\store::getEm()->flush();
+             * \mkw\store::getEm()->clear();
+             *
+             * $stmt = $dbh->prepare('SELECT * FROM termekcsoport WHERE torolt=0 ORDER BY kod');
+             * $stmt->execute();
+             * while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+             * if (!$this->getRepo('Entities\TermekFa')->find($r['kod'])) {
+             * $q = \mkw\store::getEm()->getConnection()->prepare('INSERT INTO termekfa '
+             * . '(id,parent_id,created,nev,sorrend,karkod,inaktiv) VALUES '
+             * . '('
+             * . $r['kod'] . ','
+             * . ($r['szulokod'] == '0' ? 'null' : $r['szulokod']) . ','
+             * . 'now(),'
+             * . '"' . $this->toutf($r['nev']) . '",'
+             * . '0,'
+             * . '"' . $r['karkod'] . '",'
+             * . '0'
+             * . ')'
+             * );
+             * $q->execute();
+             * }
+             * }
+             * $this->getRepo('Entities\TermekFa')->regenerateKarkod();
+             * $this->getRepo('Entities\TermekFa')->regenerateSlug();
+             *
+             * $db = 0;
+             * $stmt = $dbh->prepare('SELECT * FROM termek WHERE (hasznalt=1) AND (kod>0)');
+             * $stmt->execute();
+             * while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+             * if (!$this->getRepo('Entities\Termek')->findOneBy(array('migrid' => $r['kod']))) {
+             * $db++;
+             * $t = new \Entities\Termek();
+             * $t->setCikkszam($this->toutf($r['cikkszam']));
+             * $t->setNev($this->toutf($r['nev']));
+             * $t->setNev2($this->toutf($r['nev2']));
+             * $t->setNev3($this->toutf($r['nev3']));
+             * $t->setNev4($this->toutf($r['nev4']));
+             * $t->setNev5($this->toutf($r['nev5']));
+             * $t->setMe($this->toutf($r['me']));
+             * $t->setKiszereles($r['gyujto']);
+             * $t->setVtsz($this->getRepo('Entities\Vtsz')->findOneBy(array('migrid' => $r['vtsz'])));
+             * $fa = $this->getRepo('Entities\TermekFa')->find($r['csoportkod']);
+             * if (!$fa) {
+             * $fa = $this->getRepo('Entities\TermekFa')->find(1);
+             * }
+             * $t->setTermekfa1($fa);
+             * $t->setSzelesseg($r['meretx']);
+             * $t->setHosszusag($r['merety']);
+             * $t->setSuly($r['suly']);
+             * $t->setSuruseg($r['anyagsuruseg']);
+             * $t->setValutameszorzo($r['valutameszorzo']);
+             * $arkat = $this->getRepo('Entities\Termekcsoport')->findOneBy(array('migrid' => $r['arkategoria']));
+             * if ($arkat) {
+             * $t->setTermekcsoport($arkat);
+             * }
+             * $t->setMigrid($r['kod']);
+             * \mkw\store::getEm()->persist($t);
+             * if (($db % 20) === 0) {
+             * \mkw\store::getEm()->flush();
+             * \mkw\store::getEm()->clear();
+             * }
+             * }
+             * }
+             * \mkw\store::getEm()->flush();
+             * \mkw\store::getEm()->clear();
+             *
+             * function createptszar($r, $szam) {
+             * $mennysz = 'menny' . $szam;
+             * if ($szam == 1) {
+             * $nettosz = 'netto';
+             * $bruttosz = 'brutto';
+             * $nettovsz = 'nettov';
+             * $bruttovsz = 'bruttov';
+             * }
+             * else {
+             * $nettosz = 'netto' . $szam;
+             * $bruttosz = 'brutto' . $szam;
+             * $nettovsz = 'nettov' . $szam;
+             * $bruttovsz = 'bruttov' . $szam;
+             * }
+             * if (($r[$nettosz] * 1 > 0) || ($r[$nettovsz] * 1 > 0)) {
+             * $ret = new \Entities\PartnerTermekSzerzodesAr();
+             * $ret->setMennyiseg($r[$mennysz] * 1);
+             * if ($r[$nettosz] * 1 > 0) {
+             * $ret->setNetto($r[$nettosz] * 1);
+             * $ret->setBrutto($r[$bruttosz] * 1);
+             * }
+             * else {
+             * $ret->setNetto($r[$nettovsz] * 1);
+             * $ret->setBrutto($r[$bruttovsz] * 1);
+             * }
+             * return $ret;
+             * }
+             * return false;
+             * }
+             *
+             * $db = 0;
+             * $stmt = $dbh->prepare('SELECT * FROM partnerszerzodes WHERE kod>0');
+             * $stmt->execute();
+             * while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+             *
+             * $partner = $this->getRepo('Entities\Partner')->findOneBy(array('migrid' => $r['partner']));
+             * $termek = $this->getRepo('Entities\Termek')->findOneBy(array('migrid' => $r['termek']));
+             *
+             * if ($partner && $termek) {
+             *
+             * $eur = $this->getRepo('Entities\Valutanem')->findOneBy(array('nev' => 'EUR'));
+             * $huf = $this->getRepo('Entities\Valutanem')->findOneBy(array('nev' => 'HUF'));
+             *
+             * $szerz = $this->getRepo('Entities\PartnerTermekSzerzodes')->findOneBy(array('termek' => $termek, 'partner' => $partner));
+             *
+             * if (!$szerz) {
+             * $szerz = new \Entities\PartnerTermekSzerzodes();
+             * $szerz->setTermek($termek);
+             * $szerz->setPartner($partner);
+             * if ($r['ervenyestol']) {
+             * $szerz->setErvenyestol(new \DateTime(\mkw\store::convDate($r['ervenyestol'])));
+             * }
+             * if ($r['ervenyesig']) {
+             * $szerz->setErvenyesig(new \DateTime(\mkw\store::convDate($r['ervenyesig'])));
+             * }
+             * if ($r['netto'] * 1 > 0) {
+             * $szerz->setValutanem($huf);
+             * }
+             * else {
+             * $szerz->setValutanem($eur);
+             * }
+             * \mkw\store::getEm()->persist($szerz);
+             *
+             * $ptszar = createptszar($r, 1);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptszar($r, 2);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptszar($r, 3);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptszar($r, 4);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptszar($r, 5);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptszar($r, 6);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptszar($r, 7);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptszar($r, 8);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptszar($r, 9);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptszar($r, 10);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * }
+             * \mkw\store::getEm()->flush();
+             * \mkw\store::getEm()->clear();
+             * }
+             * }
+             *
+             * function createptcsszar($r, $szam) {
+             * $mennysz = 'menny' . $szam;
+             * if ($szam == 1) {
+             * $nettosz = 'netto';
+             * $bruttosz = 'brutto';
+             * $nettovsz = 'nettov';
+             * $bruttovsz = 'bruttov';
+             * }
+             * else {
+             * $nettosz = 'netto' . $szam;
+             * $bruttosz = 'brutto' . $szam;
+             * $nettovsz = 'nettov' . $szam;
+             * $bruttovsz = 'bruttov' . $szam;
+             * }
+             * if (($r[$nettosz] * 1 > 0) || ($r[$nettovsz] * 1 > 0)) {
+             * $ret = new \Entities\PartnerTermekcsoportSzerzodesAr();
+             * $ret->setMennyiseg($r[$mennysz] * 1);
+             * if ($r[$nettosz] * 1 > 0) {
+             * $ret->setNetto($r[$nettosz] * 1);
+             * $ret->setBrutto($r[$bruttosz] * 1);
+             * }
+             * else {
+             * $ret->setNetto($r[$nettovsz] * 1);
+             * $ret->setBrutto($r[$bruttovsz] * 1);
+             * }
+             * return $ret;
+             * }
+             * return false;
+             * }
+             *
+             * $db = 0;
+             * $stmt = $dbh->prepare('SELECT * FROM partnerszerzodes2 WHERE kod>0');
+             * $stmt->execute();
+             * while (($r = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+             *
+             * $partner = $this->getRepo('Entities\Partner')->findOneBy(array('migrid' => $r['partner']));
+             * $termekcs = $this->getRepo('Entities\Termekcsoport')->findOneBy(array('migrid' => $r['arkategoria']));
+             *
+             * if ($partner && $termekcs) {
+             *
+             * $eur = $this->getRepo('Entities\Valutanem')->findOneBy(array('nev' => 'EUR'));
+             * $huf = $this->getRepo('Entities\Valutanem')->findOneBy(array('nev' => 'HUF'));
+             *
+             * $szerz = $this->getRepo('Entities\PartnerTermekcsoportSzerzodes')->findOneBy(array('termekcsoport' => $termekcs, 'partner' => $partner));
+             *
+             * if (!$szerz) {
+             * $szerz = new \Entities\PartnerTermekcsoportSzerzodes();
+             * $szerz->setTermekcsoport($termekcs);
+             * $szerz->setPartner($partner);
+             * if ($r['ervenyestol']) {
+             * $szerz->setErvenyestol(new \DateTime(\mkw\store::convDate($r['ervenyestol'])));
+             * }
+             * if ($r['netto'] * 1 > 0) {
+             * $szerz->setValutanem($huf);
+             * }
+             * else {
+             * $szerz->setValutanem($eur);
+             * }
+             * \mkw\store::getEm()->persist($szerz);
+             *
+             * $ptszar = createptcsszar($r, 1);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekcsoportszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptcsszar($r, 2);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekcsoportszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptcsszar($r, 3);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekcsoportszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptcsszar($r, 4);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekcsoportszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptcsszar($r, 5);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekcsoportszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptcsszar($r, 6);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekcsoportszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptcsszar($r, 7);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekcsoportszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptcsszar($r, 8);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekcsoportszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptcsszar($r, 9);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekcsoportszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * $ptszar = createptcsszar($r, 10);
+             * if ($ptszar) {
+             * $ptszar->setPartnertermekcsoportszerzodes($szerz);
+             * \mkw\store::getEm()->persist($ptszar);
+             * }
+             * }
+             * \mkw\store::getEm()->flush();
+             * \mkw\store::getEm()->clear();
+             * }
+             * }
              */
 
             $db = 0;

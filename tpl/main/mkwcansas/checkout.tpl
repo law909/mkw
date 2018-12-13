@@ -186,7 +186,7 @@
 								<div class="span8 controls js-chkszallmodlist">
 									{foreach $szallitasimodlist as $szallitasimod}
                                         <label class="radio">
-                                            <input type="radio" name="szallitasimod" class="js-chkrefresh{if ($szallitasimod.foxpost)} js-foxpostchk{/if}{if ($szallitasimod.tof)} js-tofchk{/if}" value="{$szallitasimod.id}"{if ($szallitasimod.selected)} checked{/if} data-caption="{$szallitasimod.caption}">
+                                            <input type="radio" name="szallitasimod" class="js-chkrefresh{if ($szallitasimod.foxpost)} js-foxpostchk{/if}{if ($szallitasimod.tof)} js-tofchk{/if}{if ($szallitasimod.gls)} js-glschk{/if}" value="{$szallitasimod.id}"{if ($szallitasimod.selected)} checked{/if} data-caption="{$szallitasimod.caption}">
                                             {$szallitasimod.caption}
                                         </label>
                                         {if ($szallitasimod.leiras)}
@@ -197,6 +197,9 @@
                                         {/if}
                                         {if ($szallitasimod.tof)}
                                             <div class="js-tofmapcontainer"></div>
+                                        {/if}
+                                        {if ($szallitasimod.gls)}
+                                            <div id="glsmapcontainer"></div>
                                         {/if}
 									{/foreach}
                                     <input type="hidden" class="js-tofnev">

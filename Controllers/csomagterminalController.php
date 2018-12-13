@@ -60,7 +60,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         foreach ($terminalok as $terminal) {
             $megvan = false;
             foreach ($res as $r) {
-                $megvan = $megvan || ((int)$r->place_id === $terminal->getIdegenid());
+                $megvan = $megvan || ($r->place_id === $terminal->getIdegenid());
             }
             if (!$megvan) {
                 $terminal->setInaktiv(!$megvan);
@@ -79,7 +79,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
     public function sendMegrendelesToFoxpost($fej) {
         $ch = $this->initFoxpostCurl('orders');
         $fields = array(
-            'place_id' => (int)$fej->getCsomagterminalId(),
+            'place_id' => (int)$fej->getCsomagterminalIdegenId(),
             'name' => ( \mkw\store::getConfigValue('developer') ? 'teszt' : $fej->getPartnernev()),
             'phone' => $fej->getPartnertelefon(),
             'email' => $fej->getPartneremail(),
@@ -100,6 +100,65 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         curl_close($ch);
         $res = json_decode($res, true);
         return $res;
+    }
+
+    public function downloadGLSTerminalList() {
+        $sep = ';';
+        $ch = curl_init(\mkw\store::getParameter(\mkw\consts::GLSTerminalURL));
+        $fh = fopen('glscsomagpont.csv', 'w');
+        curl_setopt($ch, CURLOPT_FILE, $fh);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_exec($ch);
+        fclose($fh);
+        $fh = fopen('glscsomagpont.csv', 'r');
+        if ($fh) {
+
+            $pontok = array();
+            fgetcsv($fh, 0, $sep);
+            while ($data = fgetcsv($fh, 0, $sep)) {
+                $pontok[] = $data;
+            }
+            $db = 0;
+            foreach ($pontok as $i => $r) {
+                $db++;
+                $terminal = $this->getRepo('Entities\CsomagTerminal')->findOneBy(array('idegenid' => $r[\mkw\store::n('a')], 'tipus' => 'gls'));
+                if (!$terminal) {
+                    $terminal = new \Entities\CsomagTerminal();
+                }
+                $terminal->setIdegenid($r[\mkw\store::n('a')]);
+                $terminal->setNev(\mkw\store::toutf($r[\mkw\store::n('f')]));
+                $terminal->setCim(\mkw\store::toutf($r[\mkw\store::n('e')]));
+                $terminal->setCsoport(\mkw\store::toutf($r[\mkw\store::n('d')]));
+                $terminal->setFindme(\mkw\store::toutf($r[\mkw\store::n('g')] . ' ' . $r[\mkw\store::n('h')]));
+                $terminal->setInaktiv(false);
+                $terminal->setTipus('gls');
+                $this->getEm()->persist($terminal);
+                if ($db % 20 === 0) {
+                    $this->getEm()->flush();
+                    $this->getEm()->clear();
+                }
+            }
+            $this->getEm()->flush();
+            $this->getEm()->clear();
+
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('tipus', '=', 'gls');
+            $terminalok = $this->getRepo('\Entities\CsomagTerminal')->getAll($filter);
+            /** @var \Entities\CsomagTerminal $terminal */
+            foreach ($terminalok as $terminal) {
+                $megvan = false;
+                foreach ($pontok as $r) {
+                    $megvan = $megvan || ($r[\mkw\store::n('a')] === $terminal->getIdegenid());
+                }
+                if (!$megvan) {
+                    $terminal->setInaktiv(!$megvan);
+                    $this->getEm()->persist($terminal);
+                }
+            }
+            $this->getEm()->flush();
+            $this->getEm()->clear();
+        }
     }
 
     public function getCsoportok() {

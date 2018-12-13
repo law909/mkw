@@ -14,22 +14,22 @@ class CsomagTerminal {
 	 */
 	private $id;
 
-    /** @ORM\Column(type="integer") */
+    /** @ORM\Column(type="string",length=100) */
     private $idegenid;
 
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $tipus;
 
-	/** @ORM\Column(type="string",length=70,nullable=true) */
+	/** @ORM\Column(type="string",length=254,nullable=true) */
 	private $nev;
 
-    /** @ORM\Column(type="string",length=100,nullable=true) */
+    /** @ORM\Column(type="string",length=254,nullable=true) */
 	private $cim;
 
-    /** @ORM\Column(type="string",length=35,nullable=true) */
+    /** @ORM\Column(type="string",length=100,nullable=true) */
 	private $csoport;
 
-    /** @ORM\Column(type="string",length=35,nullable=true) */
+    /** @ORM\Column(type="string",length=100,nullable=true) */
 	private $subgroup;
 
     /** @ORM\Column(type="string",length=75,nullable=true) */

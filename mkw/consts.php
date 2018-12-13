@@ -107,6 +107,7 @@ class consts {
     const Hirekoldalcim = 'hirekoldalcim';
     const Hirekseodescription = 'hirekseodescription';
     const GAFollow = 'gafollow';
+    const GMapsApiKey = 'gmapsapikey';
     const FBAppId = 'fbappid';
 
     const MarkaCs = 'markacs';
@@ -154,7 +155,10 @@ class consts {
     const FoxpostUsername = 'foxpostusername';
     const FoxpostPassword = 'foxpostpassword';
 
+    const GLSTerminalURL = 'glsterminalurl';
+    
     const TOFSzallitasiMod = 'tofszallitasimod';
+    const GLSSzallitasiMod = 'glsszallitasimod';
 
     const ValtozatSorrend = 'valtozatsorrend';
     const RendezendoValtozat = 'rendezendovaltozat';
@@ -196,6 +200,8 @@ class consts {
     const UrlLegavenue = 'urllegavenue';
     const UrlHaffner24 = 'urlhaffner24';
     const UrlReintex = 'urlreintex';
+
+    const ExcludeReintex = 'excludereintex';
 
     const RunningKreativImport = 'runningkreativimport';
     const RunningDeltonImport = 'runningdeltonimport';

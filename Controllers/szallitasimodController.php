@@ -263,6 +263,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
     public function getSelectList($selid = null, $mind = false) {
         $foxpostid = \mkw\store::getParameter(\mkw\consts::FoxpostSzallitasiMod);
         $tofid = \mkw\store::getParameter(\mkw\consts::TOFSzallitasiMod);
+        $glsid = \mkw\store::getParameter(\mkw\consts::GLSSzallitasiMod);
         if ($mind) {
             $rec = $this->getRepo()->getAll(array(),array('sorrend'=>'ASC','nev'=>'ASC'));
         }
@@ -279,6 +280,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
                 'leiras' => $sor->getLeiras(),
                 'foxpost' => ($sor->getId() == $foxpostid),
                 'tof' => ($sor->getId() == $tofid),
+                'gls' => ($sor->getId() == $glsid),
                 'terminaltipus' => $sor->getTerminaltipus()
             );
             if ($selid) {

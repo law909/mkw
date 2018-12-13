@@ -59,7 +59,7 @@ $(document).ready(function() {
                 });
             }).button();
 
-            $('.js-foxpostterminalimport').on('click', function(e) {
+            $('.js-foxpostterminalimport, .js-glsterminalimport').on('click', function(e) {
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',

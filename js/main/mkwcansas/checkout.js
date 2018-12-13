@@ -77,13 +77,13 @@ var checkout = (function($, guid) {
             })
         }
         else
-            if ($szallmodchk.hasClass('js-tofchk')) {
-                $('.js-tofmapcontainer').html('<iframe width="100%" height="471px" src="http://tofweb.hu/tofshops/ts_api_v2.php"></iframe>').show();
-                refreshAttekintes();
-            }
-            else {
-                refreshAttekintes();
-            }
+        if ($szallmodchk.hasClass('js-tofchk')) {
+            $('.js-tofmapcontainer').html('<iframe width="100%" height="471px" src="http://tofweb.hu/tofshops/ts_api_v2.php"></iframe>').show();
+            refreshAttekintes();
+        }
+        else {
+            refreshAttekintes();
+        }
     }
 
     function loadFoxpostTerminalData() {

@@ -135,6 +135,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('foxpostszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
         $p = $repo->find(\mkw\consts::TOFSzallitasiMod);
         $view->setVar('tofszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
+        $p = $repo->find(\mkw\consts::GLSSzallitasiMod);
+        $view->setVar('glsszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
 
         $p = $repo->find(\mkw\consts::NullasAfa);
         $fizmod = new afaController($this->params);
@@ -193,6 +195,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::Autologoutmin, ($p ? $p->getErtek() : 10));
         $p = $repo->find(\mkw\consts::GAFollow);
         $view->setVar(\mkw\consts::GAFollow, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::GMapsApiKey);
+        $view->setVar(\mkw\consts::GMapsApiKey, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::FBAppId);
         $view->setVar(\mkw\consts::FBAppId, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::FoxpostApiURL);
@@ -209,6 +213,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::EmagUsercode, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::EmagPassword);
         $view->setVar(\mkw\consts::EmagPassword, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::GLSTerminalURL);
+        $view->setVar(\mkw\consts::GLSTerminalURL, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::KuponElotag);
         $view->setVar(\mkw\consts::KuponElotag, ($p ? $p->getErtek() : 'MKW'));
         $p = $repo->find(\mkw\consts::Off);
@@ -507,6 +513,9 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::UrlReintex);
         $view->setVar(\mkw\consts::UrlReintex, ($p ? $p->getErtek() : ''));
 
+        $p = $repo->find(\mkw\consts::ExcludeReintex);
+        $view->setVar(\mkw\consts::ExcludeReintex, ($p ? $p->getErtek() : ''));
+
         $p = $repo->find(\mkw\consts::MiniCRMHasznalatban);
         $view->setVar(\mkw\consts::MiniCRMHasznalatban, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::MiniCRMSystemId);
@@ -649,6 +658,14 @@ class setupController extends \mkwhelpers\Controller {
             $this->setObj(\mkw\consts::TOFSzallitasiMod, '');
         }
 
+        $szm = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('glsszallmod', 0));
+        if ($szm) {
+            $this->setObj(\mkw\consts::GLSSzallitasiMod, $szm->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GLSSzallitasiMod, '');
+        }
+
         $belsouk = \mkw\store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('belsouk', 0));
         if ($belsouk) {
             $this->setObj(\mkw\consts::BelsoUzletkoto, $belsouk->getId());
@@ -699,6 +716,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Hirekoldalcim, $this->params->getStringRequestParam('hirekoldalcim'));
         $this->setObj(\mkw\consts::Hirekseodescription, $this->params->getStringRequestParam('hirekseodescription'));
         $this->setObj(\mkw\consts::GAFollow, $this->params->getStringRequestParam('gafollow'));
+        $this->setObj(\mkw\consts::GMapsApiKey, $this->params->getStringRequestParam('gmapsapikey'));
         $this->setObj(\mkw\consts::FBAppId, $this->params->getStringRequestParam('fbappid'));
         $this->setObj(\mkw\consts::FoxpostApiURL, $this->params->getStringRequestParam('foxpostapiurl'), true);
         $this->setObj(\mkw\consts::FoxpostUsername, $this->params->getStringRequestParam('foxpostusername'));
@@ -707,6 +725,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::EmagUsername, $this->params->getStringRequestParam('emagusername'));
         $this->setObj(\mkw\consts::EmagUsercode, $this->params->getStringRequestParam('emagusercode'));
         $this->setObj(\mkw\consts::EmagPassword, $this->params->getStringRequestParam('emagpassword'));
+        $this->setObj(\mkw\consts::GLSTerminalURL, $this->params->getStringRequestParam('glsterminalurl'), true);
         $this->setObj(\mkw\consts::MiniCRMHasznalatban, $this->params->getBoolRequestParam('minicrmhasznalatban'));
         $this->setObj(\mkw\consts::MiniCRMSystemId, $this->params->getStringRequestParam('minicrmsystemid'));
         $this->setObj(\mkw\consts::MiniCRMAPIKey, $this->params->getStringRequestParam('minicrmapikey'));
@@ -1145,6 +1164,8 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::UrlLegavenue, $this->params->getStringRequestParam('urllegavenue', ''), true);
         $this->setObj(\mkw\consts::UrlHaffner24, $this->params->getStringRequestParam('urlhaffner24', ''), true);
         $this->setObj(\mkw\consts::UrlReintex, $this->params->getStringRequestParam('urlreintex', ''), true);
+
+        $this->setObj(\mkw\consts::ExcludeReintex, $this->params->getStringRequestParam('excludereintex', ''), true);
 
         $this->setObj(\mkw\consts::MugenraceLogo, $this->params->getStringRequestParam('mugenracelogo'));
         $this->setObj(\mkw\consts::MugenraceFooterLogo, $this->params->getStringRequestParam('mugenracefooterlogo'));
