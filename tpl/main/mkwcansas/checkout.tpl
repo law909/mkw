@@ -199,7 +199,7 @@
                                             <div class="js-tofmapcontainer"></div>
                                         {/if}
                                         {if ($szallitasimod.gls)}
-                                            <div id="glsmapcontainer"></div>
+                                            <div class="js-glsterminalcontainer chk-glscontainer"></div>
                                         {/if}
 									{/foreach}
                                     <input type="hidden" class="js-tofnev">

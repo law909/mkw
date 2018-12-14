@@ -104,6 +104,8 @@ $router->map('GET', '/checkout/koszonjuk', 'checkoutController#thanks', 'checkou
 $router->map('GET', '/checkout/barionerror', 'checkoutController#barionError', 'checkoutbarionerror');
 $router->map('GET', '/checkout/getfoxpostcsoportlist', 'csomagterminalController#getCsoportok', 'checkoutgetfoxpostcsoportlist');
 $router->map('GET', '/checkout/getfoxpostterminallist', 'csomagterminalController#getTerminalok', 'checkoutgetfoxpostterminallist');
+$router->map('GET', '/checkout/getglscsoportlist', 'csomagterminalController#getCsoportok', 'checkoutgetglscsoportlist');
+$router->map('GET', '/checkout/getglsterminallist', 'csomagterminalController#getTerminalok', 'checkoutgetglsterminallist');
 $router->map('GET', '/checkout/getcsomagterminalid', 'csomagterminalController#getTerminalId', 'checkoutgetcsomagterminalid');
 
 $router->map('GET', '/irszam', 'irszamController#typeaheadList', 'irszamtypeahead');

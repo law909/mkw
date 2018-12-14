@@ -594,6 +594,7 @@ var checkout = (function($, guid) {
 
     function loadCsomagterminalData(termis) {
         $('.js-foxpostterminalcontainer').empty().hide();
+        $('.js-glsterminalcontainer').empty().hide();
         $('.js-tofmapcontainer').empty().hide();
         $('.js-tofnev').val('');
         $('.js-tofid').val('');
@@ -609,6 +610,25 @@ var checkout = (function($, guid) {
                     $('.js-foxpostterminalcontainer').html(d.html).show();
                     if (termis) {
                         loadFoxpostTerminalData();
+                    }
+                    else {
+                        refreshAttekintes();
+                    }
+                }
+            })
+        }
+        else
+        if ($szallmodchk.hasClass('js-glschk')) {
+            $.ajax({
+                url: '/checkout/getglscsoportlist',
+                data: {
+                    szmid: $szallmodchk.val()
+                },
+                success: function(data) {
+                    var d = JSON.parse(data);
+                    $('.js-glsterminalcontainer').html(d.html).show();
+                    if (termis) {
+                        loadGLSTerminalData();
                     }
                     else {
                         refreshAttekintes();
@@ -639,6 +659,24 @@ var checkout = (function($, guid) {
                 var d = JSON.parse(data);
                 $('select[name="foxpostterminal"]').remove();
                 $('.js-foxpostterminalcontainer').append(d.html);
+                refreshAttekintes();
+            }
+        })
+    }
+
+    function loadGLSTerminalData() {
+        var cs = $('select[name="glscsoport"]').val(),
+            $szallmodchk = $('input[name="szallitasimod"]:checked');
+        $.ajax({
+            url: '/checkout/getglsterminallist',
+            data: {
+                cs: cs,
+                szmid: $szallmodchk.val()
+            },
+            success: function(data) {
+                var d = JSON.parse(data);
+                $('select[name="glsterminal"]').remove();
+                $('.js-glsterminalcontainer').append(d.html);
                 refreshAttekintes();
             }
         })
@@ -703,8 +741,13 @@ var checkout = (function($, guid) {
             $('.js-chkcsomagterminal').text($('select[name="foxpostterminal"] option:selected').text());
         }
         else {
-            if ($szallmodchk.hasClass('js-tofchk')) {
-                $('.js-chkcsomagterminal').text($('.js-tofnev').val());
+            if ($szallmodchk.hasClass('js-glschk')) {
+                $('.js-chkcsomagterminal').text($('select[name="glsterminal"] option:selected').text());
+            }
+            else {
+                if ($szallmodchk.hasClass('js-tofchk')) {
+                    $('.js-chkcsomagterminal').text($('.js-tofnev').val());
+                }
             }
         }
 		$('.js-chkfizetesimod').text($('input[name="fizetesimod"]:checked').data('caption'));
@@ -765,6 +808,9 @@ var checkout = (function($, guid) {
 			$checkout
             .on('change', 'select[name="foxpostcsoport"]', function() {
                 loadFoxpostTerminalData();
+            })
+            .on('change', 'select[name="glscsoport"]', function() {
+                loadGLSTerminalData();
             })
 			.on('change', 'input[name="szallitasimod"]', function() {
 				loadFizmodList();

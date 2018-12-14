@@ -224,6 +224,9 @@ class checkoutController extends \mkwhelpers\MattableController {
                 $akciohirlevel = $this->params->getBoolRequestParam('akciohirlevel');
                 $ujdonsaghirlevel = $this->params->getBoolRequestParam('ujdonsaghirlevel');
                 $csomagterminalid = $this->params->getIntRequestParam('foxpostterminal');
+                if (!$csomagterminalid) {
+                    $csomagterminalid = $this->params->getIntRequestParam('glsterminal');
+                }
                 $tofterminalid = $this->params->getIntRequestParam('tofid');
                 $kuponkod = $this->params->getStringRequestParam('kupon');
 
@@ -238,7 +241,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                         $aszfready
                         );
 
-                if (\mkw\store::isFoxpostSzallitasimod($szallitasimod)) {
+                if (\mkw\store::isFoxpostSzallitasimod($szallitasimod) || \mkw\store::isGLSSzallitasimod($szallitasimod)) {
                     $ok = $ok && $csomagterminalid;
                 }
 
@@ -407,7 +410,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                         $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
                     }
                     $megrendfej->setBizonylatstatusz($bizstatusz);
-                    if (\mkw\store::isFoxpostSzallitasimod($szallitasimod)) {
+                    if (\mkw\store::isFoxpostSzallitasimod($szallitasimod) || \mkw\store::isGLSSzallitasimod($szallitasimod)) {
                         $fpc = $this->getRepo('Entities\CsomagTerminal')->find($csomagterminalid);
                         if ($fpc) {
                             $megrendfej->setCsomagterminal($fpc);

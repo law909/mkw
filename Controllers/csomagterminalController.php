@@ -187,8 +187,8 @@ class csomagterminalController extends \mkwhelpers\MattableController {
             }
             $res[] = $r;
         }
-		$view = \mkw\store::getTemplateFactory()->createMainView('checkoutfoxpostcsoportlist.tpl');
-		$view->setVar('foxpostcsoportlist', $res);
+		$view = \mkw\store::getTemplateFactory()->createMainView('checkout' . $tipus . 'csoportlist.tpl');
+		$view->setVar($tipus . 'csoportlist', $res);
 		echo json_encode(array(
             'html' => $view->getTemplateResult()
         ));
@@ -221,8 +221,8 @@ class csomagterminalController extends \mkwhelpers\MattableController {
             }
             $res[] = $r;
         }
-		$view = \mkw\store::getTemplateFactory()->createMainView('checkoutfoxpostterminallist.tpl');
-		$view->setVar('foxpostterminallist', $res);
+		$view = \mkw\store::getTemplateFactory()->createMainView('checkout' . $tipus . 'terminallist.tpl');
+		$view->setVar($tipus . 'terminallist', $res);
 		echo json_encode(array(
             'html' => $view->getTemplateResult()
         ));
@@ -232,12 +232,12 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         if (!is_null($tipus)) {
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('tipus', '=', $tipus);
-            $rec = $this->getRepo()->getAll($filter, array('nev' => 'ASC'));
+            $rec = $this->getRepo()->getAll($filter, array('csoport' => 'ASC', 'nev' => 'ASC'));
             $res = array();
             foreach ($rec as $sor) {
                 $res[] = array(
                     'id' => $sor->getId(),
-                    'caption' => $sor->getNev() . ' ' . $sor->getCim(),
+                    'caption' => $sor->getCsoport() . ' ' . $sor->getNev() . ' ' . $sor->getCim(),
                     'selected' => ($sor->getId() == $selid)
                 );
             }
