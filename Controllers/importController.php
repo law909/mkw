@@ -167,6 +167,21 @@ class importController extends \mkwhelpers\Controller {
         return $cimke1;
     }
 
+    private function createTermekCimke($ckat, $nev) {
+        if (!$nev) {
+            return null;
+        }
+        $cimke1 = \mkw\store::getEm()->getRepository('Entities\Termekcimketorzs')->getByNevAndKategoria($nev, $ckat);
+        if (!$cimke1) {
+            $cimke1 = new \Entities\Termekcimketorzs();
+            $cimke1->setKategoria($ckat);
+            $cimke1->setNev($nev);
+            $cimke1->setMenu1lathato(false);
+            \mkw\store::getEm()->persist($cimke1);
+        }
+        return $cimke1;
+    }
+
     private function checkRunningImport($imp) {
         return (boolean)\mkw\store::getParameter($imp);
     }
@@ -2009,8 +2024,11 @@ class importController extends \mkwhelpers\Controller {
 
     public function reintexImport() {
 
-        echo json_encode(array('msg' => 'Fejlesztés alatt.'));
-        return false;
+//        echo json_encode(array('msg' => 'Fejlesztés alatt.'));
+//        return false;
+        function trimCikkszam($csz) {
+            return str_replace('g', '', $csz);
+        }
 
         if (!$this->checkRunningImport(\mkw\consts::RunningReintexImport)) {
 
@@ -2039,6 +2057,8 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
+            @\unlink('reintex_fuggoben.txt');
+
             if (\mkw\store::isDeveloper()) {
                 move_uploaded_file($_FILES['toimport']['tmp_name'], 'reintex.csv');
             }
@@ -2057,87 +2077,68 @@ class importController extends \mkwhelpers\Controller {
                 $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
                 $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
                 $termekdb = 0;
+                $minden = array();
                 $termekek = array();
                 $szulogyerekek = array();
                 $cikkszamok = array();
                 fgetcsv($fh, 0, $sep, '"');
                 while ($data = fgetcsv($fh, 0, $sep, '"')) {
-                    if (!\mkw\store::strpos_array($data[$this->n('a')], explode(',', \mkw\store::getParameter(\mkw\consts::ExcludeReintex)))) {
-                        if (!$data[$this->n('u')]) {
-                            $termekek[] = $data;
+                    if (($data[$this->n('c')] != 2) && (!\mkw\store::strpos_array($data[$this->n('a')], explode(',', \mkw\store::getParameter(\mkw\consts::ExcludeReintex))))) {
+                        $minden[] = $data;
+                        $cikkszamok[] = trimCikkszam($data[$this->n('a')]);
+                        $kats = explode('|', $data[$this->n('k')]);
+                        $kid = $parentid;
+                        foreach ($kats as $kat) {
+                            $kp = $this->createKategoria($this->toutf($kat), $kid);
+                            $kid = $kp->getId();
                         }
                     }
                 }
-                rewind($fh);
-                fgetcsv($fh, 0, $sep, '"');
-                while ($data = fgetcsv($fh, 0, $sep, '"')) {
-                    if (!\mkw\store::strpos_array($data[$this->n('a')], explode(',', \mkw\store::getParameter(\mkw\consts::ExcludeReintex)))) {
-                        if ($data[$this->n('u')] === 'unas') {
-                            $szulogyerekek[$data[$this->n('a')]][] = $data;
-                        }
-                    }
-                }
-                rewind($fh);
-                fgetcsv($fh, 0, $sep, '"');
-                while ($data = fgetcsv($fh, 0, $sep, '"')) {
-                    if (!\mkw\store::strpos_array($data[$this->n('a')], explode(',', \mkw\store::getParameter(\mkw\consts::ExcludeReintex)))) {
-                        if (($data[$this->n('u')] !== 'unas') && $data[$this->n('u')]) {
-                            $szulogyerekek[$data[$this->n('u')]][] = $data;
-                        }
-                    }
-                }
-                rewind($fh);
-                fgetcsv($fh, 0, $sep, '"');
-                while ($data = fgetcsv($fh, 0, $sep, '"')) {
-                    $cikkszamok[] = $data[$this->n('a')];
-                    $kats = explode('|', $data[$this->n('k')]);
-                    $kid = $parentid;
-                    foreach ($kats as $kat) {
-                        $kid = $this->createKategoria($this->toutf($kat), $kid);
-                    }
-                }
-                \mkw\store::writelog(print_r($termekek, true), 'reintex.log');
-                \mkw\store::writelog(print_r($szulogyerekek, true), 'reintexszulo.log');
-                while (false) {
+
+                foreach ($minden as $data) {
                     $termekdb++;
-                    if ($data[$this->n('a')]) {
-                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data[$this->n('a')], 'gyarto' => $gyartoid));
+                    $cikkszam = trimCikkszam($data[$this->n('a')]);
+                    if ($cikkszam) {
+                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikkszam, 'gyarto' => $gyartoid));
                         if (!$termek) {
 
-                            if ($createuj) {
-
-                                $termeknev = mb_convert_encoding($data[$this->n('b')], 'UTF8', 'ISO-8859-2');
-
-                                $termek = new \Entities\Termek();
-                                $termek->setFuggoben(true);
-                                $termek->setMe($data[$this->n('h')]);
-                                $termek->setNev($termeknev);
-                                $leiras = mb_convert_encoding(trim($data[$this->n('d')]), 'UTF8', 'ISO-8859-2');
-                                $termek->setRovidleiras(mb_substr($leiras, 0, 100, 'UTF8') . '...');
-                                $termek->setLeiras($leiras);
-                                $termek->setCikkszam($data[$this->n('a')]);
-                                $termek->setTermekfa1($parent);
-                                $termek->setVtsz($vtsz[0]);
-                                $termek->setHparany(3);
-                                if ($gyarto) {
-                                    $termek->setGyarto($gyarto);
+                            $valtozatok = $this->getRepo('Entities\TermekValtozat')->findBy(array('idegencikkszam' => $cikkszam));
+                            if ($valtozatok) {
+                                foreach ($valtozatok as $v) {
+                                    $termek = $v->getTermek();
+                                    if ($termek && $termek->getGyartoId() == $gyartoid) {
+                                        $valtozat = $v;
+                                        break;
+                                    }
                                 }
                             }
                         }
-                        else {
+                        if (is_array($termek)) {
                             $termek = $termek[0];
-                            if ($editleiras) {
-                                //$hosszuleiras = mb_convert_encoding(trim($data[3]), 'UTF8', 'ISO-8859-2');
-                                //$termek->setLeiras($hosszuleiras);
-                                //$rovidleiras = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
-                                //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
-                            }
                         }
                         if ($termek) {
-                            if (!$termek->getAkcios()) {
-                                $termek->setBrutto(round($data[$this->n('i')] * 1 * $arszaz / 100, -1));
+                            //$termek->setMe(mb_convert_encoding($data[$this->n('h')], 'UTF8', 'ISO-8859-2'));
+                            if ($editnev && false) {
+                                if (trim($data[$this->n('b')])) {
+                                    $termek->setNev(mb_convert_encoding($data[$this->n('b')], 'UTF8', 'ISO-8859-2'));
+                                }
                             }
-                            \mkw\store::getEm()->persist($termek);
+                            if ($editleiras) {
+                                if (trim($data[$this->n('d')])) {
+                                    if (!$termek->getLeiras()) {
+                                        $hosszuleiras = mb_convert_encoding(trim($data[$this->n('d')]), 'UTF8', 'ISO-8859-2');
+                                        $termek->setLeiras($hosszuleiras);
+                                    }
+
+                                    if (!$termek->getRovidLeiras()) {
+                                        $puri2 = \mkw\store::getSanitizer();
+                                        $rovidleiras = $puri2->sanitize($hosszuleiras);
+                                        $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
+                                    }
+
+                                }
+                            }
+                            $this->getEm()->persist($termek);
                         }
                     }
                     if (($termekdb % $batchsize) === 0) {
@@ -2150,6 +2151,176 @@ class importController extends \mkwhelpers\Controller {
                 }
                 \mkw\store::getEm()->flush();
                 \mkw\store::getEm()->clear();
+
+                $minden = null;
+
+                $lettfuggoben = false;
+                if ($gyarto) {
+                    if ($cikkszamok) {
+                        $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
+                        $termekdb = 0;
+                        foreach ($termekek as $t) {
+                            if (in_array($t['cikkszam'], $cikkszamok)) {
+                                $termeketkikellvenni = true;
+                                /** @var \Entities\Termek $termek */
+                                $termek = $this->getRepo('Entities\Termek')->find($t['id']);
+                                /** @var \Entities\TermekValtozat $valtozat */
+                                foreach ($termek->getValtozatok() as $valtozat) {
+                                    if ($valtozat->getIdegencikkszam()) {
+                                        if (!in_array($valtozat->getIdegencikkszam(), $cikkszamok)) {
+                                            if ($valtozat->getKeszlet() > 0) {
+                                                $termeketkikellvenni = false;
+                                            }
+                                            // a változat nincs készleten, nincs meg az id.cikkszám reintexnel, a terméknek sincs id.cikkszáma
+                                            else {
+                                                $termekdb++;
+                                                \mkw\store::writelog('VÁLTOZAT idegen cikkszám: ' . $valtozat->getIdegencikkszam(), 'reintex_fuggoben.txt');
+                                                $lettfuggoben = true;
+                                                $valtozat->setLathato(false);
+                                                $valtozat->setElerheto(false);
+                                                \mkw\store::getEm()->persist($valtozat);
+                                                if (($termekdb % $batchsize) === 0) {
+                                                    \mkw\store::getEm()->flush();
+                                                    \mkw\store::getEm()->clear();
+                                                }
+                                            }
+                                        }
+                                        // megvan a cikkszám reintexnel
+                                        else {
+                                            $termeketkikellvenni = false;
+                                        }
+                                    }
+                                    // nincs cikkszám
+                                    else {
+                                        $termeketkikellvenni = false;
+                                    }
+                                }
+                                if ($termeketkikellvenni) {
+                                    if ($termek && $termek->getKeszlet() <= 0) {
+                                        $termekdb++;
+                                        \mkw\store::writelog('TERMÉK cikkszám: ' . $t['cikkszam'] . $termek->getCikkszam(), 'reintex_fuggoben.txt');
+                                        $lettfuggoben = true;
+                                        $termek->setInaktiv(true);
+                                        \mkw\store::getEm()->persist($termek);
+                                        if (($termekdb % $batchsize) === 0) {
+                                            \mkw\store::getEm()->flush();
+                                            \mkw\store::getEm()->clear();
+                                        }
+                                    }
+                                }
+                            }
+                            else {
+                                /** @var \Entities\Termek $termek */
+                                $termek = $this->getRepo('Entities\Termek')->find($t['id']);
+                                if ($termek && $termek->getKeszlet() <= 0) {
+                                    $termekdb++;
+                                    \mkw\store::writelog('TERMÉK cikkszám: ' . $t['cikkszam'], 'reintex_fuggoben.txt');
+                                    $lettfuggoben = true;
+                                    $termek->setInaktiv(true);
+                                    \mkw\store::getEm()->persist($termek);
+                                    if (($termekdb % $batchsize) === 0) {
+                                        \mkw\store::getEm()->flush();
+                                        \mkw\store::getEm()->clear();
+                                    }
+                                }
+                            }
+                        }
+                        \mkw\store::getEm()->flush();
+                        \mkw\store::getEm()->clear();
+                    }
+                }
+                if ($lettfuggoben) {
+                    echo json_encode(array('url' => '/reintex_fuggoben.txt'));
+                }
+
+                if ($createuj && false) {
+                    rewind($fh);
+                    fgetcsv($fh, 0, $sep, '"');
+                    while ($data = fgetcsv($fh, 0, $sep, '"')) {
+                        if (($data[$this->n('c')] != 2) && (!\mkw\store::strpos_array($data[$this->n('a')], explode(',', \mkw\store::getParameter(\mkw\consts::ExcludeReintex))))) {
+                            if (!$data[$this->n('u')] && ($data[$this->n('c')] != 2)) {
+                                $termekek[] = $data;
+                            }
+                        }
+                    }
+                    rewind($fh);
+                    fgetcsv($fh, 0, $sep, '"');
+                    while ($data = fgetcsv($fh, 0, $sep, '"')) {
+                        if (($data[$this->n('c')] != 2) && (!\mkw\store::strpos_array($data[$this->n('a')], explode(',', \mkw\store::getParameter(\mkw\consts::ExcludeReintex))))) {
+                            if (($data[$this->n('u')] === 'unas') && ($data[$this->n('c')] != 2)) {
+                                $szulogyerekek[$data[$this->n('a')]][] = $data;
+                            }
+                        }
+                    }
+                    rewind($fh);
+                    fgetcsv($fh, 0, $sep, '"');
+                    while ($data = fgetcsv($fh, 0, $sep, '"')) {
+                        if (($data[$this->n('c')] != 2) && (!\mkw\store::strpos_array($data[$this->n('a')], explode(',', \mkw\store::getParameter(\mkw\consts::ExcludeReintex))))) {
+                            if (($data[$this->n('u')] !== 'unas') && $data[$this->n('u')] && ($data[$this->n('c')] != 2)) {
+                                $szulogyerekek[$data[$this->n('u')]][] = $data;
+                            }
+                        }
+                    }
+
+                    \mkw\store::writelog(print_r($termekek, true), 'reintex.log');
+                    \mkw\store::writelog(print_r($szulogyerekek, true), 'reintexszulo.log');
+
+                    foreach ($termekek as $data) {
+                        $termekdb++;
+                        $cikkszam = trimCikkszam($data[$this->n('a')]);
+                        if ($cikkszam) {
+                            $termek = $this->getRepo('Entities\Termek')->findBy(array('cikkszam' => $cikkszam, 'gyarto' => $gyartoid));
+                            if (!$termek) {
+
+                                $valtozatok = $this->getRepo('Entities\TermekValtozat')->findBy(array('idegencikkszam' => $cikkszam));
+                                if ($valtozatok) {
+                                    foreach ($valtozatok as $v) {
+                                        $termek = $v->getTermek();
+                                        if ($termek && $termek->getGyartoId() == $gyartoid) {
+                                            $valtozat = $v;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (!$valtozat) {
+                                    $termeknev = mb_convert_encoding($data[$this->n('b')], 'UTF8', 'ISO-8859-2');
+
+                                    $termek = new \Entities\Termek();
+                                    $termek->setFuggoben(true);
+                                    $termek->setMe($data[$this->n('h')]);
+                                    $termek->setNev($termeknev);
+
+                                    $hosszuleiras = mb_convert_encoding(trim($data[$this->n('d')]), 'UTF8', 'ISO-8859-2');
+                                    $termek->setLeiras($hosszuleiras);
+
+                                    $puri2 = \mkw\store::getSanitizer();
+                                    $rovidleiras = $puri2->sanitize($hosszuleiras);
+                                    $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
+
+                                    $termek->setCikkszam($cikkszam);
+                                    $termek->setTermekfa1($parent);
+                                    $termek->setVtsz($vtsz[0]);
+                                    $termek->setHparany(3);
+                                    if ($gyarto) {
+                                        $termek->setGyarto($gyarto);
+                                    }
+                                    $this->getEm()->persist($termek);
+                                }
+                            }
+                        }
+                        if (($termekdb % $batchsize) === 0) {
+                            $this->getEm()->flush();
+                            $this->getEm()->clear();
+                            $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
+                            $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                            $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
+                        }
+
+                    }
+
+                }
+
                 fclose($fh);
                 \unlink('reintex.csv');
             }
@@ -3656,7 +3827,6 @@ class importController extends \mkwhelpers\Controller {
                 else {
                     $termek->setNev($data[$this->n('f')]);
                     $termek->setCikkszam($data[$this->n('e')]);
-                    $termek->setTermekfa1($parent);
                     $termek->setVtsz($vtsz);
 
                     $valt = \mkw\store::getEm()->getRepository('Entities\TermekValtozat')->findByVonalkod($data[$this->n('d')]);
