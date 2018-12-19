@@ -20,7 +20,7 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th class="textalignright">Org. unit price</th>
+                            <th class="textalignright">Retail price</th>
                             <th class="textalignright">Discount</th>
                             <th class="textalignright">Unit price</th>
                             <th class="textalignright">Stock</th>
