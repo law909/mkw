@@ -166,6 +166,8 @@ $router->map('POST', '/admin/bizonylatfej/setstatusz', 'bizonylatfejController#s
 $router->map('POST', '/admin/bizonylatfej/setnyomtatva', 'bizonylatfejController#setNyomtatva', 'adminbizonylatfejsetnyomtatva');
 $router->map('GET', '/admin/bizonylatfej/getpartnerlist', 'partnerController#getBizonylatfejSelectList', 'adminbizonylatfejgetpartnerlist');
 $router->map('POST', '/admin/bizonylatfej/quickadd', 'bizonylatfejController#quickAdd', 'adminbizonylatfejquickadd');
+$router->map('GET', '/admin/bizonylatfej/pdf', 'bizonylatfejController#doPDF', 'adminbizonylatfejpdf');
+$router->map('POST', '/admin/bizonylatfej/emailpdf', 'bizonylatfejController#sendPDF', 'adminbizonylatfejemailpdf');
 
 $router->map('GET', '/admin/megrendelesfej/viewlist', 'megrendelesfejController#viewlist', 'adminmegrendelesfejviewlist');
 $router->map('GET', '/admin/megrendelesfej/getlistbody', 'megrendelesfejController#getlistbody', 'adminmegrendelesfejgetlistbody');
@@ -207,8 +209,6 @@ $router->map('GET', '/admin/szamlafej/getkarb', 'szamlafejController#getkarb', '
 $router->map('GET', '/admin/szamlafej/viewkarb', 'szamlafejController#viewkarb', 'adminszamlafejviewkarb');
 $router->map('POST', '/admin/szamlafej/save', 'szamlafejController#save', 'adminszamlafejsave');
 $router->map('GET', '/admin/szamlafej/print', 'szamlafejController#doPrint', 'adminszamlafejprint');
-$router->map('GET', '/admin/szamlafej/pdf', 'szamlafejController#doPDF', 'adminszamlafejpdf');
-$router->map('POST', '/admin/szamlafej/emailpdf', 'szamlafejController#sendPDF', 'adminszamlafejemailpdf');
 $router->map('GET', '/admin/szamlafej/storno', 'szamlafejController#storno', 'adminszamlafejstorno');
 $router->map('POST', '/admin/szamlafej/fejexport', 'szamlafejController#fejexport', 'adminszamlafejfejexport');
 $router->map('POST', '/admin/szamlafej/tetelexport', 'szamlafejController#tetelexport', 'adminszamlafejtetelexport');

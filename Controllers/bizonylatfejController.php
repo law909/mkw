@@ -1008,10 +1008,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
     public function doPDF() {
         if (\mkw\store::isPDF()) {
             $id = $this->params->getStringRequestParam('id');
-            $html = $this->getBizonylatHTML($id);
-            $pdf = new Pdf($html);
-            $pdf->setOptions(array('encoding' => 'UTF-8'));
-            $pdf->send(\mkw\store::urlize($id) . '.pdf');
+            /** @var \Entities\Bizonylatfej $o */
+            $o = $this->getRepo()->find($id);
+            if ($o) {
+                $this->biztipus = $o->getBizonylattipusId();
+                $html = $this->getBizonylatHTML($id);
+                $pdf = new Pdf($html);
+                $pdf->setOptions(array('encoding' => 'UTF-8'));
+                $pdf->send(\mkw\store::urlize($id) . '.pdf');
+            }
         }
     }
 
@@ -1021,6 +1026,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             /** @var \Entities\Bizonylatfej $o */
             $o = $this->getRepo()->find($id);
             if ($o) {
+                $this->biztipus = $o->getBizonylattipusId();
                 $email = $o->getPartneremail();
                 if ($email) {
                     $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::SzamlalevelSablon));

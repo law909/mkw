@@ -81,6 +81,8 @@ class Bizonylattipus {
     private $showfelhasznalo = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $checkkelt = true;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showpdf = false;
 
     public function __construct() {
         $this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -110,6 +112,7 @@ class Bizonylattipus {
         $view->setVar('showkupon', $this->getShowkupon());
         $view->setVar('showfoxpostterminaleditor', $this->getShowfoxpostterminaleditor());
         $view->setVar('showfelhasznalo', $this->getShowfelhasznalo());
+        $view->setVar('showpdf', $this->getShowpdf());
     }
 
     public function getId() {
@@ -432,6 +435,20 @@ class Bizonylattipus {
      */
     public function setCheckkelt($checkkelt) {
         $this->checkkelt = $checkkelt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShowpdf() {
+        return $this->showpdf;
+    }
+
+    /**
+     * @param mixed $showpdf
+     */
+    public function setShowpdf($showpdf) {
+        $this->showpdf = $showpdf;
     }
 
 }

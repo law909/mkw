@@ -2798,6 +2798,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getCsomagterminalIdegenId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCsomagterminalIdegenId', []);
+
+        return parent::getCsomagterminalIdegenId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setCsomagterminal($val)
     {
 

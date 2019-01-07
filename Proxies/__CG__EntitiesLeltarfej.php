@@ -64,10 +64,10 @@ class Leltarfej extends \Entities\Leltarfej implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'id', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'created', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'createdby', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'raktar', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'nyitas', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'zaras', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'zarva', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'leltartetelek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'id', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'nev', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'created', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'createdby', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'raktar', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'nyitas', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'zaras', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'zarva', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'leltartetelek'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'id', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'created', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'createdby', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'raktar', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'nyitas', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'zaras', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'zarva', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'leltartetelek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'id', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'nev', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'created', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'createdby', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'raktar', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'nyitas', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'zaras', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'zarva', '' . "\0" . 'Entities\\Leltarfej' . "\0" . 'leltartetelek'];
     }
 
     /**
@@ -527,6 +527,28 @@ class Leltarfej extends \Entities\Leltarfej implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearLeltartetelek', []);
 
         return parent::clearLeltartetelek();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
+
+        return parent::getNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setNev($nev)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
+
+        return parent::setNev($nev);
     }
 
 }

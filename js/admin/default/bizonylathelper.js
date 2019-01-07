@@ -1075,7 +1075,7 @@ var bizonylathelper = function($) {
                         });
                         $('.js-pdf').each(function() {
                             var $this = $(this);
-                            $this.attr('href', '/admin/' + bizonylattipus + 'fej/pdf?id=' + $this.data('egyedid'));
+                            $this.attr('href', '/admin/bizonylatfej/pdf?id=' + $this.data('egyedid'));
                         });
                         $('.js-stornobizonylat1').each(function() {
                             var $this = $(this);
@@ -1493,7 +1493,7 @@ var bizonylathelper = function($) {
                         'OK': function() {
                             var dial = $(this);
                             $.ajax({
-                                url: '/admin/' + bizonylattipus + 'fej/emailpdf',
+                                url: '/admin/bizonylatfej/emailpdf',
                                 type: 'POST',
                                 data: {
                                     id: $this.data('egyedid')
