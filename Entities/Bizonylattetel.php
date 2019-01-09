@@ -366,6 +366,15 @@ class Bizonylattetel {
         }
     }
 
+    public function fillEgysar() {
+        $this->setNettoegysar($this->getTermek()->getNettoAr($this->getTermekvaltozat(), $this->getBizonylatfej()->getPartner(), $this->getValutanem()));
+        $this->setEnettoegysar($this->getNettoegysar());
+        $this->setEbruttoegysar($this->getBruttoegysar());
+        $this->setNettoegysarhuf($this->getNettoegysar() * $this->getArfolyam());
+        $this->setEnettoegysarhuf($this->getNettoegysarhuf());
+        $this->setEbruttoegysarhuf($this->getBruttoegysarhuf());
+    }
+
     public function calc() {
         $this->setNetto($this->getNettoegysar() * $this->getMennyiseg());
         $this->setBrutto($this->getBruttoegysar() * $this->getMennyiseg());

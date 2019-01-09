@@ -165,7 +165,13 @@ class TermekValtozat {
         $d = $q->getScalarResult();
 
         $k = $d[0]['mennyiseg'];
+        if (is_null($k)) {
+            $k = 0;
+        }
         $db = $d[0]['mozgasdb'];
+        if (is_null($db)) {
+            $db = 0;
+        }
 
         /*
         $k = 0;

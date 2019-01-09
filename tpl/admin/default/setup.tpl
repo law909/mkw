@@ -570,6 +570,15 @@
                             <td><input id="TulajjovengszamEdit" type="text" name="tulajjovengszam" value="{$tulajjovengszam}"></td>
                         </tr>
                         <tr>
+                            <td><label for="TulajpartnerEdit">Partner:</label></td>
+                            <td><select id="TulajpartnerEdit" name="tulajpartner">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $tulajpartnerlist as $_gyarto}
+                                    <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                                {/foreach}
+                                </select></td>
+                        </tr>
+                        <tr>
                             <td><label for="TulajcrcEdit">{at('CRC')}:</label></td>
                             <td><input id="TulajcrcEdit" name="tulajcrc" type="password" value=""></td>
                         </tr>

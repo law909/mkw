@@ -395,8 +395,110 @@ class leltarfejController extends \mkwhelpers\MattableController {
     }
 
     public function zar() {
-        $leltarid = $this->params->getIntRequestParam('leltarid');
-        $zarasstr = $this->params->getStringRequestParam('datum');
+        $hianybt = $this->getRepo('Entities\Bizonylattipus')->find('leltarhiany');
+        $tobbletbt = $this->getRepo('Entities\Bizonylattipus')->find('leltartobblet');
+
+        if ($hianybt && $tobbletbt) {
+            $hianyok = array();
+            $tobbletek = array();
+
+            $leltarid = $this->params->getIntRequestParam('leltarid');
+            $zarasstr = $this->params->getStringRequestParam('datum');
+
+            /** @var \Entities\Leltarfej $leltar */
+            $leltar = $this->getRepo()->find($leltarid);
+            if ($leltar) {
+                $partner = $this->getRepo('Entities\Partner')->find(\mkw\store::getParameter(\mkw\consts::Tulajpartner));
+                $raktarid = $leltar->getRaktarId();
+                $filter = new FilterDescriptor();
+                $filter->addFilter('leltarfej', '=', $leltarid);
+                $leltartetelek = $this->getRepo('Entities\Leltartetel')->getWithJoins($filter);
+                /** @var \Entities\Leltartetel $tetel */
+                foreach ($leltartetelek as $tetel) {
+                    $valtozat = $tetel->getTermekvaltozat();
+                    $keszlet = $valtozat->getKeszlet($zarasstr, $raktarid);
+                    if ($keszlet < $tetel->getTenymennyiseg()) {
+                        $tobbletek[] = array(
+                            'termek' => $tetel->getTermek(),
+                            'valtozat' => $tetel->getTermekvaltozat(),
+                            'keszlet' => $keszlet,
+                            'teny' => $tetel->getTenymennyiseg()
+                        );
+                    }
+                    elseif ($keszlet > $tetel->getTenymennyiseg()) {
+                        $hianyok[] = array(
+                            'termek' => $tetel->getTermek(),
+                            'valtozat' => $tetel->getTermekvaltozat(),
+                            'keszlet' => $keszlet,
+                            'teny' => $tetel->getTenymennyiseg()
+                        );
+                    }
+                }
+
+                if ($hianyok) {
+                    $fej = new \Entities\Bizonylatfej();
+                    $fej->setPersistentData();
+                    $fej->setBizonylattipus($hianybt);
+                    $fej->setKelt('');
+                    $fej->setTeljesites($zarasstr);
+                    $fej->setEsedekesseg('');
+                    $fej->setArfolyam(1);
+                    $fej->setPartner($partner);
+                    $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
+                    $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
+                    $fej->setValutanem($valutanem);
+                    $fej->setBankszamla($valutanem->getBankszamla());
+                    $fej->setRaktar($this->getRepo('Entities\Raktar')->find($raktarid));
+
+                    foreach ($hianyok as $hiany) {
+                        $t = new \Entities\Bizonylattetel();
+                        $t->setBizonylatfej($fej);
+                        $t->setPersistentData();
+                        $t->setTermek($hiany['termek']);
+                        $t->setTermekvaltozat($hiany['valtozat']);
+                        $t->setMennyiseg(abs($hiany['keszlet'] - $hiany['teny']));
+                        $t->fillEgysar();
+                        $t->calc();
+                        $this->getEm()->persist($t);
+                    }
+                    $this->getEm()->persist($fej);
+                    $this->getEm()->flush();
+                }
+                if ($tobbletek) {
+                    $fej = new \Entities\Bizonylatfej();
+                    $fej->setPersistentData();
+                    $fej->setBizonylattipus($tobbletbt);
+                    $fej->setKelt('');
+                    $fej->setTeljesites($zarasstr);
+                    $fej->setEsedekesseg('');
+                    $fej->setArfolyam(1);
+                    $fej->setPartner($partner);
+                    $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
+                    $valutanem = $this->getRepo('Entities\Valutanem')->find($valutanemid);
+                    $fej->setValutanem($valutanem);
+                    $fej->setBankszamla($valutanem->getBankszamla());
+                    $fej->setRaktar($this->getRepo('Entities\Raktar')->find($raktarid));
+
+                    foreach ($tobbletek as $tobblet) {
+                        $t = new \Entities\Bizonylattetel();
+                        $t->setBizonylatfej($fej);
+                        $t->setPersistentData();
+                        $t->setTermek($tobblet['termek']);
+                        $t->setTermekvaltozat($tobblet['valtozat']);
+                        $t->setMennyiseg(abs($tobblet['keszlet'] - $tobblet['teny']));
+                        $t->fillEgysar();
+                        $t->calc();
+                        $this->getEm()->persist($t);
+                    }
+                    $this->getEm()->persist($fej);
+                    $this->getEm()->flush();
+                }
+                $leltar->setZaras($zarasstr);
+                $leltar->setZarva(true);
+                $this->getEm()->persist($leltar);
+                $this->getEm()->flush();
+            }
+        }
     }
 
 

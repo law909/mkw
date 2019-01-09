@@ -193,6 +193,16 @@ $router->map('POST', '/admin/szallitofej/ront', 'szallitofejController#ront', 'a
 $router->map('POST', '/admin/szallitofej/fejexport', 'szallitofejController#fejexport', 'adminszallitofejfejexport');
 $router->map('POST', '/admin/szallitofej/tetelexport', 'szallitofejController#tetelexport', 'adminszallitofejtetelexport');
 
+$router->map('GET', '/admin/leltarhianyfej/viewlist', 'leltarhianyfejController#viewlist', 'adminleltarhianyfejviewlist');
+$router->map('GET', '/admin/leltarhianyfej/getlistbody', 'leltarhianyfejController#getlistbody', 'adminleltarhianyfejgetlistbody');
+$router->map('GET', '/admin/leltarhianyfej/getkarb', 'leltarhianyfejController#getkarb', 'adminleltarhianyfejgetkarb');
+$router->map('GET', '/admin/leltarhianyfej/viewkarb', 'leltarhianyfejController#viewkarb', 'adminleltarhianyfejviewkarb');
+//$router->map('POST', '/admin/leltarhianyfej/save', 'leltarhianyfejController#save', 'adminleltarhianyfejsave');
+$router->map('GET', '/admin/leltarhianyfej/print', 'leltarhianyfejController#doPrint', 'adminleltarhianyfejprint');
+$router->map('POST', '/admin/leltarhianyfej/ront', 'leltarhianyfejController#ront', 'adminleltarhianyfejront');
+$router->map('POST', '/admin/leltarhianyfej/fejexport', 'leltarhianyfejController#fejexport', 'adminleltarhianyfejfejexport');
+$router->map('POST', '/admin/leltarhianyfej/tetelexport', 'leltarhianyfejController#tetelexport', 'adminleltarhianyfejtetelexport');
+
 $router->map('GET', '/admin/autokiserofej/viewlist', 'autokiserofejController#viewlist', 'adminautokiserofejviewlist');
 $router->map('GET', '/admin/autokiserofej/getlistbody', 'autokiserofejController#getlistbody', 'adminautokiserofejgetlistbody');
 $router->map('GET', '/admin/autokiserofej/getkarb', 'autokiserofejController#getkarb', 'adminautokiserofejgetkarb');
@@ -273,6 +283,16 @@ $router->map('GET', '/admin/bevetfej/print', 'bevetfejController#doPrint', 'admi
 $router->map('POST', '/admin/bevetfej/ront', 'bevetfejController#ront', 'adminbevetfejront');
 $router->map('POST', '/admin/bevetfej/fejexport', 'bevetfejController#fejexport', 'adminbevetfejfejexport');
 $router->map('POST', '/admin/bevetfej/tetelexport', 'bevetfejController#tetelexport', 'adminbevetfejtetelexport');
+
+$router->map('GET', '/admin/leltartobbletfej/viewlist', 'leltartobbletfejController#viewlist', 'adminleltartobbletfejviewlist');
+$router->map('GET', '/admin/leltartobbletfej/getlistbody', 'leltartobbletfejController#getlistbody', 'adminleltartobbletfejgetlistbody');
+$router->map('GET', '/admin/leltartobbletfej/getkarb', 'leltartobbletfejController#getkarb', 'adminleltartobbletfejgetkarb');
+$router->map('GET', '/admin/leltartobbletfej/viewkarb', 'leltartobbletfejController#viewkarb', 'adminleltartobbletfejviewkarb');
+//$router->map('POST', '/admin/leltartobbletfej/save', 'leltartobbletfejController#save', 'adminleltartobbletfejsave');
+$router->map('GET', '/admin/leltartobbletfej/print', 'leltartobbletfejController#doPrint', 'adminleltartobbletfejprint');
+$router->map('POST', '/admin/leltartobbletfej/ront', 'leltartobbletfejController#ront', 'adminleltartobbletfejront');
+$router->map('POST', '/admin/leltartobbletfej/fejexport', 'leltartobbletfejController#fejexport', 'adminleltartobbletfejfejexport');
+$router->map('POST', '/admin/leltartobbletfej/tetelexport', 'leltartobbletfejController#tetelexport', 'adminleltartobbletfejtetelexport');
 
 $router->map('GET', '/admin/koltsegszamlafej/viewlist', 'koltsegszamlafejController#viewlist', 'adminkoltsegszamlafejviewlist');
 $router->map('GET', '/admin/koltsegszamlafej/getlistbody', 'koltsegszamlafejController#getlistbody', 'adminkoltsegszamlafejgetlistbody');

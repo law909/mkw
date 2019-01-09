@@ -46,6 +46,7 @@ class consts {
     const Tulajevnev = 'tulajevnev';
     const Tulajevnyilvszam = 'tulajevnyilvszam';
     const Tulajjovengszam = 'tulajjovengszam';
+    const Tulajpartner = 'tulajpartner';
     const ProgramNev = 'programnev';
 
     const EmailFrom = 'emailfrom';
@@ -156,7 +157,7 @@ class consts {
     const FoxpostPassword = 'foxpostpassword';
 
     const GLSTerminalURL = 'glsterminalurl';
-    
+
     const TOFSzallitasiMod = 'tofszallitasimod';
     const GLSSzallitasiMod = 'glsszallitasimod';
 

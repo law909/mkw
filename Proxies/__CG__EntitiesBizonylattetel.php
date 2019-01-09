@@ -209,6 +209,17 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function fillEgysar()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'fillEgysar', []);
+
+        return parent::fillEgysar();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function calc()
     {
 

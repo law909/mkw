@@ -1,4 +1,4 @@
-<tr id="mattable-row_{$_leltarfej.id}" data-egyedid="{$_leltarfej.id}">
+<tr id="mattable-row_{$_leltarfej.id}" data-egyedid="{$_leltarfej.id}"{if ($_leltarfej.zarva)} class="rontott"{/if}>
     <td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
     <td class="cell">
         <div>
@@ -7,7 +7,9 @@
             <a class="js-import" href="/admin/leltarfej/viewimport?leltar={$_leltarfej.id}" target="_blank">{at('Tény adat betöltés')}</a>
             <a class="js-zar" href="#" data-href="/admin/leltarfej/zar" data-leltarfejid="{$_leltarfej.id}">{at('Zárás')}</a>
 
+            {if (!$_leltarfej.zarva)}
             <span class="jobbra"><a class="mattable-dellink" href="#" data-leltarfejid="{$_leltarfej.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
+            {/if}
         </div>
         <div>{$_leltarfej.nev}</div>
         <div>{at('Raktár')}: {$_leltarfej.raktarnev}</div>

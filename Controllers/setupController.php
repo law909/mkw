@@ -41,6 +41,9 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::Tulajevnev, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::ProgramNev);
         $view->setVar(\mkw\consts::ProgramNev, ($p ? $p->getErtek() : ''));
+        $tulajpartner = new partnerController($this->params);
+        $p = $repo->find(\mkw\consts::Tulajpartner);
+        $view->setVar('tulajpartnerlist', $tulajpartner->getSzallitoSelectList(($p ? $p->getErtek() : '')));
 
 //        $p = $repo->find(\mkw\consts::Tulajcrc);
 //        $view->setVar(\mkw\consts::Tulajcrc, ($p ? $p->getErtek() : ''));
@@ -606,6 +609,15 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Tulajevnyilvszam, $this->params->getStringRequestParam(\mkw\consts::Tulajevnyilvszam));
         $this->setObj(\mkw\consts::Tulajjovengszam, $this->params->getStringRequestParam(\mkw\consts::Tulajjovengszam));
         $this->setObj(\mkw\consts::ProgramNev, $this->params->getStringRequestParam(\mkw\consts::ProgramNev));
+        $tulajpartner = \mkw\store::getEm()->getRepository('Entities\Partner');
+        $x = $this->params->getIntRequestParam('tulajpartner', 0);
+        $partner = $tulajpartner->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::Tulajpartner, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::Tulajpartner, '');
+        }
 
         if ($this->params->getStringRequestParam('tulajcrc')) {
             $this->setObj(\mkw\consts::Tulajcrc, md5($this->params->getStringRequestParam('tulajcrc') . \mkw\store::getAdminSalt()));
