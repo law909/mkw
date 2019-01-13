@@ -36,6 +36,12 @@ class TermekFaRepository extends \mkwhelpers\Repository {
                 $q->Execute();
                 $q = $this->_em->createQuery('UPDATE Entities\Termek x SET x.termekfa3karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.termekfa3=' . $val['id']);
                 $q->Execute();
+                $q = $this->_em->createQuery('UPDATE Entities\Blogposzt x SET x.termekfa1karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.termekfa1=' . $val['id']);
+                $q->Execute();
+                $q = $this->_em->createQuery('UPDATE Entities\Blogposzt x SET x.termekfa2karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.termekfa2=' . $val['id']);
+                $q->Execute();
+                $q = $this->_em->createQuery('UPDATE Entities\Blogposzt x SET x.termekfa3karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.termekfa3=' . $val['id']);
+                $q->Execute();
                 $this->_regenerateKarKod($val['id'], $szulokarkod . sprintf('%05d', $val['id']));
             }
         }
