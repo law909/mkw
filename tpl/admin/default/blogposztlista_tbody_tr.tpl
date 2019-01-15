@@ -14,7 +14,7 @@
                                 </tr>
                                 <tr>
                                     <td>{at('Link')}:</td>
-                                    <td colspan="3"><a href="{$mainurl}/blogposzt/{$_blogposzt.slug}" target="_blank">/blog/{$_blogposzt.slug}</a></td>
+                                    <td colspan="3"><a href="{$mainurl}/blogposzt/{$_blogposzt.slug}" target="_blank">/blogposzt/{$_blogposzt.slug}</a></td>
                                 </tr>
                             </tbody>
                         </table>
