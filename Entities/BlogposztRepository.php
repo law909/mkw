@@ -42,4 +42,14 @@ class BlogposztRepository extends \mkwhelpers\Repository {
         return $q->getSingleScalarResult();
     }
 
+    public function getFeedBlogposztok() {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('lathato', '=', true);
+
+        $order = array('_xx.megjelenesdatum' => 'DESC', '_xx.id' => 'DESC');
+
+        $res = $this->getAll($filter, $order, 0, \mkw\store::getParameter(\mkw\consts::Feedblogdb, 20));
+        return $res;
+    }
+
 }

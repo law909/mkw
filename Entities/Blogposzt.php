@@ -1,4 +1,5 @@
 <?php
+
 namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -104,6 +105,27 @@ class Blogposzt {
 
     /** @ORM\Column(type="boolean",nullable=false) */
     private $lathato = 1;
+
+    public function convertToArray() {
+        $ret = array(
+            'slug' => $this->getSlug(),
+            'cim' => $this->getCim(),
+            'kivonat' => $this->getKivonat(),
+            'kepurlsmall' => $this->getKepurlSmall(),
+            'kepleiras' => $this->getKepleiras(),
+            'szoveg' => $this->getSzoveg(),
+            'url' => $this->getLink()
+        );
+        return $ret;
+    }
+
+    public function getLink() {
+        return \mkw\store::getRouter()->generate('showblogposzt', \mkw\store::getConfigValue('mainurl', true), array('blogposzt' => $this->getSlug()));
+    }
+
+    public function getShowSeodescription() {
+        return $this->cim . ' - ' . \mkw\store::getParameter(\mkw\consts::Seodescription);
+    }
 
     public function getId() {
         return $this->id;
@@ -365,6 +387,10 @@ class Blogposzt {
         else {
             $this->termekfa3karkod = '';
         }
+    }
+
+    public function getShowCim() {
+        return $this->cim . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim);
     }
 
     /**

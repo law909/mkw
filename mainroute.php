@@ -72,8 +72,11 @@ $router->map('GET', '/statlap/[:lap]', 'statlapController#show', 'showstatlap');
 $router->map('GET', '/statlap/p/[:lap]', 'statlapController#showPopup', 'showstatlappopup');
 $router->map('GET', '/hir/[:hir]', 'hirController#show', 'showhir');
 $router->map('GET', '/hirek', 'hirController#showHirList', 'showhirlist');
+$router->map('GET', '/blogposzt/[:blogposzt]', 'blogposztController#show', 'showblogposzt');
+$router->map('GET', '/blog', 'blogposztController#showBlogposztList', 'showblogposztlist');
 $router->map('GET', '/feed/hir', 'hirController#feed', 'hirfeed');
 $router->map('GET', '/feed/termek', 'termekController#feed', 'termekfeed');
+$router->map('GET', '/feed/blog', 'blogposztController#feed', 'blogposztfeed');
 $router->map('GET', '/kapcsolat', 'mainController#kapcsolat', 'showkapcsolat');
 $router->map('POST', '/kapcsolat/[ment:todo]', 'mainController#kapcsolat', 'savekapcsolat');
 

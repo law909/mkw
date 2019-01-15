@@ -84,6 +84,15 @@ var mkw = (function($) {
         document.location = url;
     }
 
+    function bloglapozas(page) {
+        var lf = $('.lapozoform'), url;
+        if (!page) {
+            page = lf.data('pageno');
+        }
+        url = lf.data('url') + '?pageno=' + page;
+        document.location = url;
+    }
+
     function overrideFormSubmit(form, msg, events) {
         var $form = form;
         if (!events) {
@@ -244,6 +253,7 @@ var mkw = (function($) {
         showDialog: showDialog,
         closeDialog: closeDialog,
         lapozas: lapozas,
+        bloglapozas: bloglapozas,
         overrideFormSubmit: overrideFormSubmit,
         irszamTypeahead: irszamTypeahead,
         varosTypeahead: varosTypeahead,

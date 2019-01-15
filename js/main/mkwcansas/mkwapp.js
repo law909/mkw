@@ -105,6 +105,15 @@ var mkw = (function($) {
         document.location = url;
     }
 
+    function bloglapozas(page) {
+        var lf = $('.lapozoform'), url;
+        if (!page) {
+            page = lf.data('pageno');
+        }
+        url = lf.data('url') + '?pageno=' + page;
+        document.location = url;
+    }
+
     function overrideFormSubmit(form, msg, events) {
         var $form = form;
         if (!events) {
@@ -265,6 +274,7 @@ var mkw = (function($) {
         showDialog: showDialog,
         closeDialog: closeDialog,
         lapozas: lapozas,
+        bloglapozas: bloglapozas,
         overrideFormSubmit: overrideFormSubmit,
         irszamTypeahead: irszamTypeahead,
         varosTypeahead: varosTypeahead,
@@ -1819,33 +1829,42 @@ $(document).ready(function() {
         e.preventDefault();
         document.location = $(this).attr('data-href');
     });
-    // lapozo es szuroform
-    $('.elemperpageedit').on('change', function() {
-        $('.elemperpageedit').val($(this).val());
-        mkw.lapozas();
-    });
-    $('.orderedit').on('change', function() {
-        $('.orderedit').val($(this).val());
-        mkw.lapozas();
-    });
-    $('.pageedit').on('click', function() {
-        $('.lapozoform').attr('data-pageno', $(this).attr('data-pageno'));
-        mkw.lapozas();
-    });
-    $('.termeklistview').on('click', function() {
-        $('#ListviewEdit').val($(this).attr('data-vt'));
-        mkw.lapozas();
-    });
-    $('#szuroform input').on('change', function() {
-        $('.lapozoform input[name="cimkekatid"]').val($(this).attr('name').split('_')[1]);
-        mkw.lapozas();
-    });
-    $('.js-filterclear').on('click', function(e) {
-        e.preventDefault();
-        $('#szuroform input[type="checkbox"]').prop('checked',false);
-        $('#ArSlider').val('0;0');
-        mkw.lapozas(1);
-    });
+
+    if ($('.js-blog').length > 0) {
+        $('.pageedit').on('click', function () {
+            $('.lapozoform').attr('data-pageno', $(this).attr('data-pageno'));
+            mkw.bloglapozas();
+        });
+    }
+    else {
+        // lapozo es szuroform
+        $('.elemperpageedit').on('change', function () {
+            $('.elemperpageedit').val($(this).val());
+            mkw.lapozas();
+        });
+        $('.orderedit').on('change', function () {
+            $('.orderedit').val($(this).val());
+            mkw.lapozas();
+        });
+        $('.pageedit').on('click', function () {
+            $('.lapozoform').attr('data-pageno', $(this).attr('data-pageno'));
+            mkw.lapozas();
+        });
+        $('.termeklistview').on('click', function () {
+            $('#ListviewEdit').val($(this).attr('data-vt'));
+            mkw.lapozas();
+        });
+        $('#szuroform input').on('change', function () {
+            $('.lapozoform input[name="cimkekatid"]').val($(this).attr('name').split('_')[1]);
+            mkw.lapozas();
+        });
+        $('.js-filterclear').on('click', function (e) {
+            e.preventDefault();
+            $('#szuroform input[type="checkbox"]').prop('checked', false);
+            $('#ArSlider').val('0;0');
+            mkw.lapozas(1);
+        });
+    }
 
     mkw.initTooltips();
     mkw.showhideFilterClear();

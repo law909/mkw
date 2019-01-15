@@ -658,6 +658,10 @@
                             <td><label>{at('Automatikus kiléptetés ideje (perc)')}:</label></td>
                             <td><input name="autologoutmin" type="number" value="{$autologoutmin}"></td>
                         </tr>
+                        <tr>
+                            <td><label>{at('Blogposztok száma a blogban')}:</label></td>
+                            <td><input name="blogposztdb" type="number" value="{$blogposztdb}"></td>
+                        </tr>
                         </tbody>
                     </table>
                     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
@@ -722,7 +726,7 @@
                         </tr>
                         <tr>
                             <td><label for="TSeodescriptionEdit">{at('META leírás')}:</label></td>
-                            <td colspan="3"><textarea id="TSeodescriptionEdit" name="termekseodescription" type="text"
+                            <td colspan="3"><textarea id="TSeodescriptionEdit" name="termekseodescription"
                                                       cols="75">{$termekseodescription}</textarea></td>
                         </tr>
                         </tbody>
@@ -741,7 +745,7 @@
                         </tr>
                         <tr>
                             <td><label for="MSeodescriptionEdit">{at('META leírás')}:</label></td>
-                            <td colspan="3"><textarea id="MSeodescriptionEdit" name="markaseodescription" type="text"
+                            <td colspan="3"><textarea id="MSeodescriptionEdit" name="markaseodescription"
                                                       cols="75">{$markaseodescription}</textarea></td>
                         </tr>
                         </tbody>
@@ -761,8 +765,28 @@
                         </tr>
                         <tr>
                             <td><label for="HirekSeodescriptionEdit">{at('META leírás')}:</label></td>
-                            <td colspan="3"><textarea id="HirekSeodescriptionEdit" name="hirekseodescription" type="text"
+                            <td colspan="3"><textarea id="HirekSeodescriptionEdit" name="hirekseodescription"
                                                       cols="75">{$hirekseodescription}</textarea></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <tbody>
+                        <tr>
+                            <td colspan="3">{at('Blog')}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">[global]</td>
+                        </tr>
+                        <tr>
+                            <td><label for="BlogOldalCimEdit">{at('Lap címe')}:</label></td>
+                            <td colspan="3"><input id="BlogOldalCimEdit" name="blogoldalcim" type="text" size="75" maxlength="255" value="{$blogoldalcim}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="BlogSeodescriptionEdit">{at('META leírás')}:</label></td>
+                            <td colspan="3"><textarea id="BlogSeodescriptionEdit" name="blogseodescription"
+                                                      cols="75">{$blogseodescription}</textarea></td>
                         </tr>
                         </tbody>
                     </table>
@@ -1286,6 +1310,16 @@
                         <tr>
                             <td><label>{at('Termék feed leírása')}:</label></td>
                             <td colspan="3"><input name="feedtermekdescription" type="text" value="{$feedtermekdescription}"></td>
+                        </tr>
+                        <tr>
+                            <td><label>{at('Posztok száma a feed-ben')}:</label></td>
+                            <td><input name="feedblogdb" type="number" value="{$feedblogdb}"></td>
+                            <td><label>{at('Blog feed címe')}:</label></td>
+                            <td><input name="feedblogtitle" type="text" value="{$feedblogtitle}"></td>
+                        </tr>
+                        <tr>
+                            <td><label>{at('Blog feed leírása')}:</label></td>
+                            <td colspan="3"><input name="feedblogdescription" type="text" value="{$feedblogdescription}"></td>
                         </tr>
                         </tbody>
                     </table>

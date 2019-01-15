@@ -85,6 +85,13 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::Hirekseodescription);
         $view->setVar(\mkw\consts::Hirekseodescription, ($p ? $p->getErtek() : ''));
 
+        $p = $repo->find(\mkw\consts::Blogoldalcim);
+        $view->setVar(\mkw\consts::Blogoldalcim, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Blogseodescription);
+        $view->setVar(\mkw\consts::Blogseodescription, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Blogposztdb);
+        $view->setVar(\mkw\consts::Blogposztdb, ($p ? $p->getErtek() : 15));
+
         $p = $repo->find(\mkw\consts::Logo);
         $view->setVar(\mkw\consts::Logo, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::UjtermekJelolo);
@@ -424,6 +431,12 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::Feedtermektitle, ($p ? $p->getErtek() : t('Termékeink')));
         $p = $repo->find(\mkw\consts::Feedtermekdescription);
         $view->setVar(\mkw\consts::Feedtermekdescription, ($p ? $p->getErtek() : t('Termékeink')));
+        $p = $repo->find(\mkw\consts::Feedblogdb);
+        $view->setVar(\mkw\consts::Feedblogdb, ($p ? $p->getErtek() : 20));
+        $p = $repo->find(\mkw\consts::Feedblogtitle);
+        $view->setVar(\mkw\consts::Feedblogtitle, ($p ? $p->getErtek() : t('Blog')));
+        $p = $repo->find(\mkw\consts::Feedblogdescription);
+        $view->setVar(\mkw\consts::Feedblogdescription, ($p ? $p->getErtek() : t('Blog')));
 
         // sitemap
         $p = $repo->find(\mkw\consts::Statlapprior);
@@ -727,6 +740,9 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Markaseodescription, $this->params->getStringRequestParam('markaseodescription'));
         $this->setObj(\mkw\consts::Hirekoldalcim, $this->params->getStringRequestParam('hirekoldalcim'));
         $this->setObj(\mkw\consts::Hirekseodescription, $this->params->getStringRequestParam('hirekseodescription'));
+        $this->setObj(\mkw\consts::Blogoldalcim, $this->params->getStringRequestParam('blogoldalcim'));
+        $this->setObj(\mkw\consts::Blogseodescription, $this->params->getStringRequestParam('blogseodescription'));
+        $this->setObj(\mkw\consts::Blogposztdb, $this->params->getIntRequestParam('blogposztdb', 15));
         $this->setObj(\mkw\consts::GAFollow, $this->params->getStringRequestParam('gafollow'));
         $this->setObj(\mkw\consts::GMapsApiKey, $this->params->getStringRequestParam('gmapsapikey'));
         $this->setObj(\mkw\consts::FBAppId, $this->params->getStringRequestParam('fbappid'));
@@ -1043,6 +1059,9 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Feedtermekdb, $this->params->getIntRequestParam('feedtermekdb', 30));
         $this->setObj(\mkw\consts::Feedtermektitle, $this->params->getStringRequestParam('feedtermektitle', t('Termékeink')));
         $this->setObj(\mkw\consts::Feedtermekdescription, $this->params->getStringRequestParam('feedtermekdescription', t('Termékeink')));
+        $this->setObj(\mkw\consts::Feedblogdb, $this->params->getIntRequestParam('feedblogdb', 20));
+        $this->setObj(\mkw\consts::Feedblogtitle, $this->params->getStringRequestParam('feedblogtitle', t('Blog')));
+        $this->setObj(\mkw\consts::Feedblogdescription, $this->params->getStringRequestParam('feedblogdescription', t('Blog')));
         // sitemap
         $this->setObj(\mkw\consts::Statlapprior, $this->params->getNumRequestParam('statlapprior', 0.4));
         $this->setObj(\mkw\consts::Termekprior, $this->params->getNumRequestParam('termekprior', 0.5));

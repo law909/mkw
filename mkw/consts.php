@@ -58,10 +58,13 @@ class consts {
     const Seodescription = 'seodescription';
     const Feedhirtitle = 'feedhirtitle';
     const Feedhirdescription = 'feedhirdescription';
+    const Feedblogtitle = 'feedblogtitle';
+    const Feedblogdescription = 'feedblogdescription';
     const Feedtermektitle = 'feedtermektitle';
     const Feedtermekdescription = 'feedtermekdescription';
     const Feedhirdb = 'feedhirdb';
     const Feedtermekdb = 'feedtermekdb';
+    const Feedblogdb = 'feedblogdb';
 
     const Jpgquality = 'jpgquality';
     const Pngquality = 'pngquality';
@@ -107,6 +110,9 @@ class consts {
     const Markaseodescription = 'markaseodescription';
     const Hirekoldalcim = 'hirekoldalcim';
     const Hirekseodescription = 'hirekseodescription';
+    const Blogoldalcim = 'blogoldalcim';
+    const Blogseodescription = 'blogseodescription';
+    const Blogposztdb = 'blogposztdb';
     const GAFollow = 'gafollow';
     const GMapsApiKey = 'gmapsapikey';
     const FBAppId = 'fbappid';
