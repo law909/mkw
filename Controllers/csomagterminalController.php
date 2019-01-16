@@ -149,7 +149,7 @@ class csomagterminalController extends \mkwhelpers\MattableController {
             foreach ($terminalok as $terminal) {
                 $megvan = false;
                 foreach ($pontok as $r) {
-                    $megvan = $megvan || ($r[\mkw\store::n('a')] === $terminal->getIdegenid());
+                    $megvan = $megvan || ($r[\mkw\store::n('a')] == $terminal->getIdegenid());
                 }
                 if (!$megvan) {
                     $terminal->setInaktiv(!$megvan);
