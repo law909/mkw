@@ -38,7 +38,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $x['todowebposzt'] = $t->getTodowebposzt();
         $x['todowebslider'] = $t->getTodowebslider();
         $x['uid'] = $t->getUid();
-        $x['reglink'] = \mkw\store::getRouter()->generate('showrendezvenyreg', \mkw\store::getConfigValue('mainurl'), array(), array('r' => $t->getUid()));
+        $x['reglink'] = \mkw\store::getConfigValue('mainurl') . '/js/main/' . \mkw\store::getConfigValue('main.theme') . '/rendezvenyregloader.js?r=' . $t->getUid();
 
         if ($forKarb) {
             foreach ($t->getRendezvenyDokok() as $kepje) {
