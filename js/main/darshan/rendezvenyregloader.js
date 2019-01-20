@@ -15,7 +15,6 @@ if (typeof billyloader !== "object") {
             return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         },
         MessageHandler: function(e) {
-            if (!e.origin.match("minicrm")) return;
             var obj = JSON.parse(e.data);
             if (typeof obj != "object") return;
             if (obj.action == "sizing") {
