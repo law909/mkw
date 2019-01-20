@@ -237,7 +237,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
     }
 
     public function regView() {
-        $rid = $this->params->getIntRequestParam('r');
+        $rid = $this->params->getStringRequestParam('r');
         $rendezveny = $this->getRepo()->findOneBy(array('uid' => $rid));
         if ($rendezveny) {
             $v = $this->getTemplateFactory()->createMainView('rendezvenyreg.tpl');
