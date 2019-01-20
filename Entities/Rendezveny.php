@@ -108,12 +108,24 @@ class Rendezveny {
     /** @ORM\OneToMany(targetEntity="RendezvenyDok", mappedBy="rendezveny", cascade={"persist", "remove"}) */
     private $rendezvenydokok;
 
+    /** @ORM\Column(type="string", length=23, nullable=false) */
+    private $uid;
+
     public function __construct() {
         $this->rendezvenydokok = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    public function generateUId() {
+        $this->uid = uniqid('', true);
+        return $this->uid;
+    }
+
     public function getId() {
         return $this->id;
+    }
+
+    public function getUid() {
+        return $this->uid;
     }
 
     /**

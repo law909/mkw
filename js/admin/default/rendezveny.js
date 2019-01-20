@@ -82,7 +82,10 @@ $(document).ready(function() {
                 fields: ['#nevfilter', '#tanarfilter', '#teremfilter', '#allapotfilter', '#TolEdit', '#IgEdit']
             },
             tablebody: {
-                url: '/admin/rendezveny/getlistbody'
+                url: '/admin/rendezveny/getlistbody',
+                onStyle: function() {
+                    new ClipboardJS('.js-uidcopy');
+                }
             },
             karb: rendezveny
         });

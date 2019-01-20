@@ -4,6 +4,7 @@
 <script type="text/javascript" src="/js/admin/default/jquery.form.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.mattkarb.js"></script>
 <script type="text/javascript" src="/js/admin/default/jquery.mattable.js"></script>
+<script type="text/javascript" src="/js/admin/default/clipboard.min.js"></script>
 <script type="text/javascript" src="/js/admin/default/rendezveny.js"></script>
 {/block}
 

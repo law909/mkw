@@ -64,10 +64,10 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todonaptar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebposzt', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todourlap', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebslider', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbevent', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbhirdetes', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoplakat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofotobe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoleirasbe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenydokok'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todonaptar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebposzt', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todourlap', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebslider', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbevent', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbhirdetes', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoplakat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofotobe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoleirasbe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenydokok', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'uid'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todonaptar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebposzt', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todourlap', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebslider', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbevent', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbhirdetes', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoplakat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofotobe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoleirasbe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenydokok'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'created', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'createdby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'kezdodatum', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'tanar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'termek', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenyallapot', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todonaptar', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebposzt', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todourlap', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todowebslider', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbevent', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofbhirdetes', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoplakat', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todofotobe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'todoleirasbe', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'rendezvenydokok', '' . "\0" . 'Entities\\Rendezveny' . "\0" . 'uid'];
     }
 
     /**
@@ -176,6 +176,17 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
+    public function generateUId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'generateUId', []);
+
+        return parent::generateUId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {
@@ -186,6 +197,17 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUid', []);
+
+        return parent::getUid();
     }
 
     /**

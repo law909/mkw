@@ -8,6 +8,8 @@
                 <tr><td>{$_egyed.kezdodatum}</td></tr>
                 <tr><td>{$_egyed.termeknev}</td></tr>
                 <tr><td>{$_egyed.jogateremnev}</td></tr>
+                <tr><td>Regisztrációs form: <span>{$_egyed.reglink}</span></td></tr>
+                <tr><td><a href="#" class="js-uidcopy" data-clipboard-text="{$_egyed.reglink}">Másolás vágólapra</a></td></tr>
             </tbody>
         </table>
     </td>

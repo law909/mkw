@@ -37,6 +37,9 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $x['todourlap'] = $t->getTodourlap();
         $x['todowebposzt'] = $t->getTodowebposzt();
         $x['todowebslider'] = $t->getTodowebslider();
+        $x['uid'] = $t->getUid();
+        $x['reglink'] = \mkw\store::getRouter()->generate('showrendezvenyreg', \mkw\store::getConfigValue('mainurl'), array(), array('r' => $t->getUid()));
+
         if ($forKarb) {
             foreach ($t->getRendezvenyDokok() as $kepje) {
                 $dok[] = $dokCtrl->loadVars($kepje);
@@ -230,6 +233,16 @@ class rendezvenyController extends \mkwhelpers\MattableController {
             }
             $this->getEm()->persist($obj);
             $this->getEm()->flush();
+        }
+    }
+
+    public function regView() {
+        $rid = $this->params->getIntRequestParam('r');
+        $rendezveny = $this->getRepo()->findOneBy(array('uid' => $rid));
+        if ($rendezveny) {
+            $v = $this->getTemplateFactory()->createMainView('rendezvenyreg.tpl');
+            $v->setVar('rendezvenyid', $rendezveny->getId());
+            echo $v->getTemplateResult();
         }
     }
 

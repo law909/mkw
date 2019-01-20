@@ -107,6 +107,7 @@ $evm->addEventListener(array('onFlush', 'prePersist'), new Listeners\Bankbizonyl
 $evm->addEventListener(array('onFlush', 'prePersist'), new Listeners\PenztarbizonylatfejListener());
 $evm->addEventListener(array('onFlush'), new Listeners\BizonylattetelListener());
 $evm->addEventListener(array('prePersist'), new Listeners\KuponListener());
+$evm->addEventListener(array('prePersist'), new Listeners\RendezvenyListener());
 
 $em = \Doctrine\ORM\EntityManager::create($connectionOptions, $config, $evm);
 
