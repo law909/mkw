@@ -44,7 +44,7 @@ if (typeof billyloader !== "object") {
             });
             var me = myScripts[myScripts.length - 1];
             var src = me.src.split("?");
-            billyloader.params = src[1];
+            billyloader.params = '?' + src[1];
             billyloader.SetBaseUrl(src[0]);
 
             var iframe = document.createElement("iframe");
