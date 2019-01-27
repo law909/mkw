@@ -91,6 +91,7 @@ $router->map('GET', '/markak', 'termekcimkeController#showMarkak', 'markak');
 $router->map('GET', '/getmeretszinhez', 'termekController#getMeretSzinhez', 'getmeretszinhez');
 
 $router->map('GET', '/rendezveny/reg', 'rendezvenyController#regView', 'showrendezvenyreg');
+$router->map('POST', '/rendezveny/reg/save', 'rendezvenyController#regSave', 'saverendezvenyreg');
 
 $router->map('POST', '/kosar/add', 'kosarController#add', 'kosaradd');
 $router->map('POST', '/kosar/multiadd', 'kosarController#multiAdd', 'kosarmultiadd');

@@ -246,4 +246,12 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         }
     }
 
+    public function regSave() {
+/*
+        $v = $this->getTemplateFactory()->createMainView('rendezvenyregkoszono.tpl');
+        $v->setVar('rendezvenyid', $rendezveny->getId());
+        echo $v->getTemplateResult();
+*/
+    }
+
 }

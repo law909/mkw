@@ -1,7 +1,7 @@
 {extends "basestone.tpl"}
 
 {block "script"}
-    <!--script src="/js/main/darshan/rendezvenyreg.js"></script-->
+    <script src="/js/main/darshan/rendezvenyreg.js"></script>
 {/block}
 
 {block "stonebody"}
@@ -11,7 +11,7 @@
                 <h4 class="color-darshan">JELENTKEZÉS</h4>
             </div>
         </div>
-        <form>
+        <form id="rendezvenyregform" action="/rendezveny/reg/save" method="post">
             <div class="form-group row">
                 <label for="vnevedit" class="col-sm-2 col-form-label">Vezetéknév</label>
                 <div class="col">
