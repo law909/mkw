@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <script type="text/javascript" src="/js/admin/darshan/iframeResizer.contentWindow.min.js"></script>
+    <script type="text/javascript" src="/js/main/darshan/iframeResizer.contentWindow.min.js"></script>
     <style>
         body {
             font-family: 'Arial',Helvetica,Arial,Lucida,sans-serif;

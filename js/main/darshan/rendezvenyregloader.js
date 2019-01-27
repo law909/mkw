@@ -14,19 +14,8 @@ if (typeof billyloader !== "object") {
             var results = regex.exec(billyloader.params);
             return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         },
-        MessageHandler: function(e) {
-            var obj = JSON.parse(e.data);
-            if (typeof obj != "object") return;
-            if (obj.action == "sizing") {
-                iframe = document.getElementById(obj.target);
-                iframe.style.width = "100%";
-                iframe.style.height = 40 + parseInt(obj.height) + "px"
-            }
-        },
         IFrameOnLoad: function() {
-            var iframe = document.getElementById(billyloader.iFrameId);
-            var data = '{"action": "sizing?", "target": "' + billyloader.iFrameId + '"}';
-            iframe.contentWindow.postMessage(data, billyloader.BaseUrl);
+            iFrameResize({}, billyloader.iFrameId);
         },
         Init: function() {
             var scripts = document.getElementsByTagName("script");
@@ -65,15 +54,7 @@ if (typeof billyloader !== "object") {
             me.parentNode.appendChild(iframe);
             setTimeout(function () {
             }, 1e3)
-        },
-        InitOnce: function() {
-            if (typeof window.addEventListener != "undefined") {
-                window.addEventListener("message", billyloader.MessageHandler, false)
-            } else if (typeof window.attachEvent != "undefined") {
-                window.attachEvent("onmessage", billyloader.MessageHandler)
-            }
         }
     };
-    billyloader.InitOnce()
 }
 billyloader.Init();
