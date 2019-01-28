@@ -162,7 +162,7 @@ class partnerController extends \mkwhelpers\MattableController {
      * @param \Entities\Partner $obj
      * @return \Entities\Partner
      */
-    protected function setFields($obj, $parancs, $subject = 'minden') {
+    public function setFields($obj, $parancs, $subject = 'minden') {
 
         if ($subject === 'minden') {
             $j1 = $this->params->getStringRequestParam('jelszo1');
@@ -283,7 +283,7 @@ class partnerController extends \mkwhelpers\MattableController {
         if ($subject === 'adataim' || $subject === 'pubreg' || $subject === 'minden') {
             $obj->setVezeteknev($this->params->getStringRequestParam('vezeteknev'));
             $obj->setKeresztnev($this->params->getStringRequestParam('keresztnev'));
-            if (\mkw\store::getTheme() === 'mkwcansas' && $subject !== 'minden') {
+            if (\mkw\store::isMindentkapni() && $subject !== 'minden') {
                 $obj->setNev($this->params->getStringRequestParam('vezeteknev') . ' ' . $this->params->getStringRequestParam('keresztnev'));
             }
             $obj->setEmail($this->params->getStringRequestParam('email'));
@@ -301,7 +301,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setFoglalkozas($this->params->getStringRequestParam('foglalkozas'));
         }
 
-        if ($subject === 'pubreg') {
+        if (\mkw\store::isMIJSZ() && $subject === 'pubreg') {
             $cimke = $this->getEm()->getRepository('Entities\Partnercimketorzs')->find(\mkw\store::getParameter(\mkw\consts::FelvetelAlattCimke));
             if ($cimke) {
                 $obj->addCimke($cimke);
@@ -520,7 +520,7 @@ class partnerController extends \mkwhelpers\MattableController {
         if ($subject === 'registration') {
             $obj->setVezeteknev($this->params->getStringRequestParam('vezeteknev'));
             $obj->setKeresztnev($this->params->getStringRequestParam('keresztnev'));
-            if (\mkw\store::getTheme() === 'mkwcansas') {
+            if (\mkw\store::isMindentkapni()) {
                 $obj->setNev($this->params->getStringRequestParam('vezeteknev') . ' ' . $this->params->getStringRequestParam('keresztnev'));
             }
             $email = $this->params->getStringRequestParam('kapcsemail');

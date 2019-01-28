@@ -271,4 +271,9 @@ class consts {
 
     const SzamlaOrzesAlap = 'szamlaorzesalap';
     const SzamlaOrzesEv = 'szamlaorzesev';
+
+    const RendezvenySablonRegKoszono = 'rendezvenysablonregkoszono';
+    const RendezvenySablonDijbekero = 'rendezvenysablondijbekero';
+    const RendezvenySablonFizetesKoszono = 'rendezvenysablonfizeteskoszono';
+    const RendezvenySablonKezdesEmlekezteto = 'rendezvenysablonkezdesemlekezteto';
 }

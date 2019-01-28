@@ -6,6 +6,7 @@
         <table>
             <tbody>
                 <tr><td>{$_egyed.partneremail}</td></tr>
+                <tr><td>{$_egyed.partnertelefon}</td></tr>
                 <tr><td>{$_egyed.datum}</td></tr>
             </tbody>
         </table>
@@ -74,6 +75,34 @@
     </td>
     <td class="cell">
         <table><tbody>
+            {if ($_egyed.emailregkoszono)}
+                <tr>
+                    <td>
+                        Jelentkezés megköszönve
+                    </td>
+                </tr>
+            {/if}
+            {if (!$_egyed.fizetve)}
+                {if ($_egyed.emaildijbekero)}
+                <tr>
+                    <td>
+                        Utolsó díjbekérő email: {$_egyed.emaildijbekerodatum}
+                    </td>
+                </tr>
+                {/if}
+                <tr>
+                    <td>
+                        <a class="js-emaildijbekero" href="#" data-id="{$_egyed.id}">{at('Díjbekérő email')}</a>
+                    </td>
+                </tr>
+            {/if}
+            {if (!$_egyed.emailrendezvenykezdes)}
+                <tr>
+                    <td>
+                        <a class="js-emailrendezvenykezdes" href="#" data-id="{$_egyed.id}">{at('Kezdés emlékeztető email')}</a>
+                    </td>
+                </tr>
+            {/if}
             {if (!$_egyed.fizetve && !$_egyed.szamlazva && !$_egyed.lemondva && !$_egyed.visszautalva)}
             <tr>
                 <td>

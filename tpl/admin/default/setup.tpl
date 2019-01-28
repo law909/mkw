@@ -36,6 +36,7 @@
                     {if ($setup.barion)}
                         <li><a href="#BarionTab">{at('Barion')}</a></li>
                     {/if}
+                    <li><a href="#RendezvenyTab">{at('Rendezvények')}</a></li>
                     <li><a href="#IdTab">{at('Azonosítók, kódok')}</a></li>
                     <li><a href="#MiniCRMTab">{at('MiniCRM')}</a></li>
                     <li><a href="#EmailTab">{at('Email')}</a></li>
@@ -1191,6 +1192,47 @@
                     </div>
                 </div>
                 {/if}
+
+                <div id="RendezvenyTab" class="mattkarb-page" data-visible="visible">
+                    <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="RRegKoszonoSablonEdit">{at('Jelentkezés köszönő levél sablon')}:</label></span>
+                            <select id="RRegKoszonoSablonEdit" name="rendezvenysablonregkoszono">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $rendezvenysablonregkoszonolist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="RDijbekeroSablonEdit">{at('Díjbekérő levél sablon')}:</label></span>
+                            <select id="RDijbekeroSablonEdit" name="rendezvenysablondijbekero">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $rendezvenysablondijbekerolist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="RFizetesKoszonoSablonEdit">{at('Fizetés köszönő levél sablon')}:</label></span>
+                            <select id="RFizetesKoszonoSablonEdit" name="rendezvenysablonfizeteskoszono">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $rendezvenysablonfizeteskoszonolist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="RKezdesEmlekeztetoSablonEdit">{at('Kezdés emlékeztető levél sablon')}:</label></span>
+                            <select id="RKezdesEmlekeztetoSablonEdit" name="rendezvenysablonkezdesemlekezteto">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $rendezvenysablonkezdesemlekeztetolist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
                 <div id="IdTab" class="mattkarb-page" data-visible="visible">
                     <table>

@@ -111,6 +111,7 @@ $(document).ready(function() {
         $('#mattable-select').mattable({
             filter: {
                 fields: [
+                    '#idfilter',
                     '#partnernevfilter',
                     '#partneremailfilter',
                     '#datumtolfilter',
@@ -122,12 +123,60 @@ $(document).ready(function() {
             tablebody: {
                 url: '/admin/rendezvenyjelentkezes/getlistbody',
                 onStyle: function() {
-                    $('.js-fizetve, .js-szamlazva, .js-lemondva, .js-visszautalva').button();
+                    $('.js-emaildijbekero, .js-emailrendezvenykezdes, .js-fizetve, .js-szamlazva, .js-lemondva, .js-visszautalva').button();
                 }
             },
             karb: rendezvenyjel
         });
         $('#mattable-body')
+            .on('click', '.js-emaildijbekero', function(e) {
+                var $gomb = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/rendezvenyjelentkezes/email/dijbekero',
+                    type: 'POST',
+                    data: {
+                        id: $gomb.data('id')
+                    },
+                    success: function (data) {
+                        var d = JSON.parse(data);
+                        dialogcenter.html(d.msg).dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'OK': function() {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                });
+            })
+            .on('click', '.js-emailrendezvenykezdes', function(e) {
+                var $gomb = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/rendezvenyjelentkezes/email/kezdes',
+                    type: 'POST',
+                    data: {
+                        id: $gomb.data('id')
+                    },
+                    success: function (data) {
+                        var d = JSON.parse(data);
+                        dialogcenter.html(d.msg).dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'OK': function() {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                });
+            })
             .on('click', '.js-fizetve', function(e) {
 
                 function clearForm() {

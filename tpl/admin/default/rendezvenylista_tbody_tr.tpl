@@ -2,12 +2,15 @@
     <td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
     <td class="cell">
         <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.nev}</a>
+        <a class="js-emailrendezvenykezdes" href="#" data-egyedid="{$_egyed.id}">{at('Kezdés emlékeztető email')}</a>
+
         <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
         <table>
             <tbody>
-                <tr><td>{$_egyed.kezdodatum}</td></tr>
-                <tr><td>{$_egyed.termeknev}</td></tr>
-                <tr><td>{$_egyed.jogateremnev}</td></tr>
+                <tr><td>Dátum:</td><td>{$_egyed.kezdodatum} {$_egyed.kezdoido}</td></tr>
+                <tr><td>Termék a számlán</td><td>{$_egyed.termeknev}</td></tr>
+                <tr><td>Ár:</td><td class="pricenowrap">{number_format($_egyed.ar, 2, '.', ' ')}</td></tr>
+                <tr><td>Terem:</td><td>{$_egyed.jogateremnev}</td></tr>
                 <tr><td>Regisztrációs form: <span>{$_egyed.reglink}</span></td></tr>
                 <tr><td><a href="#" class="js-uidcopy" data-clipboard-text="{$_egyed.reglink}">Másolás vágólapra</a></td></tr>
             </tbody>
@@ -34,4 +37,5 @@
             </tbody>
         </table>
     </td>
+
 </tr>

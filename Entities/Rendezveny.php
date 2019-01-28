@@ -48,6 +48,9 @@ class Rendezveny {
     /** @ORM\Column(type="date",nullable=true) */
     private $kezdodatum;
 
+    /** @ORM\Column(type="string",length=50,nullable=true) */
+    private $kezdoido;
+
     /**
      * @ORM\Column(type="string",length=255,nullable=false)
      */
@@ -65,6 +68,9 @@ class Rendezveny {
      * @var \Entities\Termek
      */
     private $termek;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $ar;
 
     /**
      * @ORM\ManyToOne(targetEntity="Rendezvenyallapot")
@@ -489,6 +495,34 @@ class Rendezveny {
             return true;
         }
         return false;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getKezdoido() {
+        return $this->kezdoido;
+    }
+
+    /**
+     * @param mixed $kezdoido
+     */
+    public function setKezdoido($kezdoido) {
+        $this->kezdoido = $kezdoido;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAr() {
+        return $this->ar;
+    }
+
+    /**
+     * @param mixed $ar
+     */
+    public function setAr($ar) {
+        $this->ar = $ar;
     }
 
 }

@@ -64,10 +64,10 @@ class RendezvenyJelentkezes extends \Entities\RendezvenyJelentkezes implements \
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'rendezveny', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'partner', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizmod', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetve', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetesdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetesbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetveosszeghuf', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvebankbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvebanktetelid', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvebankszamla', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvepenztarbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvepenztartetelid', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvepenztar', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazva', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazasdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazasbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvabizonylattipus', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvakelt', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvateljesites', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvaosszeghuf', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondva', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondasdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondasbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondasoka', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalva', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasfizmod', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasosszeghuf', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasbankbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasbankszamla', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalaspenztarbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalaspenztar', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'minicrmprojectid', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'minicrmcontactid'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'rendezveny', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'partner', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'partnertelefon', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizmod', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetve', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetesdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetesbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetveosszeghuf', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvebankbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvebanktetelid', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvebankszamla', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvepenztarbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvepenztartetelid', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvepenztar', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazva', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazasdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazasbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvabizonylattipus', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvakelt', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvateljesites', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvaosszeghuf', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondva', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondasdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondasbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondasoka', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalva', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasfizmod', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasosszeghuf', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasbankbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasbankszamla', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalaspenztarbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalaspenztar', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'minicrmprojectid', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'minicrmcontactid', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'emailregkoszono', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'emaildijbekero', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'emaildijbekerodatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'emailrendezvenykezdes'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'rendezveny', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'partner', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizmod', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetve', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetesdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetesbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetveosszeghuf', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvebankbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvebanktetelid', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvebankszamla', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvepenztarbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvepenztartetelid', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvepenztar', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazva', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazasdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazasbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvabizonylattipus', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvakelt', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvateljesites', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvaosszeghuf', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondva', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondasdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondasbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondasoka', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalva', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasfizmod', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasosszeghuf', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasbankbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasbankszamla', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalaspenztarbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalaspenztar', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'minicrmprojectid', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'minicrmcontactid'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'rendezveny', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'partner', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'partnertelefon', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizmod', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetve', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetesdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetesbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetveosszeghuf', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvebankbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvebanktetelid', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvebankszamla', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvepenztarbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvepenztartetelid', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'fizetvepenztar', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazva', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazasdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazasbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvabizonylattipus', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvakelt', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvateljesites', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'szamlazvaosszeghuf', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondva', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondasdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondasbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'lemondasoka', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalva', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasdatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasfizmod', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasosszeghuf', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasbankbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasbankszamla', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalaspenztarbizonylatszam', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalaspenztar', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'visszautalasbejegyzo', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'minicrmprojectid', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'minicrmcontactid', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'emailregkoszono', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'emaildijbekero', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'emaildijbekerodatum', '' . "\0" . 'Entities\\RendezvenyJelentkezes' . "\0" . 'emailrendezvenykezdes'];
     }
 
     /**
@@ -173,6 +173,17 @@ class RendezvenyJelentkezes extends \Entities\RendezvenyJelentkezes implements \
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
+    public function toLista()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', []);
+
+        return parent::toLista();
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -560,6 +571,83 @@ class RendezvenyJelentkezes extends \Entities\RendezvenyJelentkezes implements \
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerCim', []);
 
         return parent::getPartnerCim();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartnerKeresztnev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerKeresztnev', []);
+
+        return parent::getPartnerKeresztnev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartnerVezeteknev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerVezeteknev', []);
+
+        return parent::getPartnerVezeteknev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartnerIrszam()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerIrszam', []);
+
+        return parent::getPartnerIrszam();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartnerVaros()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerVaros', []);
+
+        return parent::getPartnerVaros();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartnerUtca()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerUtca', []);
+
+        return parent::getPartnerUtca();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartnerHazszam()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerHazszam', []);
+
+        return parent::getPartnerHazszam();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartnerAdoszam()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerAdoszam', []);
+
+        return parent::getPartnerAdoszam();
     }
 
     /**
@@ -1605,6 +1693,127 @@ class RendezvenyJelentkezes extends \Entities\RendezvenyJelentkezes implements \
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMinicrmcontactid', [$minicrmcontactid]);
 
         return parent::setMinicrmcontactid($minicrmcontactid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartnertelefon()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnertelefon', []);
+
+        return parent::getPartnertelefon();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPartnertelefon($telefon)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnertelefon', [$telefon]);
+
+        return parent::setPartnertelefon($telefon);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEmaildijbekerodatum()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmaildijbekerodatum', []);
+
+        return parent::getEmaildijbekerodatum();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEmaildijbekerodatumStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmaildijbekerodatumStr', []);
+
+        return parent::getEmaildijbekerodatumStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEmaildijbekerodatum($adat = '')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmaildijbekerodatum', [$adat]);
+
+        return parent::setEmaildijbekerodatum($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEmailregkoszono()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmailregkoszono', []);
+
+        return parent::getEmailregkoszono();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEmailregkoszono($emailregkoszono)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmailregkoszono', [$emailregkoszono]);
+
+        return parent::setEmailregkoszono($emailregkoszono);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEmaildijbekero()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmaildijbekero', []);
+
+        return parent::getEmaildijbekero();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEmaildijbekero($emaildijbekero)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmaildijbekero', [$emaildijbekero]);
+
+        return parent::setEmaildijbekero($emaildijbekero);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEmailrendezvenykezdes()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmailrendezvenykezdes', []);
+
+        return parent::getEmailrendezvenykezdes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEmailrendezvenykezdes($emailrendezvenykezdes)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmailrendezvenykezdes', [$emailrendezvenykezdes]);
+
+        return parent::setEmailrendezvenykezdes($emailrendezvenykezdes);
     }
 
 }

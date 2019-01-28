@@ -32,6 +32,10 @@
                     <td><input id="KezdodatumEdit" name="kezdodatum" data-datum="{$egyed.kezdodatum}"></td>
                 </tr>
                 <tr>
+                    <td><label for="KezdoidoEdit">{at('Rendezvény kezdés ideje')}:</label></td>
+                    <td><input id="KezdoidoEdit" name="kezdoido" value="{$egyed.kezdoido}"></td>
+                </tr>
+                <tr>
                     <td><label for="TanarEdit">{at('Rendezvény tanára')}:</label></td>
                     <td><select id="TanarEdit" name="tanar">
                             <option value="">{at('válasszon')}</option>
@@ -63,6 +67,10 @@
                             {/foreach}
                         </select>
                     </td>
+                </tr>
+                <tr>
+                    <td><label for="">{at('Ár')}:</label></td>
+                    <td><input name="ar" type="number" step="any" value="{$egyed.ar}" required="required"></td>
                 </tr>
                 </tbody>
             </table>

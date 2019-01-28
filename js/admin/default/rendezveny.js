@@ -85,6 +85,7 @@ $(document).ready(function() {
                 url: '/admin/rendezveny/getlistbody',
                 onStyle: function() {
                     new ClipboardJS('.js-uidcopy');
+                    $('.js-emailrendezvenykezdes').button();
                 }
             },
             karb: rendezveny
@@ -92,7 +93,8 @@ $(document).ready(function() {
         $('.js-maincheckbox').change(function() {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
-        $('#mattable-body').on('click', '.js-flagcheckbox', function (e) {
+        $('#mattable-body')
+        .on('click', '.js-flagcheckbox', function (e) {
             function doit(succ) {
                 var id = $this.attr('data-id'),
                     flag = $this.attr('data-flag'),
@@ -118,6 +120,31 @@ $(document).ready(function() {
             var $this = $(this);
             doit();
         })
+        .on('click', '.js-emailrendezvenykezdes', function(e) {
+            var $gomb = $(this);
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/rendezveny/email/kezdes',
+                type: 'POST',
+                data: {
+                    id: $gomb.data('egyedid')
+                },
+                success: function (data) {
+                    var d = JSON.parse(data);
+                    dialogcenter.html(d.msg).dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function() {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                }
+            });
+
+        });
     }
     else {
         if ($.fn.mattkarb) {

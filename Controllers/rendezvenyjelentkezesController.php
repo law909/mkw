@@ -28,6 +28,13 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $x['partnernev'] = $t->getPartnernev();
         $x['partnercim'] = $t->getPartnerCim();
         $x['partneremail'] = $t->getPartneremail();
+        $x['partnertelefon'] = $t->getPartnertelefon();
+        $x['partnervezeteknev'] = $t->getPartnerVezeteknev();
+        $x['partnerkeresztnev'] = $t->getPartnerKeresztnev();
+        $x['partnerirszam'] = $t->getPartnerIrszam();
+        $x['partnervaros'] = $t->getPartnerVaros();
+        $x['partnerutca'] = $t->getPartnerUtca();
+        $x['partnerhazszam'] = $t->getPartnerHazszam();
 
         $x['fizetve'] = $t->getFizetve();
         $x['fizetesdatum'] = $t->getFizetesdatumStr();
@@ -57,6 +64,11 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $x['visszautalasbankbizonylatszam'] = $t->getVisszautalasbankbizonylatszam();
         $x['visszautalasosszeghuf'] = $t->getVisszautalasosszeghuf();
         $x['visszautalasfizmodnev'] = $t->getVisszautalasfizmodNev();
+
+        $x['emailregkoszono'] = $t->getEmailregkoszono();
+        $x['emaildijbekero'] = $t->getEmaildijbekero();
+        $x['emaildijbekerodatum'] = $t->getEmaildijbekerodatumStr();
+        $x['emailrendezvenykezdes'] = $t->getEmailrendezvenykezdes();
         return $x;
     }
 
@@ -89,6 +101,7 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
             $partnerobj->setIrszam($this->params->getStringRequestParam('partnerirszam'));
             $partnerobj->setVaros($this->params->getStringRequestParam('partnervaros'));
             $partnerobj->setUtca($this->params->getStringRequestParam('partnerutca'));
+            $partnerobj->setHazszam($this->params->getStringRequestParam('partnerhazszam'));
             $this->getEm()->persist($partnerobj);
         }
         if ($partnerkod > 0) {
@@ -118,6 +131,11 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         $view = $this->createView('rendezvenyjelentkezeslista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
+
+        $f = $this->params->getIntRequestParam('idfilter');
+        if ($f) {
+            $filter->addFilter('id', '=', $f);
+        }
 
         $f = $this->params->getStringRequestParam('partnernevfilter');
         if ($f) {
@@ -245,19 +263,24 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         if ($rj) {
             /** @var \Entities\Rendezveny $r */
             $r = $rj->getRendezveny();
-            if ($r) {
-                $t = $r->getTermek();
-                $p = $rj->getPartner();
-                if ($t && $p) {
-                    $price = $t->getBruttoAr(null, $p);
-                    echo json_encode(array('result' => 'ok', 'price' => $price));
-                }
-                else {
-                    echo json_encode(array('result' => 'error', 'msg' => at('Nincs termék vagy partner!')));
-                }
+            if ($r->getAr()) {
+                echo json_encode(array('result' => 'ok', 'price' => $r->getAr()));
             }
             else {
-                echo json_encode(array('result' => 'error', 'msg' => at('Nincs rendezvény!')));
+                if ($r) {
+                    $t = $r->getTermek();
+                    $p = $rj->getPartner();
+                    if ($t && $p) {
+                        $price = $t->getBruttoAr(null, $p);
+                        echo json_encode(array('result' => 'ok', 'price' => $price));
+                    }
+                    else {
+                        echo json_encode(array('result' => 'error', 'msg' => at('Nincs termék vagy partner!')));
+                    }
+                }
+                else {
+                    echo json_encode(array('result' => 'error', 'msg' => at('Nincs rendezvény!')));
+                }
             }
         }
         else {
@@ -355,6 +378,26 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
 
             $this->getEm()->persist($r);
             $this->getEm()->flush();
+
+            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonFizetesKoszono));
+            if ($emailtpl) {
+                $tpldata = $r->toLista();
+                $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                $subject->setVar('jelentkezes', $tpldata);
+                $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                $body->setVar('jelentkezes', $tpldata);
+                if (\mkw\store::getConfigValue('developer')) {
+                    \mkw\store::writelog($subject->getTemplateResult(), 'rendezvenyfizeteskoszonoemail.html');
+                    \mkw\store::writelog($body->getTemplateResult(), 'rendezvenyfizeteskoszonoemail.html');
+                }
+                else {
+                    $mailer = \mkw\store::getMailer();
+                    $mailer->addTo($r->getPartneremail());
+                    $mailer->setSubject($subject->getTemplateResult());
+                    $mailer->setMessage($body->getTemplateResult());
+                    $mailer->send();
+                }
+            }
 
             echo json_encode(array('result' => 'ok'));
         }
@@ -486,5 +529,88 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
         /** @var \Entities\RendezvenyJelentkezes $rj */
         $rj = $this->getRepo()->find($this->params->getIntRequestParam('id'));
 
+    }
+
+    public function sendDijbekeroEmail() {
+        $ret = array('msg' => at('A díjbekérő levél kiküldve.'));
+        /** @var \Entities\RendezvenyJelentkezes $jel */
+        $jel = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+        if ($jel) {
+            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonDijbekero));
+            if ($emailtpl) {
+                $tpldata = $jel->toLista();
+                $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                $subject->setVar('jelentkezes', $tpldata);
+                $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                $body->setVar('jelentkezes', $tpldata);
+                if (\mkw\store::getConfigValue('developer')) {
+                    \mkw\store::writelog($subject->getTemplateResult(), 'rendezvenydijbekeroemail.html');
+                    \mkw\store::writelog($body->getTemplateResult(), 'rendezvenydijbekeroemail.html');
+                }
+                else {
+                    $mailer = \mkw\store::getMailer();
+                    $mailer->addTo($jel->getPartneremail());
+                    $mailer->setSubject($subject->getTemplateResult());
+                    $mailer->setMessage($body->getTemplateResult());
+                    $mailer->send();
+                }
+                $jel->setEmaildijbekero(true);
+                $jel->setEmaildijbekerodatum('');
+                $this->getEm()->persist($jel);
+                $this->getEm()->flush();
+            }
+            else {
+                $ret['msg'] = at('Díjbekérő levél sablon nem található.');
+            }
+        }
+        else {
+            $ret['msg'] = at('A jelentkezés nem található.');
+        }
+        echo json_encode($ret);
+    }
+
+    public function sendKezdesEmail($id = null) {
+        $ret = array('msg' => at('A kezdés emlékeztető levél kiküldve.'));
+        $kellecho = false;
+        if (!$id) {
+            $kellecho = true;
+            $id = $this->params->getIntRequestParam('id');
+        }
+        /** @var \Entities\RendezvenyJelentkezes $jel */
+        $jel = $this->getRepo()->find($id);
+        if ($jel) {
+            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonKezdesEmlekezteto));
+            if ($emailtpl) {
+                $tpldata = $jel->toLista();
+                $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                $subject->setVar('jelentkezes', $tpldata);
+                $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                $body->setVar('jelentkezes', $tpldata);
+                if (\mkw\store::getConfigValue('developer')) {
+                    \mkw\store::writelog($subject->getTemplateResult(), 'rendezvenykezdesemail.html');
+                    \mkw\store::writelog($body->getTemplateResult(), 'rendezvenykezdesemail.html');
+                }
+                else {
+                    $mailer = \mkw\store::getMailer();
+                    $mailer->addTo($jel->getPartneremail());
+                    $mailer->setSubject($subject->getTemplateResult());
+                    $mailer->setMessage($body->getTemplateResult());
+                    $mailer->send();
+                }
+
+                $jel->setEmailrendezvenykezdes(true);
+                $this->getEm()->persist($jel);
+                $this->getEm()->flush();
+            }
+            else {
+                $ret['msg'] = at('Kezdés emlékeztető levél sablon nem található.');
+            }
+        }
+        else {
+            $ret['msg'] = at('A jelentkezés nem található.');
+        }
+        if ($kellecho) {
+            echo json_encode($ret);
+        }
     }
 }

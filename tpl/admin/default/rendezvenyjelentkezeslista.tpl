@@ -11,6 +11,8 @@
 <div id="mattable-select" data-theme="{$theme}">
 <div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Rendezvény jelentkezések')}"></div>
 <div id="mattable-filterwrapper">
+    <label for="idfilter">{at('Azonosító')}</label>
+    <input id="idfilter" name="idfilter" type="number" step="any">
 	<label for="partnernevfilter">{at('Résztvevő név')}</label>
 	<input id="partnernevfilter" name="partnernevfilter" type="text" size="30" maxlength="255">
     <label for="partneremailfilter">{at('Email')}:</label>

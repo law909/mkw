@@ -117,6 +117,22 @@ class setupController extends \mkwhelpers\Controller {
         $konyvelolevelsablon = new emailtemplateController($this->params);
         $view->setVar('konyvelolevelsablonlist', $konyvelolevelsablon->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::RendezvenySablonDijbekero);
+        $rsdsablon = new emailtemplateController($this->params);
+        $view->setVar('rendezvenysablondijbekerolist', $rsdsablon->getSelectList(($p ? $p->getErtek() : 0)));
+
+        $p = $repo->find(\mkw\consts::RendezvenySablonRegKoszono);
+        $rsrksablon = new emailtemplateController($this->params);
+        $view->setVar('rendezvenysablonregkoszonolist', $rsrksablon->getSelectList(($p ? $p->getErtek() : 0)));
+
+        $p = $repo->find(\mkw\consts::RendezvenySablonFizetesKoszono);
+        $rsfksablon = new emailtemplateController($this->params);
+        $view->setVar('rendezvenysablonfizeteskoszonolist', $rsfksablon->getSelectList(($p ? $p->getErtek() : 0)));
+
+        $p = $repo->find(\mkw\consts::RendezvenySablonKezdesEmlekezteto);
+        $rskesablon = new emailtemplateController($this->params);
+        $view->setVar('rendezvenysablonkezdesemlekeztetolist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::SzallitasiKtg1Tol);
         $view->setVar(\mkw\consts::SzallitasiKtg1Tol, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::SzallitasiKtg1Ig);
@@ -785,6 +801,38 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::KonyvelolevelSablon, '');
+        }
+
+        $levelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('rendezvenysablonregkoszono', 0));
+        if ($levelsablon) {
+            $this->setObj(\mkw\consts::RendezvenySablonRegKoszono, $levelsablon->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::RendezvenySablonRegKoszono, '');
+        }
+
+        $levelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('rendezvenysablondijbekero', 0));
+        if ($levelsablon) {
+            $this->setObj(\mkw\consts::RendezvenySablonDijbekero, $levelsablon->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::RendezvenySablonDijbekero, '');
+        }
+
+        $levelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('rendezvenysablonkezdesemlekezteto', 0));
+        if ($levelsablon) {
+            $this->setObj(\mkw\consts::RendezvenySablonKezdesEmlekezteto, $levelsablon->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::RendezvenySablonKezdesEmlekezteto, '');
+        }
+
+        $levelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('rendezvenysablonfizeteskoszono', 0));
+        if ($levelsablon) {
+            $this->setObj(\mkw\consts::RendezvenySablonFizetesKoszono, $levelsablon->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::RendezvenySablonFizetesKoszono, '');
         }
 
         $this->setObj(\mkw\consts::BarionEnvironment, $this->params->getNumRequestParam(\mkw\consts::BarionEnvironment));

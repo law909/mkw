@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use Entities\Rendezveny;
+
 class rendezvenyController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -24,8 +26,10 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $x['id'] = $t->getId();
         $x['nev'] = $t->getNev();
         $x['termeknev'] = $t->getTermekNev();
+        $x['ar'] = $t->getAr();
         $x['tanarnev'] = $t->getTanarNev();
         $x['kezdodatum'] = $t->getKezdodatumStr();
+        $x['kezdoido'] = $t->getKezdoido();
         $x['jogateremnev'] = $t->getJogateremNev();
         $x['rendezvenyallapotnev'] = $t->getRendezvenyallapotNev();
         $x['todoplakat'] = $t->getTodoplakat();
@@ -38,7 +42,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $x['todowebposzt'] = $t->getTodowebposzt();
         $x['todowebslider'] = $t->getTodowebslider();
         $x['uid'] = $t->getUid();
-        $x['reglink'] = \mkw\store::getConfigValue('mainurl') . '/js/main/' . \mkw\store::getConfigValue('main.theme') . '/rendezvenyregloader.js?r=' . $t->getUid();
+        $x['reglink'] = '<script src="' . \mkw\store::getConfigValue('mainurl') . '/js/main/' . \mkw\store::getConfigValue('main.theme') . '/rendezvenyregloader.js?r=' . $t->getUid() . '"></script>';
 
         if ($forKarb) {
             foreach ($t->getRendezvenyDokok() as $kepje) {
@@ -57,6 +61,8 @@ class rendezvenyController extends \mkwhelpers\MattableController {
     protected function setFields($obj, $oper) {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setKezdodatum($this->params->getStringRequestParam('kezdodatum'));
+        $obj->setKezdoido($this->params->getStringRequestParam('kezdoido'));
+        $obj->setAr($this->params->getFloatRequestParam('ar'));
         $ck = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek', 0));
         if ($ck) {
             $obj->setTermek($ck);
@@ -108,13 +114,13 @@ class rendezvenyController extends \mkwhelpers\MattableController {
             $filterarr->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
         if (!is_null($this->params->getRequestParam('tanarfilter', null))) {
-            $filterarr->addFilter('tanar' , '=', $this->params->getIntRequestParam('tanarfilter'));
+            $filterarr->addFilter('tanar', '=', $this->params->getIntRequestParam('tanarfilter'));
         }
         if (!is_null($this->params->getRequestParam('jogateremfilter', null))) {
-            $filterarr->addFilter('jogaterem' , '=', $this->params->getIntRequestParam('jogateremfilter'));
+            $filterarr->addFilter('jogaterem', '=', $this->params->getIntRequestParam('jogateremfilter'));
         }
         if (!is_null($this->params->getRequestParam('rendezvenyallapotfilter', null))) {
-            $filterarr->addFilter('rendezvenyallapot' , '=', $this->params->getIntRequestParam('rendezvenyallapotfilter'));
+            $filterarr->addFilter('rendezvenyallapot', '=', $this->params->getIntRequestParam('rendezvenyallapotfilter'));
         }
         $datumtol = $this->params->getStringRequestParam('tol');
         if ($datumtol) {
@@ -238,20 +244,76 @@ class rendezvenyController extends \mkwhelpers\MattableController {
 
     public function regView() {
         $rid = $this->params->getStringRequestParam('r');
+        /** @var \Entities\Rendezveny $rendezveny */
         $rendezveny = $this->getRepo()->findOneBy(array('uid' => $rid));
         if ($rendezveny) {
             $v = $this->getTemplateFactory()->createMainView('rendezvenyreg.tpl');
-            $v->setVar('rendezvenyid', $rendezveny->getId());
+            $v->setVar('uid', $rendezveny->getUid());
             echo $v->getTemplateResult();
         }
     }
 
     public function regSave() {
-/*
-        $v = $this->getTemplateFactory()->createMainView('rendezvenyregkoszono.tpl');
-        $v->setVar('rendezvenyid', $rendezveny->getId());
-        echo $v->getTemplateResult();
-*/
+        $rid = $this->params->getStringRequestParam('r');
+        /** @var \Entities\Rendezveny $rendezveny */
+        $rendezveny = $this->getRepo()->findOneBy(array('uid' => $rid));
+        if ($rendezveny) {
+            $email = $this->params->getStringRequestParam('email');
+            $partner = $this->getRepo('Entities\Partner')->findOneBy(array('email' => $email));
+            if (!$partner) {
+                $partner = new \Entities\Partner();
+            }
+            $partnerctrl = new \Controllers\partnerController($this->params);
+            $partner = $partnerctrl->setFields($partner, null, 'pubreg');
+            $this->getEm()->persist($partner);
+
+            $jel = new \Entities\RendezvenyJelentkezes();
+            $jel->setDatum('');
+            $jel->setPartner($partner);
+            $jel->setRendezveny($rendezveny);
+            $jel->setEmailregkoszono(true);
+            $this->getEm()->persist($jel);
+
+            $this->getEm()->flush();
+
+            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonRegKoszono));
+            if ($emailtpl) {
+                $tpldata = $jel->toLista();
+                $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                $subject->setVar('jelentkezes', $tpldata);
+                $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                $body->setVar('jelentkezes', $tpldata);
+                if (\mkw\store::getConfigValue('developer')) {
+                    \mkw\store::writelog($subject->getTemplateResult(), 'rendezvenyregkoszonoemail.html');
+                    \mkw\store::writelog($body->getTemplateResult(), 'rendezvenyregkoszonoemail.html');
+                }
+                else {
+                    $mailer = \mkw\store::getMailer();
+                    $mailer->addTo($jel->getPartneremail());
+                    $mailer->setSubject($subject->getTemplateResult());
+                    $mailer->setMessage($body->getTemplateResult());
+                    $mailer->send();
+                }
+            }
+
+            $v = $this->getTemplateFactory()->createMainView('rendezvenyregkoszono.tpl');
+            echo $v->getTemplateResult();
+        }
     }
 
+    public function sendKezdesEmail() {
+        $ret = array('msg' => at('A kezdés emlékeztető levelek kiküldve.'));
+        $rend = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+        if ($rend) {
+            $rjc = new \Controllers\rendezvenyjelentkezesController($this->params);
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('rendezveny', '=', $rend);
+            $jelek = $this->getRepo('Entities\RendezvenyJelentkezes')->getAll($filter);
+            /** @var \Entities\RendezvenyJelentkezes $jel */
+            foreach($jelek as $jel) {
+                $rjc->sendKezdesEmail($jel->getId());
+            }
+        }
+        echo json_encode($ret);
+    }
 }

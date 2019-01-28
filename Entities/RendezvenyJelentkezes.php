@@ -68,6 +68,9 @@ class RendezvenyJelentkezes {
     /** @ORM\Column(type="string",length=100,nullable=true) */
     private $partneremail = '';
 
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $partnertelefon = '';
+
     /**
      * @ORM\ManyToOne(targetEntity="Fizmod")
      * @ORM\JoinColumn(name="fizmod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -213,6 +216,76 @@ class RendezvenyJelentkezes {
     /** @ORM\Column(type="integer", nullable=true) */
     private $minicrmcontactid;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $emailregkoszono = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $emaildijbekero = false;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $emaildijbekerodatum;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $emailrendezvenykezdes = false;
+
+    public function toLista() {
+        $x = array();
+        $x['id'] = $this->getId();
+        $x['megjegyzes'] = $this->getMegjegyzes();
+        $x['datum'] = $this->getDatumStr();
+        $x['rendezvenynev'] = $this->getRendezvenyNev();
+        $x['rendezvenykezdodatum'] = $this->getRendezvenyDatumStr();
+        $x['rendezvenykezdoido'] = $this->getRendezveny()->getKezdoido();
+        $x['rendezvenytanarnev'] = $this->getRendezvenyTanarNev();
+        $x['rendezvenyar'] = $this->getRendezveny()->getAr();
+        $x['partnernev'] = $this->getPartnernev();
+        $x['partnercim'] = $this->getPartnerCim();
+        $x['partneremail'] = $this->getPartneremail();
+        $x['partnertelefon'] = $this->getPartnertelefon();
+        $x['partnervezeteknev'] = $this->getPartnerVezeteknev();
+        $x['partnerkeresztnev'] = $this->getPartnerKeresztnev();
+        $x['partnerirszam'] = $this->getPartnerIrszam();
+        $x['partnervaros'] = $this->getPartnerVaros();
+        $x['partnerutca'] = $this->getPartnerUtca();
+        $x['partnerhazszam'] = $this->getPartnerHazszam();
+
+        $x['fizetve'] = $this->getFizetve();
+        $x['fizetesdatum'] = $this->getFizetesdatumStr();
+        $x['fizetvepenztarnev'] = $this->getFizetvepenztarNev();
+        $x['fizetvepenztarbizonylatszam'] = $this->getFizetvepenztarbizonylatszam();
+        $x['fizetvebankszamlaszam'] = $this->getFizetvebankszamlaSzam();
+        $x['fizetvebankbizonylatszam'] = $this->getFizetvebankbizonylatszam();
+        $x['fizetveosszeghuf'] = $this->getFizetveosszeghuf();
+        $x['fizmodnev'] = $this->getFizmodNev();
+
+        $x['szamlazva'] = $this->getSzamlazva();
+        $x['szamlazasdatum'] = $this->getSzamlazasdatumStr();
+        $x['szamlaszam'] = $this->getSzamlaszam();
+        $x['szamlazvakelt'] = $this->getSzamlazvakeltStr();
+        $x['szamlazvateljesites'] = $this->getSzamlazvateljesitesStr();
+        $x['szamlazvaosszeghuf'] = $this->getSzamlazvaosszeghuf();
+
+        $x['lemondva'] = $this->getLemondva();
+        $x['lemondasdatum'] = $this->getLemondasdatumStr();
+        $x['lemondasoka'] = $this->getLemondasoka();
+
+        $x['visszautalva'] = $this->getVisszautalva();
+        $x['visszautalasdatum'] = $this->getVisszautalasdatumStr();
+        $x['visszautalaspenztarnev'] = $this->getVisszautalaspenztarNev();
+        $x['visszautalaspenztarbizonylatszam'] = $this->getVisszautalaspenztarbizonylatszam();
+        $x['visszautalasbankszamlaszam'] = $this->getVisszautalasbankszamlaSzam();
+        $x['visszautalasbankbizonylatszam'] = $this->getVisszautalasbankbizonylatszam();
+        $x['visszautalasosszeghuf'] = $this->getVisszautalasosszeghuf();
+        $x['visszautalasfizmodnev'] = $this->getVisszautalasfizmodNev();
+
+        $x['emailregkoszono'] = $this->getEmailregkoszono();
+        $x['emaildijbekero'] = $this->getEmaildijbekero();
+        $x['emaildijbekerodatum'] = $this->getEmaildijbekerodatumStr();
+        $x['emailrendezvenykezdes'] = $this->getEmailrendezvenykezdes();
+        return $x;
+    }
+
+
     public function getId() {
         return $this->id;
     }
@@ -229,11 +302,14 @@ class RendezvenyJelentkezes {
     }
 
     public function setDatum($adat = '') {
-        if ($adat != '') {
-            $this->datum = new \DateTime(\mkw\store::convDate($adat));
+        if (is_a($adat, 'DateTime')) {
+            $this->datum = $adat;
         }
-        else{
-            $this->datum = null;
+        else {
+            if ($adat == '') {
+                $adat = date(\mkw\store::$DateFormat);
+            }
+            $this->datum = new \DateTime(\mkw\store::convDate($adat));
         }
     }
 
@@ -419,6 +495,7 @@ class RendezvenyJelentkezes {
                 $this->partner = $val;
                 $this->partnernev = $val->getNev();
                 $this->partneremail = $val->getEmail();
+                $this->partnertelefon = $val->getTelefon();
             }
         }
     }
@@ -428,6 +505,7 @@ class RendezvenyJelentkezes {
             $this->partner = null;
             $this->partnernev = null;
             $this->partneremail = null;
+            $this->partnertelefon = null;
         }
     }
 
@@ -442,6 +520,55 @@ class RendezvenyJelentkezes {
     public function getPartnerCim() {
         if ($this->getPartner()) {
             return $this->getPartner()->getCim();
+        }
+        return null;
+    }
+
+    public function getPartnerKeresztnev() {
+        if ($this->getPartner()) {
+            return $this->getPartner()->getKeresztnev();
+        }
+        return null;
+    }
+
+    public function getPartnerVezeteknev() {
+        if ($this->getPartner()) {
+            return $this->getPartner()->getVezeteknev();
+        }
+        return null;
+    }
+
+    public function getPartnerIrszam() {
+        if ($this->getPartner()) {
+            return $this->getPartner()->getIrszam();
+        }
+        return null;
+    }
+
+    public function getPartnerVaros() {
+        if ($this->getPartner()) {
+            return $this->getPartner()->getVaros();
+        }
+        return null;
+    }
+
+    public function getPartnerUtca() {
+        if ($this->getPartner()) {
+            return $this->getPartner()->getUtca();
+        }
+        return null;
+    }
+
+    public function getPartnerHazszam() {
+        if ($this->getPartner()) {
+            return $this->getPartner()->getHazszam();
+        }
+        return null;
+    }
+
+    public function getPartnerAdoszam() {
+        if ($this->getPartner()) {
+            return $this->getPartner()->getAdoszam();
         }
         return null;
     }
@@ -1149,6 +1276,84 @@ class RendezvenyJelentkezes {
      */
     public function setMinicrmcontactid($minicrmcontactid) {
         $this->minicrmcontactid = $minicrmcontactid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPartnertelefon() {
+        return $this->partnertelefon;
+    }
+
+    /**
+     * @param mixed $telefon
+     */
+    public function setPartnertelefon($telefon) {
+        $this->partnertelefon = $telefon;
+    }
+    public function getEmaildijbekerodatum() {
+        return $this->emaildijbekerodatum;
+    }
+
+    public function getEmaildijbekerodatumStr() {
+        if ($this->getEmaildijbekerodatum()) {
+            return $this->getEmaildijbekerodatum()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setEmaildijbekerodatum($adat = '') {
+        if (is_a($adat, 'DateTime')) {
+            $this->emaildijbekerodatum = $adat;
+        }
+        else {
+            if ($adat == '') {
+                $adat = date(\mkw\store::$DateFormat);
+            }
+            $this->emaildijbekerodatum = new \DateTime(\mkw\store::convDate($adat));
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmailregkoszono() {
+        return $this->emailregkoszono;
+    }
+
+    /**
+     * @param mixed $emailregkoszono
+     */
+    public function setEmailregkoszono($emailregkoszono) {
+        $this->emailregkoszono = $emailregkoszono;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmaildijbekero() {
+        return $this->emaildijbekero;
+    }
+
+    /**
+     * @param mixed $emaildijbekero
+     */
+    public function setEmaildijbekero($emaildijbekero) {
+        $this->emaildijbekero = $emaildijbekero;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmailrendezvenykezdes() {
+        return $this->emailrendezvenykezdes;
+    }
+
+    /**
+     * @param mixed $emailrendezvenykezdes
+     */
+    public function setEmailrendezvenykezdes($emailrendezvenykezdes) {
+        $this->emailrendezvenykezdes = $emailrendezvenykezdes;
     }
 
 }

@@ -36,39 +36,68 @@
                     </td>
                     <td><label>{at('Vezetéknév')}:</td>
                     <td>
+                        {if ($oper == 'add')}
                         <input name="partnervezeteknev" value="{$egyed.partnervezeteknev}">
+                        {else}
+                        {$egyed.partnervezeteknev}
+                        {/if}
                     </td>
                     <td><label>{at('Keresztnév')}:</td>
                     <td colspan="3">
+                        {if ($oper == 'add')}
                         <input name="partnerkeresztnev" value="{$egyed.partnerkeresztnev}">
+                        {else}
+                            {$egyed.partnerkeresztnev}
+                        {/if}
                     </td>
                 </tr>
                 <tr>
                     <td>{at('Számlázási cím')}:</td>
                     <td colspan="7">
+                        {if ($oper == 'add')}
                         <input name="partnerirszam" value="{$egyed.partnerirszam}" size="6" maxlength="10">
                         <input name="partnervaros" value="{$egyed.partnervaros}" size="20" maxlength="40">
                         <input name="partnerutca" value="{$egyed.partnerutca}" size="40" maxlength="60">
+                        <input name="partnerhazszam" value="{$egyed.partnerhazszam}" size="10">
+                        {else}
+                            {$egyed.partnerirszam} {$egyed.partnervaros}, {$egyed.partnerutca} {$egyed.partnerhazszam}
+                        {/if}
                     </td>
                 </tr>
                 <tr>
                     <td><label for="AdoszamEdit">{at('Adószám')}:</label></td>
                     <td>
+                        {if ($oper == 'add')}
                         <input id="AdoszamEdit" name="partneradoszam" value="{$egyed.partneradoszam}">
+                        {else}
+                        {$egyed.partneradoszam}
+                        {/if}
                     </td>
                     <td><label for="EUAdoszamEdit">{at('EU adószám')}:</label></td>
                     <td colspan="5">
+                        {if ($oper == 'add')}
                         <input id="EUAdoszamEdit" name="partnereuadoszam" value="{$egyed.partnereuadoszam}">
+                        {else}
+                            {$egyed.partnereuadoszam}
+                        {/if}
                     </td>
                 </tr>
                 <tr>
                     <td><label for="TelefonEdit">{at('Telefon')}:</label></td>
                     <td>
-                        <input id="TelefonEdit" name="partnertelefon" value="{$egyed.partnertelefon}">
+                        {if ($oper == 'add')}
+                            <input id="TelefonEdit" name="partnertelefon" value="{$egyed.partnertelefon}">
+                        {else}
+                            {$egyed.partnertelefon}
+                        {/if}
                     </td>
                     <td><label for="EmailEdit">{at('Email')}:</label></td>
                     <td colspan="5">
-                        <input id="EmailEdit" name="partneremail" value="{$egyed.partneremail}">
+                        {if ($oper == 'add')}
+                            <input id="EmailEdit" name="partneremail" value="{$egyed.partneremail}">
+                        {else}
+                            {$egyed.partneremail}
+                        {/if}
                     </td>
                 </tr>
                 <tr>

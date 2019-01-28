@@ -15,13 +15,13 @@
             <div class="form-group row">
                 <label for="vnevedit" class="col-sm-2 col-form-label">Vezetéknév</label>
                 <div class="col">
-                    <input type="text" class="form-control" id="vnevedit" name="vnev" required>
+                    <input type="text" class="form-control" id="vnevedit" name="vezeteknev" required>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="knevedit" class="col-sm-2 col-form-label">Keresztnév</label>
                 <div class="col">
-                    <input type="text" class="form-control" id="knevedit" name="knev" required>
+                    <input type="text" class="form-control" id="knevedit" name="keresztnev" required>
                 </div>
             </div>
             <div class="form-group row">
@@ -40,7 +40,7 @@
                 <div class="col-sm-2">Kérek értesítést a stúdió programjairól</div>
                 <div class="col">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="gridCheck1" name="feliratkozas">
+                        <input class="form-check-input" type="checkbox" id="gridCheck1" name="ujdonsaghirlevelkell">
                     </div>
                 </div>
             </div>
@@ -82,9 +82,15 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="utcaedit" class="col-sm-2 col-form-label">Utca, házszám</label>
+                <label for="utcaedit" class="col-sm-2 col-form-label">Utca</label>
                 <div class="col">
                     <input type="text" class="form-control" id="utcaedit" name="utca" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="hszedit" class="col-sm-2 col-form-label">Házszám</label>
+                <div class="col">
+                    <input type="text" class="form-control" id="hszedit" name="hazszam" required>
                 </div>
             </div>
             <div class="form-group row">
@@ -97,6 +103,7 @@
             </div>
             <div class="form-group row">
                 <div class="col-sm-10">
+                    <input type="hidden" name="r" value="{$uid}">
                     <button type="submit" class="btn btn-darshan">Regisztrálok</button>
                 </div>
             </div>

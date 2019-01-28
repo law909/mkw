@@ -9,8 +9,12 @@ var rendezvenyreg = (function($) {
         regform.on('submit', function(e) {
             var hibas = false;
 
-            if (!hibas) {
-                window.location = 'http://jogadarshan.hu/sikeres-jelentkezes/';
+            return !hibas;
+        })
+        .on('change', '#knevedit', function(e) {
+            var $edit = $('#nevedit');
+            if (!$edit.val()) {
+                $edit.val($('#vnevedit').val() + ' ' + $('#knevedit').val());
             }
         });
     }
@@ -20,3 +24,7 @@ var rendezvenyreg = (function($) {
     }
 
 })(jQuery);
+
+$(document).ready(function() {
+    rendezvenyreg.initUI();
+});
