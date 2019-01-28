@@ -276,4 +276,6 @@ class consts {
     const RendezvenySablonDijbekero = 'rendezvenysablondijbekero';
     const RendezvenySablonFizetesKoszono = 'rendezvenysablonfizeteskoszono';
     const RendezvenySablonKezdesEmlekezteto = 'rendezvenysablonkezdesemlekezteto';
+    const RendezvenySablonRegErtesito = 'rendezvenysablonregertesito';
+    const RendezvenyRegErtesitoEmail = 'rendezvenyregertesitoemail';
 }

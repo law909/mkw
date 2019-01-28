@@ -296,6 +296,26 @@ class rendezvenyController extends \mkwhelpers\MattableController {
                 }
             }
 
+            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::RendezvenySablonRegErtesito));
+            if ($emailtpl) {
+                $tpldata = $jel->toLista();
+                $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                $subject->setVar('jelentkezes', $tpldata);
+                $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                $body->setVar('jelentkezes', $tpldata);
+                if (\mkw\store::getConfigValue('developer')) {
+                    \mkw\store::writelog($subject->getTemplateResult(), 'rendezvenyregertesitoemail.html');
+                    \mkw\store::writelog($body->getTemplateResult(), 'rendezvenyregertesitoemail.html');
+                }
+                else {
+                    $mailer = \mkw\store::getMailer();
+                    $mailer->addTo(\mkw\store::getParameter(\mkw\consts::RendezvenyRegErtesitoEmail));
+                    $mailer->setSubject($subject->getTemplateResult());
+                    $mailer->setMessage($body->getTemplateResult());
+                    $mailer->send();
+                }
+            }
+
             $v = $this->getTemplateFactory()->createMainView('rendezvenyregkoszono.tpl');
             echo $v->getTemplateResult();
         }

@@ -1196,6 +1196,19 @@
                 <div id="RendezvenyTab" class="mattkarb-page" data-visible="visible">
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="RRegErtesitoSablonEdit">{at('Jelentkezés értesítő levél sablon')}:</label></span>
+                            <select id="RRegErtesitoSablonEdit" name="rendezvenysablonregertesito">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $rendezvenysablonregertesitolist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="RendezvenyRegErtesitoEmailEdit">{at('Jelentkezés értesítés email')}:</label></span>
+                            <input id="RendezvenyRegErtesitoEmailEdit" name="rendezvenyregertesitoemail" value="{$rendezvenyregertesitoemail}" title="Vesszővel elválasztva">
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="RRegKoszonoSablonEdit">{at('Jelentkezés köszönő levél sablon')}:</label></span>
                             <select id="RRegKoszonoSablonEdit" name="rendezvenysablonregkoszono">
                                 <option value="">{at('válasszon')}</option>
