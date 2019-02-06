@@ -554,6 +554,15 @@ class termekfaController extends \mkwhelpers\MattableController {
                     $ret['termekek'] = $t;
                     $ret['lapozo'] = $pager->loadValues();
                     $ret['order'] = $ord;
+
+                    $bpt = array();
+                    $blogposztok = $this->getRepo('Entities\Blogposzt')->getByTermekfa($parent);
+                    /** @var \Entities\Blogposzt $poszt */
+                    foreach($blogposztok as $poszt) {
+                        $bpt[] = $poszt->convertToArray();
+                    }
+                    $ret['blogposztok'] = $bpt;
+
                     if ($parent) {
                         $ret['kategoria'] = array(
                             'nev' => $parent->getNev(),

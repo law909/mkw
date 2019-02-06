@@ -57,6 +57,25 @@
 			<div>
 				{$kategoria.leiras2}
 			</div>
+            <div>
+                <h4>Blog bejegyzések</h4>
+            </div>
+            <div>
+                {$i=0}
+                {foreach $blogposztok as $_child}
+                    {if ($_child.lathato && ($i<$blogposztdb))}
+                        {$i=$i+1}
+                        <div class="kat" data-href="/blogposzt/{$_child.slug}">
+                            <div class="kattext">
+                                <div class="blogkivonatkep"><a href="/blogposzt/{$_child.slug}" rel="nofollow"><img src="{$_child.kepurlsmall}"</a></div>
+                                <div class="kattitle"><a href="/blogposzt/{$_child.slug}" rel="nofollow">{$_child.cim}</a></div>
+                                <div>{$_child.megjelenesdatumstr}</div>
+                                <div class="katcopy">{$_child.kivonat}</div>
+                            </div>
+                        </div>
+                    {/if}
+                {/foreach}
+            </div>
         {$lntcnt=count($kiemelttermekek)}
         {if ($lntcnt>0)}
             <div class="lapozo">

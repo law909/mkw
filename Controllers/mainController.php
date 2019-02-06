@@ -100,6 +100,7 @@ class mainController extends \mkwhelpers\Controller {
             \mkw\store::fillTemplate($this->view);
 			$this->view->setVar('pagetitle', $ag->getShowOldalcim());
 			$this->view->setVar('seodescription', $ag->getShowSeodescription());
+			$this->view->setVar('blogposztdb', \mkw\store::getParameter(\mkw\consts::BlogposztKategoriadb, 3));
 			$this->view->printTemplateResult(true);
 		}
 		else {
@@ -217,6 +218,7 @@ class mainController extends \mkwhelpers\Controller {
                     $this->view->setVar('seodescription', $termek->getShowSeodescription());
                     $this->view->setVar('legnepszerubbtermekek', $tc->getLegnepszerubbLista(\mkw\store::getParameter(\mkw\consts::Termeklapnepszerutermekdb, 5)));
                     $this->view->setVar('hozzavasarolttermekek', $tc->getHozzavasaroltLista($termek));
+                    $this->view->setVar('blogposztdb', \mkw\store::getParameter(\mkw\consts::BlogposztTermeklapdb, 3));
                     $t = $tc->getTermekLap($termek);
                     foreach ($t as $k => $v) {
                         $this->view->setVar($k, $v);

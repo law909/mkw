@@ -272,15 +272,19 @@
                 </div>
                 <div class="row">
                     <div class="span9">
+                        {$i=0}
                         {foreach $termek.blogposztok as $_child}
-                            <div class="kat" data-href="/blogposzt/{$_child.slug}">
-                                <div class="kattext">
-                                    <div class="blogkivonatkep"><a href="/blogposzt/{$_child.slug}" rel="nofollow"><img src="{$_child.kepurlsmall}"</a></div>
-                                    <div class="kattitle"><a href="/blogposzt/{$_child.slug}" rel="nofollow">{$_child.cim}</a></div>
-                                    <div>{$_child.megjelenesdatumstr}</div>
-                                    <div class="katcopy">{$_child.kivonat}</div>
+                            {if ($_child.lathato && ($i<$blogposztdb))}
+                                {$i=$i+1}
+                                <div class="kat" data-href="/blogposzt/{$_child.slug}">
+                                    <div class="kattext">
+                                        <div class="blogkivonatkep"><a href="/blogposzt/{$_child.slug}" rel="nofollow"><img src="{$_child.kepurlsmall}"</a></div>
+                                        <div class="kattitle"><a href="/blogposzt/{$_child.slug}" rel="nofollow">{$_child.cim}</a></div>
+                                        <div>{$_child.megjelenesdatumstr}</div>
+                                        <div class="katcopy">{$_child.kivonat}</div>
+                                    </div>
                                 </div>
-                            </div>
+                            {/if}
                         {/foreach}
                     </div>
                 </div>

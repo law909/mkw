@@ -128,7 +128,8 @@ class Blogposzt {
             'seodescription' => $this->getShowSeodescription(),
             'megjelenesdatum' => $this->getMegjelenesdatumStr(),
             'megjelenesdatumstr' => $this->getMegjelenesdatumStr(),
-            'showseodescription' => $this->getShowSeodescription()
+            'showseodescription' => $this->getShowSeodescription(),
+            'lathato' => $this->getLathato()
         );
         return $ret;
     }

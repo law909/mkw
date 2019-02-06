@@ -91,6 +91,10 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::Blogseodescription, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::Blogposztdb);
         $view->setVar(\mkw\consts::Blogposztdb, ($p ? $p->getErtek() : 15));
+        $p = $repo->find(\mkw\consts::BlogposztTermeklapdb);
+        $view->setVar(\mkw\consts::BlogposztTermeklapdb, ($p ? $p->getErtek() : 3));
+        $p = $repo->find(\mkw\consts::BlogposztKategoriadb);
+        $view->setVar(\mkw\consts::BlogposztKategoriadb, ($p ? $p->getErtek() : 3));
 
         $p = $repo->find(\mkw\consts::Logo);
         $view->setVar(\mkw\consts::Logo, ($p ? $p->getErtek() : ''));
@@ -766,6 +770,8 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Blogoldalcim, $this->params->getStringRequestParam('blogoldalcim'));
         $this->setObj(\mkw\consts::Blogseodescription, $this->params->getStringRequestParam('blogseodescription'));
         $this->setObj(\mkw\consts::Blogposztdb, $this->params->getIntRequestParam('blogposztdb', 15));
+        $this->setObj(\mkw\consts::BlogposztTermeklapdb, $this->params->getIntRequestParam('blogposzttermeklapdb', 3));
+        $this->setObj(\mkw\consts::BlogposztKategoriadb, $this->params->getIntRequestParam('blogposztkategoriadb', 3));
         $this->setObj(\mkw\consts::GAFollow, $this->params->getStringRequestParam('gafollow'));
         $this->setObj(\mkw\consts::GMapsApiKey, $this->params->getStringRequestParam('gmapsapikey'));
         $this->setObj(\mkw\consts::FBAppId, $this->params->getStringRequestParam('fbappid'));

@@ -113,6 +113,8 @@ class consts {
     const Blogoldalcim = 'blogoldalcim';
     const Blogseodescription = 'blogseodescription';
     const Blogposztdb = 'blogposztdb';
+    const BlogposztTermeklapdb = 'blogposzttermeklapdb';
+    const BlogposztKategoriadb = 'blogposztkategoriadb';
     const GAFollow = 'gafollow';
     const GMapsApiKey = 'gmapsapikey';
     const FBAppId = 'fbappid';

@@ -52,4 +52,13 @@ class BlogposztRepository extends \mkwhelpers\Repository {
         return $res;
     }
 
+    public function getByTermekfa($parent) {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter(array('_xx.termekfa1', '_xx.termekfa2', '_xx.termekfa3'), '=', $parent->getId());
+        $filter->addFilter('lathato', '=', true);
+        $order = array('_xx.megjelenesdatum' => 'DESC');
+
+        $res = $this->getAll($filter, $order);
+        return $res;
+    }
 }

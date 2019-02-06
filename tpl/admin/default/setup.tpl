@@ -663,6 +663,14 @@
                             <td><label>{at('Blogposztok száma a blogban')}:</label></td>
                             <td><input name="blogposztdb" type="number" value="{$blogposztdb}"></td>
                         </tr>
+                        <tr>
+                            <td><label>{at('Blogposztok száma a terméklapon')}:</label></td>
+                            <td><input name="blogposzttermeklapdb" type="number" value="{$blogposzttermeklapdb}"></td>
+                        </tr>
+                        <tr>
+                            <td><label>{at('Blogposztok száma a terméklistában')}:</label></td>
+                            <td><input name="blogposztkategoriadb" type="number" value="{$blogposztkategoriadb}"></td>
+                        </tr>
                         </tbody>
                     </table>
                     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
