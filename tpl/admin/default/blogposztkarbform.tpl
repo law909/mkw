@@ -9,6 +9,7 @@
     <div id="mattkarb-tabs">
         <ul>
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
+            <li><a href="#TermekTab">{at('Termékek')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <input id="LathatoCheck" name="lathato" type="checkbox"
@@ -53,11 +54,24 @@
                     <td><label for="LeirasEdit">{at('Szöveg')}:</label></td>
                     <td><textarea id="LeirasEdit" name="szoveg">{$egyed.szoveg}</textarea></td>
                 </tr>
+                <tr>
+                    <td><label for="SeoDescriptionEdit">{at('META leírás')}:</label></td>
+                    <td><textarea id="SeoDescriptionEdit" name="seodescription"
+                              cols="70">{$egyed.seodescription}</textarea></td>
+                </tr>
                 </tbody>
             </table>
             <div>
                 {include 'termekimagekarb.tpl'}
             </div>
+        </div>
+        <div id="TermekTab" class="mattkarb-page" data-visible="visible">
+            {foreach $egyed.termekek as $termek}
+                {include 'blogposzttermekkarb.tpl'}
+            {/foreach}
+            <a class="js-termeknewbutton" href="#" title="{at('Új')}">
+                <span class="ui-icon ui-icon-circle-plus"></span>
+            </a>
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

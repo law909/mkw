@@ -1,14 +1,44 @@
 $(document).ready(function () {
     var dialogcenter = $('#dialogcenter');
 
+    function termekAutocompleteRenderer(ul, item) {
+        if (item.nemlathato) {
+            return $('<li>')
+                .append('<a class="nemelerhetovaltozat">' + item.label + '</a>')
+                .appendTo( ul );
+        }
+        else {
+            return $('<li>')
+                .append('<a>' + item.label + '</a>')
+                .appendTo( ul );
+        }
+    }
+
+    function termekAutocompleteConfig() {
+        return {
+            minLength: 4,
+            autoFocus: true,
+            source: '/admin/bizonylattetel/gettermeklist',
+            select: function(event, ui) {
+                var termek = ui.item;
+                if (termek) {
+                    var $this = $(this),
+                        sorid = $this.attr('name').split('_')[1];
+                    $this.siblings().val(termek.id);
+                }
+            }
+        };
+    }
+
     var blogposzt = {
         container: '#mattkarb',
         viewUrl: '/admin/blogposzt/getkarb',
         newWindowUrl: '/admin/blogposzt/viewkarb',
         saveUrl: '/admin/blogposzt/save',
         beforeShow: function () {
-            var alttab = $('#AltalanosTab');
-            $('#FoKepDelButton,#FoKepBrowseButton').button();
+            var alttab = $('#AltalanosTab'),
+                termektab = $('#TermekTab');
+            $('#FoKepDelButton,#FoKepBrowseButton,.js-termeknewbutton,.js-termekdelbutton').button();
             if (!$.browser.mobile) {
                 $('.js-toflyout').flyout();
             }
@@ -46,6 +76,51 @@ $(document).ready(function () {
                 };
                 finder.popup();
             });
+
+            termektab
+                .on('click', '.js-termeknewbutton', function (e) {
+                    var $this = $(this);
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/admin/blogposzttermek/getemptyrow',
+                        type: 'GET',
+                        success: function (data) {
+                            termektab.append(data);
+                            $('.js-termeknewbutton,.js-termekdelbutton').button();
+                            $('.js-termekselect').autocomplete(termekAutocompleteConfig())
+                                .autocomplete( "instance" )._renderItem = termekAutocompleteRenderer;
+                            $this.remove();
+                        }
+                    });
+                })
+                .on('click', '.js-termekdelbutton', function (e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    dialogcenter.html('Biztos, hogy törli a terméket?').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'Igen': function () {
+                                $.ajax({
+                                    url: '/admin/blogposzttermek/del',
+                                    type: 'POST',
+                                    data: {
+                                        tid: $this.data('tid'),
+                                        bid: $this.data('bid')
+                                    },
+                                    success: function (data) {
+                                        $('#termektable_' + data).remove();
+                                    }
+                                });
+                                $(this).dialog('close');
+                            },
+                            'Nem': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                });
 
             $('.js-termekfabutton').on('click', function (e) {
                 var edit = $(this);

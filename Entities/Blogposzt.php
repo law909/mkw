@@ -106,6 +106,16 @@ class Blogposzt {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $lathato = 1;
 
+    /** @ORM\Column(type="text",nullable=true) */
+    private $seodescription;
+
+    /** @ORM\ManyToMany(targetEntity="Termek", mappedBy="blogposztok", cascade={"persist"}) */
+    private $termekek;
+
+    public function __construct() {
+        $this->termekek = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     public function convertToArray() {
         $ret = array(
             'slug' => $this->getSlug(),
@@ -114,7 +124,11 @@ class Blogposzt {
             'kepurlsmall' => $this->getKepurlSmall(),
             'kepleiras' => $this->getKepleiras(),
             'szoveg' => $this->getSzoveg(),
-            'url' => $this->getLink()
+            'url' => $this->getLink(),
+            'seodescription' => $this->getShowSeodescription(),
+            'megjelenesdatum' => $this->getMegjelenesdatumStr(),
+            'megjelenesdatumstr' => $this->getMegjelenesdatumStr(),
+            'showseodescription' => $this->getShowSeodescription()
         );
         return $ret;
     }
@@ -124,7 +138,10 @@ class Blogposzt {
     }
 
     public function getShowSeodescription() {
-        return $this->cim . ' - ' . \mkw\store::getParameter(\mkw\consts::Seodescription);
+        if ($this->seodescription) {
+            return $this->seodescription;
+        }
+        return $this->cim . ' - ' . \mkw\store::getParameter(\mkw\consts::Blogseodescription);
     }
 
     public function getId() {
@@ -456,4 +473,39 @@ class Blogposzt {
     public function setSlug($slug) {
         $this->slug = $slug;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSeodescription() {
+        return $this->seodescription;
+    }
+
+    /**
+     * @param mixed $seodescription
+     */
+    public function setSeodescription($seodescription) {
+        $this->seodescription = $seodescription;
+    }
+
+    public function getTermekek() {
+        return $this->termekek;
+    }
+
+    public function addTermek(Termek $termek) {
+//		if (!$this->termekek->contains($termek)) {  // deleted for speed
+        $this->termekek->add($termek);
+        $termek->addBlogposzt($this);
+//		}
+    }
+
+    public function removeTermek(Termek $termek) {
+        // TODO ha sok termeknek van ilyen cimkeje, akkor lassu lesz
+        if ($this->termekek->removeElement($termek)) {
+            $termek->removeBlogposzt($this);
+            return true;
+        }
+        return false;
+    }
+
 }

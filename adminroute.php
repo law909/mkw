@@ -460,6 +460,8 @@ $router->map('GET', '/admin/blogposzt/getkarb', 'blogposztController#getkarb', '
 $router->map('GET', '/admin/blogposzt/viewkarb', 'blogposztController#viewkarb', 'adminblogposztviewkarb');
 $router->map('POST', '/admin/blogposzt/save', 'blogposztController#save', 'adminblogposztsave');
 $router->map('POST', '/admin/blogposzt/setflag', 'blogposztController#setflag', 'adminblogposztsetflag');
+$router->map('GET', '/admin/blogposzttermek/getemptyrow', 'blogposztController#getTermekEmptyrow', 'adminblogposzttermekgetemptyrow');
+$router->map('POST', '/admin/blogposzttermek/del', 'blogposztController#removeTermek', 'adminblogposzttermekdel');
 
 $router->map('GET', '/admin/template/viewlist', 'templateController#viewlist', 'admintemplateviewlist');
 $router->map('GET', '/admin/template/getlistbody', 'templateController#getlistbody', 'admintemplategetlistbody');

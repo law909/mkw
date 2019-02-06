@@ -160,7 +160,7 @@
                                 <li><a href="#szallitasTab" data-toggle="tab">{t('Szállítás és fizetés')}</a></li>
                                 {/if}
                             </ul>
-                            <div class="tab-content keret">
+                            <div class="tab-content termektabbablekeret">
                                 <div id="leirasTab" class="tab-pane active">
                                     <span itemprop="description">{$termek.leiras}</span>
                                 </div>
@@ -264,6 +264,27 @@
                         </div>
                     </div>
                 </div>
+                {if (count($termek.blogposztok)>0)}
+                <div class="row">
+                    <div class="span9">
+                        <h4>Blog bejegyzések</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span9">
+                        {foreach $termek.blogposztok as $_child}
+                            <div class="kat" data-href="/blogposzt/{$_child.slug}">
+                                <div class="kattext">
+                                    <div class="blogkivonatkep"><a href="/blogposzt/{$_child.slug}" rel="nofollow"><img src="{$_child.kepurlsmall}"</a></div>
+                                    <div class="kattitle"><a href="/blogposzt/{$_child.slug}" rel="nofollow">{$_child.cim}</a></div>
+                                    <div>{$_child.megjelenesdatumstr}</div>
+                                    <div class="katcopy">{$_child.kivonat}</div>
+                                </div>
+                            </div>
+                        {/foreach}
+                    </div>
+                </div>
+                {/if}
                 {if (count($hozzavasarolttermekek)>0)}
                 <div class="row">
                     <div class="span9">

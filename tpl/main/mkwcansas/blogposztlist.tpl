@@ -26,6 +26,7 @@
 					<div class="kattext">
                         <div class="blogkivonatkep"><a href="/blogposzt/{$_child.slug}"><img src="{$_child.kepurlsmall}"</a></div>
 						<div class="kattitle"><a href="/blogposzt/{$_child.slug}">{$_child.cim}</a></div>
+                        <div>{$_child.megjelenesdatumstr}</div>
 						<div class="katcopy">{$_child.kivonat}</div>
 					</div>
 				</div>

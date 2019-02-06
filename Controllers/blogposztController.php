@@ -40,6 +40,17 @@ class blogposztController extends \mkwhelpers\MattableController {
         $x['kepurlmedium'] = $t->getKepurlMedium();
         $x['kepurllarge'] = $t->getKepurlLarge();
         $x['kepleiras'] = $t->getKepleiras();
+        $x['seodescription'] = $t->getSeodescription();
+        $x['showseodescription'] = $t->getShowSeodescription();
+
+        if ($forKarb) {
+            $termekek = array();
+            /** @var \Entities\Termek $termek */
+            foreach ($t->getTermekek() as $termek) {
+                $termekek[] = array('id' => $termek->getId(), 'nev' => $termek->getNev());
+            }
+            $x['termekek'] = $termekek;
+        }
         return $x;
     }
 
@@ -55,6 +66,7 @@ class blogposztController extends \mkwhelpers\MattableController {
         $obj->setKepurl($this->params->getStringRequestParam('kepurl', ''));
         $obj->setKepleiras($this->params->getStringRequestParam('kepleiras', ''));
         $obj->setMegjelenesdatum($this->params->getStringRequestParam('megjelenesdatum'));
+        $obj->setSeodescription($this->params->getStringRequestParam('seodescription'));
 
         $farepo = \mkw\store::getEm()->getRepository('Entities\TermekFa');
         $fa = $farepo->find($this->params->getIntRequestParam('termekfa1'));
@@ -77,6 +89,13 @@ class blogposztController extends \mkwhelpers\MattableController {
         }
         else {
             $obj->setTermekfa3(null);
+        }
+        $termekids = $this->params->getArrayRequestParam('termekid');
+        foreach ($termekids as $termekid) {
+            $termek = $this->getRepo('Entities\Termek')->find($termekid);
+            if ($termek) {
+                $obj->addTermek($termek);
+            }
         }
         return $obj;
     }
@@ -143,6 +162,30 @@ class blogposztController extends \mkwhelpers\MattableController {
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         $view->printTemplateResult();
+    }
+
+    public function getTermekEmptyrow() {
+        $view = $this->createView('blogposzttermekkarb.tpl');
+        $tetel = $this->loadVars(null, true);
+        $tetel['oper'] = 'add';
+        $tetel['id'] = \mkw\store::createUID();
+        $view->setVar('termek', $tetel);
+        echo $view->getTemplateResult();
+
+    }
+
+    public function removeTermek() {
+        $tid = $this->params->getStringRequestParam('tid');
+        $bid = $this->params->getIntRequestParam('bid');
+        /** @var \Entities\Blogposzt $poszt */
+        $poszt = $this->getRepo()->find($bid);
+        $termek = $this->getRepo('Entities\Termek')->find($tid);
+        if ($termek) {
+            $poszt->removeTermek($termek);
+            $this->getEm()->persist($poszt);
+            $this->getEm()->flush();
+        }
+        echo $tid;
     }
 
     protected function _getkarb($tplname) {

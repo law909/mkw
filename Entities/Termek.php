@@ -111,6 +111,16 @@ class Termek {
     /** @ORM\Column(type="text",nullable=true) */
     private $cimkenevek = '';
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Blogposzt",inversedBy="termekek")
+     * @ORM\OrderBy({"megjelenesdatum" = "DESC"})
+     * @ORM\JoinTable(name="termek_blogposztok",
+     *  joinColumns={@ORM\JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")},
+     *  inverseJoinColumns={@ORM\JoinColumn(name="blogposzt_id",referencedColumnName="id",onDelete="cascade")}
+     *  )
+     */
+    private $blogposztok;
+
     /** @ORM\Column(type="string",length=50,nullable=true) */
     private $cikkszam = '';
 
@@ -412,6 +422,7 @@ class Termek {
         $this->termekarak = new \Doctrine\Common\Collections\ArrayCollection();
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekdokok = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->blogposztok = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getUjTermek($min) {
@@ -811,6 +822,14 @@ class Termek {
             $hasontomb[] = $has->toKapcsolodo();
         }
         $x['hasonlotermekek'] = $hasontomb;
+
+        $bpt = array();
+        $blogposztok = $this->getBlogposztok();
+        /** @var \Entities\Blogposzt $poszt */
+        foreach($blogposztok as $poszt) {
+            $bpt[] = $poszt->convertToArray();
+        }
+        $x['blogposztok'] = $bpt;
 
         return $x;
     }
@@ -2413,6 +2432,44 @@ class Termek {
             return true;
         }
         return false;
+    }
+
+    /**
+     *
+     * @return ArrayCollection
+     */
+    public function getBlogposztok() {
+        return $this->blogposztok;
+    }
+
+    public function getAllBlogposztId() {
+        $res = array();
+        foreach ($this->blogposztok as $bp) {
+            $res[] = $bp->getId();
+        }
+        return $res;
+    }
+
+    public function addBlogposzt(Blogposzt $blogposzt) {
+        if (!$this->blogposztok->contains($blogposzt)) {
+            $this->blogposztok->add($blogposzt);
+            $blogposzt->addTermek($this);
+        }
+    }
+
+    public function removeBlogposzt(Blogposzt $blogposzt) {
+        if ($this->blogposztok->removeElement($blogposzt)) {
+            $blogposzt->removeTermek($this);  // deleted for speed
+            return true;
+        }
+        return false;
+    }
+
+    public function removeAllBlogposzt() {
+//		$this->blogposztok->clear();
+        foreach ($this->blogposztok as $bp) {
+            $this->removeBlogposzt($bp);
+        }
     }
 
 }

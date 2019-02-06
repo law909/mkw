@@ -64,10 +64,10 @@ class Blogposzt extends \Entities\Blogposzt implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'id', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'created', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'createdby', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'cim', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'slug', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'kivonat', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa1', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa1karkod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa2', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa2karkod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa3', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa3karkod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'megjelenesdatum', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'lathato'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'id', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'created', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'createdby', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'cim', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'slug', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'kivonat', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa1', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa1karkod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa2', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa2karkod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa3', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa3karkod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'megjelenesdatum', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'lathato', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekek'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'id', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'created', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'createdby', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'cim', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'slug', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'kivonat', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa1', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa1karkod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa2', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa2karkod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa3', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa3karkod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'megjelenesdatum', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'lathato'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'id', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'created', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'createdby', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'cim', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'slug', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'kivonat', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'szoveg', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa1', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa1karkod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa2', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa2karkod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa3', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekfa3karkod', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'kepleiras', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'megjelenesdatum', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'lathato', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'seodescription', '' . "\0" . 'Entities\\Blogposzt' . "\0" . 'termekek'];
     }
 
     /**
@@ -725,6 +725,61 @@ class Blogposzt extends \Entities\Blogposzt implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', [$slug]);
 
         return parent::setSlug($slug);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSeodescription()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSeodescription', []);
+
+        return parent::getSeodescription();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSeodescription($seodescription)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSeodescription', [$seodescription]);
+
+        return parent::setSeodescription($seodescription);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTermekek()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekek', []);
+
+        return parent::getTermekek();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addTermek(\Entities\Termek $termek)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTermek', [$termek]);
+
+        return parent::addTermek($termek);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeTermek(\Entities\Termek $termek)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', [$termek]);
+
+        return parent::removeTermek($termek);
     }
 
 }
