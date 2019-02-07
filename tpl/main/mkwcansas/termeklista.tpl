@@ -57,8 +57,9 @@
 			<div>
 				{$kategoria.leiras2}
 			</div>
+            {if (count($blogposztok))}
             <div>
-                <h4>Blog bejegyzések</h4>
+                <h3>Kapcsolódó blogbejegyzések</h3>
             </div>
             <div>
                 {$i=0}
@@ -76,6 +77,7 @@
                     {/if}
                 {/foreach}
             </div>
+            {/if}
         {$lntcnt=count($kiemelttermekek)}
         {if ($lntcnt>0)}
             <div class="lapozo">

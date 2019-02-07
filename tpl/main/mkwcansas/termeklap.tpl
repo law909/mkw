@@ -267,7 +267,7 @@
                 {if (count($termek.blogposztok)>0)}
                 <div class="row">
                     <div class="span9">
-                        <h4>Blog bejegyzések</h4>
+                        <h3>Kapcsolódó blogbejegyzések</h3>
                     </div>
                 </div>
                 <div class="row">

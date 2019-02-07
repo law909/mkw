@@ -408,7 +408,7 @@ class Blogposzt {
     }
 
     public function getShowCim() {
-        return $this->cim . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim);
+        return $this->cim . ' - ' . \mkw\store::getParameter(\mkw\consts::Blogoldalcim);
     }
 
     /**
