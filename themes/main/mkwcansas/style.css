@@ -479,6 +479,10 @@ footer nav {
   float: left;
   margin-right: 10px;
 }
+.bloglogo {
+  width: 100px;
+  height: 100px;
+}
 .kat {
   padding: 10px 0;
   float: left;

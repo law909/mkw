@@ -4,7 +4,7 @@
 <div class="container whitebg">
     <div class="row">
         <div class="span12">
-            <h1>Mindentkapni Blog</h1>
+            <h1>Mindent Kapni Blog</h1>
         </div>
     </div>
 	<div class="row js-blog">

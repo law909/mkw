@@ -51,6 +51,9 @@
                 </div>
                 </form>
             </div>
+            <div class="pull-right">
+                <a href="/blog"><img src="/themes/main/mkwcansas/img/blog.svg" class="bloglogo" alt="Mindent Kapni Blog" title="Mindent Kapni Blog"></a>
+            </div>
             </div>
         </div>
     </div>
