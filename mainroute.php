@@ -137,6 +137,7 @@ $router->map('GET', '/export/olcsobbat', 'exportController#OlcsobbatExport', 'ol
 //$router->map('GET', '/export/fcmoto', 'exportController#FCMotoExport', 'fcmotoexport');
 $router->map('GET', '/export/mugenrace', 'exportController#MugenraceExport', 'mugenraceexport');
 $router->map('GET', '/export/superzonehu', 'exportController#SuperzonehuExport', 'superzonehuexport');
+$router->map('GET', '/export/depo', 'exportController#DepoExport', 'depoexport');
 $router->map('GET', '/sitemap.xml', 'sitemapController#toBot', 'sitemap');
 
 $router->map('GET', '/t/emag/printvat', 'emagController#printVat', 'printvat');

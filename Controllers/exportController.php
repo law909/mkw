@@ -1008,4 +1008,53 @@ class exportController extends \mkwhelpers\Controller {
             }
         }
     }
+
+    public function DepoExport() {
+        header("Content-type: text/xml");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+        echo '<products>';
+        echo '<version>1.0</version>';
+
+        $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
+        $res = $tr->getAllForExport();
+        /** @var \Entities\Termek $t */
+        foreach ($res as $t) {
+
+            $cimke = $t->getCimkeByCategory(\mkw\store::getParameter(\mkw\consts::MarkaCs));
+
+            if ($t->getSzallitasiido()) {
+                $szallitasiido = $t->getSzallitasiido();
+            }
+            else {
+                /** @var \Entities\Partner $gyarto */
+                $gyarto = $t->getGyarto();
+                if ($gyarto && $gyarto->getSzallitasiido()) {
+                    $szallitasiido = $gyarto->getSzallitasiido();
+                }
+                else {
+                    $szallitasiido = 0;
+                }
+            }
+
+            $leiras = $t->getRovidleiras();
+
+            echo '<product>';
+            echo '<id><![CDATA[' . $t->getId() . ']]></id>';
+            echo '<manufacturer><![CDATA[' . ($cimke ? $cimke->getNev() : '') . ']]></manufacturer>';
+            echo '<name><![CDATA[' . $t->getNev() . ']]></name>';
+            echo '<category><![CDATA[' . $t->getTermekfa1Nev() . ']]></category>';
+            echo '<price>' . number_format($t->getBruttoAr(), 0, ',', '') . '</price>';
+            echo '<description><![CDATA[' . $leiras . ']]></description>';
+            echo '<photoURL><![CDATA[' . \mkw\store::getFullUrl($t->getKepurlLarge(), \mkw\store::getConfigValue('mainurl')) . ']]></photoURL>';
+            echo '<productURL><![CDATA[' . \mkw\store::getFullUrl('/termek/' . $t->getSlug(), \mkw\store::getConfigValue('mainurl')) . ']]></productURL>';
+            echo '<delivery_time><![CDATA[' . $szallitasiido . ']]></delivery_time>';
+            echo '<delivery_cost><![CDATA[]]></delivery_cost>';
+            echo '</product>';
+        }
+        echo '</products>';
+    }
+
 }
