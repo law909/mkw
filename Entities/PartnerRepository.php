@@ -138,7 +138,7 @@ class PartnerRepository extends \mkwhelpers\Repository {
         $filter
             ->addFilter('email', '=', $user)
             ->addFilter('jelszo', '=', sha1(strtoupper(md5($pass)) . \mkw\store::getSalt()));
-		return $this->getAll($filter, array());
+        return $this->getAll($filter, array());
 	}
 
 	public function findVendegByEmail($email) {

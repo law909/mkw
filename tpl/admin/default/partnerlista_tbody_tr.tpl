@@ -27,6 +27,9 @@
                         <tr><td>{at('Valutanem')}:</td><td>{$_partner.valutanemnev}</td></tr>
                         <tr><td>{at('Ársáv')}:</td><td>{$_partner.termekarazonosito}</td></tr>
                     {/if}
+                    {if ($_partner.apinev)}
+                        <tr><td>{at('API')}:</td><td>{$_partner.apinev}</td></tr>
+                    {/if}
                 {/if}
             </tbody>
         </table>

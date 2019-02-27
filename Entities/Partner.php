@@ -355,6 +355,17 @@ class Partner {
     private $anonym = false;
     /** @ORM\Column(type="date",nullable=true) */
     private $anonymdatum;
+    /** @ORM\Column(type="boolean") */
+    private $apireg = false;
+    /**
+     * @ORM\ManyToOne(targetEntity="Apiconsumer")
+     * @ORM\JoinColumn(name="apiconsumer_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Apiconsumer
+     */
+    private $apiconsumer;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $apiconsumernev;
 
     public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -422,6 +433,29 @@ class Partner {
         $this->minicrmcontactid = 0;
         $this->munkahelyneve = '';
         $this->foglalkozas = '';
+    }
+
+    public function toA2a() {
+        $x = array();
+        $x['id'] = $this->getId();
+        $x['nev'] = $this->getNev();
+        $x['vezeteknev'] = $this->getVezeteknev();
+        $x['keresztnev'] = $this->getKeresztnev();
+        $x['irszam'] = $this->getIrszam();
+        $x['varos'] = $this->getVaros();
+        $x['utca'] = $this->getUtca();
+        $x['hazszam'] = $this->getHazszam();
+        $x['adoszam'] = $this->getAdoszam();
+        $x['euadoszam'] = $this->getEuadoszam();
+        $x['email'] = $this->getEmail();
+        $x['telefon'] = $this->getTelefon();
+        $x['szallnev'] = $this->getSzallnev();
+        $x['szallirszam'] = $this->getSzallirszam();
+        $x['szallvaros'] = $this->getSzallvaros();
+        $x['szallutca'] = $this->getSzallutca();
+        $x['szallhazszam'] = $this->getSzallhazszam();
+        $x['vendeg'] = $this->getVendeg();
+        return $x;
     }
 
 	public function getCim() {
@@ -1671,6 +1705,62 @@ class Partner {
      */
     public function getPenztarbizonylatfejek() {
         return $this->penztarbizonylatfejek;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApireg() {
+        return $this->apireg;
+    }
+
+    /**
+     * @param mixed $apireg
+     */
+    public function setApireg($apireg) {
+        $this->apireg = $apireg;
+    }
+    /**
+     * @return Apiconsumer
+     */
+    public function getApiconsumer() {
+        return $this->apiconsumer;
+    }
+
+    /**
+     * @param Apiconsumer $apiconsumer
+     */
+    public function setApiconsumer($apiconsumer) {
+        if ($this->apiconsumer !== $apiconsumer) {
+            if (!$apiconsumer) {
+                $this->removeApiconsumer();
+            }
+            else {
+                $this->apiconsumer = $apiconsumer;
+                $this->setApiconsumernev($apiconsumer->getNev());
+            }
+        }
+    }
+
+    public function removeApiconsumer() {
+        if (!is_null($this->apiconsumer)) {
+            $this->apiconsumer = null;
+            $this->setApiconsumernev(null);
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApiconsumernev() {
+        return $this->apiconsumernev;
+    }
+
+    /**
+     * @param mixed $apiconsumernev
+     */
+    public function setApiconsumernev($apiconsumernev) {
+        $this->apiconsumernev = $apiconsumernev;
     }
 
 }

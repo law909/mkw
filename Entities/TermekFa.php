@@ -184,6 +184,41 @@ class TermekFa {
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    public function toA2a() {
+        $ford = $this->getTranslationsArray();
+        $x = array();
+        $x['id'] = $this->getId();
+        $x['nev'] = $this->getNev();
+        $x['nev_en'] = $ford['en_us']['nev'];
+        $x['nev_it'] = $ford['it_it']['nev'];
+        $x['rovidleiras'] = $this->getRovidleiras();
+        $x['rovidleiras_en'] = $ford['en_us']['rovidleiras'];
+        $x['rovidleiras_it'] = $ford['it_it']['rovidleiras'];
+        $x['leiras'] = $this->getLeiras();
+        $x['leiras_en'] = $ford['en_us']['leiras'];
+        $x['leiras_it'] = $ford['it_it']['leiras'];
+        $x['leiras2'] = $this->getLeiras2();
+        $x['leiras2_en'] = $ford['en_us']['leiras2'];
+        $x['leiras2_it'] = $ford['it_it']['leiras2'];
+        $x['karkod'] = $this->getKarkod();
+        $x['sorrend'] = $this->getSorrend();
+        if ($this->getKepurl()) {
+            $x['kepurl'] = \mkw\store::getFullUrl($this->getKepurlLarge());
+            $x['kozepeskepurl'] = \mkw\store::getFullUrl($this->getKepurlMedium());
+            $x['kiskepurl'] = \mkw\store::getFullUrl($this->getKepurlSmall());
+            $x['minikepurl'] = \mkw\store::getFullUrl($this->getKepurlMini());
+            $x['kepleiras'] = $this->getKepleiras();
+        }
+        else {
+            $x['kepurl'] = null;
+            $x['kozepeskepurl'] = null;
+            $x['kiskepurl'] = null;
+            $x['minikepurl'] = null;
+            $x['kepleiras'] = null;
+        }
+        return $x;
+    }
+
     public function getId() {
         return $this->id;
     }
@@ -545,6 +580,15 @@ class TermekFa {
 
     public function getTranslations() {
         return $this->translations;
+    }
+
+    public function getTranslationsArray() {
+        $r = array();
+        /** @var \Entities\TermekFaTranslation $tr */
+        foreach ($this->translations as $tr) {
+            $r[$tr->getLocale()][$tr->getField()] = $tr->getContent();
+        }
+        return $r;
     }
 
     public function addTranslation(TermekFaTranslation $t) {

@@ -107,6 +107,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['minicrmcontactid'] = $t->getMinicrmcontactid();
         $x['anonymizalnikell'] = $t->getAnonymizalnikell();
         $x['anonym'] = $t->getAnonym();
+        $x['apinev'] = $t->getApiconsumernev();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             if ($afa) {
@@ -568,6 +569,62 @@ class partnerController extends \mkwhelpers\MattableController {
         return $t;
     }
 
+    public function checkApiRegData($data) {
+        $ret = array();
+        if (!$data['email']) {
+            $ret[] = 'Empty field: email';
+        }
+        if (!$data['password']) {
+            $ret[] = 'Empty field: password';
+        }
+        if (!$data['nev']) {
+            $ret[] = 'Empty field: nev';
+        }
+        if (!$data['irszam']) {
+            $ret[] = 'Empty field: irszam';
+        }
+        if (!$data['varos']) {
+            $ret[] = 'Empty field: varos';
+        }
+        if (!$data['utca']) {
+            $ret[] = 'Empty field: utca';
+        }
+        return $ret;
+    }
+
+    public function saveApiRegData($data, $consumer) {
+        $p = $this->getRepo()->findOneBy(array('email' => $data['email']));
+        if (!$p) {
+            $p = new \Entities\Partner();
+        }
+        $p->setEmail($data['email']);
+        $p->setJelszo($data['password']);
+        $p->setVezeteknev($data['vezeteknev']);
+        $p->setKeresztnev($data['keresztnev']);
+        $p->setNev($data['nev']);
+        $p->setIrszam($data['irszam']);
+        $p->setVaros($data['varos']);
+        $p->setUtca($data['utca']);
+        $p->setHazszam($data['hazszam']);
+        $p->setTelefon($data['telefon']);
+        $p->setEmail($data['email']);
+        $p->setAdoszam($data['adoszam']);
+        $p->setEuadoszam($data['euadoszam']);
+        $p->setSzallnev($data['szallnev']);
+        $p->setSzallirszam($data['szallirszam']);
+        $p->setSzallvaros($data['szallvaros']);
+        $p->setSzallutca($data['szallutca']);
+        $p->setSzallhazszam($data['szallhazszam']);
+        $p->setVendeg((bool)$data['vendeg']);
+
+        $p->setApireg(true);
+        $p->setApiconsumer($consumer);
+
+        $this->getEm()->persist($p);
+        $this->getEm()->flush();
+        return $p;
+    }
+
     public function getlistbody() {
         $view = $this->createView('partnerlista_tbody.tpl');
 
@@ -831,6 +888,25 @@ class partnerController extends \mkwhelpers\MattableController {
         $view = $this->getTemplateFactory()->createMainView('pubregistrationthx.tpl');
         \mkw\store::fillTemplate($view);
         $view->printTemplateResult(true);
+    }
+
+    public function apiLogin($puser, $pass) {
+        $ok = false;
+        if ($puser instanceof \Entities\Partner) {
+            $user = $puser;
+            $ok = true;
+        }
+        else {
+            $users = $this->getRepo()->findByUserPass($puser, $pass);
+            if (count($users) > 0) {
+                $user = $users[0];
+                $ok = true;
+            }
+        }
+        if ($ok && $user && !$user->getVendeg()) {
+            return $user;
+        }
+        return false;
     }
 
     public function login($puser, $pass = null) {

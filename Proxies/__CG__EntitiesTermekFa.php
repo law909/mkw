@@ -187,6 +187,17 @@ class TermekFa extends \Entities\TermekFa implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function toA2a()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toA2a', []);
+
+        return parent::toA2a();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {
@@ -879,6 +890,17 @@ class TermekFa extends \Entities\TermekFa implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslations', []);
 
         return parent::getTranslations();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTranslationsArray()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTranslationsArray', []);
+
+        return parent::getTranslationsArray();
     }
 
     /**
