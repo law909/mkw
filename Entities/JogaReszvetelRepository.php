@@ -47,8 +47,8 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository {
         return $q->getSingleScalarResult();
     }
 
-    public function getTanarOsszesito($filter) {
-        $q = $this->_em->createQuery('SELECT SUM(_xx.jutalek) AS jutalek,ta.nev,ta.id '
+    public function getTanarOsszesito($filter, $honap = 1) {
+        $q = $this->_em->createQuery('SELECT SUM(_xx.jutalek) AS jutalek,ta.nev,ta.id,ta.havilevonas*' . $honap . ' AS havilevonas'
             . ' FROM Entities\JogaReszvetel _xx'
             . ' LEFT JOIN _xx.tanar ta'
             . $this->getFilterString($filter)

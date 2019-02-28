@@ -13,6 +13,12 @@
             <tbody>
                 <tr><td>{$_egyed.szulidostr} {$_egyed.szulhely}</td></tr>
                 <tr><td>{$_egyed.munkakornev} {$_egyed.munkaviszonykezdetestr} {at('óta')}</td></tr>
+            {if ($_egyed.havilevonas)}
+                <tr><td>{at('Havi levonás')}: {$_egyed.havilevonas}</td></tr>
+            {/if}
+            {if ($_egyed.szamlatad)}
+                <tr><td>Számlát ad</td></tr>
+            {/if}
             </tbody>
         </table>
     </td>

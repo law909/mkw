@@ -34,6 +34,8 @@ class dolgozoController extends \mkwhelpers\MattableController {
         $x['munkaviszonykezdetestr'] = $t->getMunkaviszonykezdeteStr();
         $x['munkakornev'] = $t->getMunkakorNev();
         $x['url'] = $t->getUrl();
+        $x['havilevonas'] = $t->getHavilevonas();
+        $x['szamlatad'] = $t->getSzamlatad();
         return $x;
     }
 
@@ -49,6 +51,8 @@ class dolgozoController extends \mkwhelpers\MattableController {
         $obj->setEvesmaxszabi($this->params->getIntRequestParam('evesmaxszabi'));
         $obj->setMunkaviszonykezdete($this->params->getStringRequestParam('munkaviszonykezdete'));
         $obj->setUrl($this->params->getStringRequestParam('url'));
+        $obj->setHavilevonas($this->params->getFloatRequestParam('havilevonas'));
+        $obj->setSzamlatad($this->params->getBoolRequestParam('szamlatad'));
         $pass1 = $this->params->getStringRequestParam('jelszo1');
         $pass2 = $this->params->getStringRequestParam('jelszo2');
         if ($oper == $this->addOperation) {

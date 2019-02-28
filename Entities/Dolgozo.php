@@ -60,10 +60,18 @@ class Dolgozo {
 
     /** @ORM\OneToMany(targetEntity="Jelenletiiv", mappedBy="dolgozo") */
     private $jelenletek;
+
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $uitheme;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $havilevonas;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $szamlatad = 1;
+
 
     public function __construct() {
         $this->jelenletek = new ArrayCollection();
@@ -278,6 +286,34 @@ class Dolgozo {
      */
     public function setUrl($url) {
         $this->url = $url;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHavilevonas() {
+        return $this->havilevonas;
+    }
+
+    /**
+     * @param mixed $havilevonas
+     */
+    public function setHavilevonas($havilevonas) {
+        $this->havilevonas = $havilevonas;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzamlatad() {
+        return $this->szamlatad;
+    }
+
+    /**
+     * @param mixed $szamlatad
+     */
+    public function setSzamlatad($szamlatad) {
+        $this->szamlatad = $szamlatad;
     }
 
 }

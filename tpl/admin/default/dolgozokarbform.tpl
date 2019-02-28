@@ -62,6 +62,12 @@
 				<td colspan="3"><input id="EvesmaxszabiEdit" name="evesmaxszabi" type="number" size="5" maxlength="5" value="{$egyed.evesmaxszabi}"> {at('nap')}</td>
 			</tr>
             {/if}
+            <tr>
+                <td><label for="HavilevonasEdit">{at('Havi levonás')}</label></td>
+                <td><input id="HavilevonasEdit" name="havilevonas" type="number" step="any" value="{$egyed.havilevonas}"></td>
+                <td><label for="SzamlatadEdit">{at('Számlát ad')}</label></td>
+                <td><input id="SzamlatadEdit" name="szamlatad" type="checkbox"{if ($egyed.szamlatad)} checked="checked"{/if}></td>
+            </tr>
 			</tbody></table>
 		</div>
 	</div>
