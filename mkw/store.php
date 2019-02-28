@@ -888,6 +888,10 @@ class store {
         return self::getConfigValue('main.theme');
     }
 
+    public static function isMailDebug() {
+        return self::getConfigValue('mail.debug');
+    }
+
     public static function isDeveloper() {
         return self::getConfigValue('developer');
     }
