@@ -1040,6 +1040,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                         $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                         $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
                         $body->setVar('szamla', $o->toLista());
+                        $body->setVar('megszolitas', $o->getPartner()->getSzamlalevelmegszolitas());
 
                         $mailer = \mkw\store::getMailer();
 

@@ -184,6 +184,10 @@
                 <td><label for="KtdszerzszamEdit">{at('KTD szerz.szám')}:</label></td>
                 <td><input id="KtdszerzszamEdit" name="ktdszerzszam" type="text" value="{$partner.ktdszerzszam}"></td>
             </tr>
+            <tr>
+                <td><label for="SzamlalevelmegszolitasEdit">{at('Számlalevél megszólítás')}:</label></td>
+                <td><input id="SzamlalevelmegszolitasEdit" name="szamlalevelmegszolitas" type="text" value="{$partner.szamlalevelmegszolitas}"></td>
+            </tr>
             {/if}
 			</tbody></table>
 				<div id="cimkekarbcontainer">
@@ -219,7 +223,7 @@
 			</tr>
 			<tr>
 				<td><label for="EmailEdit">{at('Email')}:</label></td>
-				<td><input id="EmailEdit" name="email" type="email" size="40" maxlength="100" value="{$partner.email}"></td>
+				<td><input id="EmailEdit" name="email" type="text" size="40" maxlength="100" value="{$partner.email}" title="Vesszővel elválasztva"></td>
 			</tr>
 			<tr>
 				<td><label for="HonlapEdit">{at('Honlap')}:</label></td>

@@ -367,6 +367,9 @@ class Partner {
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $apiconsumernev;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $szamlalevelmegszolitas;
+
     public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1761,6 +1764,20 @@ class Partner {
      */
     public function setApiconsumernev($apiconsumernev) {
         $this->apiconsumernev = $apiconsumernev;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzamlalevelmegszolitas() {
+        return $this->szamlalevelmegszolitas;
+    }
+
+    /**
+     * @param mixed $szamlalevelmegszolitas
+     */
+    public function setSzamlalevelmegszolitas($szamlalevelmegszolitas) {
+        $this->szamlalevelmegszolitas = $szamlalevelmegszolitas;
     }
 
 }
