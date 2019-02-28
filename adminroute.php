@@ -703,6 +703,7 @@ if (\mkw\store::isDarshan()) {
     $router->map('GET', '/admin/cimletez', 'adminController#cimletez', 'admincimletez');
     $router->map('POST', '/admin/jelenbe', 'jelenletiivController#createBelepes', 'adminjelenbe');
     $router->map('POST', '/admin/jelenki', 'jelenletiivController#createKilepes', 'adminjelenki');
+    $router->map('POST', '/admin/berletervenyessegkalkulator', 'adminController#calcBerletervenyesseg', 'adminberletervenyessegkalkulator');
 }
 
 if (\mkw\store::isSuperzoneB2B()) {

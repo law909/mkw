@@ -367,4 +367,12 @@ class adminController extends mkwhelpers\Controller {
         echo 'kész';
     }
 
+    public function calcBerletervenyesseg() {
+        $vasarlas = new \DateTime(\mkw\store::convDate($this->params->getStringRequestParam('vasarlasdatum')));
+        $het = $this->params->getIntRequestParam('berlettipus');
+        $iw = new \DateInterval('P' . $het . 'W');
+        $vasarlas->add($iw);
+        echo $vasarlas->format('Y.m.d');
+    }
+
 }

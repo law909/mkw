@@ -42,5 +42,22 @@ $(document).ready(
                 }
             });
         });
+
+        $('#BLKButton').button();
+        mkwcomp.datumEdit.init('#BLKVasarlasDatumEdit');
+        $('#BLKButton').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                method: 'POST',
+                url: '/admin/berletervenyessegkalkulator',
+                data: {
+                    vasarlasdatum: $('#BLKVasarlasDatumEdit').val(),
+                    berlettipus: $('#BLKBerletTipusEdit option:selected').val()
+                },
+                success: function(data) {
+                    $('#BLKEredmeny').html(data);
+                }
+            })
+        });
 	}
 );

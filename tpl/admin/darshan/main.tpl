@@ -686,5 +686,24 @@
                 </table>
             </div>
         </div>
+        <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+            <div class="ui-widget-header ui-corner-top">
+                <div class="mainboxinner ui-corner-top">Bérlet lejárat kalkulátor</div>
+            </div>
+            <div class="mainboxinner">
+                <label for="BLKVasarlasDatumEdit">{at('Vásárlás dátuma')}:</label>
+                <input id="BLKVasarlasDatumEdit" type="text" name="blkvasarlasdatum" size="12" data-datum="">
+                <label for="BLKBerletTipusEdit">Bérlet típusa:</label>
+                <select id="BLKBerletTipusEdit" name="blkervenyesseg">
+                    <option value="0">válassz</option>
+                    <option value="6">4 alkalmas</option>
+                    <option value="16">10 alkalmas</option>
+                    <option value="8">Nyugdíjas 5 alkalmas</option>
+                </select>
+                <a id="BLKButton" href="#"><span>Számol</span></a>
+                <div id="BLKEredmeny">
+                </div>
+            </div>
+        </div>
     </div>
 {/block}
