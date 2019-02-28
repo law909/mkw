@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col">
+                <div class="col topmargin10">
                     <h5 class="color-darshan">Számlázási adatok</h5>
                 </div>
             </div>
