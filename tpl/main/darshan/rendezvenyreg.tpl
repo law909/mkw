@@ -102,7 +102,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <div class="col-sm-10">
+                <div class="col-sm-10 topmargin10">
                     <input type="hidden" name="r" value="{$uid}">
                     <button type="submit" class="btn btn-darshan">Regisztrálok</button>
                 </div>
