@@ -12,6 +12,41 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
         $this->setEntityname('Entities\Folyoszamla');
     }
 
+    public function getAllByHivatkozottBizonylat($bizszam) {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('hivatkozottbizonylat', '=', $bizszam);
+        $filter->addFilter('rontott', '=', false);
+
+        $q = $this->_em->createQuery('SELECT _xx, f, bankfej, banktetel, penztarfej, penztartetel'
+            . ' FROM Entities\Folyoszamla _xx'
+            . ' LEFT JOIN _xx.fizmod f'
+            . ' LEFT JOIN _xx.bankbizonylatfej bankfej'
+            . ' LEFT JOIN _xx.bankbizonylattetel banktetel'
+            . ' LEFT JOIN _xx.penztarbizonylatfej penztarfej'
+            . ' LEFT JOIN _xx.penztarbizonylattetel penztartetel'
+            . $this->getFilterString($filter));
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
+    }
+
+    public function getBefizetesByHivatkozottBizonylat($bizszam) {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('hivatkozottbizonylat', '=', $bizszam);
+        $filter->addFilter('rontott', '=', false);
+        $filter->addSql('_xx.bizonylatfej IS NULL');
+
+        $q = $this->_em->createQuery('SELECT _xx, f, bankfej, banktetel, penztarfej, penztartetel'
+            . ' FROM Entities\Folyoszamla _xx'
+            . ' LEFT JOIN _xx.fizmod f'
+            . ' LEFT JOIN _xx.bankbizonylatfej bankfej'
+            . ' LEFT JOIN _xx.bankbizonylattetel banktetel'
+            . ' LEFT JOIN _xx.penztarbizonylatfej penztarfej'
+            . ' LEFT JOIN _xx.penztarbizonylattetel penztartetel'
+            . $this->getFilterString($filter));
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
+    }
+
     public function getSumByHivatkozottBizonylat($bizszam) {
         $filter = new FilterDescriptor();
         $filter->addFilter('hivatkozottbizonylat', '=', $bizszam);

@@ -1765,4 +1765,33 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $this->getEm()->persist($bf);
         $this->getEm()->flush();
     }
+
+    public function getFolyoszamla() {
+        $bizszam = $this->params->getStringRequestParam('bizszam');
+        /** @var \Entities\Folyoszamla $folyoszamlak */
+        $folyoszamlak = $this->getRepo('Entities\Folyoszamla')->getBefizetesByHivatkozottBizonylat($bizszam);
+        $adat = array();
+        /** @var \Entities\Folyoszamla $fszla */
+        foreach ($folyoszamlak as $fszla) {
+            if ($fszla->getBankbizonylattetel()) {
+                $datum = $fszla->getBankbizonylattetel()->getDatumStr();
+            }
+            elseif ($fszla->getPenztarbizonylatfej()) {
+                $datum = $fszla->getPenztarbizonylatfej()->getKeltStr();
+            }
+            else {
+                $datum = $fszla->getDatumStr();
+            }
+            $adat[] = array(
+                'datum' => $datum,
+                'bizonylatszam' => $fszla->getBankbizonylatfejId() ? $fszla->getBankbizonylatfejId() : $fszla->getPenztarbizonylatfejId(),
+                'fizmodnev' => $fszla->getFizmod()->getNev(),
+                'brutto' => $fszla->getBrutto(),
+                'valutanemnev' => $fszla->getValutanemnev()
+            );
+        }
+        $view = $this->createView('bizonylatfolyoszamlareszletezo.tpl');
+        $view->setVar('lista', $adat);
+        $view->printTemplateResult();
+    }
 }

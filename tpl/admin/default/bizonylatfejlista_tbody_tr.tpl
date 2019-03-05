@@ -212,8 +212,8 @@
                         {$cls = 'tulfizetett'}
                     {/if}
                     <tr>
-                        <td class="{$cls}">{at('Egyenleg')}:</td>
-                        <td class="mattable-rightaligned pricenowrap {$cls}">{number_format($_egyed.egyenleg, 2, '.', ' ')}</td>
+                        <td class="{$cls}"><a href="#" data-id="{$_egyed.id}" class="js-folyoszamlabtn">{at('Egyenleg')}:</a></td>
+                        <td class="mattable-rightaligned pricenowrap {$cls}"><a href="#" data-id="{$_egyed.id}" class="js-folyoszamlabtn">{number_format($_egyed.egyenleg, 2, '.', ' ')}</a></td>
                     </tr>
                 {/if}
             </tbody>

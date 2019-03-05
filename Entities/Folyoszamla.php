@@ -160,6 +160,13 @@ class Folyoszamla {
         return $this->datum;
     }
 
+    public function getDatumStr() {
+        if ($this->getDatum()) {
+            return $this->getDatum()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
     /**
      * @param mixed $datum
      */

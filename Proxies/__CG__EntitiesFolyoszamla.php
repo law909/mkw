@@ -202,6 +202,17 @@ class Folyoszamla extends \Entities\Folyoszamla implements \Doctrine\ORM\Proxy\P
     /**
      * {@inheritDoc}
      */
+    public function getDatumStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatumStr', []);
+
+        return parent::getDatumStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setDatum($datum)
     {
 

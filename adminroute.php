@@ -168,6 +168,7 @@ $router->map('GET', '/admin/bizonylatfej/getpartnerlist', 'partnerController#get
 $router->map('POST', '/admin/bizonylatfej/quickadd', 'bizonylatfejController#quickAdd', 'adminbizonylatfejquickadd');
 $router->map('GET', '/admin/bizonylatfej/pdf', 'bizonylatfejController#doPDF', 'adminbizonylatfejpdf');
 $router->map('POST', '/admin/bizonylatfej/emailpdf', 'bizonylatfejController#sendPDF', 'adminbizonylatfejemailpdf');
+$router->map('GET', '/admin/bizonylatfej/getfolyoszamla', 'bizonylatfejController#getFolyoszamla', 'admingetfolyoszamla');
 
 $router->map('GET', '/admin/megrendelesfej/viewlist', 'megrendelesfejController#viewlist', 'adminmegrendelesfejviewlist');
 $router->map('GET', '/admin/megrendelesfej/getlistbody', 'megrendelesfejController#getlistbody', 'adminmegrendelesfejgetlistbody');

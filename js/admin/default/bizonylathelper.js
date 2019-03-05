@@ -1535,6 +1535,26 @@ var bizonylathelper = function($) {
                     }
                 });
             })
+            .on('click', '.js-folyoszamlabtn', function (e) {
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/bizonylatfej/getfolyoszamla',
+                    data: {
+                        bizszam: $this.data('id')
+                    },
+                    success: function (data) {
+                        dialogcenter.html(data).dialog({
+                            modal: true,
+                            buttons: {
+                                'OK': function () {
+                                    dialogcenter.dialog('close');
+                                }
+                            }
+                        });
+                    }
+                });
+            })
             .on('click', '.js-printbizonylat, .js-pdf', function(e) {
                     var $this = $(this);
                     e.preventDefault();
