@@ -1380,6 +1380,7 @@ class partnerController extends \mkwhelpers\MattableController {
     public function getKiegyenlitetlenBiz() {
         $partnerid = $this->params->getIntRequestParam('partner');
         $irany = $this->params->getIntRequestParam('irany', 1);
+        $br = $this->getRepo('Entities\Bizonylatfej');
         $bizs = $this->getRepo('Entities\Folyoszamla')->getSumByPartner($partnerid, $irany);
         $adat = array();
         foreach($bizs as $biz) {
@@ -1389,8 +1390,17 @@ class partnerController extends \mkwhelpers\MattableController {
             else {
                 $datum = '';
             }
+            /** @var \Entities\Bizonylatfej $hbiz */
+            $hbiz = $br->find($biz['hivatkozottbizonylat']);
+            if ($hbiz) {
+                $erbizszam = $hbiz->getErbizonylatszam();
+            }
+            else {
+                $erbizszam = '';
+            }
             $adat[] = array(
                 'bizszam' => $biz['hivatkozottbizonylat'],
+                'erbizszam' => $erbizszam,
                 'datum' => $datum,
                 'egyenleg' => $biz['egyenleg'] * 1 * $irany,
                 'fizmod' => $biz['fizmodnev']

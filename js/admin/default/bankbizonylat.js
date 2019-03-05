@@ -117,6 +117,7 @@ $(document).ready(function () {
                             dialogcenter.dialog({
                                 resizable: true,
                                 height: 340,
+                                width: 400,
                                 modal: true,
                                 buttons: {
                                     'OK': function() {
