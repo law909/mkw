@@ -1108,6 +1108,24 @@
                             <a href="#" class="js-stopimport" data-href="{$stophaffner24importurl}">Stop import</a>
                             <a href="#" class="js-repairimport" data-href="{$repairhaffner24importurl}">Javít</a>
                         </div>
+                        <div class="matt-hseparator"></div>
+                        <div>
+                            <div>
+                                <label for="EvonaEdit">Evona:</label>
+                                <select id="EvonaEdit" name="gyartoevona">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $gyartoevonalist as $_gyarto}
+                                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                                    {/foreach}
+                                </select>
+                                <label for="PathEvonaEdit">Képek mappája:</label>
+                                <input id="PathEvonaEdit" name="pathevona" value="{$pathevona}">
+                                <label for="KepUrlEvonaEdit">Képek eredeti url-je:</label>
+                                <input id="KepUrlEvonaEdit" name="kepurlevona" value="{$kepurlevona}">
+                                <a href="#" class="js-stopimport" data-href="{$stopevonaimporturl}">Stop import</a>
+                                <a href="#" class="js-repairimport" data-href="{$repairevonaimporturl}">Javít</a>
+                            </div>
+                        </div>
                     </div>
                 {/if}
                 {if ($maintheme == 'superzoneb2b' || $maintheme == 'mugenrace')}
