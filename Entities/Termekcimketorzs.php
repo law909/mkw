@@ -33,6 +33,15 @@ class Termekcimketorzs extends Cimketorzs {
     /** @ORM\Column(type="boolean") */
     private $kiemelt = false;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Partner")
+     * @ORM\JoinColumn(name="gyarto_id",referencedColumnName="id",nullable=true,onDelete="set null")
+     */
+    private $gyarto;
+
+    /** @ORM\Column(type="string",length=7,nullable=true) */
+    private $szinkod;
+
     public function __construct() {
         $this->termekek = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -52,6 +61,8 @@ class Termekcimketorzs extends Cimketorzs {
         $x['termekfilter'] = $this->getTermekFilter();
         $x['termeklisturl'] = \mkw\store::getRouter()->generate('showmarka', true, array('slug' => $x['slug']));
         $x['leiras'] = $this->getLeiras();
+        $x['szinkod'] = $this->getSzinkod();
+        $x['gyartonev'] = $this->getGyartoNev();
         return $x;
     }
 
@@ -134,5 +145,40 @@ class Termekcimketorzs extends Cimketorzs {
 
     public function setKiemelt($adat) {
         $this->kiemelt = $adat;
+    }
+    public function getGyarto() {
+        return $this->gyarto;
+    }
+
+    public function getGyartoNev() {
+        if ($this->gyarto) {
+            return $this->gyarto->getNev();
+        }
+        return '';
+    }
+
+    public function getGyartoId() {
+        if ($this->gyarto) {
+            return $this->gyarto->getId();
+        }
+        return '';
+    }
+
+    public function setGyarto($gyarto) {
+        $this->gyarto = $gyarto;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzinkod() {
+        return $this->szinkod;
+    }
+
+    /**
+     * @param mixed $szinkod
+     */
+    public function setSzinkod($szinkod) {
+        $this->szinkod = $szinkod;
     }
 }

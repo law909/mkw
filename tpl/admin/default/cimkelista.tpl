@@ -23,6 +23,15 @@
 		<option value="{$_ck.id}">{$_ck.caption}</option>
 		{/foreach}
 	</select>
+    <div>
+        <label for="gyartofilter">{at('Gyártó')}</label>
+        <select id="gyartofilter" name="gyartofilter">
+            <option value="">{at('válasszon')}</option>
+            {foreach $gyartolist as $_ck}
+                <option value="{$_ck.id}">{$_ck.caption}</option>
+            {/foreach}
+        </select>
+    </div>
 </div>
 <div class="mattable-pagerwrapper">
 	<div class="mattable-order">

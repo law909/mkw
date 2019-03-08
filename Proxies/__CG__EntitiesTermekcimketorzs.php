@@ -64,10 +64,10 @@ class Termekcimketorzs extends \Entities\Termekcimketorzs implements \Doctrine\O
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'slug', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'kategoria', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'kiemelt'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'slug', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'kategoria', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'kiemelt', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'gyarto', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'szinkod'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'slug', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'kategoria', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'kiemelt'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'slug', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'kategoria', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'kiemelt', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'gyarto', '' . "\0" . 'Entities\\Termekcimketorzs' . "\0" . 'szinkod'];
     }
 
     /**
@@ -347,6 +347,72 @@ class Termekcimketorzs extends \Entities\Termekcimketorzs implements \Doctrine\O
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKiemelt', [$adat]);
 
         return parent::setKiemelt($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getGyarto()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGyarto', []);
+
+        return parent::getGyarto();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getGyartoNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGyartoNev', []);
+
+        return parent::getGyartoNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getGyartoId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGyartoId', []);
+
+        return parent::getGyartoId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setGyarto($gyarto)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setGyarto', [$gyarto]);
+
+        return parent::setGyarto($gyarto);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzinkod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzinkod', []);
+
+        return parent::getSzinkod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzinkod($szinkod)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzinkod', [$szinkod]);
+
+        return parent::setSzinkod($szinkod);
     }
 
     /**

@@ -56,7 +56,7 @@ class partnercimkeController extends \mkwhelpers\MattableController {
 
     public function getlistbody() {
         $view = $this->createView('cimkelista_tbody.tpl');
-        $view->setVar('kellkep', false);
+        $view->setVar('cimketipus', 'partner');
 
         $filter = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
@@ -79,7 +79,7 @@ class partnercimkeController extends \mkwhelpers\MattableController {
         $view = $this->createView('cimkelista.tpl');
 
         $view->setVar('pagetitle', t('Partnercímkék'));
-        $view->setVar('kellkep', false);
+        $view->setVar('cimketipus', 'partner');
         $view->setVar('controllerscript', 'partnercimke.js');
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
@@ -95,7 +95,7 @@ class partnercimkeController extends \mkwhelpers\MattableController {
 
         $view->setVar('pagetitle', t('Partnercímke'));
         $view->setVar('controllerscript', 'partnercimke.js');
-        $view->setVar('kellkep', false);
+        $view->setVar('cimketipus', 'partner');
         $view->setVar('formaction', '/admin/partnercimke/save');
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->findWithJoins($id);
@@ -176,7 +176,7 @@ class partnercimkeController extends \mkwhelpers\MattableController {
         $view = $this->createView('cimkelista.tpl');
 
         $view->setVar('pagetitle', t('Partnercímkék'));
-        $view->setVar('kellkep', false);
+        $view->setVar('cimketipus', 'partner');
         $view->setVar('controllerscript', 'partnercimke.js');
         $tc = store::getEm()->getRepository('Entities\Partnercimkekat')->getWithJoins(array(), array('_xx.nev' => 'asc', 'c.nev' => 'asc'));
         $view->setVar('cimkekat', $this->cimkekToArray($tc));

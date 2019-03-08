@@ -25,21 +25,35 @@
 			</tr>
 			<tr>
 				<td><label for="SorrendEdit">{at('Sorrend')}:</label></td>
-				<td><input id="SorrendEdit" name="sorrend" type="number" size="10" maxlength="10" value="{$cimke.sorrend}"</td>
+				<td><input id="SorrendEdit" name="sorrend" type="number" size="10" maxlength="10" value="{$cimke.sorrend}"></td>
 			</tr>
+            {if ($cimketipus === 'termek')}
+            <tr>
+                <td><label for="GyartoEdit">{at('Gyártó')}:</label></td>
+                <td colspan="3"><select id="GyartoEdit" name="gyarto">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $gyartolist as $_gyarto}
+                            <option
+                                value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                        {/foreach}
+                    </select></td>
+            </tr>
+            <tr>
+                <td><label for="SzinkodEdit">{at('Színkód')}:</label></td>
+                <td><input id="SzinkodEdit" name="szinkod" type="text" maxlength="7" value="{$cimke.szinkod}"></td>
+            </tr>
 			<tr>
-			{if ($kellkep)}
 			{include 'cimkeimagekarb.tpl'}
-			{/if}
 			</tr>
+            {/if}
 			</tbody></table>
 		</div>
 		<div id="WebTab" class="mattkarb-page">
-			<input id="Menu1LathatoCheck" name="menu1lathato" type="checkbox"{if ($cimke.menu1lathato)}checked="checked"{/if}>{at('Menü 1')}</input>
-			<input id="Menu2LathatoCheck" name="menu2lathato" type="checkbox"{if ($cimke.menu2lathato)}checked="checked"{/if}>{at('Menü 2')}</input>
-			<input id="Menu3LathatoCheck" name="menu3lathato" type="checkbox"{if ($cimke.menu3lathato)}checked="checked"{/if}>{at('Menü 3')}</input>
-			<input id="Menu4LathatoCheck" name="menu4lathato" type="checkbox"{if ($cimke.menu4lathato)}checked="checked"{/if}>{at('Menü 4')}</input>
-			<input id="KiemeltCheck" name="kiemelt" type="checkbox"{if ($cimke.kiemelt)}checked="checked"{/if}>{at('Kiemelt')}</input>
+			<input id="Menu1LathatoCheck" name="menu1lathato" type="checkbox"{if ($cimke.menu1lathato)}checked="checked"{/if}>{at('Menü 1')}
+			<input id="Menu2LathatoCheck" name="menu2lathato" type="checkbox"{if ($cimke.menu2lathato)}checked="checked"{/if}>{at('Menü 2')}
+			<input id="Menu3LathatoCheck" name="menu3lathato" type="checkbox"{if ($cimke.menu3lathato)}checked="checked"{/if}>{at('Menü 3')}
+			<input id="Menu4LathatoCheck" name="menu4lathato" type="checkbox"{if ($cimke.menu4lathato)}checked="checked"{/if}>{at('Menü 4')}
+			<input id="KiemeltCheck" name="kiemelt" type="checkbox"{if ($cimke.kiemelt)}checked="checked"{/if}>{at('Kiemelt')}
 			<table><tbody>
 			<tr>
 				<td><label for="OldalCimEdit">{at('Lap címe')}:</label></td>

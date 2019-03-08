@@ -87,7 +87,7 @@ $(document).ready(function(){
 				}
 			},
 			filter:{
-				fields:['#nevfilter','#ckfilter']
+				fields:['#nevfilter','#ckfilter','#gyartofilter']
 			},
 			tablebody:{
 				url:'/admin/termekcimke/getlistbody'

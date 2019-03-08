@@ -43,6 +43,9 @@ class termekcimkeController extends \mkwhelpers\MattableController {
         $x['kepleiras'] = $t->getKepleiras();
         $x['sorrend'] = $t->getSorrend();
         $x['kiemelt'] = $t->getKiemelt();
+        $x['szinkod'] = $t->getSzinkod();
+        $x['gyartonev'] = $t->getGyartoNev();
+
         return $x;
     }
 
@@ -62,12 +65,20 @@ class termekcimkeController extends \mkwhelpers\MattableController {
         $obj->setKepleiras($this->params->getStringRequestParam('kepleiras', ''));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
         $obj->setKiemelt($this->params->getBoolRequestParam('kiemelt'));
+        $ck = \mkw\store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('gyarto'));
+        if ($ck) {
+            $obj->setGyarto($ck);
+        }
+        else {
+            $obj->setGyarto(null);
+        }
+        $obj->setSzinkod($this->params->getStringRequestParam('szinkod'));
         return $obj;
     }
 
     public function getlistbody() {
         $view = $this->createView('cimkelista_tbody.tpl');
-        $view->setVar('kellkep', true);
+        $view->setVar('cimketipus', 'termek');
 
         $filter = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('nevfilter', NULL))) {
@@ -76,6 +87,9 @@ class termekcimkeController extends \mkwhelpers\MattableController {
         $fv = $this->params->getIntRequestParam('ckfilter');
         if ($fv > 0) {
             $filter->addFilter('ck.id', '=', $fv);
+        }
+        if (!is_null($this->params->getRequestParam('gyartofilter', null))) {
+            $filter->addFilter('gyarto' , '=', $this->params->getIntRequestParam('gyartofilter'));
         }
 
         $this->initPager($this->getRepo()->getCount($filter));
@@ -90,12 +104,14 @@ class termekcimkeController extends \mkwhelpers\MattableController {
         $view = $this->createView('cimkelista.tpl');
 
         $view->setVar('pagetitle', t('Termékcímkék'));
-        $view->setVar('kellkep', true);
+        $view->setVar('cimketipus', 'termek');
         $view->setVar('controllerscript', 'termekcimke.js');
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         $ckat = new termekcimkekatController($this->params);
         $view->setVar('cimkecsoportlist', $ckat->getSelectList(0));
+        $gyarto = new partnerController($this->params);
+        $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(0));
         $view->printTemplateResult();
     }
 
@@ -105,13 +121,15 @@ class termekcimkeController extends \mkwhelpers\MattableController {
         $view = $this->createView($tplname);
         $view->setVar('pagetitle', t('Termékcímke'));
         $view->setVar('controllerscript', 'termekcimke.js');
-        $view->setVar('kellkep', true);
+        $view->setVar('cimketipus', 'termek');
         $view->setVar('formaction', '/admin/termekcimke/save');
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->findWithJoins($id);
         $view->setVar('cimke', $this->loadVars($record));
         $ckat = new termekcimkekatController($this->params);
         $view->setVar('cimkecsoportlist', $ckat->getSelectList(($record ? $record->getKategoriaId() : 0)));
+        $gyarto = new partnerController($this->params);
+        $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(($record ? $record->getGyartoId() : 0)));
         return $view->getTemplateResult();
     }
 
@@ -179,7 +197,7 @@ class termekcimkeController extends \mkwhelpers\MattableController {
         $view = $this->createView('cimkelista.tpl');
 
         $view->setVar('pagetitle', t('Termékcímkék'));
-        $view->setVar('kellkep', true);
+        $view->setVar('cimketipus', 'termek');
         $view->setVar('controllerscript', 'termekcimke.js');
         $tc = store::getEm()->getRepository('Entities\Termekcimkekat')->getWithJoins(array(), array('_xx.nev' => 'asc', 'c.nev' => 'asc'));
         $view->setVar('cimkekat', $this->cimkekToArray($tc));
