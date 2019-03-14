@@ -557,9 +557,11 @@ class termekfaController extends \mkwhelpers\MattableController {
 
                     $bpt = array();
                     $blogposztok = $this->getRepo('Entities\Blogposzt')->getByTermekfa($parent);
-                    /** @var \Entities\Blogposzt $poszt */
-                    foreach($blogposztok as $poszt) {
-                        $bpt[] = $poszt->convertToArray();
+                    if ($blogposztok) {
+                        /** @var \Entities\Blogposzt $poszt */
+                        foreach ($blogposztok as $poszt) {
+                            $bpt[] = $poszt->convertToArray();
+                        }
                     }
                     $ret['blogposztok'] = $bpt;
 
