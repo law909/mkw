@@ -90,6 +90,10 @@
                 <a href="/admin/import/kressgep" class="js-kressgepimport">Kress gép</a>
                 <a href="/admin/import/kresstartozek" class="js-kresstartozekimport">Kress tartozék</a>
             </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <a href="/admin/import/evona" class="js-evonaimport">Evona</a>
+            </div>
     <div class="matt-hseparator"></div>
             <div>
             <a href="/admin/import/foxpostterminal" class="js-foxpostterminalimport">Foxpost terminálok</a>

@@ -571,6 +571,7 @@ $router->map('POST','/admin/import/legavenue', 'importController#legavenueImport
 $router->map('POST','/admin/import/legavenueszotar', 'importController#legavenueSzotar', 'adminlegavenueSzotar');
 $router->map('POST','/admin/import/tutisport', 'importController#tutisportImport', 'admintutisportimport');
 $router->map('POST','/admin/import/makszutov', 'importController#makszutovImport', 'adminmakszutovimport');
+$router->map('POST','/admin/import/evona', 'importController#evonaImport', 'adminevonaimport');
 $router->map('POST','/admin/import/silko', 'importController#silkoImport', 'adminsilkoimport');
 $router->map('POST','/admin/import/btech', 'importController#btechImport', 'adminbtechimport');
 $router->map('POST','/admin/import/kressgep', 'importController#kressgepImport', 'adminkressgepimport');
