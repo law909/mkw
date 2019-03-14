@@ -169,6 +169,42 @@ class Termek {
     private $lathato3 = 1;
 
     /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato4 = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato5 = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato6 = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato7 = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato8 = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato9 = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato10 = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato11 = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato12 = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato13 = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato14 = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $lathato15 = 1;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
     private $hozzaszolas = 1;
 
     /** @ORM\Column(type="boolean",nullable=false) */
@@ -2385,6 +2421,30 @@ class Termek {
                 return $this->getLathato2();
             case 3:
                 return $this->getLathato3();
+            case 4:
+                return $this->getLathato4();
+            case 5:
+                return $this->getLathato5();
+            case 6:
+                return $this->getLathato6();
+            case 7:
+                return $this->getLathato7();
+            case 8:
+                return $this->getLathato8();
+            case 9:
+                return $this->getLathato9();
+            case 10:
+                return $this->getLathato10();
+            case 11:
+                return $this->getLathato11();
+            case 12:
+                return $this->getLathato12();
+            case 13:
+                return $this->getLathato13();
+            case 14:
+                return $this->getLathato14();
+            case 15:
+                return $this->getLathato15();
             default:
                 return $this->getLathato();
         }
@@ -2471,6 +2531,174 @@ class Termek {
         foreach ($this->blogposztok as $bp) {
             $this->removeBlogposzt($bp);
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato4() {
+        return $this->lathato4;
+    }
+
+    /**
+     * @param mixed $lathato4
+     */
+    public function setLathato4($lathato4) {
+        $this->lathato4 = $lathato4;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato5() {
+        return $this->lathato5;
+    }
+
+    /**
+     * @param mixed $lathato5
+     */
+    public function setLathato5($lathato5) {
+        $this->lathato5 = $lathato5;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato6() {
+        return $this->lathato6;
+    }
+
+    /**
+     * @param mixed $lathato6
+     */
+    public function setLathato6($lathato6) {
+        $this->lathato6 = $lathato6;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato7() {
+        return $this->lathato7;
+    }
+
+    /**
+     * @param mixed $lathato7
+     */
+    public function setLathato7($lathato7) {
+        $this->lathato7 = $lathato7;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato8() {
+        return $this->lathato8;
+    }
+
+    /**
+     * @param mixed $lathato8
+     */
+    public function setLathato8($lathato8) {
+        $this->lathato8 = $lathato8;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato9() {
+        return $this->lathato9;
+    }
+
+    /**
+     * @param mixed $lathato9
+     */
+    public function setLathato9($lathato9) {
+        $this->lathato9 = $lathato9;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato10() {
+        return $this->lathato10;
+    }
+
+    /**
+     * @param mixed $lathato10
+     */
+    public function setLathato10($lathato10) {
+        $this->lathato10 = $lathato10;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato11() {
+        return $this->lathato11;
+    }
+
+    /**
+     * @param mixed $lathato11
+     */
+    public function setLathato11($lathato11) {
+        $this->lathato11 = $lathato11;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato12() {
+        return $this->lathato12;
+    }
+
+    /**
+     * @param mixed $lathato12
+     */
+    public function setLathato12($lathato12) {
+        $this->lathato12 = $lathato12;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato13() {
+        return $this->lathato13;
+    }
+
+    /**
+     * @param mixed $lathato13
+     */
+    public function setLathato13($lathato13) {
+        $this->lathato13 = $lathato13;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato14() {
+        return $this->lathato14;
+    }
+
+    /**
+     * @param mixed $lathato14
+     */
+    public function setLathato14($lathato14) {
+        $this->lathato14 = $lathato14;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLathato15() {
+        return $this->lathato15;
+    }
+
+    /**
+     * @param mixed $lathato15
+     */
+    public function setLathato15($lathato15) {
+        $this->lathato15 = $lathato15;
     }
 
 }
