@@ -62,6 +62,7 @@ class termekController extends \mkwhelpers\MattableController {
 		$x['leiras'] = $t->getLeiras();
 		$x['seodescription'] = $t->getSeodescription();
 		$x['lathato'] = $t->getLathato();
+        $x['lathato1'] = $t->getLathato();
         $x['lathato2'] = $t->getLathato2();
         $x['lathato3'] = $t->getLathato3();
 		$x['hozzaszolas'] = $t->getHozzaszolas();

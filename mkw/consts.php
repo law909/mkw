@@ -251,6 +251,22 @@ class consts {
     const MugenraceFooterLogo = 'mugenracefooterlogo';
     const MugenraceKatId = 'mugenracekatid';
 
+    const Webshop1Name = 'webshop1name';
+    const Webshop2Name = 'webshop2name';
+    const Webshop3Name = 'webshop3name';
+    const Webshop4Name = 'webshop4name';
+    const Webshop5Name = 'webshop5name';
+    const Webshop6Name = 'webshop6name';
+    const Webshop7Name = 'webshop7name';
+    const Webshop8Name = 'webshop8name';
+    const Webshop9Name = 'webshop9name';
+    const Webshop10Name = 'webshop10name';
+    const Webshop11Name = 'webshop11name';
+    const Webshop12Name = 'webshop12name';
+    const Webshop13Name = 'webshop13name';
+    const Webshop14Name = 'webshop14name';
+    const Webshop15Name = 'webshop15name';
+
     const Webshop2Price = 'Webshop2Price';
     const Webshop2Discount = 'Webshop2Discount';
     const Webshop3Price = 'Webshop3Price';

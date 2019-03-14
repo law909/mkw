@@ -22,7 +22,7 @@ class TermekRepository extends \mkwhelpers\Repository {
 
     protected function addAktivLathatoFilter($filter) {
         $filter->addFilter('inaktiv', '=', false);
-        $filter->addFilter('lathato', '=', true);
+        $filter->addFilter(\mkw\store::getWebshopFieldName('lathato'), '=', true);
         $filter->addFilter('fuggoben', '=', false);
     }
 
@@ -103,7 +103,7 @@ class TermekRepository extends \mkwhelpers\Repository {
         }
         $q = $this->_em->createQuery('SELECT _xx, v'
             . ' FROM Entities\Termek _xx'
-            . ' LEFT JOIN _xx.valtozatok v WITH v.lathato=true AND v.elerheto=true'
+            . ' LEFT JOIN _xx.valtozatok v WITH ' . \mkw\store::getWebshopFieldName('v.lathato') . '=true AND ' . \mkw\store::getWebshopFieldName('v.elerheto') . '=true'
             . $this->getFilterString($filter)
             . $this->getOrderString(array()));
         $q->setParameters($this->getQueryParameters($filter));
@@ -266,7 +266,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                     . ' LEFT JOIN termekfa fa1 ON (_xx.termekfa1_id=fa1.id)'
                     . ' LEFT JOIN termekfa fa2 ON (_xx.termekfa2_id=fa2.id)'
                     . ' LEFT JOIN termekfa fa3 ON (_xx.termekfa3_id=fa3.id)'
-                    . ' LEFT JOIN termekvaltozat v ON (_xx.id=v.termek_id) AND (v.lathato=1) AND (v.elerheto=1)'
+                    . ' LEFT JOIN termekvaltozat v ON (_xx.id=v.termek_id) AND (' . \mkw\store::getWebshopFieldName('v.lathato') . '=1) AND (' . \mkw\store::getWebshopFieldName('v.elerheto') . '=1)'
                     . $this->getFilterString($filter)
                     . $this->getOrderString($order)
                     . $this->getLimitString($offset, $elemcount);
@@ -327,7 +327,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                     . ' LEFT JOIN _xx.termekfa1 fa1'
                     . ' LEFT JOIN _xx.termekfa2 fa2'
                     . ' LEFT JOIN _xx.termekfa3 fa3'
-                    . ' LEFT JOIN _xx.valtozatok v WITH v.lathato=true AND v.elerheto=true'
+                    . ' LEFT JOIN _xx.valtozatok v WITH ' . \mkw\store::getWebshopFieldName('v.lathato') . '=true AND ' . \mkw\store::getWebshopFieldName('v.elerheto') . '=true'
                     . $this->getFilterString($filter));
                 $q->setParameters($this->getQueryParameters($filter));
                 if (\mkw\store::isMainMode()) {
@@ -345,7 +345,7 @@ class TermekRepository extends \mkwhelpers\Repository {
             . ' LEFT JOIN _xx.termekfa1 fa1'
             . ' LEFT JOIN _xx.termekfa2 fa2'
             . ' LEFT JOIN _xx.termekfa3 fa3'
-            . ' LEFT JOIN _xx.valtozatok v WITH v.lathato=true AND v.elerheto=true'
+            . ' LEFT JOIN _xx.valtozatok v WITH ' . \mkw\store::getWebshopFieldName('v.lathato') . '=true AND ' . \mkw\store::getWebshopFieldName('v.elerheto') . '=true'
             . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
         if (\mkw\store::isMainMode()) {
@@ -363,7 +363,7 @@ class TermekRepository extends \mkwhelpers\Repository {
         $rsm->addScalarResult('kepleiras', 'kepleiras');
         $q = $this->_em->createNativeQuery('SELECT id,slug,lastmod,kepurl,kepleiras'
             . ' FROM termek '
-            . ' WHERE (inaktiv=0) AND (fuggoben=0) AND (lathato=1)'
+            . ' WHERE (inaktiv=0) AND (fuggoben=0) AND (' . \mkw\store::getWebshopFieldName('lathato') . '=1)'
             . ' ORDER BY id', $rsm);
         return $q->getScalarResult();
     }
@@ -375,7 +375,7 @@ class TermekRepository extends \mkwhelpers\Repository {
             . ' LEFT JOIN _xx.termekfa1 fa1'
             . ' LEFT JOIN _xx.termekfa2 fa2'
             . ' LEFT JOIN _xx.termekfa3 fa3'
-            . ' LEFT JOIN _xx.valtozatok v WITH v.lathato=true AND v.elerheto=true'
+            . ' LEFT JOIN _xx.valtozatok v WITH ' . \mkw\store::getWebshopFieldName('v.lathato') . '=true AND ' . \mkw\store::getWebshopFieldName('v.elerheto') . '=true'
             . $this->getFilterString($filter)
             . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
@@ -498,7 +498,7 @@ class TermekRepository extends \mkwhelpers\Repository {
                 . ' LEFT JOIN _xx.termekfa1 fa1'
                 . ' LEFT JOIN _xx.termekfa2 fa2'
                 . ' LEFT JOIN _xx.termekfa3 fa3'
-                . ' LEFT JOIN _xx.valtozatok v WITH v.lathato=true AND v.elerheto=true'
+                . ' LEFT JOIN _xx.valtozatok v WITH ' . \mkw\store::getWebshopFieldName('v.lathato') . '=true AND ' . \mkw\store::getWebshopFieldName('v.elerheto') . '=true'
                 . $this->getFilterString($kiemeltfilter));
 
             $q->setParameters($this->getQueryParameters($kiemeltfilter));
@@ -809,7 +809,7 @@ class TermekRepository extends \mkwhelpers\Repository {
         $q = $this->_em->createNativeQuery('SELECT COUNT(*) AS db '
             . 'FROM termek_cimkek tc '
             . 'LEFT OUTER JOIN termek t ON (t.id=tc.termek_id) '
-            . 'WHERE (tc.cimketorzs_id=' . $cimke . ') AND (t.inaktiv=0) AND (t.lathato=1) AND (t.fuggoben=0)', $rsm);
+            . 'WHERE (tc.cimketorzs_id=' . $cimke . ') AND (t.inaktiv=0) AND (' . \mkw\store::getWebshopFieldName('t.lathato') . '=1) AND (t.fuggoben=0)', $rsm);
         $res = $q->getScalarResult();
         return $res[0]['db'] * 1;
     }

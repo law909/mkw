@@ -21,10 +21,11 @@
                 <ul>
                     <li><a href="#DefaTab">{at('Alapértelmezések')}</a></li>
                     <li><a href="#TulajTab">{at('Tulajdonos adatai')}</a></li>
-                    <li><a href="#WebTab">{at('Web beállítások')}</a></li>
+                    <li><a href="#WebTab">{$webshop1name} {at('beállítások')}</a></li>
                     {if ($setup.multishop)}
-                        <li><a href="#Web2Tab">{at('Web 2 beállítások')}</a></li>
-                        <li><a href="#Web3Tab">{at('Web 3 beállítások')}</a></li>
+                        <li><a href="#Web2Tab">{$webshop2name} {at('beállítások')}</a></li>
+                        <li><a href="#Web3Tab">{$webshop3name} {at('beállítások')}</a></li>
+                        <li><a href="#WebshopSetupTab">{at('Webshopok beállításai')}</a></li>
                     {/if}
                     <li><a href="#SzallitasiKtgTab">{at('Szállítási költség')}</a></li>
                     {if ($maintheme == 'mkwcansas')}
@@ -877,7 +878,7 @@
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="Off3Edit">{at('Publikus felület kikapcsolva')}:</label></span>
-                                <input id="Off2Edit" name="off3" type="checkbox"{if ($off3)} checked="checked"{/if}>
+                                <input id="Off3Edit" name="off3" type="checkbox"{if ($off3)} checked="checked"{/if}>
                             </div>
                         </div>
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
@@ -907,6 +908,15 @@
                             </tr>
                             </tbody>
                         </table>
+                    </div>
+                    <div id="WebshopSetupTab" class="mattkarb-page" data-visible="visible">
+                        {for $cikl = 1 to $enabledwebshops}
+                            <div>
+                                <label>{at('Webshop név')} {$cikl}:</label>
+                                <input name="webshop{$cikl}name" type="text" value="{$webshop{$cikl}name}">
+                            </div>
+                            <div class="matt-hseparator"></div>
+                        {/for}
                     </div>
                 {/if}
                 {if ($maintheme == 'mkwcansas')}

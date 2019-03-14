@@ -1096,8 +1096,19 @@ class store {
         return self::$mainmode;
     }
 
+    public static function getWebshopFieldName($fname) {
+        if (self::getWebshopNum() == 1) {
+            return $fname;
+        }
+        return $fname . self::getWebshopNum();
+    }
+
     public static function getWebshopNum() {
         return self::getSetupValue('webshopnum', 1);
+    }
+
+    public static function getEnabledWebshops() {
+        return self::getSetupValue('enabledwebshops', 1);
     }
 
     public static function setTranslationHint($q, $locale) {
@@ -1380,4 +1391,5 @@ class store {
         $fc = mb_strtoupper(mb_substr($s, 0, 1));
         return $fc . mb_substr($s, 1);
     }
+
 }

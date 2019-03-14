@@ -77,10 +77,11 @@
         <table>
             <tbody>
                 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="inaktiv" class="js-flagcheckbox{if ($_termek.inaktiv)} ui-state-hover{/if}">{at('Inaktív')}</a></td></tr>
-                <tr><td><a href="#" data-id="{$_termek.id}" data-flag="lathato" class="js-flagcheckbox{if ($_termek.lathato)} ui-state-hover{/if}">{at('Látható')}</a></td></tr>
+                <tr><td><a href="#" data-id="{$_termek.id}" data-flag="lathato" class="js-flagcheckbox{if ($_termek.lathato)} ui-state-hover{/if}">{at('Látható')} {$webshop1name}</a></td></tr>
                 {if ($setup.multishop)}
-                    <tr><td><a href="#" data-id="{$_termek.id}" data-flag="lathato2" class="js-flagcheckbox{if ($_termek.lathato2)} ui-state-hover{/if}">{at('Látható 2')}</a></td></tr>
-                    <tr><td><a href="#" data-id="{$_termek.id}" data-flag="lathato3" class="js-flagcheckbox{if ($_termek.lathato3)} ui-state-hover{/if}">{at('Látható 3')}</a></td></tr>
+                    {for $cikl = 2 to $enabledwebshops}
+                    <tr><td><a href="#" data-id="{$_termek.id}" data-flag="lathato{$cikl}" class="js-flagcheckbox{if ($_termek["lathato$cikl"])} ui-state-hover{/if}">{at('Látható')} {$webshop{$cikl}name}</a></td></tr>
+                    {/for}
                 {/if}
                 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="ajanlott" class="js-flagcheckbox{if ($_termek.ajanlott)} ui-state-hover{/if}">{at('Ajánlott')}</a></td></tr>
                 <tr><td><a href="#" data-id="{$_termek.id}" data-flag="kiemelt" class="js-flagcheckbox{if ($_termek.kiemelt)} ui-state-hover{/if}">{at('Kiemelt')}</a></td></tr>

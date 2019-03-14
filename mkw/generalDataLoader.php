@@ -33,6 +33,22 @@ class generalDataLoader {
         $view->setVar('menu', $menuc->getMenu());
         $jelenc = new \Controllers\jelenletiivController(null);
         $view->setVar('dolgozojelen', $jelenc->isDolgozoJelen(\mkw\store::getAdminSession()->pk));
+        $view->setVar('webshop1name', \mkw\store::getParameter(\mkw\consts::Webshop1Name, '1'));
+        $view->setVar('webshop2name', \mkw\store::getParameter(\mkw\consts::Webshop2Name, '2'));
+        $view->setVar('webshop3name', \mkw\store::getParameter(\mkw\consts::Webshop3Name, '3'));
+        $view->setVar('webshop4name', \mkw\store::getParameter(\mkw\consts::Webshop4Name, '4'));
+        $view->setVar('webshop5name', \mkw\store::getParameter(\mkw\consts::Webshop5Name, '5'));
+        $view->setVar('webshop6name', \mkw\store::getParameter(\mkw\consts::Webshop6Name, '6'));
+        $view->setVar('webshop7name', \mkw\store::getParameter(\mkw\consts::Webshop7Name, '7'));
+        $view->setVar('webshop8name', \mkw\store::getParameter(\mkw\consts::Webshop8Name, '8'));
+        $view->setVar('webshop9name', \mkw\store::getParameter(\mkw\consts::Webshop9Name, '9'));
+        $view->setVar('webshop10name', \mkw\store::getParameter(\mkw\consts::Webshop10Name, '10'));
+        $view->setVar('webshop12name', \mkw\store::getParameter(\mkw\consts::Webshop11Name, '11'));
+        $view->setVar('webshop12name', \mkw\store::getParameter(\mkw\consts::Webshop12Name, '12'));
+        $view->setVar('webshop13name', \mkw\store::getParameter(\mkw\consts::Webshop13Name, '13'));
+        $view->setVar('webshop14name', \mkw\store::getParameter(\mkw\consts::Webshop14Name, '14'));
+        $view->setVar('webshop15name', \mkw\store::getParameter(\mkw\consts::Webshop15Name, '15'));
+        $view->setVar('enabledwebshops', \mkw\store::getEnabledWebshops());
         $view->setVar('uithemes', array(
             'black-tie',
             'blitzer',

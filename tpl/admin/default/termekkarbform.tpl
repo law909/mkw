@@ -387,14 +387,16 @@
             </div>
         {/if}
         <div id="WebTab" class="mattkarb-page"{if ($setup.editstyle=='dropdown')} data-visible="hidden"{/if}>
+            <div>
             <input id="LathatoCheck" name="lathato" type="checkbox"
-                   {if ($egyed.lathato)}checked="checked"{/if}>{at('Weboldalon látható')}
+                   {if ($egyed.lathato)}checked="checked"{/if}>{at('Látható')} {$webshop1name}
             {if ($setup.multishop)}
-                <input id="Lathato2Check" name="lathato2" type="checkbox"
-                       {if ($egyed.lathato2)}checked="checked"{/if}>{at('Weboldalon látható 2')}
-                <input id="Lathato3Check" name="lathato3" type="checkbox"
-                       {if ($egyed.lathato3)}checked="checked"{/if}>{at('Weboldalon látható 3')}
+                {for $cikl = 2 to $enabledwebshops}
+                    <input id="Lathato{$cikl}Check" name="lathato{$cikl}" type="checkbox"
+                           {if ($egyed["lathato$cikl"])}checked="checked"{/if}>{at('Látható')} {$webshop{$cikl}name}
+                {/for}
             {/if}
+            </div>
             <input id="NemkaphatoCheck" name="nemkaphato" type="checkbox"
                    {if ($egyed.nemkaphato)}checked="checked"{/if}>{at('Nem kapható')}
             <input id="FuggobenCheck" name="fuggoben" type="checkbox"

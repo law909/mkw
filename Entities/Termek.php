@@ -491,6 +491,7 @@ class Termek {
         $vtt = array();
         $valtozatok = $this->getValtozatok();
         if ($valtozatok) {
+            /** @var \Entities\TermekValtozat $valt */
             foreach ($valtozatok as $valt) {
                 if ($valt->getXElerheto()) {
                     $valtadat = array();
