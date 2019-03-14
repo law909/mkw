@@ -347,6 +347,9 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::MarkaCs);
         $markacs = new termekcimkekatController($this->params);
         $view->setVar('markacslist', $markacs->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::DENCs);
+        $dencs = new termekcimkekatController($this->params);
+        $view->setVar('dencslist', $dencs->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::KiskerCimke);
         $partnercimkec = new partnercimkeController($this->params);
@@ -982,6 +985,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::MarkaCs, '');
+        }
+
+        $dencs = \mkw\store::getEm()->getRepository('Entities\Termekcimkekat')->find($this->params->getIntRequestParam('dencs', 0));
+        if ($dencs) {
+            $this->setObj(\mkw\consts::DENCs, $dencs->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::DENCs, '');
         }
 
         $kiskercimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('kiskercimke', 0));

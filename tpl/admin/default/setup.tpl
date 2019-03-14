@@ -1126,6 +1126,17 @@
                                 <a href="#" class="js-repairimport" data-href="{$repairevonaimporturl}">Javít</a>
                             </div>
                         </div>
+                        <div class="matt-hseparator"></div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="DENCsEdit">{at('Szálvastagság csoport')}:</label></span>
+                            <select id="DENCsEdit" name="dencs">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $dencslist as $_dencs}
+                                    <option value="{$_dencs.id}"{if ($_dencs.selected)} selected="selected"{/if}>{$_dencs.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+
                     </div>
                 {/if}
                 {if ($maintheme == 'superzoneb2b' || $maintheme == 'mugenrace')}

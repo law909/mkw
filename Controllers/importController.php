@@ -170,7 +170,7 @@ class importController extends \mkwhelpers\Controller {
     }
 
     private function createTermekCimke($ckat, $nev) {
-        if (!$nev) {
+        if (!$nev || !$ckat) {
             return null;
         }
         $cimke1 = \mkw\store::getEm()->getRepository('Entities\Termekcimketorzs')->getByNevAndKategoria($nev, $ckat);
@@ -180,6 +180,7 @@ class importController extends \mkwhelpers\Controller {
             $cimke1->setNev($nev);
             $cimke1->setMenu1lathato(false);
             \mkw\store::getEm()->persist($cimke1);
+            \mkw\store::getEm()->flush($cimke1);
         }
         return $cimke1;
     }
@@ -4675,7 +4676,7 @@ class importController extends \mkwhelpers\Controller {
                 'szin' => trim($sheet->getCell('AI' . $row)->getValue()),
                 'meret' => trim($sheet->getCell('AJ' . $row)->getValue()),
                 'kategoria' => trim($sheet->getCell('AK' . $row)->getValue()),
-                'DEN' => $sheet->getCell('AL' . $row)->getValue(),
+                'den' => $sheet->getCell('AL' . $row)->getValue(),
                 'kaphato' => $sheet->getCell('T' . $row)->getValue() == 1
             );
         }
@@ -4691,6 +4692,7 @@ class importController extends \mkwhelpers\Controller {
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
             $vtsz = $this->getRepo('Entities\Vtsz')->findBySzam('-');
             $gyarto = $this->getRepo('Entities\Partner')->find($gyartoid);
+            $dencs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::DENCs));
 
             $urleleje = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathEvona));
 
@@ -4790,6 +4792,12 @@ class importController extends \mkwhelpers\Controller {
                         $termek->setTermekfa1($parent);
                         $termek->setVtsz($vtsz[0]);
                         $termek->setNemkaphato(!$data['kaphato']);
+                        if ($data['den']) {
+                            $cimke = $this->createTermekCimke($dencs, $data['den'] . ' DEN');
+                            if ($cimke) {
+                                $termek->addCimke($cimke);
+                            }
+                        }
                         if ($gyarto) {
                             $termek->setGyarto($gyarto);
                         }
@@ -4884,6 +4892,7 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->clear();
                     $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                     $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                    $dencs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::DENCs));
                 }
             }
 
@@ -4891,6 +4900,7 @@ class importController extends \mkwhelpers\Controller {
             \mkw\store::getEm()->clear();
             $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
             $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+            $dencs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::DENCs));
 
             $termekdb = 0;
 
@@ -4926,6 +4936,12 @@ class importController extends \mkwhelpers\Controller {
                         $termek->setTermekfa1($parent);
                         $termek->setVtsz($vtsz[0]);
                         $termek->setNemkaphato(!$data['kaphato']);
+                        if ($data['den']) {
+                            $cimke = $this->createTermekCimke($dencs, $data['den'] . ' DEN');
+                            if ($cimke) {
+                                $termek->addCimke($cimke);
+                            }
+                        }
                         if ($gyarto) {
                             $termek->setGyarto($gyarto);
                         }
@@ -5104,6 +5120,7 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->clear();
                     $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                     $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                    $dencs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::DENCs));
                 }
             }
 

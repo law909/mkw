@@ -120,6 +120,7 @@ class consts {
     const FBAppId = 'fbappid';
 
     const MarkaCs = 'markacs';
+    const DENCs = 'dencs';
     const KuponElotag = 'kuponelotag';
     const VasarlasiUtalvanyTermek = 'vasarlasiutalvanytermek';
     const AdminRole = 'adminrole';
