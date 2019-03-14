@@ -21,11 +21,13 @@
                 <ul>
                     <li><a href="#DefaTab">{at('Alapértelmezések')}</a></li>
                     <li><a href="#TulajTab">{at('Tulajdonos adatai')}</a></li>
-                    <li><a href="#WebTab">{$webshop1name} {at('beállítások')}</a></li>
                     {if ($setup.multishop)}
+                        <li><a href="#WebTab">{$webshop1name} {at('beállítások')}</a></li>
                         <li><a href="#Web2Tab">{$webshop2name} {at('beállítások')}</a></li>
                         <li><a href="#Web3Tab">{$webshop3name} {at('beállítások')}</a></li>
                         <li><a href="#WebshopSetupTab">{at('Webshopok beállításai')}</a></li>
+                    {else}
+                        <li><a href="#WebTab">{at('Web beállítások')}</a></li>
                     {/if}
                     <li><a href="#SzallitasiKtgTab">{at('Szállítási költség')}</a></li>
                     {if ($maintheme == 'mkwcansas')}

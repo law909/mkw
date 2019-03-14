@@ -39,22 +39,19 @@
                         <option value="0">{at('Nem látható')}</option>
                         <option value="9">{at('Mindegy')}</option>
                     {else}
-                        <option value="9">{at('Mindegy')}</option>
-                        <option value="1">{at('Látható')}</option>
-                        <option value="0">{at('Nem látható')}</option>
+                        <option value="9">{at('Mindegy')} {$webshop1name}</option>
+                        <option value="1">{at('Látható')} {$webshop1name}</option>
+                        <option value="0">{at('Nem látható')} {$webshop1name}</option>
                     {/if}
                 </select>
                 {if ($setup.multishop)}
-                    <select id="lathato2filter" name="lathato2filter">
-                        <option value="9">{at('Mindegy 2')}</option>
-                        <option value="1">{at('Látható 2')}</option>
-                        <option value="0">{at('Nem látható 2')}</option>
+                    {for $cikl = 2 to $enabledwebshops}
+                    <select id="lathato{$cikl}filter" name="lathato{$cikl}filter">
+                        <option value="9">{at('Mindegy')} {$webshop{$cikl}name}</option>
+                        <option value="1">{at('Látható')} {$webshop{$cikl}name}</option>
+                        <option value="0">{at('Nem látható')} {$webshop{$cikl}name}</option>
                     </select>
-                    <select id="lathato3filter" name="lathato3filter">
-                        <option value="9">{at('Mindegy 3')}</option>
-                        <option value="1">{at('Látható 3')}</option>
-                        <option value="0">{at('Nem látható 3')}</option>
-                    </select>
+                    {/for}
                 {/if}
                 <select id="nemkaphatofilter" name="nemkaphatofilter">
                     <option value="9">{at('Mindegy')}</option>

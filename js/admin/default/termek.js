@@ -820,6 +820,11 @@ $(document).ready(function () {
     };
 
     if ($.fn.mattable) {
+        var lfilternames = ['#gyartofilter', '#nevfilter', '#kepurlfilter', '#lathatofilter', '#nemkaphatofilter', '#fuggobenfilter', '#inaktivfilter',
+            '#ajanlottfilter', '#kiemeltfilter', '#akciosfilter'];
+        for (var cikl = 2; cikl <= 15; cikl++) {
+            lfilternames.push('#lathato' + cikl + 'filter');
+        }
         $('#mattable-select').mattable({
             name: 'termek',
             onGetTBody: function () {
@@ -828,7 +833,7 @@ $(document).ready(function () {
                 }
             },
             filter: {
-                fields: ['#gyartofilter', '#nevfilter', '#kepurlfilter', '#lathatofilter', '#nemkaphatofilter', '#fuggobenfilter', '#inaktivfilter', '#ajanlottfilter', '#kiemeltfilter', '#akciosfilter'],
+                fields: lfilternames,
                 onClear: function () {
                     $('.js-cimkefilter').removeClass('ui-state-hover');
                     mkwcomp.termekfaFilter.clearChecks('#termekfa');

@@ -692,6 +692,54 @@ class termekController extends \mkwhelpers\MattableController {
         if ($f != 9) {
             $filter->addFilter('lathato3', '=', $f);
         }
+        $f = $this->params->getNumRequestParam('lathato4filter',9);
+        if ($f != 9) {
+            $filter->addFilter('lathato4', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('lathato5filter',9);
+        if ($f != 9) {
+            $filter->addFilter('lathato5', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('lathato6filter',9);
+        if ($f != 9) {
+            $filter->addFilter('lathato6', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('lathato7filter',9);
+        if ($f != 9) {
+            $filter->addFilter('lathato7', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('lathato8filter',9);
+        if ($f != 9) {
+            $filter->addFilter('lathato8', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('lathato9filter',9);
+        if ($f != 9) {
+            $filter->addFilter('lathato9', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('lathato10filter',9);
+        if ($f != 9) {
+            $filter->addFilter('lathato10', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('lathato11filter',9);
+        if ($f != 9) {
+            $filter->addFilter('lathato11', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('lathato12filter',9);
+        if ($f != 9) {
+            $filter->addFilter('lathato12', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('lathato13filter',9);
+        if ($f != 9) {
+            $filter->addFilter('lathato13', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('lathato14filter',9);
+        if ($f != 9) {
+            $filter->addFilter('lathato14', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('lathato15filter',9);
+        if ($f != 9) {
+            $filter->addFilter('lathato15', '=', $f);
+        }
         $f = $this->params->getNumRequestParam('nemkaphatofilter',9);
         if ($f != 9) {
             $filter->addFilter('nemkaphato', '=', $f);
