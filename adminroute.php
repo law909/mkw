@@ -721,4 +721,3 @@ $router->map('GET', '/admin/t/kerriiimport', 'importController#kerriiimport', 'a
 $router->map('GET', '/admin/t/genean13', 'adminController#genean13', 'admingenean13');
 $router->map('GET', '/admin/t/emailtemplateconvert', 'emailtemplateController#convertToCKEditor', 'adminemailtemplateconverttockeditor');
 $router->map('GET', '/admin/t/repairfoglalas', 'adminController#repairFoglalas', 'adminrepairfoglalas');
-$router->map('GET', '/admin/t/mbucfirst', 'adminController#mbucfirst', 'adminmbucfirst');

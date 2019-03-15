@@ -1387,9 +1387,7 @@ class store {
     }
 
     public static function mb_ucfirst($str) {
-        echo $str;
         $s = mb_strtolower($str);
-        echo $s;
         $fc = mb_strtoupper(mb_substr($s, 0, 1));
         return $fc . mb_substr($s, 1);
     }
