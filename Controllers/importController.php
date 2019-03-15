@@ -4658,7 +4658,7 @@ class importController extends \mkwhelpers\Controller {
 
             $nev = $sheet->getCell('C' . $row)->getValue();
             $nev = ltrim($nev, '- ');
-            $nev = 'Evona ' . trim(\mkw\store::mb_ucfirst($nev));
+            $nev = 'Evona ' . \mkw\store::mb_ucfirst($nev);
 
             return array(
                 'cikkszam' => trim($sheet->getCell('A' . $row)->getValue()),

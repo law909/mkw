@@ -375,4 +375,7 @@ class adminController extends mkwhelpers\Controller {
         echo $vasarlas->format('Y.m.d');
     }
 
+    public function mbucfirst() {
+        echo 'Evona ' . \mkw\store::mb_ucfirst('FÉRFI ZSEBKENDŐ');
+    }
 }
