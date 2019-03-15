@@ -4672,7 +4672,7 @@ class importController extends \mkwhelpers\Controller {
                 'szelesseg' => $sheet->getCell('R' . $row)->getValue(),
                 'magassag' => $sheet->getCell('S' . $row)->getValue(),
                 'statusz' => $sheet->getCell('T' . $row)->getValue(),
-                'brutto' => $sheet->getCell('Y' . $row)->getValue(),
+                'netto' => $sheet->getCell('AC' . $row)->getValue(),
                 'szin' => trim($sheet->getCell('AI' . $row)->getValue()),
                 'meret' => trim($sheet->getCell('AJ' . $row)->getValue()),
                 'kategoria' => trim($sheet->getCell('AK' . $row)->getValue()),
@@ -4767,7 +4767,7 @@ class importController extends \mkwhelpers\Controller {
 
                 $termekdb++;
 
-                $ar = round($data['brutto'] * 1 * $arszaz /100, -1);
+                $ar = $data['netto'] * 1 * $arszaz / 100;
 
                 $termek = $this->getRepo('Entities\Termek')->findBy(array('idegencikkszam' => $data['cikkszam'], 'gyarto' => $gyartoid));
                 if (!$termek) {
@@ -4802,7 +4802,8 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setGyarto($gyarto);
                         }
 
-                        $termek->setBrutto($ar);
+                        $termek->setNetto($ar);
+                        $termek->setBrutto(round($termek->getBrutto(), -1));
 
                         $imgcnt = 1;
                         if ($data['termekkep']) {
@@ -4883,7 +4884,8 @@ class importController extends \mkwhelpers\Controller {
                         $termek->setNemkaphato(false);
                     }
                     if (!$termek->getAkcios()) {
-                        $termek->setBrutto($ar);
+                        $termek->setNetto($ar);
+                        $termek->setBrutto(round($termek->getBrutto(), -1));
                     }
                     \mkw\store::getEm()->persist($termek);
                 }
@@ -4908,7 +4910,7 @@ class importController extends \mkwhelpers\Controller {
 
                 $termekdb++;
 
-                $ar = round($data['brutto'] * 1 * $arszaz /100, -1);
+                $ar = $data['netto'] * 1 * $arszaz / 100;
 
                 $termekkeplista = array();
                 $termekkepszotar = array();
@@ -4946,7 +4948,8 @@ class importController extends \mkwhelpers\Controller {
                             $termek->setGyarto($gyarto);
                         }
 
-                        $termek->setBrutto($ar);
+                        $termek->setNetto($ar);
+                        $termek->setBrutto(round($termek->getBrutto(), -1));
 
                         $imgcnt = 1;
                         if ($data['termekkep']) {
@@ -5111,7 +5114,8 @@ class importController extends \mkwhelpers\Controller {
                         $termek->setNemkaphato(false);
                     }
                     if (!$termek->getAkcios()) {
-                        $termek->setBrutto($ar);
+                        $termek->setNetto($ar);
+                        $termek->setBrutto(round($termek->getBrutto(), -1));
                     }
                     \mkw\store::getEm()->persist($termek);
                 }
