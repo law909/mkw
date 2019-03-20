@@ -28,9 +28,9 @@
             body { font-size: 11px; font-family: Arial;}
             .nev { font-size: 11px;}
             .biznev { font-size: 17px; font-weight: bold;}
-            .tetelsor { font-size: 12px;}
+            .tetelsor { font-size: 11px;}
             .keszult { font-size: 9px;}
-            .osszesen { font-size: 13px;}
+            .osszesen { font-size: 12px;}
 
             @media all {
                 .page-break	{ display: none; }
