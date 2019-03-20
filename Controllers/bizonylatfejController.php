@@ -1062,6 +1062,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
             ->addFilter('bizonylattipus', '=', $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus));
+        $filter->addFilter('rontott', '=', false);
 
         if ($forfouk) {
             $ukrepo = $this->getRepo('Entities\Uzletkoto');
