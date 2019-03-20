@@ -93,6 +93,10 @@
                     {$tetel = $egyed.tetellista[$teteldb]}
                     {$summennyiseg = $summennyiseg + $tetel.mennyiseg}
                     <tr class="tetelsor">
+                        <td class="dashedline"></td>
+                        <td colspan={if ($egyed.kedvezmenycount > 0)}"10"{else}"8"{/if} class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach} ({$tetel.vtszszam})</td>
+                    </tr>
+                    <tr class="tetelsor">
                         <td>{$teteldb + 1}</td>
                         <td></td>
                         <td class="textalignright">{bizformat($tetel.mennyiseg)}</td>
@@ -106,10 +110,6 @@
                         <td class="textalignright">{$tetel.afanev}</td>
                         <td class="textalignright">{bizformat($tetel.afa)}</td>
                         <td class="textalignright">{bizformat($tetel.brutto)}</td>
-                    </tr>
-                    <tr class="tetelsor">
-                        <td class="dashedline"></td>
-                        <td colspan={if ($egyed.kedvezmenycount > 0)}"10"{else}"8"{/if} class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach} ({$tetel.vtszszam})</td>
                     </tr>
                 {/for}
             </tbody>
