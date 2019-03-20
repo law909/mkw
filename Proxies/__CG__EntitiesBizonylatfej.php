@@ -242,6 +242,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getKedvezmenyCount()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKedvezmenyCount', []);
+
+        return parent::getKedvezmenyCount();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function sendStatuszEmail($emailtpl, $bf = NULL, $topartner = true)
     {
 

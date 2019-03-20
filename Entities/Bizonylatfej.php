@@ -755,6 +755,17 @@ class Bizonylatfej {
         return \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getSumByHivatkozottBizonylatDatum($this->getId());
     }
 
+    public function getKedvezmenyCount() {
+        /** @var \Entities\Bizonylattetel $item */
+        $db = 0;
+        foreach ($this->bizonylattetelek as $item) {
+            $f = $item->getKedvezmeny() * 1;
+            if ((float)$f !== 0.0) {
+                $db++;
+            }
+        }
+        return $db;
+    }
     /**
      * @param \Entities\Emailtemplate $emailtpl
      * @param \Entities\Bizonylatfej|null $bf
@@ -846,6 +857,7 @@ class Bizonylatfej {
         $ret['createdstr'] = $this->getCreatedStr();
         $ret['updatedby'] = $this->getUpdatedbyNev();
         $ret['createdby'] = $this->getCreatedbyNev();
+        $ret['kedvezmenycount'] = $this->getKedvezmenyCount();
         $ret['editprinted'] = $this->getBizonylattipus() ? $this->getBizonylattipus()->getEditprinted() : false;
         $ret['bizonylatnev'] = $this->getBizonylatnev();
         $ret['programnev'] = $this->getProgramnev();

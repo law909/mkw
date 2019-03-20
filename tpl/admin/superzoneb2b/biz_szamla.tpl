@@ -67,6 +67,10 @@
                     <th class="bold">Termék</th>
                     <th class="textalignright bold">Mennyiség</th>
                     <th class="bold">ME</th>
+                    {if ($egyed.kedvezmenycount > 0)}
+                        <th class="textalignright bold">Eredeti e.ár</th>
+                        <th class="textalignright bold">Kedvezmény %</th>
+                    {/if}
                     <th class="textalignright bold">Egységár</th>
                     <th class="textalignright bold">Nettó érték</th>
                     <th class="textalignright bold">ÁFA</th>
@@ -83,6 +87,10 @@
                         <td></td>
                         <td class="textalignright">{bizformat($tetel.mennyiseg)}</td>
                         <td>{$tetel.me}</td>
+                        {if ($egyed.kedvezmenycount > 0)}
+                            <td class="textalignright">{bizformat($tetel.enettoegysar)}</td>
+                            <td class="textalignright">{bizformat($tetel.kedvezmeny)}</td>
+                        {/if}
                         <td class="textalignright">{bizformat($tetel.nettoegysar)}</td>
                         <td class="textalignright">{bizformat($tetel.netto)}</td>
                         <td class="textalignright">{$tetel.afanev}</td>
@@ -91,7 +99,7 @@
                     </tr>
                     <tr class="tetelsor">
                         <td class="dashedline"></td>
-                        <td colspan="8" class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach} ({$tetel.vtszszam})</td>
+                        <td colspan={if ($egyed.kedvezmenycount > 0)}"10"{else}"8"{/if} class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach} ({$tetel.vtszszam})</td>
                     </tr>
                 {/for}
             </tbody>
