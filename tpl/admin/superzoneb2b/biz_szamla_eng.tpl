@@ -131,12 +131,11 @@
                     {$tetel = $egyed.tetellista[$teteldb]}
                     {$summennyiseg = $summennyiseg + $tetel.mennyiseg}
                     <tr class="tetelsor">
-                        <td class="dashedline"></td>
-                        <td colspan={if ($egyed.kedvezmenycount > 0)}"10"{else}"8"{/if} class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach} ({$tetel.vtszszam})</td>
+                        <td>{$teteldb + 1}</td>
+                        <td colspan={if ($egyed.kedvezmenycount > 0)}"9"{else}"7"{/if} class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach} ({$tetel.vtszszam})</td>
                     </tr>
                     <tr class="tetelsor">
-                        <td>{$teteldb + 1}</td>
-                        <td></td>
+                        <td class="dashedline"></td>
                         <td class="textalignright">{bizformat($tetel.mennyiseg)}</td>
                         <td>{$tetel.me}</td>
                         {if ($egyed.kedvezmenycount > 0)}
