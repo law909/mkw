@@ -97,21 +97,22 @@
                     {$summennyiseg = $summennyiseg + $tetel.mennyiseg}
                     <tr class="tetelsor">
                         <td>{$teteldb + 1}</td>
-                        <td colspan={if ($egyed.kedvezmenycount > 0)}"9"{else}"7"{/if} class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach} ({$tetel.vtszszam})</td>
+                        <td colspan={if ($egyed.kedvezmenycount > 0)}"10"{else}"8"{/if} class="bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach} ({$tetel.vtszszam})</td>
                     </tr>
                     <tr class="tetelsor">
                         <td class="dashedline"></td>
-                        <td class="textalignright">{bizformat($tetel.mennyiseg)}</td>
-                        <td>{$tetel.me}</td>
+                        <td class="dashedline"></td>
+                        <td class="textalignright dashedline">{bizformat($tetel.mennyiseg)}</td>
+                        <td class="dashedline">{$tetel.me}</td>
                         {if ($egyed.kedvezmenycount > 0)}
-                            <td class="textalignright">{bizformat($tetel.enettoegysar)}</td>
-                            <td class="textalignright">{bizformat($tetel.kedvezmeny)}</td>
+                            <td class="textalignright dashedline">{bizformat($tetel.enettoegysar)}</td>
+                            <td class="textalignright dashedline">{bizformat($tetel.kedvezmeny)}</td>
                         {/if}
-                        <td class="textalignright">{bizformat($tetel.nettoegysar)}</td>
-                        <td class="textalignright">{bizformat($tetel.netto)}</td>
-                        <td class="textalignright">{$tetel.afanev}</td>
-                        <td class="textalignright">{bizformat($tetel.afa)}</td>
-                        <td class="textalignright">{bizformat($tetel.brutto)}</td>
+                        <td class="textalignright dashedline">{bizformat($tetel.nettoegysar)}</td>
+                        <td class="textalignright dashedline">{bizformat($tetel.netto)}</td>
+                        <td class="textalignright dashedline">{$tetel.afanev}</td>
+                        <td class="textalignright dashedline">{bizformat($tetel.afa)}</td>
+                        <td class="textalignright dashedline">{bizformat($tetel.brutto)}</td>
                     </tr>
                 {/for}
             </tbody>
