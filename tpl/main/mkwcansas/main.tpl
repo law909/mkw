@@ -86,11 +86,22 @@
             </div>
             {/if}
             <div>
-                <h1 class="main">{t('Üdvözöljük webáruházunkban!')}</h1>
-                <b>Dőljön hátra</b> kedvenc karosszékében, és válogasson kedvére az oldalunkon található több, mint 4000-féle termék közül. A ruhaneműkön keresztül a katonai felszereléseken át a kempingcuccokig Ön is biztosan megtalálja majd a kedvencét nálunk.
-                <br><b>A munkát bízza ránk</b>: Ön kiválasztja, mi becsomagoljuk és házhoz szállítjuk az Önnek legalkalmasabb időpontban.
-                <br><br>Webáruházunk programja kívül-belül megújult ugyan, de az elveink, lelkesedésünk és vásárlóink iránti elkötelezettségünk továbbra sem változott. Örömünkre szolgál, hogy immáron 7. éve segíthetünk minden kedves régi és új megrendelőnknek.
-                <br><br>
+                <h1 class="main">Háztartási webáruházunkban tényleg Mindent Kapni!</h1>
+                <img src="\themes\main\mkwcansas\img\mindentkapni.hu-haztartasi-webaruhaz.jpg">
+                <p>Az online vásárlás modern világunk egyik nagy találmánya. Anélkül vásárolhatunk ma már szinte
+                bármit, hogy el kellene mennünk otthonról. Amennyiben military felszerelésekre, ruhákra, műszaki
+                cikkekre, sportszerekre van szüksége, vagy játékokat keres gyermekének, érdemes felkeresnie
+                    <b>háztartási webáruházunkat</b>!</p>
+                <p><b>Háztartási webáruházunk</b> használatával egy helyről beszerezhet mindent, ami az otthonába,
+                nyaralásához, vagy túrázáshoz kellhet. Termékeink között talál kempingfelszereléseket, ruházati
+                cikkeket, konyhafelszereléseket éppúgy, mint labdajáték kellékeket. Egyszóval nálunk tényleg Mindent
+                    Kapni!</p>
+                <p><b>Háztartási webáruházunk</b> mindezt igyekszik kedvező áron biztosítani, hiszen az a célunk, hogy
+                ügyfeleink elégedettek legyenek, és rendszeresen visszatérő vásárlókká váljanak. Folyamatos
+                akciókkal, újabb termékekkel és pénzvisszafizetési garanciával várjuk Önt! Kattintson honlapunkra és
+                    rendeljen; tőlünk csak a legjobbat kaphatja!</p>
+                <p>Forduljon bizalommal <b>háztartási webáruházunkhoz</b>, hiszen érdemes körülnézni
+                    termékkínálatunkban! Ha kérdése van, megadott elérhetőségeinken szívesen válaszolunk.</p>
             </div>
             {if (count($akciostermekek)>0)}
                 <div class="blockHeader">
