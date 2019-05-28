@@ -144,6 +144,10 @@
                     <td><input id="SzallitasiidoEdit" name="szallitasiido" type="number" step="any"
                                value="{$egyed.szallitasiido}" maxlength="5" size="5"></td>
                 </tr>
+                <tr>
+                    <td><label for="MinboltikeszletEdit">{at('Min. bolti készlet')}:</label></td>
+                    <td><input id="MinboltikeszletEdit" name="minboltikeszlet" type="number" step="any" value="{$egyed.minboltikeszlet}"></td>
+                </tr>
                 {if (!$setup.arsavok)}
                     <tr>
                         <td></td>

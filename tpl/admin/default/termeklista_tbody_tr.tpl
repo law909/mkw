@@ -32,6 +32,9 @@
                                 <tr>
                                     <td>{at('ME')}:</td><td colspan="3">{$_termek.me}</td>
                                 </tr>
+                                <tr>
+                                    <td>{at('Min. bolti készlet')}:</td><td colspan="3">{number_format($_termek.minboltikeszlet, 2, '.', ' ')}</td>
+                                </tr>
                                 {if (!$setup.arsavok)}
                                 <tr>
                                     <td>{at('Nettó ár')}:</td><td>{number_format($_termek.netto,4,'.',' ')}</td>

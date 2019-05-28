@@ -405,6 +405,10 @@ class Termek {
     /** @ORM\OneToMany(targetEntity="TermekDok", mappedBy="termek", cascade={"persist", "remove"}) */
     private $termekdokok;
 
+    /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
+    private $minboltikeszlet;
+
+
     public function __toString() {
         return (string)$this->id . ' - ' . $this->nev;
     }
@@ -530,6 +534,7 @@ class Termek {
         $x['leiras_it'] = $ford['it_it']['leiras'];
         $x['termekfaid'] = $this->getTermekfa1Id();
         $x['termekfanev'] = $this->getTermekfa1()->getTeljesNev();
+        $x['minboltikeszlet'] = $this->getMinboltikeszlet();
         $vtt = array();
         $valtozatok = $this->getValtozatok();
         if ($valtozatok) {
@@ -600,6 +605,7 @@ class Termek {
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
+        $x['minboltikeszlet'] = $this->getMinboltikeszlet();
         if (\mkw\store::isMugenrace()) {
             $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
             $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
@@ -728,6 +734,7 @@ class Termek {
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
+        $x['minboltikeszlet'] = $this->getMinboltikeszlet();
         if (\mkw\store::isMugenrace()) {
             $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
             $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
@@ -774,6 +781,7 @@ class Termek {
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
+        $x['minboltikeszlet'] = $this->getMinboltikeszlet();
         if (\mkw\store::isMugenrace()) {
             $x['valutanemnev'] = \mkw\store::getMainSession()->valutanemnev;
             $x['bruttohuf'] = $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser(), \mkw\store::getMainSession()->valutanem,
@@ -2730,6 +2738,20 @@ class Termek {
      */
     public function setLathato15($lathato15) {
         $this->lathato15 = $lathato15;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMinboltikeszlet() {
+        return $this->minboltikeszlet;
+    }
+
+    /**
+     * @param mixed $minboltikeszlet
+     */
+    public function setMinboltikeszlet($minboltikeszlet) {
+        $this->minboltikeszlet = $minboltikeszlet;
     }
 
 }
