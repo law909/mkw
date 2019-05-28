@@ -1174,13 +1174,13 @@ class Bizonylatfej {
                     $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData(1) . '</unitOfMeasureOwn>';
                 }
             }
-            $result = $result . '<unitPrice>' . \mkw\store::NAVNum($bt->getNettoegysarhuf()) . '</unitPrice>';
+            $result = $result . '<unitPrice>' . \mkw\store::NAVNum($bt->getNettoegysar()) . '</unitPrice>';
             $result = $result . '<lineAmountsNormal>';
-            $result = $result . '<lineNetAmount>' . \mkw\store::NAVNum($bt->getNettohuf()) . '</lineNetAmount>';
+            $result = $result . '<lineNetAmount>' . \mkw\store::NAVNum($bt->getNetto()) . '</lineNetAmount>';
             $result = $result . '<lineVatRate><vatPercentage>' . \mkw\store::NAVNum($bt->getAfakulcs()/100) . '</vatPercentage></lineVatRate>';
             $result = $result . '<lineVatAmount>' . \mkw\store::NAVNum($bt->getAfaertek()) . '</lineVatAmount>';
             $result = $result . '<lineVatAmountHUF>' . \mkw\store::NAVNum($bt->getAfaertekhuf()) . '</lineVatAmountHUF>';
-            $result = $result . '<lineGrossAmountNormal>' . \mkw\store::NAVNum($bt->getBruttohuf()) . '</lineGrossAmountNormal>';
+            $result = $result . '<lineGrossAmountNormal>' . \mkw\store::NAVNum($bt->getBrutto()) . '</lineGrossAmountNormal>';
             $result = $result . '</lineAmountsNormal>';
             if ($this->getGyujtoszamla()) {
                 $result = $result . '<aggregateInvoiceLineData>';
@@ -1350,13 +1350,13 @@ class Bizonylatfej {
             if ($bt->getME()) {
                 $result = $result . '<unitOfMeasure>' . \mkw\store::CData($bt->getME()) . '</unitOfMeasure>';
             }
-            $result = $result . '<unitPrice>' . \mkw\store::NAVNum($bt->getNettoegysarhuf()) . '</unitPrice>';
+            $result = $result . '<unitPrice>' . \mkw\store::NAVNum($bt->getNettoegysar()) . '</unitPrice>';
             $result = $result . '<lineAmountsNormal>';
-            $result = $result . '<lineNetAmount>' . \mkw\store::NAVNum($bt->getNettohuf()) . '</lineNetAmount>';
+            $result = $result . '<lineNetAmount>' . \mkw\store::NAVNum($bt->getNetto()) . '</lineNetAmount>';
             $result = $result . '<lineVatRate><vatPercentage>' . \mkw\store::NAVNum($bt->getAfakulcs()/100) . '</vatPercentage></lineVatRate>';
             $result = $result . '<lineVatAmount>' . \mkw\store::NAVNum($bt->getAfaertek()) . '</lineVatAmount>';
             $result = $result . '<lineVatAmountHUF>' . \mkw\store::NAVNum($bt->getAfaertekhuf()) . '</lineVatAmountHUF>';
-            $result = $result . '<lineGrossAmountNormal>' . \mkw\store::NAVNum($bt->getBruttohuf()) . '</lineGrossAmountNormal>';
+            $result = $result . '<lineGrossAmountNormal>' . \mkw\store::NAVNum($bt->getBrutto()) . '</lineGrossAmountNormal>';
             $result = $result . '</lineAmountsNormal>';
             if ($this->getGyujtoszamla()) {
                 $result = $result . '<aggregateInvoiceLineData>';
