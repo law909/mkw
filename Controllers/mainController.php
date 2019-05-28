@@ -326,24 +326,25 @@ class mainController extends \mkwhelpers\Controller {
             $ma = new \DateTime();
             foreach ($valtozatok as $valt) {
                 if ($valt->getElerheto() && $valt->getLathato()) {
+                    $valtkeszlet = $valt->getKeszlet() - $valt->getFoglaltMennyiseg() - $termek->getMinboltikeszlet();
                     if (($valt->getAdatTipus1Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) && ($valt->getErtek1() == $szin)) {
                         $t['kepurllarge'] = $valt->getKepurlLarge();
                         $t['kepurlmedium'] = $valt->getKepurlMedium();
                         $vtt[] = array(
                             'id' => $valt->getId(),
                             'caption' => $valt->getErtek2(),
-                            'keszlet' => $valt->getKeszlet() - $valt->getFoglaltMennyiseg(),
+                            'keszlet' => $valtkeszlet,
                             'beerkezesdatumstr' => $valt->getBeerkezesdatumStr(),
-                            'bejon' => (($valt->getKeszlet() - $valt->getFoglaltMennyiseg() <= 0) && ($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma) ? true : false)
+                            'bejon' => (($valtkeszlet <= 0) && ($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma) ? true : false)
                         );
                     }
                     if (($valt->getAdatTipus2Id() == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) && ($valt->getErtek2() == $szin)) {
                         $vtt[] = array(
                             'id' => $valt->getId(),
                             'caption' => $valt->getErtek1(),
-                            'keszlet' => $valt->getKeszlet() - $valt->getFoglaltMennyiseg(),
+                            'keszlet' => $valtkeszlet,
                             'beerkezesdatumstr' => $valt->getBeerkezesdatumStr(),
-                            'bejon' => (($valt->getKeszlet() - $valt->getFoglaltMennyiseg() <= 0) && ($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma) ? true : false)
+                            'bejon' => (($valtkeszlet <= 0) && ($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma) ? true : false)
                         );
                     }
                 }
