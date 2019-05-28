@@ -8,7 +8,8 @@ class RendezvenyRepository extends \mkwhelpers\Repository {
         parent::__construct($em, $class);
         $this->setEntityname('Entities\Rendezveny');
         $this->setOrders(array(
-            '1' => array('caption' => 'név szerint növekvő', 'order' => array('_xx.nev' => 'ASC'))
+            '1' => array('caption' => 'kezdő dátum szerint csokkenő', 'order' => array('_xx.kezdodatum' => 'DESC')),
+            '2' => array('caption' => 'név szerint növekvő', 'order' => array('_xx.nev' => 'ASC'))
         ));
     }
 
