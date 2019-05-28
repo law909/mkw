@@ -108,6 +108,21 @@ class importController extends \mkwhelpers\Controller {
         }
     }
 
+    private function getME($me) {
+        $meobj = \mkw\store::getEm()->getRepository('Entities\ME')->findOneBy(array('nev' => $me));
+        return $meobj;
+    }
+
+    private function createME($me) {
+        $meobj = $this->getME($me);
+        if (!$meobj) {
+            $meobj = new \Entities\ME();
+            $meobj->setNev($me);
+            \mkw\store::getEm()->persist($me);
+            \mkw\store::getEm()->flush();
+        }
+    }
+
     public function getKategoriaByIdegenkod($ik) {
         $me = \mkw\store::getEm()->getRepository('Entities\TermekFa')->findBy(array('idegenkod' => $ik));
         if (!$me) {
@@ -422,7 +437,7 @@ class importController extends \mkwhelpers\Controller {
 
                                     $termek = new \Entities\Termek();
                                     $termek->setFuggoben(true);
-                                    $termek->setMe('db');
+                                    $termek->setMekod($this->getME('db'));
                                     $termek->setNev($termeknev);
                                     $termek->setLeiras($hosszuleiras);
                                     $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
@@ -662,6 +677,7 @@ class importController extends \mkwhelpers\Controller {
                                 $katnev = trim($data[4]);
                             }
                             $parent = $this->createKategoria($katnev, $parentid);
+                            $this->createME(trim($data[9]));
                         }
                     }
 
@@ -700,7 +716,7 @@ class importController extends \mkwhelpers\Controller {
 
                                     $termek = new \Entities\Termek();
                                     $termek->setFuggoben(true);
-                                    $termek->setMe(trim($data[9]));
+                                    $termek->setMekod($this->getME(trim($data[9])));
                                     $termek->setNev($termeknev);
                                     $termek->setLeiras($hosszuleiras);
                                     $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
@@ -976,7 +992,7 @@ class importController extends \mkwhelpers\Controller {
                                 $parent = $this->createKategoria($data['category'], $parentid);
                                 $termek = new \Entities\Termek();
                                 $termek->setFuggoben(true);
-                                $termek->setMe('db');
+                                $termek->setMekod($this->getME('db'));
                                 $termek->setNev($data['name']);
                                 $termek->setIdegencikkszam($data['sku']);
                                 if ($data['catalog_first']) {
@@ -1089,7 +1105,7 @@ class importController extends \mkwhelpers\Controller {
                                 $termek = new \Entities\Termek();
                                 $termek->setIdegencikkszam($data['sku']);
                                 $termek->setFuggoben(true);
-                                $termek->setMe('db');
+                                $termek->setMekod($this->getME('db'));
                                 $termek->setNev($data['name']);
                                 if ($data['catalog_first']) {
                                     $termek->setCikkszam($data['catalog_first']);
@@ -1508,6 +1524,7 @@ class importController extends \mkwhelpers\Controller {
                         $afa = $this->createAfa($_t['taxRate']);
                         $this->createVtsz($_t['cbsNumber'], $afa);
                     }
+                    $this->createME($_t['unitType']);
                 }
 
                 $lettfuggoben = false;
@@ -1538,7 +1555,7 @@ class importController extends \mkwhelpers\Controller {
                             }
                             $termek = new \Entities\Termek();
                             $termek->setFuggoben(true);
-                            $termek->setMe($data['unitType']);
+                            $termek->setMekod($this->getME($data['unitType']));
                             if ($data['manufacturerName']) {
                                 $termek->setNev($data['manufacturerName'] . ' ' . $data['name']);
                             }
@@ -1871,7 +1888,7 @@ class importController extends \mkwhelpers\Controller {
 
                             $termek = new \Entities\Termek();
                             $termek->setFuggoben(true);
-                            $termek->setMe('db');
+                            $termek->setMekod($this->getME('db'));
                             $termek->setNev($data['name']);
                             $termek->setIdegenkod($data['id']);
                             $termek->setIdegencikkszam($data['sku']);
@@ -2101,6 +2118,7 @@ class importController extends \mkwhelpers\Controller {
                             $kp = $this->createKategoria($this->toutf($kat), $kid);
                             $kid = $kp->getId();
                         }
+                        $this->createME($data[$this->n('h')]);
                     }
                 }
 
@@ -2126,7 +2144,7 @@ class importController extends \mkwhelpers\Controller {
                             $termek = $termek[0];
                         }
                         if ($termek) {
-                            //$termek->setMe(mb_convert_encoding($data[$this->n('h')], 'UTF8', 'ISO-8859-2'));
+                            //$termek->setMekod($this->>getME(mb_convert_encoding($data[$this->n('h')], 'UTF8', 'ISO-8859-2')));
                             if ($editnev && false) {
                                 if (trim($data[$this->n('b')])) {
                                     $termek->setNev(mb_convert_encoding($data[$this->n('b')], 'UTF8', 'ISO-8859-2'));
@@ -2297,7 +2315,7 @@ class importController extends \mkwhelpers\Controller {
 
                                     $termek = new \Entities\Termek();
                                     $termek->setFuggoben(true);
-                                    $termek->setMe($data[$this->n('h')]);
+                                    $termek->setMekod($this->getME($data[$this->n('h')]));
                                     $termek->setNev($termeknev);
 
                                     $hosszuleiras = mb_convert_encoding(trim($data[$this->n('d')]), 'UTF8', 'ISO-8859-2');
@@ -2380,7 +2398,7 @@ class importController extends \mkwhelpers\Controller {
 
                                 $termek = new \Entities\Termek();
                                 $termek->setFuggoben(true);
-                                $termek->setMe('darab');
+                                $termek->setMekod($this->getME('darab'));
                                 $termek->setNev($termeknev);
                                 $termek->setCikkszam($data[$this->n('a')]);
                                 $termek->setTermekfa1($parent);
@@ -2456,6 +2474,18 @@ class importController extends \mkwhelpers\Controller {
                     $termekdb++;
                 }
                 while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
+                    if ($data[$this->n('a')]) {
+                        if ($data[$this->n('d')] * 1 != 0) {
+                            $this->createME($this->toutf(trim($data[$this->n('c')])));
+                        }
+                    }
+                }
+                rewind($fh);
+                fgetcsv($fh, 0, $sep, '"');
+                while (($termekdb < $dbtol) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
+                    $termekdb++;
+                }
+                while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                     $termekdb++;
                     if ($data[$this->n('a')]) {
                         $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $data[$this->n('a')], 'gyarto' => $gyartoid));
@@ -2473,7 +2503,7 @@ class importController extends \mkwhelpers\Controller {
 
                                     $termek = new \Entities\Termek();
                                     $termek->setFuggoben(true);
-                                    $termek->setMe($me);
+                                    $termek->setMekod($this->getME($me));
                                     $termek->setNev($termeknev);
                                     $termek->setCikkszam($data[$this->n('a')]);
                                     $termek->setTermekfa1($parent);
@@ -2651,7 +2681,7 @@ class importController extends \mkwhelpers\Controller {
 
                                 $termek = new \Entities\Termek();
                                 $termek->setFuggoben(true);
-                                $termek->setMe('db');
+                                $termek->setMekod($this->getME('db'));
                                 $termek->setNev($termeknev);
                                 $termek->setLeiras($leiras);
                                 $termek->setRovidleiras(mb_substr($kisleiras, 0, 100, 'UTF8') . '...');
@@ -2919,6 +2949,7 @@ class importController extends \mkwhelpers\Controller {
                         $this->createKategoria($kats[1], $parentid);
                     }
                 }
+                $this->createME($sheet->getCell('J' . $row)->getValue());
             }
 
             $termekdb = 0;
@@ -2962,7 +2993,7 @@ class importController extends \mkwhelpers\Controller {
 
                         $termek = new \Entities\Termek();
                         $termek->setFuggoben(true);
-                        $termek->setMe($sheet->getCell('J' . $row)->getValue());
+                        $termek->setMekod($this->getME($sheet->getCell('J' . $row)->getValue()));
                         $termek->setNev($termeknev);
                         $termek->setLeiras($leiras);
                         $termek->setRovidleiras(mb_substr($kisleiras, 0, 100, 'UTF8') . '...');
@@ -3171,7 +3202,7 @@ class importController extends \mkwhelpers\Controller {
 
                                     $termek = new \Entities\Termek();
                                     $termek->setFuggoben(true);
-                                    $termek->setMe('db');
+                                    $termek->setMekod($this->getME('db'));
                                     $termek->setNev($termeknev);
                                     $termek->setLeiras($leiras);
                                     $termek->setRovidleiras(mb_substr($kisleiras, 0, 100, 'UTF8') . '...');
@@ -3815,7 +3846,7 @@ class importController extends \mkwhelpers\Controller {
                     $parent = $this->getKategoriaByIdegenkod((string)$data[$this->n('a')]);
 
                     $termek = new \Entities\Termek();
-                    $termek->setMe('db');
+                    $termek->setMekod($this->getME('db'));
                     $termek->setNev($data[$this->n('f')]);
                     $termek->setCikkszam($data[$this->n('e')]);
                     $termek->setVonalkod($data[$this->n('d')]);
@@ -4032,7 +4063,7 @@ class importController extends \mkwhelpers\Controller {
                 if ($createuj && is_array($nev) && array_key_exists('HU', $nev)) {
                     $ujtermek = true;
                     $termek = new \Entities\Termek();
-                    $termek->setMe('db');
+                    $termek->setMekod($this->getME('db'));
                     if ($parent) {
                         $termek->setTermekfa1($parent);
                     }
@@ -4423,7 +4454,7 @@ class importController extends \mkwhelpers\Controller {
                                     else {
                                         $termek = new \Entities\Termek();
                                         $termek->setFuggoben(true);
-                                        $termek->setMe('db');
+                                        $termek->setMekod($this->getME('db'));
                                         $termek->setNev($termeknev);
                                         $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
                                         $termek->setCikkszam($style);
@@ -4783,7 +4814,7 @@ class importController extends \mkwhelpers\Controller {
 
                         $termek = new \Entities\Termek();
                         $termek->setFuggoben(true);
-                        $termek->setMe('db');
+                        $termek->setMekod($this->getME('db'));
                         $termek->setNev($termeknev);
                         $termek->setRovidleiras($data['rovidleiras']);
                         $termek->setLeiras($data['leiras']);
@@ -4929,7 +4960,7 @@ class importController extends \mkwhelpers\Controller {
 
                         $termek = new \Entities\Termek();
                         $termek->setFuggoben(true);
-                        $termek->setMe('db');
+                        $termek->setMekod($this->getME('db'));
                         $termek->setNev($termeknev);
                         $termek->setRovidleiras($data['rovidleiras']);
                         $termek->setLeiras($data['leiras']);
