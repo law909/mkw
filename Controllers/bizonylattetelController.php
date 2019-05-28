@@ -18,6 +18,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 		$termek = new termekController($this->params);
 		$vtsz = new vtszController($this->params);
 		$afa = new afaController($this->params);
+		$me = new meController($this->params);
 		$mijszpartner = new partnerController($this->params);
 		$x = array();
 		if (!$t) {
@@ -103,6 +104,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController {
 			$x['valtozatlist'] = $termek->getValtozatList($t->getTermekId(), $t->getTermekvaltozatId());
 			$x['vtszlist'] = $vtsz->getSelectList(($t->getVtsz() ? $t->getVtsz()->getId() : 0));
 			$x['afalist'] = $afa->getSelectList(($t->getAfa() ? $t->getAfa()->getId() : 0));
+			$x['melist'] = $me->getSelectList($t->getMekodId());
 			if (\mkw\store::isMIJSZ()) {
                 $x['mijszpartnerlist'] = $mijszpartner->getSelectList($t->getMIJSZPartnerId());
             }

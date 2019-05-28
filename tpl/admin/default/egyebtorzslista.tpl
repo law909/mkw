@@ -58,6 +58,10 @@
             <table id="szotargrid"></table>
             <div id="szotargridpager"></div>
         </div>
+        <div class="egyebadat-grid">
+            <table id="megrid"></table>
+            <div id="megridpager"></div>
+        </div>
     </div>
     <div class="egyebadat-wrapper">
         <div class="egyebadat-grid">

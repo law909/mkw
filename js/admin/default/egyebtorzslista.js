@@ -1430,6 +1430,41 @@ $().ready(
                 caption: 'Rendezvény állapotok'});
             createNav(_rendezvenyallapot, rendezvenyallapotgrid);
 
+            // ME grid
+            var _me = {
+                grid: '#megrid',
+                pager: '#megridpager'
+            };
+            var megrid = $(_me.grid).jqGrid({
+                url: '/admin/me/jsonlist',
+                editurl: '/admin/me/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'nev', index: 'nev', label: 'Név', width: 160,
+                        editable: true,
+                        editrules: {required: true},
+                        editoptions: {size: 25, maxlength: 250},
+                        formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}},
+                    {name: 'navtipus', index: 'navtipus', label: 'NAV típus', width: 60,
+                        editable: true,
+                        edittype: 'select',
+                        editrules: {required: true},
+                        editoptions: {size: 4, dataUrl: '/admin/me/navtipuslist'},
+                        formoptions: {rowpos: 6, label: 'NAV típus:', elmsuffix: '*'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _me.pager,
+                sortname: 'nev',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Mennyiségi egységek'});
+            createNav(_me, megrid);
+
             // mijszgyakorlasszint grid
             var _mijszgyakorlasszint = {
                 grid: '#mijszgyakorlasszintgrid',

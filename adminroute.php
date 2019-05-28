@@ -58,6 +58,10 @@ $router->map('POST', '/admin/partnertipus/save', 'partnertipusController#save', 
 $router->map('GET', '/admin/orszag/jsonlist', 'orszagController#jsonlist', 'adminorszagjsonlist');
 $router->map('GET', '/admin/orszag/htmllist', 'orszagController#htmllist', 'adminorszaghtmllist');
 $router->map('POST', '/admin/orszag/save', 'orszagController#save', 'adminorszagsave');
+$router->map('GET', '/admin/me/jsonlist', 'meController#jsonlist', 'adminmejsonlist');
+$router->map('GET', '/admin/me/htmllist', 'meController#htmllist', 'adminmehtmllist');
+$router->map('POST', '/admin/me/save', 'meController#save', 'adminmesave');
+$router->map('GET', '/admin/me/navtipuslist', 'meController#navtipuslist', 'adminmenavtipuslist');
 $router->map('GET', '/admin/mijszoklevelkibocsajto/jsonlist', 'mijszoklevelkibocsajtoController#jsonlist', 'adminmijszoklevelkibocsajtojsonlist');
 $router->map('GET', '/admin/mijszoklevelkibocsajto/htmllist', 'mijszoklevelkibocsajtoController#htmllist', 'adminmijszoklevelkibocsajtohtmllist');
 $router->map('POST', '/admin/mijszoklevelkibocsajto/save', 'mijszoklevelkibocsajtoController#save', 'adminmijszoklevelkibocsajtosave');

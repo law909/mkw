@@ -704,7 +704,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                 $tetel->setCikkszam($this->params->getStringRequestParam('tetelcikkszam_' . $tetelid));
                                 $tetel->setVtsz($this->params->getIntRequestParam('tetelvtsz_' . $tetelid));
                                 $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
-                                $tetel->setME($this->params->getStringRequestParam('tetelme_' . $tetelid));
+                                $tetel->setMekod($this->params->getIntRequestParam('tetelme_' . $tetelid));
                                 $parenttetel = $this->getRepo('Entities\Bizonylattetel')->find($this->params->getStringRequestParam('tetelparentid_' . $tetelid));
                                 if ($parenttetel) {
                                     $tetel->setParbizonylattetel($parenttetel);
@@ -799,7 +799,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                                     $tetel->setCikkszam($this->params->getStringRequestParam('tetelcikkszam_' . $tetelid));
                                     $tetel->setVtsz($this->params->getIntRequestParam('tetelvtsz_' . $tetelid));
                                     $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
-                                    $tetel->setME($this->params->getStringRequestParam('tetelme_' . $tetelid));
+                                    $tetel->setMekod($this->params->getIntRequestParam('tetelme_' . $tetelid));
                                     $tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_' . $tetelid));
 
                                     $tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_' . $tetelid));

@@ -1,4 +1,6 @@
 <?php
+
+use Doctrine\ORM\Query\ResultSetMapping;
 use mkw\store;
 
 date_default_timezone_set('Europe/Budapest');
@@ -152,6 +154,8 @@ else {
         store::setRouteName($match['name']);
         if (substr($match['name'], 0, 5) === 'admin') {
             store::setAdminMode();
+
+            require_once 'runonce.php';
 
             $__admintranslate->addTranslation(
                 array(

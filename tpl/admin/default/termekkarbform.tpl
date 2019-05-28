@@ -94,7 +94,12 @@
                 {/if}
                 <tr>
                     <td><label for="MEEdit">{at('ME')}:</label></td>
-                    <td><input id="MEEdit" name="me" type="text" size="20" maxlength="20" value="{$egyed.me}"></td>
+                    <td><select id="MEEdit" name="me">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $melist as $_me}
+                                <option value="{$_me.id}"{if ($_me.selected)} selected="selected"{/if}>{$_me.caption}</option>
+                            {/foreach}
+                        </select></td>
                     <td><label for="IdegenkodEdit">{at('Idegen kód')}:</label></td>
                     <td><input id="IdegenkodEdit" name="idegenkod" type="text" size="20" maxlength="255"
                                value="{$egyed.idegenkod}"></td>

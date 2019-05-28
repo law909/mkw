@@ -100,6 +100,12 @@ class Termek {
     private $afa;
 
     /**
+     * @ORM\ManyToOne(targetEntity="ME")
+     * @ORM\JoinColumn(name="me_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $mekod;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Termekcimketorzs",inversedBy="termekek")
      * @ORM\JoinTable(name="termek_cimkek",
      *  joinColumns={@ORM\JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")},
@@ -965,6 +971,31 @@ class Termek {
 
     public function setNev($nev) {
         $this->nev = $nev;
+    }
+
+    public function getMekod() {
+        return $this->mekod;
+    }
+
+    public function getMekodId() {
+        if ($this->mekod) {
+            return $this->mekod->getId();
+        }
+        return '';
+    }
+
+    public function getMekodNev() {
+        if ($this->mekod) {
+            return $this->mekod->getNev();
+        }
+        return '';
+    }
+
+    public function setMekod($mekod) {
+        $this->mekod = $mekod;
+        if ($mekod) {
+            $this->me = $this->mekod->getNev();
+        }
     }
 
     public function getMe() {

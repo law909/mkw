@@ -86,7 +86,12 @@
             <tr>
                 <td class="mattable-important"><label for="MennyisegEdit{$tetel.id}">{at('Mennyiség')}:</label></td>
                 <td colspan="5"><input id="MennyisegEdit{$tetel.id}" class="js-mennyiseginput mattable-important" name="tetelmennyiseg_{$tetel.id}" type="number" step="any" value="{$tetel.mennyiseg}" maxlength="20" size="10" required="required">
-                    <input name="tetelme_{$tetel.id}" type="text" value="{$tetel.me}" size="10" maxlength="20" placeholder="{at('ME')}"></td>
+                    <select id="MESelect{$tetel.id}" name="tetelme_{$tetel.id}" required="required">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $tetel.melist as $_me}
+                            <option value="{$_me.id}"{if ($_me.selected)} selected="selected"{/if}>{$_me.caption}</option>
+                        {/foreach}
+                    </select>
             </tr>
         </tbody>
     </table>

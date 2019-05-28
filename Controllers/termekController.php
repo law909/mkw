@@ -250,13 +250,16 @@ class termekController extends \mkwhelpers\MattableController {
         else {
             $obj->setTermekcsoport(null);
         }
+        $me = \mkw\store::getEm()->getRepository('Entities\ME')->find($this->params->getIntRequestParam('me'));
+        if ($me) {
+            $obj->setMekod($me);
+        }
 		$obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setNev2($this->params->getStringRequestParam('nev2'));
         $obj->setNev3($this->params->getStringRequestParam('nev3'));
         $obj->setNev4($this->params->getStringRequestParam('nev4'));
         $obj->setNev5($this->params->getStringRequestParam('nev5'));
         $obj->setKiirtnev($this->params->getStringRequestParam('kiirtnev'));
-		$obj->setMe($this->params->getStringRequestParam('me'));
 		$obj->setCikkszam($this->params->getStringRequestParam('cikkszam'));
 		$obj->setIdegencikkszam($this->params->getStringRequestParam('idegencikkszam'));
         $obj->setVonalkod($this->params->getStringRequestParam('vonalkod'));
@@ -974,7 +977,7 @@ class termekController extends \mkwhelpers\MattableController {
                 $ret = array(
                     'value' => $termek->getNev(),
                     'id' => $termek->getId(),
-                    'me' => $termek->getMe(),
+                    'me' => $termek->getMekodId(),
                     'cikkszam' => $termek->getCikkszam(),
                     'vtsz' => $termek->getVtszId(),
                     'afa' => $termek->getAfaId(),
@@ -1005,7 +1008,7 @@ class termekController extends \mkwhelpers\MattableController {
                             $ret[] = array(
                                 'value' => $r->getNev(),
                                 'id' => $r->getId(),
-                                'me' => $r->getMe(),
+                                'me' => $r->getMekodId(),
                                 'cikkszam' => $r->getCikkszam(),
                                 'vtsz' => $r->getVtszId(),
                                 'afa' => $r->getAfaId(),
@@ -1031,7 +1034,7 @@ class termekController extends \mkwhelpers\MattableController {
                                 'value' => $r->getNev(),
                                 'label' => $r->getCikkszam() . ' ' . $r->getNev(),
                                 'id' => $r->getId(),
-                                'me' => $r->getMe(),
+                                'me' => $r->getMekodId(),
                                 'cikkszam' => $r->getCikkszam(),
                                 'vtsz' => $r->getVtszId(),
                                 'afa' => $r->getAfaId(),
@@ -1056,7 +1059,7 @@ class termekController extends \mkwhelpers\MattableController {
                             $ret[] = array(
                                 'value' => $r->getNev(),
                                 'id' => $r->getId(),
-                                'me' => $r->getMe(),
+                                'me' => $r->getMekodId(),
                                 'cikkszam' => $r->getCikkszam(),
                                 'vtsz' => $r->getVtszId(),
                                 'afa' => $r->getAfaId(),
@@ -1128,6 +1131,9 @@ class termekController extends \mkwhelpers\MattableController {
 
         $csoport = new termekcsoportController($this->params);
         $view->setVar('termekcsoportlist', $csoport->getSelectList(($termek ? $termek->getTermekcsoportId() : 0)));
+
+        $me = new meController($this->params);
+        $view->setVar('melist', $me->getSelectList(($termek ? $termek->getMekodId() : 0)));
 
         $view->printTemplateResult();
 	}

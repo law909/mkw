@@ -427,7 +427,7 @@ var bizonylathelper = function($) {
                     $this.siblings().val(termek.id);
                     $('input[name="tetelnev_' + sorid + '"]').val(termek.value);
                     $('input[name="tetelcikkszam_' + sorid + '"]').val(termek.cikkszam);
-                    $('input[name="tetelme_' + sorid + '"]').val(termek.me);
+                    $('select[name="tetelme_' + sorid + '"]').val(termek.me);
                     if (!$('input[name="tetelmennyiseg_' + sorid + '"]').val() && termek.defaultmennyiseg) {
                         $('input[name="tetelmennyiseg_' + sorid + '"]').val(termek.defaultmennyiseg);
                     }
@@ -553,7 +553,7 @@ var bizonylathelper = function($) {
                     $('input[name="qteteltermek_' + sorid + '"]').val(termek.id);
                     $('input[name="qtetelcikkszam_' + sorid + '"]').val(termek.cikkszam);
                     $('input[name="qtetelafa_' + sorid + '"]').val(termek.afa).data('afakulcs', termek.afakulcs);
-                    $('input[name="qtetelme_' + sorid + '"]').val(termek.me);
+                    $('select[name="qtetelme_' + sorid + '"]').val(termek.me);
                     kepsor = $('.js-termekpicturerow_' + sorid);
                     $('.js-toflyout', kepsor).attr('href', termek.mainurl + termek.kepurl);
                     $('.js-toflyout img', kepsor).attr('src', termek.mainurl + termek.kiskepurl);
@@ -910,7 +910,7 @@ var bizonylathelper = function($) {
                                 valtozatplace.empty();
                                 $('input[name="tetelnev_' + sorid + '"]').val(termek.value);
                                 $('input[name="tetelcikkszam_' + sorid + '"]').val(termek.cikkszam);
-                                $('input[name="tetelme_' + sorid + '"]').val(termek.me);
+                                $('select[name="tetelme_' + sorid + '"]').val(termek.me);
                                 if (!$('input[name="tetelmennyiseg_' + sorid + '"]').val() && termek.defaultmennyiseg) {
                                     $('input[name="tetelmennyiseg_' + sorid + '"]').val(termek.defaultmennyiseg);
                                 }

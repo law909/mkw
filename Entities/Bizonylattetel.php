@@ -79,6 +79,12 @@ class Bizonylattetel {
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $me;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="ME")
+     * @ORM\JoinColumn(name="me_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $mekod;
+
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $kiszereles;
 
@@ -640,6 +646,7 @@ class Bizonylattetel {
                     $this->setIdegencikkszam($val->getIdegencikkszam());
                     $this->setKiszereles($val->getKiszereles());
                     $this->setMagassag($val->getMagassag());
+                    $this->setMekod($val->getMekod());
                     $this->setME($val->getMe());
                     $this->setOsszehajthato($val->getOsszehajthato());
                     $this->setSuly($val->getSuly());
@@ -688,6 +695,7 @@ class Bizonylattetel {
                 $this->osszehajthato = false;
                 $this->suly = 0;
                 $this->szelesseg = 0;
+                $this->setMekod(null);
                 $this->setKozvetitett(false);
                 //$this->setMozgat();
                 //$this->setFoglal();
@@ -724,6 +732,51 @@ class Bizonylattetel {
 
     public function setIdegencikkszam($val) {
         $this->idegencikkszam = $val;
+    }
+
+    public function getMekod() {
+        return $this->mekod;
+    }
+
+    public function getMekodId() {
+        if ($this->mekod) {
+            return $this->mekod->getId();
+        }
+        return '';
+    }
+
+    public function getMekodNev() {
+        if ($this->mekod) {
+            return $this->mekod->getNev();
+        }
+        return '';
+    }
+
+    public function getMekodNavtipus() {
+        if ($this->mekod) {
+            return $this->mekod->getNavtipus();
+        }
+        return '';
+    }
+
+    public function setMekod($mekod) {
+        if (!is_object($mekod)) {
+            $mekod = \mkw\store::getEm()->getRepository('Entities\ME')->find($mekod);
+        }
+        if (!$mekod) {
+            $this->removeMekod();
+        }
+        else {
+            if ($this->mekod !== $mekod) {
+                $this->mekod = $mekod;
+                $this->me = $mekod->getNev();
+            }
+        }
+    }
+
+    public function removeMekod() {
+        $this->mekod = null;
+        $this->me = null;
     }
 
     public function getME() {
