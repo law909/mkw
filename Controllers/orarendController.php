@@ -249,8 +249,7 @@ class orarendController extends \mkwhelpers\MattableController {
 	    $orarend = array();
 	    /** @var \Entities\Orarend $item */
         foreach ($rec as $item) {
-            $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
-            $orarend[$item->getNap()]['orak'][] = array(
+            $orak = array(
                 'kezdet' => $item->getKezdetStr(),
                 'veg' => $item->getVegStr(),
                 'oranev' => $item->getNev(),
@@ -264,6 +263,25 @@ class orarendController extends \mkwhelpers\MattableController {
                 'delelott' => $item->isDelelottKezdodik(),
                 'elmarad' => $item->getElmarad()
             );
+            $hf = new \mkwhelpers\FilterDescriptor();
+            $hf->addFilter('datum', '>=', \mkw\store::startOfWeek());
+            $hf->addFilter('datum', '<=', \mkw\store::endOfWeek());
+            $hf->addFilter('orarend', '=', $item->getId());
+            $hrec = $this->getRepo('Entities\Orarendhelyettesites')->getAll($hf,array());
+            if ($hrec) {
+                if ($hrec[0]->getElmarad()) {
+                    $orak['elmarad'] = true;
+                    $orak['helyettesito'] = '';
+                    $orak['helyettesitourl'] = '';
+                }
+                else {
+                    $orak['elmarad'] = false;
+                    $orak['helyettesito'] = $hrec[0]->getHelyettesitoNev();
+                    $orak['helyettesitourl'] = $hrec[0]->getHelyettesitoUrl();
+                }
+            }
+            $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
+            $orarend[$item->getNap()]['orak'][] = $orak;
 	    }
         $view = $this->createView('orarendwordpress.tpl');
         $view->setVar('orarend', $orarend);

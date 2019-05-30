@@ -1392,4 +1392,30 @@ class store {
         return $fc . mb_substr($s, 1);
     }
 
+    public static function startOfWeek($date = null) {
+        if (is_a($date, 'DateTime')) {
+            return $date->modify('last monday');
+        }
+        else {
+            if ($date == '') {
+                $date = date(\mkw\store::$DateFormat);
+            }
+            $d = new \DateTime(\mkw\store::convDate($date));
+            return $d->modify('last monday');
+        }
+    }
+
+    public static function endOfWeek($date = null) {
+        if (is_a($date, 'DateTime')) {
+            return $date->modify('next friday');
+        }
+        else {
+            if ($date == '') {
+                $date = date(\mkw\store::$DateFormat);
+            }
+            $d = new \DateTime(\mkw\store::convDate($date));
+            return $d->modify('next friday');
+        }
+    }
+
 }
