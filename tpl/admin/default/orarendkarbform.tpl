@@ -12,8 +12,6 @@
                    {if ($egyed.inaktiv)}checked="checked"{/if}>{at('Inaktív')}
             <input id="AlkalmiCheck" name="alkalmi" type="checkbox"
                    {if ($egyed.alkalmi)}checked="checked"{/if}>{at('Alkalmi')}
-            <input id="ElmaradCheck" name="elmarad" type="checkbox"
-                   {if ($egyed.elmarad)}checked="checked"{/if}>{at('Elmarad')}
             <table>
                 <tbody>
                 <tr>
@@ -54,15 +52,6 @@
                     <td><select id="OktatoEdit" name="dolgozo" required="required">
                             <option value="">{at('válasszon')}</option>
                             {foreach $dolgozolist as $_tcs}
-                                <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
-                            {/foreach}
-                        </select></td>
-                </tr>
-                <tr>
-                    <td><label for="HelyettesitoEdit">{at('Helyettesítő')}:</label></td>
-                    <td><select id="HelyettesitoEdit" name="helyettesito">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $helyettesitolist as $_tcs}
                                 <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
                             {/foreach}
                         </select></td>

@@ -40,7 +40,7 @@ $(document).ready(function () {
             onGetTBody: function () {
             },
             filter: {
-                fields: ['#nevfilter', '#inaktivfilter', '#alkalmifilter', '#elmaradfilter', '#napfilter', '#jogateremfilter', '#jogaoratipusfilter', '#dolgozofilter']
+                fields: ['#nevfilter', '#inaktivfilter', '#alkalmifilter', '#napfilter', '#jogateremfilter', '#jogaoratipusfilter', '#dolgozofilter']
             },
             tablebody: {
                 url: '/admin/orarend/getlistbody',
@@ -194,10 +194,6 @@ $(document).ready(function () {
                 else {
                     doit();
                 }
-            }
-
-            if ($this.attr('data-flag') === 'elmarad') {
-                doit();
             }
         })
 
