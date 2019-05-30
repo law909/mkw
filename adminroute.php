@@ -681,6 +681,15 @@ if (\mkw\store::isDarshan()) {
     $router->map('GET', '/admin/orarend/viewkarb', 'orarendController#viewkarb', 'adminorarendviewkarb');
     $router->map('POST', '/admin/orarend/save', 'orarendController#save', 'adminorarendsave');
     $router->map('POST', '/admin/orarend/setflag', 'orarendController#setflag', 'adminorarendsetflag');
+    $router->map('GET', '/admin/orarend/getlistforhelyettesites', 'orarendController#getListForHelyettesites', 'adminorarendgetlistforhelyettesites');
+
+    $router->map('GET', '/admin/orarendhelyettesites/viewlist', 'orarendhelyettesitesController#viewlist', 'adminorarendhelyettesitesviewlist');
+    $router->map('GET', '/admin/orarendhelyettesites/htmllist', 'orarendhelyettesitesController#htmllist', 'adminorarendhelyettesiteshtmllist');
+    $router->map('GET', '/admin/orarendhelyettesites/getlistbody', 'orarendhelyettesitesController#getlistbody', 'adminorarendhelyettesitesgetlistbody');
+    $router->map('GET', '/admin/orarendhelyettesites/getkarb', 'orarendhelyettesitesController#getkarb', 'adminorarendhelyettesitesgetkarb');
+    $router->map('GET', '/admin/orarendhelyettesites/viewkarb', 'orarendhelyettesitesController#viewkarb', 'adminorarendhelyettesitesviewkarb');
+    $router->map('POST', '/admin/orarendhelyettesites/save', 'orarendhelyettesitesController#save', 'adminorarendhelyettesitessave');
+    $router->map('POST', '/admin/orarendhelyettesites/setflag', 'orarendhelyettesitesController#setflag', 'adminorarendhelyettesitessetflag');
 
     $router->map('GET', '/admin/rendezveny/viewlist', 'rendezvenyController#viewlist', 'adminrendezvenyviewlist');
     $router->map('GET', '/admin/rendezveny/getlistbody', 'rendezvenyController#getlistbody', 'adminrendezvenygetlistbody');

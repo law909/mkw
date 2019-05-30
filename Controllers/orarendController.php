@@ -133,45 +133,63 @@ class orarendController extends \mkwhelpers\MattableController {
         echo json_encode($this->loadDataToView($egyedek, 'orarendlista', $view));
 	}
 
-	public function getselectlist($selid) {
-		$rec = $this->getRepo()->getAllForSelectList(array(), array('nev' => 'ASC'));
+	public function getselectlist($selid = null) {
+		$rec = $this->getRepo()->getAll(array(), array('nev' => 'ASC'));
 		$res = array();
 		foreach ($rec as $sor) {
 			$res[] = array(
-				'id' => $sor['id'],
-				'caption' => $sor['nev'],
-				'selected' => ($sor['id'] == $selid)
+				'id' => $sor->getId(),
+				'caption' => $sor->getNev(),
+				'selected' => ($sor->getId() == $selid)
 			);
 		}
 		return $res;
 	}
 
 	public function htmllist() {
-		$rec = $this->getRepo()->getAllForSelectList(array(), array('nev' => 'asc'));
+		$rec = $this->getRepo()->getAll(array(), array('nev' => 'asc'));
 		$ret = '<select>';
 		foreach ($rec as $sor) {
-			$ret.='<option value="' . $sor['id'] . '">' . $sor['nev'] . '</option>';
+			$ret.='<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';
 		}
 		$ret.='</select>';
 		echo $ret;
 	}
 
-	public function viewlist() {
+    public function getListForHelyettesites() {
+	    $datum = new \DateTime(\mkw\store::convDate($this->params->getDateRequestParam('datum')));
+	    if ($datum) {
+	        $nap = $datum->format('N');
+	        $filter = new FilterDescriptor();
+	        $filter->addFilter('nap', '=', $nap);
+	        $filter->addFilter('inaktiv', '=', false);
+            $rec = $this->getRepo()->getAll($filter, array('nev' => 'asc'));
+            $ret = '<select id="OrarendEdit" name="orarend" required="required">';
+            /** @var \Entities\Orarend $sor */
+            foreach ($rec as $sor) {
+                $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNevTanar() . '</option>';
+            }
+            $ret .= '</select>';
+            echo $ret;
+        }
+    }
+
+    public function viewlist() {
 		$view = $this->createView('orarendlista.tpl');
 		$view->setVar('pagetitle', t('Órarend'));
 		$view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
 		$view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
 
         $dc = new dolgozoController($this->params);
-        $view->setVar('dolgozolist', $dc->getSelectList(($ora ? $ora->getDolgozoId() : 0)));
+        $view->setVar('dolgozolist', $dc->getSelectList());
 
         $jtc = new jogateremController($this->params);
-        $view->setVar('jogateremlist', $jtc->getSelectList(($ora ? $ora->getJogateremId() : 0)));
+        $view->setVar('jogateremlist', $jtc->getSelectList());
 
         $jotc = new jogaoratipusController($this->params);
-        $view->setVar('jogaoratipuslist', $jotc->getSelectList(($ora ? $ora->getJogaoratipusId() : 0)));
+        $view->setVar('jogaoratipuslist', $jotc->getSelectList());
 
-        $view->setVar('naplist', store::getDaynameSelectList(($ora ? $ora->getNap() : 0)));
+        $view->setVar('naplist', store::getDaynameSelectList());
 
 		$view->printTemplateResult();
 	}

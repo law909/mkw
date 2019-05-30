@@ -193,6 +193,14 @@ class Orarend {
         return $this->nev;
     }
 
+    public function getNevTanar() {
+        $arr = array(
+            $this->getNev(),
+            $this->getDolgozoNev()
+        );
+        return implode(', ', $arr);
+    }
+
     /**
      * @param mixed $nev
      */

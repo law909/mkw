@@ -374,6 +374,17 @@ class Orarend extends \Entities\Orarend implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getNevTanar()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNevTanar', []);
+
+        return parent::getNevTanar();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setNev($nev)
     {
 
