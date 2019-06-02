@@ -53,7 +53,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
         $tol = new \DateTime(\mkw\store::convDate($this->params->getStringRequestParam('tol')));
         $ig = new \DateTime(\mkw\store::convDate($this->params->getStringRequestParam('ig')));
         $kul = $tol->diff($ig);
-        $hokulonbseg = $kul->y * 12 + $kul->m + 1;
+        $hokulonbseg = $kul->y * 12 + $kul->m;
 
         $tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('tol'))));
         $igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('ig'))));
@@ -72,7 +72,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
         }
         $filter->addFilter('_xx.tanar', '=', $tanarid);
 
-        $adat = $this->getRepo('Entities\JogaReszvetel')->getWithJoins($filter);
+        $adat = $this->getRepo('Entities\JogaReszvetel')->getWithJoins($filter, arraY('datum' => 'ASC'));
 
         $excel = new \PHPExcel();
 
