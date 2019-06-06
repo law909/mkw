@@ -74,7 +74,7 @@ class TemplateFactory {
 
 	public function createMainView($tplfilename) {
 		if (strtolower($this->templateenginename)=='smarty') {
-			$view=new SmartyView($this->getTemplateC(),$this->getMainTemplate(),$tplfilename,$this->getMainSmartyConfig(),$this->getMainSmartyCache());
+			$view = new SmartyView($this->getTemplateC(),$this->getMainTemplate(),$tplfilename,$this->getMainSmartyConfig(),$this->getMainSmartyCache());
 		}
 		return $view;
 	}

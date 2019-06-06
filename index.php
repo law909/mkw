@@ -231,10 +231,6 @@ else {
                     header('Location: ' . $router->generate('showlogin'));
                 }
             }
-            else {
-                $redirected = true;
-                header('Location: ' . $router->generate('adminview'));
-            }
         }
     }
 
