@@ -54,23 +54,25 @@ function bizformat($mit, $mire = false) {
 
 // TODO find an appropriate place
 function callTheController($target, $params) {
-	$methodname = '';
-	$a = explode('#', $target);
-	$classname = $a[0];
-	if (count($a) > 1) {
-		$methodname = $a[1];
-	}
-	if (strpos($classname, '\\') === false) {
-		$classname = '\Controllers\\' . $classname;
-	}
-	$path = explode('/', str_replace('\\', '/', $classname . '.php'));
-	$inc = ltrim(implode('/', $path), '/');
-	if (file_exists($inc) && $methodname) {
-		require_once $inc;
-		$instance = new $classname(new \mkwhelpers\ParameterHandler($params));
-		$instance->$methodname();
-		return true;
-	}
+    if ($target) {
+        $methodname = '';
+        $a = explode('#', $target);
+        $classname = $a[0];
+        if (count($a) > 1) {
+            $methodname = $a[1];
+        }
+        if (strpos($classname, '\\') === false) {
+            $classname = '\Controllers\\' . $classname;
+        }
+        $path = explode('/', str_replace('\\', '/', $classname . '.php'));
+        $inc = ltrim(implode('/', $path), '/');
+        if (file_exists($inc) && $methodname) {
+            require_once $inc;
+            $instance = new $classname(new \mkwhelpers\ParameterHandler($params));
+            $instance->$methodname();
+            return true;
+        }
+    }
 	return false;
 }
 
@@ -230,6 +232,11 @@ else {
                     $redirected = true;
                     header('Location: ' . $router->generate('showlogin'));
                 }
+            }
+            else {
+                $redirected = true;
+                header('HTTP/1.1 404 Not found');
+                callTheController('mainController#show404', array());
             }
         }
     }
