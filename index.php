@@ -138,12 +138,14 @@ if (store::getSetupValue('rewrite301')) {
 }
 
 $router = store::getRouter();
-if (file_exists('mainroute.php')) {
+if ($ini['main'] && file_exists('mainroute.php')) {
     require_once 'mainroute.php';
 }
 if ($ini['admin'] && file_exists('adminroute.php')) {
     require_once 'adminroute.php';
 }
+
+$redirected = false;
 
 $match = $router->match();
 if (store::getParameter(\mkw\consts::Off) && substr($match['name'], 0, 5) !== 'admin') {
@@ -153,85 +155,98 @@ else {
     if ($match) {
         store::setRouteName($match['name']);
         if (substr($match['name'], 0, 5) === 'admin') {
-            store::setAdminMode();
+            if ($ini['admin']) {
+                store::setAdminMode();
 
-            require_once 'runonce.php';
+                require_once 'runonce.php';
 
-            $__admintranslate->addTranslation(
-                array(
-                    'adapter' => 'array',
-                    'content' => 'locales/admin/en.php',
-                    'locale' => 'en_us'
-                )
-            );
-            if (store::getAdminLocale()) {
-                $__admintranslate->setLocale(store::getAdminLocale());
-            }
-
-            if ((!in_array($match['name'], array('adminshowlogin', 'adminlogin', 'adminrlbexport', 'adminminicrmmail')))) {
-                $linuser = store::getAdminSession()->pk;
-                if (!$linuser) {
-                    Header('Location: ' . $router->generate('adminshowlogin'));
+                $__admintranslate->addTranslation(
+                    array(
+                        'adapter' => 'array',
+                        'content' => 'locales/admin/en.php',
+                        'locale' => 'en_us'
+                    )
+                );
+                if (store::getAdminLocale()) {
+                    $__admintranslate->setLocale(store::getAdminLocale());
                 }
-                \mkw\store::getBlameableListener()->setUserValue(\mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($linuser));
+
+                if ((!in_array($match['name'], array('adminshowlogin', 'adminlogin', 'adminrlbexport', 'adminminicrmmail')))) {
+                    $linuser = store::getAdminSession()->pk;
+                    if (!$linuser) {
+                        $redirected = true;
+                        header('Location: ' . $router->generate('adminshowlogin'));
+                    }
+                    \mkw\store::getBlameableListener()->setUserValue(\mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($linuser));
+                }
             }
         }
         else {
-            store::setMainMode();
+            if ($ini['main']) {
+                store::setMainMode();
 
-            if (!\mkw\store::getMainSession()->orszag) {
-                $mc = new \Controllers\mainController(null);
-                $orszag = \mkw\store::getParameter(\mkw\consts::Orszag);
-                if ($orszag) {
-                    $mc->setOrszag($orszag);
+                if (!\mkw\store::getMainSession()->orszag) {
+                    $mc = new \Controllers\mainController(null);
+                    $orszag = \mkw\store::getParameter(\mkw\consts::Orszag);
+                    if ($orszag) {
+                        $mc->setOrszag($orszag);
+                    }
                 }
-            }
 
-            $__maintranslate->addTranslation(
-                array(
-                    'adapter' => 'array',
-                    'content' => 'locales/main/en.php',
-                    'locale' => 'en_us'
-                )
-            );
-            if (store::getLocale()) {
-                $__maintranslate->setLocale(store::getLocale());
-            }
+                $__maintranslate->addTranslation(
+                    array(
+                        'adapter' => 'array',
+                        'content' => 'locales/main/en.php',
+                        'locale' => 'en_us'
+                    )
+                );
+                if (store::getLocale()) {
+                    $__maintranslate->setLocale(store::getLocale());
+                }
 
-            if (!$mainsess->referrer) {
-                if (array_key_exists('HTTP_REFERER', $_SERVER)) {
-                    $mainsess->referrer = $_SERVER['HTTP_REFERER'];
+                if (!$mainsess->referrer) {
+                    if (array_key_exists('HTTP_REFERER', $_SERVER)) {
+                        $mainsess->referrer = $_SERVER['HTTP_REFERER'];
+                    }
+                }
+                $pc = new \Controllers\partnerController(null);
+                if ($pc->checkloggedin()) {
+                    $prevuri = $_SERVER['REQUEST_URI'];
+                    if (!$prevuri) {
+                        $prevuri = '/';
+                    }
+                    if ($pc->autoLogout()) {
+                        $redirected = true;
+                        header('Location: ' . $prevuri);
+                    }
+                    else {
+                        $pc->setUtolsoKlikk();
+                    }
+                }
+                elseif (store::mustLogin() && !in_array($match['name'], array('showlogin', 'dologin', 'showfanta', 'dofanta', 'fcmotoexport',
+                        'mugenraceexport', 'superzonehuexport', 'pubregistration', 'savepubregistration', 'pubregistrationthx',
+                        'createpassreminder', 'showpassreminder', 'savepassreminder', 'szamlaprint', 'a2aprocesscmd'))) {
+                    $mainsess->redirafterlogin = $_SERVER['REQUEST_URI'];
+                    $redirected = true;
+                    header('Location: ' . $router->generate('showlogin'));
                 }
             }
-            $pc = new \Controllers\partnerController(null);
-            if ($pc->checkloggedin()) {
-                $prevuri = $_SERVER['REQUEST_URI'];
-                if (!$prevuri) {
-                    $prevuri = '/';
-                }
-                if ($pc->autoLogout()) {
-                    header('Location: ' . $prevuri);
-                }
-                else {
-                    $pc->setUtolsoKlikk();
-                }
-            }
-            elseif (store::mustLogin() && !in_array($match['name'], array('showlogin', 'dologin', 'showfanta', 'dofanta', 'fcmotoexport',
-                    'mugenraceexport', 'superzonehuexport', 'pubregistration', 'savepubregistration', 'pubregistrationthx',
-                    'createpassreminder', 'showpassreminder', 'savepassreminder', 'szamlaprint', 'a2aprocesscmd'))) {
-                $mainsess->redirafterlogin = $_SERVER['REQUEST_URI'];
-                header('Location: ' . $router->generate('showlogin'));
+            else {
+                $redirected = true;
+                header('Location: ' . $router->generate('adminshowlogin'));
             }
         }
     }
 
-    try {
-        if (!callTheController($match['target'], $match)) {
-            header('HTTP/1.1 404 Not found');
-            callTheController('mainController#show404', array());
+    if (!$redirected) {
+        try {
+            if (!callTheController($match['target'], $match)) {
+                header('HTTP/1.1 404 Not found');
+                callTheController('mainController#show404', array());
+            }
+        } catch (\Doctrine\ORM\Query\QueryException $e) {
+            error_log($e->getMessage());
+            throw $e;
         }
-    } catch (\Doctrine\ORM\Query\QueryException $e) {
-        error_log($e->getMessage());
-        throw $e;
     }
 }
