@@ -233,7 +233,7 @@ else {
             }
             else {
                 $redirected = true;
-                header('Location: ' . $router->generate('adminshowlogin'));
+                header('Location: ' . $router->generate('adminview'));
             }
         }
     }
