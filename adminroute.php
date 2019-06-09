@@ -62,6 +62,9 @@ $router->map('GET', '/admin/me/jsonlist', 'meController#jsonlist', 'adminmejsonl
 $router->map('GET', '/admin/me/htmllist', 'meController#htmllist', 'adminmehtmllist');
 $router->map('POST', '/admin/me/save', 'meController#save', 'adminmesave');
 $router->map('GET', '/admin/me/navtipuslist', 'meController#navtipuslist', 'adminmenavtipuslist');
+$router->map('GET', '/admin/korzetszam/jsonlist', 'korzetszamController#jsonlist', 'adminkorzetszamjsonlist');
+$router->map('GET', '/admin/korzetszam/htmllist', 'korzetszamController#htmllist', 'adminkorzetszamhtmllist');
+$router->map('POST', '/admin/korzetszam/save', 'korzetszamController#save', 'adminkorzetszamsave');
 $router->map('GET', '/admin/mijszoklevelkibocsajto/jsonlist', 'mijszoklevelkibocsajtoController#jsonlist', 'adminmijszoklevelkibocsajtojsonlist');
 $router->map('GET', '/admin/mijszoklevelkibocsajto/htmllist', 'mijszoklevelkibocsajtoController#htmllist', 'adminmijszoklevelkibocsajtohtmllist');
 $router->map('POST', '/admin/mijszoklevelkibocsajto/save', 'mijszoklevelkibocsajtoController#save', 'adminmijszoklevelkibocsajtosave');

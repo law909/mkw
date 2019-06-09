@@ -100,6 +100,10 @@
             <table id="cskgrid"></table>
             <div id="cskgridpager"></div>
         </div>
+        <div class="egyebadat-grid">
+            <table id="korzetszamgrid"></table>
+            <div id="korzetszamgridpager"></div>
+        </div>
         {if ($setup.receptura)}
             <div class="egyebadat-grid">
                 <table id="termekrecepttipusgrid"></table>

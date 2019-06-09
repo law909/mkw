@@ -1465,6 +1465,45 @@ $().ready(
                 caption: 'Mennyiségi egységek'});
             createNav(_me, megrid);
 
+            // Korzetszam grid
+            var _korzetszam = {
+                grid: '#korzetszamgrid',
+                pager: '#korzetszamgridpager'
+            };
+            var korzetszamgrid = $(_korzetszam.grid).jqGrid({
+                url: '/admin/korzetszam/jsonlist',
+                editurl: '/admin/korzetszam/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'id', index: 'id', label: 'Szám', width: 25, fixed: true,
+                        editable: true,
+                        editoptions: {size: 4},
+                        editrules: {required: true},
+                        formoptions: {rowpos: 1, label: 'Szám:', elmsuffix: '*'}},
+                    {name: 'hossz', index: 'hossz', label: 'Hossz', width: 25, align: 'right',
+                        editable: true,
+                        editoptions: {size: 2},
+                        editrules: {integer: true, required: true},
+                        formoptions: {rowpos: 2, label: 'Hossz:', elmsuffix: '*'}},
+                    {name: 'sorrend', index: 'sorrend', label: 'Sorrend', width: 25, align: 'right',
+                        editable: true,
+                        editoptions: {size: 2},
+                        editrules: {integer: true, required: false},
+                        formoptions: {rowpos: 3, label: 'Sorrend:'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _korzetszam.pager,
+                sortname: 'sorrend',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Körzetszámok'});
+            createNav(_korzetszam, korzetszamgrid);
+
             // mijszgyakorlasszint grid
             var _mijszgyakorlasszint = {
                 grid: '#mijszgyakorlasszintgrid',
