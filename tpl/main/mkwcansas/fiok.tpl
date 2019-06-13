@@ -37,9 +37,18 @@
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label" for="TelefonEdit">{t('Telefon')}:</label>
+									<label class="control-label" for="TelkorzetEdit">{t('Telefon')}:</label>
+                                    {if ($user.telefon && (!$user.telkorzet || !$user.telszam))}
+                                    <div class="controls">{t('Az ön által megadott telefonszám')}: {$user.telefon}</div>
+                                    {/if}
 									<div class="controls">
-										<input id="TelefonEdit" name="telefon" type="text" class="input-large" value="{$user.telefon}">
+										<select id="TelkorzetEdit" name="telkorzet" required="required" data-errormsg="{t('Hibás telefonszám')}">
+                                            <option value="">{t('válasszon')}</option>
+                                            {foreach $telkorzetlist as $tk}
+                                                <option value="{$tk.id}" data-hossz="{$tk.hossz}"{if ($tk.selected)} selected="selected"{/if}>{$tk.id}</option>
+                                            {/foreach}
+                                        </select>
+                                        <input id="TelszamEdit" type="text" name="telszam" class="input-large" value="{$user.telszam}" required="required">
 									</div>
 								</div>
 								<div class="control-group">

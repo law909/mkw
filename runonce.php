@@ -28,3 +28,13 @@ if (!\mkw\store::getParameter(\mkw\consts::NAVOnlineME1_1Kesz, 0)) {
     }
     \mkw\store::setParameter(\mkw\consts::NAVOnlineME1_1Kesz, 1);
 }
+
+
+/**
+ * ures partner nevbe betenni vezeteknev+keresztnevet
+ * partner nevben cserelni dupla es tripla szokozoket szokozre
+ * partner keresztnevet es vezeteknevet stripelni
+ * bizonylatfej ures partner nevbe betenni vezeteknev+keresztnevet
+ * bizonylatfej nevben cserelni dupla es tripla szokozoket szokozre
+ * bizonylatfej keresztnevet es vezeteknevet stripelni
+ */

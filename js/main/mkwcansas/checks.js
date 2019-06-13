@@ -40,6 +40,11 @@ var mkwcheck = {
         checkoutTelefon: {
             nev: 'input[name="telefon"]',
             msg: ''
+        },
+        checkoutTelszam: {
+            telkorzet: 'select[name="telkorzet"]',
+            telszam: 'input[name="telszam"]',
+            msg: ''
         }
     },
     kapcsolatTemaCheck: function () {
@@ -68,6 +73,9 @@ var mkwcheck = {
     },
     checkoutTelefonCheck: function () {
         this.nevcheck(this.configs.checkoutTelefon);
+    },
+    checkoutTelszamCheck: function () {
+        this.telszamchk(this.configs.checkoutTelszam);
     },
     wasinteraction: {
         nev: false,
@@ -260,6 +268,24 @@ var mkwcheck = {
             tema[0].setCustomValidity(msg);
             if (this.wasinteraction.tema) {
                 temamsg.append(msg);
+            }
+        }
+    },
+    telszamchk: function (opt) {
+        var telkorzet = $(opt.telkorzet),
+            telszam = $(opt.telszam),
+            msg = telkorzet.data('errormsg'),
+            szamdb,
+            telkorzetsel = $('option:checked', telkorzet);
+        telkorzet[0].setCustomValidity('');
+        if (telkorzetsel.length === 0) {
+            telkorzet[0].setCustomValidity(msg);
+        }
+        else {
+            szamdb = telkorzetsel.data('hossz');
+            telszam[0].setCustomValidity('');
+            if (telszam[0].value.length !== szamdb) {
+                telszam[0].setCustomValidity(msg);
             }
         }
     }

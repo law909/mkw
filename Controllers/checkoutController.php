@@ -38,6 +38,7 @@ class checkoutController extends \mkwhelpers\MattableController {
             $user['vezeteknev'] = $u->getVezeteknev();
             $user['keresztnev'] = $u->getKeresztnev();
             $user['telefon'] = $u->getTelefon();
+            $user['telszam'] = $u->getTelszam();
             $user['irszam'] = $u->getIrszam();
             $user['varos'] = $u->getVaros();
             $user['utca'] = $u->getUtca();
@@ -57,6 +58,8 @@ class checkoutController extends \mkwhelpers\MattableController {
             $view->setVar('partnerszallitasimod', $u->getSzallitasimodNev());
             $view->setVar('partnerszallitasimodid', $u->getSzallitasimodId());
             $view->setVar('partnerfizetesimod', $u->getFizmodNev());
+            $telkorzetc = new korzetszamController($this->params);
+            $view->setVar('telkorzetlist', $telkorzetc->getSelectList($u->getTelkorzet()));
         }
         else {
             $user['nev'] = '';
@@ -64,6 +67,7 @@ class checkoutController extends \mkwhelpers\MattableController {
             $user['vezeteknev'] = '';
             $user['keresztnev'] = '';
             $user['telefon'] = '';
+            $user['telszam'] = '';
             $user['orszag'] = \mkw\store::getMainSession()->orszag;
             $user['irszam'] = '';
             $user['varos'] = '';
@@ -78,6 +82,8 @@ class checkoutController extends \mkwhelpers\MattableController {
             $user['ujdonsaghirlevelkell'] = false;
             $view->setVar('partnerszallitasimod', '');
             $view->setVar('partnerfizetesimod', '');
+            $telkorzetc = new korzetszamController($this->params);
+            $view->setVar('telkorzetlist', $telkorzetc->getSelectList(null));
         }
 
 		$view->setVar('szallitasimodlist', $szlist);
@@ -88,6 +94,7 @@ class checkoutController extends \mkwhelpers\MattableController {
         $view->setVar('vezeteknev', $this->vv($p->getStringRequestParam('vezeteknev'), $user['vezeteknev']));
         $view->setVar('keresztnev', $this->vv($p->getStringRequestParam('keresztnev'), $user['keresztnev']));
         $view->setVar('telefon', $this->vv($p->getStringRequestParam('telefon'), $user['telefon']));
+        $view->setVar('telszam', $this->vv($p->getStringRequestParam('telszam'), $user['telszam']));
         $view->setVar('jelszo1', $p->getStringRequestParam('jelszo1'));
         $view->setVar('jelszo2', $p->getStringRequestParam('jelszo2'));
         $view->setVar('email', $this->vv($p->getStringRequestParam('kapcsemail'), $user['email']));
@@ -196,11 +203,9 @@ class checkoutController extends \mkwhelpers\MattableController {
                 $regkell = $this->params->getIntRequestParam('regkell');
                 $vezeteknev = $this->params->getStringRequestParam('vezeteknev');
                 $keresztnev = $this->params->getStringRequestParam('keresztnev');
-                $telefon = preg_replace('/[^0-9+]/', '', $this->params->getStringRequestParam('telefon'));
-                if (substr_count($telefon, '+') > 1) {
-                    $firstPlus = strpos($telefon, '+') + 1;
-                    $telefon = substr($telefon, 0, $firstPlus) . str_replace('+', '', substr($telefon, $firstPlus));
-                }
+                $telkorzet = $this->params->getStringRequestParam('telkorzet');
+                $telszam = preg_replace('/[^0-9+]/', '', $this->params->getStringRequestParam('telszam'));
+                $telefon = '+36' . $telkorzet . $telszam;
                 $jelszo1 = $this->params->getStringRequestParam('jelszo1');
                 $jelszo2 = $this->params->getStringRequestParam('jelszo2');
                 $kapcsemail = $this->params->getStringRequestParam('kapcsemail');
@@ -230,7 +235,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                 $tofterminalid = $this->params->getIntRequestParam('tofid');
                 $kuponkod = $this->params->getStringRequestParam('kupon');
 
-                $ok = ($vezeteknev && $keresztnev && $telefon &&
+                $ok = ($vezeteknev && $keresztnev && $telkorzet && $telszam &&
                         $szallirszam && $szallvaros && $szallutca && $szallnev &&
                         (!$szamlaeqszall ? $szamlanev : true) &&
                         (!$szamlaeqszall ? $szamlairszam : true) &&
@@ -257,7 +262,7 @@ class checkoutController extends \mkwhelpers\MattableController {
                     if (!$keresztnev) {
                         $errors[] = 'Nem adta meg a keresztnevét.';
                     }
-                    if (!$telefon) {
+                    if (!$telkorzet || !$telszam) {
                         $errors[] = 'Nem adta meg a telefonszámát.';
                     }
                     if (!$szallirszam) {
@@ -360,6 +365,8 @@ class checkoutController extends \mkwhelpers\MattableController {
                         $partner->setVaros($szamlavaros);
                         $partner->setUtca($szamlautca);
                     }
+                    $partner->setTelkorzet($telkorzet);
+                    $partner->setTelszam($telszam);
                     $partner->setTelefon($telefon);
                     $partner->setAdoszam($adoszam);
                     $partner->setAkcioshirlevelkell($akciohirlevel);

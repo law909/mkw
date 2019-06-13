@@ -53,6 +53,8 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['lutca'] = $t->getLutca();
         $x['lhazszam'] = $t->getLhazszam();
         $x['telefon'] = $t->getTelefon();
+        $x['telszam'] = $t->getTelszam();
+        $x['telkorzet'] = $t->getTelkorzet();
         $x['mobil'] = $t->getMobil();
         $x['fax'] = $t->getFax();
         $x['email'] = $t->getEmail();
@@ -290,7 +292,16 @@ class partnerController extends \mkwhelpers\MattableController {
                 $obj->setNev($this->params->getStringRequestParam('vezeteknev') . ' ' . $this->params->getStringRequestParam('keresztnev'));
             }
             $obj->setEmail($this->params->getStringRequestParam('email'));
-            $obj->setTelefon($this->params->getStringRequestParam('telefon'));
+            if (\mkw\store::isMindentkapni()) {
+                $telkorzet = $this->params->getStringRequestParam('telkorzet');
+                $telszam = preg_replace('/[^0-9+]/', '', $this->params->getStringRequestParam('telszam'));
+                $obj->setTelkorzet($telkorzet);
+                $obj->setTelszam($telszam);
+                $obj->setTelefon('+36' . $telkorzet . $telszam);
+            }
+            else {
+                $obj->setTelefon($this->params->getStringRequestParam('telefon'));
+            }
             $obj->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));
             $obj->setUjdonsaghirlevelkell($this->params->getBoolRequestParam('ujdonsaghirlevelkell'));
             if (\mkw\store::isMIJSZ()) {
@@ -1180,6 +1191,9 @@ class partnerController extends \mkwhelpers\MattableController {
 
             $orszagc = new orszagController($this->params);
             $view->setVar('orszaglist', $orszagc->getSelectList($user->getOrszagId()));
+
+            $telkorzetc = new korzetszamController($this->params);
+            $view->setVar('telkorzetlist', $telkorzetc->getSelectList($user->getTelkorzet()));
 
             $ptcsk = new partnertermekcsoportkedvezmenyController($this->params);
             $ptcsklist = $ptcsk->getFiokList();

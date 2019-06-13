@@ -115,6 +115,10 @@ var mkw = (function($) {
                         break;
                 }
             });
+            $form.find('select').each(function() {
+                var $this = $(this);
+                data[$this.attr('name')] = $this.val();
+            });
             $.ajax({
                 url: $form.attr('action'),
                 type: 'POST',
@@ -247,6 +251,22 @@ var mkw = (function($) {
         }
     }
 
+    function onlyNumberInput(input) {
+        var $kel = $(input);
+        $kel.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+            var $el = $kel[0];
+            if (/^\d*$/.test($el.value)) {
+                $el.oldValue = $el.value;
+                $el.oldSelectionStart = $el.selectionStart;
+                $el.oldSelectionEnd = $el.selectionEnd;
+            }
+            else if ($el.hasOwnProperty("oldValue")) {
+                $el.value = $el.oldValue;
+                $el.setSelectionRange($el.oldSelectionStart, $el.oldSelectionEnd);
+            }
+        });
+    }
+
     return {
         showMessage: showMessage,
         closeMessage: closeMessage,
@@ -258,6 +278,7 @@ var mkw = (function($) {
         irszamTypeahead: irszamTypeahead,
         varosTypeahead: varosTypeahead,
         initTooltips: initTooltips,
-        showhideFilterClear: showhideFilterClear
+        showhideFilterClear: showhideFilterClear,
+        onlyNumberInput: onlyNumberInput
     };
 })(jQuery);

@@ -109,6 +109,12 @@ class Partner {
 	/** @ORM\Column(type="string",length=40,nullable=true) */
 	private $mobil = '';
 
+    /** @ORM\Column(type="string",length=6,nullable=true) */
+    private $telkorzet;
+
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $telszam = '';
+
 	/** @ORM\Column(type="string",length=40,nullable=true) */
 	private $fax = '';
 
@@ -1780,4 +1786,31 @@ class Partner {
         $this->szamlalevelmegszolitas = $szamlalevelmegszolitas;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getTelkorzet() {
+        return $this->telkorzet;
+    }
+
+    /**
+     * @param mixed $telkorzet
+     */
+    public function setTelkorzet($telkorzet) {
+        $this->telkorzet = $telkorzet;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTelszam() {
+        return $this->telszam;
+    }
+
+    /**
+     * @param mixed $telszam
+     */
+    public function setTelszam($telszam) {
+        $this->telszam = $telszam;
+    }
 }

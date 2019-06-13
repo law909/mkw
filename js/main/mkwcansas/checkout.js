@@ -14,7 +14,7 @@ var checkout = (function($, guid) {
 
 	var checkoutpasswordrow,
 			checkoutpasswordcontainer,
-			vezeteknevinput, keresztnevinput, telefoninput, kapcsemailinput,
+			vezeteknevinput, keresztnevinput, telkorzetinput, telszaminput, kapcsemailinput,
 			szamlanevinput, szamlairszaminput, szamlavarosinput, szamlautcainput, adoszaminput,
 			szallnevinput, szallirszaminput, szallvarosinput, szallutcainput,
 			checkoutform,
@@ -175,7 +175,7 @@ var checkout = (function($, guid) {
         var $szallmodchk = $('input[name="szallitasimod"]:checked');
 		$('.js-chkvezeteknev').text(vezeteknevinput.val());
 		$('.js-chkkeresztnev').text(keresztnevinput.val());
-		$('.js-chktelefon').text(telefoninput.val());
+		$('.js-chktelefon').text('+36 ' + telkorzetinput.val() + ' ' + telszaminput.val());
 		$('.js-chkkapcsemail').text(kapcsemailinput.val());
         $('.js-chkszallnev').text(szallnevinput.val());
         $('.js-chkszallirszam').text(szallirszaminput.val());
@@ -247,7 +247,8 @@ var checkout = (function($, guid) {
 
 			vezeteknevinput = $('input[name="vezeteknev"]');
 			keresztnevinput = $('input[name="keresztnev"]');
-			telefoninput = $('input[name="telefon"]');
+            telkorzetinput = $('select[name="telkorzet"]');
+            telszaminput = $('input[name="telszam"]');
 			kapcsemailinput = $('input[name="kapcsemail"]');
 			szamlanevinput = $('input[name="szamlanev"]');
 			szamlairszaminput = $('input[name="szamlairszam"]');
@@ -261,6 +262,8 @@ var checkout = (function($, guid) {
 			szamlaeqszall = $('input[name="szamlaeqszall"]');
 			webshopmessageinput = $('textarea[name="webshopmessage"]');
 			couriermessageinput = $('textarea[name="couriermessage"]');
+
+            mkw.onlyNumberInput('#TelszamEdit');
 
 			loadFizmodList();
             loadCsomagterminalData(true);
@@ -388,16 +391,26 @@ var checkout = (function($, guid) {
                     keresztnevinput.removeClass('hibas');
                 }
 
-                if (!telefoninput.val()) {
-                    telefoninput.addClass('hibas');
+                var telkorzetsel = $('option:checked', telkorzetinput);
+
+                telkorzetinput.removeClass('hibas');
+                if (!telkorzetsel.val()) {
+                    telkorzetinput.addClass('hibas');
                     if (!hibas) {
-                        openDataContainer(telefoninput);
-                        tofocus = telefoninput;
+                        tofocus = telkorzetinput;
                     }
                     hibas = true;
                 }
-                else {
-                    telefoninput.removeClass('hibas');
+
+                telszaminput.removeClass('hibas');
+                if (telkorzetsel.val()) {
+                    if (telszaminput[0].value.length !== telkorzetsel.data('hossz')) {
+                        telszaminput.addClass('hibas');
+                        if (!hibas) {
+                            tofocus = telszaminput;
+                        }
+                        hibas = true;
+                    }
                 }
 
                 if (!kapcsemailinput.val() || !checkEmail(kapcsemailinput.val())) {

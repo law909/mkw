@@ -136,6 +136,10 @@ var mkw = (function($) {
                         break;
                 }
             });
+            $form.find('select').each(function() {
+                var $this = $(this);
+                data[$this.attr('name')] = $this.val();
+            });
             $.ajax({
                 url: $form.attr('action'),
                 type: 'POST',
@@ -268,6 +272,22 @@ var mkw = (function($) {
         }
     }
 
+    function onlyNumberInput(input) {
+        var $kel = $(input);
+        $kel.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+            var $el = $kel[0];
+            if (/^\d*$/.test($el.value)) {
+                $el.oldValue = $el.value;
+                $el.oldSelectionStart = $el.selectionStart;
+                $el.oldSelectionEnd = $el.selectionEnd;
+            }
+            else if ($el.hasOwnProperty("oldValue")) {
+                $el.value = $el.oldValue;
+                $el.setSelectionRange($el.oldSelectionStart, $el.oldSelectionEnd);
+            }
+        });
+    }
+
     return {
         showMessage: showMessage,
         closeMessage: closeMessage,
@@ -279,7 +299,8 @@ var mkw = (function($) {
         irszamTypeahead: irszamTypeahead,
         varosTypeahead: varosTypeahead,
         initTooltips: initTooltips,
-        showhideFilterClear: showhideFilterClear
+        showhideFilterClear: showhideFilterClear,
+        onlyNumberInput: onlyNumberInput
     };
 })(jQuery);
 var mkwcheck = {
@@ -324,6 +345,11 @@ var mkwcheck = {
         checkoutTelefon: {
             nev: 'input[name="telefon"]',
             msg: ''
+        },
+        checkoutTelszam: {
+            telkorzet: 'select[name="telkorzet"]',
+            telszam: 'input[name="telszam"]',
+            msg: ''
         }
     },
     kapcsolatTemaCheck: function () {
@@ -352,6 +378,9 @@ var mkwcheck = {
     },
     checkoutTelefonCheck: function () {
         this.nevcheck(this.configs.checkoutTelefon);
+    },
+    checkoutTelszamCheck: function () {
+        this.telszamchk(this.configs.checkoutTelszam);
     },
     wasinteraction: {
         nev: false,
@@ -546,6 +575,24 @@ var mkwcheck = {
                 temamsg.append(msg);
             }
         }
+    },
+    telszamchk: function (opt) {
+        var telkorzet = $(opt.telkorzet),
+            telszam = $(opt.telszam),
+            msg = telkorzet.data('errormsg'),
+            szamdb,
+            telkorzetsel = $('option:checked', telkorzet);
+        telkorzet[0].setCustomValidity('');
+        if (telkorzetsel.length === 0) {
+            telkorzet[0].setCustomValidity(msg);
+        }
+        else {
+            szamdb = telkorzetsel.data('hossz');
+            telszam[0].setCustomValidity('');
+            if (telszam[0].value.length !== szamdb) {
+                telszam[0].setCustomValidity(msg);
+            }
+        }
     }
 };
 var guid = (function() {
@@ -564,7 +611,7 @@ var checkout = (function($, guid) {
 
 	var checkoutpasswordrow,
 			checkoutpasswordcontainer,
-			vezeteknevinput, keresztnevinput, telefoninput, kapcsemailinput,
+			vezeteknevinput, keresztnevinput, telkorzetinput, telszaminput, kapcsemailinput,
 			szamlanevinput, szamlairszaminput, szamlavarosinput, szamlautcainput, adoszaminput,
 			szallnevinput, szallirszaminput, szallvarosinput, szallutcainput,
 			checkoutform,
@@ -725,7 +772,7 @@ var checkout = (function($, guid) {
         var $szallmodchk = $('input[name="szallitasimod"]:checked');
 		$('.js-chkvezeteknev').text(vezeteknevinput.val());
 		$('.js-chkkeresztnev').text(keresztnevinput.val());
-		$('.js-chktelefon').text(telefoninput.val());
+		$('.js-chktelefon').text('+36 ' + telkorzetinput.val() + ' ' + telszaminput.val());
 		$('.js-chkkapcsemail').text(kapcsemailinput.val());
         $('.js-chkszallnev').text(szallnevinput.val());
         $('.js-chkszallirszam').text(szallirszaminput.val());
@@ -797,7 +844,8 @@ var checkout = (function($, guid) {
 
 			vezeteknevinput = $('input[name="vezeteknev"]');
 			keresztnevinput = $('input[name="keresztnev"]');
-			telefoninput = $('input[name="telefon"]');
+            telkorzetinput = $('select[name="telkorzet"]');
+            telszaminput = $('input[name="telszam"]');
 			kapcsemailinput = $('input[name="kapcsemail"]');
 			szamlanevinput = $('input[name="szamlanev"]');
 			szamlairszaminput = $('input[name="szamlairszam"]');
@@ -811,6 +859,8 @@ var checkout = (function($, guid) {
 			szamlaeqszall = $('input[name="szamlaeqszall"]');
 			webshopmessageinput = $('textarea[name="webshopmessage"]');
 			couriermessageinput = $('textarea[name="couriermessage"]');
+
+            mkw.onlyNumberInput('#TelszamEdit');
 
 			loadFizmodList();
             loadCsomagterminalData(true);
@@ -938,16 +988,26 @@ var checkout = (function($, guid) {
                     keresztnevinput.removeClass('hibas');
                 }
 
-                if (!telefoninput.val()) {
-                    telefoninput.addClass('hibas');
+                var telkorzetsel = $('option:checked', telkorzetinput);
+
+                telkorzetinput.removeClass('hibas');
+                if (!telkorzetsel.val()) {
+                    telkorzetinput.addClass('hibas');
                     if (!hibas) {
-                        openDataContainer(telefoninput);
-                        tofocus = telefoninput;
+                        tofocus = telkorzetinput;
                     }
                     hibas = true;
                 }
-                else {
-                    telefoninput.removeClass('hibas');
+
+                telszaminput.removeClass('hibas');
+                if (telkorzetsel.val()) {
+                    if (telszaminput[0].value.length !== telkorzetsel.data('hossz')) {
+                        telszaminput.addClass('hibas');
+                        if (!hibas) {
+                            tofocus = telszaminput;
+                        }
+                        hibas = true;
+                    }
                 }
 
                 if (!kapcsemailinput.val() || !checkEmail(kapcsemailinput.val())) {
@@ -1183,6 +1243,13 @@ var fiok = (function($) {
 		if ($fiokadataimform.length > 0) {
 
 			H5F.setup($fiokadataimform);
+
+			mkw.onlyNumberInput('#TelszamEdit');
+
+			$('#TelszamEdit,#TelkorzetEdit')
+                .on('input blur', function(e) {
+                    mkwcheck.checkoutTelszamCheck();
+                });
 
 			$('#VezeteknevEdit,#KeresztnevEdit')
 			.on('input', function(e) {

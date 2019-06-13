@@ -92,8 +92,19 @@
 						<div class="controls controls-row chk-controloffset">
                             <div class="span4 nomargin chk-relative">
                                 <label class="span4 nomargin">Telefon *</label>
-								<input name="telefon" type="text" class="span4 nomargin js-chkrefresh" value="{$telefon|default}" data-container=".js-chkszallitasiadatok">
-								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="A telefonszámra azért van szükségünk, mert ezen keresztül egyeztetünk Önnel a kiszállításról, illetve a futár is így fogja tudni Önnel felvenni a kapcsolatot."></i>
+                                {if ($telefon && (!$telkorzet || !$telszam))}
+                                    <div>{t('Az ön által megadott telefonszám')}: {$telefon}</div>
+                                {/if}
+                                <div class="controls">
+                                    <select id="TelkorzetEdit" class="telszam js-chkrefresh" name="telkorzet" data-errormsg="{t('Hibás telefonszám')}" data-container=".js-chkszallitasiadatok">
+                                        <option value="">{t('válasszon')}</option>
+                                        {foreach $telkorzetlist as $tk}
+                                            <option value="{$tk.id}" data-hossz="{$tk.hossz}"{if ($tk.selected)} selected="selected"{/if}>{$tk.id}</option>
+                                        {/foreach}
+                                    </select>
+                                    <input id="TelszamEdit" class="telszam js-chkrefresh" type="text" name="telszam" value="{$telszam}" data-container=".js-chkszallitasiadatok">
+                                </div>
+								<i class="icon-question-sign chk-tooltipbtn hidden-phone js-chktooltipbtn" title="Csak mobil számot adjon meg, mert a futár arra tud SMS-t küldeni. A telefonszámra azért van szükségünk, mert ezen keresztül egyeztetünk Önnel a kiszállításról, illetve a futár is így fogja tudni Önnel felvenni a kapcsolatot."></i>
                             </div>
                             <div class="span4">
                                 <label class="span4 nomargin">Email *</label>

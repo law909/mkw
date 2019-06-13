@@ -7,6 +7,13 @@ var fiok = (function($) {
 
 			H5F.setup($fiokadataimform);
 
+			mkw.onlyNumberInput('#TelszamEdit');
+
+			$('#TelszamEdit,#TelkorzetEdit')
+                .on('input blur', function(e) {
+                    mkwcheck.checkoutTelszamCheck();
+                });
+
 			$('#VezeteknevEdit,#KeresztnevEdit')
 			.on('input', function(e) {
 				mkwcheck.regNevCheck();
