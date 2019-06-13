@@ -983,6 +983,12 @@ class Bizonylatfej {
                     $ret['foxpostterminal']['findme'] = $this->csomagterminal->getFindme();
                     $ret['foxpostterminal']['nyitva'] = $this->csomagterminal->getNyitva();
                     break;
+                case 'gls':
+                    $ret['gls'] = true;
+                    $ret['glspont']['nev'] = $this->csomagterminal->getNev();
+                    $ret['glspont']['cim'] = $this->csomagterminal->getCsoport() . ' ' . $this->csomagterminal->getCim();
+                    $ret['glspont']['findme'] = $this->csomagterminal->getFindme();
+                    break;
             }
         }
         $tetellist = array();
