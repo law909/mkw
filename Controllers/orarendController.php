@@ -225,13 +225,20 @@ class orarendController extends \mkwhelpers\MattableController {
     }
 
     public function exportToWordpress() {
+	    $offset = $this->params->getIntRequestParam('o', 0);
+        $startdatum = \mkw\store::startOfWeek();
+        if ($offset < 0) {
+            $startdatum->sub(new \DateInterval('P' . abs($offset) . 'W'));
+        }
+        else {
+            $startdatum->add(new \DateInterval('P' . $offset . 'W'));
+        }
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('inaktiv', '=', false);
 	    $rec = $this->getRepo()->getWithJoins($filter, array('nap' => 'ASC', 'kezdet' => 'ASC', 'nev' => 'ASC'));
 	    $orarend = array();
 	    /** @var \Entities\Orarend $item */
         foreach ($rec as $item) {
-            $startdatum = \mkw\store::startOfWeek();
             $orak = array(
                 'kezdet' => $item->getKezdetStr(),
                 'veg' => $item->getVegStr(),
@@ -247,8 +254,8 @@ class orarendController extends \mkwhelpers\MattableController {
                 'elmarad' => false
             );
             $hf = new \mkwhelpers\FilterDescriptor();
-            $hf->addFilter('datum', '>=', \mkw\store::startOfWeek());
-            $hf->addFilter('datum', '<=', \mkw\store::endOfWeek());
+            $hf->addFilter('datum', '>=', \mkw\store::startOfWeek($startdatum));
+            $hf->addFilter('datum', '<=', \mkw\store::endOfWeek($startdatum));
             $hf->addFilter('orarend', '=', $item->getId());
             $hrec = $this->getRepo('Entities\Orarendhelyettesites')->getAll($hf,array());
             if ($hrec) {
@@ -264,11 +271,14 @@ class orarendController extends \mkwhelpers\MattableController {
                 }
             }
             $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
-            $orarend[$item->getNap()]['napdatum'] = $startdatum->add(new \DateInterval('P' . ($item->getNap() - 1) . 'D'))->format(\mkw\store::$DateFormat);
+            $xdatum = clone $startdatum;
+            $orarend[$item->getNap()]['napdatum'] = $xdatum->add(new \DateInterval('P' . ($item->getNap() - 1) . 'D'))->format(\mkw\store::$DateFormat);
             $orarend[$item->getNap()]['orak'][] = $orak;
 	    }
         $view = $this->createView('orarendwordpress.tpl');
         $view->setVar('orarend', $orarend);
+        $view->setVar('prevoffset', $offset - 1);
+        $view->setVar('nextoffset', $offset + 1);
         $view->printTemplateResult();
     }
 

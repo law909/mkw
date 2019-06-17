@@ -34,7 +34,7 @@
             margin-bottom: 2px;
             color: #669999;
             font-weight: bold;
-            font-variant: small-caps;
+            font-variant: all-small-caps;
             font-size: 20px;
             background-color: #ded4d4;
         }
@@ -70,6 +70,26 @@
             padding: 10px 0;
             margin-right: 1%;
             width: 40%;
+            text-align: center;
+        }
+        .dttprev {
+            float: left;
+            color: #80008c;
+        }
+        .dttnext {
+            float: right;
+        }
+        .dttprev, .dttnext, .dttakt {
+            background-color: #80008c;
+            font-weight: bold;
+            font-variant: all-small-caps;
+            font-size: 20px;
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 2px;
+            color: white;
+        }
+        .dttlapozo {
             text-align: center;
         }
         /* Responsive Styles Smartphone Portrait */
@@ -118,6 +138,11 @@
 
 <body>
 <div class="dtt">
+    <div class="dttlapozo">
+        <a href="/orarend/wp?o={$prevoffset}" class="dttprev">Előző hét</a>
+        <a href="/orarend/wp" class="dttakt">Aktuális hét</a>
+        <a href="/orarend/wp?o={$nextoffset}" class="dttnext">Következő hét</a>
+    </div>
     {foreach $orarend as $nap}
     <div class="dttnap">
         <div class="dttnapnev">{$nap['napnev']} - {$nap['napdatum']}</div>
