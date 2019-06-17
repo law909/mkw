@@ -79,6 +79,9 @@
         .dttnext {
             float: right;
         }
+        .dttakt {
+            margin-left: 40px;
+        }
         .dttprev, .dttnext, .dttakt {
             background-color: #80008c;
             font-weight: bold;
