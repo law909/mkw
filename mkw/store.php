@@ -1394,6 +1394,9 @@ class store {
 
     public static function startOfWeek($date = null) {
         if (is_a($date, 'DateTime')) {
+            if ($date->format('N') === '1') {
+                return $date;
+            }
             return $date->modify('last monday');
         }
         else {
@@ -1401,20 +1404,29 @@ class store {
                 $date = date(\mkw\store::$DateFormat);
             }
             $d = new \DateTime(\mkw\store::convDate($date));
+            if ($d->format('N') === '1') {
+                return $d;
+            }
             return $d->modify('last monday');
         }
     }
 
     public static function endOfWeek($date = null) {
         if (is_a($date, 'DateTime')) {
-            return $date->modify('next friday');
+            if ($date->format('N') === '7') {
+                return $date;
+            }
+            return $date->modify('next sunday');
         }
         else {
             if ($date == '') {
                 $date = date(\mkw\store::$DateFormat);
             }
             $d = new \DateTime(\mkw\store::convDate($date));
-            return $d->modify('next friday');
+            if ($d->format('N') === '7') {
+                return $d;
+            }
+            return $d->modify('next sunday');
         }
     }
 

@@ -231,6 +231,7 @@ class orarendController extends \mkwhelpers\MattableController {
 	    $orarend = array();
 	    /** @var \Entities\Orarend $item */
         foreach ($rec as $item) {
+            $startdatum = \mkw\store::startOfWeek();
             $orak = array(
                 'kezdet' => $item->getKezdetStr(),
                 'veg' => $item->getVegStr(),
@@ -263,6 +264,7 @@ class orarendController extends \mkwhelpers\MattableController {
                 }
             }
             $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
+            $orarend[$item->getNap()]['napdatum'] = $startdatum->add(new \DateInterval('P' . ($item->getNap() - 1) . 'D'))->format(\mkw\store::$DateFormat);
             $orarend[$item->getNap()]['orak'][] = $orak;
 	    }
         $view = $this->createView('orarendwordpress.tpl');

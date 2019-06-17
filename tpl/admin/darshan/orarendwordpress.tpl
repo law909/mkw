@@ -120,7 +120,7 @@
 <div class="dtt">
     {foreach $orarend as $nap}
     <div class="dttnap">
-        <div class="dttnapnev">{$nap['napnev']}</div>
+        <div class="dttnapnev">{$nap['napnev']} - {$nap['napdatum']}</div>
         {foreach $nap['orak'] as $ora}
         <div class="dttora">
             <div class="dttidopont{if ($ora['delelott'])} delelott{/if}">{$ora['kezdet']}-{$ora['veg']}</div>
