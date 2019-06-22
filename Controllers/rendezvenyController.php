@@ -268,6 +268,9 @@ class rendezvenyController extends \mkwhelpers\MattableController {
             }
             $partnerctrl = new \Controllers\partnerController($this->params);
             $partner = $partnerctrl->setFields($partner, null, 'pubreg');
+            if (!$this->params->getBoolRequestParam('kellszamlazasiadat', false)) {
+                $partner->setNev($partner->getVezeteknev() . ' ' . $partner->getKeresztnev());
+            }
             $this->getEm()->persist($partner);
 
             $jel = new \Entities\RendezvenyJelentkezes();

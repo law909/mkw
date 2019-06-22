@@ -104,6 +104,7 @@
             <div class="form-group row">
                 <div class="col-sm-10 topmargin10">
                     <input type="hidden" name="r" value="{$uid}">
+                    <input type="hidden" name="kellszamlazasiadat" value="{$kellszamlazasiadat}">
                     <button type="submit" class="btn btn-darshan">Regisztrálok</button>
                 </div>
             </div>
