@@ -118,7 +118,7 @@ class Rendezveny {
     private $uid;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $kellszamlazasiadat = false;
+    private $kellszamlazasiadat = true;
 
     public function __construct() {
         $this->rendezvenydokok = new \Doctrine\Common\Collections\ArrayCollection();
