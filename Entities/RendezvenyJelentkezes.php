@@ -238,6 +238,7 @@ class RendezvenyJelentkezes {
         $x['rendezvenykezdoido'] = $this->getRendezveny()->getKezdoido();
         $x['rendezvenytanarnev'] = $this->getRendezvenyTanarNev();
         $x['rendezvenyar'] = $this->getRendezveny()->getAr();
+        $x['kellszamlazasiadat'] = $this->getRendezveny()->getKellszamlazasiadat();
         $x['partnernev'] = $this->getPartnernev();
         $x['partnercim'] = $this->getPartnerCim();
         $x['partneremail'] = $this->getPartneremail();

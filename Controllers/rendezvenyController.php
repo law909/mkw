@@ -41,6 +41,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $x['todourlap'] = $t->getTodourlap();
         $x['todowebposzt'] = $t->getTodowebposzt();
         $x['todowebslider'] = $t->getTodowebslider();
+        $x['kellszamlazasiadat'] = $t->getKellszamlazasiadat();
         $x['uid'] = $t->getUid();
         $x['reglink'] = '<script src=\'' . \mkw\store::getConfigValue('mainurl') . '/js/main/' . \mkw\store::getConfigValue('main.theme') . '/rendezvenyregloader.js?r=' . $t->getUid() . '\'></script>';
 
@@ -63,6 +64,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $obj->setKezdodatum($this->params->getStringRequestParam('kezdodatum'));
         $obj->setKezdoido($this->params->getStringRequestParam('kezdoido'));
         $obj->setAr($this->params->getFloatRequestParam('ar'));
+        $obj->setKellszamlazasiadat($this->params->getBoolRequestParam('kellszamlazasiadat'));
         $ck = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek', 0));
         if ($ck) {
             $obj->setTermek($ck);
@@ -249,6 +251,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         if ($rendezveny) {
             $v = $this->getTemplateFactory()->createMainView('rendezvenyreg.tpl');
             $v->setVar('uid', $rendezveny->getUid());
+            $v->setVar('kellszamlazasiadat', $rendezveny->getKellszamlazasiadat());
             echo $v->getTemplateResult();
         }
     }

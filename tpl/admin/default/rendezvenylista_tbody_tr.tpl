@@ -11,6 +11,7 @@
                 <tr><td>Termék a számlán</td><td>{$_egyed.termeknev}</td></tr>
                 <tr><td>Ár:</td><td class="pricenowrap">{number_format($_egyed.ar, 2, '.', ' ')}</td></tr>
                 <tr><td>Terem:</td><td>{$_egyed.jogateremnev}</td></tr>
+                <tr><td>Számlázási adat bekérés:</td><td>{if ($_egyed.kellszamlazasiadat)}van{else}nincs{/if}</td></tr>
                 <tr><td>Regisztrációs form:</td><td><a href="#" class="js-uidcopy" data-clipboard-text="{$_egyed.reglink}">Másolás vágólapra</a></td></tr>
             </tbody>
         </table>

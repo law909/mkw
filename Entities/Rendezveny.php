@@ -117,6 +117,9 @@ class Rendezveny {
     /** @ORM\Column(type="string", length=23, nullable=false) */
     private $uid;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $kellszamlazasiadat = false;
+
     public function __construct() {
         $this->rendezvenydokok = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -523,6 +526,20 @@ class Rendezveny {
      */
     public function setAr($ar) {
         $this->ar = $ar;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getKellszamlazasiadat() {
+        return $this->kellszamlazasiadat;
+    }
+
+    /**
+     * @param mixed $kellszamlazasiadat
+     */
+    public function setKellszamlazasiadat($kellszamlazasiadat) {
+        $this->kellszamlazasiadat = $kellszamlazasiadat;
     }
 
 }

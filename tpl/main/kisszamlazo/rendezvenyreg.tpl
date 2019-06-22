@@ -52,6 +52,7 @@
                     </div>
                 </div>
             </div>
+            {if ($kellszamlazasiadat)}
             <div class="row">
                 <div class="col topmargin10">
                     <h5 class="color-darshan">Számlázási adatok</h5>
@@ -93,6 +94,7 @@
                     <input type="text" class="form-control" id="hszedit" name="hazszam" required>
                 </div>
             </div>
+            {/if}
             <div class="form-group row">
                 <div class="col-sm-2">Adatkezelési hozzájárulás</div>
                 <div class="col">
