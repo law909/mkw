@@ -258,6 +258,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
 
     public function regSave() {
         $rid = $this->params->getStringRequestParam('r');
+        $kellszamlazasiadat = $this->params->getBoolRequestParam('kellszamlazasiadat', false);
         /** @var \Entities\Rendezveny $rendezveny */
         $rendezveny = $this->getRepo()->findOneBy(array('uid' => $rid));
         if ($rendezveny) {
@@ -268,7 +269,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
             }
             $partnerctrl = new \Controllers\partnerController($this->params);
             $partner = $partnerctrl->setFields($partner, null, 'pubreg');
-            if (!$this->params->getBoolRequestParam('kellszamlazasiadat', false)) {
+            if (!$kellszamlazasiadat) {
                 $partner->setNev($partner->getVezeteknev() . ' ' . $partner->getKeresztnev());
             }
             $this->getEm()->persist($partner);
@@ -323,6 +324,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
             }
 
             $v = $this->getTemplateFactory()->createMainView('rendezvenyregkoszono.tpl');
+            $v->setVar('kellszamlazasiadat', $kellszamlazasiadat);
             echo $v->getTemplateResult();
         }
     }
