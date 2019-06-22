@@ -671,6 +671,31 @@ $router->map('GET', '/admin/csomagterminal/gethtmllist', 'csomagterminalControll
 $router->map('GET', '/admin/minicrm/view', 'minicrmController#view', 'adminminicrmview');
 $router->map('POST', '/admin/minicrm/partnerimport', 'minicrmController#partnerImport', 'adminminicrmpartnerimport');
 
+$router->map('GET', '/admin/rendezveny/viewlist', 'rendezvenyController#viewlist', 'adminrendezvenyviewlist');
+$router->map('GET', '/admin/rendezveny/getlistbody', 'rendezvenyController#getlistbody', 'adminrendezvenygetlistbody');
+$router->map('GET', '/admin/rendezveny/getkarb', 'rendezvenyController#getkarb', 'adminrendezvenygetkarb');
+$router->map('GET', '/admin/rendezveny/viewkarb', 'rendezvenyController#viewkarb', 'adminrendezvenyviewkarb');
+$router->map('POST', '/admin/rendezveny/save', 'rendezvenyController#save', 'adminrendezvenysave');
+$router->map('POST', '/admin/rendezveny/setflag', 'rendezvenyController#setflag', 'adminrendezvenysetflag');
+$router->map('POST', '/admin/rendezveny/email/kezdes', 'rendezvenyController#sendKezdesEmail', 'adminsendrendezvenykezdesemail');
+
+$router->map('GET', '/admin/rendezvenydok/getemptyrow', 'rendezvenydokController#getemptyrow', 'adminrendezvenydokgetemptyrow');
+$router->map('POST', '/admin/rendezvenydok/del', 'rendezvenydokController#del', 'adminrendezvenydokdel');
+
+$router->map('GET', '/admin/rendezvenyjelentkezes/viewlist', 'rendezvenyjelentkezesController#viewlist', 'adminrendezvenyjelentkezesviewlist');
+$router->map('GET', '/admin/rendezvenyjelentkezes/getlistbody', 'rendezvenyjelentkezesController#getlistbody', 'adminrendezvenyjelentkezesgetlistbody');
+$router->map('GET', '/admin/rendezvenyjelentkezes/getkarb', 'rendezvenyjelentkezesController#getkarb', 'adminrendezvenyjelentkezesgetkarb');
+$router->map('GET', '/admin/rendezvenyjelentkezes/viewkarb', 'rendezvenyjelentkezesController#viewkarb', 'adminrendezvenyjelentkezesviewkarb');
+$router->map('POST', '/admin/rendezvenyjelentkezes/save', 'rendezvenyjelentkezesController#save', 'adminrendezvenyjelentkezessave');
+$router->map('POST', '/admin/rendezvenyjelentkezes/fizet', 'rendezvenyjelentkezesController#fizet', 'adminrendezvenyjelentkezesfizet');
+$router->map('POST', '/admin/rendezvenyjelentkezes/szamlaz', 'rendezvenyjelentkezesController#szamlaz', 'adminrendezvenyjelentkezesszamlaz');
+$router->map('POST', '/admin/rendezvenyjelentkezes/lemond', 'rendezvenyjelentkezesController#lemond', 'adminrendezvenyjelentkezeslemond');
+$router->map('POST', '/admin/rendezvenyjelentkezes/visszautal', 'rendezvenyjelentkezesController#visszautal', 'adminrendezvenyjelentkezesvisszautal');
+$router->map('GET', '/admin/rendezvenyjelentkezes/getar', 'rendezvenyjelentkezesController#getar', 'adminrendezvenyjelentkezesgetar');
+$router->map('GET', '/admin/rendezvenyjelentkezes/getfizetettosszeg', 'rendezvenyjelentkezesController#getfizetettosszeg', 'adminrendezvenyjelentkezesgetfizetettosszeg');
+$router->map('POST', '/admin/rendezvenyjelentkezes/email/dijbekero', 'rendezvenyjelentkezesController#sendDijbekeroEmail', 'adminsendrendezvenyjeldijbekeroemail');
+$router->map('POST', '/admin/rendezvenyjelentkezes/email/kezdes', 'rendezvenyjelentkezesController#sendKezdesEmail', 'adminsendrendezvenyjelkezdesemail');
+
 if (haveJog(90)) {
     $router->map('GET', '/admin/bizvissza', 'bizonylatfejController#setNyomtatvaVissza', 'adminbizvissza');
     $router->map('GET', '/admin/bizpartnerjavit', 'bizonylatfejController#repairPartnerAdat', 'adminbizpartnerjavit');
@@ -694,30 +719,6 @@ if (\mkw\store::isDarshan()) {
     $router->map('POST', '/admin/orarendhelyettesites/save', 'orarendhelyettesitesController#save', 'adminorarendhelyettesitessave');
     $router->map('POST', '/admin/orarendhelyettesites/setflag', 'orarendhelyettesitesController#setflag', 'adminorarendhelyettesitessetflag');
 
-    $router->map('GET', '/admin/rendezveny/viewlist', 'rendezvenyController#viewlist', 'adminrendezvenyviewlist');
-    $router->map('GET', '/admin/rendezveny/getlistbody', 'rendezvenyController#getlistbody', 'adminrendezvenygetlistbody');
-    $router->map('GET', '/admin/rendezveny/getkarb', 'rendezvenyController#getkarb', 'adminrendezvenygetkarb');
-    $router->map('GET', '/admin/rendezveny/viewkarb', 'rendezvenyController#viewkarb', 'adminrendezvenyviewkarb');
-    $router->map('POST', '/admin/rendezveny/save', 'rendezvenyController#save', 'adminrendezvenysave');
-    $router->map('POST', '/admin/rendezveny/setflag', 'rendezvenyController#setflag', 'adminrendezvenysetflag');
-    $router->map('POST', '/admin/rendezveny/email/kezdes', 'rendezvenyController#sendKezdesEmail', 'adminsendrendezvenykezdesemail');
-
-    $router->map('GET', '/admin/rendezvenydok/getemptyrow', 'rendezvenydokController#getemptyrow', 'adminrendezvenydokgetemptyrow');
-    $router->map('POST', '/admin/rendezvenydok/del', 'rendezvenydokController#del', 'adminrendezvenydokdel');
-
-    $router->map('GET', '/admin/rendezvenyjelentkezes/viewlist', 'rendezvenyjelentkezesController#viewlist', 'adminrendezvenyjelentkezesviewlist');
-    $router->map('GET', '/admin/rendezvenyjelentkezes/getlistbody', 'rendezvenyjelentkezesController#getlistbody', 'adminrendezvenyjelentkezesgetlistbody');
-    $router->map('GET', '/admin/rendezvenyjelentkezes/getkarb', 'rendezvenyjelentkezesController#getkarb', 'adminrendezvenyjelentkezesgetkarb');
-    $router->map('GET', '/admin/rendezvenyjelentkezes/viewkarb', 'rendezvenyjelentkezesController#viewkarb', 'adminrendezvenyjelentkezesviewkarb');
-    $router->map('POST', '/admin/rendezvenyjelentkezes/save', 'rendezvenyjelentkezesController#save', 'adminrendezvenyjelentkezessave');
-    $router->map('POST', '/admin/rendezvenyjelentkezes/fizet', 'rendezvenyjelentkezesController#fizet', 'adminrendezvenyjelentkezesfizet');
-    $router->map('POST', '/admin/rendezvenyjelentkezes/szamlaz', 'rendezvenyjelentkezesController#szamlaz', 'adminrendezvenyjelentkezesszamlaz');
-    $router->map('POST', '/admin/rendezvenyjelentkezes/lemond', 'rendezvenyjelentkezesController#lemond', 'adminrendezvenyjelentkezeslemond');
-    $router->map('POST', '/admin/rendezvenyjelentkezes/visszautal', 'rendezvenyjelentkezesController#visszautal', 'adminrendezvenyjelentkezesvisszautal');
-    $router->map('GET', '/admin/rendezvenyjelentkezes/getar', 'rendezvenyjelentkezesController#getar', 'adminrendezvenyjelentkezesgetar');
-    $router->map('GET', '/admin/rendezvenyjelentkezes/getfizetettosszeg', 'rendezvenyjelentkezesController#getfizetettosszeg', 'adminrendezvenyjelentkezesgetfizetettosszeg');
-    $router->map('POST', '/admin/rendezvenyjelentkezes/email/dijbekero', 'rendezvenyjelentkezesController#sendDijbekeroEmail', 'adminsendrendezvenyjeldijbekeroemail');
-    $router->map('POST', '/admin/rendezvenyjelentkezes/email/kezdes', 'rendezvenyjelentkezesController#sendKezdesEmail', 'adminsendrendezvenyjelkezdesemail');
     $router->map('GET', '/admin/cimletez', 'adminController#cimletez', 'admincimletez');
     $router->map('POST', '/admin/jelenbe', 'jelenletiivController#createBelepes', 'adminjelenbe');
     $router->map('POST', '/admin/jelenki', 'jelenletiivController#createKilepes', 'adminjelenki');
