@@ -114,18 +114,18 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
         return $q->getResult();
     }
 
-    public function getLejartKintlevosegByValutanem($partnerkodok = null) {
+    public function getLejartKintlevosegByValutanem($cimkek = null) {
         $pluszsql = ' WHERE (storno=0) AND (stornozott=0) AND '
             . '(((bizonylatfej_id IS NULL) AND (irany<0)) OR ((bizonylatfej_id IS NOT NULL) AND (bizonylatfej_id=hivatkozottbizonylat) AND (irany>0)))';
-        if ($partnerkodok) {
-            $pluszsql .= ' AND (partner_id IN (' . implode(',', $partnerkodok) . '))';
+        if ($cimkek) {
+            $pluszsql = ' JOIN partner_cimkek pc ON (f.partner_id=pc.partner_id) AND (pc.cimketorzs_id IN (' . \mkw\store::getCommaList($cimkek) . '))' . $pluszsql;
         }
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('nev', 'nev');
         $rsm->addScalarResult('egyenleg', 'egyenleg');
         $sql = 'SELECT v.nev,SUM(egyenleg) AS egyenleg FROM ('
             . ' SELECT valutanem_id,hivatkozottbizonylat,hivatkozottdatum,sum(brutto*irany) AS egyenleg'
-            . ' FROM folyoszamla'
+            . ' FROM folyoszamla f'
             . $pluszsql
             . ' GROUP BY valutanem_id,hivatkozottbizonylat,hivatkozottdatum) AS egyen'
             . ' LEFT JOIN valutanem v ON (egyen.valutanem_id=v.id)'
@@ -135,11 +135,11 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
         return $q->getScalarResult();
     }
 
-    public function getFakeKintlevosegByValutanem($partnerkodok = null) {
+    public function getFakeKintlevosegByValutanem($cimkek = null) {
         $filter = new FilterDescriptor();
 
-        if ($partnerkodok) {
-            $filter->addFilter('bf.partner_id', 'IN', $partnerkodok);
+        if ($cimkek) {
+            $filter->addJoin('JOIN partner_cimkek pc ON (bf.partner_id=pc.partner_id) AND (pc.cimketorzs_id IN (' . \mkw\store::getCommaList($cimkek) . '))');
         }
 
         $filter
@@ -163,11 +163,11 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository {
         return $q->getScalarResult();
     }
 
-    public function getKintlevosegByValutanem($partnerkodok = null) {
+    public function getKintlevosegByValutanem($cimkek = null) {
         $pluszsql = ' WHERE (storno=0) AND (stornozott=0) AND '
             . '(((bizonylatfej_id IS NULL) AND (irany<0)) OR ((bizonylatfej_id IS NOT NULL) AND (bizonylatfej_id=hivatkozottbizonylat) AND (irany>0)))';
-        if ($partnerkodok) {
-            $pluszsql .= ' AND (f.partner_id IN (' . implode(',', $partnerkodok) . '))';
+        if ($cimkek) {
+            $pluszsql = ' JOIN partner_cimkek pc ON (f.partner_id=pc.partner_id) AND (pc.cimketorzs_id IN (' . \mkw\store::getCommaList($cimkek) . '))' . $pluszsql;
         }
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('nev', 'nev');

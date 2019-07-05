@@ -270,16 +270,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $cf = $this->params->getArrayRequestParam('cimkefilter');
         if ($cf) {
-            if (is_array($cf)) {
-                $cimkekodok = implode(',', $cf);
-            }
-            else {
-                $cimkekodok = $cf;
-            }
-            if ($cimkekodok) {
-                $filter->addJoin('JOIN _xx.partner p');
-                $filter->addJoin('INNER JOIN p.cimkek c WITH (c.id IN (' . $cimkekodok . '))');
-            }
+            $filter->addJoin('JOIN _xx.partner p');
+            $filter->addJoin('INNER JOIN p.cimkek c WITH (c.id IN (' . \mkw\store::getCommaList($cf) . '))');
         }
 
         $f = $this->params->getIntRequestParam('feketelistafilter');

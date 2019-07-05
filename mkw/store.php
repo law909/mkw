@@ -1432,4 +1432,10 @@ class store {
         }
     }
 
+    public static function getCommaList($vmi) {
+        if (is_array($vmi)) {
+            return implode(',', $vmi);
+        }
+        return $vmi;
+    }
 }

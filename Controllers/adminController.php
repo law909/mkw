@@ -74,15 +74,13 @@ class adminController extends mkwhelpers\Controller {
                 }
                 $view->setVar('kintlevoseg', $nemlejart);
 
-                $partnerkodok = \mkw\store::getEm()->getRepository('Entities\Partner')->getByCimkek(array(\mkw\store::getParameter(\mkw\consts::SpanyolCimke)));
-
                 $lejart = array();
-                $r = $this->getRepo('Entities\Folyoszamla')->getLejartKintlevosegByValutanem($partnerkodok);
+                $r = $this->getRepo('Entities\Folyoszamla')->getLejartKintlevosegByValutanem(array(\mkw\store::getParameter(\mkw\consts::SpanyolCimke)));
                 foreach ($r as $_r) {
                     $lejart[$_r['nev']] = $_r;
                 }
                 if (\mkw\store::isFakeKintlevoseg()) {
-                    $fake = $this->getRepo('Entities\Folyoszamla')->getFakeKintlevosegByValutanem($partnerkodok);
+                    $fake = $this->getRepo('Entities\Folyoszamla')->getFakeKintlevosegByValutanem(array(\mkw\store::getParameter(\mkw\consts::SpanyolCimke)));
                     foreach ($fake as $_r) {
                         if (array_key_exists($_r['nev'], $lejart)) {
                             $lejart[$_r['nev']]['egyenleg'] += $_r['egyenleg'] * 1;
@@ -95,7 +93,7 @@ class adminController extends mkwhelpers\Controller {
                 $view->setVar('spanyollejartkintlevoseg', $lejart);
 
                 $nemlejart = array();
-                $r = \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem($partnerkodok);
+                $r = \mkw\store::getEm()->getRepository('Entities\Folyoszamla')->getKintlevosegByValutanem(array(\mkw\store::getParameter(\mkw\consts::SpanyolCimke)));
                 foreach ($r as $_r) {
                     $nemlejart[$_r['nev']] = $_r;
                 }
