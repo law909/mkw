@@ -688,13 +688,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $fv = $this->params->getArrayRequestParam('cimkefilter');
             $cimkekodok = implode(',', $fv);
             if ($cimkekodok) {
-                $q = $this->getEm()->createQuery('SELECT p.id FROM Entities\Partnercimketorzs pc JOIN pc.partnerek p WHERE pc.id IN (' . $cimkekodok . ')');
-                $res = $q->getScalarResult();
-                $cimkefilter = array();
-                foreach ($res as $sor) {
-                    $cimkefilter[] = $sor['id'];
-                }
-                $filter->addFilter('id', 'IN', $cimkefilter);
+                $filter->addJoin('INNER JOIN _xx.cimkek c WITH (c.id IN (' . $cimkekodok . '))');
             }
         }
 
