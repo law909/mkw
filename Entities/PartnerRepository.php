@@ -2,6 +2,8 @@
 
 namespace Entities;
 
+use Doctrine\ORM\Query\ResultSetMapping;
+
 class PartnerRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
@@ -115,11 +117,31 @@ class PartnerRepository extends \mkwhelpers\Repository {
                 $cimkekodok = $cimkefilter;
             }
             if ($cimkekodok) {
+
+                $rsm = new ResultSetMapping();
+                $rsm->addScalarResult('partner_id', 'id');
+                $sql = 'SELECT pc.partner_id'
+                    . ' FROM partner_cimkek pc'
+                    . ' WHERE pc.cimketorzs_id IN (' . $cimkekodok .')';
+                $q = $this->_em->createNativeQuery($sql, $rsm);
+                $res = $q->getScalarResult();
+                foreach ($res as $sor) {
+                    $partnerkodok[] = $sor['id'];
+                }
+
+                /**
+                $partnerkodok = array();
+                list($usec, $sec) = explode('.', microtime(true));
+                \mkw\store::writelog('old start ' . date('H:i:s', $sec) . $usec);
+
                 $q = \mkw\store::getEm()->createQuery('SELECT p.id FROM Entities\Partnercimketorzs pc JOIN pc.partnerek p WHERE pc.id IN (' . $cimkekodok . ')');
                 $res = $q->getScalarResult();
                 foreach ($res as $sor) {
                     $partnerkodok[] = $sor['id'];
                 }
+                list($usec, $sec) = explode('.', microtime(true));
+                \mkw\store::writelog('old stop ' . date('H:i:s', $sec) . $usec);
+                 */
             }
         }
         return $partnerkodok;

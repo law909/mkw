@@ -270,9 +270,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         $cf = $this->params->getArrayRequestParam('cimkefilter');
         if ($cf) {
-            $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($cf);
-            if ($partnerkodok) {
-                $filter->addFilter('partner', 'IN', $partnerkodok);
+            if (is_array($cf)) {
+                $cimkekodok = implode(',', $cf);
+            }
+            else {
+                $cimkekodok = $cf;
+            }
+            if ($cimkekodok) {
+                $filter->addJoin('JOIN _xx.partner p');
+                $filter->addJoin('INNER JOIN p.cimkek c WITH (c.id IN (' . $cimkekodok . '))');
             }
         }
 

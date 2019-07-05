@@ -6,9 +6,11 @@ namespace mkwhelpers;
 class FilterDescriptor implements \Countable {
 
     private $filter = array();
+    private $join = array();
 
     public function clear() {
         $this->filter = array();
+        $this->join = array();
     }
 
     public function addFilter($field, $clause, $value) {
@@ -33,8 +35,16 @@ class FilterDescriptor implements \Countable {
         return $this;
     }
 
+    public function addJoin($str) {
+        $this->join[] = $str;
+    }
+
     public function getFilter() {
         return $this->filter;
+    }
+
+    public function getJoin() {
+        return $this->join;
     }
 
     public function getArray() {
@@ -61,6 +71,12 @@ class FilterDescriptor implements \Countable {
     }
 
     public function getFilterString($palias = '_xx', $parampre = 'p') {
+        $str = implode(' ', $this->join);
+        $f = $this->_getFilterString($palias, $parampre);
+        return ' ' . implode(' ', array($str, $f));
+    }
+
+    protected function _getFilterString($palias = '_xx', $parampre = 'p') {
         $filter = $this->getFilter();
         if (array_key_exists('fields', $filter) && array_key_exists('values', $filter)) {
             $fno = 1;
