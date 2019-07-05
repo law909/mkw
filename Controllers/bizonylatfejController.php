@@ -154,7 +154,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
         $f = $this->params->getStringRequestParam('szamlazasiutcafilter');
         if ($f) {
-            $filter->addFilter('partnerutcav', 'LIKE', '%' . $f . '%');
+            $filter->addFilter('partnerutca', 'LIKE', '%' . $f . '%');
         }
         $tip = $this->params->getStringRequestParam('datumtipusfilter');
         $tol = $this->params->getStringRequestParam('datumtolfilter');

@@ -129,19 +129,6 @@ class PartnerRepository extends \mkwhelpers\Repository {
                     $partnerkodok[] = $sor['id'];
                 }
 
-                /**
-                $partnerkodok = array();
-                list($usec, $sec) = explode('.', microtime(true));
-                \mkw\store::writelog('old start ' . date('H:i:s', $sec) . $usec);
-
-                $q = \mkw\store::getEm()->createQuery('SELECT p.id FROM Entities\Partnercimketorzs pc JOIN pc.partnerek p WHERE pc.id IN (' . $cimkekodok . ')');
-                $res = $q->getScalarResult();
-                foreach ($res as $sor) {
-                    $partnerkodok[] = $sor['id'];
-                }
-                list($usec, $sec) = explode('.', microtime(true));
-                \mkw\store::writelog('old stop ' . date('H:i:s', $sec) . $usec);
-                 */
             }
         }
         return $partnerkodok;
