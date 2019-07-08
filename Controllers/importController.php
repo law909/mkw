@@ -118,7 +118,7 @@ class importController extends \mkwhelpers\Controller {
         if (!$meobj) {
             $meobj = new \Entities\ME();
             $meobj->setNev($me);
-            \mkw\store::getEm()->persist($me);
+            \mkw\store::getEm()->persist($meobj);
             \mkw\store::getEm()->flush();
         }
     }
