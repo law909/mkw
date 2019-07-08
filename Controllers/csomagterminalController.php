@@ -27,48 +27,50 @@ class csomagterminalController extends \mkwhelpers\MattableController {
         $res = curl_exec($ch);
         $res = json_decode($res);
         curl_close($ch);
-        $db = 0;
-        foreach ($res as $r) {
-            $db++;
-            $terminal = $this->getRepo('Entities\CsomagTerminal')->findOneBy(array('idegenid' => $r->place_id, 'tipus' => 'foxpost'));
-            if (!$terminal) {
-                $terminal = new \Entities\CsomagTerminal();
-            }
-            $terminal->setIdegenid($r->place_id);
-            $terminal->setNev($r->name);
-            $terminal->setCim($r->address);
-            $terminal->setCsoport($r->group);
-            $terminal->setFindme($r->findme);
-            $terminal->setNyitva($r->open);
-            $terminal->setGeolat($r->geolat);
-            $terminal->setGeolng($r->geolng);
-            $terminal->setInaktiv(false);
-            $terminal->setTipus('foxpost');
-            $this->getEm()->persist($terminal);
-            if ($db % 20 === 0) {
-                $this->getEm()->flush();
-                $this->getEm()->clear();
-            }
-        }
-        $this->getEm()->flush();
-        $this->getEm()->clear();
-
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('tipus', '=', 'foxpost');
-        $terminalok = $this->getRepo('\Entities\CsomagTerminal')->getAll($filter);
-        /** @var \Entities\CsomagTerminal $terminal */
-        foreach ($terminalok as $terminal) {
-            $megvan = false;
+        if ($res && is_array($res)) {
+            $db = 0;
             foreach ($res as $r) {
-                $megvan = $megvan || ($r->place_id == $terminal->getIdegenid());
-            }
-            if (!$megvan) {
-                $terminal->setInaktiv(!$megvan);
+                $db++;
+                $terminal = $this->getRepo('Entities\CsomagTerminal')->findOneBy(array('idegenid' => $r->place_id, 'tipus' => 'foxpost'));
+                if (!$terminal) {
+                    $terminal = new \Entities\CsomagTerminal();
+                }
+                $terminal->setIdegenid($r->place_id);
+                $terminal->setNev($r->name);
+                $terminal->setCim($r->address);
+                $terminal->setCsoport($r->group);
+                $terminal->setFindme($r->findme);
+                $terminal->setNyitva($r->open);
+                $terminal->setGeolat($r->geolat);
+                $terminal->setGeolng($r->geolng);
+                $terminal->setInaktiv(false);
+                $terminal->setTipus('foxpost');
                 $this->getEm()->persist($terminal);
+                if ($db % 20 === 0) {
+                    $this->getEm()->flush();
+                    $this->getEm()->clear();
+                }
             }
+            $this->getEm()->flush();
+            $this->getEm()->clear();
+
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('tipus', '=', 'foxpost');
+            $terminalok = $this->getRepo('\Entities\CsomagTerminal')->getAll($filter);
+            /** @var \Entities\CsomagTerminal $terminal */
+            foreach ($terminalok as $terminal) {
+                $megvan = false;
+                foreach ($res as $r) {
+                    $megvan = $megvan || ($r->place_id == $terminal->getIdegenid());
+                }
+                if (!$megvan) {
+                    $terminal->setInaktiv(!$megvan);
+                    $this->getEm()->persist($terminal);
+                }
+            }
+            $this->getEm()->flush();
+            $this->getEm()->clear();
         }
-        $this->getEm()->flush();
-        $this->getEm()->clear();
         return $res;
     }
 
