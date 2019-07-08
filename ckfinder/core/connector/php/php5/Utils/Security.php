@@ -43,7 +43,7 @@ class CKFinder_Connector_Utils_Security
                 $this->stripQuotes($_COOKIE);
             }
             if (!empty($_FILES)) {
-                while (list($k,$v) = each($_FILES)) {
+                foreach ($_FILES as $k => $v) {
                     if (isset($_FILES[$k]['name'])) {
                         $this->stripQuotes($_FILES[$k]['name']);
                     }
@@ -64,7 +64,7 @@ class CKFinder_Connector_Utils_Security
     {
         if (is_array($var)) {
             if ($depth++<$howDeep) {
-                while (list($k,$v) = each($var)) {
+                foreach ($var as $k => $v) {
                     $this->stripQuotes($var[$k], $depth, $howDeep);
                 }
             }
