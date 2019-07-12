@@ -64,10 +64,10 @@ class Orarend extends \Entities\Orarend implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Orarend' . "\0" . 'id', '' . "\0" . 'Entities\\Orarend' . "\0" . 'created', '' . "\0" . 'Entities\\Orarend' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Orarend' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaoratipus', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nev', '' . "\0" . 'Entities\\Orarend' . "\0" . 'maxferohely', '' . "\0" . 'Entities\\Orarend' . "\0" . 'atlagresztvevoszam', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nap', '' . "\0" . 'Entities\\Orarend' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Orarend' . "\0" . 'veg', '' . "\0" . 'Entities\\Orarend' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Orarend' . "\0" . 'alkalmi'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Orarend' . "\0" . 'id', '' . "\0" . 'Entities\\Orarend' . "\0" . 'created', '' . "\0" . 'Entities\\Orarend' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Orarend' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaoratipus', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nev', '' . "\0" . 'Entities\\Orarend' . "\0" . 'maxferohely', '' . "\0" . 'Entities\\Orarend' . "\0" . 'atlagresztvevoszam', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nap', '' . "\0" . 'Entities\\Orarend' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Orarend' . "\0" . 'veg', '' . "\0" . 'Entities\\Orarend' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Orarend' . "\0" . 'multilang'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Orarend' . "\0" . 'id', '' . "\0" . 'Entities\\Orarend' . "\0" . 'created', '' . "\0" . 'Entities\\Orarend' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Orarend' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaoratipus', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nev', '' . "\0" . 'Entities\\Orarend' . "\0" . 'maxferohely', '' . "\0" . 'Entities\\Orarend' . "\0" . 'atlagresztvevoszam', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nap', '' . "\0" . 'Entities\\Orarend' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Orarend' . "\0" . 'veg', '' . "\0" . 'Entities\\Orarend' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Orarend' . "\0" . 'alkalmi'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Orarend' . "\0" . 'id', '' . "\0" . 'Entities\\Orarend' . "\0" . 'created', '' . "\0" . 'Entities\\Orarend' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Orarend' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaterem', '' . "\0" . 'Entities\\Orarend' . "\0" . 'jogaoratipus', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nev', '' . "\0" . 'Entities\\Orarend' . "\0" . 'maxferohely', '' . "\0" . 'Entities\\Orarend' . "\0" . 'atlagresztvevoszam', '' . "\0" . 'Entities\\Orarend' . "\0" . 'nap', '' . "\0" . 'Entities\\Orarend' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Orarend' . "\0" . 'veg', '' . "\0" . 'Entities\\Orarend' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Orarend' . "\0" . 'multilang'];
     }
 
     /**
@@ -532,28 +532,6 @@ class Orarend extends \Entities\Orarend implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getAlkalmi()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAlkalmi', []);
-
-        return parent::getAlkalmi();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setAlkalmi($alkalmi)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAlkalmi', [$alkalmi]);
-
-        return parent::setAlkalmi($alkalmi);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function isDelelottKezdodik()
     {
 
@@ -582,6 +560,28 @@ class Orarend extends \Entities\Orarend implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAtlagresztvevoszam', [$atlagresztvevoszam]);
 
         return parent::setAtlagresztvevoszam($atlagresztvevoszam);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMultilang()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMultilang', []);
+
+        return parent::getMultilang();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMultilang($multilang)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMultilang', [$multilang]);
+
+        return parent::setMultilang($multilang);
     }
 
 }

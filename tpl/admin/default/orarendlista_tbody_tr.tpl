@@ -35,7 +35,7 @@
         <table>
             <tbody>
                 <tr><td><a href="#" data-id="{$_orarend.id}" data-flag="inaktiv" class="js-flagcheckbox{if ($_orarend.inaktiv)} ui-state-hover{/if}">{at('Inaktív')}</a></td></tr>
-                <tr><td><a href="#" data-id="{$_orarend.id}" data-flag="alkalmi" class="js-flagcheckbox{if ($_orarend.alkalmi)} ui-state-hover{/if}">{at('Alkalmi')}</a></td></tr>
+                <tr><td><a href="#" data-id="{$_orarend.id}" data-flag="multilang" class="js-flagcheckbox{if ($_orarend.multilang)} ui-state-hover{/if}">{at('Több nyelvű')}</a></td></tr>
             </tbody>
         </table>
     </td>

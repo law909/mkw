@@ -37,8 +37,8 @@ class orarendController extends \mkwhelpers\MattableController {
         $x['kezdet'] = $t->getKezdetStr();
 		$x['veg'] = $t->getVegStr();
 		$x['inaktiv'] = $t->getInaktiv();
-		$x['alkalmi'] = $t->getAlkalmi();
 		$x['atlagresztvevoszam'] = $t->getAtlagresztvevoszam();
+		$x['multilang'] = $t->getMultilang();
 		return $x;
 	}
 
@@ -74,8 +74,8 @@ class orarendController extends \mkwhelpers\MattableController {
 		$obj->setKezdet($this->params->getStringRequestParam('kezdet'));
         $obj->setVeg($this->params->getStringRequestParam('veg'));
 		$obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
-        $obj->setAlkalmi($this->params->getBoolRequestParam('alkalmi'));
         $obj->setAtlagresztvevoszam($this->params->getIntRequestParam('atlagresztvevoszam'));
+        $obj->setMultilang($this->params->getBoolRequestParam('multilang'));
 //		$obj->doStuffOnPrePersist();
 		return $obj;
 	}
@@ -95,9 +95,9 @@ class orarendController extends \mkwhelpers\MattableController {
         if ($f != 9) {
             $filter->addFilter('inaktiv', '=', $f);
         }
-        $f = $this->params->getNumRequestParam('alkalmifilter',9);
+        $f = $this->params->getNumRequestParam('multilangfilter',9);
         if ($f != 9) {
-            $filter->addFilter('alkalmi', '=', $f);
+            $filter->addFilter('multilang', '=', $f);
         }
         if (!is_null($this->params->getRequestParam('napfilter', null))) {
             $filter->addFilter('nap' , '=', $this->params->getIntRequestParam('napfilter'));
@@ -218,6 +218,8 @@ class orarendController extends \mkwhelpers\MattableController {
                 case 'alkalmi':
                     $obj->setAlkalmi($kibe);
                     break;
+                case 'multilang':
+                    $obj->setMultilang($kibe);
             }
             $this->getEm()->persist($obj);
             $this->getEm()->flush();
@@ -251,7 +253,8 @@ class orarendController extends \mkwhelpers\MattableController {
                 'terem' => $item->getJogateremNev(),
                 'class' => $item->getJogateremOrarendclass(),
                 'delelott' => $item->isDelelottKezdodik(),
-                'elmarad' => false
+                'elmarad' => false,
+                'multilang' => $item->getMultilang()
             );
             $hf = new \mkwhelpers\FilterDescriptor();
             $hf->addFilter('datum', '>=', \mkw\store::startOfWeek($startdatum));
@@ -301,7 +304,8 @@ class orarendController extends \mkwhelpers\MattableController {
                 'terem' => $item->getJogateremNev(),
                 'class' => $item->getJogateremOrarendclass(),
                 'delelott' => $item->isDelelottKezdodik(),
-                'atlagresztvevoszam' => $item->getAtlagresztvevoszam()
+                'atlagresztvevoszam' => $item->getAtlagresztvevoszam(),
+                'multilang' => $item->getMultilang()
             );
         }
         $view = $this->createView('orarendprint.tpl');

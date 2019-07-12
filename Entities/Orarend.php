@@ -77,7 +77,7 @@ class Orarend {
     private $inaktiv = false;
 
     /** @ORM\Column(type="boolean", nullable=false) */
-    private $alkalmi = false;
+    private $multilang = false;
 
     public function getDolgozo() {
         return $this->dolgozo;
@@ -299,20 +299,6 @@ class Orarend {
         return '';
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAlkalmi() {
-        return $this->alkalmi;
-    }
-
-    /**
-     * @param mixed $alkalmi
-     */
-    public function setAlkalmi($alkalmi) {
-        $this->alkalmi = $alkalmi;
-    }
-
     public function isDelelottKezdodik() {
         $noon = '12:00:00';
         return $this->getKezdetStr() <= $noon;
@@ -330,5 +316,19 @@ class Orarend {
      */
     public function setAtlagresztvevoszam($atlagresztvevoszam) {
         $this->atlagresztvevoszam = $atlagresztvevoszam;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMultilang() {
+        return $this->multilang;
+    }
+
+    /**
+     * @param mixed $multilang
+     */
+    public function setMultilang($multilang) {
+        $this->multilang = $multilang;
     }
 }

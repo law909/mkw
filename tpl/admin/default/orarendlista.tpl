@@ -72,10 +72,10 @@
                     <option value="1">{at('Inaktív')}</option>
                     <option value="9">{at('Mindegy')}</option>
                 </select>
-                <select id="alkalmifilter" name="alkalmifilter">
+                <select id="multilangfilter" name="multilangfilter">
                     <option value="9">{at('Mindegy')}</option>
-                    <option value="0">{at('Nem alkalmi')}</option>
-                    <option value="1">{at('Alkalmi')}</option>
+                    <option value="0">{at('Magyar')}</option>
+                    <option value="1">{at('Több nyelvű')}</option>
                 </select>
             </div>
         </div>

@@ -40,7 +40,7 @@ $(document).ready(function () {
             onGetTBody: function () {
             },
             filter: {
-                fields: ['#nevfilter', '#inaktivfilter', '#alkalmifilter', '#napfilter', '#jogateremfilter', '#jogaoratipusfilter', '#dolgozofilter']
+                fields: ['#nevfilter', '#inaktivfilter', '#multilangfilter', '#napfilter', '#jogateremfilter', '#jogaoratipusfilter', '#dolgozofilter']
             },
             tablebody: {
                 url: '/admin/orarend/getlistbody',
@@ -150,32 +150,14 @@ $(document).ready(function () {
 
             e.preventDefault();
             var $this = $(this);
+
+
+            if ($this.attr('data-flag') === 'multilang') {
+                doit();
+            }
             if ($this.attr('data-flag') === 'inaktiv') {
                 if (!$this.is('.ui-state-hover')) {
                     dialogcenter.html('Biztos, hogy inaktívvá teszi az órát? Az óra ezután a naptárból is kikerül.').dialog({
-                        resizable: false,
-                        height: 200,
-                        modal: true,
-                        buttons: {
-                            'Igen': function () {
-                                doit(function () {
-                                    dialogcenter.dialog('close');
-                                });
-                            },
-                            'Nem': function () {
-                                $(this).dialog('close');
-                            }
-                        }
-                    });
-                }
-                else {
-                    doit();
-                }
-            }
-
-            if ($this.attr('data-flag') === 'alkalmi') {
-                if (!$this.is('.ui-state-hover')) {
-                    dialogcenter.html('Biztos, hogy alkalmivá teszi az órát? Az óra ezután a nyomtatásból kikerül.').dialog({
                         resizable: false,
                         height: 200,
                         modal: true,
