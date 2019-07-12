@@ -45,9 +45,6 @@ class orarendhelyettesitesController extends \mkwhelpers\MattableController {
 		if ($orarend) {
 			$obj->setOrarend($orarend);
 		}
-		else {
-		    $obj->setOrarend(null);
-        }
         $helyettesito = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('helyettesito'));
         if ($helyettesito) {
             $obj->setHelyettesito($helyettesito);
