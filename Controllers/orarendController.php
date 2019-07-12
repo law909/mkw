@@ -228,6 +228,7 @@ class orarendController extends \mkwhelpers\MattableController {
 
     public function exportToWordpress() {
 	    $offset = $this->params->getIntRequestParam('o', 0);
+	    $tanarkod = $this->params->getIntRequestParam('t', 0);
         $startdatum = \mkw\store::startOfWeek();
         if ($offset < 0) {
             $startdatum->sub(new \DateInterval('P' . abs($offset) . 'W'));
@@ -237,6 +238,9 @@ class orarendController extends \mkwhelpers\MattableController {
         }
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('inaktiv', '=', false);
+        if ($tanarkod) {
+            $filter->addFilter('dolgozo', '=', $tanarkod);
+        }
 	    $rec = $this->getRepo()->getWithJoins($filter, array('nap' => 'ASC', 'kezdet' => 'ASC', 'nev' => 'ASC'));
 	    $orarend = array();
 	    /** @var \Entities\Orarend $item */
@@ -282,6 +286,7 @@ class orarendController extends \mkwhelpers\MattableController {
         $view->setVar('orarend', $orarend);
         $view->setVar('prevoffset', $offset - 1);
         $view->setVar('nextoffset', $offset + 1);
+        $view->setVar('tanarkod', $tanarkod);
         $view->printTemplateResult();
     }
 

@@ -142,9 +142,9 @@
 <body>
 <div class="dtt">
     <div class="dttlapozo">
-        <a href="/orarend/wp?o={$prevoffset}" class="dttprev">Előző hét</a>
-        <a href="/orarend/wp" class="dttakt">Aktuális hét</a>
-        <a href="/orarend/wp?o={$nextoffset}" class="dttnext">Következő hét</a>
+        <a href="/orarend/wp?o={$prevoffset}{if ($tanarkod)}&t={$tanarkod}{/if}" class="dttprev">Előző hét</a>
+        <a href="/orarend/wp{if ($tanarkod)}?t={$tanarkod}{/if}" class="dttakt">Aktuális hét</a>
+        <a href="/orarend/wp?o={$nextoffset}{if ($tanarkod)}&t={$tanarkod}{/if}" class="dttnext">Következő hét</a>
     </div>
     {foreach $orarend as $nap}
     <div class="dttnap">
