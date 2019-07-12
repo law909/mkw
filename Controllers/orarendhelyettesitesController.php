@@ -41,20 +41,34 @@ class orarendhelyettesitesController extends \mkwhelpers\MattableController {
      * @return mixed
      */
 	protected function setFields($obj) {
-		$orarend = \mkw\store::getEm()->getRepository('Entities\Orarend')->find($this->params->getIntRequestParam('orarend'));
-		if ($orarend) {
-			$obj->setOrarend($orarend);
-		}
-        $helyettesito = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('helyettesito'));
-        if ($helyettesito) {
-            $obj->setHelyettesito($helyettesito);
+	    switch ($this->$this->params->getStringRequestParam('oper')) {
+	        case 'edit':
+                $helyettesito = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('helyettesito'));
+                if ($helyettesito) {
+                    $obj->setHelyettesito($helyettesito);
+                }
+                else {
+                    $obj->setHelyettesito(null);
+                }
+                $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
+                $obj->setElmarad($this->params->getBoolRequestParam('elmarad'));
+                break;
+            default:
+                $orarend = \mkw\store::getEm()->getRepository('Entities\Orarend')->find($this->params->getIntRequestParam('orarend'));
+                if ($orarend) {
+                    $obj->setOrarend($orarend);
+                }
+                $helyettesito = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('helyettesito'));
+                if ($helyettesito) {
+                    $obj->setHelyettesito($helyettesito);
+                }
+                else {
+                    $obj->setHelyettesito(null);
+                }
+                $obj->setDatum($this->params->getStringRequestParam('datum'));
+                $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
+                $obj->setElmarad($this->params->getBoolRequestParam('elmarad'));
         }
-        else {
-            $obj->setHelyettesito(null);
-        }
-		$obj->setDatum($this->params->getStringRequestParam('datum'));
-		$obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
-        $obj->setElmarad($this->params->getBoolRequestParam('elmarad'));
 //		$obj->doStuffOnPrePersist();
 		return $obj;
 	}
