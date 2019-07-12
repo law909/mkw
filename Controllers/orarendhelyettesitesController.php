@@ -41,7 +41,7 @@ class orarendhelyettesitesController extends \mkwhelpers\MattableController {
      * @return mixed
      */
 	protected function setFields($obj) {
-	    switch ($this->$this->params->getStringRequestParam('oper')) {
+	    switch ($this->params->getStringRequestParam('oper')) {
 	        case 'edit':
                 $helyettesito = \mkw\store::getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('helyettesito'));
                 if ($helyettesito) {
