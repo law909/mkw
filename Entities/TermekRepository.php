@@ -368,7 +368,7 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $q->getScalarResult();
     }
 
-    public function getTermekIds($filter, $order) {
+    public function getTermekIds($filter, $order = array()) {
         $this->addAktivLathatoFilter($filter);
         $q = $this->_em->createQuery('SELECT DISTINCT _xx.id '
             . ' FROM Entities\Termek _xx'
