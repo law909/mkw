@@ -505,7 +505,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                     }
                     // termek id-k csak kategoriaval es arral szurve
                     // a szuroben szereplo cimkek megallapitasahoz
-                    $termekids = $termekrepo->getTermekIds($keresofilter->merge($kategoriafilter)->merge($arfilter)->merge($akciosfilter), $order);
+                    $termekids = $termekrepo->getTermekIds($keresofilter->merge($kategoriafilter)->merge($arfilter)->merge($akciosfilter));
                     $tid = array();
                     foreach ($termekids as $termek) {
                         $tid[] = $termek['id'];
@@ -786,7 +786,7 @@ class termekfaController extends \mkwhelpers\MattableController {
                     }
                     // termek id-k csak kategoriaval es arral szurve
                     // a szuroben szereplo cimkek megallapitasahoz
-                    $termekids = $termekrepo->getTermekIds($keresofilter->merge($kategoriafilter)->merge($arfilter)->merge($akciosfilter), $order);
+                    $termekids = $termekrepo->getTermekIds($keresofilter->merge($kategoriafilter)->merge($arfilter)->merge($akciosfilter));
                     $tid = array();
                     foreach ($termekids as $termek) {
                         $tid[] = $termek['id'];
