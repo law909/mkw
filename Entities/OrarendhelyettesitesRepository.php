@@ -37,10 +37,12 @@ class OrarendhelyettesitesRepository extends \mkwhelpers\Repository {
 
     public function getCount($filter) {
         $q = $this->_em->createQuery('SELECT COUNT(_xx)'
-            . ' FROM Entities\Orarend _xx'
-            . ' LEFT JOIN _xx.dolgozo dolgozo'
-            . ' LEFT JOIN _xx.jogaterem jogaterem'
-            . ' LEFT JOIN _xx.jogaoratipus jogaoratipus'
+            . ' FROM Entities\Orarendhelyettesites _xx'
+            . ' LEFT JOIN _xx.helyettesito helyettesito'
+            . ' LEFT JOIN _xx.orarend orarend'
+            . ' LEFT JOIN orarend.dolgozo dolgozo'
+            . ' LEFT JOIN orarend.jogaterem jogaterem'
+            . ' LEFT JOIN orarend.jogaoratipus jogaoratipus'
             . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
