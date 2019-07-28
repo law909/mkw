@@ -104,6 +104,7 @@
 		  <div class="modal-footer"></div>
 		</div>
 		<div id="messagecenter" class="mfp-hide"></div>
+        <!--
         <script type="text/javascript">
             (function(e,a){
                 var t,r=e.getElementsByTagName("head")[0],c=e.location.protocol;
@@ -112,5 +113,6 @@
                 t.src=c+"//front.optimonk.com/public/"+a+"/js/preload.js";r.appendChild(t);
             })(document,"31897");
         </script>
+        -->
 	</body>
 </html>

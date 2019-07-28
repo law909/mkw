@@ -299,7 +299,8 @@
 								<div>
 									<label class="checkbox">
 										<input name="aszfready" type="checkbox">
-										Tudomásul veszem és elfogadom az <a href="{$showaszflink}" target="empty" class="js-chkaszf">ÁSZF</a>-et<br>és a rendeléssel járó fizetési kötelezettséget
+                                        Kérjük, a jelölőnégyzetbe helyezett pipával igazolja, hogy elolvasta, megértette, és elfogadta <a href="{$showaszflink}" target="empty" class="js-chkaszf">ÁSZF</a>-ünket és adatvédelmi nyilatkozatunkat.
+                                        Felhívjuk szíves figyelmét, hogy a „megrendelés elküldése” gombra történő kattintással Ön kötelező érvényű ajánlatot tesz a kosárba helyezett termék megvásárlására, ami fizetési kötelezettséget von maga után.
 									</label>
 								</div>
 								<div><input type="submit" class="btn cartbtn chk-sendorderbtn js-chksendorderbtn" value="Megrendelés elküldése"></div>
