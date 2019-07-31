@@ -31,6 +31,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $x['kezdodatum'] = $t->getKezdodatumStr();
         $x['kezdoido'] = $t->getKezdoido();
         $x['jogateremnev'] = $t->getJogateremNev();
+        $x['helyszinnev'] = $t->getHelyszinNev();
         $x['rendezvenyallapotnev'] = $t->getRendezvenyallapotNev();
         $x['todoplakat'] = $t->getTodoplakat();
         $x['todofbevent'] = $t->getTodofbevent();
@@ -81,6 +82,10 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         if ($ck) {
             $obj->setJogaterem($ck);
         }
+        $ck = \mkw\store::getEm()->getRepository('Entities\Helyszin')->find($this->params->getIntRequestParam('helyszin', 0));
+        if ($ck) {
+            $obj->setHelyszin($ck);
+        }
         $dokids = $this->params->getArrayRequestParam('dokid');
         foreach ($dokids as $dokid) {
             if (($this->params->getStringRequestParam('dokurl_' . $dokid, '') !== '') ||
@@ -120,6 +125,9 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         }
         if (!is_null($this->params->getRequestParam('jogateremfilter', null))) {
             $filterarr->addFilter('jogaterem', '=', $this->params->getIntRequestParam('jogateremfilter'));
+        }
+        if (!is_null($this->params->getRequestParam('helyszinfilter', null))) {
+            $filterarr->addFilter('helyszin', '=', $this->params->getIntRequestParam('helyszinfilter'));
         }
         if (!is_null($this->params->getRequestParam('rendezvenyallapotfilter', null))) {
             $filterarr->addFilter('rendezvenyallapot', '=', $this->params->getIntRequestParam('rendezvenyallapotfilter'));
@@ -179,6 +187,8 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $view->setVar('rendezvenyallapotlist', $rcs->getSelectList());
         $jtcs = new jogateremController($this->params);
         $view->setVar('jogateremlist', $jtcs->getSelectList());
+        $hcs = new helyszinController($this->params);
+        $view->setVar('helyszinlist', $hcs->getSelectList());
         $view->printTemplateResult(false);
     }
 
@@ -200,6 +210,8 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $view->setVar('rendezvenyallapotlist', $rcs->getSelectList(($record ? $record->getRendezvenyallapotId() : 0)));
         $jtcs = new jogateremController($this->params);
         $view->setVar('jogateremlist', $jtcs->getSelectList(($record ? $record->getJogateremId() : 0)));
+        $hcs = new helyszinController($this->params);
+        $view->setVar('helyszinlist', $hcs->getSelectList(($record ? $record->getHelyszinId() : 0)));
         return $view->getTemplateResult();
     }
 
@@ -290,6 +302,9 @@ class rendezvenyController extends \mkwhelpers\MattableController {
                 $subject->setVar('jelentkezes', $tpldata);
                 $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
                 $body->setVar('jelentkezes', $tpldata);
+                if ($rendezveny && $rendezveny->getHelyszin()) {
+                    $body->setVar('helyszin', $rendezveny->getHelyszin()->getEmailsablon());
+                }
                 if (\mkw\store::getConfigValue('developer')) {
                     \mkw\store::writelog($subject->getTemplateResult(), 'rendezvenyregkoszonoemail.html');
                     \mkw\store::writelog($body->getTemplateResult(), 'rendezvenyregkoszonoemail.html');

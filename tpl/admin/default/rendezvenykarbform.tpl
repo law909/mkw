@@ -47,6 +47,17 @@
                     </td>
                 </tr>
                 <tr>
+                    <td><label for="HelszinEdit">{at('Rendezvény helyszíne')}:</label></td>
+                    <td><select id="HelyszinEdit" name="helyszin">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $helyszinlist as $_tanar}
+                                <option
+                                    value="{$_tanar.id}"{if ($_tanar.selected)} selected="selected"{/if}>{$_tanar.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td><label for="JogateremEdit">{at('Rendezvény helye')}:</label></td>
                     <td><select id="JogateremEdit" name="jogaterem">
                             <option value="">{at('válasszon')}</option>

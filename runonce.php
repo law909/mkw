@@ -2,6 +2,16 @@
 
 use Doctrine\ORM\Query\ResultSetMapping;
 
+$DBVersion = \mkw\store::getParameter(\mkw\consts::DBVersion, '');
+
+if ($DBVersion < '0028') {
+    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(7, "Helyszínek","/admin/helyszin/viewlist","/admin/helyszin",20,0,50, "")');
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0028');
+}
+
+
 if (!\mkw\store::getParameter(\mkw\consts::NAVOnlineME1_1Kesz, 0)) {
     $mes2 = array();
     $rsm = new ResultSetMapping();

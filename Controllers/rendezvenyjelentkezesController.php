@@ -386,6 +386,10 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
                 $subject->setVar('jelentkezes', $tpldata);
                 $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
                 $body->setVar('jelentkezes', $tpldata);
+                if ($r->getRendezveny() && $r->getRendezveny()->getHelyszin()) {
+                    $body->setVar('helyszin', $r->getRendezveny()->getHelyszin()->getEmailsablon());
+                }
+
                 if (\mkw\store::getConfigValue('developer')) {
                     \mkw\store::writelog($subject->getTemplateResult(), 'rendezvenyfizeteskoszonoemail.html');
                     \mkw\store::writelog($body->getTemplateResult(), 'rendezvenyfizeteskoszonoemail.html');
@@ -543,6 +547,9 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
                 $subject->setVar('jelentkezes', $tpldata);
                 $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
                 $body->setVar('jelentkezes', $tpldata);
+                if ($jel->getRendezveny() && $jel->getRendezveny()->getHelyszin()) {
+                    $body->setVar('helyszin', $jel->getRendezveny()->getHelyszin()->getEmailsablon());
+                }
                 if (\mkw\store::getConfigValue('developer')) {
                     \mkw\store::writelog($subject->getTemplateResult(), 'rendezvenydijbekeroemail.html');
                     \mkw\store::writelog($body->getTemplateResult(), 'rendezvenydijbekeroemail.html');
@@ -586,6 +593,9 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController {
                 $subject->setVar('jelentkezes', $tpldata);
                 $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
                 $body->setVar('jelentkezes', $tpldata);
+                if ($jel->getRendezveny() && $jel->getRendezveny()->getHelyszin()) {
+                    $body->setVar('helyszin', $jel->getRendezveny()->getHelyszin()->getEmailsablon());
+                }
                 if (\mkw\store::getConfigValue('developer')) {
                     \mkw\store::writelog($subject->getTemplateResult(), 'rendezvenykezdesemail.html');
                     \mkw\store::writelog($body->getTemplateResult(), 'rendezvenykezdesemail.html');

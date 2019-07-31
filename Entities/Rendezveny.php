@@ -84,6 +84,12 @@ class Rendezveny {
      */
     private $jogaterem;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Helyszin")
+     * @ORM\JoinColumn(name="helyszin_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $helyszin;
+
     /** @ORM\Column(type="boolean",nullable=false) */
     private $todonaptar = false;
 
@@ -355,6 +361,28 @@ class Rendezveny {
 
     public function setJogaterem($ra) {
         $this->jogaterem = $ra;
+    }
+
+    public function getHelyszin() {
+        return $this->helyszin;
+    }
+
+    public function getHelyszinNev() {
+        if ($this->helyszin) {
+            return $this->helyszin->getNev();
+        }
+        return '';
+    }
+
+    public function getHelyszinId() {
+        if ($this->helyszin) {
+            return $this->helyszin->getId();
+        }
+        return '';
+    }
+
+    public function setHelyszin($ra) {
+        $this->helyszin = $ra;
     }
 
     /**

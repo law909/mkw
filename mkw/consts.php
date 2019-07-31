@@ -8,6 +8,8 @@ class consts {
 
     const Tulajcrc = 'tulajcrc';
 
+    const DBVersion = 'dbversion';
+
     const Valutanem = 'valutanem';
     const Raktar = 'raktar';
     const Fizmod = 'fizmod';
