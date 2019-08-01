@@ -174,10 +174,17 @@ class kosarController extends \mkwhelpers\MattableController {
         $sorok = $this->getRepo()->getDataBySessionId(\Zend_Session::getId());
         $s = array();
         $tids = array();
+        $szallido = 1;
+        /** @var \Entities\Kosar $sor */
         foreach ($sorok as $sor) {
+            $sorszallido = $sor->getTermek()->calcSzallitasiido($sor->getTermekvaltozat());
+            if ($szallido < $sorszallido) {
+                $szallido = $sorszallido;
+            }
             $s[] = $sor->toLista($partner);
             $tids[] = $sor->getTermekId();
         }
+        $v->setVar('szallitasiido', $szallido);
         $v->setVar('tetellista', $s);
         $v->setVar('valutanem', $valutanem);
         $tc = new termekController($this->params);

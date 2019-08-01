@@ -239,6 +239,9 @@ class Bizonylatfej {
      */
     private $szallitasimodnev;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $szallitasiido;
+
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $netto;
 
@@ -923,6 +926,8 @@ class Bizonylatfej {
         $ret['szallvaros'] = $this->getSzallvaros();
         $ret['szallutca'] = $this->getSzallutca();
         $ret['szallhazszam'] = $this->getSzallhazszam();
+        $ret['szallitasiido'] = $this->getSzallitasiido();
+        $ret['szallitasiidodatum'] = $this->getSzallitasiidoDatumStr();
         $ret['adoszam'] = $this->getPartneradoszam();
         $ret['euadoszam'] = $this->getPartnereuadoszam();
         $ret['partneradoszam'] = $this->getPartneradoszam();
@@ -4423,6 +4428,45 @@ class Bizonylatfej {
      */
     public function setPartnerorszagiso3166($partnerorszagiso3166) {
         $this->partnerorszagiso3166 = $partnerorszagiso3166;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSzallitasiido() {
+        return $this->szallitasiido;
+    }
+
+    public function getSzallitasiidoDatumStr() {
+        if ($this->kelt && $this->getSzallitasiido()) {
+            /** @var \DateTime $k */
+            $k = clone $this->kelt;
+            $k->add(new \DateInterval('P' . $this->getSzallitasiido() . 'D'));
+            return $k->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    /**
+     * @param mixed $szallitasiido
+     */
+    public function setSzallitasiido($szallitasiido) {
+        $this->szallitasiido = $szallitasiido;
+    }
+
+    public function calcSzallitasiido() {
+        $szallido = 0;
+        /** @var \Entities\Bizonylattetel $tetel */
+        foreach ($this->getBizonylattetelek() as $tetel) {
+            $termek = $tetel->getTermek();
+            if ($termek) {
+                $sorszallido = $termek->calcSzallitasiido($tetel->getTermekvaltozat());
+                if ($szallido < $sorszallido) {
+                    $szallido = $sorszallido;
+                }
+            }
+        }
+        $this->setSzallitasiido($szallido);
     }
 
 }

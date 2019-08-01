@@ -54,4 +54,9 @@
 		<th><div id="kosarsum" class="textalignright">{number_format($osszesen,0,',',' ')} Ft</div></th>
 		<th></th>
 	</tr>
+    <tr>
+        <th colspan="4"><div class="textalignright">{t('Szállítási idő')}:</div></th>
+        <th><div class="textalignright">{$szallitasiido} nap</div></th>
+        <th></th>
+    </tr>
 </tfoot>

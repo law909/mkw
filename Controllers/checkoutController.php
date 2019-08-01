@@ -180,9 +180,16 @@ class checkoutController extends \mkwhelpers\MattableController {
         else {
             $view->setVar('valutanemnev', \mkw\store::getMainSession()->valutanemnev);
         }
-		foreach ($sorok as $sor) {
+        $szallido = 1;
+        /** @var \Entities\Kosar $sor */
+        foreach ($sorok as $sor) {
+            $sorszallido = $sor->getTermek()->calcSzallitasiido($sor->getTermekvaltozat());
+            if ($szallido < $sorszallido) {
+                $szallido = $sorszallido;
+            }
 			$s[] = $sor->toLista($partner);
 		}
+        $view->setVar('szallitasiido', $szallido);
 		$view->setVar('tetellista', $s);
 		echo json_encode(array(
             'html' => $view->getTemplateResult(),

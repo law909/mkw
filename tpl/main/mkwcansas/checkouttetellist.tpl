@@ -31,4 +31,8 @@
 		<th colspan="4"><div class="textalignright">{t('Összesen')}:</div></th>
 		<th><div class="textalignright">{number_format($osszesen,0,',',' ')} Ft</div></th>
 	</tr>
+    <tr>
+        <th colspan="4"><div class="textalignright">{t('Szállítási idő')}:</div></th>
+        <th><div class="textalignright">{$szallitasiido} nap</div></th>
+    </tr>
 </tfoot>
