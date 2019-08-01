@@ -24,10 +24,11 @@ class mkwzendmailer {
     private $message;
     private $headers;
     private $replyto;
+    private $attachment;
 
     protected function clear() {
         $this->to = array();
-        unset($this->subject, $this->message, $this->headers, $this->replyto);
+        unset($this->subject, $this->message, $this->headers, $this->replyto, $this->attachment);
     }
 
     public function setTo($to) {
@@ -73,6 +74,14 @@ class mkwzendmailer {
         return $this->replyto;
     }
 
+    public function setAttachment($fname) {
+        $this->attachment = $fname;
+    }
+
+    public function getAttachment() {
+        return $this->attachment;
+    }
+
     protected function getBccArray() {
         $bcc = \mkw\store::getParameter(\mkw\consts::EmailBcc);
         return explode(',', $bcc);
@@ -91,6 +100,16 @@ class mkwzendmailer {
         $this->mailer = new \Zend_Mail('UTF-8');
         $this->mailer->setBodyHtml($this->message);
         $this->mailer->setSubject($this->subject);
+
+        if ($this->attachment) {
+            $content = file_get_contents($this->attachment);
+            $attachment = new \Zend_Mime_Part($content);
+            $attachment->type = 'application/pdf';
+            $attachment->disposition = \Zend_Mime::DISPOSITION_ATTACHMENT;
+            $attachment->encoding = \Zend_Mime::ENCODING_BASE64;
+            $attachment->filename = $this->attachment;
+            $this->mailer->addAttachment($attachment);
+        }
 
         $from = \mkw\store::getParameter(\mkw\consts::EmailFrom);
         $fromdata = explode(';', $from);
