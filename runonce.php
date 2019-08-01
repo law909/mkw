@@ -11,6 +11,25 @@ if ($DBVersion < '0028') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0028');
 }
 
+if ($DBVersion < '0029') {
+    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO bizonylattipus (id, nev, irany, nyomtatni, azonosito, kezdosorszam, peldanyszam,'
+        . ' mozgat, penztmozgat, editprinted, showteljesites, showesedekesseg, showhatarido, tplname, showbizonylatstatuszeditor,'
+        . ' showszamlabutton, showszallitobutton, showkivetbutton, showkeziszamlabutton, showuzenet, showszallitasicim, showerbizonylatszam,'
+        . ' showfuvarlevelszam, showhaszonszazalek, showstorno, foglal, showbackorder, showbevetbutton, showmesebutton, showcsomagbutton,'
+        . ' showfeketelistabutton, showkupon, showfoxpostterminaleditor, showfelhasznalo, checkkelt, showpdf) '
+        . ' VALUES '
+        . '("bizsablon", "Bizonylat sablon", "-1", "0", "BSAB", "1", "1",'
+        . ' "0", "0", "1", "1", "1", "0", "biz_sablon.tpl", "0",'
+        . ' "1", "0", "0", "0", "0", "0", "0",'
+        . ' "0", "0", "0", "0", "0", "0", "0", "0",'
+        . ' "0", "0", "0", "0", "0", "0")');
+
+    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(1, "Biz. sablonok","/admin/bizsablonfej/viewlist","/admin/bizsablonfej",15,1,50, "")');
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0029');
+}
 
 if (!\mkw\store::getParameter(\mkw\consts::NAVOnlineME1_1Kesz, 0)) {
     $mes2 = array();

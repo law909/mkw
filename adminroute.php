@@ -322,6 +322,17 @@ $router->map('POST', '/admin/kivetfej/ront', 'kivetfejController#ront', 'adminki
 $router->map('POST', '/admin/kivetfej/fejexport', 'kivetfejController#fejexport', 'adminkivetfejfejexport');
 $router->map('POST', '/admin/kivetfej/tetelexport', 'kivetfejController#tetelexport', 'adminkivetfejtetelexport');
 
+$router->map('GET', '/admin/bizsablonfej/viewlist', 'bizsablonfejController#viewlist', 'adminbizsablonfejviewlist');
+$router->map('GET', '/admin/bizsablonfej/getlistbody', 'bizsablonfejController#getlistbody', 'adminbizsablonfejgetlistbody');
+$router->map('GET', '/admin/bizsablonfej/getkarb', 'bizsablonfejController#getkarb', 'adminbizsablonfejgetkarb');
+$router->map('GET', '/admin/bizsablonfej/viewkarb', 'bizsablonfejController#viewkarb', 'adminbizsablonfejviewkarb');
+$router->map('POST', '/admin/bizsablonfej/save', 'bizsablonfejController#save', 'adminbizsablonfejsave');
+$router->map('GET', '/admin/bizsablonfej/print', 'bizsablonfejController#doPrint', 'adminbizsablonfejprint');
+$router->map('GET', '/admin/bizsablonfej/storno', 'bizsablonfejController#storno', 'adminbizsablonfejstorno');
+$router->map('POST', '/admin/bizsablonfej/fejexport', 'bizsablonfejController#fejexport', 'adminbizsablonfejfejexport');
+$router->map('POST', '/admin/bizsablonfej/tetelexport', 'bizsablonfejController#tetelexport', 'adminbizsablonfejtetelexport');
+$router->map('GET', '/admin/bizsablonfej/navonline', 'bizsablonfejController#navonline', 'adminbizsablonfejnavonline');
+
 $router->map('GET', '/admin/termek/viewlist', 'termekController#viewlist', 'admintermekviewlist');
 $router->map('GET', '/admin/termek/htmllist', 'termekController#htmllist', 'admintermekhtmllist');
 $router->map('GET', '/admin/termek/getlistbody', 'termekController#getlistbody', 'admintermekgetlistbody');
