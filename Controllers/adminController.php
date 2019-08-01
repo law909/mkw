@@ -373,4 +373,10 @@ class adminController extends mkwhelpers\Controller {
         echo $vasarlas->format('Y.m.d');
     }
 
+    public function checkEmail() {
+        echo 'balint.lovey@gmail.com - X' . print_r(\mkw\store::isValidEmail('balint.lovey@gmail.com'), true) . 'X<br>';
+        echo '^balint.lovey@gmail.com - X' . \mkw\store::isValidEmail('balint.lovey@gmail.com,vikarerzsebet@gmail.com') . 'X<br>';
+        echo 'balint.lovey@gmail com - X' . \mkw\store::isValidEmail('balint.lovey@gmail com') . 'X';
+    }
+
 }

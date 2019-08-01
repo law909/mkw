@@ -58,8 +58,6 @@ class checkoutController extends \mkwhelpers\MattableController {
             $view->setVar('partnerszallitasimod', $u->getSzallitasimodNev());
             $view->setVar('partnerszallitasimodid', $u->getSzallitasimodId());
             $view->setVar('partnerfizetesimod', $u->getFizmodNev());
-            $telkorzetc = new korzetszamController($this->params);
-            $view->setVar('telkorzetlist', $telkorzetc->getSelectList($u->getTelkorzet()));
         }
         else {
             $user['nev'] = '';
@@ -82,8 +80,6 @@ class checkoutController extends \mkwhelpers\MattableController {
             $user['ujdonsaghirlevelkell'] = false;
             $view->setVar('partnerszallitasimod', '');
             $view->setVar('partnerfizetesimod', '');
-            $telkorzetc = new korzetszamController($this->params);
-            $view->setVar('telkorzetlist', $telkorzetc->getSelectList(null));
         }
 
 		$view->setVar('szallitasimodlist', $szlist);
@@ -118,6 +114,8 @@ class checkoutController extends \mkwhelpers\MattableController {
         $view->setVar('ujdonsaghirlevel', $this->vv($p->getBoolRequestParam('ujdonsaghirlevel'), $user['ujdonsaghirlevelkell']));
         $oc = new orszagController($p);
         $view->setVar('szallorszaglist', $oc->getSelectList($this->vv($p->getIntRequestParam('orszag'), $user['orszag'])));
+        $telkorzetc = new korzetszamController($this->params);
+        $view->setVar('telkorzetlist', $telkorzetc->getSelectList($this->vv($p->getStringRequestParam('telkorzet'), $user['telkorzet'])));
         \mkw\store::getMainSession()->loginerror = false;
         \mkw\store::getMainSession()->checkoutErrors = false;
 		$view->printTemplateResult(false);
@@ -208,7 +206,8 @@ class checkoutController extends \mkwhelpers\MattableController {
                 $telefon = '+36' . $telkorzet . $telszam;
                 $jelszo1 = $this->params->getStringRequestParam('jelszo1');
                 $jelszo2 = $this->params->getStringRequestParam('jelszo2');
-                $kapcsemail = $this->params->getStringRequestParam('kapcsemail');
+                $kapcsemail = trim($this->params->getStringRequestParam('kapcsemail'));
+                $validkapcsemail = \mkw\store::isValidEmail($kapcsemail);
                 $szamlanev = $this->params->getStringRequestParam('szamlanev');
                 $szamlairszam = $this->params->getStringRequestParam('szamlairszam');
                 $szamlavaros = $this->params->getStringRequestParam('szamlavaros');
@@ -303,14 +302,20 @@ class checkoutController extends \mkwhelpers\MattableController {
                 }
                 switch ($regkell) {
                     case 1: // vendég
-                        $ok = $ok && $kapcsemail;
+                        $ok = $ok && $kapcsemail && $validkapcsemail;
                         if (!$kapcsemail) {
                             $errorlogtext[] = '2vendegemail';
                             $errors[] = 'Nem adott meg emailcímet.';
                         }
+                        else {
+                            if (!$validkapcsemail) {
+                                $errorlogtext[] = '2vendegemailhiba';
+                                $errors[] = 'A megadott emailcím hibás.';
+                            }
+                        }
                         break;
                     case 2: // regisztráció
-                        $ok = $ok && $jelszo1 && $jelszo2 && ($jelszo1 === $jelszo2) && $kapcsemail;
+                        $ok = $ok && $jelszo1 && $jelszo2 && ($jelszo1 === $jelszo2) && $kapcsemail && $validkapcsemail;
                         if (!$jelszo1 || !$jelszo2 || ($jelszo1 !== $jelszo2)) {
                             $errorlogtext[] = '3regjelszo';
                             $errors[] = 'Nem adott meg jelszót, vagy a két jelszó nem egyezik.';
@@ -318,6 +323,12 @@ class checkoutController extends \mkwhelpers\MattableController {
                         if (!$kapcsemail) {
                             $errorlogtext[] = '3regemail';
                             $errors[] = 'Nem adott meg emailcímet.';
+                        }
+                        else {
+                            if (!$validkapcsemail) {
+                                $errorlogtext[] = '3vendegemailhiba';
+                                $errors[] = 'A megadott emailcím hibás.';
+                            }
                         }
                         break;
                     default: // be van jelentkezve elvileg
