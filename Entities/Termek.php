@@ -2,9 +2,11 @@
 
 namespace Entities;
 
+use Doctrine\ORM\Query\ResultSetMapping;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
+use mkwhelpers\FilterDescriptor;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekRepository")
@@ -480,16 +482,53 @@ class Termek {
     }
 
     public function getKeszlet($datum = null, $raktarid = null) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('mennyiseg', 'mennyiseg');
+        $rsm->addScalarResult('mozgasdb', 'mozgasdb');
+
         if (!$datum) {
+            $datum = new \DateTime();
+        }
+
+        $filter = new FilterDescriptor();
+        $filter->addFilter('bt.termek_id', '=', $this->getId());
+        $filter->addFilter('bt.mozgat', '=', 1);
+        $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
+        $filter->addFilter('bf.teljesites', '<=', $datum);
+        if ($raktarid) {
+            $filter->addFilter('bf.raktar_id', '=', $raktarid);
+        }
+
+        $q = \mkw\store::getEm()->createNativeQuery('SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
+            . ' FROM bizonylattetel bt'
+            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . $filter->getFilterString()
+            , $rsm);
+
+        $q->setParameters($filter->getQueryParameters());
+        $d = $q->getScalarResult();
+
+        $k = $d[0]['mennyiseg'];
+        if (is_null($k)) {
+            $k = 0;
+        }
+        $db = $d[0]['mozgasdb'];
+        if (is_null($db)) {
+            $db = 0;
+        }
+
+        /*if (!$datum) {
             $datum = new \DateTime();
         }
         $k = 0;
         /** @var \Entities\Bizonylattetel $bt */
+        /*
         foreach($this->bizonylattetelek as $bt) {
             if ($bt->getMozgat() && (!$bt->getRontott()) && ($bt->getTeljesites() <= $datum) && (!$raktarid || ($raktarid && $raktarid == $bt->getRaktarId()))) {
                 $k += ($bt->getMennyiseg() * $bt->getIrany());
             }
         }
+        */
         return $k;
     }
 
