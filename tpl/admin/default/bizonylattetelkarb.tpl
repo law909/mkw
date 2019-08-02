@@ -53,7 +53,7 @@
                 {/if}
             </tr>
             <tr class="js-termekpicturerow_{$tetel.id}">
-                <td>{if ($tetel.kepurl)}<a class="js-toflyout" href="{$mainurl}{$tetel.kepurl}" target="_blank"><img src="{$mainurl}{$tetel.kiskepurl}"/></a>{/if}</td>
+                <td><a class="js-toflyout" href="{$mainurl}{$tetel.kepurl}" target="_blank"><img src="{$mainurl}{$tetel.kiskepurl}"/></a></td>
                 <td>{at('Link')}:<a class="js-termeklink" href="{$tetel.link}" target="_blank">{$tetel.link}</a></td>
                 <td><a class="js-kartonlink" href="{$tetel.kartonurl|default:'#'}" target="_blank">Karton</a></td>
             </tr>
