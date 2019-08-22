@@ -50,6 +50,7 @@ class Emailtemplate {
 
     public function getHTMLSzoveg() {
         $szoveg = str_replace(']', '}', str_replace('[', '{', $this->getSzoveg()));
+        $szoveg = str_replace('<!--', '', str_replace('-->', '', $szoveg));
         return
             '<html>'.
             '<head>'.
@@ -74,6 +75,7 @@ class Emailtemplate {
 
     public function convertForCKEditor() {
         $this->setSzoveg(str_replace('}', ']', str_replace('{', '[', $this->getSzoveg())));
+        $this->setSzoveg( str_replace('<!--', '', str_replace('-->', '', $this->getSzoveg())));
     }
 
 }
