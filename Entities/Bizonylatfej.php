@@ -1805,6 +1805,28 @@ class Bizonylatfej {
         $this->otpayid = $val;
     }
 
+    public static function getNextId($bizszam) {
+        $szam = explode('/', $bizszam);
+        if (is_array($szam)) {
+            $szam[1] = $szam[1] + 1;
+            return self::createBizonylatszam($szam[0], null, $szam[1]);
+        }
+        return $bizszam;
+    }
+
+    public static function getPrevId($bizszam) {
+        $szam = explode('/', $bizszam);
+        if (is_array($szam)) {
+            $szam[1] = $szam[1] - 1;
+            return self::createBizonylatszam($szam[0], null, $szam[1]);
+        }
+        return $bizszam;
+    }
+
+    public static function createBizonylatszam($azon = '', $ev = 0, $szam = 0) {
+        return $azon . $ev . '/' . sprintf('%06d', $szam * 1);
+    }
+
     public function generateId($from = null) {
         if ($this->getId()) {
             return $this->getId();
@@ -1859,7 +1881,7 @@ class Bizonylatfej {
                     $szam = $from;
                 }
             }
-            $this->id = \mkw\store::createBizonylatszam($azon, $ev, $szam);
+            $this->id = self::createBizonylatszam($azon, $ev, $szam);
         }
         return $szam;
     }

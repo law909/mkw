@@ -260,7 +260,7 @@ var bizonylathelper = function($) {
                 tetelok = ($('.js-termekid').length !== 0) && ($('.js-termekid[value=""]').length === 0) && ($('.js-termekid[value="0"]').length === 0),
                 ret = keltok && tetelok;
         if (!keltok) {
-            dialogcenter.html('Már van későbbi keltű bizonylat.').dialog({
+            dialogcenter.html('A bizonylatoknak szigorú sorszámozás van előírva.').dialog({
                 resizable: false,
                 height: 140,
                 modal: true,

@@ -73,7 +73,7 @@ class BankbizonylatfejListener {
                     $szam = $from;
                 }
             }
-            $entity->setId(\mkw\store::createBizonylatszam($azon, $ev, $szam));
+            $entity->setId(\Entities\Bizonylatfej::createBizonylatszam($azon, $ev, $szam));
         }
         return $szam;
     }

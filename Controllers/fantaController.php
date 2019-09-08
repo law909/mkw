@@ -25,7 +25,7 @@ class fantaController extends \mkwhelpers\MattableController {
             $ujbt = $this->getRepo('Entities\Bizonylattipus')->find('egyeb');
 
             if ($bt && $ujbt) {
-                $szamlaszam = \mkw\store::createBizonylatszam($bt->getAzonosito(), $ev, $bizszam);
+                $szamlaszam = \Entities\Bizonylatfej::createBizonylatszam($bt->getAzonosito(), $ev, $bizszam);
 
                 $filter = new \mkwhelpers\FilterDescriptor();
                 $filter

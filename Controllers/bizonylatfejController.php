@@ -910,17 +910,30 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $bt = $this->getRepo('Entities\Bizonylattipus')->find($biztipid);
         if ($bt) {
             if ($bt->getCheckkelt()) {
-                $filter = new \mkwhelpers\FilterDescriptor();
-                $filter
-                    ->addFilter('bizonylattipus', '=', $bt)
-                    ->addFilter('kelt', '>', $keltstr)
-                    ->addSql('(YEAR(_xx.kelt)=' . date('Y', $kelt) . ')');
-                if ($bizszam) {
-                    $filter->addFilter('id', '<>', $bizszam);
+                if (!$bizszam) {
+                    $filter = new \mkwhelpers\FilterDescriptor();
+                    $filter
+                        ->addFilter('bizonylattipus', '=', $bt)
+                        ->addFilter('kelt', '>', $keltstr)
+                        ->addSql('(YEAR(_xx.kelt)=' . date('Y', $kelt) . ')');
+                    $db = $this->getRepo()->getCount($filter);
+                    if ($db == 0) {
+                        $ret = array('response' => 'ok');
+                    }
                 }
-                $db = $this->getRepo()->getCount($filter);
-                if ($db == 0) {
-                    $ret = array('response' => 'ok');
+                else {
+                    $biz = $this->getRepo()->find($bizszam);
+                    if ($biz && date('Y', $kelt) === $biz->getKelt()->format('Y')) {
+                        $prevbizszam = \Entities\Bizonylatfej::getPrevId($bizszam);
+                        $nextbizszam = \Entities\Bizonylatfej::getNextId($bizszam);
+                        $prevbiz = $this->getRepo()->find($prevbizszam);
+                        $nextbiz = $this->getRepo()->find($nextbizszam);
+                        $prevok = ($prevbiz && ($prevbiz->getKelt()->format(\mkw\store::$SQLDateFormat) <= date(\mkw\store::$SQLDateFormat, $kelt))) || !$prevbiz;
+                        $nextok = ($nextbiz && ($nextbiz->getKelt()->format(\mkw\store::$SQLDateFormat) >= date(\mkw\store::$SQLDateFormat, $kelt))) || !$nextbiz;
+                        if ($prevok && $nextok) {
+                            $ret = array('response' => 'ok');
+                        }
+                    }
                 }
             }
             else {
