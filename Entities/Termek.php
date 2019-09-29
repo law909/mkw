@@ -666,7 +666,7 @@ class Termek {
             if ($kat->getTermeklistabanlathato()) {
                 $listaban[] = $cimke->toLista();
             }
-            if ($kat->getId() === \mkw\store::getParameter(\mkw\consts::MarkaCs, 0)) {
+            if ($kat->getId() == \mkw\store::getParameter(\mkw\consts::MarkaCs, 0)) {
                 $x['marka'] = $cimke->getNev();
             }
         }
@@ -868,7 +868,7 @@ class Termek {
             if ($kat->getTermekakciodobozbanlathato()) {
                 $akciodobozban[] = $cimke->toLista();
             }
-            if ($kat->getId() === \mkw\store::getParameter(\mkw\consts::MarkaCs, 0)) {
+            if ($kat->getId() == \mkw\store::getParameter(\mkw\consts::MarkaCs, 0)) {
                 $x['marka'] = $cimke->getNev();
             }
         }
