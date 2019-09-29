@@ -49,6 +49,7 @@
                                 <img id="termekkep{$termek.id}" itemprop="image" src="{$termek.kozepeskepurl}" alt="{$termek.caption}" title="{$termek.caption}">
                             </a>
                         </div>
+                        {if ($termek.marka)}<span itemprop="brand" content="{$termek.marka}"></span>{/if}
                         {$kcnt=count($termek.kepek)}
                         {if ($kcnt>0)}
                         <div class="js-termekimageslider termekimageslider termekimagecontainer textaligncenter royalSlider contentSlider rsDefaultInv">
@@ -122,7 +123,6 @@
                                 {/if}
                                 <link href="/termek/{$termek.slug}" itemprop="url">
                                 <span itemprop="price" content="{number_format($termek.bruttohuf,0,'','')}">{number_format($termek.bruttohuf,0,',',' ')} <span itemprop="priceCurrency" content="HUF"> Ft</span></span>
-                                {if ($termek.marka)}<span itemprop="brand" content="{$termek.marka}"></span>{/if}
                             </div>
                             {if ($termek.nemkaphato)}
                             <div class="textalignright">
