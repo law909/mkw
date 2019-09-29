@@ -230,11 +230,11 @@
                                         {/if}
                                         <div id="termekprice{$_termek.id}-{$_termek.valtozatid|default}" class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                                             {if ($_termek.nemkaphato)}
-                                                <link itemprop="availability" href="http://schema.org/OutOfStock" content="Nem kapható">
+                                                <link itemprop="availability" href="http://schema.org/OutOfStock">
                                             {else}
-                                                <link itemprop="availability" href="http://schema.org/InStock" content="Kapható">
+                                                <link itemprop="availability" href="http://schema.org/InStock">
                                             {/if}
-                                            <span itemprop="price">{number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
+                                            <span itemprop="price" content="{number_format($_termek.bruttohuf,0,'','')}">{number_format($_termek.bruttohuf,0,',',' ')} <span itemprop="priceCurrency" content="HUF">Ft</span></span>
                                         </div>
                                         {if ($_termek.nemkaphato)}
                                             <div class="textalignright">
@@ -329,11 +329,11 @@
                                             <span class="akciosarszoveg">Eredeti ár: <span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} Ft</span></span>
                                             {/if}
                                             {if ($_termek.nemkaphato)}
-                                                <link itemprop="availability" href="http://schema.org/OutOfStock" content="Nem kapható">
+                                                <link itemprop="availability" href="http://schema.org/OutOfStock">
                                             {else}
-                                                <link itemprop="availability" href="http://schema.org/InStock" content="Kapható">
+                                                <link itemprop="availability" href="http://schema.org/InStock">
                                             {/if}
-                                            <span itemprop="price">{number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
+                                            <span itemprop="price" content="{number_format($_termek.bruttohuf,0,'','')}">{number_format($_termek.bruttohuf,0,',',' ')} <span itemprop="priceCurrency" content="HUF">Ft</span></span>
                                         </div>
                                         <div class="pull-right">
                                         {if ($_termek.nemkaphato)}
