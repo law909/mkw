@@ -120,7 +120,8 @@
                                 {else}
                                     <link itemprop="availability" href="http://schema.org/InStock">
                                 {/if}
-                                <span itemprop="price" content="{number_format($_termek.bruttohuf,0,'','')}">{number_format($termek.bruttohuf,0,',',' ')} <span itemprop="priceCurrency" content="HUF"> Ft</span></span>
+                                <link href="/termek/{$termek.slug}" itemprop="url">
+                                <span itemprop="price" content="{number_format($termek.bruttohuf,0,'','')}">{number_format($termek.bruttohuf,0,',',' ')} <span itemprop="priceCurrency" content="HUF"> Ft</span></span>
                                 {if ($termek.marka)}<span itemprop="brand" content="{$termek.marka}"></span>{/if}
                             </div>
                             {if ($termek.nemkaphato)}
