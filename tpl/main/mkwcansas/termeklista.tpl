@@ -234,6 +234,7 @@
                                             {else}
                                                 <link itemprop="availability" href="http://schema.org/InStock">
                                             {/if}
+                                            <link href="/termek/{$_termek.slug}" itemprop="url">
                                             <span itemprop="price" content="{number_format($_termek.bruttohuf,0,'','')}">{number_format($_termek.bruttohuf,0,',',' ')} <span itemprop="priceCurrency" content="HUF">Ft</span></span>
                                         </div>
                                         {if ($_termek.nemkaphato)}
@@ -333,6 +334,7 @@
                                             {else}
                                                 <link itemprop="availability" href="http://schema.org/InStock">
                                             {/if}
+                                            <link href="/termek/{$_termek.slug}" itemprop="url">
                                             <span itemprop="price" content="{number_format($_termek.bruttohuf,0,'','')}">{number_format($_termek.bruttohuf,0,',',' ')} <span itemprop="priceCurrency" content="HUF">Ft</span></span>
                                         </div>
                                         <div class="pull-right">
