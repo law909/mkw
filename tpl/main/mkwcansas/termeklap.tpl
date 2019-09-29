@@ -70,7 +70,7 @@
                     </div>
                     <div class="span3 hatter">
                         <div class="korbepadding">
-                            <div><span class="bold">Cikkszám:</span> <span itemprop="productID">{$termek.cikkszam}</span></div>
+                            <div><span class="bold">Cikkszám:</span> <span itemprop="sku">{$termek.cikkszam}</span></div>
                             <div><span class="bold">Kapható hűségpont:</span> {$termek.husegpont}</div>
                             {if ($termek.me)}
                             <div><span class="bold">Kiszerelés:</span> {$termek.me}</div>
@@ -116,11 +116,12 @@
                             {/if}
                             <div id="termekprice{$termek.id}" class="itemPrice textalignright" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                                 {if ($termek.nemkaphato)}
-                                    <link itemprop="availability" href="http://schema.org/OutOfStock" content="Nem kapható">
+                                    <link itemprop="availability" href="http://schema.org/OutOfStock">
                                 {else}
-                                    <link itemprop="availability" href="http://schema.org/InStock" content="Kapható">
+                                    <link itemprop="availability" href="http://schema.org/InStock">
                                 {/if}
-                                <span itemprop="price">{number_format($termek.bruttohuf,0,',',' ')} Ft</span>
+                                <span itemprop="price" content="{number_format($_termek.bruttohuf,0,'','')}">{number_format($termek.bruttohuf,0,',',' ')} <span itemprop="priceCurrency" content="HUF"> Ft</span></span>
+                                {if ($termek.marka)}<span itemprop="brand" content="{$termek.marka}"></span>{/if}
                             </div>
                             {if ($termek.nemkaphato)}
                             <div class="textalignright">

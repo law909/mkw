@@ -868,6 +868,9 @@ class Termek {
             if ($kat->getTermekakciodobozbanlathato()) {
                 $akciodobozban[] = $cimke->toLista();
             }
+            if ($kat->getId() === \mkw\store::getParameter(\mkw\consts::MarkaCs, 0)) {
+                $x['marka'] = $cimke->getNev();
+            }
         }
         $x['cimkelapon'] = $lapon;
         $x['cimkeakciodobozban'] = $akciodobozban;
