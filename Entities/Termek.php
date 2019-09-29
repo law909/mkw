@@ -666,6 +666,9 @@ class Termek {
             if ($kat->getTermeklistabanlathato()) {
                 $listaban[] = $cimke->toLista();
             }
+            if ($kat->getId() === \mkw\store::getParameter(\mkw\consts::MarkaCs, 0)) {
+                $x['marka'] = $cimke->getNev();
+            }
         }
         $x['cimkelistaban'] = $listaban;
 

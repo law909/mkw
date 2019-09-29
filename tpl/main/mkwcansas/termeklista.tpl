@@ -174,6 +174,8 @@
                                     </div>
                                     <div class="span5 termektext">
                                         <a href="/termek/{$_termek.slug}" itemprop="url"><span class="termekcaption" itemprop="name">{$_termek.caption}</span></a>
+                                        <span itemprop="sku" content="{$_termek.cikkszam}"></span>
+                                        {if ($_termek.marka)}<span itemprop="brand" content="{$_termek.marka}"></span>{/if}
                                         <p itemprop="description" class="textalignjustify">{$_termek.rovidleiras}</p>
                                         {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
                                             <div><span class="bold">Szállítási idő: </span>max. <span id="termekszallitasiido{$_termek.id}-{$_termek.valtozatid|default}">{$_termek.szallitasiido}</span> munkanap</div>
@@ -272,6 +274,8 @@
                                         <div class="gtermekright pull-left">
                                         <a itemprop="url" href="/termek/{$_termek.slug}"><span class="gtermekcaption" itemprop="name">{$_termek.caption}</span></a>
                                         <div itemprop="description" class="textalignjustify">{$_termek.rovidleiras}</div>
+                                            <span itemprop="sku" content="{$_termek.cikkszam}"></span>
+                                            {if ($_termek.marka)}<span itemprop="brand" content="{$_termek.marka}"></span>{/if}
                                         </div>
                                     </div>
                                     <div class="pull-left gtermekcenter">
