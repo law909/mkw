@@ -1447,6 +1447,21 @@
                             </td>
                         </tr>
                         <tr>
+                            <td><label>{at('Blogposzt prioritás')}:</label></td>
+                            <td><input name="blogposztprior" type="text" value="{$blogposztprior}"></td>
+                            <td><label>{at('changefreq')}:</label></td>
+                            <td><select name="blogposztchangefreq" value="{$blogposztchangefreq}">
+                                    <option value="always"{if ($blogposztchangefreq=='always')} selected="selected"{/if}>always</option>
+                                    <option value="hourly"{if ($blogposztchangefreq=='hourly')} selected="selected"{/if}>hourly</option>
+                                    <option value="daily"{if ($blogposztchangefreq=='daily')} selected="selected"{/if}>daily</option>
+                                    <option value="weekly"{if ($blogposztchangefreq=='weekly')} selected="selected"{/if}>weekly</option>
+                                    <option value="monthly"{if ($blogposztchangefreq=='monthly')} selected="selected"{/if}>monthly</option>
+                                    <option value="yearly"{if ($blogposztchangefreq=='yearly')} selected="selected"{/if}>yearly</option>
+                                    <option value="never"{if ($blogposztchangefreq=='never')} selected="selected"{/if}>never</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
                             <td><label>{at('Terméklap prioritás')}:</label></td>
                             <td><input name="termekprior" type="text" value="{$termekprior}"></td>
                             <td><label>{at('changefreq')}:</label></td>

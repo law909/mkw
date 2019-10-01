@@ -25,6 +25,7 @@ class sitemapController extends \mkwhelpers\Controller {
             'changefreq' => \mkw\store::getParameter(\mkw\consts::Fooldalchangefreq, 'daily'),
             'priority' => \mkw\store::getParameter(\mkw\consts::Fooldalprior, '1.0')
         );
+
         $c = \mkw\store::getParameter(\mkw\consts::Kategoriachangefreq, 'daily');
         $p = \mkw\store::getParameter(\mkw\consts::Kategoriaprior, '0.7');
         $tr = \mkw\store::getEm()->getRepository('\Entities\TermekFa');
@@ -51,6 +52,7 @@ class sitemapController extends \mkwhelpers\Controller {
             }
             $urls[] = $u;
         }
+
         $c = \mkw\store::getParameter(\mkw\consts::Termekchangefreq, 'daily');
         $p = \mkw\store::getParameter(\mkw\consts::Termekprior, '0.5');
         $tkr = \mkw\store::getEm()->getRepository('\Entities\TermekKep');
@@ -83,6 +85,7 @@ class sitemapController extends \mkwhelpers\Controller {
             }
             $urls[] = $u;
         }
+
         $c = \mkw\store::getParameter(\mkw\consts::Statlapchangefreq, 'monthly');
         $p = \mkw\store::getParameter(\mkw\consts::Statlapprior, '0.4');
         $tr = \mkw\store::getEm()->getRepository('\Entities\Statlap');
@@ -96,12 +99,27 @@ class sitemapController extends \mkwhelpers\Controller {
                 'priority' => $p
             );
         }
+
         $urls[] = array(
             'url' => htmlentities($router->generate('markak', \mkw\store::getConfigValue('mainurl'), array())),
             'lastmod' => date('Y-m-d'),
             'changefreq' => $c,
             'priority' => $p
         );
+
+        $c = \mkw\store::getParameter(\mkw\consts::Blogposztchangefreq, 'monthly');
+        $p = \mkw\store::getParameter(\mkw\consts::Blogposztprior, '0.4');
+        $tr = \mkw\store::getEm()->getRepository('\Entities\Blogposzt');
+        $rec = $tr->getForSitemapXml();
+        foreach ($rec as $sor) {
+            $d = new \DateTime($sor['lastmod']);
+            $urls[] = array(
+                'url' => htmlentities($router->generate('showblogposzt', \mkw\store::getConfigValue('mainurl'), array('blogposzt' => $sor['slug']))),
+                'lastmod' => $d->format('Y-m-d'),
+                'changefreq' => $c,
+                'priority' => $p
+            );
+        }
         $smview->setVar('urls', $urls);
         return $smview->getTemplateResult();
     }

@@ -3,6 +3,7 @@
 namespace Entities;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 class BlogposztRepository extends \mkwhelpers\Repository {
 
@@ -18,6 +19,18 @@ class BlogposztRepository extends \mkwhelpers\Repository {
     public function findWithJoins($id) {
         return parent::findWithJoins((string)$id);
     }
+
+    public function getForSitemapXml() {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id');
+        $rsm->addScalarResult('slug', 'slug');
+        $rsm->addScalarResult('lastmod', 'lastmod');
+        $q = $this->_em->createNativeQuery('SELECT id,slug,lastmod'
+            . ' FROM blogposzt '
+            . ' ORDER BY id', $rsm);
+        return $q->getScalarResult();
+    }
+
 
     public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
         $q = $this->_em->createQuery('SELECT _xx'

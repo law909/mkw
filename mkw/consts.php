@@ -88,6 +88,8 @@ class consts {
     const Termekprior = 'termekprior';
     const Statlapchangefreq = 'statlapchangefreq';
     const Statlapprior = 'statlapprior';
+    const Blogposztchangefreq = 'blogposztchangefreq';
+    const Blogposztprior = 'blogposztprior';
     const Fooldalajanlotttermekdb = 'fooldalajanlotttermekdb';
     const Fooldalnepszerutermekdb = 'fooldalnepszerutermekdb';
     const Fooldalakciostermekdb = 'fooldalakciostermekdb';

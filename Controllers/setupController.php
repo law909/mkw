@@ -501,6 +501,8 @@ class setupController extends \mkwhelpers\Controller {
         // sitemap
         $p = $repo->find(\mkw\consts::Statlapprior);
         $view->setVar(\mkw\consts::Statlapprior, ($p ? $p->getErtek() : 0.4));
+        $p = $repo->find(\mkw\consts::Blogposztprior);
+        $view->setVar(\mkw\consts::Blogposztprior, ($p ? $p->getErtek() : 0.4));
         $p = $repo->find(\mkw\consts::Termekprior);
         $view->setVar(\mkw\consts::Termekprior, ($p ? $p->getErtek() : 0.5));
         $p = $repo->find(\mkw\consts::Kategoriaprior);
@@ -509,6 +511,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::Fooldalprior, ($p ? $p->getErtek() : 1));
         $p = $repo->find(\mkw\consts::Statlapchangefreq);
         $view->setVar(\mkw\consts::Statlapchangefreq, ($p ? $p->getErtek() : 'monthly'));
+        $p = $repo->find(\mkw\consts::Blogposztchangefreq);
+        $view->setVar(\mkw\consts::Blogposztchangefreq, ($p ? $p->getErtek() : 'monthly'));
         $p = $repo->find(\mkw\consts::Termekchangefreq);
         $view->setVar(\mkw\consts::Termekchangefreq, ($p ? $p->getErtek() : 'monthly'));
         $p = $repo->find(\mkw\consts::Kategoriachangefreq);
@@ -1200,10 +1204,12 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Feedblogdescription, $this->params->getStringRequestParam('feedblogdescription', t('Blog')));
         // sitemap
         $this->setObj(\mkw\consts::Statlapprior, $this->params->getNumRequestParam('statlapprior', 0.4));
+        $this->setObj(\mkw\consts::Blogposztprior, $this->params->getNumRequestParam('blogposztprior', 0.4));
         $this->setObj(\mkw\consts::Termekprior, $this->params->getNumRequestParam('termekprior', 0.5));
         $this->setObj(\mkw\consts::Kategoriaprior, $this->params->getNumRequestParam('kategoriaprior', 0.7));
         $this->setObj(\mkw\consts::Fooldalprior, $this->params->getNumRequestParam('fooldalprior', 1));
         $this->setObj(\mkw\consts::Statlapchangefreq, $this->params->getStringRequestParam('statlapchangefreq', 'monthly'));
+        $this->setObj(\mkw\consts::Blogposztchangefreq, $this->params->getStringRequestParam('blogposztchangefreq', 'monthly'));
         $this->setObj(\mkw\consts::Termekchangefreq, $this->params->getStringRequestParam('termekchangefreq', 'monthly'));
         $this->setObj(\mkw\consts::Kategoriachangefreq, $this->params->getStringRequestParam('kategoriachangefreq', 'daily'));
         $this->setObj(\mkw\consts::Fooldalchangefreq, $this->params->getStringRequestParam('fooldalchangefreq', 'daily'));
