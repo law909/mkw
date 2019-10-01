@@ -757,6 +757,7 @@ class Termek {
                 $x['mindenvaltozat'] = $vtt;
             }
         }
+        \mkw\store::writelog(print_r($x, true), 'totermeklista.txt');
         return $x;
     }
 
