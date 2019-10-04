@@ -43,6 +43,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $x['todowebposzt'] = $t->getTodowebposzt();
         $x['todowebslider'] = $t->getTodowebslider();
         $x['kellszamlazasiadat'] = $t->getKellszamlazasiadat();
+        $x['orarendbenszerepel'] = $t->getOrarendbenszerepel();
         $x['uid'] = $t->getUid();
         $x['reglink'] = '<script src=\'' . \mkw\store::getConfigValue('mainurl') . '/js/main/' . \mkw\store::getConfigValue('main.theme') . '/rendezvenyregloader.js?r=' . $t->getUid() . '\'></script>';
 
@@ -66,6 +67,7 @@ class rendezvenyController extends \mkwhelpers\MattableController {
         $obj->setKezdoido($this->params->getStringRequestParam('kezdoido'));
         $obj->setAr($this->params->getFloatRequestParam('ar'));
         $obj->setKellszamlazasiadat($this->params->getBoolRequestParam('kellszamlazasiadat'));
+        $obj->setOrarendbenszerepel($this->params->getBoolRequestParam('orarendbenszerepel'));
         $ck = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek', 0));
         if ($ck) {
             $obj->setTermek($ck);

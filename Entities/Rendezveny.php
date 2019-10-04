@@ -126,6 +126,9 @@ class Rendezveny {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $kellszamlazasiadat = true;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $orarendbenszerepel = true;
+
     public function __construct() {
         $this->rendezvenydokok = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -568,6 +571,20 @@ class Rendezveny {
      */
     public function setKellszamlazasiadat($kellszamlazasiadat) {
         $this->kellszamlazasiadat = $kellszamlazasiadat;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getOrarendbenszerepel() {
+        return $this->orarendbenszerepel;
+    }
+
+    /**
+     * @param bool $orarendbenszerepel
+     */
+    public function setOrarendbenszerepel($orarendbenszerepel) {
+        $this->orarendbenszerepel = $orarendbenszerepel;
     }
 
 }

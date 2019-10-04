@@ -13,6 +13,7 @@
                 <tr><td>Helyszín:</td><td>{$_egyed.helyszinnev}</td></tr>
                 <tr><td>Terem:</td><td>{$_egyed.jogateremnev}</td></tr>
                 <tr><td>Számlázási adat bekérés:</td><td>{if ($_egyed.kellszamlazasiadat)}van{else}nincs{/if}</td></tr>
+                <tr><td>Órarendben szerepel:</td><td>{if ($_egyed.orarendbenszerepel)}igen{else}nem{/if}</td></tr>
                 <tr><td>Regisztrációs form:</td><td><a href="#" class="js-uidcopy" data-clipboard-text="{$_egyed.reglink}">Másolás vágólapra</a></td></tr>
             </tbody>
         </table>

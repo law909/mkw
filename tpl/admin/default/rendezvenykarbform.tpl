@@ -73,6 +73,10 @@
                     <td><input id="KellszamlazasiadatEdit" name="kellszamlazasiadat" type="checkbox"{if ($egyed.kellszamlazasiadat)} checked="checked"{/if}></td>
                 </tr>
                 <tr>
+                    <td><label for="OrarendbenszerepelEdit">{at('Órarendben szerepel')}:</label></td>
+                    <td><input id="OrarendbenszerepelEdit" name="orarendbenszerepel" type="checkbox"{if ($egyed.orarendbenszerepel)} checked="checked"{/if}></td>
+                </tr>
+                <tr>
                     <td><label for="TermekEdit">{at('Termék a számlán')}:</label></td>
                     <td><select id="TermekEdit" name="termek">
                             <option value="">{at('válasszon')}</option>
