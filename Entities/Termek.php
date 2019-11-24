@@ -2395,17 +2395,17 @@ class Termek {
         $this->valutameszorzo = $valutameszorzo;
     }
 
-    public function calcSzallitasiido($valtozat = null) {
+    public function calcSzallitasiido($valtozat = null, $mennyiseg = 0) {
         switch (true) {
             case \mkw\store::isMindentkapni():
                 $szallitasiido = 0;
                 if (!is_null($valtozat)) {
-                    if ($valtozat->getKeszlet() > 0) {
+                    if ($valtozat->getKeszlet() >= $mennyiseg) {
                         $szallitasiido = 1;
                     }
                 }
                 else {
-                    if ($this->getKeszlet() > 0) {
+                    if ($this->getKeszlet() >= $mennyiseg) {
                         $szallitasiido = 1;
                     }
                 }

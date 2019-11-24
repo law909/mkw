@@ -4463,7 +4463,20 @@ class Bizonylatfej {
         if ($this->kelt && $this->getSzallitasiido()) {
             /** @var \DateTime $k */
             $k = clone $this->kelt;
-            $k->add(new \DateInterval('P' . $this->getSzallitasiido() . 'D'));
+            $v = $this->getSzallitasiido();
+            for ($i = 1; $i <= $v; $i++) {
+                $k->add(new \DateInterval('P1D'));
+                if ($k->format('w') == 6) {
+                    $k->add(new \DateInterval('P2D'));
+                }
+            }
+            if (\mkw\store::isFoxpostSzallitasimod($this->getSzallitasimodId())) {
+                $r = $k->format(\mkw\store::$DateFormat);
+                $k->add(new \DateInterval('P2D'));
+                $r = $r . ' - ' . $k->format(\mkw\store::$DateFormat);
+                return $r;
+            }
+            //$k->add(new \DateInterval('P' . $this->getSzallitasiido() . 'D'));
             return $k->format(\mkw\store::$DateFormat);
         }
         return '';
@@ -4482,11 +4495,14 @@ class Bizonylatfej {
         foreach ($this->getBizonylattetelek() as $tetel) {
             $termek = $tetel->getTermek();
             if ($termek) {
-                $sorszallido = $termek->calcSzallitasiido($tetel->getTermekvaltozat());
+                $sorszallido = $termek->calcSzallitasiido($tetel->getTermekvaltozat(), $tetel->getMennyiseg());
                 if ($szallido < $sorszallido) {
                     $szallido = $sorszallido;
                 }
             }
+        }
+        if ($this->getCreated()->format(\mkw\store::$TimeFormat) > '13:00') {
+            $szallido = $szallido + 1;
         }
         $this->setSzallitasiido($szallido);
     }

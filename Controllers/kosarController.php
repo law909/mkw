@@ -177,12 +177,15 @@ class kosarController extends \mkwhelpers\MattableController {
         $szallido = 1;
         /** @var \Entities\Kosar $sor */
         foreach ($sorok as $sor) {
-            $sorszallido = $sor->getTermek()->calcSzallitasiido($sor->getTermekvaltozat());
+            $sorszallido = $sor->getTermek()->calcSzallitasiido($sor->getTermekvaltozat(), $sor->getMennyiseg());
             if ($szallido < $sorszallido) {
                 $szallido = $sorszallido;
             }
             $s[] = $sor->toLista($partner);
             $tids[] = $sor->getTermekId();
+        }
+        if (date(\mkw\store::$TimeFormat) > '13:00') {
+            $szallido = $szallido + 1;
         }
         $v->setVar('szallitasiido', $szallido);
         $v->setVar('tetellista', $s);

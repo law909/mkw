@@ -183,12 +183,15 @@ class checkoutController extends \mkwhelpers\MattableController {
         $szallido = 1;
         /** @var \Entities\Kosar $sor */
         foreach ($sorok as $sor) {
-            $sorszallido = $sor->getTermek()->calcSzallitasiido($sor->getTermekvaltozat());
+            $sorszallido = $sor->getTermek()->calcSzallitasiido($sor->getTermekvaltozat(), $sor->getMennyiseg());
             if ($szallido < $sorszallido) {
                 $szallido = $sorszallido;
             }
 			$s[] = $sor->toLista($partner);
 		}
+        if (date(\mkw\store::$TimeFormat) > '13:00') {
+            $szallido = $szallido + 1;
+        }
         $view->setVar('szallitasiido', $szallido);
 		$view->setVar('tetellista', $s);
 		echo json_encode(array(

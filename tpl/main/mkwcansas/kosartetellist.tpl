@@ -56,7 +56,7 @@
 	</tr>
     <tr>
         <th colspan="4"><div class="textalignright">{t('Szállítási idő')}:</div></th>
-        <th><div class="textalignright">{$szallitasiido} nap</div></th>
+        <th><div class="textalignright">{$szallitasiido} munkanap</div></th>
         <th></th>
     </tr>
 </tfoot>
