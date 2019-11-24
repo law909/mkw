@@ -18,7 +18,7 @@ class RendezvenyRepository extends \mkwhelpers\Repository {
             . ' FROM Entities\Rendezveny _xx'
             . ' LEFT JOIN _xx.termek t'
             . ' LEFT JOIN _xx.tanar ta'
-            . ' LEFT JOIN _xx.terem te'
+            . ' LEFT JOIN _xx.jogaterem te'
             . $this->getFilterString($filter)
             . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
