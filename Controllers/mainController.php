@@ -464,7 +464,7 @@ class mainController extends \mkwhelpers\Controller {
 				}
 				if (!$hibas) {
                     $mailer = \mkw\store::getMailer();
-                    $mailer->setTo('info@mindentkapni.hu');
+                    $mailer->setTo(\mkw\store::getParameter(\mkw\consts::EmailReplyTo));
                     $mailer->setSubject('Kapcsolatfelvétel, ' . $rendelesszam . ' ' . $nev);
                     $mailer->setMessage(
                         'Rendelésszám: ' . $rendelesszam . '<br>' .
