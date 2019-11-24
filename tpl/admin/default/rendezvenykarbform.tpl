@@ -28,6 +28,11 @@
                                            value="{$egyed.nev}" required autofocus></td>
                 </tr>
                 <tr>
+                    <td><label for="UrlEdit">{at('Webcím')}:</label></td>
+                    <td colspan="3"><input id="UrlEdit" name="url" type="text" size="83" maxlength="255"
+                                           value="{$egyed.url}"></td>
+                </tr>
+                <tr>
                     <td><label for="KezdodatumEdit">{at('Rendezvény kezdő dátuma')}:</label></td>
                     <td><input id="KezdodatumEdit" name="kezdodatum" data-datum="{$egyed.kezdodatum}"></td>
                 </tr>

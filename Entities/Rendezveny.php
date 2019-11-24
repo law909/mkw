@@ -129,6 +129,9 @@ class Rendezveny {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $orarendbenszerepel = true;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $url;
+
     public function __construct() {
         $this->rendezvenydokok = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -189,6 +192,13 @@ class Rendezveny {
         }
     }
 
+    public function getNap() {
+        if ($this->kezdodatum) {
+            return $this->kezdodatum->format('N');
+        }
+        return false;
+    }
+
     public function getTanar() {
         return $this->tanar;
     }
@@ -203,6 +213,13 @@ class Rendezveny {
     public function getTanarId() {
         if ($this->tanar) {
             return $this->tanar->getId();
+        }
+        return '';
+    }
+
+    public function getTanarUrl() {
+        if ($this->tanar) {
+            return $this->tanar->getUrl();
         }
         return '';
     }
@@ -351,6 +368,13 @@ class Rendezveny {
     public function getJogateremNev() {
         if ($this->jogaterem) {
             return $this->jogaterem->getNev();
+        }
+        return '';
+    }
+
+    public function getJogateremOrarendclass() {
+        if ($this->jogaterem) {
+            return $this->jogaterem->getOrarendclass();
         }
         return '';
     }
@@ -585,6 +609,20 @@ class Rendezveny {
      */
     public function setOrarendbenszerepel($orarendbenszerepel) {
         $this->orarendbenszerepel = $orarendbenszerepel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrl() {
+        return $this->url;
+    }
+
+    /**
+     * @param mixed $url
+     */
+    public function setUrl($url) {
+        $this->url = $url;
     }
 
 }

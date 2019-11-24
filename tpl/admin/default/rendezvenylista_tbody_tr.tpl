@@ -7,6 +7,7 @@
         <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
         <table>
             <tbody>
+                <tr><td>Webcím:</td><td><a href="{$_egyed.url}" target="_blank">{$_egyed.url}</a></td></tr>
                 <tr><td>Dátum:</td><td>{$_egyed.kezdodatum} {$_egyed.kezdoido}</td></tr>
                 <tr><td>Termék a számlán</td><td>{$_egyed.termeknev}</td></tr>
                 <tr><td>Ár:</td><td class="pricenowrap">{number_format($_egyed.ar, 2, '.', ' ')}</td></tr>

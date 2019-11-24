@@ -227,8 +227,8 @@ class orarendController extends \mkwhelpers\MattableController {
     }
 
     public function exportToWordpress() {
-	    $offset = $this->params->getIntRequestParam('o', 0);
-	    $tanarkod = $this->params->getIntRequestParam('t', 0);
+        $offset = $this->params->getIntRequestParam('o', 0);
+        $tanarkod = $this->params->getIntRequestParam('t', 0);
         $startdatum = \mkw\store::startOfWeek();
         if ($offset < 0) {
             $startdatum->sub(new \DateInterval('P' . abs($offset) . 'W'));
@@ -241,9 +241,9 @@ class orarendController extends \mkwhelpers\MattableController {
         if ($tanarkod) {
             $filter->addFilter('dolgozo', '=', $tanarkod);
         }
-	    $rec = $this->getRepo()->getWithJoins($filter, array('nap' => 'ASC', 'kezdet' => 'ASC', 'nev' => 'ASC'));
-	    $orarend = array();
-	    /** @var \Entities\Orarend $item */
+        $rec = $this->getRepo()->getWithJoins($filter, array('nap' => 'ASC', 'kezdet' => 'ASC', 'nev' => 'ASC'));
+        $orarend = array();
+        /** @var \Entities\Orarend $item */
         foreach ($rec as $item) {
             $orak = array(
                 'kezdet' => $item->getKezdetStr(),
@@ -264,7 +264,7 @@ class orarendController extends \mkwhelpers\MattableController {
             $hf->addFilter('datum', '>=', \mkw\store::startOfWeek($startdatum));
             $hf->addFilter('datum', '<=', \mkw\store::endOfWeek($startdatum));
             $hf->addFilter('orarend', '=', $item->getId());
-            $hrec = $this->getRepo('Entities\Orarendhelyettesites')->getAll($hf,array());
+            $hrec = $this->getRepo('Entities\Orarendhelyettesites')->getAll($hf, array());
             if ($hrec) {
                 if ($hrec[0]->getElmarad()) {
                     $orak['elmarad'] = true;
@@ -281,7 +281,38 @@ class orarendController extends \mkwhelpers\MattableController {
             $xdatum = clone $startdatum;
             $orarend[$item->getNap()]['napdatum'] = $xdatum->add(new \DateInterval('P' . ($item->getNap() - 1) . 'D'))->format(\mkw\store::$DateFormat);
             $orarend[$item->getNap()]['orak'][] = $orak;
-	    }
+        }
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('orarendbenszerepel', '=', true);
+        $rec = $this->getRepo('Entities\Rendezveny')->getWithJoins($filter, array('kezdodatum' => 'ASC', 'kezdoido' => 'ASC'));
+        /** @var \Entities\Rendezveny $item */
+        foreach ($rec as $item) {
+            $orak = array(
+                'kezdet' => $item->getKezdoido(),
+                'veg' => '',
+                'oranev' => $item->getNev(),
+                'oraurl' => '',
+                'tanar' => $item->getTanarNev(),
+                'tanarurl' => $item->getTanarUrl(),
+                'helyettesito' => '',
+                'helyettesitourl' => '',
+                'terem' => $item->getJogateremNev(),
+                'class' => $item->getJogateremOrarendclass(),
+                'delelott' => false,
+                'elmarad' => false,
+                'multilang' => false
+            );
+            $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
+            $orarend[$item->getNap()]['napdatum'] = $item->getKezdodatumStr();
+            $orarend[$item->getNap()]['orak'][] = $orak;
+        }
+
+        foreach ($orarend as $elem) {
+            uasort($elem['orak'], function($a, $b) {
+                return strnatcmp($a['kezdet'], $b['kezdet']);
+            });
+        }
+
         $view = $this->createView('orarendwordpress.tpl');
         $view->setVar('orarend', $orarend);
         $view->setVar('prevoffset', $offset - 1);
