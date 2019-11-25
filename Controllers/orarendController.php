@@ -291,7 +291,7 @@ class orarendController extends \mkwhelpers\MattableController {
                 'kezdet' => $item->getKezdoido(),
                 'veg' => '',
                 'oranev' => $item->getTeljesNev(),
-                'oraurl' => '',
+                'oraurl' => $item->getUrl(),
                 'tanar' => $item->getTanarNev(),
                 'tanarurl' => $item->getTanarUrl(),
                 'helyettesito' => '',
