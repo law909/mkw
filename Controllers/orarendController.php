@@ -303,7 +303,7 @@ class orarendController extends \mkwhelpers\MattableController {
                 'elmarad' => false,
                 'multilang' => false
             );
-            if (!array_key_exists($item->getNap())) {
+            if (!array_key_exists($item->getNap(), $orarend)) {
                 $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
                 $orarend[$item->getNap()]['napdatum'] = $item->getKezdodatumStr();
             }

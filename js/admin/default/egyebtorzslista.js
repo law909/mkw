@@ -1414,13 +1414,13 @@ $().ready(
                         editable: true,
                         editoptions: {},
                         editrules: {integer: true},
-                        formoptions: {rowpos: 3, label: 'Sorrend:'}},
+                        formoptions: {rowpos: 2, label: 'Sorrend:'}},
                     {name: 'orarendbenszerepel', index: 'orarendbenszerepel', label: 'Órarendben', width: 25, align: 'right',
                         formatter: 'checkbox',
                         editable: true,
                         edittype: 'checkbox',
                         editoptions: {value: '1:0'},
-                        formoptions: {rowpos: 2, label: 'Órarendben:'}}
+                        formoptions: {rowpos: 3, label: 'Órarendben:'}}
                 ],
                 rowNum: 100000,
                 rowList: [10, 20, 30],
