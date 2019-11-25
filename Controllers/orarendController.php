@@ -290,7 +290,7 @@ class orarendController extends \mkwhelpers\MattableController {
             $orak = array(
                 'kezdet' => $item->getKezdoido(),
                 'veg' => '',
-                'oranev' => $item->getNev(),
+                'oranev' => $item->getTeljesNev(),
                 'oraurl' => '',
                 'tanar' => $item->getTanarNev(),
                 'tanarurl' => $item->getTanarUrl(),
@@ -302,8 +302,8 @@ class orarendController extends \mkwhelpers\MattableController {
                 'elmarad' => false,
                 'multilang' => false
             );
-            $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
-            $orarend[$item->getNap()]['napdatum'] = $item->getKezdodatumStr();
+//            $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
+//            $orarend[$item->getNap()]['napdatum'] = $item->getKezdodatumStr();
             $orarend[$item->getNap()]['orak'][] = $orak;
         }
 
