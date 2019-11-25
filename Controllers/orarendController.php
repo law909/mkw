@@ -284,6 +284,7 @@ class orarendController extends \mkwhelpers\MattableController {
         }
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('orarendbenszerepel', '=', true);
+        $filter->addFilter('ra.orarendbenszerepel', '=', true);
         $rec = $this->getRepo('Entities\Rendezveny')->getWithJoins($filter, array('kezdodatum' => 'ASC', 'kezdoido' => 'ASC'));
         /** @var \Entities\Rendezveny $item */
         foreach ($rec as $item) {

@@ -11,19 +11,19 @@ class rendezvenyallapotController extends \mkwhelpers\JQGridController {
     }
 
     protected function getOrderArray() {
-        // TODO SQLINJECTION
         $order = array();
         $order[$this->params->getRequestParam('sidx', 'sorrend')] = $this->params->getRequestParam('sord', 'ASC');
         return $order;
     }
 
     protected function loadCells($obj) {
-        return array($obj->getNev(), $obj->getSorrend());
+        return array($obj->getNev(), $obj->getSorrend(), $obj->isOrarendbenszerepel());
     }
 
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend', $obj->getSorrend()));
+        $obj->setOrarendbenszerepel($this->params->getBoolRequestParam('orarendbenszerepel', $obj->isOrarendbenszerepel()));
         return $obj;
     }
 

@@ -14,11 +14,12 @@ class RendezvenyRepository extends \mkwhelpers\Repository {
     }
 
     public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT _xx,t,ta,te'
+        $q = $this->_em->createQuery('SELECT _xx,t,ta,te,ra'
             . ' FROM Entities\Rendezveny _xx'
             . ' LEFT JOIN _xx.termek t'
             . ' LEFT JOIN _xx.tanar ta'
             . ' LEFT JOIN _xx.jogaterem te'
+            . ' LEFT JOIN _xx.rendezvenyallapot ra'
             . $this->getFilterString($filter)
             . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));

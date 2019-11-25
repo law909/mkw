@@ -1410,11 +1410,17 @@ $().ready(
                         editoptions: {size: 25, maxlength: 255},
                         editrules: {required: true},
                         formoptions: {rowpos: 1, label: 'Név:', elmsuffix: '*'}},
+                    {name: 'orarendbenszerepel', index: 'orarendbenszerepel', label: 'Órarendben', width: 25, align: 'right',
+                        formatter: 'checkbox',
+                        editable: true,
+                        edittype: 'checkbox',
+                        editoptions: {value: '1:0'},
+                        formoptions: {rowpos: 2, label: 'Órarendben:'}},
                     {name: 'sorrend', index: 'sorrend', label: 'Sorrend', width: 25, align: 'right',
                         editable: true,
                         editoptions: {},
                         editrules: {integer: true},
-                        formoptions: {rowpos: 2, label: 'Sorrend:'}}
+                        formoptions: {rowpos: 3, label: 'Sorrend:'}}
                 ],
                 rowNum: 100000,
                 rowList: [10, 20, 30],

@@ -2523,12 +2523,12 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function calcSzallitasiido($valtozat = NULL)
+    public function calcSzallitasiido($valtozat = NULL, $mennyiseg = 0)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcSzallitasiido', [$valtozat]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcSzallitasiido', [$valtozat, $mennyiseg]);
 
-        return parent::calcSzallitasiido($valtozat);
+        return parent::calcSzallitasiido($valtozat, $mennyiseg);
     }
 
     /**

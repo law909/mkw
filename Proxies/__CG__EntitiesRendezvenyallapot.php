@@ -64,10 +64,10 @@ class Rendezvenyallapot extends \Entities\Rendezvenyallapot implements \Doctrine
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezvenyallapot' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezvenyallapot' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezvenyallapot' . "\0" . 'sorrend'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezvenyallapot' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezvenyallapot' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezvenyallapot' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Rendezvenyallapot' . "\0" . 'orarendbenszerepel'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezvenyallapot' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezvenyallapot' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezvenyallapot' . "\0" . 'sorrend'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Rendezvenyallapot' . "\0" . 'id', '' . "\0" . 'Entities\\Rendezvenyallapot' . "\0" . 'nev', '' . "\0" . 'Entities\\Rendezvenyallapot' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Rendezvenyallapot' . "\0" . 'orarendbenszerepel'];
     }
 
     /**
@@ -230,6 +230,28 @@ class Rendezvenyallapot extends \Entities\Rendezvenyallapot implements \Doctrine
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', [$sorrend]);
 
         return parent::setSorrend($sorrend);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isOrarendbenszerepel()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isOrarendbenszerepel', []);
+
+        return parent::isOrarendbenszerepel();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOrarendbenszerepel($orarendbenszerepel)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrarendbenszerepel', [$orarendbenszerepel]);
+
+        return parent::setOrarendbenszerepel($orarendbenszerepel);
     }
 
 }

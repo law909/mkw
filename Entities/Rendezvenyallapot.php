@@ -24,6 +24,9 @@ class Rendezvenyallapot {
     /** @ORM\Column(type="integer",nullable=true) */
     private $sorrend;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $orarendbenszerepel = true;
+
     /**
      * @return mixed
      */
@@ -57,6 +60,20 @@ class Rendezvenyallapot {
      */
     public function setSorrend($sorrend) {
         $this->sorrend = $sorrend;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOrarendbenszerepel() {
+        return $this->orarendbenszerepel;
+    }
+
+    /**
+     * @param bool $orarendbenszerepel
+     */
+    public function setOrarendbenszerepel($orarendbenszerepel) {
+        $this->orarendbenszerepel = $orarendbenszerepel;
     }
 
 }
