@@ -2400,12 +2400,12 @@ class Termek {
             case \mkw\store::isMindentkapni():
                 $szallitasiido = 0;
                 if (!is_null($valtozat)) {
-                    if ($valtozat->getKeszlet() >= $mennyiseg) {
+                    if ((($mennyiseg === 0) && ($valtozat->getKeszlet() > 0)) || (($mennyiseg !== 0) && ($valtozat->getKeszlet() >= $mennyiseg))) {
                         $szallitasiido = 1;
                     }
                 }
                 else {
-                    if ($this->getKeszlet() >= $mennyiseg) {
+                    if ((($mennyiseg === 0) && ($this->getKeszlet() > 0)) || (($mennyiseg !== 0) && ($this->getKeszlet() >= $mennyiseg))) {
                         $szallitasiido = 1;
                     }
                 }
