@@ -4463,6 +4463,12 @@ class Bizonylatfej {
         if ($this->kelt && $this->getSzallitasiido()) {
             /** @var \DateTime $k */
             $k = clone $this->kelt;
+            if ($k->format('w') == 6) {
+                $k->add(new \DateInterval('P2D'));
+            }
+            elseif ($k->format('w') == 0) {
+                $k->add(new \DateInterval('P1D'));
+            }
             $v = $this->getSzallitasiido();
             for ($i = 1; $i <= $v; $i++) {
                 $k->add(new \DateInterval('P1D'));
