@@ -23,7 +23,7 @@
                             <th class="textalignright">Retail price</th>
                             <th class="textalignright">Discount</th>
                             <th class="textalignright">Unit price</th>
-                            <th class="textalignright">Stock</th>
+                            <!--th class="textalignright">Stock</th-->
                             <th class="textaligncenter">Arrival</th>
                         </tr>
                     </thead>
@@ -46,9 +46,9 @@
                         <td class="textalignright">
                             <span class="js-ar{$_valt.id}">{number_format($termek.ar, 2, ',', ' ')}</span><span> {$termek.valutanemnev}</span>
                         </td>
-                        <td class="textalignright">
+                        <!--td class="textalignright">
                             {if ($_valt.keszlet <= 0)}0{else}{$_valt.keszlet}{/if} pcs
-                        </td>
+                        </td-->
                         <td class="valtozatkeszlet textaligncenter">
                             {if ($_valt.bejon)}
                                 <span class="arrival">{$_valt.beerkezesdatumstr}</span>
