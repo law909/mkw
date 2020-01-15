@@ -18,7 +18,7 @@
 					<li>elsők között értesülhet akciós termékeinkről, legfrissebb híreinkről</li>
 				</ul>
 				</div>
-				<form id="Regform" action="/regisztracio/ment" method="post">
+				<form id="Regform" action="/regisztracio/ms" method="post">
 					<fieldset>
 						<div class="controls controls-row chk-controloffset">
 							<input id="VezeteknevEdit" name="vezeteknev" type="text" class="span" value="{$vezeteknev|default}" placeholder="{t('vezetéknév')} *" required data-errormsg="{t('Adja meg a nevét')}">

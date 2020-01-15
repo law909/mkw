@@ -41,7 +41,7 @@ else {
     else {
         $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');
         $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
-        $router->map('POST', '/regisztracio/ment', 'partnerController#saveRegistration', 'saveregistration');
+        $router->map('POST', '/regisztracio/ms', 'partnerController#saveRegistration', 'saveregistration');
     }
 }
 
