@@ -1052,11 +1052,13 @@ class partnerController extends \mkwhelpers\MattableController {
                 $subject->setVar('user', $tpldata);
                 $body = $this->getTemplateFactory()->createMainView('string:' . $emailtpl->getHTMLSzoveg());
                 $body->setVar('user', $tpldata);
+                /*
                 $mailer = \mkw\store::getMailer();
                 $mailer->setTo($email);
                 $mailer->setSubject($subject->getTemplateResult());
                 $mailer->setMessage($body->getTemplateResult());
                 $mailer->send();
+                */
             }
             \Zend_Session::writeClose();
             Header('Location: ' . \mkw\store::getRouter()->generate('showaccount'));
