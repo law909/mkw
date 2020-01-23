@@ -1272,15 +1272,29 @@ var bizonylathelper = function($) {
                 });
             })
             .on('click', '.js-rontbizonylat', function(e) {
+                var $this = $(this);
                 e.preventDefault();
-                $.ajax({
-                    url:'/admin/' + bizonylattipus + 'fej/ront',
-                    type: 'POST',
-                    data: {
-                        id: $(this).data('egyedid')
-                    },
-                    success:function() {
-                        $('.mattable-tablerefresh').click();
+                dialogcenter.html('Biztosan rontja a bizonylatot?').dialog({
+                    resizable: false,
+                    height: 140,
+                    modal: true,
+                    buttons: {
+                        'Igen': function() {
+                            $.ajax({
+                                url:'/admin/' + bizonylattipus + 'fej/ront',
+                                type: 'POST',
+                                data: {
+                                    id: $this.data('egyedid')
+                                },
+                                success:function() {
+                                    $('.mattable-tablerefresh').click();
+                                }
+                            });
+                            $(this).dialog('close');
+                        },
+                        'Nem': function() {
+                            $(this).dialog('close');
+                        }
                     }
                 });
             })
