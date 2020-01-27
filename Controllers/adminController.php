@@ -151,6 +151,9 @@ class adminController extends mkwhelpers\Controller {
                 $view->setVar('eladasformaction', \mkw\store::getRouter()->generate('adminbizonylatfejquickadd'));
                 $view->setVar('jogareszvetelformaction', \mkw\store::getRouter()->generate('adminjogareszvetelquicksave'));
 
+                $view->setVar('toldatum', date(\mkw\store::$DateFormat));
+                $view->setVar('igdatum', date(\mkw\store::$DateFormat));
+
                 $fmarr = \mkw\store::getIds($this->getRepo('Entities\Fizmod')->getAllKeszpenzes());
                 $fmfilter = new mkwhelpers\FilterDescriptor();
                 $fmfilter->addSql('bf.fizmod_id IN (' . implode(',', $fmarr) . ')');
@@ -172,6 +175,34 @@ class adminController extends mkwhelpers\Controller {
                 break;
         }
         $view->printTemplateResult();
+    }
+
+    public function darshanStatisztika() {
+        $view = $this->createView('statisztika.tpl');
+        $datumstr = $this->params->getStringRequestParam('tol');
+        $tol = \mkw\store::convDate($datumstr);
+        $datumstr = $this->params->getStringRequestParam('ig');
+        $ig = \mkw\store::convDate($datumstr);
+
+        $partnerrepo = $this->getRepo('Entities\Partner');
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('created', '>=', $tol);
+        $filter->addFilter('created', '<=', $ig);
+        $ujpk = $partnerrepo->getAll($filter, array('created' => 'ASC'));
+        $ujpartnerlista = array();
+        /** @var \Entities\Partner $ujp */
+        foreach ($ujpk as $ujp) {
+            $ujpartnerlista[] = array(
+                'datum' => $ujp->getCreatedStr(),
+                'nev' => $ujp->getNev(),
+                'email' => $ujp->getEmail()
+            );
+        }
+        $view->setVar('ujpartnerlista', $ujpartnerlista);
+        $view->setVar('ujpartnercount', count($ujpartnerlista));
+
+        $view->printTemplateResult();
+
     }
 
     public function printNapijelentes() {

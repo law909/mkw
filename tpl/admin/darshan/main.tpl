@@ -26,65 +26,15 @@
         </div>
     </div>
     <div class="clearboth">
-    {if (haveJog(15))}
-            <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
-                <div class="ui-widget-header ui-corner-top">
-                    <div class="mainboxinner ui-corner-top">Ezek az emberek tartoznak nekünk</div>
-                </div>
-                <div class="mainboxinner">
-                    <div class="mainboxinner">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Bizonylatszám</th>
-                                <th>Fiz.mód</th>
-                                <th>Kelt</th>
-                                <th>Teljesítés</th>
-                                <th>Esedékesség</th>
-                                <th class="textalignright">Tartozás</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {$cnt = count($kintlevoseglista)}
-                            {$cikl = 0}
-                            {while ($cikl < $cnt)}
-                                {$partner = $kintlevoseglista[$cikl]}
-                                {$partnerid = $partner.partner_id}
-                                {$pbsum = array()}
-                                <tr class="italic">
-                                    <td colspan="8" class="cell">
-                                        {$partner.nev} {$partner.irszam} {$partner.varos} {$partner.utca}  {$partner.hazszam}
-                                    </td>
-                                </tr>
-                                {while (($cikl < $cnt) && ($partnerid == $kintlevoseglista[$cikl].partner_id))}
-                                    {$elem = $kintlevoseglista[$cikl]}
-                                    <tr>
-                                        <td class="cell"><a href="{$elem.printurl}" target="_blank">{$elem.bizonylatfej_id}</a></td>
-                                        <td class="cell">{$elem.fizmodnev}</td>
-                                        <td class="cell">{$elem.kelt}</td>
-                                        <td class="cell">{$elem.teljesites}</td>
-                                        <td class="cell">{$elem.hivatkozottdatum}</td>
-                                        <td class="cell textalignright nowrap">{bizformat($elem.tartozas)}</td>
-                                        <td class="cell">{$elem.valutanemnev}</td>
-                                    </tr>
-                                    {$pbsum[$elem.valutanemnev]['tartozas'] = $pbsum[$elem.valutanemnev]['tartozas'] + $elem.tartozas}
-                                    {$cikl = $cikl + 1}
-                                {/while}
-                                {foreach $pbsum as $k=>$bs}
-                                    <tr class="italic bold">
-                                        <td colspan="5" class="cell">{$partner.nev} összesen</td>
-                                        <td class="textalignright">{bizformat($bs['tartozas'])}</td>
-                                        <td>{$k}</td>
-                                    </tr>
-                                {/foreach}
-                            {/while}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        {/if}
+    <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+        <div class="ui-widget-header ui-corner-top">
+            <div class="mainboxinner ui-corner-top">Statisztikák</div>
+        </div>
+        <div class="mainboxinner">
+            {include "../default/comp_idoszak.tpl" comptype="datum"}
+            <a id="StatRefreshButton" href="#"><span>Frissít</span></a>
+            <div id="stateredmeny"></div>
+        </div>
     </div>
     <div class="clearboth">
         <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
@@ -705,5 +655,66 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="clearboth">
+        {if (haveJog(15))}
+            <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
+                <div class="ui-widget-header ui-corner-top">
+                    <div class="mainboxinner ui-corner-top">Ezek az emberek tartoznak nekünk</div>
+                </div>
+                <div class="mainboxinner">
+                    <div class="mainboxinner">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Bizonylatszám</th>
+                                <th>Fiz.mód</th>
+                                <th>Kelt</th>
+                                <th>Teljesítés</th>
+                                <th>Esedékesség</th>
+                                <th class="textalignright">Tartozás</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {$cnt = count($kintlevoseglista)}
+                            {$cikl = 0}
+                            {while ($cikl < $cnt)}
+                                {$partner = $kintlevoseglista[$cikl]}
+                                {$partnerid = $partner.partner_id}
+                                {$pbsum = array()}
+                                <tr class="italic">
+                                    <td colspan="8" class="cell">
+                                        {$partner.nev} {$partner.irszam} {$partner.varos} {$partner.utca}  {$partner.hazszam}
+                                    </td>
+                                </tr>
+                                {while (($cikl < $cnt) && ($partnerid == $kintlevoseglista[$cikl].partner_id))}
+                                    {$elem = $kintlevoseglista[$cikl]}
+                                    <tr>
+                                        <td class="cell"><a href="{$elem.printurl}" target="_blank">{$elem.bizonylatfej_id}</a></td>
+                                        <td class="cell">{$elem.fizmodnev}</td>
+                                        <td class="cell">{$elem.kelt}</td>
+                                        <td class="cell">{$elem.teljesites}</td>
+                                        <td class="cell">{$elem.hivatkozottdatum}</td>
+                                        <td class="cell textalignright nowrap">{bizformat($elem.tartozas)}</td>
+                                        <td class="cell">{$elem.valutanemnev}</td>
+                                    </tr>
+                                    {$pbsum[$elem.valutanemnev]['tartozas'] = $pbsum[$elem.valutanemnev]['tartozas'] + $elem.tartozas}
+                                    {$cikl = $cikl + 1}
+                                {/while}
+                                {foreach $pbsum as $k=>$bs}
+                                    <tr class="italic bold">
+                                        <td colspan="5" class="cell">{$partner.nev} összesen</td>
+                                        <td class="textalignright">{bizformat($bs['tartozas'])}</td>
+                                        <td>{$k}</td>
+                                    </tr>
+                                {/foreach}
+                            {/while}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {/if}
     </div>
 {/block}

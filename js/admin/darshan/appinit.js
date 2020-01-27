@@ -16,6 +16,25 @@ $(document).ready(
         reszvetel = jogareszvetel();
         reszvetel.init();
 
+        mkwcomp.datumEdit.init('#TolEdit');
+        mkwcomp.datumEdit.init('#IgEdit');
+
+        $('#StatRefreshButton').button();
+        $('#StatRefreshButton').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                method: 'POST',
+                url: '/admin/darshanstat',
+                data: {
+                    tol: mkwcomp.datumEdit.getDate('#TolEdit'),
+                    ig: mkwcomp.datumEdit.getDate('#IgEdit')
+                },
+                success: function(data) {
+                    $('#stateredmeny').html(data);
+                }
+            })
+        });
+
         $('#CimletezoButton').button();
         $('#CimletezoButton').on('click', function(e) {
             e.preventDefault();
