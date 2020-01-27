@@ -13,7 +13,7 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository {
     }
 
     public function getWithJoins($filter, $order = array(), $offset = 0, $elemcount = 0) {
-        $q = $this->_em->createQuery('SELECT _xx,jt,jot,f,p,ta,pa '
+        $q = $this->_em->createQuery('SELECT _xx,jt,jot,f,p,ta,pa,t '
             . ' FROM Entities\JogaReszvetel _xx'
             . ' LEFT JOIN _xx.jogaterem jt'
             . ' LEFT JOIN _xx.jogaoratipus jot'
@@ -21,6 +21,7 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository {
             . ' LEFT JOIN _xx.penztar p'
             . ' LEFT JOIN _xx.tanar ta'
             . ' LEFT JOIN _xx.partner pa'
+            . ' LEFT JOIN _xx.termek t'
             . $this->getFilterString($filter)
             . $this->getOrderString($order));
         $q->setParameters($this->getQueryParameters($filter));
@@ -54,6 +55,17 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository {
             . $this->getFilterString($filter)
             . ' GROUP BY ta.id'
             . ' ORDER BY ta.nev');
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
+    }
+
+    public function getTermekOsszesito($filter, $honap = 1) {
+        $q = $this->_em->createQuery('SELECT COUNT(_xx) AS db,t.nev,t.id'
+            . ' FROM Entities\JogaReszvetel _xx'
+            . ' LEFT JOIN _xx.termek t'
+            . $this->getFilterString($filter)
+            . ' GROUP BY t.id'
+            . ' ORDER BY t.nev');
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getResult();
     }

@@ -206,6 +206,34 @@ class adminController extends mkwhelpers\Controller {
         $view->setVar('ujpartnerlista', $ujpartnerlista);
         $view->setVar('ujpartnercount', count($ujpartnerlista));
 
+        $reszvetrepo = $this->getRepo('Entities\JogaReszvetel');
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('datum', '>=', $tol);
+        $filter->addFilter('datum', '<=', $ig);
+        $filter->addFilter('uresterem', '=', false);
+        $view->setVar('reszvetelcount', $reszvetrepo->getCount($filter));
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('datum', '>=', $tol);
+        $filter->addFilter('datum', '<=', $ig);
+        $filter->addFilter('uresterem', '=', true);
+        $view->setVar('uresteremcount', $reszvetrepo->getCount($filter));
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('datum', '>=', $tol);
+        $filter->addFilter('datum', '<=', $ig);
+        $filter->addFilter('uresterem', '=', false);
+        $rvk = $reszvetrepo->getTermekOsszesito($filter);
+        $resztvevolista = array();
+        /** @var \Entities\JogaReszvetel $rv */
+        foreach ($rvk as $rv) {
+            $resztvevolista[] = array(
+                'db' => $rv['db'],
+                'termek' => $rv['nev']
+            );
+        }
+        $view->setVar('resztvevolista', $resztvevolista);
+
         $view->printTemplateResult();
 
     }
