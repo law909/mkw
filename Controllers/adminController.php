@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Cassandra\Date;
 use mkw\store;
 use mkwhelpers, Entities;
 
@@ -151,7 +152,10 @@ class adminController extends mkwhelpers\Controller {
                 $view->setVar('eladasformaction', \mkw\store::getRouter()->generate('adminbizonylatfejquickadd'));
                 $view->setVar('jogareszvetelformaction', \mkw\store::getRouter()->generate('adminjogareszvetelquicksave'));
 
-                $view->setVar('toldatum', date(\mkw\store::$DateFormat));
+                $ma = new \DateTime();
+                $ma->sub(new \DateInterval('P1W'));
+
+                $view->setVar('toldatum', $ma->format(\mkw\store::$DateFormat));
                 $view->setVar('igdatum', date(\mkw\store::$DateFormat));
 
                 $fmarr = \mkw\store::getIds($this->getRepo('Entities\Fizmod')->getAllKeszpenzes());
@@ -195,6 +199,7 @@ class adminController extends mkwhelpers\Controller {
             $ujpartnerlista[] = array(
                 'datum' => $ujp->getCreatedStr(),
                 'nev' => $ujp->getNev(),
+                'createdby' => $ujp->getCreatedbyNev(),
                 'email' => $ujp->getEmail()
             );
         }
