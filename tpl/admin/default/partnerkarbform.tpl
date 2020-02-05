@@ -209,9 +209,26 @@
 		</div>
 		<div id="ElerhetosegTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
-			<tr>
+            {if ($maintheme === 'mkwcansas' && $partner.telefon && (!$partner.telkorzet || !$partner.telszam))}
+                <tr>
+                    <td>{at('Telefonszám')}:</td>
+                    <td>{$partner.telefon}</td>
+                </tr>
+            {/if}
+            <tr>
 				<td><label for="TelefonEdit">{at('Telefon')}:</label></td>
-				<td><input id="TelefonEdit" name="telefon" type="text" size="40" maxlength="40" value="{$partner.telefon}"></td>
+                {if ($maintheme === 'mkwcansas')}
+                    <td><select id="TelkorzetEdit" name="telkorzet" required="required" data-errormsg="{t('Hibás telefonszám')}">
+                            <option value="">{t('válasszon')}</option>
+                            {foreach $telkorzetlist as $tk}
+                                <option value="{$tk.id}" data-hossz="{$tk.hossz}"{if ($tk.selected)} selected="selected"{/if}>{$tk.id}</option>
+                            {/foreach}
+                        </select>
+                        <input id="TelszamEdit" type="text" name="telszam" value="{$partner.telszam}" required="required">
+                    </td>
+                {else}
+                    <td><input id="TelefonEdit" name="telefon" type="text" size="40" maxlength="40" value="{$partner.telefon}"></td>
+                {/if}
 			</tr>
 			<tr>
 				<td><label for="MobilEdit">{at('Mobil')}:</label></td>

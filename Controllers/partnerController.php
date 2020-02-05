@@ -746,6 +746,9 @@ class partnerController extends \mkwhelpers\MattableController {
 
         $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList($partner ? $partner->getBizonylatnyelv() : ''));
 
+        $telkorzetc = new korzetszamController($this->params);
+        $view->setVar('telkorzetlist', $telkorzetc->getSelectList($partner ? $partner->getTelkorzet() : ''));
+
         $view->setVar('partner', $this->loadVars($partner, true));
         $view->printTemplateResult();
     }
