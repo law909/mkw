@@ -1,6 +1,7 @@
 <?php
 namespace Controllers;
 
+use Entities\Termek;
 use mkwhelpers\FilterDescriptor;
 
 class exportController extends \mkwhelpers\Controller {
@@ -51,28 +52,35 @@ class exportController extends \mkwhelpers\Controller {
             $cimke = $t->getCimkeByCategory(\mkw\store::getParameter(\mkw\consts::MarkaCs));
             $leiras = $t->getLeiras();
             $valtozatok = $t->getValtozatok();
-            $vszoveg = '';
-            /** @var \Entities\TermekValtozat $v */
-            foreach ($valtozatok as $v) {
-                if ($v->getElerheto()) {
+            if (count($valtozatok)) {
+                $vszoveg = '';
+                /** @var \Entities\TermekValtozat $v */
+                foreach ($valtozatok as $v) {
+                    if ($v->getElerheto()) {
 
-                    $szallszoveg = false;
-                    $szallitasiido = $t->calcSzallitasiido($v);
+                        $szallszoveg = false;
+                        $szallitasiido = $t->calcSzallitasiido($v);
 
-                    if ($szallitasiido) {
-                        $szallszoveg = '<b>Szállítási határidő ' . $szallitasiido. ' munkanap.</b>';
-                    }
-                    $vszoveg = $vszoveg . '<br>' . $v->getNev() . ' ' . bizformat($t->getBruttoAr($v)) . ' Ft';
+                        if ($szallitasiido) {
+                            $szallszoveg = '<b>Szállítási határidő ' . $szallitasiido . ' munkanap.</b>';
+                        }
+                        $vszoveg = $vszoveg . '<br>' . $v->getNev() . ' ' . bizformat($t->getBruttoAr($v)) . ' Ft';
 
-                    if ($szallszoveg) {
-                        $vszoveg = $vszoveg . ' ' . $szallszoveg;
+                        if ($szallszoveg) {
+                            $vszoveg = $vszoveg . ' ' . $szallszoveg;
+                        }
                     }
                 }
+                if ($vszoveg) {
+                    $leiras = $leiras . '<p>Jelenleg elérhető termékváltozatok:' . $vszoveg . '</p>';
+                }
             }
-            if ($vszoveg) {
-                $leiras = $leiras . '<p>Jelenleg elérhető termékváltozatok:' . $vszoveg . '</p>';
+            else {
+                $szallitasiido = $t->calcSzallitasiido();
+                if ($szallitasiido) {
+                    $leiras = $leiras . '<p><b>Szállítási határidő ' . $szallitasiido . ' munkanap.</b></p>';
+                }
             }
-
             $cimkek = $t->getCimkek();
             $cszoveg = '';
             /** @var \Entities\Termekcimketorzs $c */
@@ -156,26 +164,34 @@ class exportController extends \mkwhelpers\Controller {
             $cimke = $t->getCimkeByCategory(\mkw\store::getParameter(\mkw\consts::MarkaCs));
             $leiras = $t->getLeiras();
             $valtozatok = $t->getValtozatok();
-            $vszoveg = '';
-            /** @var \Entities\TermekValtozat $v */
-            foreach ($valtozatok as $v) {
-                if ($v->getElerheto()) {
+            if (count($valtozatok)) {
+                $vszoveg = '';
+                /** @var \Entities\TermekValtozat $v */
+                foreach ($valtozatok as $v) {
+                    if ($v->getElerheto()) {
 
-                    $szallszoveg = false;
-                    $szallitasiido = $t->calcSzallitasiido($v);
+                        $szallszoveg = false;
+                        $szallitasiido = $t->calcSzallitasiido($v);
 
-                    if ($szallitasiido) {
-                        $szallszoveg = '<b>Szállítási határidő ' . $szallitasiido. ' munkanap.</b>';
-                    }
-                    $vszoveg = $vszoveg . '<br>' . $v->getNev() . ' ' . bizformat($t->getBruttoAr($v)) . ' Ft';
+                        if ($szallitasiido) {
+                            $szallszoveg = '<b>Szállítási határidő ' . $szallitasiido. ' munkanap.</b>';
+                        }
+                        $vszoveg = $vszoveg . '<br>' . $v->getNev() . ' ' . bizformat($t->getBruttoAr($v)) . ' Ft';
 
-                    if ($szallszoveg) {
-                        $vszoveg = $vszoveg . ' ' . $szallszoveg;
+                        if ($szallszoveg) {
+                            $vszoveg = $vszoveg . ' ' . $szallszoveg;
+                        }
                     }
                 }
+                if ($vszoveg) {
+                    $leiras = $leiras . '<p>Jelenleg elérhető termékváltozatok:' . $vszoveg . '</p>';
+                }
             }
-            if ($vszoveg) {
-                $leiras = $leiras . '<p>Jelenleg elérhető termékváltozatok:' . $vszoveg . '</p>';
+            else {
+                $szallitasiido = $t->calcSzallitasiido();
+                if ($szallitasiido) {
+                    $leiras = $leiras . '<p><b>Szállítási határidő ' . $szallitasiido . ' munkanap.</b></p>';
+                }
             }
 
             $cimkek = $t->getCimkek();
@@ -417,20 +433,10 @@ class exportController extends \mkwhelpers\Controller {
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
+        /** @var \Entities\Termek $t */
         foreach ($res as $t) {
 
-            if ($t->getSzallitasiido()) {
-                $szallitasiido = $t->getSzallitasiido();
-            }
-            else {
-                $gyarto = $t->getGyarto();
-                if ($gyarto && $gyarto->getSzallitasiido()) {
-                    $szallitasiido = $gyarto->getSzallitasiido();
-                }
-                else {
-                    $szallitasiido = 0;
-                }
-            }
+            $szallitasiido = $t->calcSzallitasiido();
 
             $leiras = $t->getLeiras();
             $leiras = str_replace("\n", '', $leiras);
@@ -471,20 +477,10 @@ class exportController extends \mkwhelpers\Controller {
 
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
+        /** @var \Entities\Termek $t */
         foreach ($res as $t) {
 
-            if ($t->getSzallitasiido()) {
-                $szallitasiido = $t->getSzallitasiido();
-            }
-            else {
-                $gyarto = $t->getGyarto();
-                if ($gyarto && $gyarto->getSzallitasiido()) {
-                    $szallitasiido = $gyarto->getSzallitasiido();
-                }
-                else {
-                    $szallitasiido = 0;
-                }
-            }
+            $szallitasiido = $t->calcSzallitasiido();
 
             $leiras = $t->getLeiras();
             $leiras = str_replace("\n", '', $leiras);
@@ -526,6 +522,7 @@ class exportController extends \mkwhelpers\Controller {
         echo implode("\t", $sor) . "\n";
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
+        /** @var \Entities\Termek $t */
         foreach ($res as $t) {
             $cimke = $t->getCimkeByCategory(\mkw\store::getParameter(\mkw\consts::MarkaCs));
 
@@ -535,18 +532,7 @@ class exportController extends \mkwhelpers\Controller {
             $leiras = str_replace("\n\r", '', $leiras);
             $leiras = str_replace('"', '""', $leiras);
 
-            if ($t->getSzallitasiido()) {
-                $szallitasiido = $t->getSzallitasiido();
-            }
-            else {
-                $gyarto = $t->getGyarto();
-                if ($gyarto && $gyarto->getSzallitasiido()) {
-                    $szallitasiido = $gyarto->getSzallitasiido();
-                }
-                else {
-                    $szallitasiido = 0;
-                }
-            }
+            $szallitasiido = $t->calcSzallitasiido();
 
             $sor = array(
                 '"' . ($cimke ? $cimke->getNev() : '') . '"',
@@ -581,6 +567,7 @@ class exportController extends \mkwhelpers\Controller {
         echo implode(";", $sor) . "\n";
         $tr = \mkw\store::getEm()->getRepository('Entities\Termek');
         $res = $tr->getAllForExport();
+        /** @var \Entities\Termek $t */
         foreach ($res as $t) {
             $cimke = $t->getCimkeByCategory(\mkw\store::getParameter(\mkw\consts::MarkaCs));
 
@@ -589,19 +576,6 @@ class exportController extends \mkwhelpers\Controller {
             $leiras = str_replace("\r", '', $leiras);
             $leiras = str_replace("\n\r", '', $leiras);
             $leiras = str_replace('"', '""', $leiras);
-
-            if ($t->getSzallitasiido()) {
-                $szallitasiido = $t->getSzallitasiido();
-            }
-            else {
-                $gyarto = $t->getGyarto();
-                if ($gyarto && $gyarto->getSzallitasiido()) {
-                    $szallitasiido = $gyarto->getSzallitasiido();
-                }
-                else {
-                    $szallitasiido = 0;
-                }
-            }
 
             $sor = array(
                 '"' . ($cimke ? $cimke->getNev() : '') . '"',
@@ -1025,19 +999,7 @@ class exportController extends \mkwhelpers\Controller {
 
             $cimke = $t->getCimkeByCategory(\mkw\store::getParameter(\mkw\consts::MarkaCs));
 
-            if ($t->getSzallitasiido()) {
-                $szallitasiido = $t->getSzallitasiido();
-            }
-            else {
-                /** @var \Entities\Partner $gyarto */
-                $gyarto = $t->getGyarto();
-                if ($gyarto && $gyarto->getSzallitasiido()) {
-                    $szallitasiido = $gyarto->getSzallitasiido();
-                }
-                else {
-                    $szallitasiido = 0;
-                }
-            }
+            $szallitasiido = $t->calcSzallitasiido();
 
             $leiras = $t->getRovidleiras();
 
