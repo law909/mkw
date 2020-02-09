@@ -754,6 +754,8 @@ class exportController extends \mkwhelpers\Controller {
 
     public function MugenraceExport() {
 
+        $maxstock = $this->params->getNumRequestParam('max', 0);
+
         $kodszotarrepo = \mkw\store::getEm()->getRepository('Entities\TermekValtozatErtekKodszotar');
 
         $ertek1 = array_merge(
@@ -817,6 +819,9 @@ class exportController extends \mkwhelpers\Controller {
                     if ($keszlet < 0) {
                         $keszlet = 0;
                     }
+                    if ($maxstock > 0) {
+                        $keszlet = min($keszlet, $maxstock);
+                    }
                     $sor = array(
                         '"' . $t->getCikkszam() . '"',
                         '"' . $kodszotarrepo->translate($valt->getSzin()) . '"',
@@ -837,6 +842,9 @@ class exportController extends \mkwhelpers\Controller {
                 if ($keszlet < 0) {
                     $keszlet = 0;
                 }
+                if ($maxstock > 0) {
+                    $keszlet = min($keszlet, $maxstock);
+                }
                 $sor = array(
                     '"' . $t->getCikkszam() . '"',
                     '""',
@@ -855,6 +863,8 @@ class exportController extends \mkwhelpers\Controller {
     }
 
     public function SuperzonehuExport() {
+
+        $maxstock = $this->params->getNumRequestParam('max', 0);
 
         $kodszotarrepo = \mkw\store::getEm()->getRepository('Entities\TermekValtozatErtekKodszotar');
 
@@ -927,6 +937,9 @@ class exportController extends \mkwhelpers\Controller {
                     if ($keszlet < 0) {
                         $keszlet = 0;
                     }
+                    if ($maxstock > 0) {
+                        $keszlet = min($keszlet, $maxstock);
+                    }
                     $sor = array(
                         '"' . $t->getTermekfa1Id() . '"',
                         '"' . $t->getTermekfa1()->getTeljesNev() . '"',
@@ -956,6 +969,9 @@ class exportController extends \mkwhelpers\Controller {
                 $keszlet = $t->getKeszlet() - $t->getFoglaltMennyiseg();
                 if ($keszlet < 0) {
                     $keszlet = 0;
+                }
+                if ($maxstock > 0) {
+                    $keszlet = min($keszlet, $maxstock);
                 }
                 $sor = array(
                     '"' . $t->getTermekfa1Id() . '"',
