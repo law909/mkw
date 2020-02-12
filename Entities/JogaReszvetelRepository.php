@@ -7,8 +7,9 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository {
         parent::__construct($em, $class);
         $this->setEntityname('Entities\JogaReszvetel');
         $this->setOrders(array(
-            '1' => array('caption' => 'dátum és tanár szerint növekvő', 'order' => array('_xx.datum' => 'ASC', '_xx.tanarnev' => 'ASC')),
-            '2' => array('caption' => 'tanár és dátum szerint növekvő', 'order' => array('_xx.tanarnev' => 'ASC', '_xx.datum' => 'ASC'))
+            '1' => array('caption' => 'dátum és tanár szerint csökkenő', 'order' => array('_xx.datum' => 'DESC', 'ta.nev' => 'ASC', 'pa.nev' => 'ASC')),
+            '2' => array('caption' => 'dátum és tanár szerint növekvő', 'order' => array('_xx.datum' => 'ASC', 'ta.nev' => 'ASC', 'pa.nev' => 'ASC')),
+            '3' => array('caption' => 'tanár és dátum szerint növekvő', 'order' => array('ta.nev' => 'ASC', '_xx.datum' => 'ASC', 'pa.nev' => 'ASC'))
         ));
     }
 

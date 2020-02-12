@@ -31,6 +31,20 @@ if ($DBVersion < '0029') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0029');
 }
 
+if ($DBVersion < '0030') {
+    if (\mkw\store::isDarshan()) {
+        \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+            . ' VALUES '
+            . '(8, "Óra látogatások","/admin/jogareszvetel/viewlist","/admin/jogareszvetel",15,1,200, "")');
+    }
+    else {
+        \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+            . ' VALUES '
+            . '(8, "Óra látogatások","/admin/jogareszvetel/viewlist","/admin/jogareszvetel",15,0,200, "")');
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0030');
+}
+
 if (!\mkw\store::getParameter(\mkw\consts::NAVOnlineME1_1Kesz, 0)) {
     $mes2 = array();
     $rsm = new ResultSetMapping();

@@ -32,6 +32,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         $x['partner'] = $t->getPartnerId();
         $x['partnernev'] = $t->getPartnernev();
         $x['partneremail'] = $t->getPartneremail();
+        $x['partnertelefon'] = ($t->getPartner() ? $t->getPartner()->getTelefon() : '');
 
         $x['tanar'] = $t->getTanarId();
         $x['tanarnev'] = $t->getTanarnev();
@@ -52,6 +53,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         $x['termeknev'] = $t->getTermeknev();
         $x['nettoegysar'] = $t->getNettoegysar();
         $x['bruttoegysar'] = $t->getBruttoegysar();
+        $x['jutalek'] = $t->getJutalek();
 
         if ($forKarb) {
             $fizmod = new fizmodController($this->params);
@@ -60,8 +62,6 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
             $x['termeklist'] = $termek->getEladhatoSelectList();
             $penztar = new penztarController($this->params);
             $x['penztarlist'] = $penztar->getSelectList();
-            $rendezveny = new rendezvenyController($this->params);
-            $x['rendezvenylist'] = $rendezveny->getSelectList();
             $tanar = new dolgozoController($this->params);
             $x['tanarlist'] = $tanar->getSelectList();
             $terem = new jogateremController($this->params);
@@ -145,10 +145,6 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         if ($ck) {
             $obj->setTermek($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Rendezveny')->find($this->params->getIntRequestParam('rendezveny', 0));
-        if ($ck) {
-            $obj->setRendezveny($ck);
-        }
         return $obj;
     }
 
@@ -172,14 +168,6 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
             $bs = $this->getRepo('Entities\Fizmod')->findOneById($f);
             if ($bs) {
                 $filter->addFilter('fizmod', '=', $bs);
-            }
-        }
-
-        $f = $this->params->getIntRequestParam('rendezvenyfilter');
-        if ($f) {
-            $bs = $this->getRepo('Entities\Rendezveny')->findOneById($f);
-            if ($bs) {
-                $filter->addFilter('rendezveny', '=', $bs);
             }
         }
 
@@ -215,14 +203,14 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         $view->setVar('pagetitle', t('Óra látogatások'));
         if (!\mkw\store::isPartnerAutocomplete()) {
             $partner = new partnerController($this->params);
-            $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
+            $view->setVar('partnerlist', $partner->getSelectList());
         }
         $fizmod = new fizmodController($this->params);
-        $view->setVar('fizmodlist', $fizmod->getSelectList(($record ? $record->getFizmodId() : 0)));
+        $view->setVar('fizmodlist', $fizmod->getSelectList());
         $penztar = new penztarController($this->params);
         $view->setVar('penztarlist', $penztar->getSelectList());
-        $rendezveny = new rendezvenyController($this->params);
-        $view->setVar('rendezvenylist', $rendezveny->getSelectList(($record ? $record->getRendezvenyId() : 0)));
+        $termek = new termekController($this->params);
+        $view->setVar('termeklist', $termek->getSelectList());
         $view->printTemplateResult(false);
     }
 
@@ -240,8 +228,6 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         $view->setVar('fizmodlist', $fizmod->getSelectList(($record ? $record->getFizmodId() : 0)));
         $penztar = new penztarController($this->params);
         $view->setVar('penztarlist', $penztar->getSelectList());
-        $rendezveny = new rendezvenyController($this->params);
-        $view->setVar('rendezvenylist', $rendezveny->getSelectList(($record ? $record->getRendezvenyId() : 0)));
         $view->printTemplateResult(false);
     }
 
@@ -272,8 +258,6 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         }
         $fizmod = new fizmodController($this->params);
         $view->setVar('fizmodlist', $fizmod->getSelectList(($record ? $record->getFizmodId() : 0)));
-        $rendezveny = new rendezvenyController($this->params);
-        $view->setVar('rendezvenylist', $rendezveny->getSelectList(($record ? $record->getRendezvenyId() : 0)));
 
         return $view->getTemplateResult();
     }

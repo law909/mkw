@@ -391,6 +391,8 @@ $router->map('GET', '/admin/jogareszvetel/getemptyrow', 'jogareszvetelController
 $router->map('POST', '/admin/jogareszvetel/del', 'jogareszvetelController#del', 'adminjogareszveteldel');
 $router->map('POST', '/admin/jogareszvetel/quicksave', 'jogareszvetelController#quicksave', 'adminjogareszvetelquicksave');
 $router->map('GET', '/admin/jogareszvetel/getar', 'jogareszvetelController#getar', 'adminjogareszvetelgetar');
+$router->map('GET', '/admin/jogareszvetel/viewlist', 'jogareszvetelController#viewlist', 'adminjogareszvetelviewlist');
+$router->map('GET', '/admin/jogareszvetel/getlistbody', 'jogareszvetelController#getlistbody', 'adminjogareszvetelgetlistbody');
 
 $router->map('GET', '/admin/termekvaltozat/getemptyrow', 'termekvaltozatController#getemptyrow', 'admintermekvaltozatgetemptyrow');
 $router->map('POST', '/admin/termekvaltozat/generate', 'termekvaltozatController#generate', 'admintermekvaltozatgenerate');
