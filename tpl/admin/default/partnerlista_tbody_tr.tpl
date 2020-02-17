@@ -16,6 +16,7 @@
                     <tr><td>{at('Mióta jógázik')}:</td><td>{$_partner.mijszmiotajogazik}</td></tr>
                     <tr><td>{at('Mióta tanít')}:</td><td>{$_partner.mijszmiotatanit}</td></tr>
                 {else}
+                    <tr><td>{at('Azonosító')}:</td><td>{$_partner.id}</td></tr>
                     <tr><td>{at('Üzletkötő')}:</td><td>{$_partner.uzletkotonev}</td></tr>
                     <tr><td>{at('Adószám')}:</td><td>{$_partner.adoszam}</td></tr>
                     <tr><td>{at('Fizetési mód')}:</td><td>{$_partner.fizmodnev}</td></tr>
