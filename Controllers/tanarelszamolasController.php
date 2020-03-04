@@ -78,11 +78,13 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
 
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', t('Dátum'))
-            ->setCellValue('B1', t('Név'))
-            ->setCellValue('C1', t('Jegy típus'))
-            ->setCellValue('D1', t('Jutalék'));
+            ->setCellValue('B1', t('Nap'))
+            ->setCellValue('C1', t('Név'))
+            ->setCellValue('D1', t('Jegy típus'))
+            ->setCellValue('E1', t('Jutalék'));
 
         $sor = 2;
+        /** @var \Entities\JogaReszvetel $item */
         foreach ($adat as $item) {
             $fm = $item->getFizmod();
             if (\mkw\store::isAYCMFizmod($fm)) {
@@ -93,17 +95,19 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
             }
             $excel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $sor, $item->getDatumStr())
-                ->setCellValue('B' . $sor, $item->getPartnerNev())
-                ->setCellValue('C' . $sor, $termeknev)
-                ->setCellValue('D' . $sor, $item->getJutalek());
+                ->setCellValue('B' . $sor, $item->getDatumNapnev())
+                ->setCellValue('C' . $sor, $item->getPartnerNev())
+                ->setCellValue('D' . $sor, $termeknev)
+                ->setCellValue('E' . $sor, $item->getJutalek());
 
             $sor++;
         }
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A' . $sor, '')
             ->setCellValue('B' . $sor, '')
-            ->setCellValue('C' . $sor, 'Járulék levonás')
-            ->setCellValue('D' . $sor, $tanar->getHavilevonas() * -1 * $hokulonbseg);
+            ->setCellValue('C' . $sor, '')
+            ->setCellValue('D' . $sor, 'Járulék levonás')
+            ->setCellValue('E' . $sor, $tanar->getHavilevonas() * -1 * $hokulonbseg);
 
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 

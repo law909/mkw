@@ -862,6 +862,17 @@ class JogaReszvetel extends \Entities\JogaReszvetel implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
+    public function getDatumNapnev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDatumNapnev', []);
+
+        return parent::getDatumNapnev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setDatum($adat = '')
     {
 

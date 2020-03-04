@@ -533,6 +533,13 @@ class JogaReszvetel {
         return '';
     }
 
+    public function getDatumNapnev() {
+        if ($this->getDatum()) {
+            return \mkw\store::getDayname($this->getDatum()->format('D'));
+        }
+        return '';
+    }
+
     public function setDatum($adat = '') {
         if (is_a($adat, 'DateTime')) {
             $this->datum = $adat;

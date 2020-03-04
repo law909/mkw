@@ -28,6 +28,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
             $x['id'] = $t->getId();
         }
         $x['datum'] = $t->getDatumStr();
+        $x['napnev'] = $t->getDatumNapnev();
 
         $x['partner'] = $t->getPartnerId();
         $x['partnernev'] = $t->getPartnernev();
