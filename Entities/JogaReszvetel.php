@@ -535,7 +535,7 @@ class JogaReszvetel {
 
     public function getDatumNapnev() {
         if ($this->getDatum()) {
-            return \mkw\store::getDayname($this->getDatum()->format('D'));
+            return \mkw\store::getDayname($this->getDatum()->format('N'));
         }
         return '';
     }
