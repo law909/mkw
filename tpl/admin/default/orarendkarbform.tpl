@@ -71,6 +71,11 @@
                     <td><input id="AtlagresztvevoszamEdit" name="atlagresztvevoszam" type="number" size="5" maxlength="5" step="any"
                                value="{$egyed.atlagresztvevoszam}"></td>
                 </tr>
+                <tr>
+                    <td><label for="OnlineUrlEdit">{at('Online óra link')}:</label></td>
+                    <td colspan="3"><input id="OnlineUrlEdit" name="onlineurl" type="text" size="83" maxlength="255"
+                                           value="{$egyed.onlineurl}"></td>
+                </tr>
                 </tbody>
             </table>
         </div>

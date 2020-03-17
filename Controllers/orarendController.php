@@ -39,6 +39,7 @@ class orarendController extends \mkwhelpers\MattableController {
 		$x['inaktiv'] = $t->getInaktiv();
 		$x['atlagresztvevoszam'] = $t->getAtlagresztvevoszam();
 		$x['multilang'] = $t->getMultilang();
+		$x['onlineurl'] = $t->getOnlineurl();
 		return $x;
 	}
 
@@ -76,6 +77,7 @@ class orarendController extends \mkwhelpers\MattableController {
 		$obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
         $obj->setAtlagresztvevoszam($this->params->getIntRequestParam('atlagresztvevoszam'));
         $obj->setMultilang($this->params->getBoolRequestParam('multilang'));
+        $obj->setOnlineurl($this->params->getOriginalStringRequestParam('onlineurl'));
 //		$obj->doStuffOnPrePersist();
 		return $obj;
 	}
@@ -258,7 +260,8 @@ class orarendController extends \mkwhelpers\MattableController {
                 'class' => $item->getJogateremOrarendclass(),
                 'delelott' => $item->isDelelottKezdodik(),
                 'elmarad' => false,
-                'multilang' => $item->getMultilang()
+                'multilang' => $item->getMultilang(),
+                'onlineurl' => $item->getOnlineurl()
             );
             $hf = new \mkwhelpers\FilterDescriptor();
             $hf->addFilter('datum', '>=', \mkw\store::startOfWeek($startdatum));
@@ -301,7 +304,8 @@ class orarendController extends \mkwhelpers\MattableController {
                 'class' => $item->getJogateremOrarendclass(),
                 'delelott' => false,
                 'elmarad' => false,
-                'multilang' => false
+                'multilang' => false,
+                'onlineurl' => false
             );
             if (!array_key_exists($item->getNap(), $orarend)) {
                 $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
@@ -344,7 +348,8 @@ class orarendController extends \mkwhelpers\MattableController {
                 'class' => $item->getJogateremOrarendclass(),
                 'delelott' => $item->isDelelottKezdodik(),
                 'atlagresztvevoszam' => $item->getAtlagresztvevoszam(),
-                'multilang' => $item->getMultilang()
+                'multilang' => $item->getMultilang(),
+                'online' => $item->getOnlineurl()
             );
         }
         $view = $this->createView('orarendprint.tpl');

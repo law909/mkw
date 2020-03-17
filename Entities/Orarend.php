@@ -79,6 +79,12 @@ class Orarend {
     /** @ORM\Column(type="boolean", nullable=false) */
     private $multilang = false;
 
+    /**
+     * @Gedmo\Translatable
+     * @ORM\Column(type="string",length=255,nullable=false)
+     */
+    private $onlineurl = '';
+
     public function getDolgozo() {
         return $this->dolgozo;
     }
@@ -330,5 +336,19 @@ class Orarend {
      */
     public function setMultilang($multilang) {
         $this->multilang = $multilang;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOnlineurl() {
+        return $this->onlineurl;
+    }
+
+    /**
+     * @param string $onlineurl
+     */
+    public function setOnlineurl($onlineurl) {
+        $this->onlineurl = $onlineurl;
     }
 }
