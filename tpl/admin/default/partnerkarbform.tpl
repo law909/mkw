@@ -39,6 +39,10 @@
 				<td><label for="EzuzletkotoEdit">{at('Üzletkötő')}:</label></td>
 				<td><input id="EzuzletkotoEdit" name="ezuzletkoto" type="checkbox"{if ($partner.ezuzletkoto==1)} checked="checked"{/if}></td>
 			</tr>
+            <tr>
+                <td><label for="ExportbanKeszletEdit">{at('Termék exp.ba csak készletes termékek')}:</label></td>
+                <td><input id="ExportbanKeszletEdit" name="exportbacsakkeszlet" type="checkbox"{if ($partner.exportbacsakkeszlet==1)} checked="checked"{/if}></td>
+            </tr>
             {/if}
 			<tr>
 				<td><label for="IrszamEdit">{at('Cím')}:</label></td>

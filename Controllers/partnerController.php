@@ -80,6 +80,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['ip'] = $t->getIp();
         $x['referrer'] = $t->getReferrer();
         $x['szallito'] = $t->getSzallito();
+        $x['exportbacsakkeszlet'] = $t->isExportbacsakkeszlet();
         $x['szallitasiido'] = $t->getSzallitasiido();
         $x['szamlatipus'] = $t->getSzamlatipus();
         $x['banknev'] = $t->getBanknev();
@@ -196,6 +197,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setNem($this->params->getIntRequestParam('nem'));
             $obj->setSzuletesiido($this->params->getStringRequestParam('szuletesiido'));
             $obj->setSzallito($this->params->getBoolRequestParam('szallito'));
+            $obj->setExportbacsakkeszlet($this->params->getBoolRequestParam('exportbacsakkeszlet'));
             $obj->setSzallitasiido($this->params->getIntRequestParam('szallitasiido'));
             $obj->setSzamlatipus($this->params->getIntRequestParam('szamlatipus'));
             $obj->setTermekarazonosito($this->params->getStringRequestParam('termekarazonosito'));

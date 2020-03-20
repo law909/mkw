@@ -220,6 +220,9 @@ class Partner {
 	/** @ORM\Column(type="boolean") */
 	private $szallito = false;
 
+    /** @ORM\Column(type="boolean") */
+    private $exportbacsakkeszlet = false;
+
     /** @ORM\Column(type="string",length=64,nullable=true) */
     private $passwordreminder;
 
@@ -1812,5 +1815,19 @@ class Partner {
      */
     public function setTelszam($telszam) {
         $this->telszam = $telszam;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExportbacsakkeszlet() {
+        return $this->exportbacsakkeszlet;
+    }
+
+    /**
+     * @param bool $exportbacsakkeszlet
+     */
+    public function setExportbacsakkeszlet($exportbacsakkeszlet) {
+        $this->exportbacsakkeszlet = $exportbacsakkeszlet;
     }
 }
