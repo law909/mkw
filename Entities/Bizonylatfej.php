@@ -1067,6 +1067,229 @@ class Bizonylatfej {
         return $this->toNAVOnlineXML1_1();
     }
 
+    private function toNAVOnlineXML2_0() {
+        $result = '<?xml version="1.0" encoding="UTF-8"?>';
+        $result = $result . '<InvoiceData xmlns="http://schemas.nav.gov.hu/OSA/2.0/data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.nav.gov.hu/OSA/2.0/data invoiceData.xsd">';
+        $result = $result . '<invoiceNumber>' . $this->getId() . '</invoiceNumber>';
+        $result = $result . '<invoiceIssueDate>' . $this->getKelt()->format(\mkw\store::$SQLDateFormat) . '</invoiceIssueDate>';
+        $result = $result . '<invoiceMain>';
+        $result = $result . '<invoice>';
+        if ($this->getStorno()) {
+            $result = $result . '<invoiceReference>';
+            $result = $result . '<originalInvoiceNumber>' . $this->getParbizonylatfejId() . '</originalInvoiceNumber>';
+            $result = $result . '<modificationIssueDate>' . $this->getKelt()->format(\mkw\store::$SQLDateFormat) . '</modificationIssueDate>';
+            $utcmost = strtotime($this->getCreated()->format(\mkw\store::$sqlDateTimeFormat));
+            $result = $result . '<modificationTimestamp>' . gmdate(\mkw\store::$sqlDateTimeFormat, $utcmost) . '.000Z</modificationTimestamp>';
+            $pb = $this->getParbizonylatfej();
+            if ($pb->getKelt()->format(\mkw\store::$SQLDateFormat) >= '2018-07-01') {
+                $result = $result . '<modifyWithoutMaster>false</modifyWithoutMaster>';
+            }
+            else {
+                $result = $result . '<modifyWithoutMaster>true</modifyWithoutMaster>';
+            }
+            $result = $result . '</invoiceReference>';
+        }
+        $result = $result . '<invoiceHead>';
+
+        $result = $result . '<supplierInfo>';
+        $s = explode('-', $this->getTulajadoszam());
+        $result = $result . '<supplierTaxNumber><taxpayerId>' . $s[0] . '</taxpayerId><vatCode>' . $s[1] . '</vatCode><countyCode>' . $s[2] . '</countyCode></supplierTaxNumber>';
+        $result = $result . '<supplierName>' . \mkw\store::CData($this->getTulajnev()) . '</supplierName>';
+        $result = $result . '<supplierAddress><simpleAddress>';
+        $result = $result . '<countryCode>HU</countryCode><postalCode>' . \mkw\store::CData($this->getTulajirszam()) . '</postalCode><city>' . \mkw\store::CData($this->getTulajvaros()) . '</city><additionalAddressDetail>' . \mkw\store::CData($this->getTulajutca()) . '</additionalAddressDetail>';
+        $result = $result . '</simpleAddress></supplierAddress>';
+        if ($this->getTulajjovengszam()) {
+            $result = $result . '<exciseLicenceNum>' . $this->getTulajjovengszam() . '</exciseLicenceNum>';
+        }
+        $result = $result . '</supplierInfo>';
+
+        $result = $result . '<customerInfo>';
+        $s = explode('-', $this->getPartneradoszam());
+        if ($s) {
+            $result = $result . '<customerTaxNumber><taxpayerId>' . $s[0] . '</taxpayerId><vatCode>' . $s[1] . '</vatCode><countyCode>' . $s[2] . '</countyCode></customerTaxNumber>';
+        }
+        $result = $result . '<customerName>' . \mkw\store::CData($this->getPartnernev()) . '</customerName>';
+        $result = $result . '<customerAddress><simpleAddress>';
+        $result = $result . '<countryCode>';
+        $result = $result . $this->getPartnerorszagiso3166();
+        $result = $result . '</countryCode>';
+        $result = $result . '<postalCode>';
+        if ($this->getPartnerirszam()) {
+            $result = $result . \mkw\store::CData($this->getPartnerirszam());
+        }
+        else {
+            $result = $result . '0000';
+        }
+        $result = $result . '</postalCode>';
+        $result = $result . '<city>' . \mkw\store::CData($this->getPartnervaros()) . '</city>';
+        $result = $result . '<additionalAddressDetail>' . \mkw\store::CData(implode(' ', array($this->getPartnerutca(), $this->getPartnerhazszam()))) . '</additionalAddressDetail>';
+        $result = $result . '</simpleAddress></customerAddress>';
+        $result = $result . '</customerInfo>';
+
+        $result = $result . '<invoiceDetail>';
+        $result = $result . '<invoiceCategory>';
+        if ($this->getGyujtoszamla()) {
+            $result = $result . 'AGGREGATE';
+        }
+        else {
+            $result = $result . 'NORMAL';
+        }
+        $result = $result . '</invoiceCategory>';
+        $result = $result . '<invoiceDeliveryDate>' . $this->getTeljesites()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryDate>';
+        if ($this->getGyujtoszamla()) {
+            $result = $result . '<invoiceDeliveryPeriodStart>' . $this->getGyujtoidoszakeleje()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryPeriodStart>' .
+                '<invoiceDeliveryPeriodEnd>' . $this->getGyujtoidoszakvege()->format(\mkw\store::$SQLDateFormat) . '</invoiceDeliveryPeriodEnd>';
+        }
+        $result = $result . '<currencyCode>' . $this->getValutanemnev() . '</currencyCode>';
+        if (\mkw\store::getParameter(\mkw\consts::Valutanem) != $this->getValutanemId()) {
+            $result = $result . '<exchangeRate>' . \mkw\store::NAVNum($this->getArfolyam()) . '</exchangeRate>';
+        }
+        else {
+            $result = $result . '<exchangeRate>1</exchangeRate>';
+        }
+        $result = $result . '<paymentMethod>' . $this->getFizmod()->getNavtipus() . '</paymentMethod>';
+        $result = $result . '<invoiceAppearance>PAPER</invoiceAppearance>';
+        $result = $result . '</invoiceDetail>';
+        $result = $result . '</invoiceHead>';
+
+        $result = $result . '<invoiceLines>';
+        $tetelsorszam = 1;
+        /** @var \Entities\Bizonylattetel $bt */
+        foreach ($this->getBizonylattetelek() as $bt) {
+            $result = $result . '<line>';
+            $result = $result . '<lineNumber>' . $tetelsorszam . '</lineNumber>';
+            if ($this->getStorno()) {
+                $result = $result . '<lineModificationReference>';
+                $result = $result . '<lineNumberReference>' . $tetelsorszam . '</lineNumberReference>';
+                $result = $result . '<lineOperation>MODIFY</lineOperation>';
+                $result = $result . '</lineModificationReference>';
+            }
+            if (str_replace(array('.', ' ', '-', '_', ','), '', $bt->getVtszszam())) {
+                $result = $result . '<productCodes><productCode>';
+                $result = $result . '<productCodeCategory>VTSZ</productCodeCategory>';
+                $result = $result . '<productCodeValue>' . str_replace(array('.', ' ', '-', '_', ','), '', $bt->getVtszszam()) . '</productCodeValue>';
+                $result = $result . '</productCode></productCodes>';
+            }
+            $result = $result . '<lineExpressionIndicator>true</lineExpressionIndicator>';
+            $result = $result . '<lineDescription>' . \mkw\store::CData($bt->getTermeknev()) . '</lineDescription>';
+            $result = $result . '<quantity>' . \mkw\store::NAVNum($bt->getMennyiseg()) . '</quantity>';
+
+            if ($bt->getMekodNavtipus()) {
+                $result = $result . '<unitOfMeasure>' . \mkw\store::CData($bt->getMekodNavtipus()) . '</unitOfMeasure>';
+                $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData($bt->getME()) . '</unitOfMeasureOwn>';
+            }
+            else {
+                $result = $result . '<unitOfMeasure>' . \mkw\store::CData('OWN') . '</unitOfMeasure>';
+                if ($bt->getME()) {
+                    $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData($bt->getME()) . '</unitOfMeasureOwn>';
+                }
+                else {
+                    $result = $result . '<unitOfMeasureOwn>' . \mkw\store::CData(1) . '</unitOfMeasureOwn>';
+                }
+            }
+            $result = $result . '<unitPrice>' . \mkw\store::NAVNum($bt->getNettoegysar()) . '</unitPrice>';
+            $result = $result . '<unitPriceHUF>' . \mkw\store::NAVNum($bt->getNettoegysarhuf()) . '</unitPriceHUF>';
+            $result = $result . '<lineAmountsNormal>';
+
+            $result = $result . '<lineNetAmountData>';
+            $result = $result . '<lineNetAmount>' . \mkw\store::NAVNum($bt->getNetto()) . '</lineNetAmount>';
+            $result = $result . '<lineNetAmountHUF>' . \mkw\store::NAVNum($bt->getNettohuf()) . '</lineNetAmountHUF>';
+            $result = $result . '</lineNetAmountData>';
+
+            $result = $result . '<lineVatRate><vatPercentage>' . \mkw\store::NAVNum($bt->getAfakulcs()/100) . '</vatPercentage></lineVatRate>';
+            $result = $result . '<lineVatData>';
+            $result = $result . '<lineVatAmount>' . \mkw\store::NAVNum($bt->getAfaertek()) . '</lineVatAmount>';
+            $result = $result . '<lineVatAmountHUF>' . \mkw\store::NAVNum($bt->getAfaertekhuf()) . '</lineVatAmountHUF>';
+            $result = $result . '</lineVatData>';
+
+            $result = $result . '<lineGrossAmountData>';
+            $result = $result . '<lineGrossAmountNormal>' . \mkw\store::NAVNum($bt->getBrutto()) . '</lineGrossAmountNormal>';
+            $result = $result . '<lineGrossAmountNormalHUF>' . \mkw\store::NAVNum($bt->getBruttohuf()) . '</lineGrossAmountNormalHUF>';
+            $result = $result . '</lineGrossAmountData>';
+
+            $result = $result . '</lineAmountsNormal>';
+            if ($this->getGyujtoszamla()) {
+                $result = $result . '<aggregateInvoiceLineData>';
+                $result = $result . '<lineExchangeRate>' . \mkw\store::NAVNum($this->getArfolyam()) . '</lineExchangeRate>';
+                $result = $result . '<lineDeliveryDate>' . $bt->getTeljesites()->format(\mkw\store::$SQLDateFormat) . '</lineDeliveryDate>';
+                $result = $result . '</aggregateInvoiceLineData>';
+            }
+
+            // KTD
+
+            if ($this->getGyujtoszamla()) {
+                /*
+                $result = $result . '<additionalLineData>';
+                $result = $result . '<dataName>X00001_SZSZ</dataName>';
+                $result = $result . '<dataDescription>' . \mkw\store::CData('Szállítólevél száma') . '</dataDescription>';
+                $result = $result . '<dataValue>' . \mkw\store::CData() . '</dataValue>';
+                $result = $result . '</additionalLineData>';
+                */
+            }
+            $result = $result . '</line>';
+            $tetelsorszam++;
+        }
+        $result = $result . '</invoiceLines>';
+
+        // KTD SUMMARY
+
+        $result = $result . '<invoiceSummary>';
+        $result = $result . '<summaryNormal>';
+        $afasum = \mkw\store::getEm()->getRepository('Entities\Bizonylatfej')->getAFAOsszesito($this);
+        foreach($afasum as $as) {
+            $result = $result . '<summaryByVatRate>';
+            $result = $result . '<vatRate><vatPercentage>' . \mkw\store::NAVNum($as['afakulcs'] / 100) . '</vatPercentage></vatRate>';
+
+            $result = $result . '<vatRateNetData>';
+            $result = $result . '<vatRateNetAmount>' . \mkw\store::NAVNum($as['netto']) . '</vatRateNetAmount>';
+            $result = $result . '<vatRateNetAmountHUF>' . \mkw\store::NAVNum($as['nettohuf']) . '</vatRateNetAmountHUF>';
+            $result = $result . '</vatRateNetData>';
+
+            $result = $result . '<vatRateVatData>';
+            $result = $result . '<vatRateVatAmount>' . \mkw\store::NAVNum($as['afa']) . '</vatRateVatAmount>';
+            $result = $result . '<vatRateVatAmountHUF>' . \mkw\store::NAVNum($as['afahuf']) . '</vatRateVatAmountHUF>';
+            $result = $result . '</vatRateVatData>';
+
+            $result = $result . '<vatRateGrossData>';
+            $result = $result . '<vatRateGrossAmount>' . \mkw\store::NAVNum($as['brutto']) . '</vatRateGrossAmount>';
+            $result = $result . '<vatRateGrossAmountHUF>' . \mkw\store::NAVNum($as['bruttohuf']) . '</vatRateGrossAmountHUF>';
+            $result = $result . '</vatRateGrossData>';
+
+            $result = $result . '</summaryByVatRate>';
+        }
+        $result = $result . '<invoiceNetAmount>' . \mkw\store::NAVNum($this->getNetto()) . '</invoiceNetAmount>';
+        $result = $result . '<invoiceNetAmountHUF>' . \mkw\store::NAVNum($this->getNettohuf()) . '</invoiceNetAmountHUF>';
+        $result = $result . '<invoiceVatAmount>' . \mkw\store::NAVNum($this->getAfa()) . '</invoiceVatAmount>';
+        $result = $result . '<invoiceVatAmountHUF>' . \mkw\store::NAVNum($this->getAfahuf()) . '</invoiceVatAmountHUF>';
+        $result = $result . '</summaryNormal>';
+        $result = $result . '<summaryGrossData>';
+        $result = $result . '<invoiceGrossAmount>' . \mkw\store::NAVNum($this->getBrutto()) . '</invoiceGrossAmount>';
+        $result = $result . '<invoiceGrossAmountHUF>' . \mkw\store::NAVNum($this->getBruttohuf()) . '</invoiceGrossAmountHUF>';
+        $result = $result . '</summaryGrossData>';
+        $result = $result . '</invoiceSummary>';
+        $result = $result . '</invoice>';
+        $result = $result . '</invoiceMain>';
+        $result = $result . '</InvoiceData>';
+
+        $b64 = base64_encode($result);
+
+        $result = '<invoiceOperations>';
+        $result = $result . '<compressedContent>false</compressedContent>';
+        $result = $result . '<invoiceOperation>';
+        $result = $result . '<index>1</index>';
+        if ($this->getStorno()) {
+            $result = $result . '<invoiceOperation>STORNO</invoiceOperation>';
+        }
+        else {
+            $result = $result . '<invoiceOperation>CREATE</invoiceOperation>';
+        }
+        $result = $result . '<invoiceData>' . $b64 . '</invoiceData>';
+        $result = $result . '</invoiceOperation>';
+        $result = $result . '</invoiceOperations>';
+
+        return $result;
+    }
+
     private function toNAVOnlineXML1_1() {
         $result = '<?xml version="1.0" encoding="UTF-8"?><Invoice xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.nav.gov.hu/OSA/1.0/data" xs:schemaLocation="http://schemas.nav.gov.hu/OSA/1.0/data invoiceData.xsd">';
         $result = $result . '<invoiceExchange>';
