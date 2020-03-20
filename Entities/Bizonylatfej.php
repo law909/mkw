@@ -4,6 +4,7 @@ namespace Entities;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
+use mkw\store;
 
 
 /** @ORM\Entity(repositoryClass="Entities\BizonylatfejRepository")
@@ -1064,7 +1065,18 @@ class Bizonylatfej {
     }
 
     public function toNAVOnlineXML() {
-        return $this->toNAVOnlineXML1_1();
+        $nover = store::getParameter(\mkw\consts::NAVOnlineVersion, '1_1');
+        switch ($nover) {
+            case '1_1':
+                return $this->toNAVOnlineXML1_1();
+                break;
+            case '2_0':
+                return $this->toNAVOnlineXML2_0();
+                break;
+            default:
+                return $this->toNAVOnlineXML2_0();
+                break;
+        }
     }
 
     private function toNAVOnlineXML2_0() {

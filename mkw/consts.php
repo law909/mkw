@@ -309,4 +309,5 @@ class consts {
 
     const NAVOnlineME1_1Kesz = 'NAVOnlineME1_1Kesz';
     const NAVOnline1_1Kesz = 'NAVOnline1_1Kesz';
+    const NAVOnlineVersion = 'NAVOnlineVersion';
 }
