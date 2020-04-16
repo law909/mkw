@@ -1223,6 +1223,7 @@ class importController extends \mkwhelpers\Controller {
                                             \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
                                                 . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
                                         }
+                                        $termek->setNemkaphato(false);
                                         $termek->setInaktiv(false);
                                     }
                                 }
@@ -1232,6 +1233,7 @@ class importController extends \mkwhelpers\Controller {
                                         \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
                                             . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
                                     }
+                                    $termek->setNemkaphato(false);
                                     $termek->setInaktiv(false);
                                 }
                                 \mkw\store::getEm()->persist($valtozat);
@@ -1350,6 +1352,7 @@ class importController extends \mkwhelpers\Controller {
                                                 . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
                                         }
                                         $termek->setInaktiv(false);
+                                        $termek->setNemkaphato(false);
                                     }
                                 }
                                 else {
@@ -1359,6 +1362,7 @@ class importController extends \mkwhelpers\Controller {
                                             . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
                                     }
                                     $termek->setInaktiv(false);
+                                    $termek->setNemkaphato(false);
                                 }
                                 \mkw\store::getEm()->persist($valtozat);
                             }
