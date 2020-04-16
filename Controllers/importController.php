@@ -1064,9 +1064,18 @@ class importController extends \mkwhelpers\Controller {
                                 if ($termek->getKeszlet() <= 0) {
                                     $termek->setNemkaphato(true);
                                 }
+                                else {
+                                    $termek->setNemkaphato(false);
+                                    $termek->setInaktiv(false);
+                                    \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                        . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
+                                }
                             }
                             else {
                                 $termek->setNemkaphato(false);
+                                $termek->setInaktiv(false);
+                                \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                    . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
                             }
                             if (!$termek->getAkcios()) {
                                 $termek->setBrutto($data['price']);
@@ -1204,9 +1213,18 @@ class importController extends \mkwhelpers\Controller {
                                     if ($valtozat->getKeszlet() <= 0) {
                                         $valtozat->setElerheto(false);
                                     }
+                                    else {
+                                        $valtozat->setElerheto(true);
+                                        $termek->setInaktiv(false);
+                                        \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                            . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
+                                    }
                                 }
                                 else {
                                     $valtozat->setElerheto(true);
+                                    $termek->setInaktiv(false);
+                                    \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                        . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
                                 }
                                 \mkw\store::getEm()->persist($valtozat);
                             }
@@ -1317,9 +1335,18 @@ class importController extends \mkwhelpers\Controller {
                                     if ($valtozat->getKeszlet() <= 0) {
                                         $valtozat->setElerheto(false);
                                     }
+                                    else {
+                                        $valtozat->setElerheto(true);
+                                        $termek->setInaktiv(false);
+                                        \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                            . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
+                                    }
                                 }
                                 else {
                                     $valtozat->setElerheto(true);
+                                    $termek->setInaktiv(false);
+                                    \mkw\store::writelog('termék cikkszám: ' . $termek->getCikkszam() . ' szállítói cikkszám: ' . $termek->getIdegencikkszam()
+                                        . ' ' . $termek->getNev(), 'nomad_ujra_aktiv.txt');
                                 }
                                 \mkw\store::getEm()->persist($valtozat);
                             }
