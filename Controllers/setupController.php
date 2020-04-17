@@ -174,6 +174,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('tofszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
         $p = $repo->find(\mkw\consts::GLSSzallitasiMod);
         $view->setVar('glsszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
+        $p = $repo->find(\mkw\consts::GLSFutarSzallitasmod);
+        $view->setVar('glsfutarszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
 
         $p = $repo->find(\mkw\consts::NullasAfa);
         $fizmod = new afaController($this->params);
@@ -770,6 +772,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::GLSSzallitasiMod, '');
+        }
+
+        $szm = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('glsfutarszallmod', 0));
+        if ($szm) {
+            $this->setObj(\mkw\consts::GLSFutarSzallitasmod, $szm->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GLSFutarSzallitasmod, '');
         }
 
         $belsouk = \mkw\store::getEm()->getRepository('Entities\Uzletkoto')->find($this->params->getIntRequestParam('belsouk', 0));

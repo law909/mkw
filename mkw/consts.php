@@ -177,6 +177,7 @@ class consts {
 
     const TOFSzallitasiMod = 'tofszallitasimod';
     const GLSSzallitasiMod = 'glsszallitasimod';
+    const GLSFutarSzallitasmod = 'glsfutarszallitasimod';
 
     const ValtozatSorrend = 'valtozatsorrend';
     const RendezendoValtozat = 'rendezendovaltozat';
