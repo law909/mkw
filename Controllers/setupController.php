@@ -242,6 +242,14 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::FoxpostUsername, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::FoxpostPassword);
         $view->setVar(\mkw\consts::FoxpostPassword, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::GLSApiURL);
+        $view->setVar(\mkw\consts::GLSApiURL, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::GLSUsername);
+        $view->setVar(\mkw\consts::GLSUsername, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::GLSClientNumber);
+        $view->setVar(\mkw\consts::GLSClientNumber, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::GLSPassword);
+        $view->setVar(\mkw\consts::GLSPassword, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::EmagAPIUrl);
         $view->setVar(\mkw\consts::EmagAPIUrl, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::EmagUsername);
@@ -824,6 +832,10 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::FoxpostApiURL, $this->params->getStringRequestParam('foxpostapiurl'), true);
         $this->setObj(\mkw\consts::FoxpostUsername, $this->params->getStringRequestParam('foxpostusername'));
         $this->setObj(\mkw\consts::FoxpostPassword, $this->params->getStringRequestParam('foxpostpassword'));
+        $this->setObj(\mkw\consts::GLSApiURL, $this->params->getStringRequestParam('glsapiurl'), true);
+        $this->setObj(\mkw\consts::GLSUsername, $this->params->getStringRequestParam('glsusername'));
+        $this->setObj(\mkw\consts::GLSClientNumber, $this->params->getStringRequestParam('glsclientnumber'));
+        $this->setObj(\mkw\consts::GLSPassword, $this->params->getStringRequestParam('glspassword'));
         $this->setObj(\mkw\consts::EmagAPIUrl, $this->params->getStringRequestParam('emagapiurl'), true);
         $this->setObj(\mkw\consts::EmagUsername, $this->params->getStringRequestParam('emagusername'));
         $this->setObj(\mkw\consts::EmagUsercode, $this->params->getStringRequestParam('emagusercode'));

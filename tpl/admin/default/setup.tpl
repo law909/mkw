@@ -1324,6 +1324,16 @@
                             <td><input name="foxpostpassword" type="password" value="{$foxpostpassword}" autocomplete="off"></td>
                         </tr>
                         <tr>
+                            <td><label>{at('GLS API URL')}:</label></td>
+                            <td><input name="glsapiurl" type="text" value="{$glsapiurl}"></td>
+                            <td><label>{at('Client number')}:</label></td>
+                            <td><input name="glsclientnumber" type="text" value="{$glsclientnumber}" autocomplete="off"></td>
+                            <td><label>{at('Username')}:</label></td>
+                            <td><input name="glsusername" type="text" value="{$glsusername}" autocomplete="off"></td>
+                            <td><label>{at('Password')}:</label></td>
+                            <td><input name="glspassword" type="password" value="{$glspassword}" autocomplete="off"></td>
+                        </tr>
+                        <tr>
                             <td><label>{at('eMAG API URL')}:</label></td>
                             <td><input name="emagapiurl" type="text" value="{$emagapiurl}"></td>
                             <td><label>{at('Username')}:</label></td>

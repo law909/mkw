@@ -169,6 +169,10 @@ class consts {
     const FoxpostUsername = 'foxpostusername';
     const FoxpostPassword = 'foxpostpassword';
 
+    const GLSApiURL = 'glsapiurl';
+    const GLSClientNumber = 'glsclientnumber';
+    const GLSUsername = 'glsusername';
+    const GLSPassword = 'glspassword';
     const GLSTerminalURL = 'glsterminalurl';
 
     const TOFSzallitasiMod = 'tofszallitasimod';
