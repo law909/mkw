@@ -996,6 +996,14 @@ class store {
         return $i == self::getParameter(\mkw\consts::GLSSzallitasiMod);
     }
 
+    public static function isGLSFutarSzallitasimod($szm) {
+        $i = $szm;
+        if (is_a($szm, 'Entities\Szallitasimod')) {
+            $i = $szm->getId();
+        }
+        return $i == self::getParameter(\mkw\consts::GLSFutarSzallitasmod);
+    }
+
     public static function isUtanvetFizmod($fm) {
         $i = $fm;
         if (is_a($fm, 'Entities\Fizmod')) {

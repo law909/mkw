@@ -39,6 +39,14 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::Tulajjovengszam, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::Tulajevnev);
         $view->setVar(\mkw\consts::Tulajevnev, ($p ? $p->getErtek() : ''));
+
+        $p = $repo->find(\mkw\consts::TulajKontaktNev);
+        $view->setVar(\mkw\consts::TulajKontaktNev, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::TulajKontaktEmail);
+        $view->setVar(\mkw\consts::TulajKontaktEmail, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::TulajKontaktTelefon);
+        $view->setVar(\mkw\consts::TulajKontaktTelefon, ($p ? $p->getErtek() : ''));
+
         $p = $repo->find(\mkw\consts::ProgramNev);
         $view->setVar(\mkw\consts::ProgramNev, ($p ? $p->getErtek() : ''));
         $tulajpartner = new partnerController($this->params);
@@ -704,6 +712,9 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::Tulajevnev, $this->params->getStringRequestParam(\mkw\consts::Tulajevnev));
         $this->setObj(\mkw\consts::Tulajevnyilvszam, $this->params->getStringRequestParam(\mkw\consts::Tulajevnyilvszam));
         $this->setObj(\mkw\consts::Tulajjovengszam, $this->params->getStringRequestParam(\mkw\consts::Tulajjovengszam));
+        $this->setObj(\mkw\consts::TulajKontaktNev, $this->params->getStringRequestParam(\mkw\consts::TulajKontaktNev));
+        $this->setObj(\mkw\consts::TulajKontaktEmail, $this->params->getStringRequestParam(\mkw\consts::TulajKontaktEmail));
+        $this->setObj(\mkw\consts::TulajKontaktTelefon, $this->params->getStringRequestParam(\mkw\consts::TulajKontaktTelefon));
         $this->setObj(\mkw\consts::ProgramNev, $this->params->getStringRequestParam(\mkw\consts::ProgramNev));
         $tulajpartner = \mkw\store::getEm()->getRepository('Entities\Partner');
         $x = $this->params->getIntRequestParam('tulajpartner', 0);

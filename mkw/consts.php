@@ -49,6 +49,9 @@ class consts {
     const Tulajevnyilvszam = 'tulajevnyilvszam';
     const Tulajjovengszam = 'tulajjovengszam';
     const Tulajpartner = 'tulajpartner';
+    const TulajKontaktNev = 'tulajkontaktnev';
+    const TulajKontaktEmail = 'tulajkontaktemail';
+    const TulajKontaktTelefon = 'tulajkontakttelefon';
     const ProgramNev = 'programnev';
 
     const EmailFrom = 'emailfrom';

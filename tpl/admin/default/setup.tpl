@@ -583,6 +583,16 @@
                             <td><input id="TulajjovengszamEdit" type="text" name="tulajjovengszam" value="{$tulajjovengszam}"></td>
                         </tr>
                         <tr>
+                            <td><label for="TulajkontaktnevEdit">{at('Kontakt név')}:</label></td>
+                            <td><input id="TulajkontaktnevEdit" type="text" name="tulajkontaktnev" value="{$tulajkontaktnev}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="TulajKontaktEmailEdit">{at('Kontakt email')}:</label></td>
+                            <td><input id="TulajKontaktEmailEdit" type="text" name="tulajkontaktemail" value="{$tulajkontaktemail}"></td>
+                            <td><label for="TulajKontaktTelefonEdit">{at('Kontakt telefon')}:</label></td>
+                            <td><input id="TulajKontaktTelefonEdit" type="text" name="tulajkontakttelefon" value="{$tulajkontakttelefon}"></td>
+                        </tr>
+                        <tr>
                             <td><label for="TulajpartnerEdit">Partner:</label></td>
                             <td><select id="TulajpartnerEdit" name="tulajpartner">
                                 <option value="">{at('válasszon')}</option>
