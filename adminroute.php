@@ -186,6 +186,7 @@ $router->map('GET', '/admin/megrendelesfej/getszamlakarb', 'megrendelesfejContro
 $router->map('GET', '/admin/megrendelesfej/print', 'megrendelesfejController#doPrint', 'adminmegrendelesfejprint');
 $router->map('GET', '/admin/megrendelesfej/printelolegbekero', 'megrendelesfejController#doPrintelolegbekero', 'adminmegrendelesfejprintelolegbekero');
 $router->map('POST', '/admin/megrendelesfej/sendtofoxpost', 'megrendelesfejController#sendToFoxPost', 'adminmegrendelessendtofoxpost');
+$router->map('POST', '/admin/megrendelesfej/sendtogls', 'megrendelesfejController#sendToGLS', 'adminmegrendelessendtogls');
 $router->map('POST', '/admin/megrendelesfej/ront', 'megrendelesfejController#ront', 'adminmegrendelesfejront');
 $router->map('POST', '/admin/megrendelesfej/backorder', 'megrendelesfejController#backOrder', 'adminmegrendelesfejbackorder');
 $router->map('POST', '/admin/megrendelesfej/fejexport', 'megrendelesfejController#fejexport', 'adminmegrendelesfejfejexport');
@@ -543,6 +544,7 @@ $router->map('GET', '/admin/partner/getdata', 'partnerController#getPartnerData'
 $router->map('POST', '/admin/partner/getkiegyenlitetlenbiz', 'partnerController#getKiegyenlitetlenBiz', 'admingetkiegyenlitetlenbiz');
 $router->map('POST', '/admin/partner/mijszexport', 'partnerController#mijszExport', 'adminmijszexport');
 $router->map('POST', '/admin/partner/megjegyzesexport', 'partnerController#megjegyzesExport', 'adminmegjegyzesexport');
+$router->map('POST', '/admin/partner/hirlevelexport', 'partnerController#hirlevelExport', 'adminhirlevelexport');
 $router->map('POST', '/admin/partner/roadrecordexport', 'partnerController#roadrecordExport', 'adminroadrecordexport');
 $router->map('GET', '/admin/partnerdok/getemptyrow', 'partnerdokController#getemptyrow', 'adminpartnerdokgetemptyrow');
 $router->map('POST', '/admin/partnerdok/del', 'partnerdokController#del', 'adminpartnerdokdel');

@@ -530,6 +530,11 @@ $(document).ready(function(){
                         });
                     }
                     break;
+                case 'hirlevelexport':
+                    var $exportform = $('#exportform');
+                    $exportform.attr('action', '/admin/partner/hirlevelexport');
+                    $exportform.submit();
+                    break;
                 case 'roadrecordexport':
                     var tomb = [],
                         $exportform = $('#exportform');
