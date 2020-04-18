@@ -494,7 +494,9 @@ class Termek {
         $filter->addFilter('bt.termek_id', '=', $this->getId());
         $filter->addFilter('bt.mozgat', '=', 1);
         $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
-        $filter->addFilter('bf.teljesites', '<=', $datum);
+        if ($datum) {
+            $filter->addFilter('bf.teljesites', '<=', $datum);
+        }
         if ($raktarid) {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
@@ -532,13 +534,59 @@ class Termek {
         return $k;
     }
 
-    public function getFoglaltMennyiseg($kivevebiz = null) {
+    public function getFoglaltMennyiseg($kivevebiz = null, $datum = null, $raktarid = null) {
         if (\mkw\store::isFoglalas()) {
+            $rsm = new ResultSetMapping();
+            $rsm->addScalarResult('mennyiseg', 'mennyiseg');
+            $rsm->addScalarResult('mozgasdb', 'mozgasdb');
+
+            if (!$datum) {
+                $datum = new \DateTime();
+            }
+
+            $filter = new FilterDescriptor();
+            $filter->addFilter('bt.termek_id', '=', $this->getId());
+            $filter->addFilter('bt.foglal', '=', 1);
+            $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
+            if ($datum) {
+                $filter->addFilter('bf.teljesites', '<=', $datum);
+            }
+            $filter->addFilter('bf.bizonylattipus_id', '=', 'megrendeles');
+            if ($kivevebiz) {
+                $filter->addFilter('bf.id', '<>', $kivevebiz);
+            }
+            if ($raktarid) {
+                $filter->addFilter('bf.raktar_id', '=', $raktarid);
+            }
+
+            $q = \mkw\store::getEm()->createNativeQuery('SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
+                . ' FROM bizonylattetel bt'
+                . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+                . $filter->getFilterString()
+                , $rsm);
+
+            $q->setParameters($filter->getQueryParameters());
+            $d = $q->getScalarResult();
+
+            $k = $d[0]['mennyiseg'];
+            if (is_null($k)) {
+                $k = 0;
+            }
+            $k = $k * -1;
+            $db = $d[0]['mozgasdb'];
+            if (is_null($db)) {
+                $db = 0;
+            }
+
+            return $k;
+
+            /*
             if (is_a($kivevebiz, 'Bizonylatfej')) {
                 $kivevebiz = $kivevebiz->getId();
             }
             $k = 0;
             /** @var \Entities\Bizonylattetel $bt */
+            /*
             foreach($this->bizonylattetelek as $bt) {
                 $bf = $bt->getBizonylatfej();
                 if ($bf->getBizonylattipusId() === 'megrendeles') {
@@ -552,6 +600,7 @@ class Termek {
                 }
             }
             return -1 * $k;
+            */
         }
         return 0;
     }
@@ -2395,17 +2444,24 @@ class Termek {
         $this->valutameszorzo = $valutameszorzo;
     }
 
-    public function calcSzallitasiido($valtozat = null, $mennyiseg = 0) {
+    /**
+     * @param \Entities\TermekValtozat $valtozat
+     * @param int $mennyiseg
+     * @return int
+     */
+    public function calcSzallitasiido($valtozat = null, $mennyiseg = 0, $kivevebizonylat = null) {
         switch (true) {
             case \mkw\store::isMindentkapni():
                 $szallitasiido = 0;
                 if (!is_null($valtozat)) {
-                    if ((($mennyiseg === 0) && ($valtozat->getKeszlet() > 0)) || (($mennyiseg !== 0) && ($valtozat->getKeszlet() >= $mennyiseg))) {
+                    $keszlet = $valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg($kivevebizonylat);
+                    if ((($mennyiseg === 0) && ($keszlet > 0)) || (($mennyiseg !== 0) && ($keszlet >= $mennyiseg))) {
                         $szallitasiido = 1;
                     }
                 }
                 else {
-                    if ((($mennyiseg === 0) && ($this->getKeszlet() > 0)) || (($mennyiseg !== 0) && ($this->getKeszlet() >= $mennyiseg))) {
+                    $keszlet = $this->getKeszlet() - $this->getFoglaltMennyiseg($kivevebizonylat);
+                    if ((($mennyiseg === 0) && ($keszlet > 0)) || (($mennyiseg !== 0) && ($keszlet >= $mennyiseg))) {
                         $szallitasiido = 1;
                     }
                 }

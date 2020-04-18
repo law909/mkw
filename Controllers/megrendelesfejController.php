@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use Entities\Bizonylatfej;
+
 class megrendelesfejController extends bizonylatfejController {
 
     public function __construct($params) {
@@ -10,6 +12,7 @@ class megrendelesfejController extends bizonylatfejController {
         $this->setPluralPageTitle('Megrendelések');
         parent::__construct($params);
         $this->getRepo()->addToBatches(array('foxpostsend' => 'Küldés Foxpostnak'));
+        $this->getRepo()->addToBatches(array('glssend' => 'Küldés GLS-nek'));
     }
 
     public function setVars($view) {
@@ -160,6 +163,53 @@ class megrendelesfejController extends bizonylatfejController {
                     $this->getEm()->flush();
                 }
             }
+        }
+    }
+
+    private function _sendToGLS($glsmegrend) {
+        $glsapi = new \mkwhelpers\GLSAPI(
+            \mkw\store::getParameter(\mkw\consts::GLSClientNumber),
+            \mkw\store::getParameter(\mkw\consts::GLSUsername),
+            \mkw\store::getParameter(\mkw\consts::GLSPassword),
+            \mkw\store::getParameter(\mkw\consts::GLSApiURL)
+        );
+        $glsres = $glsapi->printLabels($glsmegrend);
+        if ($glsres) {
+            foreach ($glsres as $item) {
+                /** @var Bizonylatfej $megrendfej */
+                $megrendfej = $this->getRepo()->find($item['ClientReference']);
+                if ($megrendfej) {
+                    $megrendfej->setGlsparcelid($item['ParcelId']);
+                    $megrendfej->setFuvarlevelszam($item['ParcelNumber']);
+                    $this->getEm()->persist($megrendfej);
+                    $this->getEm()->flush();
+                }
+            }
+        }
+    }
+
+    public function sendToGLS() {
+        $ids = $this->params->getArrayRequestParam('ids');
+        $db = 0;
+        $glsmegrend = [];
+        foreach($ids as $id) {
+            /** @var Bizonylatfej $megrendfej */
+            $megrendfej = $this->getRepo()->find($id);
+            if ($megrendfej &&
+                (\mkw\store::isGLSSzallitasimod($megrendfej->getSzallitasimodId())
+                    || \mkw\store::isGLSFutarSzallitasimod($megrendfej->getSzallitasimodId())))
+            {
+                $db++;
+                $glsmegrend[] = $megrendfej->toGLSAPI();
+                if ($db == 4) {
+                    $this->_sendToGLS($glsmegrend);
+                    $db = 0;
+                    $glsmegrend = [];
+                }
+            }
+        }
+        if ($glsmegrend) {
+            $this->_sendToGLS($glsmegrend);
         }
     }
 

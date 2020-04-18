@@ -1151,6 +1151,51 @@ var bizonylathelper = function($) {
                             });
                         }
                         break;
+                    case 'glssend':
+                        cbs = $('.maincheckbox:checked');
+                        if (cbs.length) {
+                            dialogcenter.html('Biztos, hogy elküldi a megrendeléseket?').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'Igen': function() {
+                                        var tomb = [],
+                                            dia = $(this);
+                                        cbs.closest('tr').each(function(index, elem) {
+                                            tomb.push($(elem).data('egyedid'));
+                                        });
+                                        $.ajax({
+                                            url: '/admin/' + bizonylattipus + 'fej/sendtogls',
+                                            type: 'POST',
+                                            data: {
+                                                ids: tomb
+                                            },
+                                            success: function() {
+                                                dia.dialog('close');
+                                                $('.mattable-tablerefresh').click();
+                                            }
+                                        });
+                                    },
+                                    'Nem': function() {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            dialogcenter.html('Válasszon ki legalább egy megrendelést!').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'OK': function() {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                        break;
                     case 'excelfejexport':
                         cbs = $('.maincheckbox:checked');
                         if (cbs.length) {

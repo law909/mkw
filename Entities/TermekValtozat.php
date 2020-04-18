@@ -150,7 +150,9 @@ class TermekValtozat {
         $filter->addFilter('bt.termekvaltozat_id', '=', $this->getId());
         $filter->addFilter('bt.mozgat', '=', 1);
         $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
-        $filter->addFilter('bf.teljesites', '<=', $datum);
+        if ($datum) {
+            $filter->addFilter('bf.teljesites', '<=', $datum);
+        }
         if ($raktarid) {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
@@ -202,7 +204,9 @@ class TermekValtozat {
         $filter->addFilter('bt.termekvaltozat_id', '=', $this->getId());
         $filter->addFilter('bt.foglal', '=', 1);
         $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
-        $filter->addFilter('bf.teljesites', '<=', $datum);
+        if ($datum) {
+            $filter->addFilter('bf.teljesites', '<=', $datum);
+        }
         $filter->addFilter('bf.bizonylattipus_id', '=', 'megrendeles');
         if ($kivevebiz) {
             $filter->addFilter('bf.id', '<>', $kivevebiz);

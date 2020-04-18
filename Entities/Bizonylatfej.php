@@ -73,6 +73,11 @@ class Bizonylatfej {
      */
     private $foxpostbarcode;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $glsparcelid;
+
     /** @ORM\Column(type="boolean",nullable=false) */
     private $fix = false;
 
@@ -806,6 +811,73 @@ class Bizonylatfej {
                 }
             }
         }
+    }
+
+    public function toGLSAPI() {
+        $fsdpar = new \stdClass();
+        $fsdpar->Value = $this->getPartneremail();
+        $sm2par = new \stdClass();
+        $sm2par->Value = $this->getPartnertelefon();
+        $result = [
+            'ClientNumber' => \mkw\store::getParameter(\mkw\consts::GLSClientNumber),
+            'ClientReference' => $this->getId(),
+            'Count' => 1,
+            'Content' => $this->getCouriermessage(),
+            'PickupDate' => "/Date(" . (time() * 1000) . ")/",
+            'PickupAddress' => [
+                'Name' => $this->getTulajnev(),
+                'Street' => $this->getTulajutca(),
+                'City' => $this->getTulajvaros(),
+                'ZipCode' => $this->getTulajirszam(),
+                'ContactName' => \mkw\store::getParameter(\mkw\consts::TulajKontaktNev),
+                'ContactPhone' => \mkw\store::getParameter(\mkw\consts::TulajKontaktTelefon),
+                'ContactEmail' => \mkw\store::getParameter(\mkw\consts::TulajKontaktEmail)
+            ],
+            'DeliveryAddress' => [
+                'Name' => $this->getSzallnev(),
+                'Street' => $this->getSzallutca(),
+                'City' => $this->getSzallvaros(),
+                'ZipCode' => $this->getSzallirszam(),
+                'ContactName' => $this->getPartnernev(),
+                'ContactPhone' => $this->getPartnertelefon(),
+                'ContactEmail' => $this->getPartneremail()
+            ],
+            'ServiceList' => [
+                [
+                    'Code' => 'FDS',
+                    'FDSParameter' => $fsdpar
+                ],
+                [
+                    'Code' => 'SM2',
+                    'SM2Parameter' => $sm2par
+                ]
+            ]
+        ];
+        if (\mkw\store::isGLSSzallitasimod($this->getSzallitasimodId())) {
+            $psdpar = new \stdClass();
+            $psdpar->StringValue = $this->getCsomagterminalIdegenId();
+            $result['ServiceList'][] = [
+                'Code' => 'PSD',
+                'PSDParameter' => $psdpar
+            ];
+        }
+        if (\mkw\store::isUtanvetFizmod($this->getFizmodId())) {
+            $result['CODAmount'] = $this->getBruttohuf();
+            $szamlaszam = false;
+            /** @var Bizonylatfej $gy */
+            foreach ($this->szulobizonylatfejek as $gy) {
+                if (!$szamlaszam && $gy->getBizonylattipusId() == 'szamla') {
+                    $szamlaszam = $gy->getId();
+                }
+            }
+            if ($szamlaszam) {
+                $result['CODReference'] = $szamlaszam;
+            }
+            else {
+                $result['CODReference'] = $this->getId();
+            }
+        }
+        return $result;
     }
 
     public function toBarionModel() {
@@ -4736,7 +4808,7 @@ class Bizonylatfej {
         foreach ($this->getBizonylattetelek() as $tetel) {
             $termek = $tetel->getTermek();
             if ($termek) {
-                $sorszallido = $termek->calcSzallitasiido($tetel->getTermekvaltozat(), $tetel->getMennyiseg());
+                $sorszallido = $termek->calcSzallitasiido($tetel->getTermekvaltozat(), $tetel->getMennyiseg(), $this->getId());
                 if ($szallido < $sorszallido) {
                     $szallido = $sorszallido;
                 }
@@ -4746,6 +4818,20 @@ class Bizonylatfej {
             $szallido = $szallido + 1;
         }
         $this->setSzallitasiido($szallido);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGlsparcelid() {
+        return $this->glsparcelid;
+    }
+
+    /**
+     * @param mixed $glsparcelid
+     */
+    public function setGlsparcelid($glsparcelid) {
+        $this->glsparcelid = $glsparcelid;
     }
 
 }
