@@ -122,6 +122,41 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController {
                 $adat[$ev]['szamlanettoperdbvalt'] = 0;
             }
         }
+        $bestmegrendelesdb = 0;
+        $bestmegrendelesnetto = 0;
+        $bestmegrendelesnettoperdb = 0;
+        $bestszamladb = 0;
+        $bestszamlanetto = 0;
+        $bestszamlanettoperdb = 0;
+        $keys = array_keys($adat);
+        $len = count($keys) - 1;
+        for ($i = 0; $i < $len; $i++) {
+            if ($bestmegrendelesdb < $adat[$keys[$i]]['megrendelesdb']) {
+                $bestmegrendelesdb = $adat[$keys[$i]]['megrendelesdb'];
+            }
+            if ($bestmegrendelesnetto < $adat[$keys[$i]]['megrendelesnetto']) {
+                $bestmegrendelesnetto = $adat[$keys[$i]]['megrendelesnetto'];
+            }
+            if ($bestszamladb < $adat[$keys[$i]]['szamladb']) {
+                $bestszamladb = $adat[$keys[$i]]['szamladb'];
+            }
+            if ($bestszamlanetto < $adat[$keys[$i]]['szamlanetto']) {
+                $bestszamlanetto = $adat[$keys[$i]]['szamlanetto'];
+            }
+            if ($bestmegrendelesnettoperdb < $adat[$keys[$i]]['megrendelesnettoperdb']) {
+                $bestmegrendelesnettoperdb = $adat[$keys[$i]]['megrendelesnettoperdb'];
+            }
+            if ($bestszamlanettoperdb < $adat[$keys[$i]]['szamlanettoperdb']) {
+                $bestszamlanettoperdb = $adat[$keys[$i]]['szamlanettoperdb'];
+            }
+        }
+        $adat['LB']['ev'] = 'Last/Best';
+        $adat['LB']['megrendelesdbvalt'] = per($adat[$keys[$len]]['megrendelesdb'], $bestmegrendelesdb) * 100;
+        $adat['LB']['megrendelesnettovalt'] = per($adat[$keys[$len]]['megrendelesnetto'], $bestmegrendelesnetto) * 100;
+        $adat['LB']['megrendelesnettoperdbvalt'] = per($adat[$keys[$len]]['megrendelesnettoperdb'], $bestmegrendelesnettoperdb) * 100;
+        $adat['LB']['szamladbvalt'] = per($adat[$keys[$len]]['szamladb'], $bestszamladb) * 100;
+        $adat['LB']['szamlanettovalt'] = per($adat[$keys[$len]]['szamlanetto'], $bestszamlanetto) * 100;
+        $adat['LB']['szamlanettoperdbvalt'] = per($adat[$keys[$len]]['szamlanettoperdb'], $bestszamlanettoperdb) * 100;
         return $adat;
     }
 
