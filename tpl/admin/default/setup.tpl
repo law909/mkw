@@ -1353,6 +1353,10 @@
                             <td><input name="glspassword" type="password" value="{$glspassword}" autocomplete="off"></td>
                         </tr>
                         <tr>
+                            <td><label>{at('GLS PDF mappa')}:</label></td>
+                            <td><input name="glsparcellabeldir" type="text" value="{$glsparcellabeldir}"></td>
+                        </tr>
+                        <tr>
                             <td><label>{at('eMAG API URL')}:</label></td>
                             <td><input name="emagapiurl" type="text" value="{$emagapiurl}"></td>
                             <td><label>{at('Username')}:</label></td>

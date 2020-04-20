@@ -254,6 +254,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::FoxpostPassword, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::GLSApiURL);
         $view->setVar(\mkw\consts::GLSApiURL, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::GLSParcelLabelDir);
+        $view->setVar(\mkw\consts::GLSParcelLabelDir, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::GLSUsername);
         $view->setVar(\mkw\consts::GLSUsername, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::GLSClientNumber);
@@ -857,6 +859,8 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::GLSUsername, $this->params->getStringRequestParam('glsusername'));
         $this->setObj(\mkw\consts::GLSClientNumber, $this->params->getStringRequestParam('glsclientnumber'));
         $this->setObj(\mkw\consts::GLSPassword, $this->params->getStringRequestParam('glspassword'));
+        $this->setObj(\mkw\consts::GLSParcelLabelDir, $this->params->getStringRequestParam('glsparcellabeldir'));
+        \mkw\store::createDirectoryRecursively($this->params->getStringRequestParam('glsparcellabeldir'));
         $this->setObj(\mkw\consts::EmagAPIUrl, $this->params->getStringRequestParam('emagapiurl'), true);
         $this->setObj(\mkw\consts::EmagUsername, $this->params->getStringRequestParam('emagusername'));
         $this->setObj(\mkw\consts::EmagUsercode, $this->params->getStringRequestParam('emagusercode'));

@@ -177,6 +177,7 @@ class consts {
     const GLSUsername = 'glsusername';
     const GLSPassword = 'glspassword';
     const GLSTerminalURL = 'glsterminalurl';
+    const GLSParcelLabelDir = 'glsparcellabeldir';
 
     const TOFSzallitasiMod = 'tofszallitasimod';
     const GLSSzallitasiMod = 'glsszallitasimod';
