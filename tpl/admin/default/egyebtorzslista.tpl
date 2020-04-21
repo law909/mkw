@@ -62,6 +62,10 @@
             <table id="megrid"></table>
             <div id="megridpager"></div>
         </div>
+        <div class="egyebadat-grid">
+            <table id="unnepnapgrid"></table>
+            <div id="unnepnapgridpager"></div>
+        </div>
     </div>
     <div class="egyebadat-wrapper">
         <div class="egyebadat-grid">

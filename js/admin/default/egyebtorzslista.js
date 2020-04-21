@@ -1555,6 +1555,54 @@ $().ready(
             $(_mijszgyakorlasszint.pager + '_center').hide();
             $(_mijszgyakorlasszint.pager + '_right').hide();
 
+            // Unnepnap grid
+            var _unn = {
+                grid: '#unnepnapgrid',
+                pager: '#unnepnapgridpager'
+            };
+            var unnepnapgrid = $(_unn.grid).jqGrid({
+                url: '/admin/unnepnap/jsonlist',
+                editurl: '/admin/unnepnap/save',
+                datatype: 'json',
+                colModel: [
+                    {name: 'datum', index: 'datum', label: 'Dátum', width: 60,
+                        sorttype: 'date',
+                        formatter: 'date',
+                        formatoptions: {srcformat: 'Y-m-d', newformat: 'Y.m.d', reformatAfterEdit: true},
+                        editable: true,
+                        editoptions: {size: 15},
+                        editrules: {required: true, date: true},
+                        formoptions: {rowpos: 1, label: 'Dátum:', elmsuffix: '*'}}],
+                rowNum: 100000,
+                rowList: [10, 20, 30],
+                pager: _unn.pager,
+                sortname: 'datum',
+                sortorder: 'asc',
+                viewrecords: true,
+                loadonce: false,
+                gridview: true,
+                height: 100,
+                width: 320,
+                hiddengrid: true,
+                caption: 'Ünnepnapok'});
+            $(_unn.grid).jqGrid('navGrid', _unn.pager, {edit: true, add: true, del: true, search: false},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true, bottominfo: _txt.req},
+                {reloadAfterSubmit: true});
+            $(_unn.grid).jqGrid('navButtonAdd', _unn.pager, {caption: _txt.srch, title: _txt.srchtoggle, buttonicon: _txt.srchicon,
+                onClickButton: function() {
+                    unnepnapgrid[0].toggleToolbar();
+                }
+            });
+            $(_unn.grid).jqGrid('navButtonAdd', _unn.pager, {caption: _txt.clr, title: _txt.clrtitle, buttonicon: _txt.clricon,
+                onClickButton: function() {
+                    unnepnapgrid[0].clearToolbar();
+                }
+            });
+            $(_unn.grid).jqGrid('filterToolbar');
+            $(_unn.pager + '_center').hide();
+            $(_unn.pager + '_right').hide();
+
             // Altalanos
             $('.ui-search-toolbar').hide();
             $('.ui-jqgrid-titlebar').on('click', function(e) {

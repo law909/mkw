@@ -11,6 +11,9 @@ $router->map('GET', '/admin/arfolyam/htmllist', 'arfolyamController#htmllist', '
 $router->map('POST', '/admin/arfolyam/save', 'arfolyamController#save', 'adminarfolyamsave');
 $router->map('GET', '/admin/arfolyam/getarfolyam', 'arfolyamController#getarfolyam', 'admingetarfolyam');
 $router->map('POST', '/admin/arfolyam/download', 'arfolyamController#downloadArfolyam', 'admindownloadarfolyam');
+$router->map('GET', '/admin/unnepnap/jsonlist', 'unnepnapController#jsonlist', 'adminunnepnapjsonlist');
+$router->map('GET', '/admin/unnepnap/htmllist', 'unnepnapController#htmllist', 'adminunnepnaphtmllist');
+$router->map('POST', '/admin/unnepnap/save', 'unnepnapController#save', 'adminunnepnapsave');
 $router->map('GET', '/admin/bankszamla/jsonlist', 'bankszamlaController#jsonlist', 'adminbankszamlajsonlist');
 $router->map('GET', '/admin/bankszamla/htmllist', 'bankszamlaController#htmllist', 'adminbankszamlahtmllist');
 $router->map('POST', '/admin/bankszamla/save', 'bankszamlaController#save', 'adminbankszamlasave');
