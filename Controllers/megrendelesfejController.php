@@ -166,21 +166,29 @@ class megrendelesfejController extends bizonylatfejController {
         }
     }
 
-    private function _sendToGLS($glsmegrend) {
-        $glsapi = new \mkwhelpers\GLSAPI(
-            \mkw\store::getParameter(\mkw\consts::GLSClientNumber),
-            \mkw\store::getParameter(\mkw\consts::GLSUsername),
-            \mkw\store::getParameter(\mkw\consts::GLSPassword),
-            \mkw\store::getParameter(\mkw\consts::GLSApiURL)
+    private function _sendToGLS($glsmegrend, $pdfname) {
+        $glsapi = new \mkwhelpers\GLSAPI([
+                'clientnumber' => \mkw\store::getParameter(\mkw\consts::GLSClientNumber),
+                'username' => \mkw\store::getParameter(\mkw\consts::GLSUsername),
+                'password' => \mkw\store::getParameter(\mkw\consts::GLSPassword),
+                'apiurl' => \mkw\store::getParameter(\mkw\consts::GLSApiURL),
+                'pdfdirectory' => \mkw\store::getParameter(\mkw\consts::GLSParcelLabelDir)
+            ]
         );
-        $glsres = $glsapi->printLabels($glsmegrend);
+        $glsres = $glsapi->printLabels($glsmegrend, $pdfname);
         if ($glsres) {
+            $pdfname = implode('/', [
+                rtrim($glsapi->getPdfdirectory(), '/'),
+                $pdfname
+            ]);
             foreach ($glsres as $item) {
                 /** @var Bizonylatfej $megrendfej */
-                $megrendfej = $this->getRepo()->find($item['ClientReference']);
+                $megrendfej = $this->getRepo()->find($item->ClientReference);
                 if ($megrendfej) {
-                    $megrendfej->setGlsparcelid($item['ParcelId']);
-                    $megrendfej->setFuvarlevelszam($item['ParcelNumber']);
+                    $megrendfej->setSimpleedit(true);
+                    $megrendfej->setGlsparcelid($item->ParcelId);
+                    $megrendfej->setGlsparcellabelurl($pdfname);
+                    $megrendfej->setFuvarlevelszam($item->ParcelNumber);
                     $this->getEm()->persist($megrendfej);
                     $this->getEm()->flush();
                 }
@@ -191,25 +199,57 @@ class megrendelesfejController extends bizonylatfejController {
     public function sendToGLS() {
         $ids = $this->params->getArrayRequestParam('ids');
         $db = 0;
+        $pdfname = false;
         $glsmegrend = [];
         foreach($ids as $id) {
             /** @var Bizonylatfej $megrendfej */
             $megrendfej = $this->getRepo()->find($id);
-            if ($megrendfej &&
-                (\mkw\store::isGLSSzallitasimod($megrendfej->getSzallitasimodId())
-                    || \mkw\store::isGLSFutarSzallitasimod($megrendfej->getSzallitasimodId())))
+            if ($megrendfej
+                && (\mkw\store::isGLSSzallitasimod($megrendfej->getSzallitasimodId())
+                    || \mkw\store::isGLSFutarSzallitasimod($megrendfej->getSzallitasimodId()))
+                && (!$megrendfej->getGlsparcelid())
+            )
             {
+                if (!$pdfname) {
+                    $pdfname = $megrendfej->getSanitizedId() . '_parcel_label.pdf';
+                }
                 $db++;
                 $glsmegrend[] = $megrendfej->toGLSAPI();
                 if ($db == 4) {
-                    $this->_sendToGLS($glsmegrend);
+                    $this->_sendToGLS($glsmegrend, $pdfname);
                     $db = 0;
+                    $pdfname = false;
                     $glsmegrend = [];
                 }
             }
         }
         if ($glsmegrend) {
-            $this->_sendToGLS($glsmegrend);
+            $this->_sendToGLS($glsmegrend, $pdfname);
+        }
+    }
+
+    public function delGLSParcel() {
+        $id = $this->params->getStringRequestParam('id');
+        /** @var \Entities\Bizonylatfej $megrendfej */
+        $megrendfej = $this->getRepo()->find($id);
+        if ($megrendfej) {
+            $glsapi = new \mkwhelpers\GLSAPI([
+                    'clientnumber' => \mkw\store::getParameter(\mkw\consts::GLSClientNumber),
+                    'username' => \mkw\store::getParameter(\mkw\consts::GLSUsername),
+                    'password' => \mkw\store::getParameter(\mkw\consts::GLSPassword),
+                    'apiurl' => \mkw\store::getParameter(\mkw\consts::GLSApiURL),
+                    'pdfdirectory' => \mkw\store::getParameter(\mkw\consts::GLSParcelLabelDir)
+                ]
+            );
+            $glsres = $glsapi->deleteLabels([$megrendfej->getGlsparcelid()]);
+            if ($glsres && $glsres[0]->ParcelId == $megrendfej->getGlsparcelid()) {
+                $megrendfej->setSimpleedit(true);
+                $megrendfej->setGlsparcellabelurl(null);
+                $megrendfej->setGlsparcelid(null);
+                $megrendfej->setFuvarlevelszam(null);
+                $this->getEm()->persist($megrendfej);
+                $this->getEm()->flush();
+            }
         }
     }
 

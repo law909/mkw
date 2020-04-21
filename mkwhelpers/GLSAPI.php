@@ -11,14 +11,15 @@ class GLSAPI {
     private $pdfdirectory;
     private $lasterrors = [];
 
-    public function __construct($clientnumber, $username, $password, $apiurl = null) {
-        $this->clientnumber = $clientnumber;
-        $this->username = $username;
-        $this->password = array_values(unpack('C*', hash('sha512', $password, true)));
+    public function __construct($param) {
+        $this->clientnumber = $param['clientnumber'];
+        $this->username = $param['username'];
+        $this->password = array_values(unpack('C*', hash('sha512', $param['password'], true)));
             //"[".implode(',',unpack('C*', hash('sha512', $password, true)))."]";
-        if ($apiurl) {
-            $this->apiurl = $apiurl;
+        if ($param['apiurl']) {
+            $this->apiurl = $param['apiurl'];
         }
+        $this->pdfdirectory = $param['pdfdirectory'];
     }
 
     /**
@@ -26,6 +27,13 @@ class GLSAPI {
      */
     public function getLasterrors() {
         return $this->lasterrors;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPdfdirectory() {
+        return $this->pdfdirectory;
     }
 
     protected function callAPI($endpoint, $data, $printpos = null, $printdialog = null) {
@@ -37,11 +45,12 @@ class GLSAPI {
             $req['PrintPosition'] = $printpos;
         }
         if ($printdialog) {
-            $req['PrintDialog'] = $printdialog;
+            $req['ShowPrintDialog'] = 1;
         }
-        $req = json_encode($req, JSON_PRETTY_PRINT);
-\mkw\store::writelog($req, 'gls.log');
-\mkw\store::writelog($this->apiurl . $endpoint, 'gls.log');
+        else {
+            $req['ShowPrintDialog'] = 0;
+        }
+        $req = json_encode($req, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_URL, $this->apiurl . $endpoint);
@@ -55,10 +64,7 @@ class GLSAPI {
                 'Content-Length: ' . strlen($req))
         );
         $response = curl_exec($curl);
-\mkw\store::writelog(print_r($response, true), 'gls.log');
-\mkw\store::writelog('curl_error:"' . curl_error($curl) . '";curl_errno:' . curl_errno($curl), 'gls.log');
         curl_close($curl);
-die();
 
         return $response;
     }
@@ -78,37 +84,43 @@ die();
         return false;
     }
 
-    public function getPrintedLabels($parcelids, $printposition = 1, $printdialog = 0) {
+    public function getPrintedLabels($parcelids, $pdfname, $printposition = 1, $printdialog = 0) {
         $requestdata = [];
         $requestdata['ParcelIdList'] = $parcelids;
 
-        $pdfname = rtrim($this->pdfdirectory, '/') . '/' . $parcelids[0] . '.pdf';
+        $pdfname = implode('/', [
+            rtrim($this->pdfdirectory, '/'),
+            $pdfname
+        ]);
 
         $response = $this->callAPI('GetPrintedLabels', $requestdata, $printposition, $printdialog);
         if ($response) {
             $response = json_decode($response);
             $this->lasterrors = $response->GetPrintedLabelsErrorList;
             if (count($response->GetPrintedLabelsErrorList) === 0 && count($response->Labels) > 0) {
-                $pdf = implode(array_map('chr', json_decode($response)->Labels));
+                $pdf = implode(array_map('chr', $response->Labels));
                 file_put_contents($pdfname, $pdf);
-                return $pdfname;
+                return true;
             }
         }
         return false;
     }
 
-    public function printLabels($parcellist, $printposition = 1, $printdialog = 0) {
+    public function printLabels($parcellist, $pdfname, $printposition = 1, $printdialog = 0) {
         $requestdata = [];
         $requestdata['ParcelList'] = $parcellist;
 
-        $pdfname = rtrim($this->pdfdirectory, '/') . '/' .str_replace('\\', '', $parcellist[0]['ClientReference']) . '_parcel.pdf';
+        $pdfname = implode('/', [
+            rtrim($this->pdfdirectory, '/'),
+            $pdfname
+        ]);
 
         $response = $this->callAPI('PrintLabels', $requestdata, $printposition, $printdialog);
         if ($response) {
             $response = json_decode($response);
             $this->lasterrors = $response->PrintLabelsErrorList;
             if (count($response->PrintLabelsErrorList) === 0 && count($response->Labels) > 0) {
-                $pdf = implode(array_map('chr', json_decode($response)->Labels));
+                $pdf = implode(array_map('chr', $response->Labels));
                 file_put_contents($pdfname, $pdf);
                 return $response->PrintLabelsInfoList;
             }

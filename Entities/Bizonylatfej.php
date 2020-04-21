@@ -78,6 +78,9 @@ class Bizonylatfej {
      */
     private $glsparcelid;
 
+    /** @ORM\Column(type="text",nullable=true) */
+    private $glsparcellabelurl;
+
     /** @ORM\Column(type="boolean",nullable=false) */
     private $fix = false;
 
@@ -814,39 +817,60 @@ class Bizonylatfej {
     }
 
     public function toGLSAPI() {
-        $fsdpar = new \stdClass();
-        $fsdpar->Value = $this->getPartneremail();
+        if (\mkw\store::isUtanvetFizmod($this->getFizmodId())) {
+            $codamount = $this->getBruttohuf();
+            $szamlaszam = false;
+            /** @var Bizonylatfej $gy */
+            foreach ($this->szulobizonylatfejek as $gy) {
+                if (!$szamlaszam && $gy->getBizonylattipusId() == 'szamla') {
+                    $szamlaszam = $gy->getId();
+                }
+            }
+            if ($szamlaszam) {
+                $codref = $szamlaszam;
+            }
+            else {
+                $codref = $this->getId();
+            }
+        }
+        else {
+            $codamount = 0;
+            $codref = $this->getId();
+        }
+        $fdspar = new \stdClass();
+        $fdspar->StringValue = $this->getPartneremail();
         $sm2par = new \stdClass();
-        $sm2par->Value = $this->getPartnertelefon();
+        $sm2par->StringValue = $this->getPartnertelefon();
+
         $result = [
             'ClientNumber' => \mkw\store::getParameter(\mkw\consts::GLSClientNumber),
             'ClientReference' => $this->getId(),
-            'Count' => 1,
+            'CODAmount' => $codamount,
+            'CODReference' => $codref,
             'Content' => $this->getCouriermessage(),
-            'PickupDate' => "/Date(" . (time() * 1000) . ")/",
-            'PickupAddress' => [
-                'Name' => $this->getTulajnev(),
-                'Street' => $this->getTulajutca(),
-                'City' => $this->getTulajvaros(),
-                'ZipCode' => $this->getTulajirszam(),
-                'ContactName' => \mkw\store::getParameter(\mkw\consts::TulajKontaktNev),
-                'ContactPhone' => \mkw\store::getParameter(\mkw\consts::TulajKontaktTelefon),
-                'ContactEmail' => \mkw\store::getParameter(\mkw\consts::TulajKontaktEmail)
-            ],
+            'Count' => 1,
             'DeliveryAddress' => [
                 'Name' => $this->getSzallnev(),
                 'Street' => $this->getSzallutca(),
                 'City' => $this->getSzallvaros(),
                 'ZipCode' => $this->getSzallirszam(),
+                'CountryIsoCode' => 'HU',
                 'ContactName' => $this->getPartnernev(),
                 'ContactPhone' => $this->getPartnertelefon(),
                 'ContactEmail' => $this->getPartneremail()
             ],
+            'PickupAddress' => [
+                'Name' => $this->getTulajnev(),
+                'Street' => $this->getTulajutca(),
+                'City' => $this->getTulajvaros(),
+                'ZipCode' => $this->getTulajirszam(),
+                'CountryIsoCode' => 'HU',
+                'ContactName' => \mkw\store::getParameter(\mkw\consts::TulajKontaktNev),
+                'ContactPhone' => \mkw\store::getParameter(\mkw\consts::TulajKontaktTelefon),
+                'ContactEmail' => \mkw\store::getParameter(\mkw\consts::TulajKontaktEmail)
+            ],
+            'PickupDate' => "/Date(" . (time() * 1000) . ")/",
             'ServiceList' => [
-                [
-                    'Code' => 'FDS',
-                    'FDSParameter' => $fsdpar
-                ],
                 [
                     'Code' => 'SM2',
                     'SM2Parameter' => $sm2par
@@ -861,21 +885,11 @@ class Bizonylatfej {
                 'PSDParameter' => $psdpar
             ];
         }
-        if (\mkw\store::isUtanvetFizmod($this->getFizmodId())) {
-            $result['CODAmount'] = $this->getBruttohuf();
-            $szamlaszam = false;
-            /** @var Bizonylatfej $gy */
-            foreach ($this->szulobizonylatfejek as $gy) {
-                if (!$szamlaszam && $gy->getBizonylattipusId() == 'szamla') {
-                    $szamlaszam = $gy->getId();
-                }
-            }
-            if ($szamlaszam) {
-                $result['CODReference'] = $szamlaszam;
-            }
-            else {
-                $result['CODReference'] = $this->getId();
-            }
+        else {
+            $result['ServiceList'][] = [
+                'Code' => 'FDS',
+                'FDSParameter' => $fdspar
+            ];
         }
         return $result;
     }
@@ -2098,6 +2112,10 @@ class Bizonylatfej {
 
     public function clearId() {
         $this->id = null;
+    }
+
+    public function getSanitizedId() {
+        return str_replace(['/', ' ', '.', '-'], '_', $this->getId());
     }
 
     public function getTrxId() {
@@ -4832,6 +4850,28 @@ class Bizonylatfej {
      */
     public function setGlsparcelid($glsparcelid) {
         $this->glsparcelid = $glsparcelid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGlsparcellabelurl($pre = '/') {
+        if ($this->glsparcellabelurl) {
+            if ($this->glsparcellabelurl[0] !== $pre) {
+                return $pre . $this->glsparcellabelurl;
+            }
+            else {
+                return $this->glsparcellabelurl;
+            }
+        }
+        return '';
+    }
+
+    /**
+     * @param mixed $glsparcellabelurl
+     */
+    public function setGlsparcellabelurl($glsparcellabelurl) {
+        $this->glsparcellabelurl = $glsparcellabelurl;
     }
 
 }

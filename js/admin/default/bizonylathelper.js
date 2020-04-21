@@ -1644,7 +1644,36 @@ var bizonylathelper = function($) {
                             }
                         });
                     }
-                });
+                })
+                .on('click', '.js-delglsparcel', function(e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    dialogcenter.html('Biztos, hogy törli a csomagot a GLS-nél?').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'Igen': function () {
+                                var dia = $(this);
+                                $.ajax({
+                                    url: '/admin/' + bizonylattipus + 'fej/delglsparcel',
+                                    type: 'POST',
+                                    data: {
+                                        id: $this.data('egyedid')
+                                    },
+                                    success: function (data) {
+                                        dia.dialog('close');
+                                        $('.mattable-tablerefresh').click();
+                                    }
+                                });
+                            },
+                            'Nem': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+            });
+
             $('#cimkefiltercontainer').mattaccord({
                 header: '',
                 page: '.js-cimkefilterpage',

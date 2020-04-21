@@ -135,7 +135,15 @@
                     <tr><td>{at('Er.biz.szám')}:</td><td>{$_egyed.erbizonylatszam}</td></tr>
                 {/if}
                 {if ($showfuvarlevelszam)}
-                    <tr><td>{at('Fuvarlevél')}:</td><td class="fuvarlevel">{$_egyed.fuvarlevelszam}</td></tr>
+                    <tr>
+                        <td>{at('Fuvarlevél')}:</td>
+                        <td class="fuvarlevel">
+                            <a href="{$mainurl}{$_egyed.glsparcellabelurl}" target="_blank">
+                                {$_egyed.fuvarlevelszam}
+                            </a>
+                            &nbsp;{if ($_egyed.isglsbekuldve)}<a href="#" class="js-delglsparcel" data-egyedid="{$_egyed.id}">GLS csomag törlés</a>{/if}
+                        </td>
+                    </tr>
                 {/if}
                 {if ($showkupon)}
                     <tr><td>{at('Kupon')}:</td><td class="kupon">{$_egyed.kupon}</td></tr>

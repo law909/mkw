@@ -187,6 +187,7 @@ $router->map('GET', '/admin/megrendelesfej/print', 'megrendelesfejController#doP
 $router->map('GET', '/admin/megrendelesfej/printelolegbekero', 'megrendelesfejController#doPrintelolegbekero', 'adminmegrendelesfejprintelolegbekero');
 $router->map('POST', '/admin/megrendelesfej/sendtofoxpost', 'megrendelesfejController#sendToFoxPost', 'adminmegrendelessendtofoxpost');
 $router->map('POST', '/admin/megrendelesfej/sendtogls', 'megrendelesfejController#sendToGLS', 'adminmegrendelessendtogls');
+$router->map('POST', '/admin/megrendelesfej/delglsparcel', 'megrendelesfejController#delGLSParcel', 'adminmegrendelesdelglsparcel');
 $router->map('POST', '/admin/megrendelesfej/ront', 'megrendelesfejController#ront', 'adminmegrendelesfejront');
 $router->map('POST', '/admin/megrendelesfej/backorder', 'megrendelesfejController#backOrder', 'adminmegrendelesfejbackorder');
 $router->map('POST', '/admin/megrendelesfej/fejexport', 'megrendelesfejController#fejexport', 'adminmegrendelesfejfejexport');

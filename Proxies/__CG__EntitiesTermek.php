@@ -242,12 +242,12 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getFoglaltMennyiseg($kivevebiz = NULL)
+    public function getFoglaltMennyiseg($kivevebiz = NULL, $datum = NULL, $raktarid = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFoglaltMennyiseg', [$kivevebiz]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFoglaltMennyiseg', [$kivevebiz, $datum, $raktarid]);
 
-        return parent::getFoglaltMennyiseg($kivevebiz);
+        return parent::getFoglaltMennyiseg($kivevebiz, $datum, $raktarid);
     }
 
     /**
@@ -2523,12 +2523,12 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function calcSzallitasiido($valtozat = NULL, $mennyiseg = 0)
+    public function calcSzallitasiido($valtozat = NULL, $mennyiseg = 0, $kivevebizonylat = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcSzallitasiido', [$valtozat, $mennyiseg]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcSzallitasiido', [$valtozat, $mennyiseg, $kivevebizonylat]);
 
-        return parent::calcSzallitasiido($valtozat, $mennyiseg);
+        return parent::calcSzallitasiido($valtozat, $mennyiseg, $kivevebizonylat);
     }
 
     /**
