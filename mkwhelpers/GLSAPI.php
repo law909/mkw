@@ -47,10 +47,11 @@ class GLSAPI {
         if ($printdialog) {
             $req['ShowPrintDialog'] = 1;
         }
-        else {
-            $req['ShowPrintDialog'] = 0;
-        }
         $req = json_encode($req, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+
+        \mkw\store::writelog($req, 'gls.log');
+        \mkw\store::writelog($this->apiurl . $endpoint, 'gls.log');
+
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_URL, $this->apiurl . $endpoint);
@@ -64,6 +65,15 @@ class GLSAPI {
                 'Content-Length: ' . strlen($req))
         );
         $response = curl_exec($curl);
+
+        \mkw\store::writelog($response, 'gls.log');
+        if (!curl_errno($curl)) {
+            \mkw\store::writelog(print_r(curl_getinfo($curl), true));
+        }
+        else {
+            \mkw\store::writelog(curl_errno($curl) . ' ' . curl_error($curl));
+        }
+
         curl_close($curl);
 
         return $response;
