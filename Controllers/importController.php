@@ -790,6 +790,9 @@ class importController extends \mkwhelpers\Controller {
                                     if ($termek->getKeszlet() <= 0) {
                                         $termek->setNemkaphato(true);
                                     }
+                                    else {
+                                        $termek->setNemkaphato(false);
+                                    }
                                 }
                                 else {
                                     $termek->setNemkaphato(false);
