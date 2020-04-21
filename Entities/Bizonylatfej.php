@@ -4835,6 +4835,10 @@ class Bizonylatfej {
         if ($this->getCreated()->format(\mkw\store::$TimeFormat) > '13:00') {
             $szallido = $szallido + 1;
         }
+        $ur = \mkw\store::getEm()->getRepository('Entities\Unnepnap');
+        $k = clone $this->getKelt();
+        $k->add(new \DateInterval('P' . $szallido . 'D'));
+        $szallido = $szallido + $ur->countUnnepnap($this->getKelt(), $k);
         $this->setSzallitasiido($szallido);
     }
 

@@ -11,4 +11,10 @@ class UnnepnapRepository extends \mkwhelpers\Repository {
         $this->setEntityname('Entities\Unnepnap');
     }
 
+    public function countUnnepnap($tol, $ig) {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('datum', '>=', $tol);
+        $filter->addFilter('datum', '<=', $ig);
+        return $this->getCount($filter);
+    }
 }
