@@ -138,7 +138,7 @@
                     <tr>
                         <td>{at('Fuvarlevél')}:</td>
                         <td class="fuvarlevel">
-                            <a href="{$mainurl}{$_egyed.glsparcellabelurl}" target="_blank">
+                            <a href="{$_egyed.glsparcellabelurl}" target="_blank">
                                 {$_egyed.fuvarlevelszam}
                             </a>
                             &nbsp;{if ($_egyed.isglsbekuldve)}<a href="#" class="js-delglsparcel" data-egyedid="{$_egyed.id}">GLS csomag törlés</a>{/if}
