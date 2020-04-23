@@ -188,12 +188,6 @@ class kosarController extends \mkwhelpers\MattableController {
             $szallido = $szallido + 1;
         }
 
-        $ur = \mkw\store::getEm()->getRepository('Entities\Unnepnap');
-        $k = new \DateTime('now');
-        $t = clone $k;
-        $t->add(new \DateInterval('P' . $szallido . 'D'));
-        $szallido = $szallido + $ur->countUnnepnap($k, $t);
-
         $v->setVar('szallitasiido', $szallido);
         $v->setVar('tetellista', $s);
         $v->setVar('valutanem', $valutanem);

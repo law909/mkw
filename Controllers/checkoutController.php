@@ -192,11 +192,6 @@ class checkoutController extends \mkwhelpers\MattableController {
         if (date(\mkw\store::$TimeFormat) > '13:00') {
             $szallido = $szallido + 1;
         }
-        $ur = \mkw\store::getEm()->getRepository('Entities\Unnepnap');
-        $k = new \DateTime('now');
-        $t = clone $k;
-        $t->add(new \DateInterval('P' . $szallido . 'D'));
-        $szallido = $szallido + $ur->countUnnepnap($k, $t);
 
         $view->setVar('szallitasiido', $szallido);
 		$view->setVar('tetellista', $s);
