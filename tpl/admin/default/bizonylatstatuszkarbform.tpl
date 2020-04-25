@@ -36,6 +36,26 @@
 					</select>
 				</td>
 			</tr>
+            <tr>
+                <td><label for="FizmodEdit">{at('Fizetési mód')}:</label></td>
+                <td><select id="FizmodEdit" name="fizmod">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $fizmodlist as $_mk}
+                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                        {/foreach}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="SzallitasimodEdit">{at('Szállítási mód')}:</label></td>
+                <td><select id="SzallitasimodEdit" name="szallitasimod">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $szallitasimodlist as $_mk}
+                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                        {/foreach}
+                    </select>
+                </td>
+            </tr>
 			</tbody></table>
 		</div>
 	</div>

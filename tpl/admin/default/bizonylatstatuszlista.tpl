@@ -35,13 +35,14 @@
 <table id="mattable-table">
 <thead>
 	<tr>
-	<th><input id="maincheckbox" type="checkbox"></th>
-	<th>{at('Név')}</th>
-    {if ($setup.foglalas)}
-	<th>{at('Foglal')}</th>
-    {/if}
-	<th>{at('Csoport')}</th>
-	<th>{at('Sorrend')}</th>
+        <th><input id="maincheckbox" type="checkbox"></th>
+        <th>{at('Név')}</th>
+        <th>{at('Fiz.mód, száll.mód')}</th>
+        {if ($setup.foglalas)}
+        <th>{at('Foglal')}</th>
+        {/if}
+        <th>{at('Csoport')}</th>
+        <th>{at('Sorrend')}</th>
 	</tr>
 </thead>
 <tbody id="mattable-body"></tbody>

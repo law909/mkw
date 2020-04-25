@@ -429,7 +429,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $x['fakekifizetesdatumstr'] = $t->getFakekifizetesdatumStr();
         }
         $bsc = new bizonylatstatuszController($this->params);
-        $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId());
+        $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId(), $t->getFizmodId(), $t->getSzallitasimodId());
         if ($forKarb) {
             if ($t->getPartner() && ($t->getPartner()->getSzamlatipus() > 0)) {
                 $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));

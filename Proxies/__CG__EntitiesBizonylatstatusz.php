@@ -64,10 +64,10 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'szallitasimod'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'szallitasimod'];
     }
 
     /**
@@ -329,6 +329,116 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFoglal', [$adat]);
 
         return parent::setFoglal($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizmod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmod', []);
+
+        return parent::getFizmod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizmodnev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodnev', []);
+
+        return parent::getFizmodnev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizmodId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodId', []);
+
+        return parent::getFizmodId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizmod($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizmod', [$val]);
+
+        return parent::setFizmod($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeFizmod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeFizmod', []);
+
+        return parent::removeFizmod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzallitasimod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasimod', []);
+
+        return parent::getSzallitasimod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzallitasimodnev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasimodnev', []);
+
+        return parent::getSzallitasimodnev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzallitasimodId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzallitasimodId', []);
+
+        return parent::getSzallitasimodId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzallitasimod($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzallitasimod', [$val]);
+
+        return parent::setSzallitasimod($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeSzallitasimod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeSzallitasimod', []);
+
+        return parent::removeSzallitasimod();
     }
 
 }

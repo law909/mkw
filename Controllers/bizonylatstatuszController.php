@@ -2,7 +2,9 @@
 
 namespace Controllers;
 
+use Entities\Bizonylatstatusz;
 use mkw\store;
+use mkwhelpers\FilterDescriptor;
 
 class bizonylatstatuszController extends \mkwhelpers\MattableController {
 
@@ -27,9 +29,14 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
         $x['csoport'] = $t->getCsoport();
         $x['foglal'] = $t->getFoglal();
         $x['emailtemplatenev'] = $t->getEmailtemplateNev();
+        $x['fizmod'] = $t->getFizmodId();
+        $x['fizmodnev'] = $t->getFizmodnev();
+        $x['szallitasimod'] = $t->getSzallitasimodId();
+        $x['szallitasimodnev'] = $t->getSzallitasimodnev();
         return $x;
     }
 
+    /** @param \Entities\Bizonylatstatusz $obj */
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev'));
         $obj->setSorrend($this->params->getIntRequestParam('sorrend'));
@@ -38,6 +45,20 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
         $ck = store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('emailtemplate'));
         if ($ck) {
             $obj->setEmailtemplate($ck);
+        }
+        $ck = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod'));
+        if ($ck) {
+            $obj->setFizmod($ck);
+        }
+        else {
+            $obj->removeFizmod();
+        }
+        $ck = \mkw\store::getEm()->getRepository('Entities\Szallitasimod')->find($this->params->getIntRequestParam('szallitasimod'));
+        if ($ck) {
+            $obj->setSzallitasimod($ck);
+        }
+        else {
+            $obj->removeSzallitasimod();
         }
         return $obj;
     }
@@ -86,15 +107,33 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
         $view->setVar('controllerscript', 'bizonylatstatuszkarb.js');
         $view->setVar('formaction', '/admin/bizonylatstatusz/save');
         $view->setVar('oper', $oper);
+        /** @var \Entities\Bizonylatstatusz $record */
         $record = $this->getRepo()->findWithJoins($id);
         $etpl = new emailtemplateController($this->params);
         $view->setVar('emailtemplatelist', $etpl->getSelectList(($record ? $record->getEmailtemplateId() : 0)));
+        $fmc = new fizmodController($this->params);
+        $view->setVar('fizmodlist', $fmc->getSelectList($record ? $record->getFizmodId() : 0));
+        $fmc = new szallitasimodController($this->params);
+        $view->setVar('szallitasimodlist', $fmc->getSelectList($record ? $record->getSzallitasimodId() : 0, true));
         $view->setVar('egyed', $this->loadVars($record));
         return $view->getTemplateResult();
     }
 
-    public function getSelectList($selid = null) {
-        $rec = $this->getRepo()->getAll(array(), array('sorrend' => 'ASC', 'nev' => 'ASC'));
+    public function getSelectList($selid = null, $fizmodid = null, $szallmodid = null) {
+        $filter = new FilterDescriptor();
+        if ($szallmodid && $fizmodid) {
+            $filter->addSql('((_xx.fizmod=' . $fizmodid . ') AND (_xx.szallitasimod=' . $szallmodid . '))' .
+                ' OR ((_xx.fizmod IS NULL) AND (_xx.szallitasimod IS NULL))');
+        }
+        else {
+            if ($fizmodid) {
+                $filter->addSql('((_xx.fizmod=' . $fizmodid . ') OR (_xx.fizmod IS NULL))');
+            }
+            if ($szallmodid) {
+                $filter->addSql('((_xx.szallitasimod=' . $szallmodid . ') OR (_xx.fizmod IS NULL))');
+            }
+        }
+        $rec = $this->getRepo()->getAll($filter, array('sorrend' => 'ASC', 'nev' => 'ASC'));
         $res = array();
         foreach ($rec as $sor) {
             $res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
@@ -103,7 +142,7 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController {
     }
 
     public function getCsoportSelectList($sel = null) {
-        $rec = $this->getRepo()->getExistingCsoportok($sel);
+        $rec = $this->getRepo()->getExistingCsoportok();
         $res = array();
         foreach ($rec as $sor) {
             $res[] = array(
