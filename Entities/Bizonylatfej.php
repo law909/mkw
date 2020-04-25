@@ -4801,6 +4801,18 @@ class Bizonylatfej {
                     $k->add(new \DateInterval('P2D'));
                 }
             }
+
+            $ur = \mkw\store::getEm()->getRepository('Entities\Unnepnap');
+            $unnep = $ur->countUnnepnap($this->getKelt(), $k);
+            if ($unnep) {
+                for ($i = 1; $i <= $unnep; $i++) {
+                    $k->add(new \DateInterval('P1D'));
+                    if ($k->format('w') == 6) {
+                        $k->add(new \DateInterval('P2D'));
+                    }
+                }
+            }
+
             if (\mkw\store::isFoxpostSzallitasimod($this->getSzallitasimodId())) {
                 $r = $k->format(\mkw\store::$DateFormat);
                 $k->add(new \DateInterval('P2D'));
@@ -4835,10 +4847,6 @@ class Bizonylatfej {
         if ($this->getCreated()->format(\mkw\store::$TimeFormat) > '13:00') {
             $szallido = $szallido + 1;
         }
-        $ur = \mkw\store::getEm()->getRepository('Entities\Unnepnap');
-        $k = clone $this->getKelt();
-        $k->add(new \DateInterval('P' . $szallido . 'D'));
-        $szallido = $szallido + $ur->countUnnepnap($this->getKelt(), $k);
         $this->setSzallitasiido($szallido);
     }
 
