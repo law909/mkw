@@ -1446,4 +1446,8 @@ class store {
     public static function isValidEmail($email) {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
+
+    public static function filePath($filename) {
+        return self::getConfigValue('path.storage', 'storage/') . $filename;
+    }
 }

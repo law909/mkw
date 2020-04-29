@@ -1345,7 +1345,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('bizonylatfej') . '.xlsx';
+        $filepath = \mkw\store::filePath(uniqid('bizonylatfej') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
@@ -1478,7 +1478,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('bizonylattetel') . '.xlsx';
+        $filepath = \mkw\store::filePath(uniqid('bizonylattetel') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
