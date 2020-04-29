@@ -111,7 +111,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
 
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = $tanarnev . ' ' . $tolstr . '-' . $igstr . '.xlsx';
+        $filepath = \mkw\store::storagePath($tanarnev . ' ' . $tolstr . '-' . $igstr . '.xlsx');
         $writer->save($filepath);
 
         return $filepath;
@@ -183,7 +183,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
 
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('tanarelszamolas') . '.xlsx';
+        $filepath = \mkw\store::storagePath(uniqid('tanarelszamolas') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

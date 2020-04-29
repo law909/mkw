@@ -234,7 +234,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
 
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('keszlet') . '.xlsx';
+        $filepath = \mkw\store::storagePath(uniqid('keszlet') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

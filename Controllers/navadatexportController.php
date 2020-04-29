@@ -49,7 +49,7 @@ class navadatexportController extends \mkwhelpers\MattableController {
     }
 
     public function createLista() {
-        $filepath = 'navexport.xml';
+        $filepath = \mkw\store::storagePath('navexport.xml');
 
         $handle = fopen($filepath, "wb");
 

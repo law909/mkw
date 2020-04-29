@@ -101,7 +101,7 @@ class store {
     }
 
     public static function writelog($text, $fname = 'log.txt') {
-        $handle = fopen($fname, "a");
+        $handle = fopen(self::storagePath($fname), "a");
         $log = "";
         $separator = " ## ";
         $log .= date('Y.m.d. H:i:s') . $separator;
@@ -1447,7 +1447,7 @@ class store {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
-    public static function filePath($filename) {
-        return self::getConfigValue('path.storage', 'storage/') . $filename;
+    public static function storagePath($filename) {
+        return self::getConfigValue('path.storage', '') . $filename;
     }
 }

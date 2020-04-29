@@ -348,24 +348,24 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            @unlink('kreativ_fuggoben.txt');
+            @unlink(\mkw\store::storagePath('kreativ_fuggoben.txt'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlKreativ));
-            $fh = fopen('kreativpuzzlestock.txt', 'w');
+            $fh = fopen(\mkw\store::storagePath('kreativpuzzlestock.txt'), 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
             fclose($fh);
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlKreativImages));
-            $fh = fopen('kreativpuzzleimages.txt', 'w');
+            $fh = fopen(\mkw\store::storagePath('kreativpuzzleimages.txt'), 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
             fclose($fh);
 
             $imagelist = array();
-            $fh = fopen('kreativpuzzleimages.txt', 'r');
+            $fh = fopen(\mkw\store::storagePath('kreativpuzzleimages.txt'), 'r');
             if ($fh) {
                 fgetcsv($fh, 0, $sep, '"');
                 while ($data = fgetcsv($fh, 0, $sep, '"')) {
@@ -383,7 +383,7 @@ class importController extends \mkwhelpers\Controller {
 
 
             $linecount = 0;
-            $fh = fopen('kreativpuzzlestock.txt', 'r');
+            $fh = fopen(\mkw\store::storagePath('kreativpuzzlestock.txt'), 'r');
             if ($fh) {
                 while (($linecount < 10) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                     $linecount++;
@@ -392,7 +392,7 @@ class importController extends \mkwhelpers\Controller {
             fclose($fh);
 
             if ($linecount > 1) {
-                $fh = fopen('kreativpuzzlestock.txt', 'r');
+                $fh = fopen(\mkw\store::storagePath('kreativpuzzlestock.txt'), 'r');
                 if ($fh) {
                     $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                     $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
@@ -558,13 +558,13 @@ class importController extends \mkwhelpers\Controller {
                         }
                     }
                     if ($lettfuggoben) {
-                        echo json_encode(array('url' => '/kreativ_fuggoben.txt'));
+                        echo json_encode(array('url' => \mkw\store::storagePath('kreativ_fuggoben.txt')));
                     }
                 }
                 fclose($fh);
             }
             else {
-                echo json_encode(array('url' => '/kreativpuzzlestock.txt'));
+                echo json_encode(array('url' => \mkw\store::storagePath('/kreativpuzzlestock.txt')));
             }
             $this->setRunningImport(\mkw\consts::RunningKreativImport, 0);
         }
@@ -632,12 +632,12 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            @unlink('delton_fuggoben.txt');
+            @unlink(\mkw\store::storagePath('delton_fuggoben.txt'));
 
             if ($deltondownload) {
-                \unlink('delton.txt');
+                \unlink(\mkw\store::storagePath('delton.txt'));
                 $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlDelton));
-                $fh = fopen('delton.txt', 'w');
+                $fh = fopen(\mkw\store::storagePath('delton.txt'), 'w');
                 \curl_setopt($ch, CURLOPT_FILE, $fh);
                 \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                 \curl_exec($ch);
@@ -645,7 +645,7 @@ class importController extends \mkwhelpers\Controller {
             }
 
             $linecount = 0;
-            $fh = fopen('delton.txt', 'r');
+            $fh = fopen(\mkw\store::storagePath('delton.txt'), 'r');
             if ($fh) {
                 while (($linecount < 10) && ($data = $this->fgetdeltoncsv($fh))) {
                     $linecount++;
@@ -654,7 +654,7 @@ class importController extends \mkwhelpers\Controller {
             fclose($fh);
 
             if ($linecount > 1) {
-                $fh = fopen('delton.txt', 'r');
+                $fh = fopen(\mkw\store::storagePath('delton.txt'), 'r');
                 if ($fh) {
                     $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                     $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
@@ -854,13 +854,13 @@ class importController extends \mkwhelpers\Controller {
                         }
                     }
                     if ($lettfuggoben) {
-                        echo json_encode(array('url' => '/delton_fuggoben.txt'));
+                        echo json_encode(array('url' => \mkw\store::storagePath('delton_fuggoben.txt')));
                     }
                 }
                 fclose($fh);
             }
             else {
-                echo json_encode(array('url' => '/delton.txt'));
+                echo json_encode(array('url' => \mkw\store::storagePath('delton.txt')));
             }
             $this->setRunningImport(\mkw\consts::RunningDeltonImport, 0);
         }
@@ -926,17 +926,17 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            @unlink('nomad_fuggoben.txt');
+            @unlink(\mkw\store::storagePath('nomad_fuggoben.txt'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlNomad));
-            $fh = fopen('nomad.xml', 'w');
+            $fh = fopen(\mkw\store::storagePath('nomad.xml'), 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
             fclose($fh);
             \curl_close($ch);
 
-            $xml = simplexml_load_file("nomad.xml");
+            $xml = simplexml_load_file(\mkw\store::storagePath("nomad.xml"));
             if ($xml) {
                 $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                 $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
@@ -1442,10 +1442,10 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->clear();
                 }
                 if ($lettfuggoben) {
-                    echo json_encode(array('url' => '/nomad_fuggoben.txt'));
+                    echo json_encode(array('url' => \mkw\store::storagePath('nomad_fuggoben.txt')));
                 }
             }
-            \unlink('nomad.xml');
+            \unlink(\mkw\store::storagePath('nomad.xml'));
 
             $this->setRunningImport(\mkw\consts::RunningNomadImport, 0);
         }
@@ -1526,17 +1526,17 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            @unlink('nikaimport.txt');
+            @unlink(\mkw\store::storagePath('nikaimport.txt'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlNika));
-            $fh = fopen('nikaproducts.xml', 'w');
+            $fh = fopen(\mkw\store::storagePath('nikaproducts.xml'), 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
             fclose($fh);
             \curl_close($ch);
 
-            $xml = simplexml_load_file("nikaproducts.xml");
+            $xml = simplexml_load_file(\mkw\store::storagePath("nikaproducts.xml"));
             if ($xml) {
                 $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
 
@@ -1774,10 +1774,10 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->clear();
                 }
                 if ($lettfuggoben) {
-                    echo json_encode(array('url' => '/nikaimport.txt'));
+                    echo json_encode(array('url' => \mkw\store::storagePath('nikaimport.txt')));
                 }
             }
-            \unlink('nikaproducts.xml');
+            \unlink(\mkw\store::storagePath('nikaproducts.xml'));
 
             $this->setRunningImport(\mkw\consts::RunningNikaImport, 0);
         }
@@ -1862,17 +1862,17 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            @unlink('haffner24import.txt');
+            @unlink(\mkw\store::storagePath('haffner24import.txt'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlHaffner24));
-            $fh = fopen('haffner24products.xml', 'w');
+            $fh = fopen(\mkw\store::storagePath('haffner24products.xml'), 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
             fclose($fh);
             \curl_close($ch);
 
-            $xml = simplexml_load_file("haffner24products.xml");
+            $xml = simplexml_load_file(\mkw\store::storagePath("haffner24products.xml"));
             if ($xml) {
                 $products = $xml->product;
                 unset($xml);
@@ -2082,10 +2082,10 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->clear();
                 }
                 if ($lettfuggoben) {
-                    echo json_encode(array('url' => '/haffner24import.txt'));
+                    echo json_encode(array('url' => \mkw\store::storagePath('haffner24import.txt')));
                 }
             }
-            \unlink('haffner24products.xml');
+            \unlink(\mkw\store::storagePath('haffner24products.xml'));
 
             $this->setRunningImport(\mkw\consts::RunningHaffner24Import, 0);
         }
@@ -2129,21 +2129,21 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            @\unlink('reintex_fuggoben.txt');
+            @\unlink(\mkw\store::storagePath('reintex_fuggoben.txt'));
 
             if (\mkw\store::isDeveloper()) {
                 move_uploaded_file($_FILES['toimport']['tmp_name'], 'reintex.csv');
             }
             else {
                 $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlReintex));
-                $fh = fopen('reintex.csv', 'w');
+                $fh = fopen(\mkw\store::storagePath('reintex.csv'), 'w');
                 \curl_setopt($ch, CURLOPT_FILE, $fh);
                 \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                 \curl_exec($ch);
                 fclose($fh);
                 \curl_close($ch);
             }
-            $fh = fopen('reintex.csv', 'r');
+            $fh = fopen(\mkw\store::storagePath('reintex.csv'), 'r');
             if ($fh) {
                 $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                 $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
@@ -2303,7 +2303,7 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
                 if ($lettfuggoben) {
-                    echo json_encode(array('url' => '/reintex_fuggoben.txt'));
+                    echo json_encode(array('url' => \mkw\store::storagePath('reintex_fuggoben.txt')));
                 }
 
                 if ($createuj && false) {
@@ -2635,10 +2635,10 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            @\unlink('makszutov_fuggoben.txt');
+            @\unlink(\mkw\store::storagePath('makszutov_fuggoben.txt'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlMaxutov));
-            $fh = fopen('makszutov.txt', 'w');
+            $fh = fopen(\mkw\store::storagePath('makszutov.txt'), 'w');
             \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -2646,7 +2646,7 @@ class importController extends \mkwhelpers\Controller {
             fclose($fh);
 
             $linecount = 0;
-            $fh = fopen('makszutov.txt', 'r');
+            $fh = fopen(\mkw\store::storagePath('makszutov.txt'), 'r');
             if ($fh) {
                 while (($linecount < 10) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                     $linecount++;
@@ -2655,7 +2655,7 @@ class importController extends \mkwhelpers\Controller {
             fclose($fh);
 
             if ($linecount > 1) {
-                $fh = fopen('makszutov.txt', 'r');
+                $fh = fopen(\mkw\store::storagePath('makszutov.txt'), 'r');
                 if ($fh) {
                     $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                     $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
@@ -2927,14 +2927,14 @@ class importController extends \mkwhelpers\Controller {
                         }
                     }
                     if ($lettfuggoben) {
-                        echo json_encode(array('url' => '/makszutov_fuggoben.txt'));
+                        echo json_encode(array('url' => \mkw\store::storagePath('makszutov_fuggoben.txt')));
                     }
                 }
                 fclose($fh);
-                \unlink('makszutov.txt');
+                \unlink(\mkw\store::storagePath('makszutov.txt'));
             }
             else {
-                echo json_encode(array('url' => '/makszutov.txt'));
+                echo json_encode(array('url' => \mkw\store::storagePath('makszutov.txt')));
             }
             $this->setRunningImport(\mkw\consts::RunningMaxutovImport, 0);
         }
@@ -4289,21 +4289,21 @@ class importController extends \mkwhelpers\Controller {
 
             $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 1);
 
-            @\unlink('legavenue_forditani.txt');
+            @\unlink(\mkw\store::storagePath('legavenue_forditani.txt'));
 
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
             $dbig = $this->params->getIntRequestParam('dbig', 0);
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlLegavenue));
-            $fh = fopen('legavenue.xml', 'w');
+            $fh = fopen(\mkw\store::storagePath('legavenue.xml'), 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
             fclose($fh);
 
             $db = 0;
-            $xml = simplexml_load_file("legavenue.xml");
+            $xml = simplexml_load_file(\mkw\store::storagePath("legavenue.xml"));
             if ($xml) {
 
                 $products = $xml;
@@ -4336,10 +4336,10 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
             }
-            \unlink('legavenue.xml');
+            \unlink(\mkw\store::storagePath('legavenue.xml'));
 
             if ($db) {
-                echo json_encode(array('url' => '/legavenue_forditani.txt'));
+                echo json_encode(array('url' => \mkw\store::storagePath('legavenue_forditani.txt')));
             }
 
             $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 0);
@@ -4356,7 +4356,7 @@ class importController extends \mkwhelpers\Controller {
 
                 $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 1);
 
-                @\unlink('legavenue_fuggoben.txt');
+                @\unlink(\mkw\store::storagePath('legavenue_fuggoben.txt'));
 
                 $parentid = $this->params->getIntRequestParam('katid', 0);
                 $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoLegavenue);
@@ -4379,13 +4379,13 @@ class importController extends \mkwhelpers\Controller {
                 $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
                 $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlLegavenue));
-                $fh = fopen('legavenue.xml', 'w');
+                $fh = fopen(\mkw\store::storagePath('legavenue.xml'), 'w');
                 \curl_setopt($ch, CURLOPT_FILE, $fh);
                 \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                 \curl_exec($ch);
                 fclose($fh);
 
-                $xml = simplexml_load_file("legavenue.xml");
+                $xml = simplexml_load_file(\mkw\store::storagePath("legavenue.xml"));
                 if ($xml) {
                     $vtsz = $this->getRepo('Entities\Vtsz')->findBySzam('-');
                     $gyarto = $this->getRepo('Entities\Partner')->find($gyartoid);
@@ -4702,10 +4702,10 @@ class importController extends \mkwhelpers\Controller {
                         \mkw\store::getEm()->clear();
                     }
                     if ($lettfuggoben) {
-                        echo json_encode(array('url' => '/legavenue_fuggoben.txt'));
+                        echo json_encode(array('url' => \mkw\store::storagePath('legavenue_fuggoben.txt')));
                     }
                 }
-                \unlink('legavenue.xml');
+                \unlink(\mkw\store::storagePath('legavenue.xml'));
 
                 $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 0);
             }

@@ -69,7 +69,7 @@ class partnermijszoralatogatasosszesitolistaController extends \mkwhelpers\Contr
         }
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('oralatogatasosszesito') . '.xlsx';
+        $filepath = \mkw\store::storagePath(uniqid('oralatogatasosszesito') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

@@ -34,7 +34,7 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController {
         /** @var \Entities\Bizonylatfej $bizonylat */
         foreach ($r as $bizonylat) {
             $mar = $bizonylat->getId();
-            $filenev = \mkw\store::getTmpPath() . \mkw\store::urlize($mar) . '.pdf';
+            $filenev = \mkw\store::storagePath(\mkw\store::urlize($mar) . '.pdf');
             $html = $bizctrl->getBizonylatHTML($mar);
             $pdf = new Pdf($html);
             $pdf->setOptions(array('encoding' => 'UTF-8'));
@@ -50,7 +50,7 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController {
 
         if ($this->files) {
 
-            $zipname = \mkw\store::getTmpPath() . 'konyvelonek.zip';
+            $zipname = \mkw\store::storagePath('konyvelonek.zip');
             $zip = new \ZipArchive();
             $zip->open($zipname, \ZipArchive::CREATE);
             foreach ($this->files as $fname) {

@@ -146,7 +146,7 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
         }
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('termekforgalmi') . '.xlsx';
+        $filepath = \mkw\store::storagePath(uniqid('termekforgalmi') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

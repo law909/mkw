@@ -18,7 +18,7 @@ class minicrmController extends \mkwhelpers\Controller {
             $voltkapcsolat = false;
             $vanlog = false;
 
-            @unlink('minicrmimport.txt');
+            @unlink(\mkw\store::storagePath('minicrmimport.txt'));
 
             require 'busvendor/MiniCRM/minicrm-api.phar';
             $catid = \mkw\store::getParameter(\mkw\consts::MiniCRMPartnertorzs);
@@ -133,7 +133,7 @@ class minicrmController extends \mkwhelpers\Controller {
             }
 
             if ($vanlog) {
-                echo json_encode(array('url' => \mkw\store::getFullUrl(null, '/minicrmimport.txt')));
+                echo json_encode(array('url' => \mkw\store::getFullUrl(null, \mkw\store::storagePath('minicrmimport.txt'))));
             }
         }
     }

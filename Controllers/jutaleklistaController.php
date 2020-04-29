@@ -263,7 +263,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
 
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('comission') . '.xlsx';
+        $filepath = \mkw\store::storagePath(uniqid('comission') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

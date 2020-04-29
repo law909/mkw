@@ -378,7 +378,7 @@ class tartozaslistaController extends \mkwhelpers\MattableController {
 
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('tartozas') . '.xlsx';
+        $filepath = \mkw\store::storagePath(uniqid('tartozas') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

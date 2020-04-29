@@ -176,7 +176,7 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
 
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('idoszakipenztarjelentes') . '.xlsx';
+        $filepath = \mkw\store::storagePath(uniqid('idoszakipenztarjelentes') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

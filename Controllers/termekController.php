@@ -1461,7 +1461,7 @@ class termekController extends \mkwhelpers\MattableController {
 
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('termekarak') . '.xlsx';
+        $filepath = \mkw\store::storagePath(uniqid('termekarak') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

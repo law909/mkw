@@ -115,7 +115,7 @@ class emagController extends \mkwhelpers\Controller {
         }
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('emag_categories_') . '.xlsx';
+        $filepath = \mkw\store::storagePath(uniqid('emag_categories_') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

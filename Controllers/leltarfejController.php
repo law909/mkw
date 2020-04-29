@@ -314,7 +314,7 @@ class leltarfejController extends \mkwhelpers\MattableController {
 
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('leltar-' . \mkw\store::urlize($this->raktarnev)) . '.xlsx';
+        $filepath = \mkw\store::storagePath(uniqid('leltar-' . \mkw\store::urlize($this->raktarnev)) . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

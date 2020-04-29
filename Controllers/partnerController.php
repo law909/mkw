@@ -1506,10 +1506,10 @@ class partnerController extends \mkwhelpers\MattableController {
 
         switch ($country) {
             case 'in':
-                $filepath = uniqid('mijszpartner_in') . '.xlsx';
+                $filepath = \mkw\store::storagePath(uniqid('mijszpartner_in') . '.xlsx');
                 break;
             case 'us':
-                $filepath = uniqid('mijszpartner_us') . '.xlsx';
+                $filepath = \mkw\store::storagePath(uniqid('mijszpartner_us') . '.xlsx');
                 break;
         }
         $writer->save($filepath);
@@ -1571,7 +1571,7 @@ class partnerController extends \mkwhelpers\MattableController {
         }
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('partnermegjegyzes') . '.xlsx';
+        $filepath = \mkw\store::storagePath(uniqid('partnermegjegyzes') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
@@ -1692,7 +1692,7 @@ class partnerController extends \mkwhelpers\MattableController {
         }
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('partnerhirlevel') . '.xlsx';
+        $filepath = \mkw\store::storagePath(uniqid('partnerhirlevel') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

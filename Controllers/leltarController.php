@@ -188,7 +188,7 @@ class leltarController extends \mkwhelpers\Controller {
 
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('leltar') . '.xlsx';
+        $filepath = \mkw\store::storagePath(uniqid('leltar') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

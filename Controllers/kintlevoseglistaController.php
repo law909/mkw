@@ -448,7 +448,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
 
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('kintlevoseg') . '.xlsx';
+        $filepath = \mkw\store::storagePath(uniqid('kintlevoseg') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

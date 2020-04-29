@@ -334,7 +334,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
         }
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = uniqid('bizonylattetel') . '.xlsx';
+        $filepath = \mkw\store::storagePath(uniqid('bizonylattetel') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);

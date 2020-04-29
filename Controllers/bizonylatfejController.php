@@ -1047,7 +1047,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                     $pdf = new Pdf($html);
                     $pdf->setOptions(array('encoding' => 'UTF-8'));
                     if ($email && $emailtpl) {
-                        $filepath = \mkw\store::urlize($id) . '.pdf';
+                        $filepath = \mkw\store::storagePath(\mkw\store::urlize($id) . '.pdf');
                         $pdf->saveAs($filepath);
 
                         $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
@@ -1345,7 +1345,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = \mkw\store::filePath(uniqid('bizonylatfej') . '.xlsx');
+        $filepath = \mkw\store::storagePath(uniqid('bizonylatfej') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
@@ -1478,7 +1478,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
         $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 
-        $filepath = \mkw\store::filePath(uniqid('bizonylattetel') . '.xlsx');
+        $filepath = \mkw\store::storagePath(uniqid('bizonylattetel') . '.xlsx');
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
