@@ -56,7 +56,7 @@ if (isset($_POST["req"])) {
 
 switch ($req) {
     case 'write':
-        writelog($_POST['data']);
+        //writelog($_POST['data']);
         break;
 }
 
