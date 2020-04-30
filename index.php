@@ -110,27 +110,6 @@ try {
     $conn = store::getEm()->getConnection()->connect();
 }
 catch (\Exception $e) {
-    $lee = file_get_contents('lasterroremail.log');
-    if (time() - ($lee * 1) > 600) {
-        if (!$ini['developer']) {
-            file_put_contents('lasterroremail.log', time());
-            if ($ini['onerror.email']) {
-                $m = store::getMailer();
-                $m->setTo($ini['onerror.email']);
-                $m->setSubject($ini['onerror.subject']);
-                $m->setMessage('Error code: ' . $e->getCode() . ' ' . $e->getMessage());
-                $m->send();
-            }
-        }
-        else {
-            file_put_contents('lasterroremail.log', time());
-            file_put_contents('erroremail.log', array(
-                'to' => $ini['onerror.email'],
-                'subject' => $ini['onerror.subject'],
-                'message' => 'Error code: ' . $e->getCode() . ' ' . $e->getMessage()
-            ));
-        }
-    }
     throw $e;
 }
 
