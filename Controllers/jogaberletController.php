@@ -31,6 +31,7 @@ class jogaberletController extends \mkwhelpers\MattableController {
         $x['lejart'] = $t->isLejart();
         $x['elfogyottalkalom'] = $t->getElfogyottalkalom();
         $x['offlineelfogyottalkalom'] = $t->getOfflineelfogyottalkalom();
+        $x['nincsfizetve'] = $t->isNincsfizetve();
         return $x;
     }
 
@@ -53,6 +54,7 @@ class jogaberletController extends \mkwhelpers\MattableController {
         $obj->setVasarlasnapja($this->params->getStringRequestParam('vasarlasnapja'));
         $obj->setElfogyottalkalom($this->params->getIntRequestParam('elfogyottalkalom'));
         $obj->setOfflineelfogyottalkalom($this->params->getIntRequestParam('offlineelfogyottalkalom'));
+        $obj->setNincsfizetve($this->params->getBoolRequestParam('nincsfizetve', false));
         return $obj;
     }
 
@@ -89,6 +91,15 @@ class jogaberletController extends \mkwhelpers\MattableController {
                 break;
             case 2:
                 $filter->addFilter('lejart', '=', true);
+                break;
+        }
+        $f = $this->params->getIntRequestParam('nincsfizetvefilter');
+        switch ($f) {
+            case 1:
+                $filter->addFilter('nincsfizetve', '=', false);
+                break;
+            case 2:
+                $filter->addFilter('nincsfizetve', '=', true);
                 break;
         }
 

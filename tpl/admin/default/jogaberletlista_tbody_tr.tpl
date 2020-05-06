@@ -12,4 +12,5 @@
     <td class="cell">{$_egyed.vasarlasnapja}</td>
     <td class="cell">{$_egyed.lejaratdatum}</td>
     <td class="cell">{if ($_egyed.lejart)}LEJÁRT{/if}</td>
+    <td class="cell">{if ($_egyed.nincsfizetve)}NINCS KIFIZETVE{/if}</td>
 </tr>

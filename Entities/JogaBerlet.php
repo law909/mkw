@@ -78,6 +78,9 @@ class JogaBerlet {
     /** @ORM\Column(type="integer",nullable=true) */
     private $offlineelfogyottalkalom;
 
+    /** @ORM\Column(type="boolean") */
+    private $nincsfizetve = false;
+
     /**
      * @return mixed
      */
@@ -353,6 +356,20 @@ class JogaBerlet {
      */
     public function setOfflineelfogyottalkalom($offlineelfogyottalkalom) {
         $this->offlineelfogyottalkalom = $offlineelfogyottalkalom;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNincsfizetve() {
+        return $this->nincsfizetve;
+    }
+
+    /**
+     * @param bool $nincsfizetve
+     */
+    public function setNincsfizetve($nincsfizetve) {
+        $this->nincsfizetve = $nincsfizetve;
     }
 
 }

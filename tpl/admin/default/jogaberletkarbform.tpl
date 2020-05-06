@@ -50,6 +50,10 @@
                 <td><label for="OElfogyottAlkalomEdit">{at('Offline elfogyott alkalom')}:</label></td>
                 <td><input id="OElfogyottAlkalomEdit" name="offlineelfogyottalkalom" type="text" value="{$egyed.offlineelfogyottalkalom}"></td>
             </tr>
+            <tr>
+                <td><label for="NincsfizetveEdit">{at('Nincs kifizetve')}:</label></td>
+                <td><input id="NincsfizetveEdit" name="nincsfizetve" type="checkbox"{if ($egyed.nincsfizetve)} checked="checked"{/if}></td>
+            </tr>
 			</tbody></table>
 		</div>
 	</div>

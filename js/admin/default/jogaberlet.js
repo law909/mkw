@@ -90,7 +90,8 @@ $(document).ready(function(){
                     '#datumigfilter',
                     '#lejarattolfilter',
                     '#lejaratigfilter',
-                    '#lejartfilter'
+                    '#lejartfilter',
+                    '#nincsfizetvefilter'
                 ]
 			},
 			tablebody:{

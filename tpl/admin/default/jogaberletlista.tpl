@@ -45,6 +45,12 @@
             <option value="1"{if ($lejartfilter === 1)} selected="selected"{/if}>{at('nem')}</option>
             <option value="2"{if ($lejartfilter === 2)} selected="selected"{/if}>{at('igen')}</option>
         </select>
+        <label for="nincsfizetvefilter">{at('Lejárt')}:</label>
+        <select id="nincsfizetvefilter" name="nincsfizetvefilter">
+            <option value="0">{at('Mindegy')}</option>
+            <option value="1"{if ($nincsfizetvefilter === 1)} selected="selected"{/if}>{at('ki van fizetve')}</option>
+            <option value="2"{if ($nincsfizetvefilter === 2)} selected="selected"{/if}>{at('nincs kifizetve')}</option>
+        </select>
     </div>
 </div>
 <div class="mattable-pagerwrapper">
@@ -73,6 +79,7 @@
         <th>{at('Termék')}</th>
         <th>{at('Vásárlás dátuma')}</th>
         <th>{at('Lejárat dátuma')}</th>
+        <th></th>
         <th></th>
 	</tr>
 </thead>

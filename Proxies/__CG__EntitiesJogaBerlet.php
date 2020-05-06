@@ -66,10 +66,10 @@ class JogaBerlet extends \Entities\JogaBerlet implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'vasarlasnapja', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejaratdatum', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'alkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'ervenyesseg', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'elfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejart', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'offlineelfogyottalkalom'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'vasarlasnapja', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejaratdatum', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'alkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'ervenyesseg', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'elfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejart', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'offlineelfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nincsfizetve'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'vasarlasnapja', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejaratdatum', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'alkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'ervenyesseg', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'elfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejart', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'offlineelfogyottalkalom'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'vasarlasnapja', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejaratdatum', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'alkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'ervenyesseg', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'elfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejart', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'offlineelfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nincsfizetve'];
     }
 
     /**
@@ -607,6 +607,28 @@ class JogaBerlet extends \Entities\JogaBerlet implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOfflineelfogyottalkalom', [$offlineelfogyottalkalom]);
 
         return parent::setOfflineelfogyottalkalom($offlineelfogyottalkalom);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isNincsfizetve()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isNincsfizetve', []);
+
+        return parent::isNincsfizetve();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setNincsfizetve($nincsfizetve)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNincsfizetve', [$nincsfizetve]);
+
+        return parent::setNincsfizetve($nincsfizetve);
     }
 
 }
