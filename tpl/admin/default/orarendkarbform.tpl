@@ -10,7 +10,7 @@
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <input id="InaktivCheck" name="inaktiv" type="checkbox"
                    {if ($egyed.inaktiv)}checked="checked"{/if}>{at('Inaktív')}
-            <input id="MultilangCheck" name="mmultilang" type="checkbox"
+            <input id="MultilangCheck" name="multilang" type="checkbox"
                    {if ($egyed.multilang)}checked="checked"{/if}>{at('Több nyelvű')}
             <table>
                 <tbody>

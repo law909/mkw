@@ -623,6 +623,12 @@ $router->map('GET', '/admin/bizonylatstatusz/getkarb', 'bizonylatstatuszControll
 $router->map('GET', '/admin/bizonylatstatusz/viewkarb', 'bizonylatstatuszController#viewkarb', 'adminbizonylatstatuszviewkarb');
 $router->map('POST', '/admin/bizonylatstatusz/save', 'bizonylatstatuszController#save', 'adminbizonylatstatuszsave');
 
+$router->map('GET', '/admin/jogaberlet/viewlist', 'jogaberletController#viewlist', 'adminjogaberletviewlist');
+$router->map('GET', '/admin/jogaberlet/getlistbody', 'jogaberletController#getlistbody', 'adminjogaberletgetlistbody');
+$router->map('GET', '/admin/jogaberlet/getkarb', 'jogaberletController#getkarb', 'adminjogaberletgetkarb');
+$router->map('GET', '/admin/jogaberlet/viewkarb', 'jogaberletController#viewkarb', 'adminjogaberletviewkarb');
+$router->map('POST', '/admin/jogaberlet/save', 'jogaberletController#save', 'adminjogaberletsave');
+
 $router->map('GET', '/admin/rlbexport', 'exportController#RLBExport', 'adminrlbexport');
 $router->map('GET', '/admin/rlbcsvexport/view', 'rlbexportController#view', 'adminrlbcsvexportview');
 $router->map('GET', '/admin/rlbcsvexport/export', 'rlbexportController#RLBCSVExport', 'adminrlbcsvexport');
