@@ -149,13 +149,8 @@ class mkwphpmailer {
             }
         }
 
-        try {
             if ($this->mailer->getAllRecipientAddresses()) {
                 $this->mailer->send();
             }
-        }
-        finally {
-            $this->clear();
-        }
     }
 }
