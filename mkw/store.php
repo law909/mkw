@@ -1448,6 +1448,6 @@ class store {
     }
 
     public static function storagePath($filename) {
-        return self::getConfigValue('path.storage', '') . $filename;
+        return getcwd() . '/' . self::getConfigValue('path.storage', '') . $filename;
     }
 }
