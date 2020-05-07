@@ -9,7 +9,7 @@
 
 {block "kozep"}
 <div id="mattable-select" data-theme="{$theme}">
-<div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Bizonylat státusz')}"></div>
+<div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Bérletek')}"></div>
 <div id="mattable-filterwrapper">
     <div>
     <label for="vevonevfilter">{at('Partner')}:</label>
