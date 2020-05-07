@@ -12,6 +12,7 @@ class mkwphpmailer {
     private $headers;
     private $replyto;
     private $attachment;
+    public $ErrorInfo;
 
     protected function clear() {
         $this->to = array();
@@ -149,8 +150,9 @@ class mkwphpmailer {
             }
         }
 
-            if ($this->mailer->getAllRecipientAddresses()) {
-                $this->mailer->send();
-            }
+        if ($this->mailer->getAllRecipientAddresses()) {
+            $this->mailer->send();
+            $this->ErrorInfo = $this->mailer->ErrorInfo;
+        }
     }
 }
