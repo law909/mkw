@@ -10,7 +10,7 @@
         "gedmo/doctrine-extensions": "2.4.*",
         "symfony/css-selector": "3.*",
         "symfony/dom-crawler": "3.*",
-        "phpmailer/phpmailer": "~6.0",
+        "phpmailer/phpmailer": "6.0.6",
 		"mikehaertl/phpwkhtmltopdf": "^2.3"
 	}
 }

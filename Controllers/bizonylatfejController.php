@@ -1048,10 +1048,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                     $pdf->setOptions(array('encoding' => 'UTF-8'));
                     if ($email && $emailtpl) {
                         $filepath = \mkw\store::storagePath(\mkw\store::urlize($id) . '.pdf');
-
-                        \mkw\store::writelog($filepath, 'sendpdf.log');
-                        \mkw\store::writelog($emailtpl->getHTMLSzoveg(), 'sendpdf.log');
-
                         $pdf->saveAs($filepath);
 
                         $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
@@ -1059,17 +1055,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                         $body->setVar('szamla', $o->toLista());
                         $body->setVar('megszolitas', $o->getPartner()->getSzamlalevelmegszolitas());
 
-                        \mkw\store::writelog('1 OK', 'sendpdf.log');
 
                         $mailer = \mkw\store::getMailer();
 
-                        //$mailer->setAttachment($filepath);
+                        $mailer->setAttachment($filepath);
                         $mailer->addTo($email);
                         $mailer->setSubject($subject->getTemplateResult());
                         $mailer->setMessage($body->getTemplateResult());
-
-                        \mkw\store::writelog(print_r($mailer, true), 'sendpdf.log');
-                        \mkw\store::writelog(getcwd(), 'sendpdf.log');
 
                         $mailer->send();
 
