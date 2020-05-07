@@ -45,6 +45,14 @@
                 <td><input id="PartnertelefonEdit" name="partnertelefon"></td>
             </tr>
             <tr>
+                <td><label for="BerletEdit">{at('Bérlet')}:</label></td>
+                <td>
+                    <select id="BerletEdit" name="jogaberlet" class="js-berletedit mattable-important" data-id="{$egyed.id}">
+                        <option value="">{at('válassz')}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <td><label for="TermekEdit" class="mattable-important" title="{at('Milyen bérlettel, órajeggyel vett részt?')}">{at('Bérlet, órajegy')}:</label></td>
                 <td>
                     <select id="TermekEdit" name="termek" class="js-termekedit mattable-important" data-id="{$egyed.id}">

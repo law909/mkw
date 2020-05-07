@@ -47,6 +47,14 @@
                         <td><input id="JRPartnertelefonEdit_{$egyed.id}" name="partnertelefon_{$egyed.id}"></td>
                     </tr>
                     <tr>
+                        <td><label for="JRBerletEdit_{$egyed.id}">{at('Bérlet')}:</label></td>
+                        <td>
+                            <select id="JRBerletEdit_{$egyed.id}" name="jogaberlet_{$egyed.id}" class="js-jrberletedit mattable-important" data-id="{$egyed.id}">
+                                <option value="">{at('válassz')}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td><label for="JRTermekEdit_{$egyed.id}" class="mattable-important" title="{at('Milyen bérlettel, órajeggyel vett részt?')}">{at('Bérlet, órajegy')}:</label></td>
                         <td>
                             <select id="JRTermekEdit_{$egyed.id}" name="termek_{$egyed.id}" class="js-jrtermekedit mattable-important" data-id="{$egyed.id}">

@@ -92,6 +92,12 @@ class JogaBerlet {
         return $this->getTermeknev();
     }
 
+    public function getFullNev() {
+        return $this->getNev() . '('
+            . $this->getVasarlasnapjaStr() . ', '
+            . ($this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom()) . ' alkalom, '
+            . $this->getLejaratdatumStr() . ')';
+    }
     public function getLastmod() {
         return $this->lastmod;
     }
@@ -372,4 +378,10 @@ class JogaBerlet {
         $this->nincsfizetve = $nincsfizetve;
     }
 
+    public function calcLejart($num = 0) {
+        $jrrepo = \mkw\store::getEm()->getRepository('Entities\JogaReszvetel');
+        $y = $jrrepo->getCountByBerlet($this->getId());
+        $this->setElfogyottalkalom($y + $num);
+        $this->setLejart($this->getAlkalom() <= $this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom());
+    }
 }

@@ -157,16 +157,28 @@ class jogaberletController extends \mkwhelpers\MattableController {
 
     public function getSelectList($selid = null, $partnerid = null) {
         $filter = new FilterDescriptor();
-        $filter->addFilter('lejart', '=', true);
+        $filter->addFilter('lejart', '=', false);
         if ($partnerid) {
             $filter->addFilter('partner', '=', $partnerid);
         }
         $rec = $this->getRepo()->getAll($filter, array('vasarlasnapja' => 'ASC'));
         $res = array();
+        /** @var \Entities\JogaBerlet $sor */
         foreach ($rec as $sor) {
-            $res[] = array('id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid));
+            $res[] = array(
+                'id' => $sor->getId(),
+                'caption' => $sor->getFullNev(),
+                'termekid' => $sor->getTermekId(),
+                'selected' => ($sor->getId() == $selid));
         }
         return $res;
+    }
+
+    public function getSelectHtml() {
+        $data = $this->getSelectList(null, $this->params->getIntRequestParam('partnerid'));
+        $view = $this->createView('jogareszvetelberletselect.tpl');
+        $view->setVar('berletlist', $data);
+        echo $view->getTemplateResult();
     }
 
 }

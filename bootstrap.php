@@ -108,6 +108,7 @@ $evm->addEventListener(array('onFlush', 'prePersist'), new Listeners\Penztarbizo
 $evm->addEventListener(array('onFlush'), new Listeners\BizonylattetelListener());
 $evm->addEventListener(array('prePersist'), new Listeners\KuponListener());
 $evm->addEventListener(array('prePersist'), new Listeners\RendezvenyListener());
+$evm->addEventListener(array('onFlush'), new Listeners\JogareszvetelListener());
 
 $em = \Doctrine\ORM\EntityManager::create($connectionOptions, $config, $evm);
 

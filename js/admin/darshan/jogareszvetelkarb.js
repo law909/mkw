@@ -5,6 +5,19 @@ $(document).ready(function() {
         newWindowUrl: '/admin/jogareszvetel/viewkarb',
         saveUrl: '/admin/jogareszvetel/save',
         beforeShow: function() {
+            $('.js-partneredit').on('change', function() {
+                var $this = $(this);
+                $.ajax({
+                    url: '/admin/jogareszvetel/getselect',
+                    data: {
+                        partnerid: $this.val()
+                    },
+                    type: 'GET',
+                    success: function(data) {
+                        $('.js-berletedit').innerHTML(data);
+                    }
+                });
+            });
         },
         beforeHide: function() {
         },

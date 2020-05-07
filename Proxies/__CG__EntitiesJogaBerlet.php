@@ -205,6 +205,17 @@ class JogaBerlet extends \Entities\JogaBerlet implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
+    public function getFullNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFullNev', []);
+
+        return parent::getFullNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getLastmod()
     {
 
@@ -629,6 +640,17 @@ class JogaBerlet extends \Entities\JogaBerlet implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNincsfizetve', [$nincsfizetve]);
 
         return parent::setNincsfizetve($nincsfizetve);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function calcLejart($num = 0)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcLejart', [$num]);
+
+        return parent::calcLejart($num);
     }
 
 }

@@ -56,6 +56,9 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         $x['bruttoegysar'] = $t->getBruttoegysar();
         $x['jutalek'] = $t->getJutalek();
 
+        $x['jogaberlet'] = $t->getJogaberletId();
+        $x['jogaberletnev'] = $t->getJogaberlet() ? $t->getJogaberlet()->getFullNev() : '';
+
         if ($forKarb) {
             $fizmod = new fizmodController($this->params);
             $x['fizmodlist'] = $fizmod->getSelectList();
@@ -145,6 +148,13 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         $ck = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek', 0));
         if ($ck) {
             $obj->setTermek($ck);
+        }
+        $ck = \mkw\store::getEm()->getRepository('Entities\JogaBerlet')->find($this->params->getIntRequestParam('jogaberlet', 0));
+        if ($ck) {
+            $obj->setJogaberlet($ck);
+        }
+        else {
+            $obj->removeJogaberlet();
         }
         return $obj;
     }
@@ -346,6 +356,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                 /** @var \Entities\Fizmod $fizmod */
                 $fizmod = $this->getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod_' . $jrid, 0));
                 $penztar = $this->getEm()->getRepository('Entities\Penztar')->find($this->params->getIntRequestParam('penztar_' . $jrid, 0));
+                $berlet = $this->getEm()->getRepository('Entities\JogaBerlet')->find($this->params->getIntRequestParam('jogaberlet_' . $jrid, 0));
                 if (
                     (!$uresterem && $termek && ($this->params->getNumRequestParam('ar_' . $jrid, 0) !== 0)) ||
                     $uresterem
@@ -422,6 +433,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                         $jr->setDatum($this->params->getStringRequestParam('datum'));
                         $jr->setFizmod($fizmod);
                         $jr->setPenztar($penztar);
+                        $jr->setJogaberlet($berlet);
                         $jr->calcJutalek();
                         $this->getEm()->persist($jr);
                         $this->getEm()->flush();
@@ -516,4 +528,13 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
             echo json_encode(array('result' => 'error', 'msg' => at('Nem adott meg minden adatot!')));
         }
     }
+
+    protected function beforeRemove($o) {
+        /** @var \Entities\JogaBerlet $berlet */
+        $berlet = $o->getJogaberlet();
+        if ($berlet) {
+            $berlet->calcLejart(-1);
+        }
+    }
+
 }

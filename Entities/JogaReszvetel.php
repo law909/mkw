@@ -117,6 +117,13 @@ class JogaReszvetel {
     /** @ORM\Column(type="boolean",nullable=true) */
     private $uresterem = false;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="JogaBerlet",inversedBy="reszvetelek")
+     * @ORM\JoinColumn(name="jogaberlet_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\JogaBerlet
+     */
+    private $jogaberlet;
+
     public function getId() {
         return $this->id;
     }
@@ -580,4 +587,36 @@ class JogaReszvetel {
             }
         }
     }
+
+    public function getJogaberlet() {
+        return $this->jogaberlet;
+    }
+
+    public function getJogaberletId() {
+        if ($this->jogaberlet) {
+            return $this->jogaberlet->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\JogaBerlet $val
+     */
+    public function setJogaberlet($val) {
+        if ($this->jogaberlet !== $val) {
+            if (!$val) {
+                $this->removeJogaberlet();
+            }
+            else {
+                $this->jogaberlet = $val;
+            }
+        }
+    }
+
+    public function removeJogaberlet() {
+        if ($this->jogaberlet !== null) {
+            $this->jogaberlet = null;
+        }
+    }
+
 }

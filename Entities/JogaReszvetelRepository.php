@@ -70,4 +70,17 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository {
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getResult();
     }
+
+    public function getCountByBerlet($berletid) {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        if ($berletid) {
+            $filter->addFilter('jogaberlet', '=', $berletid);
+        }
+        $q = $this->_em->createQuery('SELECT COUNT(_xx)'
+            . ' FROM Entities\JogaReszvetel _xx'
+            . $this->getFilterString($filter)
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getSingleScalarResult();
+    }
 }

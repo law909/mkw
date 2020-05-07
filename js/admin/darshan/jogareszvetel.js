@@ -19,6 +19,19 @@ function jogareszvetel() {
         });
     }
 
+    function loadBerletSelect(fid, partnerid) {
+        $.ajax({
+            url: '/admin/jogaberlet/getselect',
+            data: {
+                partnerid: partnerid
+            },
+            type: 'GET',
+            success: function(data) {
+                $('select[name="jogaberlet_' + fid + '"]').html(data);
+            }
+        });
+    }
+
     function setPartnerData(d, fid) {
         $('input[name="partnervezeteknev_' + fid + '"]', form).val(d.vezeteknev);
         $('input[name="partnerkeresztnev_' + fid + '"]', form).val(d.keresztnev);
@@ -137,6 +150,7 @@ function jogareszvetel() {
             .on('change', '.js-jrpartneredit', function(e) {
                 var pe = $(this);
                 if (pe.val() > 0) {
+                    loadBerletSelect(pe.data('id'), pe.val());
                     $.ajax({
                         url: '/admin/partner/getdata',
                         type: 'GET',
@@ -146,10 +160,14 @@ function jogareszvetel() {
                         success: function(data) {
                             var d = JSON.parse(data);
                             setPartnerData(d, pe.data('id'));
-                            $('#JRTermekEdit_' + pe.data('id')).focus();
+                            $('#JRBerletEdit_' + pe.data('id')).focus();
                         }
                     });
                 }
+            })
+            .on('change', '.js-jrberletedit', function(e) {
+                var termekid = $('option:selected', this).data('termekid');
+                $('select[name="termek_' + $(this).data('id') + '"] option[value="' + termekid + '"]').attr('selected', 'selected').change();
             })
             .on('change', '.js-jrtermekedit', function(e) {
                 setTermekAr($(this).data('id'));
