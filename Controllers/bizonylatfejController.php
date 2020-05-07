@@ -1068,13 +1068,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                         $mailer->setSubject($subject->getTemplateResult());
                         $mailer->setMessage($body->getTemplateResult());
 
-                        \mkw\store::writelog('2 OK', 'sendpdf.log');
+                        \mkw\store::writelog(print_r($mailer, true), 'sendpdf.log');
 
                         $mailer->send();
 
-                        \mkw\store::writelog('3 OK', 'sendpdf.log');
-
-                        // \unlink($filepath);
+                        \unlink($filepath);
                     }
                 }
             }
