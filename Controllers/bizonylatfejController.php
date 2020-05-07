@@ -1063,7 +1063,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
                         $mailer = \mkw\store::getMailer();
 
-                        $mailer->setAttachment($filepath);
+                        //$mailer->setAttachment($filepath);
                         $mailer->addTo($email);
                         $mailer->setSubject($subject->getTemplateResult());
                         $mailer->setMessage($body->getTemplateResult());
