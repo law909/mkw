@@ -101,7 +101,7 @@ class store {
     }
 
     public static function writelog($text, $fname = 'log.txt') {
-        $handle = fopen(self::storagePath($fname), "a");
+        $handle = fopen(self::storagePath('logs/' . $fname), "a");
         $log = "";
         $separator = " ## ";
         $log .= date('Y.m.d. H:i:s') . $separator;
