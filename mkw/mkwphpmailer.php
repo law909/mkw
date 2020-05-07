@@ -112,7 +112,9 @@ class mkwphpmailer {
         $this->mailer->setFrom($fromdata[0], $fromdata[1]);
 
         if (!$this->replyto) {
-            $this->mailer->addReplyTo(\mkw\store::getParameter(\mkw\consts::EmailReplyTo));
+            $replyto = \mkw\store::getParameter(\mkw\consts::EmailReplyTo);
+            $replytodata = explode(';', $replyto);
+            $this->mailer->addReplyTo($replytodata[0], $replytodata[1]);
         }
         else {
             $this->mailer->addReplyTo($this->replyto);
