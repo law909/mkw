@@ -4,6 +4,8 @@ namespace Controllers;
 
 
 use mkwhelpers\FilterDescriptor;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class bizonylattetellistaController extends \mkwhelpers\Controller {
 
@@ -223,7 +225,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
             return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
         }
 
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
 
         switch ($csoportositas) {
             case 1:
@@ -332,7 +334,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller {
                 break;
 
         }
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('bizonylattetel') . '.xlsx');
         $writer->save($filepath);

@@ -3,6 +3,9 @@
 namespace Controllers;
 
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
 class termekforgalmilistaController extends \mkwhelpers\Controller {
 
     public function view() {
@@ -109,7 +112,7 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
             return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
         }
 
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', t('Cikkszám'))
             ->setCellValue('B1', t('Név'))
@@ -144,7 +147,7 @@ class termekforgalmilistaController extends \mkwhelpers\Controller {
                 ->setCellValue('L' . $sor, $item['zaroertek']);
             $sor++;
         }
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('termekforgalmi') . '.xlsx');
         $writer->save($filepath);

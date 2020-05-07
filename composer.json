@@ -4,13 +4,13 @@
 		"zendframework/zendframework1": "1.*",
 		"smarty/smarty": "3.*",
 		"ezyang/htmlpurifier": "v4.5.0",
-        "phpoffice/phpexcel": "1.*",
         "myclabs/deep-copy": "1.*",
         "doctrine/orm": "2.6.*",
         "gedmo/doctrine-extensions": "2.4.*",
         "symfony/css-selector": "3.*",
         "symfony/dom-crawler": "3.*",
         "phpmailer/phpmailer": "6.*",
-		"mikehaertl/phpwkhtmltopdf": "^2.3"
+		"mikehaertl/phpwkhtmltopdf": "^2.3",
+		"phpoffice/phpspreadsheet": "^1.12"
 	}
 }

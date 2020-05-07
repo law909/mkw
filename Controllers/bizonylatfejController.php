@@ -2,9 +2,10 @@
 
 namespace Controllers;
 
-use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 use mikehaertl\wkhtmlto\Pdf;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class bizonylatfejController extends \mkwhelpers\MattableController {
 
@@ -1284,7 +1285,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
         $fejek = $this->getRepo()->getWithJoins($filter, array());
         $o = 0;
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
         if ($this->biztipus === 'megrendeles') {
             $excel->setActiveSheetIndex(0)->setCellValue(x($o++, 1), 'Státusz');
         }
@@ -1344,7 +1345,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 $sor++;
             }
         }
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('bizonylatfej') . '.xlsx');
         $writer->save($filepath);
@@ -1382,7 +1383,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         }
 
         $o = 0;
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
         if ($this->biztipus === 'megrendeles') {
             $excel->setActiveSheetIndex(0)->setCellValue(x($o++, 1), 'Státusz');
         }
@@ -1477,7 +1478,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 }
             }
         }
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('bizonylattetel') . '.xlsx');
         $writer->save($filepath);

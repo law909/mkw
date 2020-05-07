@@ -2,6 +2,9 @@
 
 namespace Controllers;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
 class emagController extends \mkwhelpers\Controller {
 
     protected function calcHash($data) {
@@ -95,7 +98,7 @@ class emagController extends \mkwhelpers\Controller {
         function x($o) {
             return \mkw\store::getExcelCoordinate($o, '');
         }
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', 'Id')
             ->setCellValue('B1', 'Parent Id')
@@ -113,7 +116,7 @@ class emagController extends \mkwhelpers\Controller {
 
             $sor++;
         }
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('emag_categories_') . '.xlsx');
         $writer->save($filepath);

@@ -4,6 +4,8 @@ namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
 use mkwhelpers\FilterDescriptor;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class leltarfejController extends \mkwhelpers\MattableController {
 
@@ -285,7 +287,7 @@ class leltarfejController extends \mkwhelpers\MattableController {
             return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
         }
 
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', t('Termék ID'))
             ->setCellValue('B1', t('Változat ID'))
@@ -312,7 +314,7 @@ class leltarfejController extends \mkwhelpers\MattableController {
             $sor++;
         }
 
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('leltar-' . \mkw\store::urlize($this->raktarnev)) . '.xlsx');
         $writer->save($filepath);
@@ -339,8 +341,8 @@ class leltarfejController extends \mkwhelpers\MattableController {
                 $filenev = $_FILES['toimport']['name'];
                 move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
 
-                $filetype = \PHPExcel_IOFactory::identify($filenev);
-                $reader = \PHPExcel_IOFactory::createReader($filetype);
+                $filetype = IOFactory::identify($filenev);
+                $reader = IOFactory::createReader($filetype);
                 $reader->setReadDataOnly(true);
                 $excel = $reader->load($filenev);
                 $sheet = $excel->getActiveSheet();

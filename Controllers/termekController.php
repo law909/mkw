@@ -6,6 +6,8 @@ use Entities\TermekValtozat,
 	Entities\TermekRecept;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class termekController extends \mkwhelpers\MattableController {
 
@@ -1416,7 +1418,7 @@ class termekController extends \mkwhelpers\MattableController {
         $arsavok = $this->getRepo('Entities\TermekAr')->getExistingArsavok();
         $defavaluta = \mkw\store::getParameter(\mkw\consts::Valutanem);
 
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', 'kod');
         $oszlop = 3;
@@ -1459,7 +1461,7 @@ class termekController extends \mkwhelpers\MattableController {
             $sor++;
         }
 
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('termekarak') . '.xlsx');
         $writer->save($filepath);

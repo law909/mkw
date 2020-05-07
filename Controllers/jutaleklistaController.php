@@ -3,6 +3,9 @@
 namespace Controllers;
 
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
 class jutaleklistaController extends \mkwhelpers\MattableController {
 
     private $tolstr;
@@ -223,7 +226,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
 
         $this->updateDB();
 
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', 'Payment Due')
             ->setCellValue('B1', 'Date of income')
@@ -261,7 +264,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController {
             $sor++;
         }
 
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('comission') . '.xlsx');
         $writer->save($filepath);

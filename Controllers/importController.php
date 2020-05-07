@@ -2,7 +2,8 @@
 
 namespace Controllers;
 
-use Entities\TermekRecept;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Component\DomCrawler\Crawler;
 
 class importController extends \mkwhelpers\Controller {
@@ -2966,8 +2967,8 @@ class importController extends \mkwhelpers\Controller {
             move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
             //pathinfo
 
-            $filetype = \PHPExcel_IOFactory::identify($filenev);
-            $reader = \PHPExcel_IOFactory::createReader($filetype);
+            $filetype = IOFactory::identify($filenev);
+            $reader = IOFactory::createReader($filetype);
             $reader->setReadDataOnly(true);
             $excel = $reader->load($filenev);
             $sheet = $excel->getActiveSheet();
@@ -2976,7 +2977,7 @@ class importController extends \mkwhelpers\Controller {
                 $dbig = $maxrow;
             }
             $maxcol = $sheet->getHighestColumn();
-            $maxcolindex = \PHPExcel_Cell::columnIndexFromString($maxcol);
+            $maxcolindex = Coordinate::columnIndexFromString($maxcol);
 
             $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
             $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
@@ -3137,8 +3138,8 @@ class importController extends \mkwhelpers\Controller {
             move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
             //pathinfo
 
-            $filetype = \PHPExcel_IOFactory::identify($filenev);
-            $reader = \PHPExcel_IOFactory::createReader($filetype);
+            $filetype = IOFactory::identify($filenev);
+            $reader = IOFactory::createReader($filetype);
             $reader->setReadDataOnly(true);
             $excel = $reader->load($filenev);
             $sheet = $excel->getActiveSheet();
@@ -3419,8 +3420,8 @@ class importController extends \mkwhelpers\Controller {
             move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
             //pathinfo
 
-            $filetype = \PHPExcel_IOFactory::identify($filenev);
-            $reader = \PHPExcel_IOFactory::createReader($filetype);
+            $filetype = IOFactory::identify($filenev);
+            $reader = IOFactory::createReader($filetype);
             $reader->setReadDataOnly(true);
             $excel = $reader->load($filenev);
             $sheet = $excel->getActiveSheet();
@@ -3496,8 +3497,8 @@ class importController extends \mkwhelpers\Controller {
             move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
             //pathinfo
 
-            $filetype = \PHPExcel_IOFactory::identify($filenev);
-            $reader = \PHPExcel_IOFactory::createReader($filetype);
+            $filetype = IOFactory::identify($filenev);
+            $reader = IOFactory::createReader($filetype);
             $reader->setReadDataOnly(true);
             $excel = $reader->load($filenev);
             $sheet = $excel->getActiveSheet();
@@ -4020,8 +4021,8 @@ class importController extends \mkwhelpers\Controller {
         move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
         //pathinfo
 
-        $filetype = \PHPExcel_IOFactory::identify($filenev);
-        $reader = \PHPExcel_IOFactory::createReader($filetype);
+        $filetype = IOFactory::identify($filenev);
+        $reader = IOFactory::createReader($filetype);
         $reader->setReadDataOnly(true);
         $excel = $reader->load($filenev);
         $sheet = $excel->getActiveSheet();
@@ -4030,7 +4031,7 @@ class importController extends \mkwhelpers\Controller {
             $dbig = $maxrow;
         }
         $maxcol = $sheet->getHighestColumn();
-        $maxcolindex = \PHPExcel_Cell::columnIndexFromString($maxcol);
+        $maxcolindex = Coordinate::columnIndexFromString($maxcol);
 
         $afa = \mkw\store::getEm()->getRepository('Entities\Afa')->findByErtek(27);
         $afa = $afa[0];
@@ -4786,8 +4787,8 @@ class importController extends \mkwhelpers\Controller {
             move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
             //pathinfo
 
-            $filetype = \PHPExcel_IOFactory::identify($filenev);
-            $reader = \PHPExcel_IOFactory::createReader($filetype);
+            $filetype = IOFactory::identify($filenev);
+            $reader = IOFactory::createReader($filetype);
             $reader->setReadDataOnly(true);
             $excel = $reader->load($filenev);
             $sheet = $excel->getActiveSheet();

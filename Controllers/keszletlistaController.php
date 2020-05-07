@@ -4,6 +4,8 @@ namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
 use mkwhelpers\FilterDescriptor;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class keszletlistaController extends \mkwhelpers\MattableController {
 
@@ -211,7 +213,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
             return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
         }
 
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', t('Cikkszám'))
             ->setCellValue('B1', t('Termék'))
@@ -232,7 +234,7 @@ class keszletlistaController extends \mkwhelpers\MattableController {
             $sor++;
         }
 
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('keszlet') . '.xlsx');
         $writer->save($filepath);

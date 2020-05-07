@@ -3,6 +3,10 @@
 namespace Controllers;
 
 use mkwhelpers\FilterDescriptor;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class tanarelszamolasController extends \mkwhelpers\Controller {
 
@@ -74,7 +78,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
 
         $adat = $this->getRepo('Entities\JogaReszvetel')->getWithJoins($filter, arraY('datum' => 'ASC'));
 
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
 
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', t('Dátum'))
@@ -109,7 +113,43 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
             ->setCellValue('D' . $sor, 'Járulék levonás')
             ->setCellValue('E' . $sor, $tanar->getHavilevonas() * -1 * $hokulonbseg);
 
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $sor++;
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue('A' . $sor, 'Összesen')
+            ->setCellValue('E' . $sor, '=SUM(E2:E' . ($sor - 1) . ')');
+
+        $excel->getActiveSheet()->getStyle('E1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+        $excel->getActiveSheet()->getStyle('A1:E1')->applyFromArray(
+            [
+                'font' => [
+                    'bold' => true,
+                ],
+                'borders' => [
+                    'bottom' => [
+                        'borderStyle' => Border::BORDER_THIN,
+                    ],
+                ],
+            ]
+        );
+        $excel->getActiveSheet()->getStyle('A' . $sor . ':E' . $sor)->applyFromArray(
+            [
+                'font' => [
+                    'bold' => true,
+                ],
+                'borders' => [
+                    'top' => [
+                        'borderStyle' => Border::BORDER_THIN,
+                    ],
+                ],
+            ]
+        );
+        $excel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $excel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $excel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath($tanarnev . ' ' . $tolstr . '-' . $igstr . '.xlsx');
         $writer->save($filepath);
@@ -155,7 +195,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
             return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
         }
 
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
 
         $res = $this->getData();
         $mind = $res['tetelek'];
@@ -181,7 +221,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
             $sor++;
         }
 
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('tanarelszamolas') . '.xlsx');
         $writer->save($filepath);

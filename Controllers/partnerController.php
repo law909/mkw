@@ -2,6 +2,9 @@
 
 namespace Controllers;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
 class partnerController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -1448,7 +1451,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $partnerek = $this->getRepo()->getAll($filter, array('keresztnev' => 'ASC', 'vezeteknev' => 'ASC'));
 
         $o = 0;
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
             ->setCellValue(x($o++, 1), 'First name')
             ->setCellValue(x($o++, 1), 'Last name')
@@ -1502,7 +1505,7 @@ class partnerController extends \mkwhelpers\MattableController {
                 $sor++;
             }
         }
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         switch ($country) {
             case 'in':
@@ -1543,7 +1546,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $partnerek = $this->getRepo()->getAll($filter, array('vezeteknev' => 'ASC', 'keresztnev' => 'ASC'));
 
         $o = 0;
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
             ->setCellValue(x($o++, 1), 'Vezetéknév')
             ->setCellValue(x($o++, 1), 'Keresztnév')
@@ -1569,7 +1572,7 @@ class partnerController extends \mkwhelpers\MattableController {
                 $sor++;
             }
         }
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('partnermegjegyzes') . '.xlsx');
         $writer->save($filepath);
@@ -1664,7 +1667,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $partnerek = $this->getRepo()->getAll($filter, array('vezeteknev' => 'ASC', 'keresztnev' => 'ASC'));
 
         $o = 0;
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
             ->setCellValue(x($o++, 1), 'Vezetéknév')
             ->setCellValue(x($o++, 1), 'Keresztnév')
@@ -1690,7 +1693,7 @@ class partnerController extends \mkwhelpers\MattableController {
                 $sor++;
             }
         }
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('partnerhirlevel') . '.xlsx');
         $writer->save($filepath);

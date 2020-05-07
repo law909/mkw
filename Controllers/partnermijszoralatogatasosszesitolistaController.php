@@ -3,6 +3,9 @@
 namespace Controllers;
 
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
 class partnermijszoralatogatasosszesitolistaController extends \mkwhelpers\Controller {
 
     public function view() {
@@ -42,7 +45,7 @@ class partnermijszoralatogatasosszesitolistaController extends \mkwhelpers\Contr
             return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
         }
 
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', t('Tag neve'))
             ->setCellValue('B1', t('Email'))
@@ -67,7 +70,7 @@ class partnermijszoralatogatasosszesitolistaController extends \mkwhelpers\Contr
                 ->setCellValue('G' . $sor, $item['oraszam']);
             $sor++;
         }
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('oralatogatasosszesito') . '.xlsx');
         $writer->save($filepath);

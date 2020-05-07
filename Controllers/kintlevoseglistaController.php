@@ -5,6 +5,8 @@ namespace Controllers;
 use Doctrine\ORM\Query\ResultSetMapping;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class kintlevoseglistaController extends \mkwhelpers\MattableController {
 
@@ -407,7 +409,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
         }
 
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', t('Partner'))
             ->setCellValue('B1', t('Partner cím'))
@@ -446,7 +448,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController {
             $sor++;
         }
 
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('kintlevoseg') . '.xlsx');
         $writer->save($filepath);

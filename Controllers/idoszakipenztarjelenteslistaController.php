@@ -3,6 +3,9 @@
 namespace Controllers;
 
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
 class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableController {
 
     private $tolstr;
@@ -118,7 +121,7 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
             return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
         }
 
-        $excel = new \PHPExcel();
+        $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', 'Dátum')
             ->setCellValue('B1', 'Bizonylatszám')
@@ -174,7 +177,7 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
             $sor++;
         }
 
-        $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
 
         $filepath = \mkw\store::storagePath(uniqid('idoszakipenztarjelentes') . '.xlsx');
         $writer->save($filepath);
