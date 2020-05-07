@@ -154,6 +154,9 @@ class mkwphpmailer {
 
         if ($this->mailer->getAllRecipientAddresses()) {
             $this->mailer->send();
+            if ($this->mailer->ErrorInfo) {
+                error_log($this->mailer->ErrorInfo);
+            }
             $this->ErrorInfo = $this->mailer->ErrorInfo;
         }
     }
