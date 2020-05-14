@@ -30,7 +30,7 @@
             <tr>
                 <td><label for="TermekEdit" class="mattable-important">{at('Bérlet')}:</label></td>
                 <td>
-                    <select id="TermekEdit" name="termek" class="mattable-important" required="required">
+                    <select id="TermekEdit" name="termek" class="js-termekedit mattable-important" required="required">
                         <option value="">{at('válassz')}</option>
                         {foreach $termeklist as $_mk}
                             <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
@@ -38,7 +38,11 @@
                     </select>
                 </td>
             </tr>
-			<tr>
+            <tr>
+                <td><label for="ArEdit" class="mattable-important">{at('Ár')}:</label></td>
+                <td><input id="ArEdit" name="bruttoar" type="number" step="any" class="mattable-important" value="{$egyed.bruttoar}"></td>
+            </tr>
+            <tr>
 				<td><label for="VasarlasDatumEdit">{at('Vásárlás dátuma')}:</label></td>
                 <td><input id="VasarlasDatumEdit" name="vasarlasnapja" type="text" size="12" data-datum="{$egyed.vasarlasnapja}" class="mattable-important"></td>
 			</tr>

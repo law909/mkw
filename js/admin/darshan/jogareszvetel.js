@@ -61,6 +61,25 @@ function jogareszvetel() {
         });
     }
 
+    function setBerletAr(fid) {
+        var partner = $('select[name="partner_' + fid + '"] option:selected', form).val();
+
+        $.ajax({
+            async: false,
+            url: '/admin/jogaberlet/getar',
+            data: {
+                partner: partner,
+                berlet: $('select[name="jogaberlet_' + fid + '"] option:selected', form).val()
+            },
+            success: function(data) {
+                var inp = $('input[name="ar_' + fid + '"]', form),
+                    adat = JSON.parse(data);
+                inp.val(adat.brutto);
+                inp.change();
+            }
+        });
+    }
+
     function clearForm() {
         mkwcomp.datumEdit.clear('#JRDatumEdit');
         $('.js-reszveteltable').remove();
@@ -167,7 +186,8 @@ function jogareszvetel() {
             })
             .on('change', '.js-jrberletedit', function(e) {
                 var termekid = $('option:selected', this).data('termekid');
-                $('select[name="termek_' + $(this).data('id') + '"] option[value="' + termekid + '"]').attr('selected', 'selected').change();
+                $('select[name="termek_' + $(this).data('id') + '"] option[value="' + termekid + '"]').attr('selected', 'selected');
+                setBerletAr($(this).data('id'));
             })
             .on('change', '.js-jrtermekedit', function(e) {
                 setTermekAr($(this).data('id'));

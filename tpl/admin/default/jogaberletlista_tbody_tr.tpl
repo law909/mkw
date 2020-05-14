@@ -9,6 +9,7 @@
     <td class="cell">
         {$_egyed.termeknev} ({$_egyed.elfogyottalkalom + $_egyed.offlineelfogyottalkalom} alkalom lejárva)
     </td>
+    <td class="cell">{$_egyed.bruttoar}</td>
     <td class="cell">{$_egyed.vasarlasnapja}</td>
     <td class="cell">{$_egyed.lejaratdatum}</td>
     <td class="cell">{if ($_egyed.lejart)}LEJÁRT{/if}</td>

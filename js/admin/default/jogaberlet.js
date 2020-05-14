@@ -56,6 +56,25 @@ $(document).ready(function(){
         };
     }
 
+    function setTermekAr(fid) {
+        var partner = $('select[name="partner"] option:selected').val();
+
+        $.ajax({
+            async: false,
+            url: '/admin/jogareszvetel/getar',
+            data: {
+                partner: partner,
+                termek: $('select[name="termek"] option:selected').val()
+            },
+            success: function(data) {
+                var inp = $('input[name="bruttoar"]'),
+                    adat = JSON.parse(data);
+                inp.val(adat.bruttofull);
+                inp.change();
+            }
+        });
+    }
+
     var mattkarbconfig={
 			container:'#mattkarb',
 			viewUrl:'/admin/jogaberlet/getkarb',
@@ -65,6 +84,9 @@ $(document).ready(function(){
                 $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
                     .autocomplete( "instance" )._renderItem = partnerAutocompleteRenderer;
                 mkwcomp.datumEdit.init('#VasarlasDatumEdit');
+            $('#mattkarb-form').on('change', '.js-termekedit', function(e) {
+                    setTermekAr($(this).data('id'));
+                })
             },
 			onSubmit:function() {
 				$('#messagecenter')

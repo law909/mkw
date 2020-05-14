@@ -32,6 +32,7 @@ class jogaberletController extends \mkwhelpers\MattableController {
         $x['elfogyottalkalom'] = $t->getElfogyottalkalom();
         $x['offlineelfogyottalkalom'] = $t->getOfflineelfogyottalkalom();
         $x['nincsfizetve'] = $t->isNincsfizetve();
+        $x['bruttoar'] = $t->getBruttoegysar();
         return $x;
     }
 
@@ -55,6 +56,7 @@ class jogaberletController extends \mkwhelpers\MattableController {
         $obj->setElfogyottalkalom($this->params->getIntRequestParam('elfogyottalkalom'));
         $obj->setOfflineelfogyottalkalom($this->params->getIntRequestParam('offlineelfogyottalkalom'));
         $obj->setNincsfizetve($this->params->getBoolRequestParam('nincsfizetve', false));
+        $obj->setBruttoegysar($this->params->getNumRequestParam('bruttoar'));
         return $obj;
     }
 
@@ -179,6 +181,116 @@ class jogaberletController extends \mkwhelpers\MattableController {
         $view = $this->createView('jogareszvetelberletselect.tpl');
         $view->setVar('berletlist', $data);
         echo $view->getTemplateResult();
+    }
+
+    public function getar() {
+        // Nincsenek ársávok
+        if (!\mkw\store::isArsavok()) {
+            /** @var \Entities\JogaBerlet $berlet */
+            $berlet = $this->getEm()->getRepository('Entities\JogaBerlet')->find($this->params->getIntRequestParam('berlet'));
+            if ($berlet) {
+                $termek = $berlet->getTermek();
+                if ($termek) {
+                    $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
+                    $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+                    $valtozat = null;
+                    if ($this->params->getIntRequestParam('valtozat')) {
+                        $valtozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('valtozat'));
+                    }
+                    $o = $termek->getJogaalkalom();
+                    if (!$o) {
+                        $o = 1;
+                    }
+                    if ($berlet->getBruttoegysar()) {
+                        $r = array(
+                            'netto' => $berlet->getNettoegysar() / $o,
+                            'brutto' => $berlet->getBruttoegysar() / $o,
+                            'nettofull' => $berlet->getNettoegysar(),
+                            'bruttofull' => $berlet->getBruttoegysar(),
+                            'kedvezmeny' => $termek->getKedvezmeny($partner) / $o,
+                            'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem) / $o,
+                            'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem) / $o
+                        );
+                        echo json_encode($r);
+                    }
+                    else {
+                        if ($termek) {
+                            $o = $termek->getJogaalkalom();
+                            if (!$o) {
+                                $o = 1;
+                            }
+                            $r = array(
+                                'netto' => $termek->getNettoAr($valtozat) / $o,
+                                'brutto' => $termek->getBruttoAr($valtozat) / $o,
+                                'nettofull' => $termek->getNettoAr($valtozat),
+                                'bruttofull' => $termek->getBruttoAr($valtozat),
+                                'kedvezmeny' => $termek->getKedvezmeny($partner) / $o,
+                                'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem) / $o,
+                                'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem) / $o
+                            );
+                            echo json_encode($r);
+                        }
+                    }
+                }
+            }
+        }
+        // Vannak ársávok
+        else {
+            $arsavnev = 'folyamatos';
+            /** @var \Entities\JogaBerlet $berlet */
+            $berlet = $this->getEm()->getRepository('Entities\JogaBerlet')->find($this->params->getIntRequestParam('berlet'));
+            if ($berlet) {
+                /** @var \Entities\Termek $termek */
+                $termek = $berlet->getTermek();
+                if ($termek) {
+                    $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
+                    $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+                    $valtozat = null;
+                    if ($this->params->getIntRequestParam('valtozat')) {
+                        $valtozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('valtozat'));
+                    }
+                    $o = $termek->getJogaalkalom();
+                    if (!$o) {
+                        $o = 1;
+                    }
+                    if ($berlet->getBruttoegysar()) {
+                        $r = array(
+                            'netto' => $berlet->getNettoegysar() / $o,
+                            'brutto' => $berlet->getBruttoegysar() / $o,
+                            'nettofull' => $berlet->getNettoegysar(),
+                            'bruttofull' => $berlet->getBruttoegysar(),
+                            'kedvezmeny' => $termek->getKedvezmeny($partner) / $o,
+                            'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem) / $o,
+                            'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem) / $o
+                        );
+                        echo json_encode($r);
+                    }
+                    else {
+                        $r = array(
+                            'netto' => $termek->getNettoAr($valtozat, $partner, $valutanem, $arsavnev) / $o,
+                            'brutto' => $termek->getBruttoAr($valtozat, $partner, $valutanem, $arsavnev) / $o,
+                            'nettofull' => $termek->getNettoAr($valtozat, $partner, $valutanem, $arsavnev),
+                            'bruttofull' => $termek->getBruttoAr($valtozat, $partner, $valutanem, $arsavnev),
+                            'kedvezmeny' => $termek->getKedvezmeny($partner) / $o,
+                            'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem, $arsavnev) / $o,
+                            'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem, $arsavnev) / $o
+                        );
+                        echo json_encode($r);
+                    }
+                }
+            }
+        }
+        if (!$r) {
+            echo json_encode(array(
+                'netto' => 0,
+                'brutto' => 0,
+                'nettofull' => 0,
+                'bruttofull' => 0,
+                'kedvezmeny' => 0,
+                'enetto' => 0,
+                'ebrutto' => 0
+            ));
+        }
     }
 
 }

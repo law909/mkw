@@ -77,6 +77,7 @@
         <th><input id="maincheckbox" type="checkbox"></th>
         <th>{at('Partner')}</th>
         <th>{at('Termék')}</th>
+        <th>{at('Ár')}</th>
         <th>{at('Vásárlás dátuma')}</th>
         <th>{at('Lejárat dátuma')}</th>
         <th></th>

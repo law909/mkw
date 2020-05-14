@@ -81,6 +81,12 @@ class JogaBerlet {
     /** @ORM\Column(type="boolean") */
     private $nincsfizetve = false;
 
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $nettoegysar;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $bruttoegysar;
+
     /**
      * @return mixed
      */
@@ -383,5 +389,33 @@ class JogaBerlet {
         $y = $jrrepo->getCountByBerlet($this->getId());
         $this->setElfogyottalkalom($y + $num);
         $this->setLejart($this->getAlkalom() <= $this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom());
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNettoegysar() {
+        return $this->nettoegysar;
+    }
+
+    /**
+     * @param mixed $nettoegysar
+     */
+    public function setNettoegysar($nettoegysar) {
+        $this->nettoegysar = $nettoegysar;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBruttoegysar() {
+        return $this->bruttoegysar;
+    }
+
+    /**
+     * @param mixed $bruttoegysar
+     */
+    public function setBruttoegysar($bruttoegysar) {
+        $this->bruttoegysar = $bruttoegysar;
     }
 }

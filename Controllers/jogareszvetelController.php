@@ -291,6 +291,8 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                 $r = array(
                     'netto' => $termek->getNettoAr($valtozat) / $o,
                     'brutto' => $termek->getBruttoAr($valtozat) / $o,
+                    'nettofull' => $termek->getNettoAr($valtozat),
+                    'bruttofull' => $termek->getBruttoAr($valtozat),
                     'kedvezmeny' => $termek->getKedvezmeny($partner) / $o,
                     'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem) / $o,
                     'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem) / $o
@@ -301,6 +303,8 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                 echo json_encode(array(
                     'netto' => 0,
                     'brutto' => 0,
+                    'nettofull' => 0,
+                    'bruttofull' => 0,
                     'kedvezmeny' => 0,
                     'enetto' => 0,
                     'ebrutto' => 0
@@ -326,6 +330,8 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                 $r = array(
                     'netto' => $termek->getNettoAr($valtozat, $partner, $valutanem, $arsavnev) / $o,
                     'brutto' => $termek->getBruttoAr($valtozat, $partner, $valutanem, $arsavnev) / $o,
+                    'nettofull' => $termek->getNettoAr($valtozat, $partner, $valutanem, $arsavnev),
+                    'bruttofull' => $termek->getBruttoAr($valtozat, $partner, $valutanem, $arsavnev),
                     'kedvezmeny' => $termek->getKedvezmeny($partner) / $o,
                     'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem, $arsavnev) / $o,
                     'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem, $arsavnev) / $o
@@ -336,6 +342,8 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                 echo json_encode(array(
                     'netto' => 0,
                     'brutto' => 0,
+                    'nettofull' => 0,
+                    'bruttofull' => 0,
                     'kedvezmeny' => 0,
                     'enetto' => 0,
                     'ebrutto' => 0

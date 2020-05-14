@@ -66,10 +66,10 @@ class JogaBerlet extends \Entities\JogaBerlet implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'vasarlasnapja', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejaratdatum', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'alkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'ervenyesseg', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'elfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejart', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'offlineelfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nincsfizetve'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'vasarlasnapja', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejaratdatum', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'alkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'ervenyesseg', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'elfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejart', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'offlineelfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nincsfizetve', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'bruttoegysar'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'vasarlasnapja', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejaratdatum', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'alkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'ervenyesseg', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'elfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejart', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'offlineelfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nincsfizetve'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'termek', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'vasarlasnapja', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejaratdatum', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'alkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'ervenyesseg', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'elfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'lejart', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'offlineelfogyottalkalom', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nincsfizetve', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'nettoegysar', '' . "\0" . 'Entities\\JogaBerlet' . "\0" . 'bruttoegysar'];
     }
 
     /**
@@ -651,6 +651,50 @@ class JogaBerlet extends \Entities\JogaBerlet implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcLejart', [$num]);
 
         return parent::calcLejart($num);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNettoegysar()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNettoegysar', []);
+
+        return parent::getNettoegysar();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setNettoegysar($nettoegysar)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNettoegysar', [$nettoegysar]);
+
+        return parent::setNettoegysar($nettoegysar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBruttoegysar()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBruttoegysar', []);
+
+        return parent::getBruttoegysar();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBruttoegysar($bruttoegysar)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBruttoegysar', [$bruttoegysar]);
+
+        return parent::setBruttoegysar($bruttoegysar);
     }
 
 }
