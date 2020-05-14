@@ -83,4 +83,16 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository {
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
     }
+
+    public function getTanarhozJarok($tanarid) {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('tanar', '=', $tanarid);
+        $filter->addFilter('datum', '>=', '2020-03-15');
+        $q = $this->_em->createQuery('SELECT DISTINCT(_xx.partner)'
+            . ' FROM Entities\JogaReszvetel _xx'
+            . $this->getFilterString($filter)
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+        return array_map('current', $q->getResult());
+    }
 }

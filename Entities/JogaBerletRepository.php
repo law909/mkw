@@ -1,6 +1,8 @@
 <?php
 namespace Entities;
 
+use mkwhelpers\FilterDescriptor;
+
 class JogaBerletRepository extends \mkwhelpers\Repository {
 
 	public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class) {
@@ -36,6 +38,17 @@ class JogaBerletRepository extends \mkwhelpers\Repository {
             . $this->getFilterString($filter));
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
+    }
+
+    public function getAktualisBerlet($partner) {
+	    $filter = new FilterDescriptor();
+	    $filter->addFilter('partner', '=', $partner);
+	    $filter->addFilter('lejart', '=', false);
+	    $res = $this->getAll($filter, array('vasarlasnapja' => 'DESC'));
+	    if ($res) {
+	        return $res[0];
+        }
+	    return null;
     }
 
 }

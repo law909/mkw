@@ -5,6 +5,8 @@ namespace Controllers;
 use Entities\JogaBerlet;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class jogaberletController extends \mkwhelpers\MattableController {
 
@@ -293,4 +295,71 @@ class jogaberletController extends \mkwhelpers\MattableController {
         }
     }
 
+    public function getBerletAlkalmak() {
+        $tanar = $this->getRepo('Entities\Dolgozo')->find($this->params->getIntRequestParam('t'));
+        if ($tanar) {
+            $filter = new FilterDescriptor();
+            $partnerek = $this->getRepo('Entities\JogaReszvetel')->getTanarhozJarok($tanar);
+            $res = [];
+            foreach ($partnerek as $partner) {
+                $filter->addFilter('partner', '=', $partner);
+                $reszvetelek = $this->getRepo('Entities\JogaReszvetel')->getAll($filter, array('datum' => 'DESC'));
+                /** @var \Entities\JogaReszvetel $reszvetel */
+                $reszvetel = $reszvetelek[0];
+                $berlet = $reszvetel->getJogaberlet();
+                if (!$berlet) {
+                    $berlet = $this->getRepo()->getAktualisBerlet($partner);
+                }
+                if ($berlet) {
+                    $res[] = [
+                        'partnerid' => $reszvetel->getPartnerId(),
+                        'partner' => $reszvetel->getPartnernev(),
+                        'berlet' => $berlet->getNev(),
+                        'elhasznalt' => $berlet->getElfogyottalkalom() + $berlet->getOfflineelfogyottalkalom()
+                    ];
+                }
+                else {
+                    $res[] = [
+                        'partnerid' => $reszvetel->getPartnerId(),
+                        'partner' => $reszvetel->getPartnernev(),
+                        'berlet' => 'nincs bérlete',
+                        'elhasznalt' => ''
+                    ];
+                }
+                $filter->clear();
+            }
+            $excel = new Spreadsheet();
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue('A1', t('Partner ID'))
+                ->setCellValue('B1', t('Partner'))
+                ->setCellValue('C1', t('Bérlet'))
+                ->setCellValue('D1', t('Felhasznált alkalom'));
+
+            $num = 2;
+            foreach ($res as $sor) {
+                $excel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $num, $sor['partnerid'])
+                    ->setCellValue('B' . $num, $sor['partner'])
+                    ->setCellValue('C' . $num, $sor['berlet'])
+                    ->setCellValue('D' . $num, $sor['elhasznalt']);
+                $num++;
+            }
+            $writer = IOFactory::createWriter($excel, 'Xlsx');
+
+            $filepath = \mkw\store::storagePath('berletellenor.xlsx');
+            $writer->save($filepath);
+            $fileSize = filesize($filepath);
+
+            // Output headers.
+            header('Cache-Control: private');
+            header('Content-Type: application/stream');
+            header('Content-Length: ' . $fileSize);
+            header('Content-Disposition: attachment; filename=berletellenor.xlsx');
+
+            readfile($filepath);
+
+            \unlink($filepath);
+
+        }
+    }
 }
