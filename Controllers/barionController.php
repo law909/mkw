@@ -58,20 +58,24 @@ class barionController extends \mkwhelpers\Controller {
         \mkw\store::writelog(print_r($state, true));
 
         if ($state && $state->RequestSuccessful && $state->PaymentId === $biz->getBarionpaymentid() && $state->OrderNumber === $biz->getId()) {
-            $last = [];
-            foreach ($state->Transactions as $key => $trans) {
+            $last = null;
+            foreach ($state->Transactions as $trans) {
                 switch ($trans->TransactionType) {
+                    case 'GatewayFee':
+                        break;
                     case 'CardPayment':
+                    case 'Unspecified':
                     case 'RefundToBankCard':
-                        $last = $state->Transactions[$key];
+                        $last = $trans;
                         break;
                 }
             }
-            $res = array(
-                'result' => true,
-                'status' => $state->Status,
-                'lastTransaction' => $last
-            );
+            if ($last) {
+                $res = array(
+                    'result' => true,
+                    'lastTransaction' => $last
+                );
+            }
         }
         return $res;
     }
@@ -88,30 +92,31 @@ class barionController extends \mkwhelpers\Controller {
             $state = $this->getPaymentState($megrendeles);
             if ($state['result']) {
 
-                switch ($state['lastTransactionType']) {
-                    case 'GatewayFee':
-                        break;
+                /** @var \TransactionDetailModel $lasttrans */
+                $lasttrans = $state['lastTransaction'];
+
+                switch ($lasttrans->TransactionType) {
                     case 'RefundToBankCard':
                         $bizstatusz = null;
-                        $megrendeles->setSimpleedit(true);
-                        $megrendeles->setBarionpaymentstatus('');
-                        if ($state['status'] === \PaymentStatus::Succeeded) {
-                            $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BarionFizetveStatusz));
+                        if ($lasttrans->Status === \PaymentStatus::Succeeded && $lasttrans->Total == $megrendeles->getBrutto()) {
+                            $megrendeles->setSimpleedit(true);
+                            $megrendeles->setBarionpaymentstatus('Refunded');
+                            $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BarionRefundedStatusz));
                             if ($bizstatusz) {
                                 $megrendeles->setBizonylatstatusz($bizstatusz);
                             }
-                        }
-                        $this->getEm()->persist($megrendeles);
-                        $this->getEm()->flush();
-                        if ($bizstatusz) {
-                            $megrendeles->sendStatuszEmail($bizstatusz->getEmailtemplate());
+                            $this->getEm()->persist($megrendeles);
+                            $this->getEm()->flush();
+                            if ($bizstatusz) {
+                                $megrendeles->sendStatuszEmail($bizstatusz->getEmailtemplate());
+                            }
                         }
                         break;
                     default:
                         $bizstatusz = null;
                         $megrendeles->setSimpleedit(true);
-                        $megrendeles->setBarionpaymentstatus($state['status']);
-                        if ($state['status'] === \PaymentStatus::Succeeded) {
+                        $megrendeles->setBarionpaymentstatus($lasttrans->Status);
+                        if ($lasttrans->Status === \PaymentStatus::Succeeded) {
                             $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BarionFizetveStatusz));
                             if ($bizstatusz) {
                                 $megrendeles->setBizonylatstatusz($bizstatusz);
@@ -123,23 +128,6 @@ class barionController extends \mkwhelpers\Controller {
                             $megrendeles->sendStatuszEmail($bizstatusz->getEmailtemplate());
                         }
                         break;
-                }
-                refund-rol nem kell email, hanem refund statust kell beallitani
-                mkw log.txt/ben van refund
-
-                $bizstatusz = null;
-                $megrendeles->setSimpleedit(true);
-                $megrendeles->setBarionpaymentstatus($state['status']);
-                if ($state['status'] === \PaymentStatus::Succeeded) {
-                    $bizstatusz = $this->getRepo('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BarionFizetveStatusz));
-                    if ($bizstatusz) {
-                        $megrendeles->setBizonylatstatusz($bizstatusz);
-                    }
-                }
-                $this->getEm()->persist($megrendeles);
-                $this->getEm()->flush();
-                if ($bizstatusz) {
-                    $megrendeles->sendStatuszEmail($bizstatusz->getEmailtemplate());
                 }
             }
         }

@@ -1257,6 +1257,15 @@
                                 {/foreach}
                             </select>
                         </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="BarionStatuszRefundedEdit">{at('"Refunded" biz.státusz')}:</label></span>
+                            <select id="BarionStatuszRefundedEdit" name="barionrefundedstatusz">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $barionrefundedstatuszlist as $_role}
+                                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
                     </div>
                 </div>
                 {/if}

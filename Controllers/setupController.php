@@ -439,6 +439,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('barionfizetesrevarstatuszlist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::BarionFizetveStatusz);
         $view->setVar('barionfizetvestatuszlist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::BarionRefundedStatusz);
+        $view->setVar('barionrefundedstatuszlist', $bsf->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::Esedekessegalap);
         $view->setVar(\mkw\consts::Esedekessegalap, ($p ? $p->getErtek() : '1'));
@@ -1208,6 +1210,13 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::BarionFizetveStatusz, '');
+        }
+        $bsf = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find($this->params->getIntRequestParam('barionrefundedstatusz', 0));
+        if ($bsf) {
+            $this->setObj(\mkw\consts::BarionRefundedStatusz, $bsf->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::BarionRefundedStatusz, '');
         }
 
         $this->setObj(\mkw\consts::Esedekessegalap, $this->params->getIntRequestParam('esedekessegalap', 1));

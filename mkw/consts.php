@@ -305,6 +305,7 @@ class consts {
     const BarionFizmod = 'barionfizmod';
     const BarionFizetveStatusz = 'barionfizetvestatusz';
     const BarionFizetesrevarStatusz = 'barionfizetesrevarstatusz';
+    const BarionRefundedStatusz = 'barionrefundedstatusz';
 
     const SzamlaOrzesAlap = 'szamlaorzesalap';
     const SzamlaOrzesEv = 'szamlaorzesev';
