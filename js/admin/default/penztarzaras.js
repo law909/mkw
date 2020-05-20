@@ -17,7 +17,7 @@ $(document).ready(function() {
                     url: '/admin/penztarzaras/zar',
                     data: {
                         datum: datum,
-                        penztar: $('#PenztarEdit option:selected').val()
+                        penztar: $('#PenztarEdit').val()
                     }
                 });
             }).button();

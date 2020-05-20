@@ -13,7 +13,11 @@ $(document).ready(function() {
             $('.js-refresh')
                 .on('click', function() {
 
-                    var fak, fafilter, biztipusfilter, partnercimkefilter;
+                    var fak, fafilter, biztipusfilter, partnercimkefilter, partner,
+                        datumtipus, tol, ig, raktar, gyarto, uzletkoto, fizmod,
+                        forgalomfilter, ertektipus, arsav, nevfilter, nyelv,
+                        bizonylatstatusz, bizonylatstatuszcsoport, csoportositas,
+                        keszletkell, csakfoglalas;
                     fak = mkwcomp.termekfaFilter.getFilter('#termekfa');
                     if (fak.length > 0) {
                         fafilter = fak;
@@ -23,31 +27,50 @@ $(document).ready(function() {
 
                     biztipusfilter = mkwcomp.bizonylattipusFilter.getFilter('input[name="bizonylattipus[]"]');
 
+                    datumtipus = $('select[name="datumtipus"]').val();
+                    tol = $('input[name="tol"]').val();
+                    ig = $('input[name="ig"]').val();
+                    raktar = $('select[name="raktar"]').val();
+                    gyarto = $('select[name="gyarto"]').val();
+                    uzletkoto = $('select[name="uzletkoto"]').val();
+                    fizmod = $('select[name="fizmod"]').val();
+                    forgalomfilter = $('select[name="forgalomfilter"]').val();
+                    ertektipus = $('select[name="ertektipus"]').val();
+                    arsav = $('select[name="arsav"]').val();
+                    nevfilter = $('input[name="nevfilter"]').val();
+                    nyelv = $('select[name="nyelv"]').val();
+                    bizonylatstatusz = $('select[name="bizonylatstatusz"]').val();
+                    bizonylatstatuszcsoport = $('select[name="bizonylatstatuszcsoport"]').val();
+                    csoportositas = $('select[name="csoportositas"]').val();
+                    keszletkell = $('input[name="keszletkell"]').prop('checked');
+                    csakfoglalas = $('input[name="csakfoglalas"]').prop('checked');
+                    partner = $('select[name="partner"]').val();
+
                     $.ajax({
                         url: '/admin/bizonylattetellista/refresh',
                         type: 'GET',
                         data: {
-                            datumtipus: $('select[name="datumtipus"] option:selected').val(),
-                            tol: $('input[name="tol"]').val(),
-                            ig: $('input[name="ig"]').val(),
-                            raktar: $('select[name="raktar"] option:selected').val(),
-                            gyarto: $('select[name="gyarto"] option:selected').val(),
-                            uzletkoto: $('select[name="uzletkoto"] option:selected').val(),
-                            partner: $('select[name="partner"] option:selected').val(),
-                            fizmod: $('select[name="fizmod"] option:selected').val(),
-                            forgalomfilter: $('select[name="forgalomfilter"] option:selected').val(),
-                            ertektipus: $('select[name="ertektipus"] option:selected').val(),
-                            arsav: $('select[name="arsav"] option:selected').val(),
-                            nevfilter: $('input[name="nevfilter"]').val(),
-                            nyelv: $('select[name="nyelv"] option:selected').val(),
+                            datumtipus: datumtipus,
+                            tol: tol,
+                            ig: ig,
+                            raktar: raktar,
+                            gyarto: gyarto,
+                            uzletkoto: uzletkoto,
+                            partner: partner,
+                            fizmod: fizmod,
+                            forgalomfilter: forgalomfilter,
+                            ertektipus: ertektipus,
+                            arsav: arsav,
+                            nevfilter: nevfilter,
+                            nyelv: nyelv,
                             fafilter: fafilter,
-                            bizonylatstatusz: $('select[name="bizonylatstatusz"] option:selected').val(),
-                            bizonylatstatuszcsoport: $('select[name="bizonylatstatuszcsoport"] option:selected').val(),
+                            bizonylatstatusz: bizonylatstatusz,
+                            bizonylatstatuszcsoport: bizonylatstatuszcsoport,
                             bizonylattipus: biztipusfilter,
                             partnercimkefilter: partnercimkefilter,
-                            csoportositas: $('select[name="csoportositas"] option:selected').val(),
-                            keszletkell: $('input[name="keszletkell"]').prop('checked'),
-                            csakfoglalas: $('input[name="csakfoglalas"]').prop('checked')
+                            csoportositas: csoportositas,
+                            keszletkell: keszletkell,
+                            csakfoglalas: csakfoglalas
                         },
                         success: function(d) {
                             $('#eredmeny').html(d);

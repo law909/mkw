@@ -18,12 +18,12 @@ $(document).ready(function() {
                         url: '/admin/bizomanyosertekesiteslista/refresh',
                         type: 'GET',
                         data: {
-                            datumtipus: $('select[name="datumtipus"] option:selected').val(),
+                            datumtipus: $('select[name="datumtipus"]').val(),
                             datumtol: $('input[name="tol"]').val(),
                             datumig: $('input[name="ig"]').val(),
-                            partnerid: $('select[name="partner"] option:selected').val(),
-                            ertektipus: $('select[name="ertektipus"] option:selected').val(),
-                            arsav: $('select[name="arsav"] option:selected').val(),
+                            partnerid: $('select[name="partner"]').val(),
+                            ertektipus: $('select[name="ertektipus"]').val(),
+                            arsav: $('select[name="arsav"]').val(),
                             partnercimkefilter: partnercimkefilter
                         },
                         success: function(d) {

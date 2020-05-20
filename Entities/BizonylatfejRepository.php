@@ -707,7 +707,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
                 $termekfilter->addFilter(array('t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'), 'LIKE', $faszuro);
             }
         }
-        if (!is_null($nevfilter)) {
+        if ($nevfilter) {
             $termekfilter->addFilter(array('t.nev', 't.rovidleiras', 't.cikkszam', 't.vonalkod'), 'LIKE', '%' . $nevfilter . '%');
         }
         if ($gyartoid) {

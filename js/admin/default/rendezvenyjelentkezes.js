@@ -33,7 +33,7 @@ $(document).ready(function() {
                     partner = $('.js-partnerid').val();
                 }
                 else {
-                    partner = $('#PartnerEdit option:selected').val();
+                    partner = $('#PartnerEdit').val();
                 }
                 if (partner == -1) {
                     $.ajax({
@@ -231,10 +231,10 @@ $(document).ready(function() {
                                             type: 'POST',
                                             data: {
                                                 id: $gomb.data('id'),
-                                                fizmod: $('#afizetvefizmodedit option:selected').val(),
-                                                bankszamla: $('#afizetvebankszamlaedit option:selected').val(),
-                                                penztar: $('#afizetvepenztaredit option:selected').val(),
-                                                jogcim: $('#afizetvejogcimedit option:selected').val(),
+                                                fizmod: $('#afizetvefizmodedit').val(),
+                                                bankszamla: $('#afizetvebankszamlaedit').val(),
+                                                penztar: $('#afizetvepenztaredit').val(),
+                                                jogcim: $('#afizetvejogcimedit').val(),
                                                 datum: datumstr,
                                                 osszeg: $('#afizetveosszegedit').val()
                                             },
