@@ -28,8 +28,24 @@ class checkoutController extends \mkwhelpers\MattableController {
 		$view = \mkw\store::getTemplateFactory()->createMainView('checkout.tpl');
         \mkw\store::fillTemplate($view, false);
 
-		$szm = new szallitasimodController($this->params);
-		$szlist = $szm->getSelectList(null);
+        $partner = \mkw\store::getLoggedInUser();
+        if ($partner) {
+            $valu = $partner->getValutanemId();
+        }
+        else {
+            $valu = \mkw\store::getMainSession()->valutanem;
+        }
+
+        $kr = $this->getRepo('Entities\Kosar');
+        $sorok = $kr->getDataBySessionId(\Zend_Session::getId());
+        $sum = 0;
+        /** @var \Entities\Kosar $sor */
+        foreach ($sorok as $sor) {
+            $sum = $sum + $sor->getBruttoegysar() * $sor->getMennyiseg();
+        }
+
+        $szm = new szallitasimodController($this->params);
+		$szlist = $szm->getSelectList(null, false, $valu, $sum);
 
         $u = \mkw\store::getLoggedInUser();
         if ($u) {

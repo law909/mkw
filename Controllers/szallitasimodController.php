@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use Entities\Szallitasimod;
+
 class szallitasimodController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -260,7 +262,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         return $view->getTemplateResult();
     }
 
-    public function getSelectList($selid = null, $mind = false) {
+    public function getSelectList($selid = null, $mind = false, $valutanem = null, $ertek = 0) {
         $foxpostid = \mkw\store::getParameter(\mkw\consts::FoxpostSzallitasiMod);
         $tofid = \mkw\store::getParameter(\mkw\consts::TOFSzallitasiMod);
         $glsid = \mkw\store::getParameter(\mkw\consts::GLSSzallitasiMod);
@@ -273,6 +275,7 @@ class szallitasimodController extends \mkwhelpers\MattableController {
         $res = array();
         // mkwnál ki kell választani az elsőt
         $vanvalasztott = true; // \mkw\store::getTheme() !== 'mkwcansas';
+        /** @var Szallitasimod $sor */
         foreach ($rec as $sor) {
             $r = array(
                 'id' => $sor->getId(),
@@ -281,7 +284,8 @@ class szallitasimodController extends \mkwhelpers\MattableController {
                 'foxpost' => ($sor->getId() == $foxpostid),
                 'tof' => ($sor->getId() == $tofid),
                 'gls' => ($sor->getId() == $glsid),
-                'terminaltipus' => $sor->getTerminaltipus()
+                'terminaltipus' => $sor->getTerminaltipus(),
+                'brutto' => $this->getRepo()->getSzallitasiKoltseg($sor->getId(), null, null, $valutanem, $ertek)
             );
             if ($selid) {
                 $r['selected'] = $sor->getId() == $selid;
