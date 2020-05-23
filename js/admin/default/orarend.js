@@ -155,6 +155,9 @@ $(document).ready(function () {
             if ($this.attr('data-flag') === 'multilang') {
                 doit();
             }
+            if ($this.attr('data-flag') === 'bejelentkezeskell') {
+                doit();
+            }
             if ($this.attr('data-flag') === 'inaktiv') {
                 if (!$this.is('.ui-state-hover')) {
                     dialogcenter.html('Biztos, hogy inaktívvá teszi az órát? Az óra ezután a naptárból is kikerül.').dialog({

@@ -3,6 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <script type="text/javascript" src="/js/main/darshan/iframeResizer.contentWindow.min.js"></script>
+    <script type="text/javascript" src="/js/admin/default/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var modal = document.querySelector(".modal");
+
+            function toggleModal() {
+                modal.classList.toggle("show-modal");
+            }
+
+            function windowOnClick(event) {
+                if (event.target === modal) {
+                    toggleModal();
+                }
+            }
+
+            $('body').on('click', '.js-bejelentkezes', function(e) {
+                var $this = $(this);
+                e.preventDefault();
+                $('input[name="id"]').val($this.data('id'));
+                $('input[name="datum"]').val($this.data('datum'));
+                toggleModal();
+            });
+            $('.close-button').click(function(e) {
+                e.preventDefault();
+                toggleModal();
+            });
+            $('.js-ok').click(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/orarend/bejelentkezes',
+                    type: 'POST',
+                    data: {
+                        id: $('input[name="id"]').val(),
+                        datum: $('input[name="datum"]').val(),
+                        partnernev: $('input[name="partnernev"]').val(),
+                        email: $('input[name="email"]').val()
+                    },
+                    success: function () {
+                        toggleModal();
+                        location.reload();
+                    }
+                });
+            });
+            window.addEventListener("click", windowOnClick);
+        });
+    </script>
     <style>
         body {
             font-family: 'Arial',Helvetica,Arial,Lucida,sans-serif;
@@ -98,6 +144,92 @@
         .dttonlinelink {
             font-weight: bold;
         }
+        .modal {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(1.1);
+            transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+        }
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 1rem 1.5rem;
+            width: 24rem;
+            border-radius: 0.1rem;
+        }
+        .close-button {
+            float: right;
+            width: 1.5rem;
+            line-height: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 0.25rem;
+            background-color: lightgray;
+        }
+        .close-button:hover {
+            background-color: darkgray;
+        }
+        .show-modal {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1.0);
+            transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+        }
+        .bejelentkezesbtn {
+            color: #fff;
+            background-color: #80008C;
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            vertical-align: middle;
+            user-select: none;
+            border: 1px solid #80008C;
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+        .form-label {
+            padding-top: calc(.375rem + 1px);
+            padding-bottom: calc(.375rem + 1px);
+            margin-bottom: 0;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        .form-control {
+            display: block;
+            width: 100%;
+            height: calc(2.25rem + 2px);
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
         /* Responsive Styles Smartphone Portrait */
         @media all and (max-width: 479px) {
             .dttidopont {
@@ -156,11 +288,44 @@
         <div class="dttora">
             <div class="dttidopont{if ($ora['delelott'])} delelott{/if}">{$ora['kezdet']}-{$ora['veg']}</div>
             <div class="dttoranev"><a href="{if ($ora['oraurl'])}http://jogadarshan.hu/{$ora['oraurl']}{/if}" target="_parent">{if ($ora['elmarad'])}ELMARAD! {/if}{$ora['oranev']}</a>{if ($ora['multilang'])}<span> (HU/EN)</span>{/if}</div>
-            <div class="dtttanar"><a href="{if ($ora['tanarurl'])}http://jogadarshan.hu/{$ora['tanarurl']}{/if}" target="_parent">{$ora['tanar']}{if ($ora['helyettesito'])} HELYETTESÍT: {$ora['helyettesito']}{/if}{if ($ora['elmarad'])} ELMARAD!{/if}</a>{if ($ora['onlineurl'])}<div><a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink">Csatlakozok</a></div>{/if}</div>
+            <div class="dtttanar">
+                <a href="{if ($ora['tanarurl'])}http://jogadarshan.hu/{$ora['tanarurl']}{/if}" target="_parent">{$ora['tanar']}{if ($ora['helyettesito'])} HELYETTESÍT: {$ora['helyettesito']}{/if}{if ($ora['elmarad'])} ELMARAD!{/if}</a>
+                {if ($ora['onlineurl'])}<div><a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink">Csatlakozom</a></div>{/if}
+                {if ($ora['bejelentkezeskell'])}
+                    {if ($ora['bejelentkezesdb'] >= $ora['maxbejelentkezes'])}
+                        <div>Az óra betelt</div>
+                    {else}
+                        <div>
+                            <a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink js-bejelentkezes" data-id="{$ora['id']}" data-datum="{$ora['datum']}">
+                                Bejelentkezek{if ($ora['bejelentkezesdb'])} ({$ora['bejelentkezesdb']} fő a {$ora['maxbejelentkezes']}-ból){/if}
+                            </a>
+                        </div>
+                    {/if}
+                {/if}
+            </div>
         </div>
         {/foreach}
     </div>
     {/foreach}
+</div>
+<div class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h1>Add meg az adataidat</h1>
+        <form id="modal-form">
+            <div class="form-group">
+                <label class="form-label">Név</label>
+                <input class="form-control" type="text" name="partnernev">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input class="form-control" type="email" name="email">
+            </div>
+            <input type="hidden" name="id">
+            <input type="hidden" name="datum">
+            <button class="js-ok bejelentkezesbtn">OK</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

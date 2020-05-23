@@ -2,6 +2,7 @@
 
 namespace Entities;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -84,6 +85,20 @@ class Orarend {
      * @ORM\Column(type="string",length=255,nullable=false)
      */
     private $onlineurl = '';
+
+    /** @ORM\Column(type="boolean", nullable=false) */
+    private $bejelentkezeskell = false;
+
+    /** @ORM\OneToMany(targetEntity="JogaBejelentkezes", mappedBy="orarend",cascade={"persist"}) */
+    private $bejelentkezesek;
+
+    public function __construct() {
+        $this->bejelentkezesek = new ArrayCollection();
+    }
+
+    public function getBejelentkezesek() {
+        return $this->bejelentkezesek;
+    }
 
     public function getDolgozo() {
         return $this->dolgozo;
@@ -350,5 +365,19 @@ class Orarend {
      */
     public function setOnlineurl($onlineurl) {
         $this->onlineurl = $onlineurl;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBejelentkezeskell() {
+        return $this->bejelentkezeskell;
+    }
+
+    /**
+     * @param bool $bejelentkezeskell
+     */
+    public function setBejelentkezeskell($bejelentkezeskell) {
+        $this->bejelentkezeskell = $bejelentkezeskell;
     }
 }

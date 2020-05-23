@@ -40,6 +40,7 @@ class orarendController extends \mkwhelpers\MattableController {
 		$x['atlagresztvevoszam'] = $t->getAtlagresztvevoszam();
 		$x['multilang'] = $t->getMultilang();
 		$x['onlineurl'] = $t->getOnlineurl();
+		$x['bejelentkezeskell'] = $t->isBejelentkezeskell();
 		return $x;
 	}
 
@@ -78,6 +79,7 @@ class orarendController extends \mkwhelpers\MattableController {
         $obj->setAtlagresztvevoszam($this->params->getIntRequestParam('atlagresztvevoszam'));
         $obj->setMultilang($this->params->getBoolRequestParam('multilang'));
         $obj->setOnlineurl($this->params->getOriginalStringRequestParam('onlineurl'));
+        $obj->setBejelentkezeskell($this->params->getBoolRequestParam('bejelentkezeskell'));
 //		$obj->doStuffOnPrePersist();
 		return $obj;
 	}
@@ -217,11 +219,12 @@ class orarendController extends \mkwhelpers\MattableController {
                 case 'inaktiv':
                     $obj->setInaktiv($kibe);
                     break;
-                case 'alkalmi':
-                    $obj->setAlkalmi($kibe);
+                case 'bejelentkezeskell':
+                    $obj->setBejelentkezeskell($kibe);
                     break;
                 case 'multilang':
                     $obj->setMultilang($kibe);
+                    break;
             }
             $this->getEm()->persist($obj);
             $this->getEm()->flush();
@@ -248,6 +251,7 @@ class orarendController extends \mkwhelpers\MattableController {
         /** @var \Entities\Orarend $item */
         foreach ($rec as $item) {
             $orak = array(
+                'id' => $item->getId(),
                 'kezdet' => $item->getKezdetStr(),
                 'veg' => $item->getVegStr(),
                 'oranev' => $item->getNev(),
@@ -261,8 +265,15 @@ class orarendController extends \mkwhelpers\MattableController {
                 'delelott' => $item->isDelelottKezdodik(),
                 'elmarad' => false,
                 'multilang' => $item->getMultilang(),
-                'onlineurl' => $item->getOnlineurl()
+                'onlineurl' => $item->getOnlineurl(),
+                'bejelentkezeskell' => $item->isBejelentkezeskell()
             );
+            $xdatum = clone $startdatum;
+            $napdatum = $xdatum->add(new \DateInterval('P' . ($item->getNap() - 1) . 'D'));
+            $orak['datum'] = $napdatum->format(\mkw\store::$SQLDateFormat);
+            $orak['bejelentkezesdb'] = $this->getRepo('Entities\JogaBejelentkezes')->getAdottOraCount($napdatum, $item->getId());
+            $orak['maxbejelentkezes'] = 8;
+
             $hf = new \mkwhelpers\FilterDescriptor();
             $hf->addFilter('datum', '>=', \mkw\store::startOfWeek($startdatum));
             $hf->addFilter('datum', '<=', \mkw\store::endOfWeek($startdatum));
@@ -292,6 +303,7 @@ class orarendController extends \mkwhelpers\MattableController {
         /** @var \Entities\Rendezveny $item */
         foreach ($rec as $item) {
             $orak = array(
+                'id' => $item->getId(),
                 'kezdet' => $item->getKezdoido(),
                 'veg' => '',
                 'oranev' => $item->getTeljesNev(),
@@ -305,7 +317,11 @@ class orarendController extends \mkwhelpers\MattableController {
                 'delelott' => false,
                 'elmarad' => false,
                 'multilang' => false,
-                'onlineurl' => false
+                'onlineurl' => false,
+                'bejelentkezeskell' => false,
+                'datum' => '',
+                'bejelentkezesdb' => 0,
+                'maxbejelentkezes' => 0
             );
             if (!array_key_exists($item->getNap(), $orarend)) {
                 $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
