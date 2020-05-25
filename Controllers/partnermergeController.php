@@ -190,32 +190,32 @@ class partnermergeController extends \mkwhelpers\MattableController {
         $st->execute();
 
         if ($this->params->getBoolRequestParam('nevcsere')) {
-            if (!$partnerre->getNev() && $partnerrol->getNev()) {
+            if ($partnerrol->getNev()) {
                 $partnerre->setNev($partnerrol->getNev());
             }
-            if (!$partnerre->getVezeteknev() && $partnerrol->getVezeteknev()) {
+            if ($partnerrol->getVezeteknev()) {
                 $partnerre->setVezeteknev($partnerrol->getVezeteknev());
             }
-            if (!$partnerre->getKeresztnev() && $partnerrol->getKeresztnev()) {
+            if ($partnerrol->getKeresztnev()) {
                 $partnerre->setKeresztnev($partnerrol->getKeresztnev());
             }
         }
         if ($this->params->getBoolRequestParam('cimcsere')) {
-            if (!$partnerre->getIrszam() && $partnerrol->getIrszam()) {
+            if ($partnerrol->getIrszam()) {
                 $partnerre->setIrszam($partnerrol->getIrszam());
             }
-            if (!$partnerre->getVaros() && $partnerrol->getVaros()) {
+            if ($partnerrol->getVaros()) {
                 $partnerre->setVaros($partnerrol->getVaros());
             }
-            if (!$partnerre->getUtca() && $partnerrol->getUtca()) {
+            if ($partnerrol->getUtca()) {
                 $partnerre->setUtca($partnerrol->getUtca());
             }
-            if (!$partnerre->getHazszam() && $partnerrol->getHazszam()) {
+            if ($partnerrol->getHazszam()) {
                 $partnerre->setHazszam($partnerrol->getHazszam());
             }
         }
         if ($this->params->getBoolRequestParam('emailcsere')) {
-            if (!$partnerre->getEmail() && $partnerrol->getEmail() && strpos($partnerrol->getEmail(), 'mail.local') === false) {
+            if ($partnerrol->getEmail() && strpos($partnerrol->getEmail(), 'mail.local') === false) {
                 $partnerre->setEmail($partnerrol->getEmail());
             }
         }
