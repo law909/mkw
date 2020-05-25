@@ -60,6 +60,13 @@ if ($DBVersion < '0031') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0031');
 }
 
+if ($DBVersion < '0032') {
+    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(7, "Partner összefűzés","/admin/partnermerge/view","/admin/partnermerge",90,1,1000, "")');
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0032');
+}
+
 if (!\mkw\store::getParameter(\mkw\consts::NAVOnlineME1_1Kesz, 0)) {
     $mes2 = array();
     $rsm = new ResultSetMapping();

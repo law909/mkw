@@ -767,6 +767,7 @@ class partnerController extends \mkwhelpers\MattableController {
                 'caption' => $sor['nev'] . ' ' . $sor['irszam'] . ' ' . $sor['varos'] . ' ' . $sor['utca'] . ' ' . $sor['hazszam'],
                 'nevvaros' => $sor['nev'] . ' ' . $sor['varos'],
                 'nev' => $sor['nev'],
+                'cim' => $sor['irszam'] . ' ' . $sor['varos'] . ' ' . $sor['utca'] . ' ' . $sor['hazszam'],
                 'email' => $sor['email'],
                 'selected' => ($sor['id'] == $selid)
             );

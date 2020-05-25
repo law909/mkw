@@ -733,6 +733,8 @@ $router->map('POST', '/admin/rendezvenyjelentkezes/email/kezdes', 'rendezvenyjel
 if (haveJog(90)) {
     $router->map('GET', '/admin/bizvissza', 'bizonylatfejController#setNyomtatvaVissza', 'adminbizvissza');
     $router->map('GET', '/admin/bizpartnerjavit', 'bizonylatfejController#repairPartnerAdat', 'adminbizpartnerjavit');
+    $router->map('GET', '/admin/partnermerge/view', 'partnermergeController#view', 'adminpartnermergeview');
+    $router->map('POST', '/admin/partnermerge', 'partnermergeController#doIt', 'adminpartnermerge');
 }
 
 if (\mkw\store::isDarshan()) {
