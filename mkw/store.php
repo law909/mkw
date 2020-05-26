@@ -101,7 +101,7 @@ class store {
     }
 
     public static function writelog($text, $fname = 'log.txt') {
-        $handle = fopen(self::storagePath('logs/' . $fname), "a");
+        $handle = fopen(self::logsPath($fname), "a");
         $log = "";
         $separator = " ## ";
         $log .= date('Y.m.d. H:i:s') . $separator;
@@ -1449,5 +1449,17 @@ class store {
 
     public static function storagePath($filename) {
         return getcwd() . '/' . self::getConfigValue('path.storage', '') . $filename;
+    }
+
+    public static function storageUrl($filename) {
+        return '/' . self::getConfigValue('path.storage', '') . $filename;
+    }
+
+    public static function logsPath($filename) {
+        return getcwd() . '/' . self::getConfigValue('path.storage', '') . 'logs/' . $filename;
+    }
+
+    public static function logsUrl($filename) {
+        return '/' . self::getConfigValue('path.storage', '') . 'logs/' . $filename;
     }
 }

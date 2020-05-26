@@ -559,13 +559,13 @@ class importController extends \mkwhelpers\Controller {
                         }
                     }
                     if ($lettfuggoben) {
-                        echo json_encode(array('url' => \mkw\store::storagePath('kreativ_fuggoben.txt')));
+                        echo json_encode(array('url' => \mkw\store::logsUrl('kreativ_fuggoben.txt')));
                     }
                 }
                 fclose($fh);
             }
             else {
-                echo json_encode(array('url' => \mkw\store::storagePath('/kreativpuzzlestock.txt')));
+                echo json_encode(array('url' => \mkw\store::storageUrl('kreativpuzzlestock.txt')));
             }
             $this->setRunningImport(\mkw\consts::RunningKreativImport, 0);
         }
@@ -855,13 +855,13 @@ class importController extends \mkwhelpers\Controller {
                         }
                     }
                     if ($lettfuggoben) {
-                        echo json_encode(array('url' => \mkw\store::storagePath('delton_fuggoben.txt')));
+                        echo json_encode(array('url' => \mkw\store::logsUrl('delton_fuggoben.txt')));
                     }
                 }
                 fclose($fh);
             }
             else {
-                echo json_encode(array('url' => \mkw\store::storagePath('delton.txt')));
+                echo json_encode(array('url' => \mkw\store::storageUrl('delton.txt')));
             }
             $this->setRunningImport(\mkw\consts::RunningDeltonImport, 0);
         }
@@ -927,7 +927,7 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            @unlink(\mkw\store::storagePath('nomad_fuggoben.txt'));
+            @unlink(\mkw\store::logsPath('nomad_fuggoben.txt'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlNomad));
             $fh = fopen(\mkw\store::storagePath('nomad.xml'), 'w');
@@ -1443,7 +1443,7 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->clear();
                 }
                 if ($lettfuggoben) {
-                    echo json_encode(array('url' => \mkw\store::storagePath('nomad_fuggoben.txt')));
+                    echo json_encode(array('url' => \mkw\store::logsUrl('nomad_fuggoben.txt')));
                 }
             }
             \unlink(\mkw\store::storagePath('nomad.xml'));
@@ -1527,7 +1527,7 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            @unlink(\mkw\store::storagePath('nikaimport.txt'));
+            @unlink(\mkw\store::logsPath('nikaimport.txt'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlNika));
             $fh = fopen(\mkw\store::storagePath('nikaproducts.xml'), 'w');
@@ -1775,7 +1775,7 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->clear();
                 }
                 if ($lettfuggoben) {
-                    echo json_encode(array('url' => \mkw\store::storagePath('nikaimport.txt')));
+                    echo json_encode(array('url' => \mkw\store::logsPath('nikaimport.txt')));
                 }
             }
             \unlink(\mkw\store::storagePath('nikaproducts.xml'));
@@ -1863,7 +1863,7 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            @unlink(\mkw\store::storagePath('haffner24import.txt'));
+            @unlink(\mkw\store::logsPath('haffner24import.txt'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlHaffner24));
             $fh = fopen(\mkw\store::storagePath('haffner24products.xml'), 'w');
@@ -2083,7 +2083,7 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->clear();
                 }
                 if ($lettfuggoben) {
-                    echo json_encode(array('url' => \mkw\store::storagePath('haffner24import.txt')));
+                    echo json_encode(array('url' => \mkw\store::logsUrl('haffner24import.txt')));
                 }
             }
             \unlink(\mkw\store::storagePath('haffner24products.xml'));
@@ -2130,7 +2130,7 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            @\unlink(\mkw\store::storagePath('reintex_fuggoben.txt'));
+            @\unlink(\mkw\store::logsPath('reintex_fuggoben.txt'));
 
             if (\mkw\store::isDeveloper()) {
                 move_uploaded_file($_FILES['toimport']['tmp_name'], 'reintex.csv');
@@ -2304,7 +2304,7 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
                 if ($lettfuggoben) {
-                    echo json_encode(array('url' => \mkw\store::storagePath('reintex_fuggoben.txt')));
+                    echo json_encode(array('url' => \mkw\store::logsUrl('reintex_fuggoben.txt')));
                 }
 
                 if ($createuj && false) {
@@ -2396,7 +2396,7 @@ class importController extends \mkwhelpers\Controller {
                 }
 
                 fclose($fh);
-                \unlink('reintex.csv');
+                \unlink(\mkw\store::storagePath('reintex.csv'));
             }
             $this->setRunningImport(\mkw\consts::RunningReintexImport, 0);
         }
@@ -2636,7 +2636,7 @@ class importController extends \mkwhelpers\Controller {
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            @\unlink(\mkw\store::storagePath('makszutov_fuggoben.txt'));
+            @\unlink(\mkw\store::logsPath('makszutov_fuggoben.txt'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlMaxutov));
             $fh = fopen(\mkw\store::storagePath('makszutov.txt'), 'w');
@@ -2928,14 +2928,14 @@ class importController extends \mkwhelpers\Controller {
                         }
                     }
                     if ($lettfuggoben) {
-                        echo json_encode(array('url' => \mkw\store::storagePath('makszutov_fuggoben.txt')));
+                        echo json_encode(array('url' => \mkw\store::logsUrl('makszutov_fuggoben.txt')));
                     }
                 }
                 fclose($fh);
                 \unlink(\mkw\store::storagePath('makszutov.txt'));
             }
             else {
-                echo json_encode(array('url' => \mkw\store::storagePath('makszutov.txt')));
+                echo json_encode(array('url' => \mkw\store::storageUrl('makszutov.txt')));
             }
             $this->setRunningImport(\mkw\consts::RunningMaxutovImport, 0);
         }
@@ -4290,7 +4290,7 @@ class importController extends \mkwhelpers\Controller {
 
             $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 1);
 
-            @\unlink(\mkw\store::storagePath('legavenue_forditani.txt'));
+            @\unlink(\mkw\store::logsPath('legavenue_forditani.txt'));
 
             $dbtol = $this->params->getIntRequestParam('dbtol', 0);
             $dbig = $this->params->getIntRequestParam('dbig', 0);
@@ -4340,7 +4340,7 @@ class importController extends \mkwhelpers\Controller {
             \unlink(\mkw\store::storagePath('legavenue.xml'));
 
             if ($db) {
-                echo json_encode(array('url' => \mkw\store::storagePath('legavenue_forditani.txt')));
+                echo json_encode(array('url' => \mkw\store::logsUrl('legavenue_forditani.txt')));
             }
 
             $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 0);
@@ -4357,7 +4357,7 @@ class importController extends \mkwhelpers\Controller {
 
                 $this->setRunningImport(\mkw\consts::RunningLegavenueImport, 1);
 
-                @\unlink(\mkw\store::storagePath('legavenue_fuggoben.txt'));
+                @\unlink(\mkw\store::logsPath('legavenue_fuggoben.txt'));
 
                 $parentid = $this->params->getIntRequestParam('katid', 0);
                 $gyartoid = \mkw\store::getParameter(\mkw\consts::GyartoLegavenue);
@@ -4703,7 +4703,7 @@ class importController extends \mkwhelpers\Controller {
                         \mkw\store::getEm()->clear();
                     }
                     if ($lettfuggoben) {
-                        echo json_encode(array('url' => \mkw\store::storagePath('legavenue_fuggoben.txt')));
+                        echo json_encode(array('url' => \mkw\store::logsUrl('legavenue_fuggoben.txt')));
                     }
                 }
                 \unlink(\mkw\store::storagePath('legavenue.xml'));
@@ -4828,8 +4828,8 @@ class importController extends \mkwhelpers\Controller {
                 }
             }
 
-            \unlink('evonaszulok.log');
-            \unlink('evonatermekek.log');
+            \unlink(\mkw\store::logsPath('evonaszulok.log'));
+            \unlink(\mkw\store::logsPath('evonatermekek.log'));
             \mkw\store::writelog(print_r($szulok, true), 'evonaszulok.log');
             \mkw\store::writelog(print_r($termekek, true), 'evonatermekek.log');
 
