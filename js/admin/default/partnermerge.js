@@ -22,6 +22,7 @@ $(document).ready(function() {
                                     partnerrol: $('#PartnerRolEdit').val(),
                                     partnerre: $('#PartnerReEdit').val(),
                                     roldel: $('input[name="roldel"]').prop('checked'),
+                                    bizupdate: $('input[name="bizupdate"]').prop('checked'),
                                     nevcsere: $('input[name="nevcsere"]').prop('checked'),
                                     cimcsere: $('input[name="cimcsere"]').prop('checked'),
                                     emailcsere: $('input[name="emailcsere"]').prop('checked')

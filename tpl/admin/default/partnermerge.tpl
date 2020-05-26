@@ -44,6 +44,9 @@
                         <label>RŐL partner törlése</label><input type="checkbox" name="roldel" checked="checked">
                     </div>
                     <div>
+                        <label>Partner adat módosítás nem szigorú bizonylatokon (superzone)</label><input type="checkbox" name="bizupdate">
+                    </div>
+                    <div>
                         <label>Név csere</label><input type="checkbox" name="nevcsere">
                     </div>
                     <div>

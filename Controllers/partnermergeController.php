@@ -63,10 +63,46 @@ class partnermergeController extends \mkwhelpers\MattableController {
                 . ' WHERE partner_id=' . $partnerrolid);
             $st->execute();
 
-            $st = $conn->prepare('UPDATE bizonylatfej SET'
-                . ' partner_id=' . $partnerreid
-                . ' WHERE partner_id=' . $partnerrolid);
-            $st->execute();
+            if ($this->params->getBoolRequestParam('bizupdate')) {
+                $st = $conn->prepare('UPDATE bizonylatfej SET'
+                    . ' partner_id=' . $partnerreid
+                    . ', partnernev="' . $partnerre->getNev() . '"'
+                    . ', partnervezeteknev="' . $partnerre->getVezeteknev() . '"'
+                    . ', partnerkeresztnev="' . $partnerre->getKeresztnev() . '"'
+                    . ', partnermukengszam="' . $partnerre->getMukengszam() . '"'
+                    . ', partnerjovengszam="' . $partnerre->getJovengszam() . '"'
+                    . ', partnerostermszam="' . $partnerre->getOstermszam() . '"'
+                    . ', partnervalligszam="' . $partnerre->getValligszam() . '"'
+                    . ', partnerfvmszam="' . $partnerre->getFvmszam() . '"'
+                    . ', partnercjszam="' . $partnerre->getCjszam() . '"'
+                    . ', partnerstatszamjel="' . $partnerre->getStatszamjel() . '"'
+                    . ', partneradoszam="' . $partnerre->getAdoszam() . '"'
+                    . ', partnereuadoszam="' . $partnerre->getEuadoszam() . '"'
+                    . ', partnerirszam="' . $partnerre->getIrszam() . '"'
+                    . ', partnervaros="' . $partnerre->getVaros() . '"'
+                    . ', partnerutca="' . $partnerre->getUtca() . '"'
+                    . ', partnerhazszam="' . $partnerre->getHazszam() . '"'
+                    . ', partnerlirszam="' . $partnerre->getLirszam() . '"'
+                    . ', partnerlvaros="' . $partnerre->getLvaros() . '"'
+                    . ', partnerlutca="' . $partnerre->getLutca() . '"'
+                    . ', partnerlhazszam="' . $partnerre->getLhazszam() . '"'
+                    . ', partneremail="' . $partnerre->getEmail() . '"'
+                    . ', partnertelefon="' . $partnerre->getTelefon() . '"'
+                    . ', partnerktdszerzszam="' . $partnerre->getKtdszerzszam() . '"'
+                    . ', partnerktdatvallal=' . ($partnerre->getKtdatvallal() ? '1' : '0')
+                    . ', partnerktdatalany=' . ($partnerre->getKtdatalany() ? '1' : '0')
+                    . ', partnerorszag_id=' . $partnerre->getOrszagId()
+                    . ', partnerorszagnev="' . $partnerre->getOrszagNev() . '"'
+                    . ', partnerorszagiso3166="' . ($partnerre->getOrszag() ? $partnerre->getOrszag()->getIso3166() : '') . '"'
+                    . ' WHERE (partner_id=' . $partnerrolid . ') AND (bizonylattipus_id<>"szamla") AND (bizonylattipus_id<>"esetiszamla")');
+                $st->execute();
+            }
+            else {
+                $st = $conn->prepare('UPDATE bizonylatfej SET'
+                    . ' partner_id=' . $partnerreid
+                    . ' WHERE partner_id=' . $partnerrolid);
+                $st->execute();
+            }
 
             $st = $conn->prepare('UPDATE bizonylattetel SET'
                 . ' mijszpartner_id=' . $partnerreid
