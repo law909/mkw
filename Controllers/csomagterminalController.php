@@ -107,13 +107,13 @@ class csomagterminalController extends \mkwhelpers\MattableController {
     public function downloadGLSTerminalList() {
         $sep = ';';
         $ch = curl_init(\mkw\store::getParameter(\mkw\consts::GLSTerminalURL));
-        $fh = fopen('glscsomagpont.csv', 'w');
+        $fh = fopen(\mkw\store::storagePath('glscsomagpont.csv'), 'w');
         curl_setopt($ch, CURLOPT_FILE, $fh);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_exec($ch);
         fclose($fh);
-        $fh = fopen('glscsomagpont.csv', 'r');
+        $fh = fopen(\mkw\store::storagePath('glscsomagpont.csv'), 'r');
         if ($fh) {
 
             $pontok = array();
