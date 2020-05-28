@@ -66,10 +66,10 @@ class Partnertipus extends \Entities\Partnertipus implements \Doctrine\ORM\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'id', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'partnerek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'id', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet2', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet3', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet4', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet5', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet6', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet7', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet8', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet9', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet10', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet11', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet12', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet13', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet14', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet15'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'id', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'partnerek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'id', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'nev', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'partnerek', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet2', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet3', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet4', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet5', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet6', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet7', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet8', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet9', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet10', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet11', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet12', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet13', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet14', '' . "\0" . 'Entities\\Partnertipus' . "\0" . 'belephet15'];
     }
 
     /**
@@ -211,6 +211,347 @@ class Partnertipus extends \Entities\Partnertipus implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getXBelephet()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getXBelephet', []);
+
+        return parent::getXBelephet();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelephet()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelephet', []);
+
+        return parent::getBelephet();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelephet($belephet)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelephet', [$belephet]);
+
+        return parent::setBelephet($belephet);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelephet2()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelephet2', []);
+
+        return parent::getBelephet2();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelephet2($belephet2)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelephet2', [$belephet2]);
+
+        return parent::setBelephet2($belephet2);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelephet3()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelephet3', []);
+
+        return parent::getBelephet3();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelephet3($belephet3)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelephet3', [$belephet3]);
+
+        return parent::setBelephet3($belephet3);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelephet4()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelephet4', []);
+
+        return parent::getBelephet4();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelephet4($belephet4)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelephet4', [$belephet4]);
+
+        return parent::setBelephet4($belephet4);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelephet5()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelephet5', []);
+
+        return parent::getBelephet5();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelephet5($belephet5)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelephet5', [$belephet5]);
+
+        return parent::setBelephet5($belephet5);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelephet6()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelephet6', []);
+
+        return parent::getBelephet6();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelephet6($belephet6)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelephet6', [$belephet6]);
+
+        return parent::setBelephet6($belephet6);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelephet7()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelephet7', []);
+
+        return parent::getBelephet7();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelephet7($belephet7)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelephet7', [$belephet7]);
+
+        return parent::setBelephet7($belephet7);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelephet8()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelephet8', []);
+
+        return parent::getBelephet8();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelephet8($belephet8)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelephet8', [$belephet8]);
+
+        return parent::setBelephet8($belephet8);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelephet9()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelephet9', []);
+
+        return parent::getBelephet9();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelephet9($belephet9)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelephet9', [$belephet9]);
+
+        return parent::setBelephet9($belephet9);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelephet10()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelephet10', []);
+
+        return parent::getBelephet10();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelephet10($belephet10)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelephet10', [$belephet10]);
+
+        return parent::setBelephet10($belephet10);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelephet11()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelephet11', []);
+
+        return parent::getBelephet11();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelephet11($belephet11)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelephet11', [$belephet11]);
+
+        return parent::setBelephet11($belephet11);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelephet12()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelephet12', []);
+
+        return parent::getBelephet12();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelephet12($belephet12)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelephet12', [$belephet12]);
+
+        return parent::setBelephet12($belephet12);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelephet13()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelephet13', []);
+
+        return parent::getBelephet13();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelephet13($belephet13)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelephet13', [$belephet13]);
+
+        return parent::setBelephet13($belephet13);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelephet14()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelephet14', []);
+
+        return parent::getBelephet14();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelephet14($belephet14)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelephet14', [$belephet14]);
+
+        return parent::setBelephet14($belephet14);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBelephet15()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBelephet15', []);
+
+        return parent::getBelephet15();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBelephet15($belephet15)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBelephet15', [$belephet15]);
+
+        return parent::setBelephet15($belephet15);
     }
 
 }
