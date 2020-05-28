@@ -1218,6 +1218,9 @@ class Partner {
         return $this->termekkedvezmenyek;
     }
 
+    /**
+     * @return \Entities\Partnertipus
+     */
     public function getPartnertipus() {
         return $this->partnertipus;
     }

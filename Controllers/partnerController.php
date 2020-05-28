@@ -932,6 +932,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $ok = true;
         }
         else {
+            /** @var \Entities\Partner $users */
             $users = $this->getRepo()->findByUserPass($puser, $pass);
             if (count($users) > 0) {
                 $user = $users[0];
@@ -941,6 +942,13 @@ class partnerController extends \mkwhelpers\MattableController {
         if ($ok && $user) {
             if ($user->getVendeg()) {
                 return false;
+            }
+            if (\mkw\store::isMultiShop()) {
+                if ($user->getPartnertipus()) {
+                    if (!$user->getPartnertipus()->getXBelephet()) {
+                        return false;
+                    }
+                }
             }
             $kc = new kosarController($this->params);
             $kc->clear($user->getId()); // csak partner alapján
