@@ -28,6 +28,7 @@ class cronController extends \mkwhelpers\Controller {
         $filter = new FilterDescriptor();
         $filter->addFilter('nap', '=', $nap);
         $filter->addFilter('inaktiv', '=', false);
+        $filter->addFilter('bejelentkezeskell', '=', true);
 
         /** @var Orarend $ora */
         $maiorak = $this->getRepo(Orarend::class)->getAll($filter);
