@@ -1,5 +1,7 @@
 <?php
 
+$router->map('GET', '/admin/cron', 'cronController#run', 'admincron');
+
 $router->map('GET', '/admin', 'adminController#view', 'adminview');
 $router->map('GET', '/admin/view', 'adminController#view', 'adminview2');
 $router->map('GET', '/admin/egyebtorzs/view', 'egyebtorzsController#view', 'adminegyebtorzsview');

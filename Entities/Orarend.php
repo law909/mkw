@@ -89,6 +89,9 @@ class Orarend {
     /** @ORM\Column(type="boolean", nullable=false) */
     private $bejelentkezeskell = false;
 
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $minbejelentkezes = 0;
+
     /** @ORM\OneToMany(targetEntity="JogaBejelentkezes", mappedBy="orarend",cascade={"persist"}) */
     private $bejelentkezesek;
 
@@ -380,4 +383,19 @@ class Orarend {
     public function setBejelentkezeskell($bejelentkezeskell) {
         $this->bejelentkezeskell = $bejelentkezeskell;
     }
+
+    /**
+     * @return int
+     */
+    public function getMinbejelentkezes() {
+        return $this->minbejelentkezes;
+    }
+
+    /**
+     * @param int $minbejelentkezes
+     */
+    public function setMinbejelentkezes($minbejelentkezes) {
+        $this->minbejelentkezes = $minbejelentkezes;
+    }
+
 }

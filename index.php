@@ -152,7 +152,7 @@ else {
                     $__admintranslate->setLocale(store::getAdminLocale());
                 }
 
-                if ((!in_array($match['name'], array('adminshowlogin', 'adminlogin', 'adminrlbexport', 'adminminicrmmail')))) {
+                if ((!in_array($match['name'], array('admincron', 'adminshowlogin', 'adminlogin', 'adminrlbexport', 'adminminicrmmail')))) {
                     $linuser = store::getAdminSession()->pk;
                     if (!$linuser) {
                         $redirected = true;

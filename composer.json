@@ -11,6 +11,7 @@
         "symfony/dom-crawler": "3.*",
         "phpmailer/phpmailer": "6.*",
 		"mikehaertl/phpwkhtmltopdf": "^2.3",
-		"phpoffice/phpspreadsheet": "^1.12"
+		"phpoffice/phpspreadsheet": "^1.12",
+        "nesbot/carbon": "^2.35.0"
 	}
 }

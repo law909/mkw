@@ -24,6 +24,9 @@
                                 <tr>
                                     <td>Átl.résztvevő: {$_orarend.atlagresztvevoszam}</td>
                                 </tr>
+                                <tr>
+                                    <td>Min.bejelentkezés: {$_orarend.minbejelentkezes}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </td>

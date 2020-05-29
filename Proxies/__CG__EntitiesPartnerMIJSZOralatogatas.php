@@ -26,7 +26,7 @@ class PartnerMIJSZOralatogatas extends \Entities\PartnerMIJSZOralatogatas implem
     /**
      * @var boolean flag indicating if this object was already initialized
      *
-     * @see \Doctrine\Common\Persistence\Proxy::__isInitialized
+     * @see \Doctrine\Persistence\Proxy::__isInitialized
      */
     public $__isInitialized__ = false;
 

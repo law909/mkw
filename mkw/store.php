@@ -48,6 +48,7 @@ class store {
     public static $DateTimeFormat = 'Y.m.d. H:i:s';
     public static $MiniCRMDateTimeFormat = 'Y-m-d+H:i:s';
     public static $TimeFormat = 'H:i';
+    public static $FullTimeFormat = 'H:i:s';
     private static $blameableListener;
 
     public static function getJSVersion() {

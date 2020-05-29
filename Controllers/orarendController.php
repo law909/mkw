@@ -41,6 +41,7 @@ class orarendController extends \mkwhelpers\MattableController {
 		$x['multilang'] = $t->getMultilang();
 		$x['onlineurl'] = $t->getOnlineurl();
 		$x['bejelentkezeskell'] = $t->isBejelentkezeskell();
+		$x['minbejelentkezes'] = $t->getMinbejelentkezes();
 		return $x;
 	}
 
@@ -80,6 +81,7 @@ class orarendController extends \mkwhelpers\MattableController {
         $obj->setMultilang($this->params->getBoolRequestParam('multilang'));
         $obj->setOnlineurl($this->params->getOriginalStringRequestParam('onlineurl'));
         $obj->setBejelentkezeskell($this->params->getBoolRequestParam('bejelentkezeskell'));
+        $obj->setMinbejelentkezes($this->params->getIntRequestParam('minbejelentkezes'));
 //		$obj->doStuffOnPrePersist();
 		return $obj;
 	}

@@ -74,6 +74,11 @@
                                value="{$egyed.atlagresztvevoszam}"></td>
                 </tr>
                 <tr>
+                    <td><label for="MinbejelentkezesEdit">{at('Minimum bejelentkezés')}:</label></td>
+                    <td><input id="MinbejelentkezesEdit" name="minbejelentkezes" type="number" size="5" maxlength="5" step="any"
+                               value="{$egyed.minbejelentkezes}"></td>
+                </tr>
+                <tr>
                     <td><label for="OnlineUrlEdit">{at('Online óra link')}:</label></td>
                     <td colspan="3"><input id="OnlineUrlEdit" name="onlineurl" type="text" size="83" maxlength="255"
                                            value="{$egyed.onlineurl}"></td>
