@@ -292,15 +292,11 @@
                 <a href="{if ($ora['tanarurl'])}http://jogadarshan.hu/{$ora['tanarurl']}{/if}" target="_parent">{$ora['tanar']}{if ($ora['helyettesito'])} HELYETTESÍT: {$ora['helyettesito']}{/if}{if ($ora['elmarad'])} ELMARAD!{/if}</a>
                 {if ($ora['onlineurl'])}<div><a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink">Csatlakozom</a></div>{/if}
                 {if ($ora['bejelentkezeskell'])}
-                    {if ($ora['bejelentkezesdb'] >= $ora['maxbejelentkezes'])}
-                        <div>Az óra betelt</div>
-                    {else}
-                        <div>
-                            <a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink js-bejelentkezes" data-id="{$ora['id']}" data-datum="{$ora['datum']}">
-                                Bejelentkezek{if ($ora['bejelentkezesdb'])} ({$ora['bejelentkezesdb']} fő a {$ora['maxbejelentkezes']}-ból){/if}
-                            </a>
-                        </div>
-                    {/if}
+                    <div>
+                        <a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink js-bejelentkezes" data-id="{$ora['id']}" data-datum="{$ora['datum']}">
+                            Bejelentkezek (eddig {$ora['bejelentkezesdb']} fő)
+                        </a>
+                    </div>
                 {/if}
             </div>
         </div>
