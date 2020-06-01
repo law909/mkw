@@ -57,6 +57,7 @@ class cronController extends \mkwhelpers\Controller {
                             $body->setVar('megszolitas', $ora->getDolgozoNev());
                             $body->setVar('oranev', $ora->getNev());
                             $body->setVar('orakezdet', $ora->getKezdetStr());
+                            $body->setVar('oradatum', $ma->format(\mkw\store::$DateFormat));
 
                             $tanaremail = $ora->getDolgozoEmail();
                             $mailer = \mkw\store::getMailer();
@@ -79,6 +80,7 @@ class cronController extends \mkwhelpers\Controller {
                             $body->setVar('megszolitas', $ora->getDolgozoNev());
                             $body->setVar('oranev', $ora->getNev());
                             $body->setVar('orakezdet', $ora->getKezdetStr());
+                            $body->setVar('oradatum', $ma->format(\mkw\store::$DateFormat));
 
                             $tanaremail = $ora->getDolgozoEmail();
                             $mailer = \mkw\store::getMailer();
@@ -102,6 +104,7 @@ class cronController extends \mkwhelpers\Controller {
                                 $body->setVar('megszolitas', $jelentkezes->getPartnernev());
                                 $body->setVar('oranev', $ora->getNev());
                                 $body->setVar('orakezdet', $ora->getKezdetStr());
+                                $body->setVar('oradatum', $ma->format(\mkw\store::$DateFormat));
 
                                 $email = $jelentkezes->getPartneremail();
                                 $mailer = \mkw\store::getMailer();
@@ -126,6 +129,7 @@ class cronController extends \mkwhelpers\Controller {
                         $body->setVar('megszolitas', $ora->getDolgozoNev());
                         $body->setVar('oranev', $ora->getNev());
                         $body->setVar('orakezdet', $ora->getKezdetStr());
+                        $body->setVar('oradatum', $ma->format(\mkw\store::$DateFormat));
                         $jelz = [];
                         $jelentkezesek = $this->getRepo(JogaBejelentkezes::class)->getAll($bejfilter);
                         /** @var JogaBejelentkezes $jelentkezes */
