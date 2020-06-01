@@ -223,6 +223,17 @@ class Orarend extends \Entities\Orarend implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getDolgozoEmail()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDolgozoEmail', []);
+
+        return parent::getDolgozoEmail();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setDolgozo($dolgozo)
     {
 

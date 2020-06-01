@@ -297,6 +297,10 @@ class consts {
     const JogaUresTeremJutalek = 'jogauresteremjutalek';
     const JogaAYCMJutalek = 'jogaaycmjutalek';
     const JogaTanarelszamolasSablon = 'jogatanarelszamolassablon';
+    const JogaNemjonsenkiSablon = 'joganemjonsenkisablon';
+    const JogaNemjelenteztekelegenTanarnakSablon = 'joganemjelentkeztekelegentanarnaksablon';
+    const JogaNemjelentkeztekelegenGyakorlonakSablon = 'joganemjelentkeztekelegengyakorlonaksablon';
+    const JogaElegenjelentkeztek = 'jogaelegenjelentkeztek';
 
     const BarionPOSKey = 'barionposkey';
     const BarionAPIVersion = 'barionapiversion';

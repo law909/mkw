@@ -121,6 +121,13 @@ class Orarend {
         return '';
     }
 
+    public function getDolgozoEmail() {
+        if ($this->dolgozo) {
+            return $this->dolgozo->getEmail();
+        }
+        return '';
+    }
+
     public function setDolgozo($dolgozo) {
         $this->dolgozo = $dolgozo;
     }
