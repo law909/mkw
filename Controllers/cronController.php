@@ -81,6 +81,15 @@ class cronController extends \mkwhelpers\Controller {
                             $body->setVar('oranev', $ora->getNev());
                             $body->setVar('orakezdet', $ora->getKezdetStr());
                             $body->setVar('oradatum', $ma->format(\mkw\store::$DateFormat));
+                            $jelz = [];
+                            $jelentkezesek = $this->getRepo(JogaBejelentkezes::class)->getAll($bejfilter);
+                            /** @var JogaBejelentkezes $jelentkezes */
+                            foreach ($jelentkezesek as $jelentkezes) {
+                                $jelz[] = [
+                                    'nev' => $jelentkezes->getPartnernev()
+                                ];
+                            }
+                            $body->setVar('jelentkezesek', $jelz);
 
                             $tanaremail = $ora->getDolgozoEmail();
                             $mailer = \mkw\store::getMailer();
