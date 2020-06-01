@@ -119,6 +119,33 @@ class cronController extends \mkwhelpers\Controller {
                     }
                 }
                 else {
+                    $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaElegenjelentkeztekTanarnakSablon));
+                    if ($emailtpl) {
+                        $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                        $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                        $body->setVar('megszolitas', $ora->getDolgozoNev());
+                        $body->setVar('oranev', $ora->getNev());
+                        $body->setVar('orakezdet', $ora->getKezdetStr());
+                        $jelz = [];
+                        $jelentkezesek = $this->getRepo(JogaBejelentkezes::class)->getAll($bejfilter);
+                        /** @var JogaBejelentkezes $jelentkezes */
+                        foreach ($jelentkezesek as $jelentkezes) {
+                            $jelz[] = [
+                                'nev' => $jelentkezes->getPartnernev()
+                            ];
+                        }
+                        $body->setVar('jelentkezesek', $jelz);
+                        $tanaremail = $ora->getDolgozoEmail();
+                        $mailer = \mkw\store::getMailer();
+
+                        if ($tanaremail) {
+                            $mailer->addTo($tanaremail);
+                            $mailer->setSubject($subject->getTemplateResult());
+                            $mailer->setMessage($body->getTemplateResult());
+
+                            $mailer->send();
+                        }
+                    }
                     \mkw\store::writelog('okenak tunik');
                 }
                 \mkw\store::writelog($bejcnt . ' < ' . $ora->getMinbejelentkezes());

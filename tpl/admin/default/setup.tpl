@@ -342,6 +342,42 @@
                                 {/foreach}
                             </select>
                         </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="NemjonsenkiSablonEdit">{at('Nem jön senki sablon (tanárnak)')}:</label></span>
+                            <select id="NemjonsenkiSablonEdit" name="nemjonsenkisablon">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $nemjonsenkisablonlist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="nemjelentkeztekelegentanarnakSablonEdit">{at('Nem jelentkeztek elegen sablon (tanárnak)')}:</label></span>
+                            <select id="nemjelentkeztekelegentanarnakSablonEdit" name="nemjelentkeztekelegentanarnaksablon">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $nemjelentkeztekelegentanarnaksablonlist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="nemjelentkeztekelegengyakorlonaksablonEdit">{at('Nem jelentkeztek elegen sablon (gyakorlónak)')}:</label></span>
+                            <select id="nemjelentkeztekelegengyakorlonaksablonEdit" name="nemjelentkeztekelegengyakorlonaksablon">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $nemjelentkeztekelegengyakorlonaksablonlist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="elegenjelentkeztektanarnaksablonEdit">{at('Elegen jelentkeztek sablon (tanárnak)')}:</label></span>
+                            <select id="elegenjelentkeztektanarnaksablonEdit" name="elegenjelentkeztektanarnaksablon">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $elegenjelentkeztektanarnaksablonlist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
                     </div>
                     {/if}
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">

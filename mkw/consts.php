@@ -300,7 +300,7 @@ class consts {
     const JogaNemjonsenkiSablon = 'joganemjonsenkisablon';
     const JogaNemjelenteztekelegenTanarnakSablon = 'joganemjelentkeztekelegentanarnaksablon';
     const JogaNemjelentkeztekelegenGyakorlonakSablon = 'joganemjelentkeztekelegengyakorlonaksablon';
-    const JogaElegenjelentkeztek = 'jogaelegenjelentkeztek';
+    const JogaElegenjelentkeztekTanarnakSablon = 'jogaelegenjelentkeztektanarnaksablon';
 
     const BarionPOSKey = 'barionposkey';
     const BarionAPIVersion = 'barionapiversion';
