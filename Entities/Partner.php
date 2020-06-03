@@ -379,6 +379,10 @@ class Partner {
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $szamlalevelmegszolitas;
 
+    /** @ORM\Column(type="boolean") */
+    private $kulsos = false;
+
+
     public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1832,5 +1836,19 @@ class Partner {
      */
     public function setExportbacsakkeszlet($exportbacsakkeszlet) {
         $this->exportbacsakkeszlet = $exportbacsakkeszlet;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getKulsos() {
+        return $this->kulsos;
+    }
+
+    /**
+     * @param bool $kulsos
+     */
+    public function setKulsos($kulsos) {
+        $this->kulsos = $kulsos;
     }
 }

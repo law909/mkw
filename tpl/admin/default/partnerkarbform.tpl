@@ -42,6 +42,8 @@
             <tr>
                 <td><label for="ExportbanKeszletEdit">{at('Termék exp.ba csak készletes termékek')}:</label></td>
                 <td><input id="ExportbanKeszletEdit" name="exportbacsakkeszlet" type="checkbox"{if ($partner.exportbacsakkeszlet==1)} checked="checked"{/if}></td>
+                <td><label for="KulsosEdit">{at('Külsős')}:</label></td>
+                <td><input id="KulsosEdit" name="kulsos" type="checkbox"{if ($partner.kulsos==1)} checked="checked"{/if}></td>
             </tr>
             {/if}
 			<tr>

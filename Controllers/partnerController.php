@@ -115,6 +115,7 @@ class partnerController extends \mkwhelpers\MattableController {
         $x['anonym'] = $t->getAnonym();
         $x['apinev'] = $t->getApiconsumernev();
         $x['szamlalevelmegszolitas'] = $t->getSzamlalevelmegszolitas();
+        $x['kulsos'] = $t->getKulsos();
         if ($t->getSzamlatipus() > 0) {
             $afa = $this->getRepo('Entities\Afa')->find(\mkw\store::getParameter(\mkw\consts::NullasAfa));
             if ($afa) {
@@ -212,6 +213,7 @@ class partnerController extends \mkwhelpers\MattableController {
             $obj->setMunkahelyneve($this->params->getStringRequestParam('munkahelyneve'));
             $obj->setFoglalkozas($this->params->getStringRequestParam('foglalkozas'));
             $obj->setSzamlalevelmegszolitas($this->params->getStringRequestParam('szamlalevelmegszolitas'));
+            $obj->setKulsos($this->params->getBoolRequestParam('kulsos'));
             if ($this->params->getIntRequestParam('minicrmprojectid')) {
                 $obj->setMinicrmprojectid($this->params->getIntRequestParam('minicrmprojectid'));
             }
