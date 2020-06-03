@@ -21,6 +21,7 @@
                     <tr><td>{at('Adószám')}:</td><td>{$_partner.adoszam}</td></tr>
                     <tr><td>{at('Fizetési mód')}:</td><td>{$_partner.fizmodnev}</td></tr>
                     <tr><td>{at('Szállítási mód')}:</td><td>{$_partner.szallitasimodnev}</td></tr>
+                    <tr><td>{at('Partner típus')}:</td><td>{$_partner.partnertipusnev}</td></tr>
                     {if ($setup.multilang)}
                         <tr><td>{at('Bizonylatok nyelve')}:</td><td>{$_partner.bizonylatnyelv}</td></tr>
                     {/if}
