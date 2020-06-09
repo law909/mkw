@@ -244,3 +244,17 @@ table.termekkarton tr:nth-child(even) {
 .setuprow {
     margin-bottom: 3px;
 }
+
+.redtext {
+    color: red;
+    font-weight: bold;
+}
+
+.greentext {
+    color: green;
+    font-weight: bold;
+}
+
+.unstyled-list {
+    list-style: none;
+}

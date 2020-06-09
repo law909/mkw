@@ -10,6 +10,9 @@
 
 {block "kozep"}
     <div class="clearboth">
+        {include "../default/comp_noallapot.tpl"}
+    </div>
+    <div class="clearboth">
         <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
             <div class="ui-widget-header ui-corner-top">
                 <div class="mainboxinner ui-corner-top">Árfolyamok</div>

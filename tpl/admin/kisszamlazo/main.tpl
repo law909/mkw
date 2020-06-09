@@ -2,6 +2,9 @@
 
 {block "kozep"}
     <div class="clearboth">
+        {include "../default/comp_noallapot.tpl"}
+    </div>
+    <div class="clearboth">
         {if (haveJog(20))}
             {if ($setup.bankpenztar)}
                 <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">

@@ -94,6 +94,13 @@ if (!\mkw\store::getParameter(\mkw\consts::NAVOnlineME1_1Kesz, 0)) {
     \mkw\store::setParameter(\mkw\consts::NAVOnlineME1_1Kesz, 1);
 }
 
+$now = \Carbon\Carbon::now();
+
+$NAV2_0Date = \Carbon\Carbon::create(2020, 7, 1);
+if ($now->format(\mkw\store::$SQLDateFormat) >= $NAV2_0Date->format(\mkw\store::$SQLDateFormat)) {
+    \mkw\store::setParameter(\mkw\consts::NAVOnlineVersion, '2_0');
+}
+
 
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet

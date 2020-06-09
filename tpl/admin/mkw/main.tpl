@@ -1,8 +1,11 @@
 {extends "../base.tpl"}
 
 {block "kozep"}
-{if (haveJog(20))}
-<div>
+    <div class="clearboth">
+        {include "../default/comp_noallapot.tpl"}
+    </div>
+    {if (haveJog(20))}
+<div class="clearboth">
     <div class="mainbox ui-widget ui-widget-content ui-corner-all balra">
         <div class="ui-widget-header ui-corner-top">
             <div class="mainboxinner ui-corner-top">Nem kapható termékek, amikre van feliratkozó</div>

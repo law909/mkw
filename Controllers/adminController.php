@@ -2,7 +2,6 @@
 
 namespace Controllers;
 
-use Cassandra\Date;
 use mkw\store;
 use mkwhelpers, Entities;
 
@@ -24,6 +23,24 @@ class adminController extends mkwhelpers\Controller {
         $view = $this->createView('main.tpl');
         $this->generalDataLoader->loadData($view);
         $view->setVar('pagetitle', t('Főoldal'));
+
+        $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+        $no->hello();
+        $view->setVar('noerrors', $no->getErrors());
+        $view->setVar('noresult', $no->getResult());
+
+        $nohibasbeallitas = [];
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addSql('(_xx.navtipus=\'\') OR (_xx.navtipus IS NULL)');
+        $hibasdb = $this->getRepo(\Entities\Fizmod::class)->getCount($filter);
+        if ($hibasdb) {
+            $nohibasbeallitas[] = 'Nincs minden fizetési módnak NAV típus megadva.';
+        }
+        $hibasdb = $this->getRepo(\Entities\ME::class)->getCount($filter);
+        if ($hibasdb) {
+            $nohibasbeallitas[] = 'Nincs minden mennyiségi egységnek NAV típus megadva.';
+        }
+        $view->setVar('nohibalista', $nohibasbeallitas);
 
         $raktar = new raktarController($this->params);
         $raktarid = \mkw\store::getParameter(\mkw\consts::Raktar, 0);

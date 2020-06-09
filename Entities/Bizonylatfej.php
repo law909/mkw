@@ -1369,22 +1369,14 @@ class Bizonylatfej {
         $result = $result . '</invoiceMain>';
         $result = $result . '</InvoiceData>';
 
-        $b64 = base64_encode($result);
+        $b64 = str_replace('+', '$', base64_encode($result)); // a Delphi miatt az API igy várja az adatot
 
-        $result = '<invoiceOperations>';
-        $result = $result . '<compressedContent>false</compressedContent>';
-        $result = $result . '<invoiceOperation>';
-        $result = $result . '<index>1</index>';
         if ($this->getStorno()) {
-            $result = $result . '<invoiceOperation>STORNO</invoiceOperation>';
+            $result = 'STORNO' . $b64;
         }
         else {
-            $result = $result . '<invoiceOperation>CREATE</invoiceOperation>';
+            $result = 'CREATE' . $b64;
         }
-        $result = $result . '<invoiceData>' . $b64 . '</invoiceData>';
-        $result = $result . '</invoiceOperation>';
-        $result = $result . '</invoiceOperations>';
-
         return $result;
     }
 

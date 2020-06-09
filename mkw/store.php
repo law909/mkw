@@ -1463,4 +1463,15 @@ class store {
     public static function logsUrl($filename) {
         return '/' . self::getConfigValue('path.storage', '') . 'logs/' . $filename;
     }
+
+    public static function getTulajAdoszam() {
+        return self::getParameter(\mkw\consts::Tulajadoszam);
+    }
+
+    public static function getNAVOnlineEnv() {
+        if (self::isDeveloper()) {
+            return 'dev';
+        }
+        return \mkw\store::getParameter(\mkw\consts::NAVOnlineEnv);
+    }
 }
