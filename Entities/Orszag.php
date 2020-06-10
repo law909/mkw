@@ -148,7 +148,13 @@ class Orszag {
     }
 
     public function isDefault() {
-        return $this->getId() == \mkw\store::getParameter(\mkw\consts::Orszag);
+        if (\mkw\store::getParameter(\mkw\consts::Magyarorszag)) {
+            return $this->getId() == \mkw\store::getParameter(\mkw\consts::Magyarorszag);
+        }
+        elseif (\mkw\store::getParameter(\mkw\consts::Orszag)) {
+            return $this->getId() == \mkw\store::getParameter(\mkw\consts::Orszag);
+        }
+        return true;
     }
 
 }
