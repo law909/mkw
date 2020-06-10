@@ -124,6 +124,7 @@ if ($now->format(\mkw\store::$SQLDateFormat) >= $NAV2_0Date->format(\mkw\store::
     \mkw\store::setParameter(\mkw\consts::NAVOnlineErtekhatar, 0);
 }
 else {
+    \mkw\store::setParameter(\mkw\consts::NAVOnlineVersion, '1_1');
     \mkw\store::setParameter(\mkw\consts::NAVOnlineErtekhatar, 100000);
 }
 if (!\mkw\store::getNAVOnlineEnv()) {
