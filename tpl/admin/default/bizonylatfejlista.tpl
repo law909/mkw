@@ -179,6 +179,9 @@
 <thead>
 	<tr>
         <th><input id="maincheckbox" type="checkbox"></th>
+        {if ($shownavallapot)}
+        <th>NAV állapot</th>
+        {/if}
         {if ($showbizonylatstatuszeditor)}
         <th></th>
         {/if}

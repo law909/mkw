@@ -8,7 +8,7 @@
             {foreach $noerrors as $noerror}
                 <li class="redtext">{$noerror['code']} - {$noerror['message']} (v{$noversion})</li>
                 {foreachelse}
-                <li class="greentext">Elérhető ({$noresult}) (v{$noversion})</li>
+                <li class="greentext">Elérhető ({$noresult}) ({$noversion})</li>
             {/foreach}
             </ul>
             <ul class="unstyled-list">

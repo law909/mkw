@@ -115,6 +115,7 @@ class Bizonylattipus {
         $view->setVar('showfoxpostterminaleditor', $this->getShowfoxpostterminaleditor());
         $view->setVar('showfelhasznalo', $this->getShowfelhasznalo());
         $view->setVar('showpdf', $this->getShowpdf());
+        $view->setVar('shownavallapot', $this->getNavbekuldendo());
     }
 
     public function getId() {

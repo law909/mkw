@@ -1,5 +1,8 @@
 <tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}"{if (!$_egyed.nemrossz)} class="rontott"{/if}>
     <td class="cell"><input class="maincheckbox" type="checkbox"></td>
+    {if ($shownavallapot)}
+    <td class="cell{if ($_egyed.naveredmeny=='DONE')} greentext{/if}{if ($_egyed.naveredmeny=='ABORTED')} redtext{/if}">{$_egyed.naveredmeny}</td>
+    {/if}
         {if ($showbizonylatstatuszeditor)}
         <td class="cell">
             <select id="BizonylatStatuszFuggobenEdit" name="bizonylatstatusz" class="js-bizonylatstatuszedit">
@@ -21,7 +24,7 @@
                 <a class="js-pdf" href="#" data-egyedid="{$_egyed.id}" data-oper="pdf" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}" title="{at('PDF letöltés')}" target="_blank">PDF</a>
                 <a class="js-emailpdf" href="#" data-egyedid="{$_egyed.id}" data-oper="emailpdf" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}" title="{at('Küldés emailben')}" target="_blank"><span class="ui-icon ui-icon-mail-closed"></span></a>
             {/if}
-            {if ($_egyed.bizonylattipusid=='szamla')}
+            {if ($shownavallapot && $_egyed.navbekuldendo)}
                 <a class="js-nav" href="#" data-egyedid="{$_egyed.id}" title="{at('NAV XML')}" target="_blank">NAV</a>
             {/if}
             {if ($_egyed.nemrossz)}
