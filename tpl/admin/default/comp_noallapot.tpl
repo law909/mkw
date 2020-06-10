@@ -6,7 +6,7 @@
         <div class="mainboxinner">
             <ul class="unstyled-list">
             {foreach $noerrors as $noerror}
-                <li class="redtext">{$noerror['code']} - {$noerror['message']} (v{$noversion})</li>
+                <li class="redtext">{$noerror['code']} - {$noerror['message']} ({$noversion})</li>
                 {foreachelse}
                 <li class="greentext">Elérhető ({$noresult}) ({$noversion})</li>
             {/foreach}
