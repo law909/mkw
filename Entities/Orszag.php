@@ -154,7 +154,7 @@ class Orszag {
         elseif (\mkw\store::getParameter(\mkw\consts::Orszag)) {
             return $this->getId() == \mkw\store::getParameter(\mkw\consts::Orszag);
         }
-        return true;
+        return false;
     }
 
 }
