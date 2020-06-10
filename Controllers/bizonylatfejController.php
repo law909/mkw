@@ -655,6 +655,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 break;
             case $this->stornoOperation:
                 $obj->setSysmegjegyzes($this->params->getStringRequestParam('parentid') . ' stornó bizonylata.');
+                $obj->setNaveredmeny(null);
                 $obj->setStorno(true);
                 $obj->setStornotipus($this->params->getIntRequestParam('stornotip'));
                 switch ($obj->getStornotipus()) {

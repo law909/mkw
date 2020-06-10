@@ -33,7 +33,7 @@ class fantaController extends \mkwhelpers\MattableController {
                     ->addFilter('id', '>=', $szamlaszam);
 
                 $fixfilter = new \mkwhelpers\FilterDescriptor();
-                $fixfilter->addFilter('fix', '=', true);
+                $fixfilter->addSql('((_xx.fix=1) OR (_xx.navbekuldendo=1))');
 
                 $fixdb = $this->getRepo('Entities\Bizonylatfej')->getCount($filter->merge($fixfilter));
 
@@ -166,7 +166,7 @@ class fantaController extends \mkwhelpers\MattableController {
                 /** @var \Entities\Bizonylatfej $szamla */
                 $szamla = $this->getRepo('Entities\Bizonylatfej')->find($bizszam);
                 if ($szamla && !$szamla->getStorno() && !$szamla->getStornozott()
-                    && !$szamla->getFix() && !$szamla->getMese()
+                    && !$szamla->getFix() && !$szamla->getMese() && !$szamla->isNavbekuldendo()
                 ) {
 
                     $ujbt = $this->getRepo('Entities\Bizonylattipus')->find('egyeb');
@@ -179,6 +179,8 @@ class fantaController extends \mkwhelpers\MattableController {
                         $uj->clearLastmod();
                         $uj->setNyomtatva(false);
                         $uj->setFix(false);
+                        $uj->setNavbekuldendo(false);
+                        $uj->setNaveredmeny(null);
                         $uj->setBizonylattipus($ujbt);
                         foreach ($szamla->getBizonylattetelek() as $biztetel) {
                             $ujtetel = new \Entities\Bizonylattetel();
