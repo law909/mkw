@@ -13,6 +13,7 @@ class orszagController extends \mkwhelpers\JQGridController {
         $valuta = $sor->getValutanem();
         return array(
             $sor->getNev(),
+            $sor->getIso3166(),
             (isset($valuta) ? $valuta->getNev() : ''),
             $sor->getLathato(),
             $sor->getLathato2(),
@@ -22,6 +23,7 @@ class orszagController extends \mkwhelpers\JQGridController {
 
     protected function setFields($obj) {
         $obj->setNev($this->params->getStringRequestParam('nev', $obj->getNev()));
+        $obj->setIso3166($this->params->getStringRequestParam('iso3166', $obj->getIso3166()));
         $obj->setLathato($this->params->getBoolRequestParam('lathato'));
         $obj->setLathato2($this->params->getBoolRequestParam('lathato2'));
         $obj->setLathato3($this->params->getBoolRequestParam('lathato3'));
