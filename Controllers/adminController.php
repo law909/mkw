@@ -28,6 +28,7 @@ class adminController extends mkwhelpers\Controller {
         $no->hello();
         $view->setVar('noerrors', $no->getErrors());
         $view->setVar('noresult', $no->getResult());
+        $view->setVar('noversion', \mkw\store::getParameter(\mkw\consts::NAVOnlineVersion));
 
         $nohibasbeallitas = [];
         $filter = new \mkwhelpers\FilterDescriptor();
