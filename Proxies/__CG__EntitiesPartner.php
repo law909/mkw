@@ -1932,6 +1932,17 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function isDefaultOrszag()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isDefaultOrszag', []);
+
+        return parent::isDefaultOrszag();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getOrszag()
     {
 

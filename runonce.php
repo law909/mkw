@@ -67,6 +67,23 @@ if ($DBVersion < '0032') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0032');
 }
 
+if ($DBVersion < '0033') {
+    /** @var \Entities\Bizonylattipus $bizt */
+    $bizt = \mkw\store::getEm()->getRepository(\Entities\Bizonylattipus::class)->find('szamla');
+    $bizt->setNavbekuldendo(true);
+    \mkw\store::getEm()->persist($bizt);
+    $bizt = \mkw\store::getEm()->getRepository(\Entities\Bizonylattipus::class)->find('esetiszamla');
+    $bizt->setNavbekuldendo(true);
+    \mkw\store::getEm()->persist($bizt);
+    \mkw\store::getEm()->flush();
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0033');
+}
+
+/*********************************************************
+ *
+ * NAV ONLINE 1.1 (2019.06.01)
+ *
+ */
 if (!\mkw\store::getParameter(\mkw\consts::NAVOnlineME1_1Kesz, 0)) {
     $mes2 = array();
     $rsm = new ResultSetMapping();
@@ -96,6 +113,11 @@ if (!\mkw\store::getParameter(\mkw\consts::NAVOnlineME1_1Kesz, 0)) {
 
 $now = \Carbon\Carbon::now();
 
+/*********************************************************
+ *
+ * NAV ONLINE 2.0 (2020.07.01)
+ *
+ */
 $NAV2_0Date = \Carbon\Carbon::create(2020, 7, 1);
 if ($now->format(\mkw\store::$SQLDateFormat) >= $NAV2_0Date->format(\mkw\store::$SQLDateFormat)) {
     \mkw\store::setParameter(\mkw\consts::NAVOnlineVersion, '2_0');
@@ -104,7 +126,6 @@ if ($now->format(\mkw\store::$SQLDateFormat) >= $NAV2_0Date->format(\mkw\store::
 else {
     \mkw\store::setParameter(\mkw\consts::NAVOnlineErtekhatar, 100000);
 }
-
 if (!\mkw\store::getNAVOnlineEnv()) {
     \mkw\store::setParameter(\mkw\consts::NAVOnlineEnv, 'prod');
 }

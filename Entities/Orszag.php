@@ -147,5 +147,8 @@ class Orszag {
         $this->iso3166 = $iso3166;
     }
 
+    public function isDefault() {
+        return $this->getId() == \mkw\store::getParameter(\mkw\consts::Orszag);
+    }
 
 }

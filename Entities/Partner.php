@@ -1255,6 +1255,13 @@ class Partner {
         }
     }
 
+    public function isDefaultOrszag() {
+        if ($this->orszag) {
+            return $this->orszag->isDefault();
+        }
+        return true;
+    }
+
     public function getOrszag() {
         return $this->orszag;
     }

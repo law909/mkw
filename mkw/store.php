@@ -1472,6 +1472,10 @@ class store {
         if (self::isDeveloper()) {
             return 'dev';
         }
-        return \mkw\store::getParameter(\mkw\consts::NAVOnlineEnv);
+        return self::getParameter(\mkw\consts::NAVOnlineEnv);
+    }
+
+    public static function getNAVOnlineErtekhatar() {
+        return self::getParameter(\mkw\consts::NAVOnlineErtekhatar, 0) * 1;
     }
 }

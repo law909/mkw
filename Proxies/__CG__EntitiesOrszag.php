@@ -345,4 +345,15 @@ class Orszag extends \Entities\Orszag implements \Doctrine\ORM\Proxy\Proxy
         return parent::setIso3166($iso3166);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function isDefault()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isDefault', []);
+
+        return parent::isDefault();
+    }
+
 }

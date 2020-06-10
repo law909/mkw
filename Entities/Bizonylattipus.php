@@ -83,6 +83,8 @@ class Bizonylattipus {
     private $checkkelt = true;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showpdf = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $navbekuldendo = false;
 
     public function __construct() {
         $this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -449,6 +451,20 @@ class Bizonylattipus {
      */
     public function setShowpdf($showpdf) {
         $this->showpdf = $showpdf;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getNavbekuldendo() {
+        return $this->navbekuldendo;
+    }
+
+    /**
+     * @param bool $navbekuldendo
+     */
+    public function setNavbekuldendo($navbekuldendo) {
+        $this->navbekuldendo = $navbekuldendo;
     }
 
 }

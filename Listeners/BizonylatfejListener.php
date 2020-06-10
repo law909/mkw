@@ -465,6 +465,7 @@ class BizonylatfejListener {
                     $entity->calcRugalmasFizmod();
                     $entity->calcOsztottFizetendo();
                     $entity->calcSzallitasiido();
+                    $entity->calcNAVBekuldendo();
 
                     $feketelistarepo = $this->em->getRepository('Entities\Feketelista');
                     $fok = $feketelistarepo->getFeketelistaOk($entity->getPartneremail(), $entity->getIp());

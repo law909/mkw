@@ -419,6 +419,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['isbarion'] = \mkw\store::isBarionFizmod($t->getFizmod());
         $x['glsparcellabelurl'] = $t->getGlsparcellabelurl();
         $x['isglsbekuldve'] = $t->getGlsparcelid() ? true : false;
+        $x['navbekuldendo'] = $t->isNavbekuldendo();
+        $x['naveredmeny'] = $t->getNaveredmeny();
         if ($oper === $this->inheritOperation) {
             $x['fakekintlevoseg'] = false;
             $x['fakekifizetve'] = false;

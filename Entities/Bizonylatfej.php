@@ -615,8 +615,26 @@ class Bizonylatfej {
     /** @ORM\Column(type="string", length=100,nullable=true) */
     private $barionpaymentstatus;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $navbekuldendo = false;
+
+    /** @ORM\Column(type="string", length=30,nullable=true) */
+    private $naveredmeny;
+
+
     public function __toString() {
         return (string)$this->id;
+    }
+
+    public function calcNAVBekuldendo() {
+        if (!$this->isNavbekuldve()) {
+            $this->setNavbekuldendo(
+                $this->getBizonylattipusNavbekuldendo()
+                && $this->getPartneradoszam()
+                && $this->getPartner()->isDefaultOrszag()
+                && $this->getAfahuf() >= \mkw\store::getNAVOnlineErtekhatar()
+            );
+        }
     }
 
     public function calcOsszesen() {
@@ -2263,6 +2281,13 @@ class Bizonylatfej {
      */
     public function getBizonylattipus() {
         return $this->bizonylattipus;
+    }
+
+    public function getBizonylattipusNavbekuldendo() {
+        if ($this->bizonylattipus) {
+            return $this->bizonylattipus->getNavbekuldendo();
+        }
+        return false;
     }
 
     public function getBizonylattipusId() {
@@ -4876,6 +4901,41 @@ class Bizonylatfej {
      */
     public function setGlsparcellabelurl($glsparcellabelurl) {
         $this->glsparcellabelurl = $glsparcellabelurl;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNavbekuldendo() {
+        return $this->navbekuldendo;
+    }
+
+    /**
+     * @param bool $navbekuldendo
+     */
+    public function setNavbekuldendo($navbekuldendo) {
+        $this->navbekuldendo = $navbekuldendo;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNavbekuldve() {
+        return (bool)$this->getNaveredmeny();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNaveredmeny() {
+        return $this->naveredmeny;
+    }
+
+    /**
+     * @param mixed $naveredmeny
+     */
+    public function setNaveredmeny($naveredmeny) {
+        $this->naveredmeny = $naveredmeny;
     }
 
 }
