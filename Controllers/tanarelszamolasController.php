@@ -40,6 +40,8 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
             $filter->addFilter('_xx.datum', '<=', $igstr);
         }
 
+        $filter->addFilter('_xx.tisztaznikell', '=', false);
+
         $tetelek = $this->getRepo('Entities\JogaReszvetel')->getTanarOsszesito($filter, $hokulonbseg);
 
         return $tetelek;

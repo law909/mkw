@@ -13,6 +13,8 @@
                     <tr>
                         <td class="mattable-important"><label for="JRUresTeremEdit_{$egyed.id}" class="mattable-important">{at('Üres terem')}:</label></td>
                         <td><input id="JRUresTeremEdit_{$egyed.id}" name="uresterem_{$egyed.id}" type="checkbox"></td>
+                        <td class="mattable-important"><label for="JRTisztaznikellEdit_{$egyed.id}" class="mattable-important">{at('Tisztázni kell')}:</label></td>
+                        <td><input id="JRTisztaznikellEdit_{$egyed.id}" name="tisztaznikell_{$egyed.id}" type="checkbox"></td>
                     </tr>
                     <tr>
                         <td class="mattable-important"><label for="JRPartnerEdit_{$egyed.id}">{at('Résztvevő')}:</label></td>

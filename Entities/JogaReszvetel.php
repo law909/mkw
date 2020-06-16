@@ -124,6 +124,9 @@ class JogaReszvetel {
      */
     private $jogaberlet;
 
+    /** @ORM\Column(type="boolean",nullable=true,options={"default": 0}) */
+    private $tisztaznikell = false;
+
     public function getId() {
         return $this->id;
     }
@@ -617,6 +620,20 @@ class JogaReszvetel {
         if ($this->jogaberlet !== null) {
             $this->jogaberlet = null;
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTisztaznikell() {
+        return $this->tisztaznikell;
+    }
+
+    /**
+     * @param bool $tisztaznikell
+     */
+    public function setTisztaznikell($tisztaznikell) {
+        $this->tisztaznikell = $tisztaznikell;
     }
 
 }

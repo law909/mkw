@@ -241,6 +241,7 @@ class adminController extends mkwhelpers\Controller {
         $filter->addFilter('datum', '>=', $tol);
         $filter->addFilter('datum', '<=', $ig);
         $filter->addFilter('uresterem', '=', false);
+        $filter->addFilter('tisztaznikell', '=', false);
         $rvk = $reszvetrepo->getTermekOsszesito($filter);
         $resztvevolista = array();
         /** @var \Entities\JogaReszvetel $rv */

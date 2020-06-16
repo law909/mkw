@@ -59,6 +59,8 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         $x['jogaberlet'] = $t->getJogaberletId();
         $x['jogaberletnev'] = $t->getJogaberlet() ? $t->getJogaberlet()->getFullNev() : '';
 
+        $x['tisztaznikell'] = $t->isTisztaznikell();
+
         if ($forKarb) {
             $fizmod = new fizmodController($this->params);
             $x['fizmodlist'] = $fizmod->getSelectList();
@@ -156,6 +158,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         else {
             $obj->removeJogaberlet();
         }
+        $obj->setTisztaznikell($this->params->getBoolRequestParam('tisztaznikell'));
         return $obj;
     }
 
@@ -189,6 +192,16 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         }
         if ($ig) {
             $filter->addFilter('datum', '<=', $ig);
+        }
+
+        $tisztaznikell = $this->params->getBoolRequestParam('tisztaznikellfilter');
+        switch ($tisztaznikell) {
+            case 0:
+                $filter->addFilter('tisztaznikell', '=', false);
+                break;
+            case 1:
+                $filter->addFilter('tisztaznikell', '=', true);
+                break;
         }
 
         $this->initPager($this->getRepo()->getCount($filter));
@@ -442,6 +455,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                         $jr->setFizmod($fizmod);
                         $jr->setPenztar($penztar);
                         $jr->setJogaberlet($berlet);
+                        $jr->setTisztaznikell($this->params->getBoolRequestParam('tisztaznikell_' . $jrid));
                         $jr->calcJutalek();
                         $this->getEm()->persist($jr);
                         $this->getEm()->flush();

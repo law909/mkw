@@ -25,6 +25,14 @@
         <input id="partneremailfilter" name="partneremailfilter" type="text">
     </div>
     <div class="matt-hseparator"></div>
+    <div>
+        <select id="tisztaznikellfilter" name="tisztaznikellfilter">
+            <option value="0">{at('Rendben')}</option>
+            <option value="1">{at('Tisztázni kell')}</option>
+            <option value="9">{at('Mindegy')}</option>
+        </select>
+    </div>
+    <div class="matt-hseparator"></div>
 </div>
 <div class="mattable-pagerwrapper">
 	<div class="mattable-order">
@@ -48,6 +56,7 @@
 <thead>
 	<tr>
         <th><input class="js-maincheckbox" type="checkbox"></th>
+        <th>{at('Tisztázni kell')}</th>
         <th>{at('Dátum')}</th>
         <th>{at('Tanár')}</th>
         <th>{at('Óra')}</th>

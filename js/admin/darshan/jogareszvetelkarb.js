@@ -36,7 +36,7 @@ $(document).ready(function() {
         mkwcomp.datumEdit.init('#datumigfilter');
         $('#mattable-select').mattable({
             filter: {
-                fields: ['#datumtolfilter', '#datumigfilter', '#partnernevfilter', '#partneremailfilter']
+                fields: ['#datumtolfilter', '#datumigfilter', '#partnernevfilter', '#partneremailfilter', '#tisztaznikellfilter']
             },
             tablebody: {
                 url: '/admin/jogareszvetel/getlistbody'
