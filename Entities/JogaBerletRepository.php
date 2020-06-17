@@ -9,7 +9,8 @@ class JogaBerletRepository extends \mkwhelpers\Repository {
 		parent::__construct($em,$class);
 		$this->setEntityname(JogaBerlet::class);
         $this->setOrders(array(
-            '1' => array('caption' => 'név, lejárat dátum csökkenő', 'order' => array('p.nev' => 'ASC', '_xx.lejaratdatum' => 'DESC'))
+            '1' => array('caption' => 'vásárlás dátum csökkenő', 'order' => array('_xx.vasarlasnapja' => 'DESC')),
+            '2' => array('caption' => 'név, lejárat dátum csökkenő', 'order' => array('p.nev' => 'ASC', '_xx.lejaratdatum' => 'DESC'))
         ));
     }
 
