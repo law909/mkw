@@ -31,6 +31,14 @@ no.CegAdoszam:=DM._Param.ReadString(pTulajAdoszam,'');
         return $this->errors;
     }
 
+    public function getErrorsAsHtml() {
+        $str = '';
+        foreach ($this->getErrors() as $error) {
+            $str .= $error['code'] . ' - ' . $error['message'];
+        }
+        return $str;
+    }
+
     public function getResult() {
         return $this->result;
     }
@@ -139,8 +147,9 @@ no.CegAdoszam:=DM._Param.ReadString(pTulajAdoszam,'');
     }
 
     public function getSomeSzamlaInfo($bizszamlist) {
+        $bl = implode('##', $bizszamlist);
         $postdata = [
-            'bizszamlist' => $bizszamlist
+            'bizszamlist' => $bl
         ];
         return $this->callAPI('POST', '/someinvoices/' . $this->cegAdoszam, $postdata);
     }

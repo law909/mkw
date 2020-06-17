@@ -83,17 +83,4 @@ class SzamlafejController extends bizonylatfejController {
         return $egyed;
     }
 
-    public function navonline() {
-        $id = $this->params->getStringRequestParam('id', '');
-        /** @var \Entities\Bizonylatfej $biz */
-        $biz = $this->getRepo()->find($id);
-        if ($biz) {
-            $xml = $biz->toNAVOnlineXML();
-            header("Content-type: application/xml");
-            header("Pragma: no-cache");
-            header("Expires: 0");
-            echo $xml;
-        }
-    }
-
 }

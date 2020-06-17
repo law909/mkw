@@ -932,7 +932,7 @@ var bizonylathelper = function($) {
                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
                     .autocomplete( "instance" )._renderItem = termekAutocompleteRenderer;
 
-                $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder,.js-nav').button();
+                $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder,.js-nav,.js-navstat').button();
 
                 $('.js-inheritbizonylat').each(function() {
                     var $this = $(this);
@@ -1062,7 +1062,7 @@ var bizonylathelper = function($) {
                     onStyle: function() {
                         $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, ' +
                             '.js-inheritbizonylat, .js-printelolegbekero, .js-otpayrefund, .js-otpaystorno, .js-backorder, .js-mese, '+
-                            '.js-feketelista, .js-vissza, .js-nav, .js-pdf, .js-emailpdf').button();
+                            '.js-feketelista, .js-vissza, .js-nav, .js-navstat, .js-pdf, .js-emailpdf').button();
                     },
                     onDoEditLink: function() {
                         $('.js-inheritbizonylat').each(function() {
@@ -1090,8 +1090,10 @@ var bizonylathelper = function($) {
                             $this.attr('href', '/admin/' + bizonylattipus + 'fej/printelolegbekero?id=' + $this.data('egyedid'));
                         });
                         $('.js-nav').each(function() {
-                            var $this = $(this);
-                            $this.attr('href', '/admin/' + bizonylattipus + 'fej/navonline?id=' + $this.data('egyedid'));
+                            if ($('#mattable-table').data('noversion') <= '1_1') {
+                                var $this = $(this);
+                                $this.attr('href', '/admin/' + bizonylattipus + 'fej/navonline?id=' + $this.data('egyedid'));
+                            }
                         });
                     }
                 },
@@ -1573,7 +1575,19 @@ var bizonylathelper = function($) {
                                                             id: $this.data('egyedid'),
                                                             printed: true
                                                         },
-                                                        success: function() {
+                                                        success: function(r) {
+                                                            if (r) {
+                                                                $('#naverrordialog').html(r).dialog({
+                                                                    resizable: true,
+                                                                    height: 160,
+                                                                    modal: true,
+                                                                    buttons: {
+                                                                        'OK': function() {
+                                                                            $(this).dialog('close');
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
                                                             $('.mattable-tablerefresh').click();
                                                         }
                                                     });
@@ -1593,6 +1607,76 @@ var bizonylathelper = function($) {
                         }
                     }
                 });
+            })
+            .on('click', '.js-nav', function(e) {
+                if ($('#mattable-table').data('noversion') > '1_1') {
+                    var $this = $(this),
+                        $dia = $('#navdialog');
+                    e.preventDefault();
+                    $dia.dialog({
+                        title: 'NAV beküldés',
+                        resizable: true,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                var dial = $(this);
+                                $.ajax({
+                                    url: '/admin/bizonylatfej/navonline',
+                                    type: 'POST',
+                                    data: {
+                                        id: $this.data('egyedid')
+                                    },
+                                    success: function (r) {
+                                        dial.dialog('close');
+                                        if (r) {
+                                            $('#naverrordialog').html(r).dialog({
+                                                resizable: true,
+                                                height: 160,
+                                                modal: true,
+                                                buttons: {
+                                                    'OK': function () {
+                                                        $(this).dialog('close');
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        $('.mattable-tablerefresh').click();
+                                    }
+                                });
+                            },
+                            'Mégsem': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                }
+            })
+            .on('click', '.js-navstat', function(e) {
+                if ($('#mattable-table').data('noversion') > '1_1') {
+                    var $this = $(this),
+                        $dia = $('#naverrordialog');
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/admin/bizonylatfej/navstat',
+                        type: 'POST',
+                        data: {
+                            id: $this.data('egyedid')
+                        },
+                        success: function () {
+                            $('#naverrordialog').html('Az eredmény megtekintéséhez frissítse az ablakot.').dialog({
+                                resizable: true,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'OK': function () {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
             })
             .on('click', '.js-folyoszamlabtn', function (e) {
                 var $this = $(this);
@@ -1632,7 +1716,19 @@ var bizonylathelper = function($) {
                                             id: $this.data('egyedid'),
                                             printed: true
                                         },
-                                        success: function() {
+                                        success: function(r) {
+                                            if (r) {
+                                                $('#naverrordialog').html(r).dialog({
+                                                    resizable: true,
+                                                    height: 160,
+                                                    modal: true,
+                                                    buttons: {
+                                                        'OK': function() {
+                                                            $(this).dialog('close');
+                                                        }
+                                                    }
+                                                });
+                                            }
                                             $('.mattable-tablerefresh').click();
                                         }
                                     });

@@ -1476,6 +1476,9 @@ class store {
     }
 
     public static function getNAVOnlineErtekhatar() {
+        if (self::isDeveloper()) {
+            return 0;
+        }
         return self::getParameter(\mkw\consts::NAVOnlineErtekhatar, 0) * 1;
     }
 }

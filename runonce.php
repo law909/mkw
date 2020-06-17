@@ -111,20 +111,23 @@ if (!\mkw\store::getParameter(\mkw\consts::NAVOnlineME1_1Kesz, 0)) {
     \mkw\store::setParameter(\mkw\consts::NAVOnlineME1_1Kesz, 1);
 }
 
-$now = \Carbon\Carbon::now();
+$now = \Carbon\Carbon::now()->format(\mkw\store::$SQLDateFormat);
 
 /*********************************************************
  *
  * NAV ONLINE 2.0 (2020.07.01)
  *
  */
-$NAV2_0Date = \Carbon\Carbon::create(2020, 7, 1);
-if ($now->format(\mkw\store::$SQLDateFormat) >= $NAV2_0Date->format(\mkw\store::$SQLDateFormat)) {
+$NAV2_0Date = \Carbon\Carbon::create(2020, 6, 17)->format(\mkw\store::$SQLDateFormat);
+$NAVNincsErtekhatarDate = \Carbon\Carbon::create(2020, 7, 1)->format(\mkw\store::$SQLDateFormat);
+if ($now >= $NAV2_0Date) {
     \mkw\store::setParameter(\mkw\consts::NAVOnlineVersion, '2_0');
+    \mkw\store::setParameter(\mkw\consts::NAVOnline2_0StartDate, $NAV2_0Date);
+}
+if ($now >= $NAVNincsErtekhatarDate) {
     \mkw\store::setParameter(\mkw\consts::NAVOnlineErtekhatar, 0);
 }
 else {
-    \mkw\store::setParameter(\mkw\consts::NAVOnlineVersion, '1_1');
     \mkw\store::setParameter(\mkw\consts::NAVOnlineErtekhatar, 100000);
 }
 if (!\mkw\store::getNAVOnlineEnv()) {

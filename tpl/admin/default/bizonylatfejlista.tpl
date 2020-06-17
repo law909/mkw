@@ -175,7 +175,7 @@
 	</select>
     <a href="#" class="mattable-batchbtn">{at('Futtat')}</a>
 </div>
-<table id="mattable-table">
+<table id="mattable-table" data-noversion="{$noversion}">
 <thead>
 	<tr>
         <th><input id="maincheckbox" type="checkbox"></th>
@@ -212,6 +212,11 @@
 </div>
 <div id="emailpdfdialog" class="hidden">
 {at('A bizonylat ezután nyomtatott státuszú lesz. Biztos, hogy elküldi emailben?')}
+</div>
+<div id="navdialog" class="hidden">
+    {at('Biztos, hogy beküldi a bizonylatot a NAV-nak?')}
+</div>
+<div id="naverrordialog" class="hidden">
 </div>
 <div id="mattkarb">
 </div>

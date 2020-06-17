@@ -43,6 +43,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
     }
 
     public function viewlist() {
+        /** @var \Entities\Bizonylattipus $bt */
+        $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+        if ($bt && $bt->getNavbekuldendo()) {
+            $this->NAVEredmenyFeldolgoz();
+        }
+
         $view = $this->createView('bizonylatfejlista.tpl');
 
         $view->setVar('pagetitle', $this->getPluralPageTitle());
@@ -419,8 +425,18 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['isbarion'] = \mkw\store::isBarionFizmod($t->getFizmod());
         $x['glsparcellabelurl'] = $t->getGlsparcellabelurl();
         $x['isglsbekuldve'] = $t->getGlsparcelid() ? true : false;
-        $x['navbekuldendo'] = $t->isNavbekuldendo();
+        $x['navbekuldendo'] = $t->isNavbekuldendo() &&
+            (
+                ($t->getNaveredmeny() == 'ABORTED') ||
+                ($t->getNaveredmeny() == 'WAITING') ||
+                (!$t->getNaveredmeny())
+            );
         $x['naveredmeny'] = $t->getNaveredmeny();
+        $x['vegleges'] = $t->isNavbekuldendo() &&
+            (
+                ($t->getNaveredmeny() == 'DONE') ||
+                ($t->getNaveredmeny() == 'WAITING')
+            );
         if ($oper === $this->inheritOperation) {
             $x['fakekintlevoseg'] = false;
             $x['fakekifizetve'] = false;
@@ -1258,6 +1274,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
     }
 
     public function setNyomtatva($id = null, $printed = null) {
+        $httpcall = $id === null && $printed === null;
         if ($id === null) {
             $id = $this->params->getStringRequestParam('id');
         }
@@ -1272,6 +1289,20 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $bf->setNyomtatva($printed);
             $this->getEm()->persist($bf);
             $this->getEm()->flush();
+            if ($printed && !$bf->isNavbekuldve()) {
+                $nores = $this->sendToNAV($id);
+                if ($nores) {
+                    if (!$httpcall) {
+                        return $nores;
+                    }
+                    else {
+                        echo $nores;
+                    }
+                }
+            }
+        }
+        if (!$httpcall) {
+            return false;
         }
     }
 
@@ -1812,5 +1843,90 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $view = $this->createView('bizonylatfolyoszamlareszletezo.tpl');
         $view->setVar('lista', $adat);
         $view->printTemplateResult();
+    }
+
+    public function sendToNAV($bizszam) {
+        /** @var \Entities\Bizonylatfej $biz */
+        $biz = $this->getRepo()->find($bizszam);
+        if ($biz && $biz->getBizonylattipusNavbekuldendo() && $biz->isNavbekuldendo()) {
+            $xml = $biz->toNAVOnlineXML();
+            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+            if ($no->sendSzamla($bizszam, $xml)) {
+                $biz->setNaveredmeny($no->getResult());
+                $this->getEm()->persist($biz);
+                $this->getEm()->flush();
+            }
+            else {
+                $noerrors = $no->getErrors();
+                \mkw\store::writelog($bizszam, 'navonline.log');
+                \mkw\store::writelog(print_r($noerrors, true), 'navonline.log');
+                return $no->getErrorsAsHtml();
+            }
+        }
+        return false;
+    }
+
+    public function NAVEredmenyFeldolgoz() {
+        $bizszamok = $this->getRepo()->getNAVEredmenyFeldolgozando();
+        if ($bizszamok) {
+            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+            if ($no->getSomeSzamlaInfo($bizszamok)) {
+                $noresult = json_decode($no->getResult());
+                foreach ($noresult as $res) {
+                    /** @var \Entities\Bizonylatfej $biz */
+                    $biz = $this->getRepo()->find($res->bizszam);
+                    if ($biz) {
+                        $biz->setNaveredmeny($res->navstate);
+                        $this->getEm()->persist($biz);
+                        $this->getEm()->flush();
+                    }
+                }
+            }
+            else {
+                $noerrors = $no->getErrors();
+                \mkw\store::writelog(print_r($bizszamok, true), 'navonline.log');
+                \mkw\store::writelog(print_r($noerrors, true), 'navonline.log');
+            }
+        }
+    }
+
+    public function navonline() {
+        $id = $this->params->getStringRequestParam('id', '');
+        if (\mkw\store::getParameter(\mkw\consts::NAVOnlineVersion, '2_0') === '1_1') {
+            /** @var \Entities\Bizonylatfej $biz */
+            $biz = $this->getRepo()->find($id);
+            if ($biz && $biz->isNavbekuldendo()) {
+                $xml = $biz->toNAVOnlineXML();
+                header("Content-type: application/xml");
+                header("Pragma: no-cache");
+                header("Expires: 0");
+                echo $xml;
+            }
+        }
+        else {
+            /** @var \Entities\Bizonylatfej $biz */
+            $biz = $this->getRepo()->find($id);
+            if ($biz && $biz->isNavbekuldendo()) {
+                if ($biz->getNyomtatva()) {
+                    $nores = $this->sendToNAV($id);
+                    if ($nores) {
+                        echo $nores;
+                    }
+                }
+                else {
+                    echo 'A bizonylat nincs kinyomtatva';
+                }
+            }
+        }
+    }
+
+    public function requeryNavEredmeny() {
+        $id = $this->params->getStringRequestParam('id', '');
+        /** @var \Entities\Bizonylatfej $biz */
+        $biz = $this->getRepo()->find($id);
+        if ($biz) {
+            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+            $no->requeryFromNAV($id);
+        }
     }
 }

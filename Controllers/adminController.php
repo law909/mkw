@@ -28,7 +28,10 @@ class adminController extends mkwhelpers\Controller {
         $no->hello();
         $view->setVar('noerrors', $no->getErrors());
         $view->setVar('noresult', $no->getResult());
-        $view->setVar('noversion', \mkw\store::getNAVOnlineEnv() . ' v' . \mkw\store::getParameter(\mkw\consts::NAVOnlineVersion));
+        $view->setVar('noversion', \mkw\store::getNAVOnlineEnv()
+            . ' v' . \mkw\store::getParameter(\mkw\consts::NAVOnlineVersion)
+            . '; értékhatár=' . \mkw\store::getParameter(\mkw\consts::NAVOnlineErtekhatar, 0)
+        );
 
         $nohibasbeallitas = [];
         $filter = new \mkwhelpers\FilterDescriptor();

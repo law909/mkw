@@ -1193,16 +1193,14 @@ class Bizonylatfej {
         if ($this->getStorno()) {
             $result = $result . '<invoiceReference>';
             $result = $result . '<originalInvoiceNumber>' . $this->getParbizonylatfejId() . '</originalInvoiceNumber>';
-            $result = $result . '<modificationIssueDate>' . $this->getKelt()->format(\mkw\store::$SQLDateFormat) . '</modificationIssueDate>';
-            $utcmost = strtotime($this->getCreated()->format(\mkw\store::$sqlDateTimeFormat));
-            $result = $result . '<modificationTimestamp>' . gmdate(\mkw\store::$sqlDateTimeFormat, $utcmost) . '.000Z</modificationTimestamp>';
             $pb = $this->getParbizonylatfej();
-            if ($pb->getKelt()->format(\mkw\store::$SQLDateFormat) >= '2018-07-01') {
+            if ($pb->getNaveredmeny() === 'DONE') {
                 $result = $result . '<modifyWithoutMaster>false</modifyWithoutMaster>';
             }
             else {
                 $result = $result . '<modifyWithoutMaster>true</modifyWithoutMaster>';
             }
+            $result = $result . '<modificationIndex>1</modificationIndex>';
             $result = $result . '</invoiceReference>';
         }
         $result = $result . '<invoiceHead>';
@@ -1312,7 +1310,12 @@ class Bizonylatfej {
             $result = $result . '<lineNetAmountHUF>' . \mkw\store::NAVNum($bt->getNettohuf()) . '</lineNetAmountHUF>';
             $result = $result . '</lineNetAmountData>';
 
-            $result = $result . '<lineVatRate><vatPercentage>' . \mkw\store::NAVNum($bt->getAfakulcs()/100) . '</vatPercentage></lineVatRate>';
+            if ($bt->getAfakulcs() == 0) {
+                $result = $result . '<lineVatRate><vatExemption>AAM</vatExemption></lineVatRate>';
+            }
+            else {
+                $result = $result . '<lineVatRate><vatPercentage>' . \mkw\store::NAVNum($bt->getAfakulcs() / 100) . '</vatPercentage></lineVatRate>';
+            }
             $result = $result . '<lineVatData>';
             $result = $result . '<lineVatAmount>' . \mkw\store::NAVNum($bt->getAfaertek()) . '</lineVatAmount>';
             $result = $result . '<lineVatAmountHUF>' . \mkw\store::NAVNum($bt->getAfaertekhuf()) . '</lineVatAmountHUF>';
@@ -1354,7 +1357,12 @@ class Bizonylatfej {
         $afasum = \mkw\store::getEm()->getRepository('Entities\Bizonylatfej')->getAFAOsszesito($this);
         foreach($afasum as $as) {
             $result = $result . '<summaryByVatRate>';
-            $result = $result . '<vatRate><vatPercentage>' . \mkw\store::NAVNum($as['afakulcs'] / 100) . '</vatPercentage></vatRate>';
+            if ($as['afakulcs'] == 0) {
+                $result = $result . '<vatRate><vatExemption>AAM</vatExemption></vatRate>';
+            }
+            else {
+                $result = $result . '<vatRate><vatPercentage>' . \mkw\store::NAVNum($as['afakulcs'] / 100) . '</vatPercentage></vatRate>';
+            }
 
             $result = $result . '<vatRateNetData>';
             $result = $result . '<vatRateNetAmount>' . \mkw\store::NAVNum($as['netto']) . '</vatRateNetAmount>';

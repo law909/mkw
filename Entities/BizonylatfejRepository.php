@@ -1126,4 +1126,23 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getResult();
     }
+
+    public function getNAVEredmenyFeldolgozando() {
+        $filter = new FilterDescriptor();
+        $filter
+            ->addFilter('kelt', '>=', \mkw\store::getParameter(\mkw\consts::NAVOnline2_0StartDate))
+            ->addFilter('navbekuldendo', '=', true)
+            ->addFilter('naveredmeny', '=', 'WAITING');
+
+        $q = $this->_em->createQuery('SELECT _xx.id'
+            . ' FROM Entities\Bizonylatfej _xx'
+            . $this->getFilterString($filter));
+        $q->setParameters($this->getQueryParameters($filter));
+        $r = $q->getScalarResult();
+        $res = [];
+        foreach ($r as $b) {
+            $res[] = $b['id'];
+        }
+        return $res;
+    }
 }
