@@ -621,6 +621,8 @@ class Bizonylatfej {
     /** @ORM\Column(type="string", length=30,nullable=true) */
     private $naveredmeny;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $forditottadozas = false;
 
     public function __toString() {
         return (string)$this->id;
@@ -1310,12 +1312,20 @@ class Bizonylatfej {
             $result = $result . '<lineNetAmountHUF>' . \mkw\store::NAVNum($bt->getNettohuf()) . '</lineNetAmountHUF>';
             $result = $result . '</lineNetAmountData>';
 
-            if ($bt->getAfakulcs() == 0) {
-                $result = $result . '<lineVatRate><vatExemption>AAM</vatExemption></lineVatRate>';
+            $result = $result . '<lineVatRate>';
+            if ($this->isForditottadozas()) {
+                $result = $result . '<vatDomesticReverseCharge>true</vatDomesticReverseCharge>';
             }
             else {
-                $result = $result . '<lineVatRate><vatPercentage>' . \mkw\store::NAVNum($bt->getAfakulcs() / 100) . '</vatPercentage></lineVatRate>';
+                if ($bt->getAfakulcs() == 0) {
+                    $result = $result . '<vatExemption>AAM</vatExemption>';
+                }
+                else {
+                    $result = $result . '<vatPercentage>' . \mkw\store::NAVNum($bt->getAfakulcs() / 100) . '</vatPercentage>';
+                }
             }
+            $result = $result . '</lineVatRate>';
+
             $result = $result . '<lineVatData>';
             $result = $result . '<lineVatAmount>' . \mkw\store::NAVNum($bt->getAfaertek()) . '</lineVatAmount>';
             $result = $result . '<lineVatAmountHUF>' . \mkw\store::NAVNum($bt->getAfaertekhuf()) . '</lineVatAmountHUF>';
@@ -1357,12 +1367,19 @@ class Bizonylatfej {
         $afasum = \mkw\store::getEm()->getRepository('Entities\Bizonylatfej')->getAFAOsszesito($this);
         foreach($afasum as $as) {
             $result = $result . '<summaryByVatRate>';
-            if ($as['afakulcs'] == 0) {
-                $result = $result . '<vatRate><vatExemption>AAM</vatExemption></vatRate>';
+            $result = $result . '<vatRate>';
+            if ($this->isForditottadozas()) {
+                $result = $result . '<vatDomesticReverseCharge>true</vatDomesticReverseCharge>';
             }
             else {
-                $result = $result . '<vatRate><vatPercentage>' . \mkw\store::NAVNum($as['afakulcs'] / 100) . '</vatPercentage></vatRate>';
+                if ($as['afakulcs'] == 0) {
+                    $result = $result . '<vatExemption>AAM</vatExemption>';
+                }
+                else {
+                    $result = $result . '<vatPercentage>' . \mkw\store::NAVNum($as['afakulcs'] / 100) . '</vatPercentage>';
+                }
             }
+            $result = $result . '</vatRate>';
 
             $result = $result . '<vatRateNetData>';
             $result = $result . '<vatRateNetAmount>' . \mkw\store::NAVNum($as['netto']) . '</vatRateNetAmount>';
@@ -4944,6 +4961,20 @@ class Bizonylatfej {
      */
     public function setNaveredmeny($naveredmeny) {
         $this->naveredmeny = $naveredmeny;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isForditottadozas() {
+        return $this->forditottadozas;
+    }
+
+    /**
+     * @param bool $forditottadozas
+     */
+    public function setForditottadozas($forditottadozas) {
+        $this->forditottadozas = $forditottadozas;
     }
 
 }

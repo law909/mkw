@@ -425,6 +425,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $x['isbarion'] = \mkw\store::isBarionFizmod($t->getFizmod());
         $x['glsparcellabelurl'] = $t->getGlsparcellabelurl();
         $x['isglsbekuldve'] = $t->getGlsparcelid() ? true : false;
+        $x['forditottadozas'] = $t->isForditottadozas();
         $x['navbekuldendo'] = $t->isNavbekuldendo() &&
             (
                 ($t->getNaveredmeny() == 'ABORTED') ||
@@ -542,6 +543,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
 
         $obj->setFix($this->params->getBoolRequestParam('fix'));
+
+        $obj->setForditottadozas($this->params->getBoolRequestParam('forditottadozas'));
 
         if ($partnerkod > 0) {
             $ck = \mkw\store::getEm()->getRepository('Entities\Partner')->find($partnerkod);

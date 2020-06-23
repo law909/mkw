@@ -8,6 +8,12 @@
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<table><tbody>
+                {if ($showforditottadozas)}
+                    <tr>
+                        <td><label for="ForditottadozasEdit">Fordított adózás:</label></td>
+                        <td><input id="ForditottadozasEdit" type="checkbox" name="forditottadozas"{if ($egyed.forditottadozas)} checked{/if}></td>
+                    </tr>
+                {/if}
             {if ($showbizonylatstatuszeditor)}
 			<tr>
                 <td class="mattable-important"><label for="BizonylatStatuszEdit">Státusz:</label></td>

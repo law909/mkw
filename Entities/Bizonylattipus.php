@@ -116,6 +116,7 @@ class Bizonylattipus {
         $view->setVar('showfelhasznalo', $this->getShowfelhasznalo());
         $view->setVar('showpdf', $this->getShowpdf());
         $view->setVar('shownavallapot', $this->getNavbekuldendo());
+        $view->setVar('showforditottadozas', $this->getId() === 'szamla' || $this->getId() === 'esetiszamla');
     }
 
     public function getId() {
