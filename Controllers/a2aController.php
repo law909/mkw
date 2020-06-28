@@ -160,6 +160,7 @@ class a2aController extends \mkwhelpers\Controller {
                 'key' => 'xxxx'
             ),
             'cmds' => array(
+                'hello',
                 'gettermek' => array(
                     'ids' => array(1,2,3,4,5), // vagy
                     'id' => 1062, // vagy
@@ -200,6 +201,35 @@ class a2aController extends \mkwhelpers\Controller {
                         'szallhazszam' => '',
                         'vendeg' => 0
                     )
+                ),
+                'szamla' => array(
+                    'create' => array(
+                        'telephelykod' => 0,
+                        'nev' => '',
+                        'irszam' => '',
+                        'varos' => '',
+                        'utca' => '',
+                        'hazszam' => '',
+                        'adoszam' => '',
+                        'fizmodnev' => '',
+                        'fizmodnavkod' => '',
+                        'megjegyzes' => '',
+                        'tetelek' => array(
+                            'termeknev' => '',
+                            'cikkszam' => '',
+                            'vonalkod' => '',
+                            'szallitoicikkszam' => '',
+                            'vtszszam' => '',
+                            'me' => '',
+                            'menavkod' => '',
+                            'mennyiseg' => 0,
+                            'nettoegysar' => 0,
+                            'bruttoegysar' => 0,
+                            'netto' => 0,
+                            'afa' => 0,
+                            'brutto' => 0
+                        )
+                    )
                 )
             )
         );
@@ -224,6 +254,9 @@ class a2aController extends \mkwhelpers\Controller {
             foreach ($cmds as $cmdkey => $cmd) {
 
                 switch ($cmdkey) {
+                    case 'hello':
+                        $results['hello'] = 'hello';
+                        break;
                     case 'gettermek':
                         if (array_key_exists('id', $cmd)) {
                             $results['termek'] = $this->gettermek_id($cmd['id']);
@@ -285,6 +318,13 @@ class a2aController extends \mkwhelpers\Controller {
                                 $padat['msg'] = $msgs;
                             }
                             $results['reg'] = $padat;
+                        }
+                        break;
+                    case 'szamla':
+                        if (array_key_exists('create', $cmd)) {
+
+                            $results['szamlaszam'] = '';
+                            $results['printurl'] = '';
                         }
                         break;
                 }
