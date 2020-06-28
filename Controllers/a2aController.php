@@ -244,6 +244,9 @@ class a2aController extends \mkwhelpers\Controller {
         $data = $this->params->getOriginalStringRequestParam('data');
         $jsondata = json_decode($data, true);
 
+        \mkw\store::writelog($data, 'ujdivat.log');
+        \mkw\store::writelog(print_r($jsondata, true), 'ujdivat.log');
+
         $auth = $jsondata['auth'];
         $consumer = $this->Auth($auth['name'], $auth['key']);
         if ($consumer) {
