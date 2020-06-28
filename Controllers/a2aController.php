@@ -203,7 +203,7 @@ class a2aController extends \mkwhelpers\Controller {
                     )
                 ),
                 'szamla' => array(
-                    'create' => array(
+                    'createraw' => array(
                         'telephelykod' => 0,
                         'nev' => '',
                         'irszam' => '',
@@ -324,7 +324,7 @@ class a2aController extends \mkwhelpers\Controller {
                         }
                         break;
                     case 'szamla':
-                        if (array_key_exists('create', $cmd)) {
+                        if (array_key_exists('createraw', $cmd)) {
 
                             $results['szamlaszam'] = '';
                             $results['printurl'] = '';
@@ -340,6 +340,7 @@ class a2aController extends \mkwhelpers\Controller {
         }
 
         $result['results'] = $results;
+        \mkw\store::writelog(print_r($result, true), 'ujdivat.log');
         echo json_encode($result);
     }
 
