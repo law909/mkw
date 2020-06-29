@@ -218,7 +218,6 @@ class a2aController extends \mkwhelpers\Controller {
                         'tetelek' => array(
                             'termeknev' => '',
                             'cikkszam' => '',
-                            'vonalkod' => '',
                             'szallitoicikkszam' => '',
                             'vtszszam' => '',
                             'afakulcs' => 27,
@@ -247,7 +246,7 @@ class a2aController extends \mkwhelpers\Controller {
         $jsondata = json_decode($data, true);
 
         \mkw\store::writelog($data, 'ujdivat.log');
-        \mkw\store::writelog(print_r($jsondata, true), 'ujdivat.log');
+        \mkw\store::writelog(json_last_error(), 'ujdivat.log');
 
         $auth = $jsondata['auth'];
         $consumer = $this->Auth($auth['name'], $auth['key']);
