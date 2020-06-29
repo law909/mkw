@@ -243,7 +243,7 @@ class a2aController extends \mkwhelpers\Controller {
         $results = array();
 
         $data = $this->params->getOriginalStringRequestParam('data');
-        $jsondata = json_decode($data, true);
+        $jsondata = json_decode($data, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 
         \mkw\store::writelog($data, 'ujdivat.log');
         \mkw\store::writelog(json_last_error(), 'ujdivat.log');
