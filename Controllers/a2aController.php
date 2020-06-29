@@ -205,6 +205,7 @@ class a2aController extends \mkwhelpers\Controller {
                 'szamla' => array(
                     'createraw' => array(
                         'telephelykod' => 0,
+                        'idegenbizszam' => '',
                         'nev' => '',
                         'irszam' => '',
                         'varos' => '',
@@ -220,6 +221,7 @@ class a2aController extends \mkwhelpers\Controller {
                             'vonalkod' => '',
                             'szallitoicikkszam' => '',
                             'vtszszam' => '',
+                            'afakulcs' => 27,
                             'me' => '',
                             'menavkod' => '',
                             'mennyiseg' => 0,
@@ -326,8 +328,8 @@ class a2aController extends \mkwhelpers\Controller {
                     case 'szamla':
                         if (array_key_exists('createraw', $cmd)) {
 
-                            $results['szamlaszam'] = '';
-                            $results['printurl'] = '';
+                            $results['szamlaszam'] = 'tesztszamlaszam';
+                            $results['pdfurl'] = 'tesztpdfurl';
                         }
                         break;
                 }
