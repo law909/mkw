@@ -24,7 +24,7 @@
     </table>
 </div>
 <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
-    <div class="mattable-important">Pénztár egyenlegek {$idoszakvege}</div>
+    <div class="mattable-important">Pénztár egyenlegek {$ma}</div>
     <table>
         {foreach $penztaregyenlegek as $egyenleg}
             {if ($egyenleg[2] != 0)}

@@ -209,6 +209,7 @@ class adminController extends mkwhelpers\Controller {
         $igstr = $this->params->getStringRequestParam('ig');
         $ig = \mkw\store::convDate($igstr);
         $view->setVar('idoszakvege', $igstr);
+        $view->setVar('ma', date(\mkw\store::$DateFormat));
 
         $partnerrepo = $this->getRepo('Entities\Partner');
         $filter = new \mkwhelpers\FilterDescriptor();
@@ -260,7 +261,7 @@ class adminController extends mkwhelpers\Controller {
         // penztar egyenlegek datumig napon
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
-            ->addFilter('kelt', '<=', $ig)
+            ->addFilter('kelt', '<=', date(\mkw\store::$SQLDateFormat))
             ->addFilter('rontott', '=', false);
         $penztaregyenleg = $this->getRepo('Entities\Penztarbizonylatfej')->getSumByPenztar($filter);
         $view->setVar('penztaregyenlegek', $penztaregyenleg);
