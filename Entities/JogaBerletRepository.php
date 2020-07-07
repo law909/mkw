@@ -52,4 +52,33 @@ class JogaBerletRepository extends \mkwhelpers\Repository {
 	    return null;
     }
 
+    public function calcMegFelhasznalhato() {
+	    $filter = new FilterDescriptor();
+	    $filter->addFilter('lejart', '=', false);
+	    $filter->addFilter('lejaratdatum', '>', date(\mkw\store::$SQLDateFormat));
+        $q = $this->_em->createQuery('SELECT _xx,t'
+            . ' FROM Entities\JogaBerlet _xx'
+            . ' LEFT JOIN _xx.termek t'
+            . $this->getFilterString($filter));
+        $q->setParameters($this->getQueryParameters($filter));
+        $ret = [
+            'mennyiseg' => 0,
+            'ertek' => 0
+        ];
+        $r = $q->getResult();
+        /** @var \Entities\JogaBerlet $berlet */
+        foreach($r as $berlet) {
+            $ret['mennyiseg'] += $berlet->getAlkalom() - ($berlet->getElfogyottalkalom() + $berlet->getOfflineelfogyottalkalom());
+            if ($berlet->getBruttoegysar() != 0) {
+                $ret['ertek'] += $berlet->getBruttoegysar()
+                    * ($berlet->getAlkalom() - ($berlet->getElfogyottalkalom() + $berlet->getOfflineelfogyottalkalom()));
+            }
+            else {
+                $ret['ertek'] += $berlet->getTermek()->getBruttoAr() / $berlet->getTermek()->getJogaalkalom()
+                    * ($berlet->getAlkalom() - ($berlet->getElfogyottalkalom() + $berlet->getOfflineelfogyottalkalom()));
+            }
+        }
+        return $ret;
+    }
+
 }

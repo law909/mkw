@@ -204,10 +204,11 @@ class adminController extends mkwhelpers\Controller {
 
     public function darshanStatisztika() {
         $view = $this->createView('statisztika.tpl');
-        $datumstr = $this->params->getStringRequestParam('tol');
-        $tol = \mkw\store::convDate($datumstr);
-        $datumstr = $this->params->getStringRequestParam('ig');
-        $ig = \mkw\store::convDate($datumstr);
+        $tolstr = $this->params->getStringRequestParam('tol');
+        $tol = \mkw\store::convDate($tolstr);
+        $igstr = $this->params->getStringRequestParam('ig');
+        $ig = \mkw\store::convDate($igstr);
+        $view->setVar('idoszakvege', $igstr);
 
         $partnerrepo = $this->getRepo('Entities\Partner');
         $filter = new \mkwhelpers\FilterDescriptor();
@@ -255,6 +256,19 @@ class adminController extends mkwhelpers\Controller {
             );
         }
         $view->setVar('resztvevolista', $resztvevolista);
+
+        // penztar egyenlegek datumig napon
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('kelt', '<=', $ig)
+            ->addFilter('rontott', '=', false);
+        $penztaregyenleg = $this->getRepo('Entities\Penztarbizonylatfej')->getSumByPenztar($filter);
+        $view->setVar('penztaregyenlegek', $penztaregyenleg);
+
+        // meg lejaratlan berlet alkalmak szama datumig napon berlet tipus szerint, ertekuk forintban, osszesen db es ertek
+        $megfelhasznalhatoberletalk = $this->getRepo('Entities\JogaBerlet')->calcMegFelhasznalhato();
+        $megfelhasznalhatoberletalk['kifizetendo'] = $megfelhasznalhatoberletalk['ertek'] * \mkw\store::getParameter(\mkw\consts::JogaJutalek) / 100;
+        $view->setVar('berletalkalom', $megfelhasznalhatoberletalk);
 
         $view->printTemplateResult();
 

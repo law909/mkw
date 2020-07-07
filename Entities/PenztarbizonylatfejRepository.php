@@ -56,6 +56,17 @@ class PenztarbizonylatfejRepository extends \mkwhelpers\Repository {
         return $q->getSingleScalarResult();
     }
 
+    public function getSumByPenztar($filter) {
+        $q = $this->_em->createQuery('SELECT IDENTITY(_xx.penztar),p.nev,SUM(_xx.irany * _xx.brutto)'
+            . ' FROM Entities\Penztarbizonylatfej _xx'
+            . ' LEFT JOIN _xx.penztar p'
+            . $this->getFilterString($filter)
+            . 'GROUP BY _xx.penztar'
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
+    }
+
     public function getAllByHivatkozottBizonylat($filter) {
         $q = $this->_em->createQuery('SELECT _xx, pt'
             . ' FROM Entities\Penztarbizonylatfej _xx'

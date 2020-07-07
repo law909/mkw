@@ -23,3 +23,21 @@
         {/foreach}
     </table>
 </div>
+<div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+    <div class="mattable-important">Pénztár egyenlegek {$idoszakvege}</div>
+    <table>
+        {foreach $penztaregyenlegek as $egyenleg}
+            {if ($egyenleg[2] != 0)}
+            <tr>
+                <td>{$egyenleg.nev}</td>
+                <td class="textalignright">{$egyenleg[2]}</td>
+            </tr>
+            {/if}
+        {/foreach}
+    </table>
+</div>
+<div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+    <div class="mattable-important">Még felhasználható bérlet alkalom: {$berletalkalom['mennyiseg']}</div>
+    <div>Még felhasználható bérlet érték: {$berletalkalom['ertek']} HUF</div>
+    <div class="mattable-important">Ennyi jár belőle a tanároknak: {$berletalkalom['kifizetendo']} HUF</div>
+</div>
