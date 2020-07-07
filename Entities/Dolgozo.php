@@ -72,6 +72,9 @@ class Dolgozo {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $szamlatad = 1;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $inaktiv = false;
+
 
     public function __construct() {
         $this->jelenletek = new ArrayCollection();
@@ -314,6 +317,20 @@ class Dolgozo {
      */
     public function setSzamlatad($szamlatad) {
         $this->szamlatad = $szamlatad;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInaktiv() {
+        return $this->inaktiv;
+    }
+
+    /**
+     * @param bool $inaktiv
+     */
+    public function setInaktiv($inaktiv) {
+        $this->inaktiv = $inaktiv;
     }
 
 }

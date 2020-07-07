@@ -2,6 +2,9 @@
 
 namespace Controllers;
 
+use mkwhelpers\Filter;
+use mkwhelpers\FilterDescriptor;
+
 class dolgozoController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
@@ -36,6 +39,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
         $x['url'] = $t->getUrl();
         $x['havilevonas'] = $t->getHavilevonas();
         $x['szamlatad'] = $t->getSzamlatad();
+        $x['inaktiv'] = $t->isInaktiv();
         return $x;
     }
 
@@ -53,6 +57,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
         $obj->setUrl($this->params->getStringRequestParam('url'));
         $obj->setHavilevonas($this->params->getFloatRequestParam('havilevonas'));
         $obj->setSzamlatad($this->params->getBoolRequestParam('szamlatad'));
+        $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
         $pass1 = $this->params->getStringRequestParam('jelszo1');
         $pass2 = $this->params->getStringRequestParam('jelszo2');
         if ($oper == $this->addOperation) {
@@ -88,8 +93,12 @@ class dolgozoController extends \mkwhelpers\MattableController {
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function getSelectList($selid = null) {
-        $rec = $this->getRepo()->getAllForSelectList(array(), array('nev' => 'ASC'));
+    public function getSelectList($selid = null, $csakaktiv = true) {
+        if ($csakaktiv) {
+            $filter = new FilterDescriptor();
+            $filter->addFilter('inaktiv', '=', false);
+        }
+        $rec = $this->getRepo()->getAllForSelectList($filter, array('nev' => 'ASC'));
         $res = array();
         foreach ($rec as $sor) {
             $res[] = array('id' => $sor['id'], 'caption' => $sor['nev'], 'selected' => ($sor['id'] == $selid));
