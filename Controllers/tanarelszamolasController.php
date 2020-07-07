@@ -22,15 +22,22 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
 
     }
 
-    protected function getData() {
+    public function getData($ptol = null, $pig = null) {
 
-        $tol = new \DateTime(\mkw\store::convDate($this->params->getStringRequestParam('tol')));
-        $ig = new \DateTime(\mkw\store::convDate($this->params->getStringRequestParam('ig')));
+        if (!$ptol) {
+            $ptol = $this->params->getStringRequestParam('tol');
+        }
+        if (!$pig) {
+            $pig = $this->params->getStringRequestParam('ig');
+        }
+
+        $tol = new \DateTime(\mkw\store::convDate($ptol));
+        $ig = new \DateTime(\mkw\store::convDate($pig));
         $kul = $tol->diff($ig);
         $hokulonbseg = $kul->y * 12 + $kul->m;
 
-        $tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('tol'))));
-        $igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('ig'))));
+        $tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($ptol)));
+        $igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($pig)));
 
         $filter = new FilterDescriptor();
         if ($tolstr) {

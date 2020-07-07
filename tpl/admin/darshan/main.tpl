@@ -35,6 +35,10 @@
         </div>
         <div class="mainboxinner">
             {include "../default/comp_idoszak.tpl" comptype="datum"}
+            <div><label>Tanár elszámolás </label>
+                <input id="telszelozo" name="telszidoszak" type="radio" value="1" checked><label for="telszelozo">előző hó</label>
+                <input id="telszaktualis" name="telszidoszak" type="radio" value="2"><label for="telszaktualis">aktuális hó</label>
+            </div>
             <a id="StatRefreshButton" href="#"><span>Frissít</span></a>
             <div id="stateredmeny"></div>
         </div>

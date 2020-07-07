@@ -37,6 +37,10 @@
     </table>
 </div>
 <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+    <div class="mattable-important">Tanár elszámolás {$telszeleje} - {$telszvege}</div>
+    {$tanarelszamolas}
+</div>
+<div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
     <div class="mattable-important">Még felhasználható bérlet alkalom: {$berletalkalom['mennyiseg']}</div>
     <div>Még felhasználható bérlet érték: {$berletalkalom['ertek']} HUF</div>
     <div class="mattable-important">Ennyi jár belőle a tanároknak: {$berletalkalom['kifizetendo']} HUF</div>

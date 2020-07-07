@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Carbon\Carbon;
 use mkw\store;
 use mkwhelpers, Entities;
 
@@ -271,8 +272,31 @@ class adminController extends mkwhelpers\Controller {
         $megfelhasznalhatoberletalk['kifizetendo'] = $megfelhasznalhatoberletalk['ertek'] * \mkw\store::getParameter(\mkw\consts::JogaJutalek) / 100;
         $view->setVar('berletalkalom', $megfelhasznalhatoberletalk);
 
-        $view->printTemplateResult();
+        // tanari fizetesek, elozo havi vagy aktualis havi pipaval
+        $telszidoszak = $this->params->getIntRequestParam('telszidoszak');
+        switch ($telszidoszak) {
+            case 1:
+                $telsztol = Carbon::now()->startOfMonth()->subMonth();
+                $telszig = Carbon::now()->startOfMonth()->subMonth()->endOfMonth();
+                break;
+            case 2:
+                $telsztol = Carbon::now()->startOfMonth();
+                $telszig = Carbon::now()->endOfMonth();
+                break;
+        }
+        $tec = new tanarelszamolasController($this->params);
+        $tecres = $tec->getData();
 
+        $tecview = $this->createView('tanarelszamolastanarsum.tpl');
+
+        $tecview->setVar('tetelek', $tecres);
+        $tecview->setVar('tol', $telsztol->format(\mkw\store::$DateFormat));
+        $tecview->setVar('ig', $telszig->format(\mkw\store::$DateFormat));
+        $view->setVar('tanarelszamolas', $tecview->getTemplateResult());
+        $view->setVar('telszeleje', $telsztol->format(\mkw\store::$DateFormat));
+        $view->setVar('telszvege', $telszig->format(\mkw\store::$DateFormat));
+
+        $view->printTemplateResult();
     }
 
     public function printNapijelentes() {

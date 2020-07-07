@@ -27,7 +27,8 @@ $(document).ready(
                 url: '/admin/darshanstat',
                 data: {
                     tol: mkwcomp.datumEdit.getDate('#TolEdit'),
-                    ig: mkwcomp.datumEdit.getDate('#IgEdit')
+                    ig: mkwcomp.datumEdit.getDate('#IgEdit'),
+                    telszidoszak: $('input[name="telszidoszak"]:checked').val()
                 },
                 success: function(data) {
                     $('#stateredmeny').html(data);
