@@ -70,7 +70,7 @@ class JogaBerletRepository extends \mkwhelpers\Repository {
         foreach($r as $berlet) {
             $ret['mennyiseg'] += $berlet->getAlkalom() - ($berlet->getElfogyottalkalom() + $berlet->getOfflineelfogyottalkalom());
             if ($berlet->getBruttoegysar() != 0) {
-                $ret['ertek'] += $berlet->getBruttoegysar()
+                $ret['ertek'] += $berlet->getBruttoegysar() / $berlet->getAlkalom()
                     * ($berlet->getAlkalom() - ($berlet->getElfogyottalkalom() + $berlet->getOfflineelfogyottalkalom()));
             }
             else {
