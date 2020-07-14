@@ -634,7 +634,6 @@ class Bizonylatfej {
                 $this->getBizonylattipusNavbekuldendo()
                 && $this->getPartneradoszam()
                 && $this->getPartner()->isDefaultOrszag()
-                && $this->getAfahuf() >= \mkw\store::getNAVOnlineErtekhatar()
             );
         }
     }
