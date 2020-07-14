@@ -1145,4 +1145,88 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         }
         return $res;
     }
+
+    public function calcNagykerForgalom($filter) {
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('partnernev', 'partnernev');
+        $rsm->addScalarResult('partnerirszam', 'partnerirszam');
+        $rsm->addScalarResult('partnervaros', 'partnervaros');
+        $rsm->addScalarResult('partnerutca', 'partnerutca');
+        $rsm->addScalarResult('partnerhazszam', 'partnerhazszam');
+        $rsm->addScalarResult('bruttohuf', 'bruttohuf');
+
+        $nagykercimke = \mkw\store::getParameter(\mkw\consts::NagykerCimke);
+        if ($nagykercimke) {
+            $filter->addFilter('pc.cimketorzs_id', '=', $nagykercimke);
+        }
+
+        $q = $this->_em->createNativeQuery('SELECT bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam, SUM(bf.bruttohuf) AS bruttohuf '
+            . 'FROM bizonylatfej bf '
+            . 'LEFT JOIN partner p ON (bf.partner_id=p.id) '
+            . 'LEFT JOIN partner_cimkek pc ON (pc.partner_id=p.id) '
+            . $this->getFilterString($filter)
+            . ' GROUP BY bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam'
+            , $rsm);
+        $q->setParameters($this->getQueryParameters($filter));
+
+        $res = $q->getScalarResult();
+        return $res;
+    }
+
+    public function calcUtanvetesForgalom($filter) {
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('partnernev', 'partnernev');
+        $rsm->addScalarResult('partnerirszam', 'partnerirszam');
+        $rsm->addScalarResult('partnervaros', 'partnervaros');
+        $rsm->addScalarResult('partnerutca', 'partnerutca');
+        $rsm->addScalarResult('partnerhazszam', 'partnerhazszam');
+        $rsm->addScalarResult('bruttohuf', 'bruttohuf');
+
+        $utanvetfm = \mkw\store::getParameter(\mkw\consts::UtanvetFizmod);
+        if ($utanvetfm) {
+            $filter->addFilter('bf.fizmod_id', '=', $utanvetfm);
+        }
+        $q = $this->_em->createNativeQuery('SELECT bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam, SUM(bf.bruttohuf) AS bruttohuf '
+            . 'FROM bizonylatfej bf '
+            . 'LEFT JOIN partner p ON (bf.partner_id=p.id) '
+            . 'LEFT JOIN partner_cimkek pc ON (pc.partner_id=p.id) '
+            . $this->getFilterString($filter)
+            . ' GROUP BY bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam'
+            , $rsm);
+        $q->setParameters($this->getQueryParameters($filter));
+
+        $res = $q->getScalarResult();
+        return $res;
+    }
+
+    public function calcNemHUFForgalom($filter) {
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('valutanemnev', 'valutanemnev');
+        $rsm->addScalarResult('partnernev', 'partnernev');
+        $rsm->addScalarResult('partnerirszam', 'partnerirszam');
+        $rsm->addScalarResult('partnervaros', 'partnervaros');
+        $rsm->addScalarResult('partnerutca', 'partnerutca');
+        $rsm->addScalarResult('partnerhazszam', 'partnerhazszam');
+        $rsm->addScalarResult('brutto', 'brutto');
+
+        $huf = \mkw\store::getParameter(\mkw\consts::Valutanem);
+        if ($huf) {
+            $filter->addFilter('bf.valutanem_id', '<>', $huf);
+        }
+        $q = $this->_em->createNativeQuery('SELECT bf.valutanemnev,bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam, SUM(bf.brutto) AS brutto '
+            . 'FROM bizonylatfej bf '
+            . 'LEFT JOIN partner p ON (bf.partner_id=p.id) '
+            . 'LEFT JOIN partner_cimkek pc ON (pc.partner_id=p.id) '
+            . $this->getFilterString($filter)
+            . ' GROUP BY bf.valutanemnev,bf.partnernev, bf.partnerirszam, bf.partnervaros, bf.partnerutca, bf.partnerhazszam'
+            . ' ORDER BY bf.valutanemnev,bf.partnernev'
+            , $rsm);
+        $q->setParameters($this->getQueryParameters($filter));
+
+        $res = $q->getScalarResult();
+        return $res;
+    }
 }

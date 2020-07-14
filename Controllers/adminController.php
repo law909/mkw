@@ -59,7 +59,7 @@ class adminController extends mkwhelpers\Controller {
             case \mkw\store::isSuperzoneB2B():
                 $napijelentesdatum = date(\mkw\store::$DateFormat);
                 $igdatum = date(\mkw\store::$DateFormat);
-                $view->setVar('napijelenteslista', $lista->napiJelentes($napijelentesdatum, $igdatum));
+                $view->setVar('napijelentes', $lista->napiJelentes($napijelentesdatum, $igdatum));
 
                 $lejart = array();
                 $r = $this->getRepo('Entities\Folyoszamla')->getLejartKintlevosegByValutanem();
@@ -306,7 +306,7 @@ class adminController extends mkwhelpers\Controller {
         $igdatumstr = $this->params->getStringRequestParam('datumig');
         $igdatum = \mkw\store::convDate($igdatumstr);
         $view = $this->createView('napijelentesbody.tpl');
-        $view->setVar('napijelenteslista', $lista->napiJelentes($datum, $igdatum));
+        $view->setVar('napijelentes', $lista->napiJelentes($datum, $igdatum));
 
         $view->printTemplateResult();
     }

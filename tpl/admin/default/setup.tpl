@@ -423,6 +423,16 @@
                                 </select>
                             </div>
                             <div class="setuprow">
+                                <span class="setuplabel"><label for="NagykerCimkeEdit">{at('Nagyker címke')}:</label></span>
+                                <select id="NagykerCimkeEdit" name="nagykercimke">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $nagykercimkelist as $_nagykercimke}
+                                        <option
+                                            value="{$_nagykercimke.id}"{if ($_nagykercimke.selected)} selected="selected"{/if}>{$_nagykercimke.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
                                 <span class="setuplabel"><label for="FelvetelalattCimkeEdit">{at('Felvétel alatt címke')}:</label></span>
                                 <select id="FelvetelalattCimkeEdit" name="felvetelalattcimke">
                                     <option value="">{at('válasszon')}</option>

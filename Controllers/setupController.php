@@ -409,9 +409,11 @@ class setupController extends \mkwhelpers\Controller {
         $dencs = new termekcimkekatController($this->params);
         $view->setVar('dencslist', $dencs->getSelectList(($p ? $p->getErtek() : 0)));
 
-        $p = $repo->find(\mkw\consts::KiskerCimke);
         $partnercimkec = new partnercimkeController($this->params);
+        $p = $repo->find(\mkw\consts::KiskerCimke);
         $view->setVar('kiskercimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::NagykerCimke);
+        $view->setVar('nagykercimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::SpanyolCimke);
         $view->setVar('spanyolcimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::FelvetelAlattCimke);
@@ -1125,6 +1127,14 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::KiskerCimke, '');
+        }
+
+        $nagykercimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('nagykercimke', 0));
+        if ($nagykercimke) {
+            $this->setObj(\mkw\consts::NagykerCimke, $nagykercimke->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::NagykerCimke, '');
         }
 
         $felvetelalattcimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('felvetelalattcimke', 0));

@@ -101,7 +101,10 @@ class listaController extends \mkwhelpers\Controller {
         $farepo = $this->getRepo('Entities\TermekFa');
         $focsoportok = $farepo->getForParent(1);
         $kiskercimke = \mkw\store::getParameter(\mkw\consts::KiskerCimke);
+
         $ret = array();
+
+        $napijelentes = array();
         foreach($focsoportok as $csoport) {
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter
@@ -125,9 +128,44 @@ class listaController extends \mkwhelpers\Controller {
                 $elem['mennyiseg'] = $k['mennyiseg'];
                 $elem['netto'] = $k['nettohuf'];
                 $elem['brutto'] = $k['bruttohuf'];
-                $ret[] = $elem;
+                $napijelentes[] = $elem;
             }
         }
+        $ret['napijelentes'] = $napijelentes;
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('bf.teljesites', '>=', $datum)
+            ->addFilter('bf.teljesites', '<=', $ig)
+            ->addFilter('bf.rontott', '=', false)
+            ->addFilter('bf.mese', '=', false)
+            ->addFilter('bf.bizonylattipus_id', 'IN', array('szamla', 'egyeb', 'keziszamla', 'kivet'));
+
+        $nagykerforg = $this->getRepo('Entities\Bizonylatfej')->calcNagykerForgalom($filter);
+        $ret['nagykerforgalom'] = $nagykerforg;
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('bf.teljesites', '>=', $datum)
+            ->addFilter('bf.teljesites', '<=', $ig)
+            ->addFilter('bf.rontott', '=', false)
+            ->addFilter('bf.mese', '=', false)
+            ->addFilter('bf.bizonylattipus_id', 'IN', array('szamla', 'egyeb', 'keziszamla', 'kivet'));
+
+        $utanvetesforg = $this->getRepo('Entities\Bizonylatfej')->calcUtanvetesForgalom($filter);
+        $ret['utanvetesforgalom'] = $utanvetesforg;
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('bf.teljesites', '>=', $datum)
+            ->addFilter('bf.teljesites', '<=', $ig)
+            ->addFilter('bf.rontott', '=', false)
+            ->addFilter('bf.mese', '=', false)
+            ->addFilter('bf.bizonylattipus_id', 'IN', array('szamla', 'egyeb', 'keziszamla', 'kivet'));
+
+        $nemhufforg = $this->getRepo('Entities\Bizonylatfej')->calcNemHUFForgalom($filter);
+        $ret['nemhufforgalom'] = $nemhufforg;
+
         return $ret;
     }
 
