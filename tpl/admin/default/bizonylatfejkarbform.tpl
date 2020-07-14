@@ -97,8 +97,18 @@
                     <input name="partnerhazszam" value="{$egyed.partnerhazszam}" size="40" maxlength="40">
 				</td>
 			</tr>
+            <tr>
+                <td><label for="OrszagEdit">{at('Ország')}:</label></td>
+                <td colspan="7"><select id="OrszagEdit" name="partnerorszag">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $orszaglist as $_mk}
+                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                        {/foreach}
+                    </select>
+                </td>
+            </tr>
 			<tr>
-				<td><label for="AdoszamEdit">{at('Adószám')}:</label></td>
+				<td><label for="AdoszamEdit" class="mattable-important">{at('Adószám')}:</label></td>
 				<td>
 					<input id="AdoszamEdit" name="partneradoszam" value="{$egyed.partneradoszam}">
 				</td>

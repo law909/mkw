@@ -515,6 +515,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             if ($ck) {
                 $partnerobj->setFizmod($ck);
             }
+            $ck = \mkw\store::getEm()->getRepository('Entities\Orszag')->find($this->params->getIntRequestParam('partnerorszaf'));
+            if ($ck) {
+                $partnerobj->setOrszag($ck);
+            }
             $partnerobj->setSzallnev($this->params->getStringRequestParam('szallnev'));
             $partnerobj->setSzallirszam($this->params->getStringRequestParam('szallirszam'));
             $partnerobj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
@@ -671,6 +675,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                 if ($parentbiz) {
                     $obj->setParbizonylatfej($parentbiz);
                 }
+                $obj->setNaveredmeny(null);
                 break;
             case $this->stornoOperation:
                 $obj->setSysmegjegyzes($this->params->getStringRequestParam('parentid') . ' stornó bizonylata.');
@@ -1247,6 +1252,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         $felh = new dolgozoController($this->params);
         $view->setVar('felhasznalolist', $felh->getSelectList(($record ? $record->getFelhasznaloId() : 0)));
 
+        $orszagc = new orszagController($this->params);
+        $view->setVar('orszaglist', $orszagc->getSelectList(($record ? $record->getPartnerorszagId() : 0)));
 
         if (method_exists($this, 'onGetKarb')) {
             $egyed = $this->onGetKarb($view, $record, $egyed, $oper, $id, $stornotip);
