@@ -1,4 +1,5 @@
 <div class="js-napijelentesbody">
+    {$sumsum = 0}
     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
         <thead>
             <tr>
@@ -32,7 +33,9 @@
                 <td class="textalignright headercell">{bizformat($sumbrutto)}</td>
             </tr>
         </tfoot>
+        {$sumsum = $sumsum + $sumbrutto}
     </table>
+    {if (haveJog(20))}
     <div>Nagyker forgalom</div>
     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
         <thead>
@@ -60,6 +63,7 @@
                 <td class="textalignright headercell">{bizformat($sumbrutto)}</td>
             </tr>
         </tfoot>
+        {$sumsum = $sumsum + $sumbrutto}
     </table>
     <div>Utánvétes forgalom</div>
     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
@@ -88,6 +92,15 @@
             <td class="textalignright headercell">{bizformat($sumbrutto)}</td>
         </tr>
         </tfoot>
+        {$sumsum = $sumsum + $sumbrutto}
+    </table>
+    <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+        <tbody>
+            <tr>
+                <td class="datacell">Mindösszesen</td>
+                <td class="textalignright datacell">{bizformat($sumsum)}</td>
+            </tr>
+        </tbody>
     </table>
     <div>Nem HUF forgalom</div>
     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
@@ -95,7 +108,7 @@
         <tr>
             <th class="headercell">Partner</th>
             <th class="headercell">Partner cím</th>
-            <th class="headercell">Bruttó HUF</th>
+            <th class="headercell">Bruttó</th>
         </tr>
         </thead>
         <tbody>
@@ -125,4 +138,5 @@
         <tfoot>
         </tfoot>
     </table>
+    {/if}
 </div>
