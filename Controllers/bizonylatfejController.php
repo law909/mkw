@@ -1862,6 +1862,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $xml = $biz->toNAVOnlineXML();
             $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
             if ($no->sendSzamla($bizszam, $xml)) {
+                $biz->setSimpleedit(true);
                 $biz->setNaveredmeny($no->getResult());
                 $this->getEm()->persist($biz);
                 $this->getEm()->flush();
@@ -1886,6 +1887,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
                     /** @var \Entities\Bizonylatfej $biz */
                     $biz = $this->getRepo()->find($res->bizszam);
                     if ($biz) {
+                        $biz->setSimpleedit(true);
                         $biz->setNaveredmeny($res->navstate);
                         $this->getEm()->persist($biz);
                         $this->getEm()->flush();
