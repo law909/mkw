@@ -74,7 +74,7 @@
     <style>
         body {
             font-family: 'Arial',Helvetica,Arial,Lucida,sans-serif;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 500;
             color: #666;
             padding: 0 10px 5px 10px;
@@ -179,6 +179,9 @@
 <body>
     <div>
         <h1>Adategyeztető</h1>
+        <p>Írd be az email címed és nyomd meg az "Egyeztetés" gombot.</p>
+        <p>Ha felismerünk az email címed alapján, akkor látni fogod az adataidat amiket tudunk rólad. Kérjük egyeztesd ezeket a valósággal!</p>
+        <p>Ha nem ismerünk fel, kérjük add meg az adataidat!</p>
         <form id="adategyezteto-form">
             <div class="form-group">
                 <label class="form-label">Email</label>
