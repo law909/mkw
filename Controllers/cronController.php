@@ -12,7 +12,7 @@ class cronController extends \mkwhelpers\Controller {
 
     public function run() {
         if (\mkw\store::isDarshan()) {
-            $this->checkJogaBejelentkezes();
+            //$this->checkJogaBejelentkezes();
         }
     }
 
