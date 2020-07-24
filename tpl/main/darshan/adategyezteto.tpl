@@ -77,6 +77,7 @@
             font-size: 14px;
             font-weight: 500;
             color: #666;
+            padding: 0 10px 5px 10px;
         }
         a {
             color: #b63535;
