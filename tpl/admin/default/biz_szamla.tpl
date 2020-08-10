@@ -38,8 +38,8 @@
                 <tr class="tetelsor">
                     <td>{$tetel.cikkszam}</td>
                     <td>{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</td>
-                    <td class="textalignright">{number_format($tetel.mennyiseg,0,'',' ')} {$tetel.me}</td>
-                    <td class="textalignright">{number_format($tetel.nettoegysar,0,'',' ')}</td>
+                    <td class="textalignright">{number_format($tetel.mennyiseg,2,',',' ')} {$tetel.me}</td>
+                    <td class="textalignright">{number_format($tetel.nettoegysar,2,',',' ')}</td>
                     <td class="textalignright">{number_format($tetel.netto,0,'',' ')}</td>
                     <td class="textalignright">{$tetel.afanev}</td>
                     <td class="textalignright">{number_format($tetel.afa,0,'',' ')}</td>
