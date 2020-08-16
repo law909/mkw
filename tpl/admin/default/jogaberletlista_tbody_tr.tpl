@@ -7,7 +7,7 @@
         <span class="jobbra"><a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></span>
     </td>
     <td class="cell">
-        {$_egyed.termeknev} ({$_egyed.elfogyottalkalom + $_egyed.offlineelfogyottalkalom} alkalom lejárva)
+        {$_egyed.termeknev} ({$_egyed.elfogyottalkalom + $_egyed.offlineelfogyottalkalom} alkalom lejárva) ({$_egyed.id})
     </td>
     <td class="cell">{$_egyed.bruttoar}</td>
     <td class="cell">{$_egyed.vasarlasnapja}</td>
