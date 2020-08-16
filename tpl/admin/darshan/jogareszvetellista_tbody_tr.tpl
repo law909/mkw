@@ -8,7 +8,7 @@
     <td class="cell">{$_egyed.tanarnev}</td>
     <td class="cell">{$_egyed.jogaoratipusnev}</td>
     <td class="cell">{$_egyed.partnernev}</td>
-    <td class="cell">{$_egyed.termeknev}</td>
+    <td class="cell">{$_egyed.termeknev} ({$_egyed.jogaberlet} - {$_egyed.jogaberletnev})</td>
     <td class="cell">{$_egyed.bruttoegysar}</td>
     <td class="cell">{$_egyed.jutalek}</td>
 </tr>
