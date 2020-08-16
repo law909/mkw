@@ -58,6 +58,10 @@
                 <td><label for="NincsfizetveEdit">{at('Nincs kifizetve')}:</label></td>
                 <td><input id="NincsfizetveEdit" name="nincsfizetve" type="checkbox"{if ($egyed.nincsfizetve)} checked="checked"{/if}></td>
             </tr>
+            <tr>
+                <td><label for="LejartEdit">{at('Lejárt')}:</label></td>
+                <td><input id="LejartEdit" name="lejart" type="checkbox"{if ($egyed.lejart)} checked="checked"{/if}></td>
+            </tr>
 			</tbody></table>
 		</div>
 	</div>

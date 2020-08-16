@@ -59,6 +59,7 @@ class jogaberletController extends \mkwhelpers\MattableController {
         $obj->setOfflineelfogyottalkalom($this->params->getIntRequestParam('offlineelfogyottalkalom'));
         $obj->setNincsfizetve($this->params->getBoolRequestParam('nincsfizetve', false));
         $obj->setBruttoegysar($this->params->getNumRequestParam('bruttoar'));
+        $obj->setLejart($this->params->getBoolRequestParam('lejart'));
         return $obj;
     }
 
