@@ -1263,6 +1263,7 @@ class Bizonylatfej {
             $result = $result . '<exchangeRate>1</exchangeRate>';
         }
         $result = $result . '<paymentMethod>' . $this->getFizmod()->getNavtipus() . '</paymentMethod>';
+        $result = $result . '<paymentDate>' . $this->getEsedekesseg()->format(\mkw\store::$SQLDateFormat) . '</paymentDate>';
         $result = $result . '<invoiceAppearance>PAPER</invoiceAppearance>';
         $result = $result . '</invoiceDetail>';
         $result = $result . '</invoiceHead>';
