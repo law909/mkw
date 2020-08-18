@@ -94,6 +94,11 @@ class partnermergeController extends \mkwhelpers\MattableController {
                     . ', partnerorszag_id=' . $partnerre->getOrszagId()
                     . ', partnerorszagnev="' . $partnerre->getOrszagNev() . '"'
                     . ', partnerorszagiso3166="' . ($partnerre->getOrszag() ? $partnerre->getOrszag()->getIso3166() : '') . '"'
+                    . ', szallnev="' . $partnerre->getSzallnev() . '"'
+                    . ', szallirszam="' . $partnerre->getSzallirszam() . '"'
+                    . ', szallvaros="' . $partnerre->getSzallvaros() . '"'
+                    . ', szallutca="' . $partnerre->getSzallutca() . '"'
+                    . ', szallhazszam="' . $partnerre->getSzallhazszam() . '"'
                     . ' WHERE (partner_id=' . $partnerrolid . ') AND (bizonylattipus_id<>"szamla") AND (bizonylattipus_id<>"esetiszamla")');
                 $st->execute();
             }
