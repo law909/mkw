@@ -139,7 +139,7 @@ class listaController extends \mkwhelpers\Controller {
             ->addFilter('bf.teljesites', '<=', $ig)
             ->addFilter('bf.rontott', '=', false)
             ->addFilter('bf.mese', '=', false)
-            ->addFilter('bf.bizonylattipus_id', 'IN', array('szamla', 'egyeb', 'keziszamla', 'kivet'));
+            ->addFilter('bf.bizonylattipus_id', 'IN', array('szamla', 'egyeb', 'keziszamla', 'kivet', 'szallito'));
 
         $nagykerforg = $this->getRepo('Entities\Bizonylatfej')->calcNagykerForgalom($filter);
         $ret['nagykerforgalom'] = $nagykerforg;
