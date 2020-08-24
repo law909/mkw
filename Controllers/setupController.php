@@ -293,6 +293,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('nemjelentkeztekelegengyakorlonaksablonlist', $tanarelszsablon->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::JogaElegenjelentkeztekTanarnakSablon);
         $view->setVar('elegenjelentkeztektanarnaksablonlist', $tanarelszsablon->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::JogaBejelentkezesKoszonoSablon);
+        $view->setVar('jogabejelentkezeskoszonosablonlist', $tanarelszsablon->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::BarionAPIVersion);
         $view->setVar(\mkw\consts::BarionAPIVersion, ($p ? $p->getErtek() : 0));
@@ -922,6 +924,13 @@ class setupController extends \mkwhelpers\Controller {
         }
         else {
             $this->setObj(\mkw\consts::JogaElegenjelentkeztekTanarnakSablon, '');
+        }
+        $tanarelszsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('jogabejelentkezeskoszonosablon', 0));
+        if ($tanarelszsablon) {
+            $this->setObj(\mkw\consts::JogaBejelentkezesKoszonoSablon, $tanarelszsablon->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::JogaBejelentkezesKoszonoSablon, '');
         }
         $szamlalevelsablon = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($this->params->getIntRequestParam('szamlalevelsablon', 0));
         if ($szamlalevelsablon) {

@@ -53,6 +53,7 @@ if (\mkw\store::isDarshan()) {
     $router->map('GET', '/adategy', 'adategyeztetoController#view', 'adategyeztetoview');
     $router->map('POST', '/adategy/check', 'adategyeztetoController#check', 'adategyeztetocheck');
     $router->map('POST', '/adategy/save', 'adategyeztetoController#save', 'adategyeztetosave');
+    $router->map('GET', '/partner/getdata', 'partnerController#getPartnerData', 'partnergetdata');
 }
 
 if (\mkw\store::isMugenrace()) {

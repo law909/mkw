@@ -121,15 +121,49 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController {
         $partnernev = $this->params->getStringRequestParam('partnernev');
         $email = $this->params->getStringRequestParam('email');
         $datumstr = $this->params->getStringRequestParam('datum');
+        $datum = new \DateTime($datumstr);
         $orarendid = $this->params->getIntRequestParam('id');
-        if ($partnernev && $email) {
-            $obj = new JogaBejelentkezes();
-            $obj->setDatum($datumstr);
-            $obj->setPartneremail($email);
-            $obj->setPartnernev($partnernev);
-            $obj->setOrarend($this->getRepo('Entities\Orarend')->find($orarendid));
-            $this->getEm()->persist($obj);
-            $this->getEm()->flush();
+        if ($partnernev && $email && $orarendid && $datumstr) {
+            $bej = $this->getRepo()->findOneBy(['partneremail' => $email, 'orarend' => $orarendid, 'datum' => $datum]);
+            if (!$bej) {
+                /** @var \Entities\Orarend $ora */
+                $ora = $this->getRepo('Entities\Orarend')->find($orarendid);
+                /** @var \Entities\Partner $partner */
+                $partner = $this->getRepo('Entities\Partner')->findOneBy(['email' => $email]);
+
+                $obj = new JogaBejelentkezes();
+                $obj->setDatum($datumstr);
+                $obj->setPartneremail($email);
+                $obj->setPartnernev($partnernev);
+                $obj->setOrarend($ora);
+                $this->getEm()->persist($obj);
+                $this->getEm()->flush();
+                $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaBejelentkezesKoszonoSablon));
+                if ($email && $emailtpl) {
+
+                    $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                    $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                    $body->setVar('oranev', $ora->getJogaoratipusNev());
+                    $body->setVar('tanarnev', $ora->getDolgozoNev());
+                    $body->setVar('idopont', $ora->getKezdetStr());
+                    if ($partner) {
+                        $body->setVar('partnerkeresztnev', $partner->getKeresztnev());
+                        $body->setVar('partnervezeteknev', $partner->getVezeteknev());
+                    }
+                    else {
+                        $body->setVar('partnerkeresztnev', $partnernev);
+                    }
+                    $body->setVar('datum', $datum->format(\mkw\store::$DateFormat));
+
+                    $mailer = \mkw\store::getMailer();
+
+                    $mailer->addTo($email);
+                    $mailer->setSubject($subject->getTemplateResult());
+                    $mailer->setMessage($body->getTemplateResult());
+
+                    $mailer->send();
+                }
+            }
         }
     }
 }

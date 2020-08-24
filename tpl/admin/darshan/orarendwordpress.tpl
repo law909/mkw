@@ -25,26 +25,57 @@
                 $('input[name="datum"]').val($this.data('datum'));
                 toggleModal();
             });
+            $('input[name="email"]').change(function(e) {
+                var ee = $(this);
+                $.ajax({
+                    url: '/partner/getdata',
+                    type: 'GET',
+                    data: {
+                        email: ee.val()
+                    },
+                    success: function(data) {
+                        var d = JSON.parse(data);
+                        if (d.id) {
+                            $('input[name="partnernev"]').val(d.nev);
+                        }
+                    }
+                });
+            });
             $('.close-button').click(function(e) {
                 e.preventDefault();
                 toggleModal();
             });
             $('.js-ok').click(function(e) {
                 e.preventDefault();
-                $.ajax({
-                    url: '/orarend/bejelentkezes',
-                    type: 'POST',
-                    data: {
-                        id: $('input[name="id"]').val(),
-                        datum: $('input[name="datum"]').val(),
-                        partnernev: $('input[name="partnernev"]').val(),
-                        email: $('input[name="email"]').val()
-                    },
-                    success: function () {
-                        toggleModal();
-                        location.reload();
+                // ha nev input hidden
+                // akkor lekerdezni, hogy ismerjuk-e az emailt
+                //      ha nem, akkor megjeleniteni a nev inputot
+                //      es ismeretlen input legyen true
+                //      egyebkent ismeretlen input legyen false es menteni
+                // egyebkent menteni
+                if (!$('input[name="email"]').val()) {
+                    alert('Add meg az email címed!');
+                }
+                else {
+                    if (!$('input[name="partnernev"]').val()) {
+                        alert('Add meg a neved!');
+                    } else {
+                        $.ajax({
+                            url: '/orarend/bejelentkezes',
+                            type: 'POST',
+                            data: {
+                                id: $('input[name="id"]').val(),
+                                datum: $('input[name="datum"]').val(),
+                                partnernev: $('input[name="partnernev"]').val(),
+                                email: $('input[name="email"]').val()
+                            },
+                            success: function () {
+                                toggleModal();
+                                location.reload();
+                            }
+                        });
                     }
-                });
+                }
             });
             window.addEventListener("click", windowOnClick);
         });
@@ -310,12 +341,12 @@
         <h1>Add meg az adataidat</h1>
         <form id="modal-form">
             <div class="form-group">
-                <label class="form-label">Név</label>
-                <input class="form-control" type="text" name="partnernev">
+                <label class="form-label">Email</label>
+                <input class="form-control" type="email" name="email" required>
             </div>
             <div class="form-group">
-                <label class="form-label">Email</label>
-                <input class="form-control" type="email" name="email">
+                <label class="form-label">Név</label>
+                <input class="form-control" type="text" name="partnernev" required>
             </div>
             <input type="hidden" name="id">
             <input type="hidden" name="datum">

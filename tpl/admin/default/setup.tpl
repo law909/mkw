@@ -378,6 +378,15 @@
                                 {/foreach}
                             </select>
                         </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="jogabejelentkezeskoszonoSablonEdit">{at('Óra bejelentkezés köszönő sablon')}:</label></span>
+                            <select id="jogabejelentkezeskoszonoSablonEdit" name="jogabejelentkezeskoszonosablon">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $jogabejelentkezeskoszonosablonlist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
                     </div>
                     {/if}
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
