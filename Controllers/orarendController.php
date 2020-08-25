@@ -86,10 +86,6 @@ class orarendController extends \mkwhelpers\MattableController {
 		return $obj;
 	}
 
-    protected function afterSave($o) {
-        parent::afterSave($o);
-    }
-
 	public function getlistbody() {
 		$view = $this->createView('orarendlista_tbody.tpl');
 

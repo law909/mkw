@@ -75,6 +75,8 @@ class Dolgozo {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $inaktiv = false;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $oraelmaradaskonyvelonek = false;
 
     public function __construct() {
         $this->jelenletek = new ArrayCollection();
@@ -331,6 +333,20 @@ class Dolgozo {
      */
     public function setInaktiv($inaktiv) {
         $this->inaktiv = $inaktiv;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOraelmaradaskonyvelonek() {
+        return $this->oraelmaradaskonyvelonek;
+    }
+
+    /**
+     * @param bool $oraelmaradaskonyvelonek
+     */
+    public function setOraelmaradaskonyvelonek($oraelmaradaskonyvelonek) {
+        $this->oraelmaradaskonyvelonek = $oraelmaradaskonyvelonek;
     }
 
 }

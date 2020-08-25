@@ -19,6 +19,9 @@
             {if ($_egyed.szamlatad)}
                 <tr><td>Számlát ad</td></tr>
             {/if}
+            {if ($_egyed.oraelmaradaskonyvelonek)}
+                <tr><td>Óra elmaradásról értesítjük a könyvelőt</td></tr>
+            {/if}
             </tbody>
         </table>
     </td>

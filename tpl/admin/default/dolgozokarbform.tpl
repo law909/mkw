@@ -12,6 +12,10 @@
                     <td><label for="InaktivEdit">{at('Inaktív')}:</label></td>
                     <td><input id="InaktivEdit" name="inaktiv" type="checkbox"{if ($egyed.inaktiv)} checked{/if}></td>
                 </tr>
+                <tr>
+                    <td><label for="oraelmaradaskonyvelonekEdit">{at('Óra elmaradásról értesítés a könyvelőnek')}:</label></td>
+                    <td><input id="oraelmaradaskonyvelonekEdit" name="oraelmaradaskonyvelonek" type="checkbox"{if ($egyed.oraelmaradaskonyvelonek)} checked{/if}></td>
+                </tr>
 			<tr>
 				<td><label for="NevEdit">{at('Név')}:</label></td>
 				<td colspan="3"><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required autofocus></td>

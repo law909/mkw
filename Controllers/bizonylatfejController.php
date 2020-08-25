@@ -906,9 +906,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         return $obj;
     }
 
-    protected function afterSave($o) {
+    protected function afterSave($o, $parancs = null) {
         $oper = $this->params->getStringRequestParam('oper');
-        parent::afterSave($o);
+        parent::afterSave($o, $parancs);
         if ($oper === 'storno') {
             $parentid = $this->params->getStringRequestParam('parentid');
             if ($parentid) {

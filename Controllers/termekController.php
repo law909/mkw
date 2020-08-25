@@ -666,12 +666,12 @@ class termekController extends \mkwhelpers\MattableController {
 		return $obj;
 	}
 
-    protected function afterSave($o) {
+    protected function afterSave($o, $parancs = null) {
         if ($this->kaphatolett) {
             $tec = new termekertesitoController($this->params);
             $tec->sendErtesito($o);
         }
-        parent::afterSave($o);
+        parent::afterSave($o, $parancs);
     }
 
 	public function getlistbody() {

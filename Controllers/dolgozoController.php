@@ -40,6 +40,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
         $x['havilevonas'] = $t->getHavilevonas();
         $x['szamlatad'] = $t->getSzamlatad();
         $x['inaktiv'] = $t->isInaktiv();
+        $x['oraelmaradaskonyvelonek'] = $t->isOraelmaradaskonyvelonek();
         return $x;
     }
 
@@ -58,6 +59,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
         $obj->setHavilevonas($this->params->getFloatRequestParam('havilevonas'));
         $obj->setSzamlatad($this->params->getBoolRequestParam('szamlatad'));
         $obj->setInaktiv($this->params->getBoolRequestParam('inaktiv'));
+        $obj->setOraelmaradaskonyvelonek($this->params->getBoolRequestParam('oraelmaradaskonyvelonek'));
         $pass1 = $this->params->getStringRequestParam('jelszo1');
         $pass2 = $this->params->getStringRequestParam('jelszo2');
         if ($oper == $this->addOperation) {

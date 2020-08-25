@@ -55,6 +55,9 @@ class Orarendhelyettesites {
     /** @ORM\Column(type="boolean", nullable=false) */
     private $elmarad = false;
 
+    /**
+     * @return Orarend
+     */
     public function getOrarend() {
         return $this->orarend;
     }

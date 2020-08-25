@@ -36,7 +36,7 @@ class Orarend {
     private $lastmod;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\ManyToOne(targetEntity="Dolgozo", fetch = "EAGER")
      * @ORM\JoinColumn(name="dolgozo_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $dolgozo;
@@ -103,6 +103,9 @@ class Orarend {
         return $this->bejelentkezesek;
     }
 
+    /**
+     * @return Dolgozo
+     */
     public function getDolgozo() {
         return $this->dolgozo;
     }

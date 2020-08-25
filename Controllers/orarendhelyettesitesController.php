@@ -73,8 +73,33 @@ class orarendhelyettesitesController extends \mkwhelpers\MattableController {
 		return $obj;
 	}
 
-    protected function afterSave($o) {
-        parent::afterSave($o);
+    /**
+     * @param \Entities\Orarendhelyettesites $o
+     * @return mixed
+     */
+    protected function afterSave($o, $parancs = null) {
+        parent::afterSave($o, $parancs);
+        $dolgozo = $o->getOrarend()->getDolgozo();
+        if ($parancs !== $this->delOperation && ($o->getElmarad() || $o->getHelyettesitoId()) && $dolgozo->isOraelmaradaskonyvelonek()) {
+            $email = \mkw\store::getParameter(\mkw\consts::KonyveloEmail);
+            $emailtpl = $this->getRepo('Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaElmaradasKonyvelonekSablon));
+            if ($email && $emailtpl) {
+
+                $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+                $body->setVar('tanarnev', $o->getOrarend()->getDolgozoNev());
+                $body->setVar('datum', $o->getDatumStr());
+
+                $mailer = \mkw\store::getMailer();
+
+                $mailer->addTo($email);
+                $mailer->setSubject($subject->getTemplateResult());
+                $mailer->setMessage($body->getTemplateResult());
+
+                $mailer->send();
+
+            }
+        }
     }
 
 	public function getlistbody() {
