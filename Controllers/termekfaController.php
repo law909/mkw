@@ -579,6 +579,31 @@ class termekfaController extends \mkwhelpers\MattableController {
                     }
                 }
                 else {
+                    $tid = array();
+                    $osszeslapozatlantermekid = array();
+                    switch ($caller) {
+                        case 'termekfa':
+                            $ret['url'] = '/termekfa/' . $parent->getSlug();
+                            $ret['navigator'] = $this->getNavigator($parent);
+                            // $tid = termek id-k csak kategoriaval es arral szurve
+                            $ret['szurok'] = $tck->getForTermekSzuro($tid, $szurotomb);
+                            break;
+                        case 'kereses':
+                            $ret['url'] = '/kereses';
+                            $ret['navigator'] = array(array('caption' => t('A keresett kifejezés') . ': ' . $keresoszo));
+                            // $tid = termek id-k csak kategoriaval es arral szurve
+                            $ret['szurok'] = $tck->getForTermekSzuro($tid, $szurotomb);
+                            break;
+                        case 'szuro':
+                            $ret['url'] = '/szuro';
+                            $ret['navigator'] = array(array('caption' => t('Szűrő')));
+                            $ret['szurok'] = $tck->getForTermekSzuro($osszeslapozatlantermekid, $szurotomb);
+                            break;
+                        case 'marka':
+                            $ret['url'] = '/marka/' . $marka->getSlug();
+                            $ret['navigator'] = array(array('caption' => $marka->getNev()));
+                            $ret['szurok'] = $tck->getForTermekSzuro($osszeslapozatlantermekid, $szurotomb);
+                    }
                     $ret['lapozo'] = 0;
                 }
                 return $ret;

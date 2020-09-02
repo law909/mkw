@@ -362,7 +362,7 @@
 					{/for}
 				{/if}
 			{else}
-				Nincs ilyen termék
+				A termékek jelenleg feltöltés alatt állnak!
 			{/if}
 			<div class="lapozo">
 				<form class="lapozoform" action="{$url}" method="post" data-url="{$url}" data-pageno="{$lapozo.pageno}">
