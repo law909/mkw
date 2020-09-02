@@ -3,7 +3,7 @@ $(document).ready(
 
 	    function getForm() {
             $.ajax({
-                url: '/admin/szamlafej/getkarb',
+                url: '/admin/garancialevelfej/getkarb',
                 data: {
                     oper: 'add'
                 },
@@ -20,7 +20,7 @@ $(document).ready(
                 independent: true,
                 onSubmit: function(data) {
                     var d = JSON.parse(data);
-                    window.open('/admin/szamlafej/print?id=' + d.id, '_blank');
+                    window.open('/admin/garancialevelfej/print?id=' + d.id, '_blank');
                     $mattkarb.empty();
                     getForm();
                 }

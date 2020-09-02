@@ -79,6 +79,26 @@ if ($DBVersion < '0033') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0033');
 }
 
+if ($DBVersion < '0034') {
+    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO bizonylattipus (id, nev, irany, nyomtatni, azonosito, kezdosorszam, peldanyszam,'
+        . ' mozgat, penztmozgat, editprinted, showteljesites, showesedekesseg, showhatarido, tplname, showbizonylatstatuszeditor,'
+        . ' showszamlabutton, showszallitobutton, showkivetbutton, showkeziszamlabutton, showuzenet, showszallitasicim, showerbizonylatszam,'
+        . ' showfuvarlevelszam, showhaszonszazalek, showstorno, foglal, showbackorder, showbevetbutton, showmesebutton, showcsomagbutton,'
+        . ' showfeketelistabutton, showkupon, showfoxpostterminaleditor, showfelhasznalo, checkkelt, showpdf, navbekuldendo) '
+        . ' VALUES '
+        . '("garancialevel", "Garancialevél", "-1", "0", "GAR", "1", "1",'
+        . ' "1", "0", "1", "1", "1", "0", "biz_garancia.tpl", "0",'
+        . ' "0", "0", "0", "0", "0", "0", "0",'
+        . ' "0", "0", "0", "0", "0", "0", "0", "0",'
+        . ' "0", "0", "0", "0", "0", "1", "0")');
+
+    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(1, "Garancialevelek","/admin/garancialevelfej/viewlist","/admin/garancialevelfej",15,0,850, "")');
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0034');
+}
+
 /*********************************************************
  *
  * NAV ONLINE 1.1 (2019.06.01)

@@ -230,6 +230,16 @@ $router->map('POST', '/admin/autokiserofej/ront', 'autokiserofejController#ront'
 $router->map('POST', '/admin/autokiserofej/fejexport', 'autokiserofejController#fejexport', 'adminautokiserofejfejexport');
 $router->map('POST', '/admin/autokiserofej/tetelexport', 'autokiserofejController#tetelexport', 'adminautokiserofejtetelexport');
 
+$router->map('GET', '/admin/garancialevelfej/viewlist', 'garancialevelfejController#viewlist', 'admingarancialevelfejviewlist');
+$router->map('GET', '/admin/garancialevelfej/getlistbody', 'garancialevelfejController#getlistbody', 'admingarancialevelfejgetlistbody');
+$router->map('GET', '/admin/garancialevelfej/getkarb', 'garancialevelfejController#getkarb', 'admingarancialevelfejgetkarb');
+$router->map('GET', '/admin/garancialevelfej/viewkarb', 'garancialevelfejController#viewkarb', 'admingarancialevelfejviewkarb');
+$router->map('POST', '/admin/garancialevelfej/save', 'garancialevelfejController#save', 'admingarancialevelfejsave');
+$router->map('GET', '/admin/garancialevelfej/print', 'garancialevelfejController#doPrint', 'admingarancialevelfejprint');
+$router->map('POST', '/admin/garancialevelfej/ront', 'garancialevelfejController#ront', 'admingarancialevelfejront');
+$router->map('POST', '/admin/garancialevelfej/fejexport', 'garancialevelfejController#fejexport', 'admingarancialevelfejfejexport');
+$router->map('POST', '/admin/garancialevelfej/tetelexport', 'garancialevelfejController#tetelexport', 'admingarancialevelfejtetelexport');
+
 $router->map('GET', '/admin/szamlafej/viewlist', 'szamlafejController#viewlist', 'adminszamlafejviewlist');
 $router->map('GET', '/admin/szamlafej/getlistbody', 'szamlafejController#getlistbody', 'adminszamlafejgetlistbody');
 $router->map('GET', '/admin/szamlafej/getkarb', 'szamlafejController#getkarb', 'adminszamlafejgetkarb');
