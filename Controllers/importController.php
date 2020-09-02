@@ -1775,7 +1775,7 @@ class importController extends \mkwhelpers\Controller {
                     \mkw\store::getEm()->clear();
                 }
                 if ($lettfuggoben) {
-                    echo json_encode(array('url' => \mkw\store::logsPath('nikaimport.txt')));
+                    echo json_encode(array('url' => \mkw\store::logsUrl('nikaimport.txt')));
                 }
             }
             \unlink(\mkw\store::storagePath('nikaproducts.xml'));
