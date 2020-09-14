@@ -285,7 +285,7 @@ class adminController extends mkwhelpers\Controller {
                 break;
         }
         $tec = new tanarelszamolasController($this->params);
-        $tecres = $tec->getData($telsztol->format(\mkw\store::$DateFormat), $telszig->format(\mkw\store::$DateFormat));
+        $tecres = $tec->getData(null, $telsztol->format(\mkw\store::$DateFormat), $telszig->format(\mkw\store::$DateFormat));
 
         $tecview = $this->createView('tanarelszamolastanarsum.tpl');
 
