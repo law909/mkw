@@ -66,10 +66,10 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'url', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'havilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szamlatad', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'inaktiv'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'url', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'havilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szamlatad', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'oraelmaradaskonyvelonek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'fizmod'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'url', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'havilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szamlatad', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'inaktiv'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'url', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'havilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szamlatad', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'oraelmaradaskonyvelonek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'fizmod'];
     }
 
     /**
@@ -695,6 +695,94 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setInaktiv', [$inaktiv]);
 
         return parent::setInaktiv($inaktiv);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isOraelmaradaskonyvelonek()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isOraelmaradaskonyvelonek', []);
+
+        return parent::isOraelmaradaskonyvelonek();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOraelmaradaskonyvelonek($oraelmaradaskonyvelonek)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOraelmaradaskonyvelonek', [$oraelmaradaskonyvelonek]);
+
+        return parent::setOraelmaradaskonyvelonek($oraelmaradaskonyvelonek);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizmod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmod', []);
+
+        return parent::getFizmod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizmodnev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodnev', []);
+
+        return parent::getFizmodnev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizmodId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodId', []);
+
+        return parent::getFizmodId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizmodTipus()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodTipus', []);
+
+        return parent::getFizmodTipus();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizmod($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizmod', [$val]);
+
+        return parent::setFizmod($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeFizmod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeFizmod', []);
+
+        return parent::removeFizmod();
     }
 
 }

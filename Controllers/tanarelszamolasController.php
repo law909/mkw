@@ -22,7 +22,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
 
     }
 
-    public function getData($ptol = null, $pig = null) {
+    public function getData($tanarid = null, $ptol = null, $pig = null) {
 
         if (!$ptol) {
             $ptol = $this->params->getStringRequestParam('tol');
@@ -46,7 +46,9 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
         if ($igstr) {
             $filter->addFilter('_xx.datum', '<=', $igstr);
         }
-
+        if ($tanarid) {
+            $filter->addFilter('_xx.tanar', '=', $tanarid);
+        }
         $filter->addFilter('_xx.tisztaznikell', '=', false);
 
         $tetelek = $this->getRepo('Entities\JogaReszvetel')->getTanarOsszesito($filter, $hokulonbseg);
@@ -195,71 +197,6 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
         \unlink($filepath);
     }
 
-    public function export() {
-
-        function x($o) {
-            if ($o <= 26) {
-                return chr(65 + $o);
-            }
-            return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
-        }
-
-        $excel = new Spreadsheet();
-
-        $res = $this->getData();
-        $mind = $res['tetelek'];
-
-        $excel->setActiveSheetIndex(0)
-            ->setCellValue('A1', t('Cikkszám'))
-            ->setCellValue('B1', t('Név'))
-            ->setCellValue('C1', t('Változat 1'))
-            ->setCellValue('D1', t('Változat 2'))
-            ->setCellValue('E1', t('Mennyiség'))
-            ->setCellValue('F1', t('Érték'));
-
-        $sor = 2;
-        foreach ($mind as $item) {
-            $excel->setActiveSheetIndex(0)
-                ->setCellValue('A' . $sor, $item['cikkszam'])
-                ->setCellValue('B' . $sor, $item['nev'])
-                ->setCellValue('C' . $sor, $item['ertek1'])
-                ->setCellValue('D' . $sor, $item['ertek2'])
-                ->setCellValue('E' . $sor, $item['mennyiseg'])
-                ->setCellValue('F' . $sor, $item['ertek']);
-
-            $sor++;
-        }
-
-        $writer = IOFactory::createWriter($excel, 'Xlsx');
-
-        $filepath = \mkw\store::storagePath(uniqid('tanarelszamolas') . '.xlsx');
-        $writer->save($filepath);
-
-        $fileSize = filesize($filepath);
-
-        // Output headers.
-        header('Cache-Control: private');
-        header('Content-Type: application/stream');
-        header('Content-Length: ' . $fileSize);
-        header('Content-Disposition: attachment; filename=' . $filepath);
-
-        readfile($filepath);
-
-        \unlink($filepath);
-    }
-
-    public function doPrint() {
-
-        $res = $this->getData();
-
-        $view = $this->createView('rep_bizonylattetellistatetel.tpl');
-
-        $view->setVar('tolstr', $this->tolstr);
-        $view->setVar('igstr', $this->igstr);
-        $view->setVar('tetelek', $res['tetelek']);
-        $view->printTemplateResult();
-    }
-
     public function sendEmail() {
 
         $tanarid = $this->params->getIntRequestParam('id');
@@ -274,6 +211,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
         $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaTanarelszamolasSablon));
         if ($tanaremail && $emailtpl) {
             $filepath = $this->reszletezoExport();
+            $adat = $this->getData($tanarid);
 
             $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
             $subject->setVar('tol', $tolstr);
@@ -282,6 +220,24 @@ class tanarelszamolasController extends \mkwhelpers\Controller {
             $body->setVar('tol', $tolstr);
             $body->setVar('ig', $igstr);
             $body->setVar('nev', $tanarnev);
+            $body->setVar('fizmodtipus', $tanar->getFizmodTipus());
+
+            /** @var \Entities\Valutanem $defavaluta */
+            $defavaluta = \mkw\store::getEm()->getRepository('Entities\Valutanem')->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+            $defakerekit = true;
+            $mincimlet = 0;
+            if ($defavaluta) {
+                $defakerekit = $defavaluta->getKerekit();
+                $mincimlet = $defavaluta->getMincimlet();
+            }
+            $osszeg = $adat[0]['jutalek'];
+            if ($defakerekit) {
+                $osszeg = round($osszeg);
+            }
+            if ($tanar->getFizmodTipus() === 'P') {
+                $osszeg = \mkw\store::kerekit($osszeg, $mincimlet);
+            }
+            $body->setVar('osszeg', $osszeg);
 
             $mailer = \mkw\store::getMailer();
 

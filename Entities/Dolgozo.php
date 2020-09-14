@@ -378,6 +378,14 @@ class Dolgozo {
         return '';
     }
 
+    public function getFizmodTipus() {
+        $fm = $this->getFizmod();
+        if ($fm) {
+            return $fm->getTipus();
+        }
+        return '';
+    }
+
     /**
      * @param \Entities\Fizmod $val
      */
