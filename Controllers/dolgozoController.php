@@ -41,6 +41,7 @@ class dolgozoController extends \mkwhelpers\MattableController {
         $x['szamlatad'] = $t->getSzamlatad();
         $x['inaktiv'] = $t->isInaktiv();
         $x['oraelmaradaskonyvelonek'] = $t->isOraelmaradaskonyvelonek();
+        $x['fizmodnev'] = $t->getFizmodNev();
         return $x;
     }
 
@@ -75,6 +76,10 @@ class dolgozoController extends \mkwhelpers\MattableController {
         $ck = \mkw\store::getEm()->getRepository('Entities\Munkakor')->find($this->params->getIntRequestParam('munkakor', 0));
         if ($ck) {
             $obj->setMunkakor($ck);
+        }
+        $fizmod = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
+        if ($fizmod) {
+            $obj->setFizmod($fizmod);
         }
         return $obj;
     }
@@ -136,6 +141,8 @@ class dolgozoController extends \mkwhelpers\MattableController {
         $view->setVar('egyed', $this->loadVars($record));
         $munkakor = new munkakorController($this->params);
         $view->setVar('munkakorlist', $munkakor->getSelectList(($record ? $record->getMunkakorId() : 0)));
+        $fizmod = new fizmodController($this->params);
+        $view->setVar('fizmodlist', $fizmod->getSelectList(($record ? $record->getFizmodId() : 0)));
         return $view->getTemplateResult();
     }
 

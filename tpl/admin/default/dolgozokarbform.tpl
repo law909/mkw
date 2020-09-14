@@ -76,6 +76,15 @@
                 <td><label for="SzamlatadEdit">{at('Számlát ad')}</label></td>
                 <td><input id="SzamlatadEdit" name="szamlatad" type="checkbox"{if ($egyed.szamlatad)} checked="checked"{/if}></td>
             </tr>
+            <tr>
+                <td><label for="FizmodEdit">{at('Fizetési mód')}:</label></td>
+                <td><select id="FizmodEdit" name="fizmod">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $fizmodlist as $_fizmod}
+                            <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
+                        {/foreach}
+                    </select></td>
+            </tr>
 			</tbody></table>
 		</div>
 	</div>

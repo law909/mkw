@@ -78,6 +78,13 @@ class Dolgozo {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $oraelmaradaskonyvelonek = false;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Fizmod")
+     * @ORM\JoinColumn(name="fizmod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Fizmod
+     */
+    private $fizmod;
+
     public function __construct() {
         $this->jelenletek = new ArrayCollection();
     }
@@ -347,6 +354,51 @@ class Dolgozo {
      */
     public function setOraelmaradaskonyvelonek($oraelmaradaskonyvelonek) {
         $this->oraelmaradaskonyvelonek = $oraelmaradaskonyvelonek;
+    }
+    /**
+     * @return \Entities\Fizmod
+     */
+    public function getFizmod() {
+        return $this->fizmod;
+    }
+
+    public function getFizmodnev() {
+        $fm = $this->getFizmod();
+        if ($fm) {
+            return $fm->getNev();
+        }
+        return '';
+    }
+
+    public function getFizmodId() {
+        $fm = $this->getFizmod();
+        if ($fm) {
+            return $fm->getId();
+        }
+        return '';
+    }
+
+    /**
+     * @param \Entities\Fizmod $val
+     */
+    public function setFizmod($val) {
+        if (!($val instanceof \Entities\Fizmod)) {
+            $val = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($val);
+        }
+        if ($this->fizmod !== $val) {
+            if (!$val) {
+                $this->removeFizmod();
+            }
+            else {
+                $this->fizmod = $val;
+            }
+        }
+    }
+
+    public function removeFizmod() {
+        if ($this->fizmod !== null) {
+            $this->fizmod = null;
+        }
     }
 
 }
