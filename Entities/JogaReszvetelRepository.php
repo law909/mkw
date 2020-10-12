@@ -50,9 +50,10 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository {
     }
 
     public function getTanarOsszesito($filter, $honap = 1) {
-        $q = $this->_em->createQuery('SELECT SUM(_xx.jutalek) AS jutalek,ta.nev,ta.id,ta.havilevonas*' . $honap . ' AS havilevonas'
+        $q = $this->_em->createQuery('SELECT SUM(_xx.jutalek) AS jutalek,ta.nev,ta.id,ta.havilevonas*' . $honap . ' AS havilevonas,fm.nev AS fizmodnev'
             . ' FROM Entities\JogaReszvetel _xx'
             . ' LEFT JOIN _xx.tanar ta'
+            . ' LEFT JOIN ta.fizmod fm'
             . $this->getFilterString($filter)
             . ' GROUP BY ta.id'
             . ' ORDER BY ta.nev');

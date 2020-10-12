@@ -5,6 +5,7 @@
         <th class="headercell textalignright">{at('Jutalék')}</th>
         <th class="headercell textalignright">{at('Havi levonás')}</th>
         <th class="headercell textalignright">{at('Fizetendő')}</th>
+        <th class="headercell">{at('Fiz.mód')}</th>
         <th></th>
         <th></th>
     </tr>
@@ -20,6 +21,7 @@
             <td class="datacell textalignright">{bizformat($tetel.jutalek)}</td>
             <td class="datacell textalignright">{bizformat($tetel.havilevonas)}</td>
             <td class="datacell textalignright">{bizformat($tetel.jutalek-$tetel.havilevonas)}</td>
+            <td class="datacell">{$tetel.fizmodnev}</td>
             <td class="datacell"><a href="\admin\tanarelszamolas\reszletezo?id={$tetel.id}&tol={$tol}&ig={$ig}" target="_blank">{at('Részletezés')}</a></td>
             <td class="datacell"><a href="\admin\tanarelszamolas\email?id={$tetel.id}&tol={$tol}&ig={$ig}" target="_blank">{at('Email')}</a></td>
         </tr>
