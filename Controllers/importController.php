@@ -2307,7 +2307,7 @@ class importController extends \mkwhelpers\Controller {
                     echo json_encode(array('url' => \mkw\store::logsUrl('reintex_fuggoben.txt')));
                 }
 
-                if ($createuj && false) {
+                if (false && $createuj) {
                     rewind($fh);
                     fgetcsv($fh, 0, $sep, '"');
                     while ($data = fgetcsv($fh, 0, $sep, '"')) {
