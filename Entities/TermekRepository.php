@@ -32,12 +32,12 @@ class TermekRepository extends \mkwhelpers\Repository {
         }
         return '
                         (
-                            (_xx.akciostart <> \'\' AND (_xx.akciostart IS NOT NULL)) OR (_xx.akciostop <> \'\' AND (_xx.akciostop IS NOT NULL))
+                            (_xx.akciostart IS NOT NULL) OR (_xx.akciostop IS NOT NULL)
                         ) AND 
                         (
                             (_xx.akciostart <= \'' . $date . '\' AND _xx.akciostop >= \'' . $date . '\') OR
-                            (_xx.akciostart <= \'' . $date . '\' AND (_xx.akciostop = \'\' OR (_xx.akciostop IS NULL))) OR
-                            ((_xx.akciostart = \'\' OR (_xx.akciostart IS NULL)) AND _xx.akciostop >= \'' . $date . '\')
+                            (_xx.akciostart <= \'' . $date . '\' AND (_xx.akciostop IS NULL)) OR
+                            ((_xx.akciostart IS NULL) AND _xx.akciostop >= \'' . $date . '\')
                         )
                 ';
     }
