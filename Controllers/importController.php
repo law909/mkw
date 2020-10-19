@@ -2146,6 +2146,10 @@ class importController extends \mkwhelpers\Controller {
                 \curl_exec($ch);
                 fclose($fh);
                 \curl_close($ch);
+
+                die();
+
+
             }
             else {
                 if (\mkw\store::isDeveloper()) {
