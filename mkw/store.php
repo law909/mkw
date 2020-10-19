@@ -1383,9 +1383,11 @@ class store {
     }
 
     public static function strpos_array($haystack, $needles) {
-        foreach ($needles as $word) {
-            if (strpos($haystack, $word) !== false) {
-                return true;
+        if ($needles && is_array($needles)) {
+            foreach ($needles as $word) {
+                if (strpos($haystack, $word) !== false) {
+                    return true;
+                }
             }
         }
         return false;

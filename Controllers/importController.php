@@ -2182,7 +2182,7 @@ class importController extends \mkwhelpers\Controller {
                             $kp = $this->createKategoria($this->toutf($kat), $kid);
                             $kid = $kp->getId();
                         }
-                        $this->createME($data[$this->n('h')]);
+                        $this->createME($this->toutf($data[$this->n('h')]));
                     }
                 }
 
@@ -2208,16 +2208,16 @@ class importController extends \mkwhelpers\Controller {
                             $termek = $termek[0];
                         }
                         if ($termek) {
-                            //$termek->setMekod($this->>getME(mb_convert_encoding($data[$this->n('h')], 'UTF8', 'ISO-8859-2')));
+                            //$termek->setMekod($this->>getME($this->>toutf($data[$this->n('h')])));
                             if ($editnev && false) {
                                 if (trim($data[$this->n('b')])) {
-                                    $termek->setNev(mb_convert_encoding($data[$this->n('b')], 'UTF8', 'ISO-8859-2'));
+                                    $termek->setNev($this->toutf(trim($data[$this->n('b')])));
                                 }
                             }
                             if ($editleiras) {
                                 if (trim($data[$this->n('d')])) {
                                     if (!$termek->getLeiras()) {
-                                        $hosszuleiras = mb_convert_encoding(trim($data[$this->n('d')]), 'UTF8', 'ISO-8859-2');
+                                        $hosszuleiras = $this->toutf(trim($data[$this->n('d')]));
                                         $termek->setLeiras($hosszuleiras);
                                     }
 
@@ -2324,7 +2324,7 @@ class importController extends \mkwhelpers\Controller {
                     echo json_encode(array('url' => \mkw\store::logsUrl('reintex_fuggoben.txt')));
                 }
 
-                if (false && $createuj) {
+                if ($createuj) {
                     rewind($fh);
                     fgetcsv($fh, 0, $sep, '"');
                     while ($data = fgetcsv($fh, 0, $sep, '"')) {
@@ -2375,14 +2375,14 @@ class importController extends \mkwhelpers\Controller {
                                 }
 
                                 if (!$valtozat) {
-                                    $termeknev = mb_convert_encoding($data[$this->n('b')], 'UTF8', 'ISO-8859-2');
+                                    $termeknev = $this->toutf($data[$this->n('b')]);
 
                                     $termek = new \Entities\Termek();
                                     $termek->setFuggoben(true);
-                                    $termek->setMekod($this->getME($data[$this->n('h')]));
+                                    $termek->setMekod($this->getME($this->toutf($data[$this->n('h')])));
                                     $termek->setNev($termeknev);
 
-                                    $hosszuleiras = mb_convert_encoding(trim($data[$this->n('d')]), 'UTF8', 'ISO-8859-2');
+                                    $hosszuleiras = $this->toutf(trim($data[$this->n('d')]));
                                     $termek->setLeiras($hosszuleiras);
 
                                     $puri2 = \mkw\store::getSanitizer();
