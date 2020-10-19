@@ -320,6 +320,9 @@ class checkoutController extends \mkwhelpers\MattableController {
                     if (!$szallitasimod) {
                         $errors[] = 'Nem adta meg a szállítási módot.';
                     }
+                    if ((\mkw\store::isFoxpostSzallitasimod($szallitasimod) || \mkw\store::isGLSSzallitasimod($szallitasimod)) && (!$csomagterminalid)) {
+                        $errors[] = 'Nem adta meg a csomagterminált.';
+                    }
                     if (!$fizetesimod) {
                         $errors[] = 'Nem adta meg a fizetési módot.';
                     }
