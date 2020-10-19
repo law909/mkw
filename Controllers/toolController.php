@@ -7,6 +7,7 @@ namespace Controllers;
 class toolController extends \mkwhelpers\Controller {
 
     public function reintexDownload() {
+        @\unlink(\mkw\store::storagePath('reintex.csv'));
         $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlReintex));
         $fh = fopen(\mkw\store::storagePath('reintex.csv'), 'w');
         \curl_setopt($ch, CURLOPT_FILE, $fh);
