@@ -2139,7 +2139,7 @@ class importController extends \mkwhelpers\Controller {
             @\unlink(\mkw\store::logsPath('reintex_fuggoben.txt'));
 
             if (\mkw\store::isReintexTeszt()) {
-                $ch = \curl_init(\mkw\store::getParameter('https://www.mindentkapni.hu/t/reintexdownload'));
+                $ch = \curl_init('https://www.mindentkapni.hu/t/reintexdownload');
                 $fh = fopen(\mkw\store::storagePath('reintex.csv'), 'w');
                 \curl_setopt($ch, CURLOPT_FILE, $fh);
                 \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
