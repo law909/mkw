@@ -202,6 +202,7 @@ class consts {
     const GyartoNika = 'gyartonika';
     const GyartoHaffner24 = 'gyartohaffner24';
     const GyartoEvona = 'gyartoevona';
+    const GyartoNetpresso = 'gyartonetpresso';
 
     const PathKreativ = 'pathkreativ';
     const PathDelton = 'pathdelton';
@@ -216,6 +217,7 @@ class consts {
     const PathNika = 'pathnika';
     const PathHaffner24 = 'pathhaffner24';
     const PathEvona = 'pathevona';
+    const PathNetpresso = 'pathnetpresso';
 
     const UrlKreativ = 'urlkreativ';
     const UrlKreativImages = 'urlkreativimages';
@@ -226,6 +228,7 @@ class consts {
     const UrlLegavenue = 'urllegavenue';
     const UrlHaffner24 = 'urlhaffner24';
     const UrlReintex = 'urlreintex';
+    const UrlNetpresso = 'urlnetpresso';
 
     const KepUrlEvona = 'kepurlevona';
 
@@ -245,6 +248,7 @@ class consts {
     const RunningNikaImport = 'runningnikaimport';
     const RunningHaffner24Import = 'runninghaffner24import';
     const RunningEvonaImport = 'runningevonaimport';
+    const RunningNetpressoImport = 'runningnetpressoimport';
 
     const MiniCRMHasznalatban = 'minicrmhasznalatban';
     const MiniCRMSystemId = 'minicrmsystemid';

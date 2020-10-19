@@ -586,6 +586,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('gyartohaffner24list', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::GyartoEvona);
         $view->setVar('gyartoevonalist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::GyartoNetpresso);
+        $view->setVar('gyartonetpressolist', $gyarto->getSzallitoSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::PathBtech);
         $view->setVar(\mkw\consts::PathBtech, ($p ? $p->getErtek() : ''));
@@ -613,6 +615,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::PathHaffner24, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::PathEvona);
         $view->setVar(\mkw\consts::PathEvona, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::PathNetpresso);
+        $view->setVar(\mkw\consts::PathNetpresso, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::UrlKreativ);
         $view->setVar(\mkw\consts::UrlKreativ, ($p ? $p->getErtek() : ''));
@@ -632,6 +636,8 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar(\mkw\consts::UrlHaffner24, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::UrlReintex);
         $view->setVar(\mkw\consts::UrlReintex, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::UrlNetpresso);
+        $view->setVar(\mkw\consts::UrlNetpresso, ($p ? $p->getErtek() : ''));
 
         $p = $repo->find(\mkw\consts::KepUrlEvona);
         $view->setVar(\mkw\consts::KepUrlEvona, ($p ? $p->getErtek() : ''));
@@ -676,6 +682,7 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('stopnikaimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'nika')));
         $view->setVar('stophaffner24importurl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'haffner24')));
         $view->setVar('stopevonaimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'evona')));
+        $view->setVar('stopnetpressoimporturl', \mkw\store::getRouter()->generate('adminimportstop', false, array('impname' => 'netpresso')));
 
         $view->setVar('repairkreativimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'kreativ')));
         $view->setVar('repairdeltonimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'delton')));
@@ -690,6 +697,7 @@ class setupController extends \mkwhelpers\Controller {
         $view->setVar('repairnikaimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'nika')));
         $view->setVar('repairhaffner24importurl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'haffner24')));
         $view->setVar('repairevonaimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'evona')));
+        $view->setVar('repairnetpressoimporturl', \mkw\store::getRouter()->generate('adminimportrepair', false, array('impname' => 'netpresso')));
         $view->printTemplateResult();
     }
 
@@ -1432,6 +1440,14 @@ class setupController extends \mkwhelpers\Controller {
         else {
             $this->setObj(\mkw\consts::GyartoEvona, '');
         }
+        $x = $this->params->getIntRequestParam('gyartonetpresso', 0);
+        $partner = $gyarto->find($x);
+        if ($partner) {
+            $this->setObj(\mkw\consts::GyartoNetpresso, $partner->getId());
+        }
+        else {
+            $this->setObj(\mkw\consts::GyartoNetpresso, '');
+        }
 
         $this->setObj(\mkw\consts::PathBtech, $this->params->getStringRequestParam('pathbtech', ''));
         $this->setObj(\mkw\consts::PathDelton, $this->params->getStringRequestParam('pathdelton', ''));
@@ -1446,6 +1462,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::PathNika, $this->params->getStringRequestParam('pathnika', ''));
         $this->setObj(\mkw\consts::PathHaffner24, $this->params->getStringRequestParam('pathhaffner24', ''));
         $this->setObj(\mkw\consts::PathEvona, $this->params->getStringRequestParam('pathevona', ''));
+        $this->setObj(\mkw\consts::PathNetpresso, $this->params->getStringRequestParam('pathnetpresso', ''));
 
         $this->setObj(\mkw\consts::UrlKreativ, $this->params->getStringRequestParam('urlkreativ', ''), true);
         $this->setObj(\mkw\consts::UrlKreativImages, $this->params->getStringRequestParam('urlkreativimages', ''), true);
@@ -1456,6 +1473,7 @@ class setupController extends \mkwhelpers\Controller {
         $this->setObj(\mkw\consts::UrlLegavenue, $this->params->getStringRequestParam('urllegavenue', ''), true);
         $this->setObj(\mkw\consts::UrlHaffner24, $this->params->getStringRequestParam('urlhaffner24', ''), true);
         $this->setObj(\mkw\consts::UrlReintex, $this->params->getStringRequestParam('urlreintex', ''), true);
+        $this->setObj(\mkw\consts::UrlNetpresso, $this->params->getStringRequestParam('urlnetpresso', ''), true);
 
         $this->setObj(\mkw\consts::KepUrlEvona, $this->params->getStringRequestParam('kepurlevona', ''));
 

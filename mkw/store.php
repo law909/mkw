@@ -897,6 +897,10 @@ class store {
         return self::getConfigValue('developer');
     }
 
+    public static function isReintexTeszt() {
+        return self::getConfigValue('reintexteszt');
+    }
+
     public static function isMultilang() {
         return self::getSetupValue('multilang');
     }

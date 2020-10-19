@@ -149,6 +149,7 @@ $router->map('GET', '/sitemap.xml', 'sitemapController#toBot', 'sitemap');
 
 $router->map('GET', '/t/emag/printvat', 'emagController#printVat', 'printvat');
 $router->map('GET', '/t/emag/printcat', 'emagController#printCategories', 'printcat');
+$router->map('GET', '/t/reintexdownload', 'toolContoller#reintexDownload', 'reintexdownload');
 
 $router->map('POST', '/barion', 'barionController#callback', 'barioncallback');
 

@@ -1231,6 +1231,24 @@
                                 {/foreach}
                             </select>
                         </div>
+                        <div class="matt-hseparator"></div>
+                        <div>
+                            <div>
+                                <label for="NetpressoEdit">Netpresso:</label>
+                                <select id="NetpressoEdit" name="gyartonetpresso">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $gyartonetpressolist as $_gyarto}
+                                        <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                                    {/foreach}
+                                </select>
+                                <label for="PathNetpressoEdit">Képek mappája:</label>
+                                <input id="PathNetpressoEdit" name="pathnetpresso" value="{$pathnetpresso}">
+                                <label for="UrlNetpressoEdit">URL:</label>
+                                <input id="UrlNetpressoEdit" name="urlnetpresso" value="{$urlnetpresso}">
+                                <a href="#" class="js-stopimport" data-href="{$stopnetpressoimporturl}">Stop import</a>
+                                <a href="#" class="js-repairimport" data-href="{$repairnetpressoimporturl}">Javít</a>
+                            </div>
+                        </div>
 
                     </div>
                 {/if}
