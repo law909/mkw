@@ -2270,10 +2270,7 @@ class importController extends \mkwhelpers\Controller {
                                                 $valtozat->setLathato(false);
                                                 $valtozat->setElerheto(false);
                                                 \mkw\store::getEm()->persist($valtozat);
-                                                if (($termekdb % $batchsize) === 0) {
-                                                    \mkw\store::getEm()->flush();
-                                                    \mkw\store::getEm()->clear();
-                                                }
+                                                \mkw\store::getEm()->flush();
                                             }
                                         }
                                         // megvan a cikkszám reintexnel
@@ -2293,10 +2290,7 @@ class importController extends \mkwhelpers\Controller {
                                         $lettfuggoben = true;
                                         $termek->setInaktiv(true);
                                         \mkw\store::getEm()->persist($termek);
-                                        if (($termekdb % $batchsize) === 0) {
-                                            \mkw\store::getEm()->flush();
-                                            \mkw\store::getEm()->clear();
-                                        }
+                                        \mkw\store::getEm()->flush();
                                     }
                                 }
                             }
@@ -2309,10 +2303,7 @@ class importController extends \mkwhelpers\Controller {
                                     $lettfuggoben = true;
                                     $termek->setInaktiv(true);
                                     \mkw\store::getEm()->persist($termek);
-                                    if (($termekdb % $batchsize) === 0) {
-                                        \mkw\store::getEm()->flush();
-                                        \mkw\store::getEm()->clear();
-                                    }
+                                    \mkw\store::getEm()->flush();
                                 }
                             }
                         }
