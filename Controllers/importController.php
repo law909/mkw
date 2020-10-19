@@ -2145,7 +2145,7 @@ class importController extends \mkwhelpers\Controller {
                 \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                 \curl_exec($ch);
                 if ($errno = \curl_errno($ch)) {
-                    writelog("reintex curl error $errno: " . \curl_error($ch), 'log.txt');
+                    \mkw\store::writelog("reintex curl error $errno: " . \curl_error($ch), 'log.txt');
                 }
                 fclose($fh);
                 \curl_close($ch);
