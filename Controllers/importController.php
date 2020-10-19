@@ -5266,7 +5266,7 @@ class importController extends \mkwhelpers\Controller {
             @unlink(\mkw\store::storagePath('netpresso_fuggoben.txt'));
 
             $ch = \curl_init(\mkw\store::getParameter(\mkw\consts::UrlNetpresso));
-            $fh = fopen(\mkw\store::storagePath('netresso.txt'), 'w');
+            $fh = fopen(\mkw\store::storagePath('netpresso.txt'), 'w');
             \curl_setopt($ch, CURLOPT_FILE, $fh);
             \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             \curl_exec($ch);
@@ -5286,6 +5286,7 @@ class importController extends \mkwhelpers\Controller {
                 if ($fh) {
                     $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                     $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                    $markacs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::MarkaCs));
 
                     $termekdb = 0;
                     fgetcsv($fh, 0, $sep, '"');
@@ -5300,7 +5301,7 @@ class importController extends \mkwhelpers\Controller {
                             $katok = explode('>', $data[$this->n('d')]);
                             foreach ($katok as $kat) {
                                 if ($_katcikl > 0) {
-                                    $katnev = $this->toutf(trim($kat));
+                                    $katnev = trim($kat);
                                     $parent = $this->createKategoria($katnev, $_parentid);
                                     $_parentid = $parent->getId();
                                 }
@@ -5319,19 +5320,32 @@ class importController extends \mkwhelpers\Controller {
                     while ((($dbig && ($termekdb < $dbig)) || (!$dbig)) && ($data = fgetcsv($fh, 0, $sep, '"'))) {
                         $termekdb++;
                         if ($data[$this->n('c')]) {
-                            $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $data[$this->n('a')], 'gyarto' => $gyartoid));
+                            $idegencikkszam = $data[$this->n('a')];
+                            $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('idegencikkszam' => $idegencikkszam, 'gyarto' => $gyartoid));
                             if (!$termek) {
 
                                 if ($createuj) {
-                                    $katnev = $this->toutf(trim($data[$this->n('d')]));
+                                    $katnev = trim($data[$this->n('d')]);
                                     $urlkatnev = \mkw\store::urlize($katnev);
                                     \mkw\store::createDirectoryRecursively($path . $urlkatnev);
-                                    $parent = $this->createKategoria($katnev, $parentid);
 
-                                    $termeknev = $this->toutf(trim($data[$this->n('c')]));
+                                    $parent = $this->getRepo('Entities\TermekFa')->find($parentid);
+                                    $_parentid = $parentid;
+                                    $_katcikl = 0;
+                                    $katok = explode('>', trim($data[$this->n('d')]));
+                                    foreach ($katok as $kat) {
+                                        if ($_katcikl > 0) {
+                                            $katnev = trim($kat);
+                                            $parent = $this->createKategoria($katnev, $_parentid);
+                                            $_parentid = $parent->getId();
+                                        }
+                                        $_katcikl++;
+                                    }
 
-                                    $hosszuleiras = $this->toutf(trim($data[$this->n('h')]));
-                                    $rovidleiras = $this->toutf(trim($data[$this->n('h')]));
+                                    $termeknev = trim($data[$this->n('c')]);
+
+                                    $hosszuleiras = trim($data[$this->n('h')]);
+                                    $rovidleiras = trim($data[$this->n('h')]);
 
                                     $termek = new \Entities\Termek();
                                     $termek->setFuggoben(true);
@@ -5340,85 +5354,60 @@ class importController extends \mkwhelpers\Controller {
                                     $termek->setLeiras($hosszuleiras);
                                     $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
                                     $termek->setCikkszam($data[$this->n('a')]);
-                                    $termek->setIdegencikkszam($data[$this->n('a')]);
+                                    $termek->setIdegencikkszam($idegencikkszam);
                                     $termek->setTermekfa1($parent);
                                     $termek->setVtsz($vtsz[0]);
                                     $termek->setHparany(3);
                                     if ($gyarto) {
                                         $termek->setGyarto($gyarto);
                                     }
-                                    // kepek
-                                    if (array_key_exists($data[$this->n('a')], $imagelist)) {
-                                        $imgcnt = 0;
-                                        foreach ($imagelist[$data[$this->n('a')]] as $imgurl) {
-                                            $imgcnt++;
-
-                                            $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegenkod);
-                                            $kepnev = \mkw\store::urlize($termeknev . '_' . $idegenkod);
-                                            if (count($imagelist[$data[$this->n('a')]]) > 1) {
-                                                $nameWithoutExt = $nameWithoutExt . '_' . $imgcnt;
-                                                $kepnev = $kepnev . '_' . $imgcnt;
-                                            }
-
-                                            $extension = \mkw\store::getExtension($imgurl);
-                                            $imgpath = $nameWithoutExt . '.' . $extension;
-
-                                            $ch = \curl_init($imgurl);
-                                            $ih = fopen($imgpath, 'w');
-                                            \curl_setopt($ch, CURLOPT_FILE, $ih);
-                                            \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                                            \curl_exec($ch);
-                                            fclose($ih);
-
-                                            foreach ($this->settings['sizes'] as $k => $size) {
-                                                $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
-                                                $matches = explode('x', $size);
-                                                \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
-                                            }
-                                            if (((count($imagelist[$data[$this->n('a')]]) > 1) && ($imgcnt == 1)) || (count($imagelist[$data[$this->n('a')]]) == 1)) {
-                                                $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
-                                                $termek->setKepleiras($termeknev);
-                                            }
-                                            else {
-                                                $kep = new \Entities\TermekKep();
-                                                $termek->addTermekKep($kep);
-                                                $kep->setUrl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
-                                                $kep->setLeiras($termeknev);
-                                                \mkw\store::getEm()->persist($kep);
-                                            }
+                                    if (trim($data[$this->n('b')])) {
+                                        $cimke = $this->createTermekCimke($markacs, trim($data[$this->n('b')]));
+                                        if ($cimke) {
+                                            $termek->addCimke($cimke);
                                         }
+                                    }
+                                    // kepek
+                                    if ($data[$this->n('i')]) {
+                                        $nameWithoutExt = $path . $urlkatnev . DIRECTORY_SEPARATOR . \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
+                                        $kepnev = \mkw\store::urlize($termeknev . '_' . $idegencikkszam);
+
+                                        $extension = \mkw\store::getExtension($data[$this->n('i')]);
+                                        $imgpath = $nameWithoutExt . '.' . $extension;
+
+                                        $ch = \curl_init($data[$this->n('i')]);
+                                        $ih = fopen($imgpath, 'w');
+                                        \curl_setopt($ch, CURLOPT_FILE, $ih);
+                                        \curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                                        \curl_exec($ch);
+                                        fclose($ih);
+
+                                        foreach ($this->settings['sizes'] as $k => $size) {
+                                            $newFilePath = $nameWithoutExt . "_" . $k . "." . $extension;
+                                            $matches = explode('x', $size);
+                                            \mkw\thumbnail::createThumb($imgpath, $newFilePath, $matches[0] * 1, $matches[1] * 1, $this->settings['quality'], true);
+                                        }
+                                        $termek->setKepurl($urleleje . $urlkatnev . DIRECTORY_SEPARATOR . $kepnev . '.' . $extension);
+                                        $termek->setKepleiras($termeknev);
                                     }
                                 }
                             }
                             else {
                                 $termek = $termek[0];
                                 if ($editleiras) {
-                                    $hosszuleiras = $this->toutf(trim($data[$this->n('n')]));
+                                    $hosszuleiras = trim($data[$this->n('h')]);
                                     $termek->setLeiras($hosszuleiras);
-                                    //$rovidleiras = mb_convert_encoding(trim($data[4]), 'UTF8', 'ISO-8859-2');
-                                    //$termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
                                 }
                             }
                             if ($termek) {
                                 if ($termek->getKeszlet() <= 0) {
-                                    $termek->setNemkaphato(($data[$this->n('g')] * 1) == 0);
+                                    $termek->setNemkaphato(($data[$this->n('q')] * 1) == 0);
                                 }
                                 if (!$termek->getAkcios()) {
-                                    $termek->setNetto($data[$this->n('d')] * 1 * $arszaz / 100);
+                                    $termek->setNetto($data[$this->n('g')] * 1 * $arszaz / 100);
                                     $termek->setBrutto(round($termek->getBrutto(), -1));
                                 }
                                 \mkw\store::getEm()->persist($termek);
-                            }
-                        }
-                        else {
-                            $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findByIdegenkod('KP' . $data[$this->n('a')]);
-                            if ($termek) {
-                                $termek = $termek[0];
-                                if ($termek->getKeszlet() <= 0) {
-                                    $termek->setNemkaphato(true);
-                                    $termek->setLathato(false);
-                                    \mkw\store::getEm()->persist($termek);
-                                }
                             }
                         }
                         if (($termekdb % $batchsize) === 0) {
@@ -5426,6 +5415,7 @@ class importController extends \mkwhelpers\Controller {
                             \mkw\store::getEm()->clear();
                             $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
                             $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                            $markacs = $this->getRepo('Entities\Termekcimkekat')->find(\mkw\store::getParameter(\mkw\consts::MarkaCs));
                         }
                     }
                     \mkw\store::getEm()->flush();
@@ -5435,18 +5425,18 @@ class importController extends \mkwhelpers\Controller {
                     if ($gyarto) {
                         rewind($fh);
                         fgetcsv($fh, 0, $sep, '"');
-                        $idegenkodok = array();
+                        $idegencikkszamok = array();
                         while ($data = fgetcsv($fh, 0, $sep, '"')) {
-                            $idegenkodok[] = 'KP' . $data[0];
+                            $idegencikkszamok[] = $data[$this->n('a')];
                         }
                         $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
                         foreach ($termekek as $t) {
-                            if (!in_array($t['idegenkod'], $idegenkodok)) {
+                            if (!in_array($t['idegencikkszam'], $idegencikkszamok)) {
                                 /** @var \Entities\Termek $termek */
                                 $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                 if ($termek && $termek->getKeszlet() <= 0) {
                                     $lettfuggoben = true;
-                                    \mkw\store::writelog('cikkszám: ' . $termek->getCikkszam(), 'kreativ_fuggoben.txt');
+                                    \mkw\store::writelog('cikkszám: ' . $termek->getCikkszam(), 'netpresso_fuggoben.txt');
                                     $termek->setInaktiv(true);
                                     \mkw\store::getEm()->persist($termek);
                                     \mkw\store::getEm()->flush();
@@ -5455,15 +5445,15 @@ class importController extends \mkwhelpers\Controller {
                         }
                     }
                     if ($lettfuggoben) {
-                        echo json_encode(array('url' => \mkw\store::logsUrl('kreativ_fuggoben.txt')));
+                        echo json_encode(array('url' => \mkw\store::logsUrl('netpresso_fuggoben.txt')));
                     }
                 }
                 fclose($fh);
             }
             else {
-                echo json_encode(array('url' => \mkw\store::storageUrl('kreativpuzzlestock.txt')));
+                echo json_encode(array('url' => \mkw\store::storageUrl('netpresso.txt')));
             }
-            $this->setRunningImport(\mkw\consts::RunningKreativImport, 0);
+            $this->setRunningImport(\mkw\consts::RunningNetpressoImport, 0);
         }
         else {
             echo json_encode(array('msg' => 'Már fut ilyen import.'));
