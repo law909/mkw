@@ -38,6 +38,10 @@
                             <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
                             {/foreach}
                         </select>
+                    </div>
+                    <div>
+                        <label for="MinKeszletEdit">Min. készlet:</label>
+                        <input id="MinKeszletEdit" type="number" name="minkeszlet" value="2">
                         <input type="submit" class="ui-widget ui-button ui-state-default ui-corner-all" value="OK">
                     </div>
                     <div>

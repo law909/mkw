@@ -12,6 +12,8 @@ class listaController extends \mkwhelpers\Controller {
         $raktarrepo = $this->getRepo('Entities\Raktar');
         $termekrepo = $this->getRepo('Entities\Termek');
 
+        $minkeszlet = $this->params->getIntRequestParam('minkeszlet');
+
         $raktarid = $this->params->getIntRequestParam('raktar');
         $boltraktar = $raktarrepo->find($raktarid);
 
@@ -54,7 +56,7 @@ class listaController extends \mkwhelpers\Controller {
             $valtozat = $rep->find($kesz['termekvaltozat_id']);
             if ($valtozat) {
                 $boltikeszlet = $valtozat->getKeszlet(null, $raktarid);
-                if ($boltikeszlet <= 0) {
+                if ($boltikeszlet <= $minkeszlet) {
                     $raktar = $raktarrepo->find($kesz['raktar_id']);
                     $termek = $termekrepo->find($kesz['termek_id']);
 
