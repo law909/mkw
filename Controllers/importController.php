@@ -2186,6 +2186,7 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
 
+                $lettfuggoben = false;
                 foreach ($minden as $data) {
                     $termekdb++;
                     $cikkszam = trimCikkszam($data[$this->n('a')]);
@@ -2229,6 +2230,14 @@ class importController extends \mkwhelpers\Controller {
 
                                 }
                             }
+                            if ($data[$this->n('c')] != 1) {
+                                if ($termek->getKeszlet() <= 0) {
+                                    $termekdb++;
+                                    \mkw\store::writelog('TERMÉK cikkszám státusz (' . $data[$this->n('c')] . ') miatt: ' . $termek->getCikkszam(), 'reintex_fuggoben.txt');
+                                    $lettfuggoben = true;
+                                    $termek->setInaktiv(true);
+                                }
+                            }
                             $this->getEm()->persist($termek);
                         }
                     }
@@ -2242,10 +2251,11 @@ class importController extends \mkwhelpers\Controller {
                 }
                 \mkw\store::getEm()->flush();
                 \mkw\store::getEm()->clear();
+                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
+                $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
 
                 $minden = null;
 
-                $lettfuggoben = false;
                 if ($gyarto) {
                     if ($cikkszamok) {
                         $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
