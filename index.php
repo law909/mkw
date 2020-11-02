@@ -52,6 +52,10 @@ function bizformat($mit, $mire = false) {
     return number_format($mit, $mire, ',', ' ');
 }
 
+function prefixUrl($prefix, $url) {
+    return \mkw\store::prefixUrl($prefix, $url);
+}
+
 // TODO find an appropriate place
 function callTheController($target, $params) {
     if ($target) {
