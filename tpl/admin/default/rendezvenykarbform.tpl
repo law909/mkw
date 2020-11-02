@@ -96,6 +96,11 @@
                     <td><label for="">{at('Ár')}:</label></td>
                     <td><input name="ar" type="number" step="any" value="{$egyed.ar}" required="required"></td>
                 </tr>
+                <tr>
+                    <td><label for="OnlineUrlEdit">{at('Online link')}:</label></td>
+                    <td colspan="3"><input id="OnlineUrlEdit" name="onlineurl" type="text" size="83" maxlength="255"
+                                           value="{$egyed.onlineurl}"></td>
+                </tr>
                 </tbody>
             </table>
         </div>

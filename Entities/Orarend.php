@@ -81,7 +81,6 @@ class Orarend {
     private $multilang = false;
 
     /**
-     * @Gedmo\Translatable
      * @ORM\Column(type="string",length=255,nullable=false)
      */
     private $onlineurl = '';

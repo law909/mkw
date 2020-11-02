@@ -315,7 +315,7 @@ class orarendController extends \mkwhelpers\MattableController {
                 'delelott' => false,
                 'elmarad' => false,
                 'multilang' => false,
-                'onlineurl' => false,
+                'onlineurl' => $item->getOnlineurl(),
                 'bejelentkezeskell' => false,
                 'datum' => '',
                 'bejelentkezesdb' => 0,

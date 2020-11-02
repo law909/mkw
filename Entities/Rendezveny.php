@@ -132,6 +132,11 @@ class Rendezveny {
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $url;
 
+    /**
+     * @ORM\Column(type="string",length=255,nullable=false)
+     */
+    private $onlineurl = '';
+
     public function __construct() {
         $this->rendezvenydokok = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -623,6 +628,20 @@ class Rendezveny {
      */
     public function setUrl($url) {
         $this->url = $url;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOnlineurl() {
+        return $this->onlineurl;
+    }
+
+    /**
+     * @param string $onlineurl
+     */
+    public function setOnlineurl($onlineurl) {
+        $this->onlineurl = $onlineurl;
     }
 
 }
