@@ -1132,7 +1132,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository {
         $filter
             ->addFilter('kelt', '>=', \mkw\store::getParameter(\mkw\consts::NAVOnline2_0StartDate))
             ->addFilter('navbekuldendo', '=', true)
-            ->addFilter('naveredmeny', '=', 'WAITING');
+            ->addFilter('naveredmeny', '<>', 'DONE');
 
         $q = $this->_em->createQuery('SELECT _xx.id'
             . ' FROM Entities\Bizonylatfej _xx'
