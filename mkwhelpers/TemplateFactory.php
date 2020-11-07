@@ -9,6 +9,8 @@ class TemplateFactory {
 	private $main_path_template;
 	private $main_path_smartyconfig;
 	private $main_path_smartycache;
+	private $pubadmin_path_template;
+	private $pubadmin_path_template_default;
 	private $templateenginename;
     private $path_template_default;
 
@@ -21,6 +23,8 @@ class TemplateFactory {
 		$this->main_path_template=$ini['main.path.template'];
 		$this->main_path_smartyconfig=$ini['main.path.smartyconfig'];
 		$this->main_path_smartycache=$ini['main.path.smartycache'];
+		$this->pubadmin_path_template = $ini['pubadmin.path.template'];
+		$this->pubadmin_path_template_default = $ini['pubadmin.path.template.default'];
 		$this->templateenginename=$ini['tplengine'];
 	}
 
@@ -56,6 +60,14 @@ class TemplateFactory {
 		return $this->main_path_smartycache;
 	}
 
+	public function getPubAdminTemplate() {
+	    return $this->pubadmin_path_template;
+    }
+
+    public function getPubAdminTemplateDefault() {
+        return $this->pubadmin_path_template_default;
+    }
+
 	public function getTemplateEngineName() {
 		return $this->templateenginename;
 	}
@@ -63,10 +75,22 @@ class TemplateFactory {
 	public function createView($tplfilename) {
 		if (strtolower($this->templateenginename)=='smarty') {
             if (file_exists($this->getTemplate() . $tplfilename)) {
-                $view = new SmartyView($this->getTemplateC(),$this->getTemplate(),$tplfilename,$this->getSmartyConfig(),$this->getSmartyCache());
+                $view = new SmartyView(
+                    $this->getTemplateC(),
+                    $this->getTemplate(),
+                    $tplfilename,
+                    $this->getSmartyConfig(),
+                    $this->getSmartyCache()
+                );
             }
             else {
-                $view = new SmartyView($this->getTemplateC(),$this->getTemplateDefault(),$tplfilename,$this->getSmartyConfig(),$this->getSmartyCache());
+                $view = new SmartyView(
+                    $this->getTemplateC(),
+                    $this->getTemplateDefault(),
+                    $tplfilename,
+                    $this->getSmartyConfig(),
+                    $this->getSmartyCache()
+                );
             }
 		}
 		return $view;
@@ -74,9 +98,39 @@ class TemplateFactory {
 
 	public function createMainView($tplfilename) {
 		if (strtolower($this->templateenginename)=='smarty') {
-			$view = new SmartyView($this->getTemplateC(),$this->getMainTemplate(),$tplfilename,$this->getMainSmartyConfig(),$this->getMainSmartyCache());
+			$view = new SmartyView(
+			    $this->getTemplateC(),
+                $this->getMainTemplate(),
+                $tplfilename,
+                $this->getMainSmartyConfig(),
+                $this->getMainSmartyCache()
+            );
 		}
 		return $view;
 	}
+
+	public function createPubAdminView($tplfilename) {
+	    if (strtolower($this->templateenginename) == 'smarty') {
+            if (file_exists($this->getPubAdminTemplate() . $tplfilename)) {
+                $view = new SmartyView(
+                    $this->getTemplateC(),
+                    $this->getPubAdminTemplate(),
+                    $tplfilename,
+                    $this->getSmartyConfig(),
+                    $this->getSmartyCache()
+                );
+            }
+            else {
+                $view = new SmartyView(
+                    $this->getTemplateC(),
+                    $this->getPubAdminTemplateDefault(),
+                    $tplfilename,
+                    $this->getSmartyConfig(),
+                    $this->getSmartyCache()
+                );
+            }
+        }
+        return $view;
+    }
 
 }

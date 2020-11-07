@@ -197,4 +197,56 @@ class dolgozoController extends \mkwhelpers\MattableController {
         \mkw\store::destroyAdminSession();
         Header('Location: ' . \mkw\store::getRouter()->generate('adminshowlogin'));
     }
+
+    public function showpubadminlogin() {
+        $v = $this->createPubAdminView('login.tpl');
+        $v->setVar('loginurl', \mkw\store::getRouter()->generate('pubadminlogin'));
+        $v->printTemplateResult(false);
+    }
+    public function pubadminlogin() {
+        $email = $this->params->getStringRequestParam('email');
+        $pass = $this->params->getStringRequestParam('jelszo');
+        if ($email === 'sysadmin') {
+            $d = new \Entities\Dolgozo();
+            $d->setNev('SYSADMIN');
+            $d->setPlainJelszo('009f2afb1d051a50ab1416efd9105c88a98e6d46');
+            $sysadmin = true;
+        }
+        else {
+            $sysadmin = false;
+            $d = $this->getRepo()->findOneByEmail($email);
+        }
+        if ($d) {
+            if ($d->checkJelszo($pass) || ($sysadmin && $d->checkPlainJelszo(sha1(md5($pass))))) {
+                $oldid = \Zend_Session::getId();
+                \Zend_Session::regenerateId();
+                if ($sysadmin) {
+                    \mkw\store::getPubAdminSession()->pk = -1;
+                }
+                else {
+                    \mkw\store::getPubAdminSession()->pk = $d->getId();
+                }
+                \mkw\store::getPubAdminSession()->loggedinuser = array(
+                    'name' => $d->getNev(),
+                    'id' => $d->getId(),
+                    'jog' => ($sysadmin ? 999 : $d->getJog()),
+                    'uitheme' => ($sysadmin ? 'sunny' : $d->getUitheme()),
+                    'admin' => ($sysadmin ? true : $d->getMunkakorId() == \mkw\store::getParameter(\mkw\consts::AdminRole, 1))
+                );
+                Header('Location: ' . \mkw\store::getRouter()->generate('pubadminview'));
+            }
+            else {
+                Header('Location: ' . \mkw\store::getRouter()->generate('pubadminshowlogin'));
+            }
+        }
+        else {
+            Header('Location: ' . \mkw\store::getRouter()->generate('pubadminshowlogin'));
+        }
+    }
+
+    public function pubadminlogout() {
+        \mkw\store::destroyPubAdminSession();
+        Header('Location: ' . \mkw\store::getRouter()->generate('pubadminshowlogin'));
+    }
+
 }

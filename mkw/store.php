@@ -23,6 +23,11 @@ class store {
      * @var \Zend_Session_Namespace
      */
     private static $adminsession;
+    /**
+     *
+     * @var \Zend_Session_Namespace
+     */
+    private static $pubadminsession;
     private static $templateFactory;
     private static $router;
     private static $gdl;
@@ -378,6 +383,29 @@ class store {
             \Zend_Session::namespaceUnset('a');
 //            \Zend_Session::destroy(true);
 //            self::$adminsession = null;
+        }
+    }
+
+    /**
+     *
+     * @return \Zend_Session_Namespace
+     */
+    public static function getPubAdminSession() {
+        if (!isset(self::$pubadminsession)) {
+            self::$pubadminsession = new \Zend_Session_Namespace('pa');
+        }
+        if (!isset(self::$pubadminsession->initialized)) {
+            \Zend_Session::regenerateId();
+            self::$pubadminsession->initialized = true;
+        }
+        return self::$pubadminsession;
+    }
+
+    public static function destroyPubAdminSession() {
+        if (isset(self::$pubadminsession)) {
+            \Zend_Session::namespaceUnset('pa');
+//            \Zend_Session::destroy(true);
+//            self::$pubadminsession = null;
         }
     }
 

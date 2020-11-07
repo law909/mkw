@@ -13,6 +13,7 @@ class generalDataLoader {
             $view->setVar('mobilebrowser', false);
         }
         $view->setVar('theme', store::getConfigValue('theme'));
+        $view->setVar('pubadmintheme', store::getConfigValue('main.theme'));
         $uitheme = \mkw\store::getAdminSession()->loggedinuser['uitheme'];
         if (!$uitheme) {
             $uitheme = 'sunny';
