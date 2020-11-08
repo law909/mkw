@@ -396,6 +396,33 @@
                                 {/foreach}
                             </select>
                         </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="JogaOrajegyTermekEdit">{at('Jóga órajegy termék')}:</label></span>
+                            <select id="JogaOrajegyTermekEdit" name="jogaorajegytermek">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $jogaorajegytermeklist as $_role}
+                                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="JogaBerlet4TermekEdit">{at('Jóga bérlet 4 termék')}:</label></span>
+                            <select id="Jogaberlet4TermekEdit" name="jogaberlet4termek">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $jogaberlet4termeklist as $_role}
+                                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="JogaBerlet10TermekEdit">{at('Jóga bérlet 10 termék')}:</label></span>
+                            <select id="JogaBerlet10TermekEdit" name="jogaberlet10termek">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $jogaberlet10termeklist as $_role}
+                                    <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
                     </div>
                     {/if}
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">

@@ -316,6 +316,12 @@ class setupController extends \mkwhelpers\Controller {
         $p = $repo->find(\mkw\consts::VasarlasiUtalvanyTermek);
 //        $termek = new termekController($this->params);
         $view->setVar('vasarlasiutalvanytermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::JogaOrajegyTermek);
+        $view->setVar('jogaorajegytermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::JogaBerlet4Termek);
+        $view->setVar('jogaberlet4termeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::JogaBerlet10Termek);
+        $view->setVar('jogaberlet10termeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
 
         // alapertelmezes
         $p = $repo->find(\mkw\consts::Fizmod);
@@ -1018,6 +1024,18 @@ class setupController extends \mkwhelpers\Controller {
         $vut = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('vasarlasiutalvanytermek', 0));
         if ($vut) {
             $this->setObj(\mkw\consts::VasarlasiUtalvanyTermek, $vut->getId());
+        }
+        $vut = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('jogaorajegytermek', 0));
+        if ($vut) {
+            $this->setObj(\mkw\consts::JogaOrajegyTermek, $vut->getId());
+        }
+        $vut = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('jogaberlet4termek', 0));
+        if ($vut) {
+            $this->setObj(\mkw\consts::JogaBerlet4Termek, $vut->getId());
+        }
+        $vut = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('jogaberlet10termek', 0));
+        if ($vut) {
+            $this->setObj(\mkw\consts::JogaBerlet10Termek, $vut->getId());
         }
 
         // alapertelmezes
