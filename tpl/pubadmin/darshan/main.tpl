@@ -20,4 +20,6 @@
         </form>
     </div>
 
+    <div id="resztvevolist"></div>
+
 {/block}

@@ -8,6 +8,14 @@
     color: #80008C;
 }
 
+.color-red {
+    color: red;
+}
+
+.color-bkg-darshan {
+    background-color: #f4e9f9;
+}
+
 .topmargin10 {
     margin-top: 10px;
 }

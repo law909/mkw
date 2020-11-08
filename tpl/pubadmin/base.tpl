@@ -7,7 +7,7 @@
     <script type="text/javascript" src="/js/pubadmin/default/bootstrap.bundle.min.js"></script>
     {block "inhead"}
     {/block}
-    <script type="text/javascript" src="/js/admin/default/appinit.js"></script>
+    <script type="text/javascript" src="/js/pubadmin/{$pubadmintheme}/appinit.js"></script>
     <title>{$pagetitle|default} - {t('Billy pubAdmin')}</title>
 </head>
 <body>
