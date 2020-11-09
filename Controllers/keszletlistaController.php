@@ -217,9 +217,10 @@ class keszletlistaController extends \mkwhelpers\MattableController {
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', t('Cikkszám'))
             ->setCellValue('B1', t('Termék'))
-            ->setCellValue('C1', t('Változat'))
-            ->setCellValue('D1', t('Készlet'))
-            ->setCellValue('E1', t('Ár'));
+            ->setCellValue('C1', t('Változat 1'))
+            ->setCellValue('D1', t('Változat 2'))
+            ->setCellValue('E1', t('Készlet'))
+            ->setCellValue('F1', t('Ár'));
 
         $mind = $this->getData();
 
@@ -228,9 +229,10 @@ class keszletlistaController extends \mkwhelpers\MattableController {
             $excel->setActiveSheetIndex(0)
                 ->setCellValue('A' . $sor, $item['cikkszam'])
                 ->setCellValue('B' . $sor, $item['termeknev'])
-                ->setCellValue('C' . $sor, $item['ertek1'] . ' ' . $item['ertek2'])
-                ->setCellValue('D' . $sor, $item['keszlet'])
-                ->setCellValue('E' . $sor, $item['ar']);
+                ->setCellValue('C' . $sor, $item['ertek1'])
+                ->setCellValue('D' . $sor, $item['ertek2'])
+                ->setCellValue('E' . $sor, $item['keszlet'])
+                ->setCellValue('F' . $sor, $item['ar']);
             $sor++;
         }
 
