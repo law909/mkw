@@ -382,6 +382,9 @@ class Partner {
     /** @ORM\Column(type="boolean") */
     private $kulsos = false;
 
+    /** @ORM\Column(type="boolean") */
+    private $mennyisegetlathat = false;
+
 
     public function __construct() {
 		$this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1858,4 +1861,19 @@ class Partner {
     public function setKulsos($kulsos) {
         $this->kulsos = $kulsos;
     }
+
+    /**
+     * @return bool
+     */
+    public function isMennyisegetlathat() {
+        return $this->mennyisegetlathat;
+    }
+
+    /**
+     * @param bool $mennyisegetlathat
+     */
+    public function setMennyisegetlathat($mennyisegetlathat) {
+        $this->mennyisegetlathat = $mennyisegetlathat;
+    }
+
 }

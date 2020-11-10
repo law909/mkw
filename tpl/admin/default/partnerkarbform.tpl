@@ -12,9 +12,6 @@
             <li><a href="#MegjegyzesTab">{at('Megjegyzés')}</a></li>
 			<li><a href="#KedvezmenyTab">{at('Termékkategória kedvezmények')}</a></li>
             <li><a href="#TermekKedvezmenyTab">{at('Termék kedvezmények')}</a></li>
-            {if ($setup.mijsz)}
-                <li><a href="#MIJSZOklevelTab">{at('Oklevelek')}</a></li>
-            {/if}
 			<li><a href="#LoginTab">{at('Bejelentkezés')}</a></li>
 			<li><a href="#BankTab">{at('Banki adatok')}</a></li>
 			<li><a href="#EgyebAzonositoTab">{at('Egyéb azonosító adatok')}</a></li>
@@ -32,7 +29,6 @@
 				<td><label for="KeresztnevEdit">{at('Keresztnév')}:</label></td>
 				<td><input id="KeresztnevEdit" name="keresztnev" type="text" size="20" maxlength="255" value="{$partner.keresztnev|escape}">
 			</tr>
-            {if (!$setup.mijsz)}
 			<tr>
 				<td><label for="SzallitoEdit">{at('Beszállító')}:</label></td>
 				<td><input id="SzallitoEdit" name="szallito" type="checkbox"{if ($partner.szallito==1)} checked="checked"{/if}></td>
@@ -45,7 +41,10 @@
                 <td><label for="KulsosEdit">{at('Külsős')}:</label></td>
                 <td><input id="KulsosEdit" name="kulsos" type="checkbox"{if ($partner.kulsos==1)} checked="checked"{/if}></td>
             </tr>
-            {/if}
+            <tr>
+                <td><label for="KeszletetlathatEdit">{at('Készletet láthat')}:</label></td>
+                <td><input id="KeszletetlathatEdit" name="mennyisegetlathat" type="checkbox"{if ($partner.mennyisegetlathat==1)} checked="checked"{/if}></td>
+            </tr>
 			<tr>
 				<td><label for="IrszamEdit">{at('Cím')}:</label></td>
 				<td colspan="3">
@@ -71,24 +70,6 @@
 				<td><label for="EUAdoszamEdit">{at('Közösségi adószám')}:</label></td>
 				<td><input id="EUAdoszamEdit" name="euadoszam" type="text" size="13" maxlength="30" value="{$partner.euadoszam}"></td>
 			</tr>
-            {if ($setup.mijsz)}
-                <tr>
-                    <td><label for="MIJSZExportTiltvaEdit">{at('MIJSZ export tiltva')}:</label></td>
-                    <td><input id="MIJSZExportTiltvaEdit" name="mijszexporttiltva" type="checkbox"{if ($partner.mijszexporttiltva)} checked="checked"{/if}></td>
-                </tr>
-                <tr>
-                    <td><label for="MIJSZMiotajogazikEdit">{at('Mióta jógázik')}:</label></td>
-                    <td><input id="MIJSZMiotajogazikEdit" name="mijszmiotajogazik" type="text" size="20" maxlength="255" value="{$partner.mijszmiotajogazik}">
-                    <td><label for="MIJSZMiotatanitEdit">{at('Mióta tanít')}:</label></td>
-                    <td><input id="MIJSZMiotatanitEdit" name="mijszmiotatanit" type="text" size="20" maxlength="255" value="{$partner.mijszmiotatanit}">
-                </tr>
-                <tr>
-                    <td><label for="MIJSZMembershipBesidesHUEdit">{at('Tagság MIJSZ-en kívül')}:</label></td>
-                    <td><input id="MIJSZMembershipBesidesHUEdit" name="mijszmembershipbesideshu" type="text" size="20" maxlength="255" value="{$partner.mijszmembershipbesideshu}">
-                    <td><label for="MIJSZBusinessEdit">{at('Business')}:</label></td>
-                    <td><input id="MIJSZBusinessEdit" name="mijszbusiness" type="text" size="20" maxlength="255" value="{$partner.mijszbusiness}">
-                </tr>
-            {/if}
             <tr>
                 <td><label for="MunkahelyneveEdit">{at('Munkahely')}:</label></td>
                 <td><input id="MunkahelyneveEdit" name="munkahelyneve" type="text" size="13" maxlength="13" value="{$partner.munkahelyneve}"></td>
@@ -131,7 +112,6 @@
 				</select></td>
             </tr>
             {/if}
-            {if (!$setup.mijsz)}
             <tr>
 				<td><label for="SzallmodEdit">{at('Szállítási mód')}:</label></td>
 				<td><select id="SzallmodEdit" name="szallitasimod">
@@ -148,7 +128,6 @@
 					{/foreach}
 				</select></td>
 			</tr>
-            {/if}
             {if ($setup.arsavok)}
                 <tr>
                     <td><label for="ValutanemEdit">{at('Valutanem')}:</label></td>
@@ -167,7 +146,6 @@
                     </select></td>
                 </tr>
             {/if}
-            {if (!$setup.mijsz)}
 			<tr>
 				<td><label for="FizhatidoEdit">{at('Fizetési haladék')}:</label></td>
 				<td><input id="FizhatidoEdit" name="fizhatido" type="number" size="5" maxlength="3" value="{$partner.fizhatido}"></td>
@@ -194,7 +172,6 @@
                 <td><label for="SzamlalevelmegszolitasEdit">{at('Számlalevél megszólítás')}:</label></td>
                 <td><input id="SzamlalevelmegszolitasEdit" name="szamlalevelmegszolitas" type="text" value="{$partner.szamlalevelmegszolitas}"></td>
             </tr>
-            {/if}
 			</tbody></table>
 				<div id="cimkekarbcontainer">
 				{foreach $cimkekat as $_cimkekat}
@@ -289,16 +266,6 @@
                 <span class="ui-icon ui-icon-circle-plus"></span>
             </a>
         </div>
-        {if ($setup.mijsz)}
-            <div id="MIJSZOklevelTab" class="mattkarb-page" data-visible="visible">
-                {foreach $partner.mijszoklevelek as $mijszoklevel}
-                    {include 'partnermijszoklevelkarb.tpl'}
-                {/foreach}
-                <a class="js-mijszoklevelnewbutton" href="#" title="{at('Új')}">
-                    <span class="ui-icon ui-icon-circle-plus"></span>
-                </a>
-            </div>
-        {/if}
 		<div id="LoginTab" class="mattkarb-page" data-visible="visible">
 			<table>
                 <tbody>

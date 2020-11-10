@@ -46,12 +46,15 @@
                         <td class="textalignright">
                             <span class="js-ar{$_valt.id}">{number_format($termek.ar, 2, ',', ' ')}</span><span> {$termek.valutanemnev}</span>
                         </td>
-                        <!--td class="textalignright">
+                        {if ($showkeszlet)}
+                        <td class="textalignright">
                             {if ($_valt.keszlet <= 0)}0{else}{$_valt.keszlet}{/if} pcs
-                        </td-->
+                        </td>
+                        {else}
                         <td class="valtozatkeszlet textaligncenter">
                             <img src="{if ($_valt.keszlet <= 0)}/themes/main/superzoneb2b/nincs.jpg{else}/themes/main/superzoneb2b/van.jpg{/if}">
                         </td>
+                        {/if}
                         <td class="valtozatmenny">
                             <div class="desktopright">
                                 <input name="mennyiseg_{$_valt.id}" type="number" data-id="{$_valt.id}" class="js-mennyiseginput">

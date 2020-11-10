@@ -306,6 +306,12 @@ class mainController extends \mkwhelpers\Controller {
             $t['leiras'] = $termek->getLeiras();
             $t['szin'] = $szin;
             $partner = \mkw\store::getLoggedInUser();
+            if ($partner) {
+                $this->view->setVar('showkeszlet', $partner->isMennyisegetlathat());
+            }
+            else {
+                $this->view->setVar('showkeszlet', false);
+            }
             $valutanem = $termek->getArValutanem(null, $partner);
             if ($valutanem) {
                 $t['valutanemnev'] = $valutanem->getNev();
