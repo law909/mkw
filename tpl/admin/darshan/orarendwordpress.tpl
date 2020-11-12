@@ -94,6 +94,9 @@
         a:hover {
             text-decoration: none;
         }
+        .margin-bottom-5 {
+            margin-bottom: 5px;
+        }
         .dtt {
             text-align: left;
         }
@@ -336,7 +339,7 @@
             <div class="dtttanar">
                 {if (!$ora['elmarad'] && $ora['bejelentkezeskell'])}
                     <div>
-                        <a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink dttorarendbutton js-bejelentkezes" data-id="{$ora['id']}" data-datum="{$ora['datum']}">
+                        <a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink dttorarendbutton margin-bottom-5 js-bejelentkezes" data-id="{$ora['id']}" data-datum="{$ora['datum']}">
                             1. Bejelentkezek (eddig {$ora['bejelentkezesdb']} fő)
                         </a>
                     </div>
