@@ -8,3 +8,4 @@ $router->map('POST', '/pubadmin/login', 'dolgozoController#pubadminlogin', 'puba
 $router->map('GET', '/pubadmin/logout', 'dolgozoController#pubadminlogout', 'pubadminlogout');
 
 $router->map('GET', '/pubadmin/resztvevolist', 'pubadminController#getResztvevolist', 'pubadmingetresztvevolist');
+$router->map('POST', '/pubadmin/resztvevomegjelent', 'pubadminController#setResztvevoMegjelent', 'pubadminsetresztvevomegjelent');

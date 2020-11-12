@@ -4,6 +4,10 @@
     border-color: #80008C;
 }
 
+.btn-darshan:hover {
+    color: #fff;
+}
+
 .color-darshan {
     color: #80008C;
 }

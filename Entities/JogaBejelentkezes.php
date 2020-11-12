@@ -62,6 +62,9 @@ class JogaBejelentkezes {
      */
     private $datum;
 
+    /** @ORM\Column(type="boolean") */
+    private $megjelent = false;
+
     public function getId() {
         return $this->id;
     }
@@ -212,4 +215,19 @@ class JogaBejelentkezes {
             $this->datum = new \DateTime(\mkw\store::convDate($adat));
         }
     }
+
+    /**
+     * @return bool
+     */
+    public function isMegjelent() {
+        return $this->megjelent;
+    }
+
+    /**
+     * @param bool $megjelent
+     */
+    public function setMegjelent($megjelent) {
+        $this->megjelent = $megjelent;
+    }
+
 }

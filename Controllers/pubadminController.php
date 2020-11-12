@@ -47,14 +47,24 @@ class pubadminController extends mkwhelpers\Controller {
     }
 
     public function getResztvevolist() {
-        $oraid = $this->params->getIntRequestParam('oraid');
         $resztvevolista = [];
+        $oraid = $this->params->getIntRequestParam('oraid');
         if ($oraid) {
+
+            /** @var \Entities\Termek $orajegytermek */
+            $orajegytermek = $this->getRepo('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
+            /** @var \Entities\Termek $berlet4termek */
+            $berlet4termek = $this->getRepo('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet4Termek));
+            /** @var \Entities\Termek $berlet10termek */
+            $berlet10termek = $this->getRepo('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet10Termek));
+
             $mainap = new \DateTime();
+
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('orarend', '=', $oraid);
             $filter->addFilter('datum', '=', $mainap->format(\mkw\store::$SQLDateFormat));
             $resztvevok = $this->getRepo('Entities\JogaBejelentkezes')->getAll($filter);
+
             /** @var \Entities\JogaBejelentkezes $resztvevo */
             foreach ($resztvevok as $resztvevo) {
                 $rvtomb = [];
@@ -84,11 +94,23 @@ class pubadminController extends mkwhelpers\Controller {
                     $rvtomb['new'] = true;
                     $rvtomb['berlet'] = false;
                 }
+                $rvtomb['id'] = $resztvevo->getId();
+                $rvtomb['megjelent'] = $resztvevo->isMegjelent();
                 $resztvevolista[] = $rvtomb;
             }
         }
         $view = $this->createPubAdminView('resztvevolist.tpl');
         $view->setVar('resztvevolist', $resztvevolista);
         $view->printTemplateResult();
+    }
+
+    public function setResztvevoMegjelent() {
+        /** @var \Entities\JogaBejelentkezes $rv */
+        $rv = $this->getRepo('Entities\JogaBejelentkezes')->find($this->params->getIntRequestParam('id'));
+        if ($rv) {
+            $rv->setMegjelent(!$rv->isMegjelent());
+            $this->getEm()->persist($rv);
+            $this->getEm()->flush();
+        }
     }
 }
