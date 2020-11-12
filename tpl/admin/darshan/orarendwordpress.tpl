@@ -175,6 +175,13 @@
         .dttonlinelink {
             font-weight: bold;
         }
+        .dttorarendbutton {
+            background-color: #80008c;
+            color: white;
+            border-radius: 3px;
+            padding: 10px;
+            display: block;
+        }
         .modal {
             position: fixed;
             left: 0;
@@ -320,15 +327,15 @@
             <div class="dttidopont{if ($ora['delelott'])} delelott{/if}">{$ora['kezdet']}-{$ora['veg']}</div>
             <div class="dttoranev"><a href="{if ($ora['oraurl'])}{prefixUrl('http://jogadarshan.hu/', $ora['oraurl'])}{/if}" target="_parent">{if ($ora['elmarad'])}ELMARAD! {/if}{$ora['oranev']}</a>{if ($ora['multilang'])}<span> (HU/EN)</span>{/if}</div>
             <div class="dtttanar">
-                <a href="{if ($ora['tanarurl'])}{prefixUrl('http://jogadarshan.hu/', $ora['tanarurl'])}{/if}" target="_parent">{$ora['tanar']}{if ($ora['helyettesito'])} HELYETTESÍT: {$ora['helyettesito']}{/if}{if ($ora['elmarad'])} ELMARAD!{/if}</a>
-                {if (!$ora['elmarad'] && $ora['onlineurl'])}<div><a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink">Csatlakozom</a></div>{/if}
                 {if (!$ora['elmarad'] && $ora['bejelentkezeskell'])}
                     <div>
-                        <a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink js-bejelentkezes" data-id="{$ora['id']}" data-datum="{$ora['datum']}">
-                            Bejelentkezek (eddig {$ora['bejelentkezesdb']} fő)
+                        <a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink dttorarendbutton js-bejelentkezes" data-id="{$ora['id']}" data-datum="{$ora['datum']}">
+                            1. Bejelentkezek (eddig {$ora['bejelentkezesdb']} fő)
                         </a>
                     </div>
                 {/if}
+                <a href="{if ($ora['tanarurl'])}{prefixUrl('http://jogadarshan.hu/', $ora['tanarurl'])}{/if}" target="_parent">{$ora['tanar']}{if ($ora['helyettesito'])} HELYETTESÍT: {$ora['helyettesito']}{/if}{if ($ora['elmarad'])} ELMARAD!{/if}</a>
+                {if (!$ora['elmarad'] && $ora['onlineurl'])}<div><a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink dttorarendbutton">2. Csatlakozom</a></div>{/if}
             </div>
         </div>
         {/foreach}
