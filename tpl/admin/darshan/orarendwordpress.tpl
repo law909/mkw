@@ -344,7 +344,7 @@
                         </a>
                     </div>
                 {/if}
-                {if (!$ora['elmarad'] && $ora['onlineurl'])}<div><a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink dttorarendbutton">2. Csatlakozom</a></div>{/if}
+                {if (!$ora['elmarad'] && $ora['onlineurl'])}<div><a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink dttorarendbutton">{if (!$ora['elmarad'] && $ora['bejelentkezeskell'])}2. {/if}Csatlakozom</a></div>{/if}
             </div>
         </div>
         {/foreach}
