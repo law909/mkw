@@ -340,11 +340,17 @@
                 {if (!$ora['elmarad'] && $ora['bejelentkezeskell'])}
                     <div>
                         <a href="#" class="dttonlinelink dttorarendbutton margin-bottom-5 js-bejelentkezes" data-id="{$ora['id']}" data-datum="{$ora['datum']}">
-                            1. Bejelentkezek (eddig {$ora['bejelentkezesdb']} fő)
+                            {if ($ora['onlineurl'])}1. {/if}Bejelentkezek (eddig {$ora['bejelentkezesdb']} fő)
                         </a>
                     </div>
                 {/if}
-                {if (!$ora['elmarad'] && $ora['onlineurl'])}<div><a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink dttorarendbutton">{if (!$ora['elmarad'] && $ora['bejelentkezeskell'])}2. {/if}Csatlakozom</a></div>{/if}
+                {if (!$ora['elmarad'] && $ora['onlineurl'])}
+                    <div>
+                        <a href="{$ora['onlineurl']}" target="_blank" class="dttonlinelink dttorarendbutton">
+                        {if ($ora['bejelentkezeskell'])}2. {/if}Csatlakozom
+                        </a>
+                    </div>
+                {/if}
             </div>
         </div>
         {/foreach}
