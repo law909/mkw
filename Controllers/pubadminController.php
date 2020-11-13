@@ -12,12 +12,19 @@ class pubadminController extends mkwhelpers\Controller {
         $view = $this->createPubAdminView('main.tpl');
         $view->setVar('pagetitle', t('Főoldal'));
 
+        $view->printTemplateResult();
+    }
+
+    public function getOralist() {
+        $view = $this->createPubAdminView('oralist.tpl');
+
         $dolgozo = $this->getRepo('Entities\Dolgozo')->find(\mkw\store::getPubAdminSession()->pk);
         if ($dolgozo) {
-            $mainap = new \DateTime();
+            $datum = $this->params->getStringRequestParam('datum');
+            $napszam = new \DateTime($datum);
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('dolgozo', '=', $dolgozo);
-            $filter->addFilter('nap', '=', $mainap->format('N'));
+            $filter->addFilter('nap', '=', $napszam->format('N'));
             $filter->addFilter('inaktiv', '=', false);
             $orak = $this->getRepo('Entities\Orarend')->getAll($filter);
             $oralista = [];
@@ -30,7 +37,7 @@ class pubadminController extends mkwhelpers\Controller {
             }
             $filter->clear();
             $filter->addFilter('helyettesito', '=', $dolgozo);
-            $filter->addFilter('datum', '=', $mainap->format(\mkw\store::$SQLDateFormat));
+            $filter->addFilter('datum', '=', $datum);
             $filter->addFilter('inaktiv', '=', false);
             $helyettek = $this->getRepo('Entities\Orarendhelyettesites')->getAll($filter);
             /** @var Entities\Orarendhelyettesites $helyett*/
@@ -42,13 +49,13 @@ class pubadminController extends mkwhelpers\Controller {
             }
             $view->setVar('oralista', $oralista);
         }
-
         $view->printTemplateResult();
     }
 
     public function getResztvevolist() {
         $resztvevolista = [];
         $oraid = $this->params->getIntRequestParam('oraid');
+        $datum = $this->params->getStringRequestParam('datum');
         if ($oraid) {
 
             /** @var \Entities\Termek $orajegytermek */
@@ -58,11 +65,10 @@ class pubadminController extends mkwhelpers\Controller {
             /** @var \Entities\Termek $berlet10termek */
             $berlet10termek = $this->getRepo('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet10Termek));
 
-            $mainap = new \DateTime();
 
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('orarend', '=', $oraid);
-            $filter->addFilter('datum', '=', $mainap->format(\mkw\store::$SQLDateFormat));
+            $filter->addFilter('datum', '=', $datum);
             $resztvevok = $this->getRepo('Entities\JogaBejelentkezes')->getAll($filter);
 
             /** @var \Entities\JogaBejelentkezes $resztvevo */
@@ -111,6 +117,13 @@ class pubadminController extends mkwhelpers\Controller {
             $rv->setMegjelent(!$rv->isMegjelent());
             $this->getEm()->persist($rv);
             $this->getEm()->flush();
+        }
+    }
+
+    public function setResztvevoOrajegy() {
+        /** @var \Entities\JogaBejelentkezes $rv */
+        $rv = $this->getRepo('Entities\JogaBejelentkezes')->find($this->params->getIntRequestParam('id'));
+        if ($rv) {
         }
     }
 }

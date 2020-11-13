@@ -20,12 +20,12 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <button class="btn btn-darshan js-buy" data-type="1">Órajegy</button>
-                    <button class="btn btn-darshan js-buy" data-type="2">4-es bérlet</button>
+                    <button class="btn btn-darshan js-buy" data-type="1" data-id="{$resztvevo.id}">Órajegy</button>
+                    <button class="btn btn-darshan js-buy" data-type="2" data-id="{$resztvevo.id}">4-es bérlet</button>
                 </div>
             </div>
         </div>
-        <button class="col btn btn-darshan js-setmegjelent"{if (!$resztvevo.berlet)} disabled{/if} data-id="{$resztvevo.id}">{if (!$resztvevo.megjelent)}Megérkezett{else}Nem érkezett meg{/if}</button>
+        <button class="col btn btn-darshan js-setmegjelent" data-id="{$resztvevo.id}">{if (!$resztvevo.megjelent)}Megérkezett{else}Nem érkezett meg{/if}</button>
     </div>
 {/foreach}
 <div class="row topmargin10">

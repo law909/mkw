@@ -7,19 +7,14 @@
     </div>
 
     <div class="row">
-        <form class="col">
+        <div class="col">
             <div class="form-group">
-                <label for="oraselect">Óra</label>
-                <select id="oraselect" class="form-control" name="ora">
-                    <option value="">válassz</option>
-                    {foreach $oralista as $ora}
-                        <option value="{$ora.id}">{$ora.nev}</option>
-                    {/foreach}
-                </select>
+                <label for="datumselect">Dátum</label>
+                <input id="datumselect" type="date" name="datum" class="form-control">
             </div>
-        </form>
+        </div>
     </div>
-
+    <div id="oralist"></div>
     <div id="resztvevolist"></div>
 
     <div class="modal fade" id="buyModal" tabindex="-1">
@@ -29,10 +24,11 @@
                     <h5 class="modal-title" id="buyModalLabel"></h5>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <label for="aredit">Ár</label>
+                    <input id="aredit" name="ar" type="text" class="form-control" value="2600">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">OK</button>
+                    <button type="button" class="btn btn-primary js-buyok">OK</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégsem</button>
                 </div>
             </div>

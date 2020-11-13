@@ -9,3 +9,6 @@ $router->map('GET', '/pubadmin/logout', 'dolgozoController#pubadminlogout', 'pub
 
 $router->map('GET', '/pubadmin/resztvevolist', 'pubadminController#getResztvevolist', 'pubadmingetresztvevolist');
 $router->map('POST', '/pubadmin/resztvevomegjelent', 'pubadminController#setResztvevoMegjelent', 'pubadminsetresztvevomegjelent');
+$router->map('POST', '/pubadmin/resztvevoorajegy', 'pubadminController#setResztvevoOrajegy', 'pubadminsetresztvevoorajegy');
+
+$router->map('GET', '/pubadmin/oralist', 'pubadminController#getOralist', 'pubadmingetoralist');
