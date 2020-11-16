@@ -4095,7 +4095,7 @@ class importController extends \mkwhelpers\Controller {
 
         $fej = array();
         for ($col = 0; $col < $maxcolindex; ++$col) {
-            $cell = $sheet->getCellByColumnAndRow($col, 1);
+            $cell = $sheet->getCellByColumnAndRow($col + 1, 1);
             $fej[$col] = $cell->getValue();
         }
 
@@ -4110,7 +4110,7 @@ class importController extends \mkwhelpers\Controller {
             $brutto = array();
 
             for ($col = 0; $col < $maxcolindex; ++$col) {
-                $cell = $sheet->getCellByColumnAndRow($col, $row);
+                $cell = $sheet->getCellByColumnAndRow($col + 1, $row);
                 if ($fej[$col] == 'kod') {
                     $kod = $cell->getValue();
                 }
