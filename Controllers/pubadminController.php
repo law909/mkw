@@ -56,6 +56,8 @@ class pubadminController extends mkwhelpers\Controller {
         $resztvevolista = [];
         $oraid = $this->params->getIntRequestParam('oraid');
         $datum = $this->params->getStringRequestParam('datum');
+        $ma = new Carbon();
+        $datumdate = Carbon::createFromFormat(\mkw\store::$SQLDateFormat, $datum);
         if ($oraid) {
 
             /** @var \Entities\Termek $orajegytermek */
@@ -107,6 +109,7 @@ class pubadminController extends mkwhelpers\Controller {
         }
         $view = $this->createPubAdminView('resztvevolist.tpl');
         $view->setVar('resztvevolist', $resztvevolista);
+        $view->setVar('future', $ma->lessThan($datumdate));
         $view->printTemplateResult();
     }
 
