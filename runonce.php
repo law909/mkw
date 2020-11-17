@@ -99,6 +99,28 @@ if ($DBVersion < '0034') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0034');
 }
 
+if ($DBVersion < '0035') {
+    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO bizonylattipus (id, nev, irany, nyomtatni, azonosito, kezdosorszam, peldanyszam,'
+        . ' mozgat, penztmozgat, editprinted, showteljesites, showesedekesseg, showhatarido, tplname, showbizonylatstatuszeditor,'
+        . ' showszamlabutton, showszallitobutton, showkivetbutton, showkeziszamlabutton, showuzenet, showszallitasicim, showerbizonylatszam,'
+        . ' showfuvarlevelszam, showhaszonszazalek, showstorno, foglal, showbackorder, showbevetbutton, showmesebutton, showcsomagbutton,'
+        . ' showfeketelistabutton, showkupon, showfoxpostterminaleditor, showfelhasznalo, checkkelt, showpdf, navbekuldendo) '
+        . ' VALUES '
+        . '("kolcsonzes", "Kölcsönzés", "-1", "0", "KLCS", "1", "1",'
+        . ' "0", "0", "1", "1", "0", "0", "biz_kolcsonzes.tpl", "0",'
+        . ' "1", "0", "0", "0", "0", "0", "0",'
+        . ' "0", "0", "0", "0", "0", "0", "0", "0",'
+        . ' "0", "0", "0", "0", "0", "1", "0")');
+
+    \mkw\store::getEm()->getConnection()->executeUpdate('INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' VALUES '
+        . '(1, "Kölcsönzés","/admin/kolcsonzesfej/viewlist","/admin/kolcsonzesfej",15,0,250, "")');
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0035');
+}
+
+
+
 /*********************************************************
  *
  * NAV ONLINE 1.1 (2019.06.01)

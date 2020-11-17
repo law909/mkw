@@ -352,6 +352,16 @@ $router->map('POST', '/admin/bizsablonfej/fejexport', 'bizsablonfejController#fe
 $router->map('POST', '/admin/bizsablonfej/tetelexport', 'bizsablonfejController#tetelexport', 'adminbizsablonfejtetelexport');
 $router->map('GET', '/admin/bizsablonfej/navonline', 'bizsablonfejController#navonline', 'adminbizsablonfejnavonline');
 
+$router->map('GET', '/admin/kolcsonzesfej/viewlist', 'kolcsonzesfejController#viewlist', 'adminkolcsonzesfejviewlist');
+$router->map('GET', '/admin/kolcsonzesfej/getlistbody', 'kolcsonzesfejController#getlistbody', 'adminkolcsonzesfejgetlistbody');
+$router->map('GET', '/admin/kolcsonzesfej/getkarb', 'kolcsonzesfejController#getkarb', 'adminkolcsonzesfejgetkarb');
+$router->map('GET', '/admin/kolcsonzesfej/viewkarb', 'kolcsonzesfejController#viewkarb', 'adminkolcsonzesfejviewkarb');
+$router->map('POST', '/admin/kolcsonzesfej/save', 'kolcsonzesfejController#save', 'adminkolcsonzesfejsave');
+$router->map('GET', '/admin/kolcsonzesfej/print', 'kolcsonzesfejController#doPrint', 'adminkolcsonzesfejprint');
+$router->map('GET', '/admin/kolcsonzesfej/storno', 'kolcsonzesfejController#storno', 'adminkolcsonzesfejstorno');
+$router->map('POST', '/admin/kolcsonzesfej/fejexport', 'kolcsonzesfejController#fejexport', 'adminkolcsonzesfejfejexport');
+$router->map('POST', '/admin/kolcsonzesfej/tetelexport', 'kolcsonzesfejController#tetelexport', 'adminkolcsonzesfejtetelexport');
+
 $router->map('GET', '/admin/termek/viewlist', 'termekController#viewlist', 'admintermekviewlist');
 $router->map('GET', '/admin/termek/htmllist', 'termekController#htmllist', 'admintermekhtmllist');
 $router->map('GET', '/admin/termek/getlistbody', 'termekController#getlistbody', 'admintermekgetlistbody');
