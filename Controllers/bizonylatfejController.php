@@ -1157,7 +1157,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             $stornotip = $this->params->getIntRequestParam('stornotip');
         }
         $view = $this->createView($tplname);
-
         $view->setVar('pagetitle', $this->getPageTitle());
         $view->setVar('controllerscript', $this->biztipus . 'fej.js');
         $view->setVar('formaction', '/admin/' . $this->biztipus . 'fej/save');
@@ -1167,101 +1166,112 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
 
         /** @var \Entities\Bizonylatfej $record */
         $record = $this->getRepo()->findWithJoins($id);
-        $egyed = $this->loadVars($record, true, $oper);
-
-        $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
-        $bt->setTemplateVars($view);
-
-        if (!\mkw\store::isPartnerAutocomplete()) {
-            $partner = new partnerController($this->params);
-            $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
-        }
-
-        $raktar = new raktarController($this->params);
-        if (!$record || !$record->getRaktarId()) {
-            $raktarid = \mkw\store::getParameter(\mkw\consts::Raktar, 0);
-        }
-        else {
-            $raktarid = $record->getRaktarId();
-        }
-        $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
-
-        $fizmod = new fizmodController($this->params);
-        if (!$record || !$record->getFizmodId()) {
-            $fmid = \mkw\store::getParameter(\mkw\consts::Fizmod);
-        }
-        else {
-            $fmid = $record->getFizmodId();
-        }
-        $view->setVar('fizmodlist', $fizmod->getSelectList($fmid));
-
-        $szallitasimod = new szallitasimodController($this->params);
-        if (!$record || !$record->getSzallitasimodId()) {
-            $szallmodid = \mkw\store::getParameter(\mkw\consts::Szallitasimod);
-        }
-        else {
-            $szallmodid = $record->getSzallitasimodId();
-        }
-        $view->setVar('szallitasimodlist', $szallitasimod->getSelectList($szallmodid, true));
-
-        $valutanem = new valutanemController($this->params);
-        if (!$record || !$record->getValutanemId()) {
-            $valutaid = \mkw\store::getParameter(\mkw\consts::Valutanem, 0);
-        }
-        else {
-            $valutaid = $record->getValutanemId();
-        }
-        $view->setVar('valutanemlist', $valutanem->getSelectList($valutaid));
-
-        $bankszla = new bankszamlaController($this->params);
-        $bankszlaid = false;
-        if ($record && $record->getBankszamlaId()) {
-            $bankszlaid = $record->getBankszamlaId();
-        }
-        else {
-            $valutanem = $this->getRepo('Entities\Valutanem')->find($valutaid);
-            if ($valutanem && $valutanem->getBankszamlaId()) {
-                $bankszlaid = $valutanem->getBankszamlaId();
+        $mehet = true;
+        if ($oper === 'storno') {
+            if ($record->getNaveredmeny() != '' && $record->getNaveredmeny() !== 'DONE') {
+                $mehet = false;
+                $view->setVar('nostorno', true);
             }
         }
 
-        $view->setVar('bankszamlalist', $bankszla->getSelectList($bankszlaid));
+        if ($mehet) {
+            $egyed = $this->loadVars($record, true, $oper);
 
-        $uk = new uzletkotoController($this->params);
-        if ($record && $record->getUzletkotoId()) {
-            $ukid = $record->getUzletkotoId();
+            $bt = $this->getRepo('Entities\Bizonylattipus')->find($this->biztipus);
+            $bt->setTemplateVars($view);
+
+            if (!\mkw\store::isPartnerAutocomplete()) {
+                $partner = new partnerController($this->params);
+                $view->setVar('partnerlist', $partner->getSelectList(($record ? $record->getPartnerId() : 0)));
+            }
+
+            $raktar = new raktarController($this->params);
+            if (!$record || !$record->getRaktarId()) {
+                $raktarid = \mkw\store::getParameter(\mkw\consts::Raktar, 0);
+            }
+            else {
+                $raktarid = $record->getRaktarId();
+            }
+            $view->setVar('raktarlist', $raktar->getSelectList($raktarid));
+
+            $fizmod = new fizmodController($this->params);
+            if (!$record || !$record->getFizmodId()) {
+                $fmid = \mkw\store::getParameter(\mkw\consts::Fizmod);
+            }
+            else {
+                $fmid = $record->getFizmodId();
+            }
+            $view->setVar('fizmodlist', $fizmod->getSelectList($fmid));
+
+            $szallitasimod = new szallitasimodController($this->params);
+            if (!$record || !$record->getSzallitasimodId()) {
+                $szallmodid = \mkw\store::getParameter(\mkw\consts::Szallitasimod);
+            }
+            else {
+                $szallmodid = $record->getSzallitasimodId();
+            }
+            $view->setVar('szallitasimodlist', $szallitasimod->getSelectList($szallmodid, true));
+
+            $valutanem = new valutanemController($this->params);
+            if (!$record || !$record->getValutanemId()) {
+                $valutaid = \mkw\store::getParameter(\mkw\consts::Valutanem, 0);
+            }
+            else {
+                $valutaid = $record->getValutanemId();
+            }
+            $view->setVar('valutanemlist', $valutanem->getSelectList($valutaid));
+
+            $bankszla = new bankszamlaController($this->params);
+            $bankszlaid = false;
+            if ($record && $record->getBankszamlaId()) {
+                $bankszlaid = $record->getBankszamlaId();
+            }
+            else {
+                $valutanem = $this->getRepo('Entities\Valutanem')->find($valutaid);
+                if ($valutanem && $valutanem->getBankszamlaId()) {
+                    $bankszlaid = $valutanem->getBankszamlaId();
+                }
+            }
+
+            $view->setVar('bankszamlalist', $bankszla->getSelectList($bankszlaid));
+
+            $uk = new uzletkotoController($this->params);
+            if ($record && $record->getUzletkotoId()) {
+                $ukid = $record->getUzletkotoId();
+            }
+            $view->setVar('uzletkotolist', $uk->getSelectList($ukid));
+
+            if ($record && $record->getBelsouzletkotoId()) {
+                $ukid = $record->getBelsouzletkotoId();
+            }
+            $fofilter = new \mkwhelpers\FilterDescriptor();
+            $fofilter->addFilter('belso', '=', true);
+            $view->setVar('belsouzletkotolist', $uk->getSelectList($ukid, $fofilter));
+
+            $view->setVar('esedekessegalap', \mkw\store::getParameter(\mkw\consts::Esedekessegalap, 1));
+            $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList(($record ? $record->getReportfile() : ''),
+                ($record ? $record->getBizonylattipusId() : $this->biztipus)));
+            $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
+
+            $csomagctrl = new csomagterminalController($this->params);
+            $szallitasimodobj = $this->getRepo('Entities\Szallitasimod')->find($szallmodid);
+            $view->setVar('csomagterminallist', $csomagctrl->getSelectList(($record ? $record->getCsomagterminalId() : 0), ($szallitasimodobj ? $szallitasimodobj->getTerminaltipus() : null)));
+
+            $felh = new dolgozoController($this->params);
+            $view->setVar('felhasznalolist', $felh->getSelectList(($record ? $record->getFelhasznaloId() : 0)));
+
+            $orszagc = new orszagController($this->params);
+            $view->setVar('orszaglist', $orszagc->getSelectList(($record ? $record->getPartnerorszagId() : 0)));
+
+            if (method_exists($this, 'onGetKarb')) {
+                $egyed = $this->onGetKarb($view, $record, $egyed, $oper, $id, $stornotip);
+            }
+
+            $view->setVar('egyed', $egyed);
+
+            $view->setVar('esedekessegalap', \mkw\store::getParameter(\mkw\consts::Esedekessegalap, 1));
         }
-        $view->setVar('uzletkotolist', $uk->getSelectList($ukid));
 
-        if ($record && $record->getBelsouzletkotoId()) {
-            $ukid = $record->getBelsouzletkotoId();
-        }
-        $fofilter = new \mkwhelpers\FilterDescriptor();
-        $fofilter->addFilter('belso', '=', true);
-        $view->setVar('belsouzletkotolist', $uk->getSelectList($ukid, $fofilter));
-
-        $view->setVar('esedekessegalap', \mkw\store::getParameter(\mkw\consts::Esedekessegalap, 1));
-        $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList(($record ? $record->getReportfile() : ''),
-            ($record ? $record->getBizonylattipusId() : $this->biztipus)));
-        $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
-
-        $csomagctrl = new csomagterminalController($this->params);
-        $szallitasimodobj = $this->getRepo('Entities\Szallitasimod')->find($szallmodid);
-        $view->setVar('csomagterminallist', $csomagctrl->getSelectList(($record ? $record->getCsomagterminalId() : 0), ($szallitasimodobj ? $szallitasimodobj->getTerminaltipus() : null)));
-
-        $felh = new dolgozoController($this->params);
-        $view->setVar('felhasznalolist', $felh->getSelectList(($record ? $record->getFelhasznaloId() : 0)));
-
-        $orszagc = new orszagController($this->params);
-        $view->setVar('orszaglist', $orszagc->getSelectList(($record ? $record->getPartnerorszagId() : 0)));
-
-        if (method_exists($this, 'onGetKarb')) {
-            $egyed = $this->onGetKarb($view, $record, $egyed, $oper, $id, $stornotip);
-        }
-
-        $view->setVar('egyed', $egyed);
-
-        $view->setVar('esedekessegalap', \mkw\store::getParameter(\mkw\consts::Esedekessegalap, 1));
         $view->printTemplateResult();
     }
 
