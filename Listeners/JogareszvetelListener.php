@@ -31,6 +31,18 @@ class JogareszvetelListener {
             }
         }
 
+        $torlendok = $this->uow->getScheduledEntityDeletions();
+        foreach ($torlendok as $entity) {
+            if ($entity instanceof \Entities\JogaReszvetel) {
+
+                $berlet = $entity->getJogaberlet();
+                if ($berlet) {
+                    $berlet->calcLejart(-1);
+                    $this->uow->recomputeSingleEntityChangeSet($this->jogaberletmd, $berlet);
+                }
+            }
+        }
+
 /*
         $entities = $this->uow->getScheduledEntityUpdates();
         foreach ($entities as $entity) {

@@ -1,6 +1,10 @@
 $(document).ready(
     function() {
 
+        $('#buyModal').on('shown.bs.modal', function () {
+            $('#aredit').trigger('focus');
+        });
+
         $(document)
             .on('change', '#datumselect', function(e) {
                 var datum = $(this).val();
@@ -32,24 +36,35 @@ $(document).ready(
             })
             .on('click', '.js-setmegjelent', function(e) {
                 e.preventDefault();
-                var rid = $(this).data('id');
-                $.ajax({
-                    method: 'POST',
-                    url: '/pubadmin/resztvevomegjelent',
-                    data: {
-                        id: rid
-                    },
-                    success: function(data) {
-                        $('#oraselect').change();
-                    }
-                });
+                if ($(this).data('mustbuy')) {
+                    $('#mustbuyModal')
+                        .modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                }
+                else {
+                    var rid = $(this).data('id');
+                    $.ajax({
+                        method: 'POST',
+                        url: '/pubadmin/resztvevomegjelent',
+                        data: {
+                            id: rid
+                        },
+                        success: function () {
+                            $('#oraselect').change();
+                        }
+                    });
+                }
             })
             .on('click', '.js-buy', function(e) {
+                var $this = $(this);
                 e.preventDefault();
-                $('#buyModalLabel').text($(this).text());
-                $('.js-buyok').data('id', $(this).data('id'));
+                $('#buyModalLabel').text($this.text() + ' vásárlás');
+                $('.js-buyok').data('id', $this.data('id'));
+                $('#aredit').val($this.data('price'))
                 $('#buyModal')
-                    .data('type', $(this).data('type'))
+                    .data('type', $this.data('type'))
                     .modal({
                         backdrop: 'static',
                         keyboard: false
@@ -57,6 +72,7 @@ $(document).ready(
             })
             .on('click', '.js-buyok', function(e) {
                 var rid = $(this).data('id');
+                $('#buyModal').modal('hide');
                 $.ajax({
                     method: 'POST',
                     url: '/pubadmin/resztvevoorajegy',
@@ -64,6 +80,9 @@ $(document).ready(
                         id: rid,
                         type: $('#buyModal').data('type'),
                         price: $('#aredit').val()
+                    },
+                    success: function () {
+                        $('#oraselect').change();
                     }
                 })
             })

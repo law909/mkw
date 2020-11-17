@@ -66,10 +66,10 @@ class JogaBejelentkezes extends \Entities\JogaBejelentkezes implements \Doctrine
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'tipus', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'ar', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'jogareszvetelid'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'tipus', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'ar', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'jogareszvetelid'];
     }
 
     /**
@@ -176,6 +176,28 @@ class JogaBejelentkezes extends \Entities\JogaBejelentkezes implements \Doctrine
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
+    public function createJogaReszvetel()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'createJogaReszvetel', []);
+
+        return parent::createJogaReszvetel();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function delJogaReszvetel()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'delJogaReszvetel', []);
+
+        return parent::delJogaReszvetel();
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -359,6 +381,28 @@ class JogaBejelentkezes extends \Entities\JogaBejelentkezes implements \Doctrine
     /**
      * {@inheritDoc}
      */
+    public function getPartnerKeresztnev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerKeresztnev', []);
+
+        return parent::getPartnerKeresztnev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartnerVezeteknev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerVezeteknev', []);
+
+        return parent::getPartnerVezeteknev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getPartnernev()
     {
 
@@ -464,6 +508,72 @@ class JogaBejelentkezes extends \Entities\JogaBejelentkezes implements \Doctrine
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMegjelent', [$megjelent]);
 
         return parent::setMegjelent($megjelent);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTipus()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipus', []);
+
+        return parent::getTipus();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTipus($tipus)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTipus', [$tipus]);
+
+        return parent::setTipus($tipus);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAr', []);
+
+        return parent::getAr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAr($ar)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAr', [$ar]);
+
+        return parent::setAr($ar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getJogareszvetelid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogareszvetelid', []);
+
+        return parent::getJogareszvetelid();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setJogareszvetelid($jogareszvetelid)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJogareszvetelid', [$jogareszvetelid]);
+
+        return parent::setJogareszvetelid($jogareszvetelid);
     }
 
 }

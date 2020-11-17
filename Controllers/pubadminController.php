@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Carbon\Carbon;
+use Entities\Partner;
 use mkw\store;
 use mkwhelpers, Entities;
 
@@ -84,7 +85,7 @@ class pubadminController extends mkwhelpers\Controller {
                     $filter->clear();
                     $filter->addFilter('partner', '=', $rvpartner);
                     $filter->addFilter('lejart', '=', false);
-                    $berletek = $this->getRepo('Entities\JogaBerlet')->getAll($filter);
+                    $berletek = $this->getRepo('Entities\JogaBerlet')->getAll($filter, array('id' => 'ASC'));
                     if (count($berletek)) {
                         /** @var \Entities\JogaBerlet $berlet */
                         $berlet = $berletek[0];
@@ -102,8 +103,22 @@ class pubadminController extends mkwhelpers\Controller {
                     $rvtomb['new'] = true;
                     $rvtomb['berlet'] = false;
                 }
+                switch (true) {
+                    case $resztvevo->getTipus() == 1:
+                        $rvtomb['berlet'] = false;
+                        $rvtomb['orajegy'] = true;
+                        break;
+                }
                 $rvtomb['id'] = $resztvevo->getId();
                 $rvtomb['megjelent'] = $resztvevo->isMegjelent();
+                $rvtomb['mustbuy'] = !$rvtomb['berlet'] && !$rvtomb['orajegy'];
+                /** @var Entities\Termek $termek */
+                $termek = $this->getRepo('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
+                $rvtomb['type1price'] = $termek->getBruttoArByArsav(null, 'normál');
+                $termek = $this->getRepo('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet4Termek));
+                $rvtomb['type2price'] = $termek->getBruttoArByArsav(null, 'normál');
+                $termek = $this->getRepo('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet10Termek));
+                $rvtomb['type3price'] = $termek->getBruttoArByArsav(null, 'normál');
                 $resztvevolista[] = $rvtomb;
             }
         }
@@ -117,16 +132,58 @@ class pubadminController extends mkwhelpers\Controller {
         /** @var \Entities\JogaBejelentkezes $rv */
         $rv = $this->getRepo('Entities\JogaBejelentkezes')->find($this->params->getIntRequestParam('id'));
         if ($rv) {
+            $megje = $rv->isMegjelent();
             $rv->setMegjelent(!$rv->isMegjelent());
             $this->getEm()->persist($rv);
             $this->getEm()->flush();
+            if ($megje) {
+                $rv->delJogaReszvetel();
+            }
+            else {
+                $rv->createJogaReszvetel();
+            }
         }
     }
 
     public function setResztvevoOrajegy() {
+        $type = $this->params->getIntRequestParam('type');
+        $price = $this->params->getNumRequestParam('price');
         /** @var \Entities\JogaBejelentkezes $rv */
         $rv = $this->getRepo('Entities\JogaBejelentkezes')->find($this->params->getIntRequestParam('id'));
         if ($rv) {
+            $rv->setTipus($type);
+            $rv->setAr($price);
+            $this->getEm()->persist($rv);
+            $this->getEm()->flush();
+
+            if ($type === 2 || $type === 3) {
+                $berlet = new Entities\JogaBerlet();
+                $rvpartner = \mkw\store::getEm()->getRepository('Entities\Partner')->findOneBy(['email' => $rv->getPartneremail()]);
+                if (!$rvpartner) {
+                    $rvpartner = new Partner();
+                    $rvpartner->setEmail($rv->getPartneremail());
+                    $rvpartner->setNev($rv->getPartnernev());
+                    $rvpartner->setVezeteknev($rv->getPartnerVezeteknev());
+                    $rvpartner->setKeresztnev($rv->getPartnerKeresztnev());
+                    \mkw\store::getEm()->persist($rvpartner);
+                    \mkw\store::getEm()->flush();
+                }
+                $berlet->setPartner($rvpartner);
+                switch ($type) {
+                    case 2:
+                        $termek = $this->getRepo('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet4Termek));
+                        break;
+                    case 3:
+                        $termek = $this->getRepo('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet10Termek));
+                        break;
+                }
+                $berlet->setTermek($termek);
+                $berlet->setBruttoegysar($price);
+                $berlet->setVasarlasnapja();
+                $this->getEm()->persist($berlet);
+                $this->getEm()->flush();
+            }
+
         }
     }
 }

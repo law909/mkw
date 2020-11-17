@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col">
                         {if ($resztvevo.berlet)}
-                            Bérlet: {$resztvevo.alkalom}/{$resztvevo.elfogyottalkalom} (az aktuális nélkül)
+                            Bérlet: {$resztvevo.alkalom}/{$resztvevo.elfogyottalkalom}
                         {else}
                             NINCS bérlete
                         {/if}
@@ -28,7 +28,9 @@
                 <div class="row">
                     <div class="col">
                 {if ($resztvevo.berlet)}
-                    Bérlet: {$resztvevo.alkalom}/{$resztvevo.elfogyottalkalom} (az aktuális nélkül)
+                    Bérlet: {$resztvevo.alkalom}/{$resztvevo.elfogyottalkalom}
+                {elseif ($resztvevo.orajegy)}
+                    Órajegyet vett
                 {else}
                     NINCS bérlete
                 {/if}
@@ -36,12 +38,16 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-darshan js-buy" data-type="1" data-id="{$resztvevo.id}">Órajegy</button>
-                        <button class="btn btn-darshan js-buy" data-type="2" data-id="{$resztvevo.id}">4-es bérlet</button>
+                        <button class="btn btn-darshan js-buy" data-type="1" data-id="{$resztvevo.id}" data-price="{$resztvevo.type1price}">
+                            Órajegy
+                        </button>
+                        <button class="btn btn-darshan js-buy" data-type="2" data-id="{$resztvevo.id}" data-price="{$resztvevo.type2price}">
+                            4-es bérlet
+                        </button>
                     </div>
                 </div>
             </div>
-            <button class="col btn btn-darshan js-setmegjelent" data-id="{$resztvevo.id}">{if (!$resztvevo.megjelent)}Megérkezett{else}Nem érkezett meg{/if}</button>
+            <button class="col btn btn-darshan js-setmegjelent" data-id="{$resztvevo.id}" {if (!$resztvevo.megjelent)}data-mustbuy="{$resztvevo.mustbuy}"{/if}>{if (!$resztvevo.megjelent)}Megérkezett{else}Nem érkezett meg{/if}</button>
         {/if}
     </div>
 {/foreach}

@@ -57,13 +57,79 @@ class JogaBejelentkezes {
     /** @ORM\Column(type="string",length=100,nullable=true) */
     private $partneremail = '';
 
-    /**
-     * @ORM\Column(type="date",nullable=true)
-     */
+    /** @ORM\Column(type="date",nullable=true) */
     private $datum;
 
     /** @ORM\Column(type="boolean") */
     private $megjelent = false;
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $tipus;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $ar;
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $jogareszvetelid;
+
+    public function createJogaReszvetel() {
+        $rvpartner = \mkw\store::getEm()->getRepository('Entities\Partner')->findOneBy(['email' => $this->getPartneremail()]);
+        if (!$rvpartner) {
+            $rvpartner = new Partner();
+            $rvpartner->setEmail($this->getPartneremail());
+            $rvpartner->setNev($this->getPartnernev());
+            $rvpartner->setVezeteknev($this->getPartnerVezeteknev());
+            $rvpartner->setKeresztnev($this->getPartnerKeresztnev());
+            \mkw\store::getEm()->persist($rvpartner);
+            \mkw\store::getEm()->flush();
+        }
+        $jr = new JogaReszvetel();
+        $jr->setPartner($rvpartner);
+        $jr->setDatum($this->getDatum());
+        $jr->setJogaoratipus($this->getOrarend()->getJogaoratipus());
+        $jr->setJogaterem($this->getOrarend()->getJogaterem());
+        $jr->setTanar($this->getOrarend()->getDolgozo());
+        switch (true) {
+            case $this->getTipus() == 1:
+                /** @var \Entities\Termek $termek */
+                $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
+                $jr->setTermek($termek);
+                $jr->setBruttoegysar($this->getAr());
+                break;
+            default:
+                $filter = new \mkwhelpers\FilterDescriptor();
+                $filter->addFilter('partner', '=', $rvpartner);
+                $filter->addFilter('lejart', '=', false);
+                $berletek = \mkw\store::getEm()->getRepository('Entities\JogaBerlet')->getAll($filter, array('id' => 'ASC'));
+                if (count($berletek)) {
+                    /** @var \Entities\JogaBerlet $berlet */
+                    $berlet = $berletek[0];
+                    $jr->setJogaberlet($berlet);
+                    $jr->setTermek($berlet->getTermek());
+                    $jr->setBruttoegysar($berlet->getBruttoegysar() / $berlet->getTermek()->getJogaalkalom());
+                }
+                break;
+        }
+        $jr->calcJutalek();
+        \mkw\store::getEm()->persist($jr);
+        \mkw\store::getEm()->flush();
+        $this->setJogareszvetelid($jr->getId());
+        \mkw\store::getEm()->persist($this);
+        \mkw\store::getEm()->flush();
+    }
+
+    public function delJogaReszvetel() {
+        if ($this->getJogareszvetelid()) {
+            $obj = \mkw\store::getEm()->getRepository('Entities\JogaReszvetel')->find($this->getJogareszvetelid());
+            if ($obj) {
+                \mkw\store::getEm()->remove($obj);
+                \mkw\store::getEm()->flush();
+                $this->setJogareszvetelid(null);
+                \mkw\store::getEm()->persist($this);
+                \mkw\store::getEm()->flush();
+            }
+        }
+    }
 
     public function getId() {
         return $this->id;
@@ -164,6 +230,16 @@ class JogaBejelentkezes {
         }
     }
 
+    public function getPartnerKeresztnev() {
+        $x = explode(' ', $this->getPartnernev());
+        return $x[1];
+    }
+
+    public function getPartnerVezeteknev() {
+        $x = explode(' ', $this->getPartnernev());
+        return $x[0];
+    }
+
     public function getPartnernev() {
         return $this->partnernev;
     }
@@ -228,6 +304,48 @@ class JogaBejelentkezes {
      */
     public function setMegjelent($megjelent) {
         $this->megjelent = $megjelent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTipus() {
+        return $this->tipus;
+    }
+
+    /**
+     * @param mixed $tipus
+     */
+    public function setTipus($tipus) {
+        $this->tipus = $tipus;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAr() {
+        return $this->ar;
+    }
+
+    /**
+     * @param mixed $ar
+     */
+    public function setAr($ar) {
+        $this->ar = $ar;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJogareszvetelid() {
+        return $this->jogareszvetelid;
+    }
+
+    /**
+     * @param mixed $jogareszvetelid
+     */
+    public function setJogareszvetelid($jogareszvetelid) {
+        $this->jogareszvetelid = $jogareszvetelid;
     }
 
 }

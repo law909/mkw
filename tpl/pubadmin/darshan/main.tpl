@@ -34,4 +34,19 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="mustbuyModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nincs bérlet!</h5>
+                </div>
+                <div class="modal-body">
+                    A látogatónak órajegyet vagy bérletet kell vásárolnia. Nyomd meg az "Órajegy" vagy a "4-es bérlet" gombot a vásárláshoz.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Bezár</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {/block}
