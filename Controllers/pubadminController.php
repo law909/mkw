@@ -192,4 +192,54 @@ class pubadminController extends mkwhelpers\Controller {
 
         }
     }
+
+    public function getPartnerData() {
+        $result = [];
+        $q = $this->params->getStringRequestParam('q');
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter(array('nev', 'keresztnev', 'vezeteknev'), 'like', '%' . $q . '%');
+        $partnerek = $this->getRepo('Entities\Partner')->getAll($filter, array('nev' => 'ASC'));
+        /** @var \Entities\Partner $partner */
+        foreach ($partnerek as $partner) {
+            $result[] = [
+                'value' => $partner->getId(),
+                'text' => $partner->getNev() . ' (' . $partner->getEmail() . ')'
+            ];
+        }
+        header('Content-Type: application/json');
+        echo json_encode($result);
+    }
+
+    public function newBejelentkezes() {
+        $oraid = $this->params->getIntRequestParam('oraid');
+        $ora = $this->getRepo('Entities\Orarend')->find($oraid);
+        $datum = $this->params->getStringRequestParam('datum');
+        $partnerid = $this->params->getIntRequestParam('partnerid');
+        /** @var Entities\Partner $partner */
+        $partner = $this->getRepo('Entities\Partner')->find($partnerid);
+        if ($partner && $ora) {
+            $obj = new \Entities\JogaBejelentkezes();
+            $obj->setDatum($datum);
+            $obj->setPartnernev($partner->getNev());
+            $obj->setPartneremail($partner->getEmail());
+            $obj->setOrarend($ora);
+            $this->getEm()->persist($obj);
+            $this->getEm()->flush();
+        }
+    }
+
+    public function newBejelentkezesWNewPartner() {
+        $oraid = $this->params->getIntRequestParam('oraid');
+        $ora = $this->getRepo('Entities\Orarend')->find($oraid);
+        $datum = $this->params->getStringRequestParam('datum');
+        if ($ora) {
+            $obj = new \Entities\JogaBejelentkezes();
+            $obj->setDatum($datum);
+            $obj->setPartnernev($this->params->getStringRequestParam('nev'));
+            $obj->setPartneremail($this->params->getStringRequestParam('email'));
+            $obj->setOrarend($ora);
+            $this->getEm()->persist($obj);
+            $this->getEm()->flush();
+        }
+    }
 }

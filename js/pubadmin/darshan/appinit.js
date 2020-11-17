@@ -1,8 +1,31 @@
 $(document).ready(
     function() {
 
+        function resetPartnerModal() {
+            $('#nevedit').val('');
+            $('#emailedit').val('');
+            $('#keresoedit').autoComplete('clear');
+        }
+
+        function refreshResztvevoList() {
+            $('#oraselect').change();
+        }
+
         $('#buyModal').on('shown.bs.modal', function () {
             $('#aredit').trigger('focus');
+        });
+
+        $('#keresoedit').autoComplete({
+            resolverSettings: {
+                url: '/pubadmin/partnerdata'
+            }
+        });
+        $('#keresoedit').on('autocomplete.select', function() {
+            $('#nevedit, #emailedit').val('');
+        });
+
+        $('#nevedit, #emailedit').change(function() {
+            $('#keresoedit').autoComplete('clear');
         });
 
         $(document)
@@ -52,7 +75,7 @@ $(document).ready(
                             id: rid
                         },
                         success: function () {
-                            $('#oraselect').change();
+                            refreshResztvevoList();
                         }
                     });
                 }
@@ -82,9 +105,52 @@ $(document).ready(
                         price: $('#aredit').val()
                     },
                     success: function () {
-                        $('#oraselect').change();
+                        refreshResztvevoList();
                     }
                 })
+            })
+            .on('click', '.js-newpartner', function(e) {
+                e.preventDefault();
+                $('#partnerModal').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            })
+            .on('click', '.js-partnerok', function(e) {
+                e.preventDefault();
+                $('#partnerModal').modal('hide');
+                var partnerid = $('input[name="kereso"]').val();
+                if (partnerid) {
+                    $.ajax({
+                        method: 'POST',
+                        url: '/pubadmin/newbejelentkezes',
+                        data: {
+                            datum: $('#datumselect').val(),
+                            oraid: $('#oraselect').val(),
+                            partnerid: partnerid
+                        },
+                        success: function() {
+                            refreshResztvevoList();
+                            resetPartnerModal();
+                        }
+                    });
+                }
+                else {
+                    $.ajax({
+                        method: 'POST',
+                        url: '/pubadmin/newpartnernewbejelentkezes',
+                        data: {
+                            datum: $('#datumselect').val(),
+                            oraid: $('#oraselect').val(),
+                            nev: $('#nevedit').val(),
+                            email: $('#emailedit').val()
+                        },
+                        success: function() {
+                            refreshResztvevoList();
+                            resetPartnerModal();
+                        }
+                    });
+                }
             })
     }
 );
