@@ -114,11 +114,17 @@ class pubadminController extends mkwhelpers\Controller {
                 $rvtomb['mustbuy'] = !$rvtomb['berlet'] && !$rvtomb['orajegy'];
                 /** @var Entities\Termek $termek */
                 $termek = $this->getRepo('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
-                $rvtomb['type1price'] = $termek->getBruttoArByArsav(null, 'normál');
+                if ($termek) {
+                    $rvtomb['type1price'] = $termek->getBruttoArByArsav(null, 'normál');
+                }
                 $termek = $this->getRepo('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet4Termek));
-                $rvtomb['type2price'] = $termek->getBruttoArByArsav(null, 'normál');
+                if ($termek) {
+                    $rvtomb['type2price'] = $termek->getBruttoArByArsav(null, 'normál');
+                }
                 $termek = $this->getRepo('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaBerlet10Termek));
-                $rvtomb['type3price'] = $termek->getBruttoArByArsav(null, 'normál');
+                if ($termek) {
+                    $rvtomb['type3price'] = $termek->getBruttoArByArsav(null, 'normál');
+                }
                 $resztvevolista[] = $rvtomb;
             }
         }

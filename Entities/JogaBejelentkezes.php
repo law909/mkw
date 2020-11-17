@@ -93,7 +93,9 @@ class JogaBejelentkezes {
             case $this->getTipus() == 1:
                 /** @var \Entities\Termek $termek */
                 $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
-                $jr->setTermek($termek);
+                if ($termek) {
+                    $jr->setTermek($termek);
+                }
                 $jr->setBruttoegysar($this->getAr());
                 break;
             default:
