@@ -31,6 +31,7 @@ $(document).ready(
         $(document)
             .on('change', '#datumselect', function(e) {
                 var datum = $(this).val();
+                $('#resztvevolist').html('');
                 $.ajax({
                     method: 'GET',
                     url: '/pubadmin/oralist',
@@ -62,8 +63,7 @@ $(document).ready(
                 if ($(this).data('mustbuy')) {
                     $('#mustbuyModal')
                         .modal({
-                            backdrop: 'static',
-                            keyboard: false
+                            backdrop: 'static'
                         });
                 }
                 else {
@@ -89,8 +89,7 @@ $(document).ready(
                 $('#buyModal')
                     .data('type', $this.data('type'))
                     .modal({
-                        backdrop: 'static',
-                        keyboard: false
+                        backdrop: 'static'
                     });
             })
             .on('click', '.js-buyok', function(e) {
@@ -112,8 +111,7 @@ $(document).ready(
             .on('click', '.js-newpartner', function(e) {
                 e.preventDefault();
                 $('#partnerModal').modal({
-                    backdrop: 'static',
-                    keyboard: false
+                    backdrop: 'static'
                 });
             })
             .on('click', '.js-partnerok', function(e) {
