@@ -150,5 +150,10 @@ $(document).ready(
                     });
                 }
             })
+            .on('click', '.js-refresh', function(e) {
+                e.preventDefault();
+                refreshResztvevoList();
+                resetPartnerModal();
+            })
     }
 );

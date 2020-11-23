@@ -1,5 +1,10 @@
+<div class="row top-margin-10 bottom-margin-10">
+    <div class="col">
+        <button class="btn btn-darshan js-refresh">Frissít <i class="fas fa-sync-alt"></i></button>
+    </div>
+</div>
 {foreach $resztvevolist as $resztvevo}
-    <div class="row js-resztvevo topmargin10 color-bkg-darshan">
+    <div class="row js-resztvevo top-margin-10 color-bkg-darshan">
         {if ($future)}
             <div class="col-1">&nbsp;</div>
             <div class="col">{$resztvevo.nev} ({$resztvevo.email})</div>
