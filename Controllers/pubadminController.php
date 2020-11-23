@@ -72,7 +72,7 @@ class pubadminController extends mkwhelpers\Controller {
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('orarend', '=', $oraid);
             $filter->addFilter('datum', '=', $datum);
-            $resztvevok = $this->getRepo('Entities\JogaBejelentkezes')->getAll($filter);
+            $resztvevok = $this->getRepo('Entities\JogaBejelentkezes')->getAll($filter, ['partnernev' => 'ASC']);
 
             /** @var \Entities\JogaBejelentkezes $resztvevo */
             foreach ($resztvevok as $resztvevo) {
