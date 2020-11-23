@@ -53,7 +53,7 @@
         {/if}
     </div>
 {/foreach}
-<div class="row topmargin10">
+<div class="row top-margin-10 bottom-margin-10">
     <div class="col">
         <button class="btn btn-darshan js-newpartner">Új gyakorló</button>
     </div>

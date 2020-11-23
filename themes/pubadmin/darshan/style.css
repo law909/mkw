@@ -20,8 +20,12 @@
     background-color: #f4e9f9;
 }
 
-.topmargin10 {
+.top-margin-10 {
     margin-top: 10px;
+}
+
+.bottom-margin-10 {
+    margin-bottom: 10px;
 }
 
 .top-bottom-margin-5 {
