@@ -3,11 +3,12 @@
         <button class="btn btn-darshan js-refresh">Frissít <i class="fas fa-sync-alt"></i></button>
     </div>
 </div>
+{$sorszam = 1}
 {foreach $resztvevolist as $resztvevo}
     <div class="row js-resztvevo top-margin-10 color-bkg-darshan">
         {if ($future)}
             <div class="col-1">&nbsp;</div>
-            <div class="col">{$resztvevo.nev} ({$resztvevo.email})</div>
+            <div class="col">{$sorszam}. {$resztvevo.nev} ({$resztvevo.email})</div>
             <div class="col">
                 <div class="row">
                     <div class="col">
@@ -27,7 +28,7 @@
                 <div class="col-md-1 bg-danger">&nbsp;</div>
             {/if}
             <div class="col-md-5{if ($resztvevo.new)} text-danger{/if}">
-                {$resztvevo.nev} ({$resztvevo.email})
+                {$sorszam}. {$resztvevo.nev} ({$resztvevo.email})
             </div>
             <div class="col-md-4">
                 <div class="row">
@@ -57,6 +58,7 @@
             <button class="col-md-2 btn btn-darshan top-bottom-margin-5 js-setmegjelent" data-id="{$resztvevo.id}" {if (!$resztvevo.megjelent)}data-mustbuy="{$resztvevo.mustbuy}"{/if}>{if (!$resztvevo.megjelent)}Megérkezett{else}Nem érkezett meg{/if}</button>
         {/if}
     </div>
+    {$sorszam = $sorszam + 1}
 {/foreach}
 <div class="row top-margin-10 bottom-margin-10">
     <div class="col">
