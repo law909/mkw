@@ -311,6 +311,9 @@ class consts {
     const JogaOrajegyTermek = 'jogaorajegytermek';
     const JogaBerlet4Termek = 'jogaberlet4termek';
     const JogaBerlet10Termek = 'jogaberlet10termek';
+    const JogaBerletFelszolitoSablon = 'jogaberletfelszolitosablon';
+    const JogaBerletLefogjarniSablon = 'jogaberletlefogjarnisablon';
+    const JogaBerletLejartSablon = 'jogaberletlejartsablon';
 
     const BarionPOSKey = 'barionposkey';
     const BarionAPIVersion = 'barionapiversion';
