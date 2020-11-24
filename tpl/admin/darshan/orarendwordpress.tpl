@@ -340,7 +340,7 @@
                 {if (!$ora['elmarad'] && $ora['bejelentkezeskell'])}
                     <div>
                         <a href="#" class="dttonlinelink dttorarendbutton margin-bottom-5 js-bejelentkezes" data-id="{$ora['id']}" data-datum="{$ora['datum']}">
-                            {if ($ora['onlineurl'])}1. {/if}Bejelentkezek (eddig {$ora['bejelentkezesdb']} fő)
+                            {if ($ora['onlineurl'])}1. {/if}Bejelentkezek
                         </a>
                     </div>
                 {/if}
