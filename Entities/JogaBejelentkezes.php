@@ -72,6 +72,9 @@ class JogaBejelentkezes {
     /** @ORM\Column(type="integer",nullable=true) */
     private $jogareszvetelid;
 
+    /** @ORM\Column(type="boolean") */
+    private $kesobbfizet = false;
+
     public function createJogaReszvetel() {
         $rvpartner = \mkw\store::getEm()->getRepository('Entities\Partner')->findOneBy(['email' => $this->getPartneremail()]);
         if (!$rvpartner) {
@@ -348,6 +351,20 @@ class JogaBejelentkezes {
      */
     public function setJogareszvetelid($jogareszvetelid) {
         $this->jogareszvetelid = $jogareszvetelid;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isKesobbfizet() {
+        return $this->kesobbfizet;
+    }
+
+    /**
+     * @param bool $kesobbfizet
+     */
+    public function setKesobbfizet($kesobbfizet) {
+        $this->kesobbfizet = $kesobbfizet;
     }
 
 }

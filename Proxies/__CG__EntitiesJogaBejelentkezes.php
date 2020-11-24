@@ -66,10 +66,10 @@ class JogaBejelentkezes extends \Entities\JogaBejelentkezes implements \Doctrine
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'tipus', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'ar', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'jogareszvetelid'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'tipus', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'ar', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'jogareszvetelid', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'kesobbfizet'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'tipus', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'ar', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'jogareszvetelid'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'tipus', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'ar', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'jogareszvetelid', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'kesobbfizet'];
     }
 
     /**
@@ -574,6 +574,28 @@ class JogaBejelentkezes extends \Entities\JogaBejelentkezes implements \Doctrine
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJogareszvetelid', [$jogareszvetelid]);
 
         return parent::setJogareszvetelid($jogareszvetelid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isKesobbfizet()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isKesobbfizet', []);
+
+        return parent::isKesobbfizet();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setKesobbfizet($kesobbfizet)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKesobbfizet', [$kesobbfizet]);
+
+        return parent::setKesobbfizet($kesobbfizet);
     }
 
 }

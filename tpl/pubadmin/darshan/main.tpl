@@ -24,8 +24,14 @@
                     <h5 class="modal-title" id="buyModalLabel"></h5>
                 </div>
                 <div class="modal-body">
-                    <label for="aredit">Ár</label>
-                    <input id="aredit" name="ar" type="text" class="form-control">
+                    <div class="form-group">
+                        <label for="aredit">Ár</label>
+                        <input id="aredit" name="ar" type="text" class="form-control">
+                    </div>
+                    <div class="form-group form-check">
+                        <input id="lateredit" name="later" type="checkbox" class="form-check-input" checked="checked">
+                        <label for="lateredit" class="form-check-label">Később fizet</label>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary js-buyok">OK</button>
@@ -41,7 +47,7 @@
                     <h5 class="modal-title">Nincs bérlet!</h5>
                 </div>
                 <div class="modal-body">
-                    A látogatónak órajegyet vagy bérletet kell vásárolnia. Nyomd meg az "Órajegy" vagy a "4-es bérlet" gombot a vásárláshoz.
+                    A gyakorlónak órajegyet vagy bérletet kell vásárolnia. Nyomd meg az "Órajegy" vagy a "4-es bérlet" gombot a vásárláshoz.
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Bezár</button>

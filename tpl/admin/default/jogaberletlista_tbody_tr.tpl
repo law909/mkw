@@ -1,4 +1,4 @@
-<tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}">
+<tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}"{if ($_egyed.nincsfizetve)} class="redtext"{/if}>
     <td class="cell">
         <input class="maincheckbox" type="checkbox">
     </td>

@@ -101,7 +101,8 @@ $(document).ready(
                     data: {
                         id: rid,
                         type: $('#buyModal').data('type'),
-                        price: $('#aredit').val()
+                        price: $('#aredit').val(),
+                        later: $('#lateredit').prop('checked')
                     },
                     success: function () {
                         refreshResztvevoList();

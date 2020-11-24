@@ -77,6 +77,7 @@ class pubadminController extends mkwhelpers\Controller {
             /** @var \Entities\JogaBejelentkezes $resztvevo */
             foreach ($resztvevok as $resztvevo) {
                 $rvtomb = [];
+                $rvtomb['tipus'] = false;
                 $rvpartner = $this->getRepo('Entities\Partner')->findOneBy(['email' => $resztvevo->getPartneremail()]);
                 if ($rvpartner) {
                     $rvtomb['nev'] = $resztvevo->getPartnernev();
@@ -89,29 +90,24 @@ class pubadminController extends mkwhelpers\Controller {
                     if (count($berletek)) {
                         /** @var \Entities\JogaBerlet $berlet */
                         $berlet = $berletek[0];
-                        $rvtomb['berlet'] = true;
+                        $rvtomb['tipus'] = 'berlet';
                         $rvtomb['alkalom'] = $berlet->getAlkalom();
                         $rvtomb['elfogyottalkalom'] = $berlet->getElfogyottalkalom() + $berlet->getOfflineelfogyottalkalom();
-                    }
-                    else {
-                        $rvtomb['berlet'] = false;
                     }
                 }
                 else {
                     $rvtomb['nev'] = $resztvevo->getPartnernev();
                     $rvtomb['email'] = $resztvevo->getPartneremail();
                     $rvtomb['new'] = true;
-                    $rvtomb['berlet'] = false;
                 }
                 switch (true) {
                     case $resztvevo->getTipus() == 1:
-                        $rvtomb['berlet'] = false;
-                        $rvtomb['orajegy'] = true;
+                        $rvtomb['tipus'] = 'orajegy';
                         break;
                 }
                 $rvtomb['id'] = $resztvevo->getId();
                 $rvtomb['megjelent'] = $resztvevo->isMegjelent();
-                $rvtomb['mustbuy'] = !$rvtomb['berlet'] && !$rvtomb['orajegy'];
+                $rvtomb['mustbuy'] = !$rvtomb['tipus'];
                 /** @var Entities\Termek $termek */
                 $termek = $this->getRepo('Entities\Termek')->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
                 if ($termek) {
@@ -154,11 +150,13 @@ class pubadminController extends mkwhelpers\Controller {
     public function setResztvevoOrajegy() {
         $type = $this->params->getIntRequestParam('type');
         $price = $this->params->getNumRequestParam('price');
+        $later = $this->params->getBoolRequestParam('later');
         /** @var \Entities\JogaBejelentkezes $rv */
         $rv = $this->getRepo('Entities\JogaBejelentkezes')->find($this->params->getIntRequestParam('id'));
         if ($rv) {
             $rv->setTipus($type);
             $rv->setAr($price);
+            $rv->setKesobbfizet($later);
             $this->getEm()->persist($rv);
             $this->getEm()->flush();
 
@@ -186,6 +184,7 @@ class pubadminController extends mkwhelpers\Controller {
                 $berlet->setTermek($termek);
                 $berlet->setBruttoegysar($price);
                 $berlet->setVasarlasnapja();
+                $berlet->setNincsfizetve($rv->isKesobbfizet());
                 $this->getEm()->persist($berlet);
                 $this->getEm()->flush();
             }
