@@ -1304,19 +1304,30 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         /** @var \Entities\Bizonylatfej $bf */
         $bf = $this->getRepo()->find($id);
         if ($bf) {
-            $bf->setKellszallitasikoltsegetszamolni(false);
-            $bf->setSimpleedit(true);
-            $bf->setNyomtatva($printed);
-            $this->getEm()->persist($bf);
-            $this->getEm()->flush();
-            if ($printed && !$bf->isNavbekuldve()) {
-                $nores = $this->sendToNAV($id);
-                if ($nores) {
-                    if (!$httpcall) {
-                        return $nores;
-                    }
-                    else {
-                        echo $nores;
+            $nores = $this->validateWithNAV($id);
+            if ($nores !== true) {
+                if (!$httpcall) {
+                    return $nores;
+                }
+                else {
+                    echo $nores;
+                }
+            }
+            else {
+                $bf->setKellszallitasikoltsegetszamolni(false);
+                $bf->setSimpleedit(true);
+                $bf->setNyomtatva($printed);
+                $this->getEm()->persist($bf);
+                $this->getEm()->flush();
+                if ($printed && !$bf->isNavbekuldve()) {
+                    $nores = $this->sendToNAV($id);
+                    if ($nores) {
+                        if (!$httpcall) {
+                            return $nores;
+                        }
+                        else {
+                            echo $nores;
+                        }
                     }
                 }
             }
@@ -1885,6 +1896,31 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
             }
         }
         return false;
+    }
+
+    public function validateWithNAV($bizszam) {
+        /** @var \Entities\Bizonylatfej $biz */
+        $biz = $this->getRepo()->find($bizszam);
+        if ($biz && $biz->getBizonylattipusNavbekuldendo() && $biz->isNavbekuldendo()) {
+            $xml = $biz->toNAVOnlineXML();
+            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam(), \mkw\store::getNAVOnlineEnv());
+            if ($no->validate($xml)) {
+                if ($no->getResult() !== 'OK') {
+                    $noerrors = $no->getErrors();
+                    \mkw\store::writelog($bizszam, 'navonline.log');
+                    \mkw\store::writelog(print_r($noerrors, true), 'navonline.log');
+                    return $no->getErrorsAsHtml();
+                }
+                return true;
+            }
+            else {
+                $noerrors = $no->getErrors();
+                \mkw\store::writelog($bizszam, 'navonline.log');
+                \mkw\store::writelog(print_r($noerrors, true), 'navonline.log');
+                return $no->getErrorsAsHtml();
+            }
+        }
+        return true;
     }
 
     public function NAVEredmenyFeldolgoz() {
