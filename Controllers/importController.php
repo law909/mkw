@@ -2191,74 +2191,6 @@ class importController extends \mkwhelpers\Controller {
                     }
                 }
 
-                $lettfuggoben = false;
-                foreach ($minden as $data) {
-                    $termekdb++;
-                    $cikkszam = trimCikkszam($data[$this->n('a')]);
-                    if ($cikkszam) {
-                        $termek = \mkw\store::getEm()->getRepository('Entities\Termek')->findBy(array('cikkszam' => $cikkszam, 'gyarto' => $gyartoid));
-                        if (!$termek) {
-
-                            $valtozatok = $this->getRepo('Entities\TermekValtozat')->findBy(array('idegencikkszam' => $cikkszam));
-                            if ($valtozatok) {
-                                foreach ($valtozatok as $v) {
-                                    $termek = $v->getTermek();
-                                    if ($termek && $termek->getGyartoId() == $gyartoid) {
-                                        $valtozat = $v;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        if (is_array($termek)) {
-                            $termek = $termek[0];
-                        }
-                        if ($termek) {
-                            //$termek->setMekod($this->>getME($this->>toutf($data[$this->n('h')])));
-                            if ($editnev && false) {
-                                if (trim($data[$this->n('b')])) {
-                                    $termek->setNev($this->toutf(trim($data[$this->n('b')])));
-                                }
-                            }
-                            if ($editleiras) {
-                                if (trim($data[$this->n('d')])) {
-                                    if (!$termek->getLeiras()) {
-                                        $hosszuleiras = $this->toutf(trim($data[$this->n('d')]));
-                                        $termek->setLeiras($hosszuleiras);
-                                    }
-
-                                    if (!$termek->getRovidLeiras()) {
-                                        $puri2 = \mkw\store::getSanitizer();
-                                        $rovidleiras = $puri2->sanitize($hosszuleiras);
-                                        $termek->setRovidleiras(mb_substr($rovidleiras, 0, 100, 'UTF8') . '...');
-                                    }
-
-                                }
-                            }
-                            if ($data[$this->n('c')] != 1) {
-                                if ($termek->getKeszlet() <= 0) {
-                                    $termekdb++;
-                                    \mkw\store::writelog('TERMÉK cikkszám státusz (' . $data[$this->n('c')] . ') miatt: ' . $termek->getCikkszam(), 'reintex_fuggoben.txt');
-                                    $lettfuggoben = true;
-                                    $termek->setInaktiv(true);
-                                }
-                            }
-                            $this->getEm()->persist($termek);
-                        }
-                    }
-                    if (($termekdb % $batchsize) === 0) {
-                        \mkw\store::getEm()->flush();
-                        \mkw\store::getEm()->clear();
-                        $vtsz = \mkw\store::getEm()->getRepository('Entities\Vtsz')->findBySzam('-');
-                        $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
-                        $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
-                    }
-                }
-                \mkw\store::getEm()->flush();
-                \mkw\store::getEm()->clear();
-                $gyarto = \mkw\store::getEm()->getRepository('Entities\Partner')->find($gyartoid);
-                $parent = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($parentid);
-
                 $minden = null;
 
                 if ($gyarto) {
@@ -2266,90 +2198,126 @@ class importController extends \mkwhelpers\Controller {
                         $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto);
                         $termekdb = 0;
                         foreach ($termekek as $t) {
+                            // CSVben megvan
                             if (in_array($t['cikkszam'], $cikkszamok)) {
-                                $termeketkikellvenni = true;
                                 /** @var \Entities\Termek $termek */
                                 $termek = $this->getRepo('Entities\Termek')->find($t['id']);
-                                /** @var \Entities\TermekValtozat $valtozat */
-                                foreach ($termek->getValtozatok() as $valtozat) {
-                                    if ($valtozat->getIdegencikkszam()) {
-                                        if (!in_array($valtozat->getIdegencikkszam(), $cikkszamok)) {
-                                            if ($valtozat->getKeszlet() > 0) {
-                                                $termeketkikellvenni = false;
+                                if (count($termek->getValtozatok()) > 0) {
+                                    /** @var \Entities\TermekValtozat $valtozat */
+                                    foreach ($termek->getValtozatok() as $valtozat) {
+                                        if ($valtozat->getIdegencikkszam()) {  // van idegencikkszam
+                                            if (!in_array($valtozat->getIdegencikkszam(), $cikkszamok)) {  // nincs meg a reintexnel
+                                                if ($valtozat->getKeszlet() <= 0) {  // nincs keszleten
+                                                    if ($valtozat->getElerheto()) {
+                                                        \mkw\store::writelog('VÁLTOZAT idegen cikkszám NEM ELÉRHETŐ lett: ' . $valtozat->getIdegencikkszam(), 'reintex_fuggoben.txt');
+                                                        $lettfuggoben = true;
+                                                        $valtozat->setElerheto(false);
+                                                        \mkw\store::getEm()->persist($valtozat);
+                                                        \mkw\store::getEm()->flush();
+                                                    }
+                                                }
                                             }
-                                            // a változat nincs készleten, nincs meg az id.cikkszám reintexnel, a terméknek sincs id.cikkszáma
-                                            else {
-                                                $termekdb++;
-                                                \mkw\store::writelog('VÁLTOZAT idegen cikkszám: ' . $valtozat->getIdegencikkszam(), 'reintex_fuggoben.txt');
+                                        }
+                                        if (
+                                            ($valtozat->getKeszlet() > 0)
+                                            ||
+                                            ($valtozat->getIdegencikkszam() && in_array($valtozat->getIdegencikkszam(), $cikkszamok))
+                                        ) {
+                                            if (!$valtozat->getElerheto()) {
+                                                \mkw\store::writelog('VÁLTOZAT idegen cikkszám ELÉRTHETŐ lett: ' . $valtozat->getIdegencikkszam(), 'reintex_fuggoben.txt');
                                                 $lettfuggoben = true;
-                                                $valtozat->setLathato(false);
-                                                $valtozat->setElerheto(false);
+                                                $valtozat->setElerheto(true);
                                                 \mkw\store::getEm()->persist($valtozat);
                                                 \mkw\store::getEm()->flush();
                                             }
                                         }
-                                        // megvan a cikkszám reintexnel
-                                        else {
-                                            $termeketkikellvenni = false;
+                                    }
+                                    $elerhetovaltozatdb = 0;
+                                    foreach ($termek->getValtozatok() as $valtozat) {
+                                        if ($valtozat->getElerheto()) {
+                                            $elerhetovaltozatdb++;
                                         }
                                     }
-                                    // nincs cikkszám
-                                    else {
-                                        $termeketkikellvenni = false;
+                                    if ($elerhetovaltozatdb == 0) {
+                                        if ($termek && $termek->getKeszlet() <= 0) {
+                                            $termekdb++;
+                                            if (!$termek->getInaktiv()) {
+                                                \mkw\store::writelog('TERMÉK cikkszám INAKTIVÁLVA: ' . $t['cikkszam'] . $termek->getCikkszam(), 'reintex_fuggoben.txt');
+                                                $lettfuggoben = true;
+                                                $termek->setInaktiv(true);
+                                                \mkw\store::getEm()->persist($termek);
+                                                \mkw\store::getEm()->flush();
+                                            }
+                                        }
                                     }
-                                }
-                                if ($termeketkikellvenni) {
-                                    if ($termek && $termek->getKeszlet() <= 0) {
-                                        $termekdb++;
-                                        \mkw\store::writelog('TERMÉK cikkszám: ' . $t['cikkszam'] . $termek->getCikkszam(), 'reintex_fuggoben.txt');
-                                        $lettfuggoben = true;
-                                        $termek->setInaktiv(true);
-                                        \mkw\store::getEm()->persist($termek);
-                                        \mkw\store::getEm()->flush();
+                                    else {
+                                        if ($termek->getInaktiv()) {
+                                            \mkw\store::writelog('TERMÉK cikkszám AKTIVÁLVA: ' . $t['cikkszam'] . $termek->getCikkszam(), 'reintex_fuggoben.txt');
+                                            $lettfuggoben = true;
+                                            $termek->setInaktiv(false);
+                                            \mkw\store::getEm()->persist($termek);
+                                            \mkw\store::getEm()->flush();
+                                        }
                                     }
                                 }
                             }
+                            // CSVben NINCS meg
                             else {
-                                $termeketkikellvenni = true;
                                 /** @var \Entities\Termek $termek */
                                 $termek = $this->getRepo('Entities\Termek')->find($t['id']);
                                 /** @var \Entities\TermekValtozat $valtozat */
                                 foreach ($termek->getValtozatok() as $valtozat) {
                                     if ($valtozat->getIdegencikkszam()) {
-                                        // nincs cikkszam a reintexnel
                                         if (!in_array($valtozat->getIdegencikkszam(), $cikkszamok)) {
-                                            if ($valtozat->getKeszlet() > 0) {
-                                                $termeketkikellvenni = false;
+                                            if ($valtozat->getKeszlet() <= 0) {
+                                                if ($valtozat->getElerheto()) {
+                                                    \mkw\store::writelog('VÁLTOZAT idegen cikkszám NEM ELÉRHETŐ lett: ' . $valtozat->getIdegencikkszam(), 'reintex_fuggoben.txt');
+                                                    $lettfuggoben = true;
+                                                    $valtozat->setElerheto(false);
+                                                    \mkw\store::getEm()->persist($valtozat);
+                                                    \mkw\store::getEm()->flush();
+                                                }
                                             }
-                                            // a változat nincs készleten, nincs meg az id.cikkszám reintexnel, a terméknek sincs id.cikkszáma
-                                            else {
-                                                $termekdb++;
-                                                \mkw\store::writelog('VÁLTOZAT idegen cikkszám: ' . $valtozat->getIdegencikkszam(), 'reintex_fuggoben.txt');
-                                                $lettfuggoben = true;
-                                                $valtozat->setLathato(false);
-                                                $valtozat->setElerheto(false);
-                                                \mkw\store::getEm()->persist($valtozat);
-                                                \mkw\store::getEm()->flush();
-                                            }
-                                        }
-                                        // megvan a cikkszám reintexnel
-                                        else {
-                                            $termeketkikellvenni = false;
                                         }
                                     }
-                                    // nincs cikkszám
-                                    else {
-                                        $termeketkikellvenni = false;
+                                    if (
+                                        ($valtozat->getKeszlet() > 0)
+                                        ||
+                                        ($valtozat->getIdegencikkszam() && in_array($valtozat->getIdegencikkszam(), $cikkszamok))
+                                    ) {
+                                        if (!$valtozat->getElerheto()) {
+                                            \mkw\store::writelog('VÁLTOZAT idegen cikkszám ELÉRTHETŐ lett: ' . $valtozat->getIdegencikkszam(), 'reintex_fuggoben.txt');
+                                            $lettfuggoben = true;
+                                            $valtozat->setElerheto(true);
+                                            \mkw\store::getEm()->persist($valtozat);
+                                            \mkw\store::getEm()->flush();
+                                        }
                                     }
                                 }
-                                if ($termeketkikellvenni) {
-                                    if ($termek && $termek->getKeszlet() <= 0) {
-                                        $termekdb++;
-                                        \mkw\store::writelog('TERMÉK cikkszám: ' . $t['cikkszam'], 'reintex_fuggoben.txt');
+                                $elerhetovaltozatdb = 0;
+                                foreach ($termek->getValtozatok() as $valtozat) {
+                                    if ($valtozat->getElerheto()) {
+                                        $elerhetovaltozatdb++;
+                                    }
+                                }
+                                if ($elerhetovaltozatdb > 0) {
+                                    if ($termek->getInaktiv()) {
+                                        \mkw\store::writelog('TERMÉK cikkszám AKTIVÁLVA: ' . $t['cikkszam'], 'reintex_fuggoben.txt');
                                         $lettfuggoben = true;
-                                        $termek->setInaktiv(true);
+                                        $termek->setInaktiv(false);
                                         \mkw\store::getEm()->persist($termek);
                                         \mkw\store::getEm()->flush();
+                                    }
+                                }
+                                else {
+                                    if ($termek && $termek->getKeszlet() <= 0) {
+                                        if (!$termek->getInaktiv()) {
+                                            \mkw\store::writelog('TERMÉK cikkszám INAKTIVÁLVA: ' . $t['cikkszam'], 'reintex_fuggoben.txt');
+                                            $lettfuggoben = true;
+                                            $termek->setInaktiv(true);
+                                            \mkw\store::getEm()->persist($termek);
+                                            \mkw\store::getEm()->flush();
+                                        }
                                     }
                                 }
                             }

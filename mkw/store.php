@@ -118,6 +118,12 @@ class store {
         fclose($handle);
     }
 
+    public static function deletelog($fname) {
+        if ($fname) {
+            @\unlink(self::logsPath($fname));
+        }
+    }
+
     public static function writetranslation($text, $fname = 'log.txt') {
         $handle = fopen($fname, "a");
         $log = "";
