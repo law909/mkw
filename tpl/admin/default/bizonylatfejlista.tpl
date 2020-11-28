@@ -17,10 +17,12 @@
 <div id="mattable-filterwrapper">
 	<label for="idfilter">{at('Sorszám')}:</label>
 	<input id="idfilter" name="idfilter" type="text" size="20" maxlength="20">
-    <label for="vevonevfilter">{at('Vevőnév')}:</label>
+    <label for="vevonevfilter">{at('Vevő név')}:</label>
     <input id="vevonevfilter" name="vevonevfilter" type="text">
     <label for="vevoemailfilter">{at('Vevő email')}:</label>
     <input id="vevoemailfilter" name="vevoemailfilter" type="text">
+    <label for="vevotelefonfilter">{at('Vevő telefon')}:</label>
+    <input id="vevotelefonfilter" name="vevotelefonfilter" type="text">
 	<div class="matt-hseparator"></div>
     <div>
         <label for="szallitasiirszamfilter">{at('Szállítási cím')}:</label>

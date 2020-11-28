@@ -1019,6 +1019,7 @@ var bizonylathelper = function($) {
                         '#idfilter',
                         '#vevonevfilter',
                         '#vevoemailfilter',
+                        '#vevotelefonfilter',
                         '#szallitasiirszamfilter',
                         '#szallitasivarosfilter',
                         '#szallitasiutcafilter',

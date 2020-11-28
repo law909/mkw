@@ -139,6 +139,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController {
         if ($f) {
             $filter->addFilter('partneremail', 'LIKE', '%' . $f . '%');
         }
+        $f = $this->params->getStringRequestParam('vevotelefonfilter');
+        if ($f) {
+            $filter->addFilter('partnertelefon', 'LIKE', '%' . $f . '%');
+        }
         $f = $this->params->getStringRequestParam('szallitasiirszamfilter');
         if ($f) {
             $filter->addFilter('szallirszam', 'LIKE', '%' . $f . '%');
