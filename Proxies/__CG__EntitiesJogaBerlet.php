@@ -179,6 +179,17 @@ class JogaBerlet extends \Entities\JogaBerlet implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
+    public function sendEmail($sablonid)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'sendEmail', [$sablonid]);
+
+        return parent::sendEmail($sablonid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {
@@ -436,6 +447,17 @@ class JogaBerlet extends \Entities\JogaBerlet implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
+    public function getPartneremail()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartneremail', []);
+
+        return parent::getPartneremail();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getVasarlasnapja()
     {
 
@@ -651,6 +673,28 @@ class JogaBerlet extends \Entities\JogaBerlet implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'calcLejart', [$num]);
 
         return parent::calcLejart($num);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isUtolsoElottiAlkalom()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isUtolsoElottiAlkalom', []);
+
+        return parent::isUtolsoElottiAlkalom();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isUtolsoAlkalom()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isUtolsoAlkalom', []);
+
+        return parent::isUtolsoAlkalom();
     }
 
     /**

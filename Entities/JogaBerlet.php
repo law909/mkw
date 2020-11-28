@@ -87,6 +87,27 @@ class JogaBerlet {
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $bruttoegysar;
 
+    public function sendEmail($sablonid) {
+        $emailtpl = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($sablonid);
+        if (\mkw\store::isSendableEmail($this->getPartneremail()) && $emailtpl) {
+
+            $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+            $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+            $body->setVar('partnernev', $this->getPartnernev());
+            $body->setVar('datum', $this->getVasarlasnapjaStr());
+            $body->setVar('berlet', $this->getNev());
+            $body->setVar('ar', $this->getBruttoegysar());
+
+            $mailer = \mkw\store::getMailer();
+
+            $mailer->addTo($this->getPartneremail());
+            $mailer->setSubject($subject->getTemplateResult());
+            $mailer->setMessage($body->getTemplateResult());
+
+            $mailer->send();
+        }
+    }
+
     /**
      * @return mixed
      */
@@ -245,6 +266,13 @@ class JogaBerlet {
         return '';
     }
 
+    public function getPartneremail() {
+        if ($this->partner) {
+            return $this->partner->getEmail();
+        }
+        return '';
+    }
+
     public function getVasarlasnapja() {
         return $this->vasarlasnapja;
     }
@@ -389,6 +417,27 @@ class JogaBerlet {
         $y = $jrrepo->getCountByBerlet($this->getId());
         $this->setElfogyottalkalom($y + $num);
         $this->setLejart($this->getAlkalom() <= $this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom());
+
+        if ($num > 1) {
+            if ($this->isNincsfizetve() && ($this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom() > 1)) {
+                $this->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletFelszolitoSablon));
+            }
+
+            if ($this->isUtolsoElottiAlkalom()) {
+                $this->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletLefogjarniSablon));
+            }
+            elseif ($this->isUtolsoAlkalom()) {
+                $this->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletLejartSablon));
+            }
+        }
+    }
+
+    public function isUtolsoElottiAlkalom() {
+        return $this->getAlkalom() - ($this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom()) == 1;
+    }
+
+    public function isUtolsoAlkalom() {
+        return $this->getAlkalom() == ($this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom());
     }
 
     /**
