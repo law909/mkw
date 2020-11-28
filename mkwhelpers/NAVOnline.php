@@ -120,6 +120,10 @@ no.CegAdoszam:=DM._Param.ReadString(pTulajAdoszam,'');
         return $this->callAPI('GET', '/hello/' . $this->cegAdoszam);
     }
 
+    public function version() {
+        return $this->callAPI('GET', '/version/' . $this->cegAdoszam);
+    }
+
     public function sendSzamla($bizszam, $data) {
         $operation = substr($data, 0, 6);
         $szladata = substr($data, 6);
