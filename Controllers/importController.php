@@ -5481,6 +5481,20 @@ class importController extends \mkwhelpers\Controller {
                                 }
                             }
                         }
+                        $termekek = $this->getRepo('Entities\Termek')->getForImport($gyarto, true);
+                        foreach ($termekek as $item) {
+                            if (in_array($t['idegencikkszam'], $idegencikkszamok)) {
+                                /** @var \Entities\Termek $termek */
+                                $termek = $this->getRepo('Entities\Termek')->find($t['id']);
+                                if ($termek) {
+                                    $lettfuggoben = true;
+                                    \mkw\store::writelog('vissza rakott cikkszám: ' . $termek->getCikkszam(), 'netpresso_fuggoben.txt');
+                                    $termek->setInaktiv(false);
+                                    \mkw\store::getEm()->persist($termek);
+                                    \mkw\store::getEm()->flush();
+                                }
+                            }
+                        }
 
 //                        a kivett termekeket kell megnezni, hogz bent vannak-e megint a feedben, es visszatenni
                     }

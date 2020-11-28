@@ -764,9 +764,12 @@ class TermekRepository extends \mkwhelpers\Repository {
         return $res;
     }
 
-    public function getForImport($gyarto) {
+    public function getForImport($gyarto, $inaktiv = null) {
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('gyarto', '=', $gyarto);
+        if ($inaktiv === false || $inaktiv === true) {
+            $filter->addFilter('inaktiv', '=', $inaktiv);
+        }
         $q = $this->_em->createQuery('SELECT _xx.id,_xx.idegenkod,_xx.idegencikkszam,_xx.cikkszam'
             . ' FROM Entities\Termek _xx'
             . $this->getFilterString($filter)
