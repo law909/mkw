@@ -1497,6 +1497,13 @@ class store {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
+    public static function isSendableEmail($email) {
+        if (strpos($email, '@mail.local') || strpos($email, '_@jogadarshan.hu')) {
+            return false;
+        }
+        return self::isValidEmail($email);
+    }
+
     public static function storagePath($filename) {
         return getcwd() . '/' . self::getConfigValue('path.storage', '') . $filename;
     }
