@@ -1857,6 +1857,7 @@ class importController extends \mkwhelpers\Controller {
             $createuj = $this->params->getBoolRequestParam('createuj', false);
             $arszaz = $this->params->getNumRequestParam('arszaz', 100);
             $batchsize = $this->params->getNumRequestParam('batchsize', 20);
+            $minimumar = $this->params->getNumRequestParam('minimumar', 490);
 
             $urleleje = \mkw\store::changeDirSeparator(\mkw\store::getConfigValue('path.termekkep') . \mkw\store::getParameter(\mkw\consts::PathHaffner24));
 
@@ -2043,7 +2044,11 @@ class importController extends \mkwhelpers\Controller {
                         }
                         if (!$termek->getAkcios()) {
                             $termek->setNetto($data['price'] * 1);
-                            $termek->setBrutto(round($termek->getBrutto() * $arszaz / 100, -1));
+                            $brutto = round($termek->getBrutto() * $arszaz / 100, -1);
+                            if ($brutto < $minimumar) {
+                                $brutto = $minimumar;
+                            }
+                            $termek->setBrutto($brutto);
                         }
                         \mkw\store::getEm()->persist($termek);
                     }
@@ -5476,6 +5481,8 @@ class importController extends \mkwhelpers\Controller {
                                 }
                             }
                         }
+
+//                        a kivett termekeket kell megnezni, hogz bent vannak-e megint a feedben, es visszatenni
                     }
                     if ($lettfuggoben) {
                         echo json_encode(array('url' => \mkw\store::logsUrl('netpresso_fuggoben.txt')));

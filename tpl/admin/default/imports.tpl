@@ -62,6 +62,11 @@
                 <label>Az ár az importált ár ennyi százaléka legyen:</label>
                 <input name="arszaz" value="100">
             </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label>Minimum ár:</label>
+                <input name="minimumar" value="490">
+            </div>
 	<div class="matt-hseparator"></div>
             <div>
                 <label>Delton letöltés kell:<abel>
