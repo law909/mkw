@@ -436,8 +436,8 @@ class JogaBerlet {
         \mkw\store::writelog('UE: getAlkalom: ' . $this->getAlkalom());
         \mkw\store::writelog('UE: getElfogyottAlkalom: ' . $this->getElfogyottalkalom());
         \mkw\store::writelog('UE: getOfflinelfogyottAlkalom: ' . $this->getOfflineelfogyottalkalom());
-        \mkw\store::writelog('UE: vege: ' . $this->getAlkalom() - ($this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom()));
-        return $this->getAlkalom() - ($this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom()) == 1;
+        \mkw\store::writelog('UE: vege: ' . $this->getAlkalom() - $this->getElfogyottalkalom() - $this->getOfflineelfogyottalkalom());
+        return $this->getAlkalom() - $this->getElfogyottalkalom() - $this->getOfflineelfogyottalkalom() == 1;
     }
 
     public function isUtolsoAlkalom() {
