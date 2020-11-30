@@ -2260,6 +2260,15 @@ class importController extends \mkwhelpers\Controller {
                                         }
                                     }
                                 }
+                                else {
+                                    if ($termek->getInaktiv()) {
+                                        \mkw\store::writelog('TERMÉK cikkszám AKTIVÁLVA: ' . $t['cikkszam'] . $termek->getCikkszam(), 'reintex_fuggoben.txt');
+                                        $lettfuggoben = true;
+                                        $termek->setInaktiv(false);
+                                        \mkw\store::getEm()->persist($termek);
+                                        \mkw\store::getEm()->flush();
+                                    }
+                                }
                             }
                             // CSVben NINCS meg
                             else {
