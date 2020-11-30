@@ -418,7 +418,7 @@ class JogaBerlet {
         $this->setElfogyottalkalom($y + $num);
         $this->setLejart($this->getAlkalom() <= $this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom());
 
-        if ($num > 1) {
+        if ($num > 0) {
             if ($this->isNincsfizetve() && ($this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom() > 1)) {
                 $this->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletFelszolitoSablon));
             }
