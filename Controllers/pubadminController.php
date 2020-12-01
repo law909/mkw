@@ -106,6 +106,7 @@ class pubadminController extends mkwhelpers\Controller {
                         break;
                 }
                 $rvtomb['id'] = $resztvevo->getId();
+                $rvtomb['megjegyzes'] = $resztvevo->getMegjegyzes();
                 $rvtomb['megjelent'] = $resztvevo->isMegjelent();
                 $rvtomb['mustbuy'] = !$rvtomb['tipus'];
                 /** @var Entities\Termek $termek */
@@ -265,6 +266,27 @@ class pubadminController extends mkwhelpers\Controller {
             $obj->setPartneremail($this->params->getStringRequestParam('email'));
             $obj->setOrarend($ora);
             $this->getEm()->persist($obj);
+            $this->getEm()->flush();
+        }
+    }
+
+    public function getMegjegyzes() {
+        $id = $this->params->getIntRequestParam('id');
+        /** @var \Entities\JogaBejelentkezes $rv */
+        $rv = $this->getRepo('Entities\JogaBejelentkezes')->find($id);
+        if ($rv) {
+            echo $rv->getMegjegyzes();
+        }
+    }
+
+    public function postMegjegyzes() {
+        $id = $this->params->getIntRequestParam('id');
+        $m = $this->params->getStringRequestParam('megjegyzes');
+        /** @var \Entities\JogaBejelentkezes $rv */
+        $rv = $this->getRepo('Entities\JogaBejelentkezes')->find($id);
+        if ($rv) {
+            $rv->setMegjegyzes($m);
+            $this->getEm()->persist($rv);
             $this->getEm()->flush();
         }
     }

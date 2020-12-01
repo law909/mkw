@@ -15,3 +15,6 @@ $router->map('GET', '/pubadmin/oralist', 'pubadminController#getOralist', 'pubad
 $router->map('GET', '/pubadmin/partnerdata', 'pubadminController#getPartnerData', 'pubadmingetpartnerdata');
 $router->map('POST', '/pubadmin/newbejelentkezes', 'pubadminController#newBejelentkezes', 'pubadminnewbejelentkezes');
 $router->map('POST', '/pubadmin/newpartnernewbejelentkezes', 'pubadminController#newBejelentkezesWNewPartner', 'pubadminnewpartnernewbejelentkezes');
+
+$router->map('GET', '/pubadmin/megjegyzes', 'pubadminController#getMegjegyzes', 'pubadmingetmegjegyzes');
+$router->map('POST', '/pubadmin/megjegyzes', 'pubadminController#postMegjegyzes', 'pubadminpostmegjegyzes');

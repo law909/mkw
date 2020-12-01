@@ -85,7 +85,7 @@ $(document).ready(
                 e.preventDefault();
                 $('#buyModalLabel').text($this.text() + ' vásárlás');
                 $('.js-buyok').data('id', $this.data('id'));
-                $('#aredit').val($this.data('price'))
+                $('#aredit').val($this.data('price'));
                 $('#buyModal')
                     .data('type', $this.data('type'))
                     .modal({
@@ -108,6 +108,42 @@ $(document).ready(
                         refreshResztvevoList();
                     }
                 })
+            })
+            .on('click', '.js-megjegyzes', function(e) {
+                var $this = $(this);
+                $('.js-megjegyzesok').data('id', $this.data('id'));
+                e.preventDefault();
+                $.ajax({
+                    method: 'GET',
+                    url: '/pubadmin/megjegyzes',
+                    data: {
+                        id: $this.data('id')
+                    },
+                    success: function(data) {
+                        $('#megjegyzesedit').val(data);
+                        $('#megjegyzesModal')
+                            .modal({
+                                backdrop: 'static'
+                            });
+                    }
+                });
+            })
+            .on('click', '.js-megjegyzesok', function(e) {
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    method: 'POST',
+                    url: '/pubadmin/megjegyzes',
+                    data: {
+                        id: $this.data('id'),
+                        megjegyzes: $('#megjegyzesedit').val()
+                    },
+                    success: function() {
+                        $('#megjegyzesModal').modal('hide');
+                        $('#megjegyzesedit').text('');
+                        refreshResztvevoList();
+                    }
+                });
             })
             .on('click', '.js-newpartner', function(e) {
                 e.preventDefault();

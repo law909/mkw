@@ -75,6 +75,9 @@ class JogaBejelentkezes {
     /** @ORM\Column(type="boolean") */
     private $kesobbfizet = false;
 
+    /** @ORM\Column(type="text",nullable=true) */
+    private $megjegyzes;
+
     public function createJogaReszvetel() {
         $rvpartner = \mkw\store::getEm()->getRepository('Entities\Partner')->findOneBy(['email' => $this->getPartneremail()]);
         if (!$rvpartner) {
@@ -365,6 +368,20 @@ class JogaBejelentkezes {
      */
     public function setKesobbfizet($kesobbfizet) {
         $this->kesobbfizet = $kesobbfizet;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMegjegyzes() {
+        return $this->megjegyzes;
+    }
+
+    /**
+     * @param mixed $megjegyzes
+     */
+    public function setMegjegyzes($megjegyzes) {
+        $this->megjegyzes = $megjegyzes;
     }
 
 }

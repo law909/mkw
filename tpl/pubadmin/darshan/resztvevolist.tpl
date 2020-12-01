@@ -23,9 +23,9 @@
             <div class="col"></div>
         {else}
             {if ($resztvevo.megjelent)}
-                <div class="col-md-1 bg-success">&nbsp;</div>
+                <button class="col-md-1 btn btn-success js-megjegyzes" data-id="{$resztvevo.id}">{if ($resztvevo.megjegyzes)}*{/if}M{if ($resztvevo.megjegyzes)}*{/if}</button>
             {else}
-                <div class="col-md-1 bg-danger">&nbsp;</div>
+                <button class="col-md-1 btn btn-danger js-megjegyzes" data-id="{$resztvevo.id}">{if ($resztvevo.megjegyzes)}*{/if}M{if ($resztvevo.megjegyzes)}*{/if}</button>
             {/if}
             <div class="col-md-5{if ($resztvevo.new)} text-danger{/if}">
                 {$sorszam}. {$resztvevo.nev} ({$resztvevo.email})
