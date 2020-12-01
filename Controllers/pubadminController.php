@@ -290,4 +290,34 @@ class pubadminController extends mkwhelpers\Controller {
             $this->getEm()->flush();
         }
     }
+
+    public function getPartner() {
+        $id = $this->params->getIntRequestParam('id');
+        $r = [
+            'nev' => '',
+            'email' => ''
+        ];
+        /** @var \Entities\JogaBejelentkezes $rv */
+        $rv = $this->getRepo('Entities\JogaBejelentkezes')->find($id);
+        if ($rv) {
+            $r['nev'] = $rv->getPartnernev();
+            $r['email'] = $rv->getPartneremail();
+        }
+        header('Content-Type: application/json');
+        echo json_encode($r);
+    }
+
+    public function postPartner() {
+        $id = $this->params->getIntRequestParam('id');
+        $nev = $this->params->getStringRequestParam('nev');
+        $email = $this->params->getStringRequestParam('email');
+        /** @var \Entities\JogaBejelentkezes $rv */
+        $rv = $this->getRepo('Entities\JogaBejelentkezes')->find($id);
+        if ($rv) {
+            $rv->setPartnernev($nev);
+            $rv->setPartneremail($email);
+            $this->getEm()->persist($rv);
+            $this->getEm()->flush();
+        }
+    }
 }

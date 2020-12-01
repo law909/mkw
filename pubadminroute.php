@@ -18,3 +18,6 @@ $router->map('POST', '/pubadmin/newpartnernewbejelentkezes', 'pubadminController
 
 $router->map('GET', '/pubadmin/megjegyzes', 'pubadminController#getMegjegyzes', 'pubadmingetmegjegyzes');
 $router->map('POST', '/pubadmin/megjegyzes', 'pubadminController#postMegjegyzes', 'pubadminpostmegjegyzes');
+
+$router->map('GET', '/pubadmin/partner', 'pubadminController#getPartner', 'pubadmingetpartner');
+$router->map('POST', '/pubadmin/partner', 'pubadminController#postPartner', 'pubadminpostpartner');

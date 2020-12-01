@@ -187,6 +187,45 @@ $(document).ready(
                     });
                 }
             })
+            .on('click', '.js-partneredit', function(e) {
+                var $this = $(this);
+                e.preventDefault();
+                $('.js-partnereditok').data('id', $this.data('id'));
+                $.ajax({
+                    method: 'GET',
+                    url: '/pubadmin/partner',
+                    data: {
+                        id: $this.data('id')
+                    },
+                    success: function(data) {
+                        $('#nev2edit').val(data.nev);
+                        $('#email2edit').val(data.email);
+                        $('#partnerEditModal')
+                            .modal({
+                                backdrop: 'static'
+                            });
+                    }
+                });
+            })
+            .on('click', '.js-partnereditok', function(e) {
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    method: 'POST',
+                    url: '/pubadmin/partner',
+                    data: {
+                        id: $this.data('id'),
+                        nev: $('#nev2edit').val(),
+                        email: $('#email2edit').val()
+                    },
+                    success: function() {
+                        $this.data('id', '');
+                        $('#nev2edit').val('');
+                        $('#email2edit').val('');
+                        $('#partnerEditModal').modal('hide');
+                    }
+                });
+            })
             .on('click', '.js-refresh', function(e) {
                 e.preventDefault();
                 refreshResztvevoList();

@@ -115,4 +115,35 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="partnerEditModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Gyakorló módosítás</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="nev2edit">Név</label>
+                                <input id="nev2edit" name="nev" type="text" class="form-control" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="email2edit">Email</label>
+                                <input id="email2edit" name="email" type="email" class="form-control" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary js-partnereditok">OK</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégsem</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {/block}
