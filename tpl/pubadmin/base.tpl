@@ -12,7 +12,7 @@
     <script type="text/javascript" src="/js/pubadmin/default/bootstrap-autocomplete.min.js"></script>
     {block "inhead"}
     {/block}
-    <script type="text/javascript" src="/js/pubadmin/{$pubadmintheme}/appinit.js"></script>
+    <script type="text/javascript" src="/js/pubadmin/{$pubadmintheme}/appinit.js?v={$smarty.now}"></script>
     <title>{$pagetitle|default} - {t('Billy pubAdmin')}</title>
 </head>
 <body>
