@@ -125,8 +125,16 @@ class JogaBerlet {
             . ($this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom()) . ' alkalom, '
             . $this->getLejaratdatumStr() . ')';
     }
+
     public function getLastmod() {
         return $this->lastmod;
+    }
+
+    public function getLastmodStr() {
+        if ($this->getLastmod()) {
+            return $this->getLastmod()->format(\mkw\store::$DateTimeFormat);
+        }
+        return '';
     }
 
     public function clearLastmod() {
@@ -135,6 +143,13 @@ class JogaBerlet {
 
     public function getCreated() {
         return $this->created;
+    }
+
+    public function getCreatedStr() {
+        if ($this->getCreated()) {
+            return $this->getCreated()->format(\mkw\store::$DateTimeFormat);
+        }
+        return '';
     }
 
     public function clearCreated() {

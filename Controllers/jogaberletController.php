@@ -35,6 +35,10 @@ class jogaberletController extends \mkwhelpers\MattableController {
         $x['offlineelfogyottalkalom'] = $t->getOfflineelfogyottalkalom();
         $x['nincsfizetve'] = $t->isNincsfizetve();
         $x['bruttoar'] = $t->getBruttoegysar();
+        $x['lastmodstr'] = $t->getLastmodStr();
+        $x['createdstr'] = $t->getCreatedStr();
+        $x['updatedby'] = $t->getUpdatedbyNev();
+        $x['createdby'] = $t->getCreatedbyNev();
         return $x;
     }
 
