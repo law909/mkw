@@ -219,10 +219,11 @@ $(document).ready(
                         email: $('#email2edit').val()
                     },
                     success: function() {
+                        $('#partnerEditModal').modal('hide');
                         $this.data('id', '');
                         $('#nev2edit').val('');
                         $('#email2edit').val('');
-                        $('#partnerEditModal').modal('hide');
+                        refreshResztvevoList();
                     }
                 });
             })
