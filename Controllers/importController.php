@@ -2209,7 +2209,8 @@ class importController extends \mkwhelpers\Controller {
                                             if (!in_array($valtozat->getIdegencikkszam(), $cikkszamok)) {  // nincs meg a reintexnel
                                                 if ($valtozat->getKeszlet() <= 0) {  // nincs keszleten
                                                     if ($valtozat->getElerheto()) {
-                                                        \mkw\store::writelog('VÁLTOZAT idegen cikkszám NEM ELÉRHETŐ lett: ' . $valtozat->getIdegencikkszam(), 'reintex_fuggoben.txt');
+                                                        \mkw\store::writelog('VÁLTOZAT idegen cikkszám NEM ELÉRHETŐ lett: ' . $valtozat->getIdegencikkszam()
+                                                            . ' (termék cikkszám: ' . $termek->getCikkszam() . ')', 'reintex_fuggoben.txt');
                                                         $lettfuggoben = true;
                                                         $valtozat->setElerheto(false);
                                                         \mkw\store::getEm()->persist($valtozat);
@@ -2224,7 +2225,8 @@ class importController extends \mkwhelpers\Controller {
                                             ($valtozat->getIdegencikkszam() && in_array($valtozat->getIdegencikkszam(), $cikkszamok))
                                         ) {
                                             if (!$valtozat->getElerheto()) {
-                                                \mkw\store::writelog('VÁLTOZAT idegen cikkszám ELÉRTHETŐ lett: ' . $valtozat->getIdegencikkszam(), 'reintex_fuggoben.txt');
+                                                \mkw\store::writelog('VÁLTOZAT idegen cikkszám ELÉRTHETŐ lett: ' . $valtozat->getIdegencikkszam()
+                                                    . ' (termék cikkszám: ' . $termek->getCikkszam() . ')', 'reintex_fuggoben.txt');
                                                 $lettfuggoben = true;
                                                 $valtozat->setElerheto(true);
                                                 \mkw\store::getEm()->persist($valtozat);
@@ -2280,7 +2282,8 @@ class importController extends \mkwhelpers\Controller {
                                         if (!in_array($valtozat->getIdegencikkszam(), $cikkszamok)) {
                                             if ($valtozat->getKeszlet() <= 0) {
                                                 if ($valtozat->getElerheto()) {
-                                                    \mkw\store::writelog('VÁLTOZAT idegen cikkszám NEM ELÉRHETŐ lett: ' . $valtozat->getIdegencikkszam(), 'reintex_fuggoben.txt');
+                                                    \mkw\store::writelog('VÁLTOZAT idegen cikkszám NEM ELÉRHETŐ lett: ' . $valtozat->getIdegencikkszam()
+                                                        . ' (termék cikkszám: ' . $termek->getCikkszam() . ')', 'reintex_fuggoben.txt');
                                                     $lettfuggoben = true;
                                                     $valtozat->setElerheto(false);
                                                     \mkw\store::getEm()->persist($valtozat);
@@ -2295,7 +2298,8 @@ class importController extends \mkwhelpers\Controller {
                                         ($valtozat->getIdegencikkszam() && in_array($valtozat->getIdegencikkszam(), $cikkszamok))
                                     ) {
                                         if (!$valtozat->getElerheto()) {
-                                            \mkw\store::writelog('VÁLTOZAT idegen cikkszám ELÉRTHETŐ lett: ' . $valtozat->getIdegencikkszam(), 'reintex_fuggoben.txt');
+                                            \mkw\store::writelog('VÁLTOZAT idegen cikkszám ELÉRTHETŐ lett: ' . $valtozat->getIdegencikkszam()
+                                                . ' (termék cikkszám: ' . $termek->getCikkszam() . ')', 'reintex_fuggoben.txt');
                                             $lettfuggoben = true;
                                             $valtozat->setElerheto(true);
                                             \mkw\store::getEm()->persist($valtozat);
