@@ -2,7 +2,13 @@
 
 namespace Controllers;
 
+use Entities\Dolgozo;
 use Entities\JogaBerlet;
+use Entities\JogaReszvetel;
+use Entities\Partner;
+use Entities\Termek;
+use Entities\TermekValtozat;
+use Entities\Valutanem;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -44,14 +50,14 @@ class jogaberletController extends \mkwhelpers\MattableController {
 
     /** @param \Entities\JogaBerlet $obj */
     protected function setFields($obj) {
-        $ck = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
+        $ck = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek'));
         if ($ck) {
             $obj->setTermek($ck);
         }
         else {
             $obj->removeTermek();
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
+        $ck = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('partner'));
         if ($ck) {
             $obj->setPartner($ck);
         }
@@ -194,15 +200,15 @@ class jogaberletController extends \mkwhelpers\MattableController {
         // Nincsenek ársávok
         if (!\mkw\store::isArsavok()) {
             /** @var \Entities\JogaBerlet $berlet */
-            $berlet = $this->getEm()->getRepository('Entities\JogaBerlet')->find($this->params->getIntRequestParam('berlet'));
+            $berlet = $this->getEm()->getRepository(JogaBerlet::class)->find($this->params->getIntRequestParam('berlet'));
             if ($berlet) {
                 $termek = $berlet->getTermek();
                 if ($termek) {
-                    $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
-                    $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+                    $partner = $this->getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('partner'));
+                    $valutanem = $this->getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('valutanem'));
                     $valtozat = null;
                     if ($this->params->getIntRequestParam('valtozat')) {
-                        $valtozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('valtozat'));
+                        $valtozat = $this->getEm()->getRepository(TermekValtozat::class)->find($this->params->getIntRequestParam('valtozat'));
                     }
                     $o = $termek->getJogaalkalom();
                     if (!$o) {
@@ -245,16 +251,16 @@ class jogaberletController extends \mkwhelpers\MattableController {
         else {
             $arsavnev = 'folyamatos';
             /** @var \Entities\JogaBerlet $berlet */
-            $berlet = $this->getEm()->getRepository('Entities\JogaBerlet')->find($this->params->getIntRequestParam('berlet'));
+            $berlet = $this->getEm()->getRepository(JogaBerlet::class)->find($this->params->getIntRequestParam('berlet'));
             if ($berlet) {
                 /** @var \Entities\Termek $termek */
                 $termek = $berlet->getTermek();
                 if ($termek) {
-                    $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
-                    $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+                    $partner = $this->getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('partner'));
+                    $valutanem = $this->getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('valutanem'));
                     $valtozat = null;
                     if ($this->params->getIntRequestParam('valtozat')) {
-                        $valtozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('valtozat'));
+                        $valtozat = $this->getEm()->getRepository(TermekValtozat::class)->find($this->params->getIntRequestParam('valtozat'));
                     }
                     $o = $termek->getJogaalkalom();
                     if (!$o) {
@@ -301,14 +307,14 @@ class jogaberletController extends \mkwhelpers\MattableController {
     }
 
     public function getBerletAlkalmak() {
-        $tanar = $this->getRepo('Entities\Dolgozo')->find($this->params->getIntRequestParam('t'));
+        $tanar = $this->getRepo(Dolgozo::class)->find($this->params->getIntRequestParam('t'));
         if ($tanar) {
             $filter = new FilterDescriptor();
-            $partnerek = $this->getRepo('Entities\JogaReszvetel')->getTanarhozJarok($tanar);
+            $partnerek = $this->getRepo(JogaReszvetel::class)->getTanarhozJarok($tanar);
             $res = [];
             foreach ($partnerek as $partner) {
                 $filter->addFilter('partner', '=', $partner);
-                $reszvetelek = $this->getRepo('Entities\JogaReszvetel')->getAll($filter, array('datum' => 'DESC'));
+                $reszvetelek = $this->getRepo(JogaReszvetel::class)->getAll($filter, array('datum' => 'DESC'));
                 /** @var \Entities\JogaReszvetel $reszvetel */
                 $reszvetel = $reszvetelek[0];
                 $berlet = $reszvetel->getJogaberlet();

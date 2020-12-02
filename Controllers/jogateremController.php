@@ -2,12 +2,13 @@
 
 namespace Controllers;
 
+use Entities\Jogaterem;
 use mkw\store;
 
 class jogateremController extends \mkwhelpers\JQGridController {
 
     public function __construct($params) {
-        $this->setEntityName('Entities\Jogaterem');
+        $this->setEntityName(Jogaterem::class);
         parent::__construct($params);
     }
 

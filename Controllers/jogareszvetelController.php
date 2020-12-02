@@ -3,11 +3,21 @@
 namespace Controllers;
 
 use Entities\Dolgozo;
+use Entities\Fizmod;
+use Entities\JogaBerlet;
+use Entities\Jogaoratipus;
+use Entities\JogaReszvetel;
+use Entities\Jogaterem;
+use Entities\Partner;
+use Entities\Penztar;
+use Entities\Termek;
+use Entities\TermekValtozat;
+use Entities\Valutanem;
 
 class jogareszvetelController extends \mkwhelpers\MattableController {
 
     public function __construct($params) {
-        $this->setEntityName('Entities\JogaReszvetel');
+        $this->setEntityName(JogaReszvetel::class);
         $this->setKarbFormTplName('jogareszvetelkarbform.tpl');
         $this->setKarbTplName('jogareszvetelkarb.tpl');
         $this->setListBodyRowTplName('jogareszvetellista_tbody_tr.tpl');
@@ -92,7 +102,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         if ($partnerkod == -1) {
             $partneremail = $this->params->getStringRequestParam('partneremail');
             if ($partneremail) {
-                $partnerobj = $this->getRepo('Entities\Partner')->findOneBy(array('email' => $partneremail));
+                $partnerobj = $this->getRepo(Partner::class)->findOneBy(array('email' => $partneremail));
                 if (!$partnerobj) {
                     $partnerobj = new \Entities\Partner();
                 }
@@ -113,7 +123,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
             $this->getEm()->persist($partnerobj);
         }
         if ($partnerkod > 0) {
-            $ck = \mkw\store::getEm()->getRepository('Entities\Partner')->find($partnerkod);
+            $ck = \mkw\store::getEm()->getRepository(Partner::class)->find($partnerkod);
             if ($ck) {
                 $obj->setPartner($ck);
             }
@@ -123,35 +133,35 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         }
 
         $obj->setDatum($this->params->getStringRequestParam('datum'));
-        $ck = \mkw\store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('tanar', 0));
+        $ck = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('tanar', 0));
         if ($ck) {
             $obj->setTanar($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner', 0));
+        $ck = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('partner', 0));
         if ($ck) {
             $obj->setPartner($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod', 0));
+        $ck = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizmod', 0));
         if ($ck) {
             $obj->setFizmod($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Jogaterem')->find($this->params->getIntRequestParam('jogaterem', 0));
+        $ck = \mkw\store::getEm()->getRepository(Jogaterem::class)->find($this->params->getIntRequestParam('jogaterem', 0));
         if ($ck) {
             $obj->setJogaterem($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Jogaoratipus')->find($this->params->getIntRequestParam('jogaoratipus', 0));
+        $ck = \mkw\store::getEm()->getRepository(Jogaoratipus::class)->find($this->params->getIntRequestParam('jogaoratipus', 0));
         if ($ck) {
             $obj->setJogaoratipus($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Penztar')->find($this->params->getIntRequestParam('penztar', 0));
+        $ck = \mkw\store::getEm()->getRepository(Penztar::class)->find($this->params->getIntRequestParam('penztar', 0));
         if ($ck) {
             $obj->setPenztar($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek', 0));
+        $ck = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek', 0));
         if ($ck) {
             $obj->setTermek($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository('Entities\JogaBerlet')->find($this->params->getIntRequestParam('jogaberlet', 0));
+        $ck = \mkw\store::getEm()->getRepository(JogaBerlet::class)->find($this->params->getIntRequestParam('jogaberlet', 0));
         if ($ck) {
             $obj->setJogaberlet($ck);
         }
@@ -179,7 +189,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
 
         $f = $this->params->getIntRequestParam('fizmodfilter');
         if ($f) {
-            $bs = $this->getRepo('Entities\Fizmod')->findOneById($f);
+            $bs = $this->getRepo(Fizmod::class)->findOneById($f);
             if ($bs) {
                 $filter->addFilter('fizmod', '=', $bs);
             }
@@ -289,12 +299,12 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
     public function getar() {
         // Nincsenek ársávok
         if (!\mkw\store::isArsavok()) {
-            $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
-            $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
-            $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+            $termek = $this->getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek'));
+            $partner = $this->getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('partner'));
+            $valutanem = $this->getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('valutanem'));
             $valtozat = null;
             if ($this->params->getIntRequestParam('valtozat')) {
-                $valtozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('valtozat'));
+                $valtozat = $this->getEm()->getRepository(TermekValtozat::class)->find($this->params->getIntRequestParam('valtozat'));
             }
             if ($termek) {
                 $o = $termek->getJogaalkalom();
@@ -328,12 +338,12 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
         else {
             $arsavnev = 'folyamatos';
             /** @var \Entities\Termek $termek */
-            $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek'));
-            $partner = $this->getEm()->getRepository('Entities\Partner')->find($this->params->getIntRequestParam('partner'));
-            $valutanem = $this->getEm()->getRepository('Entities\Valutanem')->find($this->params->getIntRequestParam('valutanem'));
+            $termek = $this->getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek'));
+            $partner = $this->getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('partner'));
+            $valutanem = $this->getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('valutanem'));
             $valtozat = null;
             if ($this->params->getIntRequestParam('valtozat')) {
-                $valtozat = $this->getEm()->getRepository('Entities\TermekValtozat')->find($this->params->getIntRequestParam('valtozat'));
+                $valtozat = $this->getEm()->getRepository(TermekValtozat::class)->find($this->params->getIntRequestParam('valtozat'));
             }
             if ($termek) {
                 $o = $termek->getJogaalkalom();
@@ -366,18 +376,18 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
     }
 
     public function quickSave() {
-        $terem = $this->getEm()->getRepository('Entities\Jogaterem')->find($this->params->getIntRequestParam('jogaterem'));
-        $oratipus = $this->getEm()->getRepository('Entities\Jogaoratipus')->find($this->params->getIntRequestParam('jogaoratipus', 0));
-        $tanar = $this->getEm()->getRepository('Entities\Dolgozo')->find($this->params->getIntRequestParam('tanar', 0));
+        $terem = $this->getEm()->getRepository(Jogaterem::class)->find($this->params->getIntRequestParam('jogaterem'));
+        $oratipus = $this->getEm()->getRepository(Jogaoratipus::class)->find($this->params->getIntRequestParam('jogaoratipus', 0));
+        $tanar = $this->getEm()->getRepository(Dolgozo::class)->find($this->params->getIntRequestParam('tanar', 0));
         $jrids = $this->params->getArrayRequestParam('jrid');
         if ($terem && $oratipus && $tanar) {
             foreach ($jrids as $jrid) {
                 $uresterem = $this->params->getBoolRequestParam('uresterem_' . $jrid);
-                $termek = $this->getEm()->getRepository('Entities\Termek')->find($this->params->getIntRequestParam('termek_' . $jrid, 0));
+                $termek = $this->getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek_' . $jrid, 0));
                 /** @var \Entities\Fizmod $fizmod */
-                $fizmod = $this->getEm()->getRepository('Entities\Fizmod')->find($this->params->getIntRequestParam('fizmod_' . $jrid, 0));
-                $penztar = $this->getEm()->getRepository('Entities\Penztar')->find($this->params->getIntRequestParam('penztar_' . $jrid, 0));
-                $berlet = $this->getEm()->getRepository('Entities\JogaBerlet')->find($this->params->getIntRequestParam('jogaberlet_' . $jrid, 0));
+                $fizmod = $this->getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizmod_' . $jrid, 0));
+                $penztar = $this->getEm()->getRepository(Penztar::class)->find($this->params->getIntRequestParam('penztar_' . $jrid, 0));
+                $berlet = $this->getEm()->getRepository(JogaBerlet::class)->find($this->params->getIntRequestParam('jogaberlet_' . $jrid, 0));
                 if (
                     (!$uresterem && $termek && ($this->params->getNumRequestParam('ar_' . $jrid, 0) !== 0)) ||
                     $uresterem
@@ -388,7 +398,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                         $partnerkod = $this->params->getIntRequestParam('partner_' . $jrid, 0);
                         if ($partnerkod > 0) {
                             /** @var \Entities\Partner $partnerobj */
-                            $partnerobj = \mkw\store::getEm()->getRepository('Entities\Partner')->find($partnerkod);
+                            $partnerobj = \mkw\store::getEm()->getRepository(Partner::class)->find($partnerkod);
                             if ($partnerobj) {
 
                                 $partnerobj->setEmail($this->params->getStringRequestParam('partneremail_' . $jrid));
@@ -412,7 +422,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController {
                             $partneremail = $this->params->getStringRequestParam('partneremail_' . $jrid);
                             if ($partneremail) {
                                 /** @var \Entities\Partner $partnerobj */
-                                $partnerobj = $this->getRepo('Entities\Partner')->findOneBy(array('email' => $partneremail));
+                                $partnerobj = $this->getRepo(Partner::class)->findOneBy(array('email' => $partneremail));
                             }
                             if (!$partnerobj) {
                                 $partnerobj = new \Entities\Partner();

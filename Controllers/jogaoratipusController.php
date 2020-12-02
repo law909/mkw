@@ -2,12 +2,13 @@
 
 namespace Controllers;
 
+use Entities\Jogaoratipus;
 use mkw\store;
 
 class jogaoratipusController extends \mkwhelpers\JQGridController {
 
     public function __construct($params) {
-        $this->setEntityName('Entities\Jogaoratipus');
+        $this->setEntityName(Jogaoratipus::class);
         parent::__construct($params);
     }
 

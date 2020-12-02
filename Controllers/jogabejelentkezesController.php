@@ -3,6 +3,8 @@
 namespace Controllers;
 
 use Entities\JogaBejelentkezes;
+use Entities\Orarend;
+use Entities\Partner;
 
 class jogabejelentkezesController extends \mkwhelpers\MattableController {
 
@@ -127,9 +129,9 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController {
             $bej = $this->getRepo()->findOneBy(['partneremail' => $email, 'orarend' => $orarendid, 'datum' => $datum]);
             if (!$bej) {
                 /** @var \Entities\Orarend $ora */
-                $ora = $this->getRepo('Entities\Orarend')->find($orarendid);
+                $ora = $this->getRepo(Orarend::class)->find($orarendid);
                 /** @var \Entities\Partner $partner */
-                $partner = $this->getRepo('Entities\Partner')->findOneBy(['email' => $email]);
+                $partner = $this->getRepo(Partner::class)->findOneBy(['email' => $email]);
 
                 $obj = new JogaBejelentkezes();
                 $obj->setDatum($datumstr);
