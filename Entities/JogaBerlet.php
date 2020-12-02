@@ -88,7 +88,7 @@ class JogaBerlet {
     private $bruttoegysar;
 
     public function sendEmail($sablonid) {
-        $emailtpl = \mkw\store::getEm()->getRepository('Entities\Emailtemplate')->find($sablonid);
+        $emailtpl = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($sablonid);
         if (\mkw\store::isSendableEmail($this->getPartneremail()) && $emailtpl) {
 
             $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
@@ -428,7 +428,7 @@ class JogaBerlet {
     }
 
     public function calcLejart($num = 0) {
-        $jrrepo = \mkw\store::getEm()->getRepository('Entities\JogaReszvetel');
+        $jrrepo = \mkw\store::getEm()->getRepository(JogaReszvetel::class);
         $y = $jrrepo->getCountByBerlet($this->getId());
         $this->setElfogyottalkalom($y + $num);
         $this->setLejart($this->getAlkalom() <= $this->getElfogyottalkalom() + $this->getOfflineelfogyottalkalom());
@@ -438,11 +438,20 @@ class JogaBerlet {
                 $this->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletFelszolitoSablon));
             }
 
-            if ($this->isUtolsoElottiAlkalom()) {
-                $this->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletLefogjarniSablon));
-            }
-            elseif ($this->isUtolsoAlkalom()) {
-                $this->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletLejartSablon));
+            if ($this->isUtolsoAlkalom() || $this->isUtolsoElottiAlkalom()) {
+
+                $filter = new \mkwhelpers\FilterDescriptor();
+                $filter->addFilter('partner', '=', $this->getPartner());
+                $filter->addFilter('lejart', '=', false);
+                $db = \mkw\store::getEm()->getRepository(JogaBerlet::class)->getCount($filter);
+                if ($db <= 1) {
+                    if ($this->isUtolsoElottiAlkalom()) {
+                        $this->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletLefogjarniSablon));
+                    }
+                    elseif ($this->isUtolsoAlkalom()) {
+                        $this->sendEmail(\mkw\store::getParameter(\mkw\consts::JogaBerletLejartSablon));
+                    }
+                }
             }
         }
     }
