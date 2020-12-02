@@ -204,7 +204,7 @@
             transform: translate(-50%, -50%);
             background-color: white;
             padding: 1rem 1.5rem;
-            width: 24rem;
+            width: 80%;
             border-radius: 0.1rem;
         }
         .close-button {
