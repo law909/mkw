@@ -446,17 +446,16 @@ class a2aController extends \mkwhelpers\Controller {
                                 $results['msg'] .= ' Nincs default termék.';
                             }
                             if ($results['msg'] === '') {
+                                $raktar = $this->createRaktar($data['telephelykod']);
+                                $fizmod = $this->createFizmod($data['fizmodnev'], $data['fizmodtipus'], $data['fizmodnavkod']);
+
                                 $szamlafej = new Bizonylatfej();
                                 $szamlafej->setPersistentData();
 
                                 $szamlafej->setBizonylattipus($biztipus);
                                 $szamlafej->setValutanem($valutanem);
                                 $szamlafej->setArfolyam(1);
-
-                                $fizmod = $this->createFizmod($data['fizmodnev'], $data['fizmodtipus'], $data['fizmodnavkod']);
                                 $szamlafej->setFizmod($fizmod);
-
-                                $raktar = $this->createRaktar($data['telephelykod']);
                                 $szamlafej->setRaktar($raktar);
 
                                 $szamlafej->setKelt();
@@ -472,9 +471,14 @@ class a2aController extends \mkwhelpers\Controller {
                                 $szamlafej->setPartneradoszam($data['adoszam']);
 
                                 $szamlafej->setMegjegyzes($data['megjegyzes']);
+                                $szamlafej->setBelsomegjegyzes($data['idegenbizszam']);
                                 $this->getEm()->persist($szamlafej);
 
                                 foreach ($data['tetelek'] as $tetel) {
+                                    $afa = $this->createAFA($tetel['afakulcs']);
+                                    $vtsz = $this->createVtsz($tetel['vtsz'], $afa);
+                                    $me = $this->createME($tetel['me'], $tetel['menavkod']);
+
                                     $szamlatetel = new Bizonylattetel();
                                     $szamlafej->addBizonylattetel($szamlatetel);
                                     $szamlatetel->setBizonylatfej($szamlafej);
@@ -484,9 +488,6 @@ class a2aController extends \mkwhelpers\Controller {
                                     $szamlatetel->setTermeknev($tetel['termeknev']);
                                     $szamlatetel->setCikkszam($tetel['cikkszam']);
                                     $szamlatetel->setIdegencikkszam($tetel['szallitoicikkszam']);
-                                    $afa = $this->createAFA($tetel['afakulcs']);
-                                    $vtsz = $this->createVtsz($tetel['vtsz'], $afa);
-                                    $me = $this->createME($tetel['me'], $tetel['menavkod']);
                                     $szamlatetel->setVtsz($vtsz);
                                     $szamlatetel->setAfa($afa);
                                     $szamlatetel->setMekod($me);
