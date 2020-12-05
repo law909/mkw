@@ -180,6 +180,11 @@ class a2aController extends \mkwhelpers\Controller {
     }
 
     protected function createFizmod($nev, $tipus, $navtipus) {
+        if (!$nev) {
+            $nev = 'Készpénz';
+            $tipus = 'P';
+            $navtipus = 'CASH';
+        }
         $fizmod = $this->getRepo(Fizmod::class)->findOneBy(['nev' => $nev]);
         if (!$fizmod) {
             $fizmod = new Fizmod();
@@ -210,6 +215,9 @@ class a2aController extends \mkwhelpers\Controller {
     }
 
     protected function createAFA($nev) {
+        if (!$nev) {
+            $nev = 27;
+        }
         $afa = $this->getRepo(Afa::class)->findOneBy(['ertek' => $nev]);
         if (!$afa) {
             $afa = new Afa();
@@ -222,6 +230,10 @@ class a2aController extends \mkwhelpers\Controller {
     }
 
     protected function createME($nev, $navtipus) {
+        if (!$nev) {
+            $nev = 'db';
+            $navtipus = 'PIECE';
+        }
         $me = $this->getRepo(ME::class)->findOneBy(['nev' => $nev]);
         if (!$me) {
             $me = new ME();
