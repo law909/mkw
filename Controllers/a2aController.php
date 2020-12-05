@@ -460,6 +460,7 @@ class a2aController extends \mkwhelpers\Controller {
                                 $szamlafej->setPartneradoszam($data['adoszam']);
 
                                 $szamlafej->setMegjegyzes($data['megjegyzes']);
+                                $this->getEm()->persist($szamlafej);
 
                                 foreach ($data['tetelek'] as $tetel) {
                                     $szamlatetel = new Bizonylattetel();
@@ -484,7 +485,6 @@ class a2aController extends \mkwhelpers\Controller {
                                     $this->getEm()->persist($szamlatetel);
                                 }
                                 $szamlafej->calcOsszesen();
-                                $this->getEm()->persist($szamlafej);
                                 $this->getEm()->flush();
 
                                 $results['success'] = 1;
