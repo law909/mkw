@@ -466,6 +466,7 @@ class a2aController extends \mkwhelpers\Controller {
                                     $szamlafej->addBizonylattetel($szamlatetel);
                                     $szamlatetel->setBizonylatfej($szamlafej);
 
+                                    $szamlatetel->setPersistentData();
                                     $szamlatetel->setTermek($defatermek);
                                     $szamlatetel->setTermeknev($tetel['termeknev']);
                                     $szamlatetel->setCikkszam($tetel['cikkszam']);
@@ -478,6 +479,7 @@ class a2aController extends \mkwhelpers\Controller {
                                     $szamlatetel->setMekod($me);
                                     $szamlatetel->setMennyiseg($tetel['mennyiseg']);
                                     $szamlatetel->setNettoegysar($tetel['nettoegysar']);
+                                    $szamlatetel->calc();
 
                                     $this->getEm()->persist($szamlatetel);
                                 }
