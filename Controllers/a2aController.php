@@ -335,8 +335,8 @@ class a2aController extends \mkwhelpers\Controller {
         $result = array();
         $results = array();
 
-        $data = $this->params->getOriginalStringRequestParam('data');
-        $jsondata = json_decode($data, true);
+        $rawdata = $this->params->getOriginalStringRequestParam('data');
+        $jsondata = json_decode($rawdata, true);
 
         $auth = $jsondata['auth'];
         $consumer = $this->Auth($auth['name'], $auth['key']);
@@ -361,7 +361,7 @@ class a2aController extends \mkwhelpers\Controller {
                         elseif (array_key_exists('all', $cmd)) {
                             $results['termekek'] = $this->gettermek_all();
                         }
-                        $this->writelog($consumer, $data, json_encode($results));
+                        $this->writelog($consumer, $rawdata, json_encode($results));
                         break;
                     case 'getkeszlet':
                         if (array_key_exists('id', $cmd)) {
@@ -370,7 +370,7 @@ class a2aController extends \mkwhelpers\Controller {
                         elseif (array_key_exists('ids', $cmd)) {
                             $results['keszletek'] = $this->getkeszlet_ids($cmd['ids']);
                         }
-                        $this->writelog($consumer, $data, json_encode($results));
+                        $this->writelog($consumer, $rawdata, json_encode($results));
                         break;
                     case 'getkategoria':
                         if (array_key_exists('id', $cmd)) {
@@ -382,7 +382,7 @@ class a2aController extends \mkwhelpers\Controller {
                         elseif (array_key_exists('all', $cmd)) {
                             $results['kategoriak'] = $this->getkategoria_idwithchildren();
                         }
-                        $this->writelog($consumer, $data, json_encode($results));
+                        $this->writelog($consumer, $rawdata, json_encode($results));
                         break;
                     case 'partner':
                         if (array_key_exists('get', $cmd)) {
@@ -416,7 +416,7 @@ class a2aController extends \mkwhelpers\Controller {
                             }
                             $results['reg'] = $padat;
                         }
-                        $this->writelog($consumer, $data, json_encode($results));
+                        $this->writelog($consumer, $rawdata, json_encode($results));
                         break;
                     case 'szamla':
                         if (array_key_exists('createraw', $cmd)) {
@@ -507,7 +507,7 @@ class a2aController extends \mkwhelpers\Controller {
                                 $results['pdfurl'] = \mkw\store::getRouter()->generate('szamlapdf', true, [], ['id' => $szamlafej->getId(), 'printed' => true]);
                             }
                         }
-                        $this->writelog($consumer, $data, json_encode($results));
+                        $this->writelog($consumer, $rawdata, json_encode($results));
                         break;
                 }
             }
