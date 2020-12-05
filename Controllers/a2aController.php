@@ -193,6 +193,9 @@ class a2aController extends \mkwhelpers\Controller {
     }
 
     protected function createVtsz($nev, $afa = null) {
+        if (!$nev) {
+            $nev = '.';
+        }
         $vtsz = $this->getRepo(Vtsz::class)->findOneBy(['szam' => $nev]);
         if (!$vtsz) {
             $vtsz = new Vtsz();
