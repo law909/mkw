@@ -171,6 +171,7 @@ class a2aController extends \mkwhelpers\Controller {
         if (!$raktar) {
             $raktar = new Raktar();
             $raktar->setNev($nev);
+            $raktar->setMozgat(true);
             $raktar->setIdegenkod($nev);
             $this->getEm()->persist($raktar);
             $this->getEm()->flush($raktar);
