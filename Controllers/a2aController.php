@@ -454,8 +454,14 @@ class a2aController extends \mkwhelpers\Controller {
 
                                 $szamlafej->setBizonylattipus($biztipus);
                                 $szamlafej->setValutanem($valutanem);
+
+                                \mkw\store::writelog('valu: ' . print_r(get_class($valutanem), true), 'ujdivat.log');
+
                                 $szamlafej->setArfolyam(1);
                                 $szamlafej->setFizmod($fizmod);
+
+                                \mkw\store::writelog('fm: ' . print_r(get_class($fizmod), true), 'ujdivat.log');
+
                                 $szamlafej->setRaktar($raktar);
 
                                 $szamlafej->setKelt();
